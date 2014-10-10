@@ -23,7 +23,18 @@ import logging
 #import tempfile
 import socket
 import time
-import suds
+
+try:
+    import suds
+except:
+    logging.critical(
+        "Suds python library not available in PYTHONPATH, please download "
+        "and install from https://fedorahosted.org/suds"
+    )
+    raise
+
+# static variable for how many minutes a session id will be valid
+SESSION_TIMEOUT = 5
 
 my_file = os.path.abspath(__file__)
 my_dir = os.path.dirname(my_file)
@@ -39,12 +50,12 @@ from console_support import *
 # disable python from creating .pyc files everywhere
 sys.dont_write_bytecode = True
 
-# debug log format (rather verbose, used for files only unless debug=True)
+# debug log format; rather verbose, used for files only unless loglevel >= 1
 lfdebug = logging.Formatter(
     '[%(lineno)-5d - %(filename)20s:%(funcName)s()] %(asctime)s\n'
     '%(levelname)-8s %(message)s'
 )
-# info log format (used for console output when debug=False)
+# info log format; used for console output when loglevel = 0
 lfinfo = logging.Formatter('%(levelname)-8s %(message)s')
 
 # create a logger called tanwrap and set it's default level to DEBUG
@@ -120,7 +131,11 @@ def add_file_log(logfile=None, logdir=None):
 
 
 def get_now():
-    return time.strftime('%Y_%m_%d-%H_%M_%S', time.localtime())
+    return human_time(time.localtime())
+
+
+def human_time(t, format='%Y_%m_%d-%H_%M_%S-%Z'):
+    return time.strftime(format, t)
 
 
 def port_check(address, port, timeout=5):
@@ -132,26 +147,47 @@ def port_check(address, port, timeout=5):
 
 class TaniumWrap:
 
-    def __init__(self, username=None, password=None, host='localhost',
-                 port="443", loglevel=0, logfile=None, wsdl_uri="HOSTED",
-                 soap_location="/soap"):
+    def __init__(self, username, password, host, port="443", loglevel=0,
+                 logfile=None, wsdl_uri="HOSTED", soap_location="/soap"):
+
         logging_setup(loglevel)
+
         self.soap_host = host
         self.soap_port = port
         self.soap_location = soap_location
-        self._soap_session_username = username
-        self._soap_session_password = password
-        self._soap_session_id = None
-        self._set_now()
-        self._env_overrides()
+        self.__soap_session_username = username
+        self.__soap_session_password = password
+        self.__soap_session_id = None
+        self.__soap_session_issued = None
+
+        self.__set_now()
+        self.__env_overrides()
         self.test_tanium_port_access()
-        self._define_wsdl_uri(wsdl_uri)
-        self._define_soap_uri()
-        self.soap_client = self.get_soap_client()
+        self.__define_wsdl_uri(wsdl_uri)
+        self.__define_soap_uri()
+        self.get_sc()
+        self.__update_sc_token()
+
         logger.info('we need more stuff!')
 
-    def ask_saved_question(self, question):
-        pass
+    def ask_saved_question(self, saved_question):
+        sc_object1 = self.sc.factory.create('saved_question')
+        sc_object1.name = saved_question
+
+        object_list = self.sc.factory.create('object_list')
+        object_list.saved_question = sc_object1
+
+        result = self.call_sc("GetResultData", object_list)
+        return result
+
+    def call_sc(self, command, object_list):
+        self.__update_sc_token()
+        self.last_request_params = self.__sc_token.copy()
+        self.last_request_params['object_list'] = object_list
+        self.last_request_params['command'] = command
+        self.last_result = self.sc.service.Request(**self.last_request_params)
+        self.__check_last_result_session()
+        return self.last_result
 
     def test_tanium_port_access(self):
         if port_check(self.soap_host, self.soap_port):
@@ -164,21 +200,20 @@ class TaniumWrap:
             ).format(self.soap_host, self.soap_port))
             sys.exit(100)
 
-    def get_soap_client(self):
-        soap_client = suds.client.Client(
+    def get_sc(self):
+        self.sc = suds.client.Client(
             self.wsdl_uri,
             location=self.soap_uri,
         )
-        return soap_client
 
-    def print_soap_methods(self):
-        print self.soap_client.__str__()
+    def print_sc_methods(self):
+        print self.sc.__str__()
 
-    def _env_overrides(self):
+    def __env_overrides(self):
         # OS environment variable overrides
         OS_ENV_MAP = {
-            'TAN_USER': 'self._soap_session_username',
-            'TAN_PASS': 'self._soap_session_password',
+            'TAN_USER': 'self.__soap_session_username',
+            'TAN_PASS': 'self.__soap_session_password',
             'TAN_HOST': 'self.soap_host',
             'TAN_PASS': 'self.soap_port',
             'TAN_WSDL': 'self.wsdl_uri',
@@ -196,10 +231,10 @@ class TaniumWrap:
             ).format(os.environ[os_env_var], os_env_var))
             setattr(self, class_var, os.environ['TAN_USER'])
 
-    def _set_now(self):
+    def __set_now(self):
         self._now = get_now()
 
-    def _define_wsdl_uri(self, wsdl_uri):
+    def __define_wsdl_uri(self, wsdl_uri):
         if wsdl_uri == "HOSTED":
             self.wsdl_uri = ((
                 "https://{}:{}/console/console.wsdl"
@@ -210,7 +245,7 @@ class TaniumWrap:
             "WSDL URI: {}"
         ).format(self.wsdl_uri))
 
-    def _define_soap_uri(self):
+    def __define_soap_uri(self):
         self.soap_uri = ((
             "https://{}:{}{}"
         ).format(self.soap_host, self.soap_port, self.soap_location))
@@ -218,12 +253,64 @@ class TaniumWrap:
             "SOAP URI: {}"
         ).format(self.soap_uri))
 
+    def __update_sc_token(self):
+        if self.__session_id_valid():
+            logger.debug((
+                "Using session for Soap Client Token"
+            ))
+            self.__define_sc_token_session()
+        else:
+            logger.debug((
+                "Using username/password for Soap Client Token"
+            ))
+            self.__define_sc_token_userpass()
+
+    def __session_id_valid(self):
+        if not self.__soap_session_id:
+            return False
+        if not self.__soap_session_issued:
+            return False
+        now = time.time()
+        oldest = (now - (SESSION_TIMEOUT * 60))
+        if self.__soap_session_issued < oldest:
+            logger.debug((
+                "Session ID expired - older than {} ({} minutes ago)"
+            ).format(oldest, SESSION_TIMEOUT))
+            self.__soap_session_id = None
+            return False
+        logger.debug((
+            "Session ID still valid"
+        ))
+        return True
+
+    def __define_sc_token_userpass(self):
+        token = self.sc.factory.create('auth')
+        token.username = self.__soap_session_username
+        token.password = self.__soap_session_password
+        self.__sc_token = {'auth': token}
+
+    def __define_sc_token_session(self):
+        self.__sc_token = {'session': self.__soap_session_id}
+
+    def __check_last_result_session(self):
+        if not hasattr(self.last_result, 'session'):
+            return
+        if self.__soap_session_id != self.last_result.session:
+            logger.debug((
+                "Updating session ID from last SOAP Response to {}"
+            ).format(self.last_result.session))
+            self.__soap_session_id = self.last_result.session
+            self.__soap_session_issued = time.time()
+        self.__update_sc_token()
+
 
 if __name__ == '__main__':
     tan_user = 'JTANIUM1\Jim Olsen'
     tan_pass = 'Evinc3d!'
     tan_host = '172.16.31.128'
-    loglevel = 3
+    loglevel = 1
 
-    tw = TaniumWrap(
-        username=tan_user, password=tan_pass, host=tan_host, loglevel=loglevel)
+    tw = TaniumWrap(tan_user, tan_pass, tan_host, loglevel=loglevel)
+    sq1_result = tw.ask_saved_question('Installed Applications')
+    print "session id from SOAP result:"
+    print sq1_result.session
