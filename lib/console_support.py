@@ -1,0 +1,72 @@
+# -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
+# ex: set tabstop=4
+# Please do not change the two lines above. See PEP 8, PEP 263.
+'''
+Adds readline support and other handy things to an interactive python
+console.
+'''
+__author__ = 'Jim Olsen (jim.olsen@tanium.com)'
+
+# adds readline, autocomplete, history to python interactive console
+import atexit
+import os
+import readline
+import sys
+import rlcompleter
+import pprint
+import code
+
+sys.dont_write_bytecode = True
+rlcompleter.__doc__
+
+
+def debug_list(debuglist):
+    for x in debuglist:
+        debug_obj(x)
+
+
+def debug_obj(debugobj):
+    pprint.pprint(vars(debugobj))
+
+
+# Utility function to dump all info about an object
+def introspect(object, depth=0):
+    import types
+    print "%s%s: %s\n" % (depth * "\t", object, [
+        x for x in dir(object) if x[:2] != "__"])
+    depth = depth + 1
+    for x in dir(object):
+        if x[:2] == "__":
+            continue
+        subobj = getattr(object, x)
+        print "%s%s: %s" % (depth * "\t", x, subobj)
+        if isinstance(subobj, types.InstanceType) and dir(subobj) != []:
+            introspect(subobj, depth=depth + 1)
+            print
+
+
+class HistoryConsole(code.InteractiveConsole):
+    def __init__(self, locals=None, filename="<console>",
+                 histfile=os.path.expanduser("~/.console-history")):
+        code.InteractiveConsole.__init__(self, locals, filename)
+        self.init_history(histfile)
+
+    def init_history(self, histfile):
+        if 'libedit' in readline.__doc__:
+            # osx style readline
+            readline.parse_and_bind("bind ^I rl_complete")
+        else:
+            # unix style readline
+            readline.parse_and_bind("tab: complete")
+        if hasattr(readline, "read_history_file"):
+            try:
+                readline.read_history_file(histfile)
+            except IOError:
+                pass
+            atexit.register(self.save_history, histfile)
+
+    def save_history(self, histfile):
+        readline.write_history_file(histfile)
+
+
+console = HistoryConsole()
