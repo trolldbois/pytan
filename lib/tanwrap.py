@@ -3,14 +3,14 @@
 # -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
-'''Tanium Python Wrapper Class
+"""Tanium Python Wrapper Class
 
 Like saran wrap. But not.
 
 This requires Python 2.7
 
 Reference for Tanium's SOAP API: http://kb.tanium.com/SOAP
-'''
+"""
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
 __version__ = '0.1'
 
@@ -32,6 +32,7 @@ import time
 import csv
 import StringIO
 import re
+import json
 from datetime import datetime
 from collections import defaultdict
 import xml.etree.cElementTree as ET
@@ -100,6 +101,10 @@ xmlparselog = xmlparselogger.debug
 
 
 def version_check(reqver):
+    """for scripts using this API to validate the version of the API
+
+    :param reqver: string containing version number to check against
+    """
     LOG_TPL = (
         "{}: {} version {}, required {}").format
     if not __version__ >= reqver:
@@ -111,7 +116,8 @@ def version_check(reqver):
 
 
 def logging_setup(loglevel=0):
-    '''setup console logging'''
+    """setup console logging
+    """
     # remove any old handlers, we're going to re-setup new handlers
     root_logger = logging.getLogger()
     original_handlers = root_logger.handlers
@@ -150,19 +156,30 @@ def logging_setup(loglevel=0):
 
 
 def get_now():
+    """return current time in human friendly format
+
+    :return: :class:`str`
+    """
     return human_time(time.localtime())
 
 
 def human_time(t, format='%Y_%m_%d-%H_%M_%S-%Z'):
+    """return time in human friendly format
+
+    :param t: either a epoch or struct_time time object
+    :param format: strftime format string
+    :return: :class:`str`
+    """
     if type(t) in [type(float()), type(int())]:
         t = time.localtime(t)
     return time.strftime(format, t)
 
 
 def datetime_diff(t=False):
-    """
-    Get a datetime object or a int() Epoch timestamp and return a
-    datetime diff of now - time
+    """Get the dtdiff of now - time
+
+    :param t: either a epoch or datatime object
+    :return: :class:`datatime.timedelta`
     """
     now = datetime.now()
 
@@ -181,6 +198,14 @@ def datetime_diff(t=False):
 
 
 def port_check(address, port, timeout=5):
+    """Check if address:port can be reached within timeout
+
+    :param address: string of host to connect to
+    :param port: string of port to connect to
+    :param timeout: int of seconds to wait until connection fails
+
+    :return: :class:`bool`
+    """
     try:
         return socket.create_connection((address, port), timeout)
     except:
@@ -188,42 +213,81 @@ def port_check(address, port, timeout=5):
 
 
 def prompt_username():
+    """for scripts using this API to prompt the user for a username
+
+    :return: :class:`str`
+    """
     print('Username: '),
     username = sys.stdin.readline()
     return username.strip()
 
 
 def prompt_password():
+    """for scripts using this API to prompt the user for a password
+
+    :return: :class:`str`
+    """
     password = getpass.getpass(('Password: '))
     return password.strip()
 
 
 def ns_urn(ns):
-    '''return ns wrapped by {}'''
+    """return a string wrapped by {}
+
+    :param ns: string to surround by {}
+    :return: :class:`str`
+    """
     return ('{{{}}}').format(ns)
 
 
 def ns_prefix(elem, ns):
-    '''return an element name with ns prefixed'''
+    """return an element name with a proper {} wrapped namespace prefixed
+
+    :param elem: string of element name to prefix with namespace
+    :param ns: string of namespace to prefix to the element name
+    :return: :class:`str`
+    """
     return ('{}{}').format(ns_urn(ns), elem)
 
 
 def new_elem(name, value=None, ns=None, attribs=None, parent=None):
+    """Create a new XML element
+
+    :param name: string of element to create
+    :param value: string of value to set for element, optional
+    :param ns: string of namespace to prefix to element, optional
+    :param attribs: dict of additional attributes to set on element, optional
+    :param parent: ElementTree.Element to create new element under, optional
+    :return: :class:`ElementTree.Element` or :class:`ElementTree.SubElement`
+    """
+    CREATE1_TPL = ("Creating new Element {!r} with attribs {}").format
+    CREATE2_TPL = (
+        "Creating new Sub Element {!r} under {!r} with attribs {}"
+    ).format
+    VALUE_TPL = ("Setting Element {!r} value to {!r}").format
     if ns:
         name = ns_prefix(name, ns)
     if attribs is None:
         attribs = {}
     if parent is None:
+        xmlcreatelog(CREATE1_TPL(name, attribs))
         elem = ET.Element(name, **attribs)
     else:
+        xmlcreatelog(CREATE2_TPL(name, parent.tag, attribs))
         elem = ET.SubElement(parent, name, **attribs)
     if value:
+        xmlcreatelog(VALUE_TPL(name, value))
         elem.text = value
     return elem
 
 
-def indent(elem, level=0):
-    '''indents an ElementTree object elem'''
+def xml_indent(elem, level=0):
+    """indents an ElementTree object for pretty printing
+
+    :param elem: ElementTree.Element to indent
+    :param level: int for indentation level, used for recursion
+    :return: :class:`ElementTree.Element`
+    """
     i = "\n" + level * "  "
     if len(elem):
         if not elem.text or not elem.text.strip():
@@ -231,16 +295,21 @@ def indent(elem, level=0):
         if not elem.tail or not elem.tail.strip():
             elem.tail = i
         for elem in elem:
-            indent(elem, level + 1)
+            xml_indent(elem, level + 1)
         if not elem.tail or not elem.tail.strip():
             elem.tail = i
     else:
         if level and (not elem.tail or not elem.tail.strip()):
             elem.tail = i
+    return elem
 
 
 def xml_clean_ns(elem):
-    '''removes all namespace qualifiers from ElementTree object elem'''
+    """removes all namespace qualifiers from ElementTree object
+
+    :param elem: ElementTree.Element to remove namespaces from
+    :return: :class:`ElementTree.Element`
+    """
     ns_match = re.compile(r'{.*?}')
 
     for child_elem in elem.getiterator():
@@ -248,49 +317,98 @@ def xml_clean_ns(elem):
         for k in child_elem.attrib.keys():
             if ns_match.search(k):
                 del child_elem.attrib[k]
+    return elem
 
 
 def xml_tree(elem):
-    '''returns the elem object as an ElementTree object'''
+    """returns the elem object as an ElementTree object
+
+    :param elem: ElementTree.Element or string containing raw XML
+    :return: :class:`ElementTree.Element`
+    """
     if not ET.iselement(elem):
         elem = ET.fromstring(elem)
     return elem
 
 
 def xml_pretty(elem):
-    '''returns the xml for ElementTree object elem as a pretty XML
+    """returns the xml for ElementTree object as pretty XML
     string
-    '''
+
+    :param elem: ElementTree.Element or string containing raw XML
+    :return: :class:`str`
+    """
     elem = xml_tree(elem)
-    indent(elem)
+    elem = xml_indent(elem)
     xml_pretty = ET.tostring(elem)
     return xml_pretty
 
 
-def xml_csv(xml_rows):
-    '''returns the xml for the response as a CSV string'''
+def gather_keys(obj):
+    keys = []
+    [keys.append(k) for d in obj for k in d.keys() if k not in keys]
+    return keys
+
+
+def sort_keys(keys, key_priority=None):
+    sorted_keys = sorted(keys)
+    if key_priority:
+        priority_sorted_keys = []
+        for kp in key_priority:
+            for kidx, k in enumerate(sorted_keys):
+                if k.endswith(kp):
+                    priority_sorted_keys.append(sorted_keys.pop(kidx))
+        priority_sorted_keys += sorted_keys
+        return priority_sorted_keys
+    else:
+        return sorted_keys
+
+
+def xml_csv(xml_rows_list, header_priority=None):
+    """returns the xml for the response as a CSV string"""
+    if not xml_rows_list:
+        return None
+    if type(xml_rows_list) not in [tuple, list]:
+        return None
     csv_io = StringIO.StringIO()
-    writer = csv.writer(csv_io, quoting=csv.QUOTE_NONNUMERIC)
-    writer.writerows(xml_rows)
-    csv_io.seek(0)
-    xml_csv = csv_io.read()
+    if type(xml_rows_list[0]) in [tuple, list]:
+        headers = xml_rows_list.pop(0)
+        writer = csv.writer(csv_io, quoting=csv.QUOTE_NONNUMERIC)
+        writer.writerow(headers)
+        writer.writerows(xml_rows_list)
+    elif type(xml_rows_list[0]) in [dict]:
+        headers = gather_keys(xml_rows_list)
+        headers = sort_keys(headers, header_priority)
+        writer = csv.DictWriter(
+            csv_io, fieldnames=headers, quoting=csv.QUOTE_NONNUMERIC,
+        )
+        writer.writerow(dict((h, h) for h in headers))
+        writer.writerows(xml_rows_list)
+    else:
+        return None
+    xml_csv = csv_io.getvalue()
     return xml_csv
 
 
 def xml_excel(TODO):
-    '''returns the xml for the response as an XML doc in StringIO obj'''
+    """returns the xml for the response as an XML doc in StringIO obj"""
     # TODO
     xml_excel = StringIO.StringIO()
     return xml_excel
 
 
 def build_dict_from_xml(elem):
-    '''converts an ElementTree object elem to a python dict'''
-    elem = xml_tree(elem)
+    """converts an ElementTree object to a python dict
 
+    :param elem: ElementTree.Element or string containing raw XML
+    :return: :class:`dict`
+    """
+    elem = xml_tree(elem)
     d = {elem.tag: {} if elem.attrib else None}
+    #print d
     children = list(elem)
     if children:
+        #print 'in children: ', children
         dd = defaultdict(list)
         for dc in map(build_dict_from_xml, children):
             for k, v in dc.iteritems():
@@ -301,9 +419,17 @@ def build_dict_from_xml(elem):
             }
         }
     if elem.attrib:
+        #print 'in elem.attrib: ', elem.attrib
         d[elem.tag].update(('@' + k, v) for k, v in elem.attrib.iteritems())
     if elem.text:
+        #print 'in elem.text: ', elem.text
+        #print type(elem.text)
         text = elem.text.strip()
+        try:
+            # sometimes the text of an element is JSON. cool.
+            text = json.loads(text)
+        except:
+            pass
         if children or elem.attrib:
             if text:
                 d[elem.tag]['#text'] = text
@@ -313,42 +439,211 @@ def build_dict_from_xml(elem):
 
 
 def build_xml_from_dict(parentelem, xml_dict):
+    """converts a python dict into an ElementTree.Element object under
+    parentelem
+
+    :param parentelem: ElementTree.Element object to create new elements in
+        xml_dict under
+    :param xml_dict: dict containing info about elements to create
+    :return: :class:`ElementTree.Element`
+    """
+    DICT_TPL = (
+        "dict found: creating element {!r} under {!r} with children {}"
+    ).format
+    LIST_TPL = (
+        "list found: creating element {!r} under {!r} with children {}"
+    ).format
+    STR_TPL = (
+        "str found: creating elemnt {!r} under {!r} with value {!r}"
+    ).format
+
     for objname, objvalue in xml_dict.iteritems():
-        if type(objvalue) == type(dict()):
+        if type(objvalue) == dict:
+            xmlcreatelog(DICT_TPL(objname, parentelem.tag, objvalue))
             objelem = new_elem(objname, parent=parentelem)
-            build_xml_from_dict(objelem, objvalue)
-        # TODO: add support for lists
+            objelem = build_xml_from_dict(objelem, objvalue)
+        elif type(objvalue) in [tuple, list]:
+            for x in objvalue:
+                xmlcreatelog(LIST_TPL(objname, parentelem.tag, x))
+                objelem = new_elem(objname, parent=parentelem)
+                objelem = build_xml_from_dict(objelem, x)
         else:
-            new_elem(objname, objvalue, parent=parentelem)
+            xmlcreatelog(STR_TPL(objname, parentelem.tag, objvalue))
+            objelem = new_elem(objname, objvalue, parent=parentelem)
+    return parentelem
+
+
+def flatten_obj(fullobj, prefix=None):
+    flat = {}
+    #print fullobj, prefix
+    if type(fullobj) == dict:
+        for k, v in fullobj.iteritems():
+            if prefix:
+                k = ('{}.{}').format(prefix, k)
+            if type(v) == dict:
+                #print 'dict found: ', k, v
+                flat.update(flatten_obj(v, k))
+            elif type(v) in [list, tuple]:
+                #print 'list found: ', k, v
+                for idx, item in enumerate(v):
+                    itempre = ('{}{}').format(k, idx)
+                    flat.update(flatten_obj(item, itempre))
+            else:
+                #print 'other found: ', k, v
+                if v and type(v) == str:
+                    v = v.replace('\n', '\r\n')
+                flat[k] = v
+    elif type(fullobj) in [list, tuple]:
+        flat[prefix] = ", ".join(fullobj)
+    else:
+        flat[prefix] = fullobj
+    return flat
+
+
+def parse_result_object(result_object, multi, single):
+    """
+    example breakdown of result_object for GetObject on sensor:
+
+    single sensor return:
+    dict:result_object:
+        dict:sensor:
+            dict:sensor_details:
+
+    multiple sensors return:
+    dict:result_object:
+        list:sensor:
+            dict:sensor_details:
+
+    all sensors return:
+    dict:result_object:
+        dict:sensors:
+            list:sensor:
+                dict:sensor_details:
+    """
+    items = []
+    if single in result_object:
+        if type(result_object[single]) in [list, tuple]:
+            for item in result_object[single]:
+                items.append(flatten_obj(item, prefix=single))
+        else:
+            items.append(flatten_obj(result_object[single], prefix=single))
+    elif multi in result_object:
+        multi_list = result_object[multi]
+        for item in multi_list[single]:
+            items.append(flatten_obj(item, prefix=single))
+    return items
+
+
+def parse_query_args(args, prefixes):
+    p = None
+    if type(args) == str:
+        p_done = False
+        for prefix in prefixes:
+            if args.startswith(prefix + ':'):
+                p_done = True
+                p = {prefix: args.lstrip(prefix + ':')}
+        if not p_done:
+            p = {prefixes[0]: args}
+        return p
+    elif type(args) in [tuple, list]:
+        parsed_args = []
+        for i in args:
+            parsed_arg = parse_query_args(i, prefixes)
+            if parsed_arg:
+                parsed_args.append(parsed_arg)
+        return parsed_args
+    return {}
+
+
+def check_single_query(query):
+    ERR_TPL = (
+        "Too many list items!! string or list with single string required, "
+        "you passed in {}"
+    ).format
+
+    if type(query) in [list, tuple]:
+        if len(query) != 1:
+            logger.error(ERR_TPL(query))
+            return False
+    return True
 
 
 class SoapRequest(object):
-    def __init__(self, command, auth_dict, objects_dict):
+    def __init__(self, **kwargs):
+        """handles the creation of XML for a SOAP request
+
+        :param auth_dict: dict of authorization info to include in XML
+        :param command: string to set command XML element to
+        :param objects_dict: dict of objects to include in object_list element
+        """
         super(SoapRequest, self).__init__()
-        self.command = command
-        self.auth_dict = auth_dict
-        self.objects_dict = objects_dict
+        self.__generals(**kwargs)
+
+    def __generals(self, **kwargs):
         self.xml_raw = ''
+        # throw an exception if auth_dict not passed in to kwargs
+        self.auth_dict = kwargs['auth_dict']
+
+        # throw an exception if object_typ not passed in to kwargs
+        self.object_type = kwargs['object_type']
+
+        # optionally get the values for a single object and multiple object
+        # types from kwargs
+        self._single = kwargs.get('object_single') or self.object_type
+        self._multi = kwargs.get('object_multi') or '%ss' % self.object_type
+
+        # optionally get command from kwargs
+        self.command = kwargs.get('command')
+
+        # for sorting the xml result
+        self.header_priority = []
+
+        self.overrides(**kwargs)
+
+        # build self.objects_dict
+        self.__get_objects_dict(**kwargs)
+
+        self.header_priority = [
+            '%s.%s' % (self.object_type, x) for x in self.header_priority
+        ]
+
+    def __get_objects_dict(self, **kwargs):
+        # get either objects_dict from kwargs, or build objects_dict from
+        # query_type and query in kwargs
+        self.objects_dict = kwargs.get('objects_dict')
+        if not self.objects_dict:
+            # throw an exception if auth_dict not passed in to kwargs
+            query_objects = kwargs['query']
+            # turn id:value/name:value/hash:value in kwargs['query']
+            # to a dictionary {prefix: value}
+            arg_prefixes = kwargs.get('arg_prefixes') or ['name', 'id', 'hash']
+            parsed_query_objects = parse_query_args(
+                query_objects, arg_prefixes,
+            )
+            self.objects_dict = {self.object_type: parsed_query_objects}
+
+    def overrides(self, **kwargs):
+        # these should be over-ridden by a subclass
+        # sub classed
+        # for sorting the xml result
+        self.header_priority = []
 
     def __str__(self):
-        sent = self.sent_human or "Not Yet Sent"
-        auth = self.auth_dict.keys()[0]
-        if auth == 'auth':
-            auth = 'user/pass'
         STR_TPL = (
             "{} for {!r} of {!r}, Sent: {}, Auth: {}"
         ).format
+        sent = self.sent_human or "Not Yet Sent"
         ret = STR_TPL(
             self.__class__.__name__,
             self.command,
             self.objects_dict,
             sent,
-            auth,
+            self.auth_type,
         )
         return ret
 
     def build_xml(self):
-        '''builds the xml envelope needed for a SOAP request
+        """builds the xml envelope needed for a SOAP request
 
         self.command should be a valid SOAP command, i.e. the following:
           GetObject
@@ -362,10 +657,13 @@ class SoapRequest(object):
 
         self.objects_dict should be something like one of the following:
           # get a single sensor
-          {'sensor': {'name': 'Computer Name'}
+          {'sensor': {'name': 'Computer Name'}}
+          {'sensor': {'id': '65'}}
+          {'sensor': {'hash': '2940242'}}
+
           # get all sensors
           {'sensor': {'name': ''}}
-        '''
+        """
         DBG_TPL = ('Created XML:\n{}').format
         xmltree = new_elem('Envelope', ns=NS_SOAP_ENV, attribs=NS_DICT)
         body_elem = new_elem('Body', ns=NS_SOAP_ENV, parent=xmltree)
@@ -383,38 +681,69 @@ class SoapRequest(object):
         xmlcreatelog(DBG_TPL(self.xml_raw))
         return self.xml_raw
 
+    def csv_pre(self, ResultXML_dict, result_object):
+        """returns the xml for the response as a list of lists or dicts
+
+        needs to be overriden by each sub-class to handle the results specifc
+        to that request
+
+        pre_csv should return one of the following:
+            * a list of lists, each sub list mapping to a row in CSV, with
+            headers in the first sub list
+            * a list of dicts, each sub dict mapping to a row in CSV, with
+            the headers being extracted from the sub-dict keys
+        """
+        pre_csv = None
+        return pre_csv
+
+    @property
+    def auth_type(self):
+        """returns the auth type of self.auth_dict"""
+        auth_type = "Undefined"
+        if not hasattr(self, 'auth_dict'):
+            return auth_type
+
+        keys = self.auth_dict.keys()
+        if 'auth' in keys:
+            auth_type = 'user/pass'
+        elif 'session' in keys:
+            auth_type = 'session'
+        return auth_type
+
     @property
     def sent_human(self):
-        '''returns the time the request was sent in human friendly format'''
+        """returns the time the request was sent in human friendly format"""
         if not hasattr(self, '_sent'):
             return None
         return human_time(self._sent)
 
     @property
     def sent(self):
-        '''returns the time the request was sent'''
+        """returns the time the request was sent"""
         if not hasattr(self, '_sent'):
             return None
         return self._sent
 
     @sent.setter
     def sent(self, value):
-        '''sets the time the request was sent'''
+        """sets the time the request was sent"""
         self._sent = value
 
 
 class AskSavedQuestionRequest(SoapRequest):
-    def __init__(self, saved_question, auth_dict):
-        self.command = 'GetResultData'
-        self.auth_dict = auth_dict
-        self.objects_dict = {'saved_question': {'name': saved_question}}
-        self.xml_raw = ''
+    def __init__(self, **kwargs):
+        super(AskSavedQuestionRequest, self).__init__(**kwargs)
 
-    def xml_rows(self, xml_dict):
-        '''returns the xml for the response as a list of lists, one
+    def overrides(self, **kwargs):
+        self.command = 'GetResultData'
+        # for sorting the xml result
+        self.header_priority = []
+
+    def csv_pre(self, ResultXML_dict, result_object):
+        """returns the ResultXML_dict for the response as a list of lists, one
         for each row, headers in the first row
-        '''
-        result_sets = xml_dict.get('result_sets', {})
+        """
+        result_sets = ResultXML_dict.get('result_sets', {})
         result_set = result_sets.get('result_set', {})
 
         # get headers from xml response result_set
@@ -430,11 +759,34 @@ class AskSavedQuestionRequest(SoapRequest):
         xml_rows = [x.get('c', []) for x in r]
 
         # extract the row values for each column
-        rows = [[y.get('v', None) for y in x] for x in xml_rows]
+        pre_csv = [[y.get('v', None) for y in x] for x in xml_rows]
 
         # prepend headers to rows
-        rows.insert(0, headers)
-        return rows
+        pre_csv.insert(0, headers)
+        return pre_csv
+
+
+class GetObjectRequest(SoapRequest):
+    def overrides(self, **kwargs):
+        self.command = 'GetObject'
+        # for sorting the xml result
+        self.header_priority = [
+            'name',
+            'id',
+            'description',
+            'hash',
+            'value_type',
+        ]
+
+    def csv_pre(self, ResultXML_dict, result_object):
+        """returns the result_object for the response as a list of dicts, one
+        for each row
+        """
+        if not result_object:
+            # TODO our call failed to return a result object. print error
+            return None
+        pre_csv = parse_result_object(result_object, self._multi, self._single)
+        return pre_csv
 
 
 class SoapResponse(object):
@@ -457,6 +809,14 @@ class SoapResponse(object):
         self.text = self.http_response.text
         self.__parse_text(self.text)
 
+        # call the request parser to generate a CSV consumable object
+        pre_csv = self.request.csv_pre(self.ResultXML_dict, self.result_object)
+
+        header_priority = getattr(self.request, 'header_priority', None)
+
+        # the pre_csv into an actual csv and store it in csv
+        self.csv = xml_csv(pre_csv, header_priority)
+
     def __str__(self):
         received = self.received_human or "Not Yet Sent"
         STR_TPL = (
@@ -466,7 +826,7 @@ class SoapResponse(object):
         return ret
 
     def __parse_text(self, text):
-        '''chew up the raw text from the http_response into XML'''
+        """chew up the raw text from the http_response into XML"""
         DBG2_TPL = ('Parsed XML:\n{}').format
         CMD_TPL = ("response command: {}").format
         self.xmltree = xml_tree(text)
@@ -478,9 +838,9 @@ class SoapResponse(object):
         env_elem = self.xmldict.get('Envelope', {})
         body_elem = env_elem.get('Body', {})
         self.returndict = body_elem.get('return', {})
-        self.command = self.returndict.get('command', None)
-        self.session_id = self.returndict.get('session', None)
-        self.object_list = self.returndict.get('object_list', None)
+        self.command = self.returndict.get('command')
+        self.session_id = self.returndict.get('session')
+        self.object_list = self.returndict.get('object_list')
 
         logger.debug(CMD_TPL(self.command))
         self.authok = True
@@ -491,15 +851,39 @@ class SoapResponse(object):
         if 'Bad Request' in self.command:
             self.reqok = False
 
+        if not self.command:
+            self.reqok = False
+
         if not self.authok or not self.reqok or not self.command:
             return
 
+        # TODO:
+        """if bad_request we throw exception:
+[845   -           tanwrap.py:__parse_text()] 2014-10-17 23:15:26,719
+DEBUG    response command: ERROR: 400 Bad Request
+
+XML Parse Error: SOAPProcessing Exception: class ActionNotFound
+Traceback (most recent call last):
+  File "./tanwrap.py", line 1663, in <module>
+    all_actions = sw.get_all_actions()
+  File "./tanwrap.py", line 1463, in get_all_actions
+    self.__call_api()
+  File "./tanwrap.py", line 1215, in __call_api
+    self.__send_request()
+  File "./tanwrap.py", line 1270, in __send_request
+    http_response=http_response,
+  File "./tanwrap.py", line 813, in __init__
+    pre_csv = self.request.csv_pre(self.ResultXML_dict, self.result_object)
+AttributeError: 'SoapResponse' object has no attribute 'ResultXML_dict'
+
+        """
         self.__parse_inner_results()
 
     def __parse_inner_results(self):
-        '''look for results embedded in the returndict of the XML response'''
+        """look for results embedded in the returndict of the XML response"""
 
-        #ResultXML is used for returns from command=GetResultData
+        #ResultXML is used for returns from command=[GetResultData,
+        #GetResultInfo]
         DBG3_TPL = ('Inner Result XML:\n{}').format
         self.ResultXML_dict = {}
         ResultXML = self.returndict.get('ResultXML', '')
@@ -509,13 +893,37 @@ class SoapResponse(object):
             ResultXML_raw = xml_pretty(ResultXML_tree)
             xmlparselog(DBG3_TPL(ResultXML_raw))
 
-        #result_object is used for returns from command=GetObject
+        #result_object is used for returns from command=[GetObject, AddObject,
+        #DeleteObject]
         self.result_object = self.returndict.get('result_object', {})
+
+    def write_csv_file(self, path=None):
+        if self.csv is None:
+            # TODO more logging
+            return False
+        WRITE_TPL = ("Writing CSV to file: {}").format
+        if path is None:
+            path = str(self.request.objects_dict)
+            path = path.replace(': ', '.')
+            path = path.translate(None, '\'{[]}')
+            path = path.replace(' ', '_')
+            path = path.replace(',', '+')
+            path = path.replace('+_', '+')
+            path = path[0:80]
+            path += '__'
+            path += get_now()
+            path += ".csv"
+            path = ("{}__{}").format(self.command, path)
+        logger.debug(WRITE_TPL(path))
+        x = open(path, 'w+')
+        x.write(self.csv)
+        x.close()
+        return True
 
     @property
     def received_human(self):
-        '''returns the time the response was received in human friendly format
-        '''
+        """returns the time the response was received in human friendly format
+        """
         return human_time(self.received)
 
 
@@ -538,7 +946,7 @@ class SoapAuth(object):
         return ret
 
     def update_token(self):
-        '''updates self.token with either session ID or user/pass auth'''
+        """updates self.token with either session ID or user/pass auth"""
         UPD_TPL = ("SOAP Token updated to: {}").format
         if self.session_id_valid:
             token = self.token_session_id
@@ -549,13 +957,13 @@ class SoapAuth(object):
             logger.debug(UPD_TPL(self.token_type_details))
 
     def auth_fallback(self):
-        '''removes the session ID from the token, and reverts back to
-        user and password auth'''
+        """removes the session ID from the token, and reverts back to
+        user and password auth"""
         self.session_id = None
         self.update_token()
 
     def session_id_text(self, session_id):
-        '''returns session ID if SHOW_SESSION_ID = True'''
+        """returns session ID if SHOW_SESSION_ID = True"""
         if self.SHOW_SESSION_ID:
             id_text = session_id
         else:
@@ -564,26 +972,26 @@ class SoapAuth(object):
 
     @property
     def token(self):
-        '''returns the token'''
+        """returns the token"""
         if not hasattr(self, '_token'):
             return None
         return self._token
 
     @token.setter
     def token(self, value):
-        '''sets the token'''
+        """sets the token"""
         self._token = value
 
     @property
     def session_id(self):
-        '''returns the session_id'''
+        """returns the session_id"""
         if not hasattr(self, '_session_id'):
             return None
         return self._session_id
 
     @session_id.setter
     def session_id(self, value):
-        '''sets the session_id'''
+        """sets the session_id"""
         if self._session_id != value:
             self._session_id = value
             self._session_id_issued = time.time()
@@ -594,22 +1002,22 @@ class SoapAuth(object):
 
     @property
     def session_id_issued(self):
-        '''returns the session_id_issued'''
+        """returns the session_id_issued"""
         if not hasattr(self, '_session_id_issued'):
             return None
         return self._session_id_issued
 
     @session_id_issued.setter
     def session_id_issued(self, value):
-        '''sets the session_id_issued'''
+        """sets the session_id_issued"""
         self._session_id_issued = value
 
     @property
     def session_id_valid(self):
-        '''returns True if self.session_id is not empty and not yet expired,
+        """returns True if self.session_id is not empty and not yet expired,
         False otherwise - expiration is validated by looking at
         self.session_id_issued
-        '''
+        """
         SESSION_TPL = (
             "Session ID {}: issued {}, minutes ago: {}, timeout: {} minutes"
         ).format
@@ -636,17 +1044,17 @@ class SoapAuth(object):
 
     @property
     def via_session_id(self):
-        '''returns True if self.token dict has 'session' in it'''
+        """returns True if self.token dict has 'session' in it"""
         return 'session' in self._token.keys()
 
     @property
     def via_userpass(self):
-        '''returns True if token dict has 'auth' in it'''
+        """returns True if token dict has 'auth' in it"""
         return 'auth' in self._token.keys()
 
     @property
     def token_type_details(self):
-        '''returns token type and details in text form'''
+        """returns token type and details in text form"""
         TOK_TPL = ('auth type: {} [{}: "{}"]').format
         token_details = "NONE"
         token_type = "UNKNOWN"
@@ -670,9 +1078,9 @@ class SoapAuth(object):
 
     @property
     def token_userpass(self):
-        '''returns a dictionary that has 'auth': SOAP element: auth,
+        """returns a dictionary that has 'auth': SOAP element: auth,
         $username, $password
-        '''
+        """
         token = {
             'auth': {'username': self._username, 'password': self._password}
         }
@@ -680,13 +1088,13 @@ class SoapAuth(object):
 
     @property
     def token_session_id(self):
-        '''returns a dictionary that has 'session': '$session_id' '''
+        """returns a dictionary that has 'session': '$session_id' """
         token = {'session': self.session_id}
         return token
 
 
 class FailedPage(object):
-    '''simple object to replicate requests-like object for exceptions'''
+    """simple object to replicate requests-like object for exceptions"""
     # TODO subclass requests response object??
     def __init__(self, text):
         self.text = text
@@ -723,8 +1131,8 @@ class SoapWrap:
         return ret
 
     def __env_overrides(self):
-        '''looks for OS environment variables and overrides the corresponding
-        attribute if they exist'''
+        """looks for OS environment variables and overrides the corresponding
+        attribute if they exist"""
         OR_TPL = ("Overriding {!r} with OS environment variable {!r}").format
         OS_ENV_MAP = {
             'SOAP_USERNAME': 'self.__username',
@@ -746,7 +1154,7 @@ class SoapWrap:
             setattr(self, class_var, os.environ[os_env_var])
 
     def __test_port(self):
-        '''validates that the SOAP port on the SOAP host can be reached'''
+        """validates that the SOAP port on the SOAP host can be reached"""
         CHK_TPL = ("Port test to {}:{} {}").format
         if port_check(self.__host, self.__port):
             return True
@@ -755,9 +1163,9 @@ class SoapWrap:
             return False
 
     def __test_page(self):
-        '''validates that the HTTP server is returning a valid response,
+        """validates that the HTTP server is returning a valid response,
         will set self.app_version if so
-        '''
+        """
         CHK_TPL = ("HTTP test to {} {} {}").format
         ER1_TPL = ("Returned Code: {}, Returned Page:\n{}").format
         page = self.http_get(self.app_url)
@@ -765,29 +1173,29 @@ class SoapWrap:
         page_text = getattr(page, 'text', None)
         if not self.__page_ok(page):
             ERROR = ER1_TPL(page_code, page_text)
-            logging.error(CHK_TPL(self.app_url, "FAILED", ERROR))
+            logger.error(CHK_TPL(self.app_url, "FAILED", ERROR))
             return False
         self.app_version = self.__extract_version(page)
         return True
 
     def __extract_version(self, page):
-        '''extracts the serverVersion from the apps home page HTML'''
+        """extracts the serverVersion from the apps home page HTML"""
         ER2_TPL = ("Version info not found in applications home page").format
         version_regex = re.compile(r"flashvars.serverVersion.*'(.*)';")
         version_search = version_regex.search(page.text)
         if not version_search:
-            logging.warn(ER2_TPL())
+            logger.warn(ER2_TPL())
             return "Unknown"
         if len(version_search.groups()) != 1:
-            logging.warn(ER2_TPL())
+            logger.warn(ER2_TPL())
             return "Unknown"
         else:
             return version_search.groups()[0]
 
     def __page_ok(self, page):
-        '''return True if the page object is not None and has a status code
+        """return True if the page object is not None and has a status code
         of 200
-        '''
+        """
         valid_status = [200]
         if not page:
             return False
@@ -796,7 +1204,7 @@ class SoapWrap:
         return True
 
     def __app_ok(self):
-        '''runs test_port and test_page'''
+        """runs test_port and test_page"""
         OK_TPL = ("Application at {} is healthy, version: {}").format
         self.app_ok = True
         if not self.__test_port():
@@ -810,9 +1218,9 @@ class SoapWrap:
         return self.app_ok
 
     def __call_api(self):
-        '''makes a call to the SOAP API, returns a SoapResponse object,
+        """makes a call to the SOAP API, returns a SoapResponse object,
         expects a SoapRequest object to exist at self.request
-        '''
+        """
         AUTH_TPL = (
             'Authorization {} for last request: {}').format
         BAD_TPL = (
@@ -851,8 +1259,9 @@ class SoapWrap:
         return self.last_response
 
     def __send_request(self):
-        '''sends the request to the SOAP API'''
+        """sends the request to the SOAP API"""
         # TODO: Figure out request sent time for multiple requests
+        # TODO NEXT PRIORITY
         # TODO: ADD LOGIC FOR WAITING FOR FULL RESULT SET
 
         SEND_TPL = ("Sending {}, SOAP URL: {}").format
@@ -892,80 +1301,260 @@ class SoapWrap:
 
     @property
     def soap_url(self):
-        '''returns the SOAP URL'''
+        """returns the SOAP URL"""
         SOAP_TPL = ("{}{}").format
         self._soap_url = SOAP_TPL(self.app_url, self.__soap_path)
         return self._soap_url
 
     @property
     def app_url(self):
-        '''returns the application URL'''
+        """returns the application URL"""
         APP_TPL = ("{}://{}:{}").format
         self._app_url = APP_TPL(self.__protocol, self.__host, self.__port)
         return self._app_url
 
-    def ask_saved_question(self, saved_question):
-        '''sends a saved question Request and returns a SoapResponse object'''
+    def ask_saved_question(self, query):
+        """sends a saved question Request and returns the response
+
+        :param query: string or list of queries
+        :return: :class:`SoapResponse`
+        """
+        if not check_single_query(query):
+            return None
+
         request_args = {
+            'object_type': 'saved_question',
+            'query': query,
             'auth_dict': self.auth.token,
-            'saved_question': saved_question,
         }
 
         self.last_request = AskSavedQuestionRequest(**request_args)
-
         self.__call_api()
         return self.last_response
 
-    def get_sensor(self, sensor):
-        '''sends a get all sensors request and returns a SoapResponse object'''
-        # TODO CONVERT TO NEW OBJECT STYLE
-        command = 'GetObject'
-        objects_dict = {'sensor': {'name': sensor}}
+    def get_saved_question(self, query):
+        """sends a get saved question request and returns a SoapResponse
+        object
+        :return: :class:`SoapResponse`
+        """
         request_args = {
-            'command': command,
+            'object_type': 'saved_question',
+            'query': query,
             'auth_dict': self.auth.token,
-            'objects_dict': objects_dict,
         }
 
-        self.last_request = SoapRequest(**request_args)
+        self.last_request = GetObjectRequest(**request_args)
         self.__call_api()
         return self.last_response
 
-    def get_all_sensors(self):
-        '''sends a get all sensors request and returns a SoapResponse object'''
-        # TODO CONVERT TO NEW OBJECT STYLE
-        command = 'GetObject'
-        objects_dict = {'sensor': {'name': ''}}
+    def get_all_saved_questions(self):
+        """sends a get all saved question request and returns a SoapResponse
+        object
+        :return: :class:`SoapResponse`
+        """
         request_args = {
-            'command': command,
+            'object_type': 'saved_question',
+            'query': '',
             'auth_dict': self.auth.token,
-            'objects_dict': objects_dict,
         }
 
-        self.last_request = SoapRequest(**request_args)
+        self.last_request = GetObjectRequest(**request_args)
         self.__call_api()
         return self.last_response
 
     def ask_question(self, question):
-        '''sends a question Request and returns a SoapResponse object'''
+        """sends a question Request and returns a SoapResponse object"""
+        # TODO NEXT PRIORITY
+        pass
+
+    def get_question(self, query):
+        """sends a get question request and returns a SoapResponse object
+        can only ask for questions by ID
+        :return: :class:`SoapResponse`
+        """
+        request_args = {
+            'object_type': 'question',
+            'query': query,
+            'auth_dict': self.auth.token,
+            'arg_prefixes': ['id'],
+        }
+
+        self.last_request = GetObjectRequest(**request_args)
+        self.__call_api()
+        return self.last_response
+
+    def get_all_questions(self):
+        """sends a get all question request and returns a SoapResponse object
+        :return: :class:`SoapResponse`
+        """
+        request_args = {
+            'object_type': 'question',
+            'query': '',
+            'auth_dict': self.auth.token,
+        }
+
+        self.last_request = GetObjectRequest(**request_args)
+        self.__call_api()
+        return self.last_response
+
+    def get_sensor(self, query):
+        """sends a get sensor request and returns a SoapResponse object
+        :param query: string or list of queries
+        :return: :class:`SoapResponse`
+        """
+        request_args = {
+            'object_type': 'sensor',
+            'query': query,
+            'auth_dict': self.auth.token,
+        }
+
+        self.last_request = GetObjectRequest(**request_args)
+        self.__call_api()
+        return self.last_response
+
+    def get_all_sensors(self):
+        """sends a get all sensors request and returns a SoapResponse object
+        :return: :class:`SoapResponse`
+        """
+        request_args = {
+            'object_type': 'sensor',
+            'query': '',
+            'auth_dict': self.auth.token,
+        }
+
+        self.last_request = GetObjectRequest(**request_args)
+        self.__call_api()
+        return self.last_response
+
+    def get_package(self, query):
+        """sends a get package request and returns a SoapResponse object
+        :param query: string or list of queries
+        :return: :class:`SoapResponse`
+        """
+        request_args = {
+            'object_type': 'package_spec',
+            'query': query,
+            'auth_dict': self.auth.token,
+        }
+
+        self.last_request = GetObjectRequest(**request_args)
+        self.__call_api()
+        return self.last_response
+
+    def get_all_packages(self):
+        """sends a get all packages request and returns a SoapResponse object
+        :return: :class:`SoapResponse`
+        """
+        request_args = {
+            'object_type': 'package_spec',
+            'objects_dict': {'package_spec': ''},
+            'auth_dict': self.auth.token,
+        }
+
+        self.last_request = GetObjectRequest(**request_args)
+        self.__call_api()
+        return self.last_response
+
+    # TODO NOT WORKING (same problem as get_all_groups)
+    '''
+    def get_action(self, query):
+        """sends a get action request and returns a SoapResponse object
+        :param query: string or list of queries
+        :return: :class:`SoapResponse`
+        """
+        request_args = {
+            'object_type': 'action',
+            'query': query,
+            'auth_dict': self.auth.token,
+        }
+
+        self.last_request = GetObjectRequest(**request_args)
+        self.__call_api()
+        return self.last_response
+
+    def get_all_actions(self):
+        """sends a get all actions request and returns a SoapResponse object
+        :return: :class:`SoapResponse`
+        """
+        request_args = {
+            'object_type': 'action',
+            'objects_dict': {'action': {'name': ''}},
+            'auth_dict': self.auth.token,
+        }
+
+        self.last_request = GetObjectRequest(**request_args)
+        self.__call_api()
+        return self.last_response
+    '''
+
+    def get_group(self, query):
+        """sends a get group request and returns a SoapResponse object
+        :param query: string or list of queries
+        :return: :class:`SoapResponse`
+        """
+        request_args = {
+            'object_type': 'group',
+            'query': query,
+            'auth_dict': self.auth.token,
+        }
+
+        self.last_request = GetObjectRequest(**request_args)
+        self.__call_api()
+        return self.last_response
+
+    # TODO NOT WORKING
+    '''
+    def get_all_groups(self):
+        """sends a get all groups request and returns a SoapResponse object
+        :return: :class:`SoapResponse`
+        """
+        request_args = {
+            'object_type': 'group',
+            'objects_dict': {'group': {'name': ''}},
+            'auth_dict': self.auth.token,
+        }
+
+        self.last_request = GetObjectRequest(**request_args)
+        self.__call_api()
+        return self.last_response
+
+    """RAW XML FOR REQUEST THAT DOES NOT WORK (also tried <group/>):
+<soap:Body xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <tanium_soap_request xmlns="urn:TaniumSOAP">
+      <session>...</session>
+      <command>GetObject</command>
+      <object_list>
+        <group>
+          <name />
+        </group>
+      </object_list>
+      <ID>0</ID>
+      <ContextID>0</ContextID>
+    </tanium_soap_request>
+  </soap:Body>
+    """
+    '''
+
+    # TODO
+    '''
+    def deploy_package(self):
         # TODO
         pass
 
-    def deploy_package(self, question):
-        '''sends a deploy package Request and returns a SoapResponse object'''
+    def deploy_action(self):
         # TODO
         pass
 
-    def deploy_action(self, question):
-        '''sends a deploy action Request and returns a SoapResponse object'''
+    def get_system_status(self):
         # TODO
         pass
+    '''
 
     def http_get(self, url, headers={}):
-        '''perform an HTTP get using the requests module - this is
+        """perform an HTTP get using the requests module - this is
         so we always bypass SSL verification, and wrap exceptions into a
         requests-like object
-        '''
+        """
         ER1_TPL = ("SSL Error in HTTP GET to {!r}: {}").format
         try:
             ret = requests.get(url, verify=False, headers=headers)
@@ -974,10 +1563,10 @@ class SoapWrap:
         return ret
 
     def http_post(self, url, data, headers={}):
-        '''perform an HTTP post using the requests module - this is
+        """perform an HTTP post using the requests module - this is
         so we always bypass SSL verification, and wrap exceptions into a
         requests-like object
-        '''
+        """
         ER1_TPL = ("SSL Error in HTTP POST to {!r}: {}").format
         try:
             ret = requests.post(url, data=data, verify=False, headers=headers)
@@ -986,7 +1575,7 @@ class SoapWrap:
         return ret
 
     def soap_post(self, data, url=None):
-        '''uses http_post to perform a SOAPAction call to url with data'''
+        """uses http_post to perform a SOAPAction call to url with data"""
         DBG1_TPL = ('Received SOAP Response {}:\n{}').format
         if not url:
             url = self.soap_url
@@ -1007,7 +1596,7 @@ if __name__ == '__main__':
     non_host = '172.16.31.129'
 
     loglevel = 1
-    '''
+    """
     from threaded_http import threaded_http
     threaded_http(port=4443)
 
@@ -1040,7 +1629,7 @@ if __name__ == '__main__':
         protocol='https',
         loglevel=loglevel,
     )
-    '''
+    """
     print ('### TEST: good host: {}:{}').format(host, port)
     sw = SoapWrap(
         user,
@@ -1051,6 +1640,57 @@ if __name__ == '__main__':
         loglevel=loglevel,
     )
 
-    result1 = sw.ask_saved_question('Installed Applications')
-    print xml_csv(sw.last_request.xml_rows(result1.ResultXML_dict))
-    #sq2_result = sw.list_sensors()
+    # wont work, saved_question needs just one entry
+    # saved_question_bad = sw.ask_saved_question(
+        # ['Installed Applications', 'id:0'])
+
+    # will work, single str
+    ask_saved_question_good1 = sw.ask_saved_question('Installed Applications')
+    ask_saved_question_good1.write_csv_file()
+
+    # will work, list with single str
+    # saved_question_good2 = sw.ask_saved_question(['Installed Applications'])
+
+    sensor = sw.get_sensor('Computer Name')
+    sensor.write_csv_file()
+
+    multiple_sensors = sw.get_sensor(['Computer Name', 'Action Statuses'])
+    multiple_sensors.write_csv_file()
+
+    all_sensors = sw.get_all_sensors()
+    all_sensors.write_csv_file()
+
+    all_saved_questions = sw.get_all_saved_questions()
+    all_saved_questions.write_csv_file()
+
+    saved_question = sw.get_saved_question('Installed Applications')
+    saved_question.write_csv_file()
+
+    # this is all questions that have been asked
+    all_questions = sw.get_all_questions()
+    all_questions.write_csv_file()
+
+    # must only pass id: to get_question
+    question = sw.get_question('id:9000')
+    question.write_csv_file()
+
+    package = sw.get_package('Distribute Patch Tools')
+    package.write_csv_file()
+
+    all_packages = sw.get_all_packages()
+    all_packages.write_csv_file()
+
+    # TODO NOT WORKING
+    # all_groups = sw.get_all_groups()
+    # all_groups.write_csv_file()
+
+    group = sw.get_group('All Computers')
+    group.write_csv_file()
+
+    # TODO NOT WORKING
+    # all_actions = sw.get_all_actions()
+    # all_actions.write_csv_file()
+
+    # TODO NOT WORKING
+    # action = sw.get_action('Distribute Tanium Standard Utilities')
+    # action.write_csv_file()
