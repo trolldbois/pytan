@@ -277,7 +277,7 @@ def new_elem(name, value=None, ns=None, attribs=None, parent=None):
         elem = ET.SubElement(parent, name, **attribs)
     if value:
         xmlcreatelog(VALUE_TPL(name, value))
-        elem.text = value
+        elem.text = str(value)
     return elem
 
 
@@ -610,7 +610,8 @@ class SoapRequest(object):
     def __get_objects_dict(self, **kwargs):
         # get either objects_dict from kwargs, or build objects_dict from
         # query_type and query in kwargs
-        self.objects_dict = kwargs.get('objects_dict')
+        if not hasattr(self, 'objects_dict'):
+            self.objects_dict = kwargs.get('objects_dict')
         if not self.objects_dict:
             # throw an exception if auth_dict not passed in to kwargs
             query_objects = kwargs['query']
@@ -751,7 +752,7 @@ class AskSavedQuestionRequest(SoapRequest):
         xml_headers = cs.get('c', [])
 
         # extract the name for the header of each column
-        headers = [x.get('dn', None) for x in xml_headers]
+        headers = [x.get('dn', '').encode('utf-8') for x in xml_headers]
 
         # get rows from xml response result_set
         rs = result_set.get('rs', {})
@@ -759,7 +760,9 @@ class AskSavedQuestionRequest(SoapRequest):
         xml_rows = [x.get('c', []) for x in r]
 
         # extract the row values for each column
-        pre_csv = [[y.get('v', None) for y in x] for x in xml_rows]
+        pre_csv = [
+            [y.get('v', '').encode('utf-8') for y in x] for x in xml_rows
+        ]
 
         # prepend headers to rows
         pre_csv.insert(0, headers)
@@ -789,6 +792,65 @@ class GetObjectRequest(SoapRequest):
         return pre_csv
 
 
+class ParseQuestionRequest(SoapRequest):
+    def overrides(self, **kwargs):
+        self.command = 'AddObject'
+        self.objects_dict = {
+            'parse_job': {'question_text': kwargs['question_request']}
+        }
+
+
+def dict_get(d, k, v='', e='utf-8'):
+    v = d.get(k, v)
+    if type(v) in [unicode, str]:
+        v = v.encode(e)
+    return v
+
+
+class QuestionResults(SoapRequest):
+    def overrides(self, **kwargs):
+        self.command = 'GetResultData'
+        self.objects_dict = {
+            'question': {'id': kwargs['question_id']}
+        }
+
+    def csv_pre(self, ResultXML_dict, result_object):
+        """returns the ResultXML_dict for the response as a list of lists, one
+        for each row, headers in the first row
+        """
+        result_sets = ResultXML_dict.get('result_sets', {})
+        result_set = result_sets.get('result_set', {})
+
+        # get headers from xml response result_set
+        cs = result_set.get('cs', {})
+        xml_headers = cs.get('c', [])
+
+        # extract the name for the header of each column
+        headers = [dict_get(x, 'dn') for x in xml_headers]
+
+        # get rows from xml response result_set
+        rs = result_set.get('rs', {})
+        r = rs.get('r', [])
+        xml_rows = [x.get('c', []) for x in r]
+
+        # extract the row values for each column
+        pre_csv = [
+            [dict_get(y, 'v') for y in x] for x in xml_rows
+        ]
+
+        # prepend headers to rows
+        pre_csv.insert(0, headers)
+        return pre_csv
+
+
+class AskParseQuestionRequest(SoapRequest):
+    def overrides(self, **kwargs):
+        self.command = 'AddObject'
+        self.objects_dict = {
+            'parse_result_group': kwargs['parse_result_group'],
+        }
+
+
 class SoapResponse(object):
 
     def __init__(self, soap_url, request, http_response):
@@ -805,13 +867,12 @@ class SoapResponse(object):
         self.http_response = http_response
 
         # extract some things from the requests object
-        self.status_code = self.http_response.status_code
-        self.text = self.http_response.text
+        self.status_code = http_response.status_code
+        self.text = http_response.text.encode(http_response.encoding)
         self.__parse_text(self.text)
 
         # call the request parser to generate a CSV consumable object
         pre_csv = self.request.csv_pre(self.ResultXML_dict, self.result_object)
-
         header_priority = getattr(self.request, 'header_priority', None)
 
         # the pre_csv into an actual csv and store it in csv
@@ -888,6 +949,7 @@ AttributeError: 'SoapResponse' object has no attribute 'ResultXML_dict'
         self.ResultXML_dict = {}
         ResultXML = self.returndict.get('ResultXML', '')
         if ResultXML:
+            ResultXML = ResultXML.encode('utf-8')
             ResultXML_tree = xml_tree(ResultXML)
             self.ResultXML_dict = build_dict_from_xml(ResultXML_tree)
             ResultXML_raw = xml_pretty(ResultXML_tree)
@@ -1231,6 +1293,10 @@ class SoapWrap:
         if not self.app_ok:
             return self.last_response
 
+        if self.last_request.command == "GetResultData":
+            self.last_request.command = "GetResultInfo"
+
+        orig_request_start = time.time()
         # get the SOAP response and store it in self.response
         self.__send_request()
 
@@ -1253,27 +1319,45 @@ class SoapWrap:
         # log an auth failure
         if not self.last_response.authok:
             logger.error(AUTH_TPL('FAILED', self.last_request))
+            return self.last_response
         else:
             logger.debug(AUTH_TPL('SUCCESS', self.last_request))
+
+        if self.last_request.command == "GetResultInfo":
+            full_results = False
+            while full_results is not True:
+                result_xml = self.last_response.ResultXML_dict
+                result_infos = result_xml['result_infos']
+                result_info = result_infos['result_info']
+                logger.debug((
+                    "GetResultInfo result_infos: {}"
+                ).format(result_infos))
+                mr_passed = result_info['mr_passed']
+                est_total = result_info['estimated_total']
+                if mr_passed == est_total:
+                    full_results = True
+                self.__send_request()
+                # TODO ADD MAX_SLEEP here
+                time.sleep(1)
+
+            self.last_request.command = "GetResultData"
+            self.__send_request()
+            self.last_request.sent = orig_request_start
 
         return self.last_response
 
     def __send_request(self):
         """sends the request to the SOAP API"""
-        # TODO: Figure out request sent time for multiple requests
-        # TODO NEXT PRIORITY
-        # TODO: ADD LOGIC FOR WAITING FOR FULL RESULT SET
-
         SEND_TPL = ("Sending {}, SOAP URL: {}").format
         RECV_TPL = ("Received {}, SOAP URL: {}").format
 
         # set token to user/pass or session ID accordingly
         self.auth.update_token()
 
-        logger.debug(SEND_TPL(self.last_request, self.soap_url))
-
         # update last_requests auth_dict with current token
         self.last_request.auth_dict = self.auth.token
+
+        logger.debug(SEND_TPL(self.last_request, self.soap_url))
 
         # build the xml request for the last request
         request_xml = self.last_request.build_xml()
@@ -1363,9 +1447,129 @@ class SoapWrap:
         return self.last_response
 
     def ask_question(self, question):
-        """sends a question Request and returns a SoapResponse object"""
-        # TODO NEXT PRIORITY
-        pass
+        """sends a question Request and returns the response
+
+        :param query: string or list of queries
+        :return: :class:`SoapResponse`
+        """
+        # TODO SUPPORT FILTERS
+
+        request_args = {
+            'object_type': 'question',
+            'query': query,
+            'auth_dict': self.auth.token,
+        }
+
+        self.last_request = AskQuestionRequest(**request_args)
+        self.__call_api()
+        return self.last_response
+
+    def parse_question(self, question):
+        """sends a parse question Request and returns the response
+
+        :param query: string or list of queries
+        :return: :class:`SoapResponse`
+        """
+        request_args = {
+            'object_type': 'question',
+            'question_request': question,
+            'auth_dict': self.auth.token,
+        }
+
+        self.last_request = ParseQuestionRequest(**request_args)
+        self.__call_api()
+
+        self.last_response.prg_match = None
+
+        result_obj = getattr(self.last_response, 'result_object', {})
+
+        if not result_obj:
+            logger.error("No result_object returned from last response")
+            return self.last_response
+
+        prgs_all = result_obj.get('parse_result_groups', {})
+        prgs_all = prgs_all.get('parse_result_group', [])
+        self.last_response.prgs_all = prgs_all
+
+        prg_match = [
+            x for x in prgs_all
+            if x['question_text'].lower() == question.lower()
+        ]
+
+        if not prg_match:
+            logger.debug((
+                "No matching questions for {!r}, full list of questions: {}"
+            ).format(question.lower(), [x['question_text'] for x in prgs_all]))
+            return self.last_response
+
+        self.last_response.prg_match = prg_match[0]
+        logger.debug((
+            "Matching parse_result for {!r}: {!r}"
+        ).format(question.lower(), self.last_response.prg_match))
+
+        return self.last_response
+
+    def ask_parsed_question(self, question, picker=None):
+        PICK_TPL = (
+            "Re-run this method with picker=$INDEX, where $INDEX is "
+            "one of the following:"
+        ).format
+
+        self.parse_question(question)
+        prg_match = getattr(self.last_response, 'prg_match', {})
+        prgs_all = getattr(self.last_response, 'prgs_all', [])
+        picker_indexes = "\n".join([
+            ("INDEX: {}, parsedq: {}").format(xidx, x['question_text'])
+            for xidx, x in enumerate(prgs_all)
+        ])
+
+        if picker == -1:
+            logger.error(PICK_TPL())
+            print picker_indexes
+            return None
+
+        if not prg_match and picker is None:
+            logger.error(PICK_TPL())
+            print picker_indexes
+            return None
+
+        if picker:
+            try:
+                prg_match = prgs_all[picker]
+            except IndexError:
+                logger.error(
+                    "Invalid picker index, re-run with picker=-1 to see "
+                    "picker index list"
+                )
+                return None
+
+        request_args = {
+            'object_type': 'question',
+            'parse_result_group': prg_match,
+            'auth_dict': self.auth.token,
+        }
+
+        self.last_request = AskParseQuestionRequest(**request_args)
+        self.__call_api()
+
+        result_object = getattr(self.last_response, 'result_object', {})
+        question_id = result_object.get('question', {}).get('id')
+        self.last_response.question_id = question_id
+        if not question_id:
+            logger.error((
+                "No question ID returned from AddObject on {}"
+            ).format(prg_match))
+            return None
+
+        request_args = {
+            'object_type': 'question',
+            'question_id': question_id,
+            'auth_dict': self.auth.token,
+        }
+
+        self.last_request = QuestionResults(**request_args)
+        self.__call_api()
+        return self.last_response
 
     def get_question(self, query):
         """sends a get question request and returns a SoapResponse object
@@ -1581,7 +1785,8 @@ class SoapWrap:
             url = self.soap_url
         headers = {'SOAPAction': '""'}
         ret = self.http_post(url=url, data=data, headers=headers)
-        httplog(DBG1_TPL(ret.status_code, ret.text))
+        self.ret = ret
+        httplog(DBG1_TPL(ret.status_code, ret.text.encode(ret.encoding)))
         return ret
 
 
@@ -1591,9 +1796,9 @@ if __name__ == '__main__':
     host = '172.16.31.128'
     port = '443'
 
-    badsslhost = '127.0.0.1'
-    badsslport = 4443
-    non_host = '172.16.31.129'
+    # badsslhost = '127.0.0.1'
+    # badsslport = 4443
+    # non_host = '172.16.31.129'
 
     loglevel = 1
     """
@@ -1644,53 +1849,55 @@ if __name__ == '__main__':
     # saved_question_bad = sw.ask_saved_question(
         # ['Installed Applications', 'id:0'])
 
-    # will work, single str
-    ask_saved_question_good1 = sw.ask_saved_question('Installed Applications')
-    ask_saved_question_good1.write_csv_file()
+    # # will work, single str
+    # ask_saved_question_good1 = sw.ask_saved_question(
+    # 'Installed Applications')
+    # ask_saved_question_good1.write_csv_file()
 
-    # will work, list with single str
-    # saved_question_good2 = sw.ask_saved_question(['Installed Applications'])
+    # # will work, list with single str
+    # # saved_question_good2 = sw.ask_saved_question(
+    # #   ['Installed Applications'])
 
-    sensor = sw.get_sensor('Computer Name')
-    sensor.write_csv_file()
+    # sensor = sw.get_sensor('Computer Name')
+    # sensor.write_csv_file()
 
-    multiple_sensors = sw.get_sensor(['Computer Name', 'Action Statuses'])
-    multiple_sensors.write_csv_file()
+    # multiple_sensors = sw.get_sensor(['Computer Name', 'Action Statuses'])
+    # multiple_sensors.write_csv_file()
 
-    all_sensors = sw.get_all_sensors()
-    all_sensors.write_csv_file()
+    # all_sensors = sw.get_all_sensors()
+    # all_sensors.write_csv_file()
 
-    all_saved_questions = sw.get_all_saved_questions()
-    all_saved_questions.write_csv_file()
+    # all_saved_questions = sw.get_all_saved_questions()
+    # all_saved_questions.write_csv_file()
 
-    saved_question = sw.get_saved_question('Installed Applications')
-    saved_question.write_csv_file()
+    # saved_question = sw.get_saved_question('Installed Applications')
+    # saved_question.write_csv_file()
 
-    # this is all questions that have been asked
-    all_questions = sw.get_all_questions()
-    all_questions.write_csv_file()
+    # # this is all questions that have been asked
+    # all_questions = sw.get_all_questions()
+    # all_questions.write_csv_file()
 
-    # must only pass id: to get_question
-    question = sw.get_question('id:9000')
-    question.write_csv_file()
+    # # must only pass id: to get_question
+    # question = sw.get_question('id:9000')
+    # question.write_csv_file()
 
-    package = sw.get_package('Distribute Patch Tools')
-    package.write_csv_file()
+    # package = sw.get_package('Distribute Patch Tools')
+    # package.write_csv_file()
 
-    all_packages = sw.get_all_packages()
-    all_packages.write_csv_file()
+    # all_packages = sw.get_all_packages()
+    # all_packages.write_csv_file()
 
-    # TODO NOT WORKING
-    # all_groups = sw.get_all_groups()
-    # all_groups.write_csv_file()
+    # # TODO NOT WORKING
+    # # all_groups = sw.get_all_groups()
+    # # all_groups.write_csv_file()
 
-    group = sw.get_group('All Computers')
-    group.write_csv_file()
+    # group = sw.get_group('All Computers')
+    # group.write_csv_file()
 
-    # TODO NOT WORKING
-    # all_actions = sw.get_all_actions()
-    # all_actions.write_csv_file()
+    # # TODO NOT WORKING
+    # # all_actions = sw.get_all_actions()
+    # # all_actions.write_csv_file()
 
-    # TODO NOT WORKING
-    # action = sw.get_action('Distribute Tanium Standard Utilities')
-    # action.write_csv_file()
+    # # TODO NOT WORKING
+    # # action = sw.get_action('Distribute Tanium Standard Utilities')
+    # # action.write_csv_file()
