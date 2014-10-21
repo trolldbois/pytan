@@ -1238,6 +1238,8 @@ class SoapWrap:
             logger.error(CHK_TPL(self.app_url, "FAILED", ERROR))
             return False
         self.app_version = self.__extract_version(page)
+        if not self.app_version:
+            return False
         return True
 
     def __extract_version(self, page):
@@ -1247,10 +1249,10 @@ class SoapWrap:
         version_search = version_regex.search(page.text)
         if not version_search:
             logger.warn(ER2_TPL())
-            return "Unknown"
+            return None
         if len(version_search.groups()) != 1:
             logger.warn(ER2_TPL())
-            return "Unknown"
+            return None
         else:
             return version_search.groups()[0]
 
@@ -1470,6 +1472,13 @@ class SoapWrap:
         :param query: string or list of queries
         :return: :class:`SoapResponse`
         """
+        ERR1_TPL("No result_object returned from last response").format
+        ERR2_TPL("No parse results returned for {!r}").format
+        DBUG1_TPL(
+            "No matching questions for {!r}, full list of questions: {}"
+        ).format
+        DBUG2_TPL("Matching parse_result for {!r}: {!r}").format
+
         request_args = {
             'object_type': 'question',
             'question_request': question,
@@ -1484,12 +1493,16 @@ class SoapWrap:
         result_obj = getattr(self.last_response, 'result_object', {})
 
         if not result_obj:
-            logger.error("No result_object returned from last response")
+            logger.error(ERR1_TPL())
             return self.last_response
 
         prgs_all = result_obj.get('parse_result_groups', {})
         prgs_all = prgs_all.get('parse_result_group', [])
         self.last_response.prgs_all = prgs_all
+
+        if not prgs_all:
+            logger.error(ERR2_TPL(question))
+            return self.last_response
 
         prg_match = [
             x for x in prgs_all
@@ -1497,15 +1510,15 @@ class SoapWrap:
         ]
 
         if not prg_match:
-            logger.debug((
-                "No matching questions for {!r}, full list of questions: {}"
-            ).format(question.lower(), [x['question_text'] for x in prgs_all]))
+            logger.debug(ERR3_TPL(
+                question.lower(),
+                [x['question_text'] for x in prgs_all],
+            ))
             return self.last_response
 
-        self.last_response.prg_match = prg_match[0]
-        logger.debug((
-            "Matching parse_result for {!r}: {!r}"
-        ).format(question.lower(), self.last_response.prg_match))
+        prg_match = prg_match[0]
+        self.last_response.prg_match = prg_match
+        logger.debug(DBUG2_TPL(question.lower(), prg_match))
 
         return self.last_response
 
@@ -1513,6 +1526,10 @@ class SoapWrap:
         PICK_TPL = (
             "Re-run this method with picker=$INDEX, where $INDEX is "
             "one of the following:"
+        ).format
+        PERR_TPK = (
+            "Invalid picker index {}, re-run with picker=-1 to see picker "
+            "index list"
         ).format
 
         self.parse_question(question)
@@ -1537,10 +1554,7 @@ class SoapWrap:
             try:
                 prg_match = prgs_all[picker]
             except IndexError:
-                logger.error(
-                    "Invalid picker index, re-run with picker=-1 to see "
-                    "picker index list"
-                )
+                logger.error(PERR_TPK(picker))
                 return None
 
         request_args = {
@@ -1553,7 +1567,7 @@ class SoapWrap:
         self.__call_api()
 
         result_object = getattr(self.last_response, 'result_object', {})
-        question_id = result_object.get('question', {}).get('id')
+        question_id = result_object.get('question', {}).get('id', '')
         self.last_response.question_id = question_id
         if not question_id:
             logger.error((
@@ -1790,60 +1804,16 @@ class SoapWrap:
         return ret
 
 
-if __name__ == '__main__':
-    user = 'JTANIUM1\Jim Olsen'
-    password = 'Evinc3d!'
-    host = '172.16.31.128'
-    port = '443'
-
-    # badsslhost = '127.0.0.1'
-    # badsslport = 4443
-    # non_host = '172.16.31.129'
-
-    loglevel = 1
-    """
-    from threaded_http import threaded_http
-    threaded_http(port=4443)
-
-    print ('### TEST: bad https host: {}:{}').format(badsslhost, badsslport)
-    badssl = SoapWrap(
-        user,
-        password,
-        badsslhost,
-        port=badsslport,
-        protocol='https',
-        loglevel=loglevel,
-    )
-
-    print ('### TEST: bad http host: {}:{}').format(badsslhost, badsslport)
-    badssl = SoapWrap(
-        user,
-        password,
-        badsslhost,
-        port=badsslport,
-        protocol='http',
-        loglevel=loglevel,
-    )
-
-    print ('### TEST: non-existant host: {}:{}').format(non_host, port)
-    test_non_host = SoapWrap(
-        user,
-        password,
-        non_host,
-        port=port,
-        protocol='https',
-        loglevel=loglevel,
-    )
-    """
-    print ('### TEST: good host: {}:{}').format(host, port)
-    sw = SoapWrap(
-        user,
-        password,
-        host,
-        port=port,
-        protocol='https',
-        loglevel=loglevel,
-    )
+# if __name__ == '__main__':
+    # print ('### TEST: good host: {}:{}').format(host, port)
+    # sw = SoapWrap(
+    #     user,
+    #     password,
+    #     host,
+    #     port=port,
+    #     protocol='https',
+    #     loglevel=loglevel,
+    # )
 
     # wont work, saved_question needs just one entry
     # saved_question_bad = sw.ask_saved_question(
