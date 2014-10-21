@@ -19,6 +19,7 @@ import tanwrap
 import threaded_http
 
 LOGLEVEL = 0
+CSV_OUT = os.path.join(my_dir, 'CSV_OUT')
 
 
 class BasicTests(unittest.TestCase):
@@ -89,6 +90,9 @@ class TestsAgainstServer(unittest.TestCase):
     HOST = '172.16.31.128'
 
     def setUp(self):
+        if not os.path.isdir(CSV_OUT):
+            os.mkdir(CSV_OUT)
+
         self.sw = tanwrap.SoapWrap(
             self.USERNAME,
             self.PASSWORD,
@@ -100,7 +104,7 @@ class TestsAgainstServer(unittest.TestCase):
         self.assertTrue(self.sw.app_ok)
 
     @unittest.expectedFailure
-    def test_bad_saved_question(self):
+    def test_bad_ask_saved_question(self):
         '''response from asking a saved question with multiple sensors'''
         q = ['Installed Applications', 'id:0']
         response = self.sw.ask_saved_question(q)
@@ -131,7 +135,7 @@ class TestsAgainstServer(unittest.TestCase):
         self.assertTrue(response.text)
         self.assertTrue(response.xml_raw)
         self.assertTrue(response.csv)
-        response.write_csv_file()
+        response.write_csv_file(dir=CSV_OUT)
         self.assertIsNotNone(response.csv_path)
         self.assertTrue(os.path.isfile(response.csv_path))
 
@@ -205,15 +209,20 @@ class TestsAgainstServer(unittest.TestCase):
         response = self.sw.get_saved_question(q)
         self.response_tests(response)
 
-    def test_get_all_questions(self):
+    def test_get_all_questions_log(self):
         '''response from getobject for all questions that have been asked'''
-        response = self.sw.get_all_questions()
+        response = self.sw.get_all_questions_log()
         self.response_tests(response)
 
-    # def test_get_question(self):
-    #     '''response from getobject for all questions that have been asked'''
-    #     response = self.sw.get_all_questions()
-    #     self.response_tests(response)
+    def test_get_question_log(self):
+        '''response from getobject for all questions that have been asked'''
+        response = self.sw.get_question_log('1')
+        self.response_tests(response)
+
+    def test_get_question_log1(self):
+        '''response from getobject for all questions that have been asked'''
+        response = self.sw.get_question_log('n')
+        self.response_tests(response)
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

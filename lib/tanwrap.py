@@ -1595,7 +1595,7 @@ class SoapWrap:
         self.__call_api()
         return self.last_response
 
-    def get_question(self, query):
+    def get_question_log(self, query):
         """sends a get question request and returns a SoapResponse object
         can only ask for questions by ID
         :return: :class:`SoapResponse`
@@ -1611,7 +1611,7 @@ class SoapWrap:
         self.__call_api()
         return self.last_response
 
-    def get_all_questions(self):
+    def get_all_questions_log(self):
         """sends a get all question request and returns a SoapResponse object
         :return: :class:`SoapResponse`
         """
@@ -1815,47 +1815,6 @@ class SoapWrap:
 
 
 # if __name__ == '__main__':
-    # print ('### TEST: good host: {}:{}').format(host, port)
-    # sw = SoapWrap(
-    #     user,
-    #     password,
-    #     host,
-    #     port=port,
-    #     protocol='https',
-    #     loglevel=loglevel,
-    # )
-
-    # wont work, saved_question needs just one entry
-    # saved_question_bad = sw.ask_saved_question(
-        # ['Installed Applications', 'id:0'])
-
-    # # will work, single str
-    # ask_saved_question_good1 = sw.ask_saved_question(
-    # 'Installed Applications')
-    # ask_saved_question_good1.write_csv_file()
-
-    # # will work, list with single str
-    # # saved_question_good2 = sw.ask_saved_question(
-    # #   ['Installed Applications'])
-
-    # sensor = sw.get_sensor('Computer Name')
-    # sensor.write_csv_file()
-
-    # multiple_sensors = sw.get_sensor(['Computer Name', 'Action Statuses'])
-    # multiple_sensors.write_csv_file()
-
-    # all_sensors = sw.get_all_sensors()
-    # all_sensors.write_csv_file()
-
-    # all_saved_questions = sw.get_all_saved_questions()
-    # all_saved_questions.write_csv_file()
-
-    # saved_question = sw.get_saved_question('Installed Applications')
-    # saved_question.write_csv_file()
-
-    # # this is all questions that have been asked
-    # all_questions = sw.get_all_questions()
-    # all_questions.write_csv_file()
 
     # # must only pass id: to get_question
     # question = sw.get_question('id:9000')
