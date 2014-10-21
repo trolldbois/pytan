@@ -25,3 +25,4 @@ def threaded_http(host='localhost', port=4443):
     t.setDaemon(True)
     t.start()
     print ('Threaded HTTP server started on {}:{}').format(host, port)
+    return server
