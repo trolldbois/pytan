@@ -752,7 +752,7 @@ class AskSavedQuestionRequest(SoapRequest):
         xml_headers = cs.get('c', [])
 
         # extract the name for the header of each column
-        headers = [x.get('dn', '').encode('utf-8') for x in xml_headers]
+        headers = [dict_get(x, 'dn') for x in xml_headers]
 
         # get rows from xml response result_set
         rs = result_set.get('rs', {})
@@ -761,7 +761,7 @@ class AskSavedQuestionRequest(SoapRequest):
 
         # extract the row values for each column
         pre_csv = [
-            [y.get('v', '').encode('utf-8') for y in x] for x in xml_rows
+            [dict_get(y, 'v') for y in x] for x in xml_rows
         ]
 
         # prepend headers to rows
@@ -877,6 +877,7 @@ class SoapResponse(object):
 
         # the pre_csv into an actual csv and store it in csv
         self.csv = xml_csv(pre_csv, header_priority)
+        self.csv_path = None
 
     def __str__(self):
         received = self.received_human or "Not Yet Sent"
@@ -959,25 +960,34 @@ AttributeError: 'SoapResponse' object has no attribute 'ResultXML_dict'
         #DeleteObject]
         self.result_object = self.returndict.get('result_object', {})
 
-    def write_csv_file(self, path=None):
-        if self.csv is None:
-            # TODO more logging
-            return False
+    def write_csv_file(self, filename=None, dir=None):
         WRITE_TPL = ("Writing CSV to file: {}").format
-        if path is None:
-            path = str(self.request.objects_dict)
-            path = path.replace(': ', '.')
-            path = path.translate(None, '\'{[]}')
-            path = path.replace(' ', '_')
-            path = path.replace(',', '+')
-            path = path.replace('+_', '+')
-            path = path[0:80]
-            path += '__'
-            path += get_now()
-            path += ".csv"
-            path = ("{}__{}").format(self.command, path)
-        logger.debug(WRITE_TPL(path))
-        x = open(path, 'w+')
+        NO_CSV_TPL = ("No CSV exists for: {}").format
+
+        if filename is None:
+            filename = str(self.request.objects_dict)
+            filename = filename.replace(': ', '.')
+            filename = filename.translate(None, '\'{[]}')
+            filename = filename.replace(' ', '_')
+            filename = filename.replace(',', '+')
+            filename = filename.replace('+_', '+')
+            filename = filename[0:80]
+            filename += '__'
+            filename += get_now()
+            filename += ".csv"
+            filename = ("{}__{}").format(self.command, filename)
+
+        if dir is None:
+            dir = os.path.curdir
+
+        if self.csv is None:
+            logger.error(NO_CSV_TPL(self))
+            return False
+
+        csv_path = os.path.join(dir, filename)
+        self.csv_path = csv_path
+        logger.debug(WRITE_TPL(csv_path))
+        x = open(csv_path, 'w+')
         x.write(self.csv)
         x.close()
         return True
@@ -1527,7 +1537,7 @@ class SoapWrap:
             "Re-run this method with picker=$INDEX, where $INDEX is "
             "one of the following:"
         ).format
-        PERR_TPK = (
+        PERR_TPL = (
             "Invalid picker index {}, re-run with picker=-1 to see picker "
             "index list"
         ).format
@@ -1554,7 +1564,7 @@ class SoapWrap:
             try:
                 prg_match = prgs_all[picker]
             except IndexError:
-                logger.error(PERR_TPK(picker))
+                logger.error(PERR_TPL(picker))
                 return None
 
         request_args = {
