@@ -2,6 +2,7 @@
 
 import os
 import sys
+import glob
 import unittest
 
 my_file = os.path.abspath(__file__)
@@ -89,18 +90,27 @@ class TestsAgainstServer(unittest.TestCase):
     PASSWORD = 'Evinc3d!'
     HOST = '172.16.31.128'
 
-    def setUp(self):
-        if not os.path.isdir(CSV_OUT):
-            os.mkdir(CSV_OUT)
+    sw = None
 
-        self.sw = tanwrap.SoapWrap(
-            self.USERNAME,
-            self.PASSWORD,
-            self.HOST,
-            port=443,
-            protocol='https',
-            loglevel=LOGLEVEL,
-        )
+    def setUp(self):
+        if TestsAgainstServer.sw is None:
+            TestsAgainstServer.sw = tanwrap.SoapWrap(
+                self.USERNAME,
+                self.PASSWORD,
+                self.HOST,
+                port=443,
+                protocol='https',
+                loglevel=LOGLEVEL,
+            )
+
+            if not os.path.isdir(CSV_OUT):
+                os.mkdir(CSV_OUT)
+
+            csv_files = glob.glob(CSV_OUT + '/*.csv')
+            if csv_files:
+                print "Cleaning up %s old CSV files" % len(csv_files)
+                [os.unlink(x) for x in csv_files]
+
         self.assertTrue(self.sw.app_ok)
 
     @unittest.expectedFailure
