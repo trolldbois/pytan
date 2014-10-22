@@ -15,7 +15,6 @@ for x in path_adds:
     if x not in sys.path:
         sys.path.insert(0, x)
 
-#sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.pardir, 'lib'))
 import tanwrap
 import threaded_http
 
@@ -23,57 +22,57 @@ LOGLEVEL = 0
 CSV_OUT = os.path.join(my_dir, 'CSV_OUT')
 
 
-# class BasicTests(unittest.TestCase):
+class BasicTests(unittest.TestCase):
 
-#     __http = None
+    __http = None
 
-#     def setUp(self):
-#         # Only setup the http server once
-#         # (or make it so that a tearDown can kill it)
-#         if BasicTests.__http is None:
-#             BasicTests.__http = threaded_http.threaded_http(port=4433)
+    def setUp(self):
+        # Only setup the http server once
+        # (or make it so that a tearDown can kill it)
+        if BasicTests.__http is None:
+            BasicTests.__http = threaded_http.threaded_http(port=4433)
 
-#     def tearDown(self):
-#         pass
+    def tearDown(self):
+        pass
 
-#     @unittest.expectedFailure
-#     def test_nossl(self):
-#         '''tests HTTP port using HTTPS on host with no tanium'''
-#         sw = tanwrap.SoapWrap(
-#             'user',
-#             'password',
-#             '127.0.0.1',
-#             port=4433,
-#             protocol='https',
-#             loglevel=LOGLEVEL,
-#         )
-#         self.assertTrue(sw.app_ok)
+    @unittest.expectedFailure
+    def test_nossl(self):
+        '''tests HTTP port using HTTPS on host with no tanium'''
+        sw = tanwrap.SoapWrap(
+            'user',
+            'password',
+            '127.0.0.1',
+            port=4433,
+            protocol='https',
+            loglevel=LOGLEVEL,
+        )
+        self.assertTrue(sw.app_ok)
 
-#     @unittest.expectedFailure
-#     def test_badhost(self):
-#         '''tests HTTP port using HTTP on host with no tanium'''
-#         sw = tanwrap.SoapWrap(
-#             'user',
-#             'password',
-#             '127.0.0.1',
-#             port=4433,
-#             protocol='http',
-#             loglevel=LOGLEVEL,
-#         )
-#         self.assertTrue(sw.app_ok)
+    @unittest.expectedFailure
+    def test_badhost(self):
+        '''tests HTTP port using HTTP on host with no tanium'''
+        sw = tanwrap.SoapWrap(
+            'user',
+            'password',
+            '127.0.0.1',
+            port=4433,
+            protocol='http',
+            loglevel=LOGLEVEL,
+        )
+        self.assertTrue(sw.app_ok)
 
-#     @unittest.expectedFailure
-#     def test_nonhost(self):
-#         '''tests accessing a server and port that does not exist at all'''
-#         sw = tanwrap.SoapWrap(
-#             'user',
-#             'password',
-#             '1.1.1.1',
-#             port=4433,
-#             protocol='https',
-#             loglevel=LOGLEVEL,
-#         )
-#         self.assertTrue(sw.app_ok)
+    @unittest.expectedFailure
+    def test_nonhost(self):
+        '''tests accessing a server and port that does not exist at all'''
+        sw = tanwrap.SoapWrap(
+            'user',
+            'password',
+            '1.1.1.1',
+            port=4433,
+            protocol='https',
+            loglevel=LOGLEVEL,
+        )
+        self.assertTrue(sw.app_ok)
 
 
 class TestsAgainstServer(unittest.TestCase):
@@ -85,6 +84,8 @@ class TestsAgainstServer(unittest.TestCase):
     # PASSWORD = 'Tanium!'
     # HOST = '192.168.42.130'
 
+    # TODO ADD INVALID LOGIN TEST
+    # TODO ADD INVALID SOAP PATH TEST
     # jims server info
     USERNAME = 'Jim Olsen'
     PASSWORD = 'Evinc3d!'
@@ -142,12 +143,6 @@ class TestsAgainstServer(unittest.TestCase):
         self.assertIsNotNone(response.csv_path)
         self.assertTrue(os.path.isfile(response.csv_path))
 
-    @unittest.expectedFailure
-    def test_bad_ask_saved_question(self):
-        q = ['Installed Applications', 'id:0']
-        response = self.sw.ask_saved_question(q)
-        self.response_tests(response)
-
     def test_ask_saved_question_single_str(self):
         q = 'Installed Applications'
         response = self.sw.ask_saved_question(q)
@@ -156,6 +151,11 @@ class TestsAgainstServer(unittest.TestCase):
     def test_ask_saved_question_single_list(self):
         q = 'Installed Applications'
         response = self.sw.ask_saved_question([q])
+        self.response_tests(response)
+
+    def test_ask_parsed_question(self):
+        q = 'Get Installed Applications from All Machines'
+        response = self.sw.ask_parsed_question(q)
         self.response_tests(response)
 
     def test_get_single_sensor(self):
@@ -206,12 +206,42 @@ class TestsAgainstServer(unittest.TestCase):
         response = self.sw.get_saved_question(q)
         self.response_tests(response)
 
-    def test_get_all_questions_log(self):
-        response = self.sw.get_all_questions_log()
+    def test_get_all_question_logs(self):
+        response = self.sw.get_all_question_logs()
         self.response_tests(response)
 
     def test_get_question_log(self):
         response = self.sw.get_question_log('1')
+        self.response_tests(response)
+
+    def test_get_package_single(self):
+        q = 'Distribute Patch Tools'
+        response = self.sw.get_package(q)
+        self.response_tests(response)
+
+    def test_get_all_packages(self):
+        response = self.sw.get_all_packages()
+        self.response_tests(response)
+
+    def test_get_all_groups(self):
+        response = self.sw.get_all_groups()
+        self.response_tests(response)
+
+    # TODO FAILS
+    def test_get_group_single(self):
+        q = 'All Computers'
+        response = self.sw.get_group(q)
+        self.response_tests(response)
+
+    # TODO FAILS
+    def test_get_all_actions(self):
+        response = self.sw.get_all_actions()
+        self.response_tests(response)
+
+    # TODO FAILS
+    def test_get_action_single(self):
+        q = 'Distribute Tanium Standard Utilities'
+        response = self.sw.get_action(q)
         self.response_tests(response)
 
     @unittest.expectedFailure
@@ -222,6 +252,12 @@ class TestsAgainstServer(unittest.TestCase):
     @unittest.expectedFailure
     def test_get_question_log_fail_by_name(self):
         response = self.sw.get_question_log('name:fail')
+        self.response_tests(response)
+
+    @unittest.expectedFailure
+    def test_bad_ask_saved_question(self):
+        q = ['Installed Applications', 'id:0']
+        response = self.sw.ask_saved_question(q)
         self.response_tests(response)
 
 if __name__ == "__main__":

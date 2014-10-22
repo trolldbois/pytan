@@ -752,6 +752,7 @@ class AskSavedQuestionRequest(SoapRequest):
         """returns the inner_dict_xml for the response as a list of lists, one
         for each row, headers in the first row
         """
+        # TODO: MAKE THIS DICT LIKE INSTEAD OF ROW LIKE
         result_sets = inner_dict_xml.get('result_sets', {})
         result_set = result_sets.get('result_set', {})
 
@@ -794,7 +795,6 @@ class GetObjectRequest(SoapRequest):
         for each row
         """
         if not inner_dict_xml:
-            # TODO our call failed to return a result object. print error
             return None
         pre_csv = parse_result_object(
             inner_dict_xml, self._multi, self._single,
@@ -1085,7 +1085,7 @@ class SoapResponse(object):
             filename += '__'
             filename += get_now()
             filename += ".csv"
-            filename = ("{}__{}").format(self.command, filename)
+            filename = ("{}__{}").format(self.request.caller_method, filename)
 
         if dir is None:
             dir = os.path.curdir
@@ -1574,6 +1574,7 @@ class SoapWrap:
         :param query: string or list of queries
         :return: :class:`SoapResponse`
         """
+        # TODO DO ME
         # TODO SUPPORT FILTERS
 
         request_args = {
@@ -1592,12 +1593,12 @@ class SoapWrap:
         :param query: string or list of queries
         :return: :class:`SoapResponse`
         """
-        ERR1_TPL("No result_object returned from last response").format
-        ERR2_TPL("No parse results returned for {!r}").format
-        DBUG1_TPL(
+        ERR1_TPL = ("No inner_dict_xml returned from last response").format
+        ERR2_TPL = ("No parse results returned for {!r}").format
+        DBUG1_TPL = (
             "No matching questions for {!r}, full list of questions: {}"
         ).format
-        DBUG2_TPL("Matching parse_result for {!r}: {!r}").format
+        DBUG2_TPL = ("Matching parse_result for {!r}: {!r}").format
 
         request_args = {
             'object_type': 'question',
@@ -1610,7 +1611,7 @@ class SoapWrap:
 
         self.last_response.prg_match = None
 
-        result_obj = getattr(self.last_response, 'result_object', {})
+        result_obj = getattr(self.last_response, 'inner_dict_xml', {})
 
         if not result_obj:
             logger.error(ERR1_TPL())
@@ -1630,7 +1631,7 @@ class SoapWrap:
         ]
 
         if not prg_match:
-            logger.debug(ERR3_TPL(
+            logger.debug(DBUG1_TPL(
                 question.lower(),
                 [x['question_text'] for x in prgs_all],
             ))
@@ -1686,7 +1687,7 @@ class SoapWrap:
         self.last_request = AskParseQuestionRequest(**request_args)
         self.__call_api()
 
-        result_object = getattr(self.last_response, 'result_object', {})
+        result_object = getattr(self.last_response, 'inner_dict_xml', {})
         question_id = result_object.get('question', {}).get('id', '')
         self.last_response.question_id = question_id
         if not question_id:
@@ -1794,7 +1795,6 @@ class SoapWrap:
         return self.last_response
 
     # TODO NOT WORKING (same problem as get_all_groups)
-    '''
     def get_action(self, query):
         """sends a get action request and returns a SoapResponse object
         :param query: string or list of queries
@@ -1810,6 +1810,7 @@ class SoapWrap:
         self.__call_api()
         return self.last_response
 
+    # TODO NOT WORKING (same problem as get_all_groups)
     def get_all_actions(self):
         """sends a get all actions request and returns a SoapResponse object
         :return: :class:`SoapResponse`
@@ -1823,7 +1824,6 @@ class SoapWrap:
         self.last_request = GetObjectRequest(**request_args)
         self.__call_api()
         return self.last_response
-    '''
 
     def get_group(self, query):
         """sends a get group request and returns a SoapResponse object
@@ -1841,7 +1841,6 @@ class SoapWrap:
         return self.last_response
 
     # TODO NOT WORKING
-    '''
     def get_all_groups(self):
         """sends a get all groups request and returns a SoapResponse object
         :return: :class:`SoapResponse`
@@ -1856,6 +1855,7 @@ class SoapWrap:
         self.__call_api()
         return self.last_response
 
+    '''
     """RAW XML FOR REQUEST THAT DOES NOT WORK (also tried <group/>):
 <soap:Body xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
     <tanium_soap_request xmlns="urn:TaniumSOAP">
@@ -1922,31 +1922,3 @@ class SoapWrap:
         self.ret = ret
         httplog(DBG1_TPL(ret.status_code, ret.text.encode(ret.encoding)))
         return ret
-
-
-# if __name__ == '__main__':
-
-    # # must only pass id: to get_question
-    # question = sw.get_question('id:9000')
-    # question.write_csv_file()
-
-    # package = sw.get_package('Distribute Patch Tools')
-    # package.write_csv_file()
-
-    # all_packages = sw.get_all_packages()
-    # all_packages.write_csv_file()
-
-    # # TODO NOT WORKING
-    # # all_groups = sw.get_all_groups()
-    # # all_groups.write_csv_file()
-
-    # group = sw.get_group('All Computers')
-    # group.write_csv_file()
-
-    # # TODO NOT WORKING
-    # # all_actions = sw.get_all_actions()
-    # # all_actions.write_csv_file()
-
-    # # TODO NOT WORKING
-    # # action = sw.get_action('Distribute Tanium Standard Utilities')
-    # # action.write_csv_file()
