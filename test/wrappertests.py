@@ -18,7 +18,7 @@ for x in path_adds:
 import tanwrap
 import threaded_http
 
-LOGLEVEL = 0
+LOGLEVEL = 1
 CSV_OUT = os.path.join(my_dir, 'CSV_OUT')
 
 
@@ -92,26 +92,26 @@ class TestsAgainstServer(unittest.TestCase):
     HOST = '172.16.31.128'
 
     sw = None
+    sw = tanwrap.SoapWrap(
+        USERNAME,
+        PASSWORD,
+        HOST,
+        port=443,
+        protocol='https',
+        loglevel=LOGLEVEL,
+    )
+
+    if not os.path.isdir(CSV_OUT):
+        os.mkdir(CSV_OUT)
+
+    csv_files = glob.glob(CSV_OUT + '/*.csv')
+    if csv_files:
+        print "Cleaning up %s old CSV files" % len(csv_files)
+        [os.unlink(x) for x in csv_files]
+
+    print '\n' + str(sw)
 
     def setUp(self):
-        if TestsAgainstServer.sw is None:
-            TestsAgainstServer.sw = tanwrap.SoapWrap(
-                self.USERNAME,
-                self.PASSWORD,
-                self.HOST,
-                port=443,
-                protocol='https',
-                loglevel=LOGLEVEL,
-            )
-
-            if not os.path.isdir(CSV_OUT):
-                os.mkdir(CSV_OUT)
-
-            csv_files = glob.glob(CSV_OUT + '/*.csv')
-            if csv_files:
-                print "Cleaning up %s old CSV files" % len(csv_files)
-                [os.unlink(x) for x in csv_files]
-
         self.assertTrue(self.sw.app_ok)
 
     def response_tests(self, response):
@@ -133,6 +133,7 @@ class TestsAgainstServer(unittest.TestCase):
         self.assertTrue(response.command)
 
         self.assertTrue(response.auth_ok)
+        self.assertTrue(response.command_ok)
         self.assertTrue(response.everything_ok)
 
         self.assertTrue(response.session_id)

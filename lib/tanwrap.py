@@ -397,13 +397,6 @@ def xml_csv(xml_rows_list, header_priority=None):
     return xml_csv
 
 
-def xml_excel(TODO):
-    """returns the xml for the response as an XML doc in StringIO obj"""
-    # TODO
-    xml_excel = StringIO.StringIO()
-    return xml_excel
-
-
 def build_dict_from_xml(elem):
     """converts an ElementTree object to a python dict
 
@@ -1275,9 +1268,8 @@ class SoapAuth(object):
         return token
 
 
-class FailedPage(object):
+class FailedPage(requests.Request):
     """simple object to replicate requests-like object for exceptions"""
-    # TODO subclass requests response object??
     def __init__(self, text):
         self.text = text
         self.status_code = -1
@@ -1405,10 +1397,9 @@ class SoapWrap:
         """makes a call to the SOAP API, returns a SoapResponse object,
         expects a SoapRequest object to exist at self.request
         """
-        AUTH_TPL = (
-            'Authorization {} for last request: {}').format
-        BAD_TPL = (
-            'Bad SOAP request for last request: {}').format
+        AUTH_TPL = ('Authorization {} for last request: {}').format
+        BAD_TPL = ('Bad SOAP request for last request: {}').format
+        TIME_TPL = ('Last Request {} took longer than {} seconds!').format
 
         self.last_response = None
 
@@ -1447,6 +1438,9 @@ class SoapWrap:
 
         if self.last_request.command == "GetResultInfo":
             full_results = False
+            wait = 1
+            max_wait = 600
+            current_wait = 1
             while full_results is not True:
                 result_xml = self.last_response.inner_dict_xml
                 result_infos = result_xml['result_infos']
@@ -1459,8 +1453,11 @@ class SoapWrap:
                 if mr_passed == est_total:
                     full_results = True
                 self.__send_request()
-                # TODO ADD MAX_SLEEP here
-                time.sleep(1)
+                current_wait += 1
+                if current_wait > max_wait:
+                    # TODO better message
+                    raise Exception(TIME_TPL(self.last_request, max_wait))
+                time.sleep(wait)
 
             self.last_request.command = "GetResultData"
             self.__send_request()
@@ -1722,7 +1719,7 @@ class SoapWrap:
         self.__call_api()
         return self.last_response
 
-    def get_all_questions_log(self):
+    def get_all_question_logs(self):
         """sends a get all question request and returns a SoapResponse object
         :return: :class:`SoapResponse`
         """
@@ -1876,15 +1873,12 @@ class SoapWrap:
     # TODO
     '''
     def deploy_package(self):
-        # TODO
         pass
 
     def deploy_action(self):
-        # TODO
         pass
 
     def get_system_status(self):
-        # TODO
         pass
     '''
 

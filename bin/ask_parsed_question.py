@@ -57,8 +57,7 @@ swargs = args.__dict__
 qkeys = ['picker', 'question']
 qargs = {k: swargs.pop(k) for k in qkeys}
 sw = tanwrap.SoapWrap(**swargs)
-print ("Connection ok: {}, version: {}").format(sw.app_ok, sw.app_version)
-print sw.soap_url
+print ("{}, Version: {}").format(sw, sw.app_version)
 response = sw.ask_parsed_question(**qargs)
 # need file arg, and dir arg
 # response.write_csv_file()
