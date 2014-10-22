@@ -25,8 +25,7 @@ import os
 import sys
 import logging
 import getpass
-#import inspect
-#import tempfile
+import traceback
 import socket
 import time
 import csv
@@ -36,7 +35,6 @@ import json
 from datetime import datetime
 from collections import defaultdict
 import xml.etree.cElementTree as ET
-#import xml.etree.ElementTree as ET
 
 # ElementTree FUN!
 NS_SOAP_ENV = "http://schemas.xmlsoap.org/soap/envelope/"
@@ -153,6 +151,15 @@ def logging_setup(loglevel=0):
         else:
             #print 'setting %s to INFO' % loggername
             logging.getLogger(loggername).setLevel(logging.INFO)
+
+
+def get_caller_method():
+    stack = traceback.extract_stack()
+    # for x, y in enumerate(stack):
+        # print x, y
+    caller_stack = stack[-3]
+    caller_method = caller_stack[2]
+    return caller_method
 
 
 def get_now():
@@ -578,6 +585,10 @@ class SoapRequest(object):
         """
         super(SoapRequest, self).__init__()
         self.__generals(**kwargs)
+        try:
+            self.caller_method = get_caller_method()
+        except:
+            self.caller_method = self.command
 
     def __generals(self, **kwargs):
         self.xml_raw = ''
@@ -636,7 +647,7 @@ class SoapRequest(object):
         sent = self.sent_human or "Not Yet Sent"
         ret = STR_TPL(
             self.__class__.__name__,
-            self.command,
+            self.caller_method,
             self.objects_dict,
             sent,
             self.auth_type,
@@ -682,7 +693,7 @@ class SoapRequest(object):
         xmlcreatelog(DBG_TPL(self.xml_raw))
         return self.xml_raw
 
-    def csv_pre(self, ResultXML_dict, result_object):
+    def csv_pre(self, inner_dict_xml):
         """returns the xml for the response as a list of lists or dicts
 
         needs to be overriden by each sub-class to handle the results specifc
@@ -732,19 +743,16 @@ class SoapRequest(object):
 
 
 class AskSavedQuestionRequest(SoapRequest):
-    def __init__(self, **kwargs):
-        super(AskSavedQuestionRequest, self).__init__(**kwargs)
-
     def overrides(self, **kwargs):
         self.command = 'GetResultData'
         # for sorting the xml result
         self.header_priority = []
 
-    def csv_pre(self, ResultXML_dict, result_object):
-        """returns the ResultXML_dict for the response as a list of lists, one
+    def csv_pre(self, inner_dict_xml):
+        """returns the inner_dict_xml for the response as a list of lists, one
         for each row, headers in the first row
         """
-        result_sets = ResultXML_dict.get('result_sets', {})
+        result_sets = inner_dict_xml.get('result_sets', {})
         result_set = result_sets.get('result_set', {})
 
         # get headers from xml response result_set
@@ -781,14 +789,16 @@ class GetObjectRequest(SoapRequest):
             'value_type',
         ]
 
-    def csv_pre(self, ResultXML_dict, result_object):
+    def csv_pre(self, inner_dict_xml):
         """returns the result_object for the response as a list of dicts, one
         for each row
         """
-        if not result_object:
+        if not inner_dict_xml:
             # TODO our call failed to return a result object. print error
             return None
-        pre_csv = parse_result_object(result_object, self._multi, self._single)
+        pre_csv = parse_result_object(
+            inner_dict_xml, self._multi, self._single,
+        )
         return pre_csv
 
 
@@ -814,11 +824,11 @@ class QuestionResults(SoapRequest):
             'question': {'id': kwargs['question_id']}
         }
 
-    def csv_pre(self, ResultXML_dict, result_object):
+    def csv_pre(self, inner_dict_xml):
         """returns the ResultXML_dict for the response as a list of lists, one
         for each row, headers in the first row
         """
-        result_sets = ResultXML_dict.get('result_sets', {})
+        result_sets = inner_dict_xml.get('result_sets', {})
         result_set = result_sets.get('result_set', {})
 
         # get headers from xml response result_set
@@ -866,103 +876,203 @@ class SoapResponse(object):
         # http_response = requests module object
         self.http_response = http_response
 
-        # extract some things from the requests object
-        self.status_code = http_response.status_code
-        self.text = http_response.text.encode(http_response.encoding)
-        self.__parse_text(self.text)
+        self.response_ok = self.check_response_ok()
 
-        # call the request parser to generate a CSV consumable object
-        pre_csv = self.request.csv_pre(self.ResultXML_dict, self.result_object)
-        header_priority = getattr(self.request, 'header_priority', None)
+        self.outer_dict_xml = self.get_outer_xml()
+        self.outer_return = self.get_outer_return()
 
-        # the pre_csv into an actual csv and store it in csv
-        self.csv = xml_csv(pre_csv, header_priority)
-        self.csv_path = None
+        self.command = self.get_command()
+        self.auth_ok = self.check_auth_ok()
+        self.command_ok = self.check_command_ok()
+
+        self.everything_ok = self.check_everything_ok()
+
+        self.session_id = self.get_session_id()
+        self.inner_dict_xml = self.get_inner_xml()
+        self.pre_csv = self.consume_inner_xml()
+        self.csv = self.get_csv()
 
     def __str__(self):
         received = self.received_human or "Not Yet Sent"
         STR_TPL = (
-            "SoapResponse from {}, code {} on: {}, Request: {}"
+            "SoapResponse from {}, len: {}, code {} on: {}, SoapRequest: {}"
         ).format
-        ret = STR_TPL(self.soap_url, self.status_code, received, self.request)
+        ret = STR_TPL(
+            self.soap_url,
+            len(self.http_response.text),
+            self.http_response.status_code,
+            received,
+            self.request,
+        )
         return ret
 
-    def __parse_text(self, text):
+    def get_outer_xml(self, **kwargs):
         """chew up the raw text from the http_response into XML"""
-        DBG2_TPL = ('Parsed XML:\n{}').format
-        CMD_TPL = ("response command: {}").format
-        self.xmltree = xml_tree(text)
-        xml_clean_ns(self.xmltree)
-        self.xmldict = build_dict_from_xml(self.xmltree)
-        self.xml_raw = xml_pretty(self.xmltree)
-        xmlparselog(DBG2_TPL(self.xml_raw))
+        NOTEXT_TPL = ("No text converted from HTTP response: {}").format
+        OUTER_XML = ('Parsed XML:\n{}').format
+        OUTER_ERR = ("Exception while converting outer XML: {}").format
+        outer_dict_xml = None
 
-        env_elem = self.xmldict.get('Envelope', {})
-        body_elem = env_elem.get('Body', {})
-        self.returndict = body_elem.get('return', {})
-        self.command = self.returndict.get('command')
-        self.session_id = self.returndict.get('session')
-        self.object_list = self.returndict.get('object_list')
+        text = kwargs.get('text') or self.http_response.text
+        response_ok = kwargs.get('response_ok') or self.response_ok
 
-        logger.debug(CMD_TPL(self.command))
-        self.authok = True
-        if 'Forbidden' in self.command:
-            self.authok = False
+        if response_ok:
+            text = text.encode('utf-8')
 
-        self.reqok = True
-        if 'Bad Request' in self.command:
-            self.reqok = False
+            if not text:
+                logger.error(NOTEXT_TPL(self.http_response.text))
+            else:
+                try:
+                    outer_elem_xml = xml_tree(text)
+                    outer_elem_xml = xml_clean_ns(outer_elem_xml)
+                    outer_raw_xml = xml_pretty(outer_elem_xml)
+                    outer_dict_xml = build_dict_from_xml(outer_elem_xml)
+                    xmlparselog(OUTER_XML(outer_raw_xml))
+                except Exception as e:
+                    logger.error(OUTER_ERR(e))
 
-        if not self.command:
-            self.reqok = False
+        self.outer_dict_xml = outer_dict_xml
+        return outer_dict_xml
 
-        if not self.authok or not self.reqok or not self.command:
-            return
+    def get_outer_return(self, **kwargs):
+        OUTER_ERR = ("Exception while parsing outer XML: {}").format
+        outer_return = None
+        outer_dict_xml = kwargs.get('outer_dict_xml') or self.outer_dict_xml
+        response_ok = kwargs.get('response_ok') or self.response_ok
 
-        # TODO:
-        """if bad_request we throw exception:
-[845   -           tanwrap.py:__parse_text()] 2014-10-17 23:15:26,719
-DEBUG    response command: ERROR: 400 Bad Request
+        if response_ok:
+            try:
+                outer_envelope = outer_dict_xml['Envelope']
+                outer_body = outer_envelope['Body']
+                outer_return = outer_body['return']
+            except Exception as e:
+                logger.error(OUTER_ERR(e))
 
-XML Parse Error: SOAPProcessing Exception: class ActionNotFound
-Traceback (most recent call last):
-  File "./tanwrap.py", line 1663, in <module>
-    all_actions = sw.get_all_actions()
-  File "./tanwrap.py", line 1463, in get_all_actions
-    self.__call_api()
-  File "./tanwrap.py", line 1215, in __call_api
-    self.__send_request()
-  File "./tanwrap.py", line 1270, in __send_request
-    http_response=http_response,
-  File "./tanwrap.py", line 813, in __init__
-    pre_csv = self.request.csv_pre(self.ResultXML_dict, self.result_object)
-AttributeError: 'SoapResponse' object has no attribute 'ResultXML_dict'
+        self.outer_return = outer_return
+        return outer_return
 
-        """
-        self.__parse_inner_results()
+    def get_command(self, **kwargs):
+        command = None
+        outer_return = kwargs.get('outer_return') or self.outer_return
+        response_ok = kwargs.get('response_ok') or self.response_ok
 
-    def __parse_inner_results(self):
-        """look for results embedded in the returndict of the XML response"""
+        if response_ok:
+            command = outer_return.get('command')
+        self.command = command
+        return command
 
-        #ResultXML is used for returns from command=[GetResultData,
-        #GetResultInfo]
-        DBG3_TPL = ('Inner Result XML:\n{}').format
-        self.ResultXML_dict = {}
-        ResultXML = self.returndict.get('ResultXML', '')
-        if ResultXML:
-            ResultXML = ResultXML.encode('utf-8')
-            ResultXML_tree = xml_tree(ResultXML)
-            self.ResultXML_dict = build_dict_from_xml(ResultXML_tree)
-            ResultXML_raw = xml_pretty(ResultXML_tree)
-            xmlparselog(DBG3_TPL(ResultXML_raw))
+    def check_everything_ok(self, **kwargs):
+        auth_ok = kwargs.get('auth_ok') or self.auth_ok
+        response_ok = kwargs.get('response_ok') or self.response_ok
+        command_ok = kwargs.get('command_ok') or self.command_ok
+        everything_ok = auth_ok and response_ok and command_ok
+        self.everything_ok = everything_ok
+        return everything_ok
 
-        #result_object is used for returns from command=[GetObject, AddObject,
-        #DeleteObject]
-        self.result_object = self.returndict.get('result_object', {})
+    def check_auth_ok(self, **kwargs):
+        AUTH_ERR = ("Authorization failure in {} (COMMAND: {!r})").format
+        command = kwargs.get('command') or self.command
+        auth_ok = 'Forbidden' not in command
+        if not auth_ok:
+            logger.debug(AUTH_ERR(self, command))
+        self.auth_ok = auth_ok
+        return auth_ok
 
-    def write_csv_file(self, filename=None, dir=None):
+    def check_response_ok(self, **kwargs):
+        NON_200 = ("Non 200 status code in {} (CODE: {!r})").format
+        http_response = kwargs.get('http_response') or self.http_response
+        valid_codes = [200]
+        response_ok = http_response.status_code in valid_codes
+        if not response_ok:
+            logger.error(NON_200(http_response.status_code, self))
+        self.response_ok = response_ok
+        return response_ok
+
+    def check_command_ok(self, **kwargs):
+        BAD_ERR = ("Bad Command Return in {} (COMMAND: {!r})").format
+        command = kwargs.get('command') or self.command
+        command_ok = 'Bad Request' not in command
+        if not command_ok:
+            command = command.replace('\n', '')
+            logger.error(BAD_ERR(self, command))
+        self.command_ok = command_ok
+        return command_ok
+
+    def get_session_id(self, **kwargs):
+        session_id = None
+        outer_return = kwargs.get('outer_return') or self.outer_return
+        everything_ok = kwargs.get('everything_ok') or self.everything_ok
+        if everything_ok is True:
+            session_id = outer_return['session']
+
+        self.session_id = session_id
+        return session_id
+
+    def get_inner_xml(self, **kwargs):
+        XML_TPL = ('Inner ResultXML:\n{}').format
+        XML_ERR = ("Exception getting inner ResultXML: {}").format
+        OBJ_ERR = ("Exception getting inner result_object: {}").format
+
+        inner_dict_xml = None
+        result_xml_commands = ['GetResultData', 'GetResultInfo']
+        result_obj_commands = ['GetObject', 'AddObject', 'DeleteObject']
+
+        command = kwargs.get('command') or self.command
+        outer_return = kwargs.get('outer_return') or self.outer_return
+        everything_ok = kwargs.get('everything_ok') or self.everything_ok
+
+        if everything_ok is True:
+            if command in result_xml_commands:
+                try:
+                    inner_raw_xml = outer_return['ResultXML']
+                    inner_raw_xml = inner_raw_xml.encode('utf-8')
+                    inner_elem_xml = xml_tree(inner_raw_xml)
+                    inner_elem_xml = xml_clean_ns(inner_elem_xml)
+                    inner_raw_xml = xml_pretty(inner_elem_xml)
+                    inner_dict_xml = build_dict_from_xml(inner_elem_xml)
+                    xmlparselog(XML_TPL(inner_raw_xml))
+                except Exception as e:
+                    logger.error(XML_ERR(e))
+            elif command in result_obj_commands:
+                try:
+                    inner_dict_xml = outer_return['result_object']
+                except Exception as e:
+                    logger.error(OBJ_ERR(e))
+
+        self.inner_dict_xml = inner_dict_xml
+        return inner_dict_xml
+
+    def consume_inner_xml(self, **kwargs):
+        everything_ok = kwargs.get('everything_ok') or self.everything_ok
+        pre_csv = None
+        if everything_ok:
+            inner_dict_xml = kwargs.get('inner_dict_xml')
+            if not inner_dict_xml:
+                inner_dict_xml = self.inner_dict_xml
+            pre_csv = self.request.csv_pre(inner_dict_xml)
+        self.pre_csv = pre_csv
+        return pre_csv
+
+    def get_csv(self, **kwargs):
+        # grab the pre_csv into an actual csv and store it in csv
+        everything_ok = kwargs.get('everything_ok') or self.everything_ok
+        pre_csv = kwargs.get('pre_csv') or self.pre_csv
+        csv = None
+        if everything_ok:
+            header_priority = kwargs.get('header_priority')
+            if not header_priority:
+                header_priority = getattr(
+                    self.request, 'header_priority', None,
+                )
+            csv = xml_csv(pre_csv, header_priority)
+        self.csv = csv
+        return csv
+
+    def write_csv_file(self, filename=None, dir=None, **kwargs):
         WRITE_TPL = ("Writing CSV to file: {}").format
         NO_CSV_TPL = ("No CSV exists for: {}").format
+        csv = kwargs.get('csv') or self.csv
+        csv_path = None
 
         if filename is None:
             filename = str(self.request.objects_dict)
@@ -980,17 +1090,17 @@ AttributeError: 'SoapResponse' object has no attribute 'ResultXML_dict'
         if dir is None:
             dir = os.path.curdir
 
-        if self.csv is None:
+        if csv is None:
             logger.error(NO_CSV_TPL(self))
-            return False
+        else:
+            csv_path = os.path.join(dir, filename)
+            logger.debug(WRITE_TPL(csv_path))
+            x = open(csv_path, 'w+')
+            x.write(csv)
+            x.close()
 
-        csv_path = os.path.join(dir, filename)
         self.csv_path = csv_path
-        logger.debug(WRITE_TPL(csv_path))
-        x = open(csv_path, 'w+')
-        x.write(self.csv)
-        x.close()
-        return True
+        return csv_path
 
     @property
     def received_human(self):
@@ -1313,13 +1423,13 @@ class SoapWrap:
         self.__send_request()
 
         # if bad request, log it and return response
-        if not self.last_response.reqok:
+        if not self.last_response.response_ok:
             logger.error(BAD_TPL(self.last_request))
             return self.last_response
 
         # if auth failed and we are using a session ID, fallback to user/pass
         # and retry the request
-        if not self.last_response.authok and self.auth.via_session_id:
+        if not self.last_response.auth_ok and self.auth.via_session_id:
             logger.warn(
                 "Last request failed due to expired/invalid session ID, "
                 "retrying request with username/password"
@@ -1329,7 +1439,7 @@ class SoapWrap:
 
         # if auth is STILL failed, even if request was re-issued,
         # log an auth failure
-        if not self.last_response.authok:
+        if not self.last_response.auth_ok:
             logger.error(AUTH_TPL('FAILED', self.last_request))
             return self.last_response
         else:
@@ -1338,7 +1448,7 @@ class SoapWrap:
         if self.last_request.command == "GetResultInfo":
             full_results = False
             while full_results is not True:
-                result_xml = self.last_response.ResultXML_dict
+                result_xml = self.last_response.inner_dict_xml
                 result_infos = result_xml['result_infos']
                 result_info = result_infos['result_info']
                 logger.debug((
