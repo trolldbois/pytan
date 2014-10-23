@@ -107,6 +107,7 @@ def setup_parser(desc, help=False):
         dest='loglevel',
         help='Logging level to use, increase for more verbosity',
     )
+    # TODO
     # sw_group.add_argument(
     #     '-l',
     #     '--log',

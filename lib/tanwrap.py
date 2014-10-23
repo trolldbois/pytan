@@ -534,6 +534,42 @@ def parse_result_object(result_object, multi, single):
     return items
 
 
+def parse_resultxml(result_xml_dict):
+    """
+    example breakdown of ResultXML for GetResultData:
+
+    dict:result_sets:
+        dict:result_set:
+            dict:cs: # column names
+            dict:rs:
+                list:r: # row data
+                    dict:c:
+                        dict:v: # row values
+    """
+    result_sets = result_xml_dict.get('result_sets', {})
+    result_set = result_sets.get('result_set', {})
+
+    # get headers from xml response result_set
+    cs = result_set.get('cs', {})
+    xml_headers = cs.get('c', [])
+
+    # extract the name for the header of each column
+    headers = [dict_get(x, 'dn') for x in xml_headers]
+
+    # get rows from xml response result_set
+    rs = result_set.get('rs', {})
+    r = rs.get('r', [])
+    xml_rows = [x.get('c', []) for x in r]
+
+    # extract the row values for each column
+    pre_csv = [
+        [dict_get(y, 'v') for y in x] for x in xml_rows
+    ]
+
+    pre_csv = [dict(zip(headers, x)) for x in pre_csv]
+    return pre_csv
+
+
 def parse_query_args(args, prefixes):
     p = None
     if type(args) == str:
@@ -689,16 +725,24 @@ class SoapRequest(object):
     def csv_pre(self, inner_dict_xml):
         """returns the xml for the response as a list of lists or dicts
 
-        needs to be overriden by each sub-class to handle the results specifc
+        could be overriden by each sub-class to handle the results specific
         to that request
 
         pre_csv should return one of the following:
             * a list of lists, each sub list mapping to a row in CSV, with
             headers in the first sub list
             * a list of dicts, each sub dict mapping to a row in CSV, with
-            the headers being extracted from the sub-dict keys
+            the headers being extracted from the sub-dict keys (preferred)
         """
         pre_csv = None
+        if not inner_dict_xml:
+            return pre_csv
+        if self.command == 'GetObject':
+            pre_csv = parse_result_object(
+                inner_dict_xml, self._multi, self._single,
+            )
+        elif self.command == 'GetResultData':
+            pre_csv = parse_resultxml(inner_dict_xml)
         return pre_csv
 
     @property
@@ -741,35 +785,6 @@ class AskSavedQuestionRequest(SoapRequest):
         # for sorting the xml result
         self.header_priority = []
 
-    def csv_pre(self, inner_dict_xml):
-        """returns the inner_dict_xml for the response as a list of lists, one
-        for each row, headers in the first row
-        """
-        # TODO: MAKE THIS DICT LIKE INSTEAD OF ROW LIKE
-        result_sets = inner_dict_xml.get('result_sets', {})
-        result_set = result_sets.get('result_set', {})
-
-        # get headers from xml response result_set
-        cs = result_set.get('cs', {})
-        xml_headers = cs.get('c', [])
-
-        # extract the name for the header of each column
-        headers = [dict_get(x, 'dn') for x in xml_headers]
-
-        # get rows from xml response result_set
-        rs = result_set.get('rs', {})
-        r = rs.get('r', [])
-        xml_rows = [x.get('c', []) for x in r]
-
-        # extract the row values for each column
-        pre_csv = [
-            [dict_get(y, 'v') for y in x] for x in xml_rows
-        ]
-
-        # prepend headers to rows
-        pre_csv.insert(0, headers)
-        return pre_csv
-
 
 class GetObjectRequest(SoapRequest):
     def overrides(self, **kwargs):
@@ -782,17 +797,6 @@ class GetObjectRequest(SoapRequest):
             'hash',
             'value_type',
         ]
-
-    def csv_pre(self, inner_dict_xml):
-        """returns the result_object for the response as a list of dicts, one
-        for each row
-        """
-        if not inner_dict_xml:
-            return None
-        pre_csv = parse_result_object(
-            inner_dict_xml, self._multi, self._single,
-        )
-        return pre_csv
 
 
 class ParseQuestionRequest(SoapRequest):
@@ -869,47 +873,78 @@ class SoapResponse(object):
         # http_response = requests module object
         self.http_response = http_response
 
+        self.problem = ''
+        self._stage = 1
         self.response_ok = self.check_response_ok()
-
+        self._stage = 2
         self.outer_dict_xml = self.get_outer_xml()
         self.outer_return = self.get_outer_return()
-
+        self._stage = 3
         self.command = self.get_command()
         self.auth_ok = self.check_auth_ok()
         self.command_ok = self.check_command_ok()
-
-        self.everything_ok = self.check_everything_ok()
-
         self.session_id = self.get_session_id()
+        self._stage = 4
         self.inner_dict_xml = self.get_inner_xml()
-        self.pre_csv = self.consume_inner_xml()
+        self._stage = 5
         self.csv = self.get_csv()
 
     def __str__(self):
         received = self.received_human or "Not Yet Sent"
         STR_TPL = (
-            "SoapResponse from {}, len: {}, code {} on: {}, SoapRequest: {}"
+            "SoapResponse ok: {}, from: {}, len: {}, on: {}, SoapRequest: {}"
         ).format
         ret = STR_TPL(
+            self.check_everything_ok(),
             self.soap_url,
             len(self.http_response.text),
-            self.http_response.status_code,
             received,
             self.request,
         )
         return ret
 
-    def get_outer_xml(self, **kwargs):
+    def check_everything_ok(self):
+        ERR_TPL = ("{} is False, everything is not OK in {}").format
+
+        stage_map = {
+            1: ['http_response'],
+            2: ['response_ok'],
+            3: ['outer_dict_xml', 'outer_return'],
+            4: ['command', 'auth_ok', 'command_ok', 'session_id'],
+            5: ['inner_dict_xml']
+        }
+
+        everything = {
+            'self.%s' % i: getattr(self, i, False)
+            for k, v in stage_map.iteritems()
+            for i in v if k <= self._stage
+        }
+
+        # sort of clever way to do it, but doesn't allow printing
+        # of which items failed:
+        # everything_ok = all(everything.values())
+
+        everything_ok = True
+        for k, v in everything.iteritems():
+            if not v:
+                everything_ok = False
+                self.problem = ERR_TPL(k, self)
+                logger.debug(ERR_TPL(k, self))
+                # should raise here?
+                break
+
+        self.everything_ok = everything_ok
+        return everything_ok
+
+    def get_outer_xml(self):
         """chew up the raw text from the http_response into XML"""
         NOTEXT_TPL = ("No text converted from HTTP response: {}").format
         OUTER_XML = ('Parsed XML:\n{}').format
         OUTER_ERR = ("Exception while converting outer XML: {}").format
         outer_dict_xml = None
 
-        text = kwargs.get('text') or self.http_response.text
-        response_ok = kwargs.get('response_ok') or self.response_ok
-
-        if response_ok:
+        if self.check_everything_ok():
+            text = self.http_response.text
             text = text.encode('utf-8')
 
             if not text:
@@ -927,14 +962,13 @@ class SoapResponse(object):
         self.outer_dict_xml = outer_dict_xml
         return outer_dict_xml
 
-    def get_outer_return(self, **kwargs):
+    def get_outer_return(self):
         OUTER_ERR = ("Exception while parsing outer XML: {}").format
         outer_return = None
-        outer_dict_xml = kwargs.get('outer_dict_xml') or self.outer_dict_xml
-        response_ok = kwargs.get('response_ok') or self.response_ok
 
-        if response_ok:
+        if self.check_everything_ok():
             try:
+                outer_dict_xml = self.outer_dict_xml
                 outer_envelope = outer_dict_xml['Envelope']
                 outer_body = outer_envelope['Body']
                 outer_return = outer_body['return']
@@ -944,77 +978,69 @@ class SoapResponse(object):
         self.outer_return = outer_return
         return outer_return
 
-    def get_command(self, **kwargs):
+    def get_command(self):
         command = None
-        outer_return = kwargs.get('outer_return') or self.outer_return
-        response_ok = kwargs.get('response_ok') or self.response_ok
-
-        if response_ok:
+        if self.check_everything_ok():
+            outer_return = self.outer_return
             command = outer_return.get('command')
         self.command = command
         return command
 
-    def check_everything_ok(self, **kwargs):
-        auth_ok = kwargs.get('auth_ok') or self.auth_ok
-        response_ok = kwargs.get('response_ok') or self.response_ok
-        command_ok = kwargs.get('command_ok') or self.command_ok
-        everything_ok = auth_ok and response_ok and command_ok
-        self.everything_ok = everything_ok
-        return everything_ok
-
-    def check_auth_ok(self, **kwargs):
+    def check_auth_ok(self):
         AUTH_ERR = ("Authorization failure in {} (COMMAND: {!r})").format
-        command = kwargs.get('command') or self.command
-        auth_ok = 'Forbidden' not in command
-        if not auth_ok:
-            logger.debug(AUTH_ERR(self, command))
+        auth_ok = None
+        if self.check_everything_ok():
+            command = self.command
+            auth_ok = 'Forbidden' not in command
+            if not auth_ok:
+                logger.debug(AUTH_ERR(self, command))
         self.auth_ok = auth_ok
         return auth_ok
 
-    def check_response_ok(self, **kwargs):
+    def check_response_ok(self):
         NON_200 = ("Non 200 status code in {} (CODE: {!r})").format
-        http_response = kwargs.get('http_response') or self.http_response
-        valid_codes = [200]
-        response_ok = http_response.status_code in valid_codes
-        if not response_ok:
-            logger.error(NON_200(http_response.status_code, self))
+        response_ok = None
+        if self.check_everything_ok():
+            http_response = self.http_response
+            valid_codes = [200]
+            response_ok = http_response.status_code in valid_codes
+            if not response_ok:
+                logger.error(NON_200(http_response.status_code, self))
         self.response_ok = response_ok
         return response_ok
 
-    def check_command_ok(self, **kwargs):
+    def check_command_ok(self):
         BAD_ERR = ("Bad Command Return in {} (COMMAND: {!r})").format
-        command = kwargs.get('command') or self.command
-        command_ok = 'Bad Request' not in command
-        if not command_ok:
-            command = command.replace('\n', '')
-            logger.error(BAD_ERR(self, command))
+        command_ok = None
+        if self.check_everything_ok():
+            command = self.command
+            command_ok = 'Bad Request' not in command
+            if not command_ok:
+                command = command.replace('\n', '')
+                logger.error(BAD_ERR(self, command))
         self.command_ok = command_ok
         return command_ok
 
-    def get_session_id(self, **kwargs):
+    def get_session_id(self):
         session_id = None
-        outer_return = kwargs.get('outer_return') or self.outer_return
-        everything_ok = kwargs.get('everything_ok') or self.everything_ok
-        if everything_ok is True:
+        if self.check_everything_ok():
+            outer_return = self.outer_return
             session_id = outer_return['session']
-
         self.session_id = session_id
         return session_id
 
-    def get_inner_xml(self, **kwargs):
+    def get_inner_xml(self):
         XML_TPL = ('Inner ResultXML:\n{}').format
         XML_ERR = ("Exception getting inner ResultXML: {}").format
         OBJ_ERR = ("Exception getting inner result_object: {}").format
 
         inner_dict_xml = None
-        result_xml_commands = ['GetResultData', 'GetResultInfo']
-        result_obj_commands = ['GetObject', 'AddObject', 'DeleteObject']
+        if self.check_everything_ok():
 
-        command = kwargs.get('command') or self.command
-        outer_return = kwargs.get('outer_return') or self.outer_return
-        everything_ok = kwargs.get('everything_ok') or self.everything_ok
-
-        if everything_ok is True:
+            command = self.command
+            outer_return = self.outer_return
+            result_xml_commands = ['GetResultData', 'GetResultInfo']
+            result_obj_commands = ['GetObject', 'AddObject', 'DeleteObject']
             if command in result_xml_commands:
                 try:
                     inner_raw_xml = outer_return['ResultXML']
@@ -1035,28 +1061,13 @@ class SoapResponse(object):
         self.inner_dict_xml = inner_dict_xml
         return inner_dict_xml
 
-    def consume_inner_xml(self, **kwargs):
-        everything_ok = kwargs.get('everything_ok') or self.everything_ok
-        pre_csv = None
-        if everything_ok:
-            inner_dict_xml = kwargs.get('inner_dict_xml')
-            if not inner_dict_xml:
-                inner_dict_xml = self.inner_dict_xml
-            pre_csv = self.request.csv_pre(inner_dict_xml)
-        self.pre_csv = pre_csv
-        return pre_csv
-
-    def get_csv(self, **kwargs):
+    def get_csv(self):
         # grab the pre_csv into an actual csv and store it in csv
-        everything_ok = kwargs.get('everything_ok') or self.everything_ok
-        pre_csv = kwargs.get('pre_csv') or self.pre_csv
         csv = None
-        if everything_ok:
-            header_priority = kwargs.get('header_priority')
-            if not header_priority:
-                header_priority = getattr(
-                    self.request, 'header_priority', None,
-                )
+        if self.check_everything_ok():
+            inner_dict_xml = self.inner_dict_xml
+            pre_csv = self.request.csv_pre(inner_dict_xml)
+            header_priority = getattr(self.request, 'header_priority', None)
             csv = xml_csv(pre_csv, header_priority)
         self.csv = csv
         return csv
@@ -1065,32 +1076,34 @@ class SoapResponse(object):
         WRITE_TPL = ("Writing CSV to file: {}").format
         NO_CSV_TPL = ("No CSV exists for: {}").format
         csv = kwargs.get('csv') or self.csv
-        csv_path = None
+        csv_path = kwargs.get('csv_path')
 
-        if filename is None:
-            filename = str(self.request.objects_dict)
-            filename = filename.replace(': ', '.')
-            filename = filename.translate(None, '\'{[]}')
-            filename = filename.replace(' ', '_')
-            filename = filename.replace(',', '+')
-            filename = filename.replace('+_', '+')
-            filename = filename[0:80]
-            filename += '__'
-            filename += get_now()
-            filename += ".csv"
-            filename = ("{}__{}").format(self.request.caller_method, filename)
+        if self.check_everything_ok():
+            if filename is None:
+                filename = str(self.request.objects_dict)
+                filename = filename.replace(': ', '.')
+                filename = filename.translate(None, '\'{[]}')
+                filename = filename.replace(' ', '_')
+                filename = filename.replace(',', '+')
+                filename = filename.replace('+_', '+')
+                filename = filename[0:80]
+                filename += '__'
+                filename += get_now()
+                filename += ".csv"
+                filename = ("{}__{}").format(
+                    self.request.caller_method, filename)
 
-        if dir is None:
-            dir = os.path.curdir
+            if dir is None:
+                dir = os.path.curdir
 
-        if csv is None:
-            logger.error(NO_CSV_TPL(self))
-        else:
-            csv_path = os.path.join(dir, filename)
-            logger.debug(WRITE_TPL(csv_path))
-            x = open(csv_path, 'w+')
-            x.write(csv)
-            x.close()
+            if csv is None:
+                logger.error(NO_CSV_TPL(self))
+            else:
+                csv_path = csv_path or os.path.join(dir, filename)
+                logger.debug(WRITE_TPL(csv_path))
+                x = open(csv_path, 'w+')
+                x.write(csv)
+                x.close()
 
         self.csv_path = csv_path
         return csv_path
@@ -1276,8 +1289,9 @@ class FailedPage(requests.Request):
 
 
 class SoapWrap:
-    def __init__(self, username, password, host, port="443", protocol='https',
-                 soap_path="/soap", loglevel=0, logfile=None,):
+    def __init__(self, username=None, password=None, host=None, port="443",
+                 protocol='https', soap_path="/soap", loglevel=0,
+                 logfile=None):
 
         logging_setup(loglevel)
 
@@ -1285,28 +1299,37 @@ class SoapWrap:
         self.__port = port
         self.__protocol = protocol
         self.__soap_path = soap_path
-
         self.__username = username
         self.__password = password
 
+        self.app_sysinfo = {}
         self.last_request = None
         self.last_response = None
         self.all_responses = []
 
         self.__env_overrides()
-        self.__app_ok()
+
+        if not self.__host:
+            raise Exception("Must supply host!")
+        if not self.__username:
+            raise Exception("Must supply username!")
+        if not self.__password:
+            raise Exception("Must supply password!")
+
         self.auth = SoapAuth(self.__username, self.__password)
+        self.app_ok = self.get_app_ok()
 
     def __str__(self):
         STR_TPL = (
-            "SoapWrap to {}, Healthy: {}"
+            "SoapWrap to {}, Version: {}, Healthy: {}"
         ).format
-        ret = STR_TPL(self.soap_url, self.app_ok)
+        ret = STR_TPL(self.soap_url, self.app_version, self.app_ok)
         return ret
 
     def __env_overrides(self):
         """looks for OS environment variables and overrides the corresponding
-        attribute if they exist"""
+        attribute if they exist
+        """
         OR_TPL = ("Overriding {!r} with OS environment variable {!r}").format
         OS_ENV_MAP = {
             'SOAP_USERNAME': 'self.__username',
@@ -1327,76 +1350,102 @@ class SoapWrap:
             logger.debug(OR_TPL(os.environ[os_env_var], os_env_var))
             setattr(self, class_var, os.environ[os_env_var])
 
-    def __test_port(self):
+    def test_app_port(self):
         """validates that the SOAP port on the SOAP host can be reached"""
         CHK_TPL = ("Port test to {}:{} {}").format
         if port_check(self.__host, self.__port):
+            logger.debug(CHK_TPL(self.__host, self.__port, "SUCCESS"))
             return True
         else:
-            logger.error(CHK_TPL(self.__host, self.__port, "FAILED"))
+            logger.error(CHK_TPL(self.__host, self.__port, "FAILURE"))
             return False
 
-    def __test_page(self):
-        """validates that the HTTP server is returning a valid response,
-        will set self.app_version if so
-        """
+    def test_app_root_page(self):
+        """validates that the HTTP server is returning a valid response"""
         CHK_TPL = ("HTTP test to {} {} {}").format
         ER1_TPL = ("Returned Code: {}, Returned Page:\n{}").format
+        root_page_ok = False
         page = self.http_get(self.app_url)
         page_code = getattr(page, 'status_code', None)
         page_text = getattr(page, 'text', None)
         if not self.__page_ok(page):
             ERROR = ER1_TPL(page_code, page_text)
             logger.error(CHK_TPL(self.app_url, "FAILED", ERROR))
-            return False
-        self.app_version = self.__extract_version(page)
-        if not self.app_version:
-            return False
-        return True
+            return root_page_ok
+        self.app_version_from_root_page = self.__extract_version(page)
+        if not self.app_version_from_root_page:
+            return root_page_ok
+        root_page_ok = True
+        return root_page_ok
 
     def __extract_version(self, page):
         """extracts the serverVersion from the apps home page HTML"""
         ER2_TPL = ("Version info not found in applications home page").format
         version_regex = re.compile(r"flashvars.serverVersion.*'(.*)';")
         version_search = version_regex.search(page.text)
+        version = None
         if not version_search:
-            logger.warn(ER2_TPL())
-            return None
+            logger.debug(ER2_TPL())
+            return version
         if len(version_search.groups()) != 1:
-            logger.warn(ER2_TPL())
-            return None
-        else:
-            return version_search.groups()[0]
+            logger.debug(ER2_TPL())
+            return version
+        version = version_search.groups()[0]
+        return version
 
     def __page_ok(self, page):
         """return True if the page object is not None and has a status code
         of 200
         """
         valid_status = [200]
+        page_ok = False
         if not page:
-            return False
+            return page_ok
         if page.status_code not in valid_status:
-            return False
-        return True
+            return page_ok
+        page_ok = True
+        return page_ok
 
-    def __app_ok(self):
-        """runs test_port and test_page"""
-        OK_TPL = ("Application at {} is healthy, version: {}").format
+    def test_get_app_sysinfo(self):
+        app_sysinfo = {}
         self.app_ok = True
-        if not self.__test_port():
-            self.app_ok = False
-            return self.app_ok
+        response = self.get_server_info()
+        if not response:
+            return app_sysinfo
+        if not response.check_everything_ok():
+            return app_sysinfo
+        app_sysinfo = response.inner_dict_xml
+        self.app_sysinfo = app_sysinfo
+        return app_sysinfo
 
-        if not self.__test_page():
-            self.app_ok = False
-            return self.app_ok
+    @property
+    def app_version(self):
+        d = self.app_sysinfo.get('Diagnostics', [])
+        s = [x for x in d if 'Settings' in x.keys()]
+        v = s[0]['Settings']['Version']
+        return v
+
+    def get_app_ok(self):
+        OK_TPL = ("Application at {} is healthy, version: {}").format
+        app_ok = False
+        if not self.test_app_port():
+            return app_ok
+
+        if not self.test_app_root_page():
+            return app_ok
+
+        if not self.test_get_app_sysinfo():
+            return app_ok
+
+        app_ok = True
         logger.debug(OK_TPL(self.soap_url, self.app_version))
-        return self.app_ok
+        return app_ok
 
     def __call_api(self):
         """makes a call to the SOAP API, returns a SoapResponse object,
         expects a SoapRequest object to exist at self.request
         """
+        self.check_app_ok()
         AUTH_TPL = ('Authorization {} for last request: {}').format
         BAD_TPL = ('Bad SOAP request for last request: {}').format
         TIME_TPL = ('Last Request {} took longer than {} seconds!').format
@@ -1515,6 +1564,11 @@ class SoapWrap:
         APP_TPL = ("{}://{}:{}").format
         self._app_url = APP_TPL(self.__protocol, self.__host, self.__port)
         return self._app_url
+
+    def check_app_ok(self):
+        ERR_TPL = ("App is not OK, unable to do anything! {}").format
+        if not self.app_ok:
+            raise Exception(ERR_TPL(self))
 
     def ask_saved_question(self, query):
         """sends a saved question Request and returns the response
@@ -1661,19 +1715,19 @@ class SoapWrap:
         if picker == -1:
             logger.error(PICK_TPL())
             print picker_indexes
-            return None
+            return self.last_response
 
         if not prg_match and picker is None:
             logger.error(PICK_TPL())
             print picker_indexes
-            return None
+            return self.last_response
 
         if picker:
             try:
                 prg_match = prgs_all[picker]
             except IndexError:
                 logger.error(PERR_TPL(picker))
-                return None
+                return self.last_response
 
         request_args = {
             'object_type': 'question',
@@ -1791,9 +1845,9 @@ class SoapWrap:
         self.__call_api()
         return self.last_response
 
-    # TODO NOT WORKING (same problem as get_all_groups)
     def get_action(self, query):
         """sends a get action request and returns a SoapResponse object
+        can only ask for action by id (by name broken in API)
         :param query: string or list of queries
         :return: :class:`SoapResponse`
         """
@@ -1801,20 +1855,20 @@ class SoapWrap:
             'object_type': 'action',
             'query': query,
             'auth_dict': self.auth.token,
+            'arg_prefixes': ['id'],
         }
 
         self.last_request = GetObjectRequest(**request_args)
         self.__call_api()
         return self.last_response
 
-    # TODO NOT WORKING (same problem as get_all_groups)
     def get_all_actions(self):
         """sends a get all actions request and returns a SoapResponse object
         :return: :class:`SoapResponse`
         """
         request_args = {
             'object_type': 'action',
-            'objects_dict': {'action': {'name': ''}},
+            'objects_dict': {'actions': ''},
             'auth_dict': self.auth.token,
         }
 
@@ -1837,14 +1891,13 @@ class SoapWrap:
         self.__call_api()
         return self.last_response
 
-    # TODO NOT WORKING
     def get_all_groups(self):
         """sends a get all groups request and returns a SoapResponse object
         :return: :class:`SoapResponse`
         """
         request_args = {
             'object_type': 'group',
-            'objects_dict': {'group': {'name': ''}},
+            'objects_dict': {'groups': ''},
             'auth_dict': self.auth.token,
         }
 
@@ -1852,23 +1905,20 @@ class SoapWrap:
         self.__call_api()
         return self.last_response
 
-    '''
-    """RAW XML FOR REQUEST THAT DOES NOT WORK (also tried <group/>):
-<soap:Body xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-    <tanium_soap_request xmlns="urn:TaniumSOAP">
-      <session>...</session>
-      <command>GetObject</command>
-      <object_list>
-        <group>
-          <name />
-        </group>
-      </object_list>
-      <ID>0</ID>
-      <ContextID>0</ContextID>
-    </tanium_soap_request>
-  </soap:Body>
-    """
-    '''
+    def get_server_info(self):
+        """sends a get server_info and returns a SoapResponse object
+        :return: :class:`SoapResponse`
+        """
+        #<object_list><server_info/></object_list>
+        request_args = {
+            'object_type': 'server_info',
+            'objects_dict': {'server_info': ''},
+            'auth_dict': self.auth.token,
+        }
+
+        self.last_request = GetObjectRequest(**request_args)
+        self.__call_api()
+        return self.last_response
 
     # TODO
     '''

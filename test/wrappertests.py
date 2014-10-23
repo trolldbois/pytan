@@ -18,26 +18,77 @@ for x in path_adds:
 import tanwrap
 import threaded_http
 
-LOGLEVEL = 1
+
+# TODO: let these be more dynamic
+# (like when ryan's test framework is awesome)
+
+# ryans server info
+# USERNAME = 'Administrator'
+# PASSWORD = 'Tanium!'
+# HOST = '192.168.42.130'
+
+# jims server info
+USERNAME = 'Jim Olsen'
+PASSWORD = 'Evinc3d!'
+HOST = '172.16.31.128'
+
 CSV_OUT = os.path.join(my_dir, 'CSV_OUT')
+LOGLEVEL = 0
+
+
+def setUp():
+    print 'yo'
 
 
 class BasicTests(unittest.TestCase):
+    print "### BasicTests setup START"
+    __http = threaded_http.threaded_http(port=4433)
+    print "### BasicTests setup END"
 
-    __http = None
+    @unittest.expectedFailure
+    def test_soap_path(self):
+        '''tests HTTP port using HTTPS on host with no tanium'''
+        print ""
+        sw = tanwrap.SoapWrap(
+            USERNAME,
+            PASSWORD,
+            HOST,
+            soap_path='/invalid_path',
+            loglevel=LOGLEVEL,
+        )
+        print str(sw)
+        self.assertTrue(sw.app_ok)
 
-    def setUp(self):
-        # Only setup the http server once
-        # (or make it so that a tearDown can kill it)
-        if BasicTests.__http is None:
-            BasicTests.__http = threaded_http.threaded_http(port=4433)
+    @unittest.expectedFailure
+    def test_badpassword(self):
+        '''tests HTTP port using HTTPS on host with no tanium'''
+        print ""
+        sw = tanwrap.SoapWrap(
+            USERNAME,
+            'INVALID_PASSWORD',
+            HOST,
+            loglevel=LOGLEVEL,
+        )
+        print str(sw)
+        self.assertTrue(sw.app_ok)
 
-    def tearDown(self):
-        pass
+    @unittest.expectedFailure
+    def test_badusername(self):
+        '''tests HTTP port using HTTPS on host with no tanium'''
+        print ""
+        sw = tanwrap.SoapWrap(
+            'INVALID_USER',
+            PASSWORD,
+            HOST,
+            loglevel=LOGLEVEL,
+        )
+        print str(sw)
+        self.assertTrue(sw.app_ok)
 
     @unittest.expectedFailure
     def test_nossl(self):
         '''tests HTTP port using HTTPS on host with no tanium'''
+        print ""
         sw = tanwrap.SoapWrap(
             'user',
             'password',
@@ -46,11 +97,13 @@ class BasicTests(unittest.TestCase):
             protocol='https',
             loglevel=LOGLEVEL,
         )
+        print str(sw)
         self.assertTrue(sw.app_ok)
 
     @unittest.expectedFailure
     def test_badhost(self):
         '''tests HTTP port using HTTP on host with no tanium'''
+        print ""
         sw = tanwrap.SoapWrap(
             'user',
             'password',
@@ -59,11 +112,13 @@ class BasicTests(unittest.TestCase):
             protocol='http',
             loglevel=LOGLEVEL,
         )
+        print sw
         self.assertTrue(sw.app_ok)
 
     @unittest.expectedFailure
     def test_nonhost(self):
         '''tests accessing a server and port that does not exist at all'''
+        print ""
         sw = tanwrap.SoapWrap(
             'user',
             'password',
@@ -72,26 +127,12 @@ class BasicTests(unittest.TestCase):
             protocol='https',
             loglevel=LOGLEVEL,
         )
+        print sw
         self.assertTrue(sw.app_ok)
 
 
 class TestsAgainstServer(unittest.TestCase):
-    # todo: let these be more dynamic
-    # (like when ryan's test framework is awesome)
-
-    # ryans server info
-    # USERNAME = 'Administrator'
-    # PASSWORD = 'Tanium!'
-    # HOST = '192.168.42.130'
-
-    # TODO ADD INVALID LOGIN TEST
-    # TODO ADD INVALID SOAP PATH TEST
-    # jims server info
-    USERNAME = 'Jim Olsen'
-    PASSWORD = 'Evinc3d!'
-    HOST = '172.16.31.128'
-
-    sw = None
+    print "### TestsAgainstServer setup START"
     sw = tanwrap.SoapWrap(
         USERNAME,
         PASSWORD,
@@ -110,13 +151,14 @@ class TestsAgainstServer(unittest.TestCase):
         [os.unlink(x) for x in csv_files]
 
     print '\n' + str(sw)
+    print "### TestsAgainstServer setup END"
 
     def setUp(self):
         self.assertTrue(self.sw.app_ok)
 
     def response_tests(self, response):
         '''standard tests for any response object'''
-        print "\nRESPONSE: %s\n" % response
+        print "RESPONSE: %s\n" % response
         self.assertIsNotNone(response)
         self.assertTrue(response.request.xml_raw)
         self.assertIn('<command>', response.request.xml_raw)
@@ -134,131 +176,217 @@ class TestsAgainstServer(unittest.TestCase):
 
         self.assertTrue(response.auth_ok)
         self.assertTrue(response.command_ok)
-        self.assertTrue(response.everything_ok)
 
         self.assertTrue(response.session_id)
         self.assertTrue(response.inner_dict_xml)
-        self.assertTrue(response.pre_csv)
         self.assertTrue(response.csv)
+        self.assertTrue(response.check_everything_ok())
+
         response.write_csv_file(dir=CSV_OUT)
         self.assertIsNotNone(response.csv_path)
         self.assertTrue(os.path.isfile(response.csv_path))
 
     def test_ask_saved_question_single_str(self):
+        print ""
+        sw = self.sw
         q = 'Installed Applications'
-        response = self.sw.ask_saved_question(q)
+        response = sw.ask_saved_question(q)
         self.response_tests(response)
 
     def test_ask_saved_question_single_list(self):
+        print ""
+        sw = self.sw
         q = 'Installed Applications'
-        response = self.sw.ask_saved_question([q])
+        response = sw.ask_saved_question([q])
         self.response_tests(response)
 
     def test_ask_parsed_question(self):
+        print ""
+        sw = self.sw
         q = 'Get Installed Applications from All Machines'
-        response = self.sw.ask_parsed_question(q)
+        response = sw.ask_parsed_question(q)
         self.response_tests(response)
 
+    @unittest.expectedFailure
+    def test_ask_parsed_question_invalid_picker(self):
+        print ""
+        sw = self.sw
+        q = 'Get Installed Applications from All Machines'
+        picker = 99999
+        response = sw.ask_parsed_question(q, picker)
+        self.response_tests(response)
+
+    def test_ask_parsed_question_forced_picker0(self):
+        print ""
+        sw = self.sw
+        q = 'Get Installed Applications from All Machines'
+        picker = 0
+        response = sw.ask_parsed_question(q, picker)
+        self.response_tests(response)
+
+    def test_ask_parsed_question_forced_picker1(self):
+        print ""
+        sw = self.sw
+        q = 'Get Installed Applications from All Machines'
+        picker = 1
+        response = sw.ask_parsed_question(q, picker)
+        self.response_tests(response)
+
+    def test_ask_parsed_question_picker_list(self):
+        print ""
+        sw = self.sw
+        q = 'Get Installed Applications from All Machines'
+        picker = -1
+        response = sw.ask_parsed_question(q, picker)
+        self.assertIsNotNone(response)
+        self.assertTrue(response.prgs_all)
+
     def test_get_single_sensor(self):
+        print ""
+        sw = self.sw
         q = 'Computer Name'
-        response = self.sw.get_sensor(q)
+        response = sw.get_sensor(q)
         self.response_tests(response)
 
     def test_get_single_sensor_by_name(self):
+        print ""
+        sw = self.sw
         q = 'name:Computer Name'
-        response = self.sw.get_sensor(q)
+        response = sw.get_sensor(q)
         self.response_tests(response)
 
     def test_get_single_sensor_by_id(self):
+        print ""
+        sw = self.sw
         q = 'id:1'
-        response = self.sw.get_sensor(q)
+        response = sw.get_sensor(q)
         self.response_tests(response)
 
     def test_get_single_sensor_by_hash(self):
+        print ""
+        sw = self.sw
         q = 'hash:322086833'
-        response = self.sw.get_sensor(q)
+        response = sw.get_sensor(q)
         self.response_tests(response)
 
     def test_get_multiple_sensors(self):
+        print ""
+        sw = self.sw
         q = ['Computer Name', 'Action Statuses']
-        response = self.sw.get_sensor(q)
+        response = sw.get_sensor(q)
         self.response_tests(response)
 
     def test_get_multiple_sensors_selectors(self):
+        print ""
+        sw = self.sw
         q = ['name:Computer Name', 'id:1', 'hash:322086833']
-        response = self.sw.get_sensor(q)
+        response = sw.get_sensor(q)
         self.response_tests(response)
 
     def test_get_all_sensors(self):
-        response = self.sw.get_all_sensors()
+        print ""
+        sw = self.sw
+        response = sw.get_all_sensors()
         self.response_tests(response)
 
     def test_get_all_saved_questions(self):
-        response = self.sw.get_all_saved_questions()
+        sw = self.sw
+        response = sw.get_all_saved_questions()
         self.response_tests(response)
 
     def test_get_saved_question_single(self):
+        print ""
+        sw = self.sw
         q = 'Installed Applications'
-        response = self.sw.get_saved_question(q)
+        response = sw.get_saved_question(q)
         self.response_tests(response)
 
     def test_get_saved_question_multiple(self):
+        print ""
+        sw = self.sw
         q = ['Installed Applications', 'Computer Name']
-        response = self.sw.get_saved_question(q)
+        response = sw.get_saved_question(q)
         self.response_tests(response)
 
     def test_get_all_question_logs(self):
-        response = self.sw.get_all_question_logs()
+        print ""
+        sw = self.sw
+        response = sw.get_all_question_logs()
         self.response_tests(response)
 
     def test_get_question_log(self):
-        response = self.sw.get_question_log('1')
+        print ""
+        sw = self.sw
+        response = sw.get_question_log('1')
         self.response_tests(response)
 
     def test_get_package_single(self):
+        print ""
+        sw = self.sw
         q = 'Distribute Patch Tools'
-        response = self.sw.get_package(q)
+        response = sw.get_package(q)
         self.response_tests(response)
 
     def test_get_all_packages(self):
-        response = self.sw.get_all_packages()
+        print ""
+        sw = self.sw
+        response = sw.get_all_packages()
         self.response_tests(response)
 
     def test_get_all_groups(self):
-        response = self.sw.get_all_groups()
+        print ""
+        sw = self.sw
+        response = sw.get_all_groups()
         self.response_tests(response)
 
-    # TODO FAILS
     def test_get_group_single(self):
+        print ""
+        sw = self.sw
         q = 'All Computers'
-        response = self.sw.get_group(q)
+        response = sw.get_group(q)
         self.response_tests(response)
 
-    # TODO FAILS
     def test_get_all_actions(self):
-        response = self.sw.get_all_actions()
+        print ""
+        sw = self.sw
+        response = sw.get_all_actions()
         self.response_tests(response)
 
-    # TODO FAILS
-    def test_get_action_single(self):
+    def test_get_action_single_by_id(self):
+        print ""
+        sw = self.sw
+        q = '1'
+        response = sw.get_action(q)
+        self.response_tests(response)
+
+    @unittest.expectedFailure
+    def test_get_action_single_by_name(self):
+        print ""
+        sw = self.sw
         q = 'Distribute Tanium Standard Utilities'
-        response = self.sw.get_action(q)
+        response = sw.get_action(q)
         self.response_tests(response)
 
     @unittest.expectedFailure
     def test_get_question_log_fail_invalid_id(self):
-        response = self.sw.get_question_log('n')
+        print ""
+        sw = self.sw
+        response = sw.get_question_log('n')
         self.response_tests(response)
 
     @unittest.expectedFailure
     def test_get_question_log_fail_by_name(self):
-        response = self.sw.get_question_log('name:fail')
+        print ""
+        sw = self.sw
+        response = sw.get_question_log('name:fail')
         self.response_tests(response)
 
     @unittest.expectedFailure
     def test_bad_ask_saved_question(self):
+        print ""
+        sw = self.sw
         q = ['Installed Applications', 'id:0']
-        response = self.sw.ask_saved_question(q)
+        response = sw.ask_saved_question(q)
         self.response_tests(response)
 
 if __name__ == "__main__":

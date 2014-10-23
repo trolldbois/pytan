@@ -13,6 +13,11 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write('\n')
         return
 
+    # turn off logging messages so we don't seem the get requests in console
+    # during unittests
+    def log_message(self, format, *args):
+        pass
+
 
 class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
     """Handle requests in a separate thread."""
