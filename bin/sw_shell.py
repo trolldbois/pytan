@@ -26,10 +26,12 @@ for x in path_adds:
         sys.path.append(x)
 
 import customparser
-import tanwrap
+import SoapUtil
+from SoapWrap import SoapWrap
+from SoapTransform import SoapTransform
 from console_support import *
 
-tanwrap.version_check(__version__)
+SoapUtil.version_check(__version__)
 parent_parser = customparser.setup_parser(__doc__)
 parser = customparser.CustomParser(
     description=__doc__,
@@ -38,5 +40,7 @@ parser = customparser.CustomParser(
 
 args = parser.parse_args()
 swargs = args.__dict__
-sw = tanwrap.SoapWrap(**swargs)
+sw = SoapWrap(**swargs)
 print ("%s -- now available as 'sw'!" % sw)
+st = SoapTransform()
+print ("SoapTransform -- now available as 'st'!")

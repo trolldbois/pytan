@@ -1,4 +1,7 @@
 X better app_test
+move formatting/data transforms OUT (transforms.py?)
+REFACTOR TIME>>>>>
+time btwn req/resp
 manual query
 parameters
 

@@ -4,21 +4,24 @@
 
 import os
 import sys
-import time
 import argparse
 from argparse import ArgumentDefaultsHelpFormatter as A1
 from argparse import RawDescriptionHelpFormatter as A2
 
+# disable python from creating .pyc files everywhere
+sys.dont_write_bytecode = True
+
 pname = os.path.splitext(os.path.basename(sys.argv[0]))[0]
 
+my_file = os.path.abspath(__file__)
+my_dir = os.path.dirname(my_file)
+path_adds = [my_dir]
 
-def get_now():
-    return time.strftime('%Y_%m_%d-%H_%M_%S', time.localtime())
+for x in path_adds:
+    if x not in sys.path:
+        sys.path.insert(0, x)
 
-
-def fn_gen(ext):
-    fn = "{}_{}.{}".format(get_now(), pname, ext)
-    return fn
+# import SoapUtil
 
 
 class CustomFormatter(A1, A2):
@@ -107,6 +110,16 @@ def setup_parser(desc, help=False):
         dest='loglevel',
         help='Logging level to use, increase for more verbosity',
     )
+    sw_group.add_argument(
+        '--debugformat',
+        required=False,
+        action='store_true',
+        default=False,
+        dest='debugformat',
+        help='Use debug format for log output',
+        # help=argparse.SUPPRESS,
+    )
+
     # TODO
     # sw_group.add_argument(
     #     '-l',
