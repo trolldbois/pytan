@@ -1,16 +1,14 @@
 X better app_test
-move formatting/data transforms OUT (transforms.py?)
-REFACTOR TIME>>>>>
-time btwn req/resp
-manual query
-parameters
-
-csv out
-
-excel out
-json out
+X move formatting/data transforms OUT (transforms.py?)
+X REFACTOR TIME>>>>>
+X json out
 xml out
-email out
+manual query
+time btwn req/resp
+parameters
+wrapper scripts
+X csv out
 sort order?
 444 vs 443
-timing op
+excel out
+email out

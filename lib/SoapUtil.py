@@ -12,6 +12,8 @@ import socket
 import time
 import getpass
 import logging
+import json
+from collections import OrderedDict
 # from datetime import datetime
 
 # disable python from creating .pyc files everywhere
@@ -97,6 +99,10 @@ def utf_clean(v, e='utf-8'):
     return v
 
 
+def jsonify(v, indent=4, sort_keys=True):
+    return json.dumps(v, indent=indent, sort_keys=sort_keys)
+
+
 def is_list(l):
     return type(l) in [list, tuple]
 
@@ -106,11 +112,11 @@ def is_str(l):
 
 
 def is_dict(l):
-    return type(l) in [dict]
+    return type(l) in [dict, OrderedDict]
 
 
 def is_num(l):
-    return type(l) in [float, int]
+    return type(l) in [float, int, long]
 
 
 def get_caller_method():
@@ -280,3 +286,13 @@ def set_log_levels(loglevel=0):
             for lname, llevel in logmap[1].iteritems():
                 # print 'setting %s to %s' % (lname, llevel)
                 logging.getLogger(lname).setLevel(getattr(logging, llevel))
+
+
+def set_all_loglevels(level='DEBUG'):
+    for k, v in logging.Logger.manager.loggerDict.iteritems():
+        v.setLevel(getattr(logging, level))
+        m = 'set to %s' % level
+        v.debug(m)
+        v.info(m)
+        v.warn(m)
+        v.error(m)

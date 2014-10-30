@@ -38,3 +38,7 @@ class AppError(Exception):
 
 class PickerError(Exception):
     pass
+
+
+class TransformError(Exception):
+    pass

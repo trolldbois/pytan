@@ -28,7 +28,6 @@ for x in path_adds:
 import customparser
 import SoapUtil
 from SoapWrap import SoapWrap
-from SoapTransform import SoapTransform
 from console_support import *
 
 SoapUtil.version_check(__version__)
@@ -41,6 +40,7 @@ parser = customparser.CustomParser(
 args = parser.parse_args()
 swargs = args.__dict__
 sw = SoapWrap(**swargs)
+if swargs['loglevel'] >= 10:
+    SoapUtil.set_all_loglevels()
+
 print ("%s -- now available as 'sw'!" % sw)
-st = SoapTransform()
-print ("SoapTransform -- now available as 'st'!")

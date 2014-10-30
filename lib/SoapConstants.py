@@ -34,15 +34,40 @@ RESULT_TYPE_MAP = {
     12: 'LastOperatorType',
 }
 
-ARG_PREFIXES = ['name', 'id', 'hash']
+QUERY_PREFIXES = ['name', 'id', 'hash']
 
 # static variable to control whether or not SOAP Session IDs are included
 # in any outputs
 SHOW_SESSION_ID = False
 
-# ElementTree FUN!
-NS_SOAP_ENV = "http://schemas.xmlsoap.org/soap/envelope/"
-NS_XSI = "http://www.w3.org/2001/XMLSchema-instance"
-NS_XSD = "http://www.w3.org/2001/XMLSchema"
-NS_DICT = {"xmlns:xsi": NS_XSI, "xmlns:xsd": NS_XSD}
-APP_NS = {'xmlns': "urn:TaniumSOAP"}
+# # ElementTree FUN!
+# NS_SOAP_ENV = "http://schemas.xmlsoap.org/soap/envelope/"
+# NS_XSI = "http://www.w3.org/2001/XMLSchema-instance"
+# NS_XSD = "http://www.w3.org/2001/XMLSchema"
+# NS_DICT = {"xmlns:xsi": NS_XSI, "xmlns:xsd": NS_XSD}
+# APP_NS = {'xmlns': "urn:TaniumSOAP"}
+
+REQ_ENVELOPE_NS = {
+    "@xmlns:soap": "http://schemas.xmlsoap.org/soap/envelope/",
+    "@xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+    "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+}
+
+REQ_APP_NS = {
+    "@xmlns": "urn:TaniumSOAP",
+}
+
+HEADER_SORT_PRIORITY = [
+    'name',
+    'id',
+    'description',
+    'hash',
+    'value_type',
+]
+
+PARSE_RESULT_XML_ARGS = {
+    'ADD_TYPE_TO_HEADERS': False,
+    'ADD_SENSOR_TO_HEADERS': True,
+    'EXPAND_GROUPED_COLUMNS': False,
+    'HIDE_COUNT_COLUMN': True,
+}
