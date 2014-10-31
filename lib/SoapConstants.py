@@ -74,9 +74,10 @@ TRANSFORM_FORMATS = {
     'csv': 'get_csv',
     # 'xls': 'get_xls',
     'json': 'get_json',
-    # 'xml': 'get_xml',
-    # 'raw.xml': 'get_rawxml',
-    # 'http_response': 'get_http_response',
+    'xml': 'get_xml',
+    'raw.xml': 'get_rawxml',
+    'raw.response': 'get_rawresponse',
+    'raw.request': 'get_rawrequest',
 }
 
 # Used by SoapWrap.SoapTransform.write_response() as boolean kwargs

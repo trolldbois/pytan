@@ -38,6 +38,13 @@ import SoapUtil
 requests.packages.urllib3.disable_warnings()
 
 
+def jsonprocessor(path, key, value):
+    try:
+        return key, json.loads(value)
+    except:
+        return key, value
+
+
 class SoapWrap:
     last_http_response = None
     last_response = None
@@ -172,7 +179,7 @@ class SoapWrap:
                 result_xml = response.inner_return
                 result_infos = result_xml['result_infos']
                 result_info = result_infos['result_info']
-                self.RILOG(ri_tpl(result_infos))
+                self.RILOG(ri_tpl(json.dumps(result_infos)))
                 mr_passed = result_info['mr_passed']
                 est_total = result_info['estimated_total']
                 if mr_passed == est_total:
@@ -366,7 +373,7 @@ class SoapWrap:
 
         prg_match = prg_match[0]
         response.prg_match = prg_match
-        self.DLOG(dbug2_tpl(question.lower(), prg_match))
+        self.DLOG(dbug2_tpl(question.lower(), json.dumps(prg_match)))
 
         return response
 
@@ -407,9 +414,9 @@ class SoapWrap:
         question_id = result_object.get('question', {}).get('id', '')
 
         response.question_id = question_id
-        self.DLOG(qret_tpl(question_id, prg_match))
+        self.DLOG(qret_tpl(question_id, json.dumps(prg_match)))
         if not question_id:
-            raise SoapErrors.AppError(qerr_tpl(prg_match))
+            raise SoapErrors.AppError(qerr_tpl(json.dumps(prg_match)))
 
         response = self.get_question_results(question_id)
         return response
@@ -473,7 +480,7 @@ class SoapWrap:
         header_list = header_list['c']
         sensor_hashes = list(set([x['wh'] for x in header_list]))
         sensor_hashes = [
-            'hash:%s' % x for x in sensor_hashes if x != '0'
+            'hash:%s' % x for x in sensor_hashes if str(x) != '0'
         ]
         sensor_objects = []
         if sensor_hashes:
@@ -734,7 +741,7 @@ class SoapRequest(object):
         ret = str_tpl(
             self.__class__.__name__,
             self.caller_method,
-            self.objects_dict,
+            json.dumps(self.objects_dict),
             sent,
             self.auth_type,
         )
@@ -847,7 +854,6 @@ class SoapResponse(object):
     def __init__(self, soap_url, request, http_response):
         super(SoapResponse, self).__init__()
         self.XMLPLOG = logging.getLogger("SoapWrap.xmlparse").debug
-        self.everything_ok = False
         self.received = time.time()
 
         # URL to SOAP in question
@@ -896,7 +902,7 @@ class SoapResponse(object):
         text = text.encode('utf-8')
 
         try:
-            outer_xml = xmltodict.parse(text)
+            outer_xml = xmltodict.parse(text, postprocessor=jsonprocessor)
         except Exception as e:
             raise SoapErrors.BadResponseError(outer_err(e))
 
@@ -963,7 +969,9 @@ class SoapResponse(object):
         if command in result_xml_commands:
             self.XMLPLOG("Parsing ResultXML from outer return")
             try:
-                inner_return = xmltodict.parse(outer_return['ResultXML'])
+                inner_return = xmltodict.parse(
+                    outer_return['ResultXML'], postprocessor=jsonprocessor
+                )
             except Exception as e:
                 raise SoapErrors.InnerReturnError(xml_err(e))
         elif command in result_obj_commands:
@@ -1158,7 +1166,7 @@ class SoapTransform(object):
         self.ILOG(write_tpl(fpath))
 
         x = open(fpath, 'w+')
-        x.write(fout)
+        x.write(fout.encode('utf-8'))
         x.close()
         return fpath
 
@@ -1190,7 +1198,35 @@ class SoapTransform(object):
 
         return rows
 
-    # # XML
+    # XML
+    def get_xml(self, response, **kwargs):
+        rows_list = self.get_rows(response, **kwargs)
+        new_rows = []
+        for row in rows_list:
+            new_row = [{'n': n, 'v': v} for n, v in row.iteritems()]
+            new_row = {'col': new_row}
+            new_rows.append(new_row)
+
+        new_rows = {'SoapTransform': {'row': new_rows}}
+        fout = xmltodict.unparse(new_rows, pretty=True, indent="  ")
+        return fout
+
+    # RAW XML
+    def get_rawxml(self, response, **kwargs):
+        fout = xmltodict.unparse(
+            response.inner_return, pretty=True, indent="  "
+        )
+        return fout
+
+    # RAW REQUEST
+    def get_rawrequest(self, response, **kwargs):
+        fout = response.request.xml_raw
+        return fout
+
+    # RAW RESPONSE
+    def get_rawresponse(self, response, **kwargs):
+        fout = response.http_response.text
+        return fout
 
     ## JSON
     def get_json(self, response, **kwargs):

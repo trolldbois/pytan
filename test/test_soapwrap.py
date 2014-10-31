@@ -40,11 +40,14 @@ HOST = '172.16.31.128'
 PORT = 443
 
 # other options for SoapWrap
-LOGLEVEL = 0
+LOGLEVEL = 1
 DEBUGFORMAT = False
 
 # control the amount of output from unittests
 TESTVERBOSITY = 2
+
+# control whether the transform tests will be done
+TRANSFORM_TESTS = True
 
 # where the output files from the tests will be stored
 TEST_OUT = os.path.join(my_dir, 'TEST_OUT')
@@ -192,10 +195,13 @@ class TestsAgainstServer(unittest.TestCase):
         # we write a response file for every supported format, with every
         # possible combination of options (and embed those options into
         # the filename)
+        if not TRANSFORM_TESTS:
+            return
         sw = self.sw
         bool_args = sw.st.BOOL_KWARGS.keys()
         sort_tests = sw.st.HEADER_SORT_PRIORITY
         format_tests = sw.st.FORMATS.keys()
+        arg_format_tests = [x for x in format_tests if 'raw.' not in x]
         bool_opts = (True, False)
 
         bool_combos = [
@@ -221,7 +227,7 @@ class TestsAgainstServer(unittest.TestCase):
                 for k, v in bc.iteritems()
             ])
             bc['fpostfix'] = fpostfix
-            for ft in format_tests:
+            for ft in arg_format_tests:
                 new_bc = copy.deepcopy(bc)
                 new_bc['ftype'] = ft
                 all_test_permutations.append(new_bc)
@@ -236,7 +242,7 @@ class TestsAgainstServer(unittest.TestCase):
             else:
                 fpostfix = 'sort_' + str(vals)
             st['fpostfix'] = fpostfix
-            for ft in format_tests:
+            for ft in arg_format_tests:
                 new_st = copy.deepcopy(st)
                 new_st['ftype'] = ft
                 all_test_permutations.append(new_st)
