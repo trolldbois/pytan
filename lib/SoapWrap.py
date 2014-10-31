@@ -1213,9 +1213,8 @@ class SoapTransform(object):
 
     # RAW XML
     def get_rawxml(self, response, **kwargs):
-        fout = xmltodict.unparse(
-            response.inner_return, pretty=True, indent="  "
-        )
+        inner_return = {'raw_inner_xml': response.inner_return}
+        fout = xmltodict.unparse(inner_return, pretty=True, indent="  ")
         return fout
 
     # RAW REQUEST
