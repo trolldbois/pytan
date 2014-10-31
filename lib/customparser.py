@@ -17,9 +17,9 @@ my_file = os.path.abspath(__file__)
 my_dir = os.path.dirname(my_file)
 path_adds = [my_dir]
 
-for x in path_adds:
-    if x not in sys.path:
-        sys.path.insert(0, x)
+for aa in path_adds:
+    if aa not in sys.path:
+        sys.path.insert(0, aa)
 
 # import SoapUtil
 

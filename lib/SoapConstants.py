@@ -8,6 +8,18 @@ import sys
 # disable python from creating .pyc files everywhere
 sys.dont_write_bytecode = True
 
+# Used by SoapWrap.SoapWrap for environment variable override mappings
+OS_ENV_MAP = {
+    'SOAP_USERNAME': 'self.__username',
+    'SOAP_PASSWORD': 'self.__password',
+    'SOAP_HOSTNAME': 'self.__host',
+    'SOAP_PORT': 'self.__port',
+    'SOAP_PROTOCOL': 'self.__protocol',
+    'SOAP_PATH': 'self.__soap_path',
+}
+
+# Used by SoapWrap.SoapTransform.parse_resultxml() to determine what the
+# numeric type value for a column maps to
 RESULT_TYPE_MAP = {
     0: 'Hash',
     # SENSOR_RESULT_TYPE_STRING
@@ -34,40 +46,54 @@ RESULT_TYPE_MAP = {
     12: 'LastOperatorType',
 }
 
+# Used by SoapWrap.SoapWrap.__build_objects_dict() to figure out
+# what valid query prefixes can be used
 QUERY_PREFIXES = ['name', 'id', 'hash']
 
-# static variable to control whether or not SOAP Session IDs are included
-# in any outputs
+# Used by SoapWrap.SoapAuth.session_id_text() to control whether
+#or not SOAP Session IDs are included in any logging outputs
 SHOW_SESSION_ID = False
 
-# # ElementTree FUN!
-# NS_SOAP_ENV = "http://schemas.xmlsoap.org/soap/envelope/"
-# NS_XSI = "http://www.w3.org/2001/XMLSchema-instance"
-# NS_XSD = "http://www.w3.org/2001/XMLSchema"
-# NS_DICT = {"xmlns:xsi": NS_XSI, "xmlns:xsd": NS_XSD}
-# APP_NS = {'xmlns': "urn:TaniumSOAP"}
-
+# Used by SoapWrap.SoapRequest.build_request_xml_dict() for
+# creating the Soap Request XML
 REQ_ENVELOPE_NS = {
     "@xmlns:soap": "http://schemas.xmlsoap.org/soap/envelope/",
     "@xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
     "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
 }
 
+# Used by SoapWrap.SoapRequest.build_request_xml_dict() for
+# creating the Soap Request XML
 REQ_APP_NS = {
     "@xmlns": "urn:TaniumSOAP",
 }
 
-HEADER_SORT_PRIORITY = [
+# Used by SoapWrap.SoapTransform.write_response() to determine
+# supported formats
+TRANSFORM_FORMATS = {
+    'csv': 'get_csv',
+    # 'xls': 'get_xls',
+    'json': 'get_json',
+    # 'xml': 'get_xml',
+    # 'raw.xml': 'get_rawxml',
+    # 'http_response': 'get_http_response',
+}
+
+# Used by SoapWrap.SoapTransform.write_response() as boolean kwargs
+# defaults for passthrus for parse_resultxml():
+TRANSFORM_BOOL_KWARGS = {
+    'ADD_TYPE_TO_HEADERS': False,
+    'ADD_SENSOR_TO_HEADERS': True,
+    'EXPAND_GROUPED_COLUMNS': False,
+    'HIDE_COUNT_COLUMN': True,
+}
+
+# Used by SoapWrap.SoapTransform.write_response() for kwargs
+# defaults for passthrus for sort_headers():
+TRANSFORM_HEADER_SORT_PRIORITY = [
     'name',
     'id',
     'description',
     'hash',
     'value_type',
 ]
-
-PARSE_RESULT_XML_ARGS = {
-    'ADD_TYPE_TO_HEADERS': False,
-    'ADD_SENSOR_TO_HEADERS': True,
-    'EXPAND_GROUPED_COLUMNS': False,
-    'HIDE_COUNT_COLUMN': True,
-}

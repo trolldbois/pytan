@@ -3,6 +3,9 @@
 import os
 import sys
 import glob
+import itertools
+import copy
+import json
 import unittest
 
 # disable python from creating .pyc files everywhere
@@ -14,9 +17,9 @@ par_dir = os.path.join(my_dir, os.pardir)
 lib_dir = os.path.join(par_dir, 'lib')
 path_adds = [my_dir, par_dir, lib_dir]
 
-for x in path_adds:
-    if x not in sys.path:
-        sys.path.insert(0, x)
+for aa in path_adds:
+    if aa not in sys.path:
+        sys.path.insert(0, aa)
 
 from SoapWrap import SoapWrap
 import threaded_http
@@ -53,9 +56,14 @@ def spew(m):
 
 
 class BasicTests(unittest.TestCase):
-    spew("### BasicTests setup START")
-    __http = threaded_http.threaded_http(port=4433, verbosity=TESTVERBOSITY)
-    spew("### BasicTests setup END")
+
+    @classmethod
+    def setUpClass(cls):
+        spew("### BasicTests setup START")
+        cls.__http = threaded_http.threaded_http(
+            port=4433, verbosity=TESTVERBOSITY
+        )
+        spew("### BasicTests setup END")
 
     @unittest.expectedFailure
     def test_soap_path(self):
@@ -147,31 +155,108 @@ class BasicTests(unittest.TestCase):
 
 
 class TestsAgainstServer(unittest.TestCase):
-    spew("### TestsAgainstServer setup START")
-    sw = SoapWrap(
-        USERNAME,
-        PASSWORD,
-        HOST,
-        PORT,
-        protocol='https',
-        loglevel=LOGLEVEL,
-        debugformat=DEBUGFORMAT,
-    )
 
-    if not os.path.isdir(TEST_OUT):
-        os.mkdir(TEST_OUT)
+    @classmethod
+    def setUpClass(cls):
+        spew("### TestsAgainstServer setup START")
+        cls.sw = SoapWrap(
+            USERNAME,
+            PASSWORD,
+            HOST,
+            PORT,
+            protocol='https',
+            loglevel=LOGLEVEL,
+            debugformat=DEBUGFORMAT,
+        )
 
-    csv_files = glob.glob(TEST_OUT + '/*.csv')
-    if csv_files:
-        spew("Cleaning up %s old CSV files" % len(csv_files))
-        [os.unlink(x) for x in csv_files]
+        if not os.path.isdir(TEST_OUT):
+            os.mkdir(TEST_OUT)
 
-    spew('\n' + str(sw))
-    spew("### TestsAgainstServer setup END")
+        test_files = glob.glob(TEST_OUT + '/*.*')
+        if test_files:
+            spew("Cleaning up %s old test files" % len(test_files))
+            [os.unlink(x) for x in test_files]
+
+        spew('\n' + str(cls.sw))
+        spew("### TestsAgainstServer setup END")
 
     def setup_test(self):
         spew("")
         return self.sw
+
+    def transform_tests(self, response):
+        '''standard transform tests for any response object'''
+        # derive all the permutations of every option we have for
+        # bool args and header sort priority
+        # this is complicated and involves combinatorics, but basically
+        # we write a response file for every supported format, with every
+        # possible combination of options (and embed those options into
+        # the filename)
+        sw = self.sw
+        bool_args = sw.st.BOOL_KWARGS.keys()
+        sort_tests = sw.st.HEADER_SORT_PRIORITY
+        format_tests = sw.st.FORMATS.keys()
+        bool_opts = (True, False)
+
+        bool_combos = [
+            dict(zip(bool_args, x))
+            for x in itertools.product(
+                *itertools.repeat(bool_opts, len(bool_args))
+            )
+        ]
+
+        sort_tests = [
+            {'HEADER_SORT_PRIORITY': v}
+            for v in [sort_tests, [], ["name"], False]
+        ]
+
+        all_test_permutations = []
+
+        for bc in bool_combos:
+            fpostfix = '-'.join([
+                '_'.join([
+                    ''.join([s[0] for s in k.split('_')]),
+                    str(v)[0]
+                ])
+                for k, v in bc.iteritems()
+            ])
+            bc['fpostfix'] = fpostfix
+            for ft in format_tests:
+                new_bc = copy.deepcopy(bc)
+                new_bc['ftype'] = ft
+                all_test_permutations.append(new_bc)
+
+        for st in sort_tests:
+            vals = st.items()[0][1]
+            if type(vals) == list:
+                if not vals:
+                    fpostfix = 'sort_empty'
+                else:
+                    fpostfix = 'sort_' + ''.join([s[0] for s in vals])
+            else:
+                fpostfix = 'sort_' + str(vals)
+            st['fpostfix'] = fpostfix
+            for ft in format_tests:
+                new_st = copy.deepcopy(st)
+                new_st['ftype'] = ft
+                all_test_permutations.append(new_st)
+
+        for test_args in all_test_permutations:
+            spew("Testing st.write_response() with {}".format(
+                json.dumps(test_args)))
+            test_args['fdir'] = TEST_OUT
+            test_args['response'] = response
+            f = sw.st.write_response(**test_args)
+            spew("wrote response to: %s" % f)
+            self.assertTrue(os.path.isfile(f))
+
+        for ft in format_tests:
+            spew(
+                "Testing st.write_response() "
+                "with default opts for ftype {}".format(ft))
+            f = sw.st.write_response(response, fdir=TEST_OUT, ftype=ft)
+            spew("wrote response to: %s" % f)
+            self.assertTrue(os.path.isfile(f))
 
     def response_tests(self, response):
         '''standard tests for any response object'''
@@ -188,125 +273,7 @@ class TestsAgainstServer(unittest.TestCase):
         self.assertTrue(response.command)
         self.assertTrue(response.session_id)
         self.assertTrue(response.inner_return)
-        if response.command == 'GetObject':
-            f = self.sw.transform.write_response(
-                response,
-                fdir=TEST_OUT,
-                fprefix="defaults",
-                format='csv',
-            )
-            spew("wrote response to: %s" % f)
-            self.assertTrue(os.path.isfile(f))
-
-            f = self.sw.transform.write_response(
-                response,
-                fdir=TEST_OUT,
-                format='csv',
-                fprefix="nosort",
-                HEADER_SORT_PRIORITY=None,
-            )
-            spew("wrote response to: %s" % f)
-            self.assertTrue(os.path.isfile(f))
-
-            f = self.sw.transform.write_response(
-                response,
-                fdir=TEST_OUT,
-                format='csv',
-                fprefix="manualsort",
-                HEADER_SORT_PRIORITY=['name'],
-            )
-            spew("wrote response to: %s" % f)
-            self.assertTrue(os.path.isfile(f))
-
-        else:
-            f = self.sw.transform.write_response(
-                response,
-                fdir=TEST_OUT,
-                format='csv',
-                fprefix="defaults",
-            )
-            spew("wrote response to: %s" % f)
-            self.assertTrue(os.path.isfile(f))
-
-            f = self.sw.transform.write_response(
-                response,
-                fdir=TEST_OUT,
-                format='csv',
-                fprefix="addtypetrue",
-                ADD_TYPE_TO_HEADERS=True,
-            )
-            spew("wrote response to: %s" % f)
-            self.assertTrue(os.path.isfile(f))
-
-            f = self.sw.transform.write_response(
-                response,
-                fdir=TEST_OUT,
-                format='csv',
-                fprefix="addtypefalse",
-                ADD_TYPE_TO_HEADERS=False,
-            )
-            spew("wrote response to: %s" % f)
-            self.assertTrue(os.path.isfile(f))
-
-            f = self.sw.transform.write_response(
-                response,
-                fdir=TEST_OUT,
-                format='csv',
-                fprefix="addsensortrue",
-                ADD_SENSOR_TO_HEADERS=True,
-            )
-            spew("wrote response to: %s" % f)
-            self.assertTrue(os.path.isfile(f))
-
-            f = self.sw.transform.write_response(
-                response,
-                fdir=TEST_OUT,
-                format='csv',
-                fprefix="addsensorfalse",
-                ADD_SENSOR_TO_HEADERS=False,
-            )
-            spew("wrote response to: %s" % f)
-            self.assertTrue(os.path.isfile(f))
-
-            f = self.sw.transform.write_response(
-                response,
-                fdir=TEST_OUT,
-                format='csv',
-                fprefix="expandcoltrue",
-                EXPAND_GROUPED_COLUMNS=True,
-            )
-            spew("wrote response to: %s" % f)
-            self.assertTrue(os.path.isfile(f))
-
-            f = self.sw.transform.write_response(
-                response,
-                fdir=TEST_OUT,
-                format='csv',
-                fprefix="expandcolfalse",
-                EXPAND_GROUPED_COLUMNS=False,
-            )
-            spew("wrote response to: %s" % f)
-            self.assertTrue(os.path.isfile(f))
-
-            f = self.sw.transform.write_response(
-                response,
-                fdir=TEST_OUT,
-                format='csv',
-                fprefix="hidecnttrue",
-                HIDE_COUNT_COLUMN=True,
-            )
-            spew("wrote response to: %s" % f)
-            self.assertTrue(os.path.isfile(f))
-
-            f = self.sw.transform.write_response(
-                response,
-                fdir=TEST_OUT,
-                format='csv',
-                fprefix="hidecntfalse",
-                HIDE_COUNT_COLUMN=False,
-            )
-            spew("wrote response to: %s" % f)
-            self.assertTrue(os.path.isfile(f))
+        self.transform_tests(response)
 
     def test_ask_saved_question_single_str(self):
         sw = self.setup_test()
@@ -494,4 +461,4 @@ class TestsAgainstServer(unittest.TestCase):
         self.response_tests(response)
 
 if __name__ == "__main__":
-    unittest.main(verbosity=TESTVERBOSITY)
+    unittest.main(verbosity=TESTVERBOSITY, failfast=True, catchbreak=True)

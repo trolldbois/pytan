@@ -38,3 +38,6 @@
   * Cons:
     * Not a very pythonific way to handle this scenario
     * Error prone since XML messages being constructed "by hand"
+
+= Notes = 
+  * Reference for Tanium's SOAP API: http://kb.tanium.com/SOAP

@@ -7,8 +7,6 @@
 Like saran wrap. But not.
 
 This requires Python 2.7
-
-Reference for Tanium's SOAP API: http://kb.tanium.com/SOAP
 """
 import os
 import sys
@@ -26,21 +24,27 @@ my_file = os.path.abspath(__file__)
 my_dir = os.path.dirname(my_file)
 path_adds = [my_dir]
 
-for x in path_adds:
-    if x not in sys.path:
-        sys.path.insert(0, x)
+for aa in path_adds:
+    if aa not in sys.path:
+        sys.path.insert(0, aa)
 
 import requests
+import xmltodict
 import SoapErrors
 import SoapConstants
 import SoapUtil
-import xmltodict
 
 # disable warning messages about insecure HTTPS validation
 requests.packages.urllib3.disable_warnings()
 
 
 class SoapWrap:
+    last_http_response = None
+    last_response = None
+    last_request = None
+    all_responses = []
+    app_version = 'Unknown'
+    OS_ENV_MAP = SoapConstants.OS_ENV_MAP
 
     def __init__(self, username=None, password=None, host=None, port="443",
                  protocol='https', soap_path="/soap", loglevel=0,
@@ -52,7 +56,7 @@ class SoapWrap:
         SoapUtil.set_log_levels(loglevel)
         # change the format of console logging handler if need be
         SoapUtil.change_console_format(debugformat)
-        self.transform = SoapTransform()
+        self.st = SoapTransform()
 
         self.swlog = logging.getLogger("SoapWrap")
         self.DLOG = self.swlog.debug
@@ -64,14 +68,10 @@ class SoapWrap:
         self.AUTHLOG = logging.getLogger("SoapWrap.auth").debug
         self.RILOG = logging.getLogger("SoapWrap.result_infos").debug
 
-        SOAP_TPL = ("{}{}").format
-        APP_TPL = ("{}://{}:{}").format
+        soap_tpl = "{}{}".format
+        app_tpl = "{}://{}:{}".format
         # use port 444 if you have direct access to it, direct access to API
         # instead of using apache forwarder @ 443
-
-        self.last_http_response = None
-        self.last_response = None
-        self.last_request = None
 
         self.__host = host
         self.__port = port
@@ -79,8 +79,6 @@ class SoapWrap:
         self.__soap_path = soap_path
         self.__username = username
         self.__password = password
-        self.all_responses = []
-        self.app_version = 'Unknown'
 
         self.__env_overrides()
 
@@ -94,44 +92,35 @@ class SoapWrap:
         # kwargs here allows SoapWrap instantiation to pass
         # SHOW_SESSION_ID to SoapAuth
         self.auth = SoapAuth(self.__username, self.__password, **kwargs)
-        self.app_url = APP_TPL(self.__protocol, self.__host, self.__port)
-        self.soap_url = SOAP_TPL(self.app_url, self.__soap_path)
+        self.app_url = app_tpl(self.__protocol, self.__host, self.__port)
+        self.soap_url = soap_tpl(self.app_url, self.__soap_path)
 
         self.test_app_port()
         self.server_info = self.get_server_info()
 
     def __str__(self):
-        STR_TPL = (
-            "SoapWrap to {}, Version: {}"
-        ).format
-        ret = STR_TPL(self.soap_url, self.server_info['Settings']['Version'])
+        str_tpl = "SoapWrap to {}, Version: {}".format
+        ret = str_tpl(self.soap_url, self.server_info['Settings']['Version'])
         return ret
 
     def __env_overrides(self):
         """looks for OS environment variables and overrides the corresponding
         attribute if they exist
         """
-        OR_TPL = ("Overriding {!r} with OS environment variable {!r}").format
-        OS_ENV_MAP = {
-            'SOAP_USERNAME': 'self.__username',
-            'SOAP_PASSWORD': 'self.__password',
-            'SOAP_HOSTNAME': 'self.__host',
-            'SOAP_PORT': 'self.__port',
-            'SOAP_PROTOCOL': 'self.__protocol',
-            'SOAP_PATH': 'self.__soap_path',
-        }
+        or_tpl = "Overriding {!r} with OS environment variable {!r}".format
 
-        for os_env_var, class_var in OS_ENV_MAP.iteritems():
+        for os_env_var, class_var in self.OS_ENV_MAP.iteritems():
             if not os_env_var in os.environ.keys():
                 continue
 
             if not os.environ[os_env_var]:
                 continue
 
-            self.DLOG(OR_TPL(os.environ[os_env_var], os_env_var))
+            self.DLOG(or_tpl(os.environ[os_env_var], os_env_var))
             setattr(self, class_var, os.environ[os_env_var])
 
-    def __page_ok(self, page):
+    @staticmethod
+    def __page_ok(page):
         """return True if the page object is not None and has a status code
         of 200
         """
@@ -148,7 +137,8 @@ class SoapWrap:
         """makes a call to the SOAP API, returns a SoapResponse object,
         expects a SoapRequest object as request
         """
-        TIME_TPL = ('Last Request {} took longer than {} seconds!').format
+        time_tpl = 'Last Request {} took longer than {} seconds!'.format
+        ri_tpl = "GetResultInfo result_infos: {}".format
 
         if request.command == "GetResultData":
             request.command = "GetResultInfo"
@@ -174,8 +164,6 @@ class SoapWrap:
                 raise
 
         if request.command == "GetResultInfo":
-            # TODO: ADD LONGER WAIT TIME FOR HIGHER est_total
-            # TO BE NICER TO API
             full_results = False
             wait = 1
             max_wait = 600
@@ -184,9 +172,7 @@ class SoapWrap:
                 result_xml = response.inner_return
                 result_infos = result_xml['result_infos']
                 result_info = result_infos['result_info']
-                self.RILOG((
-                    "GetResultInfo result_infos: {}"
-                ).format(result_infos))
+                self.RILOG(ri_tpl(result_infos))
                 mr_passed = result_info['mr_passed']
                 est_total = result_info['estimated_total']
                 if mr_passed == est_total:
@@ -194,7 +180,7 @@ class SoapWrap:
                 response = self.__send_request(request)
                 current_wait += 1
                 if current_wait > max_wait:
-                    raise SoapErrors.AppError(TIME_TPL(request, max_wait))
+                    raise SoapErrors.AppError(time_tpl(request, max_wait))
                 time.sleep(wait)
 
             request.command = "GetResultData"
@@ -204,8 +190,8 @@ class SoapWrap:
 
     def __send_request(self, request):
         """sends the request to the SOAP API"""
-        SEND_TPL = ("Sending {}, SOAP URL: {}").format
-        RECV_TPL = ("Received {}, SOAP URL: {}").format
+        send_tpl = "Sending {}, SOAP URL: {}".format
+        recv_tpl = "Received {}, SOAP URL: {}".format
 
         # set token to user/pass or session ID accordingly
         self.auth.update_token()
@@ -213,7 +199,7 @@ class SoapWrap:
         # update last_requests auth_dict with current token
         request.auth_dict = self.auth.token
 
-        self.DLOG(SEND_TPL(request, self.soap_url))
+        self.DLOG(send_tpl(request, self.soap_url))
 
         # build the xml request for the last request
         request_xml = request.build_request_xml_raw()
@@ -229,7 +215,7 @@ class SoapWrap:
             http_response=http_response,
         )
         self.last_response = response
-        self.DLOG(RECV_TPL(response, self.soap_url))
+        self.DLOG(recv_tpl(response, self.soap_url))
 
         # update auth token with last reponses session_id
         self.auth.session_id = response.session_id
@@ -239,15 +225,16 @@ class SoapWrap:
 
         return response
 
-    def __check_single_query(self, query):
-        ERR_TPL = (
+    @staticmethod
+    def __check_single_query(query):
+        err_tpl = (
             "Too many list items!! string or list with single string "
             "required, you passed in {}"
         ).format
 
         if SoapUtil.is_list(query):
             if len(query) != 1:
-                raise Exception(ERR_TPL(query))
+                raise Exception(err_tpl(query))
 
     def __parse_query_objects(self, args, prefixes):
         if SoapUtil.is_list(args):
@@ -278,62 +265,65 @@ class SoapWrap:
 
     def test_app_port(self):
         """validates that the SOAP port on the SOAP host can be reached"""
-        CHK_TPL = ("Port test to {}:{} {}").format
+        chk_tpl = "Port test to {}:{} {}".format
         if SoapUtil.port_check(self.__host, self.__port):
-            self.DLOG(CHK_TPL(self.__host, self.__port, "SUCCESS"))
+            self.DLOG(chk_tpl(self.__host, self.__port, "SUCCESS"))
         else:
             raise SoapErrors.AppError(
-                CHK_TPL(self.__host, self.__port, "FAILURE")
+                chk_tpl(self.__host, self.__port, "FAILURE")
             )
 
-    def http_get(self, url, headers={}):
+    def http_get(self, url, headers=None):
         """perform an HTTP get using the requests module - this is
         so we always bypass SSL verification, and wrap exceptions into a
         requests-like object
         """
-        ER1_TPL = ("SSL Error in HTTP GET to {!r}: {}").format
+        er1_tpl = "SSL Error in HTTP GET to {!r}: {}".format
+        if headers is None:
+            headers = {}
         try:
             ret = requests.get(url, verify=False, headers=headers)
             self.last_http_response = ret
         except requests.exceptions.SSLError as e:
-            raise SoapErrors.AppError(ER1_TPL(url, e))
+            raise SoapErrors.AppError(er1_tpl(url, e))
         return ret
 
-    def http_post(self, url, data, headers={}):
+    def http_post(self, url, data, headers=None):
         """perform an HTTP post using the requests module - this is
         so we always bypass SSL verification, and wrap exceptions into a
         requests-like object
         """
-        ER1_TPL = ("SSL Error in HTTP POST to {!r}: {}").format
+        er1_tpl = "SSL Error in HTTP POST to {!r}: {}".format
+        if headers is None:
+            headers = {}
         try:
             ret = requests.post(url, data=data, verify=False, headers=headers)
             self.last_http_response = ret
         except requests.exceptions.SSLError as e:
-            raise SoapErrors.AppError(ER1_TPL(url, e))
+            raise SoapErrors.AppError(er1_tpl(url, e))
         return ret
 
     def soap_post(self, data, url=None):
         """uses http_post to perform a SOAPAction call to url with data"""
-        DBG1_TPL = ('Received SOAP Response {}:\n{}').format
+        dbg1_tpl = 'Received SOAP Response {}:\n{}'.format
         if not url:
             url = self.soap_url
         headers = {'SOAPAction': '""'}
         ret = self.http_post(url=url, data=data, headers=headers)
-        self.HTTPLOG(DBG1_TPL(ret.status_code, ret.text.encode(ret.encoding)))
+        self.HTTPLOG(dbg1_tpl(ret.status_code, ret.text.encode(ret.encoding)))
         return ret
 
     def get_parse_groups(self, question):
         """sends a parse question Request and returns the response
 
-        :param query: string or list of queries
         :return: :class:`SoapResponse`
         """
-        ERR1_TPL = ("No inner_return returned from last response").format
-        ERR2_TPL = ("No parse results returned for {!r}").format
-        DBUG1_TPL = (
+        err1_tpl = "No inner_return returned from last response".format
+        err2_tpl = "No parse results returned for {!r}".format
+        dbug1_tpl = (
             "No matching questions for {!r}, full list of questions: {}"
         ).format
-        DBUG2_TPL = ("Matching parse_result for {!r}: {!r}").format
+        dbug2_tpl = "Matching parse_result for {!r}: {!r}".format
 
         object_type = 'question'
         request_args = {
@@ -351,7 +341,7 @@ class SoapWrap:
         result_obj = getattr(response, 'inner_return', {})
 
         if not result_obj:
-            self.ELOG(ERR1_TPL())
+            self.ELOG(err1_tpl())
             return response
 
         prgs_all = result_obj.get('parse_result_groups', {})
@@ -359,7 +349,7 @@ class SoapWrap:
         response.prgs_all = prgs_all
 
         if not prgs_all:
-            self.ELOG(ERR2_TPL(question))
+            self.ELOG(err2_tpl(question))
             return response
 
         prg_match = [
@@ -368,7 +358,7 @@ class SoapWrap:
         ]
 
         if not prg_match:
-            self.DLOG(DBUG1_TPL(
+            self.DLOG(dbug1_tpl(
                 question.lower(),
                 [x['question_text'] for x in prgs_all],
             ))
@@ -376,50 +366,50 @@ class SoapWrap:
 
         prg_match = prg_match[0]
         response.prg_match = prg_match
-        self.DLOG(DBUG2_TPL(question.lower(), prg_match))
+        self.DLOG(dbug2_tpl(question.lower(), prg_match))
 
         return response
 
     def ask_parsed_question(self, question, picker=None):
-        PICK_TPL = (
+        pick_tpl = (
             "Re-run with picker=$INDEX, where $INDEX is "
             "one of the following:\n{}"
         ).format
-        PERR_TPL = (
+        perr_tpl = (
             "Invalid picker index {}, re-run with picker=-1 to see picker "
             "index list"
         ).format
-        QRET_TPL = ("Question ID {} returned from AddObject on {}").format
-        QERR_TPL = ("No question ID returned from AddObject on {}").format
+        qret_tpl = "Question ID {} returned from AddObject on {}".format
+        qerr_tpl = "No question ID returned from AddObject on {}".format
 
         response = self.get_parse_groups(question)
         prg_match = getattr(response, 'prg_match', {})
         prgs_all = getattr(response, 'prgs_all', [])
         picker_indexes = "\n".join([
-            ("INDEX: {}, parsedq: {}").format(xidx, x['question_text'])
+            "INDEX: {}, parsedq: {}".format(xidx, x['question_text'])
             for xidx, x in enumerate(prgs_all)
         ])
 
         if picker == -1:
-            raise SoapErrors.PickerError(PICK_TPL(picker_indexes))
+            raise SoapErrors.PickerError(pick_tpl(picker_indexes))
 
         if not prg_match and picker is None:
-            raise SoapErrors.PickerError(PICK_TPL(picker_indexes))
+            raise SoapErrors.PickerError(pick_tpl(picker_indexes))
 
         if picker:
             try:
                 prg_match = prgs_all[picker]
             except IndexError:
-                raise SoapErrors.PickerError(PERR_TPL(picker))
+                raise SoapErrors.PickerError(perr_tpl(picker))
 
         response = self.add_parse_group(prg_match)
         result_object = getattr(response, 'inner_return', {})
         question_id = result_object.get('question', {}).get('id', '')
 
         response.question_id = question_id
-        self.DLOG(QRET_TPL(question_id, prg_match))
+        self.DLOG(qret_tpl(question_id, prg_match))
         if not question_id:
-            raise SoapErrors.AppError(QERR_TPL(prg_match))
+            raise SoapErrors.AppError(qerr_tpl(prg_match))
 
         response = self.get_question_results(question_id)
         return response
@@ -695,7 +685,7 @@ class SoapWrap:
         """sends a get server_info and returns a SoapResponse object
         :return: :class:`SoapResponse`
         """
-        #<object_list><server_info/></object_list>
+        # <object_list><server_info/></object_list>
         object_type = 'server_info'
         objects_dict = {object_type: ''}
         request_args = {
@@ -712,6 +702,10 @@ class SoapWrap:
 
 
 class SoapRequest(object):
+    _sent = None
+    xml_raw = ''
+    xml_dict = {}
+
     def __init__(self, auth_dict, object_type, objects_dict, command):
         """handles the creation of XML for a SOAP request
 
@@ -727,20 +721,17 @@ class SoapRequest(object):
         except:
             self.caller_method = self.command
 
-        self.xml_raw = ''
-        self.xml_dict = {}
-
         self.auth_dict = auth_dict
         self.object_type = object_type
         self.objects_dict = objects_dict
         self.command = command
 
     def __str__(self):
-        STR_TPL = (
+        str_tpl = (
             "{} for {!r} of {!r}, Sent: {}, Auth: {}"
         ).format
         sent = self.sent_human or "Not Yet Sent"
-        ret = STR_TPL(
+        ret = str_tpl(
             self.__class__.__name__,
             self.caller_method,
             self.objects_dict,
@@ -810,12 +801,12 @@ class SoapRequest(object):
         return root
 
     def build_request_xml_raw(self):
-        DBG1_TPL = ('Created XML Request Dict:\n{}').format
-        DBG2_TPL = ('Created XML Request Raw:\n{}').format
+        dbg1_tpl = 'Created XML Request Dict:\n{}'.format
+        dbg2_tpl = 'Created XML Request Raw:\n{}'.format
         self.xml_dict = self.build_request_xml_dict()
-        self.XMLCLOG(DBG1_TPL(SoapUtil.jsonify(self.xml_dict)))
+        self.XMLCLOG(dbg1_tpl(SoapUtil.jsonify(self.xml_dict)))
         self.xml_raw = xmltodict.unparse(self.xml_dict, pretty=True)
-        self.XMLCLOG(DBG2_TPL(self.xml_raw))
+        self.XMLCLOG(dbg2_tpl(self.xml_raw))
         return self.xml_raw
 
     @property
@@ -853,7 +844,6 @@ class SoapRequest(object):
 
 
 class SoapResponse(object):
-
     def __init__(self, soap_url, request, http_response):
         super(SoapResponse, self).__init__()
         self.XMLPLOG = logging.getLogger("SoapWrap.xmlparse").debug
@@ -881,10 +871,10 @@ class SoapResponse(object):
 
     def __str__(self):
         received = self.received_human or "Not Yet Sent"
-        STR_TPL = (
+        str_tpl = (
             "SoapResponse from: {}, len: {}, on: {}, {}"
         ).format
-        ret = STR_TPL(
+        ret = str_tpl(
             self.soap_url,
             len(self.http_response.text),
             received,
@@ -892,82 +882,82 @@ class SoapResponse(object):
         )
         return ret
 
-    def get_outer_xml(self, http_response):
+    @staticmethod
+    def get_outer_xml(http_response):
         """chew up the raw text from the http_response into a dict"""
-        NOTEXT_TPL = ("No text converted from HTTP response: {}").format
-        OUTER_ERR = ("Exception while converting outer XML: {}").format
+        notext_tpl = "No text converted from HTTP response: {}".format
+        outer_err = "Exception while converting outer XML: {}".format
 
         text = http_response.text
 
         if not text:
-            raise SoapErrors.HttpError(NOTEXT_TPL(text))
+            raise SoapErrors.HttpError(notext_tpl(text))
 
         text = text.encode('utf-8')
 
         try:
             outer_xml = xmltodict.parse(text)
         except Exception as e:
-            raise SoapErrors.BadResponseError(OUTER_ERR(e))
+            raise SoapErrors.BadResponseError(outer_err(e))
 
         return outer_xml
 
     def get_outer_return(self, outer_xml):
-        P1_TPL = ("Parsed outer return from XML:\n{}").format
-        OUTER_ERR = ("Exception while parsing outer XML: {}").format
+        p1_tpl = "Parsed outer return from XML:\n{}".format
+        outer_err = "Exception while parsing outer XML: {}".format
         try:
             outer_envelope = outer_xml['soap:Envelope']
             outer_body = outer_envelope['soap:Body']
             outer_return = outer_body['t:return']
         except Exception as e:
-            raise SoapErrors.OuterReturnError(OUTER_ERR(e))
-        self.XMLPLOG(P1_TPL(SoapUtil.jsonify(outer_return)))
+            raise SoapErrors.OuterReturnError(outer_err(e))
+        self.XMLPLOG(p1_tpl(SoapUtil.jsonify(outer_return)))
         return outer_return
 
     def get_command(self, outer_return):
-        P1_TPL = ("Parsed command from outer return: {}").format
+        p1_tpl = "Parsed command from outer return: {}".format
         command = outer_return['command']
-        self.XMLPLOG(P1_TPL(SoapUtil.jsonify(command)))
+        self.XMLPLOG(p1_tpl(SoapUtil.jsonify(command)))
         return command
 
     def check_auth_ok(self, command):
-        AUTH_ERR = ("Authorization failure in {} (COMMAND: {!r})").format
+        auth_err = "Authorization failure in {} (COMMAND: {!r})".format
         auth_ok = 'Forbidden' not in command
         if not auth_ok:
-            raise SoapErrors.AuthorizationError(AUTH_ERR(self, self.command))
+            raise SoapErrors.AuthorizationError(auth_err(self, self.command))
         return auth_ok
 
     def check_response_ok(self, http_response):
-        NON_200 = ("Non 200 status code {!r} (RESPONSE: {})").format
+        non_200 = "Non 200 status code {!r} (RESPONSE: {})".format
         valid_codes = [200]
         response_ok = http_response.status_code in valid_codes
         if not response_ok:
-            raise SoapErrors.HttpError(NON_200(
+            raise SoapErrors.HttpError(non_200(
                 self.http_response.status_code, self.http_response.text
             ))
         return response_ok
 
     def check_command_ok(self, command):
-        BAD_ERR = ("Bad Command Return in {} (COMMAND: {!r})").format
+        bad_err = "Bad Command Return in {} (COMMAND: {!r})".format
         command_ok = 'Bad Request' not in command
         if not command_ok:
             raise SoapErrors.BadRequestError(
-                BAD_ERR(self, self.command.replace('\n', ''))
+                bad_err(self, self.command.replace('\n', ''))
             )
         return command_ok
 
     def get_session_id(self, outer_return):
-        P1_TPL = ("Parsed session from outer return: {}").format
+        p1_tpl = "Parsed session from outer return: {}".format
         session_id = outer_return['session']
-        self.XMLPLOG(P1_TPL(SoapUtil.jsonify(session_id)))
+        self.XMLPLOG(p1_tpl(SoapUtil.jsonify(session_id)))
         return session_id
 
     def get_inner_return(self, command, outer_return):
-        P1_TPL = ("Parsed inner return from outer return: {}").format
-        XML_ERR = ("Exception getting inner ResultXML: {}").format
-        OBJ_ERR = ("Exception getting inner result_object: {}").format
-        UNK_ERR = ("Unknown command: {}, unable to get inner return").format
+        p1_tpl = "Parsed inner return from outer return: {}".format
+        xml_err = "Exception getting inner ResultXML: {}".format
+        obj_err = "Exception getting inner result_object: {}".format
+        unk_err = "Unknown command: {}, unable to get inner return".format
 
-        inner_return = None
         result_xml_commands = ['GetResultData', 'GetResultInfo']
         result_obj_commands = ['GetObject', 'AddObject', 'DeleteObject']
         if command in result_xml_commands:
@@ -975,7 +965,7 @@ class SoapResponse(object):
             try:
                 inner_return = xmltodict.parse(outer_return['ResultXML'])
             except Exception as e:
-                raise SoapErrors.InnerReturnError(XML_ERR(e))
+                raise SoapErrors.InnerReturnError(xml_err(e))
         elif command in result_obj_commands:
             self.XMLPLOG("Parsing result_object from outer return")
             try:
@@ -984,11 +974,11 @@ class SoapResponse(object):
                 else:
                     inner_return = outer_return['result_object']
             except Exception as e:
-                raise SoapErrors.InnerReturnError(OBJ_ERR(e))
+                raise SoapErrors.InnerReturnError(obj_err(e))
         else:
-            raise SoapErrors.UnknownCommandError(UNK_ERR(self.command))
+            raise SoapErrors.UnknownCommandError(unk_err(self.command))
 
-        self.XMLPLOG(P1_TPL(SoapUtil.jsonify(inner_return)))
+        self.XMLPLOG(p1_tpl(SoapUtil.jsonify(inner_return)))
         return inner_return
 
     @property
@@ -1015,22 +1005,22 @@ class SoapAuth(object):
         self.update_token()
 
     def __str__(self):
-        STR_TPL = (
+        str_tpl = (
             "SoapAuth {}"
         ).format
-        ret = STR_TPL(self.token_type_details)
+        ret = str_tpl(self.token_type_details)
         return ret
 
     def update_token(self):
         """updates self.token with either session ID or user/pass auth"""
-        UPD_TPL = ("SOAP Token updated to: {}").format
+        upd_tpl = "SOAP Token updated to: {}".format
         if self.session_id:
             token = self.token_session_id
         else:
             token = self.token_userpass
         if self._token != token:
             self._token = token
-            self.AUTHLOG(UPD_TPL(self.token_type_details))
+            self.AUTHLOG(upd_tpl(self.token_type_details))
 
     def auth_fallback(self):
         """removes the session ID from the token, and reverts back to
@@ -1071,9 +1061,8 @@ class SoapAuth(object):
     @property
     def token_type_details(self):
         """returns token type and details in text form"""
-        TOK_TPL = ('auth type: {} [{}: "{}"]').format
-        token_details = "NONE"
-        token_type = "UNKNOWN"
+        tok_tpl = 'auth type: {} [{}: "{}"]'.format
+
         if self.via_session_id:
             token_predetails = 'ID'
             token_details = self.session_id_text(self._token.get('session'))
@@ -1087,7 +1076,7 @@ class SoapAuth(object):
             token_details = 'None'
             token_type = 'Not yet set'
 
-        token_type_details = TOK_TPL(
+        token_type_details = tok_tpl(
             token_type, token_predetails, token_details
         )
         return token_type_details
@@ -1110,6 +1099,9 @@ class SoapAuth(object):
 
 
 class SoapTransform(object):
+    FORMATS = SoapConstants.TRANSFORM_FORMATS
+    BOOL_KWARGS = SoapConstants.TRANSFORM_BOOL_KWARGS
+    HEADER_SORT_PRIORITY = SoapConstants.TRANSFORM_HEADER_SORT_PRIORITY
 
     def __init__(self):
         self.logger = logging.getLogger("SoapWrap.transform")
@@ -1118,63 +1110,60 @@ class SoapTransform(object):
         self.WLOG = self.logger.warn
         self.ELOG = self.logger.error
 
-    def write_response(self, response, fname=None, fdir=None, format='csv',
-                       **kwargs):
-        # kwargs passthrus:
-        # HEADER_SORT_PRIORITY: sort_headers()
-        # ADD_TYPE_TO_HEADERS: parse_resultxml()
-        # ADD_SENSOR_TO_HEADERS: parse_resultxml()
-        # EXPAND_GROUPED_COLUMNS: parse_resultxml()
-        # HIDE_COUNT_COLUMN: parse_resultxml()
+    def write_response(self, response, fname=None, fdir=None, ftype='csv',
+                       fprefix=None, fpostfix=None, fext=None, **kwargs):
+        write_tpl = "Writing response to file: {}".format
+        badf_err = "Unsupported format: {!r}, must be one of {r}".format
 
-        WRITE_TPL = ("Writing response to file: {}").format
-        BADF_ERR = ("Unsupported format: {!r}, must be one of {r}").format
+        kwargs = {
+            k: kwargs.get(k, v)
+            for k, v in self.BOOL_KWARGS.iteritems()
+        }
 
-        objtype = response.request.object_type
+        hsp = 'HEADER_SORT_PRIORITY'
+        otype = response.request.object_type
 
-        HEADER_SORT_PRIORITY = [
-            '%s.%s' % (objtype, x) for x in SoapConstants.HEADER_SORT_PRIORITY
-        ]
-
+        # for GetObject command, prepend the object type so the header
+        # sort priority works better
         if response.command == 'GetObject':
-            if 'HEADER_SORT_PRIORITY' not in kwargs:
-                kwargs['HEADER_SORT_PRIORITY'] = HEADER_SORT_PRIORITY
+            kwargs[hsp] = kwargs.get(hsp, getattr(self, hsp))
+            kwargs[hsp] = ['%s.%s' % (otype, x) for x in kwargs.get(hsp, [])]
 
         if fname is None:
-            fname = self.get_fn(response, format)
+            fname = self.get_fname(response)
 
-        if 'fprefix' in kwargs:
-            fname = ("{}_{}").format(kwargs['fprefix'], fname)
+        if fprefix is not None:
+            fname = "{}.{}".format(fprefix, fname)
+
+        if fpostfix is not None:
+            fname = "{}.{}".format(fname, fpostfix)
+
+        if fext is None:
+            fext = ftype
+
+        fname = "{}.{}".format(fname, fext)
 
         if fdir is None:
             fdir = os.path.curdir
 
         fpath = os.path.join(fdir, fname)
 
-        formats = {
-            'csv': 'get_csv',
-            'xls': 'get_xls',
-            'json': 'get_json',
-            'xml': 'get_xml',
-            'raw.xml': 'get_rawxml',
-            'http_response': 'get_http_response',
-        }
-
-        if format in formats:
-            fout = getattr(self, formats[format])(response, **kwargs)
+        if ftype in self.FORMATS:
+            fout = getattr(self, self.FORMATS[ftype])(response, **kwargs)
         else:
-            raise SoapErrors.TransformError(BADF_ERR(
-                format, ', '.join(formats.keys())
+            raise SoapErrors.TransformError(badf_err(
+                ftype, ', '.join(self.FORMATS.keys())
             ))
 
-        self.ILOG(WRITE_TPL(fpath))
+        self.ILOG(write_tpl(fpath))
 
         x = open(fpath, 'w+')
         x.write(fout)
         x.close()
         return fpath
 
-    def get_fn(self, response, format):
+    @staticmethod
+    def get_fname(response):
         max_len = 80
         s = str(response.request.objects_dict)
         s = re.sub(r'[^\w,:]', '', s)
@@ -1182,16 +1171,13 @@ class SoapTransform(object):
         s = s.replace(',', '+')
         s = s[0:max_len]
 
-        base_fn = []
-        base_fn.append(response.request.caller_method)
-        base_fn.append(s)
-        base_fn.append(SoapUtil.get_now())
+        base_fn = [response.request.caller_method, s, SoapUtil.get_now()]
         base_fn = '__'.join(base_fn)
-        fn = ("{}.{}").format(base_fn, format)
-        return fn
+        return base_fn
 
     def get_rows(self, response, **kwargs):
         """transforms response.inner_return into a list of dicts"""
+        rows = []
         if response.command == 'GetObject':
             rows = self.parse_result_object(response, **kwargs)
         elif response.command == 'GetResultData':
@@ -1204,7 +1190,7 @@ class SoapTransform(object):
 
         return rows
 
-    ## XML
+    # # XML
 
     ## JSON
     def get_json(self, response, **kwargs):
@@ -1219,14 +1205,16 @@ class SoapTransform(object):
         return fout
 
     ## CSV
-    def get_all_headers(self, rows_list):
+    @staticmethod
+    def get_all_headers(rows_list):
         headers = []
         for row_dict in rows_list:
             [headers.append(h) for h in row_dict.keys() if h not in headers]
         return headers
 
     ## CSV
-    def sort_headers(self, headers, **kwargs):
+    @staticmethod
+    def sort_headers(headers, **kwargs):
         header_sort_priority = kwargs.get('HEADER_SORT_PRIORITY', [])
         if header_sort_priority is False:
             return headers
@@ -1242,8 +1230,9 @@ class SoapTransform(object):
         return sorted_headers
 
     ## CSV
-    def csvlistwriter(self, rows_list):
-        '''unused'''
+    @staticmethod
+    def csvlistwriter(rows_list):
+        """unused"""
         csv_io = StringIO.StringIO()
         headers = rows_list.pop(0)
         writer = csv.writer(csv_io, quoting=csv.QUOTE_NONNUMERIC)
@@ -1273,14 +1262,14 @@ class SoapTransform(object):
         if SoapUtil.is_dict(fullobj):
             for k, v in fullobj.iteritems():
                 if prefix:
-                    k = ('{}.{}').format(prefix, k)
+                    k = '{}.{}'.format(prefix, k)
                 if SoapUtil.is_dict(v):
                     # print 'dict found: ', k, v
                     flat.update(self.flatten_obj(v, k))
                 elif SoapUtil.is_list(v):
                     # print 'list found: ', k, v
                     for idx, item in enumerate(v):
-                        itempre = ('{}{}').format(k, idx)
+                        itempre = '{}{}'.format(k, idx)
                         flat.update(self.flatten_obj(item, itempre))
                 else:
                     # print 'other found: ', k, v
@@ -1314,10 +1303,10 @@ class SoapTransform(object):
                 list:sensor:
                     dict:sensor_details:
         """
-        ERR1 = (
+        err1 = (
             "Unexpected error when parsing inner return: {}"
         ).format
-        ERR2 = (
+        err2 = (
             "inner return contains neither a list or dictionary "
             "unable to parse out result object(s): {}"
         ).format
@@ -1327,7 +1316,7 @@ class SoapTransform(object):
             prefix = return_items[0]
             results = return_items[1]
         except Exception as e:
-            raise Exception(ERR1(e))
+            raise Exception(err1(e))
 
         # handle "all" responses
         if SoapUtil.is_dict(results):
@@ -1341,7 +1330,7 @@ class SoapTransform(object):
         elif SoapUtil.is_dict(results):
             rows = [self.flatten_obj(results, prefix)]
         else:
-            raise Exception(ERR2(response.inner_return))
+            raise Exception(err2(response.inner_return))
 
         return rows
 
@@ -1370,11 +1359,6 @@ class SoapTransform(object):
         if not SoapUtil.is_list(sensors):
             sensors = [sensors]
 
-        kwargs = {
-            k: kwargs.get(k, v)
-            for k, v in SoapConstants.PARSE_RESULT_XML_ARGS.iteritems()
-        }
-
         headers = self.get_headers(inner_return)
 
         if kwargs.get('ADD_TYPE_TO_HEADERS', False):
@@ -1395,7 +1379,8 @@ class SoapTransform(object):
         return rows
 
     ## ResultXML
-    def get_headers(self, inner_return):
+    @staticmethod
+    def get_headers(inner_return):
         result_sets = inner_return['result_sets']
         result_set = result_sets['result_set']
         header_list = result_set['cs']
@@ -1415,13 +1400,15 @@ class SoapTransform(object):
         return headers
 
     ## ResultXML
-    def add_type_to_headers(self, headers):
+    @staticmethod
+    def add_type_to_headers(headers):
         for x in headers:
             x['name'] = "%s (%s)" % (x['name'], x['type'])
         return headers
 
     ## ResultXML
-    def add_sensor_to_headers(self, headers, sensors):
+    @staticmethod
+    def add_sensor_to_headers(headers, sensors):
         for h in headers:
             sensor = [x for x in sensors if x['hash'] == h['wh']]
             if sensor:
@@ -1434,17 +1421,19 @@ class SoapTransform(object):
         return headers
 
     ## ResultXML
-    def remove_count_column(self, rows, headers):
-        COUNT_HEADERS = ['Count (NumericDecimal)', 'Count']
+    @staticmethod
+    def remove_count_column(rows, headers):
+        count_headers = ['Count (NumericDecimal)', 'Count']
         rows = [
-            {k: v for k, v in row.iteritems() if k not in COUNT_HEADERS}
+            {k: v for k, v in row.iteritems() if k not in count_headers}
             for row in rows
         ]
-        headers = [x for x in headers if x['name'] not in COUNT_HEADERS]
+        headers = [x for x in headers if x['name'] not in count_headers]
         return rows, headers
 
     ## ResultXML
-    def get_resultxml_rows(self, inner_return, headers):
+    @staticmethod
+    def get_resultxml_rows(inner_return, headers):
         result_sets = inner_return['result_sets']
         result_set = result_sets['result_set']
         row_lists = result_set['rs']
@@ -1471,7 +1460,8 @@ class SoapTransform(object):
         return rows
 
     ## ResultXML
-    def excel_list(self, l):
+    @staticmethod
+    def excel_list(l):
         if SoapUtil.is_list(l):
             l = [str(SoapUtil.utf_clean(x)) for x in l]
             l = '\r\n'.join(l)
@@ -1497,7 +1487,8 @@ class SoapTransform(object):
         return new_rows
 
     ## ResultXML
-    def build_new_row(self, row, wh_friends, v_idx, headers):
+    @staticmethod
+    def build_new_row(row, wh_friends, v_idx, headers):
         new_row = {}
         for h in headers:
             if h not in wh_friends:

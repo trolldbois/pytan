@@ -1,10 +1,10 @@
 # -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
-'''
+"""
 Adds readline support and other handy things to an interactive python
 console.
-'''
+"""
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
 
 # adds readline, autocomplete, history to python interactive console
@@ -30,15 +30,15 @@ def debug_obj(debugobj):
 
 
 # Utility function to dump all info about an object
-def introspect(object, depth=0):
+def introspect(obj, depth=0):
     import types
-    print "%s%s: %s\n" % (depth * "\t", object, [
-        x for x in dir(object) if x[:2] != "__"])
-    depth = depth + 1
-    for x in dir(object):
+    print "%s%s: %s\n" % (depth * "\t", obj, [
+        x for x in dir(obj) if x[:2] != "__"])
+    depth += 1
+    for x in dir(obj):
         if x[:2] == "__":
             continue
-        subobj = getattr(object, x)
+        subobj = getattr(obj, x)
         print "%s%s: %s" % (depth * "\t", x, subobj)
         if isinstance(subobj, types.InstanceType) and dir(subobj) != []:
             introspect(subobj, depth=depth + 1)
@@ -55,6 +55,7 @@ class HistoryConsole(code.InteractiveConsole):
         if 'libedit' in readline.__doc__:
             # osx style readline
             readline.parse_and_bind("bind ^I rl_complete")
+            readline.parse_and_bind("bind ^R em-inc-search-prev")
         else:
             # unix style readline
             readline.parse_and_bind("tab: complete")
@@ -65,7 +66,8 @@ class HistoryConsole(code.InteractiveConsole):
                 pass
             atexit.register(self.save_history, histfile)
 
-    def save_history(self, histfile):
+    @staticmethod
+    def save_history(histfile):
         readline.write_history_file(histfile)
 
 

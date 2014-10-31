@@ -21,9 +21,9 @@ parent_dir = os.path.dirname(my_dir)
 lib_dir = os.path.join(parent_dir, 'lib')
 path_adds = [lib_dir]
 
-for x in path_adds:
-    if x not in sys.path:
-        sys.path.append(x)
+for aa in path_adds:
+    if aa not in sys.path:
+        sys.path.append(aa)
 
 import customparser
 import tanwrap

@@ -82,14 +82,14 @@ def version_check(reqver):
 
     :param reqver: string containing version number to check against
     """
-    LOG_TPL = (
+    log_tpl = (
         "{}: {} version {}, required {}").format
     if not __version__ >= reqver:
         s = "Script and API Version mismatch!"
-        logging.error(LOG_TPL(s, __file__, __version__, reqver))
+        logging.error(log_tpl(s, __file__, __version__, reqver))
         sys.exit(100)
     s = "Script and API Version match"
-    logging.debug(LOG_TPL(s, __file__, __version__, reqver))
+    logging.debug(log_tpl(s, __file__, __version__, reqver))
 
 
 def utf_clean(v, e='utf-8'):
@@ -143,7 +143,7 @@ def prompt_password():
 
     :return: :class:`str`
     """
-    password = getpass.getpass(('Password: '))
+    password = getpass.getpass('Password: ')
     return password.strip()
 
 
@@ -160,16 +160,16 @@ def fn_gen(ext, pname):
     return fn
 
 
-def human_time(t, format='%Y_%m_%d-%H_%M_%S-%Z'):
+def human_time(t, tformat='%Y_%m_%d-%H_%M_%S-%Z'):
     """return time in human friendly format
 
     :param t: either a epoch or struct_time time object
-    :param format: strftime format string
+    :param tformat: strftime format string
     :return: :class:`str`
     """
     if is_num(t):
         t = time.localtime(t)
-    return time.strftime(format, t)
+    return time.strftime(tformat, t)
 
 
 # not in use
@@ -209,7 +209,7 @@ def port_check(address, port, timeout=5):
     """
     try:
         return socket.create_connection((address, port), timeout)
-    except:
+    except socket.error:
         return False
 
 
@@ -227,7 +227,7 @@ class SplitStreamHandler(logging.Handler):
             fs = "%s\n"
             try:
                 is_unicode = isinstance(msg, unicode)
-                if (is_unicode and getattr(stream, 'encoding', None)):
+                if is_unicode and getattr(stream, 'encoding', None):
                     ufs = u'%s\n'
                     try:
                         stream.write(ufs % msg)
