@@ -103,6 +103,13 @@ def jsonify(v, indent=4, sort_keys=True):
     return json.dumps(v, indent=indent, sort_keys=sort_keys)
 
 
+def jsonprocessor(path, key, value):
+    try:
+        return key, json.loads(value)
+    except:
+        return key, value
+
+
 def is_list(l):
     return type(l) in [list, tuple]
 

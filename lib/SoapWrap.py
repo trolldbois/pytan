@@ -38,13 +38,6 @@ import SoapUtil
 requests.packages.urllib3.disable_warnings()
 
 
-def jsonprocessor(path, key, value):
-    try:
-        return key, json.loads(value)
-    except:
-        return key, value
-
-
 class SoapWrap:
     last_http_response = None
     last_response = None
@@ -243,7 +236,10 @@ class SoapWrap:
             if len(query) != 1:
                 raise Exception(err_tpl(query))
 
-    def __parse_query_objects(self, args, prefixes):
+    def __parse_query_objects(self, args, prefixes=None):
+        if prefixes is None:
+            prefixes = SoapConstants.QUERY_PREFIXES
+
         if SoapUtil.is_list(args):
             parsed_args = []
             for i in args:
@@ -263,8 +259,6 @@ class SoapWrap:
         return p
 
     def __build_objects_dict(self, objtype, objquery, prefixes=None):
-        if prefixes is None:
-            prefixes = SoapConstants.QUERY_PREFIXES
         objects_dict = {
             objtype: self.__parse_query_objects(objquery, prefixes)
         }
@@ -376,6 +370,9 @@ class SoapWrap:
         self.DLOG(dbug2_tpl(question.lower(), json.dumps(prg_match)))
 
         return response
+
+    # def ask_manual_question(self, selects, filters=None):
+        # object_type = 'question'
 
     def ask_parsed_question(self, question, picker=None):
         pick_tpl = (
@@ -902,7 +899,8 @@ class SoapResponse(object):
         text = text.encode('utf-8')
 
         try:
-            outer_xml = xmltodict.parse(text, postprocessor=jsonprocessor)
+            outer_xml = xmltodict.parse(
+                text, postprocessor=SoapUtil.jsonprocessor)
         except Exception as e:
             raise SoapErrors.BadResponseError(outer_err(e))
 
@@ -970,7 +968,8 @@ class SoapResponse(object):
             self.XMLPLOG("Parsing ResultXML from outer return")
             try:
                 inner_return = xmltodict.parse(
-                    outer_return['ResultXML'], postprocessor=jsonprocessor
+                    outer_return['ResultXML'],
+                    postprocessor=SoapUtil.jsonprocessor,
                 )
             except Exception as e:
                 raise SoapErrors.InnerReturnError(xml_err(e))
@@ -1212,18 +1211,21 @@ class SoapTransform(object):
         return fout
 
     # RAW XML
-    def get_rawxml(self, response, **kwargs):
+    @staticmethod
+    def get_rawxml(response, **kwargs):
         inner_return = {'raw_inner_xml': response.inner_return}
         fout = xmltodict.unparse(inner_return, pretty=True, indent="  ")
         return fout
 
     # RAW REQUEST
-    def get_rawrequest(self, response, **kwargs):
+    @staticmethod
+    def get_rawrequest(response, **kwargs):
         fout = response.request.xml_raw
         return fout
 
     # RAW RESPONSE
-    def get_rawresponse(self, response, **kwargs):
+    @staticmethod
+    def get_rawresponse(response, **kwargs):
         fout = response.http_response.text
         return fout
 

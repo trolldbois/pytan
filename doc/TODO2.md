@@ -2,12 +2,15 @@
  * [ ] manual query
  * [ ] time btwn req/resp
  * [ ] wrapper scripts
+ * [ ] build "ask all questions" workflow
  * [ ] test on windoze
  * [ ] test against RT
+ * [ ] logfile support
+ * [ ] fix get_question_object request to map to original request
 
 # TODO LATER
- * [ ] parameters
- * [ ] sort order?
+ * [ ] parameters / options / filters
+ * [ ] sort order? (switch to ordereddicts)
  * [ ] test against 444 vs 443
  * [ ] excel out
  * [ ] email out

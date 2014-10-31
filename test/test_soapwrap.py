@@ -49,6 +49,9 @@ TESTVERBOSITY = 2
 # control whether the transform tests will be done
 TRANSFORM_TESTS = True
 
+# control whether the combinator transform tests will be done
+COMBO_TRANSFORM_TESTS = True
+
 # where the output files from the tests will be stored
 TEST_OUT = os.path.join(my_dir, 'TEST_OUT')
 
@@ -187,15 +190,14 @@ class TestsAgainstServer(unittest.TestCase):
         spew("")
         return self.sw
 
-    def transform_tests(self, response):
-        '''standard transform tests for any response object'''
+    def combo_transform_tests(self, response):
         # derive all the permutations of every option we have for
         # bool args and header sort priority
         # this is complicated and involves combinatorics, but basically
         # we write a response file for every supported format, with every
         # possible combination of options (and embed those options into
         # the filename)
-        if not TRANSFORM_TESTS:
+        if not COMBO_TRANSFORM_TESTS:
             return
         sw = self.sw
         bool_args = sw.st.BOOL_KWARGS.keys()
@@ -256,6 +258,14 @@ class TestsAgainstServer(unittest.TestCase):
             spew("wrote response to: %s" % f)
             self.assertTrue(os.path.isfile(f))
 
+    def transform_tests(self, response):
+        '''standard transform tests for any response object'''
+
+        if not TRANSFORM_TESTS:
+            return
+        sw = self.sw
+        format_tests = sw.st.FORMATS.keys()
+
         for ft in format_tests:
             spew(
                 "Testing st.write_response() "
@@ -279,6 +289,7 @@ class TestsAgainstServer(unittest.TestCase):
         self.assertTrue(response.command)
         self.assertTrue(response.session_id)
         self.assertTrue(response.inner_return)
+        self.combo_transform_tests(response)
         self.transform_tests(response)
 
     def test_ask_saved_question_single_str(self):
