@@ -2,11 +2,13 @@
  * [ ] manual query
  * [ ] time btwn req/resp
  * [ ] wrapper scripts
+ * [ ] test on windoze
+ * [ ] test against RT
 
 # TODO LATER
  * [ ] parameters
  * [ ] sort order?
- * [ ] 444 vs 443
+ * [ ] test against 444 vs 443
  * [ ] excel out
  * [ ] email out
  * [ ] ADD LONGER WAIT TIME FOR HIGHER est_total TO BE NICER TO API
