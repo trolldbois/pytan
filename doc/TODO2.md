@@ -1,20 +1,15 @@
 # TODO NOW
- * [ ] manual query
+ * [ ] parameters / options / filters
  * [ ] time btwn req/resp
- * [ ] wrapper scripts
  * [ ] build "ask all questions" workflow
- * [ ] test on windoze
  * [ ] test against RT
- * [ ] logfile support
- * [ ] fix get_question_object request to map to original request
 
 # TODO LATER
- * [ ] parameters / options / filters
+ * [ ] logfile support
  * [ ] sort order? (switch to ordereddicts)
  * [ ] test against 444 vs 443
  * [ ] excel out
  * [ ] email out
- * [ ] ADD LONGER WAIT TIME FOR HIGHER est_total TO BE NICER TO API
 
 # DONE
  * [X] better app_test
@@ -24,3 +19,10 @@
  * [X] refactor unittests for write_response()
  * [X] xml out
  * [X] csv out
+ * [X] fix get_question_object request to map to original request
+ * [X] manual query
+ * [X] test on windoze
+ * [X] ADD LONGER WAIT TIME FOR HIGHER est_total TO BE NICER TO API
+ * [X] python wrapper scripts
+ * [X] windows wrapper scripts
+ * [X] unix example scripts

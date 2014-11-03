@@ -66,7 +66,6 @@ class SoapWrap:
 
         self.HTTPLOG = logging.getLogger("SoapWrap.http").debug
         self.AUTHLOG = logging.getLogger("SoapWrap.auth").debug
-        self.RILOG = logging.getLogger("SoapWrap.result_infos").debug
 
         soap_tpl = "{}{}".format
         app_tpl = "{}://{}:{}".format
@@ -133,12 +132,12 @@ class SoapWrap:
         page_ok = True
         return page_ok
 
-    def __call_api(self, request):
+    def call_api(self, request):
         """makes a call to the SOAP API, returns a SoapResponse object,
         expects a SoapRequest object as request
         """
         time_tpl = 'Last Request {} took longer than {} seconds!'.format
-        ri_tpl = "GetResultInfo result_infos: {}".format
+        wait_tpl = "Waiting {} secs, mr_passed {} != estimated_total {}".format
 
         if request.command == "GetResultData":
             request.command = "GetResultInfo"
@@ -165,22 +164,24 @@ class SoapWrap:
 
         if request.command == "GetResultInfo":
             full_results = False
-            wait = 1
+            wait = 2
             max_wait = 600
             current_wait = 1
             while full_results is not True:
-                result_xml = response.inner_return
-                result_infos = result_xml['result_infos']
-                result_info = result_infos['result_info']
-                self.RILOG(ri_tpl(json.dumps(result_infos)))
-                mr_passed = result_info['mr_passed']
-                est_total = result_info['estimated_total']
-                if mr_passed == est_total:
+                result_info = response.get_result_info()
+                if result_info['mr_passed'] == result_info['estimated_total']:
                     full_results = True
+                    break
                 response = self.__send_request(request)
-                current_wait += 1
+                current_wait += wait
                 if current_wait > max_wait:
+                    self.DLOG(SoapUtil.jsonify(result_info))
                     raise SoapErrors.AppError(time_tpl(request, max_wait))
+                self.DLOG(wait_tpl(
+                    wait,
+                    result_info['mr_passed'],
+                    result_info['estimated_total'],
+                ))
                 time.sleep(wait)
 
             request.command = "GetResultData"
@@ -241,21 +242,20 @@ class SoapWrap:
             prefixes = SoapConstants.QUERY_PREFIXES
 
         if SoapUtil.is_list(args):
-            parsed_args = []
-            for i in args:
-                parsed_arg = self.__parse_query_objects(i, prefixes)
-                if parsed_arg:
-                    parsed_args.append(parsed_arg)
-            return parsed_args
+            return [self.__parse_query_objects(i, prefixes) for i in args]
         p = {}
         args = str(args)
         for prefix in prefixes:
             inner_pre = prefix + ':'
+            # print "args: ", args
+            # print "inner_pre: ", inner_pre
             if args.startswith(inner_pre):
                 p = {prefix: args.lstrip(inner_pre)}
+                # print "p: ", p
                 break
         if not p:
             p = {prefixes[0]: args}
+            # print "pdef: ", p
         return p
 
     def __build_objects_dict(self, objtype, objquery, prefixes=None):
@@ -335,7 +335,7 @@ class SoapWrap:
         }
 
         request = SoapRequest(**request_args)
-        response = self.__call_api(request)
+        response = self.call_api(request)
 
         response.prg_match = None
 
@@ -371,8 +371,32 @@ class SoapWrap:
 
         return response
 
-    # def ask_manual_question(self, selects, filters=None):
-        # object_type = 'question'
+    def ask_manual_question(self, sensors, filters=None):
+        sensor_objs = self.__parse_query_objects(sensors)
+        if not SoapUtil.is_list(sensor_objs):
+            sensor_objs = [sensor_objs]
+        object_type = 'question'
+        objects_dict = {
+            object_type: {
+                'selects': {
+                    "select": [{"sensor": s_obj} for s_obj in sensor_objs],
+                },
+            },
+        }
+
+        request_args = {
+            'command': 'AddObject',
+            'object_type': object_type,
+            'objects_dict': objects_dict,
+            'auth_dict': self.auth.token,
+        }
+
+        request = SoapRequest(**request_args)
+        orig_response = self.call_api(request)
+        question_id = orig_response.get_question_id()
+        response = self.get_question_results(question_id)
+        response.request = orig_response.request
+        return response
 
     def ask_parsed_question(self, question, picker=None):
         pick_tpl = (
@@ -383,16 +407,18 @@ class SoapWrap:
             "Invalid picker index {}, re-run with picker=-1 to see picker "
             "index list"
         ).format
-        qret_tpl = "Question ID {} returned from AddObject on {}".format
         qerr_tpl = "No question ID returned from AddObject on {}".format
 
-        response = self.get_parse_groups(question)
-        prg_match = getattr(response, 'prg_match', {})
-        prgs_all = getattr(response, 'prgs_all', [])
+        orig_response = self.get_parse_groups(question)
+        prg_match = getattr(orig_response, 'prg_match', {})
+        prgs_all = getattr(orig_response, 'prgs_all', [])
         picker_indexes = "\n".join([
             "INDEX: {}, parsedq: {}".format(xidx, x['question_text'])
             for xidx, x in enumerate(prgs_all)
         ])
+
+        if picker is not None:
+            picker = int(picker)
 
         if picker == -1:
             raise SoapErrors.PickerError(pick_tpl(picker_indexes))
@@ -407,15 +433,12 @@ class SoapWrap:
                 raise SoapErrors.PickerError(perr_tpl(picker))
 
         response = self.add_parse_group(prg_match)
-        result_object = getattr(response, 'inner_return', {})
-        question_id = result_object.get('question', {}).get('id', '')
-
-        response.question_id = question_id
-        self.DLOG(qret_tpl(question_id, json.dumps(prg_match)))
+        question_id = response.get_question_id()
         if not question_id:
             raise SoapErrors.AppError(qerr_tpl(json.dumps(prg_match)))
 
         response = self.get_question_results(question_id)
+        response.request = orig_response.request
         return response
 
     def add_parse_group(self, parse_group):
@@ -428,7 +451,7 @@ class SoapWrap:
             'auth_dict': self.auth.token,
         }
         request = SoapRequest(**request_args)
-        response = self.__call_api(request)
+        response = self.call_api(request)
         return response
 
     def ask_saved_question(self, query):
@@ -447,7 +470,7 @@ class SoapWrap:
             'auth_dict': self.auth.token,
         }
         request = SoapRequest(**request_args)
-        response = self.__call_api(request)
+        response = self.call_api(request)
         response.sensors = self.gather_sensors_from_response(response)
         return response
 
@@ -465,7 +488,7 @@ class SoapWrap:
             'auth_dict': self.auth.token,
         }
         request = SoapRequest(**request_args)
-        response = self.__call_api(request)
+        response = self.call_api(request)
         response.sensors = self.gather_sensors_from_response(response)
         return response
 
@@ -499,7 +522,7 @@ class SoapWrap:
             'auth_dict': self.auth.token,
         }
         request = SoapRequest(**request_args)
-        response = self.__call_api(request)
+        response = self.call_api(request)
         return response
 
     def get_all_saved_question_objects(self):
@@ -516,7 +539,7 @@ class SoapWrap:
             'auth_dict': self.auth.token,
         }
         request = SoapRequest(**request_args)
-        response = self.__call_api(request)
+        response = self.call_api(request)
         return response
 
     def get_question_object(self, query):
@@ -533,7 +556,7 @@ class SoapWrap:
             'auth_dict': self.auth.token,
         }
         request = SoapRequest(**request_args)
-        response = self.__call_api(request)
+        response = self.call_api(request)
         return response
 
     def get_all_question_objects(self):
@@ -549,7 +572,7 @@ class SoapWrap:
             'auth_dict': self.auth.token,
         }
         request = SoapRequest(**request_args)
-        response = self.__call_api(request)
+        response = self.call_api(request)
         return response
 
     def get_sensor_object(self, query):
@@ -566,7 +589,7 @@ class SoapWrap:
             'auth_dict': self.auth.token,
         }
         request = SoapRequest(**request_args)
-        response = self.__call_api(request)
+        response = self.call_api(request)
         return response
 
     def get_all_sensor_objects(self):
@@ -582,7 +605,7 @@ class SoapWrap:
             'auth_dict': self.auth.token,
         }
         request = SoapRequest(**request_args)
-        response = self.__call_api(request)
+        response = self.call_api(request)
         return response
 
     def get_package_object(self, query):
@@ -599,7 +622,7 @@ class SoapWrap:
             'auth_dict': self.auth.token,
         }
         request = SoapRequest(**request_args)
-        response = self.__call_api(request)
+        response = self.call_api(request)
         return response
 
     def get_all_package_objects(self):
@@ -615,7 +638,7 @@ class SoapWrap:
             'auth_dict': self.auth.token,
         }
         request = SoapRequest(**request_args)
-        response = self.__call_api(request)
+        response = self.call_api(request)
         return response
 
     def get_action_object(self, query):
@@ -633,7 +656,7 @@ class SoapWrap:
             'auth_dict': self.auth.token,
         }
         request = SoapRequest(**request_args)
-        response = self.__call_api(request)
+        response = self.call_api(request)
         return response
 
     def get_all_action_objects(self):
@@ -649,7 +672,7 @@ class SoapWrap:
             'auth_dict': self.auth.token,
         }
         request = SoapRequest(**request_args)
-        response = self.__call_api(request)
+        response = self.call_api(request)
         return response
 
     def get_group_object(self, query):
@@ -666,7 +689,7 @@ class SoapWrap:
             'auth_dict': self.auth.token,
         }
         request = SoapRequest(**request_args)
-        response = self.__call_api(request)
+        response = self.call_api(request)
         return response
 
     def get_all_group_objects(self):
@@ -682,7 +705,7 @@ class SoapWrap:
             'auth_dict': self.auth.token,
         }
         request = SoapRequest(**request_args)
-        response = self.__call_api(request)
+        response = self.call_api(request)
         return response
 
     def get_server_info(self):
@@ -699,7 +722,7 @@ class SoapWrap:
             'auth_dict': self.auth.token,
         }
         request = SoapRequest(**request_args)
-        response = self.__call_api(request)
+        response = self.call_api(request)
         server_info = response.inner_return['Diagnostics']
         server_info = {k: v for j in server_info for k, v in j.iteritems()}
         return server_info
@@ -732,12 +755,13 @@ class SoapRequest(object):
 
     def __str__(self):
         str_tpl = (
-            "{} for {!r} of {!r}, Sent: {}, Auth: {}"
+            "{} for {!r}/{!r} of {!r}, Sent: {}, Auth: {}"
         ).format
         sent = self.sent_human or "Not Yet Sent"
         ret = str_tpl(
             self.__class__.__name__,
             self.caller_method,
+            self.command,
             json.dumps(self.objects_dict),
             sent,
             self.auth_type,
@@ -988,6 +1012,18 @@ class SoapResponse(object):
         self.XMLPLOG(p1_tpl(SoapUtil.jsonify(inner_return)))
         return inner_return
 
+    def get_question_id(self):
+        qret_tpl = "Question ID {!r} returned".format
+        question_id = self.inner_return.get('question', {}).get('id', '')
+        self.question_id = question_id
+        self.XMLPLOG(qret_tpl(question_id))
+        return question_id
+
+    def get_result_info(self):
+        result_infos = self.inner_return['result_infos']
+        result_info = result_infos['result_info']
+        return result_info
+
     @property
     def received_human(self):
         return SoapUtil.human_time(self.received)
@@ -1121,6 +1157,7 @@ class SoapTransform(object):
                        fprefix=None, fpostfix=None, fext=None, **kwargs):
         write_tpl = "Writing response to file: {}".format
         badf_err = "Unsupported format: {!r}, must be one of {r}".format
+        excf_err = 'Exception in SoapTransform.{}({}, {})'.format
 
         kwargs = {
             k: kwargs.get(k, v)
@@ -1156,7 +1193,14 @@ class SoapTransform(object):
         fpath = os.path.join(fdir, fname)
 
         if ftype in self.FORMATS:
-            fout = getattr(self, self.FORMATS[ftype])(response, **kwargs)
+            try:
+                fout = getattr(self, self.FORMATS[ftype])(response, **kwargs)
+            except:
+                self.logger.critical(excf_err(
+                    self.FORMATS[ftype], response, kwargs)
+                )
+                self.logger.critical(SoapUtil.jsonify(response.inner_return))
+                raise
         else:
             raise SoapErrors.TransformError(badf_err(
                 ftype, ', '.join(self.FORMATS.keys())

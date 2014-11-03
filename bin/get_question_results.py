@@ -2,7 +2,7 @@
 # -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
-'''Ask a parsed question and save the results as a report format'''
+'''Get results for a question ID and save the results as a report format'''
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
 __version__ = '0.1'
 
@@ -31,23 +31,14 @@ parser = customparser.CustomParser(
     parents=[parent_parser],
 )
 parser.add_argument(
-    '--question',
+    '--query',
     required=True,
     action='store',
-    dest='question',
-    help='Question to ask',
+    dest='query',
+    help='Question to get results for - can prepend with id:, '
+    '- id: will be prepended by default',
 )
 
-parser.add_argument(
-    '--picker',
-    required=False,
-    action='store',
-    default=None,
-    dest='picker',
-    help='Which parsed query to pick, only needed if parsed queries do not '
-    'match lower cased input query - supply -1 to force a list of query '
-    'matches',
-)
 parser = customparser.setup_transform_parser(parser)
 parser = customparser.setup_transform_resultxml_parser(parser)
 parser = customparser.setup_transform_sort_parser(parser)
@@ -56,7 +47,7 @@ args = parser.parse_args()
 swargs = args.__dict__
 
 # put our query args into their own dict and remove them from swargs
-qkeys = ['picker', 'question']
+qkeys = ['query']
 qargs = {k: swargs.pop(k) for k in qkeys}
 
 # put our transform args into their own dict and remove them from swargs
@@ -71,8 +62,8 @@ fargs = {k: swargs.pop(k) for k in fargs if k in swargs}
 
 sw = SoapWrap.SoapWrap(**swargs)
 print str(sw)
-print "++ Asking parsed question: ", SoapUtil.json.dumps(qargs)
-response = sw.ask_parsed_question(**qargs)
+print "++ Getting question results: ", SoapUtil.json.dumps(qargs)
+response = sw.get_question_results(**qargs)
 print "++ Received Response: ", str(response)
 print "++ Creating Report: ", SoapUtil.json.dumps(fargs)
 report_file = sw.st.write_response(response, **fargs)

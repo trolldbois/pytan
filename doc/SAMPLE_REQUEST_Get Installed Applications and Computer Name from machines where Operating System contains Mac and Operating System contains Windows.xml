@@ -1,9 +1,7 @@
-Get Installed Applications from machines where Operating System contains Mac
-
 <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SOAP-ENV:Body>
     <typens:tanium_soap_request xmlns:typens="urn:TaniumSOAP">
-      <session>1-3042-f5f1a43fba43de4e267104fa59665d39587a3410da642212dc7f92d9349a8cbc5f48e48d03b8dfd896dd4c860b713a294afad1197aea7f5268d3f629fb6ff987</session>
+      <session>1-3044-d9520944468ef85dcd8226b684c7a56dc27ee1007777c498ab2d0dd40780519c446d797d76527960229f0006b428457ae99765857d7d02e7415dd91f514eaad6</session>
       <command>AddObject</command>
       <object_list>
         <question>
@@ -24,6 +22,48 @@ Get Installed Applications from machines where Operating System contains Mac
                 <id>-1</id>
                 <sensor>
                   <hash>1511329504</hash>
+                  <source_id>0</source_id>
+                  <max_age_seconds>0</max_age_seconds>
+                  <ignore_case_flag>0</ignore_case_flag>
+                  <exclude_from_parse_flag>0</exclude_from_parse_flag>
+                  <preview_sensor_flag>0</preview_sensor_flag>
+                  <hidden_flag>0</hidden_flag>
+                  <cache_row_id>0</cache_row_id>
+                </sensor>
+                <operator>Less</operator>
+                <value_type>String</value_type>
+                <value></value>
+                <not_flag>0</not_flag>
+                <max_age_seconds>0</max_age_seconds>
+                <ignore_case_flag>1</ignore_case_flag>
+                <all_values_flag>0</all_values_flag>
+                <substring_flag>0</substring_flag>
+                <substring_start>0</substring_start>
+                <substring_length>0</substring_length>
+                <delimiter></delimiter>
+                <delimiter_index>0</delimiter_index>
+                <utf8_flag>0</utf8_flag>
+                <aggregation>Sum</aggregation>
+                <all_times_flag>0</all_times_flag>
+                <start_time></start_time>
+                <end_time></end_time>
+              </filter>
+            </select>
+            <select>
+              <sensor>
+                <hash>3409330187</hash>
+                <source_id>0</source_id>
+                <max_age_seconds>0</max_age_seconds>
+                <ignore_case_flag>0</ignore_case_flag>
+                <exclude_from_parse_flag>0</exclude_from_parse_flag>
+                <preview_sensor_flag>0</preview_sensor_flag>
+                <hidden_flag>0</hidden_flag>
+                <cache_row_id>0</cache_row_id>
+              </sensor>
+              <filter>
+                <id>-1</id>
+                <sensor>
+                  <hash>3409330187</hash>
                   <source_id>0</source_id>
                   <max_age_seconds>0</max_age_seconds>
                   <ignore_case_flag>0</ignore_case_flag>
@@ -79,6 +119,35 @@ Get Installed Applications from machines where Operating System contains Mac
                 </sensor>
                 <operator>RegexMatch</operator>
                 <value>.*Mac.*</value>
+                <not_flag>0</not_flag>
+                <max_age_seconds>0</max_age_seconds>
+                <ignore_case_flag>1</ignore_case_flag>
+                <all_values_flag>0</all_values_flag>
+                <substring_flag>0</substring_flag>
+                <substring_start>0</substring_start>
+                <substring_length>0</substring_length>
+                <delimiter></delimiter>
+                <delimiter_index>0</delimiter_index>
+                <utf8_flag>0</utf8_flag>
+                <aggregation>Sum</aggregation>
+                <all_times_flag>0</all_times_flag>
+                <start_time></start_time>
+                <end_time></end_time>
+              </filter>
+              <filter>
+                <id>-1</id>
+                <sensor>
+                  <hash>45421433</hash>
+                  <source_id>0</source_id>
+                  <max_age_seconds>0</max_age_seconds>
+                  <ignore_case_flag>0</ignore_case_flag>
+                  <exclude_from_parse_flag>0</exclude_from_parse_flag>
+                  <preview_sensor_flag>0</preview_sensor_flag>
+                  <hidden_flag>0</hidden_flag>
+                  <cache_row_id>0</cache_row_id>
+                </sensor>
+                <operator>RegexMatch</operator>
+                <value>.*Windows.*</value>
                 <not_flag>0</not_flag>
                 <max_age_seconds>0</max_age_seconds>
                 <ignore_case_flag>1</ignore_case_flag>

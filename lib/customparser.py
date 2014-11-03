@@ -22,6 +22,7 @@ for aa in path_adds:
         sys.path.insert(0, aa)
 
 # import SoapUtil
+import SoapConstants
 
 
 class CustomFormatter(A1, A2):
@@ -117,19 +118,101 @@ def setup_parser(desc, help=False):
         default=False,
         dest='debugformat',
         help='Use debug format for log output',
-        # help=argparse.SUPPRESS,
     )
 
-    # TODO
-    # sw_group.add_argument(
-    #     '-l',
-    #     '--log',
-    #     required=False,
-    #     default=False,
-    #     dest='logfile',
-    #     const=fn_gen("log"),
-    #     nargs='?',
-    #     help='Save the log to a file (if no file supplied, will be saved '
-    #     'to $date.$prog.log)',
-    # )
+    return parser
+
+
+def setup_transform_parser(parser):
+    exp_group = parser.add_argument_group('Report Options')
+    exp_group.add_argument(
+        '--format',
+        required=True,
+        action='store',
+        dest='ftype',
+        choices=SoapConstants.TRANSFORM_FORMATS.keys(),
+        help='Format to save response as',
+    )
+
+    exp_group.add_argument(
+        '--filename',
+        required=False,
+        action='store',
+        default=argparse.SUPPRESS,
+        dest='fname',
+        help='File name of report to create (will be automatically '
+        'generated if not supplied)',
+    )
+
+    exp_group.add_argument(
+        '--fileext',
+        required=False,
+        action='store',
+        default=argparse.SUPPRESS,
+        dest='fext',
+        help='File name extension of report to create (--format used if not '
+        'supplied)',
+    )
+
+    exp_group.add_argument(
+        '--dirname',
+        required=False,
+        action='store',
+        default=argparse.SUPPRESS,
+        dest='fdir',
+        help='Directory to create report in (current dir used if not '
+        'supplied)',
+    )
+
+    exp_group.add_argument(
+        '--filename_prefix',
+        required=False,
+        action='store',
+        default=argparse.SUPPRESS,
+        dest='fprefix',
+        help='Prefix to add to the report filename',
+    )
+    exp_group.add_argument(
+        '--filename_postfix',
+        required=False,
+        action='store',
+        default=argparse.SUPPRESS,
+        dest='fpostfix',
+        help='Postfix to add to the report filename',
+    )
+
+    return parser
+
+
+def setup_transform_resultxml_parser(parser):
+    resultxml_group = parser.add_argument_group('Question Report Options')
+
+    for TB, TB_DEF in SoapConstants.TRANSFORM_BOOL_KWARGS.iteritems():
+        if TB_DEF is False:
+            tb_action = "store_true"
+        else:
+            tb_action = "store_false"
+
+        resultxml_group.add_argument(
+            '--%s' % TB,
+            required=False,
+            action=tb_action,
+            dest=TB,
+            default=TB_DEF,
+            help=SoapConstants.TRANSFORM_BOOL_HELP[TB],
+        )
+    return parser
+
+
+def setup_transform_sort_parser(parser):
+    sort_group = parser.add_argument_group('Report Sort Options')
+
+    sort_group.add_argument(
+        '--sort',
+        required=False,
+        action='append',
+        dest='HEADER_SORT_PRIORITY',
+        default=SoapConstants.TRANSFORM_HEADER_SORT_PRIORITY,
+        help='Columns to sort first in output',
+    )
     return parser

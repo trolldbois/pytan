@@ -2,7 +2,7 @@
 # -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
-'''Ask a parsed question and save the results as a report format'''
+'''Get objects and save the results as a report format'''
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
 __version__ = '0.1'
 
@@ -24,6 +24,15 @@ import customparser
 import SoapWrap
 import SoapUtil
 
+obj_types = [
+    'saved_question',
+    'question',
+    'sensor',
+    'package',
+    'action',
+    'group',
+]
+
 SoapUtil.version_check(__version__)
 parent_parser = customparser.setup_parser(__doc__)
 parser = customparser.CustomParser(
@@ -31,38 +40,38 @@ parser = customparser.CustomParser(
     parents=[parent_parser],
 )
 parser.add_argument(
-    '--question',
+    '--objtype',
     required=True,
     action='store',
-    dest='question',
-    help='Question to ask',
+    dest='objtype',
+    choices=obj_types,
+    help='Object type to retrieve',
 )
 
 parser.add_argument(
-    '--picker',
-    required=False,
-    action='store',
-    default=None,
-    dest='picker',
-    help='Which parsed query to pick, only needed if parsed queries do not '
-    'match lower cased input query - supply -1 to force a list of query '
-    'matches',
+    '--query',
+    required=True,
+    action='append',
+    dest='query',
+    help='Object to get - can prepend with id:, name:, or hash: '
+    '- name: will be prepended by default, use "all" to get all objects',
 )
+
 parser = customparser.setup_transform_parser(parser)
-parser = customparser.setup_transform_resultxml_parser(parser)
 parser = customparser.setup_transform_sort_parser(parser)
 
 args = parser.parse_args()
 swargs = args.__dict__
 
 # put our query args into their own dict and remove them from swargs
-qkeys = ['picker', 'question']
+qkeys = ['query']
 qargs = {k: swargs.pop(k) for k in qkeys}
+
+objtype = swargs.pop('objtype')
 
 # put our transform args into their own dict and remove them from swargs
 f_grpnames = [
     'Report Options',
-    'Question Report Options',
     'Report Sort Options',
 ]
 fgrps = [a for a in parser._action_groups if a.title in f_grpnames]
@@ -71,8 +80,15 @@ fargs = {k: swargs.pop(k) for k in fargs if k in swargs}
 
 sw = SoapWrap.SoapWrap(**swargs)
 print str(sw)
-print "++ Asking parsed question: ", SoapUtil.json.dumps(qargs)
-response = sw.ask_parsed_question(**qargs)
+all_in_query = 'all' in [x.lower() for x in qargs['query']]
+if all_in_query:
+    print "++ Getting all objects for object type: %s" % (objtype)
+    response = getattr(sw, 'get_all_%s_objects' % objtype)()
+else:
+    print "++ Getting objects %s for object type: %s" % (
+        SoapUtil.json.dumps(qargs), objtype)
+    response = getattr(sw, 'get_%s_object' % objtype)(**qargs)
+
 print "++ Received Response: ", str(response)
 print "++ Creating Report: ", SoapUtil.json.dumps(fargs)
 report_file = sw.st.write_response(response, **fargs)

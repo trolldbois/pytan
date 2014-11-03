@@ -10,14 +10,17 @@ __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
 # adds readline, autocomplete, history to python interactive console
 import atexit
 import os
-import readline
 import sys
-import rlcompleter
 import pprint
 import code
 
+try:
+    import readline
+    import rlcompleter
+except:
+    pass
+
 sys.dont_write_bytecode = True
-rlcompleter.__doc__
 
 
 def debug_list(debuglist):
@@ -49,7 +52,10 @@ class HistoryConsole(code.InteractiveConsole):
     def __init__(self, locals=None, filename="<console>",
                  histfile=os.path.expanduser("~/.console-history")):
         code.InteractiveConsole.__init__(self, locals, filename)
-        self.init_history(histfile)
+        try:
+            self.init_history(histfile)
+        except:
+            pass
 
     def init_history(self, histfile):
         if 'libedit' in readline.__doc__:

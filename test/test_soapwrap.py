@@ -47,7 +47,7 @@ DEBUGFORMAT = False
 TESTVERBOSITY = 2
 
 # control whether the transform tests will be done
-TRANSFORM_TESTS = True
+DEFAULT_TRANSFORM_TESTS = True
 
 # control whether the combinator transform tests will be done
 COMBO_TRANSFORM_TESTS = True
@@ -261,7 +261,7 @@ class TestsAgainstServer(unittest.TestCase):
     def transform_tests(self, response):
         '''standard transform tests for any response object'''
 
-        if not TRANSFORM_TESTS:
+        if not DEFAULT_TRANSFORM_TESTS:
             return
         sw = self.sw
         format_tests = sw.st.FORMATS.keys()
@@ -317,6 +317,24 @@ class TestsAgainstServer(unittest.TestCase):
             'IP Route Details and Installed Applications from all machines'
         )
         response = sw.ask_parsed_question(q)
+        self.response_tests(response)
+
+    def test_ask_manual_question_single(self):
+        sw = self.setup_test()
+        q = 'Computer Name'
+        response = sw.ask_manual_question(q)
+        self.response_tests(response)
+
+    def test_ask_manual_question_multiple(self):
+        sw = self.setup_test()
+        q = ['Computer Name', 'Installed Applications']
+        response = sw.ask_manual_question(q)
+        self.response_tests(response)
+
+    def test_ask_manual_question_multiple_selector(self):
+        sw = self.setup_test()
+        q = ['name:Computer Name', 'name:Installed Applications']
+        response = sw.ask_manual_question(q)
         self.response_tests(response)
 
     @unittest.expectedFailure
