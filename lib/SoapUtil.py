@@ -4,7 +4,7 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 """Generic Utility Functions"""
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
-__version__ = '0.1'
+__version__ = '0.5.0'
 
 import sys
 import traceback
