@@ -53,7 +53,7 @@ Groups interested in PyTan thus far:
 # How do I install it
 
 ## Windows Installation
-  * Download Python 2.7 from https://www.python.org/downloads/release/python-278/
+  * Download Python 2.7 from https://www.python.org/downloads/windows/
   * Install Python 2.7 -- if you accept the default paths it will install to C:\Python27
   * Copy this distro to your local machine somewhere
   * If you did not accept the default install path for Python 2.7, edit ```pytan\winbin\CONFIG.bat``` to change the *PYTHON* variable to point to the full path of *python.exe*
