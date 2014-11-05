@@ -12,6 +12,10 @@
  * [How do I use it](#how-do-i-use-it)
   * [Windows Usage](#windows-usage)
   * [OS X and Linux Usage](#os-x-and-linux-usage)
+  * [API Usage](#api-usage)
+    - [Create a connection](#create-a-connection)
+    - [Ask a parsed question](#ask-a-parsed-question)
+    - [Ask a parsed question and save as CSV](#ask-a-parsed-question-and-save-as-csv)
 
 ----
 
