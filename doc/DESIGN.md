@@ -1,6 +1,12 @@
-= Decision trees for creating a Python wrapper class for Taniums SOAP API =
+# Current / Actual Path
+  * Use xmltodict to parse/unparse XML to/from python dictionaries
 
-== Path 1 Suds ==
+# Notes
+  * Reference for Tanium's SOAP API: http://kb.tanium.com/SOAP
+
+# Paths for creating a Python wrapper class for Taniums SOAP API
+
+## Path 1 Suds
   * Most desirable path for "right now"
   * DOC URL: https://fedorahosted.org/suds/wiki/Documentation
   * Source URL: https://fedorahosted.org/suds/
@@ -14,11 +20,11 @@
     * External module, so will need to include setup instructions or include it in lib directory of wrapper package
     * Will require user to supply WSDL (which is not currently available via URL in current product)
 
-== Path 2 SOAPpy ==
+## Path 2 SOAPpy
   * Not going this path -- GIT repo readme for SOAPpy says to use suds instead of SOAPpy
   * Source URL: https://github.com/kiorky/SOAPpy
 
-== Path 3 ElementTree ==
+## Path 3 ElementTree
   * This path might be something for a later version
   * AKA "roll your own SOAP / XML parser"
   * ElementTree is built into python
@@ -29,7 +35,7 @@
   * Cons:
     * Would require much more dev work up front
 
-== Path 4 XML Templating ==
+## Path 4 XML Templating
   * This path is not very pythonific, not going this route
   * AKA "roll your own SOAP / XML parser using Python String Templates and BeautifulSoup"
   * Pros:
@@ -38,6 +44,3 @@
   * Cons:
     * Not a very pythonific way to handle this scenario
     * Error prone since XML messages being constructed "by hand"
-
-= Notes = 
-  * Reference for Tanium's SOAP API: http://kb.tanium.com/SOAP
