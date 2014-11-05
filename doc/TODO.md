@@ -15,6 +15,7 @@
  * [ ] excel out
  * [ ] email out
  * [ ] test against demo tanium
+ * [ ] Expand API examples in README.md
 
 # DONE
  * [X] better app_test
