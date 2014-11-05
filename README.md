@@ -1,8 +1,8 @@
 # Table of Contents
  * [What is it](#what-is-it)
  * [Why was it created](#why-was-it-created)
- * [Things PyTan can do right now](#things-pytan-can-do-right-now)
- * [Things PyTan can NOT do right now](#things-pytan-can-not-do-right-now)
+ * [Things it can do right now](#things-pytan-can-do-right-now)
+ * [Things it can NOT do right now](#things-pytan-can-not-do-right-now)
  * [How it has been tested](#how-it-has-been-tested)
  * [Groups interested in it](#groups-interested-in-it)
  * [How do I install it](#how-do-i-install-it)
@@ -29,7 +29,7 @@ PyTan was created to solve for the following needs:
     * Make a self contained package with as little external dependencies as possible
     * Make a self contained package with as little setup required as possible
 
-# Things PyTan can do right now
+# Things it can do right now
 
   1. Ask parsed questions (just like in the console)
   2. Ask manually built questions
@@ -42,7 +42,7 @@ PyTan was created to solve for the following needs:
     3. raw.response: will save the raw HTTP response from Tanium with no transformation
     5. raw.request: will save the raw HTTP request to Tanium with no transformation
 
-# Things PyTan can NOT do right now
+# Things it can NOT do right now
 
   1. Pass parameters for parsed questions
   2. Pass parameters for manual questions
