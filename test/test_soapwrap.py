@@ -34,8 +34,8 @@ import threaded_http
 # HOST = '192.168.42.130'
 
 # jims server info
-USERNAME = 'Jim Olsen'
-PASSWORD = 'Evinc3d!'
+USERNAME = 'Tanium User'
+PASSWORD = 'T@n!um'
 HOST = '172.16.31.128'
 PORT = 443
 

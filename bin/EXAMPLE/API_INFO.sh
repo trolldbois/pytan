@@ -1,5 +1,5 @@
-username='Jim Olsen'
-password='Evinc3d!'
+username='Tanium User'
+password='T@n!um'
 host='172.16.31.128'
 loglevel=1
 ftype=csv

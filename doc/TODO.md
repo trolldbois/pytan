@@ -1,13 +1,18 @@
 # TODO NOW
- * [ ] generalize username/password in test cases
- * [ ] re-work unit tests to be more better (data driven)
+ * [X] generalize username/password in test cases
+ * [ ] re-work unit tests to be more better-er (data driven)
  * [ ] support parameters in parsed & manual questions
+   * [ ] Param parsing for parsed questions (look for brackets, extract, store in sensor correlative array, add to request xml after getting prg match)
+   * [ ] Param parsing for manual questions (sameish for parsed)
  * [ ] support filters in manual questions
  * [ ] support options everywhere
  * [ ] add method to calculate total time btwn request and response
  * [ ] build "ask all questions" workflow
  * [ ] test against RT
  * [ ] test against all the different levels of user privs
+ * [ ] Deploy action
+ * [ ] Deploy package
+ * [ ] AddObject
 
 # TODO LATER
  * [ ] logfile support
