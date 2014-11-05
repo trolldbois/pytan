@@ -7,6 +7,7 @@
  * [ ] add method to calculate total time btwn request and response
  * [ ] build "ask all questions" workflow
  * [ ] test against RT
+ * [ ] test against all the different levels of user privs
 
 # TODO LATER
  * [ ] logfile support
