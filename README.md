@@ -24,6 +24,8 @@
 
 PyTan is a Python library that provides a simple way for programmatically interfacing with Tanium's SOAP API. It also has command line scripts that make it easy for non-programmers to utilize PyTan's library.
 
+The current code base should be considered version "0.5" - It will reach a version "1.0alpha" by sometime around 11/17/2014, and a version "1.0" by sometime around 12/1/2014.
+
 [..TOC..](#table-of-contents)
 # Why was it created
 
