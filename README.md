@@ -1,8 +1,8 @@
 # Table of Contents
  * [What is it](#what-is-it)
  * [Why was it created](#why-was-it-created)
- * [Things it can do right now](#things-pytan-can-do-right-now)
- * [Things it can NOT do right now](#things-pytan-can-not-do-right-now)
+ * [Things it can do right now](#things-it-can-not-do-right-now)
+ * [Things it can NOT do right now](#things-it-can-not-do-right-now)
  * [How it has been tested](#how-it-has-been-tested)
  * [Groups interested in it](#groups-interested-in-it)
  * [How do I install it](#how-do-i-install-it)
