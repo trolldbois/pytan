@@ -121,9 +121,9 @@ PyTan was created to solve for the following needs:
 [..TOC..](#table-of-contents)
 ## API Usage
 
-### Create a connection to a Tanium Server
+### Create a connection
 
-  * Here is an example python script that will 
+  * This python script will create a connection to the SOAP API on a Tanium server. Change PYTAN_PATH, USERNAME, PASSWORD, and HOST accordingly.
 
 ```python
 #!/usr/bin/env python
@@ -144,4 +144,141 @@ Should produce the following output:
 
 SoapWrap to https://172.16.31.128:443/soap, Version: 6.2.314.3258
 '''
+```
+
+### Ask a parsed question
+
+  * This python script will create a connection to the SOAP API on a Tanium server, and ask a parsed question and store the return in ```response```. Change PYTAN_PATH, USERNAME, PASSWORD, HOST, and QUESTION accordingly.
+
+```python
+#!/usr/bin/env python
+PYTAN_PATH = '/Users/jolsen/gh/pytan'
+USERNAME = 'Tanium User'
+PASSWORD = 'T@n!um'
+HOST = '172.16.31.128'
+QUESTION = 'Get Computer Name from all machines'
+
+import sys
+sys.path.insert(0, '%s/lib' % PYTAN_PATH)
+
+import SoapWrap
+import json
+
+sw = SoapWrap.SoapWrap(USERNAME, PASSWORD, HOST)
+response = sw.ask_parsed_question(QUESTION)
+print response
+'''
+Should produce the following output:
+
+SoapResponse from: https://172.16.31.128:443/soap, len: 1640, on: 2014_11_05-11_09_55-EST, SoapRequest for 'get_parse_groups'/'AddObject' of '{"parse_job": {"question_text": "Get Computer Name from all machines"}}', Sent: 2014_11_05-11_09_40-EST, Auth: session
+'''
+print json.dumps(response.inner_return, indent=2)
+'''
+Should produce the following output:
+
+{
+  "result_sets": {
+    "now": "2014/11/03 11:02:28 GMT-0000",
+    "result_set": {
+      "age": 0,
+      "archived_question_id": 0,
+      "saved_question_id": 0,
+      "question_id": 22636,
+      "report_count": 2,
+      "seconds_since_issued": 0,
+      "issue_seconds": 0,
+      "expire_seconds": 0,
+      "tested": 2,
+      "passed": 2,
+      "mr_tested": 2,
+      "mr_passed": 2,
+      "estimated_total": 2,
+      "select_count": 1,
+      "cs": {
+        "c": [
+          {
+            "wh": 3409330187,
+            "dn": "Computer Name",
+            "rt": 1
+          },
+          {
+            "wh": 0,
+            "dn": "Count",
+            "rt": 3
+          }
+        ]
+      },
+      "filtered_row_count": 2,
+      "filtered_row_count_machines": 2,
+      "item_count": 2,
+      "rs": {
+        "r": [
+          {
+            "id": 510214322,
+            "cid": 0,
+            "c": [
+              {
+                "v": "Casus-Belli.local"
+              },
+              {
+                "v": 1
+              }
+            ]
+          },
+          {
+            "id": 911171945,
+            "cid": 0,
+            "c": [
+              {
+                "v": "jtanium1.localdomain"
+              },
+              {
+                "v": 1
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
+'''
+```
+
+### Ask a parsed question and save as CSV
+
+  * This python script will create a connection to the SOAP API on a Tanium server, and ask a parsed question and store the return in ```response```, then use the SoapTransform class to write the response as a CSV file. Change PYTAN_PATH, USERNAME, PASSWORD, HOST, QUESTION, and FTYPE accordingly. See the dictionary ```TRANSFORM_FORMATS``` in ```pytan/lib/SoapConstants.py``` for all of the supported formats for FTYPE.
+
+```python
+#!/usr/bin/env python
+PYTAN_PATH = '/Users/jolsen/gh/pytan'
+USERNAME = 'Tanium User'
+PASSWORD = 'T@n!um'
+HOST = '172.16.31.128'
+QUESTION = 'Get Computer Name from all machines'
+FTYPE = 'csv'
+
+import sys
+sys.path.insert(0, '%s/lib' % PYTAN_PATH)
+
+import SoapWrap
+
+sw = SoapWrap.SoapWrap(USERNAME, PASSWORD, HOST)
+response = sw.ask_parsed_question(QUESTION)
+st = SoapWrap.SoapTransform()
+response_filename = st.write_response(response, ftype=FTYPE)
+print response_filename
+'''
+Should produce the following output:
+
+./get_parse_groups__parse_job_question_text_GetComputerNamefromallmachines__2014_11_05-11_16_22-EST.csv
+'''
+```
+
+  * Contents of the transformed CSV file:
+
+```csv
+"Computer Name"
+"Casus-Belli.local"
+"jtanium1.localdomain"
 ```
