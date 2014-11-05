@@ -11,6 +11,25 @@
 PyTan was created to solve for the following needs:
   1. Create a python library to provide an easy set of methods for programmatically interfacing with Tanium via the SOAP API
   2. Create a set of command line scripts that utilize the python library that handle the argument parsing, thereby providing non-python users with command line access to the functionality provided by the methods inside of the python library
+ 
+Things PyTan can do right now:
+  1. Ask parsed questions (just like in the console)
+  2. Ask manually built questions
+  3. Get object data for the following object types: saved question, question, sensor, package, action, group
+  4. Transform the data and save the transformation into a file for any response into the following types: 
+    1. csv: will transform the response from Tanium into a CSV document
+    7. json: will transform the response from Tanium into a JSON document
+    4. xml: will transform the response from Tanium into an XML document
+    2. raw.xml: will save the raw XML response from Tanium with no transformation
+    3. raw.response: will save the raw HTTP response from Tanium with no transformation
+    5. raw.request: will save the raw HTTP request to Tanium with no transformation
+
+Things PyTan can **NOT** do right now:
+  1. Pass parameters for parsed questions
+  2. Pass parameters for manual questions
+  3. Pass filters for manual questions
+  4. Pass Options for anything
+  5. Add object for saved question, sensor, package, action, group
 
 [TOC](#table-of-contents)
 
@@ -37,4 +56,25 @@ To date, this has only been tested on OS X 10.10 and Windows 2008 R2.
 
 # How do I use it
 
+## Windows Usage
+  * See ```pytan\winbin\EXAMPLE``` for a set of batch scripts that use the various command line scripts to do things. Ensure you update ```pytan\winbin\EXAMPLE\API_INFO.bat``` with username, password, and host for your Tanium server
+  * Use ```pytan\winbin\ask_parsed_question.bat``` to ask a parsed question of Tanium
+  * Use ```pytan\winbin\ask_manual_question.bat``` to ask a manual question of Tanium
+  * Use ```pytan\winbin\get_objects.bat``` to get object data from Tanium
+  * Use ```pytan\winbin\get_question_results.bat``` to get results from a question ID that has already been asked
+  * Use ```pytan\winbin\get_server_info.bat``` to get print out the return of GetServerInfo from the API
+  * Use ```pytan\winbin\sw_shell.bat``` to enter into a python console that has access to the PyTan Library as **sw**
+  * Run any of the commands above with **-h/--help** to get usage information
+ 
+## OS X and Linux Usage
+  * See ```pytan\bin\EXAMPLE``` for a set of bash scripts that use the various command line scripts to do things. Ensure you update ```pytan\bin\EXAMPLE\API_INFO.sh``` with username, password, and host for your Tanium server
+  * Use ```pytan\bin\ask_parsed_question.py``` to ask a parsed question of Tanium
+  * Use ```pytan\bin\ask_manual_question.py``` to ask a manual question of Tanium
+  * Use ```pytan\bin\get_objects.py``` to get object data from Tanium
+  * Use ```pytan\bin\get_question_results.py``` to get results from a question ID that has already been asked
+  * Use ```pytan\bin\get_server_info.py``` to get print out the return of GetServerInfo from the API
+  * Use ```pytan\bin\sw_shell.py``` to enter into a python console that has access to the PyTan Library as **sw**
+  * Run any of the commands above with **-h/--help** to get usage information
+  
+  
 [TOC](#table-of-contents)
