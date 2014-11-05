@@ -13,7 +13,14 @@
 PyTan was created to solve for the following needs:
   1. Create a python library to provide an easy set of methods for programmatically interfacing with Tanium via the SOAP API
   2. Create a set of command line scripts that utilize the python library that handle the argument parsing, thereby providing non-python users with command line access to the functionality provided by the methods inside of the python library
- 
+  3. [Original Design Approach Doc](doc/DESIGN.md)
+  4. Original Design Goals:
+    * Provide a command line method for asking a question and getting a result
+    * Provide a command line method for asking all questions and getting all results
+    * Make above methods produce output in programmatic output (i.e. CSV)
+    * Make a self contained package with as little external dependencies as possible
+    * Make a self contained package with as little setup required as possible
+
 Things PyTan can do right now:
   1. Ask parsed questions (just like in the console)
   2. Ask manually built questions
