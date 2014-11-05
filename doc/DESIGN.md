@@ -1,5 +1,7 @@
 # Current / Actual Path
   * Use xmltodict to parse/unparse XML to/from python dictionaries
+  * Handles XML parsing and creation cleanly, and XML namespace are easily handled
+  * Source URL: https://github.com/martinblech/xmltodict
 
 # Notes
   * Reference for Tanium's SOAP API: http://kb.tanium.com/SOAP
@@ -7,6 +9,7 @@
 # Paths for creating a Python wrapper class for Taniums SOAP API
 
 ## Path 1 Suds
+  * **Tried this path -- ran into issues with XML typing and WSDL parsing in response, as well as problems with creating null objects**
   * Most desirable path for "right now"
   * DOC URL: https://fedorahosted.org/suds/wiki/Documentation
   * Source URL: https://fedorahosted.org/suds/
@@ -21,10 +24,11 @@
     * Will require user to supply WSDL (which is not currently available via URL in current product)
 
 ## Path 2 SOAPpy
-  * Not going this path -- GIT repo readme for SOAPpy says to use suds instead of SOAPpy
+  * **Not going this path -- GIT repo readme for SOAPpy says to use suds instead of SOAPpy**
   * Source URL: https://github.com/kiorky/SOAPpy
 
 ## Path 3 ElementTree
+  * **Tried this path -- ran into issues with ElementTree being too unweildy**
   * This path might be something for a later version
   * AKA "roll your own SOAP / XML parser"
   * ElementTree is built into python
@@ -36,7 +40,7 @@
     * Would require much more dev work up front
 
 ## Path 4 XML Templating
-  * This path is not very pythonific, not going this route
+  * **This path is not very pythonific, not going this route**
   * AKA "roll your own SOAP / XML parser using Python String Templates and BeautifulSoup"
   * Pros:
     * No external dependencies for third party modules
