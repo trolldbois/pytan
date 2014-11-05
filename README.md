@@ -5,6 +5,8 @@
   * [OS X Installation](#os-x-installation)
   * [Linux Installation](#linux-installation)
  * [How do I use it](#how-do-i-use-it)
+  * [Windows Usage](#windows-usage)
+  * [OS X and Linux Usage](#os-x-and-linux-usage)
 
 # What is it
 
