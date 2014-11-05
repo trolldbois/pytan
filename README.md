@@ -121,6 +121,7 @@ PyTan was created to solve for the following needs:
 [..TOC..](#table-of-contents)
 ## API Usage
 
+[..TOC..](#table-of-contents)
 ### Create a connection
 
   * This python script will create a connection to the SOAP API on a Tanium server. Change PYTAN_PATH, USERNAME, PASSWORD, and HOST accordingly.
@@ -146,13 +147,14 @@ SoapWrap to https://172.16.31.128:443/soap, Version: 6.2.314.3258
 '''
 ```
 
+[..TOC..](#table-of-contents)
 ### Ask a parsed question
 
   * This python script will create a connection to the SOAP API on a Tanium server, and ask a parsed question and store the return in ```response```. Change PYTAN_PATH, USERNAME, PASSWORD, HOST, and QUESTION accordingly.
 
 ```python
 #!/usr/bin/env python
-PYTAN_PATH = '/Users/jolsen/gh/pytan'
+PYTAN_PATH = '/opt/pytan'
 USERNAME = 'Tanium User'
 PASSWORD = 'T@n!um'
 HOST = '172.16.31.128'
@@ -245,13 +247,14 @@ Should produce the following output:
 '''
 ```
 
+[..TOC..](#table-of-contents)
 ### Ask a parsed question and save as CSV
 
   * This python script will create a connection to the SOAP API on a Tanium server, and ask a parsed question and store the return in ```response```, then use the SoapTransform class to write the response as a CSV file. Change PYTAN_PATH, USERNAME, PASSWORD, HOST, QUESTION, and FTYPE accordingly. See the dictionary ```TRANSFORM_FORMATS``` in ```pytan/lib/SoapConstants.py``` for all of the supported formats for FTYPE.
 
 ```python
 #!/usr/bin/env python
-PYTAN_PATH = '/Users/jolsen/gh/pytan'
+PYTAN_PATH = '/opt/pytan'
 USERNAME = 'Tanium User'
 PASSWORD = 'T@n!um'
 HOST = '172.16.31.128'
@@ -282,3 +285,5 @@ Should produce the following output:
 "Casus-Belli.local"
 "jtanium1.localdomain"
 ```
+
+[..TOC..](#table-of-contents)
