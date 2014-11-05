@@ -13,10 +13,14 @@
   * [Windows Usage](#windows-usage)
   * [OS X and Linux Usage](#os-x-and-linux-usage)
 
+----
+
+[..TOC..](#table-of-contents)
 # What is it
 
 PyTan is a Python library that provides a simple way for programmatically interfacing with Tanium's SOAP API. It also has command line scripts that make it easy for non-programmers to utilize PyTan's library.
 
+[..TOC..](#table-of-contents)
 # Why was it created
 
 PyTan was created to solve for the following needs:
@@ -29,6 +33,7 @@ PyTan was created to solve for the following needs:
     * Make a self contained package with as little external dependencies as possible
     * Make a self contained package with as little setup required as possible
 
+[..TOC..](#table-of-contents)
 # Things it can do right now
 
   1. Ask parsed questions (just like in the console)
@@ -42,6 +47,7 @@ PyTan was created to solve for the following needs:
     3. raw.response: will save the raw HTTP response from Tanium with no transformation
     5. raw.request: will save the raw HTTP request to Tanium with no transformation
 
+[..TOC..](#table-of-contents)
 # Things it can NOT do right now
 
   1. Pass parameters for parsed questions
@@ -53,6 +59,7 @@ PyTan was created to solve for the following needs:
   7. Deploy packages
   8. See [TODO.md](doc/TODO.md) for the list of things that need to be done and their priority
  
+[..TOC..](#table-of-contents)
 # How it has been tested
 
   * To date, PyTan has only been tested to run on OS X 10.10 and Windows 2008 R2
@@ -64,13 +71,13 @@ PyTan was created to solve for the following needs:
      * One windows (installed on the Tanium Server itself)
      * One OS X (installed on the OS X 10.10 running VMWare Fusion 7)
 
+[..TOC..](#table-of-contents)
 # Groups interested in it
 
   * Tanium TAM's (for automating Sensor testing)
   * Potential Client in Fed
 
-[TOC](#table-of-contents)
-
+[..TOC..](#table-of-contents)
 # How do I install it
 
 ## Windows Installation
@@ -88,8 +95,7 @@ PyTan was created to solve for the following needs:
   * Ensure the first *python* binary in your path points to your Python 2.7 installation
   * Copy this distro to your local machine somewhere
 
-[TOC](#table-of-contents)
-
+[..TOC..](#table-of-contents)
 # How do I use it
 
 ## Windows Usage
@@ -112,5 +118,4 @@ PyTan was created to solve for the following needs:
   * Run any of the commands above with **-h/--help** to get usage information
   * See ```pytan\bin\EXAMPLE``` for a set of bash scripts that use the various command line scripts to do things. Ensure you update ```pytan\bin\EXAMPLE\API_INFO.sh``` with username, password, and host for your Tanium server
   
-  
-[TOC](#table-of-contents)
+[..TOC..](#table-of-contents)
