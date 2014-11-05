@@ -119,3 +119,18 @@ PyTan was created to solve for the following needs:
   * See ```pytan\bin\EXAMPLE``` for a set of bash scripts that use the various command line scripts to do things. Ensure you update ```pytan\bin\EXAMPLE\API_INFO.sh``` with username, password, and host for your Tanium server
   
 [..TOC..](#table-of-contents)
+## API Usage
+
+### Create a connection to a Tanium Server
+
+  * Here is an example python script that will 
+
+```python
+PYTAN_PATH='/opt/pytan'
+
+import sys
+sys.path.insert(0, '%s/lib' % PYTAN_LIB)
+import SoapWrap
+
+sw = 
+```
