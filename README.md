@@ -48,8 +48,8 @@ How PyTan has been tested so far:
    * SQL Server version: SQL Server 2012 Express with Tools
    * Host OS: Windows 2008 R2 SP1 x64 with all Windows Updates applied, running inside a VMWare Fusion 7 Virtual Machine on OS X 10.10 - both the Tanium Server and the SQL Server reside on the same host
    * Tanium Clients:
-    * One windows (installed on the Tanium Server itself)
-    * One OS X (installed on the OS X 10.10 running VMWare Fusion 7)
+     * One windows (installed on the Tanium Server itself)
+     * One OS X (installed on the OS X 10.10 running VMWare Fusion 7)
 
 Groups interested in PyTan thus far:
   * Tanium TAM's (for automating Sensor testing)
