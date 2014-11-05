@@ -32,12 +32,25 @@ Things PyTan can **NOT** do right now:
   3. Pass filters for manual questions
   4. Pass Options for anything
   5. Add object for saved question, sensor, package, action, group
+  6. See (doc/TODO.md) for the list of things that need to be done and their priority
+ 
+How PyTan has been tested so far:
+  * To date, PyTan has only been tested to run on OS X 10.10 and Windows 2008 R2
+  * To date, the only Tanium installation PyTan has been tested to run against is the following:
+   * Tanium Server version: 6.2.314.3258
+   * SQL Server version: SQL Server 2012 Express with Tools
+   * Host OS: Windows 2008 R2 SP1 x64 with all Windows Updates applied, running inside a VMWare Fusion 7 Virtual Machine on OS X 10.10 - both the Tanium Server and the SQL Server reside on the same host
+   * Tanium Clients:
+    * One windows (installed on the Tanium Server itself)
+    * One OS X (installed on the OS X 10.10 running VMWare Fusion 7)
+
+Groups interested in PyTan thus far:
+  * Tanium TAM's (for automating Sensor testing)
+  * Potential Client in Fed
 
 [TOC](#table-of-contents)
 
 # How do I install it
-
-To date, this has only been tested on OS X 10.10 and Windows 2008 R2.
 
 ## Windows Installation
   * Download Python 2.7 from https://www.python.org/downloads/release/python-278/
