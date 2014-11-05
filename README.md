@@ -32,7 +32,7 @@ Things PyTan can **NOT** do right now:
   3. Pass filters for manual questions
   4. Pass Options for anything
   5. Add object for saved question, sensor, package, action, group
-  6. See (doc/TODO.md) for the list of things that need to be done and their priority
+  6. See [TODO.md](doc/TODO.md) for the list of things that need to be done and their priority
  
 How PyTan has been tested so far:
   * To date, PyTan has only been tested to run on OS X 10.10 and Windows 2008 R2
