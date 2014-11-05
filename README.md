@@ -113,14 +113,14 @@ PyTan was created to solve for the following needs:
   * See ```pytan\winbin\EXAMPLE``` for a set of batch scripts that use the various command line scripts to do things. Ensure you update ```pytan\winbin\EXAMPLE\API_INFO.bat``` with username, password, and host for your Tanium server
  
 ## OS X and Linux Usage
-  * Use ```pytan\bin\ask_parsed_question.py``` to ask a parsed question of Tanium
-  * Use ```pytan\bin\ask_manual_question.py``` to ask a manual question of Tanium
-  * Use ```pytan\bin\get_objects.py``` to get object data from Tanium
-  * Use ```pytan\bin\get_question_results.py``` to get results from a question ID that has already been asked
-  * Use ```pytan\bin\get_server_info.py``` to get print out the return of GetServerInfo from the API
-  * Use ```pytan\bin\sw_shell.py``` to enter into a python console that has access to the PyTan Library as **sw**
+  * Use ```pytan/bin/ask_parsed_question.py``` to ask a parsed question of Tanium
+  * Use ```pytan/bin/ask_manual_question.py``` to ask a manual question of Tanium
+  * Use ```pytan/bin/get_objects.py``` to get object data from Tanium
+  * Use ```pytan/bin/get_question_results.py``` to get results from a question ID that has already been asked
+  * Use ```pytan/bin/get_server_info.py``` to get print out the return of GetServerInfo from the API
+  * Use ```pytan/bin/sw_shell.py``` to enter into a python console that has access to the PyTan Library as **sw**
   * Run any of the commands above with **-h/--help** to get usage information
-  * See ```pytan\bin\EXAMPLE``` for a set of bash scripts that use the various command line scripts to do things. Ensure you update ```pytan\bin\EXAMPLE\API_INFO.sh``` with username, password, and host for your Tanium server
+  * See ```pytan/bin/EXAMPLE``` for a set of bash scripts that use the various command line scripts to do things. Ensure you update ```pytan/bin/EXAMPLE/API_INFO.sh``` with username, password, and host for your Tanium server
   
 [..TOC..](#table-of-contents)
 ## API Usage
