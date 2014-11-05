@@ -1,13 +1,16 @@
 # TODO NOW
- * [ ] parameters / options / filters
- * [ ] time btwn req/resp
+ * [ ] generalize username/password in test cases
+ * [ ] re-work unit tests to be more better (data driven)
+ * [ ] support parameters in parsed & manual questions
+ * [ ] support filters in manual questions
+ * [ ] support options everywhere
+ * [ ] add method to calculate total time btwn request and response
  * [ ] build "ask all questions" workflow
  * [ ] test against RT
 
 # TODO LATER
  * [ ] logfile support
  * [ ] sort order? (switch to ordereddicts)
- * [ ] test against 444 vs 443
  * [ ] excel out
  * [ ] email out
 
@@ -26,3 +29,5 @@
  * [X] python wrapper scripts
  * [X] windows wrapper scripts
  * [X] unix example scripts
+ * [X] test against 444 vs 443
+ 
