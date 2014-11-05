@@ -47,7 +47,7 @@ How PyTan has been tested so far:
    * Tanium Server version: 6.2.314.3258
    * SQL Server version: SQL Server 2012 Express with Tools
    * Host OS: Windows 2008 R2 SP1 x64 with all Windows Updates applied, running inside a VMWare Fusion 7 Virtual Machine on OS X 10.10 - both the Tanium Server and the SQL Server reside on the same host
-   * Tanium Clients:
+   * Tanium Clients: 2
      * One windows (installed on the Tanium Server itself)
      * One OS X (installed on the OS X 10.10 running VMWare Fusion 7)
 
@@ -79,7 +79,6 @@ Groups interested in PyTan thus far:
 # How do I use it
 
 ## Windows Usage
-  * See ```pytan\winbin\EXAMPLE``` for a set of batch scripts that use the various command line scripts to do things. Ensure you update ```pytan\winbin\EXAMPLE\API_INFO.bat``` with username, password, and host for your Tanium server
   * Use ```pytan\winbin\ask_parsed_question.bat``` to ask a parsed question of Tanium
   * Use ```pytan\winbin\ask_manual_question.bat``` to ask a manual question of Tanium
   * Use ```pytan\winbin\get_objects.bat``` to get object data from Tanium
@@ -87,9 +86,9 @@ Groups interested in PyTan thus far:
   * Use ```pytan\winbin\get_server_info.bat``` to get print out the return of GetServerInfo from the API
   * Use ```pytan\winbin\sw_shell.bat``` to enter into a python console that has access to the PyTan Library as **sw**
   * Run any of the commands above with **-h/--help** to get usage information
+  * See ```pytan\winbin\EXAMPLE``` for a set of batch scripts that use the various command line scripts to do things. Ensure you update ```pytan\winbin\EXAMPLE\API_INFO.bat``` with username, password, and host for your Tanium server
  
 ## OS X and Linux Usage
-  * See ```pytan\bin\EXAMPLE``` for a set of bash scripts that use the various command line scripts to do things. Ensure you update ```pytan\bin\EXAMPLE\API_INFO.sh``` with username, password, and host for your Tanium server
   * Use ```pytan\bin\ask_parsed_question.py``` to ask a parsed question of Tanium
   * Use ```pytan\bin\ask_manual_question.py``` to ask a manual question of Tanium
   * Use ```pytan\bin\get_objects.py``` to get object data from Tanium
@@ -97,6 +96,7 @@ Groups interested in PyTan thus far:
   * Use ```pytan\bin\get_server_info.py``` to get print out the return of GetServerInfo from the API
   * Use ```pytan\bin\sw_shell.py``` to enter into a python console that has access to the PyTan Library as **sw**
   * Run any of the commands above with **-h/--help** to get usage information
+  * See ```pytan\bin\EXAMPLE``` for a set of bash scripts that use the various command line scripts to do things. Ensure you update ```pytan\bin\EXAMPLE\API_INFO.sh``` with username, password, and host for your Tanium server
   
   
 [TOC](#table-of-contents)
