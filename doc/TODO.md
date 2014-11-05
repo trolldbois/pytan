@@ -13,6 +13,7 @@
  * [ ] sort order? (switch to ordereddicts)
  * [ ] excel out
  * [ ] email out
+ * [ ] test against demo tanium
 
 # DONE
  * [X] better app_test
