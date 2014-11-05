@@ -126,11 +126,22 @@ PyTan was created to solve for the following needs:
   * Here is an example python script that will 
 
 ```python
-PYTAN_PATH='/opt/pytan'
+#!/usr/bin/env python
+PYTAN_PATH = '/opt/pytan'
+USERNAME = 'Tanium User'
+PASSWORD = 'T@n!um'
+HOST = '172.16.31.128'
 
 import sys
-sys.path.insert(0, '%s/lib' % PYTAN_LIB)
+sys.path.insert(0, '%s/lib' % PYTAN_PATH)
+
 import SoapWrap
 
-sw = 
+sw = SoapWrap.SoapWrap(USERNAME, PASSWORD, HOST)
+print sw
+'''
+Should produce the following output:
+
+SoapWrap to https://172.16.31.128:443/soap, Version: 6.2.314.3258
+'''
 ```
