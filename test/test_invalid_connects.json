@@ -1,20 +1,20 @@
 {
     "bad_soap_path": {
-         "soap_path": "/bad_path"
-     },
+        "soap_path": "/bad_path"
+    },
     "bad_password": {
-         "password": "INVALID_PASSWORD"
-     },
+        "password": "INVALID_PASSWORD"
+    },
     "bad_username": {
-         "username": "INVALID_USERNAME"
-     },
+        "username": "INVALID_USERNAME"
+    },
     "bad_host_and_non_ssl_port_using_https": {
-         "host": "127.0.0.1",
-         "port": "4433"
-     },
+        "host": "127.0.0.1",
+        "port": "4433"
+    },
     "bad_host_and_non_ssl_port_using_http": {
-         "host": "127.0.0.1",
-         "port": "4433",
-         "protocol": "http"
-     }
+        "host": "127.0.0.1",
+        "port": "4433",
+        "protocol": "http"
+    }
 }
