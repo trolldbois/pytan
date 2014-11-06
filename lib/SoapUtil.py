@@ -341,8 +341,8 @@ def build_fn_from_dict(d, key='fpostfix'):
     return d
 
 
-def stringify_dict(d, max_len=80):
-    s = str(d)
+def stringify_obj(o, max_len=80):
+    s = json.dumps(o)
     s = re.sub(r'[^\w,:]', '', s)
     s = s.replace(':', '_')
     s = s.replace(',', '+')

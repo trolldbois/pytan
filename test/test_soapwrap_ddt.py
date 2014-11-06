@@ -131,7 +131,7 @@ class ValidServerTests(unittest.TestCase):
                 json.dumps(combo)))
             combo['fdir'] = TEST_OUT
             combo['response'] = response
-            combo['fname'] = '_'.join([method, SoapUtil.stringify_dict(value)])
+            combo['fname'] = '_'.join([method, SoapUtil.stringify_obj(value)])
             f = st.write_response(**combo)
             spew("wrote response to: %s" % f)
             self.assertTrue(os.path.isfile(f))

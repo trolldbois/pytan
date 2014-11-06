@@ -1226,7 +1226,7 @@ class SoapTransform(object):
 
     @staticmethod
     def get_fname(response):
-        s = SoapUtil.stringify_dict(response.request.objects_dict)
+        s = SoapUtil.stringify_obj(response.request.objects_dict)
         base_fn = [response.request.caller_method, s, SoapUtil.get_now()]
         base_fn = '__'.join(base_fn)
         return base_fn
@@ -1454,9 +1454,7 @@ class SoapTransform(object):
             headers = self.add_sensor_to_headers(headers, sensors)
 
         rows = self.get_resultxml_rows(inner_return, headers)
-
-        # if kwargs.get('HIDE_COUNT_COLUMN', True):
-            # rows, headers = self.remove_count_column(rows, headers)
+        rows, headers = self.check_count_column(rows, headers)
 
         if kwargs.get('EXPAND_GROUPED_COLUMNS', False):
             rows = self.expand_grouped_columns(rows, headers)
@@ -1507,14 +1505,15 @@ class SoapTransform(object):
         return headers
 
     ## ResultXML
-    @staticmethod
-    def remove_count_column(rows, headers):
+    def check_count_column(self, rows, headers):
         count_headers = ['Count (NumericDecimal)', 'Count']
-        rows = [
-            {k: v for k, v in row.iteritems() if k not in count_headers}
-            for row in rows
-        ]
-        headers = [x for x in headers if x['name'] not in count_headers]
+        if not any([x.get(y, 0) > 1 for y in count_headers for x in rows]):
+            self.DLOG("Removing count header from result, all = 1")
+            rows = [
+                {k: v for k, v in row.iteritems() if k not in count_headers}
+                for row in rows
+            ]
+            headers = [x for x in headers if x['name'] not in count_headers]
         return rows, headers
 
     ## ResultXML

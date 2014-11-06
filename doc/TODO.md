@@ -1,5 +1,4 @@
 # TODO NOW
- * [ ] re-work COUNT column hiding (need to expand testbed to have 2 or more of one OS)
  * [ ] support parameters in parsed & manual questions
    * [ ] Param parsing for parsed questions (look for brackets, extract, store in sensor correlative array, add to request xml after getting prg match)
    * [ ] Param parsing for manual questions (sameish for parsed)
@@ -40,4 +39,5 @@
  * [X] test against 444 vs 443
  * [X] generalize username/password in test cases
  * [X] re-work unit tests to be more better-er (data driven)
- 
+ * [X] re-work COUNT column hiding (need to expand testbed to have 2 or more of one OS)
+
