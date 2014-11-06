@@ -73,9 +73,13 @@ PyTan was created to solve for the following needs:
    * Tanium Server version: 6.2.314.3258
    * SQL Server version: SQL Server 2012 Express with Tools
    * Host OS: Windows 2008 R2 SP1 x64 with all Windows Updates applied, running inside a VMWare Fusion 7 Virtual Machine on OS X 10.10 - both the Tanium Server and the SQL Server reside on the same host
-   * Tanium Clients: 2
-     * One windows (installed on the Tanium Server itself)
-     * One OS X (installed on the OS X 10.10 running VMWare Fusion 7)
+   * Tanium Clients: 6
+     * OS X 10.10 (laptop running VMWare Fusion 7)
+     * OS X 10.9 (VM)
+     * Windows 2008 R2 SP1 x64 (VM running the Tanium Server itself)
+     * Windows 2008 R2 SP1 x64 (VM)
+     * Ubuntu 14.04.1 Desktop amd64 (VM)
+     * RedHat Enterprise Linux 6.4 x86_64 (VM)
 
 [..TOC..](#table-of-contents)
 # Groups interested in it

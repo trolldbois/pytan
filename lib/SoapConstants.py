@@ -86,7 +86,6 @@ TRANSFORM_BOOL_KWARGS = {
     'ADD_TYPE_TO_HEADERS': False,
     'ADD_SENSOR_TO_HEADERS': False,
     'EXPAND_GROUPED_COLUMNS': False,
-    # 'HIDE_COUNT_COLUMN': True,
 }
 TRANSFORM_BOOL_HELP = {
     'ADD_TYPE_TO_HEADERS': "Appends the column type to each column header for "
@@ -95,7 +94,6 @@ TRANSFORM_BOOL_HELP = {
     "originates from for question results",
     'EXPAND_GROUPED_COLUMNS': "Expand carriage return seperated values into "
     "sensor related rows",
-    'HIDE_COUNT_COLUMN': "Hide the count column returned by the API",
 }
 
 # Used by SoapWrap.SoapTransform.write_response() for kwargs
