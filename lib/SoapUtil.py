@@ -13,6 +13,7 @@ import time
 import getpass
 import logging
 import json
+import itertools
 from collections import OrderedDict
 # from datetime import datetime
 
@@ -303,3 +304,37 @@ def set_all_loglevels(level='DEBUG'):
         v.info(m)
         v.warn(m)
         v.error(m)
+
+
+def combinator1(l1, l2):
+    l2_repeated = itertools.repeat(l2, len(l1))
+    c = [dict(zip(l1, x)) for x in itertools.product(*l2_repeated)]
+    return c
+
+
+def combinator2(l1, l2, key):
+    c = [
+        dict(x[0].items() + {key: x[1]}.items())
+        for x in itertools.product(l1, l2)
+    ]
+    return c
+
+
+def add_fprefix(d, key='fprefix'):
+    skips = ['ftype', key]
+    parts = []
+    for k, v in d.iteritems():
+        if k in skips:
+            continue
+        new_k = ''.join([s[0] for s in k.split('_')])
+        if is_list(v):
+            if not v:
+                new_v = 'null'
+            else:
+                new_v = ''.join([s[0] for s in v])
+        else:
+            new_v = str(v)[0]
+        parts.append('_'.join([new_k, new_v]))
+    parts = '-'.join(parts)
+    d[key] = parts
+    return d

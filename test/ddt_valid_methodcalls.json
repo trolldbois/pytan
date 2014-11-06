@@ -1,0 +1,5 @@
+{
+    "get_server_info": {
+        "method": "get_server_info"
+    }
+}

@@ -3,9 +3,8 @@
 import os
 import sys
 import glob
-# import itertools
 import copy
-# import json
+import json
 import unittest
 
 # disable python from creating .pyc files everywhere
@@ -22,6 +21,7 @@ for aa in path_adds:
         sys.path.insert(0, aa)
 
 import SoapWrap
+import SoapUtil
 import threaded_http
 import ddt
 
@@ -59,13 +59,13 @@ class InvalidServerTests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        spew("### BasicTests setup START")
+        spew("### InvalidServerTests setup START")
         cls.__http = threaded_http.threaded_http(
             port=4433, verbosity=TESTVERBOSITY
         )
-        spew("### BasicTests setup END")
+        spew("### InvalidServerTests setup END")
 
-    @ddt.file_data('test_invalid_connects.json')
+    @ddt.file_data('ddt_invalid_connects.json')
     @unittest.expectedFailure
     def test_invalid_connect(self, value):
         mykwargs = copy.copy(SERVER_INFO)
@@ -82,8 +82,9 @@ class ValidServerTests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        spew("### TestsAgainstServer setup START")
+        spew("### ValidServerTests setup START")
         cls.sw = SoapWrap.SoapWrap(**SERVER_INFO)
+        cls.st = SoapWrap.SoapTransform()
 
         if not os.path.isdir(TEST_OUT):
             os.mkdir(TEST_OUT)
@@ -94,11 +95,54 @@ class ValidServerTests(unittest.TestCase):
             [os.unlink(x) for x in test_files]
 
         spew('\n' + str(cls.sw))
-        spew("### TestsAgainstServer setup END")
+        spew("### ValidServerTests setup END")
 
     def setup_test(self):
         spew("")
         return self.sw
+
+    def combo_transform_tests(self, response):
+        # derive all the permutations of every option we have for
+        # bool args and header sort priority
+        # this is complicated and involves combinatorics, but basically
+        # we write a response file for every supported format, with every
+        # possible combination of options (and embed those options into
+        # the filename)
+        st = self.st
+        bool_args = st.BOOL_KWARGS.keys()
+        bool_opts = [True, False]
+        sort_args = ['HEADER_SORT_PRIORITY']
+        sort_opts = [st.HEADER_SORT_PRIORITY, [], ["name"], False]
+        format_tests = [x for x in st.FORMATS if 'raw.' not in x]
+
+        bool_combos = SoapUtil.combinator1(bool_args, bool_opts)
+        sort_combos = SoapUtil.combinator1(sort_args, sort_opts)
+        all_combos = bool_combos + sort_combos
+        all_combos = SoapUtil.combinator2(all_combos, format_tests, 'ftype')
+        all_combos = [SoapUtil.add_fprefix(x) for x in all_combos]
+
+        for combo in all_combos:
+            spew("+++ TESTING SoapTransform.write_response() with {}".format(
+                json.dumps(combo)))
+            combo['fdir'] = TEST_OUT
+            combo['response'] = response
+            f = st.write_response(**combo)
+            spew("wrote response to: %s" % f)
+            self.assertTrue(os.path.isfile(f))
+
+    def transform_tests(self, response):
+        '''standard transform tests for any response object'''
+        st = self.st
+        format_tests = st.FORMATS.keys()
+
+        for ft in format_tests:
+            spew(
+                "+++ TESTING SoapTransform.write_response() "
+                "with default opts for ftype {}".format(ft))
+            f = st.write_response(
+                response, fdir=TEST_OUT, ftype=ft, fprefix='defaults')
+            spew("wrote response to: %s" % f)
+            self.assertTrue(os.path.isfile(f))
 
     def response_tests(self, response):
         '''standard tests for any response object'''
@@ -119,10 +163,21 @@ class ValidServerTests(unittest.TestCase):
         self.assertTrue(response.command)
         self.assertTrue(response.session_id)
         self.assertTrue(response.inner_return)
-        # self.combo_transform_tests(response)
-        # self.transform_tests(response)
+        if COMBO_TRANSFORM_TESTS:
+            self.combo_transform_tests(response)
+        if DEFAULT_TRANSFORM_TESTS:
+            self.transform_tests(response)
 
-    @ddt.file_data('test_valid_data.json')
+    @ddt.file_data('ddt_valid_methodcalls.json')
+    def test_valid_methodcalls(self, value):
+        sw = self.setup_test()
+        method = value.pop('method')
+        spew("+++ TESTING EXPECTED SUCCESS SoapWrap.%s() with kwargs %s" % (
+            method, value))
+        response = getattr(sw, method)(**value)
+        self.assertTrue(response)
+
+    @ddt.file_data('ddt_valid_queries.json')
     def test_valid(self, value):
         sw = self.setup_test()
         method = value.pop('method')
@@ -131,7 +186,7 @@ class ValidServerTests(unittest.TestCase):
         response = getattr(sw, method)(**value)
         self.response_tests(response)
 
-    @ddt.file_data('test_invalid_data.json')
+    @ddt.file_data('ddt_invalid_queries.json')
     @unittest.expectedFailure
     def test_invalid(self, value):
         sw = self.setup_test()

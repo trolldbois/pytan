@@ -1151,6 +1151,7 @@ class SoapTransform(object):
         self.ILOG = self.logger.info
         self.WLOG = self.logger.warn
         self.ELOG = self.logger.error
+        self.last_transform = {}
 
     def __str__(self):
         str_tpl = (
@@ -1214,9 +1215,14 @@ class SoapTransform(object):
 
         self.ILOG(write_tpl(fpath))
 
+        fout = fout.encode('utf-8')
+
         x = open(fpath, 'w+')
-        x.write(fout.encode('utf-8'))
+        x.write(fout)
         x.close()
+
+        self.last_transform = {fpath: fout}
+
         return fpath
 
     @staticmethod

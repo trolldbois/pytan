@@ -105,8 +105,5 @@
     },
     "get_all_saved_question_objects": {
         "method": "get_all_saved_question_objects"
-    },
-    "get_server_info": {
-        "method": "get_server_info"
     }
 }
