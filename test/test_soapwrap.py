@@ -21,9 +21,9 @@ for aa in path_adds:
     if aa not in sys.path:
         sys.path.insert(0, aa)
 
-from SoapWrap import SoapWrap
+import SoapWrap
 import threaded_http
-
+import ddt
 
 # TODO: let these be more dynamic
 # (like when ryan's test framework is awesome)
@@ -75,7 +75,7 @@ class BasicTests(unittest.TestCase):
     def test_soap_path(self):
         '''tests HTTP port using HTTPS on host with no tanium'''
         spew("")
-        sw = SoapWrap(
+        sw = SoapWrap.SoapWrap(
             USERNAME,
             PASSWORD,
             HOST,
@@ -90,7 +90,7 @@ class BasicTests(unittest.TestCase):
     def test_badpassword(self):
         '''tests tanium host with bad password'''
         spew("")
-        sw = SoapWrap(
+        sw = SoapWrap.SoapWrap(
             USERNAME,
             'INVALID_PASSWORD',
             HOST,
@@ -104,7 +104,7 @@ class BasicTests(unittest.TestCase):
     def test_badusername(self):
         '''tests tanium host with bad username'''
         spew("")
-        sw = SoapWrap(
+        sw = SoapWrap.SoapWrap(
             'INVALID_USER',
             PASSWORD,
             HOST,
@@ -118,7 +118,7 @@ class BasicTests(unittest.TestCase):
     def test_nossl(self):
         '''tests HTTP port using HTTPS on host with no tanium'''
         spew("")
-        sw = SoapWrap(
+        sw = SoapWrap.SoapWrap(
             'user',
             'password',
             '127.0.0.1',
@@ -133,7 +133,7 @@ class BasicTests(unittest.TestCase):
     def test_badhost(self):
         '''tests HTTP port using HTTP on host with no tanium'''
         spew("")
-        sw = SoapWrap(
+        sw = SoapWrap.SoapWrap(
             'user',
             'password',
             '127.0.0.1',
@@ -148,7 +148,7 @@ class BasicTests(unittest.TestCase):
     def test_nonhost(self):
         '''tests accessing a server and port that does not exist at all'''
         spew("")
-        sw = SoapWrap(
+        sw = SoapWrap.SoapWrap(
             'user',
             'password',
             '1.1.1.1',
@@ -165,7 +165,7 @@ class TestsAgainstServer(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         spew("### TestsAgainstServer setup START")
-        cls.sw = SoapWrap(
+        cls.sw = SoapWrap.SoapWrap(
             USERNAME,
             PASSWORD,
             HOST,
@@ -199,10 +199,10 @@ class TestsAgainstServer(unittest.TestCase):
         # the filename)
         if not COMBO_TRANSFORM_TESTS:
             return
-        sw = self.sw
-        bool_args = sw.st.BOOL_KWARGS.keys()
-        sort_tests = sw.st.HEADER_SORT_PRIORITY
-        format_tests = sw.st.FORMATS.keys()
+        st = SoapWrap.SoapTransform()
+        bool_args = st.BOOL_KWARGS.keys()
+        sort_tests = st.HEADER_SORT_PRIORITY
+        format_tests = st.FORMATS.keys()
         arg_format_tests = [x for x in format_tests if 'raw.' not in x]
         bool_opts = (True, False)
 
@@ -254,7 +254,7 @@ class TestsAgainstServer(unittest.TestCase):
                 json.dumps(test_args)))
             test_args['fdir'] = TEST_OUT
             test_args['response'] = response
-            f = sw.st.write_response(**test_args)
+            f = st.write_response(**test_args)
             spew("wrote response to: %s" % f)
             self.assertTrue(os.path.isfile(f))
 
@@ -263,14 +263,14 @@ class TestsAgainstServer(unittest.TestCase):
 
         if not DEFAULT_TRANSFORM_TESTS:
             return
-        sw = self.sw
-        format_tests = sw.st.FORMATS.keys()
+        st = SoapWrap.SoapTransform()
+        format_tests = st.FORMATS.keys()
 
         for ft in format_tests:
             spew(
                 "Testing st.write_response() "
                 "with default opts for ftype {}".format(ft))
-            f = sw.st.write_response(response, fdir=TEST_OUT, ftype=ft)
+            f = st.write_response(response, fdir=TEST_OUT, ftype=ft)
             spew("wrote response to: %s" % f)
             self.assertTrue(os.path.isfile(f))
 
