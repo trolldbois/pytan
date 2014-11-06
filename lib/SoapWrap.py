@@ -314,7 +314,7 @@ class SoapWrap:
         self.HTTPLOG(dbg1_tpl(ret.status_code, ret.text.encode(ret.encoding)))
         return ret
 
-    def get_parse_groups(self, question):
+    def get_parse_groups(self, query):
         """sends a parse question Request and returns the response
 
         :return: :class:`SoapResponse`
@@ -330,7 +330,7 @@ class SoapWrap:
         request_args = {
             'command': 'AddObject',
             'object_type': object_type,
-            'objects_dict': {'parse_job': {'question_text': question}},
+            'objects_dict': {'parse_job': {'question_text': query}},
             'auth_dict': self.auth.token,
         }
 
@@ -350,24 +350,24 @@ class SoapWrap:
         response.prgs_all = prgs_all
 
         if not prgs_all:
-            self.ELOG(err2_tpl(question))
+            self.ELOG(err2_tpl(query))
             return response
 
         prg_match = [
             x for x in prgs_all
-            if x['question_text'].lower() == question.lower()
+            if x['question_text'].lower() == query.lower()
         ]
 
         if not prg_match:
             self.DLOG(dbug1_tpl(
-                question.lower(),
+                query.lower(),
                 [x['question_text'] for x in prgs_all],
             ))
             return response
 
         prg_match = prg_match[0]
         response.prg_match = prg_match
-        self.DLOG(dbug2_tpl(question.lower(), json.dumps(prg_match)))
+        self.DLOG(dbug2_tpl(query.lower(), json.dumps(prg_match)))
 
         return response
 
@@ -398,7 +398,7 @@ class SoapWrap:
         response.request = orig_response.request
         return response
 
-    def ask_parsed_question(self, question, picker=None):
+    def ask_parsed_question(self, query, picker=None):
         pick_tpl = (
             "Re-run with picker=$INDEX, where $INDEX is "
             "one of the following:\n{}"
@@ -409,7 +409,7 @@ class SoapWrap:
         ).format
         qerr_tpl = "No question ID returned from AddObject on {}".format
 
-        orig_response = self.get_parse_groups(question)
+        orig_response = self.get_parse_groups(query)
         prg_match = getattr(orig_response, 'prg_match', {})
         prgs_all = getattr(orig_response, 'prgs_all', [])
         picker_indexes = "\n".join([
@@ -755,7 +755,7 @@ class SoapRequest(object):
 
     def __str__(self):
         str_tpl = (
-            "{} for {!r}/{!r} of {!r}, Sent: {}, Auth: {}"
+            "{} for {}/{} of {}, Auth: {}, Sent: {}"
         ).format
         sent = self.sent_human or "Not Yet Sent"
         ret = str_tpl(
@@ -763,8 +763,8 @@ class SoapRequest(object):
             self.caller_method,
             self.command,
             json.dumps(self.objects_dict),
-            sent,
             self.auth_type,
+            sent,
         )
         return ret
 
@@ -899,13 +899,12 @@ class SoapResponse(object):
     def __str__(self):
         received = self.received_human or "Not Yet Sent"
         str_tpl = (
-            "SoapResponse from: {}, len: {}, on: {}, {}"
+            "SoapResponse from: {}, len: {}, Rcvd: {}"
         ).format
         ret = str_tpl(
             self.soap_url,
             len(self.http_response.text),
             received,
-            self.request,
         )
         return ret
 
@@ -1152,6 +1151,14 @@ class SoapTransform(object):
         self.ILOG = self.logger.info
         self.WLOG = self.logger.warn
         self.ELOG = self.logger.error
+        self.last_transform = {}
+
+    def __str__(self):
+        str_tpl = (
+            "SoapTransform, formats: {}"
+        ).format
+        ret = str_tpl(', '.join(self.FORMATS))
+        return ret
 
     def write_response(self, response, fname=None, fdir=None, ftype='csv',
                        fprefix=None, fpostfix=None, fext=None, **kwargs):
@@ -1208,9 +1215,14 @@ class SoapTransform(object):
 
         self.ILOG(write_tpl(fpath))
 
+        fout = fout.encode('utf-8')
+
         x = open(fpath, 'w+')
-        x.write(fout.encode('utf-8'))
+        x.write(fout)
         x.close()
+
+        self.last_transform = {fpath: fout}
+
         return fpath
 
     @staticmethod

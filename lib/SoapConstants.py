@@ -86,7 +86,7 @@ TRANSFORM_BOOL_KWARGS = {
     'ADD_TYPE_TO_HEADERS': False,
     'ADD_SENSOR_TO_HEADERS': False,
     'EXPAND_GROUPED_COLUMNS': False,
-    'HIDE_COUNT_COLUMN': True,
+    # 'HIDE_COUNT_COLUMN': True,
 }
 TRANSFORM_BOOL_HELP = {
     'ADD_TYPE_TO_HEADERS': "Appends the column type to each column header for "
