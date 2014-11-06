@@ -20,6 +20,7 @@
  * [ ] email out
  * [ ] test against demo tanium
  * [ ] Expand API examples in README.md
+ * [ ] doc 3rd party modules
 
 # DONE
  * [X] better app_test

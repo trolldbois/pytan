@@ -101,7 +101,7 @@ class ValidServerTests(unittest.TestCase):
         spew("")
         return self.sw
 
-    def combo_transform_tests(self, response):
+    def combo_transform_tests(self, response, method, value):
         # derive all the permutations of every option we have for
         # bool args and header sort priority
         # this is complicated and involves combinatorics, but basically
@@ -109,28 +109,34 @@ class ValidServerTests(unittest.TestCase):
         # possible combination of options (and embed those options into
         # the filename)
         st = self.st
-        bool_args = st.BOOL_KWARGS.keys()
-        bool_opts = [True, False]
+        if response.command == 'GetResultData':
+            bool_args = st.BOOL_KWARGS.keys()
+            bool_opts = [True, False]
+            bool_combos = SoapUtil.combinator1(bool_args, bool_opts)
+        else:
+            bool_combos = []
+
         sort_args = ['HEADER_SORT_PRIORITY']
         sort_opts = [st.HEADER_SORT_PRIORITY, [], ["name"], False]
+        sort_combos = SoapUtil.combinator1(sort_args, sort_opts)
+
         format_tests = [x for x in st.FORMATS if 'raw.' not in x]
 
-        bool_combos = SoapUtil.combinator1(bool_args, bool_opts)
-        sort_combos = SoapUtil.combinator1(sort_args, sort_opts)
         all_combos = bool_combos + sort_combos
         all_combos = SoapUtil.combinator2(all_combos, format_tests, 'ftype')
-        all_combos = [SoapUtil.add_fprefix(x) for x in all_combos]
+        all_combos = [SoapUtil.build_fn_from_dict(x) for x in all_combos]
 
         for combo in all_combos:
             spew("+++ TESTING SoapTransform.write_response() with {}".format(
                 json.dumps(combo)))
             combo['fdir'] = TEST_OUT
             combo['response'] = response
+            combo['fname'] = '_'.join([method, SoapUtil.stringify_dict(value)])
             f = st.write_response(**combo)
             spew("wrote response to: %s" % f)
             self.assertTrue(os.path.isfile(f))
 
-    def transform_tests(self, response):
+    def transform_tests(self, response, method, value):
         '''standard transform tests for any response object'''
         st = self.st
         format_tests = st.FORMATS.keys()
@@ -140,11 +146,11 @@ class ValidServerTests(unittest.TestCase):
                 "+++ TESTING SoapTransform.write_response() "
                 "with default opts for ftype {}".format(ft))
             f = st.write_response(
-                response, fdir=TEST_OUT, ftype=ft, fprefix='defaults')
+                response, fdir=TEST_OUT, ftype=ft, fpostfix='defaults')
             spew("wrote response to: %s" % f)
             self.assertTrue(os.path.isfile(f))
 
-    def response_tests(self, response):
+    def response_tests(self, response, method, value):
         '''standard tests for any response object'''
 
         spew("+++ TESTING REQUEST: %s" % response.request)
@@ -164,9 +170,9 @@ class ValidServerTests(unittest.TestCase):
         self.assertTrue(response.session_id)
         self.assertTrue(response.inner_return)
         if COMBO_TRANSFORM_TESTS:
-            self.combo_transform_tests(response)
+            self.combo_transform_tests(response, method, value)
         if DEFAULT_TRANSFORM_TESTS:
-            self.transform_tests(response)
+            self.transform_tests(response, method, value)
 
     @ddt.file_data('ddt_valid_methodcalls.json')
     def test_valid_methodcalls(self, value):
@@ -184,7 +190,7 @@ class ValidServerTests(unittest.TestCase):
         spew("+++ TESTING EXPECTED SUCCESS SoapWrap.%s() with kwargs %s" % (
             method, value))
         response = getattr(sw, method)(**value)
-        self.response_tests(response)
+        self.response_tests(response, method, value)
 
     @ddt.file_data('ddt_invalid_queries.json')
     @unittest.expectedFailure
@@ -194,7 +200,7 @@ class ValidServerTests(unittest.TestCase):
         spew("+++ TESTING EXPECTED FAILURE SoapWrap.%s() with kwargs %s" % (
             method, value))
         response = getattr(sw, method)(**value)
-        self.response_tests(response)
+        self.response_tests(response, method, value)
 
 
 if __name__ == "__main__":

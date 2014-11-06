@@ -15,7 +15,6 @@ import time
 import csv
 import json
 import StringIO
-import re
 
 # disable python from creating .pyc files everywhere
 sys.dont_write_bytecode = True
@@ -1227,13 +1226,7 @@ class SoapTransform(object):
 
     @staticmethod
     def get_fname(response):
-        max_len = 80
-        s = str(response.request.objects_dict)
-        s = re.sub(r'[^\w,:]', '', s)
-        s = s.replace(':', '_')
-        s = s.replace(',', '+')
-        s = s[0:max_len]
-
+        s = SoapUtil.stringify_dict(response.request.objects_dict)
         base_fn = [response.request.caller_method, s, SoapUtil.get_now()]
         base_fn = '__'.join(base_fn)
         return base_fn
@@ -1462,8 +1455,8 @@ class SoapTransform(object):
 
         rows = self.get_resultxml_rows(inner_return, headers)
 
-        if kwargs.get('HIDE_COUNT_COLUMN', True):
-            rows, headers = self.remove_count_column(rows, headers)
+        # if kwargs.get('HIDE_COUNT_COLUMN', True):
+            # rows, headers = self.remove_count_column(rows, headers)
 
         if kwargs.get('EXPAND_GROUPED_COLUMNS', False):
             rows = self.expand_grouped_columns(rows, headers)

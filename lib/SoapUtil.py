@@ -14,6 +14,7 @@ import getpass
 import logging
 import json
 import itertools
+import re
 from collections import OrderedDict
 # from datetime import datetime
 
@@ -320,7 +321,7 @@ def combinator2(l1, l2, key):
     return c
 
 
-def add_fprefix(d, key='fprefix'):
+def build_fn_from_dict(d, key='fpostfix'):
     skips = ['ftype', key]
     parts = []
     for k, v in d.iteritems():
@@ -338,3 +339,12 @@ def add_fprefix(d, key='fprefix'):
     parts = '-'.join(parts)
     d[key] = parts
     return d
+
+
+def stringify_dict(d, max_len=80):
+    s = str(d)
+    s = re.sub(r'[^\w,:]', '', s)
+    s = s.replace(':', '_')
+    s = s.replace(',', '+')
+    s = s[0:max_len]
+    return s
