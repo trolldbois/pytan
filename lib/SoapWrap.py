@@ -755,7 +755,7 @@ class SoapRequest(object):
 
     def __str__(self):
         str_tpl = (
-            "{} for {!r}/{!r} of {!r}, Sent: {}, Auth: {}"
+            "{} for {}/{} of {}, Auth: {}, Sent: {}"
         ).format
         sent = self.sent_human or "Not Yet Sent"
         ret = str_tpl(
@@ -763,8 +763,8 @@ class SoapRequest(object):
             self.caller_method,
             self.command,
             json.dumps(self.objects_dict),
-            sent,
             self.auth_type,
+            sent,
         )
         return ret
 
@@ -899,13 +899,12 @@ class SoapResponse(object):
     def __str__(self):
         received = self.received_human or "Not Yet Sent"
         str_tpl = (
-            "SoapResponse from: {}, len: {}, on: {}, {}"
+            "SoapResponse from: {}, len: {}, Rcvd: {}"
         ).format
         ret = str_tpl(
             self.soap_url,
             len(self.http_response.text),
             received,
-            self.request,
         )
         return ret
 
@@ -1152,6 +1151,13 @@ class SoapTransform(object):
         self.ILOG = self.logger.info
         self.WLOG = self.logger.warn
         self.ELOG = self.logger.error
+
+    def __str__(self):
+        str_tpl = (
+            "SoapTransform, formats: {}"
+        ).format
+        ret = str_tpl(', '.join(self.FORMATS))
+        return ret
 
     def write_response(self, response, fname=None, fdir=None, ftype='csv',
                        fprefix=None, fpostfix=None, fext=None, **kwargs):

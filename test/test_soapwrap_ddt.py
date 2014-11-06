@@ -4,7 +4,7 @@ import os
 import sys
 import glob
 # import itertools
-# import copy
+import copy
 # import json
 import unittest
 
@@ -22,26 +22,19 @@ for aa in path_adds:
         sys.path.insert(0, aa)
 
 import SoapWrap
-# import threaded_http
+import threaded_http
 import ddt
 
-# TODO: let these be more dynamic
-# (like when ryan's test framework is awesome)
-
-# ryans server info
-# USERNAME = 'Administrator'
-# PASSWORD = 'Tanium!'
-# HOST = '192.168.42.130'
-
-# jims server info
-USERNAME = 'Tanium User'
-PASSWORD = 'T@n!um'
-HOST = '172.16.31.128'
-PORT = 443
-
-# other options for SoapWrap
-LOGLEVEL = 0
-DEBUGFORMAT = False
+SERVER_INFO = {
+    "username": "Tanium User",
+    "password": "T@n!um",
+    "host": "172.16.31.128",
+    "protocol": "https",
+    "soap_path": "/soap",
+    "port": "443",
+    "loglevel": 0,
+    "debugformat": False,
+}
 
 # control the amount of output from unittests
 TESTVERBOSITY = 2
@@ -62,20 +55,35 @@ def spew(m):
 
 
 @ddt.ddt
-class TestsAgainstServer(unittest.TestCase):
+class InvalidServerTests(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        spew("### BasicTests setup START")
+        cls.__http = threaded_http.threaded_http(
+            port=4433, verbosity=TESTVERBOSITY
+        )
+        spew("### BasicTests setup END")
+
+    @ddt.file_data('test_invalid_connects.json')
+    @unittest.expectedFailure
+    def test_invalid_connect(self, value):
+        mykwargs = copy.copy(SERVER_INFO)
+        mykwargs.update(value)
+        spew("")
+        spew("+++ TESTING EXPECTED FAILURE SoapWrap() with kwargs %s" % (
+            mykwargs))
+        sw = SoapWrap.SoapWrap(**mykwargs)
+        spew(str(sw))
+
+
+@ddt.ddt
+class ValidServerTests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
         spew("### TestsAgainstServer setup START")
-        cls.sw = SoapWrap.SoapWrap(
-            USERNAME,
-            PASSWORD,
-            HOST,
-            PORT,
-            protocol='https',
-            loglevel=LOGLEVEL,
-            debugformat=DEBUGFORMAT,
-        )
+        cls.sw = SoapWrap.SoapWrap(**SERVER_INFO)
 
         if not os.path.isdir(TEST_OUT):
             os.mkdir(TEST_OUT)
@@ -94,14 +102,18 @@ class TestsAgainstServer(unittest.TestCase):
 
     def response_tests(self, response):
         '''standard tests for any response object'''
-        spew("+++ TESTING RESPONSE: %s\n" % response)
-        self.assertIsNotNone(response)
+
+        spew("+++ TESTING REQUEST: %s" % response.request)
+        self.assertIsNotNone(response.request)
         self.assertTrue(response.request.xml_raw)
         self.assertIn('<command>', response.request.xml_raw)
         self.assertIn('<object_list>', response.request.xml_raw)
         auth = '<auth>' in response.request.xml_raw
         session = '<session>' in response.request.xml_raw
         self.assertTrue(auth or session)
+
+        spew("+++ TESTING RESPONSE: %s" % response)
+        self.assertIsNotNone(response)
         self.assertTrue(response.outer_xml)
         self.assertTrue(response.outer_return)
         self.assertTrue(response.command)
@@ -114,7 +126,7 @@ class TestsAgainstServer(unittest.TestCase):
     def test_valid(self, value):
         sw = self.setup_test()
         method = value.pop('method')
-        spew("+++ testing expected success SoapWrap.%s() with kwargs %s" % (
+        spew("+++ TESTING EXPECTED SUCCESS SoapWrap.%s() with kwargs %s" % (
             method, value))
         response = getattr(sw, method)(**value)
         self.response_tests(response)
@@ -124,7 +136,7 @@ class TestsAgainstServer(unittest.TestCase):
     def test_invalid(self, value):
         sw = self.setup_test()
         method = value.pop('method')
-        spew("+++ testing expected failure SoapWrap.%s() with kwargs %s" % (
+        spew("+++ TESTING EXPECTED FAILURE SoapWrap.%s() with kwargs %s" % (
             method, value))
         response = getattr(sw, method)(**value)
         self.response_tests(response)
