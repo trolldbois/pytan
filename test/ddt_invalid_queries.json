@@ -17,6 +17,19 @@
         "query": "Get Installed Applications from All Machines",
         "picker": -1
     },
+    "ask_parsed_question_noresults": {
+        "method": "ask_parsed_question",
+        "query": "Get Installed Applications and Computer Name from machines where Operating System contains Mac and Operating System contains Windows"
+    },
+    "ask_parsed_question_parameterized": {
+        "method": "ask_parsed_question",
+        "query": "Get High CPU Processes[3] from all machines"
+    },
+    "ask_parsed_question_picker_nonnumber": {
+        "method": "ask_parsed_question",
+        "query": "Get Installed Applications from All Machines",
+        "picker": "STRING"
+    },
     "get_action_object_single_by_name": {
         "method": "get_action_object",
         "query": "Distribute Tanium Standard Utilities"

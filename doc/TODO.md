@@ -1,7 +1,5 @@
 # TODO NOW
- * [ ] support parameters in parsed & manual questions
-   * [ ] Param parsing for parsed questions (look for brackets, extract, store in sensor correlative array, add to request xml after getting prg match)
-   * [ ] Param parsing for manual questions (sameish for parsed)
+ * [ ] support parameters in manual questions
  * [ ] support filters in manual questions
  * [ ] support options everywhere
  * [ ] add method to calculate total time btwn request and response
@@ -9,8 +7,9 @@
  * [ ] test against RT
  * [ ] test against all the different levels of user privs
  * [ ] Deploy action
- * [ ] Deploy package
+ * [ ] define package
  * [ ] AddObject
+ * [ ] add script / method to return all sensor names for discovery of manual question builder
 
 # TODO LATER
  * [ ] logfile support
@@ -40,4 +39,6 @@
  * [X] generalize username/password in test cases
  * [X] re-work unit tests to be more better-er (data driven)
  * [X] re-work COUNT column hiding (need to expand testbed to have 2 or more of one OS)
-
+ * [X] mark parsed question as no params support (add check for [] and throw excpetion if found)
+ * [X] move XML dict grabbing stuff from soapwrap into soapresponse 
+ 

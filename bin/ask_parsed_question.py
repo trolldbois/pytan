@@ -31,10 +31,10 @@ parser = customparser.CustomParser(
     parents=[parent_parser],
 )
 parser.add_argument(
-    '--question',
+    '--query',
     required=True,
     action='store',
-    dest='question',
+    dest='query',
     help='Question to ask',
 )
 
@@ -56,7 +56,7 @@ args = parser.parse_args()
 swargs = args.__dict__
 
 # put our query args into their own dict and remove them from swargs
-qkeys = ['picker', 'question']
+qkeys = ['picker', 'query']
 qargs = {k: swargs.pop(k) for k in qkeys}
 
 # put our transform args into their own dict and remove them from swargs

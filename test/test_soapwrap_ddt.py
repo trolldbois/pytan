@@ -32,7 +32,7 @@ SERVER_INFO = {
     "protocol": "https",
     "soap_path": "/soap",
     "port": "443",
-    "loglevel": 0,
+    "loglevel": 10,
     "debugformat": False,
 }
 
@@ -43,7 +43,7 @@ TESTVERBOSITY = 2
 DEFAULT_TRANSFORM_TESTS = True
 
 # control whether the combinator transform tests will be done
-COMBO_TRANSFORM_TESTS = True
+COMBO_TRANSFORM_TESTS = False
 
 # where the output files from the tests will be stored
 TEST_OUT = os.path.join(my_dir, 'TEST_OUT')
