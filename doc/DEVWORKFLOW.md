@@ -90,6 +90,40 @@ cd ~/gh/pytan
 git flow feature finish add_support_for_widget
 ```
 
+## Add new release
+
+N.B. Git flow merges releases from develop to master by default.
+
+Start a release branch using git flow:
+```
+cd ~/gh/pytan
+git flow release start 0.6.0
+```
+
+Publish the release branch to origin (so other people can see it):
+```
+git flow release publish 0.6.0
+```
+
+ * Increment ```__version__``` in pytan/SoapUtil.py
+ * Make other changes as necessary for the release
+ * commit your changes:
+
+```
+git commit -am 'version bump for 0.6.0'
+```
+
+Once you are done with your set of commits for this release, finish the release branch using git flow:
+```
+cd ~/gh/pytan
+git flow release finish 0.6.0
+```
+
+Push the tags to origin:
+```
+git push --tags
+```
+
 ## See the commit log history
 
 Switch to master branch and view the log
