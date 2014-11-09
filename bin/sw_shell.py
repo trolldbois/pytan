@@ -36,11 +36,13 @@ parser = customparser.CustomParser(
     description=__doc__,
     parents=[parent_parser],
 )
-
 args = parser.parse_args()
 swargs = args.__dict__
+
 sw = SoapWrap.SoapWrap(**swargs)
+
 st = SoapWrap.SoapTransform()
+
 if swargs['loglevel'] >= 10:
     SoapUtil.set_all_loglevels()
 

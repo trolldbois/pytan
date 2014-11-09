@@ -2,7 +2,7 @@
 # -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
-"""Tanium Python Wrapper Class
+"""PyTan: A wrapper around Tanium's SOAP API in Python
 
 Like saran wrap. But not.
 
@@ -15,6 +15,8 @@ import time
 import csv
 import json
 import StringIO
+import re
+from operator import itemgetter
 
 # disable python from creating .pyc files everywhere
 sys.dont_write_bytecode = True
@@ -49,6 +51,10 @@ class SoapWrap:
                  protocol='https', soap_path="/soap", loglevel=0,
                  logfile=None, debugformat=False, **kwargs):
 
+        # use port 444 if you have direct access to it,
+        # port 444 is direct access to API
+        # port 443 uses apache forwarder which then goes to port 444
+
         # setup the console logging handler
         SoapUtil.setup_console_logging()
         # create all the loggers and set their levels based on loglevel
@@ -65,11 +71,6 @@ class SoapWrap:
 
         self.HTTPLOG = logging.getLogger("SoapWrap.http").debug
         self.AUTHLOG = logging.getLogger("SoapWrap.auth").debug
-
-        soap_tpl = "{}{}".format
-        app_tpl = "{}://{}:{}".format
-        # use port 444 if you have direct access to it, direct access to API
-        # instead of using apache forwarder @ 443
 
         self.__host = host
         self.__port = port
@@ -90,11 +91,16 @@ class SoapWrap:
         # kwargs here allows SoapWrap instantiation to pass
         # SHOW_SESSION_ID to SoapAuth
         self.auth = SoapAuth(self.__username, self.__password, **kwargs)
+
+        soap_tpl = "{}{}".format
+        app_tpl = "{}://{}:{}".format
+
         self.app_url = app_tpl(self.__protocol, self.__host, self.__port)
         self.soap_url = soap_tpl(self.app_url, self.__soap_path)
 
         self.test_app_port()
         self.server_info = self.get_server_info()
+        self.param_re = re.compile(SoapConstants.PARAM_RE)
 
     def __str__(self):
         str_tpl = "SoapWrap to {}, Version: {}".format
@@ -137,6 +143,7 @@ class SoapWrap:
         """
         time_tpl = 'Last Request {} took longer than {} seconds!'.format
         wait_tpl = "Waiting {} secs, mr_passed {} != estimated_total {}".format
+        no_results = "No results returned, row_count = {}".format
 
         if request.command == "GetResultData":
             request.command = "GetResultInfo"
@@ -146,7 +153,7 @@ class SoapWrap:
 
         try:
             # get the SOAP response and store it in response
-            response = self.__send_request(request)
+            response = self.__send_api_request(request)
         except SoapErrors.AuthorizationError:
             # if auth failed and we are using a session ID,
             # fallback to user/pass and retry the request
@@ -157,38 +164,40 @@ class SoapWrap:
                     "retrying request with username/password"
                 )
                 self.auth.auth_fallback()
-                response = self.__send_request(request)
+                response = self.__send_api_request(request)
             else:
                 raise
 
         if request.command == "GetResultInfo":
             full_results = False
-            wait = 2
-            max_wait = 600
+            wait = SoapConstants.RESULT_SLEEP
+            max_wait = SoapConstants.RESULT_MAX_WAIT
             current_wait = 1
             while full_results is not True:
-                result_info = response.get_result_info()
-                if result_info['mr_passed'] == result_info['estimated_total']:
+                ri = response.get_result_info()
+
+                if ri['mr_passed'] == ri['estimated_total']:
+                    if ri['row_count'] == 0:
+                        raise SoapErrors.AppError(no_results(ri['row_count']))
                     full_results = True
                     break
-                response = self.__send_request(request)
+
+                response = self.__send_api_request(request)
                 current_wait += wait
                 if current_wait > max_wait:
-                    self.DLOG(SoapUtil.jsonify(result_info))
                     raise SoapErrors.AppError(time_tpl(request, max_wait))
+
                 self.DLOG(wait_tpl(
-                    wait,
-                    result_info['mr_passed'],
-                    result_info['estimated_total'],
+                    wait, ri['mr_passed'], ri['estimated_total'],
                 ))
                 time.sleep(wait)
 
             request.command = "GetResultData"
-            response = self.__send_request(request)
+            response = self.__send_api_request(request)
 
         return response
 
-    def __send_request(self, request):
+    def __send_api_request(self, request):
         """sends the request to the SOAP API"""
         send_tpl = "Sending {}, SOAP URL: {}".format
         recv_tpl = "Received {}, SOAP URL: {}".format
@@ -263,6 +272,46 @@ class SoapWrap:
         }
         return objects_dict
 
+    @staticmethod
+    def param_split(param):
+        '''
+        >>> param = "Program Files,\,.*,No,No"
+        >>> param = re.split(SoapConstants.PARAM_SPLIT_RE, param)
+        >>> param
+        ['Program Files', '\\,.*', 'No', 'No']
+        '''
+        if param:
+            param = re.split(SoapConstants.PARAM_SPLIT_RE, param)
+        else:
+            param = []
+        return param
+
+    def parse_params(self, sensors):
+        mt1_tpl = "More than one parameter passed in {}".format
+        sensor_params = []
+        for s in sensors:
+            # s =
+            # "Folder Name Search with RegEx Match[Program Files,\,.*,No,No]"
+            params = self.param_re.findall(s)
+            # params =
+            # ['Program Files,\,.*,No,No']
+            if len(params) > 1:
+                raise SoapErrors.AppError(mt1_tpl(s))
+            elif len(params) == 1:
+                param = params[0]
+            else:
+                param = ''
+            # param =
+            # 'Program Files,\,.*,No,No'
+            split_param = self.param_split(param)
+            # split_param =
+            # ['Program Files', '\\,.*', 'No', 'No']
+            sensor_params.append(split_param)
+        return sensor_params
+
+    def remove_params(self, sensors):
+        return [self.param_re.sub('', s) for s in sensors]
+
     def test_app_port(self):
         """validates that the SOAP port on the SOAP host can be reached"""
         chk_tpl = "Port test to {}:{} {}".format
@@ -305,25 +354,206 @@ class SoapWrap:
 
     def soap_post(self, data, url=None):
         """uses http_post to perform a SOAPAction call to url with data"""
-        dbg1_tpl = 'Received SOAP Response {}:\n{}'.format
         if not url:
             url = self.soap_url
         headers = {'SOAPAction': '""'}
         ret = self.http_post(url=url, data=data, headers=headers)
+        dbg1_tpl = 'Received SOAP Response {}:\n{}'.format
         self.HTTPLOG(dbg1_tpl(ret.status_code, ret.text.encode(ret.encoding)))
         return ret
+
+    def ask_manual_question(self, sensors, filters=None, options=None):
+        '''
+        examples for sensors input:
+        ='Computer Name'
+        ='name:Computer Name'
+        ='id:202'
+        ="Folder Name Search with RegEx Match[Program Files,\\,.*,No,No]
+        ="Folder Name Search with RegEx Match[]
+        ="Folder Name Search with RegEx Match
+        =["Folder Name Search with RegEx Match[Program Files,\\,.*,No,No]",
+        "Computer Name"]
+        '''
+
+        if not SoapUtil.is_list(sensors):
+            sensors = [sensors]
+
+        sensor_params = self.parse_params(sensors)
+        '''
+        sensor_params =
+        [['Program Files', '\\,.*', 'No', 'No'], []]
+        '''
+
+        sensors = self.remove_params(sensors)
+        '''
+        sensors =
+        ['Folder Name Search with RegEx Match', 'Computer Name']
+        '''
+
+        # sensor_filters = []
+        # sensor_options = []
+        # filters
+        # options
+
+        sensor_objects = self.amq_get_so(sensors)
+        objects_dict = self.amq_get_od(
+            sensors, sensor_params, sensor_objects, filters, options,
+        )
+
+        object_type = 'question'
+
+        request_args = {
+            'command': 'AddObject',
+            'object_type': object_type,
+            'objects_dict': objects_dict,
+            'auth_dict': self.auth.token,
+        }
+
+        orig_request = SoapRequest(**request_args)
+        orig_response = self.call_api(orig_request)
+        question_id = orig_response.get_question_id()
+        response = self.get_question_results(question_id)
+        response.request = orig_response.request
+        response.sensors = sensor_objects
+        return response
+
+    def amq_get_so(self, sensors):
+        nomatch_tpl = ("Sensor {!r} NOT FOUND!!").format
+
+        # this does double duty:
+        # asks for each sensor individually to make sure it exists
+        # gets the sensor object so that we can handle parameters
+        sensor_objects = []
+
+        for sqry in sensors:
+            try:
+                sresp = self.get_sensor_object(sqry)
+                sobj = sresp.get_sensor_objects()
+                sensor_objects.append(sobj)
+            except Exception as e:
+                self.DLOG(e)
+                raise SoapErrors.AppError(nomatch_tpl(sqry))
+        return sensor_objects
+
+    def amq_get_od(self, sensors, sensor_params, sensor_objects, filters=None,
+                   options=None):
+
+        sensor_param_maps = [
+            {'sensor': x[0], 'passed_params': x[1]}
+            for x in zip(sensor_objects, sensor_params)
+        ]
+
+        sselects = []
+        for spm in sensor_param_maps:
+            sname = spm['sensor']['name']
+            sid = spm['sensor']['id']
+            shash = spm['sensor']['hash']
+            spd = spm['sensor']['parameter_definition'] or {}
+            passed_params = spm['passed_params']
+            if not spd and passed_params:
+                    print (
+                        "ERROR: {} does not take any parameters and "
+                        "you supplied: {}"
+                    ).format(sname, passed_params)
+                    raise
+
+            param_dicts = []
+            for pd_idx, pd in enumerate(spd.get('parameters') or []):
+                param_key = '{0}{1}{0}'.format(
+                    SoapConstants.PARAM_DELIM, pd['key'])
+                try:
+                    passed_param = passed_params[pd_idx]
+                except IndexError:
+                    passed_param = ''
+                if not passed_param:
+                    continue
+                param_dict = {'key': param_key, 'value': passed_param}
+                param_dicts.append(param_dict)
+
+            if param_dicts:
+                sselect = {'parameter': param_dicts}
+                sselect = {'source_id': sid, 'parameters': sselect}
+                sfilter = {'id': sid, 'hash': shash}
+                sselect = {'sensor': sselect, 'filter': sfilter}
+            else:
+                sselect = {'hash': shash}
+                sselect = {'sensor': sselect}
+
+            sselects.append(sselect)
+
+        objects_dict = {'select': sselects}
+        objects_dict = {'selects': objects_dict}
+        objects_dict = {'question': objects_dict}
+        return objects_dict
+
+    def ask_parsed_question(self, query, picker=None):
+        nomatch_tpl = ("No matches for {}").format
+        manymatch_tpl = ("Too many matches for {}").format
+        pick_tpl = (
+            "Re-run with picker=$INDEX, where $INDEX is "
+            "one of the following:\n{}"
+        ).format
+        perr_tpl = (
+            "Invalid picker index {}, re-run with picker=-1 to see picker "
+            "index list"
+        ).format
+        paramerr_tpl = (
+            "Parsing parameterized questions is not supported by SOAP API "
+            "please use ask_manual_question instead"
+        ).format
+        match_tpl = "parse_result match for {!r}: {!r}".format
+        picknum_tpl = "Picker must be a number".format
+
+        if self.param_re.search(query):
+            raise SoapErrors.AppError(paramerr_tpl())
+
+        prg_list = self.get_parse_groups(query)
+
+        picker_indexes = "\n".join([
+            "INDEX: {}, parsedq: {}".format(xidx, x['question_text'])
+            for xidx, x in enumerate(prg_list)
+        ])
+
+        if picker is None:
+            parse_match = [
+                x for x in prg_list
+                if x['question_text'].lower() == query.lower()
+            ]
+
+            if len(parse_match) == 0:
+                self.ELOG(nomatch_tpl(query))
+                raise SoapErrors.PickerError(pick_tpl(picker_indexes))
+            elif len(parse_match) > 1:
+                self.ELOG(manymatch_tpl(query))
+                raise SoapErrors.PickerError(pick_tpl(picker_indexes))
+            else:
+                parse_match = parse_match[0]
+        else:
+            try:
+                picker = int(picker)
+            except:
+                raise SoapErrors.PickerError(picknum_tpl())
+
+            if picker == -1:
+                raise SoapErrors.PickerError(pick_tpl(picker_indexes))
+
+            try:
+                parse_match = prg_list[picker]
+            except IndexError:
+                raise SoapErrors.PickerError(perr_tpl(picker))
+
+        self.DLOG(match_tpl(query, json.dumps(parse_match)))
+        response = self.add_parse_group(parse_match)
+        question_id = response.get_question_id()
+        response = self.get_question_results(question_id)
+        response.sensors = self.gather_sensors_from_response(response)
+        return response
 
     def get_parse_groups(self, query):
         """sends a parse question Request and returns the response
 
         :return: :class:`SoapResponse`
         """
-        err1_tpl = "No inner_return returned from last response".format
-        err2_tpl = "No parse results returned for {!r}".format
-        dbug1_tpl = (
-            "No matching questions for {!r}, full list of questions: {}"
-        ).format
-        dbug2_tpl = "Matching parse_result for {!r}: {!r}".format
 
         object_type = 'question'
         request_args = {
@@ -336,109 +566,8 @@ class SoapWrap:
         request = SoapRequest(**request_args)
         response = self.call_api(request)
 
-        response.prg_match = None
-
-        result_obj = getattr(response, 'inner_return', {})
-
-        if not result_obj:
-            self.ELOG(err1_tpl())
-            return response
-
-        prgs_all = result_obj.get('parse_result_groups', {})
-        prgs_all = prgs_all.get('parse_result_group', [])
-        response.prgs_all = prgs_all
-
-        if not prgs_all:
-            self.ELOG(err2_tpl(query))
-            return response
-
-        prg_match = [
-            x for x in prgs_all
-            if x['question_text'].lower() == query.lower()
-        ]
-
-        if not prg_match:
-            self.DLOG(dbug1_tpl(
-                query.lower(),
-                [x['question_text'] for x in prgs_all],
-            ))
-            return response
-
-        prg_match = prg_match[0]
-        response.prg_match = prg_match
-        self.DLOG(dbug2_tpl(query.lower(), json.dumps(prg_match)))
-
-        return response
-
-    def ask_manual_question(self, sensors, filters=None):
-        sensor_objs = self.__parse_query_objects(sensors)
-        if not SoapUtil.is_list(sensor_objs):
-            sensor_objs = [sensor_objs]
-        object_type = 'question'
-        objects_dict = {
-            object_type: {
-                'selects': {
-                    "select": [{"sensor": s_obj} for s_obj in sensor_objs],
-                },
-            },
-        }
-
-        request_args = {
-            'command': 'AddObject',
-            'object_type': object_type,
-            'objects_dict': objects_dict,
-            'auth_dict': self.auth.token,
-        }
-
-        request = SoapRequest(**request_args)
-        orig_response = self.call_api(request)
-        question_id = orig_response.get_question_id()
-        response = self.get_question_results(question_id)
-        response.request = orig_response.request
-        return response
-
-    def ask_parsed_question(self, query, picker=None):
-        pick_tpl = (
-            "Re-run with picker=$INDEX, where $INDEX is "
-            "one of the following:\n{}"
-        ).format
-        perr_tpl = (
-            "Invalid picker index {}, re-run with picker=-1 to see picker "
-            "index list"
-        ).format
-        qerr_tpl = "No question ID returned from AddObject on {}".format
-
-        orig_response = self.get_parse_groups(query)
-        prg_match = getattr(orig_response, 'prg_match', {})
-        prgs_all = getattr(orig_response, 'prgs_all', [])
-        picker_indexes = "\n".join([
-            "INDEX: {}, parsedq: {}".format(xidx, x['question_text'])
-            for xidx, x in enumerate(prgs_all)
-        ])
-
-        if picker is not None:
-            picker = int(picker)
-
-        if picker == -1:
-            raise SoapErrors.PickerError(pick_tpl(picker_indexes))
-
-        if not prg_match and picker is None:
-            raise SoapErrors.PickerError(pick_tpl(picker_indexes))
-
-        if picker:
-            try:
-                prg_match = prgs_all[picker]
-            except IndexError:
-                raise SoapErrors.PickerError(perr_tpl(picker))
-
-        response = self.add_parse_group(prg_match)
-        question_id = response.get_question_id()
-        if not question_id:
-            raise SoapErrors.AppError(qerr_tpl(json.dumps(prg_match)))
-
-        response = self.get_question_results(question_id)
-        response.request = orig_response.request
-        return response
+        prg_list = response.get_parse_result_groups()
+        return prg_list
 
     def add_parse_group(self, parse_group):
         object_type = 'question'
@@ -488,23 +617,17 @@ class SoapWrap:
         }
         request = SoapRequest(**request_args)
         response = self.call_api(request)
-        response.sensors = self.gather_sensors_from_response(response)
         return response
 
     def gather_sensors_from_response(self, response):
-        inner_return = response.inner_return
-        result_sets = inner_return['result_sets']
-        result_set = result_sets['result_set']
-        header_list = result_set['cs']
-        header_list = header_list['c']
-        sensor_hashes = list(set([x['wh'] for x in header_list]))
+        sensor_hashes = response.get_sensor_hashes()
         sensor_hashes = [
             'hash:%s' % x for x in sensor_hashes if str(x) != '0'
         ]
         sensor_objects = []
         if sensor_hashes:
             response = self.get_sensor_object(sensor_hashes)
-            sensor_objects = response.inner_return['sensor']
+            sensor_objects = response.get_sensor_objects()
         return sensor_objects
 
     def get_saved_question_object(self, query):
@@ -722,8 +845,7 @@ class SoapWrap:
         }
         request = SoapRequest(**request_args)
         response = self.call_api(request)
-        server_info = response.inner_return['Diagnostics']
-        server_info = {k: v for j in server_info for k, v in j.iteritems()}
+        server_info = response.get_server_info()
         return server_info
 
 
@@ -885,15 +1007,14 @@ class SoapResponse(object):
         # http_response = requests module object
         self.http_response = http_response
 
-        self.check_response_ok(self.http_response)
-        self.outer_xml = self.get_outer_xml(self.http_response)
-        self.outer_return = self.get_outer_return(self.outer_xml)
-        self.command = self.get_command(self.outer_return)
-        self.check_auth_ok(self.command)
-        self.check_command_ok(self.command)
-        self.session_id = self.get_session_id(self.outer_return)
-        self.inner_return = self.get_inner_return(
-            self.command, self.outer_return)
+        self.check_response_ok()
+        self.outer_xml = self.get_outer_xml()
+        self.outer_return = self.get_outer_return()
+        self.command = self.get_command()
+        self.check_auth_ok()
+        self.check_command_ok()
+        self.session_id = self.get_session_id()
+        self.inner_return = self.get_inner_return()
 
     def __str__(self):
         received = self.received_human or "Not Yet Sent"
@@ -907,13 +1028,12 @@ class SoapResponse(object):
         )
         return ret
 
-    @staticmethod
-    def get_outer_xml(http_response):
+    def get_outer_xml(self):
         """chew up the raw text from the http_response into a dict"""
         notext_tpl = "No text converted from HTTP response: {}".format
         outer_err = "Exception while converting outer XML: {}".format
 
-        text = http_response.text
+        text = self.http_response.text
 
         if not text:
             raise SoapErrors.HttpError(notext_tpl(text))
@@ -928,11 +1048,11 @@ class SoapResponse(object):
 
         return outer_xml
 
-    def get_outer_return(self, outer_xml):
+    def get_outer_return(self):
         p1_tpl = "Parsed outer return from XML:\n{}".format
         outer_err = "Exception while parsing outer XML: {}".format
         try:
-            outer_envelope = outer_xml['soap:Envelope']
+            outer_envelope = self.outer_xml['soap:Envelope']
             outer_body = outer_envelope['soap:Body']
             outer_return = outer_body['t:return']
         except Exception as e:
@@ -940,45 +1060,45 @@ class SoapResponse(object):
         self.XMLPLOG(p1_tpl(SoapUtil.jsonify(outer_return)))
         return outer_return
 
-    def get_command(self, outer_return):
+    def get_command(self):
         p1_tpl = "Parsed command from outer return: {}".format
-        command = outer_return['command']
+        command = self.outer_return['command']
         self.XMLPLOG(p1_tpl(SoapUtil.jsonify(command)))
         return command
 
-    def check_auth_ok(self, command):
-        auth_err = "Authorization failure in {} (COMMAND: {!r})".format
-        auth_ok = 'Forbidden' not in command
+    def check_auth_ok(self):
+        auth_err = "Authorization failure in {} ({})".format
+        auth_ok = 'Forbidden' not in self.command
         if not auth_ok:
             raise SoapErrors.AuthorizationError(auth_err(self, self.command))
         return auth_ok
 
-    def check_response_ok(self, http_response):
+    def check_response_ok(self):
         non_200 = "Non 200 status code {!r} (RESPONSE: {})".format
         valid_codes = [200]
-        response_ok = http_response.status_code in valid_codes
+        response_ok = self.http_response.status_code in valid_codes
         if not response_ok:
             raise SoapErrors.HttpError(non_200(
                 self.http_response.status_code, self.http_response.text
             ))
         return response_ok
 
-    def check_command_ok(self, command):
-        bad_err = "Bad Command Return in {} (COMMAND: {!r})".format
-        command_ok = 'Bad Request' not in command
+    def check_command_ok(self):
+        bad_err = "Bad Command Return in {} ({})".format
+        command_ok = self.request.command == self.command
         if not command_ok:
             raise SoapErrors.BadRequestError(
                 bad_err(self, self.command.replace('\n', ''))
             )
         return command_ok
 
-    def get_session_id(self, outer_return):
+    def get_session_id(self):
         p1_tpl = "Parsed session from outer return: {}".format
-        session_id = outer_return['session']
+        session_id = self.outer_return['session']
         self.XMLPLOG(p1_tpl(SoapUtil.jsonify(session_id)))
         return session_id
 
-    def get_inner_return(self, command, outer_return):
+    def get_inner_return(self):
         p1_tpl = "Parsed inner return from outer return: {}".format
         xml_err = "Exception getting inner ResultXML: {}".format
         obj_err = "Exception getting inner result_object: {}".format
@@ -986,22 +1106,22 @@ class SoapResponse(object):
 
         result_xml_commands = ['GetResultData', 'GetResultInfo']
         result_obj_commands = ['GetObject', 'AddObject', 'DeleteObject']
-        if command in result_xml_commands:
+        if self.command in result_xml_commands:
             self.XMLPLOG("Parsing ResultXML from outer return")
             try:
                 inner_return = xmltodict.parse(
-                    outer_return['ResultXML'],
+                    self.outer_return['ResultXML'],
                     postprocessor=SoapUtil.jsonprocessor,
                 )
             except Exception as e:
                 raise SoapErrors.InnerReturnError(xml_err(e))
-        elif command in result_obj_commands:
+        elif self.command in result_obj_commands:
             self.XMLPLOG("Parsing result_object from outer return")
             try:
-                if SoapUtil.is_str(outer_return['result_object']):
-                    inner_return = eval(outer_return['result_object'])
+                if SoapUtil.is_str(self.outer_return['result_object']):
+                    inner_return = eval(self.outer_return['result_object'])
                 else:
-                    inner_return = outer_return['result_object']
+                    inner_return = self.outer_return['result_object']
             except Exception as e:
                 raise SoapErrors.InnerReturnError(obj_err(e))
         else:
@@ -1012,15 +1132,60 @@ class SoapResponse(object):
 
     def get_question_id(self):
         qret_tpl = "Question ID {!r} returned".format
-        question_id = self.inner_return.get('question', {}).get('id', '')
-        self.question_id = question_id
+        obj_err = "Exception getting question id: {}".format
+        try:
+            question_id = self.inner_return['question']['id']
+        except Exception as e:
+            raise SoapErrors.InnerReturnError(obj_err(e))
         self.XMLPLOG(qret_tpl(question_id))
         return question_id
 
     def get_result_info(self):
-        result_infos = self.inner_return['result_infos']
-        result_info = result_infos['result_info']
+        obj_err = "Exception getting result info: {}".format
+        try:
+            result_info = self.inner_return['result_infos']['result_info']
+            self.XMLPLOG(SoapUtil.jsonify(result_info))
+        except Exception as e:
+            raise SoapErrors.InnerReturnError(obj_err(e))
         return result_info
+
+    def get_sensor_hashes(self):
+        obj_err = "Exception getting sensor hashes: {}".format
+        try:
+            result_sets = self.inner_return['result_sets']
+            result_set = result_sets['result_set']
+            header_list = result_set['cs']
+            header_list = header_list['c']
+            sensor_hashes = list(set([x['wh'] for x in header_list]))
+        except Exception as e:
+            raise SoapErrors.InnerReturnError(obj_err(e))
+        return sensor_hashes
+
+    def get_sensor_objects(self):
+        obj_err = "Exception getting sensor objects: {}".format
+        try:
+            sensor_objects = self.inner_return['sensor']
+        except Exception as e:
+            raise SoapErrors.InnerReturnError(obj_err(e))
+        return sensor_objects
+
+    def get_server_info(self):
+        obj_err = "Exception getting server info: {}".format
+        try:
+            server_info = self.inner_return['Diagnostics']
+            server_info = {k: v for j in server_info for k, v in j.iteritems()}
+        except Exception as e:
+            raise SoapErrors.InnerReturnError(obj_err(e))
+        return server_info
+
+    def get_parse_result_groups(self):
+        obj_err = "Exception getting server info: {}".format
+        try:
+            prgs = self.inner_return.get('parse_result_groups', {})
+            prg_list = prgs['parse_result_group']
+        except Exception as e:
+            raise SoapErrors.InnerReturnError(obj_err(e))
+        return prg_list
 
     @property
     def received_human(self):
@@ -1367,6 +1532,162 @@ class SoapTransform(object):
         else:
             flat[prefix] = fullobj
         return flat
+
+    ## result_object
+    def humanize_result_object(self, response, **kwargs):
+        err1 = (
+            "Unexpected error when parsing inner return: {}"
+        ).format
+        err3 = ("No print method available for object type {}").format
+
+        try:
+            return_items = response.inner_return.items()[0]
+            prefix = return_items[0]
+            results = return_items[1]
+        except Exception as e:
+            raise Exception(err1(e))
+
+        # handle "all" responses
+        if SoapUtil.is_dict(results):
+            single_prefix = prefix[:-1]
+            if single_prefix in results.keys():
+                prefix = single_prefix
+                results = results[prefix]
+
+        if not SoapUtil.is_list(results):
+            results = [results]
+
+        if prefix == 'sensor':
+            human_out = self.humanize_results_sensor(results, **kwargs)
+        else:
+            raise Exception(err3(prefix))
+
+        if not human_out:
+            human_out.append("No results returned...")
+        human_out = '\n'.join(human_out)
+        return human_out
+
+    @staticmethod
+    def humanize_results_sensor(results, **kwargs):
+        '''
+        kwargs:
+          CATEGORIES(list): only show sensors for these categories
+          PLATFORMS(list): only show sensors that match these platforms
+          SENSOR_REGEXES(list): only show sensors that match these regexes
+          HIDE_PARAMS(bool): do not show params in output
+          PARAMS_ONLY(bool): show only sensors with params
+          JSON_SENSOR(bool): just print out a json dump of the sensor
+        '''
+        sens_line = (
+            "  Sensor Name: '{name}', Platforms: {platforms}, "
+            "Category: {category}"
+        ).format
+        desc_line = "    Description: {description}".format
+        param_line = "    Parameter {}:".format
+        pval_line = "      {}: {}".format
+
+        kw_categories = [x.lower() for x in kwargs.get('CATEGORIES', [])]
+        kw_platforms = [x.lower() for x in kwargs.get('PLATFORMS', [])]
+        kw_sensor_regexes = kwargs.get('SENSOR_REGEXES', [])
+        kw_sensor_regexes = [re.compile(x) for x in kw_sensor_regexes]
+        kw_hide_params = kwargs.get('HIDE_PARAMS', False)
+        kw_params_only = kwargs.get('PARAMS_ONLY', False)
+        kw_json_sensor = kwargs.get('JSON_SENSOR', False)
+
+        human_out = []
+        cat_groups = {}
+        for r in results:
+            rcat = str(r['category'])
+            if kw_categories:
+                if rcat.lower() not in kw_categories:
+                    continue
+            if rcat not in cat_groups:
+                cat_groups[rcat] = []
+            cat_groups[rcat].append(r)
+
+        for cat_group in sorted(cat_groups):
+            cat_items = sorted(cat_groups[cat_group], key=itemgetter('name'))
+            for cat_item in cat_items:
+                if kw_sensor_regexes:
+                    name_match = [
+                        x for x in kw_sensor_regexes
+                        if x.search(cat_item['name'])
+                    ]
+                    if not name_match:
+                        continue
+
+                if kw_json_sensor:
+                    human_out.append(SoapUtil.jsonify(cat_item, 2))
+                    continue
+
+                # clean up description
+                item_desc = cat_item.get('description') or ''
+                item_desc = item_desc.replace('\n', ' ').strip()
+                cat_item['description'] = item_desc
+
+                # figure out platforms for this item
+                item_plats = []
+                item_queries = cat_item.get('queries', {})
+                item_queries = item_queries.get('query', [])
+
+                if not SoapUtil.is_list(item_queries):
+                    item_queries = [item_queries]
+
+                for item_query in item_queries:
+                    query_script = item_query.get('script')
+                    if not query_script:
+                        continue
+                    if 'THIS IS A STUB' in query_script:
+                        continue
+                    if 'echo Windows Only' in query_script:
+                        continue
+                    item_plats.append(item_query['platform'])
+
+                if item_plats:
+                    item_plats = sorted(item_plats)
+                else:
+                    item_plats = ['None']
+
+                if kw_platforms:
+                    plat_match = [
+                        x for x in item_plats if x.lower() in kw_platforms
+                    ]
+                    if not plat_match:
+                        continue
+
+                cat_item['platforms'] = ', '.join(item_plats)
+
+                item_params = cat_item.get('parameter_definition') or {}
+                item_params = item_params.get('parameters') or []
+
+                if kw_params_only and not item_params:
+                    continue
+
+                poppers = [
+                    'model',
+                    'parameterType',
+                    'snapInterval',
+                    'validationExpressions',
+                ]
+
+                for p in poppers:
+                    [i.pop(p) for i in item_params if p in i]
+
+                human_out.append(sens_line(**cat_item))
+                human_out.append(desc_line(**cat_item))
+
+                if kw_hide_params:
+                    continue
+
+                for item_idx, item_param in enumerate(item_params):
+                    human_out.append(param_line(item_idx + 1))
+                    for k, v in sorted(item_param.iteritems()):
+                        if not v:
+                            continue
+                        human_out.append(pval_line(k, v))
+
+                human_out.append("")
+        return human_out
 
     ## result_object
     def parse_result_object(self, response, **kwargs):

@@ -15,4 +15,4 @@ basescript="${myscript%%.*}"
     --loglevel "${loglevel}" \
     --format "${ftype}" \
     --dirname "${fdir}" \
-    --query "Get Computer Name and Installed Applications from all machines"
+    --query "all"

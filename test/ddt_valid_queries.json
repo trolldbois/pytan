@@ -15,6 +15,10 @@
         "method": "ask_parsed_question",
         "query": "Get Computer Name and Operating System and IP Address and IP Route Details and Installed Applications from all machines"
     },
+    "ask_parsed_question_complex_filter": {
+        "method": "ask_parsed_question",
+        "query": "Get Computer Name and Operating System and IP Address and IP Route Details and Installed Applications from machines where Operating System contains Windows"
+    },
     "ask_parsed_question_forced_picker0": {
         "method": "ask_parsed_question",
         "query": "Get Installed Applications from All Machines",
@@ -32,6 +36,21 @@
     "ask_manual_question_multiple": {
         "method": "ask_manual_question",
         "sensors": ["Computer Name", "Installed Applications"]
+    },
+    "ask_manual_question_params_single": {
+        "method": "ask_manual_question",
+        "sensors": "Folder Name Search with RegEx Match[Program Files,.*,No,No]"
+    },
+    "ask_manual_question_params_escaped_comma": {
+        "method": "ask_manual_question",
+        "sensors": "Folder Name Search with RegEx Match[Program Files,\\,?.*,No,No]"
+    },
+    "ask_manual_question_params_multiple": {
+        "method": "ask_manual_question",
+        "sensors": [
+            "Folder Name Search with RegEx Match[Program Files,.*,No,No]",
+            "Computer Name"
+        ]
     },
     "ask_manual_question_multiple_selector": {
         "method": "ask_manual_question",

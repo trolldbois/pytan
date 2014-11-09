@@ -348,3 +348,23 @@ def stringify_obj(o, max_len=80):
     s = s.replace(',', '+')
     s = s[0:max_len]
     return s
+
+
+def get_object_case(sw, objtype, qgrp_args):
+    all_in_query = 'all' in [x.lower() for x in qgrp_args['query']]
+    if all_in_query:
+        print "++ Getting all objects for object type: %s" % (objtype)
+        response = getattr(sw, 'get_all_%s_objects' % objtype)()
+    else:
+        print "++ Getting objects %s for object type: %s" % (
+            json.dumps(qgrp_args), objtype)
+        response = getattr(sw, 'get_%s_object' % objtype)(**qgrp_args)
+
+    print "++ Received Response: ", str(response)
+    return response
+
+
+def write_object(sw, response, tgrp_args):
+    print "++ Creating Report: ", json.dumps(tgrp_args)
+    report_file = sw.st.write_response(response, **tgrp_args)
+    print "++ Report created: ", report_file
