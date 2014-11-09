@@ -119,9 +119,10 @@ cd ~/gh/pytan
 git flow release finish 0.6.0
 ```
 
-Push the tags to origin:
+Push the changes and the tags to origin:
 ```
 git push --tags
+git push
 ```
 
 ## See the commit log history
