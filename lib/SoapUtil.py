@@ -4,7 +4,7 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 """Generic Utility Functions"""
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
-__version__ = '0.5.0'
+__version__ = '0.6.0'
 
 import sys
 import traceback
@@ -13,6 +13,8 @@ import time
 import getpass
 import logging
 import json
+import itertools
+import re
 from collections import OrderedDict
 # from datetime import datetime
 
@@ -303,3 +305,66 @@ def set_all_loglevels(level='DEBUG'):
         v.info(m)
         v.warn(m)
         v.error(m)
+
+
+def combinator1(l1, l2):
+    l2_repeated = itertools.repeat(l2, len(l1))
+    c = [dict(zip(l1, x)) for x in itertools.product(*l2_repeated)]
+    return c
+
+
+def combinator2(l1, l2, key):
+    c = [
+        dict(x[0].items() + {key: x[1]}.items())
+        for x in itertools.product(l1, l2)
+    ]
+    return c
+
+
+def build_fn_from_dict(d, key='fpostfix'):
+    skips = ['ftype', key]
+    parts = []
+    for k, v in d.iteritems():
+        if k in skips:
+            continue
+        new_k = ''.join([s[0] for s in k.split('_')])
+        if is_list(v):
+            if not v:
+                new_v = 'null'
+            else:
+                new_v = ''.join([s[0] for s in v])
+        else:
+            new_v = str(v)[0]
+        parts.append('_'.join([new_k, new_v]))
+    parts = '-'.join(parts)
+    d[key] = parts
+    return d
+
+
+def stringify_obj(o, max_len=80):
+    s = json.dumps(o)
+    s = re.sub(r'[^\w,:]', '', s)
+    s = s.replace(':', '_')
+    s = s.replace(',', '+')
+    s = s[0:max_len]
+    return s
+
+
+def get_object_case(sw, objtype, qgrp_args):
+    all_in_query = 'all' in [x.lower() for x in qgrp_args['query']]
+    if all_in_query:
+        print "++ Getting all objects for object type: %s" % (objtype)
+        response = getattr(sw, 'get_all_%s_objects' % objtype)()
+    else:
+        print "++ Getting objects %s for object type: %s" % (
+            json.dumps(qgrp_args), objtype)
+        response = getattr(sw, 'get_%s_object' % objtype)(**qgrp_args)
+
+    print "++ Received Response: ", str(response)
+    return response
+
+
+def write_object(sw, response, tgrp_args):
+    print "++ Creating Report: ", json.dumps(tgrp_args)
+    report_file = sw.st.write_response(response, **tgrp_args)
+    print "++ Report created: ", report_file

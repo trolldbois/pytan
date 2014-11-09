@@ -30,7 +30,11 @@ parser = customparser.CustomParser(
     description=__doc__,
     parents=[parent_parser],
 )
-parser.add_argument(
+parser = customparser.setup_report_parser(parser)
+parser = customparser.setup_question_report_parser(parser)
+parser = customparser.setup_report_sort_parser(parser)
+ask_question_group = parser.add_argument_group('Ask Saved Question Options')
+ask_question_group.add_argument(
     '--query',
     required=True,
     action='store',
@@ -38,33 +42,28 @@ parser.add_argument(
     help='Saved question to ask - can prepend with id:, name:, '
     ' or hash: - name: will be prepended by default',
 )
-
-parser = customparser.setup_transform_parser(parser)
-parser = customparser.setup_transform_resultxml_parser(parser)
-parser = customparser.setup_transform_sort_parser(parser)
-
 args = parser.parse_args()
 swargs = args.__dict__
 
 # put our query args into their own dict and remove them from swargs
-qkeys = ['query']
-qargs = {k: swargs.pop(k) for k in qkeys}
+qgrp_names = ['Ask Saved Question Options']
+qgrp_opts = customparser.get_grp_opts(parser, qgrp_names)
+qgrp_args = {k: swargs.pop(k) for k in qgrp_opts}
 
 # put our transform args into their own dict and remove them from swargs
-f_grpnames = [
+tgrp_names = [
     'Report Options',
     'Question Report Options',
     'Report Sort Options',
 ]
-fgrps = [a for a in parser._action_groups if a.title in f_grpnames]
-fargs = [a.dest for b in fgrps for a in b._group_actions]
-fargs = {k: swargs.pop(k) for k in fargs if k in swargs}
+tgrp_opts = customparser.get_grp_opts(parser, tgrp_names)
+tgrp_args = {k: swargs.pop(k) for k in tgrp_opts if k in swargs}
 
 sw = SoapWrap.SoapWrap(**swargs)
 print str(sw)
-print "++ Asking saved question: ", SoapUtil.json.dumps(qargs)
-response = sw.ask_saved_question(**qargs)
+
+print "++ Asking saved question: ", SoapUtil.json.dumps(qgrp_args)
+response = sw.ask_saved_question(**qgrp_args)
 print "++ Received Response: ", str(response)
-print "++ Creating Report: ", SoapUtil.json.dumps(fargs)
-report_file = sw.st.write_response(response, **fargs)
-print "++ Report created: ", report_file
+
+SoapUtil.write_object(sw, response, tgrp_args)

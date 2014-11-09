@@ -27,7 +27,7 @@ for aa in path_adds:
 
 import customparser
 import SoapUtil
-from SoapWrap import SoapWrap
+import SoapWrap
 from console_support import *
 
 SoapUtil.version_check(__version__)
@@ -36,11 +36,15 @@ parser = customparser.CustomParser(
     description=__doc__,
     parents=[parent_parser],
 )
-
 args = parser.parse_args()
 swargs = args.__dict__
-sw = SoapWrap(**swargs)
+
+sw = SoapWrap.SoapWrap(**swargs)
+
+st = SoapWrap.SoapTransform()
+
 if swargs['loglevel'] >= 10:
     SoapUtil.set_all_loglevels()
 
 print ("%s -- now available as 'sw'!" % sw)
+print ("%s -- now available as 'st'!" % st)

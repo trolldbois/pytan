@@ -8,6 +8,14 @@ import sys
 # disable python from creating .pyc files everywhere
 sys.dont_write_bytecode = True
 
+# Used by SoapWrap.call_api() for how long a GetResultInfo loop is allowed
+# to go on for
+RESULT_MAX_WAIT = 500
+
+# Used by SoapWrap.call_api() for long to sleep in between
+# GetResultInfo checks
+RESULT_SLEEP = 2
+
 # Used by SoapWrap.SoapWrap for environment variable override mappings
 OS_ENV_MAP = {
     'SOAP_USERNAME': 'self.__username',
@@ -86,7 +94,6 @@ TRANSFORM_BOOL_KWARGS = {
     'ADD_TYPE_TO_HEADERS': False,
     'ADD_SENSOR_TO_HEADERS': False,
     'EXPAND_GROUPED_COLUMNS': False,
-    'HIDE_COUNT_COLUMN': True,
 }
 TRANSFORM_BOOL_HELP = {
     'ADD_TYPE_TO_HEADERS': "Appends the column type to each column header for "
@@ -95,7 +102,6 @@ TRANSFORM_BOOL_HELP = {
     "originates from for question results",
     'EXPAND_GROUPED_COLUMNS': "Expand carriage return seperated values into "
     "sensor related rows",
-    'HIDE_COUNT_COLUMN': "Hide the count column returned by the API",
 }
 
 # Used by SoapWrap.SoapTransform.write_response() for kwargs
@@ -107,3 +113,7 @@ TRANSFORM_HEADER_SORT_PRIORITY = [
     'hash',
     'value_type',
 ]
+
+PARAM_RE = r'\[(.*)\]'
+PARAM_SPLIT_RE = r'(?<!\\),'
+PARAM_DELIM = '||'

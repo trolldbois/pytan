@@ -1,11 +1,15 @@
 #!/bin/bash
-script=$0
-myscript=`basename $script`
-mydir=`dirname $script`
-mydir=`cd $mydir ; pwd`
-parentdir=`cd $mydir/.. ; pwd`
+script="${0}"
+myscript=`basename "${script}"`
+mydir=`dirname "${script}"`
+mydir=`cd "${mydir}" ; pwd`
+parentdir=`cd "${mydir}"/.. ; pwd`
 basescript="${myscript%%.*}"
 
-. $mydir/API_INFO.sh
+. "${mydir}"/API_INFO.sh
 
-$parentdir/${basescript}.py -u "$username" -p "$password" --host "$host" --loglevel $loglevel
+"${parentdir}"/${basescript}.py \
+    -u "${username}" \
+    -p "${password}" \
+    --host "${host}" \
+    --loglevel "${loglevel}"

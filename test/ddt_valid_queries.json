@@ -1,0 +1,128 @@
+{
+    "ask_saved_question_single_str": {
+        "method": "ask_saved_question",
+        "query": "Installed Applications"
+    },
+    "ask_saved_question_single_list": {
+        "method": "ask_saved_question",
+        "query": ["Installed Applications"]
+    },
+    "ask_parsed_question_simple": {
+        "method": "ask_parsed_question",
+        "query": "Get Installed Applications from All Machines"
+    },
+    "ask_parsed_question_complex": {
+        "method": "ask_parsed_question",
+        "query": "Get Computer Name and Operating System and IP Address and IP Route Details and Installed Applications from all machines"
+    },
+    "ask_parsed_question_complex_filter": {
+        "method": "ask_parsed_question",
+        "query": "Get Computer Name and Operating System and IP Address and IP Route Details and Installed Applications from machines where Operating System contains Windows"
+    },
+    "ask_parsed_question_forced_picker0": {
+        "method": "ask_parsed_question",
+        "query": "Get Installed Applications from All Machines",
+        "picker": 0
+    },
+    "ask_parsed_question_forced_picker1": {
+        "method": "ask_parsed_question",
+        "query": "Get Installed Applications from All Machines",
+        "picker": 1
+    },
+    "ask_manual_question_single": {
+        "method": "ask_manual_question",
+        "sensors": "Computer Name"
+    },
+    "ask_manual_question_multiple": {
+        "method": "ask_manual_question",
+        "sensors": ["Computer Name", "Installed Applications"]
+    },
+    "ask_manual_question_params_single": {
+        "method": "ask_manual_question",
+        "sensors": "Folder Name Search with RegEx Match[Program Files,.*,No,No]"
+    },
+    "ask_manual_question_params_escaped_comma": {
+        "method": "ask_manual_question",
+        "sensors": "Folder Name Search with RegEx Match[Program Files,\\,?.*,No,No]"
+    },
+    "ask_manual_question_params_multiple": {
+        "method": "ask_manual_question",
+        "sensors": [
+            "Folder Name Search with RegEx Match[Program Files,.*,No,No]",
+            "Computer Name"
+        ]
+    },
+    "ask_manual_question_multiple_selector": {
+        "method": "ask_manual_question",
+        "sensors": ["name:Computer Name", "name:Installed Applications"]
+    },
+    "get_single_sensor_object": {
+        "method": "get_sensor_object",
+        "query": "Computer Name"
+    },
+    "get_single_sensor_object_by_name": {
+        "method": "get_sensor_object",
+        "query": "name:Computer Name"
+    },
+    "get_single_sensor_object_by_id": {
+        "method": "get_sensor_object",
+        "query": "id:1"
+    },
+    "get_single_sensor_object_by_hash": {
+        "method": "get_sensor_object",
+        "query": "hash:322086833"
+    },
+    "get_multiple_sensor_objects": {
+        "method": "get_sensor_object",
+        "query": ["Computer Name", "Action Statuses"]
+    },
+    "get_multiple_sensor_objects_selectors": {
+        "method": "get_sensor_object",
+        "query": ["name:Computer Name", "id:1", "hash:322086833"]
+    },
+    "get_saved_question_object_single": {
+        "method": "get_saved_question_object",
+        "query": "Installed Applications"
+    },
+    "get_saved_question_object_multiple": {
+        "method": "get_saved_question_object",
+        "query": ["Installed Applications", "Computer Name"]
+    },
+    "get_question_object": {
+        "method": "get_question_object",
+        "query": "1"
+    },
+    "get_package_object_single": {
+        "method": "get_package_object",
+        "query": "Distribute Patch Tools"
+    },
+    "get_group_object_single": {
+        "method": "get_group_object",
+        "query": "All Computers"
+    },
+    "get_action_object_single_by_id": {
+        "method": "get_action_object",
+        "query": "1"
+    },
+    "get_all_sensor_objects": {
+        "method": "get_all_sensor_objects"
+    },
+    "get_all_saved_question_objects": {
+        "method": "get_all_saved_question_objects"
+    },
+    "get_all_question_objects": {
+        "method": "get_all_question_objects"
+    },
+    "get_all_packages": {
+        "method": "get_all_package_objects"
+    },
+    "get_all_group_objects": {
+        "method": "get_all_group_objects"
+    },
+    "get_all_action_objects": {
+        "method": "get_all_action_objects"
+    },
+    "get_all_saved_question_objects": {
+        "method": "get_all_saved_question_objects"
+    }
+}

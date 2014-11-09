@@ -1,0 +1,53 @@
+{
+    "ask_parsed_question_invalid": {
+        "method": "ask_parsed_question",
+        "query": "Dweedle Dee and Dum"
+    },
+    "ask_manual_question_invalid": {
+        "method": "ask_manual_question",
+        "sensors": "Dweedle Dee and Dum"
+    },
+    "ask_parsed_question_invalid_picker": {
+        "method": "ask_parsed_question",
+        "query": "Get Installed Applications from All Machines",
+        "picker": 99999
+    },
+    "ask_parsed_question_picker_list": {
+        "method": "ask_parsed_question",
+        "query": "Get Installed Applications from All Machines",
+        "picker": -1
+    },
+    "ask_parsed_question_noresults": {
+        "method": "ask_parsed_question",
+        "query": "Get Installed Applications and Computer Name from machines where Operating System contains Mac and Operating System contains Windows"
+    },
+    "ask_parsed_question_parameterized": {
+        "method": "ask_parsed_question",
+        "query": "Get High CPU Processes[3] from all machines"
+    },
+    "ask_parsed_question_picker_nonnumber": {
+        "method": "ask_parsed_question",
+        "query": "Get Installed Applications from All Machines",
+        "picker": "STRING"
+    },
+    "get_action_object_single_by_name": {
+        "method": "get_action_object",
+        "query": "Distribute Tanium Standard Utilities"
+    },
+    "get_question_object_fail_invalid_id": {
+        "method": "get_question_object",
+        "query": "n"
+    },
+    "get_question_object_fail_by_name": {
+        "method": "get_question_object",
+        "query": "name:fail"
+    },
+    "ask_saved_question_bad": {
+        "method": "ask_saved_question",
+        "query": ["Installed Applications", "id:0"]
+    },
+    "ask_manual_question_params_single_bad": {
+        "method": "ask_manual_question",
+        "sensors": "Computer Name[Deedle]"
+    }
+}
