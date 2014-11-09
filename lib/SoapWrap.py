@@ -16,6 +16,7 @@ import csv
 import json
 import StringIO
 import re
+from operator import itemgetter
 
 # disable python from creating .pyc files everywhere
 sys.dont_write_bytecode = True
@@ -99,6 +100,7 @@ class SoapWrap:
 
         self.test_app_port()
         self.server_info = self.get_server_info()
+        self.param_re = re.compile(SoapConstants.PARAM_RE)
 
     def __str__(self):
         str_tpl = "SoapWrap to {}, Version: {}".format
@@ -168,8 +170,8 @@ class SoapWrap:
 
         if request.command == "GetResultInfo":
             full_results = False
-            wait = 2
-            max_wait = 600
+            wait = SoapConstants.RESULT_SLEEP
+            max_wait = SoapConstants.RESULT_MAX_WAIT
             current_wait = 1
             while full_results is not True:
                 ri = response.get_result_info()
@@ -270,6 +272,46 @@ class SoapWrap:
         }
         return objects_dict
 
+    @staticmethod
+    def param_split(param):
+        '''
+        >>> param = "Program Files,\,.*,No,No"
+        >>> param = re.split(SoapConstants.PARAM_SPLIT_RE, param)
+        >>> param
+        ['Program Files', '\\,.*', 'No', 'No']
+        '''
+        if param:
+            param = re.split(SoapConstants.PARAM_SPLIT_RE, param)
+        else:
+            param = []
+        return param
+
+    def parse_params(self, sensors):
+        mt1_tpl = "More than one parameter passed in {}".format
+        sensor_params = []
+        for s in sensors:
+            # s =
+            # "Folder Name Search with RegEx Match[Program Files,\,.*,No,No]"
+            params = self.param_re.findall(s)
+            # params =
+            # ['Program Files,\,.*,No,No']
+            if len(params) > 1:
+                raise SoapErrors.AppError(mt1_tpl(s))
+            elif len(params) == 1:
+                param = params[0]
+            else:
+                param = ''
+            # param =
+            # 'Program Files,\,.*,No,No'
+            split_param = self.param_split(param)
+            # split_param =
+            # ['Program Files', '\\,.*', 'No', 'No']
+            sensor_params.append(split_param)
+        return sensor_params
+
+    def remove_params(self, sensors):
+        return [self.param_re.sub('', s) for s in sensors]
+
     def test_app_port(self):
         """validates that the SOAP port on the SOAP host can be reached"""
         chk_tpl = "Port test to {}:{} {}".format
@@ -320,38 +362,45 @@ class SoapWrap:
         self.HTTPLOG(dbg1_tpl(ret.status_code, ret.text.encode(ret.encoding)))
         return ret
 
-    def get_parse_groups(self, query):
-        """sends a parse question Request and returns the response
-
-        :return: :class:`SoapResponse`
-        """
-
-        object_type = 'question'
-        request_args = {
-            'command': 'AddObject',
-            'object_type': object_type,
-            'objects_dict': {'parse_job': {'question_text': query}},
-            'auth_dict': self.auth.token,
-        }
-
-        request = SoapRequest(**request_args)
-        response = self.call_api(request)
-
-        prg_list = response.get_parse_result_groups()
-        return prg_list
-
     def ask_manual_question(self, sensors, filters=None, options=None):
-        sensor_objs = self.__parse_query_objects(sensors)
-        if not SoapUtil.is_list(sensor_objs):
-            sensor_objs = [sensor_objs]
+        '''
+        examples for sensors input:
+        ='Computer Name'
+        ='name:Computer Name'
+        ='id:202'
+        ="Folder Name Search with RegEx Match[Program Files,\\,.*,No,No]
+        ="Folder Name Search with RegEx Match[]
+        ="Folder Name Search with RegEx Match
+        =["Folder Name Search with RegEx Match[Program Files,\\,.*,No,No]",
+        "Computer Name"]
+        '''
+
+        if not SoapUtil.is_list(sensors):
+            sensors = [sensors]
+
+        sensor_params = self.parse_params(sensors)
+        '''
+        sensor_params =
+        [['Program Files', '\\,.*', 'No', 'No'], []]
+        '''
+
+        sensors = self.remove_params(sensors)
+        '''
+        sensors =
+        ['Folder Name Search with RegEx Match', 'Computer Name']
+        '''
+
+        # sensor_filters = []
+        # sensor_options = []
+        # filters
+        # options
+
+        sensor_objects = self.amq_get_so(sensors)
+        objects_dict = self.amq_get_od(
+            sensors, sensor_params, sensor_objects, filters, options,
+        )
+
         object_type = 'question'
-        objects_dict = {
-            object_type: {
-                'selects': {
-                    "select": [{"sensor": s_obj} for s_obj in sensor_objs],
-                },
-            },
-        }
 
         request_args = {
             'command': 'AddObject',
@@ -360,12 +409,82 @@ class SoapWrap:
             'auth_dict': self.auth.token,
         }
 
-        request = SoapRequest(**request_args)
-        orig_response = self.call_api(request)
+        orig_request = SoapRequest(**request_args)
+        orig_response = self.call_api(orig_request)
         question_id = orig_response.get_question_id()
         response = self.get_question_results(question_id)
         response.request = orig_response.request
+        response.sensors = sensor_objects
         return response
+
+    def amq_get_so(self, sensors):
+        nomatch_tpl = ("Sensor {!r} NOT FOUND!!").format
+
+        # this does double duty:
+        # asks for each sensor individually to make sure it exists
+        # gets the sensor object so that we can handle parameters
+        sensor_objects = []
+
+        for sqry in sensors:
+            try:
+                sresp = self.get_sensor_object(sqry)
+                sobj = sresp.get_sensor_objects()
+                sensor_objects.append(sobj)
+            except Exception as e:
+                self.DLOG(e)
+                raise SoapErrors.AppError(nomatch_tpl(sqry))
+        return sensor_objects
+
+    def amq_get_od(self, sensors, sensor_params, sensor_objects, filters=None,
+                   options=None):
+
+        sensor_param_maps = [
+            {'sensor': x[0], 'passed_params': x[1]}
+            for x in zip(sensor_objects, sensor_params)
+        ]
+
+        sselects = []
+        for spm in sensor_param_maps:
+            sname = spm['sensor']['name']
+            sid = spm['sensor']['id']
+            shash = spm['sensor']['hash']
+            spd = spm['sensor']['parameter_definition'] or {}
+            passed_params = spm['passed_params']
+            if not spd and passed_params:
+                    print (
+                        "ERROR: {} does not take any parameters and "
+                        "you supplied: {}"
+                    ).format(sname, passed_params)
+                    raise
+
+            param_dicts = []
+            for pd_idx, pd in enumerate(spd.get('parameters') or []):
+                param_key = '{0}{1}{0}'.format(
+                    SoapConstants.PARAM_DELIM, pd['key'])
+                try:
+                    passed_param = passed_params[pd_idx]
+                except IndexError:
+                    passed_param = ''
+                if not passed_param:
+                    continue
+                param_dict = {'key': param_key, 'value': passed_param}
+                param_dicts.append(param_dict)
+
+            if param_dicts:
+                sselect = {'parameter': param_dicts}
+                sselect = {'source_id': sid, 'parameters': sselect}
+                sfilter = {'id': sid, 'hash': shash}
+                sselect = {'sensor': sselect, 'filter': sfilter}
+            else:
+                sselect = {'hash': shash}
+                sselect = {'sensor': sselect}
+
+            sselects.append(sselect)
+
+        objects_dict = {'select': sselects}
+        objects_dict = {'selects': objects_dict}
+        objects_dict = {'question': objects_dict}
+        return objects_dict
 
     def ask_parsed_question(self, query, picker=None):
         nomatch_tpl = ("No matches for {}").format
@@ -385,8 +504,7 @@ class SoapWrap:
         match_tpl = "parse_result match for {!r}: {!r}".format
         picknum_tpl = "Picker must be a number".format
 
-        param_re = re.compile(r'(\[\w*\])')
-        if param_re.search(query):
+        if self.param_re.search(query):
             raise SoapErrors.AppError(paramerr_tpl())
 
         prg_list = self.get_parse_groups(query)
@@ -428,7 +546,28 @@ class SoapWrap:
         response = self.add_parse_group(parse_match)
         question_id = response.get_question_id()
         response = self.get_question_results(question_id)
+        response.sensors = self.gather_sensors_from_response(response)
         return response
+
+    def get_parse_groups(self, query):
+        """sends a parse question Request and returns the response
+
+        :return: :class:`SoapResponse`
+        """
+
+        object_type = 'question'
+        request_args = {
+            'command': 'AddObject',
+            'object_type': object_type,
+            'objects_dict': {'parse_job': {'question_text': query}},
+            'auth_dict': self.auth.token,
+        }
+
+        request = SoapRequest(**request_args)
+        response = self.call_api(request)
+
+        prg_list = response.get_parse_result_groups()
+        return prg_list
 
     def add_parse_group(self, parse_group):
         object_type = 'question'
@@ -478,7 +617,6 @@ class SoapWrap:
         }
         request = SoapRequest(**request_args)
         response = self.call_api(request)
-        response.sensors = self.gather_sensors_from_response(response)
         return response
 
     def gather_sensors_from_response(self, response):
@@ -929,7 +1067,7 @@ class SoapResponse(object):
         return command
 
     def check_auth_ok(self):
-        auth_err = "Authorization failure in {} (COMMAND: {!r})".format
+        auth_err = "Authorization failure in {} ({})".format
         auth_ok = 'Forbidden' not in self.command
         if not auth_ok:
             raise SoapErrors.AuthorizationError(auth_err(self, self.command))
@@ -946,7 +1084,7 @@ class SoapResponse(object):
         return response_ok
 
     def check_command_ok(self):
-        bad_err = "Bad Command Return in {} (COMMAND: {!r})".format
+        bad_err = "Bad Command Return in {} ({})".format
         command_ok = self.request.command == self.command
         if not command_ok:
             raise SoapErrors.BadRequestError(
@@ -1394,6 +1532,162 @@ class SoapTransform(object):
         else:
             flat[prefix] = fullobj
         return flat
+
+    ## result_object
+    def humanize_result_object(self, response, **kwargs):
+        err1 = (
+            "Unexpected error when parsing inner return: {}"
+        ).format
+        err3 = ("No print method available for object type {}").format
+
+        try:
+            return_items = response.inner_return.items()[0]
+            prefix = return_items[0]
+            results = return_items[1]
+        except Exception as e:
+            raise Exception(err1(e))
+
+        # handle "all" responses
+        if SoapUtil.is_dict(results):
+            single_prefix = prefix[:-1]
+            if single_prefix in results.keys():
+                prefix = single_prefix
+                results = results[prefix]
+
+        if not SoapUtil.is_list(results):
+            results = [results]
+
+        if prefix == 'sensor':
+            human_out = self.humanize_results_sensor(results, **kwargs)
+        else:
+            raise Exception(err3(prefix))
+
+        if not human_out:
+            human_out.append("No results returned...")
+        human_out = '\n'.join(human_out)
+        return human_out
+
+    @staticmethod
+    def humanize_results_sensor(results, **kwargs):
+        '''
+        kwargs:
+          CATEGORIES(list): only show sensors for these categories
+          PLATFORMS(list): only show sensors that match these platforms
+          SENSOR_REGEXES(list): only show sensors that match these regexes
+          HIDE_PARAMS(bool): do not show params in output
+          PARAMS_ONLY(bool): show only sensors with params
+          JSON_SENSOR(bool): just print out a json dump of the sensor
+        '''
+        sens_line = (
+            "  Sensor Name: '{name}', Platforms: {platforms}, "
+            "Category: {category}"
+        ).format
+        desc_line = "    Description: {description}".format
+        param_line = "    Parameter {}:".format
+        pval_line = "      {}: {}".format
+
+        kw_categories = [x.lower() for x in kwargs.get('CATEGORIES', [])]
+        kw_platforms = [x.lower() for x in kwargs.get('PLATFORMS', [])]
+        kw_sensor_regexes = kwargs.get('SENSOR_REGEXES', [])
+        kw_sensor_regexes = [re.compile(x) for x in kw_sensor_regexes]
+        kw_hide_params = kwargs.get('HIDE_PARAMS', False)
+        kw_params_only = kwargs.get('PARAMS_ONLY', False)
+        kw_json_sensor = kwargs.get('JSON_SENSOR', False)
+
+        human_out = []
+        cat_groups = {}
+        for r in results:
+            rcat = str(r['category'])
+            if kw_categories:
+                if rcat.lower() not in kw_categories:
+                    continue
+            if rcat not in cat_groups:
+                cat_groups[rcat] = []
+            cat_groups[rcat].append(r)
+
+        for cat_group in sorted(cat_groups):
+            cat_items = sorted(cat_groups[cat_group], key=itemgetter('name'))
+            for cat_item in cat_items:
+                if kw_sensor_regexes:
+                    name_match = [
+                        x for x in kw_sensor_regexes
+                        if x.search(cat_item['name'])
+                    ]
+                    if not name_match:
+                        continue
+
+                if kw_json_sensor:
+                    human_out.append(SoapUtil.jsonify(cat_item, 2))
+                    continue
+
+                # clean up description
+                item_desc = cat_item.get('description') or ''
+                item_desc = item_desc.replace('\n', ' ').strip()
+                cat_item['description'] = item_desc
+
+                # figure out platforms for this item
+                item_plats = []
+                item_queries = cat_item.get('queries', {})
+                item_queries = item_queries.get('query', [])
+
+                if not SoapUtil.is_list(item_queries):
+                    item_queries = [item_queries]
+
+                for item_query in item_queries:
+                    query_script = item_query.get('script')
+                    if not query_script:
+                        continue
+                    if 'THIS IS A STUB' in query_script:
+                        continue
+                    if 'echo Windows Only' in query_script:
+                        continue
+                    item_plats.append(item_query['platform'])
+
+                if item_plats:
+                    item_plats = sorted(item_plats)
+                else:
+                    item_plats = ['None']
+
+                if kw_platforms:
+                    plat_match = [
+                        x for x in item_plats if x.lower() in kw_platforms
+                    ]
+                    if not plat_match:
+                        continue
+
+                cat_item['platforms'] = ', '.join(item_plats)
+
+                item_params = cat_item.get('parameter_definition') or {}
+                item_params = item_params.get('parameters') or []
+
+                if kw_params_only and not item_params:
+                    continue
+
+                poppers = [
+                    'model',
+                    'parameterType',
+                    'snapInterval',
+                    'validationExpressions',
+                ]
+
+                for p in poppers:
+                    [i.pop(p) for i in item_params if p in i]
+
+                human_out.append(sens_line(**cat_item))
+                human_out.append(desc_line(**cat_item))
+
+                if kw_hide_params:
+                    continue
+
+                for item_idx, item_param in enumerate(item_params):
+                    human_out.append(param_line(item_idx + 1))
+                    for k, v in sorted(item_param.iteritems()):
+                        if not v:
+                            continue
+                        human_out.append(pval_line(k, v))
+
+                human_out.append("")
+        return human_out
 
     ## result_object
     def parse_result_object(self, response, **kwargs):

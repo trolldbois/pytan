@@ -42,8 +42,12 @@
         "method": "get_question_object",
         "query": "name:fail"
     },
-    "bad_ask_saved_question": {
+    "ask_saved_question_bad": {
         "method": "ask_saved_question",
         "query": ["Installed Applications", "id:0"]
+    },
+    "ask_manual_question_params_single_bad": {
+        "method": "ask_manual_question",
+        "sensors": "Computer Name[Deedle]"
     }
 }

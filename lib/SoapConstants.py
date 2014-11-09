@@ -8,6 +8,14 @@ import sys
 # disable python from creating .pyc files everywhere
 sys.dont_write_bytecode = True
 
+# Used by SoapWrap.call_api() for how long a GetResultInfo loop is allowed
+# to go on for
+RESULT_MAX_WAIT = 500
+
+# Used by SoapWrap.call_api() for long to sleep in between
+# GetResultInfo checks
+RESULT_SLEEP = 2
+
 # Used by SoapWrap.SoapWrap for environment variable override mappings
 OS_ENV_MAP = {
     'SOAP_USERNAME': 'self.__username',
@@ -105,3 +113,7 @@ TRANSFORM_HEADER_SORT_PRIORITY = [
     'hash',
     'value_type',
 ]
+
+PARAM_RE = r'\[(.*)\]'
+PARAM_SPLIT_RE = r'(?<!\\),'
+PARAM_DELIM = '||'

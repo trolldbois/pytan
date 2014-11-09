@@ -32,7 +32,7 @@ SERVER_INFO = {
     "protocol": "https",
     "soap_path": "/soap",
     "port": "443",
-    "loglevel": 10,
+    "loglevel": 0,
     "debugformat": False,
 }
 

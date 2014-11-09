@@ -30,10 +30,10 @@ parser = customparser.CustomParser(
     description=__doc__,
     parents=[parent_parser],
 )
-
 args = parser.parse_args()
 swargs = args.__dict__
 
 sw = SoapWrap.SoapWrap(**swargs)
 print str(sw)
+
 print SoapUtil.jsonify(sw.server_info)

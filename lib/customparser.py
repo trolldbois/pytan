@@ -123,7 +123,7 @@ def setup_parser(desc, help=False):
     return parser
 
 
-def setup_transform_parser(parser):
+def setup_report_parser(parser):
     exp_group = parser.add_argument_group('Report Options')
     exp_group.add_argument(
         '--format',
@@ -184,7 +184,7 @@ def setup_transform_parser(parser):
     return parser
 
 
-def setup_transform_resultxml_parser(parser):
+def setup_question_report_parser(parser):
     resultxml_group = parser.add_argument_group('Question Report Options')
 
     for TB, TB_DEF in SoapConstants.TRANSFORM_BOOL_KWARGS.iteritems():
@@ -204,7 +204,7 @@ def setup_transform_resultxml_parser(parser):
     return parser
 
 
-def setup_transform_sort_parser(parser):
+def setup_report_sort_parser(parser):
     sort_group = parser.add_argument_group('Report Sort Options')
 
     sort_group.add_argument(
@@ -216,3 +216,22 @@ def setup_transform_sort_parser(parser):
         help='Columns to sort first in output',
     )
     return parser
+
+
+def setup_get_object_parser(parser):
+    get_object_group = parser.add_argument_group('Get Object Options')
+    get_object_group.add_argument(
+        '--query',
+        required=True,
+        action='append',
+        dest='query',
+        help='Object to get - can prepend with id:, name:, or hash: '
+        '- name: will be prepended by default, use "all" to get all objects',
+    )
+    return parser
+
+
+def get_grp_opts(parser, grp_names):
+    action_grps = [a for a in parser._action_groups if a.title in grp_names]
+    grp_opts = [a.dest for b in action_grps for a in b._group_actions]
+    return grp_opts

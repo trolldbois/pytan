@@ -37,6 +37,21 @@
         "method": "ask_manual_question",
         "sensors": ["Computer Name", "Installed Applications"]
     },
+    "ask_manual_question_params_single": {
+        "method": "ask_manual_question",
+        "sensors": "Folder Name Search with RegEx Match[Program Files,.*,No,No]"
+    },
+    "ask_manual_question_params_escaped_comma": {
+        "method": "ask_manual_question",
+        "sensors": "Folder Name Search with RegEx Match[Program Files,\\,?.*,No,No]"
+    },
+    "ask_manual_question_params_multiple": {
+        "method": "ask_manual_question",
+        "sensors": [
+            "Folder Name Search with RegEx Match[Program Files,.*,No,No]",
+            "Computer Name"
+        ]
+    },
     "ask_manual_question_multiple_selector": {
         "method": "ask_manual_question",
         "sensors": ["name:Computer Name", "name:Installed Applications"]
