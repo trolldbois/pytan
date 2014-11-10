@@ -65,7 +65,7 @@ sensors = [
     # 'Operating System, that contains Windows, opt:match_all_values',
     'Operating System, that string contains Windows',
     # "Folder Name Search with RegEx Match, that is .*",
-    # "Folder Name Search with RegEx Match[Program Files,.*,No,No], that is .*", opt,
+    # "Folder Name Search with RegEx Match[Program Files,.*,No,No], that is .*", opt:match_all_values,
 ]
 
 '''
@@ -84,4 +84,8 @@ sensors = [
 
 next to do add build objects dict support for filters and options
 '''
-r = handler.ask_manual_question(sensors)
+for s in sensors:
+    r = handler.ask_manual_question(s)
+    print r
+    print r.request
+

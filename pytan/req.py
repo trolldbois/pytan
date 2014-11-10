@@ -26,13 +26,13 @@ class Request(object):
     _sent = None
     xml_raw = ''
     xml_dict = {}
+    XMLCLOG = logging.getLogger("pytan.request.xmlcreate").debug
+    HTTPLOG = logging.getLogger("pytan.request.http").debug
 
     def __init__(self, handler, command, objtype, query):
         """handles the creation of XML for a SOAP request
         """
         super(Request, self).__init__()
-        self.XMLCLOG = logging.getLogger("pytan.request.xmlcreate").debug
-        self.HTTPLOG = logging.getLogger("pytan.request.http").debug
 
         self.mylog = logging.getLogger("pytan.request")
         self.DLOG = self.mylog.debug
@@ -49,11 +49,10 @@ class Request(object):
         self.objects_dict = self.build_objects_dict()
 
     def __str__(self):
-        str_tpl = "{} {} of {}, Auth: {}, Sent: {}".format
+        str_tpl = "{}: '{}', Auth: {}, Sent: {}".format
         sent = self.sent_human or "Not Yet Sent"
         ret = str_tpl(
             self.__class__.__name__,
-            self.command,
             self.query,
             self.auth_type,
             sent,
@@ -303,6 +302,10 @@ class Request(object):
 
 
 class AskManualQuestionRequest(Request):
+    '''
+    This is a more complicated Request, so we override different things
+    '''
+
     def __init__(self, handler, sensors, question_filters=None,
                  question_options=None):
         """handles the creation of XML for ask_manual_question SOAP request
@@ -322,7 +325,9 @@ class AskManualQuestionRequest(Request):
         self.question_options = question_options
         self.command = 'AddObject'
         self.object_type = 'question'
+        self.query = sensors
         self.sensor_objects = []
+        self.response_class = resp.AddQuestionJobResponse
 
     def call_api(self):
         mt1_tpl = "Must supply sensors!".format
@@ -336,10 +341,14 @@ class AskManualQuestionRequest(Request):
         self.auth_dict = copy.deepcopy(self.handler.auth.token)
 
         self.sensor_maps = self.parse_sensors(self.sensors)
-        # self.objects_dict = self.build_objects_dict(??)
-
-        # response = super(AskManualQuestionRequest, self).call_api()
-        # return response
+        self.objects_dict = self.build_objects_dict()
+        print utils.jsonify(self.objects_dict)
+        add_q_response = super(AskManualQuestionRequest, self).call_api()
+        question_id = add_q_response.result
+        response = self.handler.get_question_results(question_id)
+        response.sensors = self.handler.gather_sensors_from_response(response)
+        response.request = self
+        return response
 
     def parse_sensors(self, sensors):
         '''
@@ -524,17 +533,17 @@ class AskManualQuestionRequest(Request):
 
         return sensor_maps
 
-    def build_objects_dict(self, spms, question_filters, question_options):
+    def build_objects_dict(self):
 
         sselects = []
-        for sm in spms:
-            sid = sm['object']['id']
-            shash = sm['object']['hash']
-            smpd = sm['object']['parameter_definition'] or {}
-            params = smpd['params']
+        for sensor_map in self.sensor_maps:
+            sid = sensor_map['object']['id']
+            shash = sensor_map['object']['hash']
+            sparam_def = sensor_map['object']['parameter_definition'] or {}
+            params = sensor_map['params']
 
             param_dicts = []
-            for pd_idx, pd in enumerate(smpd.get('parameters') or []):
+            for pd_idx, pd in enumerate(sparam_def.get('parameters') or []):
                 param_key = '{0}{1}{0}'.format(
                     constants.PARAM_DELIM, pd['key'])
                 try:
@@ -550,11 +559,11 @@ class AskManualQuestionRequest(Request):
                 sselect = {'parameter': param_dicts}
                 sselect = {'source_id': sid, 'parameters': sselect}
                 sfilter = {'id': sid, 'hash': shash}
-                sselect = {'sensor': sselect, 'filter': sfilter}
             else:
                 sselect = {'hash': shash}
-                sselect = {'sensor': sselect}
+                sfilter = {'hash': shash}
 
+            sselect = {'sensor': sselect, 'filter': sfilter}
             sselects.append(sselect)
 
         objects_dict = {'select': sselects}
@@ -580,7 +589,7 @@ class AddParseResultGroupRequest(Request):
         kwargs['command'] = 'AddObject'
         kwargs['objtype'] = 'question'
         super(AddParseResultGroupRequest, self).__init__(**kwargs)
-        self.response_class = resp.AddParseResultGroupResponse
+        self.response_class = resp.AddQuestionJobResponse
 
     def build_objects_dict(self):
         objects_dict = {'parse_result_group': self.query}

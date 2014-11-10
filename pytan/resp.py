@@ -216,19 +216,3 @@ class AddParseQuestionResponse(Response):
         except Exception as e:
             raise InnerReturnError(obj_err(e))
         return prg_list
-
-
-class AddParseResultGroupResponse(Response):
-    def __init__(self, **kwargs):
-        super(AddParseResultGroupResponse, self).__init__(**kwargs)
-        self.result = self.get_question_id()
-
-    def get_question_id(self):
-        qret_tpl = "Question ID {!r} returned".format
-        obj_err = "Exception getting question id: {}".format
-        try:
-            question_id = self.inner_return['question']['id']
-        except Exception as e:
-            raise InnerReturnError(obj_err(e))
-        self.XMLPLOG(qret_tpl(question_id))
-        return question_id
