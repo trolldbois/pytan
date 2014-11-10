@@ -13,16 +13,15 @@ sys.dont_write_bytecode = True
 my_file = os.path.abspath(__file__)
 my_dir = os.path.dirname(my_file)
 parent_dir = os.path.dirname(my_dir)
-lib_dir = os.path.join(parent_dir, 'lib')
-path_adds = [lib_dir]
+path_adds = [parent_dir]
 
 for aa in path_adds:
     if aa not in sys.path:
         sys.path.append(aa)
 
-import customparser
-import SoapWrap
-import SoapUtil
+from pytan import utils
+from pytan import Handler
+from pytan import cmdline_parser
 
 utils.version_check(__version__)
 parent_parser = cmdline_parser.setup_parser(__doc__)
@@ -51,5 +50,5 @@ objtype = 'action'
 handler = Handler(**handler_args)
 print str(handler)
 
-response = utils.get_object_case(sw, objtype, qgrp_args)
-utils.write_object(sw, response, tgrp_args)
+response = utils.get_object_case(handler, objtype, qgrp_args)
+utils.write_object(handler, response, tgrp_args)

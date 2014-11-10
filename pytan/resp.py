@@ -21,7 +21,7 @@ from .packages import xmltodict
 class Response(object):
     def __init__(self, soap_url, request, page):
         super(Response, self).__init__()
-        self.XMLPLOG = logging.getLogger("pytan.xmlparse").debug
+        self.XMLPLOG = logging.getLogger("pytan.response.xmlparse").debug
         self.received = time.time()
 
         # URL to SOAP in question

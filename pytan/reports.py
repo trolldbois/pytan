@@ -27,7 +27,7 @@ class Reporter(object):
     def __init__(self):
         super(Reporter, self).__init__()
 
-        self.logger = logging.getLogger("pytan.transform")
+        self.logger = logging.getLogger("pytan.reporter")
         self.DLOG = self.logger.debug
         self.ILOG = self.logger.info
         self.WLOG = self.logger.warn

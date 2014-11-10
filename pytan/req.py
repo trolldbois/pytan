@@ -31,10 +31,10 @@ class Request(object):
         """handles the creation of XML for a SOAP request
         """
         super(Request, self).__init__()
-        self.XMLCLOG = logging.getLogger("pytan.xmlcreate").debug
-        self.HTTPLOG = logging.getLogger("pytan.http").debug
+        self.XMLCLOG = logging.getLogger("pytan.request.xmlcreate").debug
+        self.HTTPLOG = logging.getLogger("pytan.request.http").debug
 
-        self.mylog = logging.getLogger("pytan")
+        self.mylog = logging.getLogger("pytan.request")
         self.DLOG = self.mylog.debug
         self.ILOG = self.mylog.info
         self.WLOG = self.mylog.warn
@@ -64,7 +64,11 @@ class Request(object):
         """makes a call to the SOAP API, returns a Response object,
         """
         time_tpl = 'Last Request {} took longer than {} seconds!'.format
-        wait_tpl = "Waiting {} secs, mr_passed {} != estimated_total {}".format
+        wait_tpl = (
+            "Waiting {} secs, mr_passed {} != estimated_total {}, "
+            "row_count: {}"
+        ).format
+        finish_tpl = "Question finished, rows: {}, servers: {}".format
         no_results = "No results returned, row_count = {}".format
 
         if self.command == "GetResultData":
@@ -99,6 +103,9 @@ class Request(object):
                 ri = response.get_result_info()
 
                 if ri['mr_passed'] == ri['estimated_total']:
+                    self.ILOG(finish_tpl(
+                        ri['row_count'], ri['mr_passed']))
+
                     if ri['row_count'] == 0:
                         raise AppError(no_results(ri['row_count']))
                     full_results = True
@@ -109,8 +116,11 @@ class Request(object):
                 if current_wait > max_wait:
                     raise AppError(time_tpl(self, max_wait))
 
-                self.DLOG(wait_tpl(
-                    wait, ri['mr_passed'], ri['estimated_total'],
+                self.ILOG(wait_tpl(
+                    wait,
+                    ri['mr_passed'],
+                    ri['estimated_total'],
+                    ri['row_count'],
                 ))
                 time.sleep(wait)
 
@@ -297,10 +307,9 @@ class AskManualQuestionRequest(Request):
                  question_options=None):
         """handles the creation of XML for ask_manual_question SOAP request
         """
-        self.XMLCLOG = logging.getLogger("pytan.xmlcreate").debug
-        self.SPLOG = logging.getLogger("pytan.sensor_parser").debug
+        self.XMLCLOG = logging.getLogger("pytan.request.xmlcreate").debug
 
-        self.mylog = logging.getLogger("pytan")
+        self.mylog = logging.getLogger("pytan.request.manual_question")
         self.DLOG = self.mylog.debug
         self.ILOG = self.mylog.info
         self.WLOG = self.mylog.warn
@@ -378,7 +387,7 @@ class AskManualQuestionRequest(Request):
             # split_param=['Program Files', '\\,.*', 'No', 'No']
 
             # remove params from the sensor
-            sensor_name = utils.PARAM_RE.sub('', s)
+            sensor_name = constants.PARAM_RE.sub('', s)
             # sensor_name=Folder Name Search with RegEx Match
 
             sensor_map['name'] = sensor_name
@@ -506,7 +515,7 @@ class AskManualQuestionRequest(Request):
                 sm['object'] = sobj
                 self.sensor_objects.append(sobj)
             except Exception as e:
-                self.SPLOG(e)
+                self.DLOG(e)
                 raise ManualQuestionParserError(nomatch_tpl(sm['name']))
             smpd = sobj['parameter_definition'] or {}
             if not smpd and sm['params']:
@@ -585,7 +594,7 @@ class AskParsedQuestionRequest(Request):
 
     def __init__(self, handler, query, picker=None):
 
-        self.mylog = logging.getLogger("pytan")
+        self.mylog = logging.getLogger("pytan.request.parsed_question")
         self.DLOG = self.mylog.debug
         self.ILOG = self.mylog.info
         self.WLOG = self.mylog.warn
@@ -617,7 +626,7 @@ class AskParsedQuestionRequest(Request):
             "index list"
         ).format
 
-        if utils.PARAM_RE.search(self.query):
+        if constants.PARAM_RE.search(self.query):
             raise AppError(paramerr_tpl())
 
         # set sent time on request
@@ -665,7 +674,7 @@ class AskParsedQuestionRequest(Request):
             except IndexError:
                 raise PickerError(perr_tpl(self.picker))
 
-        self.DLOG(match_tpl(self.query, json.dumps(parse_match)))
+        self.ILOG(match_tpl(self.query, json.dumps(parse_match)))
 
         add_prg_response = self.handler.add_parse_result_group_job(parse_match)
         question_id = add_prg_response.result
