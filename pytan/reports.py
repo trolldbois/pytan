@@ -16,7 +16,7 @@ from operator import itemgetter
 from . import constants
 from . import utils
 from .packages import xmltodict
-from .exceptions import TransformError
+from .exceptions import ReporterError
 
 
 class Reporter(object):
@@ -27,7 +27,7 @@ class Reporter(object):
     def __init__(self):
         super(Reporter, self).__init__()
 
-        self.logger = logging.getLogger("PyTan.transform")
+        self.logger = logging.getLogger("pytan.transform")
         self.DLOG = self.logger.debug
         self.ILOG = self.logger.info
         self.WLOG = self.logger.warn
@@ -45,7 +45,7 @@ class Reporter(object):
                        fprefix=None, fpostfix=None, fext=None, **kwargs):
         write_tpl = "Writing response to file: {}".format
         badf_err = "Unsupported format: {!r}, must be one of {r}".format
-        excf_err = 'Exception in SoapTransform.{}({}, {})'.format
+        excf_err = 'Exception in {}.{}({}, {})'.format
 
         kwargs = {
             k: kwargs.get(k, v)
@@ -85,12 +85,16 @@ class Reporter(object):
                 fout = getattr(self, self.FORMATS[ftype])(response, **kwargs)
             except:
                 self.logger.critical(excf_err(
-                    self.FORMATS[ftype], response, kwargs)
+                    self.__class__.__name__,
+                    self.FORMATS[ftype],
+                    response,
+                    kwargs,
+                )
                 )
                 self.logger.critical(utils.jsonify(response.inner_return))
                 raise
         else:
-            raise TransformError(badf_err(
+            raise ReporterError(badf_err(
                 ftype, ', '.join(self.FORMATS.keys())
             ))
 
@@ -160,7 +164,7 @@ class Reporter(object):
     # RAW RESPONSE
     @staticmethod
     def get_rawresponse(response, **kwargs):
-        fout = response.http_response.text
+        fout = response.page.text
         return fout
 
     ## JSON

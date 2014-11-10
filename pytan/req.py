@@ -31,10 +31,10 @@ class Request(object):
         """handles the creation of XML for a SOAP request
         """
         super(Request, self).__init__()
-        self.XMLCLOG = logging.getLogger("PyTan.xmlcreate").debug
-        self.HTTPLOG = logging.getLogger("PyTan.http").debug
+        self.XMLCLOG = logging.getLogger("pytan.xmlcreate").debug
+        self.HTTPLOG = logging.getLogger("pytan.http").debug
 
-        self.mylog = logging.getLogger("PyTan")
+        self.mylog = logging.getLogger("pytan")
         self.DLOG = self.mylog.debug
         self.ILOG = self.mylog.info
         self.WLOG = self.mylog.warn
@@ -136,8 +136,8 @@ class Request(object):
 
         self.HTTPLOG(send_tpl(self, self.handler.soap_url))
         # send the request XML as a SOAP post
-        http_response = utils.soap_post(request_xml, self.handler.soap_url)
-        self.__httprespok(http_response)
+        page = utils.soap_post(request_xml, self.handler.soap_url)
+        self.__page_ok(page)
 
         response_class = getattr(self, 'response_class', resp.Response)
 
@@ -145,7 +145,7 @@ class Request(object):
         response = response_class(
             soap_url=self.handler.soap_url,
             request=self,
-            http_response=http_response,
+            page=page,
         )
 
         self.handler.last_response = response
@@ -158,24 +158,22 @@ class Request(object):
         self.handler.all_responses.append(response)
         return response
 
-    def __httprespok(self, http_response):
+    def __page_ok(self, page):
         dbg1_tpl = 'Received SOAP Response {}:\n{}'.format
         notext_tpl = "No text from HTTP response: {}:\n{}".format
         non_200 = "Non 200 status code {!r} (RESPONSE: {})\n{}".format
 
         self.HTTPLOG(dbg1_tpl(
-            http_response.status_code,
-            http_response.text.encode(http_response.encoding),
+            page.status_code,
+            page.text.encode(page.encoding),
         ))
 
-        if not http_response.text:
-            raise HttpError(notext_tpl(http_response, http_response.text))
+        if not page.text:
+            raise HttpError(notext_tpl(page, page.text))
 
-        valid_codes = [200]
-        response_ok = http_response.status_code in valid_codes
-        if not response_ok:
+        if not utils.page_ok(page):
             raise HttpError(non_200(
-                http_response.status_code, http_response, http_response.text
+                page.status_code, page, page.text
             ))
 
     def build_objects_dict(self):
@@ -299,10 +297,10 @@ class AskManualQuestionRequest(Request):
                  question_options=None):
         """handles the creation of XML for ask_manual_question SOAP request
         """
-        self.XMLCLOG = logging.getLogger("PyTan.xmlcreate").debug
-        self.SPLOG = logging.getLogger("PyTan.sensor_parser").debug
+        self.XMLCLOG = logging.getLogger("pytan.xmlcreate").debug
+        self.SPLOG = logging.getLogger("pytan.sensor_parser").debug
 
-        self.mylog = logging.getLogger("PyTan")
+        self.mylog = logging.getLogger("pytan")
         self.DLOG = self.mylog.debug
         self.ILOG = self.mylog.info
         self.WLOG = self.mylog.warn
@@ -362,7 +360,7 @@ class AskManualQuestionRequest(Request):
             sensor_map = {'original': s}
             # s=Folder Name Search with RegEx Match[Program Files,\,.*,No,No]
 
-            params = utils.PARAM_RE.findall(s)
+            params = constants.PARAM_RE.findall(s)
             # params=['Program Files,\,.*,No,No']
 
             if len(params) > 1:
@@ -374,7 +372,7 @@ class AskManualQuestionRequest(Request):
             # param=Program Files,\,.*,No,No
 
             if param:
-                split_param = utils.PARAM_RE.split(param)
+                split_param = constants.PARAM_SPLIT_RE.split(param)
             else:
                 split_param = []
             # split_param=['Program Files', '\\,.*', 'No', 'No']
@@ -587,7 +585,7 @@ class AskParsedQuestionRequest(Request):
 
     def __init__(self, handler, query, picker=None):
 
-        self.mylog = logging.getLogger("PyTan")
+        self.mylog = logging.getLogger("pytan")
         self.DLOG = self.mylog.debug
         self.ILOG = self.mylog.info
         self.WLOG = self.mylog.warn

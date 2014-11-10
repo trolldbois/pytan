@@ -26,8 +26,6 @@ from . import constants
 # disable warning messages about insecure HTTPS validation
 requests.packages.urllib3.disable_warnings()
 
-PARAM_RE = re.compile(constants.PARAM_RE)
-
 
 def version_check(reqver):
     """for scripts using this API to validate the version of the API
@@ -302,23 +300,23 @@ def stringify_obj(o, max_len=80):
     return s
 
 
-def get_object_case(sw, objtype, qgrp_args):
+def get_object_case(handler, objtype, qgrp_args):
     all_in_query = 'all' in [x.lower() for x in qgrp_args['query']]
     if all_in_query:
         print "++ Getting all objects for object type: %s" % (objtype)
-        response = getattr(sw, 'get_all_%s_objects' % objtype)()
+        response = getattr(handler, 'get_all_%s_objects' % objtype)()
     else:
         print "++ Getting objects %s for object type: %s" % (
             json.dumps(qgrp_args), objtype)
-        response = getattr(sw, 'get_%s_object' % objtype)(**qgrp_args)
+        response = getattr(handler, 'get_%s_object' % objtype)(**qgrp_args)
 
     print "++ Received Response: ", str(response)
     return response
 
 
-def write_object(sw, response, tgrp_args):
+def write_object(handler, response, tgrp_args):
     print "++ Creating Report: ", json.dumps(tgrp_args)
-    report_file = sw.st.write_response(response, **tgrp_args)
+    report_file = handler.reporter.write_response(response, **tgrp_args)
     print "++ Report created: ", report_file
 
 
@@ -389,3 +387,17 @@ def check_single_query(query):
     if is_list(query):
         if len(query) != 1:
             raise Exception(err_tpl(query))
+
+
+def page_ok(page):
+    """return True if the page object is not None and has a status code
+    of 200
+    """
+    valid_status = [200]
+    page_ok = False
+    if not page:
+        return page_ok
+    if page.status_code not in valid_status:
+        return page_ok
+    page_ok = True
+    return page_ok

@@ -13,27 +13,26 @@ sys.dont_write_bytecode = True
 my_file = os.path.abspath(__file__)
 my_dir = os.path.dirname(my_file)
 parent_dir = os.path.dirname(my_dir)
-lib_dir = os.path.join(parent_dir, 'lib')
-path_adds = [lib_dir]
+path_adds = [parent_dir]
 
 for aa in path_adds:
     if aa not in sys.path:
         sys.path.append(aa)
 
-import customparser
-import SoapWrap
-import SoapUtil
+from pytan import utils
+from pytan import Handler
+from pytan import cmdline_parser
 
-SoapUtil.version_check(__version__)
-parent_parser = customparser.setup_parser(__doc__)
-parser = customparser.CustomParser(
+utils.version_check(__version__)
+parent_parser = cmdline_parser.setup_parser(__doc__)
+parser = cmdline_parser.CustomParser(
     description=__doc__,
     parents=[parent_parser],
 )
 args = parser.parse_args()
-swargs = args.__dict__
+handler_args = args.__dict__
 
-sw = SoapWrap.SoapWrap(**swargs)
-print str(sw)
+handler = Handler(**handler_args)
+print str(handler)
 
-print SoapUtil.jsonify(sw.server_info)
+print utils.jsonify(handler.server_info)

@@ -78,7 +78,7 @@ class InvalidServerTests(unittest.TestCase):
         mykwargs = copy.copy(SERVER_INFO)
         mykwargs.update(value)
         spew("")
-        spew("+++ TESTING EXPECTED FAILURE SoapWrap() with kwargs %s" % (
+        spew("+++ TESTING EXPECTED FAILURE Handler() with kwargs %s" % (
             mykwargs))
         handler = Handler(**mykwargs)
         spew(str(handler))
@@ -134,7 +134,7 @@ class ValidServerTests(unittest.TestCase):
         all_combos = [utils.build_fn_from_dict(x) for x in all_combos]
 
         for combo in all_combos:
-            spew("+++ TESTING SoapTransform.write_response() with {}".format(
+            spew("+++ TESTING Reporter.write_response() with {}".format(
                 json.dumps(combo)))
             combo['fdir'] = TEST_OUT
             combo['response'] = response
@@ -150,7 +150,7 @@ class ValidServerTests(unittest.TestCase):
 
         for ft in format_tests:
             spew(
-                "+++ TESTING SoapTransform.write_response() "
+                "+++ TESTING Reporter.write_response() "
                 "with default opts for ftype {}".format(ft))
             f = reporter.write_response(
                 response, fdir=TEST_OUT, ftype=ft, fpostfix='defaults')
@@ -179,7 +179,7 @@ class ValidServerTests(unittest.TestCase):
     def test_valid_methodcalls(self, value):
         handler = self.setup_test()
         method = value.pop('method')
-        spew("+++ TESTING EXPECTED SUCCESS SoapWrap.%s() with kwargs %s" % (
+        spew("+++ TESTING EXPECTED SUCCESS Handler.%s() with kwargs %s" % (
             method, value))
         response = getattr(handler, method)(**value)
         self.assertTrue(response)
@@ -188,7 +188,7 @@ class ValidServerTests(unittest.TestCase):
     def test_valid(self, value):
         handler = self.setup_test()
         method = value.pop('method')
-        spew("+++ TESTING EXPECTED SUCCESS SoapWrap.%s() with kwargs %s" % (
+        spew("+++ TESTING EXPECTED SUCCESS Handler.%s() with kwargs %s" % (
             method, value))
         response = getattr(handler, method)(**value)
         self.response_tests(response, method, value)
@@ -198,7 +198,7 @@ class ValidServerTests(unittest.TestCase):
     def test_invalid(self, value):
         handler = self.setup_test()
         method = value.pop('method')
-        spew("+++ TESTING EXPECTED FAILURE SoapWrap.%s() with kwargs %s" % (
+        spew("+++ TESTING EXPECTED FAILURE Handler.%s() with kwargs %s" % (
             method, value))
         response = getattr(handler, method)(**value)
         self.response_tests(response, method, value)

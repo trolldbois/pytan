@@ -19,9 +19,9 @@ from .packages import xmltodict
 
 
 class Response(object):
-    def __init__(self, soap_url, request, http_response):
+    def __init__(self, soap_url, request, page):
         super(Response, self).__init__()
-        self.XMLPLOG = logging.getLogger("PyTan.xmlparse").debug
+        self.XMLPLOG = logging.getLogger("pytan.xmlparse").debug
         self.received = time.time()
 
         # URL to SOAP in question
@@ -30,8 +30,8 @@ class Response(object):
         # request = Request object
         self.request = request
 
-        # http_response = requests module object
-        self.http_response = http_response
+        # page = requests module object
+        self.page = page
 
         self.outer_xml = self.get_outer_xml()
         self.outer_return = self.get_outer_return()
@@ -48,16 +48,16 @@ class Response(object):
         ret = str_tpl(
             self.__class__.__name__,
             self.soap_url,
-            len(self.http_response.text),
+            len(self.page.text),
             received,
         )
         return ret
 
     def get_outer_xml(self):
-        """chew up the raw text from the http_response into a dict"""
+        """chew up the raw text from the page into a dict"""
         outer_err = "Exception while converting outer XML: {}".format
         try:
-            text = self.http_response.text
+            text = self.page.text
             text = text.encode('utf-8')
             outer_xml = xmltodict.parse(
                 text, postprocessor=utils.jsonprocessor)

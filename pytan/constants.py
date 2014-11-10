@@ -9,6 +9,7 @@ import sys
 sys.dont_write_bytecode = True
 
 import logging
+import re
 
 # debug log format
 DEBUG_FORMAT = logging.Formatter(
@@ -21,41 +22,42 @@ INFO_FORMAT = logging.Formatter(
     '%(asctime)s %(levelname)-8s %(name)s %(message)s'
 )
 
+# log levels to turn on extra loggers (higher the level the more verbose)
 LOG_LEVEL_MAPS = [
     (0, {
-        'PyTan': 'INFO',
-        'PyTan.sensor_parser': 'WARN',
-        'PyTan.auth': 'WARN',
-        'PyTan.transform': 'WARN',
-        'PyTan.result_infos': 'WARN',
-        'PyTan.xmlcreate': 'WARN',
-        'PyTan.xmlparse': 'WARN',
-        'PyTan.http': 'WARN',
-        'requests': 'WARN',
-        'requests.packages': 'WARN',
-        'requests.packages.urllib3': 'WARN',
-        'requests.packages.urllib3.connectionpool': 'WARN',
-        'requests.packages.urllib3.poolmanager': 'WARN',
-        'requests.packages.urllib3.util': 'WARN',
-        'requests.packages.urllib3.util.retry': 'WARN',
+        'pytan': 'INFO',
+        'pytan.sensor_parser': 'WARN',
+        'pytan.auth': 'WARN',
+        'pytan.transform': 'WARN',
+        'pytan.result_infos': 'WARN',
+        'pytan.xmlcreate': 'WARN',
+        'pytan.xmlparse': 'WARN',
+        'pytan.http': 'WARN',
+        'pytan.packages.requests': 'WARN',
+        'pytan.packages.requests.packages': 'WARN',
+        'pytan.packages.requests.packages.urllib3': 'WARN',
+        'pytan.packages.requests.packages.urllib3.connectionpool': 'WARN',
+        'pytan.packages.requests.packages.urllib3.poolmanager': 'WARN',
+        'pytan.packages.requests.packages.urllib3.util': 'WARN',
+        'pytan.packages.requests.packages.urllib3.util.retry': 'WARN',
     }),
     (1, {
-        'PyTan': 'DEBUG',
+        'pytan': 'DEBUG',
     }),
     (2, {
-        'PyTan.result_infos': 'DEBUG',
-        'PyTan.transform': 'DEBUG',
-        'PyTan.sensor_parser': 'DEBUG',
+        'pytan.result_infos': 'DEBUG',
+        'pytan.transform': 'DEBUG',
+        'pytan.sensor_parser': 'DEBUG',
     }),
     (3, {
-        'PyTan.auth': 'DEBUG',
+        'pytan.auth': 'DEBUG',
     }),
     (4, {
-        'PyTan.xmlcreate': 'DEBUG',
-        'PyTan.xmlparse': 'DEBUG',
+        'pytan.xmlcreate': 'DEBUG',
+        'pytan.xmlparse': 'DEBUG',
     }),
     (5, {
-        'PyTan.http': 'DEBUG',
+        'pytan.http': 'DEBUG',
     }),
     (10, {
         'requests': 'DEBUG',
@@ -68,25 +70,15 @@ LOG_LEVEL_MAPS = [
     }),
 ]
 
-# Used by SoapWrap.call_api() for how long a GetResultInfo loop is allowed
-# to go on for
+# Used by pytan.req.Request.call_api() for how long a GetResultInfo
+# loop is allowed to go on for
 RESULT_MAX_WAIT = 500
 
-# Used by SoapWrap.call_api() for long to sleep in between
+# Used by pytan.req.Request.call_api() for long to sleep in between
 # GetResultInfo checks
 RESULT_SLEEP = 2
 
-# Used by SoapWrap.SoapWrap for environment variable override mappings
-OS_ENV_MAP = {
-    'SOAP_USERNAME': 'self.__username',
-    'SOAP_PASSWORD': 'self.__password',
-    'SOAP_HOSTNAME': 'self.__host',
-    'SOAP_PORT': 'self.__port',
-    'SOAP_PROTOCOL': 'self.__protocol',
-    'SOAP_PATH': 'self.__soap_path',
-}
-
-# Used by SoapWrap.SoapTransform.parse_resultxml() to determine what the
+# Used by pytan.reports.Reporter.parse_resultxml() to determine what the
 # numeric type value for a column maps to
 RESULT_TYPE_MAP = {
     0: 'Hash',
@@ -114,15 +106,15 @@ RESULT_TYPE_MAP = {
     12: 'LastOperatorType',
 }
 
-# Used by SoapWrap.SoapWrap.__build_objects_dict() to figure out
+# Used by pytan.req.Request.build_objects_dict() to figure out
 # what valid query prefixes can be used
 QUERY_PREFIXES = ['name', 'id', 'hash']
 
-# Used by SoapWrap.SoapAuth.session_id_text() to control whether
+# Used by pytan.auth.Auth.session_id_text() to control whether
 #or not SOAP Session IDs are included in any logging outputs
 SHOW_SESSION_ID = False
 
-# Used by SoapWrap.SoapRequest.build_request_xml_dict() for
+# Used by pytan.req.Request.build_request_xml_dict() for
 # creating the Soap Request XML
 REQ_ENVELOPE_NS = {
     "@xmlns:soap": "http://schemas.xmlsoap.org/soap/envelope/",
@@ -130,13 +122,13 @@ REQ_ENVELOPE_NS = {
     "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
 }
 
-# Used by SoapWrap.SoapRequest.build_request_xml_dict() for
+# Used by pytan.req.Request.build_request_xml_dict() for
 # creating the Soap Request XML
 REQ_APP_NS = {
     "@xmlns": "urn:TaniumSOAP",
 }
 
-# Used by SoapWrap.SoapTransform.write_response() to determine
+# Used by pytan.reports.Reporter.write_response() to determine
 # supported formats
 TRANSFORM_FORMATS = {
     'csv': 'get_csv',
@@ -148,13 +140,15 @@ TRANSFORM_FORMATS = {
     'raw.request': 'get_rawrequest',
 }
 
-# Used by SoapWrap.SoapTransform.write_response() as boolean kwargs
+# Used by pytan.reports.Reporter.write_response() as boolean kwargs
 # defaults for passthrus for parse_resultxml():
 TRANSFORM_BOOL_KWARGS = {
     'ADD_TYPE_TO_HEADERS': False,
     'ADD_SENSOR_TO_HEADERS': False,
     'EXPAND_GROUPED_COLUMNS': False,
 }
+
+# Used by bin/ scripts to provide help for TRANSFORM_BOOL_KWARGS
 TRANSFORM_BOOL_HELP = {
     'ADD_TYPE_TO_HEADERS': "Appends the column type to each column header for "
     "question results",
@@ -164,7 +158,7 @@ TRANSFORM_BOOL_HELP = {
     "sensor related rows",
 }
 
-# Used by SoapWrap.SoapTransform.write_response() for kwargs
+# Used by pytan.reports.Reporter.write_response() for kwargs
 # defaults for passthrus for sort_headers():
 TRANSFORM_HEADER_SORT_PRIORITY = [
     'name',
@@ -174,10 +168,20 @@ TRANSFORM_HEADER_SORT_PRIORITY = [
     'value_type',
 ]
 
-PARAM_RE = r'\[(.*?)\]'
-PARAM_SPLIT_RE = r'(?<!\\),'
+# Used by pytan.req.AskManualQuestionRequest.parse_params() to extract
+# params from the sensor name
+PARAM_RE = re.compile(r'\[(.*?)\]')
+
+# Used by pytan.req.AskManualQuestionRequest.parse_params() to split
+# the params by unescaped commas
+PARAM_SPLIT_RE = re.compile(r'(?<!\\),')
+
+# Used by pytan.req.AskManualQuestionRequest.build_objects_dict()
+# when creating the XML tag for a param name
 PARAM_DELIM = '||'
 
+# Used by pytan.req.AskManualQuestionRequest.get_fm_match() to
+# parse a sensor name for a filter
 FILTER_MAPS = [
     {
         'human': ['<', 'less', 'lt'],
@@ -291,6 +295,9 @@ FILTER_MAPS = [
         'not_flag': '0',
     },
 ]
+
+# Used by pytan.req.AskManualQuestionRequest.get_opt_match() to
+# parse a sensor name for options
 
 OPTION_MAPS = [
     {

@@ -12,10 +12,8 @@ import sys
 # disable python from creating .pyc files everywhere
 sys.dont_write_bytecode = True
 
-import os
 import logging
 from . import utils
-from . import constants
 from .exceptions import AppError
 from .reports import Reporter
 from .auth import Auth
@@ -46,7 +44,7 @@ class Handler(object):
 
         self.reporter = Reporter()
 
-        self.mylog = logging.getLogger("PyTan")
+        self.mylog = logging.getLogger("pytan")
         self.DLOG = self.mylog.debug
         self.ILOG = self.mylog.info
         self.WLOG = self.mylog.warn
@@ -59,8 +57,6 @@ class Handler(object):
         self.__soap_path = soap_path
         self.__username = username
         self.__password = password
-
-        self.__env_overrides()
 
         if not self.__host:
             raise AppError("Must supply host!")
@@ -86,45 +82,13 @@ class Handler(object):
         ret = str_tpl(self.soap_url, self.server_info['Settings']['Version'])
         return ret
 
-    def __env_overrides(self):
-        """looks for OS environment variables and overrides the corresponding
-        attribute if they exist
-        """
-        or_tpl = "Overriding {!r} with OS environment variable {!r}".format
-
-        for os_env_var, class_var in constants.OS_ENV_MAP.iteritems():
-            if not os_env_var in os.environ.keys():
-                continue
-
-            if not os.environ[os_env_var]:
-                continue
-
-            self.DLOG(or_tpl(os.environ[os_env_var], os_env_var))
-            setattr(self, class_var, os.environ[os_env_var])
-
-    @staticmethod
-    def __page_ok(page):
-        """return True if the page object is not None and has a status code
-        of 200
-        """
-        valid_status = [200]
-        page_ok = False
-        if not page:
-            return page_ok
-        if page.status_code not in valid_status:
-            return page_ok
-        page_ok = True
-        return page_ok
-
     def test_app_port(self):
         """validates that the SOAP port on the SOAP host can be reached"""
         chk_tpl = "Port test to {}:{} {}".format
         if utils.port_check(self.__host, self.__port):
             self.DLOG(chk_tpl(self.__host, self.__port, "SUCCESS"))
         else:
-            raise AppError(
-                chk_tpl(self.__host, self.__port, "FAILURE")
-            )
+            raise AppError(chk_tpl(self.__host, self.__port, "FAILURE"))
 
     def ask_manual_question(self, sensors, question_filters=None,
                             question_options=None):

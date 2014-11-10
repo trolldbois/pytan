@@ -14,7 +14,7 @@ class Auth(object):
     def __init__(self, username, password, **kwargs):
         super(Auth, self).__init__()
 
-        self.AUTHLOG = logging.getLogger("PyTan.auth").debug
+        self.AUTHLOG = logging.getLogger("pytan.auth").debug
         self._username = username
         self._password = password
         self.session_id = None

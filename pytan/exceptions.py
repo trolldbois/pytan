@@ -40,7 +40,7 @@ class PickerError(Exception):
     pass
 
 
-class TransformError(Exception):
+class ReporterError(Exception):
     pass
 
 
