@@ -12,6 +12,7 @@
  * [ ] AddObject
 
 # TODO LATER
+ * [ ] auto wsdl generator
  * [ ] build "ask all questions" workflow
  * [ ] test against RT
  * [ ] test against all the different levels of user privs
@@ -22,6 +23,7 @@
  * [ ] test against demo tanium
  * [ ] Expand API examples in README.md
  * [ ] doc 3rd party modules
+ * [ ] add caching
 
 # DONE
  * 0.5.0

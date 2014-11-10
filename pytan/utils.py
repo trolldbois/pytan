@@ -3,10 +3,11 @@
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
 """Generic Utility Functions"""
-__author__ = 'Jim Olsen (jim.olsen@tanium.com)'
-__version__ = '0.6.0'
-
 import sys
+
+# disable python from creating .pyc files everywhere
+sys.dont_write_bytecode = True
+
 import traceback
 import socket
 import time
@@ -17,66 +18,15 @@ import itertools
 import re
 from collections import OrderedDict
 # from datetime import datetime
+from . import __version__
+from .packages import requests
+from .exceptions import HttpError
+from . import constants
 
-# disable python from creating .pyc files everywhere
-sys.dont_write_bytecode = True
+# disable warning messages about insecure HTTPS validation
+requests.packages.urllib3.disable_warnings()
 
-# debug log format
-DEBUG_FORMAT = logging.Formatter(
-    '[%(lineno)-5d - %(filename)20s:%(funcName)s()] %(asctime)s\n'
-    '%(levelname)-8s %(name)s %(message)s'
-)
-
-# info log format
-INFO_FORMAT = logging.Formatter(
-    '%(asctime)s %(levelname)-8s %(name)s %(message)s'
-)
-
-LOG_LEVEL_MAPS = [
-    (0, {
-        'SoapWrap': 'INFO',
-        'SoapWrap.auth': 'WARN',
-        'SoapWrap.transform': 'WARN',
-        'SoapWrap.result_infos': 'WARN',
-        'SoapWrap.xmlcreate': 'WARN',
-        'SoapWrap.xmlparse': 'WARN',
-        'SoapWrap.http': 'WARN',
-        'requests': 'WARN',
-        'requests.packages': 'WARN',
-        'requests.packages.urllib3': 'WARN',
-        'requests.packages.urllib3.connectionpool': 'WARN',
-        'requests.packages.urllib3.poolmanager': 'WARN',
-        'requests.packages.urllib3.util': 'WARN',
-        'requests.packages.urllib3.util.retry': 'WARN',
-    }),
-    (1, {
-        'SoapWrap': 'DEBUG',
-    }),
-    (2, {
-        'SoapWrap.auth': 'DEBUG',
-        'SoapWrap.result_infos': 'DEBUG',
-        'SoapWrap.transform': 'DEBUG',
-    }),
-    (3, {
-        'SoapWrap.xmlcreate': 'DEBUG',
-    }),
-    (4, {
-        'SoapWrap.xmlparse': 'DEBUG',
-    }),
-    (5, {
-        'SoapWrap.http': 'DEBUG',
-    }),
-    (10, {
-        'requests': 'DEBUG',
-        'requests.packages': 'DEBUG',
-        'requests.packages.urllib3': 'DEBUG',
-        'requests.packages.urllib3.connectionpool': 'DEBUG',
-        'requests.packages.urllib3.poolmanager': 'DEBUG',
-        'requests.packages.urllib3.util': 'DEBUG',
-        'requests.packages.urllib3.util.retry': 'DEBUG',
-    }),
-
-]
+PARAM_RE = re.compile(constants.PARAM_RE)
 
 
 def version_check(reqver):
@@ -271,7 +221,7 @@ def setup_console_logging():
     ch = SplitStreamHandler()
     ch.set_name(ch_name)
     ch.setLevel(logging.DEBUG)
-    ch.setFormatter(INFO_FORMAT)
+    ch.setFormatter(constants.INFO_FORMAT)
     root_logger = logging.getLogger()
     root_logger.addHandler(ch)
     root_logger.setLevel(logging.DEBUG)
@@ -283,14 +233,14 @@ def change_console_format(debug=False):
     for h in root_handlers:
         if h.name == 'console':
             if debug:
-                h.setFormatter(DEBUG_FORMAT)
+                h.setFormatter(constants.DEBUG_FORMAT)
             else:
-                h.setFormatter(INFO_FORMAT)
+                h.setFormatter(constants.INFO_FORMAT)
 
 
 def set_log_levels(loglevel=0):
     # print loglevel
-    for logmap in LOG_LEVEL_MAPS:
+    for logmap in constants.LOG_LEVEL_MAPS:
         if loglevel >= logmap[0]:
             for lname, llevel in logmap[1].iteritems():
                 # print 'setting %s to %s' % (lname, llevel)
@@ -298,7 +248,9 @@ def set_log_levels(loglevel=0):
 
 
 def set_all_loglevels(level='DEBUG'):
-    for k, v in logging.Logger.manager.loggerDict.iteritems():
+    for k, v in sorted(logging.Logger.manager.loggerDict.iteritems()):
+        if not isinstance(v, logging.Logger):
+            continue
         v.setLevel(getattr(logging, level))
         m = 'set to %s' % level
         v.debug(m)
@@ -368,3 +320,72 @@ def write_object(sw, response, tgrp_args):
     print "++ Creating Report: ", json.dumps(tgrp_args)
     report_file = sw.st.write_response(response, **tgrp_args)
     print "++ Report created: ", report_file
+
+
+def parse_query_objects(args, prefixes):
+    if is_list(args):
+        return [parse_query_objects(i, prefixes) for i in args]
+    p = {}
+    args = str(args)
+    for prefix in prefixes:
+        inner_pre = prefix + ':'
+        # print "args: ", args
+        # print "inner_pre: ", inner_pre
+        if args.startswith(inner_pre):
+            p = {prefix: args.lstrip(inner_pre)}
+            # print "p: ", p
+            break
+    if not p:
+        p = {prefixes[0]: args}
+        # print "pdef: ", p
+    return p
+
+
+def http_get(url, headers=None):
+    """perform an HTTP get using the requests module - this is
+    so we always bypass SSL verification, and wrap exceptions into a
+    requests-like object
+    """
+    er1_tpl = "SSL Error in HTTP GET to {!r}: {}".format
+    if headers is None:
+        headers = {}
+    try:
+        ret = requests.get(url, verify=False, headers=headers)
+    except requests.exceptions.SSLError as e:
+        raise HttpError(er1_tpl(url, e))
+    return ret
+
+
+def http_post(url, data, headers=None):
+    """perform an HTTP post using the requests module - this is
+    so we always bypass SSL verification, and wrap exceptions into a
+    requests-like object
+    """
+    er1_tpl = "SSL Error in HTTP POST to {!r}: {}".format
+    if headers is None:
+        headers = {}
+    try:
+        ret = requests.post(url, data=data, verify=False, headers=headers)
+    except requests.exceptions.SSLError as e:
+        raise HttpError(er1_tpl(url, e))
+    return ret
+
+
+def soap_post(data, soap_url):
+    """uses http_post to perform a SOAPAction call to url with data"""
+    # if not url:
+        # url = self.soap_url
+    headers = {'SOAPAction': '""'}
+    ret = http_post(url=soap_url, data=data, headers=headers)
+    return ret
+
+
+def check_single_query(query):
+    err_tpl = (
+        "Too many list items!! string or list with single string "
+        "required, you passed in {}"
+    ).format
+
+    if is_list(query):
+        if len(query) != 1:
+            raise Exception(err_tpl(query))

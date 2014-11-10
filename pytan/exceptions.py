@@ -42,3 +42,7 @@ class PickerError(Exception):
 
 class TransformError(Exception):
     pass
+
+
+class ManualQuestionParserError(Exception):
+    pass
