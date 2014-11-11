@@ -46,11 +46,11 @@ FAILFAST = True
 # catch control-C to allow current test suite to finish (press 2x to force)
 CATCHBREAK = True
 
-# control whether the transform tests will be done
-DEFAULT_TRANSFORM_TESTS = True
+# control whether the report tests will be done
+DEFAULT_REPORT_TESTS = True
 
-# control whether the combinator transform tests will be done
-COMBO_TRANSFORM_TESTS = False
+# control whether the combinator report tests will be done
+COMBO_REPORT_TESTS = True
 
 # where the output files from the tests will be stored
 TEST_OUT = os.path.join(my_dir, 'TEST_OUT')
@@ -108,7 +108,7 @@ class ValidServerTests(unittest.TestCase):
         spew("")
         return self.handler
 
-    def combo_transform_tests(self, response, method, value):
+    def combo_report_tests(self, response, method, value):
         # derive all the permutations of every option we have for
         # bool args and header sort priority
         # this is complicated and involves combinatorics, but basically
@@ -143,8 +143,8 @@ class ValidServerTests(unittest.TestCase):
             spew("wrote response to: %s" % f)
             self.assertTrue(os.path.isfile(f))
 
-    def transform_tests(self, response, method, value):
-        '''standard transform tests for any response object'''
+    def report_tests(self, response, method, value):
+        '''standard report tests for any response object'''
         reporter = self.reporter
         format_tests = reporter.FORMATS.keys()
 
@@ -170,10 +170,10 @@ class ValidServerTests(unittest.TestCase):
         self.assertTrue(response.command)
         self.assertTrue(response.session_id)
         self.assertTrue(response.inner_return)
-        if COMBO_TRANSFORM_TESTS:
-            self.combo_transform_tests(response, method, value)
-        if DEFAULT_TRANSFORM_TESTS:
-            self.transform_tests(response, method, value)
+        if COMBO_REPORT_TESTS:
+            self.combo_report_tests(response, method, value)
+        if DEFAULT_REPORT_TESTS:
+            self.report_tests(response, method, value)
 
     @ddt.file_data('ddt_valid_methodcalls.json')
     def test_valid_methodcalls(self, value):

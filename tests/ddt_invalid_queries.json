@@ -21,6 +21,34 @@
         "method": "ask_parsed_question",
         "query": "Get Installed Applications and Computer Name from machines where Operating System contains Mac and Operating System contains Windows"
     },
+    "ask_manual_question_invalid_sensor": {
+        "method": "ask_manual_question",
+        "sensors": "IP Sensor, that ipaddress = 127.0.0.1"
+    },
+    "ask_manual_question_invalid_filter": {
+        "method": "ask_manual_question",
+        "sensors": "Computer name, that does not meet little"
+    },
+    "ask_manual_question_toomanyparams": {
+        "method": "ask_manual_question",
+        "sensors": "Folder Name Search with RegEx Match[Program Files,.*,No,No][]"
+    },
+    "ask_manual_question_nonparamsensor_params": {
+        "method": "ask_manual_question",
+        "sensors": "Computer Name[Dweedle]"
+    },
+    "ask_manual_question_paramsensor_noparams": {
+        "method": "ask_manual_question",
+        "sensors": "Folder Name Search with RegEx Match, that is .*"
+    },
+    "ask_manual_question_filterhelp": {
+        "method": "ask_manual_question",
+        "sensors": "Operating system, that help"
+    },
+    "ask_manual_question_optionhelp": {
+        "method": "ask_manual_question",
+        "sensors": "Operating system, opt:help"
+    },
     "ask_parsed_question_parameterized": {
         "method": "ask_parsed_question",
         "query": "Get High CPU Processes[3] from all machines"

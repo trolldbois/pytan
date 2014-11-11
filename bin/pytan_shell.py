@@ -43,60 +43,18 @@ if handler_args['loglevel'] >= 10:
 print ("%s -- now available as 'handler'!" % handler)
 print ("%s -- now available as 'reporter'!" % reporter)
 
-sensors = [
-    # will fail because "does not meet" is not a valid operator
-    # 'Computer name, that does not meet little',
-
-    # will fail because sensor is not a valid sensor
-    # 'IP Sensor, that ipaddress = 127.0.0.1',
-
-    # will fail because multiple parameters ([][])
-    # 'Folder Name Search with RegEx Match[Program Files,.*,No,No][]',
-
-    # will fail because sensor does not take params
-    # 'Computer Name[Dweedle]',
-
-    # will fail because sensor takes params and none supplied:
-    # "Folder Name Search with RegEx Match, that is .*",
-
-    # will print help and exit
-    # 'Operating system, that help'
-    # 'Operating system, opt:help'
-
-    # all will work...
-    # 'Computer Name',
-    # 'Operating System, opt:match_all_values, opt:ignore_case, opt:max_data_age:3600',
-    # 'Operating System, that contains Windows'
-    # 'Operating System, that contains Windows, opt:match_all_values',
-    # 'Operating System, that string contains Windows',
-    # "Folder Name Search with RegEx Match[Program Files,.*,No,No]",
-    # "Folder Name Search with RegEx Match[Program Files,.*,No,No], that is .*, opt:match_all_values",
-    # "Folder Name Search with RegEx Match[Program Files,.*,No,No], that contains .*",
-]
-
-'''
-        sensor filter options:
-        opt:ignore_case, opt:match_case, opt:match_any_value, opt:match_all_values, opt:max_data_age:1 hour
-
--                <ignore_case_flag>1</ignore_case_flag> IGNORE CASE
-+                <ignore_case_flag>0</ignore_case_flag> MATCH CASE
-
--                <all_values_flag>0</all_values_flag> Match any value
-+                <all_values_flag>1</all_values_flag> Match all values
--                <all_times_flag>0</all_times_flag>  Match any value
-+                <all_times_flag>1</all_times_flag>  Match all values
--                <max_age_seconds>0</max_age_seconds> max data age
-+                <max_age_seconds>950400</max_age_seconds> max data age
-
-next to do add build objects dict support for filters and options
-
-'''
-# for s in sensors:
-r = handler.ask_manual_question(
-    sensors='Operating System, opt:match_all_values, opt:ignore_case, opt:max_data_age:3600',
-    question_filters='Operating System, that contains Windows',
-    question_options=['ignore_case', 'and'],
-)
-print r
-print r.request
-
+# Example scenario:
+# r = handler.ask_manual_question(
+#     sensors=[
+#         "Computer Name",
+#         "Folder Name Search with RegEx Match[Program Files,.*,No,No], "
+#         "that is .*, opt:max_data_age:3600",
+#     ],
+#     question_filters=[
+#         "Operating System, that contains Windows",
+#         "Operating System, that does not contain Windows",
+#     ],
+#     question_options=["ignore_case", "or"],
+# )
+# print r
+# print r.request

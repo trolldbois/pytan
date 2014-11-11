@@ -329,7 +329,7 @@ class AskManualQuestionRequest(Request):
         self.question_filters = question_filters or []
         self.question_options = question_options or []
         self.command = 'AddObject'
-        self.object_type = 'question'
+        self.objtype = 'question'
         self.query = sensors
         self.sensor_objects = []
         self.response_class = resp.AddQuestionJobResponse
@@ -378,6 +378,10 @@ class AskManualQuestionRequest(Request):
         p1_tpl = (
             "Sensor object {!r} for question filter {!r} fetched successfully"
         ).format
+        p2_tpl = (
+            "Question filter {!r} parsed into Sensor name: {!r}, "
+            "filter: {!r}"
+        ).format
 
         q_filters = []
 
@@ -398,7 +402,9 @@ class AskManualQuestionRequest(Request):
                 self.DLOG(e)
                 raise ManualQuestionParserError(nomatch_tpl(sensor_name))
 
-            self.DLOG(p1_tpl(str(sensor_obj['name']), question_filter))
+            self.DLOG(
+                p1_tpl(sensor_name, question_filter)
+            )
 
             # TODO: if filter_str.lower() == 'help': print help
 
@@ -407,11 +413,7 @@ class AskManualQuestionRequest(Request):
                 raise ManualQuestionParserError(
                     mt1_tpl(filter_str, question_filter))
 
-            p1_tpl = (
-                "Question filter {!r} parsed into Sensor name: {!r}, "
-                "filter: {!r}"
-            ).format
-            self.DLOG(p1_tpl(question_filter, sensor_name, fm_match))
+            self.DLOG(p2_tpl(question_filter, sensor_name, fm_match))
             q_filter = {}
             q_filter['sensor_name'] = sensor_name
             q_filter['sensor_obj'] = sensor_obj
@@ -688,9 +690,53 @@ class AskManualQuestionRequest(Request):
             xml_select_combo = {'sensor': xml_select, 'filter': xml_filter}
             xml_selects.append(xml_select_combo)
 
-        objects_dict = {'select': xml_selects}
-        objects_dict = {'selects': objects_dict}
-        objects_dict = {'question': objects_dict}
+        xml_q_filters = []
+        if self.q_filters:
+            for q_filter in self.q_filters:
+                f_filter = q_filter['filter']
+                f_obj = q_filter['sensor_obj']
+                f_shash = f_obj['hash']
+
+                xml_f_hash = {'hash': f_shash}
+                xml_q_filter = {'id': -1, 'sensor': xml_f_hash}
+                xml_q_filter['operator'] = f_filter['operator']
+                xml_q_filter['not_flag'] = f_filter['not_flag']
+
+                if f_filter['type']:
+                    xml_q_filter['type'] = f_filter['type']
+
+                value = f_filter['value']
+                if f_filter.get('pre_value'):
+                    value = '{}{}'.format(f_filter['pre_value'], value)
+                if f_filter.get('post_value'):
+                    value = '{}{}'.format(value, f_filter['post_value'])
+                xml_q_filter['value'] = value
+
+                q_opts_filter = [
+                    x for x in self.q_opts if x['destination'] == 'filter'
+                ]
+                if q_opts_filter:
+                    for om in q_opts_filter:
+                        for op in om['operators']:
+                            xml_q_filter.update(op)
+
+                xml_q_filters.append(xml_q_filter)
+            xml_q_filters = {'filter': xml_q_filters}
+            xml_q_filters = {'filters': xml_q_filters}
+            q_opts_group = [
+                x for x in self.q_opts if x['destination'] == 'group'
+            ]
+            if q_opts_group:
+                for om in q_opts_group:
+                    for op in om['operators']:
+                        xml_q_filters.update(op)
+
+        xml_selects = {'select': xml_selects}
+        question = {'selects': xml_selects}
+        if xml_q_filters:
+            question['group'] = xml_q_filters
+
+        objects_dict = {'question': question}
         return objects_dict
 
 

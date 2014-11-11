@@ -1,5 +1,6 @@
 # TODO NOW
- * [ ] support whole question filters/options for manual questions
+ * [ ] auto wsdl generator
+ * [ ] get parsed q patch from jwk
  * [ ] fix count column sort
  * [ ] incorporate mdocbuild for bin scripts
  * [ ] update readme
@@ -11,7 +12,6 @@
  * [ ] support options everywhere (?)
 
 # TODO LATER
- * [ ] auto wsdl generator
  * [ ] build "ask all questions" workflow
  * [ ] test against RT
  * [ ] test against all the different levels of user privs
@@ -55,3 +55,4 @@
     * [X] add script / method to return all sensor names for discovery of manual question builder
   * 0.7.0
     * [X] support sensors filters/options/params for manual questions
+    * [X] support whole question filters/options for manual questions
