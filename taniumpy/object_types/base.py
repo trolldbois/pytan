@@ -19,7 +19,7 @@ class BaseType(object):
         that is in list_properties
 
         """
-        if not self.simple_properties and not self.complex_properties and len(self.list_properties) == 1:
+        if len(self.list_properties) == 1:
             return getattr(self, self.list_properties.items()[0][0])[n]
         else:
             raise Exception('Not simply a list type, __getitem__ not supported')
@@ -31,7 +31,7 @@ class BaseType(object):
         that is in list_properties
 
         """
-        if not self.simple_properties and not self.complex_properties and len(self.list_properties) == 1:
+        if len(self.list_properties) == 1:
             return len(getattr(self, self.list_properties.items()[0][0]))
         else:
             raise Exception('Not simply a list type, len() not supported')
