@@ -1,8 +1,23 @@
+#!/usr/bin/env python
+import sys
+import os
 import unittest
 
-from taniumpy.object_types.base import BaseType
-from taniumpy.object_types.user_list import UserList
-from taniumpy.object_types.user_role import UserRole
+my_file = os.path.abspath(__file__)
+my_dir = os.path.dirname(my_file)
+par_dir = os.path.join(my_dir, os.pardir)
+path_adds = [my_dir, par_dir]
+
+for aa in path_adds:
+    if aa not in sys.path:
+        sys.path.insert(0, aa)
+
+import api
+
+# from taniumpy.object_types.base import BaseType
+# from taniumpy.object_types.user_list import UserList
+# from taniumpy.object_types.user_role import UserRole
+
 
 class TestDeserializeUsers(unittest.TestCase):
 
@@ -122,12 +137,16 @@ class TestDeserializeUsers(unittest.TestCase):
 """
 
     def test_deserialize_users(self):
-        users = BaseType.fromSOAPBody(self.USERS_SOAP_RESPONSE)
-        self.assertIsInstance(users, UserList)
+        users = api.BaseType.fromSOAPBody(self.USERS_SOAP_RESPONSE)
+        self.assertIsInstance(users, api.UserList)
         self.assertEqual(len(users.user), 2)
         self.assertEquals(users.user[0].name, 'tanium')
-        self.assertIsInstance(users.user[0].roles.role[0], UserRole)
+        self.assertIsInstance(users.user[0].roles.role[0], api.UserRole)
         # validate that list convenience is available on e.g. users, roles
         self.assertEquals(len(users), 2)
         self.assertEquals(users[0].name, 'tanium')
-        self.assertIsInstance(users[0].roles[0], UserRole)
+        self.assertIsInstance(users[0].roles[0], api.UserRole)
+
+
+if __name__ == "__main__":
+    unittest.main()

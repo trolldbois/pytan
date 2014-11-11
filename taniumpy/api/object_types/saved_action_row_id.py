@@ -9,11 +9,11 @@
 
 from xml.etree import ElementTree as ET
 
-class Permission:
+class SavedActionRowId:
     def __init__(self, val=None):
         self.val = val
 
-    def toSOAPElement(
-        el = ET.Element('permission')
+    def toSOAPElement(self, val):
+        el = ET.Element('saved_action_row_id')
         el.text = str(val)
         return el

@@ -1,14 +1,18 @@
 #!/usr/bin/env python
 
-import argparse
 import datetime
 import errno
-import glob
+# import glob
+import shutil
 import os
 import re
 import sys
 import xml.etree.ElementTree as ET
 
+my_dir = os.path.dirname(__file__)
+pname = os.path.splitext(os.path.basename(sys.argv[0]))[0]
+
+def_output_dir = os.path.join(my_dir, '..')
 
 EXCLUDE_TYPE_LIST = ['auth', 'TaniumSOAPRequest', 'TaniumSOAPResult']
 
@@ -29,25 +33,41 @@ FILE_HEADER_TEMPLATE = """
 
 wsdl_version = None
 
+
+def get_now():
+    return datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+
 def get_file_header():
     if not wsdl_version:
         raise Exception('wsdl_version not set')
-    return FILE_HEADER_TEMPLATE.format(wsdl_version, datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+    return FILE_HEADER_TEMPLATE.format(wsdl_version, get_now())
+
 
 def dashcase(val):
     """convert a string to - separated, idempotent"""
     return '-'.join(re.split('[-_]', val))
 
+
 def capcase(val):
     """convert some_string or some-string to SomeString"""
-    return ''.join([a[0].upper() + (a[1:] if len(a) > 0 else '') for a in re.split('[-_]', val)])
+    val = [
+        a[0].upper() + (a[1:]if len(a) > 0 else '')
+        for a in re.split('[-_]', val)
+    ]
+    return ''.join(val)
+
 
 class Type(object):
 
     # Template for simple type.
     # Expanded with {0} = type name, {1} = properties
-    SIMPLE_PROPERTY_TEMPLATE     = "                    this.{0: <30}     = {1}"
-    COMPLEX_PROPERTY_TEMPLATE    = "                    this.{0: <30}     = None"
+    SIMPLE_PROPERTY_TEMPLATE = (
+        "                    this.{0: <30}     = {1}"
+    )
+    COMPLEX_PROPERTY_TEMPLATE = (
+        "                    this.{0: <30}     = None"
+    )
 
     TYPE_TEMPLATE = """
 
@@ -72,7 +92,9 @@ class {0}(BaseType):
 
 """
 
-    def __init__(self, wsdl_dom, namespaces, wsdl_type, simple_properties, complex_properties, list_properties, property_values, depends_list, soap_tag, force, preview, verbose):
+    def __init__(self, wsdl_dom, namespaces, wsdl_type, simple_properties,
+                 complex_properties, list_properties, property_values,
+                 depends_list, soap_tag, force, preview, verbose):
         self.wsdl_dom = wsdl_dom
         self.namespaces = namespaces
         self.wsdl_type = wsdl_type
@@ -89,7 +111,9 @@ class {0}(BaseType):
 
     @property
     def is_list(self):
-        return self.wsdl_type.endswith('_list') or self.wsdl_type == 'user_permissions'
+        c1 = '_list'
+        c2 = 'user_permissions'
+        return self.wsdl_type.endswith(c1) or self.wsdl_type == c2
 
     @property
     def list_type(self):
@@ -98,16 +122,27 @@ class {0}(BaseType):
         if self.wsdl_type == 'user_permissions':
             return 'permission'
         elif self.is_list_of_value:
-            return self.wsdl_type[:-5] 
+            return self.wsdl_type[:-5]
         else:
-            el = self.wsdl_dom.find(".//xsd:complexType[@name='{}']/xsd:sequence/xsd:element[@type]".format(self.wsdl_type), self.namespaces)
+            find_tpl = (
+                ".//xsd:complexType[@name='{}']/xsd:sequence/xsd:element"
+                "[@type]"
+            ).format(self.wsdl_type)
+            el = self.wsdl_dom.find(find_tpl, self.namespaces)
             if el is None:
-                raise Exception('Could not find {} list type in wsdl'.format(self.wsdl_type))
+                exc_tpl = (
+                    'Could not find {} list type in wsdl'
+                ).format(self.wsdl_type)
+                raise Exception(exc_tpl)
             return el.attrib['type']
-            
+
     @property
     def is_list_of_value(self):
-        return self.wsdl_dom.find(".//xsd:complexType[@name='{}']/xsd:sequence/xsd:element[@type]".format(self.wsdl_type), self.namespaces).attrib['type'].startswith('xsd:')
+        find_tpl = (
+            ".//xsd:complexType[@name='{}']/xsd:sequence/xsd:element[@type]"
+        ).format(self.wsdl_type)
+        el = self.wsdl_dom.find(find_tpl, self.namespaces)
+        return el.attrib['type'].startswith('xsd:')
 
     @property
     def type_dependencies(self):
@@ -116,34 +151,92 @@ class {0}(BaseType):
     @staticmethod
     def load(wsdl_dom, namespaces, type_name, force, preview, verbose):
         """Use the WSDL to lookup the definition and usage of type_name."""
-        type_element = wsdl_dom.find(".//xsd:complexType[@name='{}']".format(type_name), namespaces)
-        usage_elements = wsdl_dom.findall(".//xsd:element[@type='{}']/../..[@name]".format(type_name), namespaces)
+        # find_tpl = ".//xsd:complexType[@name='{}']".format(type_name)
+        # type_element = wsdl_dom.find(find_tpl, namespaces)
+
+        # find_tpl = (
+            # ".//xsd:element[@type='{}']/../..[@name]"
+        # ).format(type_name)
+        # usage_elements = wsdl_dom.findall(find_tpl, namespaces)
+
         # built-in property types
-        simple_properties = [(el.attrib['name'], XSD_TO_PYTHON_TYPES[el.attrib['type']]) for el in wsdl_dom.findall(".//xsd:complexType[@name='{}']/*/xsd:element[@type]".format(type_name),
-            namespaces) if el.attrib['type'].startswith('xsd:')]
+        find_tpl = (
+            ".//xsd:complexType[@name='{}']/*/xsd:element[@type]"
+        ).format(type_name)
+        simple_properties = [
+            (el.attrib['name'], XSD_TO_PYTHON_TYPES[el.attrib['type']])
+            for el in wsdl_dom.findall(find_tpl, namespaces)
+            if el.attrib['type'].startswith('xsd:')
+        ]
+
         # complex property types
-        complex_properties = [(el.attrib['name'], el.attrib['type']) for el in wsdl_dom.findall(".//xsd:complexType[@name='{}']/*/xsd:element[@type]".format(type_name),
-            namespaces) if not el.attrib['type'].startswith('xsd:') and not el.attrib.get('maxOccurs') == 'unbounded']
-        list_properties = [(el.attrib['name'], capcase(el.attrib['type'])) for el in wsdl_dom.findall(".//xsd:complexType[@name='{}']/*/xsd:element[@type]".format(type_name),
-            namespaces) if not el.attrib['type'].startswith('xsd:') and el.attrib.get('maxOccurs') == 'unbounded']
+        find_tpl = (
+            ".//xsd:complexType[@name='{}']/*/xsd:element[@type]"
+        ).format(type_name)
+        complex_properties = [
+            (el.attrib['name'], el.attrib['type'])
+            for el in wsdl_dom.findall(find_tpl, namespaces)
+            if not el.attrib['type'].startswith('xsd:')
+            and not el.attrib.get('maxOccurs') == 'unbounded'
+        ]
 
+        find_tpl = (
+            ".//xsd:complexType[@name='{}']/*/xsd:element[@type]"
+        ).format(type_name)
+        list_properties = [
+            (el.attrib['name'], capcase(el.attrib['type']))
+            for el in wsdl_dom.findall(find_tpl, namespaces)
+            if not el.attrib['type'].startswith('xsd:')
+            and el.attrib.get('maxOccurs') == 'unbounded'
+        ]
 
+        find_tpl = (
+            ".//xsd:complexType[@name='{}']/*/xsd:element[@type]"
+        ).format(type_name)
         property_values = {}
-        for el in wsdl_dom.findall(".//xsd:complexType[@name='{}']/*/xsd:element[@type]".format(type_name), namespaces):
+        for el in wsdl_dom.findall(find_tpl, namespaces):
             if not el.attrib['type'].startswith('xsd:'):
                 continue
             if 'default' in el.attrib:
-                property_values[el.attrib['name']] = '"{}"'.format(el.attrib['default']) if el.attrib['type'] == 'xsd:string' else '{}'.format(el.attrib['default'])
+                if el.attrib['type'] == 'xsd:string':
+                    el_val = '"{}"'.format(el.attrib['default'])
+                else:
+                    el_val = '{}'.format(el.attrib['default'])
+                property_values[el.attrib['name']] = el_val
+
             else:
-                property_values[el.attrib['name']] = 'null' if el.attrib['type'] != 'xsd:int' else 'Number.NaN'
-        property_values.update({el.attrib['name']: '[]' for el in wsdl_dom.findall(".//xsd:complexType[@name='{}']/*/xsd:element[@type]".format(type_name),
-            namespaces) if not el.attrib['type'].startswith('xsd:')})
+                if el.attrib['type'] != 'xsd:int':
+                    el_val = 'null'
+                else:
+                    el_val = 'Number.NaN'
+                property_values[el.attrib['name']] = el_val
+
+        find_tpl = (
+            ".//xsd:complexType[@name='{}']/*/xsd:element[@type]"
+        ).format(type_name)
+        property_values.update({
+            el.attrib['name']: '[]'
+            for el in wsdl_dom.findall(find_tpl, namespaces)
+            if not el.attrib['type'].startswith('xsd:')
+        })
+
         # determine dependencies
-        depends_list = [el.attrib['type'] for el in wsdl_dom.findall(".//xsd:complexType[@name='{}']/*/xsd:element[@type]".format(type_name),
-            namespaces) if not el.attrib['type'].startswith('xsd:')]
-        # generate the soap tag. If this is a type used in a list, use what 
+        find_tpl = (
+            ".//xsd:complexType[@name='{}']/*/xsd:element[@type]"
+        ).format(type_name)
+        depends_list = [
+            el.attrib['type']
+            for el in wsdl_dom.findall(find_tpl, namespaces)
+            if not el.attrib['type'].startswith('xsd:')
+        ]
+
+        # generate the soap tag. If this is a type used in a list, use what
         # the list attribute name is. If not, use the type name.
-        usage = wsdl_dom.find(".//xsd:complexType/xsd:sequence/xsd:element[@type='{0}']".format(type_name), namespaces)
+        find_tpl = (
+            ".//xsd:complexType/xsd:sequence/xsd:element[@type='{0}']"
+        ).format(type_name)
+        usage = wsdl_dom.find(find_tpl, namespaces)
+
         soap_tag = usage.attrib['name'] if usage is not None else type_name
         return Type(
             wsdl_dom=wsdl_dom,
@@ -160,66 +253,107 @@ class {0}(BaseType):
             verbose=verbose)
 
     def __str__(self):
-        return """WSDL type: {0}
-Simple Properties: {1}
-Complex Properties: {2}
-Dependencies: {3}
-""".format(self.wsdl_type,
-    ', '.join(['{0}:{1}'.format(p[0], p[1]) for p in self.simple_properties]),
-    ', '.join(['{0}:{1}'.format(p[0], p[1]) for p in self.complex_properties]),
-    ', '.join(self.depends_list))
+        simple_properties = ', '.join(
+            ['{0}:{1}'.format(p[0], p[1]) for p in self.simple_properties]
+        )
+        complex_properties = ', '.join(
+            ['{0}:{1}'.format(p[0], p[1]) for p in self.complex_properties]
+        )
+        depends_list = ', '.join(self.depends_list)
+        s = (
+            "WSDL type: {0}\n"
+            "Simple Properties: {1}\n"
+            "Complex Properties: {2}\n"
+            "Dependencies: {3}\n"
+        ).format(
+            self.wsdl_type,
+            simple_properties,
+            complex_properties,
+            depends_list,
+        )
+        return s
 
-    @property
-    def fname(self):
-        return os.path.join(self.pathname,
-            '{}.py'.format(self.wsdl_type))
+    def fname(self, output):
+        return os.path.join(
+            self.pathname(output), '{}.py'.format(self.wsdl_type)
+        )
 
-    @property
-    def pathname(self):
-        return os.path.join(os.path.dirname(__file__),
-            '..',
-            'object_types')
+    def pathname(self, output):
+        return os.path.join(output, 'api', 'object_types')
 
     @property
     def object_list_tag(self):
         # find the tag used in TaniumSOAPRequest
         if self.wsdl_type in EXCLUDE_TYPE_LIST:
             return None
-        el = self.wsdl_dom.find(".//xsd:complexType[@name='object_list']/xsd:sequence/xsd:element[@type='{}']".format(self.wsdl_type), self.namespaces)
+        find_tpl = (
+            ".//xsd:complexType[@name='object_list']/xsd:sequence/"
+            "xsd:element[@type='{}']"
+        ).format(self.wsdl_type)
+        el = self.wsdl_dom.find(find_tpl, self.namespaces)
         if el is not None:
             return "'{}'".format(el.attrib['name'])
         return None
 
     @property
     def code(self):
-        return self.TYPE_TEMPLATE.format(
+        simple_args = ',\n                        '.join(
+            ["'{}': {}".format(p[0], p[1]) for p in self.simple_properties]
+        )
+        complex_args = ',\n                        '.join(
+            [
+                "'{}': {}".format(p[0], capcase(p[1]))
+                for p in self.complex_properties
+            ]
+        )
+        list_args = ',\n                        '.join(
+            ["'{}': {}".format(p[0], p[1]) for p in self.list_properties]
+        )
+        simple_properties = '\n        '.join(
+            ["self.{} = None".format(p[0]) for p in self.simple_properties]
+        )
+        complex_properties = '\n        '.join(
+            ["self.{} = None".format(p[0]) for p in self.complex_properties]
+        )
+        list_properties = '\n        '.join(
+            ["self.{} = []".format(p[0]) for p in self.list_properties]
+        )
+        depends_list = '\n'.join(
+            [
+                "from {} import {}".format(d, capcase(d))
+                for d in self.depends_list
+            ]
+        )
+        s = self.TYPE_TEMPLATE.format(
             self.pytype,
             self.object_list_tag,
             self.soap_tag,
-            ',\n                        '.join(["'{}': {}".format(p[0], p[1]) for p in self.simple_properties]),
-            ',\n                        '.join(["'{}': {}".format(p[0], capcase(p[1])) for p in self.complex_properties]),
-            ',\n                        '.join(["'{}': {}".format(p[0], p[1]) for p in self.list_properties]),
-            '\n        '.join(["self.{} = None".format(p[0]) for p in self.simple_properties]),
-            '\n        '.join(["self.{} = None".format(p[0]) for p in self.complex_properties]),
-            '\n        '.join(["self.{} = []".format(p[0]) for p in self.list_properties]),
-            '\n'.join(["from {} import {}".format(d, capcase(d)) for d in self.depends_list]),
-         )
+            simple_args,
+            complex_args,
+            list_args,
+            simple_properties,
+            complex_properties,
+            list_properties,
+            depends_list,
+        )
+        return s
 
-    def write(self):
+    def write(self, output):
         if self.wsdl_type in EXCLUDE_TYPE_LIST:
             return
         if self.preview:
-            print 'FILE: {}'.format(self.fname)
+            print 'FILE: {}'.format(self.fname(output))
             print self.code
         else:
             try:
-                os.makedirs(self.pathname)
+                os.makedirs(self.pathname(output))
             except OSError as exception:
                 if exception.errno != errno.EEXIST:
                     raise
-            with open(self.fname, 'w') as fd:
+            with open(self.fname(output), 'w') as fd:
                 fd.write(get_file_header())
                 fd.write(self.code)
+
 
 class ValueType(Type):
 
@@ -231,14 +365,16 @@ class {0}:
     def __init__(self, val=None):
         self.val = val
 
-    def toSOAPElement(
+    def toSOAPElement(self, val):
         el = ET.Element('{1}')
         el.text = str(val)
         return el
 """
 
-    def __init__(self, wsdl_dom, namespaces, type_name, force, preview, verbose):
-        Type.__init__(self,
+    def __init__(self, wsdl_dom, namespaces, type_name, force, preview,
+                 verbose):
+        Type.__init__(
+            self,
             wsdl_dom=wsdl_dom,
             namespaces=namespaces,
             wsdl_type=type_name,
@@ -250,77 +386,214 @@ class {0}:
             soap_tag=type_name,
             force=force,
             preview=preview,
-            verbose=verbose)
-    
+            verbose=verbose,
+        )
+
     @staticmethod
     def load(wsdl_dom, namespaces, type_name, force, preview, verbose):
-        return ValueType(wsdl_dom, namespaces, type_name, force, preview, verbose)
+        return ValueType(
+            wsdl_dom, namespaces, type_name, force, preview, verbose
+        )
 
     @property
     def code(self):
-        return self.BUILTIN_TYPE_TEMPLATE.format(capcase(self.wsdl_type), self.wsdl_type)
+        return self.BUILTIN_TYPE_TEMPLATE.format(
+            capcase(self.wsdl_type), self.wsdl_type
+        )
 
-def generate_type(wsdlDom, namespaces, typeName, force, preview, verbose):
+
+def generate_type(wsdlDom, namespaces, typeName, force, preview, output,
+                  verbose):
     if verbose:
         print 'Generating {}'.format(typeName)
-    t = Type.load(wsdlDom, namespaces, typeName, force, preview, verbose);
+    t = Type.load(wsdlDom, namespaces, typeName, force, preview, verbose)  # ;
+    if verbose:
+        print 'Generated {}'.format(t.fname(output))
     return t
 
-def generate_value_type(wsdlDom, namespaces, type_name, force, preview, verbose):
+
+def generate_value_type(wsdlDom, namespaces, type_name, force, preview,
+                        verbose):
     t = ValueType.load(wsdlDom, namespaces, type_name, force, preview, verbose)
     return t
-        
+
+
 def get_namespaces(wsdl_dom, verbose):
     # these are hard-coded for now - had issues pulling from
     # wsdlDom.find('../definitions').attrib
     return {'xsd': 'http://www.w3.org/2001/XMLSchema'}
+
 
 def get_wsdl_version(input):
     """ElementTree exludes comments, just find the line with regex"""
     with open(input) as fd:
         lines = fd.readlines()
     pattern = r'<!-- Version\: ([0-9\.]+) -->'
-    return ''.join([re.match(pattern, line).group(1) for line in lines if re.match(pattern, line)])
+    patterns = [
+        re.match(pattern, line).group(1)
+        for line in lines if re.match(pattern, line)
+    ]
+    return ''.join(patterns)
 
-def generate_object_list_types(object_list_types):
-    with open(os.path.join(os.path.dirname(__file__), '..', 'object_types', 'object_list_types.py'), 'w') as fd:
-        for t in sorted(object_list_types):
-            clazz = object_list_types[t]
-            fd.write('from {0} import {1}\n'.format(
-                clazz.wsdl_type,
-                capcase(clazz.wsdl_type)))
-        fd.write("\n\nOBJECT_LIST_TYPES = {\n")
-        for t in sorted(object_list_types):
-            clazz = object_list_types[t]
-            fd.write("\t{}: {},\n".format(
-                clazz.object_list_tag,
-                capcase(clazz.wsdl_type)))
-        fd.write("}")
 
-def main(wsdlDom, force, preview, verbose):
+def print_out(s):
+    print(s)
+
+
+def generate_object_list_types(object_list_types, preview, verbose, output):
+    fpath = os.path.join(output, 'api', 'object_types', 'object_list_types.py')
+    if verbose:
+        print 'Generating {}'.format(fpath)
+    if preview:
+        writer = print_out
+    else:
+        fd = open(fpath, 'w')
+        writer = fd.write
+
+    for t in sorted(object_list_types):
+        clazz = object_list_types[t]
+        writer('from {0} import {1}\n'.format(
+            clazz.wsdl_type,
+            capcase(clazz.wsdl_type)))
+    writer("\n\nOBJECT_LIST_TYPES = {\n")
+    for t in sorted(object_list_types):
+        clazz = object_list_types[t]
+        writer("\t{}: {},\n".format(
+            clazz.object_list_tag,
+            capcase(clazz.wsdl_type)))
+    writer("}")
+    if verbose:
+        print 'Generated {}'.format(fpath)
+
+
+def main(args):
+
+    force = args.force
+    preview = args.preview
+    verbose = args.verbose
+    output = args.output
+    input = args.input
+
+    api_dir = os.path.join(output, 'api')
+    statics_dir = os.path.join(my_dir, 'statics')
+
+    if not preview:
+        if os.path.isdir(api_dir):
+            raise Exception(
+                "Directory {} already exists! Remove/rename".format(api_dir)
+            )
+        shutil.copytree(statics_dir, api_dir, symlinks=True)
+
+    wsdlDom = ET.parse(input)
+
     namespaces = get_namespaces(wsdlDom, verbose)
+
     # if no type was passed, find all types and generate them all
     typeElements = wsdlDom.findall(".//xsd:complexType[@name]", namespaces)
-    types = set([t.attrib['name'] for t in typeElements if t not in EXCLUDE_TYPE_LIST])
-    # while generating types, build a mapping of request object_list tag to class
+    types = set([
+        t.attrib['name'] for t in typeElements if t not in EXCLUDE_TYPE_LIST
+    ])
+
+    # while generating types, build a mapping of request object_list tag
+    # to class
+    all_obj = []
     object_list_types = {}
     for type_name in sorted(types):
-        t = generate_type(wsdlDom, namespaces, type_name, force, preview, verbose)
-        t.write()
+
+        t = generate_type(
+            wsdlDom,
+            namespaces,
+            type_name,
+            force,
+            preview,
+            output,
+            verbose,
+        )
+        t.write(output)
+        all_obj.append(t)
         if t.is_list and t.is_list_of_value:
-            generate_value_type(wsdlDom, namespaces, t.list_type, force, preview, verbose).write()
+            vt = generate_value_type(
+                wsdlDom,
+                namespaces,
+                t.list_type,
+                force,
+                preview,
+                verbose,
+            )
+            vt.write(output)
+            all_obj.append(vt)
         if t.object_list_tag:
             object_list_types[t.object_list_tag] = t
-    generate_object_list_types(object_list_types)
+
+    fpath = os.path.join(output, 'api', 'object_types', 'all_objects.py')
+
+    if verbose:
+        print 'Generating {}'.format(fpath)
+    if preview:
+        writer = print_out
+    else:
+        fd = open(fpath, 'w')
+        writer = fd.write
+
+    for t in [x for x in all_obj if x.wsdl_type not in EXCLUDE_TYPE_LIST]:
+        writer('from {0} import {1}\n'.format(
+            t.wsdl_type,
+            capcase(t.wsdl_type)))
+
+    if verbose:
+        print 'Generated {}'.format(fpath)
+
+    generate_object_list_types(object_list_types, preview, verbose, output)
+
+    if not preview:
+        fpath = os.path.join(output, 'api', 'README.md')
+        fd = open(fpath, 'w')
+        fd.write((
+            "This directory is automatically generated by tools/{0}.py - \n"
+            "Changes in this directory will get overwritten! \n"
+            "To perform changes, change the files in tools/statics/ and \n"
+            "re-run tools/{0}.py"
+        ).format(pname))
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(
-        description='Generate Python code from types in WSDL')
-    parser.add_argument('-i', '--input', help='WSDL file name', required=True)
-    parser.add_argument('-p', '--preview', action='store_true', default=False)
-    parser.add_argument('-v', '--verbose', action='store_true', default=False)
-    parser.add_argument('-f', '--force', action='store_true', default=False)
+    import argparse
+    from argparse import ArgumentDefaultsHelpFormatter as A1
+    from argparse import RawDescriptionHelpFormatter as A2
+
+    class CustomFormatter(A1, A2):
+        pass
+
+    class CustomParser(argparse.ArgumentParser):
+        def __init__(self, *args, **kwargs):
+            if 'formatter_class' not in kwargs:
+                kwargs['formatter_class'] = CustomFormatter
+            argparse.ArgumentParser.__init__(self, *args, **kwargs)
+
+        def error(self, message):
+            self.print_help()
+            print('ERROR:{}:{}\n'.format(pname, message))
+            sys.exit(2)
+
+    parser = CustomParser(
+        description='Generate Python code from types in WSDL',
+        formatter_class=CustomFormatter,
+    )
+    parser.add_argument(
+        '-i', '--input', help='WSDL file name', required=True,
+    )
+    parser.add_argument(
+        '-o', '--output', help='output directory', default=def_output_dir,
+    )
+    parser.add_argument(
+        '-p', '--preview', action='store_true', default=False,
+    )
+    parser.add_argument(
+        '-v', '--verbose', action='store_true', default=False,
+    )
+    parser.add_argument(
+        '-f', '--force', action='store_true', default=False,
+    )
     args = parser.parse_args()
     wsdl_version = get_wsdl_version(args.input)
-    main(ET.parse(args.input), args.force, args.preview, args.verbose)
+    main(args)

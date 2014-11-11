@@ -24,6 +24,7 @@ from pytan import Handler
 from pytan import Reporter
 from pytan import cmdline_parser
 from pytan.console_support import *
+import taniumpy.api
 
 utils.version_check(__version__)
 parent_parser = cmdline_parser.setup_parser(__doc__)
@@ -44,17 +45,17 @@ print ("%s -- now available as 'handler'!" % handler)
 print ("%s -- now available as 'reporter'!" % reporter)
 
 # Example scenario:
-# r = handler.ask_manual_question(
-#     sensors=[
-#         "Computer Name",
-#         "Folder Name Search with RegEx Match[Program Files,.*,No,No], "
-#         "that is .*, opt:max_data_age:3600",
-#     ],
-#     question_filters=[
-#         "Operating System, that contains Windows",
-#         "Operating System, that does not contain Windows",
-#     ],
-#     question_options=["ignore_case", "or"],
-# )
-# print r
-# print r.request
+r = handler.ask_manual_question(
+    sensors=[
+        "Computer Name",
+        "Folder Name Search with RegEx Match[Program Files,.*,No,No], "
+        "that is .*, opt:max_data_age:3600",
+    ],
+    question_filters=[
+        "Operating System, that contains Windows",
+        "Operating System, that does not contain Windows",
+    ],
+    question_options=["ignore_case", "or"],
+)
+print r
+print r.request
