@@ -13,16 +13,7 @@ sys.dont_write_bytecode = True
 
 pname = os.path.splitext(os.path.basename(sys.argv[0]))[0]
 
-my_file = os.path.abspath(__file__)
-my_dir = os.path.dirname(my_file)
-path_adds = [my_dir]
-
-for aa in path_adds:
-    if aa not in sys.path:
-        sys.path.insert(0, aa)
-
-# import SoapUtil
-import SoapConstants
+from . import constants
 
 
 class CustomFormatter(A1, A2):
@@ -130,7 +121,7 @@ def setup_report_parser(parser):
         required=True,
         action='store',
         dest='ftype',
-        choices=SoapConstants.TRANSFORM_FORMATS.keys(),
+        choices=constants.TRANSFORM_FORMATS.keys(),
         help='Format to save response as',
     )
 
@@ -187,7 +178,7 @@ def setup_report_parser(parser):
 def setup_question_report_parser(parser):
     resultxml_group = parser.add_argument_group('Question Report Options')
 
-    for TB, TB_DEF in SoapConstants.TRANSFORM_BOOL_KWARGS.iteritems():
+    for TB, TB_DEF in constants.TRANSFORM_BOOL_KWARGS.iteritems():
         if TB_DEF is False:
             tb_action = "store_true"
         else:
@@ -199,7 +190,7 @@ def setup_question_report_parser(parser):
             action=tb_action,
             dest=TB,
             default=TB_DEF,
-            help=SoapConstants.TRANSFORM_BOOL_HELP[TB],
+            help=constants.TRANSFORM_BOOL_HELP[TB],
         )
     return parser
 
@@ -212,7 +203,7 @@ def setup_report_sort_parser(parser):
         required=False,
         action='append',
         dest='HEADER_SORT_PRIORITY',
-        default=SoapConstants.TRANSFORM_HEADER_SORT_PRIORITY,
+        default=constants.TRANSFORM_HEADER_SORT_PRIORITY,
         help='Columns to sort first in output',
     )
     return parser

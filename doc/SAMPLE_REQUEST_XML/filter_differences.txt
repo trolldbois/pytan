@@ -1,0 +1,115 @@
+Get Computer Name and Operating System from all machines::
+
+sensor filters:
+Operating System contains Windows
+            <select>
+              <sensor>
+                <hash>45421433</hash>
+              </sensor>
+
+              <filter>
+                <sensor>
+                  <hash>45421433</hash>
+                </sensor>
+
+Operators:
+Less, Greater, LessEqual, GreaterEqual, Equal, RegexMatch (Not.*)
+value_types
+value
+
+
+xxGet Computer Name and "Operating System < 2009" from all machines::
++                <operator>Less</operator>
++                <value_type>String</value_type>
++                <value>2009</value>
++                <not_flag>0</not_flag>
+
+xxGet Computer Name and "not any Operating System > 2009"  from all machines
++                <operator>Greater</operator>
++                <value_type>String</value_type>
++                <value>2009</value>
++                <not_flag>1</not_flag>
+
+xxGet Computer Name and "Operating System > 2009" from all machines
++                <operator>Greater</operator>
++                <value_type>String</value_type>
++                <value>2009</value>
++                <not_flag>0</not_flag>
+
+xxGet Computer Name and "not any Operating System < 2009"  from all machines
++                <operator>Less</operator>
++                <value_type>String</value_type>
++                <value>2009</value>
++                <not_flag>1</not_flag>
+
+xxGet Computer Name and "Operating System is 2009" from all machines
++                <operator>RegexMatch</operator>
++                <value_type xsi:nil="true"/>
++                <value>2009</value>
+
+xxGet Computer Name and Operating System contains Windows from all machines
++                <operator>RegexMatch</operator>
++                <value_type xsi:nil="true"/>
++                <value>.*Windows.*</value>
+
+xxGet Computer Name and "any Operating System does not contain Windows" from all machines
++                <operator>RegexMatch</operator>
++                <value_type xsi:nil="true"/>
++                <value>.*Windows.*</value>
++                <not_flag>1</not_flag>
+
+xxGet Computer Name and "Operating System starts with Windows" from all machines
++                <operator>RegexMatch</operator>
++                <value_type xsi:nil="true"/>
++                <value>Windows.*</value>
+
+xxGet Computer Name and "any Operating System does not start with Windows" from all machines
++                <operator>RegexMatch</operator>
++                <value_type xsi:nil="true"/>
++                <value>Windows.*</value>
++                <not_flag>1</not_flag>
+
+xxGet Computer Name and Operating System ends with Windows from all machines
++                <operator>RegexMatch</operator>
++                <value_type xsi:nil="true"/>
++                <value>.*Windows</value>
+
+xxGet Computer Name and any Operating System does not end with Windows from all machines
++                <operator>RegexMatch</operator>
++                <value_type xsi:nil="true"/>
++                <value>.*Windows</value>
++                <not_flag>1</not_flag>
+
+xxGet Computer Name and Operating System = Windows from all machines
++                <operator>Equal</operator>
+                 <value_type>String</value_type>
++                <value>Windows</value>
+
+xxGet Computer Name and not any Operating System = Windows  from all machines
+-                <operator>Less</operator>
++                <operator>Equal</operator>
+                 <value_type>String</value_type>
+-                <value></value>
+-                <not_flag>0</not_flag>
++                <value>Windows</value>
++                <not_flag>1</not_flag>
+
+              </filter>
+            </select>
+
+question filters:
+from machines where Operating System contains Windows
+          <group>
+            <filters>
+              <filter>
+                <sensor>
+                  <hash>45421433</hash>
+                </sensor>
+                <operator>RegexMatch</operator>
+                <value>.*Windows.*</value>
+              </filter>
+            </filters>
+          </group>
+
+
+
