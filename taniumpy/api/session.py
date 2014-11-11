@@ -1,6 +1,7 @@
 import httplib
 import string
 import urllib
+import xml.etree.ElementTree as ET
 
 from base64 import b64encode
 from .object_types.base import BaseType
@@ -72,6 +73,15 @@ class Session(object):
             http = httplib.HTTPSConnection(self.server, self.port)
             http.connect()
             http.request('POST', '/soap', body=requestBody, headers={'Content-Type': 'text/xml'})
-            return http.getresponse().read()
+            response = http.getresponse()
+            body = response.read()
+            if response.status != 200:
+                raise Exception(body)
+            # a command of ERROR indicates an exception (vs 401 status, etc.)
+            el = ET.fromstring(body)
+            command = el.find('.//command')
+            if command is not None and 'ERROR:' in command.text:
+                raise Exception(command.text)
+            return body
         finally:
             http.close()
