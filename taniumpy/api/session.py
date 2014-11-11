@@ -55,7 +55,7 @@ class Session(object):
     def createGetObjectBody(self, object_type, **kwargs):
         return DynamicFormatter().format(self.REQUEST_BODY, self.session_id, self.GET_OBJECT, '<' + object_type.OBJECT_LIST_TAG + '/>', **kwargs)
 
-    def createUpdateObjectBody(self, obj):
+    def createUpdateObjectBody(self, obj, **kwargs):
         return DynamicFormatter().format(self.REQUEST_BODY, self.session_id, self.UPDATE_OBJECT, obj.toSOAPBody(), **kwargs)
 
     def findAll(self, object_type, **kwargs):
