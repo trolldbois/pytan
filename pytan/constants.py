@@ -19,7 +19,7 @@ DEBUG_FORMAT = logging.Formatter(
 
 # info log format
 INFO_FORMAT = logging.Formatter(
-    '%(asctime)s %(levelname)-8s %(name)s %(message)s'
+    '%(asctime)s %(levelname)-8s %(name)s: %(message)s'
 )
 
 # log levels to turn on extra loggers (higher the level the more verbose)
@@ -178,6 +178,14 @@ PARAM_RE = re.compile(r'\[(.*?)\]')
 # the params by unescaped commas
 PARAM_SPLIT_RE = re.compile(r'(?<!\\),')
 
+# Used by pytan.req.AskManualQuestionRequest.parse_question_filters()
+# and parse_filter() to find filters in a string
+FILTER_RE = re.compile(r',\s*that', re.IGNORECASE)
+
+# Used by pytan.req.AskManualQuestionRequest.parse_question_filters()
+# and parse_options() to find filters in a string
+OPTION_RE = re.compile(r',\s*opt:', re.IGNORECASE)
+
 # Used by pytan.req.AskManualQuestionRequest.build_objects_dict()
 # when creating the XML tag for a param name
 PARAM_DELIM = '||'
@@ -239,7 +247,7 @@ FILTER_MAPS = [
     },
     {
         'human': ['contains'],
-        'operator': 'RegExMatch',
+        'operator': 'RegexMatch',
         'pre_value': '.*',
         'post_value': '.*',
         'not_flag': '0',
@@ -248,14 +256,14 @@ FILTER_MAPS = [
         'human': [
             'does not contain', 'doesnotcontain', 'not contains', 'notcontains'
         ],
-        'operator': 'RegExMatch',
+        'operator': 'RegexMatch',
         'pre_value': '.*',
         'post_value': '.*',
         'not_flag': '1',
     },
     {
         'human': ['starts with', 'startswith'],
-        'operator': 'RegExMatch',
+        'operator': 'RegexMatch',
         'post_value': '.*',
         'not_flag': '0',
     },
@@ -264,13 +272,13 @@ FILTER_MAPS = [
             'does not start with', 'doesnotstartwith', 'not starts with',
             'notstartswith',
         ],
-        'operator': 'RegExMatch',
+        'operator': 'RegexMatch',
         'post_value': '.*',
         'not_flag': '1',
     },
     {
         'human': ['ends with', 'endswith'],
-        'operator': 'RegExMatch',
+        'operator': 'RegexMatch',
         'pre_value': '.*',
         'not_flag': '0',
     },
@@ -279,7 +287,7 @@ FILTER_MAPS = [
             'does not end with', 'doesnotendwith', 'not ends with',
             'notstartswith',
         ],
-        'operator': 'RegExMatch',
+        'operator': 'RegexMatch',
         'pre_value': '.*',
         'not_flag': '1',
     },
@@ -288,39 +296,62 @@ FILTER_MAPS = [
             'is not', 'not regex', 'notregex', 'not regex match',
             'notregexmatch', 'nre',
         ],
-        'operator': 'RegExMatch',
+        'operator': 'RegexMatch',
         'not_flag': '1',
     },
     {
         'human': ['is', 'regex', 'regex match', 'regexmatch', 're'],
-        'operator': 'RegExMatch',
+        'operator': 'RegexMatch',
         'not_flag': '0',
     },
 ]
 
 # Used by pytan.req.AskManualQuestionRequest.get_opt_match() to
 # parse a sensor name for options
-
 OPTION_MAPS = [
     {
         'human': 'ignore_case',
-        'operators': [{'ignore_case_flag': '1'}],
+        'operators': [{'ignore_case_flag': 1}],
+        'destination': 'filter',
     },
     {
         'human': 'match_case',
-        'operators': [{'ignore_case_flag': '0'}],
+        'operators': [{'ignore_case_flag': 0}],
+        'destination': 'filter',
     },
     {
         'human': 'match_any_value',
-        'operators': [{'all_values_flag': '0'}, {'all_times_flag': '0'}],
+        'operators': [{'all_values_flag': 0}, {'all_times_flag': 0}],
+        'destination': 'filter',
     },
     {
         'human': 'match_all_values',
-        'operators': [{'all_values_flag': '1'}, {'all_times_flag': '1'}],
+        'operators': [{'all_values_flag': 1}, {'all_times_flag': 1}],
+        'destination': 'filter',
     },
     {
         'human': 'max_data_age:',
         'operator': 'max_age_seconds',
         'value': 'seconds',
+        'destination': 'filter',
+    },
+    {
+        'human': 'and',
+        'operators': [{'and_flag': 1}],
+        'destination': 'group',
+    },
+    {
+        'human': 'or',
+        'operators': [{'and_flag': 0}],
+        'destination': 'group',
     },
 ]
+
+# Used by pytan.req.AskManualQuestionRequest.build_objects_dict() to
+# specify per sensor option defaults
+DEFAULT_FILTER_OPTIONS = {
+    'ignore_case_flag': 1,
+    'all_values_flag': 0,
+    'all_times_flag': 0,
+    'max_age_seconds': 0,
+}

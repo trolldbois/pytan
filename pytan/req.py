@@ -10,7 +10,6 @@ import time
 import logging
 import copy
 import json
-import re
 from . import utils
 from . import constants
 from . import resp
@@ -64,8 +63,8 @@ class Request(object):
         """
         time_tpl = 'Last Request {} took longer than {} seconds!'.format
         wait_tpl = (
-            "Waiting {} secs, mr_passed {} != estimated_total {}, "
-            "row_count: {}"
+            "[{}/{} seconds] Waiting {} more seconds, mr_passed {} != "
+            "estimated_total {}, row_count: {}"
         ).format
         finish_tpl = "Question finished, rows: {}, servers: {}".format
         no_results = "No results returned, row_count = {}".format
@@ -116,6 +115,8 @@ class Request(object):
                     raise AppError(time_tpl(self, max_wait))
 
                 self.ILOG(wait_tpl(
+                    current_wait,
+                    max_wait,
                     wait,
                     ri['mr_passed'],
                     ri['estimated_total'],
@@ -263,7 +264,11 @@ class Request(object):
         dbg2_tpl = 'Created XML Request Raw:\n{}'.format
         self.xml_dict = self.build_request_xml_dict()
         self.XMLCLOG(dbg1_tpl(utils.jsonify(self.xml_dict)))
-        self.xml_raw = xmltodict.unparse(self.xml_dict, pretty=True)
+        self.xml_raw = xmltodict.unparse(
+            self.xml_dict,
+            pretty=True,
+            indent='  ',
+        )
         self.XMLCLOG(dbg2_tpl(self.xml_raw))
         return self.xml_raw
 
@@ -321,8 +326,8 @@ class AskManualQuestionRequest(Request):
 
         self.handler = handler
         self.sensors = sensors
-        self.question_filters = question_filters
-        self.question_options = question_options
+        self.question_filters = question_filters or []
+        self.question_options = question_options or []
         self.command = 'AddObject'
         self.object_type = 'question'
         self.query = sensors
@@ -331,8 +336,10 @@ class AskManualQuestionRequest(Request):
 
     def call_api(self):
         mt1_tpl = "Must supply sensors!".format
-        if not utils.is_list(self.sensors):
-            self.sensors = [self.sensors]
+        for x in ['sensors', 'question_filters', 'question_options']:
+            v = getattr(self, x)
+            if not utils.is_list(v):
+                setattr(self, x, [v])
 
         if not self.sensors:
             raise ManualQuestionParserError(mt1_tpl())
@@ -340,9 +347,10 @@ class AskManualQuestionRequest(Request):
         # update auth_dict with current token
         self.auth_dict = copy.deepcopy(self.handler.auth.token)
 
-        self.sensor_maps = self.parse_sensors(self.sensors)
+        self.sensor_maps = self.parse_sensors()
+        self.q_opts = self.parse_question_options()
+        self.q_filters = self.parse_question_filters()
         self.objects_dict = self.build_objects_dict()
-        print utils.jsonify(self.objects_dict)
         add_q_response = super(AskManualQuestionRequest, self).call_api()
         question_id = add_q_response.result
         response = self.handler.get_question_results(question_id)
@@ -350,7 +358,69 @@ class AskManualQuestionRequest(Request):
         response.request = self
         return response
 
-    def parse_sensors(self, sensors):
+    def parse_question_options(self):
+        mt1_tpl = "Invalid option specification {!r}".format
+        q_opts = []
+        for option_str in self.question_options:
+            option_str = option_str.strip()
+            opt_match = self.get_opt_match(option_str, constants.OPTION_MAPS)
+            if not opt_match:
+                raise ManualQuestionParserError(mt1_tpl(option_str))
+            q_opts.append(opt_match)
+        p1_tpl = "Question options parsed into: {!r}".format
+        self.DLOG(p1_tpl(q_opts))
+        return q_opts
+
+    def parse_question_filters(self):
+        mt1_tpl = "Invalid filter specification {!r} in {!r}".format
+        mt2_tpl = "Question filter does not contain ', that' in {!r}".format
+        nomatch_tpl = ("Sensor {!r} NOT FOUND!!").format
+        p1_tpl = (
+            "Sensor object {!r} for question filter {!r} fetched successfully"
+        ).format
+
+        q_filters = []
+
+        for question_filter in self.question_filters:
+            # split_filter = sm['name'].split(', that', 1)
+            split_filter = constants.FILTER_RE.split(question_filter)
+
+            if len(split_filter) != 2:
+                raise ManualQuestionParserError(mt2_tpl(question_filter))
+
+            sensor_name = split_filter[0].strip()
+            filter_str = split_filter[1].strip()
+
+            try:
+                sresp = self.handler.get_sensor_object(sensor_name)
+                sensor_obj = sresp.get_sensor_objects()
+            except Exception as e:
+                self.DLOG(e)
+                raise ManualQuestionParserError(nomatch_tpl(sensor_name))
+
+            self.DLOG(p1_tpl(str(sensor_obj['name']), question_filter))
+
+            # TODO: if filter_str.lower() == 'help': print help
+
+            fm_match = self.get_fm_match(sensor_name, filter_str)
+            if not fm_match:
+                raise ManualQuestionParserError(
+                    mt1_tpl(filter_str, question_filter))
+
+            p1_tpl = (
+                "Question filter {!r} parsed into Sensor name: {!r}, "
+                "filter: {!r}"
+            ).format
+            self.DLOG(p1_tpl(question_filter, sensor_name, fm_match))
+            q_filter = {}
+            q_filter['sensor_name'] = sensor_name
+            q_filter['sensor_obj'] = sensor_obj
+            q_filter['filter'] = fm_match
+            q_filters.append(q_filter)
+
+        return q_filters
+
+    def parse_sensors(self):
         '''
         param parsing:
           look for [.*] in each sensor
@@ -364,11 +434,11 @@ class AskManualQuestionRequest(Request):
           second pass see if string starts with any operators + " ", pop
           third pass, leftovers is value
         '''
-        sensor_maps = self.parse_params(sensors)
+        sensor_maps = self.parse_params(self.sensors)
         sensor_maps = self.parse_options(sensor_maps)
-        sensor_maps = self.parse_filters(sensor_maps)
+        sensor_maps = self.parse_filter(sensor_maps)
         sensor_maps = self.fetch_sensor_objects(sensor_maps)
-        print utils.jsonify(sensor_maps, 2)
+        # print utils.jsonify(sensor_maps, 2)
         return sensor_maps
 
     def parse_params(self, sensors):
@@ -399,6 +469,12 @@ class AskManualQuestionRequest(Request):
             sensor_name = constants.PARAM_RE.sub('', s)
             # sensor_name=Folder Name Search with RegEx Match
 
+            p1_tpl = (
+                "Sensor string {!r} parsed into new string: {!r}, "
+                "parameters: {!r}"
+            ).format
+            self.DLOG(p1_tpl(s, sensor_name, split_param))
+
             sensor_map['name'] = sensor_name
             sensor_map['params'] = split_param
             sensor_maps.append(sensor_map)
@@ -407,51 +483,65 @@ class AskManualQuestionRequest(Request):
     def parse_options(self, sensor_maps):
         mt1_tpl = "Invalid option specification {!r} in {!r}".format
         for sm in sensor_maps:
-            split_option = re.split(r',\s*opt:', sm['name'])
+            split_option = constants.OPTION_RE.split(sm['name'])
+            sm['options'] = []
 
             if len(split_option) == 1:
-                sm['options'] = []
                 continue
 
             sensor_name = split_option[0].strip()
-            option_str = split_option[1].strip()
+            option_strs = split_option[1:]
 
             # TODO: if option_str.lower() == 'help': print help
 
-            opt_match = self.get_opt_match(sensor_name, option_str)
-            if not opt_match:
-                raise ManualQuestionParserError(
-                    mt1_tpl(option_str, sm['original']))
+            for option_str in option_strs:
+                option_maps = [
+                    x for x in constants.OPTION_MAPS
+                    if x['destination'] == 'filter'
+                ]
+                option_str = option_str.strip()
+                opt_match = self.get_opt_match(option_str, option_maps)
+                if not opt_match:
+                    raise ManualQuestionParserError(
+                        mt1_tpl(option_str, sm['original']))
+                sm['options'].append(opt_match)
 
+            p1_tpl = (
+                "Sensor string {!r} parsed into new string: {!r}, "
+                "options: {!r}"
+            ).format
+            self.DLOG(p1_tpl(sm['name'], sensor_name, sm['options']))
             sm['name'] = sensor_name
-            if 'options' not in sm:
-                sm['options'] = []
-            sm['options'].append(opt_match)
 
         return sensor_maps
 
-    def parse_filters(self, sensor_maps):
+    def parse_filter(self, sensor_maps):
         mt1_tpl = "Invalid filter specification {!r} in {!r}".format
         for sm in sensor_maps:
             # split_filter = sm['name'].split(', that', 1)
-            split_filter = re.split(r',\s*that', sm['name'])
+            split_filter = constants.FILTER_RE.split(sm['name'])
 
             if len(split_filter) == 1:
-                sm['filters'] = {}
+                sm['filter'] = {}
                 continue
 
             sensor_name = split_filter[0].strip()
             filter_str = split_filter[1].strip()
 
             # TODO: if filter_str.lower() == 'help': print help
-
             fm_match = self.get_fm_match(sensor_name, filter_str)
             if not fm_match:
                 raise ManualQuestionParserError(
                     mt1_tpl(filter_str, sm['original']))
 
+            p1_tpl = (
+                "Sensor string {!r} parsed into new string: {!r}, "
+                "filter: {!r}"
+            ).format
+            self.DLOG(p1_tpl(sm['name'], sensor_name, fm_match))
+
             sm['name'] = sensor_name
-            sm['filters'] = fm_match
+            sm['filter'] = fm_match
 
         return sensor_maps
 
@@ -463,7 +553,7 @@ class AskManualQuestionRequest(Request):
                 break
             for fm_human in fm['human']:
                 fm_humanspaced = fm_human + " "
-                if new_filter_str.startswith(fm_humanspaced):
+                if new_filter_str.lower().startswith(fm_humanspaced):
                     filter_val = new_filter_str[len(fm_humanspaced):]
                     fm_match = {
                         'sensor': sensor_name,
@@ -474,21 +564,18 @@ class AskManualQuestionRequest(Request):
                     break
         return fm_match
 
-    def get_opt_match(self, sensor_name, option_str):
+    def get_opt_match(self, option_str, option_maps):
         mt1_tpl = "Option {!r} requires a value in {}".format
-        opt_match = []
-        for om in constants.OPTION_MAPS:
-            if opt_match:
-                break
-            if option_str.startswith(om['human']):
+        opt_match = {}
+        for om in option_maps:
+            if option_str.lower().startswith(om['human']):
                 if om['human'].endswith(':'):
                     opt_str = option_str.split(':')
                     if len(opt_str) != 2:
                         raise ManualQuestionParserError(
                             mt1_tpl(option_str, om.get('value')))
-                    opt_match = [{om['operator']: opt_str[1]}]
-                else:
-                    opt_match = om['operators']
+                    om['operators'] = [{om['operator']: opt_str[1]}]
+                opt_match = om
                 break
         return opt_match
 
@@ -531,42 +618,77 @@ class AskManualQuestionRequest(Request):
                 raise ManualQuestionParserError(
                     not_fnd_tpl(sm['name'], sm['params']))
 
+            p1_tpl = "Sensor object for {!r} fetched successfully".format
+            self.DLOG(p1_tpl(sm['name']))
+
         return sensor_maps
 
     def build_objects_dict(self):
+        noparampassed_tpl = (
+            "ERROR: Sensor {!r} requires a paramater at index {}, "
+            "parameter definition:\n{}"
+        ).format
 
-        sselects = []
-        for sensor_map in self.sensor_maps:
-            sid = sensor_map['object']['id']
-            shash = sensor_map['object']['hash']
-            sparam_def = sensor_map['object']['parameter_definition'] or {}
-            params = sensor_map['params']
+        xml_selects = []
+        for sm in self.sensor_maps:
+            sid = sm['object']['id']
+            shash = sm['object']['hash']
+            sparam_def = sm['object']['parameter_definition'] or {}
+            sparams = sparam_def.get('parameters') or []
+            params = sm['params']
 
-            param_dicts = []
-            for pd_idx, pd in enumerate(sparam_def.get('parameters') or []):
+            xml_params = []
+            for pd_idx, pd in enumerate(sparams):
                 param_key = '{0}{1}{0}'.format(
                     constants.PARAM_DELIM, pd['key'])
+
                 try:
                     passed_param = params[pd_idx]
                 except IndexError:
-                    passed_param = ''
-                if not passed_param:
-                    continue
-                param_dict = {'key': param_key, 'value': passed_param}
-                param_dicts.append(param_dict)
+                    raise ManualQuestionParserError(noparampassed_tpl(
+                        sm['name'],
+                        pd_idx,
+                        utils.jsonify(pd)
+                    ))
 
-            if param_dicts:
-                sselect = {'parameter': param_dicts}
-                sselect = {'source_id': sid, 'parameters': sselect}
-                sfilter = {'id': sid, 'hash': shash}
+                xml_param = {'key': param_key, 'value': passed_param}
+                xml_params.append(xml_param)
+
+            xml_sensor_hash = {'hash': shash}
+            if xml_params:
+                xml_filter = {'id': sid, 'sensor': xml_sensor_hash}
+                xml_select = {'source_id': sid, 'parameters': sparams}
+                xml_params = {'parameter': xml_params}
+                xml_select['parameters'] = xml_params
             else:
-                sselect = {'hash': shash}
-                sfilter = {'hash': shash}
+                xml_filter = {'id': -1, 'sensor': xml_sensor_hash}
+                xml_select = xml_sensor_hash
 
-            sselect = {'sensor': sselect, 'filter': sfilter}
-            sselects.append(sselect)
+            xml_filter.update(constants.DEFAULT_FILTER_OPTIONS)
 
-        objects_dict = {'select': sselects}
+            if sm['options']:
+                for om in sm['options']:
+                    for op in om['operators']:
+                        xml_filter.update(op)
+
+            if sm['filter']:
+                filter = sm['filter']
+                xml_filter['operator'] = filter['operator']
+                xml_filter['not_flag'] = filter['not_flag']
+                if filter['type']:
+                    xml_filter['type'] = filter['type']
+
+                value = filter['value']
+                if filter.get('pre_value'):
+                    value = '{}{}'.format(filter['pre_value'], value)
+                if filter.get('post_value'):
+                    value = '{}{}'.format(value, filter['post_value'])
+                xml_filter['value'] = value
+
+            xml_select_combo = {'sensor': xml_select, 'filter': xml_filter}
+            xml_selects.append(xml_select_combo)
+
+        objects_dict = {'select': xml_selects}
         objects_dict = {'selects': objects_dict}
         objects_dict = {'question': objects_dict}
         return objects_dict

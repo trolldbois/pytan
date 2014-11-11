@@ -47,14 +47,17 @@ sensors = [
     # will fail because "does not meet" is not a valid operator
     # 'Computer name, that does not meet little',
 
-    # will fail because "IP Sensor" is not a valid sensor
+    # will fail because sensor is not a valid sensor
     # 'IP Sensor, that ipaddress = 127.0.0.1',
 
     # will fail because multiple parameters ([][])
     # 'Folder Name Search with RegEx Match[Program Files,.*,No,No][]',
 
-    # will fail because Computer Name does not take params
+    # will fail because sensor does not take params
     # 'Computer Name[Dweedle]',
+
+    # will fail because sensor takes params and none supplied:
+    # "Folder Name Search with RegEx Match, that is .*",
 
     # will print help and exit
     # 'Operating system, that help'
@@ -62,10 +65,13 @@ sensors = [
 
     # all will work...
     # 'Computer Name',
+    # 'Operating System, opt:match_all_values, opt:ignore_case, opt:max_data_age:3600',
+    # 'Operating System, that contains Windows'
     # 'Operating System, that contains Windows, opt:match_all_values',
-    'Operating System, that string contains Windows',
-    # "Folder Name Search with RegEx Match, that is .*",
-    # "Folder Name Search with RegEx Match[Program Files,.*,No,No], that is .*", opt:match_all_values,
+    # 'Operating System, that string contains Windows',
+    # "Folder Name Search with RegEx Match[Program Files,.*,No,No]",
+    # "Folder Name Search with RegEx Match[Program Files,.*,No,No], that is .*, opt:match_all_values",
+    # "Folder Name Search with RegEx Match[Program Files,.*,No,No], that contains .*",
 ]
 
 '''
@@ -83,9 +89,14 @@ sensors = [
 +                <max_age_seconds>950400</max_age_seconds> max data age
 
 next to do add build objects dict support for filters and options
+
 '''
-for s in sensors:
-    r = handler.ask_manual_question(s)
-    print r
-    print r.request
+# for s in sensors:
+r = handler.ask_manual_question(
+    sensors='Operating System, opt:match_all_values, opt:ignore_case, opt:max_data_age:3600',
+    question_filters='Operating System, that contains Windows',
+    question_options=['ignore_case', 'and'],
+)
+print r
+print r.request
 
