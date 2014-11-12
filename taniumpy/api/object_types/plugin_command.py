@@ -12,7 +12,7 @@ class PluginCommand:
     def __init__(self, val=None):
         self.val = val
 
-    def toSOAPElement(self, val):
+    def toSOAPElement(self, val, minimal=False):
         el = ET.Element('plugin_command')
         el.text = str(val)
         return el

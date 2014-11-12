@@ -53,8 +53,11 @@ class Session(object):
         finally:
             http.close()
 
-    def createGetObjectBody(self, object_type, **kwargs):
-        return DynamicFormatter().format(self.REQUEST_BODY, self.session_id, self.GET_OBJECT, '<' + object_type.OBJECT_LIST_TAG + '/>', **kwargs)
+    def createGetObjectBody(self, object_or_type, **kwargs):
+        obj = object_or_type.toSOAPBody(minimal=True) \
+            if isinstance(object_or_type, BaseType) \
+            else '<{}/>'.format(object_or_type.OBJECT_LIST_TAG)
+        return DynamicFormatter().format(self.REQUEST_BODY, self.session_id, self.GET_OBJECT, obj, **kwargs)
 
     def createUpdateObjectBody(self, obj, **kwargs):
         return DynamicFormatter().format(self.REQUEST_BODY, self.session_id, self.UPDATE_OBJECT, obj.toSOAPBody(), **kwargs)

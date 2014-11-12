@@ -365,7 +365,7 @@ class {0}:
     def __init__(self, val=None):
         self.val = val
 
-    def toSOAPElement(self, val):
+    def toSOAPElement(self, val, minimal=False):
         el = ET.Element('{1}')
         el.text = str(val)
         return el

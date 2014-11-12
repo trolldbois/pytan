@@ -36,34 +36,36 @@ class BaseType(object):
         else:
             raise Exception('Not simply a list type, len() not supported')
 
-    def toSOAPElement(self):
+    def toSOAPElement(self, minimal=False):
         root = ET.Element(self.soap_tag)
         for p in self.simple_properties:
             el = ET.Element(p)
             val = getattr(self, p)
             if val:
                 el.text = str(val)
-            root.append(el)
+            if val is not None or not minimal:
+                root.append(el)
         for p in self.complex_properties:
             val = getattr(self, p)
-            el = ET.Element(p)
-            root.append(el)
-            if isinstance(val, BaseType):
-                el.append(val.toSOAPElement().getchildren()[0])
-            elif val is not None:
-                el.append(val)
+            if val is not None or not minimal:
+                el = ET.Element(p)
+                root.append(el)
+                if isinstance(val, BaseType):
+                    el.append(val.toSOAPElement(minimal=minimal))
+                elif val is not None:
+                    el.append(val)
         for p, t in self.list_properties.iteritems():
             vals = getattr(self, p)
             if not vals:
                 continue
             for val in vals:
-                root.append(t.toSOAPElement(val))
+                root.append(val.toSOAPElement(minimal=minimal))
 
         return root
 
-    def toSOAPBody(self):
+    def toSOAPBody(self, minimal=False):
         out = io.BytesIO()
-        ET.ElementTree(self.toSOAPElement()).write(out)
+        ET.ElementTree(self.toSOAPElement(minimal=minimal)).write(out)
         return out.getvalue()
 
     @classmethod

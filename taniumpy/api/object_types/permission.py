@@ -12,7 +12,7 @@ class Permission:
     def __init__(self, val=None):
         self.val = val
 
-    def toSOAPElement(self, val):
+    def toSOAPElement(self, val, minimal=False):
         el = ET.Element('permission')
         el.text = str(val)
         return el
