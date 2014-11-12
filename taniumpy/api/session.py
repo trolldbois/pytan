@@ -13,6 +13,8 @@ from datetime import datetime
 
 from base64 import b64encode
 from .object_types.base import BaseType
+from .object_types.result_info import ResultInfo
+from .object_types.result_set import ResultSet
 
 my_file = os.path.abspath(__file__)
 my_dir = os.path.dirname(my_file)
@@ -93,6 +95,8 @@ class Session(object):
     GET_OBJECT = 'GetObject'
     UPDATE_OBJECT = 'UpdateObject'
     ADD_OBJECT = 'AddObject'
+    GET_RESULT_INFO = 'GetResultInfo'
+    GET_RESULT_DATA = 'GetResultData'
     REQUEST_BODY = load_file(request_body_template_file)
     FORMATTER = DynamicFormatter().format
     AUTH_RES = '/auth'
@@ -158,6 +162,29 @@ class Session(object):
         obj = BaseType.fromSOAPBody(self.response_body)
         return obj
 
+    def getResultInfo(self, obj, **kwargs):
+        self.request_body = self._createGetResultInfoBody(obj, **kwargs)
+        self.response_body = self._getResponse(self.request_body)
+        # parse the single result_info into an Element and create a ResultInfo
+        el = ET.fromstring(self.response_body)
+        cdata = el.find('.//ResultXML')
+        result_info = ET.fromstring(cdata.text)
+        # TODO: maybe this should be ResultInfoList
+        obj = ResultInfo.fromSOAPElement(result_info)
+        return obj
+
+    def getResultData(self, obj, **kwargs):
+        self.request_body = self._createGetResultDataBody(obj, **kwargs)
+        self.response_body = self._getResponse(self.request_body)
+        # parse the single result_info into an Element and create a ResultData
+        print self.response_body
+        el = ET.fromstring(self.response_body)
+        cdata = el.find('.//ResultXML')
+        result_info = ET.fromstring(cdata.text)
+        # TODO: maybe this should be ResultSetList
+        obj = ResultSet.fromSOAPElement(result_info)
+        return obj
+
     def get_server_info(self):
         self._check_auth()
         # we can't use _http_post, because INFO_RES is only available on
@@ -213,6 +240,26 @@ class Session(object):
             self.REQUEST_BODY,
             self.session_id,
             self.ADD_OBJECT,
+            obj.toSOAPBody(),
+            **kwargs
+        )
+        return obj_body
+
+    def _createGetResultInfoBody(self, obj, **kwargs):
+        obj_body = self.FORMATTER(
+            self.REQUEST_BODY,
+            self.session_id,
+            self.GET_RESULT_INFO,
+            obj.toSOAPBody(),
+            **kwargs
+        )
+        return obj_body
+
+    def _createGetResultDataBody(self, obj, **kwargs):
+        obj_body = self.FORMATTER(
+            self.REQUEST_BODY,
+            self.session_id,
+            self.GET_RESULT_DATA,
             obj.toSOAPBody(),
             **kwargs
         )
