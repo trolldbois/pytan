@@ -41,7 +41,7 @@ class BaseType(object):
         for p in self.simple_properties:
             el = ET.Element(p)
             val = getattr(self, p)
-            if val:
+            if val is not None:
                 el.text = str(val)
             if val is not None or not minimal:
                 root.append(el)

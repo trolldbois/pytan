@@ -37,12 +37,11 @@ class BaseType(object):
             raise Exception('Not simply a list type, len() not supported')
 
     def toSOAPElement(self, minimal=False):
-        import pdb; pdb.set_trace()
         root = ET.Element(self.soap_tag)
         for p in self.simple_properties:
             el = ET.Element(p)
             val = getattr(self, p)
-            if val:
+            if val is not None:
                 el.text = str(val)
             if val is not None or not minimal:
                 root.append(el)
