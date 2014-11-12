@@ -51,12 +51,13 @@ class BaseType(object):
         for p in self.complex_properties:
             val = getattr(self, p)
             if val is not None or not minimal:
-                el = ET.Element(p)
-                root.append(el)
                 if isinstance(val, BaseType):
-                    el.append(val.toSOAPElement(minimal=minimal))
-                elif val is not None:
-                    el.append(val)
+                    root.append(val.toSOAPElement(minimal=minimal))
+                else:
+                    el = ET.Element(p)
+                    root.append(el)
+                    if val is not None:
+                        el.append(str(val))
         for p, t in self.list_properties.iteritems():
             vals = getattr(self, p)
             if not vals:

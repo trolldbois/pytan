@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+
+import xml.etree.ElementTree as ET
+
 import sys
 import os
 import unittest
@@ -20,11 +23,12 @@ import api
 class TestRequest(unittest.TestCase):
 
     def test_requestUsers(self):
-        body = api.Session('', '').createGetObjectBody(
+        body = api.Session('', '')._createGetObjectBody(
             api.UserList, row_count=1,
         )
-        self.assertTrue('<users/>' in body)
-        self.assertTrue('<row_count>1</row_count>' in body)
+        el = ET.fromstring(body)
+        self.assertTrue(el.find('.//users') is not None)
+        self.assertTrue(el.find(".//row_count").text.strip() == '1')
 
 if __name__ == "__main__":
     unittest.main()
