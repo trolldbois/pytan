@@ -4,7 +4,7 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 import os
 import sys
-
+import logging
 sys.dont_write_bytecode = True
 my_file = os.path.abspath(__file__)
 my_dir = os.path.dirname(my_file)
@@ -17,12 +17,17 @@ for aa in path_adds:
 
 import api
 
+# logging.basicConfig(level=logging.DEBUG)
+
 host = '172.16.31.128'
 username = 'Tanium User'
 password = 'T@n!um'
 
 session = api.Session(host)
+print session
 session.authenticate(username, password)
+print session
+
 
 # v='''<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 # <SOAP-ENV:Body>
@@ -39,3 +44,5 @@ session.authenticate(username, password)
 
 # b = session._getResponse(v)
 # print len(b)
+
+# all_sensors = session.find(api.SensorList())

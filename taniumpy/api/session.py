@@ -8,6 +8,7 @@ import httplib
 import string
 import xml.etree.ElementTree as ET
 import logging
+import json
 from datetime import datetime
 
 from base64 import b64encode
@@ -16,6 +17,9 @@ from .object_types.base import BaseType
 my_file = os.path.abspath(__file__)
 my_dir = os.path.dirname(my_file)
 mylog = logging.getLogger("api.session")
+authlog = logging.getLogger("api.session.auth")
+httplog = logging.getLogger("api.session.http")
+bodyhttplog = logging.getLogger("api.session.http.body")
 
 request_body_template_file = os.path.join(my_dir, 'request_body_template.xml')
 
@@ -49,6 +53,11 @@ def http_post(host, port, url, body=None, headers=None, timeout=5):
     if headers is not None:
         req_args['headers'] = headers
 
+    full_url = "https://{0}:{1}/{2}".format(host, port, url)
+
+    httplog.debug("Sending POST to {}".format(full_url, headers))
+    bodyhttplog.debug("request headers: {}, body:\n{}".format(headers, body))
+
     try:
         http.connect()
         http.request(**req_args)
@@ -57,14 +66,15 @@ def http_post(host, port, url, body=None, headers=None, timeout=5):
     finally:
         http.close()
 
-    full_url = "https://{0}:{1}/{2}".format(host, port, url)
-    mylog.debug((
+    httplog.debug((
         "HTTP response from {0!r} len:{1}, status:{2.status} {2.reason}"
     ).format(full_url, len(response_body), response))
+    bodyhttplog.debug((
+        "response headers: {}, body:\n{}"
+    ).format(response.getheaders(), response_body))
 
     if not response_body:
-        mylog.debug("Full body of request:\n{}".format(body))
-        raise HttpError("No body returned from request to {}".format(full_url))
+        raise HttpError("POST request to {} returned nothing".format(full_url))
     if response.status not in [200]:
         raise HttpError(response_body)
     return response_body
@@ -86,11 +96,25 @@ class Session(object):
     FORMATTER = DynamicFormatter().format
     AUTH_RES = '/auth'
     SOAP_RES = '/soap'
+    INFO_RES = '/info.json'
+    SOAP_PORT = 444
 
     def __init__(self, server, port=443):
         self.server = server
         self.port = port
         self.last = {}
+
+    def __str__(self):
+        class_name = self.__class__.__name__
+        str_tpl = "{} to {}:{}, Authenticated: {}, Version: {}".format
+        ret = str_tpl(
+            class_name,
+            self.server,
+            self.port,
+            self.is_auth,
+            self.server_version,
+        )
+        return ret
 
     def authenticate(self, username=None, password=None):
         if not hasattr(self, '_auth_headers'):
@@ -112,7 +136,8 @@ class Session(object):
             raise AuthorizationError(e)
 
         self.session_id = body
-        mylog.debug("Successfully authenticated")
+        authlog.debug("Successfully authenticated")
+        self.server_info = self.get_server_info()
 
     def find(self, object_type, **kwargs):
         self.request_body = self._createGetObjectBody(object_type, **kwargs)
@@ -126,6 +151,22 @@ class Session(object):
         obj = BaseType.fromSOAPBody(self.response_body)
         return obj
 
+    def get_server_info(self):
+        self._check_auth()
+        # we can't use _http_post, because INFO_RES is only available on
+        # SOAP_PORT
+        try:
+            body = http_post(
+                host=self.server,
+                port=self.SOAP_PORT,
+                url=self.INFO_RES,
+                headers=self._auth_headers,
+            )
+            body = json.loads(body)
+        except Exception as e:
+            body = {'server_info_error': e}
+        return body
+
     @property
     def session_id(self):
         if not hasattr(self, '_session_id'):
@@ -135,7 +176,26 @@ class Session(object):
     @session_id.setter
     def session_id(self, value):
         self._session_id = value
-        mylog.debug("Session ID updated to: {}".format(value))
+        authlog.debug("Session ID updated to: {}".format(value))
+
+    @property
+    def is_auth(self):
+        if self.session_id:
+            return True
+        else:
+            return False
+
+    @property
+    def server_version(self):
+        server_version = "Unable to determine"
+        try:
+            server_info = getattr(self, 'server_info')
+            diagnostics = server_info.get('Diagnostics')
+            settings = [x for x in diagnostics if 'Settings' in x][0]
+            server_version = settings['Settings']['Version']
+        except:
+            pass
+        return server_version
 
     def _http_post(self, url, body=None, headers=None):
         body = http_post(self.server, self.port, url, body, headers)
@@ -165,7 +225,14 @@ class Session(object):
         )
         return obj_body
 
+    def _check_auth(self):
+        if not self.is_auth:
+            class_name = self.__class__.__name__
+            err = "Not yet authenticated, use {}.authenticate()!".format
+            raise AuthorizationError(err(class_name))
+
     def _getResponse(self, request_body):
+        self._check_auth()
         self.last = {}
         request_body_el = ET.fromstring(request_body)
         request_command = request_body_el.find('.//command').text
@@ -185,7 +252,7 @@ class Session(object):
         self.last['response_command'] = response_command
 
         if 'forbidden' in response_command.lower():
-            mylog.debug(
+            authlog.debug(
                 "Last request failed, re-authenticating with user/pass"
             )
 

@@ -36,9 +36,6 @@ for object_type_class in dir(api):
         )
         continue
 
-    # print type_class
-    # print list_props
-    # continue
     try:
         response = session.find(type_class)
         print (
