@@ -71,17 +71,19 @@ class Session(object):
     def getResponse(self, requestBody):
         try:
             http = httplib.HTTPSConnection(self.server, self.port)
+            body = ET.fromstring(requestBody)
+            request_command = body.find('.//command').text  # must be present
             http.connect()
             http.request('POST', '/soap', body=requestBody, headers={'Content-Type': 'text/xml'})
             response = http.getresponse()
             body = response.read()
             if response.status != 200:
                 raise Exception(body)
-            # a command of ERROR indicates an exception (vs 401 status, etc.)
+            # command in response must match command in request. If not, it is error text
             el = ET.fromstring(body)
-            command = el.find('.//command')
-            if command is not None and 'ERROR:' in command.text:
-                raise Exception(command.text)
+            command = el.find('.//command').text  # must be present
+            if command != request_command:
+                raise Exception(command)
             return body
         finally:
             http.close()
