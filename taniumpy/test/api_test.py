@@ -35,6 +35,10 @@ for object_type_class in dir(api):
             object_type_class,
         )
         continue
+
+    # print type_class
+    # print list_props
+    # continue
     try:
         response = session.find(type_class)
         print (
@@ -52,10 +56,15 @@ for object_type_class in dir(api):
             e,
         )
 
-    try:
+    list_props = getattr(type_class, 'list_properties', {})
+    if list_props:
+        for k, v in list_props.iteritems():
+            list_item = v()
+            list_item.id = 1
+            getattr(type_class, k).append(list_item)
+    else:
         type_class.id = 1
-    except:
-        continue
+
     try:
         response = session.find(type_class)
         print (
