@@ -92,6 +92,7 @@ class Session(object):
 
     GET_OBJECT = 'GetObject'
     UPDATE_OBJECT = 'UpdateObject'
+    ADD_OBJECT = 'AddObject'
     REQUEST_BODY = load_file(request_body_template_file)
     FORMATTER = DynamicFormatter().format
     AUTH_RES = '/auth'
@@ -151,6 +152,12 @@ class Session(object):
         obj = BaseType.fromSOAPBody(self.response_body)
         return obj
 
+    def add(self, obj, **kwargs):
+        self.request_body = self._createAddObjectBody(obj, **kwargs)
+        self.response_body = self._getResponse(self.request_body)
+        obj = BaseType.fromSOAPBody(self.response_body)
+        return obj
+
     def get_server_info(self):
         self._check_auth()
         # we can't use _http_post, because INFO_RES is only available on
@@ -200,6 +207,16 @@ class Session(object):
     def _http_post(self, url, body=None, headers=None):
         body = http_post(self.server, self.port, url, body, headers)
         return body
+
+    def _createAddObjectBody(self, obj, **kwargs):
+        obj_body = self.FORMATTER(
+            self.REQUEST_BODY,
+            self.session_id,
+            self.ADD_OBJECT,
+            obj.toSOAPBody(),
+            **kwargs
+        )
+        return obj_body
 
     def _createGetObjectBody(self, object_or_type, **kwargs):
         if isinstance(object_or_type, BaseType):
