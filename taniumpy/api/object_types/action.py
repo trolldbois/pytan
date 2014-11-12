@@ -1,22 +1,22 @@
 
-
 # Copyright (c) 2014 Tanium Inc
 #
 # Generated from console.wsdl version 0.0.1     
 #
 #
 
-
 from .base import BaseType
+
 
 class Action(BaseType):
 
     OBJECT_LIST_TAG = 'action'
 
     def __init__(self):
-        BaseType.__init__(self,
-            soap_tag='action',
-            simple_properties={ 'id': int,
+        BaseType.__init__(
+            self,
+            soap_tag = 'action',
+            simple_properties = {'id': int,
                         'name': str,
                         'comment': str,
                         'start_time': str,
@@ -27,16 +27,16 @@ class Action(BaseType):
                         'distribute_seconds': int,
                         'creation_time': str,
                         'stopped_flag': int,
-                        'cache_row_id': int },
-            complex_properties={ 'target_group': Group,
+                        'cache_row_id': int},
+            complex_properties = {'target_group': Group,
                         'action_group': Group,
                         'package_spec': PackageSpec,
                         'user': User,
                         'approver': User,
                         'history_saved_question': SavedQuestion,
                         'saved_action': SavedAction,
-                        'metadata': MetadataList },
-            list_properties={  },
+                        'metadata': MetadataList},
+            list_properties = {},
         )
         self.id = None
         self.name = None

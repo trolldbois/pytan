@@ -1,22 +1,22 @@
 
-
 # Copyright (c) 2014 Tanium Inc
 #
 # Generated from console.wsdl version 0.0.1     
 #
 #
 
-
 from .base import BaseType
+
 
 class PackageFileStatus(BaseType):
 
     OBJECT_LIST_TAG = None
 
     def __init__(self):
-        BaseType.__init__(self,
-            soap_tag='status',
-            simple_properties={ 'server_id': int,
+        BaseType.__init__(
+            self,
+            soap_tag = 'status',
+            simple_properties = {'server_id': int,
                         'server_name': str,
                         'status': int,
                         'cache_status': str,
@@ -24,9 +24,9 @@ class PackageFileStatus(BaseType):
                         'bytes_downloaded': int,
                         'bytes_total': int,
                         'download_start_time': str,
-                        'last_download_progress_time': str },
-            complex_properties={  },
-            list_properties={  },
+                        'last_download_progress_time': str},
+            complex_properties = {},
+            list_properties = {},
         )
         self.server_id = None
         self.server_name = None

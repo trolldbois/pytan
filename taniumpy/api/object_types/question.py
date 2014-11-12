@@ -1,22 +1,22 @@
 
-
 # Copyright (c) 2014 Tanium Inc
 #
 # Generated from console.wsdl version 0.0.1     
 #
 #
 
-
 from .base import BaseType
+
 
 class Question(BaseType):
 
     OBJECT_LIST_TAG = 'question'
 
     def __init__(self):
-        BaseType.__init__(self,
-            soap_tag='question',
-            simple_properties={ 'id': int,
+        BaseType.__init__(
+            self,
+            soap_tag = 'question',
+            simple_properties = {'id': int,
                         'expire_seconds': int,
                         'skip_lock_flag': int,
                         'expiration': str,
@@ -26,14 +26,14 @@ class Question(BaseType):
                         'action_tracking_flag': int,
                         'force_computer_id_flag': int,
                         'cache_row_id': int,
-                        'index': int },
-            complex_properties={ 'selects': SelectList,
+                        'index': int},
+            complex_properties = {'selects': SelectList,
                         'context_group': Group,
                         'group': Group,
                         'user': User,
                         'management_rights_group': Group,
-                        'saved_question': SavedQuestion },
-            list_properties={  },
+                        'saved_question': SavedQuestion},
+            list_properties = {},
         )
         self.id = None
         self.expire_seconds = None

@@ -1,22 +1,22 @@
 
-
 # Copyright (c) 2014 Tanium Inc
 #
 # Generated from console.wsdl version 0.0.1     
 #
 #
 
-
 from .base import BaseType
+
 
 class Filter(BaseType):
 
     OBJECT_LIST_TAG = None
 
     def __init__(self):
-        BaseType.__init__(self,
-            soap_tag='filter',
-            simple_properties={ 'id': int,
+        BaseType.__init__(
+            self,
+            soap_tag = 'filter',
+            simple_properties = {'id': int,
                         'operator': str,
                         'value_type': str,
                         'value': str,
@@ -33,9 +33,9 @@ class Filter(BaseType):
                         'aggregation': str,
                         'all_times_flag': int,
                         'start_time': str,
-                        'end_time': str },
-            complex_properties={ 'sensor': Sensor },
-            list_properties={  },
+                        'end_time': str},
+            complex_properties = {'sensor': Sensor},
+            list_properties = {},
         )
         self.id = None
         self.operator = None

@@ -1,22 +1,22 @@
 
-
 # Copyright (c) 2014 Tanium Inc
 #
 # Generated from console.wsdl version 0.0.1     
 #
 #
 
-
 from .base import BaseType
+
 
 class PackageFile(BaseType):
 
     OBJECT_LIST_TAG = 'package_file'
 
     def __init__(self):
-        BaseType.__init__(self,
-            soap_tag='file',
-            simple_properties={ 'id': int,
+        BaseType.__init__(
+            self,
+            soap_tag = 'file',
+            simple_properties = {'id': int,
                         'hash': str,
                         'name': str,
                         'size': int,
@@ -29,9 +29,9 @@ class PackageFile(BaseType):
                         'bytes_total': int,
                         'download_start_time': str,
                         'last_download_progress_time': str,
-                        'deleted_flag': int },
-            complex_properties={ 'file_status': PackageFileStatusList },
-            list_properties={  },
+                        'deleted_flag': int},
+            complex_properties = {'file_status': PackageFileStatusList},
+            list_properties = {},
         )
         self.id = None
         self.hash = None

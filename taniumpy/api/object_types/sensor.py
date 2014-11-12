@@ -1,22 +1,22 @@
 
-
 # Copyright (c) 2014 Tanium Inc
 #
 # Generated from console.wsdl version 0.0.1     
 #
 #
 
-
 from .base import BaseType
+
 
 class Sensor(BaseType):
 
     OBJECT_LIST_TAG = 'sensor'
 
     def __init__(self):
-        BaseType.__init__(self,
-            soap_tag='sensor',
-            simple_properties={ 'id': int,
+        BaseType.__init__(
+            self,
+            soap_tag = 'sensor',
+            simple_properties = {'id': int,
                         'name': str,
                         'hash': int,
                         'string_count': int,
@@ -36,13 +36,13 @@ class Sensor(BaseType):
                         'preview_sensor_flag': int,
                         'hidden_flag': int,
                         'deleted_flag': int,
-                        'cache_row_id': int },
-            complex_properties={ 'queries': SensorQueryList,
+                        'cache_row_id': int},
+            complex_properties = {'queries': SensorQueryList,
                         'parameters': ParameterList,
                         'subcolumns': SensorSubcolumnList,
                         'string_hints': SensorStringHints,
-                        'metadata': MetadataList },
-            list_properties={  },
+                        'metadata': MetadataList},
+            list_properties = {},
         )
         self.id = None
         self.name = None

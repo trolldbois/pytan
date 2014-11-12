@@ -1,22 +1,22 @@
 
-
 # Copyright (c) 2014 Tanium Inc
 #
 # Generated from console.wsdl version 0.0.1     
 #
 #
 
-
 from .base import BaseType
+
 
 class SavedQuestion(BaseType):
 
     OBJECT_LIST_TAG = 'saved_question'
 
     def __init__(self):
-        BaseType.__init__(self,
-            soap_tag='saved_question',
-            simple_properties={ 'id': int,
+        BaseType.__init__(
+            self,
+            soap_tag = 'saved_question',
+            simple_properties = {'id': int,
                         'name': str,
                         'public_flag': int,
                         'hidden_flag': int,
@@ -32,14 +32,14 @@ class SavedQuestion(BaseType):
                         'action_tracking_flag': int,
                         'mod_time': str,
                         'index': int,
-                        'cache_row_id': int },
-            complex_properties={ 'question': Question,
+                        'cache_row_id': int},
+            complex_properties = {'question': Question,
                         'packages': PackageSpecList,
                         'user': User,
                         'archive_owner': User,
                         'mod_user': User,
-                        'metadata': MetadataList },
-            list_properties={  },
+                        'metadata': MetadataList},
+            list_properties = {},
         )
         self.id = None
         self.name = None

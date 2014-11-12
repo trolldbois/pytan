@@ -1,22 +1,22 @@
 
-
 # Copyright (c) 2014 Tanium Inc
 #
 # Generated from console.wsdl version 0.0.1     
 #
 #
 
-
 from .base import BaseType
+
 
 class ClientStatus(BaseType):
 
     OBJECT_LIST_TAG = 'client_status'
 
     def __init__(self):
-        BaseType.__init__(self,
-            soap_tag='client_status',
-            simple_properties={ 'host_name': str,
+        BaseType.__init__(
+            self,
+            soap_tag = 'client_status',
+            simple_properties = {'host_name': str,
                         'computer_id': str,
                         'ipaddress_client': str,
                         'ipaddress_server': str,
@@ -28,9 +28,9 @@ class ClientStatus(BaseType):
                         'status': str,
                         'port_number': int,
                         'public_key_valid': int,
-                        'cache_row_id': int },
-            complex_properties={  },
-            list_properties={  },
+                        'cache_row_id': int},
+            complex_properties = {},
+            list_properties = {},
         )
         self.host_name = None
         self.computer_id = None

@@ -1,23 +1,23 @@
 
-
 # Copyright (c) 2014 Tanium Inc
 #
 # Generated from console.wsdl version 0.0.1     
 #
 #
 
-
 from .base import BaseType
+
 
 class ObjectList(BaseType):
 
     OBJECT_LIST_TAG = None
 
     def __init__(self):
-        BaseType.__init__(self,
-            soap_tag='object_list',
-            simple_properties={  },
-            complex_properties={ 'questions': QuestionList,
+        BaseType.__init__(
+            self,
+            soap_tag = 'object_list',
+            simple_properties = {},
+            complex_properties = {'questions': QuestionList,
                         'actions': ActionList,
                         'saved_actions': SavedActionList,
                         'roles': UserRoleList,
@@ -25,8 +25,8 @@ class ObjectList(BaseType):
                         'system_settings': SystemSettingsList,
                         'client_count': ClientCount,
                         'white_listed_urls': WhiteListedUrlList,
-                        'computer_groups': ComputerGroupList },
-            list_properties={ 'question': Question,
+                        'computer_groups': ComputerGroupList},
+            list_properties = {'question': Question,
                         'group': Group,
                         'groups': GroupList,
                         'saved_question': SavedQuestion,
@@ -60,7 +60,7 @@ class ObjectList(BaseType):
                         'upload_file': UploadFile,
                         'upload_file_status': UploadFileStatus,
                         'soap_error': SoapError,
-                        'computer_group': ComputerGroup },
+                        'computer_group': ComputerGroup},
         )
         
         self.questions = None

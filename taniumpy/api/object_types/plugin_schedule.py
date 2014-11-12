@@ -1,22 +1,22 @@
 
-
 # Copyright (c) 2014 Tanium Inc
 #
 # Generated from console.wsdl version 0.0.1     
 #
 #
 
-
 from .base import BaseType
+
 
 class PluginSchedule(BaseType):
 
     OBJECT_LIST_TAG = 'plugin_schedule'
 
     def __init__(self):
-        BaseType.__init__(self,
-            soap_tag='plugin_schedule',
-            simple_properties={ 'name': str,
+        BaseType.__init__(
+            self,
+            soap_tag = 'plugin_schedule',
+            simple_properties = {'name': str,
                         'plugin_name': str,
                         'plugin_bundle': str,
                         'start_hour': int,
@@ -30,11 +30,11 @@ class PluginSchedule(BaseType):
                         'input': str,
                         'last_run_time': str,
                         'last_exit_code': int,
-                        'last_run_text': str },
-            complex_properties={ 'arguments': PluginArgumentList,
+                        'last_run_text': str},
+            complex_properties = {'arguments': PluginArgumentList,
                         'user': User,
-                        'last_run_sql': PluginSql },
-            list_properties={  },
+                        'last_run_sql': PluginSql},
+            list_properties = {},
         )
         self.name = None
         self.plugin_name = None

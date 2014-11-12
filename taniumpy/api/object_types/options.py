@@ -1,22 +1,22 @@
 
-
 # Copyright (c) 2014 Tanium Inc
 #
 # Generated from console.wsdl version 0.0.1     
 #
 #
 
-
 from .base import BaseType
+
 
 class Options(BaseType):
 
     OBJECT_LIST_TAG = None
 
     def __init__(self):
-        BaseType.__init__(self,
-            soap_tag='options',
-            simple_properties={ 'flags': int,
+        BaseType.__init__(
+            self,
+            soap_tag = 'options',
+            simple_properties = {'flags': int,
                         'hide_errors_flag': int,
                         'include_answer_times_flag': int,
                         'row_counts_only_flag': int,
@@ -48,9 +48,9 @@ class Options(BaseType):
                         'include_hidden_flag': int,
                         'use_error_objects': int,
                         'use_json': int,
-                        'json_pretty_print': int },
-            complex_properties={ 'cache_filters': CacheFilterList },
-            list_properties={  },
+                        'json_pretty_print': int},
+            complex_properties = {'cache_filters': CacheFilterList},
+            list_properties = {},
         )
         self.flags = None
         self.hide_errors_flag = None

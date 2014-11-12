@@ -1,22 +1,22 @@
 
-
 # Copyright (c) 2014 Tanium Inc
 #
 # Generated from console.wsdl version 0.0.1     
 #
 #
 
-
 from .base import BaseType
+
 
 class PackageSpec(BaseType):
 
     OBJECT_LIST_TAG = 'package_spec'
 
     def __init__(self):
-        BaseType.__init__(self,
-            soap_tag='package_spec',
-            simple_properties={ 'id': int,
+        BaseType.__init__(
+            self,
+            soap_tag = 'package_spec',
+            simple_properties = {'id': int,
                         'name': str,
                         'display_name': str,
                         'command': str,
@@ -35,14 +35,14 @@ class PackageSpec(BaseType):
                         'available_time': str,
                         'deleted_flag': int,
                         'last_update': str,
-                        'cache_row_id': int },
-            complex_properties={ 'files': PackageFileList,
+                        'cache_row_id': int},
+            complex_properties = {'files': PackageFileList,
                         'file_templates': PackageFileTemplateList,
                         'verify_group': Group,
                         'parameters': ParameterList,
                         'sensors': SensorList,
-                        'metadata': MetadataList },
-            list_properties={  },
+                        'metadata': MetadataList},
+            list_properties = {},
         )
         self.id = None
         self.name = None

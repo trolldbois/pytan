@@ -1,22 +1,22 @@
 
-
 # Copyright (c) 2014 Tanium Inc
 #
 # Generated from console.wsdl version 0.0.1     
 #
 #
 
-
 from .base import BaseType
+
 
 class SystemStatusAggregate(BaseType):
 
     OBJECT_LIST_TAG = None
 
     def __init__(self):
-        BaseType.__init__(self,
-            soap_tag='aggregate',
-            simple_properties={ 'send_forward_count': int,
+        BaseType.__init__(
+            self,
+            soap_tag = 'aggregate',
+            simple_properties = {'send_forward_count': int,
                         'send_backward_count': int,
                         'send_none_count': int,
                         'send_ok_count': int,
@@ -27,9 +27,9 @@ class SystemStatusAggregate(BaseType):
                         'slowlink_count': int,
                         'blocked_count': int,
                         'leader_count': int,
-                        'normal_count': int },
-            complex_properties={ 'versions': VersionAggregateList },
-            list_properties={  },
+                        'normal_count': int},
+            complex_properties = {'versions': VersionAggregateList},
+            list_properties = {},
         )
         self.send_forward_count = None
         self.send_backward_count = None

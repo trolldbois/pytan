@@ -1,33 +1,33 @@
 
-
 # Copyright (c) 2014 Tanium Inc
 #
 # Generated from console.wsdl version 0.0.1     
 #
 #
 
-
 from .base import BaseType
+
 
 class User(BaseType):
 
     OBJECT_LIST_TAG = 'user'
 
     def __init__(self):
-        BaseType.__init__(self,
-            soap_tag='user',
-            simple_properties={ 'id': int,
+        BaseType.__init__(
+            self,
+            soap_tag = 'user',
+            simple_properties = {'id': int,
                         'name': str,
                         'domain': str,
                         'group_id': int,
                         'deleted_flag': int,
                         'last_login': str,
                         'active_session_count': int,
-                        'local_admin_flag': int },
-            complex_properties={ 'permissions': UserPermissions,
+                        'local_admin_flag': int},
+            complex_properties = {'permissions': UserPermissions,
                         'roles': UserRoleList,
-                        'metadata': MetadataList },
-            list_properties={  },
+                        'metadata': MetadataList},
+            list_properties = {},
         )
         self.id = None
         self.name = None

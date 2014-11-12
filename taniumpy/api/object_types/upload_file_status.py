@@ -1,26 +1,26 @@
 
-
 # Copyright (c) 2014 Tanium Inc
 #
 # Generated from console.wsdl version 0.0.1     
 #
 #
 
-
 from .base import BaseType
+
 
 class UploadFileStatus(BaseType):
 
     OBJECT_LIST_TAG = 'upload_file_status'
 
     def __init__(self):
-        BaseType.__init__(self,
-            soap_tag='upload_file_status',
-            simple_properties={ 'hash': str,
+        BaseType.__init__(
+            self,
+            soap_tag = 'upload_file_status',
+            simple_properties = {'hash': str,
                         'percent_complete': int,
-                        'file_cached': int },
-            complex_properties={ 'file_parts': UploadFileList },
-            list_properties={  },
+                        'file_cached': int},
+            complex_properties = {'file_parts': UploadFileList},
+            list_properties = {},
         )
         self.hash = None
         self.percent_complete = None

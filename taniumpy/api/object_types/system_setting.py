@@ -1,22 +1,22 @@
 
-
 # Copyright (c) 2014 Tanium Inc
 #
 # Generated from console.wsdl version 0.0.1     
 #
 #
 
-
 from .base import BaseType
+
 
 class SystemSetting(BaseType):
 
     OBJECT_LIST_TAG = 'system_setting'
 
     def __init__(self):
-        BaseType.__init__(self,
-            soap_tag='system_setting',
-            simple_properties={ 'id': int,
+        BaseType.__init__(
+            self,
+            soap_tag = 'system_setting',
+            simple_properties = {'id': int,
                         'name': str,
                         'value': str,
                         'default_value': str,
@@ -24,10 +24,10 @@ class SystemSetting(BaseType):
                         'setting_type': str,
                         'hidden_flag': int,
                         'read_only_flag': int,
-                        'cache_row_id': int },
-            complex_properties={ 'audit_data': AuditData,
-                        'metadata': MetadataList },
-            list_properties={  },
+                        'cache_row_id': int},
+            complex_properties = {'audit_data': AuditData,
+                        'metadata': MetadataList},
+            list_properties = {},
         )
         self.id = None
         self.name = None

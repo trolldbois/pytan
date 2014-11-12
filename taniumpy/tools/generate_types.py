@@ -23,7 +23,6 @@ XSD_TO_PYTHON_TYPES = {
 }
 
 FILE_HEADER_TEMPLATE = """
-
 # Copyright (c) 2014 Tanium Inc
 #
 # Generated from console.wsdl version {0:<10}
@@ -70,19 +69,20 @@ class Type(object):
     )
 
     TYPE_TEMPLATE = """
-
 from .base import BaseType
+
 
 class {0}(BaseType):
 
     OBJECT_LIST_TAG = {1}
 
     def __init__(self):
-        BaseType.__init__(self,
-            soap_tag='{2}',
-            simple_properties={{ {3} }},
-            complex_properties={{ {4} }},
-            list_properties={{ {5} }},
+        BaseType.__init__(
+            self,
+            soap_tag = '{2}',
+            simple_properties = {{{3}}},
+            complex_properties = {{{4}}},
+            list_properties = {{{5}}},
         )
         {6}
         {7}
@@ -479,9 +479,17 @@ def main(args):
 
     if not preview:
         if os.path.isdir(api_dir):
-            raise Exception(
-                "Directory {} already exists! Remove/rename".format(api_dir)
-            )
+            if not force:
+                raise Exception((
+                    "Directory {} already exists! Remove/rename"
+                ).format(api_dir))
+            else:
+                old_api_dir = "{}.{}".format(
+                    api_dir,
+                    datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+                )
+                print "Renaming {} to {}".format(api_dir, old_api_dir)
+                os.rename(api_dir, old_api_dir)
         shutil.copytree(statics_dir, api_dir, symlinks=True)
 
     wsdlDom = ET.parse(input)

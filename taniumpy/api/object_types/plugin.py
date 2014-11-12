@@ -1,22 +1,22 @@
 
-
 # Copyright (c) 2014 Tanium Inc
 #
 # Generated from console.wsdl version 0.0.1     
 #
 #
 
-
 from .base import BaseType
+
 
 class Plugin(BaseType):
 
     OBJECT_LIST_TAG = 'plugin'
 
     def __init__(self):
-        BaseType.__init__(self,
-            soap_tag='plugin',
-            simple_properties={ 'name': str,
+        BaseType.__init__(
+            self,
+            soap_tag = 'plugin',
+            simple_properties = {'name': str,
                         'bundle': str,
                         'input': str,
                         'script_response': str,
@@ -25,13 +25,13 @@ class Plugin(BaseType):
                         'path': str,
                         'filename': str,
                         'cache_row_id': int,
-                        'local_admin_flag': int },
-            complex_properties={ 'arguments': PluginArgumentList,
+                        'local_admin_flag': int},
+            complex_properties = {'arguments': PluginArgumentList,
                         'sql_response': PluginSql,
                         'metadata': MetadataList,
                         'commands': PluginCommandList,
-                        'permissions': UserPermissions },
-            list_properties={  },
+                        'permissions': UserPermissions},
+            list_properties = {},
         )
         self.name = None
         self.bundle = None
