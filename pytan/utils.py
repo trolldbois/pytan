@@ -19,12 +19,12 @@ import re
 from collections import OrderedDict
 # from datetime import datetime
 from . import __version__
-from .packages import requests
-from .exceptions import HttpError
+# from .packages import requests
+# from .exceptions import HttpError
 from . import constants
 
 # disable warning messages about insecure HTTPS validation
-requests.packages.urllib3.disable_warnings()
+# requests.packages.urllib3.disable_warnings()
 
 
 def version_check(reqver):
@@ -339,43 +339,43 @@ def parse_query_objects(args, prefixes):
     return p
 
 
-def http_get(url, headers=None):
-    """perform an HTTP get using the requests module - this is
-    so we always bypass SSL verification, and wrap exceptions into a
-    requests-like object
-    """
-    er1_tpl = "SSL Error in HTTP GET to {!r}: {}".format
-    if headers is None:
-        headers = {}
-    try:
-        ret = requests.get(url, verify=False, headers=headers)
-    except requests.exceptions.SSLError as e:
-        raise HttpError(er1_tpl(url, e))
-    return ret
+# def http_get(url, headers=None):
+#     """perform an HTTP get using the requests module - this is
+#     so we always bypass SSL verification, and wrap exceptions into a
+#     requests-like object
+#     """
+#     er1_tpl = "SSL Error in HTTP GET to {!r}: {}".format
+#     if headers is None:
+#         headers = {}
+#     try:
+#         ret = requests.get(url, verify=False, headers=headers)
+#     except requests.exceptions.SSLError as e:
+#         raise HttpError(er1_tpl(url, e))
+#     return ret
 
 
-def http_post(url, data, headers=None):
-    """perform an HTTP post using the requests module - this is
-    so we always bypass SSL verification, and wrap exceptions into a
-    requests-like object
-    """
-    er1_tpl = "SSL Error in HTTP POST to {!r}: {}".format
-    if headers is None:
-        headers = {}
-    try:
-        ret = requests.post(url, data=data, verify=False, headers=headers)
-    except requests.exceptions.SSLError as e:
-        raise HttpError(er1_tpl(url, e))
-    return ret
+# def http_post(url, data, headers=None):
+#     """perform an HTTP post using the requests module - this is
+#     so we always bypass SSL verification, and wrap exceptions into a
+#     requests-like object
+#     """
+#     er1_tpl = "SSL Error in HTTP POST to {!r}: {}".format
+#     if headers is None:
+#         headers = {}
+#     try:
+#         ret = requests.post(url, data=data, verify=False, headers=headers)
+#     except requests.exceptions.SSLError as e:
+#         raise HttpError(er1_tpl(url, e))
+#     return ret
 
 
-def soap_post(data, soap_url):
-    """uses http_post to perform a SOAPAction call to url with data"""
-    # if not url:
-        # url = self.soap_url
-    headers = {'SOAPAction': '""'}
-    ret = http_post(url=soap_url, data=data, headers=headers)
-    return ret
+# def soap_post(data, soap_url):
+#     """uses http_post to perform a SOAPAction call to url with data"""
+#     # if not url:
+#         # url = self.soap_url
+#     headers = {'SOAPAction': '""'}
+#     ret = http_post(url=soap_url, data=data, headers=headers)
+#     return ret
 
 
 def check_single_query(query):

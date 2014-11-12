@@ -19,14 +19,11 @@ for aa in path_adds:
     if aa not in sys.path:
         sys.path.append(aa)
 
-from pytan import utils
-from pytan import Handler
-from pytan import Reporter
-from pytan import cmdline_parser
+import pytan
 from pytan.console_support import *
-import taniumpy.api
+from pytan import cmdline_parser
 
-utils.version_check(__version__)
+pytan.utils.version_check(__version__)
 parent_parser = cmdline_parser.setup_parser(__doc__)
 parser = cmdline_parser.CustomParser(
     description=__doc__,
@@ -35,27 +32,53 @@ parser = cmdline_parser.CustomParser(
 args = parser.parse_args()
 handler_args = args.__dict__
 
-handler = Handler(**handler_args)
-reporter = Reporter()
+handler = pytan.Handler(**handler_args)
+# reporter = Reporter()
 
 if handler_args['loglevel'] >= 10:
-    utils.set_all_loglevels()
+    pytan.utils.set_all_loglevels()
 
 print ("%s -- now available as 'handler'!" % handler)
-print ("%s -- now available as 'reporter'!" % reporter)
+# print ("%s -- now available as 'reporter'!" % reporter)
 
-# Example scenario:
-r = handler.ask_manual_question(
-    sensors=[
-        "Computer Name",
-        "Folder Name Search with RegEx Match[Program Files,.*,No,No], "
-        "that is .*, opt:max_data_age:3600",
-    ],
-    question_filters=[
-        "Operating System, that contains Windows",
-        "Operating System, that does not contain Windows",
-    ],
-    question_options=["ignore_case", "or"],
-)
-print r
-print r.request
+# # Example scenario:
+# r = handler.ask_manual_question(
+#     sensors=[
+#         "Computer Name",
+#         "Folder Name Search with RegEx Match[Program Files,.*,No,No], "
+#         "that is .*, opt:max_data_age:3600",
+#     ],
+#     question_filters=[
+#         "Operating System, that contains Windows",
+#         "Operating System, that does not contain Windows",
+#     ],
+#     question_options=["ignore_case", "or"],
+# )
+# print r
+# print r.request
+
+# session = api.Session('172.16.31.128', 444)
+# session.authenticate('Tanium User', 'T@n!um')
+
+# for x in dir(pytan.api):
+#     try:
+#         t = getattr(pytan.api, x)()
+#     except:
+#         print "UNABLE TO INSTANTIATE pytan.api.", x
+#         continue
+#     try:
+#         r = handler.session.find(t)
+#         print "RETURN FROM 'findall' on %s == %s len:%s" % (x, r, len(str(r)))
+#     except Exception as e:
+#         print "EXCEPTION FROM 'findall' on: ", x, e
+
+#     try:
+#         t.id = 1
+#     except:
+#         continue
+#     try:
+#         r = handler.session.find(t)
+#         print "RETURN FROM 'findsingle' on %s == %s len:%s" % (x, r, len(str(r)))
+#     except Exception as e:
+#         print "EXCEPTION FROM 'findsingle' on: ", x, e
+#         continue

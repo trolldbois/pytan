@@ -15,9 +15,9 @@ sys.dont_write_bytecode = True
 import logging
 from . import utils
 from .exceptions import AppError
-from .reports import Reporter
-from .auth import Auth
+# from .reports import Reporter
 from . import req
+from . import api
 
 
 class Handler(object):
@@ -26,9 +26,12 @@ class Handler(object):
     all_responses = []
     app_version = 'Unknown'
 
+    '''
+    Calls that actually return something:
+    ActionList
+    '''
     def __init__(self, username=None, password=None, host=None, port="443",
-                 protocol='https', soap_path="/soap", loglevel=0,
-                 logfile=None, debugformat=False, **kwargs):
+                 loglevel=0, logfile=None, debugformat=False, **kwargs):
         super(Handler, self).__init__()
 
         # use port 444 if you have direct access to it,
@@ -42,7 +45,7 @@ class Handler(object):
         # change the format of console logging handler if need be
         utils.change_console_format(debugformat)
 
-        self.reporter = Reporter()
+        # self.reporter = Reporter()
 
         self.mylog = logging.getLogger("pytan")
         self.DLOG = self.mylog.debug
@@ -53,8 +56,6 @@ class Handler(object):
 
         self.__host = host
         self.__port = port
-        self.__protocol = protocol
-        self.__soap_path = soap_path
         self.__username = username
         self.__password = password
 
@@ -65,22 +66,25 @@ class Handler(object):
         if not self.__password:
             raise AppError("Must supply password!")
 
-        # kwargs here allows Handler instantiation to pass
-        # SHOW_SESSION_ID to Auth
-        self.auth = Auth(self.__username, self.__password, **kwargs)
+        app_tpl = "https://{}:{}".format
+        soap_tpl = "{}/soap".format
 
-        soap_tpl = "{}{}".format
-        app_tpl = "{}://{}:{}".format
-
-        self.app_url = app_tpl(self.__protocol, self.__host, self.__port)
-        self.soap_url = soap_tpl(self.app_url, self.__soap_path)
+        self.app_url = app_tpl(self.__host, self.__port)
+        self.soap_url = soap_tpl(self.app_url)
         self.test_app_port()
-        self.server_info = self.get_server_info()
+        # self.server_info = self.get_server_info()
+        self.session = api.Session(self.__host, self.__port)
+        self.session.authenticate(self.__username, self.__password)
 
     def __str__(self):
         str_tpl = "Handler for {}, Version: {}".format
-        ret = str_tpl(self.soap_url, self.server_info['Settings']['Version'])
+        ret = str_tpl(self.soap_url, self.version_info)
         return ret
+
+    @property
+    def version_info(self):
+        ver = 'Unknown'
+        return ver
 
     def test_app_port(self):
         """validates that the SOAP port on the SOAP host can be reached"""
@@ -166,7 +170,7 @@ class Handler(object):
             sensor_objects = response.get_sensor_objects()
         return sensor_objects
 
-    def get_saved_question_object(self, query):
+    def get_object(self, objtype, query):
         """sends a get saved question request and returns a SoapResponse
         object
         """
@@ -174,124 +178,6 @@ class Handler(object):
             handler=self,
             objtype='saved_question',
             query=query,
-        )
-        response = request.call_api()
-        return response
-
-    def get_all_saved_question_objects(self):
-        """sends a get all saved question request and returns a SoapResponse
-        object
-        """
-        request = req.GetAllObjectRequest(
-            handler=self,
-            objtype='saved_question',
-        )
-        response = request.call_api()
-        return response
-
-    def get_question_object(self, query):
-        """sends a get question request and returns a SoapResponse object
-        can only ask for questions by ID
-        """
-        request = req.GetObjectRequest(
-            handler=self,
-            objtype='question',
-            query=query,
-        )
-        response = request.call_api()
-        return response
-
-    def get_all_question_objects(self):
-        """sends a get all question request and returns a SoapResponse object
-        """
-        request = req.GetAllObjectRequest(
-            handler=self,
-            objtype='question',
-        )
-        response = request.call_api()
-        return response
-
-    def get_sensor_object(self, query):
-        """sends a get sensor request and returns a SoapResponse object
-        """
-        request = req.GetObjectRequest(
-            handler=self,
-            objtype='sensor',
-            query=query,
-        )
-        response = request.call_api()
-        return response
-
-    def get_all_sensor_objects(self):
-        """sends a get all sensors request and returns a SoapResponse object
-        """
-        request = req.GetAllObjectRequest(
-            handler=self,
-            objtype='sensor',
-        )
-        response = request.call_api()
-        return response
-
-    def get_package_object(self, query):
-        """sends a get package request and returns a SoapResponse object
-        """
-        request = req.GetObjectRequest(
-            handler=self,
-            objtype='package_spec',
-            query=query,
-        )
-        response = request.call_api()
-        return response
-
-    def get_all_package_objects(self):
-        """sends a get all packages request and returns a SoapResponse object
-        """
-        request = req.GetAllObjectRequest(
-            handler=self,
-            objtype='package_spec',
-        )
-        response = request.call_api()
-        return response
-
-    def get_action_object(self, query):
-        """sends a get action request and returns a SoapResponse object
-        can only ask for action by id (by name broken in API)
-        """
-        request = req.GetObjectRequest(
-            handler=self,
-            objtype='action',
-            query=query,
-        )
-        response = request.call_api()
-        return response
-
-    def get_all_action_objects(self):
-        """sends a get all actions request and returns a SoapResponse object
-        """
-        request = req.GetAllObjectRequest(
-            handler=self,
-            objtype='action',
-        )
-        response = request.call_api()
-        return response
-
-    def get_group_object(self, query):
-        """sends a get group request and returns a SoapResponse object
-        """
-        request = req.GetObjectRequest(
-            handler=self,
-            objtype='group',
-            query=query,
-        )
-        response = request.call_api()
-        return response
-
-    def get_all_group_objects(self):
-        """sends a get all groups request and returns a SoapResponse object
-        """
-        request = req.GetAllObjectRequest(
-            handler=self,
-            objtype='group',
         )
         response = request.call_api()
         return response

@@ -6,7 +6,8 @@ import xml.etree.ElementTree as ET
 
 
 class BaseType(object):
-    def __init__(self, soap_tag, simple_properties, complex_properties, list_properties):
+    def __init__(self, soap_tag, simple_properties, complex_properties,
+                 list_properties):
         self.soap_tag = soap_tag
         self.simple_properties = simple_properties
         self.complex_properties = complex_properties
@@ -22,7 +23,9 @@ class BaseType(object):
         if len(self.list_properties) == 1:
             return getattr(self, self.list_properties.items()[0][0])[n]
         else:
-            raise Exception('Not simply a list type, __getitem__ not supported')
+            raise Exception(
+                'Not simply a list type, __getitem__ not supported'
+            )
 
     def __len__(self):
         """Allow len() for lsits.
@@ -73,13 +76,22 @@ class BaseType(object):
         result = cls()
         for p, t in result.simple_properties.iteritems():
             pel = el.find("./{}".format(p))
-            setattr(result, p, t(pel.text) if pel is not None and pel.text else None)
+            if pel is not None and pel.text:
+                setattr(result, p, t(pel.text))
+            else:
+                setattr(result, p, None)
         for p, t in result.complex_properties.iteritems():
             elems = el.findall('./{}'.format(p))
             if len(elems) > 1:
-                raise Exception('Unexpected: {} elements for property'.format(p))
+                raise Exception(
+                    'Unexpected: {} elements for property'.format(p)
+                )
             elif len(elems) == 1:
-                setattr(result, p, result.complex_properties[p].fromSOAPElement(elems[0]))
+                setattr(
+                    result,
+                    p,
+                    result.complex_properties[p].fromSOAPElement(elems[0]),
+                )
             else:
                 setattr(result, p, None)
         for p, t in result.list_properties.iteritems():
@@ -107,4 +119,5 @@ class BaseType(object):
         from object_list_types import OBJECT_LIST_TYPES
         if result_object.tag not in OBJECT_LIST_TYPES:
             raise Exception('Unknown type {}'.format(result_object.tag))
-        return OBJECT_LIST_TYPES[result_object.tag].fromSOAPElement(result_object)
+        r = OBJECT_LIST_TYPES[result_object.tag].fromSOAPElement(result_object)
+        return r

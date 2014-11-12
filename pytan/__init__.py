@@ -11,7 +11,7 @@ import sys
 sys.dont_write_bytecode = True
 
 from .handler import Handler
-from .reports import Reporter
+# from .reports import Reporter
 from . import utils
 from . import exceptions
 from . import constants

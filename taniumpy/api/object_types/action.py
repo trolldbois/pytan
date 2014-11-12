@@ -1,7 +1,7 @@
 
 # Copyright (c) 2014 Tanium Inc
 #
-# Generated from console.wsdl version 0.0.1     
+# Generated from console.wsdl version 0.0.1
 #
 #
 
@@ -15,8 +15,8 @@ class Action(BaseType):
     def __init__(self):
         BaseType.__init__(
             self,
-            soap_tag = 'action',
-            simple_properties = {'id': int,
+            soap_tag='action',
+            simple_properties={'id': int,
                         'name': str,
                         'comment': str,
                         'start_time': str,
@@ -28,7 +28,7 @@ class Action(BaseType):
                         'creation_time': str,
                         'stopped_flag': int,
                         'cache_row_id': int},
-            complex_properties = {'target_group': Group,
+            complex_properties={'target_group': Group,
                         'action_group': Group,
                         'package_spec': PackageSpec,
                         'user': User,
@@ -36,7 +36,7 @@ class Action(BaseType):
                         'history_saved_question': SavedQuestion,
                         'saved_action': SavedAction,
                         'metadata': MetadataList},
-            list_properties = {},
+            list_properties={},
         )
         self.id = None
         self.name = None
@@ -58,7 +58,7 @@ class Action(BaseType):
         self.history_saved_question = None
         self.saved_action = None
         self.metadata = None
-        
+
 
 from group import Group
 from group import Group
