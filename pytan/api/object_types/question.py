@@ -10,7 +10,7 @@ from .base import BaseType
 
 class Question(BaseType):
 
-    OBJECT_LIST_TAG = 'question'
+    _OBJECT_LIST_TAG = 'question'
 
     def __init__(self):
         BaseType.__init__(

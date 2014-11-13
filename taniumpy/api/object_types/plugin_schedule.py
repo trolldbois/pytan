@@ -10,7 +10,7 @@ from .base import BaseType
 
 class PluginSchedule(BaseType):
 
-    OBJECT_LIST_TAG = 'plugin_schedule'
+    _OBJECT_LIST_TAG = 'plugin_schedule'
 
     def __init__(self):
         BaseType.__init__(

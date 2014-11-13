@@ -74,7 +74,7 @@ from .base import BaseType
 
 class {0}(BaseType):
 
-    OBJECT_LIST_TAG = {1}
+    _OBJECT_LIST_TAG = {1}
 
     def __init__(self):
         BaseType.__init__(

@@ -401,6 +401,9 @@
 		"/Users/jolsen/gh/pytan/bin",
 		"/Users/jolsen/gh/pytan/BUILD",
 		"/Users/jolsen/gh/pytan/doc",
+		"/Users/jolsen/gh/pytan/pytan",
+		"/Users/jolsen/gh/pytan/pytan/api",
+		"/Users/jolsen/gh/pytan/pytan/api/object_types",
 		"/Users/jolsen/gh/pytan/taniumpy",
 		"/Users/jolsen/gh/pytan/taniumpy/api",
 		"/Users/jolsen/gh/pytan/taniumpy/test",
@@ -411,6 +414,7 @@
 	],
 	"file_history":
 	[
+		"/Users/jolsen/gh/pytan/pytan/api/object_types/server_info_list.py",
 		"/Users/jolsen/gh/pytan/pytan/api/session.py",
 		"/Users/jolsen/gh/pytan/bin/pytan_shell.py",
 		"/Users/jolsen/gh/pytan/taniumpy/tools/generate_types.py",
@@ -537,8 +541,7 @@
 		"/Users/jolsen/Desktop/parsed_question_log.txt",
 		"/Users/jolsen/gh/pytan/lib/parsed_question_log.txt",
 		"/Users/jolsen/MainListQueries.php",
-		"/Users/jolsen/Downloads/Support/launchMLQ.js",
-		"/Users/jolsen/Downloads/Support/SOAPStub.wsf"
+		"/Users/jolsen/Downloads/Support/launchMLQ.js"
 	],
 	"find":
 	{
@@ -793,7 +796,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 246.0,
+	"side_bar_width": 245.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

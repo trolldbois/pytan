@@ -10,7 +10,7 @@ from .base import BaseType
 
 class WhiteListedUrl(BaseType):
 
-    OBJECT_LIST_TAG = 'white_listed_url'
+    _OBJECT_LIST_TAG = 'white_listed_url'
 
     def __init__(self):
         BaseType.__init__(

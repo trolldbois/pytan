@@ -22,6 +22,7 @@ for aa in path_adds:
 import pytan
 from pytan.console_support import *
 from pytan import cmdline_parser
+from pytan import constants
 
 pytan.utils.version_check(__version__)
 parent_parser = cmdline_parser.setup_parser(__doc__)
@@ -41,6 +42,35 @@ if handler_args['loglevel'] >= 10:
 print ("%s -- now available as 'handler'!" % handler)
 # print ("%s -- now available as 'reporter'!" % reporter)
 
+for k in constants.GET_OBJ_MAP:
+    r = handler.get_all(k)
+    print 'all: ', k, r
+    if len(r) == 0:
+        raise Exception("{} is 0 !!!".format(len(r)))
+    if 'id' not in constants.GET_OBJ_MAP[k]['search']:
+        continue
+    try:
+        r = handler.get(k, id=999999)
+    except Exception as e:
+        print "single get bad id=99999: {}".format(k), str(e).replace('\n', '')
+
+    r = handler.get(k, id=1)
+    print 'single id=1: ', k, r
+    if len(r) != 1:
+        raise Exception("{} != 1 !!!".format(len(r)))
+    r = handler.get(k, id=[1, 2])
+    print 'multi id=[1,2]: ', k, r
+    if len(r) != 2:
+        raise Exception("{} != 2 !!!".format(len(r)))
+
+k = 'sensor'
+r = handler.get(k, id=[1, 2], name=['Computer Name', 'Operating System'])
+print 'many multi id=[1,2] name=Computer Name, Operating System: ', k, r
+if len(r) != 4:
+    raise Exception("{} != 4 !!!".format(len(r)))
+
+
+
 # # Example scenario:
 # r = handler.ask_manual_question(
 #     sensors=[
@@ -56,29 +86,3 @@ print ("%s -- now available as 'handler'!" % handler)
 # )
 # print r
 # print r.request
-
-# session = api.Session('172.16.31.128', 444)
-# session.authenticate('Tanium User', 'T@n!um')
-
-# for x in dir(pytan.api):
-#     try:
-#         t = getattr(pytan.api, x)()
-#     except:
-#         print "UNABLE TO INSTANTIATE pytan.api.", x
-#         continue
-#     try:
-#         r = handler.session.find(t)
-#         print "RETURN FROM 'findall' on %s == %s len:%s" % (x, r, len(str(r)))
-#     except Exception as e:
-#         print "EXCEPTION FROM 'findall' on: ", x, e
-
-#     try:
-#         t.id = 1
-#     except:
-#         continue
-#     try:
-#         r = handler.session.find(t)
-#         print "RETURN FROM 'findsingle' on %s == %s len:%s" % (x, r, len(str(r)))
-#     except Exception as e:
-#         print "EXCEPTION FROM 'findsingle' on: ", x, e
-#         continue

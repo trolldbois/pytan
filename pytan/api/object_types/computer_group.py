@@ -10,7 +10,7 @@ from .base import BaseType
 
 class ComputerGroup(BaseType):
 
-    OBJECT_LIST_TAG = 'computer_group'
+    _OBJECT_LIST_TAG = 'computer_group'
 
     def __init__(self):
         BaseType.__init__(

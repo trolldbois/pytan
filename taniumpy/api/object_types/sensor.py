@@ -10,7 +10,7 @@ from .base import BaseType
 
 class Sensor(BaseType):
 
-    OBJECT_LIST_TAG = 'sensor'
+    _OBJECT_LIST_TAG = 'sensor'
 
     def __init__(self):
         BaseType.__init__(

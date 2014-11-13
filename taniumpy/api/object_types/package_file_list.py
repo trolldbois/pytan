@@ -10,7 +10,7 @@ from .base import BaseType
 
 class PackageFileList(BaseType):
 
-    OBJECT_LIST_TAG = 'package_files'
+    _OBJECT_LIST_TAG = 'package_files'
 
     def __init__(self):
         BaseType.__init__(

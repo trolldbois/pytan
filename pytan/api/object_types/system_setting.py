@@ -10,7 +10,7 @@ from .base import BaseType
 
 class SystemSetting(BaseType):
 
-    OBJECT_LIST_TAG = 'system_setting'
+    _OBJECT_LIST_TAG = 'system_setting'
 
     def __init__(self):
         BaseType.__init__(

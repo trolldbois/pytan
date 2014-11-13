@@ -10,7 +10,7 @@ from .base import BaseType
 
 class ParseJobList(BaseType):
 
-    OBJECT_LIST_TAG = 'parse_jobs'
+    _OBJECT_LIST_TAG = 'parse_jobs'
 
     def __init__(self):
         BaseType.__init__(

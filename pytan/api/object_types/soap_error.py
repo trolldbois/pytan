@@ -10,7 +10,7 @@ from .base import BaseType
 
 class SoapError(BaseType):
 
-    OBJECT_LIST_TAG = 'soap_error'
+    _OBJECT_LIST_TAG = 'soap_error'
 
     def __init__(self):
         BaseType.__init__(

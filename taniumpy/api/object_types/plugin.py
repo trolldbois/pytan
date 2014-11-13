@@ -10,7 +10,7 @@ from .base import BaseType
 
 class Plugin(BaseType):
 
-    OBJECT_LIST_TAG = 'plugin'
+    _OBJECT_LIST_TAG = 'plugin'
 
     def __init__(self):
         BaseType.__init__(

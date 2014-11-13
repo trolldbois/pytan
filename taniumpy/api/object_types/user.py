@@ -10,7 +10,7 @@ from .base import BaseType
 
 class User(BaseType):
 
-    OBJECT_LIST_TAG = 'user'
+    _OBJECT_LIST_TAG = 'user'
 
     def __init__(self):
         BaseType.__init__(

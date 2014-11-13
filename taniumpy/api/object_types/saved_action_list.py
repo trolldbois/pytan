@@ -10,7 +10,7 @@ from .base import BaseType
 
 class SavedActionList(BaseType):
 
-    OBJECT_LIST_TAG = 'saved_actions'
+    _OBJECT_LIST_TAG = 'saved_actions'
 
     def __init__(self):
         BaseType.__init__(

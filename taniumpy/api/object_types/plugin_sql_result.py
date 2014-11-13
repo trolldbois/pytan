@@ -10,7 +10,7 @@ from .base import BaseType
 
 class PluginSqlResult(BaseType):
 
-    OBJECT_LIST_TAG = None
+    _OBJECT_LIST_TAG = None
 
     def __init__(self):
         BaseType.__init__(

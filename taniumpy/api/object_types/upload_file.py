@@ -10,7 +10,7 @@ from .base import BaseType
 
 class UploadFile(BaseType):
 
-    OBJECT_LIST_TAG = 'upload_file'
+    _OBJECT_LIST_TAG = 'upload_file'
 
     def __init__(self):
         BaseType.__init__(

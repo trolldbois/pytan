@@ -10,7 +10,7 @@ from .base import BaseType
 
 class GroupList(BaseType):
 
-    OBJECT_LIST_TAG = 'groups'
+    _OBJECT_LIST_TAG = 'groups'
 
     def __init__(self):
         BaseType.__init__(

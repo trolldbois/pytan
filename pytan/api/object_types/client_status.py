@@ -10,7 +10,7 @@ from .base import BaseType
 
 class ClientStatus(BaseType):
 
-    OBJECT_LIST_TAG = 'client_status'
+    _OBJECT_LIST_TAG = 'client_status'
 
     def __init__(self):
         BaseType.__init__(

@@ -10,7 +10,7 @@ from .base import BaseType
 
 class ParseResultGroupList(BaseType):
 
-    OBJECT_LIST_TAG = 'parse_result_groups'
+    _OBJECT_LIST_TAG = 'parse_result_groups'
 
     def __init__(self):
         BaseType.__init__(

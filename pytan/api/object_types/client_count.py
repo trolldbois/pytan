@@ -10,7 +10,7 @@ from .base import BaseType
 
 class ClientCount(BaseType):
 
-    OBJECT_LIST_TAG = 'client_count'
+    _OBJECT_LIST_TAG = 'client_count'
 
     def __init__(self):
         BaseType.__init__(
