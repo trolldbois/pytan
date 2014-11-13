@@ -32,16 +32,16 @@ EXCEPTION:  ERROR: 400 Bad RequestXML Parse Error: SOAPProcessing Exception: cla
 >>> a=api.ActionList()
 >>> r=session.find(a)
 >>> print r
-ActionList, len: 709
+ActionList, len: 719
 
 >>> # find by id in list
 >>> a=api.Action()
 >>> a.id=1
 >>> b=api.ActionList()
 >>> b.append(a)
->>> r=session.find(a)
+>>> r=session.find(b)
 >>> print r
-Action, name: 'Unmanaged Asset Tracking - Run Scan'
+ActionList, len: 719
 
 >>> # find by name in list
 >>> a=api.Action()
@@ -55,7 +55,7 @@ Action, name: 'Unmanaged Asset Tracking - Run Scan'
 >>> r2=session.find(c)
 >>> print r2
 Action, name: 'Unmanaged Asset Tracking - Run Scan'
-ActionList, len: 709
+ActionList, len: 719
 ```
 
 ## ActionListInfo
@@ -97,9 +97,9 @@ None
 >>> a.id=1
 >>> b=api.ActionStopList()
 >>> b.append(a)
->>> r=session.find(a)
+>>> r=session.find(b)
 >>> print r
-EXCEPTION:  ERROR: 400 Bad RequestXML Parse Error: SOAPProcessing Exception: class ActionStopNotFound
+None
 ```
 
 ## ArchivedQuestion
@@ -130,7 +130,7 @@ None
 >>> a.id=1
 >>> b=api.ArchivedQuestionList()
 >>> b.append(a)
->>> r=session.find(a)
+>>> r=session.find(b)
 >>> print r
 None
 ```
@@ -236,7 +236,7 @@ None
 >>> a.id=1
 >>> b=api.ComputerGroupList()
 >>> b.append(a)
->>> r=session.find(a)
+>>> r=session.find(b)
 >>> print r
 None
 
@@ -323,7 +323,7 @@ None
 >>> a.id=1
 >>> b=api.FilterList()
 >>> b.append(a)
->>> r=session.find(a)
+>>> r=session.find(b)
 >>> print r
 None
 ```
@@ -368,9 +368,9 @@ GroupList, len: 3
 >>> a.id=1
 >>> b=api.GroupList()
 >>> b.append(a)
->>> r=session.find(a)
+>>> r=session.find(b)
 >>> print r
-Group, name: 'All Computers'
+GroupList, len: 1
 
 >>> # find by name in list
 >>> a=api.Group()
@@ -495,7 +495,7 @@ None
 >>> a.id=1
 >>> b=api.PackageFileList()
 >>> b.append(a)
->>> r=session.find(a)
+>>> r=session.find(b)
 >>> print r
 None
 
@@ -626,9 +626,9 @@ None
 >>> a.id=1
 >>> b=api.PackageSpecList()
 >>> b.append(a)
->>> r=session.find(a)
+>>> r=session.find(b)
 >>> print r
-PackageSpec, name: 'Update Java 64-bit - Kill / Reboot'
+None
 
 >>> # find by name in list
 >>> a=api.PackageSpec()
@@ -707,7 +707,7 @@ None
 >>> a.id=1
 >>> b=api.ParseResultList()
 >>> b.append(a)
->>> r=session.find(a)
+>>> r=session.find(b)
 >>> print r
 None
 ```
@@ -937,7 +937,7 @@ None
 >>> a=api.Question()
 >>> r=session.find(a)
 >>> print r
-QuestionList, len: 8257
+QuestionList, len: 8586
 
 >>> # find by id non list
 >>> a=api.Question()
@@ -956,22 +956,22 @@ Question, id: 1
 >>> r2=session.find(b)
 >>> print r2
 Question, id: 1
-QuestionList, len: 8257
+QuestionList, len: 8586
 
 >>> # findall list
 >>> a=api.QuestionList()
 >>> r=session.find(a)
 >>> print r
-QuestionList, len: 8257
+QuestionList, len: 8587
 
 >>> # find by id in list
 >>> a=api.Question()
 >>> a.id=1
 >>> b=api.QuestionList()
 >>> b.append(a)
->>> r=session.find(a)
+>>> r=session.find(b)
 >>> print r
-Question, id: 1
+QuestionList, len: 1
 
 >>> # find by name in list
 >>> a=api.Question()
@@ -1039,9 +1039,9 @@ SavedActionList, len: 22
 >>> a.id=1
 >>> b=api.SavedActionList()
 >>> b.append(a)
->>> r=session.find(a)
+>>> r=session.find(b)
 >>> print r
-SavedAction, name: 'Unmanaged Asset Tracking - Run Scan'
+SavedActionList, len: 1
 
 >>> # find by name in list
 >>> a=api.SavedAction()
@@ -1156,9 +1156,9 @@ SavedQuestionList, len: 172
 >>> a.id=1
 >>> b=api.SavedQuestionList()
 >>> b.append(a)
->>> r=session.find(a)
+>>> r=session.find(b)
 >>> print r
-SavedQuestion, name: 'Run Unmanaged Asset Scan on All Machines'
+SavedQuestionList, len: 172
 
 >>> # find by name in list
 >>> a=api.SavedQuestion()
@@ -1244,9 +1244,9 @@ SensorList, len: 586
 >>> a.id=1
 >>> b=api.SensorList()
 >>> b.append(a)
->>> r=session.find(a)
+>>> r=session.find(b)
 >>> print r
-Sensor, name: 'Action Statuses'
+SensorList, len: 1
 
 >>> # find by name in list
 >>> a=api.Sensor()
@@ -1448,7 +1448,7 @@ None
 >>> a.id=1
 >>> b=api.UploadFileList()
 >>> b.append(a)
->>> r=session.find(a)
+>>> r=session.find(b)
 >>> print r
 None
 ```
@@ -1516,9 +1516,9 @@ UserList, len: 3
 >>> a.id=1
 >>> b=api.UserList()
 >>> b.append(a)
->>> r=session.find(a)
+>>> r=session.find(b)
 >>> print r
-User, name: 'Jim Olsen'
+UserList, len: 3
 
 >>> # find by name in list
 >>> a=api.User()
@@ -1586,9 +1586,9 @@ UserRoleList, len: 9
 >>> a.id=1
 >>> b=api.UserRoleList()
 >>> b.append(a)
->>> r=session.find(a)
+>>> r=session.find(b)
 >>> print r
-None
+UserRoleList, len: 9
 
 >>> # find by name in list
 >>> a=api.UserRole()
@@ -1650,9 +1650,9 @@ WhiteListedUrlList, len: 3
 >>> a.id=1
 >>> b=api.WhiteListedUrlList()
 >>> b.append(a)
->>> r=session.find(a)
+>>> r=session.find(b)
 >>> print r
-WhiteListedUrl, id: 1
+WhiteListedUrlList, len: 3
 ```
 
 ## WhiteListedUrlList
