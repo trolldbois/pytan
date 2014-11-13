@@ -60,6 +60,20 @@ class BaseType(object):
         ret = '{}{}'.format(class_name, val)
         return ret
 
+    def append(self, n):
+        """Allow adding to list.
+
+        Only supported on types that have a single property
+        that is in list_properties
+
+        """
+        if len(self.list_properties) == 1:
+            getattr(self, self.list_properties.items()[0][0]).append(n)
+        else:
+            raise Exception(
+                'Not simply a list type, append not supported'
+            )
+
     def toSOAPElement(self, minimal=False):
         root = ET.Element(self.soap_tag)
         for p in self.simple_properties:
