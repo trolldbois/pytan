@@ -24,53 +24,98 @@ INFO_FORMAT = logging.Formatter(
 
 # log levels to turn on extra loggers (higher the level the more verbose)
 LOG_LEVEL_MAPS = [
-    (0, {
-        'pytan': 'INFO',
-        'pytan.request': 'INFO',
-        'pytan.request.manual_question': 'INFO',
-        'pytan.request.parsed_question': 'INFO',
-        'pytan.request.http': 'WARN',
-        'pytan.auth': 'WARN',
-        'pytan.reporter': 'WARN',
-        'pytan.request.xmlcreate': 'WARN',
-        'pytan.response.xmlparse': 'WARN',
-        'pytan.packages.requests': 'WARN',
-        'pytan.packages.requests.packages': 'WARN',
-        'pytan.packages.requests.packages.urllib3': 'WARN',
-        'pytan.packages.requests.packages.urllib3.connectionpool': 'WARN',
-        'pytan.packages.requests.packages.urllib3.poolmanager': 'WARN',
-        'pytan.packages.requests.packages.urllib3.util': 'WARN',
-        'pytan.packages.requests.packages.urllib3.util.retry': 'WARN',
-    }),
-    (1, {
-        'pytan': 'DEBUG',
-        'pytan.request': 'DEBUG',
-        'pytan.request.manual_question': 'DEBUG',
-        'pytan.request.parsed_question': 'DEBUG',
-    }),
-    (2, {
-        'pytan.reporter': 'DEBUG',
-    }),
-    (3, {
-        'pytan.auth': 'DEBUG',
-    }),
-    (4, {
-        'pytan.request.xmlcreate': 'DEBUG',
-        'pytan.response.xmlparse': 'DEBUG',
-    }),
-    (5, {
-        'pytan.request.http': 'DEBUG',
-    }),
-    (10, {
-        'pytan.packages.requests': 'DEBUG',
-        'pytan.packages.requests.packages': 'DEBUG',
-        'pytan.packages.requests.packages.urllib3': 'DEBUG',
-        'pytan.packages.requests.packages.urllib3.connectionpool': 'DEBUG',
-        'pytan.packages.requests.packages.urllib3.poolmanager': 'DEBUG',
-        'pytan.packages.requests.packages.urllib3.util': 'DEBUG',
-        'pytan.packages.requests.packages.urllib3.util.retry': 'DEBUG',
-    }),
+    (
+        0,
+        {
+            'pytan': 'INFO',
+            'api.session': 'WARN',
+            'api.session.auth': 'WARN',
+            'api.session.http': 'WARN',
+            'api.session.http.body': 'WARN',
+        }
+    ),
+    (1, {'pytan': 'DEBUG'}),
+    (2, {'api.session': 'DEBUG'}),
+    (3, {'api.session.auth': 'DEBUG'}),
+    (4, {'api.session.http': 'DEBUG'}),
+    (5, {'api.session.http.body': 'DEBUG'}),
 ]
+
+GET_OBJ_MAP = {
+    'action': {
+        'single': 'Action',
+        'multi': None,
+        'all': 'ActionList',
+        'search': ['id'],
+    },
+    'client': {
+        'single': None,
+        'multi': None,
+        'all': 'ClientStatus',
+        'search': [],
+    },
+    'group': {
+        'single': 'Group',
+        'multi': 'GroupList',
+        'all': 'GroupList',
+        'search': ['id', 'name'],
+    },
+    'package': {
+        'single': 'PackageSpec',
+        'multi': None,
+        'allfix': 'PackageSpecList',
+        'all': 'PackageSpec',
+        'search': ['id', 'name'],
+    },
+    'question': {
+        'single': 'Question',
+        'multi': None,
+        'all': 'QuestionList',
+        'search': ['id'],
+    },
+    'saved_action': {
+        'single': 'SavedAction',
+        'multi': 'SavedActionList',
+        'all': 'SavedActionList',
+        'search': ['id'],
+    },
+    'saved_question': {
+        'single': 'SavedQuestion',
+        'multi': None,
+        'all': 'SavedQuestionList',
+        'search': ['id'],
+    },
+    'sensor': {
+        'single': 'Sensor',
+        'multi': 'SensorList',
+        'all': 'SensorList',
+        'search': ['id', 'name', 'hash'],
+    },
+    'setting': {
+        'single': 'SystemSetting',
+        'multi': 'SystemSettingsList',
+        'all': 'SystemSettingsList',
+        'search': ['id', 'name'],
+    },
+    'user': {
+        'single': 'User',
+        'multi': None,
+        'all': 'UserList',
+        'search': ['id'],
+    },
+    'userrole': {
+        'single': None,
+        'multi': None,
+        'all': 'UserRoleList',
+        'search': [],
+    },
+    'whitelisted_url': {
+        'single': 'WhiteListedUrlList',
+        'multi': None,
+        'all': 'WhiteListedUrlList',
+        'search': ['id'],
+    },
+}
 
 # Used by pytan.req.Request.call_api() for how long a GetResultInfo
 # loop is allowed to go on for

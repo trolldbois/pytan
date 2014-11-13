@@ -8,10 +8,10 @@ import xml.etree.ElementTree as ET
 class BaseType(object):
     def __init__(self, soap_tag, simple_properties, complex_properties,
                  list_properties):
-        self.soap_tag = soap_tag
-        self.simple_properties = simple_properties
-        self.complex_properties = complex_properties
-        self.list_properties = list_properties
+        self._soap_tag = soap_tag
+        self._simple_properties = simple_properties
+        self._complex_properties = complex_properties
+        self._list_properties = list_properties
 
     def __getitem__(self, n):
         """Allow automatic indexing into lists.
@@ -20,8 +20,8 @@ class BaseType(object):
         that is in list_properties
 
         """
-        if len(self.list_properties) == 1:
-            return getattr(self, self.list_properties.items()[0][0])[n]
+        if len(self._list_properties) == 1:
+            return getattr(self, self._list_properties.items()[0][0])[n]
         else:
             raise Exception(
                 'Not simply a list type, __getitem__ not supported'
@@ -34,30 +34,66 @@ class BaseType(object):
         that is in list_properties
 
         """
-        if len(self.list_properties) == 1:
-            return len(getattr(self, self.list_properties.items()[0][0]))
+        if len(self._list_properties) == 1:
+            return len(getattr(self, self._list_properties.items()[0][0]))
         else:
             raise Exception('Not simply a list type, len() not supported')
 
+    def __str__(self):
+        class_name = self.__class__.__name__
+        val = ''
+        if len(self._list_properties) == 1:
+            val = ', len: {}'.format(len(self))
+        else:
+            if getattr(self, 'name', ''):
+                val = ', name: {!r}'.format(self.name)
+            elif getattr(self, 'id', ''):
+                val = ', id: {!r}'.format(self.id)
+            else:
+                vals = [
+                    '{}: {!r}'.format(p, getattr(self, p, ''))
+                    for p in sorted(self._simple_properties)
+                ]
+                if vals:
+                    vals = "\t" + "\n\t".join(vals)
+                    val = ', vals:\n{}'.format(vals)
+        ret = '{}{}'.format(class_name, val)
+        return ret
+
+    def append(self, n):
+        """Allow adding to list.
+
+        Only supported on types that have a single property
+        that is in list_properties
+
+        """
+        if len(self._list_properties) == 1:
+            getattr(self, self._list_properties.items()[0][0]).append(n)
+        else:
+            raise Exception(
+                'Not simply a list type, append not supported'
+            )
+
     def toSOAPElement(self, minimal=False):
-        root = ET.Element(self.soap_tag)
-        for p in self.simple_properties:
+        root = ET.Element(self._soap_tag)
+        for p in self._simple_properties:
             el = ET.Element(p)
             val = getattr(self, p)
             if val is not None:
                 el.text = str(val)
             if val is not None or not minimal:
                 root.append(el)
-        for p in self.complex_properties:
+        for p in self._complex_properties:
             val = getattr(self, p)
             if val is not None or not minimal:
-                el = ET.Element(p)
-                root.append(el)
                 if isinstance(val, BaseType):
-                    el.append(val.toSOAPElement(minimal=minimal))
-                elif val is not None:
-                    el.append(val)
-        for p, t in self.list_properties.iteritems():
+                    root.append(val.toSOAPElement(minimal=minimal))
+                else:
+                    el = ET.Element(p)
+                    root.append(el)
+                    if val is not None:
+                        el.append(str(val))
+        for p, t in self._list_properties.iteritems():
             vals = getattr(self, p)
             if not vals:
                 continue
@@ -74,13 +110,13 @@ class BaseType(object):
     @classmethod
     def fromSOAPElement(cls, el):
         result = cls()
-        for p, t in result.simple_properties.iteritems():
+        for p, t in result._simple_properties.iteritems():
             pel = el.find("./{}".format(p))
             if pel is not None and pel.text:
                 setattr(result, p, t(pel.text))
             else:
                 setattr(result, p, None)
-        for p, t in result.complex_properties.iteritems():
+        for p, t in result._complex_properties.iteritems():
             elems = el.findall('./{}'.format(p))
             if len(elems) > 1:
                 raise Exception(
@@ -90,11 +126,11 @@ class BaseType(object):
                 setattr(
                     result,
                     p,
-                    result.complex_properties[p].fromSOAPElement(elems[0]),
+                    result._complex_properties[p].fromSOAPElement(elems[0]),
                 )
             else:
                 setattr(result, p, None)
-        for p, t in result.list_properties.iteritems():
+        for p, t in result._list_properties.iteritems():
             setattr(result, p, [])
             elems = el.findall('./{}'.format(p))
             for elem in elems:
@@ -120,4 +156,5 @@ class BaseType(object):
         if result_object.tag not in OBJECT_LIST_TYPES:
             raise Exception('Unknown type {}'.format(result_object.tag))
         r = OBJECT_LIST_TYPES[result_object.tag].fromSOAPElement(result_object)
+        r._RESULT_OBJECT = result_object
         return r

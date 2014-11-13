@@ -238,6 +238,7 @@ def change_console_format(debug=False):
 
 def set_log_levels(loglevel=0):
     # print loglevel
+    set_all_loglevels('WARN')
     for logmap in constants.LOG_LEVEL_MAPS:
         if loglevel >= logmap[0]:
             for lname, llevel in logmap[1].iteritems():
@@ -250,11 +251,11 @@ def set_all_loglevels(level='DEBUG'):
         if not isinstance(v, logging.Logger):
             continue
         v.setLevel(getattr(logging, level))
-        m = 'set to %s' % level
-        v.debug(m)
-        v.info(m)
-        v.warn(m)
-        v.error(m)
+        # m = 'set to %s' % level
+        # v.debug(m)
+        # v.info(m)
+        # v.warn(m)
+        # v.error(m)
 
 
 def combinator1(l1, l2):
