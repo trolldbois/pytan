@@ -12,3 +12,9 @@ class ColumnSet(object):
         for column in columns:
             result.columns.append(Column.fromSOAPElement(column))
         return result
+
+    def __len__(self):
+        return len(self.columns)
+
+    def __getitem__(self, ndx):
+        return self.columns[ndx]

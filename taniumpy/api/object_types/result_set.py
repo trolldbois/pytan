@@ -1,4 +1,5 @@
 from .column_set import ColumnSet
+from .row import Row
 
 class ResultSet(object):
     """Wrap the result of GetResultData"""
@@ -23,8 +24,8 @@ class ResultSet(object):
         self.no_result_count = None
         self.row_count_machines = None
         self.row_count_flag = None
-        self.column_set = None
-        self.row_set = None
+        self.columns = None
+        self.rows = None
 
     @classmethod
     def fromSOAPElement(cls, el):
@@ -42,5 +43,11 @@ class ResultSet(object):
                 setattr(result, property, int(val.text))
         val = el.find('.//cs')
         if val is not None:
-            result.column_set = ColumnSet.fromSOAPElement(val)
+            result.columns = ColumnSet.fromSOAPElement(val)
+        result.rows = []
+        # TODO: Make sure that each "r" is a row, with one value
+        # per column in "c/v". This was tested with just one client.
+        rows = el.findall('.//rs/r')
+        for row in rows:
+            result.rows.append(Row.fromSOAPElement(row, result.columns))
         return result
