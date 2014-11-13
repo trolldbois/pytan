@@ -41,8 +41,6 @@ class ResultSet(object):
             if val is not None and val.text:
                 setattr(result, property, int(val.text))
         val = el.find('.//cs')
-        print 'creating column set'
         if val is not None:
-            print 'from soap'
             result.column_set = ColumnSet.fromSOAPElement(val)
         return result
