@@ -102,6 +102,7 @@ class Session(object):
     AUTH_RES = '/auth'
     SOAP_RES = '/soap'
     INFO_RES = '/info.json'
+    # only used for get_server_info()
     SOAP_PORT = 444
 
     def __init__(self, server, port=443):
@@ -197,7 +198,13 @@ class Session(object):
                 headers=self._auth_headers,
             )
             body = json.loads(body)
+            mylog.debug((
+                "Successfully retrieved server info from {}"
+            ).format(self.INFO_RES))
         except Exception as e:
+            mylog.warn((
+                "Failed to retriev server info from {}, {}"
+            ).format(self.INFO_RES, e))
             body = {'server_info_error': e}
         return body
 
