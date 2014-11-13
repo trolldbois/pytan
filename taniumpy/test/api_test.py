@@ -39,42 +39,62 @@ for object_type_class in dir(api):
     try:
         response = session.find(type_class)
         print (
-            "findall on {} == {} obj len:{} req len: {} resp len:{}"
+            "findall on {!r} == {!r} -- req len: {} resp len:{}"
         ).format(
             object_type_class,
             response,
-            len(str(response)),
             len(str(session.request_body)),
             len(str(session.response_body)),
         )
     except Exception as e:
-        print "EXCEPTION FROM 'findall' on {!r}: {}".format(
+        print "EXCEPTION FROM findall on {!r}: {}".format(
             object_type_class,
-            e,
+            str(e).replace('\n', ' '),
         )
 
     list_props = getattr(type_class, 'list_properties', {})
     if list_props:
-        for k, v in list_props.iteritems():
-            list_item = v()
+        list_item = list_props.items()[0][1]
+        if 'id' in vars(list_item):
             list_item.id = 1
-            getattr(type_class, k).append(list_item)
+        else:
+            print 'SKIP list find by id 1, does not have id: {}'.format(
+                object_type_class)
+            continue
+        getattr(type_class, list_props.items()[0][0]).append(list_item)
     else:
-        type_class.id = 1
+        if 'id' in vars(type_class):
+            type_class.id = 1
+        else:
+            print 'SKIP single find by id 1, does not have id: {}'.format(
+                object_type_class)
+            continue
 
     try:
         response = session.find(type_class)
         print (
-            "find id 1 on {} == {} obj len:{} req len: {} resp len:{}"
+            "find id 1 on {!r} == {!r} -- req len: {} resp len:{}"
         ).format(
             object_type_class,
             response,
-            len(str(response)),
             len(str(session.request_body)),
             len(str(session.response_body)),
         )
     except Exception as e:
-        print "EXCEPTION FROM 'find id 1' on {!r}: {}".format(
+        print "EXCEPTION FROM find id 1 on {!r}: {}".format(
             object_type_class,
-            e,
+            str(e).replace('\n', ' '),
         )
+
+# for object_type_class in dir(api):
+#     if object_type_class.startswith('__'):
+#         continue
+
+#     try:
+#         type_class = getattr(api, object_type_class)()
+#     except:
+#         print "UNABLE TO INSTANTIATE api.{}()".format(
+#             object_type_class,
+#         )
+#         continue
+#     print type_class
