@@ -177,7 +177,6 @@ class Session(object):
         self.request_body = self._createGetResultDataBody(obj, **kwargs)
         self.response_body = self._getResponse(self.request_body)
         # parse the single result_info into an Element and create a ResultData
-        print self.response_body
         el = ET.fromstring(self.response_body)
         cdata = el.find('.//ResultXML')
         result_info = ET.fromstring(cdata.text)

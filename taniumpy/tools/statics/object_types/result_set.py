@@ -1,4 +1,4 @@
-
+from .column_set import ColumnSet
 
 class ResultSet(object):
     """Wrap the result of GetResultData"""
@@ -23,7 +23,8 @@ class ResultSet(object):
         self.no_result_count = None
         self.row_count_machines = None
         self.row_count_flag = None
-        # TODO: additional properties
+        self.column_set = None
+        self.row_set = None
 
     @classmethod
     def fromSOAPElement(cls, el):
@@ -34,7 +35,14 @@ class ResultSet(object):
         """
         result = ResultSet()
         for property in vars(result):
+            if property in ['column_set', 'row_set']:
+                 continue
             val = el.find('.//{}'.format(property))
             if val is not None and val.text:
                 setattr(result, property, int(val.text))
+        val = el.find('.//cs')
+        print 'creating column set'
+        if val is not None:
+            print 'from soap'
+            result.column_set = ColumnSet.fromSOAPElement(val)
         return result
