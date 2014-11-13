@@ -39,6 +39,27 @@ class BaseType(object):
         else:
             raise Exception('Not simply a list type, len() not supported')
 
+    def __str__(self):
+        class_name = self.__class__.__name__
+        val = ''
+        if len(self.list_properties) == 1:
+            val = ', len: {}'.format(len(self))
+        else:
+            if getattr(self, 'name', ''):
+                val = ', name: {!r}'.format(self.name)
+            elif getattr(self, 'id', ''):
+                val = ', id: {!r}'.format(self.id)
+            else:
+                vals = [
+                    '{}: {!r}'.format(p, getattr(self, p, ''))
+                    for p in sorted(self.simple_properties)
+                ]
+                if vals:
+                    vals = "\t" + "\n\t".join(vals)
+                    val = ', vals:\n{}'.format(vals)
+        ret = '{}{}'.format(class_name, val)
+        return ret
+
     def toSOAPElement(self, minimal=False):
         root = ET.Element(self.soap_tag)
         for p in self.simple_properties:
@@ -121,4 +142,5 @@ class BaseType(object):
         if result_object.tag not in OBJECT_LIST_TYPES:
             raise Exception('Unknown type {}'.format(result_object.tag))
         r = OBJECT_LIST_TYPES[result_object.tag].fromSOAPElement(result_object)
+        r.RESULT_OBJECT = result_object
         return r
