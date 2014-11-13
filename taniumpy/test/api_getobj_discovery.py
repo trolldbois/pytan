@@ -108,7 +108,7 @@ print r
 a=api.{0}()
 a.id=1
 b=api.{0}List()
-b.{0}=[a]
+b.append(a)
 r=session.find(a)
 print r
 """.format(ot))
@@ -123,7 +123,7 @@ print r1
 b=api.{0}()
 b.name=r1.name
 c=api.{0}List()
-c.{0}=[b]
+c.append(b)
 r2=session.find(c)
 print r2
 """.format(ot))

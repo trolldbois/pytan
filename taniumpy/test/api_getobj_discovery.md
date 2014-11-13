@@ -32,13 +32,13 @@ EXCEPTION:  ERROR: 400 Bad RequestXML Parse Error: SOAPProcessing Exception: cla
 >>> a=api.ActionList()
 >>> r=session.find(a)
 >>> print r
-ActionList, len: 700
+ActionList, len: 709
 
 >>> # find by id in list
 >>> a=api.Action()
 >>> a.id=1
 >>> b=api.ActionList()
->>> b.Action=[a]
+>>> b.append(a)
 >>> r=session.find(a)
 >>> print r
 Action, name: 'Unmanaged Asset Tracking - Run Scan'
@@ -51,11 +51,11 @@ Action, name: 'Unmanaged Asset Tracking - Run Scan'
 >>> b=api.Action()
 >>> b.name=r1.name
 >>> c=api.ActionList()
->>> c.Action=[b]
+>>> c.append(b)
 >>> r2=session.find(c)
 >>> print r2
 Action, name: 'Unmanaged Asset Tracking - Run Scan'
-ActionList, len: 700
+ActionList, len: 709
 ```
 
 ## ActionListInfo
@@ -96,7 +96,7 @@ None
 >>> a=api.ActionStop()
 >>> a.id=1
 >>> b=api.ActionStopList()
->>> b.ActionStop=[a]
+>>> b.append(a)
 >>> r=session.find(a)
 >>> print r
 EXCEPTION:  ERROR: 400 Bad RequestXML Parse Error: SOAPProcessing Exception: class ActionStopNotFound
@@ -129,7 +129,7 @@ None
 >>> a=api.ArchivedQuestion()
 >>> a.id=1
 >>> b=api.ArchivedQuestionList()
->>> b.ArchivedQuestion=[a]
+>>> b.append(a)
 >>> r=session.find(a)
 >>> print r
 None
@@ -235,7 +235,7 @@ None
 >>> a=api.ComputerGroup()
 >>> a.id=1
 >>> b=api.ComputerGroupList()
->>> b.ComputerGroup=[a]
+>>> b.append(a)
 >>> r=session.find(a)
 >>> print r
 None
@@ -248,7 +248,7 @@ None
 >>> b=api.ComputerGroup()
 >>> b.name=r1.name
 >>> c=api.ComputerGroupList()
->>> c.ComputerGroup=[b]
+>>> c.append(b)
 >>> r2=session.find(c)
 >>> print r2
 None
@@ -322,7 +322,7 @@ None
 >>> a=api.Filter()
 >>> a.id=1
 >>> b=api.FilterList()
->>> b.Filter=[a]
+>>> b.append(a)
 >>> r=session.find(a)
 >>> print r
 None
@@ -367,7 +367,7 @@ GroupList, len: 3
 >>> a=api.Group()
 >>> a.id=1
 >>> b=api.GroupList()
->>> b.Group=[a]
+>>> b.append(a)
 >>> r=session.find(a)
 >>> print r
 Group, name: 'All Computers'
@@ -380,11 +380,11 @@ Group, name: 'All Computers'
 >>> b=api.Group()
 >>> b.name=r1.name
 >>> c=api.GroupList()
->>> c.Group=[b]
+>>> c.append(b)
 >>> r2=session.find(c)
 >>> print r2
 Group, name: 'All Computers'
-GroupList, len: 3
+GroupList, len: 1
 ```
 
 ## MetadataItem
@@ -494,7 +494,7 @@ None
 >>> a=api.PackageFile()
 >>> a.id=1
 >>> b=api.PackageFileList()
->>> b.PackageFile=[a]
+>>> b.append(a)
 >>> r=session.find(a)
 >>> print r
 None
@@ -507,7 +507,7 @@ None
 >>> b=api.PackageFile()
 >>> b.name=r1.name
 >>> c=api.PackageFileList()
->>> c.PackageFile=[b]
+>>> c.append(b)
 >>> r2=session.find(c)
 >>> print r2
 None
@@ -579,7 +579,7 @@ None
 >>> b=api.PackageFileTemplate()
 >>> b.name=r1.name
 >>> c=api.PackageFileTemplateList()
->>> c.PackageFileTemplate=[b]
+>>> c.append(b)
 >>> r2=session.find(c)
 >>> print r2
 None
@@ -625,7 +625,7 @@ None
 >>> a=api.PackageSpec()
 >>> a.id=1
 >>> b=api.PackageSpecList()
->>> b.PackageSpec=[a]
+>>> b.append(a)
 >>> r=session.find(a)
 >>> print r
 PackageSpec, name: 'Update Java 64-bit - Kill / Reboot'
@@ -638,7 +638,7 @@ PackageSpec, name: 'Update Java 64-bit - Kill / Reboot'
 >>> b=api.PackageSpec()
 >>> b.name=r1.name
 >>> c=api.PackageSpecList()
->>> c.PackageSpec=[b]
+>>> c.append(b)
 >>> r2=session.find(c)
 >>> print r2
 PackageSpec, name: 'Update Java 64-bit - Kill / Reboot'
@@ -706,7 +706,7 @@ None
 >>> a=api.ParseResult()
 >>> a.id=1
 >>> b=api.ParseResultList()
->>> b.ParseResult=[a]
+>>> b.append(a)
 >>> r=session.find(a)
 >>> print r
 None
@@ -775,7 +775,7 @@ PluginList, len: 0
 >>> b=api.Plugin()
 >>> b.name=r1.name
 >>> c=api.PluginList()
->>> c.Plugin=[b]
+>>> c.append(b)
 >>> r2=session.find(c)
 >>> print r2
 EXCEPTION:  ERROR: 400 Bad RequestXML Parse Error: SOAPProcessing Exception: class PluginNotFound
@@ -817,7 +817,7 @@ None
 >>> b=api.PluginArgument()
 >>> b.name=r1.name
 >>> c=api.PluginArgumentList()
->>> c.PluginArgument=[b]
+>>> c.append(b)
 >>> r2=session.find(c)
 >>> print r2
 None
@@ -877,7 +877,7 @@ None
 >>> b=api.PluginSchedule()
 >>> b.name=r1.name
 >>> c=api.PluginScheduleList()
->>> c.PluginSchedule=[b]
+>>> c.append(b)
 >>> r2=session.find(c)
 >>> print r2
 None
@@ -937,7 +937,7 @@ None
 >>> a=api.Question()
 >>> r=session.find(a)
 >>> print r
-QuestionList, len: 8033
+QuestionList, len: 8257
 
 >>> # find by id non list
 >>> a=api.Question()
@@ -956,19 +956,19 @@ Question, id: 1
 >>> r2=session.find(b)
 >>> print r2
 Question, id: 1
-QuestionList, len: 8033
+QuestionList, len: 8257
 
 >>> # findall list
 >>> a=api.QuestionList()
 >>> r=session.find(a)
 >>> print r
-QuestionList, len: 8033
+QuestionList, len: 8257
 
 >>> # find by id in list
 >>> a=api.Question()
 >>> a.id=1
 >>> b=api.QuestionList()
->>> b.Question=[a]
+>>> b.append(a)
 >>> r=session.find(a)
 >>> print r
 Question, id: 1
@@ -981,11 +981,11 @@ Question, id: 1
 >>> b=api.Question()
 >>> b.name=r1.name
 >>> c=api.QuestionList()
->>> c.Question=[b]
+>>> c.append(b)
 >>> r2=session.find(c)
 >>> print r2
 Question, id: 1
-QuestionList, len: 8033
+EXCEPTION:  ERROR: 400 Bad RequestXML Parse Error: SOAPProcessing Exception: class QuestionNotFound
 ```
 
 ## QuestionListInfo
@@ -1038,7 +1038,7 @@ SavedActionList, len: 22
 >>> a=api.SavedAction()
 >>> a.id=1
 >>> b=api.SavedActionList()
->>> b.SavedAction=[a]
+>>> b.append(a)
 >>> r=session.find(a)
 >>> print r
 SavedAction, name: 'Unmanaged Asset Tracking - Run Scan'
@@ -1051,11 +1051,11 @@ SavedAction, name: 'Unmanaged Asset Tracking - Run Scan'
 >>> b=api.SavedAction()
 >>> b.name=r1.name
 >>> c=api.SavedActionList()
->>> c.SavedAction=[b]
+>>> c.append(b)
 >>> r2=session.find(c)
 >>> print r2
 SavedAction, name: 'Unmanaged Asset Tracking - Run Scan'
-SavedActionList, len: 22
+SavedActionList, len: 1
 ```
 
 ## SavedActionApproval
@@ -1155,7 +1155,7 @@ SavedQuestionList, len: 172
 >>> a=api.SavedQuestion()
 >>> a.id=1
 >>> b=api.SavedQuestionList()
->>> b.SavedQuestion=[a]
+>>> b.append(a)
 >>> r=session.find(a)
 >>> print r
 SavedQuestion, name: 'Run Unmanaged Asset Scan on All Machines'
@@ -1168,7 +1168,7 @@ SavedQuestion, name: 'Run Unmanaged Asset Scan on All Machines'
 >>> b=api.SavedQuestion()
 >>> b.name=r1.name
 >>> c=api.SavedQuestionList()
->>> c.SavedQuestion=[b]
+>>> c.append(b)
 >>> r2=session.find(c)
 >>> print r2
 SavedQuestion, name: 'Run Unmanaged Asset Scan on All Machines'
@@ -1243,7 +1243,7 @@ SensorList, len: 586
 >>> a=api.Sensor()
 >>> a.id=1
 >>> b=api.SensorList()
->>> b.Sensor=[a]
+>>> b.append(a)
 >>> r=session.find(a)
 >>> print r
 Sensor, name: 'Action Statuses'
@@ -1256,11 +1256,11 @@ Sensor, name: 'Action Statuses'
 >>> b=api.Sensor()
 >>> b.name=r1.name
 >>> c=api.SensorList()
->>> c.Sensor=[b]
+>>> c.append(b)
 >>> r2=session.find(c)
 >>> print r2
 Sensor, name: 'Action Statuses'
-SensorList, len: 586
+SensorList, len: 1
 ```
 
 ## SensorQuery
@@ -1327,7 +1327,7 @@ None
 >>> b=api.SensorSubcolumn()
 >>> b.name=r1.name
 >>> c=api.SensorSubcolumnList()
->>> c.SensorSubcolumn=[b]
+>>> c.append(b)
 >>> r2=session.find(c)
 >>> print r2
 None
@@ -1447,7 +1447,7 @@ None
 >>> a=api.UploadFile()
 >>> a.id=1
 >>> b=api.UploadFileList()
->>> b.UploadFile=[a]
+>>> b.append(a)
 >>> r=session.find(a)
 >>> print r
 None
@@ -1515,7 +1515,7 @@ UserList, len: 3
 >>> a=api.User()
 >>> a.id=1
 >>> b=api.UserList()
->>> b.User=[a]
+>>> b.append(a)
 >>> r=session.find(a)
 >>> print r
 User, name: 'Jim Olsen'
@@ -1528,7 +1528,7 @@ User, name: 'Jim Olsen'
 >>> b=api.User()
 >>> b.name=r1.name
 >>> c=api.UserList()
->>> c.User=[b]
+>>> c.append(b)
 >>> r2=session.find(c)
 >>> print r2
 User, name: 'Jim Olsen'
@@ -1585,7 +1585,7 @@ UserRoleList, len: 9
 >>> a=api.UserRole()
 >>> a.id=1
 >>> b=api.UserRoleList()
->>> b.UserRole=[a]
+>>> b.append(a)
 >>> r=session.find(a)
 >>> print r
 None
@@ -1598,7 +1598,7 @@ None
 >>> b=api.UserRole()
 >>> b.name=r1.name
 >>> c=api.UserRoleList()
->>> c.UserRole=[b]
+>>> c.append(b)
 >>> r2=session.find(c)
 >>> print r2
 None
@@ -1637,22 +1637,22 @@ EXCEPTION:  ERROR: 400 Bad RequestXML Parse Error: SOAPProcessing Exception: cla
 >>> a.id=1
 >>> r=session.find(a)
 >>> print r
-EXCEPTION:  ERROR: 400 Bad RequestXML Parse Error: SOAPProcessing Exception: class WhiteListedURLNotFound
+WhiteListedUrl, id: 1
 
 >>> # findall list
 >>> a=api.WhiteListedUrlList()
 >>> r=session.find(a)
 >>> print r
-WhiteListedUrlList, len: 0
+WhiteListedUrlList, len: 3
 
 >>> # find by id in list
 >>> a=api.WhiteListedUrl()
 >>> a.id=1
 >>> b=api.WhiteListedUrlList()
->>> b.WhiteListedUrl=[a]
+>>> b.append(a)
 >>> r=session.find(a)
 >>> print r
-EXCEPTION:  ERROR: 400 Bad RequestXML Parse Error: SOAPProcessing Exception: class WhiteListedURLNotFound
+WhiteListedUrl, id: 1
 ```
 
 ## WhiteListedUrlList
@@ -1663,7 +1663,7 @@ EXCEPTION:  ERROR: 400 Bad RequestXML Parse Error: SOAPProcessing Exception: cla
 >>> a=api.WhiteListedUrlList()
 >>> r=session.find(a)
 >>> print r
-WhiteListedUrlList, len: 0
+WhiteListedUrlList, len: 3
 ```
 
 ## XmlError
