@@ -2,6 +2,7 @@ import unittest
 
 import api
 import io
+import json
 
 
 class TestWriteCSV(unittest.TestCase):
@@ -34,4 +35,14 @@ class TestWriteCSV(unittest.TestCase):
         self.assertEquals(out.getvalue(),
 """id,name,roles_role_0_id,roles_role_0_name,roles_role_0_permissions_permission,roles_role_1_id,roles_role_1_name,roles_role_1_permissions_permission\r
 1,Tanium,3,Administrator,Administrator,5,Question Asker,"Question\r\nAsker\r\n"\r
+""")
+
+    def test_with_jsonable_property(self):
+        sensor = api.Sensor()
+        sensor.parameter_definition = json.dumps([{"name": "param1"}, {"name": "param2"}])
+        out = io.BytesIO()
+        api.BaseType.write_csv(out, sensor, explode_json_string_values=True)
+        self.assertEquals(out.getvalue(),
+"""parameter_definition_0_name,parameter_definition_1_name\r
+param1,param2\r
 """)

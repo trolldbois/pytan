@@ -3,6 +3,7 @@
 
 import csv
 import io
+import json
 import re
 import xml.etree.ElementTree as ET
 
@@ -161,31 +162,59 @@ class BaseType(object):
         r._RESULT_OBJECT = result_object
         return r
 
-    def to_flat_dict(self, prefix=''):
+    def flatten_jsonable(self, val, prefix):
+        result = {}
+        if type(val) == list:
+            for i, v in enumerate(val):
+                result.update(self.flatten_jsonable(v,
+                    '_'.join([prefix, str(i)])))
+        elif type(val) == dict:
+            for k, v in val.iteritems():
+                result.update(self.flatten_jsonable(v,
+                    '_'.join([prefix, k] if prefix else k)))
+        else:
+            result[prefix] = val
+        return result
+
+    def to_flat_dict_explode_json(self, val, prefix=""):
+        """see if the value is json. If so, flatten it out into a dict"""
+        try:
+            js = json.loads(val)
+            return self.flatten_jsonable(js, prefix)
+        except Exception:
+            return None
+
+    def to_flat_dict(self, prefix='', explode_json_string_values=False):
         """Convert the object to a dict, flattening any lists or nested types"""
         result = {}
         prop_start = '{}_'.format(prefix) if prefix else ''
         for p, _ in self._simple_properties.iteritems():
             val = getattr(self, p)
             if val is not None:
-                result['{}{}'.format(prop_start, p)] = val
+                json_out = self.to_flat_dict_explode_json(val, p)
+                if json_out is not None:
+                    result.update(json_out)
+                else:
+                    result['{}{}'.format(prop_start, p)] = val
         for p, _ in self._complex_properties.iteritems():
             val = getattr(self, p)
             if val is not None:
-                result.update(val.to_flat_dict(prefix = '{}{}'.format(prop_start, p)))
+                result.update(val.to_flat_dict(prefix = '{}{}'.format(prop_start, p),
+                    explode_json_string_values=explode_json_string_values))
         for p, _ in self._list_properties.iteritems():
             val = getattr(self, p)
             if val is not None:
                 for ind, item in enumerate(val):
                     prefix = '{}{}_{}'.format(prop_start, p, ind)
                     if isinstance(item, BaseType):
-                        result.update(item.to_flat_dict(prefix = prefix))
+                        result.update(item.to_flat_dict(prefix = prefix,
+                            explode_json_string_values=explode_json_string_values))
                     else:
                         result[prefix] = item
         return result
 
     @staticmethod
-    def write_csv(fd, val):
+    def write_csv(fd, val, explode_json_string_values=False):
         """Write 'val' to CSV. val can be a BaseType instance or a list of BaseType
 
         This does a two-pass, calling to_flat_dict for each object, then
@@ -193,12 +222,16 @@ class BaseType(object):
         then writing out the value of each column for each object
         sorted by header name
 
+        explode_json_string_values attempts to see if any of the str values
+        are parseable by json.loads, and if so treat each property as a column
+        value
+
         fd is a file-like object
         """
         base_type_list = [val] if isinstance(val, BaseType) else val
         headers = set()
         for base_type in base_type_list:
-            row = base_type.to_flat_dict()
+            row = base_type.to_flat_dict(explode_json_string_values=explode_json_string_values)
             for col in row:
                 headers.add(col)
         writer = csv.writer(fd)
@@ -208,5 +241,5 @@ class BaseType(object):
             # turn \n into \r\n
             return re.sub(r"([^\r])\n", r"\1\r\n", val) if type(val) == str else val
         for base_type in base_type_list:
-            row = base_type.to_flat_dict()
+            row = base_type.to_flat_dict(explode_json_string_values=explode_json_string_values)
             writer.writerow([fix_newlines(row.get(col, '')) for col in headers_sorted])
