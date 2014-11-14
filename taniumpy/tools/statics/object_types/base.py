@@ -28,7 +28,7 @@ class BaseType(object):
             )
 
     def __len__(self):
-        """Allow len() for lsits.
+        """Allow len() for lists.
 
         Only supported on types that have a single property
         that is in list_properties
@@ -158,3 +158,27 @@ class BaseType(object):
         r = OBJECT_LIST_TYPES[result_object.tag].fromSOAPElement(result_object)
         r._RESULT_OBJECT = result_object
         return r
+
+    def to_flat_dict(self, prefix=''):
+        """Convert the object to a dict, flattening any lists or nested types"""
+        result = {}
+        prop_start = '{}_'.format(prefix) if prefix else ''
+        for p, _ in self._simple_properties.iteritems():
+            val = getattr(self, p)
+            if val is not None:
+                result['{}{}'.format(prop_start, p)] = val
+        for p, _ in self._complex_properties.iteritems():
+            val = getattr(self, p)
+            if val is not None:
+                result.update(val.to_flat_dict(prefix = '{}{}'.format(prop_start, p)))
+        for p, _ in self._list_properties.iteritems():
+            val = getattr(self, p)
+            if val is not None:
+                for ind, item in enumerate(val):
+                    prefix = '{}{}_{}'.format(prop_start, p, ind)
+                    if isinstance(item, BaseType):
+                        result.update(item.to_flat_dict(prefix = prefix))
+                    else:
+                        result[prefix] = item
+
+        return result

@@ -45,8 +45,8 @@ class QuestionAsker(object):
         Each should be a function that accepts a QuestionAsker
         and a percent complete.
 
-        Any callback can choose to get data from the QuestionAsker
-        by calling getResultData().
+        Any callback can choose to get data from the session
+        by calling asker.session.getResultData(asker.question)
 
         Polling will be stopped only when one of the callbacks
         calls the stop() method or the answers are complete. Note
