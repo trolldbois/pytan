@@ -196,9 +196,9 @@ class BaseType(object):
         fd is a file-like object
         """
         base_type_list = [val] if isinstance(val, BaseType) else val
-        rows = [row.to_flat_dict() for row in base_type_list]
         headers = set()
-        for row in rows:
+        for base_type in base_type_list:
+            row = base_type.to_flat_dict()
             for col in row:
                 headers.add(col)
         writer = csv.writer(fd)
@@ -207,5 +207,6 @@ class BaseType(object):
         def fix_newlines(val):
             # turn \n into \r\n
             return re.sub(r"([^\r])\n", r"\1\r\n", val) if type(val) == str else val
-        for row in rows:
+        for base_type in base_type_list:
+            row = base_type.to_flat_dict()
             writer.writerow([fix_newlines(row.get(col, '')) for col in headers_sorted])
