@@ -1,7 +1,9 @@
 # Copyright (c) 2014 Tanium Inc
 #
 
+import csv
 import io
+import re
 import xml.etree.ElementTree as ET
 
 
@@ -180,5 +182,30 @@ class BaseType(object):
                         result.update(item.to_flat_dict(prefix = prefix))
                     else:
                         result[prefix] = item
-
         return result
+
+    @staticmethod
+    def write_csv(fd, val):
+        """Write 'val' to CSV. val can be a BaseType instance or a list of BaseType
+
+        This does a two-pass, calling to_flat_dict for each object, then
+        finding the union of all headers,
+        then writing out the value of each column for each object
+        sorted by header name
+
+        fd is a file-like object
+        """
+        base_type_list = [val] if isinstance(val, BaseType) else val
+        rows = [row.to_flat_dict() for row in base_type_list]
+        headers = set()
+        for row in rows:
+            for col in row:
+                headers.add(col)
+        writer = csv.writer(fd)
+        headers_sorted = sorted([h for h in headers])
+        writer.writerow(headers_sorted)
+        def fix_newlines(val):
+            # turn \n into \r\n
+            return re.sub(r"([^\r])\n", r"\1\r\n", val) if type(val) == str else val
+        for row in rows:
+            writer.writerow([fix_newlines(row.get(col, '')) for col in headers_sorted])
