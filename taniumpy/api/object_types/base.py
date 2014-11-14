@@ -215,6 +215,40 @@ class BaseType(object):
                         result[prefix] = item
         return result
 
+    def explode_json(self, val):
+        try:
+            return json.loads(val)
+        except Exception:
+            return None
+
+    def to_jsonable(self, explode_json_string_values=False):
+       result = {}
+       for p, _ in self._simple_properties.iteritems():
+            val = getattr(self, p)
+            if val is not None:
+                if val is not None:
+                    json_out = None
+                    if explode_json_string_values:
+                        json_out = self.explode_json(val)
+                    if json_out is not None:
+                        result[p] = json_out
+                    else:
+                        result[p] = val
+       for p, _ in self._complex_properties.iteritems():
+           val = getattr(self, p)
+           if val is not None:
+               result[p] = val.to_jsonable(explode_json_string_values)
+       for p, _ in self._list_properties.iteritems():
+           val = getattr(self, p)
+           if val is not None:
+               result[p] = []
+               for ind, item in enumerate(val):
+                   if isinstance(item, BaseType):
+                       result[p].append(item.to_jsonable(explode_json_string_values))
+                   else:
+                       result[p].append(item)
+       return result
+
     @staticmethod
     def write_csv(fd, val, explode_json_string_values=False):
         """Write 'val' to CSV. val can be a BaseType instance or a list of BaseType
