@@ -191,7 +191,9 @@ class BaseType(object):
         for p, _ in self._simple_properties.iteritems():
             val = getattr(self, p)
             if val is not None:
-                json_out = self.to_flat_dict_explode_json(val, p)
+                json_out = None
+                if explode_json_string_values:
+                    json_out = self.to_flat_dict_explode_json(val, p)
                 if json_out is not None:
                     result.update(json_out)
                 else:
