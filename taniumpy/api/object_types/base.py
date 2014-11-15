@@ -8,6 +8,19 @@ import re
 import xml.etree.ElementTree as ET
 
 
+class IncorrectTypeException(Exception):
+    """Raised when a property is not of the expected type"""
+    def __init__(self, property, expected, actual):
+        self.property = property
+        self.expected = expected
+        self.actual = actual
+        Exception.__init__(self,
+            'Property {} is not of type {}, got {}'.format(
+                property,
+                str(expected),
+                str(actual)))
+
+
 class BaseType(object):
     def __init__(self, soap_tag, simple_properties, complex_properties,
                  list_properties):
@@ -86,9 +99,11 @@ class BaseType(object):
                 el.text = str(val)
             if val is not None or not minimal:
                 root.append(el)
-        for p in self._complex_properties:
+        for p, t in self._complex_properties.iteritems():
             val = getattr(self, p)
             if val is not None or not minimal:
+                if val is not None and type(val) != t:
+                    raise IncorrectTypeException(p, t, type(val))
                 if isinstance(val, BaseType):
                     root.append(val.toSOAPElement(minimal=minimal))
                 else:
