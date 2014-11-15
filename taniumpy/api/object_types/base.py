@@ -24,10 +24,12 @@ class IncorrectTypeException(Exception):
 class BaseType(object):
     def __init__(self, soap_tag, simple_properties, complex_properties,
                  list_properties):
+        self._initialized = False
         self._soap_tag = soap_tag
         self._simple_properties = simple_properties
         self._complex_properties = complex_properties
         self._list_properties = list_properties
+        self._initialized = True
 
     def __getitem__(self, n):
         """Allow automatic indexing into lists.
@@ -75,6 +77,18 @@ class BaseType(object):
                     val = ', vals:\n{}'.format(vals)
         ret = '{}{}'.format(class_name, val)
         return ret
+
+    def __setattr__(self, name, value):
+        """Enforce type, if name is a complex property"""
+        if value is not None and \
+                name != '_initialized' and \
+                self._initialized and \
+                name in self._complex_properties:
+            if type(value) != self._complex_properties[name]:
+                raise IncorrectTypeException(value,
+                    self._complex_properties[name],
+                    type(value))
+        super(BaseType, self).__setattr__(name, value)
 
     def append(self, n):
         """Allow adding to list.
@@ -294,3 +308,4 @@ class BaseType(object):
         for base_type in base_type_list:
             row = base_type.to_flat_dict(explode_json_string_values=explode_json_string_values)
             writer.writerow([fix_newlines(row.get(col, '')) for col in headers_sorted])
+
