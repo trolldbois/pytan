@@ -339,53 +339,6 @@ class {0}(BaseType):
                 fd.write(self.code)
 
 
-class ValueType(Type):
-
-    BUILTIN_TYPE_TEMPLATE = """
-from xml.etree import ElementTree as ET
-
-
-class {0}:
-    def __init__(self, val=None):
-        self.val = val
-
-    def toSOAPElement(self, val, minimal=False):
-        el = ET.Element('{1}')
-        el.text = str(val)
-        return el
-"""
-
-    def __init__(self, wsdl_dom, namespaces, type_name, force, preview,
-                 verbose):
-        Type.__init__(
-            self,
-            wsdl_dom=wsdl_dom,
-            namespaces=namespaces,
-            wsdl_type=type_name,
-            simple_properties=[],
-            complex_properties=[],
-            list_properties=[],
-            property_values=[],
-            depends_list=[],
-            soap_tag=type_name,
-            force=force,
-            preview=preview,
-            verbose=verbose,
-        )
-
-    @staticmethod
-    def load(wsdl_dom, namespaces, type_name, force, preview, verbose):
-        return ValueType(
-            wsdl_dom, namespaces, type_name, force, preview, verbose
-        )
-
-    @property
-    def code(self):
-        return self.BUILTIN_TYPE_TEMPLATE.format(
-            capcase(self.wsdl_type), self.wsdl_type
-        )
-
-
 def generate_type(wsdlDom, namespaces, typeName, force, preview, output,
                   verbose):
     if verbose:
@@ -393,12 +346,6 @@ def generate_type(wsdlDom, namespaces, typeName, force, preview, output,
     t = Type.load(wsdlDom, namespaces, typeName, force, preview, verbose)  # ;
     if verbose:
         print 'Generated {}'.format(t.fname(output))
-    return t
-
-
-def generate_value_type(wsdlDom, namespaces, type_name, force, preview,
-                        verbose):
-    t = ValueType.load(wsdlDom, namespaces, type_name, force, preview, verbose)
     return t
 
 
@@ -502,17 +449,6 @@ def main(args):
         )
         t.write(output)
         all_obj.append(t)
-        if t.is_list and t.is_list_of_value:
-            vt = generate_value_type(
-                wsdlDom,
-                namespaces,
-                t.list_type,
-                force,
-                preview,
-                verbose,
-            )
-            vt.write(output)
-            all_obj.append(vt)
         if t.wsdl_type not in EXCLUDE_TYPE_LIST:
             soap_tags[t.soap_tag] = t
 
