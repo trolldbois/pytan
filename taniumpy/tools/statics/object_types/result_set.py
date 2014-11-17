@@ -1,5 +1,7 @@
 from .column_set import ColumnSet
 from .row import Row
+import csv
+import re
 
 
 class ResultSet(object):
@@ -59,3 +61,30 @@ class ResultSet(object):
         for row in rows:
             result.rows.append(Row.fromSOAPElement(row, result.columns))
         return result
+
+    @staticmethod
+    def write_csv(fd, val, **kwargs):
+        def fix_newlines(val):
+            # turn \n into \r\n
+            if type(val) == str:
+                val = re.sub(r"([^\r])\n", r"\1\r\n", val)
+            return val
+
+        if not isinstance(val, ResultSet):
+            raise Exception("{} is not a ResultSet instance!".format(val))
+
+        # TODO:
+        '''
+        via kwargs:
+        Add type to header
+        Add sensor name to header
+        Remove count column if it's only one for everything
+        Add expanded groups logic
+        '''
+        headers = [x.display_name for x in val.columns]
+        headers_sorted = sorted(headers)
+        rows = [[fix_newlines(r[h]) for h in headers_sorted] for r in val.rows]
+
+        writer = csv.writer(fd)
+        writer.writerow(headers_sorted)
+        writer.writerows(rows)
