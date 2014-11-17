@@ -46,3 +46,12 @@ class TestToJsonable(unittest.TestCase):
             explode_json_string_values=True,
             include_type=False),
             {'parameter_definition': [{'name': 'param1'}, {'name': 'param2'}]})
+
+    def test_to_json(self):
+        user = api.User()
+        user.name = 'Test'
+        self.assertEqual(api.BaseType.to_json(user), """{"_type": "user", "name": "Test"}""")
+
+    def test_to_json_list(self):
+        users = [api.User(), api.User()]
+        self.assertEqual(api.BaseType.to_json(users), """[{"_type": "user"}, {"_type": "user"}]""")

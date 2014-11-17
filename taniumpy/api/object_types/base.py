@@ -285,6 +285,19 @@ class BaseType(object):
                         result[p].append(item)
         return result
 
+    @staticmethod
+    def to_json(jsonable, **kwargs):
+        """Convert to a json string.
+
+        jsonable can be a single BaseType instance of a list
+        of BaseType
+
+        """
+        if type(jsonable) == list:
+            return json.dumps([item.to_jsonable(**kwargs) for item in jsonable])
+        else:
+            return json.dumps(jsonable.to_jsonable(**kwargs))
+
     @classmethod
     def _from_json(cls, jsonable):
         """Private helper to parse from JSON after type is instantiated"""
