@@ -1,6 +1,7 @@
 from .column_set import ColumnSet
 from .row import Row
 
+
 class ResultSet(object):
     """Wrap the result of GetResultData"""
 
@@ -27,6 +28,13 @@ class ResultSet(object):
         self.columns = None
         self.rows = None
 
+    def __str__(self):
+        class_name = self.__class__.__name__
+        ret = '{} for {}, {}'.format(
+            class_name, self.question_id, self.columns,
+        )
+        return ret
+
     @classmethod
     def fromSOAPElement(cls, el):
         """Deserialize a ResultInfo from a result_info SOAPElement
@@ -37,7 +45,7 @@ class ResultSet(object):
         result = ResultSet()
         for property in vars(result):
             if property in ['column_set', 'row_set']:
-                 continue
+                continue
             val = el.find('.//{}'.format(property))
             if val is not None and val.text:
                 setattr(result, property, int(val.text))
