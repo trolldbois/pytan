@@ -10,12 +10,11 @@ from .base import BaseType
 
 class SystemStatusList(BaseType):
 
-    _OBJECT_LIST_TAG = 'system_status'
+    _soap_tag = 'system_status'
 
     def __init__(self):
         BaseType.__init__(
             self,
-            soap_tag='system_status',
             simple_properties={},
             complex_properties={'aggregate': SystemStatusAggregate,
                         'cache_info': CacheInfo},

@@ -10,12 +10,11 @@ from .base import BaseType
 
 class PluginArgument(BaseType):
 
-    _OBJECT_LIST_TAG = None
+    _soap_tag = 'argument'
 
     def __init__(self):
         BaseType.__init__(
             self,
-            soap_tag='argument',
             simple_properties={'name': str,
                         'type': str,
                         'value': str},

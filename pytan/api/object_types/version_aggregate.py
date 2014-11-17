@@ -10,12 +10,11 @@ from .base import BaseType
 
 class VersionAggregate(BaseType):
 
-    _OBJECT_LIST_TAG = None
+    _soap_tag = 'version'
 
     def __init__(self):
         BaseType.__init__(
             self,
-            soap_tag='version',
             simple_properties={'version_string': str,
                         'count': int,
                         'filtered': int},

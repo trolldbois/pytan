@@ -10,12 +10,11 @@ from .base import BaseType
 
 class SelectList(BaseType):
 
-    _OBJECT_LIST_TAG = None
+    _soap_tag = 'select_list'
 
     def __init__(self):
         BaseType.__init__(
             self,
-            soap_tag='select_list',
             simple_properties={},
             complex_properties={},
             list_properties={'select': Select},

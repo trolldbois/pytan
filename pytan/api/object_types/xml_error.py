@@ -10,12 +10,11 @@ from .base import BaseType
 
 class XmlError(BaseType):
 
-    _OBJECT_LIST_TAG = None
+    _soap_tag = 'error'
 
     def __init__(self):
         BaseType.__init__(
             self,
-            soap_tag='error',
             simple_properties={'type': str,
                         'exception': str,
                         'error_context': str},

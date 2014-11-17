@@ -10,12 +10,11 @@ from .base import BaseType
 
 class PackageFileStatus(BaseType):
 
-    _OBJECT_LIST_TAG = None
+    _soap_tag = 'status'
 
     def __init__(self):
         BaseType.__init__(
             self,
-            soap_tag='status',
             simple_properties={'server_id': int,
                         'server_name': str,
                         'status': int,

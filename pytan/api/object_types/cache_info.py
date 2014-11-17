@@ -10,12 +10,11 @@ from .base import BaseType
 
 class CacheInfo(BaseType):
 
-    _OBJECT_LIST_TAG = None
+    _soap_tag = 'cache_info'
 
     def __init__(self):
         BaseType.__init__(
             self,
-            soap_tag='cache_info',
             simple_properties={'cache_id': int,
                         'page_row_count': int,
                         'filtered_row_count': int,

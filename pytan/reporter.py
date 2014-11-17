@@ -15,9 +15,10 @@ import re
 from operator import itemgetter
 from . import constants
 from . import utils
-from .packages import xmltodict
+# from .packages import xmltodict
 from .exceptions import ReporterError
 
+mylog = logging.getLogger("pytan.handler")
 
 class Reporter(object):
     FORMATS = constants.TRANSFORM_FORMATS
@@ -27,11 +28,6 @@ class Reporter(object):
     def __init__(self):
         super(Reporter, self).__init__()
 
-        self.logger = logging.getLogger("pytan.reporter")
-        self.DLOG = self.logger.debug
-        self.ILOG = self.logger.info
-        self.WLOG = self.logger.warn
-        self.ELOG = self.logger.error
         self.last_transform = {}
 
     def __str__(self):

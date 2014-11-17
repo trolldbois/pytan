@@ -10,12 +10,11 @@ from .base import BaseType
 
 class PackageFile(BaseType):
 
-    _OBJECT_LIST_TAG = 'package_file'
+    _soap_tag = 'file'
 
     def __init__(self):
         BaseType.__init__(
             self,
-            soap_tag='file',
             simple_properties={'id': int,
                         'hash': str,
                         'name': str,

@@ -10,12 +10,11 @@ from .base import BaseType
 
 class Plugin(BaseType):
 
-    _OBJECT_LIST_TAG = 'plugin'
+    _soap_tag = 'plugin'
 
     def __init__(self):
         BaseType.__init__(
             self,
-            soap_tag='plugin',
             simple_properties={'name': str,
                         'bundle': str,
                         'input': str,

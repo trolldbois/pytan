@@ -10,12 +10,11 @@ from .base import BaseType
 
 class SensorQuery(BaseType):
 
-    _OBJECT_LIST_TAG = None
+    _soap_tag = 'query'
 
     def __init__(self):
         BaseType.__init__(
             self,
-            soap_tag='query',
             simple_properties={'platform': str,
                         'script': str,
                         'script_type': str,

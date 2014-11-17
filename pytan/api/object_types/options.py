@@ -10,12 +10,11 @@ from .base import BaseType
 
 class Options(BaseType):
 
-    _OBJECT_LIST_TAG = None
+    _soap_tag = 'options'
 
     def __init__(self):
         BaseType.__init__(
             self,
-            soap_tag='options',
             simple_properties={'flags': int,
                         'hide_errors_flag': int,
                         'include_answer_times_flag': int,

@@ -10,12 +10,11 @@ from .base import BaseType
 
 class ParseResultGroup(BaseType):
 
-    _OBJECT_LIST_TAG = 'parse_result_group'
+    _soap_tag = 'parse_result_group'
 
     def __init__(self):
         BaseType.__init__(
             self,
-            soap_tag='parse_result_group',
             simple_properties={'score': int,
                         'question_text': str},
             complex_properties={'parse_results': ParseResultList,

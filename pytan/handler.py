@@ -20,17 +20,17 @@ from . import constants
 # from . import req
 from . import api
 
-mylog = logging.getLogger("pytan")
+mylog = logging.getLogger("pytan.handler")
+
+
+def progressChanged(asker, pct):
+    mylog.info("{}: %{}".format(asker, pct))
 
 
 class Handler(object):
-    last_response = None
-    last_request = None
-    all_responses = []
-    app_version = 'Unknown'
 
-    def __init__(self, username=None, password=None, host=None, port="443",
-                 loglevel=0, logfile=None, debugformat=False, **kwargs):
+    def __init__(self, username, password, host, port="444", loglevel=0,
+                 debugformat=False, **kwargs):
         super(Handler, self).__init__()
 
         # use port 444 if you have direct access to it,
@@ -46,44 +46,56 @@ class Handler(object):
 
         # self.reporter = Reporter()
 
-        self.__host = host
-        self.__port = port
-        self.__username = username
-        self.__password = password
-
-        if not self.__host:
-            raise AppError("Must supply host!")
-        if not self.__username:
+        if not username:
             raise AppError("Must supply username!")
-        if not self.__password:
+        if not password:
             raise AppError("Must supply password!")
+        if not host:
+            raise AppError("Must supply host!")
+        if not port:
+            raise AppError("Must supply port!")
+        try:
+            int(port)
+        except ValueError:
+            raise AppError("port must be an integer!")
 
-        app_tpl = "https://{}:{}".format
-        soap_tpl = "{}/soap".format
-
-        self.app_url = app_tpl(self.__host, self.__port)
-        self.soap_url = soap_tpl(self.app_url)
-        self.test_app_port()
-        self.session = api.Session(self.__host, self.__port)
-        self.session.authenticate(self.__username, self.__password)
+        self.test_app_port(host, port)
+        self.session = api.Session(host, port)
+        self.session.authenticate(username, password)
 
     def __str__(self):
         str_tpl = "Handler for {}".format
         ret = str_tpl(self.session)
         return ret
 
-    def test_app_port(self):
+    def test_app_port(self, host, port):
         """validates that the SOAP port on the SOAP host can be reached"""
         chk_tpl = "Port test to {}:{} {}".format
-        if utils.port_check(self.__host, self.__port):
-            mylog.debug(chk_tpl(self.__host, self.__port, "SUCCESS"))
+        if utils.port_check(host, port):
+            mylog.debug(chk_tpl(host, port, "SUCCESS"))
         else:
-            raise AppError(chk_tpl(self.__host, self.__port, "FAILURE"))
+            raise AppError(chk_tpl(host, port, "FAILURE"))
+
+    def _ask_saved(self, q_obj_map, **kwargs):
+        q_args = {}
+        if 'timeout' in kwargs:
+            q_args['timeout'] = kwargs.pop('timeout')
+        q_obj = self.get('saved_question', **kwargs)[0]
+        asker = api.QuestionAsker(self.session, q_obj, **q_args)
+        asker.run({'ProgressChanged': progressChanged})
+        req_kwargs = self._get_req_kwargs(**kwargs)
+        result = self.session.getResultData(q_obj, **req_kwargs)
+        return result
+
+    def ask(self, qtype, **kwargs):
+        q_obj_map = self._get_q_obj_map(qtype)
+        result = getattr(self, q_obj_map['handler'])(q_obj_map, **kwargs)
+        return result
 
     def get_all(self, obj, **kwargs):
         obj_map = self._get_obj_map(obj)
         api_obj_all = getattr(api, obj_map['all'])()
-        found = self._find(api_obj_all)
+        found = self._find(api_obj_all, **kwargs)
         return found
 
     def get(self, obj, **kwargs):
@@ -94,7 +106,7 @@ class Handler(object):
         # if the api doesn't support filtering for this object,
         # return all objects of this type
         if not api_attrs:
-            return self.get_all(obj)
+            return self.get_all(obj, **kwargs)
 
         # if api supports filtering for this object,
         # but no filters supplied in kwargs, raise
@@ -115,15 +127,40 @@ class Handler(object):
         err = "No single or multi search defined for {}".format
         raise AppError(err(obj))
 
-    def _find(self, api_object):
+    def _empty_obj(self, api_object):
+        is_list = getattr(api_object, '_list_properties', {})
+        is_str = utils.is_str(api_object)
+        if any([is_list, is_str]) and not api_object:
+            return True
+        else:
+            return False
+
+    def _get_req_kwargs(self, **kwargs):
+        REQ_KWARGS = constants.REQ_KWARGS
+        req_kwargs = {}
+        for i in kwargs:
+            if i in REQ_KWARGS:
+                req_kwargs[i] = kwargs[i]
+        return req_kwargs
+
+    def _find(self, api_object, **kwargs):
+        req_kwargs = self._get_req_kwargs(**kwargs)
         mylog.debug("Searching for {}".format(api_object))
-        found = self.session.find(api_object)
-        is_list = getattr(found, '_list_properties', {})
-        is_str = utils.is_str(found)
-        if any([is_list, is_str]) and not found:
+        found = self.session.find(api_object, **req_kwargs)
+        if self._empty_obj(found):
             err = "No results found searching for {}!!".format
             raise AppError(err(api_object))
+        mylog.debug("Found {}".format(found))
         return found
+
+    def _get_q_obj_map(self, qtype):
+        Q_OBJ_MAP = constants.Q_OBJ_MAP
+        try:
+            obj_map = Q_OBJ_MAP[qtype.lower()]
+        except KeyError:
+            err = "{} not a valid question type, must be one of {!r}".format
+            raise AppError(err(qtype, Q_OBJ_MAP.keys()))
+        return obj_map
 
     def _get_obj_map(self, obj):
         GET_OBJ_MAP = constants.GET_OBJ_MAP
@@ -159,7 +196,7 @@ class Handler(object):
                 api_obj_multi.append(api_obj_single)
 
         # find the multi list object
-        found = self._find(api_obj_multi)
+        found = self._find(api_obj_multi, **kwargs)
         return found
 
     def _get_single(self, obj_map, **kwargs):
@@ -184,10 +221,10 @@ class Handler(object):
                 for i in v:
                     api_obj_single = getattr(api, obj_map['single'])()
                     setattr(api_obj_single, k, i)
-                    found.append(self._find(api_obj_single))
+                    found.append(self._find(api_obj_single, **kwargs))
             else:
                 api_obj_single = getattr(api, obj_map['single'])()
                 setattr(api_obj_single, k, v)
-                found.append(self._find(api_obj_single))
+                found.append(self._find(api_obj_single, **kwargs))
 
         return found

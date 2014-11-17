@@ -10,12 +10,11 @@ from .base import BaseType
 
 class User(BaseType):
 
-    _OBJECT_LIST_TAG = 'user'
+    _soap_tag = 'user'
 
     def __init__(self):
         BaseType.__init__(
             self,
-            soap_tag='user',
             simple_properties={'id': int,
                         'name': str,
                         'domain': str,

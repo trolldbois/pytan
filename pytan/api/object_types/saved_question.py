@@ -10,12 +10,11 @@ from .base import BaseType
 
 class SavedQuestion(BaseType):
 
-    _OBJECT_LIST_TAG = 'saved_question'
+    _soap_tag = 'saved_question'
 
     def __init__(self):
         BaseType.__init__(
             self,
-            soap_tag='saved_question',
             simple_properties={'id': int,
                         'name': str,
                         'public_flag': int,

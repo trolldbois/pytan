@@ -10,12 +10,11 @@ from .base import BaseType
 
 class SensorList(BaseType):
 
-    _OBJECT_LIST_TAG = 'sensors'
+    _soap_tag = 'sensors'
 
     def __init__(self):
         BaseType.__init__(
             self,
-            soap_tag='sensors',
             simple_properties={},
             complex_properties={'cache_info': CacheInfo},
             list_properties={'sensor': Sensor},

@@ -27,14 +27,14 @@ LOG_LEVEL_MAPS = [
     (
         0,
         {
-            'pytan': 'INFO',
+            'pytan.handler': 'INFO',
             'api.session': 'WARN',
             'api.session.auth': 'WARN',
             'api.session.http': 'WARN',
             'api.session.http.body': 'WARN',
         }
     ),
-    (1, {'pytan': 'DEBUG'}),
+    (1, {'pytan.handler': 'DEBUG'}),
     (2, {'api.session': 'DEBUG'}),
     (3, {'api.session.auth': 'DEBUG'}),
     (4, {'api.session.http': 'DEBUG'}),
@@ -83,7 +83,7 @@ GET_OBJ_MAP = {
         'single': 'SavedQuestion',
         'multi': None,
         'all': 'SavedQuestionList',
-        'search': ['id'],
+        'search': ['id', 'name'],
     },
     'sensor': {
         'single': 'Sensor',
@@ -117,13 +117,47 @@ GET_OBJ_MAP = {
     },
 }
 
-# Used by pytan.req.Request.call_api() for how long a GetResultInfo
-# loop is allowed to go on for
-RESULT_MAX_WAIT = 500
+Q_OBJ_MAP = {
+    'saved': {
+        'api': 'SavedQuestion',
+        'handler': '_ask_saved',
+    }
+}
 
-# Used by pytan.req.Request.call_api() for long to sleep in between
-# GetResultInfo checks
-RESULT_SLEEP = 2
+REQ_KWARGS = [
+    'hide_errors_flag',
+    'include_answer_times_flag',
+    'row_counts_only_flag',
+    'aggregate_over_time_flag',
+    'most_recent_flag',
+    'include_hashes_flag',
+    'hide_no_results_flag',
+    'use_user_context_flag',
+    'script_data',
+    'return_lists_flag',
+    'return_cdata_flag',
+    'pct_done_limit',
+    'context_id',
+    'sample_frequency',
+    'sample_start',
+    'sample_count',
+    'suppress_scripts',
+    'suppress_object_list',
+    'row_start',
+    'row_count',
+    'sort_order',
+    'filter_string',
+    'filter_not_flag',
+    'recent_result_buckets',
+    'cache_id',
+    'cache_expiration',
+    'cache_sort_fields',
+    'include_user_details',
+    'include_hidden_flag',
+    'use_error_objects',
+    'use_json',
+    'json_pretty_print',
+]
 
 # Used by pytan.reports.Reporter.parse_resultxml() to determine what the
 # numeric type value for a column maps to
@@ -151,28 +185,6 @@ RESULT_TYPE_MAP = {
     10: 'VariousDate',
     11: 'RegexMatch',
     12: 'LastOperatorType',
-}
-
-# Used by pytan.req.Request.build_objects_dict() to figure out
-# what valid query prefixes can be used
-QUERY_PREFIXES = ['name', 'id', 'hash']
-
-# Used by pytan.auth.Auth.session_id_text() to control whether
-#or not SOAP Session IDs are included in any logging outputs
-SHOW_SESSION_ID = False
-
-# Used by pytan.req.Request.build_request_xml_dict() for
-# creating the Soap Request XML
-REQ_ENVELOPE_NS = {
-    "@xmlns:soap": "http://schemas.xmlsoap.org/soap/envelope/",
-    "@xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
-    "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
-}
-
-# Used by pytan.req.Request.build_request_xml_dict() for
-# creating the Soap Request XML
-REQ_APP_NS = {
-    "@xmlns": "urn:TaniumSOAP",
 }
 
 # Used by pytan.reports.Reporter.write_response() to determine

@@ -10,12 +10,11 @@ from .base import BaseType
 
 class ClientStatus(BaseType):
 
-    _OBJECT_LIST_TAG = 'client_status'
+    _soap_tag = 'client_status'
 
     def __init__(self):
         BaseType.__init__(
             self,
-            soap_tag='client_status',
             simple_properties={'host_name': str,
                         'computer_id': str,
                         'ipaddress_client': str,

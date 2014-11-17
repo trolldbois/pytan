@@ -10,12 +10,11 @@ from .base import BaseType
 
 class ComputerSpecList(BaseType):
 
-    _OBJECT_LIST_TAG = None
+    _soap_tag = 'computer_specs'
 
     def __init__(self):
         BaseType.__init__(
             self,
-            soap_tag='computer_specs',
             simple_properties={},
             complex_properties={'cache_info': CacheInfo},
             list_properties={'computer_spec': ComputerGroupSpec},
