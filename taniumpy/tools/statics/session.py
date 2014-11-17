@@ -95,6 +95,7 @@ class Session(object):
     GET_OBJECT = 'GetObject'
     UPDATE_OBJECT = 'UpdateObject'
     ADD_OBJECT = 'AddObject'
+    DELETE_OBJECT = 'DeleteObject'
     GET_RESULT_INFO = 'GetResultInfo'
     GET_RESULT_DATA = 'GetResultData'
     REQUEST_BODY = load_file(request_body_template_file)
@@ -159,6 +160,12 @@ class Session(object):
 
     def add(self, obj, **kwargs):
         self.request_body = self._createAddObjectBody(obj, **kwargs)
+        self.response_body = self._getResponse(self.request_body)
+        obj = BaseType.fromSOAPBody(self.response_body)
+        return obj
+
+    def delete(self, obj, **kwargs):
+        self.request_body = self._createDeleteObjectBody(obj, **kwargs)
         self.response_body = self._getResponse(self.request_body)
         obj = BaseType.fromSOAPBody(self.response_body)
         return obj
@@ -246,6 +253,16 @@ class Session(object):
             self.REQUEST_BODY,
             self.session_id,
             self.ADD_OBJECT,
+            obj.toSOAPBody(),
+            **kwargs
+        )
+        return obj_body
+
+    def _createDeleteObjectBody(self, obj, **kwargs):
+        obj_body = self.FORMATTER(
+            self.REQUEST_BODY,
+            self.session_id,
+            self.DELETE_OBJECT,
             obj.toSOAPBody(),
             **kwargs
         )
