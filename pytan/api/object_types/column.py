@@ -7,6 +7,12 @@ class Column(object):
         self.display_name = None
         self.result_type = None
 
+    def __str__(self):
+        class_name = self.__class__.__name__
+        val = self.display_name
+        ret = '{}: {}'.format(class_name, val)
+        return ret
+
     @classmethod
     def fromSOAPElement(cls, el):
         result = Column()

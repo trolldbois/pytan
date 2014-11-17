@@ -24,7 +24,7 @@ mylog = logging.getLogger("pytan.handler")
 
 
 def progressChanged(asker, pct):
-    mylog.info("{}: %{}".format(asker, pct))
+    mylog.info("ProgressChanged on {0}: %{1:.2f} done...".format(asker, pct))
 
 
 class Handler(object):

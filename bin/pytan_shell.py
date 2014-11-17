@@ -41,61 +41,18 @@ if handler_args['loglevel'] >= 10:
 print ("%s -- now available as 'handler'!" % handler)
 # print ("%s -- now available as 'reporter'!" % reporter)
 
-## tests for getting objects:
-# from pytan import constants
-# for k in constants.GET_OBJ_MAP:
-#     r = handler.get_all(k)
-#     print 'all: ', k, r
-#     if len(r) == 0:
-#         raise Exception("{} is 0 !!!".format(len(r)))
-#     if 'id' not in constants.GET_OBJ_MAP[k]['search']:
-#         continue
-#     try:
-#         r = handler.get(k, id=999999)
-#     except Exception as e:
-#         print "single get bad id=99999: {}".format(k), str(e).replace('\n', '')
-
-#     r = handler.get(k, id=1)
-#     print 'single id=1: ', k, r
-#     if len(r) != 1:
-#         raise Exception("{} != 1 !!!".format(len(r)))
-#     r = handler.get(k, id=[1, 2])
-#     print 'multi id=[1,2]: ', k, r
-#     if len(r) != 2:
-#         raise Exception("{} != 2 !!!".format(len(r)))
-
-# k = 'sensor'
-# r = handler.get(k, id=[1, 2], name=['Computer Name', 'Operating System'])
-# print 'many multi id=[1,2] name=Computer Name, Operating System: ', k, r
-# if len(r) != 4:
-#     raise Exception("{} != 4 !!!".format(len(r)))
-
 # ask saved question:
 r = handler.ask('saved', name='Computer Name')
-# no write_csv on ResultSet yet
-
-# write sensor objects out:
-r = handler.get_all('sensor')
-if hasattr(r, '_list_properties'):
-    report_on = getattr(r, r._list_properties.keys()[0])
-else:
-    report_on = r
-
 with open('die.csv', 'w') as fd:
-    r.write_csv(fd, report_on, explode_json_string_values=True)
+    r.write_csv(fd, r)
 
-# # Example scenario:
-# r = handler.ask_manual_question(
-#     sensors=[
-#         "Computer Name",
-#         "Folder Name Search with RegEx Match[Program Files,.*,No,No], "
-#         "that is .*, opt:max_data_age:3600",
-#     ],
-#     question_filters=[
-#         "Operating System, that contains Windows",
-#         "Operating System, that does not contain Windows",
-#     ],
-#     question_options=["ignore_case", "or"],
-# )
-# print r
-# print r.request
+
+# # write sensor objects out:
+# r = handler.get_all('sensor')
+# if hasattr(r, '_list_properties'):
+#     report_on = getattr(r, r._list_properties.keys()[0])
+# else:
+#     report_on = r
+
+# with open('die.csv', 'w') as fd:
+#     r.write_csv(fd, report_on, explode_json_string_values=True)
