@@ -13,6 +13,18 @@ class Row(object):
         self.vals = []
         self.columns = columns
 
+    def __str__(self):
+        class_name = self.__class__.__name__
+        val = ', '.join([
+            "{}:{}".format(
+                self.columns[i].display_name,
+                len(str(self.vals[i])),
+            )
+            for i, _ in enumerate(self.columns)
+        ])
+        ret = '{}: {}'.format(class_name, val)
+        return ret
+
     @classmethod
     def fromSOAPElement(cls, el, columns):
         row = Row(columns)
