@@ -2,6 +2,7 @@
  * [ ] auto wsdl generator
      * [ ] ResultSet needs a write_csv (and json) too
      * [ ] figure out ask manual question
+     * [ ] integrate reporting into handler
      * [ ] figure out deploy action
      * [ ] figure out the "update" object for every type that i'm supporting for "get"
      * [ ] figure out the "create" object for every type that i'm supporting for "get"
