@@ -10,12 +10,11 @@ from .base import BaseType
 
 class UploadFile(BaseType):
 
-    _OBJECT_LIST_TAG = 'upload_file'
+    _soap_tag = 'upload_file'
 
     def __init__(self):
         BaseType.__init__(
             self,
-            soap_tag='upload_file',
             simple_properties={'id': int,
                         'key': str,
                         'destination_file': str,

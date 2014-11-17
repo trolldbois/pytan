@@ -10,12 +10,11 @@ from .base import BaseType
 
 class PluginSchedule(BaseType):
 
-    _OBJECT_LIST_TAG = 'plugin_schedule'
+    _soap_tag = 'plugin_schedule'
 
     def __init__(self):
         BaseType.__init__(
             self,
-            soap_tag='plugin_schedule',
             simple_properties={'name': str,
                         'plugin_name': str,
                         'plugin_bundle': str,

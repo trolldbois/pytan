@@ -22,10 +22,12 @@ class IncorrectTypeException(Exception):
 
 
 class BaseType(object):
-    def __init__(self, soap_tag, simple_properties, complex_properties,
+
+    _soap_tag = None
+
+    def __init__(self, simple_properties, complex_properties,
                  list_properties):
         self._initialized = False
-        self._soap_tag = soap_tag
         self._simple_properties = simple_properties
         self._complex_properties = complex_properties
         self._list_properties = list_properties
@@ -250,33 +252,89 @@ class BaseType(object):
         except Exception:
             return None
 
-    def to_jsonable(self, explode_json_string_values=False):
-       result = {}
-       for p, _ in self._simple_properties.iteritems():
+    def to_jsonable(self, explode_json_string_values=False, include_type=True):
+        result = {}
+        if include_type:
+            result['_type'] = self._soap_tag
+        for p, _ in self._simple_properties.iteritems():
             val = getattr(self, p)
             if val is not None:
-                if val is not None:
-                    json_out = None
-                    if explode_json_string_values:
-                        json_out = self.explode_json(val)
-                    if json_out is not None:
-                        result[p] = json_out
+                json_out = None
+                if explode_json_string_values:
+                    json_out = self.explode_json(val)
+                if json_out is not None:
+                    result[p] = json_out
+                else:
+                    result[p] = val
+        for p, _ in self._complex_properties.iteritems():
+            val = getattr(self, p)
+            if val is not None:
+                result[p] = val.to_jsonable(
+                    explode_json_string_values=explode_json_string_values,
+                    include_type=include_type)
+        for p, _ in self._list_properties.iteritems():
+            val = getattr(self, p)
+            if val is not None:
+                result[p] = []
+                for ind, item in enumerate(val):
+                    if isinstance(item, BaseType):
+                        result[p].append(item.to_jsonable(
+                            explode_json_string_values=explode_json_string_values,
+                            include_type=include_type))
                     else:
-                        result[p] = val
-       for p, _ in self._complex_properties.iteritems():
-           val = getattr(self, p)
-           if val is not None:
-               result[p] = val.to_jsonable(explode_json_string_values)
-       for p, _ in self._list_properties.iteritems():
-           val = getattr(self, p)
-           if val is not None:
-               result[p] = []
-               for ind, item in enumerate(val):
-                   if isinstance(item, BaseType):
-                       result[p].append(item.to_jsonable(explode_json_string_values))
-                   else:
-                       result[p].append(item)
-       return result
+                        result[p].append(item)
+        return result
+
+    @classmethod
+    def _from_json(cls, jsonable):
+        """Private helper to parse from JSON after type is instantiated"""
+        result = cls()
+        for p, t in result._simple_properties.iteritems():
+            val = jsonable.get(p)
+            if val is not None:
+                setattr(result, p, t(val))
+        for p, t in result._complex_properties.iteritems():
+            val = jsonable.get(p)
+            if val is not None:
+                setattr(result, p, BaseType.from_jsonable(val))
+        for p, t in result._list_properties.iteritems():
+            val = jsonable.get(p)
+            if val is not None:
+                vals = []
+                for item in val:
+                    if issubclass(t, BaseType):
+                        vals.append(BaseType.from_jsonable(item))
+                    else:
+                        vals.append(item)
+                setattr(result, p, vals)
+        return result
+
+    @staticmethod
+    def from_jsonable(jsonable):
+        """Inverse of to_jsonable, with explode_json_string_values=False.
+
+        This can be used to import objects from serialized JSON. This JSON should
+        come from BaseType.to_jsonable(explode_json_string=False, include+type=True)
+
+        Example:
+        with open('question_list.json') as fd:
+            questions = json.loads(fd.read())  # is a list of serialized questions
+            question_objects = BaseType.from_jsonable(questions)
+            # will return a list of api.Question
+
+        """
+        if type(jsonable) == list:
+            return [BaseType.from_jsonable(item for item in list)]
+        elif type(jsonable) == dict:
+            if not jsonable.get('_type'):
+                raise Exception('JSON must contain _type to be deserialized')
+            from object_list_types import OBJECT_LIST_TYPES
+            if jsonable['_type'] not in OBJECT_LIST_TYPES:
+                raise Exception('Unknown type {}'.format(jsonable['_type']))
+            result = OBJECT_LIST_TYPES[jsonable['_type']]._from_json(jsonable)
+            return result
+        else:
+            raise Exception('Expected list or dict to deserialize')
 
     @staticmethod
     def write_csv(fd, val, explode_json_string_values=False):

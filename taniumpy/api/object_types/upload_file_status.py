@@ -10,12 +10,11 @@ from .base import BaseType
 
 class UploadFileStatus(BaseType):
 
-    _OBJECT_LIST_TAG = 'upload_file_status'
+    _soap_tag = 'upload_file_status'
 
     def __init__(self):
         BaseType.__init__(
             self,
-            soap_tag='upload_file_status',
             simple_properties={'hash': str,
                         'percent_complete': int,
                         'file_cached': int},

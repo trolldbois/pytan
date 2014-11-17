@@ -26,8 +26,8 @@ class TestToJsonable(unittest.TestCase):
         permissions = api.UserPermissions()
         user_role.permissions = permissions
         permissions.permission = 'Question Asker'
-
-        self.assertEquals(user.to_jsonable(), {
+        self.maxDiff = None
+        self.assertEquals(user.to_jsonable(include_type=False), {
             'id': 1,
             'name': 'Tanium',
             'roles': {'role': [
@@ -42,5 +42,7 @@ class TestToJsonable(unittest.TestCase):
     def test_with_jsonable_property(self):
         sensor = api.Sensor()
         sensor.parameter_definition = json.dumps([{"name": "param1"}, {"name": "param2"}])
-        self.assertEquals(sensor.to_jsonable(explode_json_string_values=True),
+        self.assertEquals(sensor.to_jsonable(
+            explode_json_string_values=True,
+            include_type=False),
             {'parameter_definition': [{'name': 'param1'}, {'name': 'param2'}]})

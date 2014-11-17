@@ -10,12 +10,11 @@ from .base import BaseType
 
 class WhiteListedUrl(BaseType):
 
-    _OBJECT_LIST_TAG = 'white_listed_url'
+    _soap_tag = 'white_listed_url'
 
     def __init__(self):
         BaseType.__init__(
             self,
-            soap_tag='white_listed_url',
             simple_properties={'id': int,
                         'chunk_id': str,
                         'download_seconds': int,

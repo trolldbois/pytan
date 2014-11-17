@@ -10,12 +10,11 @@ from .base import BaseType
 
 class SystemSettingsList(BaseType):
 
-    _OBJECT_LIST_TAG = 'system_settings'
+    _soap_tag = 'system_settings'
 
     def __init__(self):
         BaseType.__init__(
             self,
-            soap_tag='system_settings',
             simple_properties={},
             complex_properties={'cache_info': CacheInfo},
             list_properties={'system_setting': SystemSetting},

@@ -275,7 +275,7 @@ class Session(object):
         if isinstance(object_or_type, BaseType):
             obj = object_or_type.toSOAPBody(minimal=True)
         else:
-            obj = '<{}/>'.format(object_or_type._OBJECT_LIST_TAG)
+            obj = '<{}/>'.format(object_or_type._soap_tag)
         obj_body = self.FORMATTER(
             self.REQUEST_BODY,
             self.session_id,

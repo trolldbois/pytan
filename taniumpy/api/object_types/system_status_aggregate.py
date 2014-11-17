@@ -10,12 +10,11 @@ from .base import BaseType
 
 class SystemStatusAggregate(BaseType):
 
-    _OBJECT_LIST_TAG = None
+    _soap_tag = 'aggregate'
 
     def __init__(self):
         BaseType.__init__(
             self,
-            soap_tag='aggregate',
             simple_properties={'send_forward_count': int,
                         'send_backward_count': int,
                         'send_none_count': int,

@@ -10,12 +10,11 @@ from .base import BaseType
 
 class PackageSpecList(BaseType):
 
-    _OBJECT_LIST_TAG = 'package_specs'
+    _soap_tag = 'package_specs'
 
     def __init__(self):
         BaseType.__init__(
             self,
-            soap_tag='package_specs',
             simple_properties={},
             complex_properties={'cache_info': CacheInfo},
             list_properties={'package_spec': PackageSpec},

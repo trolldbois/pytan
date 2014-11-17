@@ -10,12 +10,11 @@ from .base import BaseType
 
 class AuditData(BaseType):
 
-    _OBJECT_LIST_TAG = None
+    _soap_tag = 'audit_data'
 
     def __init__(self):
         BaseType.__init__(
             self,
-            soap_tag='audit_data',
             simple_properties={'creation_time': str,
                         'modification_time': str,
                         'last_modified_by': str},

@@ -10,12 +10,11 @@ from .base import BaseType
 
 class PluginSql(BaseType):
 
-    _OBJECT_LIST_TAG = None
+    _soap_tag = 'plugin_sql'
 
     def __init__(self):
         BaseType.__init__(
             self,
-            soap_tag='plugin_sql',
             simple_properties={'rows_affected': int,
                         'result_count': int},
             complex_properties={'columns': PluginSqlColumn},

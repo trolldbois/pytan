@@ -74,21 +74,20 @@ from .base import BaseType
 
 class {0}(BaseType):
 
-    _OBJECT_LIST_TAG = {1}
+    _soap_tag = '{1}'
 
     def __init__(self):
         BaseType.__init__(
             self,
-            soap_tag='{2}',
-            simple_properties={{{3}}},
-            complex_properties={{{4}}},
-            list_properties={{{5}}},
+            simple_properties={{{2}}},
+            complex_properties={{{3}}},
+            list_properties={{{4}}},
         )
+        {5}
         {6}
         {7}
-        {8}
 
-{9}
+{8}
 
 """
 
@@ -282,20 +281,6 @@ class {0}(BaseType):
         return os.path.join(output, 'api', 'object_types')
 
     @property
-    def object_list_tag(self):
-        # find the tag used in TaniumSOAPRequest
-        if self.wsdl_type in EXCLUDE_TYPE_LIST:
-            return None
-        find_tpl = (
-            ".//xsd:complexType[@name='object_list']/xsd:sequence/"
-            "xsd:element[@type='{}']"
-        ).format(self.wsdl_type)
-        el = self.wsdl_dom.find(find_tpl, self.namespaces)
-        if el is not None:
-            return "'{}'".format(el.attrib['name'])
-        return None
-
-    @property
     def code(self):
         simple_args = ',\n                        '.join(
             ["'{}': {}".format(p[0], p[1]) for p in self.simple_properties]
@@ -326,7 +311,6 @@ class {0}(BaseType):
         )
         s = self.TYPE_TEMPLATE.format(
             self.pytype,
-            self.object_list_tag,
             self.soap_tag,
             simple_args,
             complex_args,
@@ -440,7 +424,7 @@ def print_out(s):
     print(s)
 
 
-def generate_object_list_types(object_list_types, preview, verbose, output):
+def generate_object_list_types(soap_tags, preview, verbose, output):
     fpath = os.path.join(output, 'api', 'object_types', 'object_list_types.py')
     if verbose:
         print 'Generating {}'.format(fpath)
@@ -450,16 +434,16 @@ def generate_object_list_types(object_list_types, preview, verbose, output):
         fd = open(fpath, 'w')
         writer = fd.write
 
-    for t in sorted(object_list_types):
-        clazz = object_list_types[t]
+    for t in sorted(soap_tags):
+        clazz = soap_tags[t]
         writer('from {0} import {1}\n'.format(
             clazz.wsdl_type,
             capcase(clazz.wsdl_type)))
     writer("\n\nOBJECT_LIST_TYPES = {\n")
-    for t in sorted(object_list_types):
-        clazz = object_list_types[t]
-        writer("\t{}: {},\n".format(
-            clazz.object_list_tag,
+    for t in sorted(soap_tags):
+        clazz = soap_tags[t]
+        writer("\t'{}': {},\n".format(
+            clazz.soap_tag,
             capcase(clazz.wsdl_type)))
     writer("}")
     if verbose:
@@ -502,10 +486,9 @@ def main(args):
         t.attrib['name'] for t in typeElements if t not in EXCLUDE_TYPE_LIST
     ])
 
-    # while generating types, build a mapping of request object_list tag
-    # to class
+    # while generating types, build a mapping of soap tag to class
     all_obj = []
-    object_list_types = {}
+    soap_tags = {}
     for type_name in sorted(types):
 
         t = generate_type(
@@ -530,8 +513,8 @@ def main(args):
             )
             vt.write(output)
             all_obj.append(vt)
-        if t.object_list_tag:
-            object_list_types[t.object_list_tag] = t
+        if t.wsdl_type not in EXCLUDE_TYPE_LIST:
+            soap_tags[t.soap_tag] = t
 
     fpath = os.path.join(output, 'api', 'object_types', 'all_objects.py')
 
@@ -551,7 +534,7 @@ def main(args):
     if verbose:
         print 'Generated {}'.format(fpath)
 
-    generate_object_list_types(object_list_types, preview, verbose, output)
+    generate_object_list_types(soap_tags, preview, verbose, output)
 
 
 if __name__ == '__main__':

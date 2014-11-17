@@ -10,12 +10,11 @@ from .base import BaseType
 
 class GroupList(BaseType):
 
-    _OBJECT_LIST_TAG = 'groups'
+    _soap_tag = 'groups'
 
     def __init__(self):
         BaseType.__init__(
             self,
-            soap_tag='groups',
             simple_properties={},
             complex_properties={},
             list_properties={'group': Group},

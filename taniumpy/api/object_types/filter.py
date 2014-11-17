@@ -10,12 +10,11 @@ from .base import BaseType
 
 class Filter(BaseType):
 
-    _OBJECT_LIST_TAG = None
+    _soap_tag = 'filter'
 
     def __init__(self):
         BaseType.__init__(
             self,
-            soap_tag='filter',
             simple_properties={'id': int,
                         'operator': str,
                         'value_type': str,

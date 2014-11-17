@@ -10,12 +10,11 @@ from .base import BaseType
 
 class MetadataItem(BaseType):
 
-    _OBJECT_LIST_TAG = None
+    _soap_tag = 'item'
 
     def __init__(self):
         BaseType.__init__(
             self,
-            soap_tag='item',
             simple_properties={'name': str,
                         'value': str,
                         'admin_flag': int},

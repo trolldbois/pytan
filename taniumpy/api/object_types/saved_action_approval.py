@@ -10,12 +10,11 @@ from .base import BaseType
 
 class SavedActionApproval(BaseType):
 
-    _OBJECT_LIST_TAG = 'saved_action_approval'
+    _soap_tag = 'saved_action_approval'
 
     def __init__(self):
         BaseType.__init__(
             self,
-            soap_tag='saved_action_approval',
             simple_properties={'id': int,
                         'name': str,
                         'approved_flag': int},

@@ -10,12 +10,11 @@ from .base import BaseType
 
 class ComputerGroup(BaseType):
 
-    _OBJECT_LIST_TAG = 'computer_group'
+    _soap_tag = 'computer_group'
 
     def __init__(self):
         BaseType.__init__(
             self,
-            soap_tag='computer_group',
             simple_properties={'id': int,
                         'name': str,
                         'deleted_flag': int},

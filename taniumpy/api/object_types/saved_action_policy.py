@@ -10,12 +10,11 @@ from .base import BaseType
 
 class SavedActionPolicy(BaseType):
 
-    _OBJECT_LIST_TAG = None
+    _soap_tag = 'saved_action_policy'
 
     def __init__(self):
         BaseType.__init__(
             self,
-            soap_tag='saved_action_policy',
             simple_properties={'saved_question_id': int,
                         'saved_question_group_id': int,
                         'row_filter_group_id': int,

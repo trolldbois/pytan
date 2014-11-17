@@ -10,12 +10,11 @@ from .base import BaseType
 
 class UserRole(BaseType):
 
-    _OBJECT_LIST_TAG = None
+    _soap_tag = 'role'
 
     def __init__(self):
         BaseType.__init__(
             self,
-            soap_tag='role',
             simple_properties={'id': int,
                         'name': str,
                         'description': str},

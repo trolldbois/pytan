@@ -10,12 +10,11 @@ from .base import BaseType
 
 class ParseJob(BaseType):
 
-    _OBJECT_LIST_TAG = 'parse_job'
+    _soap_tag = 'parse_job'
 
     def __init__(self):
         BaseType.__init__(
             self,
-            soap_tag='parse_job',
             simple_properties={'question_text': str,
                         'parser_version': int},
             complex_properties={},
