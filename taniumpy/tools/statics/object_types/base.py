@@ -84,7 +84,7 @@ class BaseType(object):
                 name != '_initialized' and \
                 self._initialized and \
                 name in self._complex_properties:
-            if type(value) != self._complex_properties[name]:
+            if not isinstance(value, self._complex_properties[name]):
                 raise IncorrectTypeException(value,
                     self._complex_properties[name],
                     type(value))
@@ -116,7 +116,7 @@ class BaseType(object):
         for p, t in self._complex_properties.iteritems():
             val = getattr(self, p)
             if val is not None or not minimal:
-                if val is not None and type(val) != t:
+                if val is not None and not isinstance(val, t):
                     raise IncorrectTypeException(p, t, type(val))
                 if isinstance(val, BaseType):
                     root.append(val.toSOAPElement(minimal=minimal))
