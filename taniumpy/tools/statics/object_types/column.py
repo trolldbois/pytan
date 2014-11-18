@@ -1,3 +1,4 @@
+from .sensor_types import SENSOR_TYPE_MAP
 
 
 class Column(object):
@@ -24,5 +25,10 @@ class Column(object):
             result.display_name = val.text
         val = el.find('rt')
         if val is not None:
-            result.result_type = int(val.text)
+            val = int(val.text)
+            if val in SENSOR_TYPE_MAP:
+                result.result_type = SENSOR_TYPE_MAP[val]
+            else:
+                result.result_type = int(val)
+
         return result
