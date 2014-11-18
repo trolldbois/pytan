@@ -379,5 +379,4 @@ class Session(object):
         '''
         response_body = response_body.decode('utf-8')
         response_body = response_body.replace(u"\xa0", u" ")
-        print type(response_body)
         return response_body
