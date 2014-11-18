@@ -42,10 +42,22 @@ print ("%s -- now available as 'handler'!" % handler)
 # print ("%s -- now available as 'reporter'!" % reporter)
 
 # ask saved question:
-r = handler.ask('saved', name='Computer Name')
+r = handler.ask('saved', name='Manually Created Complex Saved Question')
+sensors = [x.sensor for x in r.asker.question.question.selects]
 with open('die.csv', 'w') as fd:
     r.write_csv(fd, r)
 
+with open('die_sensors.csv', 'w') as fd:
+    r.write_csv(fd, r, header_add_sensor=True, sensors=sensors)
+
+
+with open('die_sensors_type.csv', 'w') as fd:
+    r.write_csv(fd, r, header_add_sensor=True, sensors=sensors, header_add_type=True)
+
+header_sort = ['Tanium Zone Server Version']
+
+with open('die_sensors_type_sort.csv', 'w') as fd:
+    r.write_csv(fd, r, header_add_sensor=True, sensors=sensors, header_add_type=True, header_sort=header_sort, expand_grouped_columns=True)
 
 # # write sensor objects out:
 # r = handler.get_all('sensor')

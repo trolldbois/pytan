@@ -96,6 +96,7 @@ class Handler(object):
         asker.run({'ProgressChanged': progressChanged})
         req_kwargs = self._get_req_kwargs(**kwargs)
         result = self.session.getResultData(q_obj, **req_kwargs)
+        result.asker = asker
         return result
 
     def ask(self, qtype, **kwargs):
