@@ -34,9 +34,11 @@ class Row(object):
         val = el.find("cid")
         if val is not None:
             row.cid = val.text
-        vals = el.findall("c/v")
-        for val in vals:
-            row.vals.append(val.text)
+        row_cols = el.findall("c")
+        for rc in row_cols:
+            row_vals = rc.findall("v")
+            vals_text = [v.text for v in row_vals]
+            row.vals.append(vals_text)
         return row
 
     def __len__(self):
