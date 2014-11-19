@@ -10,7 +10,7 @@ from .base import BaseType
 
 class SavedActionRowIdList(BaseType):
 
-    _soap_tag = 'saved_action_row_id_list'
+    _soap_tag = 'row_ids'
 
     def __init__(self):
         BaseType.__init__(

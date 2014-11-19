@@ -10,7 +10,7 @@ from .base import BaseType
 
 class SelectList(BaseType):
 
-    _soap_tag = 'select_list'
+    _soap_tag = 'selects'
 
     def __init__(self):
         BaseType.__init__(

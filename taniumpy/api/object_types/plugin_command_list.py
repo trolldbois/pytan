@@ -10,7 +10,7 @@ from .base import BaseType
 
 class PluginCommandList(BaseType):
 
-    _soap_tag = 'plugin_command_list'
+    _soap_tag = 'commands'
 
     def __init__(self):
         BaseType.__init__(

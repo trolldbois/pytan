@@ -10,7 +10,7 @@ from .base import BaseType
 
 class SensorSubcolumnList(BaseType):
 
-    _soap_tag = 'sensor_subcolumn_list'
+    _soap_tag = 'subcolumns'
 
     def __init__(self):
         BaseType.__init__(

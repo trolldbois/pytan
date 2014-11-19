@@ -10,7 +10,7 @@ from .base import BaseType
 
 class ParameterList(BaseType):
 
-    _soap_tag = 'parameter_list'
+    _soap_tag = 'parameters'
 
     def __init__(self):
         BaseType.__init__(

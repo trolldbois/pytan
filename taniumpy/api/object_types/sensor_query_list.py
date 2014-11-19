@@ -10,7 +10,7 @@ from .base import BaseType
 
 class SensorQueryList(BaseType):
 
-    _soap_tag = 'sensor_query_list'
+    _soap_tag = 'queries'
 
     def __init__(self):
         BaseType.__init__(

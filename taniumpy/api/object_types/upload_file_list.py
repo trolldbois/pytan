@@ -10,7 +10,7 @@ from .base import BaseType
 
 class UploadFileList(BaseType):
 
-    _soap_tag = 'upload_file_list'
+    _soap_tag = 'file_parts'
 
     def __init__(self):
         BaseType.__init__(

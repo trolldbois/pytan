@@ -10,7 +10,7 @@ from .base import BaseType
 
 class UserPermissions(BaseType):
 
-    _soap_tag = 'user_permissions'
+    _soap_tag = 'permissions'
 
     def __init__(self):
         BaseType.__init__(

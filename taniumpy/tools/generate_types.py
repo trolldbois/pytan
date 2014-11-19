@@ -230,11 +230,17 @@ class {0}(BaseType):
         ]
 
         # generate the soap tag. If this is a type used in a list, use what
-        # the list attribute name is. If not, use the type name.
+        # the list attribute name is. If not, use the type name. Look
+        # for usage in an xsd:sequence or xsd:all for another type
         find_tpl = (
             ".//xsd:complexType/xsd:sequence/xsd:element[@type='{0}']"
         ).format(type_name)
         usage = wsdl_dom.find(find_tpl, namespaces)
+        if usage is None:
+            find_tpl = (
+                ".//xsd:complexType/xsd:all/xsd:element[@type='{0}']"
+            ).format(type_name)
+            usage = wsdl_dom.find(find_tpl, namespaces)
 
         soap_tag = usage.attrib['name'] if usage is not None else type_name
         return Type(

@@ -10,7 +10,7 @@ from .base import BaseType
 
 class ParseResultList(BaseType):
 
-    _soap_tag = 'parse_result_list'
+    _soap_tag = 'parse_results'
 
     def __init__(self):
         BaseType.__init__(

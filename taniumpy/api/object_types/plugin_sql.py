@@ -10,7 +10,7 @@ from .base import BaseType
 
 class PluginSql(BaseType):
 
-    _soap_tag = 'plugin_sql'
+    _soap_tag = 'sql_response'
 
     def __init__(self):
         BaseType.__init__(

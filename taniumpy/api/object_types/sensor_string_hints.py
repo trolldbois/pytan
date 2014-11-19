@@ -10,7 +10,7 @@ from .base import BaseType
 
 class SensorStringHints(BaseType):
 
-    _soap_tag = 'sensor_string_hints'
+    _soap_tag = 'string_hints'
 
     def __init__(self):
         BaseType.__init__(

@@ -10,7 +10,7 @@ from .base import BaseType
 
 class SavedActionPolicy(BaseType):
 
-    _soap_tag = 'saved_action_policy'
+    _soap_tag = 'policy'
 
     def __init__(self):
         BaseType.__init__(

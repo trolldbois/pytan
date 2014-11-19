@@ -10,7 +10,7 @@ from .base import BaseType
 
 class PluginArgumentList(BaseType):
 
-    _soap_tag = 'plugin_argument_list'
+    _soap_tag = 'arguments'
 
     def __init__(self):
         BaseType.__init__(

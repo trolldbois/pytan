@@ -10,7 +10,7 @@ from .base import BaseType
 
 class MetadataList(BaseType):
 
-    _soap_tag = 'metadata_list'
+    _soap_tag = 'metadata'
 
     def __init__(self):
         BaseType.__init__(

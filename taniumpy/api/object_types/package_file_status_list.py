@@ -10,7 +10,7 @@ from .base import BaseType
 
 class PackageFileStatusList(BaseType):
 
-    _soap_tag = 'package_file_status_list'
+    _soap_tag = 'file_status'
 
     def __init__(self):
         BaseType.__init__(
