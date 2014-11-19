@@ -330,6 +330,7 @@ class Session(object):
         response_body = self._http_post(
             url=self.SOAP_RES, body=request_body, headers=headers,
         )
+
         self.last['received'] = datetime.now()
         elapsed = self.last['received'] - self.last['sent']
         self.last['elapsed'] = elapsed
@@ -372,4 +373,10 @@ class Session(object):
         # update session_id, in case new one issued
         self.session_id = response_body_el.find('.//session').text
 
+        '''to fix elementtree from thowing:
+        UnicodeEncodeError: 'ascii' codec can't encode character
+        u'\xa0' in position 5705: ordinal not in range(128)
+        '''
+        response_body = response_body.decode('utf-8')
+        response_body = response_body.replace(u"\xa0", u" ")
         return response_body

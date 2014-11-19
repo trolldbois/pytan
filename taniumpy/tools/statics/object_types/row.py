@@ -13,6 +13,18 @@ class Row(object):
         self.vals = []
         self.columns = columns
 
+    def __str__(self):
+        class_name = self.__class__.__name__
+        val = ', '.join([
+            "{}:{}".format(
+                self.columns[i].display_name,
+                len(str(self.vals[i])),
+            )
+            for i, _ in enumerate(self.columns)
+        ])
+        ret = '{}: {}'.format(class_name, val)
+        return ret
+
     @classmethod
     def fromSOAPElement(cls, el, columns):
         row = Row(columns)
@@ -22,9 +34,11 @@ class Row(object):
         val = el.find("cid")
         if val is not None:
             row.cid = val.text
-        vals = el.findall("c/v")
-        for val in vals:
-            row.vals.append(val.text)
+        row_cols = el.findall("c")
+        for rc in row_cols:
+            row_vals = rc.findall("v")
+            vals_text = [v.text for v in row_vals]
+            row.vals.append(vals_text)
         return row
 
     def __len__(self):

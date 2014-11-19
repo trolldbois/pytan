@@ -1,3 +1,4 @@
+from .sensor_types import SENSOR_TYPE_MAP
 
 
 class Column(object):
@@ -6,6 +7,12 @@ class Column(object):
         self.what_hash = None
         self.display_name = None
         self.result_type = None
+
+    def __str__(self):
+        class_name = self.__class__.__name__
+        val = self.display_name
+        ret = '{}: {}'.format(class_name, val)
+        return ret
 
     @classmethod
     def fromSOAPElement(cls, el):
@@ -18,5 +25,10 @@ class Column(object):
             result.display_name = val.text
         val = el.find('rt')
         if val is not None:
-            result.result_type = int(val.text)
+            val = int(val.text)
+            if val in SENSOR_TYPE_MAP:
+                result.result_type = SENSOR_TYPE_MAP[val]
+            else:
+                result.result_type = int(val)
+
         return result

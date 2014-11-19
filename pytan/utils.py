@@ -8,7 +8,6 @@ import sys
 # disable python from creating .pyc files everywhere
 sys.dont_write_bytecode = True
 
-import traceback
 import socket
 import time
 import getpass
@@ -17,14 +16,8 @@ import json
 import itertools
 import re
 from collections import OrderedDict
-# from datetime import datetime
 from . import __version__
-# from .packages import requests
-# from .exceptions import HttpError
 from . import constants
-
-# disable warning messages about insecure HTTPS validation
-# requests.packages.urllib3.disable_warnings()
 
 
 def version_check(reqver):
@@ -42,22 +35,8 @@ def version_check(reqver):
     logging.debug(log_tpl(s, __file__, __version__, reqver))
 
 
-def utf_clean(v, e='utf-8'):
-    if is_str(v):
-        v = v.replace(u"\xa0", u" ")
-        v = v.encode(e)
-    return v
-
-
 def jsonify(v, indent=4, sort_keys=True):
     return json.dumps(v, indent=indent, sort_keys=sort_keys)
-
-
-def jsonprocessor(path, key, value):
-    try:
-        return key, json.loads(value)
-    except:
-        return key, value
 
 
 def is_list(l):
@@ -74,15 +53,6 @@ def is_dict(l):
 
 def is_num(l):
     return type(l) in [float, int, long]
-
-
-def get_caller_method():
-    stack = traceback.extract_stack()
-    # for x, y in enumerate(stack):
-        # print x, y
-    caller_stack = stack[-3]
-    caller_method = caller_stack[2]
-    return caller_method
 
 
 def prompt_username():
@@ -319,86 +289,3 @@ def write_object(handler, response, tgrp_args):
     print "++ Creating Report: ", json.dumps(tgrp_args)
     report_file = handler.reporter.write_response(response, **tgrp_args)
     print "++ Report created: ", report_file
-
-
-def parse_query_objects(args, prefixes):
-    if is_list(args):
-        return [parse_query_objects(i, prefixes) for i in args]
-    p = {}
-    args = str(args)
-    for prefix in prefixes:
-        inner_pre = prefix + ':'
-        # print "args: ", args
-        # print "inner_pre: ", inner_pre
-        if args.startswith(inner_pre):
-            p = {prefix: args.lstrip(inner_pre)}
-            # print "p: ", p
-            break
-    if not p:
-        p = {prefixes[0]: args}
-        # print "pdef: ", p
-    return p
-
-
-# def http_get(url, headers=None):
-#     """perform an HTTP get using the requests module - this is
-#     so we always bypass SSL verification, and wrap exceptions into a
-#     requests-like object
-#     """
-#     er1_tpl = "SSL Error in HTTP GET to {!r}: {}".format
-#     if headers is None:
-#         headers = {}
-#     try:
-#         ret = requests.get(url, verify=False, headers=headers)
-#     except requests.exceptions.SSLError as e:
-#         raise HttpError(er1_tpl(url, e))
-#     return ret
-
-
-# def http_post(url, data, headers=None):
-#     """perform an HTTP post using the requests module - this is
-#     so we always bypass SSL verification, and wrap exceptions into a
-#     requests-like object
-#     """
-#     er1_tpl = "SSL Error in HTTP POST to {!r}: {}".format
-#     if headers is None:
-#         headers = {}
-#     try:
-#         ret = requests.post(url, data=data, verify=False, headers=headers)
-#     except requests.exceptions.SSLError as e:
-#         raise HttpError(er1_tpl(url, e))
-#     return ret
-
-
-# def soap_post(data, soap_url):
-#     """uses http_post to perform a SOAPAction call to url with data"""
-#     # if not url:
-#         # url = self.soap_url
-#     headers = {'SOAPAction': '""'}
-#     ret = http_post(url=soap_url, data=data, headers=headers)
-#     return ret
-
-
-def check_single_query(query):
-    err_tpl = (
-        "Too many list items!! string or list with single string "
-        "required, you passed in {}"
-    ).format
-
-    if is_list(query):
-        if len(query) != 1:
-            raise Exception(err_tpl(query))
-
-
-def page_ok(page):
-    """return True if the page object is not None and has a status code
-    of 200
-    """
-    valid_status = [200]
-    page_ok = False
-    if not page:
-        return page_ok
-    if page.status_code not in valid_status:
-        return page_ok
-    page_ok = True
-    return page_ok

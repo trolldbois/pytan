@@ -8,7 +8,7 @@ Like saran wrap. But not.
 This requires Python 2.7
 """
 import sys
-
+import os
 # disable python from creating .pyc files everywhere
 sys.dont_write_bytecode = True
 
@@ -18,13 +18,24 @@ from .exceptions import AppError
 from . import constants
 # from .reports import Reporter
 # from . import req
-from . import api
+
+my_file = os.path.abspath(__file__)
+my_dir = os.path.dirname(my_file)
+parent_dir = os.path.dirname(my_dir)
+api_dir = os.path.join(parent_dir, 'taniumpy')
+path_adds = [parent_dir, api_dir]
+
+for aa in path_adds:
+    if aa not in sys.path:
+        sys.path.append(aa)
+
+import api
 
 mylog = logging.getLogger("pytan.handler")
 
 
 def progressChanged(asker, pct):
-    mylog.info("{}: %{}".format(asker, pct))
+    mylog.info("ProgressChanged on {0}: %{1:.2f} done...".format(asker, pct))
 
 
 class Handler(object):
@@ -85,6 +96,7 @@ class Handler(object):
         asker.run({'ProgressChanged': progressChanged})
         req_kwargs = self._get_req_kwargs(**kwargs)
         result = self.session.getResultData(q_obj, **req_kwargs)
+        result.asker = asker
         return result
 
     def ask(self, qtype, **kwargs):
