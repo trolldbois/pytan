@@ -1,6 +1,5 @@
 # TODO NOW
  * [ ] auto wsdl generator
-     * [ ] ResultSet needs a write_csv (and json) too
      * [ ] figure out ask manual question
      * [ ] integrate reporting into handler
      * [ ] figure out deploy action
@@ -8,6 +7,7 @@
      * [ ] figure out the "create" object for every type that i'm supporting for "get"
      * [ ] update all bin/ scripts to work with new handler
      * [ ] update all unit tests to work with new handler
+     * [ ] ResultSet needs a write_json
  * [ ] get parsed q patch from jwk
  * [ ] incorporate mdocbuild for bin scripts
  * [ ] update readme
@@ -63,3 +63,5 @@
   * 0.7.0
     * [X] support sensors filters/options/params for manual questions
     * [X] support whole question filters/options for manual questions
+    * [ ] auto wsdl generator
+      * [X] ResultSet needs a write_csv
