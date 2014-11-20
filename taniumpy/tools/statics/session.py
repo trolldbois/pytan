@@ -249,11 +249,13 @@ class Session(object):
         return body
 
     def _createAddObjectBody(self, obj, **kwargs):
+        obj_soap = obj.toSOAPBody(minimal=True)
+
         obj_body = self.FORMATTER(
             self.REQUEST_BODY,
             self.session_id,
             self.ADD_OBJECT,
-            obj.toSOAPBody(),
+            obj_soap,
             **kwargs
         )
         return obj_body
