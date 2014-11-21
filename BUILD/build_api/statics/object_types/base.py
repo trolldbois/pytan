@@ -14,11 +14,8 @@ class IncorrectTypeException(Exception):
         self.property = property
         self.expected = expected
         self.actual = actual
-        Exception.__init__(self,
-            'Property {} is not of type {}, got {}'.format(
-                property,
-                str(expected),
-                str(actual)))
+        err = 'Property {} is not of type {}, got {}'.format
+        Exception.__init__(self, err(property, str(expected), str(actual)))
 
 
 class BaseType(object):
@@ -87,9 +84,11 @@ class BaseType(object):
                 self._initialized and \
                 name in self._complex_properties:
             if not isinstance(value, self._complex_properties[name]):
-                raise IncorrectTypeException(value,
+                raise IncorrectTypeException(
+                    value,
                     self._complex_properties[name],
-                    type(value))
+                    type(value)
+                )
         super(BaseType, self).__setattr__(name, value)
 
     def append(self, n):
@@ -197,12 +196,16 @@ class BaseType(object):
         result = {}
         if type(val) == list:
             for i, v in enumerate(val):
-                result.update(self.flatten_jsonable(v,
-                    '_'.join([prefix, str(i)])))
+                result.update(self.flatten_jsonable(
+                    v,
+                    '_'.join([prefix, str(i)]))
+                )
         elif type(val) == dict:
             for k, v in val.iteritems():
-                result.update(self.flatten_jsonable(v,
-                    '_'.join([prefix, k] if prefix else k)))
+                result.update(self.flatten_jsonable(
+                    v,
+                    '_'.join([prefix, k] if prefix else k))
+                )
         else:
             result[prefix] = val
         return result
@@ -215,15 +218,16 @@ class BaseType(object):
         except Exception:
             return None
 
-    def to_flat_dict(self, prefix='', explode_json_string_values=False):
-        """Convert the object to a dict, flattening any lists or nested types"""
+    def to_flat_dict(self, prefix='', explode_json=False):
+        """Convert the object to a dict, flattening any lists or nested types
+        """
         result = {}
         prop_start = '{}_'.format(prefix) if prefix else ''
         for p, _ in self._simple_properties.iteritems():
             val = getattr(self, p)
             if val is not None:
                 json_out = None
-                if explode_json_string_values:
+                if explode_json:
                     json_out = self.to_flat_dict_explode_json(val, p)
                 if json_out is not None:
                     result.update(json_out)
@@ -232,16 +236,20 @@ class BaseType(object):
         for p, _ in self._complex_properties.iteritems():
             val = getattr(self, p)
             if val is not None:
-                result.update(val.to_flat_dict(prefix = '{}{}'.format(prop_start, p),
-                    explode_json_string_values=explode_json_string_values))
+                result.update(val.to_flat_dict(
+                    prefix='{}{}'.format(prop_start, p),
+                    explode_json=explode_json,
+                ))
         for p, _ in self._list_properties.iteritems():
             val = getattr(self, p)
             if val is not None:
                 for ind, item in enumerate(val):
                     prefix = '{}{}_{}'.format(prop_start, p, ind)
                     if isinstance(item, BaseType):
-                        result.update(item.to_flat_dict(prefix = prefix,
-                            explode_json_string_values=explode_json_string_values))
+                        result.update(item.to_flat_dict(
+                            prefix=prefix,
+                            explode_json=explode_json,
+                        ))
                     else:
                         result[prefix] = item
         return result
@@ -252,7 +260,7 @@ class BaseType(object):
         except Exception:
             return None
 
-    def to_jsonable(self, explode_json_string_values=False, include_type=True):
+    def to_jsonable(self, explode_json=False, include_type=True):
         result = {}
         if include_type:
             result['_type'] = self._soap_tag
@@ -260,7 +268,7 @@ class BaseType(object):
             val = getattr(self, p)
             if val is not None:
                 json_out = None
-                if explode_json_string_values:
+                if explode_json:
                     json_out = self.explode_json(val)
                 if json_out is not None:
                     result[p] = json_out
@@ -270,7 +278,7 @@ class BaseType(object):
             val = getattr(self, p)
             if val is not None:
                 result[p] = val.to_jsonable(
-                    explode_json_string_values=explode_json_string_values,
+                    explode_json=explode_json,
                     include_type=include_type)
         for p, _ in self._list_properties.iteritems():
             val = getattr(self, p)
@@ -279,7 +287,7 @@ class BaseType(object):
                 for ind, item in enumerate(val):
                     if isinstance(item, BaseType):
                         result[p].append(item.to_jsonable(
-                            explode_json_string_values=explode_json_string_values,
+                            explode_json=explode_json,
                             include_type=include_type))
                     else:
                         result[p].append(item)
@@ -294,7 +302,9 @@ class BaseType(object):
 
         """
         if type(jsonable) == list:
-            return json.dumps([item.to_jsonable(**kwargs) for item in jsonable])
+            return json.dumps(
+                [item.to_jsonable(**kwargs) for item in jsonable]
+            )
         else:
             return json.dumps(jsonable.to_jsonable(**kwargs))
 
@@ -324,14 +334,16 @@ class BaseType(object):
 
     @staticmethod
     def from_jsonable(jsonable):
-        """Inverse of to_jsonable, with explode_json_string_values=False.
+        """Inverse of to_jsonable, with explode_json=False.
 
-        This can be used to import objects from serialized JSON. This JSON should
-        come from BaseType.to_jsonable(explode_json_string=False, include+type=True)
+        This can be used to import objects from serialized JSON. This JSON
+        should come from BaseType.to_jsonable(explode_json=False,
+        include+type=True)
 
         Example:
         with open('question_list.json') as fd:
-            questions = json.loads(fd.read())  # is a list of serialized questions
+            questions = json.loads(fd.read())
+               # is a list of serialized questions
             question_objects = BaseType.from_jsonable(questions)
             # will return a list of api.Question
 
@@ -350,33 +362,72 @@ class BaseType(object):
             raise Exception('Expected list or dict to deserialize')
 
     @staticmethod
-    def write_csv(fd, val, explode_json_string_values=False):
-        """Write 'val' to CSV. val can be a BaseType instance or a list of BaseType
+    def write_csv(fd, val, explode_json=False, **kwargs):
+        """Write 'val' to CSV. val can be a BaseType instance or a list of
+        BaseType
 
         This does a two-pass, calling to_flat_dict for each object, then
         finding the union of all headers,
         then writing out the value of each column for each object
         sorted by header name
 
-        explode_json_string_values attempts to see if any of the str values
+        explode_json attempts to see if any of the str values
         are parseable by json.loads, and if so treat each property as a column
         value
 
         fd is a file-like object
         """
+        def sort_headers(headers, **kwargs):
+            '''returns a list of sorted headers (Column names)
+            If kwargs has 'header_sort':
+              if header_sort == False, do no sorting
+              if header_sort == [], do sorted(headers)
+              if header_sort == ['col1', 'col2'], do sorted(headers), then
+                put those headers first in order if they exist
+            '''
+            header_sort = kwargs.get('header_sort', [])
+
+            if header_sort is False:
+                return headers
+
+            if not type(header_sort) in [list, tuple]:
+                raise Exception("header_sort must be a list!")
+
+            headers = sorted(headers)
+            if not header_sort:
+                return headers
+
+            custom_sorted_headers = []
+            for hs in header_sort:
+                for hidx, h in enumerate(headers):
+                    if h.lower() == hs.lower():
+                        custom_sorted_headers.append(headers.pop(hidx))
+
+            # append the rest of the sorted_headers that didn't
+            # match header_sort
+            custom_sorted_headers += headers
+            return custom_sorted_headers
+
+        def fix_newlines(val):
+            if type(val) == str:
+            # turn \n into \r\n
+                val = re.sub(r"([^\r])\n", r"\1\r\n", val)
+            return val
+
         base_type_list = [val] if isinstance(val, BaseType) else val
         headers = set()
         for base_type in base_type_list:
-            row = base_type.to_flat_dict(explode_json_string_values=explode_json_string_values)
+            row = base_type.to_flat_dict(explode_json=explode_json)
             for col in row:
                 headers.add(col)
-        writer = csv.writer(fd)
-        headers_sorted = sorted([h for h in headers])
-        writer.writerow(headers_sorted)
-        def fix_newlines(val):
-            # turn \n into \r\n
-            return re.sub(r"([^\r])\n", r"\1\r\n", val) if type(val) == str else val
-        for base_type in base_type_list:
-            row = base_type.to_flat_dict(explode_json_string_values=explode_json_string_values)
-            writer.writerow([fix_newlines(row.get(col, '')) for col in headers_sorted])
 
+        writer = csv.writer(fd)
+
+        headers_sorted = sort_headers(list(headers), **kwargs)
+        writer.writerow(headers_sorted)
+
+        for base_type in base_type_list:
+            row = base_type.to_flat_dict(explode_json=explode_json)
+            writer.writerow(
+                [fix_newlines(row.get(col, '')) for col in headers_sorted]
+            )
