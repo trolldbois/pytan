@@ -1,0 +1,51 @@
+{
+    "ask_manual_question_invalid_sensor": {
+        "method": "ask",
+        "args": {
+            "qtype": "manual",
+            "sensor_defs": "Dweedle Dee and Dum"
+        }
+    },
+    "ask_manual_human_question_invalid_sensor": {
+        "method": "ask",
+        "args": {
+            "qtype": "manual_human",
+            "sensors": "IP Sensor, that ipaddress = 127.0.0.1"
+        }
+    },
+    "ask_manual_human_question_invalid_filter": {
+        "method": "ask",
+        "args": {
+            "qtype": "manual_human",
+            "sensors": "Computer name, that does not meet little"
+        }
+    },
+    "ask_manual_human_question_toomanyparams": {
+        "method": "ask",
+        "args": {
+            "qtype": "manual_human",
+            "sensors": "Folder Name Search with RegEx Match{dirname=Program Files,regex=.*}{}"
+        }
+    },
+    "ask_manual_question_filterhelp": {
+        "method": "ask",
+        "args": {
+            "qtype": "manual_human",
+            "sensors": "Operating system, that help"
+        }
+    },
+    "ask_manual_question_optionhelp": {
+        "method": "ask",
+        "args": {
+            "qtype": "manual_human",
+            "sensors": "Operating system, opt:help"
+        }
+    },
+    "ask_manual_human_question_param_missing_keysplit": {
+        "method": "ask",
+        "args": {
+            "qtype": "manual_human",
+            "sensors": "Computer Name{Dweedle}"
+        }
+    }
+}

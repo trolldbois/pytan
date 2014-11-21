@@ -1,15 +1,15 @@
 # TODO NOW
  * [ ] auto wsdl generator
      * [X] figure out ask manual question
-     * [ ] UNIT TESTS UPDATE
+     * [X] UNIT TESTS UPDATE
      * [ ] integrate reporting into handler
+     * [ ] update all bin/ scripts to work with new handler
+     * [ ] 
      * [ ] figure out deploy action
      * [ ] figure out the "update" object for every type that i'm supporting for "get"
      * [ ] figure out the "create" object for every type that i'm supporting for "get"
-     * [ ] update all bin/ scripts to work with new handler
      * [ ] update all unit tests to work with new handler
      * [ ] ResultSet needs a write_json
- * [ ] get parsed q patch from jwk
  * [ ] incorporate mdocbuild for bin scripts
  * [ ] update readme
  * [ ] update sensor help for ask_manual_quesiton.py to describe params

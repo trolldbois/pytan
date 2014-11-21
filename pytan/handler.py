@@ -96,31 +96,33 @@ class Handler(object):
             q_options = []
 
         sensor_defs = dehumanize_sensors(sensors)
-        q_filters = dehumanize_question_filters(q_filters)
-        q_options = dehumanize_question_options(q_options)
+        q_filter_defs = dehumanize_question_filters(q_filters)
+        q_option_defs = dehumanize_question_options(q_options)
 
         result = self.ask_manual(
             q_obj_map=q_obj_map,
             sensor_defs=sensor_defs,
-            question_filters=q_filters,
-            question_options=q_options,
+            question_filter_defs=q_filter_defs,
+            question_option_defs=q_option_defs,
             **kwargs
         )
         return result
 
     def ask_manual(self, q_obj_map, sensor_defs=None, **kwargs):
-        q_filters = kwargs.get('question_filters', None)
-        q_options = kwargs.get('question_options', None)
+        q_filter_defs = kwargs.get('question_filter_defs', None)
+        q_option_defs = kwargs.get('question_option_defs', None)
 
         sensor_defs = self._parse_sensor_defs(sensor_defs)
-        q_filters = self._parse_q_filters(q_filters)
-        q_options = self._parse_q_options(q_options)
+        q_filter_defs = self._parse_q_filter_defs(q_filter_defs)
+        q_option_defs = self._parse_q_option_defs(q_option_defs)
 
         sensor_defs = self._validate_sensor_defs(sensor_defs)
-        q_filters = self._validate_q_filters(q_filters, q_options)
+        q_filter_defs = self._validate_q_filter_defs(
+            q_filter_defs, q_option_defs,
+        )
 
         add_q_obj = self._build_manual_q(
-            q_obj_map, sensor_defs, q_filters, q_options,
+            q_obj_map, sensor_defs, q_filter_defs, q_option_defs,
         )
 
         q_obj = self.session.add(add_q_obj)
@@ -213,55 +215,56 @@ class Handler(object):
             setattr(obj, k, v)
         return obj
 
-    def _build_manual_q(self, q_obj_map, sensor_defs, q_filters, q_options):
+    def _build_manual_q(self, q_obj_map, sensor_defs, q_filter_defs,
+                        q_option_defs):
 
         select_objlist = api.SelectList()
         select_objlist.select = [d['select_obj'] for d in sensor_defs]
 
         filter_objlist = api.FilterList()
-        filter_objlist.filter = [d['filter_obj'] for d in q_filters]
+        filter_objlist.filter = [d['filter_obj'] for d in q_filter_defs]
 
         group_obj = api.Group()
         group_obj.filters = filter_objlist
-        group_obj = self._apply_options_obj(q_options, group_obj, 'group')
+        group_obj = self._apply_options_obj(q_option_defs, group_obj, 'group')
 
         add_q_obj = getattr(api, q_obj_map['api'])()
         add_q_obj.selects = select_objlist
         add_q_obj.group = group_obj
         return add_q_obj
 
-    def _parse_q_options(self, q_options):
+    def _parse_q_option_defs(self, q_option_defs):
 
-        if q_options is None:
+        if q_option_defs is None:
             return {}
 
         # type checking for required keys
-        if not utils.is_dict(q_options):
+        if not utils.is_dict(q_option_defs):
             err = (
                 "Unexpected Question Option type {}: {}! -- "
                 "Must be a dictionary!"
             ).format
-            raise HandlerError(err(type(q_options), q_options))
-        return q_options
+            raise HandlerError(err(type(q_option_defs), q_option_defs))
+        return q_option_defs
 
-    def _parse_q_filters(self, q_filters):
+    def _parse_q_filter_defs(self, q_filter_defs):
         new_defs = []
 
-        if q_filters is None:
+        if q_filter_defs is None:
             return new_defs
 
         # type checking for required keys
-        if utils.is_dict(q_filters):
-            new_defs.append(q_filters)
-        elif utils.is_list(q_filters):
-            for k in q_filters:
+        if utils.is_dict(q_filter_defs):
+            new_defs.append(q_filter_defs)
+        elif utils.is_list(q_filter_defs):
+            for k in q_filter_defs:
                 new_defs += self._parse_sensor_defs(k)
         else:
             err = (
                 "Unexpected Question Filter type {}: {}! -- "
                 "Must be a list or dictionary!"
             ).format
-            raise HandlerError(err(type(q_filters), q_filters))
+            raise HandlerError(err(type(q_filter_defs), q_filter_defs))
         return new_defs
 
     def _parse_sensor_defs(self, sensor_defs):
@@ -286,11 +289,11 @@ class Handler(object):
             raise HandlerError(err(type(sensor_defs), sensor_defs))
         return new_defs
 
-    def _validate_q_filters(self, q_filters, q_options):
+    def _validate_q_filter_defs(self, q_filter_defs, q_option_defs):
         s_obj_map = constants.GET_OBJ_MAP['sensor']
         search_keys = s_obj_map['search']
 
-        for d in q_filters:
+        for d in q_filter_defs:
             # value checking for required keys
             def_search = {s: d.get(s, '') for s in search_keys if d.get(s, '')}
 
@@ -313,14 +316,14 @@ class Handler(object):
 
             # update filter_obj with any options
             filter_obj = self._apply_options_obj(
-                q_options, filter_obj, 'filter',
+                q_option_defs, filter_obj, 'filter',
             )
 
             d['sensor_obj'] = sensor_obj
             d['filter_obj'] = filter_obj
 
             # TODO: if 'help' in options/filter/type: print help
-        return q_filters
+        return q_filter_defs
 
     def _validate_sensor_defs(self, sensor_defs):
         s_obj_map = constants.GET_OBJ_MAP['sensor']

@@ -71,7 +71,7 @@ def dehumanize_question_filters(question_filters):
 
 def dehumanize_question_options(question_options):
     if not question_options:
-        return []
+        return {}
 
     if not utils.is_list(question_options):
         question_options = [question_options]
@@ -130,7 +130,7 @@ def extract_params(s):
     for sp in split_param:
         # sp = 'dirname=Program Files'
         if constants.PARAM_KEY_SPLIT not in sp:
-            err = "Parameter {} missing key/value splitter ({})"
+            err = "Parameter {} missing key/value splitter ({})".format
             raise ManualParserError(err(sp, constants.PARAM_KEY_SPLIT))
         sp_key, sp_value = sp.split(constants.PARAM_KEY_SPLIT, 1)
         ## sp_key = dirname
@@ -155,7 +155,7 @@ def extract_options(s,):
     ## split_option = ['Folder Name Search with RegEx Match, that is .*', \
     ## 'max_data_age:3600', 'ignore_case']
 
-    parsed_options = []
+    parsed_options = {}
 
     # if options parsed out from s
     if len(split_option) > 1:
@@ -237,7 +237,7 @@ def extract_filter(s):
     split_filter = constants.FILTER_RE.split(s)
     ## split_filter = ['Folder Name Search with RegEx Match', ' is .*']
 
-    parsed_filter = ''
+    parsed_filter = {}
 
     # if filter parsed out from s
     if len(split_filter) > 1:

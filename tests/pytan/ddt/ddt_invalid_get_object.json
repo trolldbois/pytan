@@ -1,0 +1,18 @@
+{
+    "get_action_object_single_by_name": {
+        "method": "get",
+        "args": {
+            "obj": "action",
+            "name": "Distribute Tanium Standard Utilities"
+        },
+        "tests": ["len(response) == 1"]
+    },
+    "get_question_object_fail_by_name": {
+        "method": "get",
+        "args": {
+            "obj": "question",
+            "name": "dweedle"
+        },
+        "tests": ["len(response) == 1"]
+    }
+}
