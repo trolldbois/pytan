@@ -1,6 +1,7 @@
 # TODO NOW
  * [ ] auto wsdl generator
-     * [ ] figure out ask manual question
+     * [X] figure out ask manual question
+     * [ ] UNIT TESTS UPDATE
      * [ ] integrate reporting into handler
      * [ ] figure out deploy action
      * [ ] figure out the "update" object for every type that i'm supporting for "get"
