@@ -33,55 +33,113 @@ args = parser.parse_args()
 handler_args = args.__dict__
 
 handler = pytan.Handler(**handler_args)
-# reporter = Reporter()
 
 if handler_args['loglevel'] >= 10:
     pytan.utils.set_all_loglevels()
 
 print ("%s -- now available as 'handler'!" % handler)
-# print ("%s -- now available as 'reporter'!" % reporter)
-
-# ask saved question:
-# this saved q text is:
-# Get Computer Name and Operating System and IP Address and IP Route Details
-# and Installed Applications from all machines
-r = handler.ask('saved', name='Manually Created Complex Saved Question')
-sensors = [x.sensor for x in r.asker.question.question.selects]
-with open('die.csv', 'w') as fd:
-    r.write_csv(fd, r)
-
-with open('die_sensors.csv', 'w') as fd:
-    r.write_csv(fd, r, header_add_sensor=True, sensors=sensors)
 
 
-with open('die_sensors_type.csv', 'w') as fd:
-    r.write_csv(
-        fd,
-        r,
-        header_add_sensor=True,
-        sensors=sensors,
-        header_add_type=True,
+'''ask_manual_human example'''
+
+sensors = [
+    (
+        'Folder Name Search with RegEx Match{dirname=Program Files,regex=.*}'
+        ', that is .*, opt:max_data_age:3600, opt:ignore_case, '
+        'opt:match_any_value'
     )
+]
 
-header_sort = ['Computer Name', 'Operating System']
+question_filters = [
+    'Operating System, that contains Windows'
+]
 
-with open('die_sensors_type_sort.csv', 'w') as fd:
-    r.write_csv(
+question_options = [
+    'max_data_age:3600', 'ignore_case', 'and',
+]
+
+result = handler.ask(
+    qtype='manual_human',
+    sensors=sensors,
+    question_filters=question_filters,
+    question_options=question_options,
+)
+
+
+sensor_hashes = [x.hash for x in result.sensors]
+column_hashes = [x.what_hash for x in result.columns]
+missing_hashes = [
+    x for x in column_hashes if x not in sensor_hashes and x > 1
+]
+missing_sensors = handler.get('sensor', hash=missing_hashes)
+sensors = result.sensors + list(missing_sensors)
+
+with open('die_manualq1.csv', 'w') as fd:
+    result.write_csv(
         fd,
-        r,
+        result,
         header_add_sensor=True,
         sensors=sensors,
         header_add_type=True,
-        header_sort=header_sort,
         expand_grouped_columns=True,
     )
 
-# # write sensor objects out:
-# r = handler.get_all('sensor')
-# if hasattr(r, '_list_properties'):
-#     report_on = getattr(r, r._list_properties.keys()[0])
-# else:
-#     report_on = r
 
-# with open('die.csv', 'w') as fd:
-#     r.write_csv(fd, report_on, explode_json_string_values=True)
+'''ask_manual example'''
+sensor_defs = [
+    {
+        "name": "Computer Name",
+    },
+    {
+        "name": "Folder Name Search with RegEx Match",
+        'params': {'dirname': 'Program Files'},
+        'filter': {"operator": "RegexMatch", "not_flag": 0, "value": ".*"},
+        'options': {
+            'max_age_seconds': 3600,
+            'ignore_case_flag': 0,
+            'value_type': 'string',
+        },
+    },
+]
+
+q_filters = [
+    {
+        "name": "Operating System",
+        "filter": {
+            'operator': "RegexMatch",
+            'not_flag': 0,
+            'value': ".*Windows.*",
+        },
+    },
+]
+
+q_options = {
+    'max_age_seconds': 3600,
+    'ignore_case_flag': 0,
+    'and_flag': 0,
+}
+
+result = handler.ask(
+    qtype='manual',
+    sensor_defs=sensor_defs,
+    question_filters=q_filters,
+    question_options=q_options,
+)
+
+sensor_hashes = [x.hash for x in result.sensors]
+column_hashes = [x.what_hash for x in result.columns]
+missing_hashes = [
+    x for x in column_hashes if x not in sensor_hashes and x > 1
+]
+missing_sensors = handler.get('sensor', hash=missing_hashes)
+sensors = result.sensors + list(missing_sensors)
+
+with open('die_manualq2.csv', 'w') as fd:
+    result.write_csv(
+        fd,
+        result,
+        header_add_sensor=True,
+        sensors=sensors,
+        header_add_type=True,
+        expand_grouped_columns=True,
+    )

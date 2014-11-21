@@ -27,19 +27,49 @@ LOG_LEVEL_MAPS = [
     (
         0,
         {
-            'pytan.handler': 'INFO',
+            'handler': 'INFO',
+            'ask_manual': 'WARN',
+            'ask_manual_human': 'WARN',
             'api.session': 'WARN',
             'api.session.auth': 'WARN',
             'api.session.http': 'WARN',
             'api.session.http.body': 'WARN',
         }
     ),
-    (1, {'pytan.handler': 'DEBUG'}),
-    (2, {'api.session': 'DEBUG'}),
-    (3, {'api.session.auth': 'DEBUG'}),
-    (4, {'api.session.http': 'DEBUG'}),
-    (5, {'api.session.http.body': 'DEBUG'}),
+    (1, {'handler': 'DEBUG'}),
+    (2, {'ask_manual': 'DEBUG'}),
+    (3, {'ask_manual_human': 'DEBUG'}),
+    (7, {'api.session': 'DEBUG'}),
+    (8, {'api.session.auth': 'DEBUG'}),
+    (9, {'api.session.http': 'DEBUG'}),
+    (10, {'api.session.http.body': 'DEBUG'}),
 ]
+
+SENSOR_TYPE_MAP = {
+    0: 'Hash',
+    # SENSOR_RESULT_TYPE_STRING
+    1: 'String',
+    # SENSOR_RESULT_TYPE_VERSION
+    2: 'Version',
+    # SENSOR_RESULT_TYPE_NUMERIC
+    3: 'NumericDecimal',
+    # SENSOR_RESULT_TYPE_DATE_BES
+    4: 'BESDate',
+    # SENSOR_RESULT_TYPE_IPADDRESS
+    5: 'IPAddress',
+    # SENSOR_RESULT_TYPE_DATE_WMI
+    6: 'WMIDate',
+    #  e.g. "2 years, 3 months, 18 days, 4 hours, 22 minutes:
+    # 'TimeDiff', and 3.67 seconds" or "4.2 hours"
+    # (numeric + "Y|MO|W|D|H|M|S" units)
+    7: 'TimeDiff',
+    #  e.g. 125MB or 23K or 34.2Gig (numeric + B|K|M|G|T units)
+    8: 'DataSize',
+    9: 'NumericInteger',
+    10: 'VariousDate',
+    11: 'RegexMatch',
+    12: 'LastOperatorType',
+}
 
 GET_OBJ_MAP = {
     'action': {
@@ -120,8 +150,16 @@ GET_OBJ_MAP = {
 Q_OBJ_MAP = {
     'saved': {
         'api': 'SavedQuestion',
-        'handler': '_ask_saved',
-    }
+        'handler': 'ask_saved',
+    },
+    'manual': {
+        'api': 'Question',
+        'handler': 'ask_manual',
+    },
+    'manual_human': {
+        'api': 'Question',
+        'handler': 'ask_manual_human',
+    },
 }
 
 REQ_KWARGS = [
@@ -159,10 +197,6 @@ REQ_KWARGS = [
     'json_pretty_print',
 ]
 
-# Used by pytan.reports.Reporter.parse_resultxml() to determine what the
-# numeric type value for a column maps to
-
-
 # Used by pytan.reports.Reporter.write_response() to determine
 # supported formats
 TRANSFORM_FORMATS = {
@@ -193,97 +227,73 @@ TRANSFORM_BOOL_HELP = {
     "sensor related rows",
 }
 
-# Used by pytan.reports.Reporter.write_response() for kwargs
-# defaults for passthrus for sort_headers():
-TRANSFORM_HEADER_SORT_PRIORITY = [
-    'name',
-    'id',
-    'description',
-    'hash',
-    'value_type',
-]
-
-# Used by pytan.req.AskManualQuestionRequest.parse_params() to extract
-# params from the sensor name
-PARAM_RE = re.compile(r'\[(.*?)\]')
-
-# Used by pytan.req.AskManualQuestionRequest.parse_params() to split
-# the params by unescaped commas
+PARAM_RE = re.compile(r'\{(.*?)\}')
 PARAM_SPLIT_RE = re.compile(r'(?<!\\),')
-
-# Used by pytan.req.AskManualQuestionRequest.parse_question_filters()
-# and parse_filter() to find filters in a string
+PARAM_KEY_SPLIT = '='
 FILTER_RE = re.compile(r',\s*that', re.IGNORECASE)
-
-# Used by pytan.req.AskManualQuestionRequest.parse_question_filters()
-# and parse_options() to find filters in a string
 OPTION_RE = re.compile(r',\s*opt:', re.IGNORECASE)
-
-# Used by pytan.req.AskManualQuestionRequest.build_objects_dict()
-# when creating the XML tag for a param name
+SELECTORS = ['id', 'name', 'hash']
 PARAM_DELIM = '||'
 
-# Used by pytan.req.AskManualQuestionRequest.get_fm_match() to
-# parse a sensor name for a filter
 FILTER_MAPS = [
     {
         'human': ['<', 'less', 'lt'],
         'operator': 'Less',
-        'not_flag': '0',
+        'not_flag': 0,
     },
     {
         'human': ['!<', 'notless', 'not less'],
         'operator': 'Less',
-        'not_flag': '1',
+        'not_flag': 1,
     },
     {
         'human': ['<=', 'less equal', 'lessequal', 'le'],
         'operator': 'LessEqual',
-        'not_flag': '0',
+        'not_flag': 0,
     },
     {
         'human': ['!<=', 'not less equal', 'not lessequal'],
         'operator': 'LessEqual',
-        'not_flag': '1',
+        'not_flag': 1,
     },
     {
         'human': ['>', 'greater', 'gt'],
         'operator': 'Greater',
-        'not_flag': '0',
+        'not_flag': 0,
     },
     {
         'human': ['!>', 'not greater', 'notgreater'],
         'operator': 'Greater',
-        'not_flag': '1',
+        'not_flag': 1,
     },
     {
         'human': ['=>', 'greater equal', 'greaterequal', 'ge'],
         'operator': 'GreaterEqual',
-        'not_flag': '0',
+        'not_flag': 0,
     },
     {
         'human': ['!=>', 'not greater equal', 'notgreaterequal'],
         'operator': 'GreaterEqual',
-        'not_flag': '1',
+        'not_flag': 1,
     },
     {
         'human': ['=', 'equal', 'equals', 'eq'],
         'operator': 'Equal',
-        'not_flag': '0',
+        'not_flag': 0,
     },
     {
         'human': [
             '!=', 'not equal', 'notequal', 'not equals', 'notequals', 'ne',
         ],
         'operator': 'Equal',
-        'not_flag': '0',
+        'not_flag': 0,
     },
     {
         'human': ['contains'],
         'operator': 'RegexMatch',
         'pre_value': '.*',
         'post_value': '.*',
-        'not_flag': '0',
+        'not_flag': 0,
     },
     {
         'human': [
@@ -292,13 +302,13 @@ FILTER_MAPS = [
         'operator': 'RegexMatch',
         'pre_value': '.*',
         'post_value': '.*',
-        'not_flag': '1',
+        'not_flag': 1,
     },
     {
         'human': ['starts with', 'startswith'],
         'operator': 'RegexMatch',
         'post_value': '.*',
-        'not_flag': '0',
+        'not_flag': 0,
     },
     {
         'human': [
@@ -307,13 +317,13 @@ FILTER_MAPS = [
         ],
         'operator': 'RegexMatch',
         'post_value': '.*',
-        'not_flag': '1',
+        'not_flag': 1,
     },
     {
         'human': ['ends with', 'endswith'],
         'operator': 'RegexMatch',
         'pre_value': '.*',
-        'not_flag': '0',
+        'not_flag': 0,
     },
     {
         'human': [
@@ -322,7 +332,7 @@ FILTER_MAPS = [
         ],
         'operator': 'RegexMatch',
         'pre_value': '.*',
-        'not_flag': '1',
+        'not_flag': 1,
     },
     {
         'human': [
@@ -330,61 +340,65 @@ FILTER_MAPS = [
             'notregexmatch', 'nre',
         ],
         'operator': 'RegexMatch',
-        'not_flag': '1',
+        'not_flag': 1,
     },
     {
         'human': ['is', 'regex', 'regex match', 'regexmatch', 're'],
         'operator': 'RegexMatch',
-        'not_flag': '0',
+        'not_flag': 0,
     },
 ]
 
-# Used by pytan.req.AskManualQuestionRequest.get_opt_match() to
-# parse a sensor name for options
 OPTION_MAPS = [
     {
         'human': 'ignore_case',
-        'operators': [{'ignore_case_flag': 1}],
+        'attrs': {'ignore_case_flag': 1},
         'destination': 'filter',
+        'valid_type': int,
     },
     {
         'human': 'match_case',
-        'operators': [{'ignore_case_flag': 0}],
+        'attrs': {'ignore_case_flag': 0},
         'destination': 'filter',
+        'valid_type': int,
     },
     {
         'human': 'match_any_value',
-        'operators': [{'all_values_flag': 0}, {'all_times_flag': 0}],
+        'attrs': {'all_values_flag': 0, 'all_times_flag': 0},
         'destination': 'filter',
+        'valid_type': int,
     },
     {
         'human': 'match_all_values',
-        'operators': [{'all_values_flag': 1}, {'all_times_flag': 1}],
+        'attrs': {'all_values_flag': 1, 'all_times_flag': 1},
         'destination': 'filter',
+        'valid_type': int,
     },
     {
         'human': 'max_data_age:',
-        'operator': 'max_age_seconds',
-        'value': 'seconds',
+        'attr': 'max_age_seconds',
+        'human_type': 'seconds',
+        'valid_type': int,
         'destination': 'filter',
     },
     {
+        'human': 'value_type:',
+        'attr': 'value_type',
+        'human_type': 'value_type',
+        'valid_values': 'constants.SENSOR_TYPE_MAP.values()',
+        'destination': 'filter',
+        'valid_type': str,
+    },
+    {
         'human': 'and',
-        'operators': [{'and_flag': 1}],
+        'attrs': {'and_flag': 1},
         'destination': 'group',
+        'valid_type': int,
     },
     {
         'human': 'or',
-        'operators': [{'and_flag': 0}],
+        'attrs': {'and_flag': 0},
         'destination': 'group',
+        'valid_type': int,
     },
 ]
-
-# Used by pytan.req.AskManualQuestionRequest.build_objects_dict() to
-# specify per sensor option defaults
-DEFAULT_FILTER_OPTIONS = {
-    'ignore_case_flag': 1,
-    'all_values_flag': 0,
-    'all_times_flag': 0,
-    'max_age_seconds': 0,
-}
