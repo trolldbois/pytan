@@ -2,9 +2,9 @@
  * [ ] auto wsdl generator
      * [X] figure out ask manual question
      * [X] UNIT TESTS UPDATE
+     * [ ] json for resultset
      * [ ] integrate reporting into handler
      * [ ] update all bin/ scripts to work with new handler
-     * [ ] 
      * [ ] figure out deploy action
      * [ ] figure out the "update" object for every type that i'm supporting for "get"
      * [ ] figure out the "create" object for every type that i'm supporting for "get"

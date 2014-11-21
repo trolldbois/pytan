@@ -8,6 +8,6 @@ rootdir=`cd "${mydir}"/../ ; pwd`
 
 
 cd ${mydir}/build_api
-./generate_types.py -i console.wsdl -o ${rootdir}/pytan -f
+./generate_api.py -i console.wsdl -o ${rootdir}/pytan -f
 echo "Moving old api.* directories under ${rootdir}/pytan to $TMPDIR"
 mv ${rootdir}/pytan/api.* $TMPDIR
