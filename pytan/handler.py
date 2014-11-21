@@ -17,9 +17,6 @@ import logging
 from . import utils
 from . import constants
 from . import api
-from .ask_manual_human_parser import dehumanize_sensors
-from .ask_manual_human_parser import dehumanize_question_filters
-from .ask_manual_human_parser import dehumanize_question_options
 from .exceptions import HandlerError
 
 mylog = logging.getLogger("handler")
@@ -95,9 +92,9 @@ class Handler(object):
         else:
             q_options = []
 
-        sensor_defs = dehumanize_sensors(sensors)
-        q_filter_defs = dehumanize_question_filters(q_filters)
-        q_option_defs = dehumanize_question_options(q_options)
+        sensor_defs = utils.dehumanize_sensors(sensors)
+        q_filter_defs = utils.dehumanize_question_filters(q_filters)
+        q_option_defs = utils.dehumanize_question_options(q_options)
 
         result = self.ask_manual(
             q_obj_map=q_obj_map,
@@ -129,7 +126,7 @@ class Handler(object):
 
         ask_kwargs = self._get_ask_kwargs(**kwargs)
         asker = api.QuestionAsker(self.session, q_obj, **ask_kwargs)
-        asker.run({'ProgressChanged': progressChanged})
+        asker.run({'ProgressChanged': utils.progressChanged})
 
         req_kwargs = self._get_req_kwargs(**kwargs)
         result = self.session.getResultData(q_obj, **req_kwargs)
@@ -206,6 +203,8 @@ class Handler(object):
 
         err = "No single or multi search defined for {}".format
         raise HandlerError(err(obj))
+
+    # def report(self, result, **kwargs):
 
     # begin private methods
     @staticmethod
