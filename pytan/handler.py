@@ -68,10 +68,15 @@ class Handler(object):
         else:
             raise HandlerError(chk_tpl(host, port, "FAILURE"))
 
-    def ask_manual_human(self, sensors=None, **kwargs):
+    def ask_manual_human(self, **kwargs):
         '''Parses a set of "human" strings into python objects usable
         by ask_manual()
         '''
+
+        if 'sensors' in kwargs:
+            sensors = kwargs.pop('sensors')
+        else:
+            sensors = []
 
         if 'question_filters' in kwargs:
             q_filters = kwargs.pop('question_filters')
@@ -95,7 +100,14 @@ class Handler(object):
         )
         return result
 
-    def ask_manual(self, sensor_defs=None, **kwargs):
+    def ask_manual(self, **kwargs):
+        '''Parses a set of python objects into a Question object,
+        adds the Question object, and returns the results for the Question ID
+        of the added Question object
+        '''
+
+        # get our defs from kwargs
+        sensor_defs = kwargs.get('sensor_defs', None)
         q_filter_defs = kwargs.get('question_filter_defs', None)
         q_option_defs = kwargs.get('question_option_defs', None)
 
@@ -140,7 +152,10 @@ class Handler(object):
         return result
 
     def ask_saved(self, **kwargs):
+
+        # get the saved_question object the user passed in
         q_objs = self.get('saved_question', **kwargs)
+
         if len(q_objs) != 1:
             err = (
                 "Multiple saved questions returned, can only ask one "
@@ -151,15 +166,18 @@ class Handler(object):
 
         q_obj = q_objs[0]
 
+        # poll the Saved Question ID returned above to wait for results
         ask_kwargs = utils.get_ask_kwargs(**kwargs)
         asker = api.QuestionAsker(self.session, q_obj, **ask_kwargs)
         asker.run({'ProgressChanged': utils.progressChanged})
 
+        # get the results
         req_kwargs = utils.get_req_kwargs(**kwargs)
         result = self.session.getResultData(q_obj, **req_kwargs)
 
+        # add the sensors from this question to the ResultSet object
+        # for reporting
         result.sensors = [x.sensor for x in q_obj.question.selects]
-        result.asker = asker
         return result
 
     def ask(self, **kwargs):
