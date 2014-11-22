@@ -33,4 +33,11 @@ class TestUserSerialize(unittest.TestCase):
         user_roles.role.append(role)
         user.roles = user_roles
         body = user.toSOAPBody()
-        self.assertEquals(body, """<user><domain /><deleted_flag /><name>Testing</name><active_session_count /><last_login /><local_admin_flag /><group_id /><id /><metadata /><roles><role><description>Description</description><id>3</id><name /><permissions /></role></roles><permissions /></user>""")
+        exp = (
+            '<user><domain /><deleted_flag /><name>Testing</name>'
+            '<active_session_count /><last_login /><local_admin_flag />'
+            '<group_id /><id /><metadata /><roles><role><description>'
+            'Description</description><id>3</id><name /><permissions />'
+            '</role></roles><permissions /></user>'
+        )
+        self.assertEquals(body, exp)

@@ -45,21 +45,30 @@ class TestToJsonable(unittest.TestCase):
         user_role.permissions = permissions
         permissions.permission = 'Question Asker'
         self.maxDiff = None
-        self.assertEquals(user.to_jsonable(include_type=False), {
+        exp = {
             'id': 1,
             'name': 'Tanium',
-            'roles': {'role': [
-                {'id': 3,
-                'name': 'Administrator',
-                'permissions': {'permission': 'Administrator'}},
-                {'id': 5,
-                 'name': 'Question Asker',
-                 'permissions': {'permission': 'Question Asker'}}]}
-        })
+            'roles': {
+                'role': [
+                    {
+                        'id': 3,
+                        'name': 'Administrator',
+                        'permissions': {'permission': 'Administrator'},
+                    },
+                    {
+                        'id': 5,
+                        'name': 'Question Asker',
+                        'permissions': {'permission': 'Question Asker'},
+                    },
+                ],
+            },
+        }
+        self.assertEquals(user.to_jsonable(include_type=False), exp)
 
     def test_with_jsonable_property(self):
         sensor = api.Sensor()
-        sensor.parameter_definition = json.dumps([{"name": "param1"}, {"name": "param2"}])
+        pd = [{"name": "param1"}, {"name": "param2"}]
+        sensor.parameter_definition = json.dumps(pd)
         self.assertEquals(sensor.to_jsonable(
             explode_json_string_values=True,
             include_type=False),
@@ -68,8 +77,13 @@ class TestToJsonable(unittest.TestCase):
     def test_to_json(self):
         user = api.User()
         user.name = 'Test'
-        self.assertEqual(api.BaseType.to_json(user), """{"_type": "user", "name": "Test"}""")
+        exp = """{\n  "_type": "user", \n  "name": "Test"\n}"""
+        self.assertEqual(api.BaseType.to_json(user), exp)
 
     def test_to_json_list(self):
         users = [api.User(), api.User()]
-        self.assertEqual(api.BaseType.to_json(users), """[{"_type": "user"}, {"_type": "user"}]""")
+        exp = (
+            '[\n  {\n    "_type": "user"\n  }, \n  {\n    "_type": '
+            '"user"\n  }\n]'
+        )
+        self.assertEqual(api.BaseType.to_json(users), exp)

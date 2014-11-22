@@ -2,6 +2,7 @@ from .column_set import ColumnSet
 from .row import Row
 from .sensor import Sensor
 import csv
+import json
 import re
 from collections import OrderedDict
 
@@ -63,6 +64,38 @@ class ResultSet(object):
         for row in rows:
             result.rows.append(Row.fromSOAPElement(row, result.columns))
         return result
+
+    def to_jsonable(self, **kwargs):
+        result = []
+        for idx, r in enumerate(self.rows):
+            new_row = []
+            for h in self.columns:
+                row_col = {
+                    'column.display_name': h.display_name,
+                    'column.what_hash': h.what_hash,
+                    'column.result_type': h.result_type,
+                    'column.values': r[h.display_name],
+                }
+                new_row.append(row_col)
+            new_row = {'row{}'.format(idx): new_row}
+            result.append(new_row)
+        return result
+
+    @staticmethod
+    def to_json(jsonable, **kwargs):
+        """Convert to a json string.
+
+        jsonable must be a ResultSet instance
+
+        """
+        if not isinstance(jsonable, ResultSet):
+            raise Exception("{} is not a ResultSet instance!".format(jsonable))
+
+        return json.dumps(
+            jsonable.to_jsonable(**kwargs),
+            sort_keys=True,
+            indent=2,
+        )
 
     @staticmethod
     def write_csv(fd, val, **kwargs):

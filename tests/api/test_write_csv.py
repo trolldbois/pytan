@@ -50,17 +50,23 @@ class TestWriteCSV(unittest.TestCase):
 
         out = io.BytesIO()
         api.BaseType.write_csv(out, user)
-        self.assertEquals(out.getvalue(),
-"""id,name,roles_role_0_id,roles_role_0_name,roles_role_0_permissions_permission,roles_role_1_id,roles_role_1_name,roles_role_1_permissions_permission\r
-1,Tanium,3,Administrator,Administrator,5,Question Asker,"Question\r\nAsker\r\n"\r
-""")
+        exp = (
+            'id,name,roles_role_0_id,roles_role_0_name,'
+            'roles_role_0_permissions_permission,roles_role_1_id,'
+            'roles_role_1_name,roles_role_1_permissions_permission\r\n'
+            '1,Tanium,3,Administrator,Administrator,5,Question Asker,"Question'
+            '\r\nAsker\r\n"\r\n'
+        )
+        self.assertEquals(out.getvalue(), exp)
 
     def test_with_jsonable_property(self):
         sensor = api.Sensor()
-        sensor.parameter_definition = json.dumps([{"name": "param1"}, {"name": "param2"}])
+        pd = [{"name": "param1"}, {"name": "param2"}]
+        sensor.parameter_definition = json.dumps(pd)
         out = io.BytesIO()
         api.BaseType.write_csv(out, sensor, explode_json_string_values=True)
-        self.assertEquals(out.getvalue(),
-"""parameter_definition_0_name,parameter_definition_1_name\r
-param1,param2\r
-""")
+        exp = (
+            'parameter_definition_0_name,parameter_definition_1_name\r\n'
+            'param1,param2\r\n'
+        )
+        self.assertEquals(out.getvalue(), exp)
