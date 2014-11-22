@@ -79,10 +79,11 @@ def version_check(reqver):
         "{}: {} version {}, required {}").format
     if not __version__ >= reqver:
         s = "Script and API Version mismatch!"
-        logging.error(log_tpl(s, __file__, __version__, reqver))
-        sys.exit(100)
+        raise Exception(log_tpl(s, __file__, __version__, reqver))
+
     s = "Script and API Version match"
     logging.debug(log_tpl(s, __file__, __version__, reqver))
+    return True
 
 
 def jsonify(v, indent=2, sort_keys=True):
@@ -191,6 +192,8 @@ def dehumanize_sensors(sensors):
 
     sensor_defs = []
     for sensor in sensors:
+        if not is_str(sensor):
+            raise ManualParserError("{!r} must be a string".format(sensor))
         s, parsed_selector = extract_selector(sensor)
         s, parsed_params = extract_params(s)
         s, parsed_options = extract_options(s)
@@ -297,7 +300,7 @@ def extract_params(s):
     for sp in split_param:
         # sp = 'dirname=Program Files'
         if constants.PARAM_KEY_SPLIT not in sp:
-            err = "Parameter {} missing key/value splitter ({})".format
+            err = "Parameter {} missing key/value seperator ({})".format
             raise ManualParserError(err(sp, constants.PARAM_KEY_SPLIT))
         sp_key, sp_value = sp.split(constants.PARAM_KEY_SPLIT, 1)
         ## sp_key = dirname
@@ -376,16 +379,15 @@ def map_option(opt, dest):
 
         opt_attrs = om.get('attrs', {})
 
-        # if om['human'] ends with a :, we expect the option string
+        human_type = om.get('human_type', '')
+        valid_type = om.get('valid_type', str)
+        # if human_type we expect the option string
         # to be name:value
-        if om['human'].endswith(':'):
+        if human_type:
             opt_split = opt.split(':')
 
-            valid_type = om.get('valid_type', str)
-            human_type = om.get('human_type', '')
-
             if len(opt_split) != 2:
-                format_str = "Format should be '{}${}'".format
+                format_str = "Format should be '{}:${}'".format
                 format_str = format_str(om['human'], human_type.upper())
 
                 err = "Option {!r} is missing a {} value of {}\n{}".format

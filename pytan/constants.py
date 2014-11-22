@@ -198,17 +198,6 @@ REQ_KWARGS = [
     'json_pretty_print',
 ]
 
-# Used by pytan.reports.Reporter.write_response() to determine
-# supported formats
-TRANSFORM_FORMATS = {
-    'csv': 'get_csv',
-    # 'xls': 'get_xls',
-    'json': 'get_json',
-    'xml': 'get_xml',
-    'raw.xml': 'get_rawxml',
-    'raw.response': 'get_rawresponse',
-    'raw.request': 'get_rawrequest',
-}
 
 # Used by pytan.reports.Reporter.write_response() as boolean kwargs
 # defaults for passthrus for parse_resultxml():
@@ -376,14 +365,14 @@ OPTION_MAPS = [
         'valid_type': int,
     },
     {
-        'human': 'max_data_age:',
+        'human': 'max_data_age',
         'attr': 'max_age_seconds',
         'human_type': 'seconds',
         'valid_type': int,
         'destination': 'filter',
     },
     {
-        'human': 'value_type:',
+        'human': 'value_type',
         'attr': 'value_type',
         'human_type': 'value_type',
         'valid_values': 'constants.SENSOR_TYPE_MAP.values()',

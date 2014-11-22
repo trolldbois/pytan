@@ -2,8 +2,8 @@
  * [ ] auto wsdl generator
      * [X] figure out ask manual question
      * [X] UNIT TESTS UPDATE
-     * [ ] json for resultset
-     * [ ] write unittests for dehumanize_*
+     * [X] json for resultset
+     * [X] write unittests for dehumanize_*
      * [ ] integrate reporting into handler
      * [ ] update all bin/ scripts to work with new handler
      * [ ] figure out deploy action
