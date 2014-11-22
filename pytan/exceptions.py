@@ -8,13 +8,9 @@ class HandlerError(Exception):
     pass
 
 
-class PickerError(Exception):
+class HumanParserError(Exception):
     pass
 
 
-class ReporterError(Exception):
-    pass
-
-
-class ManualParserError(Exception):
+class DefinitionParserError(Exception):
     pass

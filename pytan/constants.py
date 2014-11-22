@@ -28,6 +28,7 @@ LOG_LEVEL_MAPS = [
         0,
         {
             'handler': 'WARN',
+            'question_progress': 'WARN',
             'ask_manual': 'WARN',
             'ask_manual_human': 'WARN',
             'api.session': 'WARN',
@@ -36,10 +37,11 @@ LOG_LEVEL_MAPS = [
             'api.session.http.body': 'WARN',
         }
     ),
-    (1, {'handler': 'INFO'}),
-    (2, {'handler': 'DEBUG'}),
-    (3, {'ask_manual': 'DEBUG'}),
-    (4, {'ask_manual_human': 'DEBUG'}),
+    (1, {'question_progress': 'INFO'}),
+    (2, {'handler': 'INFO'}),
+    (3, {'handler': 'DEBUG'}),
+    (4, {'ask_manual': 'DEBUG'}),
+    (5, {'ask_manual_human': 'DEBUG'}),
     (7, {'api.session': 'DEBUG'}),
     (8, {'api.session.auth': 'DEBUG'}),
     (9, {'api.session.http': 'DEBUG'}),
@@ -150,15 +152,12 @@ GET_OBJ_MAP = {
 
 Q_OBJ_MAP = {
     'saved': {
-        'api': 'SavedQuestion',
         'handler': 'ask_saved',
     },
     'manual': {
-        'api': 'Question',
         'handler': 'ask_manual',
     },
     'manual_human': {
-        'api': 'Question',
         'handler': 'ask_manual_human',
     },
 }
