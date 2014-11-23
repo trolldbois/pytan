@@ -18,6 +18,7 @@ from . import __version__
 from . import constants
 from . import api
 
+mylog = logging.getLogger("handler")
 humanlog = logging.getLogger("ask_manual_human")
 manuallog = logging.getLogger("ask_manual")
 progresslog = logging.getLogger("question_progress")
@@ -138,6 +139,15 @@ def port_check(address, port, timeout=5):
         return socket.create_connection((address, port), timeout)
     except socket.error:
         return False
+
+
+def test_app_port(host, port):
+    """validates that the SOAP port on the SOAP host can be reached"""
+    chk_tpl = "Port test to {}:{} {}".format
+    if port_check(host, port):
+        mylog.debug(chk_tpl(host, port, "SUCCESS"))
+    else:
+        raise HandlerError(chk_tpl(host, port, "FAILURE"))
 
 
 def remove_logging_handler(name):

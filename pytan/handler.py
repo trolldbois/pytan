@@ -52,7 +52,7 @@ class Handler(object):
         except ValueError:
             raise HandlerError("port must be an integer!")
 
-        self.test_app_port(host, port)
+        utils.test_app_port(host, port)
         self.session = api.Session(host, port)
         self.session.authenticate(username, password)
 
@@ -61,44 +61,45 @@ class Handler(object):
         ret = str_tpl(self.session)
         return ret
 
-    def test_app_port(self, host, port):
-        """validates that the SOAP port on the SOAP host can be reached"""
-        chk_tpl = "Port test to {}:{} {}".format
-        if utils.port_check(host, port):
-            mylog.debug(chk_tpl(host, port, "SUCCESS"))
-        else:
-            raise HandlerError(chk_tpl(host, port, "FAILURE"))
+    def ask(self, **kwargs):
+        qtype = kwargs.get('qtype', '')
+        if not qtype:
+            err = (
+                "Must supply question type as 'qtype'! Valid choices: {}"
+            ).format
+            raise HandlerError(err(', '.join(constants.Q_OBJ_MAP)))
+        q_obj_map = utils.get_q_obj_map(qtype)
+        kwargs.pop('qtype')
+        result = getattr(self, q_obj_map['handler'])(**kwargs)
+        return result
 
-    def ask_manual_human(self, **kwargs):
-        '''Parses a set of "human" strings into python objects usable
-        by ask_manual()
-        '''
+    def ask_saved(self, **kwargs):
 
-        if 'sensors' in kwargs:
-            sensors = kwargs.pop('sensors')
-        else:
-            sensors = []
+        # get the saved_question object the user passed in
+        q_objs = self.get('saved_question', **kwargs)
 
-        if 'question_filters' in kwargs:
-            q_filters = kwargs.pop('question_filters')
-        else:
-            q_filters = []
+        if len(q_objs) != 1:
+            err = (
+                "Multiple saved questions returned, can only ask one "
+                "saved question!\nArgs: {}\nReturned saved questions:\n\t{}"
+            ).format
+            q_obj_str = '\n\t'.join([str(x) for x in q_objs])
+            raise HandlerError(err(kwargs, q_obj_str))
 
-        if 'question_options' in kwargs:
-            q_options = kwargs.pop('question_options')
-        else:
-            q_options = []
+        q_obj = q_objs[0]
 
-        sensor_defs = utils.dehumanize_sensors(sensors)
-        q_filter_defs = utils.dehumanize_question_filters(q_filters)
-        q_option_defs = utils.dehumanize_question_options(q_options)
+        # poll the Saved Question ID returned above to wait for results
+        ask_kwargs = utils.get_ask_kwargs(**kwargs)
+        asker = api.QuestionAsker(self.session, q_obj, **ask_kwargs)
+        asker.run({'ProgressChanged': utils.progressChanged})
 
-        result = self.ask_manual(
-            sensor_defs=sensor_defs,
-            question_filter_defs=q_filter_defs,
-            question_option_defs=q_option_defs,
-            **kwargs
-        )
+        # get the results
+        req_kwargs = utils.get_req_kwargs(**kwargs)
+        result = self.session.getResultData(q_obj, **req_kwargs)
+
+        # add the sensors from this question to the ResultSet object
+        # for reporting
+        result.sensors = [x.sensor for x in q_obj.question.selects]
         return result
 
     def ask_manual(self, **kwargs):
@@ -147,145 +148,36 @@ class Handler(object):
         result.sensors = [x['sensor_obj'] for x in sensor_defs]
         return result
 
-    def ask_saved(self, **kwargs):
-
-        # get the saved_question object the user passed in
-        q_objs = self.get('saved_question', **kwargs)
-
-        if len(q_objs) != 1:
-            err = (
-                "Multiple saved questions returned, can only ask one "
-                "saved question!\nArgs: {}\nReturned saved questions:\n\t{}"
-            ).format
-            q_obj_str = '\n\t'.join([str(x) for x in q_objs])
-            raise HandlerError(err(kwargs, q_obj_str))
-
-        q_obj = q_objs[0]
-
-        # poll the Saved Question ID returned above to wait for results
-        ask_kwargs = utils.get_ask_kwargs(**kwargs)
-        asker = api.QuestionAsker(self.session, q_obj, **ask_kwargs)
-        asker.run({'ProgressChanged': utils.progressChanged})
-
-        # get the results
-        req_kwargs = utils.get_req_kwargs(**kwargs)
-        result = self.session.getResultData(q_obj, **req_kwargs)
-
-        # add the sensors from this question to the ResultSet object
-        # for reporting
-        result.sensors = [x.sensor for x in q_obj.question.selects]
-        return result
-
-    def ask(self, **kwargs):
-        qtype = kwargs.get('qtype', '')
-        if not qtype:
-            err = (
-                "Must supply question type as 'qtype'! Valid choices: {}"
-            ).format
-            raise HandlerError(err(', '.join(constants.Q_OBJ_MAP)))
-        q_obj_map = utils.get_q_obj_map(qtype)
-        kwargs.pop('qtype')
-        result = getattr(self, q_obj_map['handler'])(**kwargs)
-        return result
-
-    def get_all(self, obj, **kwargs):
-        obj_map = utils.get_obj_map(obj)
-        api_obj_all = getattr(api, obj_map['all'])()
-        found = self._find(api_obj_all, **kwargs)
-        return found
-
-    def get(self, obj, **kwargs):
-        obj_map = utils.get_obj_map(obj)
-        api_attrs = obj_map['search']
-        api_kwattrs = [kwargs.get(x, '') for x in api_attrs]
-
-        # if the api doesn't support filtering for this object,
-        # return all objects of this type
-        if not api_attrs:
-            return self.get_all(obj, **kwargs)
-
-        # if api supports filtering for this object,
-        # but no filters supplied in kwargs, raise
-        if not any(api_kwattrs):
-            err = "Getting a {} requires at least one filter: {}".format
-            raise HandlerError(err(obj, api_attrs))
-
-        # if there is a multi in obj_map, that means we can pass a list
-        # type to the api. the list will an entry for each api_kw
-        if obj_map['multi']:
-            return self._get_multi(obj_map, **kwargs)
-
-        # if there is a single in obj_map but not multi, that means
-        # we have to find each object individually
-        if obj_map['single']:
-            return self._get_single(obj_map, **kwargs)
-
-        err = "No single or multi search defined for {}".format
-        raise HandlerError(err(obj))
-
-    def _export_class_ResultSet(self, obj, export_format, **kwargs):
+    def ask_manual_human(self, **kwargs):
+        '''Parses a set of "human" strings into python objects usable
+        by ask_manual()
         '''
-        ensure kwargs[sensors] has all the sensors that correlate
-        to the what_hash of each column, but only if header_add_sensor=True
-        needed for: ResultSet.write_csv(header_add_sensor=True)
-        '''
-        header_add_sensor = kwargs.get('header_add_sensor', False)
-        sensors = kwargs.get('sensors', [])
-        if header_add_sensor:
-            sensor_hashes = [x.hash for x in sensors]
-            column_hashes = [x.what_hash for x in obj.columns]
-            missing_hashes = [
-                x for x in column_hashes if x not in sensor_hashes and x > 1
-            ]
-            if missing_hashes:
-                missing_sensors = self.get('sensor', hash=missing_hashes)
-                kwargs['sensors'] += list(missing_sensors)
 
-        # run the handler that is specific to this export_format, if it exists
-        format_method_str = '_export_format_' + export_format
-        format_handler = getattr(self, format_method_str, '')
-        if format_handler:
-            result = format_handler(obj, **kwargs)
+        if 'sensors' in kwargs:
+            sensors = kwargs.pop('sensors')
         else:
-            err = "{!r} not coded for in Handler!".format
-            raise HandlerError(err(export_format))
-        return result
+            sensors = []
 
-    def _export_class_BaseType(self, obj, export_format, **kwargs):
-        # run the handler that is specific to this export_format, if it exists
-        format_method_str = '_export_format_' + export_format
-        format_handler = getattr(self, format_method_str, '')
-        if format_handler:
-            result = format_handler(obj, **kwargs)
+        if 'question_filters' in kwargs:
+            q_filters = kwargs.pop('question_filters')
         else:
-            err = "{!r} not coded for in Handler!".format
-            raise HandlerError(err(export_format))
-        return result
+            q_filters = []
 
-    def _export_format_csv(self, obj, **kwargs):
-        if not hasattr(obj, 'write_csv'):
-            err = "{!r} has no write_csv() method!".format
-            raise HandlerError(err(obj))
-        out = io.BytesIO()
-        if getattr(obj, '_list_properties', ''):
-            result = obj.write_csv(out, list(obj), **kwargs)
+        if 'question_options' in kwargs:
+            q_options = kwargs.pop('question_options')
         else:
-            result = obj.write_csv(out, obj, **kwargs)
-        result = out.getvalue()
-        return result
+            q_options = []
 
-    def _export_format_json(self, obj, **kwargs):
-        if not hasattr(obj, 'to_json'):
-            err = "{!r} has no to_json() method!".format
-            raise HandlerError(err(obj))
-        result = obj.to_json(jsonable=obj, **kwargs)
-        return result
+        sensor_defs = utils.dehumanize_sensors(sensors)
+        q_filter_defs = utils.dehumanize_question_filters(q_filters)
+        q_option_defs = utils.dehumanize_question_options(q_options)
 
-    def _export_format_xml(self, obj, **kwargs):
-        if not hasattr(obj, 'toSOAPBody'):
-            err = "{!r} has no toSOAPBody() method!".format
-            raise HandlerError(err(obj))
-        result = obj.toSOAPBody(**kwargs)
+        result = self.ask_manual(
+            sensor_defs=sensor_defs,
+            question_filter_defs=q_filter_defs,
+            question_option_defs=q_option_defs,
+            **kwargs
+        )
         return result
 
     def export_obj(self, obj, export_format, **kwargs):
@@ -341,6 +233,41 @@ class Handler(object):
             err = "{!r} not coded for in Handler!".format
             raise HandlerError(err(objclassname))
         return result
+
+    def get(self, obj, **kwargs):
+        obj_map = utils.get_obj_map(obj)
+        api_attrs = obj_map['search']
+        api_kwattrs = [kwargs.get(x, '') for x in api_attrs]
+
+        # if the api doesn't support filtering for this object,
+        # return all objects of this type
+        if not api_attrs:
+            return self.get_all(obj, **kwargs)
+
+        # if api supports filtering for this object,
+        # but no filters supplied in kwargs, raise
+        if not any(api_kwattrs):
+            err = "Getting a {} requires at least one filter: {}".format
+            raise HandlerError(err(obj, api_attrs))
+
+        # if there is a multi in obj_map, that means we can pass a list
+        # type to the api. the list will an entry for each api_kw
+        if obj_map['multi']:
+            return self._get_multi(obj_map, **kwargs)
+
+        # if there is a single in obj_map but not multi, that means
+        # we have to find each object individually
+        if obj_map['single']:
+            return self._get_single(obj_map, **kwargs)
+
+        err = "No single or multi search defined for {}".format
+        raise HandlerError(err(obj))
+
+    def get_all(self, obj, **kwargs):
+        obj_map = utils.get_obj_map(obj)
+        api_obj_all = getattr(api, obj_map['all'])()
+        found = self._find(api_obj_all, **kwargs)
+        return found
 
     # BEGIN PRIVATE METHODS
     def _find(self, api_object, **kwargs):
@@ -432,3 +359,68 @@ class Handler(object):
             # get the sensor object
             d['sensor_obj'] = self.get('sensor', **def_search)[0]
         return defs
+
+    def _export_class_BaseType(self, obj, export_format, **kwargs):
+        # run the handler that is specific to this export_format, if it exists
+        format_method_str = '_export_format_' + export_format
+        format_handler = getattr(self, format_method_str, '')
+        if format_handler:
+            result = format_handler(obj, **kwargs)
+        else:
+            err = "{!r} not coded for in Handler!".format
+            raise HandlerError(err(export_format))
+        return result
+
+    def _export_class_ResultSet(self, obj, export_format, **kwargs):
+        '''
+        ensure kwargs[sensors] has all the sensors that correlate
+        to the what_hash of each column, but only if header_add_sensor=True
+        needed for: ResultSet.write_csv(header_add_sensor=True)
+        '''
+        header_add_sensor = kwargs.get('header_add_sensor', False)
+        sensors = kwargs.get('sensors', [])
+        if header_add_sensor:
+            sensor_hashes = [x.hash for x in sensors]
+            column_hashes = [x.what_hash for x in obj.columns]
+            missing_hashes = [
+                x for x in column_hashes if x not in sensor_hashes and x > 1
+            ]
+            if missing_hashes:
+                missing_sensors = self.get('sensor', hash=missing_hashes)
+                kwargs['sensors'] += list(missing_sensors)
+
+        # run the handler that is specific to this export_format, if it exists
+        format_method_str = '_export_format_' + export_format
+        format_handler = getattr(self, format_method_str, '')
+        if format_handler:
+            result = format_handler(obj, **kwargs)
+        else:
+            err = "{!r} not coded for in Handler!".format
+            raise HandlerError(err(export_format))
+        return result
+
+    def _export_format_csv(self, obj, **kwargs):
+        if not hasattr(obj, 'write_csv'):
+            err = "{!r} has no write_csv() method!".format
+            raise HandlerError(err(obj))
+        out = io.BytesIO()
+        if getattr(obj, '_list_properties', ''):
+            result = obj.write_csv(out, list(obj), **kwargs)
+        else:
+            result = obj.write_csv(out, obj, **kwargs)
+        result = out.getvalue()
+        return result
+
+    def _export_format_json(self, obj, **kwargs):
+        if not hasattr(obj, 'to_json'):
+            err = "{!r} has no to_json() method!".format
+            raise HandlerError(err(obj))
+        result = obj.to_json(jsonable=obj, **kwargs)
+        return result
+
+    def _export_format_xml(self, obj, **kwargs):
+        if not hasattr(obj, 'toSOAPBody'):
+            err = "{!r} has no toSOAPBody() method!".format
+            raise HandlerError(err(obj))
+        result = obj.toSOAPBody(**kwargs)
+        return result
