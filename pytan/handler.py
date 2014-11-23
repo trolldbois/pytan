@@ -13,6 +13,7 @@ import sys
 sys.dont_write_bytecode = True
 
 import logging
+import io
 from . import utils
 from . import constants
 from . import api
@@ -222,6 +223,126 @@ class Handler(object):
         err = "No single or multi search defined for {}".format
         raise HandlerError(err(obj))
 
+    def _export_class_ResultSet(self, obj, export_format, **kwargs):
+        '''
+        ensure kwargs[sensors] has all the sensors that correlate
+        to the what_hash of each column, but only if header_add_sensor=True
+        needed for: ResultSet.write_csv(header_add_sensor=True)
+        '''
+        header_add_sensor = kwargs.get('header_add_sensor', False)
+        sensors = kwargs.get('sensors', [])
+        if header_add_sensor:
+            sensor_hashes = [x.hash for x in sensors]
+            column_hashes = [x.what_hash for x in obj.columns]
+            missing_hashes = [
+                x for x in column_hashes if x not in sensor_hashes and x > 1
+            ]
+            if missing_hashes:
+                missing_sensors = self.get('sensor', hash=missing_hashes)
+                kwargs['sensors'] += list(missing_sensors)
+
+        # run the handler that is specific to this export_format, if it exists
+        format_method_str = '_export_format_' + export_format
+        format_handler = getattr(self, format_method_str, '')
+        if format_handler:
+            result = format_handler(obj, **kwargs)
+        else:
+            err = "{!r} not coded for in Handler!".format
+            raise HandlerError(err(export_format))
+        return result
+
+    def _export_class_BaseType(self, obj, export_format, **kwargs):
+        # run the handler that is specific to this export_format, if it exists
+        format_method_str = '_export_format_' + export_format
+        format_handler = getattr(self, format_method_str, '')
+        if format_handler:
+            result = format_handler(obj, **kwargs)
+        else:
+            err = "{!r} not coded for in Handler!".format
+            raise HandlerError(err(export_format))
+        return result
+
+    def _export_format_csv(self, obj, **kwargs):
+        if not hasattr(obj, 'write_csv'):
+            err = "{!r} has no write_csv() method!".format
+            raise HandlerError(err(obj))
+        out = io.BytesIO()
+        if getattr(obj, '_list_properties', ''):
+            result = obj.write_csv(out, list(obj), **kwargs)
+        else:
+            result = obj.write_csv(out, obj, **kwargs)
+        result = out.getvalue()
+        return result
+
+    def _export_format_json(self, obj, **kwargs):
+        if not hasattr(obj, 'to_json'):
+            err = "{!r} has no to_json() method!".format
+            raise HandlerError(err(obj))
+        result = obj.to_json(jsonable=obj, **kwargs)
+        return result
+
+    def _export_format_xml(self, obj, **kwargs):
+        if not hasattr(obj, 'toSOAPBody'):
+            err = "{!r} has no toSOAPBody() method!".format
+            raise HandlerError(err(obj))
+        result = obj.toSOAPBody(**kwargs)
+        return result
+
+    def export_obj(self, obj, export_format, **kwargs):
+        objtype = type(obj)
+        try:
+            objclassname = objtype.__name__
+        except:
+            objclassname = 'Unknown'
+
+        export_maps = constants.EXPORT_MAPS
+
+        # build a list of supported object types
+        supp_types = ', '.join(export_maps.keys())
+
+        # see if supplied obj is a supported object type
+        type_match = [
+            x for x in export_maps if isinstance(obj, getattr(api, x))
+        ]
+
+        if not type_match:
+            err = (
+                "{} not a supported object to export, must be one of: {}"
+            ).format
+            raise HandlerError(err(objtype, supp_types))
+
+        # get the export formats for this obj type
+        export_formats = export_maps.get(type_match[0], '')
+        if export_format not in export_formats:
+            err = (
+                "{!r} not a supported export format for {}, must be one of: {}"
+            ).format(export_format, objclassname, ', '.join(export_formats))
+            raise HandlerError(err)
+
+        # perform validation on optional kwargs, if they exist
+        opt_keys = export_formats.get(export_format, [])
+        for opt_key in opt_keys:
+            check_args = dict(opt_key.items() + {'d': kwargs}.items())
+            utils.check_dictkey(**check_args)
+
+        # filter out the kwargs that are specific to this obj type and
+        # format type
+        format_kwargs = {
+            k: v for k, v in kwargs.iteritems()
+            if k in [a['key'] for a in opt_keys]
+        }
+
+        # run the handler that is specific to this objtype, if it exists
+        class_method_str = '_export_class_' + type_match[0]
+        class_handler = getattr(self, class_method_str, '')
+        if class_handler:
+            result = class_handler(obj, export_format, **format_kwargs)
+        else:
+            err = "{!r} not coded for in Handler!".format
+            raise HandlerError(err(objclassname))
+        return result
+
+    # BEGIN PRIVATE METHODS
     def _find(self, api_object, **kwargs):
         req_kwargs = utils.get_req_kwargs(**kwargs)
         try:
