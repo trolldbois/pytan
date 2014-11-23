@@ -108,7 +108,7 @@ class ResultSet(object):
             header_add_type = kwargs.get('header_add_type', False)
             sensors = kwargs.get('sensors', [])
 
-            sorted_headers = []
+            headers = []
             for h in val.columns:
                 h_name = h.display_name
                 h_hash = h.what_hash
@@ -138,7 +138,7 @@ class ResultSet(object):
                     if not sensors or type(sensors) not in [tuple, list]:
                         err = (
                             "Must supply list of sensors used to "
-                            "product this ResultSet in order to add sensor "
+                            "produce this ResultSet in order to add sensor "
                             "name to columns!"
                         )
                         raise Exception(err)
@@ -177,7 +177,7 @@ class ResultSet(object):
                      hash: columns related sensor hash,
                     }
                 '''
-                sorted_headers.append({
+                headers.append({
                     'name': h_name,
                     'mod_name': '{}{}{}'.format(h_pre, h_name, h_post),
                     'hash': h_hash,
@@ -200,7 +200,7 @@ class ResultSet(object):
             # sort off of mod_name so that if sensor name is added to column
             # column name, sensor related columns will be grouped together
             sorted_headers = sorted(
-                sorted_headers, key=lambda k: k['mod_name']
+                headers, key=lambda k: k['mod_name']
             )
 
             custom_sorted_headers = []
