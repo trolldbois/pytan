@@ -189,8 +189,10 @@ def set_all_loglevels(level='DEBUG'):
 
 def dehumanize_sensors(sensors):
     if not sensors:
-        # TODO
-        raise HumanParserError("help me")
+        err = (
+            "A sensor string or list of strings must be supplied as 'sensors'!"
+        )
+        raise HumanParserError(err)
 
     if not is_list(sensors):
         sensors = [sensors]
@@ -228,6 +230,10 @@ def dehumanize_question_filters(question_filters):
     for question_filter in question_filters:
         s, parsed_selector = extract_selector(question_filter)
         s, parsed_filter = extract_filter(s)
+        if not parsed_filter:
+            err = "Filter {!r} is not a valid filter!".format
+            raise HumanParserError(err(question_filter))
+
         question_filter_def = {}
         question_filter_def[parsed_selector] = s
         question_filter_def['filter'] = parsed_filter
@@ -323,7 +329,7 @@ def extract_params(s):
     return s, parsed_params
 
 
-def extract_options(s,):
+def extract_options(s):
     # parse options out of s
 
     split_option = constants.OPTION_RE.split(s)
@@ -468,85 +474,89 @@ def map_filter(filter_str):
     return filter_attrs
 
 
-def parse_q_option_defs(q_option_defs):
-
-    if q_option_defs is None:
-        return {}
-
-    # type checking for required keys
-    if not is_dict(q_option_defs):
-        err = (
-            "Unexpected Question Option type {}: {}! -- "
-            "Must be a dictionary!"
-        ).format
-        raise DefinitionParserError(err(type(q_option_defs), q_option_defs))
-    return q_option_defs
+def parse_sensor_defs(**kwargs):
+    sensor_defs = parse_defs(
+        defname='sensor_defs',
+        deftypes=['list()', 'str()', 'dict()'],
+        strconv='name',
+        empty_ok=False,
+        **kwargs
+    )
+    return sensor_defs
 
 
-def parse_q_filter_defs(q_filter_defs):
+def parse_question_filter_defs(**kwargs):
+    question_filter_defs = parse_defs(
+        defname='question_filter_defs',
+        deftypes=['list()', 'dict()'],
+        empty_ok=True,
+        **kwargs
+    )
+    return question_filter_defs
+
+
+def parse_question_option_defs(**kwargs):
+    question_option_defs = parse_defs(
+        defname='question_option_defs',
+        deftypes=['dict()'],
+        empty_ok=True,
+        **kwargs
+    )
+    return question_option_defs
+
+
+def parse_defs(defname, deftypes, strconv=None, empty_ok=True, defs=None,
+               **kwargs):
+
+    if defs is None:
+        defs = kwargs.get(defname, eval(deftypes[0]))
+
+    type_msg = "{0!r} requires a non-empty value of type: {1}".format
+    type_msg = type_msg(defname, ' or '.join(deftypes))
+
+    if not defs:
+        if not empty_ok:
+            err = "Argument {0!r} is empty!\n{1}".format
+            raise DefinitionParserError(err(defname, type_msg))
+        else:
+            return defs
+
+    err = (
+        "Argument {0!r} has an invalid type {1}\n{2}"
+    ).format(defname, type(defs), type_msg)
+
+    if deftypes == ['dict()']:
+        if not is_dict(defs):
+            raise DefinitionParserError(err)
+        else:
+            return defs
+
     new_defs = []
-
-    if q_filter_defs is None:
-        return new_defs
-
-    # type checking for required keys
-    if is_dict(q_filter_defs):
-        new_defs.append(q_filter_defs)
-    elif is_list(q_filter_defs):
-        for k in q_filter_defs:
-            new_defs += parse_q_filter_defs(k)
+    if is_str(defs):
+        if 'str()' in deftypes:
+            conv = defs
+            if strconv is not None:
+                conv = {strconv: defs}
+            new_defs.append(conv)
+        else:
+            raise DefinitionParserError(err)
+    elif is_dict(defs):
+        if 'dict()' in deftypes:
+            new_defs.append(defs)
+        else:
+            raise DefinitionParserError(err)
+    elif is_list(defs):
+        if 'list()' in deftypes:
+            for k in defs:
+                new_defs += parse_defs(
+                    defname, deftypes, strconv, empty_ok, k, **kwargs
+                )
+        else:
+            raise DefinitionParserError(err)
     else:
-        err = (
-            "Unexpected Question Filter type {}: {}! -- "
-            "Must be a list or dictionary!"
-        ).format
-        raise DefinitionParserError(err(type(q_filter_defs), q_filter_defs))
+        raise DefinitionParserError(err)
+
     return new_defs
-
-
-def parse_sensor_defs(sensor_defs):
-    if sensor_defs is None:
-        # TODO
-        raise DefinitionParserError("help me")
-
-    # type checking for required keys
-    new_defs = []
-    if is_str(sensor_defs):
-        new_defs.append({'name': sensor_defs})
-    elif is_dict(sensor_defs):
-        new_defs.append(sensor_defs)
-    elif is_list(sensor_defs):
-        for k in sensor_defs:
-            new_defs += parse_sensor_defs(k)
-    else:
-        err = (
-            "Unexpected Sensor definition type {}: {}! -- "
-            "Must be one of string, list, or dictionary!"
-        ).format
-        raise DefinitionParserError(err(type(sensor_defs), sensor_defs))
-    return new_defs
-
-
-def val_q_filter_defs(q_filter_defs, q_option_defs):
-    s_obj_map = constants.GET_OBJ_MAP['sensor']
-    search_keys = s_obj_map['search']
-
-    for d in q_filter_defs:
-        # value checking for required keys
-        def_search = {s: d.get(s, '') for s in search_keys if d.get(s, '')}
-
-        if len(def_search) == 0:
-            err = "Question Filter {} missing one of {}!".format
-            raise DefinitionParserError(err(d, ', '.join(search_keys)))
-
-        elif len(def_search) > 1:
-            err = "Question Filter {} has more than one of {}!".format
-            raise DefinitionParserError(err(d, ', '.join(search_keys)))
-
-        # type checking for required filter key
-        chk_def_key(d, 'filter', [dict], req=True)
-
-    return q_filter_defs
 
 
 def val_sensor_defs(sensor_defs):
@@ -570,6 +580,28 @@ def val_sensor_defs(sensor_defs):
         chk_def_key(d, 'options', [dict])
         chk_def_key(d, 'filter', [dict])
     return sensor_defs
+
+
+def val_q_filter_defs(q_filter_defs):
+    s_obj_map = constants.GET_OBJ_MAP['sensor']
+    search_keys = s_obj_map['search']
+
+    for d in q_filter_defs:
+        # value checking for required keys
+        def_search = {s: d.get(s, '') for s in search_keys if d.get(s, '')}
+
+        if len(def_search) == 0:
+            err = "Question Filter {} missing one of {}!".format
+            raise DefinitionParserError(err(d, ', '.join(search_keys)))
+
+        elif len(def_search) > 1:
+            err = "Question Filter {} has more than one of {}!".format
+            raise DefinitionParserError(err(d, ', '.join(search_keys)))
+
+        # type checking for required filter key
+        chk_def_key(d, 'filter', [dict], req=True)
+
+    return q_filter_defs
 
 
 def build_selectlist_obj(sensor_defs):
@@ -612,7 +644,6 @@ def build_group_obj(q_filter_defs, q_option_defs):
     filter_objlist = api.FilterList()
 
     for d in q_filter_defs:
-        # TODO: if 'help' in options/filter/type: print help
         # validate/map question filter into a Filter()
         filter_obj = get_filter_obj(d)
 
@@ -702,12 +733,10 @@ def get_param_objlist(sensor_def):
         dbg = "Parameter {} for {} mapped to: {}".format
         manuallog.debug(dbg(sp_key, s_name, param_obj))
 
-        param_objlist.append(param_obj)
     return param_objlist
 
 
 def get_filter_obj(sensor_def):
-
     sensor_obj = sensor_def['sensor_obj']
 
     # create our basic filter that is needed no matter what
@@ -753,6 +782,7 @@ def get_filter_obj(sensor_def):
 
         dbg = "Filter {!r} mapped to: {}".format
         manuallog.debug(dbg(filter_def, str(filter_obj)))
+        break
 
     if not found_match:
         err = "Invalid filter {!r}".format

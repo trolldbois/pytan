@@ -152,9 +152,9 @@ class ValidServerTests(unittest.TestCase):
         response = getattr(handler, method)(**args)
         self.assertTrue(response)
         spew("RESPONSE TEST: rows >= 1")
-        self.assertTrue(len(response.rows) >= 1)
-        spew("RESPONSE TEST: columnes >= 1")
-        self.assertTrue(len(response.columns) >= 1)
+        self.assertGreaterEqual(len(response.rows), 1)
+        spew("RESPONSE TEST: columns >= 1")
+        self.assertGreaterEqual(len(response.columns), 1)
 
     @ddt.file_data('ddt/ddt_invalid_get_object.json')
     @unittest.expectedFailure

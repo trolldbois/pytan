@@ -1,0 +1,26 @@
+{
+  "_type": "sensor",
+  "category": "Reserved",
+  "description": "The assigned name of the client machine.\nExample: workstation-1.company.com",
+  "exclude_from_parse_flag": 0,
+  "hash": 3409330187,
+  "hidden_flag": 0,
+  "id": 3,
+  "ignore_case_flag": 1,
+  "max_age_seconds": 86400,
+  "name": "Computer Name",
+  "queries": {
+    "_type": "queries",
+    "query": [
+      {
+        "_type": "query",
+        "platform": "Windows",
+        "script": "select CSName from win32_operatingsystem",
+        "script_type": "WMIQuery"
+      }
+    ]
+  },
+  "source_id": 0,
+  "string_count": 7,
+  "value_type": "String"
+}

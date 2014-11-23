@@ -106,19 +106,14 @@ class Handler(object):
         of the added Question object
         '''
 
-        # get our defs from kwargs
-        sensor_defs = kwargs.get('sensor_defs', None)
-        q_filter_defs = kwargs.get('question_filter_defs', None)
-        q_option_defs = kwargs.get('question_option_defs', None)
+        # get our defs from kwargs and churn them into what we want
+        sensor_defs = utils.parse_sensor_defs(**kwargs)
+        q_filter_defs = utils.parse_question_filter_defs(**kwargs)
+        q_option_defs = utils.parse_question_option_defs(**kwargs)
 
-        # churn our defs into what we want (list/str/dict)
-        sensor_defs = utils.parse_sensor_defs(sensor_defs)
-        q_filter_defs = utils.parse_q_filter_defs(q_filter_defs)
-        q_option_defs = utils.parse_q_option_defs(q_option_defs)
-
-        # do validation of our defs
+        # do basic validation of our defs
         sensor_defs = utils.val_sensor_defs(sensor_defs)
-        q_filter_defs = utils.val_q_filter_defs(q_filter_defs, q_option_defs)
+        q_filter_defs = utils.val_q_filter_defs(q_filter_defs)
 
         # get the sensor objects that are in our defs and add them as
         # d['sensor_obj']
