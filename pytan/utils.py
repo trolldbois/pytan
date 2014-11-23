@@ -961,3 +961,18 @@ def get_obj_map(obj):
 
 def progressChanged(asker, pct):
     progresslog.info("Results {1:.0f}% ({0})".format(asker, pct))
+
+
+def check_dictkey(d, key, valid_types, valid_list_types):
+    if key in d:
+        k_val = d[key]
+        k_type = type(k_val)
+        if k_type not in valid_types:
+            err = "{!r} must be one of {}, you supplied {}!".format
+            raise HandlerError(err(key, valid_types, k_type))
+        if is_list(k_val) and valid_list_types:
+            list_types = [type(x) for x in k_val]
+            list_types_match = [x in valid_list_types for x in list_types]
+            if not all(list_types_match):
+                err = "{!r} must be a list of {}, you supplied {}!".format
+                raise HandlerError(err(key, valid_list_types, list_types))
