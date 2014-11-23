@@ -8,29 +8,15 @@ __license__ = 'TBD'
 __copyright__ = 'Copyright 2014 Tanium'
 
 import sys
-import os
 
+# disable python from creating .pyc files everywhere
 sys.dont_write_bytecode = True
 
 from .handler import Handler
-# from .reports import Reporter
 from . import utils
-from . import exceptions
 from . import constants
+from . import api
 
-my_file = os.path.abspath(__file__)
-my_dir = os.path.dirname(my_file)
-parent_dir = os.path.dirname(my_dir)
-api_dir = os.path.join(parent_dir, 'taniumpy')
-path_adds = [parent_dir, api_dir]
-
-for aa in path_adds:
-    if aa not in sys.path:
-        sys.path.append(aa)
-
-import api
-
-# disable python from creating .pyc files everywhere
 
 # Set default logging handler to avoid "No handler found" warnings.
 import logging

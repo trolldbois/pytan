@@ -16,7 +16,7 @@ import logging
 from . import utils
 from . import constants
 from . import api
-from .exceptions import HandlerError
+from .utils import HandlerError
 
 mylog = logging.getLogger("handler")
 

@@ -16,14 +16,23 @@ from collections import OrderedDict
 
 from . import __version__
 from . import constants
-from .exceptions import HumanParserError
-from .exceptions import DefinitionParserError
-from .exceptions import HandlerError
 from . import api
 
 humanlog = logging.getLogger("ask_manual_human")
 manuallog = logging.getLogger("ask_manual")
 progresslog = logging.getLogger("question_progress")
+
+
+class HandlerError(Exception):
+    pass
+
+
+class HumanParserError(Exception):
+    pass
+
+
+class DefinitionParserError(Exception):
+    pass
 
 
 class SplitStreamHandler(logging.Handler):

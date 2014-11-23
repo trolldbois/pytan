@@ -1,24 +1,16 @@
 # TODO NOW
- * [ ] auto wsdl generator
-     * [X] figure out ask manual question
-     * [X] UNIT TESTS UPDATE
-     * [X] json for resultset
-     * [X] write unittests for dehumanize_*
-     * [ ] integrate reporting into handler
-     * [ ] update all bin/ scripts to work with new handler
-     * [ ] figure out deploy action
-     * [ ] figure out the "update" object for every type that i'm supporting for "get"
-     * [ ] figure out the "create" object for every type that i'm supporting for "get"
-     * [ ] update all unit tests to work with new handler
-     * [ ] ResultSet needs a write_json
+ * [ ] integrate reporting into handler
+ * [ ] update all bin/ scripts to work with new handler
+   * [ ] build EXAMPLE from source scripts
+ * [ ] figure out deploy action
+ * [ ] figure out the "update" object for every type that i'm supporting for "get"
+ * [ ] figure out the "create" object for every type that i'm supporting for "get"
+ * [ ] add help to manual stuff
  * [ ] incorporate mdocbuild for bin scripts
+ * [ ] build API doc from unit test (as start)
  * [ ] update readme
  * [ ] update sensor help for ask_manual_quesiton.py to describe params
  * [ ] add method to calculate total time btwn request and response
- * [ ] Deploy action
- * [ ] define package
- * [ ] AddObject
- * [ ] support options everywhere (?)
 
 # TODO LATER
  * [ ] build "ask all questions" workflow
@@ -26,12 +18,11 @@
  * [ ] test against all the different levels of user privs
  * [ ] logfile support
  * [ ] sort order? (switch to ordereddicts)
- * [ ] excel out
  * [ ] email out
  * [ ] test against demo tanium
  * [ ] Expand API examples in README.md
- * [ ] doc 3rd party modules
  * [ ] add caching
+ * [ ] figure out cert based auth/plugin based auth?
 
 # DONE
   * 0.5.0
@@ -67,3 +58,9 @@
     * [X] support whole question filters/options for manual questions
     * [ ] auto wsdl generator
       * [X] ResultSet needs a write_csv
+      * [X] figure out ask manual question
+      * [X] UNIT TESTS UPDATE
+      * [X] json for resultset
+      * [X] write unittests for dehumanize_* (and everything else)
+      * [X] update all unit tests to work with new handler
+      * [X] ResultSet needs a to_json

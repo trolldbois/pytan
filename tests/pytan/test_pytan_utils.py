@@ -22,9 +22,9 @@ import json
 import pytan
 from pytan import utils
 from pytan import api
-from pytan.exceptions import HumanParserError
-from pytan.exceptions import DefinitionParserError
-from pytan.exceptions import HandlerError
+from pytan.utils import HumanParserError
+from pytan.utils import DefinitionParserError
+from pytan.utils import HandlerError
 
 # control the amount of output from unittests
 TESTVERBOSITY = 2
