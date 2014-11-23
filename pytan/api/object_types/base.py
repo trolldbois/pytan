@@ -387,7 +387,7 @@ class BaseType(object):
             '''returns a list of sorted headers (Column names)
             If kwargs has 'header_sort':
               if header_sort == False, do no sorting
-              if header_sort == [], do sorted(headers)
+              if header_sort == [] or True, do sorted(headers)
               if header_sort == ['col1', 'col2'], do sorted(headers), then
                 put those headers first in order if they exist
             '''
@@ -395,13 +395,12 @@ class BaseType(object):
 
             if header_sort is False:
                 return headers
-
-            if not type(header_sort) in [list, tuple]:
+            elif header_sort is True:
+                pass
+            elif not type(header_sort) in [list, tuple]:
                 raise Exception("header_sort must be a list!")
 
             headers = sorted(headers)
-            if not header_sort:
-                return headers
 
             custom_sorted_headers = []
             for hs in header_sort:

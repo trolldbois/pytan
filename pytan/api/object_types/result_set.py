@@ -186,14 +186,15 @@ class ResultSet(object):
             '''
             If kwargs has 'header_sort':
               if header_sort == False, do no sorting
-              if header_sort == [], do sorted(headers)
+              if header_sort == [] or True, do sorted(headers)
               if header_sort == ['col1', 'col2'], do sorted(headers), then
                 put those headers first in order if they exist
             '''
             if header_sort is False:
-                return sorted_headers
-
-            if not type(header_sort) in [list, tuple]:
+                return headers
+            elif header_sort is True:
+                pass
+            elif not type(header_sort) in [list, tuple]:
                 raise Exception("header_sort must be a list!")
 
             # sort off of mod_name so that if sensor name is added to column
@@ -201,9 +202,6 @@ class ResultSet(object):
             sorted_headers = sorted(
                 sorted_headers, key=lambda k: k['mod_name']
             )
-
-            if not header_sort:
-                return sorted_headers
 
             custom_sorted_headers = []
             for hs in header_sort:
