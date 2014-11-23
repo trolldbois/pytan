@@ -10,6 +10,7 @@ sys.dont_write_bytecode = True
 
 import logging
 import re
+from . import api
 
 # debug log format
 DEBUG_FORMAT = logging.Formatter(
@@ -391,3 +392,70 @@ OPTION_MAPS = [
         'valid_type': int,
     },
 ]
+
+EXPORT_MAPS = {
+    'ResultSet': {
+        'csv': [
+            {
+                'key': 'header_sort',
+                'valid_types': [bool, list, tuple],
+                'valid_list_types': [str, unicode],
+            },
+            {
+                'key': 'sensors',
+                'valid_types': [list, tuple],
+                'valid_list_types': [api.Sensor],
+            },
+            {
+                'key': 'header_add_sensor',
+                'valid_types': [bool],
+                'valid_list_types': [],
+            },
+            {
+                'key': 'header_add_type',
+                'valid_types': [bool],
+                'valid_list_types': [],
+            },
+            {
+                'key': 'expand_grouped_columns',
+                'valid_types': [bool],
+                'valid_list_types': [],
+            },
+        ],
+        'json': [],
+    },
+    'BaseType': {
+        'csv': [
+            {
+                'key': 'header_sort',
+                'valid_types': [bool, list, tuple],
+                'valid_list_types': [str, unicode],
+            },
+            {
+                'key': 'explode_json_string_values',
+                'valid_types': [bool],
+                'valid_list_types': [],
+            },
+        ],
+        'json': [
+            {
+                'key': 'include_type',
+                'valid_types': [bool],
+                'valid_list_types': [],
+            },
+            {
+                'key': 'explode_json_string_values',
+                'valid_types': [bool],
+                'valid_list_types': [],
+            },
+        ],
+        'xml': [
+            {
+                'key': 'minimal',
+                'valid_types': [bool],
+                'valid_list_types': [],
+            },
+        ]
+    },
+
+}
