@@ -1,17 +1,17 @@
 # TODO NOW
- * [X] update all bin/ scripts to work with new handler
-   * [ ] build EXAMPLE from source scripts
  * [ ] figure out deploy action
  * [ ] figure out the "update" object for every type that i'm supporting for "get"
  * [ ] figure out the "create" object for every type that i'm supporting for "get"
- * [ ] add help to manual stuff
- * [ ] incorporate mdocbuild for bin scripts
- * [ ] build API doc from unit test (as start)
- * [ ] update readme
- * [ ] update sensor help for ask_manual_quesiton.py to describe params
- * [ ] add method to calculate total time btwn request and response
+ * [ ] DOCS/EXAMPLES
+   * [ ] add help to manual stuff
+   * [ ] incorporate mdocbuild for bin scripts
+   * [ ] build EXAMPLE from source scripts
+   * [ ] build API doc from unit test (as start)
+   * [ ] update readme
+   * [ ] update sensor help for ask_manual_quesiton.py to describe params
 
 # TODO LATER
+ * [ ] add method to calculate total time btwn request and response
  * [ ] build "ask all questions" workflow
  * [ ] test against RT
  * [ ] test against all the different levels of user privs
@@ -55,7 +55,7 @@
   * 0.7.0
     * [X] support sensors filters/options/params for manual questions
     * [X] support whole question filters/options for manual questions
-    * [ ] auto wsdl generator
+    * [X] auto wsdl generator
       * [X] ResultSet needs a write_csv
       * [X] figure out ask manual question
       * [X] UNIT TESTS UPDATE
@@ -65,3 +65,4 @@
       * [X] ResultSet needs a to_json
       * [X] integrate reporting into handler (export_*)
       * [X] add unittests for export_obj
+   * [X] update all bin/ scripts to work with new handler
