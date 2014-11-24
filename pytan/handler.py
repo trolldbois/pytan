@@ -49,7 +49,7 @@ class Handler(object):
         if not port:
             raise HandlerError("Must supply port!")
         try:
-            int(port)
+            port = int(port)
         except ValueError:
             raise HandlerError("port must be an integer!")
 
