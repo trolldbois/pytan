@@ -1,5 +1,4 @@
 # TODO NOW
- * [ ] integrate reporting into handler
  * [ ] update all bin/ scripts to work with new handler
    * [ ] build EXAMPLE from source scripts
  * [ ] figure out deploy action
@@ -64,3 +63,4 @@
       * [X] write unittests for dehumanize_* (and everything else)
       * [X] update all unit tests to work with new handler
       * [X] ResultSet needs a to_json
+      * [X] integrate reporting into handler
