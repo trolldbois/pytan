@@ -5,7 +5,8 @@
             "obj": "action",
             "name": "Distribute Tanium Standard Utilities"
         },
-        "tests": ["len(response) == 1"]
+        "exception": "pytan.utils.HandlerError",
+        "error_str": "Getting a action requires at least one filter.*"
     },
     "get_question_object_fail_by_name": {
         "method": "get",
@@ -13,6 +14,7 @@
             "obj": "question",
             "name": "dweedle"
         },
-        "tests": ["len(response) == 1"]
+        "exception": "pytan.utils.HandlerError",
+        "error_str": "Getting a question requires at least one filter.*"
     }
 }

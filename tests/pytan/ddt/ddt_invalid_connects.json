@@ -1,12 +1,17 @@
 {
     "bad_password": {
-        "password": "INVALID_PASSWORD"
+        "args": {"password": "INVALID_PASSWORD"},
+        "exception": "pytan.api.session.AuthorizationError",
+        "error_str": "Authentication Failed - Not Authenticated"
     },
     "bad_username": {
-        "username": "INVALID_USERNAME"
+        "args": {"username": "INVALID_USERNAME"},
+        "exception": "pytan.api.session.AuthorizationError",
+        "error_str": "Authentication Failed - Incorrect User"
     },
     "bad_host_and_non_ssl_port": {
-        "host": "127.0.0.1",
-        "port": "4433"
+        "args": {"host": "127.0.0.1", "port": "4433"},
+        "exception": "pytan.utils.HandlerError",
+        "error_str": "Port test to.*FAILURE"
     }
 }
