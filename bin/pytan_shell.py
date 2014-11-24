@@ -39,10 +39,3 @@ if handler_args['loglevel'] >= 10:
     pytan.utils.set_all_loglevels()
 
 print ("%s -- now available as 'handler'!" % handler)
-
-# r = handler.get_all('sensor')
-
-# stuff = [x for x in r]
-# with open('die.csv', 'w') as fd:
-#     r.write_csv(fd, stuff, explode_json=True, header_sort=['name', 'description'])
-
