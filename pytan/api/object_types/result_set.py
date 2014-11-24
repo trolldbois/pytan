@@ -203,6 +203,9 @@ class ResultSet(object):
                 headers, key=lambda k: k['mod_name']
             )
 
+            if header_sort is True or not header_sort:
+                return sorted_headers
+
             custom_sorted_headers = []
             for hs in header_sort:
                 for hidx, h in enumerate(sorted_headers):

@@ -402,6 +402,9 @@ class BaseType(object):
 
             headers = sorted(headers)
 
+            if header_sort is True or not header_sort:
+                return headers
+
             custom_sorted_headers = []
             for hs in header_sort:
                 for hidx, h in enumerate(headers):
