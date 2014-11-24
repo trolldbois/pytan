@@ -241,7 +241,8 @@ class Handler(object):
             report_file = "{}_{}.{}".format(
                 type(obj).__name__, utils.get_now(), export_format,
             )
-            report_file = os.path.join(os.getcwd(), report_file)
+            report_dir = kwargs.get('report_dir', '') or os.getcwd()
+            report_file = os.path.join(report_dir, report_file)
             m = "No report file name supplied, generated name: {!r}".format
             mylog.debug(m(report_file))
 
@@ -253,6 +254,7 @@ class Handler(object):
             fd.write(result)
         m = "Report file {!r} written with {} bytes".format
         mylog.info(m(report_file, len(result)))
+        return report_file, result
 
     def get(self, obj, **kwargs):
         obj_map = utils.get_obj_map(obj)
@@ -398,8 +400,10 @@ class Handler(object):
         needed for: ResultSet.write_csv(header_add_sensor=True)
         '''
         header_add_sensor = kwargs.get('header_add_sensor', False)
-        sensors = kwargs.get('sensors', [])
+        sensors = kwargs.get('sensors', []) or getattr(obj, 'sensors', [])
+
         if header_add_sensor:
+            kwargs['sensors'] = sensors
             sensor_hashes = [x.hash for x in sensors]
             column_hashes = [x.what_hash for x in obj.columns]
             missing_hashes = [
