@@ -40,6 +40,8 @@ class Handler(object):
         # change the format of console logging handler if need be
         utils.change_console_format(debugformat)
 
+        self.loglevel = loglevel
+
         if not username:
             raise HandlerError("Must supply username!")
         if not password:

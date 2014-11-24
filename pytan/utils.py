@@ -199,7 +199,10 @@ def setup_get_object_argparser(obj, doc):
             dest=k,
             help='{} of {} to get'.format(k, obj),
         )
+    return parser
 
+
+def add_get_object_report_argparser(parser):
     subparsers = parser.add_subparsers(
         title='Report Types',
         dest='export_format',

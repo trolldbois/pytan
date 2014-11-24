@@ -34,8 +34,8 @@ def process_handler_args(parser, all_args):
 
 
 utils.version_check(__version__)
-
 parser = utils.setup_get_object_argparser('package', __doc__)
+parser = utils.add_get_object_report_argparser(parser)
 args = parser.parse_args()
 all_args = args.__dict__
 

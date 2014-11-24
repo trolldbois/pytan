@@ -93,6 +93,15 @@ class HistoryConsole(code.InteractiveConsole):
         readline.write_history_file(histfile)
 
 
+def process_handler_args(parser, all_args):
+    handler_grp_names = ['Handler Authentication', 'Handler Options']
+    handler_opts = utils.get_grp_opts(parser, handler_grp_names)
+    handler_args = {k: all_args.pop(k) for k in handler_opts}
+
+    h = pytan.Handler(**handler_args)
+    return h
+
+
 console = HistoryConsole()
 
 utils.version_check(__version__)
@@ -102,11 +111,11 @@ parser = utils.CustomParser(
     parents=[parent_parser],
 )
 args = parser.parse_args()
-handler_args = args.__dict__
+all_args = args.__dict__
 
-handler = pytan.Handler(**handler_args)
+handler = process_handler_args(parser, all_args)
 
-if handler_args['loglevel'] >= 10:
+if handler.loglevel >= 10:
     utils.set_all_loglevels()
 
 print ("%s -- now available as 'handler'!" % handler)

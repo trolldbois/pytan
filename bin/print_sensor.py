@@ -1,0 +1,148 @@
+#!/usr/bin/env python
+# -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
+# ex: set tabstop=4
+# Please do not change the two lines above. See PEP 8, PEP 263.
+'''Prints sensor information to stdout'''
+__author__ = 'Jim Olsen (jim.olsen@tanium.com)'
+__version__ = '0.8.0'
+
+import os
+import sys
+
+sys.dont_write_bytecode = True
+my_file = os.path.abspath(__file__)
+my_dir = os.path.dirname(my_file)
+parent_dir = os.path.dirname(my_dir)
+path_adds = [parent_dir]
+
+for aa in path_adds:
+    if aa not in sys.path:
+        sys.path.append(aa)
+
+import json
+import pytan
+from pytan import utils
+
+
+def process_handler_args(parser, all_args):
+    handler_grp_names = ['Handler Authentication', 'Handler Options']
+    handler_opts = utils.get_grp_opts(parser, handler_grp_names)
+    handler_args = {k: all_args.pop(k) for k in handler_opts}
+
+    h = pytan.Handler(**handler_args)
+    print str(h)
+    return h
+
+
+utils.version_check(__version__)
+parser = utils.setup_get_object_argparser('sensor', __doc__)
+output_group = parser.add_argument_group('Output Options')
+output_group.add_argument(
+    '--category',
+    required=False,
+    default=[],
+    action='append',
+    dest='categories',
+    help='Only show sensors in given category',
+)
+output_group.add_argument(
+    '--platform',
+    required=False,
+    default=[],
+    action='append',
+    dest='platforms',
+    help='Only show sensors for given platform',
+)
+output_group.add_argument(
+    '--hide_params',
+    required=False,
+    default=False,
+    action='store_true',
+    dest='hide_params',
+    help='Do not show parameters in output',
+)
+output_group.add_argument(
+    '--params_only',
+    required=False,
+    default=False,
+    action='store_true',
+    dest='params_only',
+    help='Only show sensors with parameters',
+)
+output_group.add_argument(
+    '--json',
+    required=False,
+    default=False,
+    action='store_true',
+    dest='json',
+    help='Show a json dump of the server information',
+)
+args = parser.parse_args()
+all_args = args.__dict__
+
+handler = process_handler_args(parser, all_args)
+
+response = utils.process_get_object_args(
+    parser, handler, 'sensor', all_args
+)
+
+if args.json:
+    for x in response:
+        result = handler.export_obj(x, 'json')
+        print "{}:\n{}".format(x, result)
+    sys.exit()
+
+
+for x in sorted(response, key=lambda x: x.category):
+    if args.categories:
+        if str(x.category).lower() not in [y.lower() for y in args.categories]:
+            continue
+
+    platforms = [
+        q.platform for q in x.queries
+        if q.script
+        and 'THIS IS A STUB' not in q.script
+        and 'echo Windows Only' not in q.script
+    ]
+
+    if args.platforms:
+        match = [
+            p for p in platforms
+            if p.lower() in [y.lower() for y in args.platforms]
+        ]
+        if not match:
+            continue
+
+    param_def = x.parameter_definition or {}
+    if param_def:
+        param_def = json.loads(param_def)
+
+    params = param_def.get('parameters', [])
+    if args.params_only and not params:
+        continue
+
+    desc = (x.description or '').replace('\n', ' ').strip()
+    print (
+        "\n  * Sensor Name: '{0.name}', Platforms: {1}, Category: {0.category}"
+    ).format(x, ', '.join(platforms))
+    print "  * Description: {}".format(desc)
+
+    if args.hide_params:
+        continue
+
+    skip_attrs = [
+        'model',
+        'parameterType',
+        'snapInterval',
+        'validationExpressions',
+        'key',
+    ]
+
+    for param in params:
+        print "  * Parameter '{}':".format(param['key'])
+        for k, v in sorted(param.iteritems()):
+            if k in skip_attrs:
+                continue
+            if not v:
+                continue
+            print "    - '{}': {}".format(k, v)
