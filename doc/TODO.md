@@ -63,4 +63,5 @@
       * [X] write unittests for dehumanize_* (and everything else)
       * [X] update all unit tests to work with new handler
       * [X] ResultSet needs a to_json
-      * [X] integrate reporting into handler
+      * [X] integrate reporting into handler (export_*)
+      * [X] add unittests for export_obj
