@@ -235,23 +235,31 @@ class Handler(object):
             raise HandlerError(err(objclassname))
         return result
 
-    def export_to_report_file(self, obj, export_format, report_file=None,
-                              **kwargs):
-        if report_file is None:
+    def export_to_report_file(self, obj, export_format, **kwargs):
+
+        report_dir = kwargs.get('report_dir', '')
+        report_file = kwargs.get('report_file', '')
+
+        if not report_file:
             report_file = "{}_{}.{}".format(
                 type(obj).__name__, utils.get_now(), export_format,
             )
-            report_dir = kwargs.get('report_dir', '') or os.getcwd()
+            report_dir = report_dir or os.getcwd()
             report_file = os.path.join(report_dir, report_file)
             m = "No report file name supplied, generated name: {!r}".format
             mylog.debug(m(report_file))
 
-        report_dir = os.path.dirname(report_file)
+        if not report_dir:
+            report_dir = os.path.dirname(report_file)
+
         if not os.path.isdir(report_dir):
             os.makedirs(report_dir)
+
         result = self.export_obj(obj, export_format, **kwargs)
+
         with open(report_file, 'w') as fd:
             fd.write(result)
+
         m = "Report file {!r} written with {} bytes".format
         mylog.info(m(report_file, len(result)))
         return report_file, result

@@ -2,7 +2,7 @@
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
 __title__ = 'pytan'
-__version__ = '0.7.0'
+__version__ = '0.8.0'
 __author__ = 'Jim Olsen <jim.olsen@tanium.com>'
 __license__ = 'TBD'
 __copyright__ = 'Copyright 2014 Tanium'

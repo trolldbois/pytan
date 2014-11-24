@@ -2,9 +2,9 @@
 # -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
-'''Get server info'''
+'''Build the bin/ scripts'''
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
-__version__ = '0.1'
+__version__ = '0.8.0'
 
 import os
 import sys
@@ -20,19 +20,20 @@ for aa in path_adds:
         sys.path.append(aa)
 
 from pytan import utils
-from pytan import Handler
-from pytan import cmdline_parser
+from pytan import constants
 
 utils.version_check(__version__)
-parent_parser = cmdline_parser.setup_parser(__doc__)
-parser = cmdline_parser.CustomParser(
-    description=__doc__,
-    parents=[parent_parser],
-)
-args = parser.parse_args()
-handler_args = args.__dict__
 
-handler = Handler(**handler_args)
-print str(handler)
+build_bin = os.path.join(my_dir, 'build_bin')
+output_bin = os.path.join(parent_dir, 'bin')
 
-print utils.jsonify(handler.server_info)
+go_f = os.path.join(build_bin, 'get_object_template.py')
+go_s = open(go_f).read()
+
+for i in constants.GET_OBJ_MAP:
+    i_f = os.path.join(output_bin, 'get_{}.py'.format(i))
+    i_h = open(i_f, 'w')
+    i_h.write(go_s.replace('OBJECTNAME', i))
+    i_h.close()
+    os.chmod(i_f, 0755)
+    print "Generated {} from {}".format(i_f, go_f)

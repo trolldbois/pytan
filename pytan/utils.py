@@ -8,10 +8,14 @@ import sys
 # disable python from creating .pyc files everywhere
 sys.dont_write_bytecode = True
 
+import os
 import socket
 import time
 import logging
 import json
+import argparse
+from argparse import ArgumentDefaultsHelpFormatter as A1
+from argparse import RawDescriptionHelpFormatter as A2
 from collections import OrderedDict
 
 from . import __version__
@@ -22,6 +26,7 @@ mylog = logging.getLogger("handler")
 humanlog = logging.getLogger("ask_manual_human")
 manuallog = logging.getLogger("ask_manual")
 progresslog = logging.getLogger("question_progress")
+pname = os.path.splitext(os.path.basename(sys.argv[0]))[0]
 
 
 class HandlerError(Exception):
@@ -67,6 +72,381 @@ class SplitStreamHandler(logging.Handler):
             raise
         except:
             self.handleError(record)
+
+
+class CustomFormatter(A1, A2):
+    pass
+
+
+class CustomParser(argparse.ArgumentParser):
+    def __init__(self, *args, **kwargs):
+        if 'formatter_class' not in kwargs:
+            kwargs['formatter_class'] = CustomFormatter
+        #print kwargs
+        argparse.ArgumentParser.__init__(self, *args, **kwargs)
+
+    def error(self, message):
+        self.print_help()
+        print('ERROR:{}:{}\n'.format(pname, message))
+        sys.exit(2)
+
+    def print_help(self, **kwargs):
+        super(CustomParser, self).print_help(**kwargs)
+        subparsers_actions = [
+            action for action in self._actions
+            if isinstance(action, argparse._SubParsersAction)
+        ]
+        for subparsers_action in subparsers_actions:
+            print ""
+            # get all subparsers and print help
+            for choice, subparser in subparsers_action.choices.items():
+                print(" ** {} '{}':".format(
+                    subparsers_action.dest, choice))
+                print(subparser.format_help())
+
+
+def setup_parser(desc, help=False):
+    parser = CustomParser(
+        description=desc,
+        add_help=help,
+        formatter_class=CustomFormatter,
+    )
+    auth_group = parser.add_argument_group('Handler Authentication')
+    auth_group.add_argument(
+        '-u',
+        '--username',
+        required=True,
+        action='store',
+        dest='username',
+        default=None,
+        help='Name of user',
+    )
+    auth_group.add_argument(
+        '-p',
+        '--password',
+        required=True,
+        action='store',
+        default=None,
+        dest='password',
+        help='Password of user',
+    )
+    auth_group.add_argument(
+        '--host',
+        required=True,
+        action='store',
+        default=None,
+        dest='host',
+        help='Hostname/ip of SOAP Server',
+    )
+    auth_group.add_argument(
+        '--port',
+        required=False,
+        action='store',
+        default="444",
+        dest='port',
+        help='Port to use when connecting to SOAP Server',
+    )
+
+    opt_group = parser.add_argument_group('Handler Options')
+    opt_group.add_argument(
+        '-l',
+        '--loglevel',
+        required=False,
+        action='store',
+        type=int,
+        default=0,
+        dest='loglevel',
+        help='Logging level to use, increase for more verbosity',
+    )
+    opt_group.add_argument(
+        '--debugformat',
+        required=False,
+        action='store_true',
+        default=False,
+        dest='debugformat',
+        help=argparse.SUPPRESS,
+    )
+
+    return parser
+
+
+def setup_get_object_argparser(obj, doc):
+    parent_parser = setup_parser(doc)
+    parser = CustomParser(
+        description=doc,
+        parents=[parent_parser],
+    )
+    get_object_group = parser.add_argument_group(
+        'Get {} Options'.format(obj.replace('_', ' ').capitalize())
+    )
+    get_object_group.add_argument(
+        '--all',
+        required=False,
+        default=False,
+        action='store_true',
+        dest='all',
+        help='Get all {}s'.format(obj),
+    )
+
+    obj_map = get_obj_map(obj)
+    search_keys = obj_map['search']
+    for k in search_keys:
+        get_object_group.add_argument(
+            '--{}'.format(k),
+            required=False,
+            action='append',
+            default=[],
+            dest=k,
+            help='{} of {} to get'.format(k, obj),
+        )
+
+    subparsers = parser.add_subparsers(
+        title='Report Types',
+        dest='export_format',
+        help='Report type choices',
+    )
+    # subparsers.required = True
+    # subparsers.default = 'csv'
+
+    csv_subparser = subparsers.add_parser(
+        'csv',
+        help='Produce a CSV report, supply "csv -h" to see CSV options',
+    )
+
+    group = csv_subparser.add_mutually_exclusive_group()
+    group.add_argument(
+        '--sort',
+        default=[],
+        action='append',
+        dest='header_sort',
+        required=False,
+        help='Sort headers by given names'
+    )
+    group.add_argument(
+        '--no-sort',
+        action='store_false',
+        dest='header_sort',
+        default=argparse.SUPPRESS,
+        required=False,
+        help='Do not sort the headers at all'
+    )
+    group.add_argument(
+        '--auto_sort',
+        action='store_true',
+        dest='header_sort',
+        default=argparse.SUPPRESS,
+        required=False,
+        help='Sort the headers with a basic alphanumeric sort'
+    )
+
+    group = csv_subparser.add_mutually_exclusive_group()
+    group.add_argument(
+        '--no-explode-json',
+        action='store_false',
+        dest='explode_json_string_values',
+        default=argparse.SUPPRESS,
+        required=False,
+        help='Do not explode any embedded JSON into their own columns'
+    )
+    group.add_argument(
+        '--explode-json',
+        action='store_true',
+        dest='explode_json_string_values',
+        default=argparse.SUPPRESS,
+        required=False,
+        help='Explode any embedded JSON into their own columns'
+    )
+
+    json_subparser = subparsers.add_parser(
+        'json',
+        help='Produce a JSON report, supply "json -h" to see JSON options',
+    )
+
+    group = json_subparser.add_mutually_exclusive_group()
+    group.add_argument(
+        '--no-explode-json',
+        action='store_false',
+        dest='explode_json_string_values',
+        default=argparse.SUPPRESS,
+        required=False,
+        help='Do not explode any embedded JSON into their own columns'
+    )
+    group.add_argument(
+        '--explode-json',
+        action='store_true',
+        dest='explode_json_string_values',
+        required=False,
+        default=argparse.SUPPRESS,
+        help='Explode any embedded JSON into their own columns'
+    )
+    group = json_subparser.add_mutually_exclusive_group()
+    group.add_argument(
+        '--no-include_type',
+        action='store_false',
+        dest='include_type',
+        default=argparse.SUPPRESS,
+        required=False,
+        help='Do not include SOAP type in JSON output'
+    )
+    group.add_argument(
+        '--include_type',
+        action='store_true',
+        dest='include_type',
+        required=False,
+        default=argparse.SUPPRESS,
+        help='Include SOAP type in JSON output'
+    )
+
+    xml_subparser = subparsers.add_parser(
+        'xml',
+        help='Produce a XML report, supply "xml -h" to see XML options',
+    )
+
+    group = xml_subparser.add_mutually_exclusive_group()
+    group.add_argument(
+        '--no-minimal',
+        action='store_false',
+        dest='minimal',
+        default=argparse.SUPPRESS,
+        required=False,
+        help='Produce the full XML representation, including empty attributes'
+    )
+    group.add_argument(
+        '--minimal',
+        action='store_true',
+        dest='minimal',
+        default=argparse.SUPPRESS,
+        required=False,
+        help='Only include attributes that are not empty'
+    )
+
+    return parser
+
+
+def process_get_object_args(parser, handler, obj, all_args):
+    # put our query args into their own dict and remove them from all_args
+    getobj_grp_names = [
+        'Get {} Options'.format(obj.replace('_', ' ').capitalize())
+    ]
+    getobj_grp_opts = get_grp_opts(parser, getobj_grp_names)
+    getobj_grp_args = {k: all_args.pop(k) for k in getobj_grp_opts}
+    get_all = getobj_grp_args.pop('all')
+    if get_all:
+        try:
+            response = handler.get_all(obj)
+        except Exception as e:
+            print e
+            sys.exit(100)
+    else:
+        try:
+            response = handler.get(obj, **getobj_grp_args)
+        except Exception as e:
+            print e
+            sys.exit(100)
+
+    print "Found items: ", response
+    return response
+
+
+def setup_report_parser(parser):
+    exp_group = parser.add_argument_group('Report Options')
+    exp_group.add_argument(
+        '--format',
+        required=True,
+        action='store',
+        dest='ftype',
+        choices=constants.TRANSFORM_FORMATS.keys(),
+        help='Format to save response as',
+    )
+
+    exp_group.add_argument(
+        '--filename',
+        required=False,
+        action='store',
+        default=argparse.SUPPRESS,
+        dest='fname',
+        help='File name of report to create (will be automatically '
+        'generated if not supplied)',
+    )
+
+    exp_group.add_argument(
+        '--fileext',
+        required=False,
+        action='store',
+        default=argparse.SUPPRESS,
+        dest='fext',
+        help='File name extension of report to create (--format used if not '
+        'supplied)',
+    )
+
+    exp_group.add_argument(
+        '--dirname',
+        required=False,
+        action='store',
+        default=argparse.SUPPRESS,
+        dest='fdir',
+        help='Directory to create report in (current dir used if not '
+        'supplied)',
+    )
+
+    exp_group.add_argument(
+        '--filename_prefix',
+        required=False,
+        action='store',
+        default=argparse.SUPPRESS,
+        dest='fprefix',
+        help='Prefix to add to the report filename',
+    )
+    exp_group.add_argument(
+        '--filename_postfix',
+        required=False,
+        action='store',
+        default=argparse.SUPPRESS,
+        dest='fpostfix',
+        help='Postfix to add to the report filename',
+    )
+
+    return parser
+
+
+def setup_question_report_parser(parser):
+    resultxml_group = parser.add_argument_group('Question Report Options')
+
+    for TB, TB_DEF in constants.TRANSFORM_BOOL_KWARGS.iteritems():
+        if TB_DEF is False:
+            tb_action = "store_true"
+        else:
+            tb_action = "store_false"
+
+        resultxml_group.add_argument(
+            '--%s' % TB,
+            required=False,
+            action=tb_action,
+            dest=TB,
+            default=TB_DEF,
+            help=constants.TRANSFORM_BOOL_HELP[TB],
+        )
+    return parser
+
+
+def setup_report_sort_parser(parser):
+    sort_group = parser.add_argument_group('Report Sort Options')
+
+    sort_group.add_argument(
+        '--sort',
+        required=False,
+        action='append',
+        dest='HEADER_SORT_PRIORITY',
+        default=constants.TRANSFORM_HEADER_SORT_PRIORITY,
+        help='Columns to sort first in output',
+    )
+    return parser
+
+
+def get_grp_opts(parser, grp_names):
+    action_grps = [a for a in parser._action_groups if a.title in grp_names]
+    grp_opts = [a.dest for b in action_grps for a in b._group_actions]
+    return grp_opts
 
 
 def is_list(l):
