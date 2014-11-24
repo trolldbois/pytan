@@ -4,7 +4,7 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 '''Ask a saved question and save the results as a report format'''
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
-__version__ = '0.1'
+__version__ = '0.8.0'
 
 import os
 import sys
@@ -19,50 +19,39 @@ for aa in path_adds:
     if aa not in sys.path:
         sys.path.append(aa)
 
+import pytan
 from pytan import utils
-from pytan import Handler
-from pytan import cmdline_parser
+
+
+def process_handler_args(parser, all_args):
+    handler_grp_names = ['Handler Authentication', 'Handler Options']
+    handler_opts = utils.get_grp_opts(parser, handler_grp_names)
+    handler_args = {k: all_args.pop(k) for k in handler_opts}
+
+    h = pytan.Handler(**handler_args)
+    print str(h)
+    return h
 
 utils.version_check(__version__)
-parent_parser = cmdline_parser.setup_parser(__doc__)
-parser = cmdline_parser.CustomParser(
-    description=__doc__,
-    parents=[parent_parser],
-)
-parser = cmdline_parser.setup_report_parser(parser)
-parser = cmdline_parser.setup_question_report_parser(parser)
-parser = cmdline_parser.setup_report_sort_parser(parser)
-ask_question_group = parser.add_argument_group('Ask Saved Question Options')
-ask_question_group.add_argument(
-    '--query',
-    required=True,
-    action='store',
-    dest='query',
-    help='Saved question to ask - can prepend with id:, name:, '
-    ' or hash: - name: will be prepended by default',
-)
+parser = utils.setup_ask_saved_argparser(__doc__)
+parser = utils.add_ask_report_argparser(parser)
+
 args = parser.parse_args()
-handler_args = args.__dict__
+all_args = args.__dict__
 
-# put our query args into their own dict and remove them from handler_args
-qgrp_names = ['Ask Saved Question Options']
-qgrp_opts = cmdline_parser.get_grp_opts(parser, qgrp_names)
-qgrp_args = {k: handler_args.pop(k) for k in qgrp_opts}
+if args.id:
+    q_args = {'id': args.id}
+elif args.name:
+    q_args = {'name': args.name}
+else:
+    parser.error("Must supply --id or --name")
 
-# put our transform args into their own dict and remove them from handler_args
-tgrp_names = [
-    'Report Options',
-    'Question Report Options',
-    'Report Sort Options',
-]
-tgrp_opts = cmdline_parser.get_grp_opts(parser, tgrp_names)
-tgrp_args = {k: handler_args.pop(k) for k in tgrp_opts if k in handler_args}
+handler = process_handler_args(parser, all_args)
 
-handler = Handler(**handler_args)
-print str(handler)
-
-print "++ Asking saved question: ", utils.json.dumps(qgrp_args)
-response = handler.ask_saved_question(**qgrp_args)
+print "++ Asking saved question: {}".format(args.id or args.name)
+response = handler.ask(qtype='saved', **q_args)
 print "++ Received Response: ", str(response)
 
-utils.write_object(handler, response, tgrp_args)
+report_file, result = handler.export_to_report_file(response, **all_args)
+m = "Report file {!r} written with {} bytes".format
+print(m(report_file, len(result)))

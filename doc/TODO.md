@@ -1,5 +1,5 @@
 # TODO NOW
- * [ ] update all bin/ scripts to work with new handler
+ * [X] update all bin/ scripts to work with new handler
    * [ ] build EXAMPLE from source scripts
  * [ ] figure out deploy action
  * [ ] figure out the "update" object for every type that i'm supporting for "get"

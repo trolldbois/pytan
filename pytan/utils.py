@@ -74,14 +74,14 @@ class SplitStreamHandler(logging.Handler):
             self.handleError(record)
 
 
-class CustomFormatter(A1, A2):
+class CustomArgFormat(A1, A2):
     pass
 
 
-class CustomParser(argparse.ArgumentParser):
+class CustomArgParse(argparse.ArgumentParser):
     def __init__(self, *args, **kwargs):
         if 'formatter_class' not in kwargs:
-            kwargs['formatter_class'] = CustomFormatter
+            kwargs['formatter_class'] = CustomArgFormat
         #print kwargs
         argparse.ArgumentParser.__init__(self, *args, **kwargs)
 
@@ -91,7 +91,7 @@ class CustomParser(argparse.ArgumentParser):
         sys.exit(2)
 
     def print_help(self, **kwargs):
-        super(CustomParser, self).print_help(**kwargs)
+        super(CustomArgParse, self).print_help(**kwargs)
         subparsers_actions = [
             action for action in self._actions
             if isinstance(action, argparse._SubParsersAction)
@@ -100,16 +100,17 @@ class CustomParser(argparse.ArgumentParser):
             print ""
             # get all subparsers and print help
             for choice, subparser in subparsers_action.choices.items():
-                print(" ** {} '{}':".format(
-                    subparsers_action.dest, choice))
+                # print subparser
+                # print(" ** {} '{}':".format(
+                    # subparsers_action.dest, choice))
                 print(subparser.format_help())
 
 
 def setup_parser(desc, help=False):
-    parser = CustomParser(
+    parser = CustomArgParse(
         description=desc,
         add_help=help,
-        formatter_class=CustomFormatter,
+        formatter_class=CustomArgFormat,
     )
     auth_group = parser.add_argument_group('Handler Authentication')
     auth_group.add_argument(
@@ -172,7 +173,7 @@ def setup_parser(desc, help=False):
 
 def setup_get_object_argparser(obj, doc):
     parent_parser = setup_parser(doc)
-    parser = CustomParser(
+    parser = CustomArgParse(
         description=doc,
         parents=[parent_parser],
     )
@@ -202,16 +203,86 @@ def setup_get_object_argparser(obj, doc):
     return parser
 
 
-def add_get_object_report_argparser(parser):
+def setup_ask_saved_argparser(doc):
+    obj = 'saved_question'
+    parent_parser = setup_parser(doc)
+    parser = CustomArgParse(
+        description=doc,
+        parents=[parent_parser],
+    )
+    ask_arggroup = parser.add_argument_group('Saved Question Selectors')
+    group = ask_arggroup.add_mutually_exclusive_group()
+
+    obj_map = get_obj_map(obj)
+    search_keys = obj_map['search']
+    for k in search_keys:
+        group.add_argument(
+            '--{}'.format(k),
+            required=False,
+            action='store',
+            dest=k,
+            help='{} of {} to ask'.format(k, obj),
+        )
+    return parser
+
+
+def setup_ask_manual_argparser(doc):
+    parent_parser = setup_parser(doc)
+    parser = CustomArgParse(
+        description=doc,
+        parents=[parent_parser],
+    )
+    ask_arggroup = parser.add_argument_group('Manual Question Options')
+
+    ask_arggroup.add_argument(
+        '-s',
+        '--sensor',
+        required=True,
+        action='append',
+        default=[],
+        dest='sensors',
+        help='Sensor, optionally describe parameters, options, and a filter'
+        '; pass --sensor-help to get a full description',
+    )
+
+    ask_arggroup.add_argument(
+        '-f',
+        '--filter',
+        required=False,
+        action='append',
+        default=[],
+        dest='question_filters',
+        help='Whole question filter; pass --filter-help'
+        'to get a full description',
+    )
+
+    ask_arggroup.add_argument(
+        '-o',
+        '--option',
+        required=False,
+        action='append',
+        default=[],
+        dest='question_options',
+        help='Whole question option; pass --option-help to get a full '
+        'description',
+    )
+
+    return parser
+
+
+def add_ask_report_argparser(parser):
+    parser = add_report_file_options(parser)
+
     subparsers = parser.add_subparsers(
-        title='Report Types',
+        title='Export Formats',
         dest='export_format',
-        help='Report type choices',
+        help='Export Format choices',
     )
 
     csv_subparser = subparsers.add_parser(
         'csv',
         help='Produce a CSV report, supply "csv -h" to see CSV options',
+        description="CSV Export Options"
     )
 
     group = csv_subparser.add_mutually_exclusive_group()
@@ -237,7 +308,135 @@ def add_get_object_report_argparser(parser):
         dest='header_sort',
         default=argparse.SUPPRESS,
         required=False,
-        help='Sort the headers with a basic alphanumeric sort'
+        help='Sort the headers with a basic alphanumeric sort (default)'
+    )
+
+    group = csv_subparser.add_mutually_exclusive_group()
+    group.add_argument(
+        '--add-sensor',
+        action='store_true',
+        dest='header_add_sensor',
+        default=argparse.SUPPRESS,
+        required=False,
+        help='Add the sensor names to each header'
+    )
+    group.add_argument(
+        '--no-add-sensor',
+        action='store_false',
+        dest='header_add_sensor',
+        default=argparse.SUPPRESS,
+        required=False,
+        help='Do not add the sensor names to each header (default)'
+    )
+
+    group = csv_subparser.add_mutually_exclusive_group()
+    group.add_argument(
+        '--add-type',
+        action='store_true',
+        dest='header_add_type',
+        default=argparse.SUPPRESS,
+        required=False,
+        help='Add the result type to each header'
+    )
+    group.add_argument(
+        '--no-add-type',
+        action='store_false',
+        dest='header_add_type',
+        default=argparse.SUPPRESS,
+        required=False,
+        help='Do not add the result type to each header (default)'
+    )
+
+    group = csv_subparser.add_mutually_exclusive_group()
+    group.add_argument(
+        '--expand-columns',
+        action='store_true',
+        dest='expand_grouped_columns',
+        default=argparse.SUPPRESS,
+        required=False,
+        help='Expand multi-line cells into their own rows that have sensor '
+        'correlated columns in the new rows'
+    )
+    group.add_argument(
+        '--no-columns',
+        action='store_false',
+        dest='expand_grouped_columns',
+        default=argparse.SUPPRESS,
+        required=False,
+        help='Do not add expand multi-line cells into their own rows (default)'
+    )
+
+    subparsers.add_parser(
+        'json',
+        help='Produce a JSON report, supply "json -h" to see JSON options',
+        description="JSON Export Options"
+    )
+
+    return parser
+
+
+def add_report_file_options(parser):
+    opt_group = parser.add_argument_group('Report File Options')
+    opt_group.add_argument(
+        '--file',
+        required=False,
+        action='store',
+        default=None,
+        dest='report_file',
+        help='File to save report to (will be automatically generated if not '
+        'supplied)',
+    )
+    opt_group.add_argument(
+        '--dir',
+        required=False,
+        action='store',
+        default=None,
+        dest='report_dir',
+        help='Directory to save report to (current directory will be used if '
+        'not supplied)',
+    )
+    return parser
+
+
+def add_get_object_report_argparser(parser):
+    parser = add_report_file_options(parser)
+
+    subparsers = parser.add_subparsers(
+        title='Export Formats',
+        dest='export_format',
+        help='Export Format choices',
+    )
+
+    csv_subparser = subparsers.add_parser(
+        'csv',
+        help='Produce a CSV report, supply "csv -h" to see CSV options',
+        description="CSV Export Options"
+    )
+
+    group = csv_subparser.add_mutually_exclusive_group()
+    group.add_argument(
+        '--sort',
+        default=[],
+        action='append',
+        dest='header_sort',
+        required=False,
+        help='Sort headers by given names'
+    )
+    group.add_argument(
+        '--no-sort',
+        action='store_false',
+        dest='header_sort',
+        default=argparse.SUPPRESS,
+        required=False,
+        help='Do not sort the headers at all'
+    )
+    group.add_argument(
+        '--auto_sort',
+        action='store_true',
+        dest='header_sort',
+        default=argparse.SUPPRESS,
+        required=False,
+        help='Sort the headers with a basic alphanumeric sort (default)'
     )
 
     group = csv_subparser.add_mutually_exclusive_group()
@@ -255,23 +454,16 @@ def add_get_object_report_argparser(parser):
         dest='explode_json_string_values',
         default=argparse.SUPPRESS,
         required=False,
-        help='Explode any embedded JSON into their own columns'
+        help='Explode any embedded JSON into their own columns (default)'
     )
 
     json_subparser = subparsers.add_parser(
         'json',
         help='Produce a JSON report, supply "json -h" to see JSON options',
+        description="CSV Export Options"
     )
 
     group = json_subparser.add_mutually_exclusive_group()
-    group.add_argument(
-        '--no-explode-json',
-        action='store_false',
-        dest='explode_json_string_values',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='Do not explode any embedded JSON into their own columns'
-    )
     group.add_argument(
         '--explode-json',
         action='store_true',
@@ -280,6 +472,16 @@ def add_get_object_report_argparser(parser):
         default=argparse.SUPPRESS,
         help='Explode any embedded JSON into their own columns'
     )
+    group.add_argument(
+        '--no-explode-json',
+        action='store_false',
+        dest='explode_json_string_values',
+        default=argparse.SUPPRESS,
+        required=False,
+        help='Do not explode any embedded JSON into their own columns '
+        '(default)'
+    )
+
     group = json_subparser.add_mutually_exclusive_group()
     group.add_argument(
         '--no-include_type',
@@ -295,12 +497,13 @@ def add_get_object_report_argparser(parser):
         dest='include_type',
         required=False,
         default=argparse.SUPPRESS,
-        help='Include SOAP type in JSON output'
+        help='Include SOAP type in JSON output (default)'
     )
 
     xml_subparser = subparsers.add_parser(
         'xml',
         help='Produce a XML report, supply "xml -h" to see XML options',
+        description="XML Export Options"
     )
 
     group = xml_subparser.add_mutually_exclusive_group()
@@ -318,7 +521,7 @@ def add_get_object_report_argparser(parser):
         dest='minimal',
         default=argparse.SUPPRESS,
         required=False,
-        help='Only include attributes that are not empty'
+        help='Only include attributes that are not empty (default)'
     )
 
     return parser

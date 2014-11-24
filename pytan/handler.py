@@ -239,8 +239,8 @@ class Handler(object):
 
     def export_to_report_file(self, obj, export_format, **kwargs):
 
-        report_dir = kwargs.get('report_dir', '')
-        report_file = kwargs.get('report_file', '')
+        report_dir = kwargs.get('report_dir', None)
+        report_file = kwargs.get('report_file', None)
 
         if not report_file:
             report_file = "{}_{}.{}".format(
@@ -252,7 +252,7 @@ class Handler(object):
             mylog.debug(m(report_file))
 
         if not report_dir:
-            report_dir = os.path.dirname(report_file)
+            report_dir = os.path.dirname(report_file) or os.getcwd()
 
         if not os.path.isdir(report_dir):
             os.makedirs(report_dir)
