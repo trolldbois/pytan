@@ -198,25 +198,6 @@ REQ_KWARGS = [
     'json_pretty_print',
 ]
 
-
-# Used by pytan.reports.Reporter.write_response() as boolean kwargs
-# defaults for passthrus for parse_resultxml():
-TRANSFORM_BOOL_KWARGS = {
-    'ADD_TYPE_TO_HEADERS': False,
-    'ADD_SENSOR_TO_HEADERS': False,
-    'EXPAND_GROUPED_COLUMNS': False,
-}
-
-# Used by bin/ scripts to provide help for TRANSFORM_BOOL_KWARGS
-TRANSFORM_BOOL_HELP = {
-    'ADD_TYPE_TO_HEADERS': "Appends the column type to each column header for "
-    "question results",
-    'ADD_SENSOR_TO_HEADERS': "Prepends the associated sensor name the column "
-    "originates from for question results",
-    'EXPAND_GROUPED_COLUMNS': "Expand carriage return seperated values into "
-    "sensor related rows",
-}
-
 PARAM_RE = re.compile(r'\{(.*?)\}')
 PARAM_SPLIT_RE = re.compile(r'(?<!\\),')
 PARAM_KEY_SPLIT = '='
