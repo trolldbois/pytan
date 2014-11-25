@@ -7,6 +7,7 @@
    * [ ] incorporate mdocbuild for bin scripts
    * [ ] build EXAMPLE from source scripts
    * [ ] build API doc from unit test (as start)
+   * [ ] Expand API examples in README.md
    * [ ] update readme
    * [ ] update sensor help for ask_manual_quesiton.py to describe params
 
@@ -16,10 +17,8 @@
  * [ ] test against RT
  * [ ] test against all the different levels of user privs
  * [ ] logfile support
- * [ ] sort order? (switch to ordereddicts)
  * [ ] email out
  * [ ] test against demo tanium
- * [ ] Expand API examples in README.md
  * [ ] add caching
  * [ ] figure out cert based auth/plugin based auth?
 
