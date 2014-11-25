@@ -48,7 +48,7 @@ def process_handler_args(parser, all_args):
 
 utils.version_check(__version__)
 parent_parser = utils.setup_parser(__doc__)
-parser = utils.CustomParser(
+parser = utils.CustomArgParse(
     description=__doc__,
     parents=[parent_parser],
 )
