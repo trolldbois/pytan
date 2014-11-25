@@ -21,6 +21,7 @@ from collections import OrderedDict
 from . import __version__
 from . import constants
 from . import api
+from . import xmltodict
 
 mylog = logging.getLogger("handler")
 humanlog = logging.getLogger("ask_manual_human")
@@ -1475,3 +1476,24 @@ def check_dictkey(d, key, valid_types, valid_list_types):
             if not all(list_types_match):
                 err = "{!r} must be a list of {}, you supplied {}!".format
                 raise HandlerError(err(key, valid_list_types, list_types))
+
+
+def xml_pretty(x):
+    x_parsed = xmltodict.parse(x)
+    x_unparsed = xmltodict.unparse(x_parsed, pretty=True, indent='  ')
+    return x_unparsed
+
+
+def xml_pretty_resultxml(x):
+    x_parsed = xmltodict.parse(x)
+    x_find = x_parsed["soap:Envelope"]["soap:Body"]["t:return"]["ResultXML"]
+    x_unparsed = xml_pretty(x_find)
+    return x_unparsed
+
+
+def xml_pretty_resultobj(x):
+    x_parsed = xmltodict.parse(x)
+    x_find = x_parsed["soap:Envelope"]["soap:Body"]["t:return"]
+    x_find = x_parsed["result-object"]
+    x_unparsed = xmltodict.unparse(x_find, pretty=True, indent='  ')
+    return x_unparsed
