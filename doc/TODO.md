@@ -1,5 +1,8 @@
 # TODO NOW
- * [ ] figure out deploy action
+ * [ ] checkin api changes to taniumpy
+ * [ ] test verify checks work against package with verification
+ * [ ] write tag cleanup func
+ * [ ] write bin script for deploy
  * [ ] figure out the "update" object for every type that i'm supporting for "get"
  * [ ] figure out the "create" object for every type that i'm supporting for "get"
  * [ ] DOCS/EXAMPLES
@@ -65,3 +68,5 @@
       * [X] integrate reporting into handler (export_*)
       * [X] add unittests for export_obj
    * [X] update all bin/ scripts to work with new handler
+   * [X] figure out deploy action
+   * [X] functests and unittest for deploy action
