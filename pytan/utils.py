@@ -232,6 +232,157 @@ def setup_ask_saved_argparser(doc):
     return parser
 
 
+def setup_stop_action_argparser(doc):
+    parent_parser = setup_parser(doc)
+    parser = CustomArgParse(
+        description=doc,
+        parents=[parent_parser],
+    )
+    ask_arggroup = parser.add_argument_group('Stop Action Options')
+
+    ask_arggroup.add_argument(
+        '-i',
+        '--id',
+        required=True,
+        type=int,
+        action='store',
+        dest='id',
+        help='ID of Deploy Action to stop',
+    )
+
+    return parser
+
+
+def setup_deploy_action_argparser(doc):
+    parent_parser = setup_parser(doc)
+    parser = CustomArgParse(
+        description=doc,
+        parents=[parent_parser],
+    )
+    ask_arggroup = parser.add_argument_group('Deploy Action Options')
+
+    ask_arggroup.add_argument(
+        '--run',
+        required=False,
+        action='store_true',
+        default=False,
+        dest='run',
+        help='Run the deploy action, if not supplied the deploy action will '
+        'only ask the question that matches --filter and save the results to '
+        'csv file for verification',
+    )
+
+    group = ask_arggroup.add_mutually_exclusive_group()
+
+    group.add_argument(
+        '--no-results',
+        action='store_false',
+        dest='get_results',
+        default=argparse.SUPPRESS,
+        required=False,
+        help='Do not get the results after starting the deploy '
+        'action'
+    )
+    group.add_argument(
+        '--results',
+        action='store_true',
+        dest='get_results',
+        default=True,
+        required=False,
+        help='Get the results after starting the deploy action '
+        '(default)',
+    )
+
+    ask_arggroup.add_argument(
+        '-k',
+        '--package',
+        required=True,
+        action='store',
+        default='',
+        dest='package',
+        help='Package to deploy action with, optionally describe parameters, '
+        'pass --package-help to get a full description',
+    )
+
+    ask_arggroup.add_argument(
+        '-f',
+        '--filter',
+        required=True,
+        action='append',
+        default=[],
+        dest='action_filters',
+        help='Filter to deploy action against; pass --filter-help'
+        'to get a full description',
+    )
+
+    ask_arggroup.add_argument(
+        '-o',
+        '--option',
+        required=False,
+        action='append',
+        default=[],
+        dest='action_options',
+        help='Options for deploy action filter; pass --option-help to get a '
+        'full description',
+    )
+
+    ask_arggroup.add_argument(
+        '--start_seconds_from_now',
+        required=False,
+        action='store',
+        type=int,
+        default=1,
+        dest='start_seconds_from_now',
+        help='Start the action N seconds from now',
+    )
+
+    ask_arggroup.add_argument(
+        '--expire_seconds',
+        required=False,
+        action='store',
+        type=int,
+        default=None,
+        dest='expire_seconds',
+        help='Expire the action N seconds after it starts, if not supplied '
+        'the packages own expire_seconds will be used',
+    )
+    parser = add_report_file_options(parser)
+
+    return parser
+
+
+def setup_get_result_argparser(doc):
+    parent_parser = setup_parser(doc)
+    parser = CustomArgParse(
+        description=doc,
+        parents=[parent_parser],
+    )
+    ask_arggroup = parser.add_argument_group('Get Result Options')
+
+    ask_arggroup.add_argument(
+        '-o',
+        '--object',
+        required=True,
+        action='store',
+        default='',
+        choices=['saved_question', 'question', 'action'],
+        dest='object_type',
+        help='Type of object to get results for',
+    )
+
+    ask_arggroup.add_argument(
+        '-i',
+        '--id',
+        required=True,
+        action='store',
+        default='',
+        type=int,
+        dest='object_id',
+        help='id of object to get results for',
+    )
+    return parser
+
+
 def setup_ask_manual_argparser(doc):
     parent_parser = setup_parser(doc)
     parser = CustomArgParse(
@@ -273,6 +424,26 @@ def setup_ask_manual_argparser(doc):
         'description',
     )
 
+    group = ask_arggroup.add_mutually_exclusive_group()
+
+    group.add_argument(
+        '--no-results',
+        action='store_false',
+        dest='get_results',
+        default=argparse.SUPPRESS,
+        required=False,
+        help='Do not get the results after asking the quesiton '
+        'action'
+    )
+    group.add_argument(
+        '--results',
+        action='store_true',
+        dest='get_results',
+        default=True,
+        required=False,
+        help='Get the results after asking the quesiton '
+        '(default)',
+    )
     return parser
 
 

@@ -106,9 +106,14 @@ class Handler(object):
         # add the sensors from this question to the ResultSet object
         # for reporting
         result.sensors = [x.sensor for x in q_obj.question.selects]
-        return result
+        ret = {
+            'question_object': q_obj,
+            'question_results': result,
+        }
 
-    def ask_manual(self, **kwargs):
+        return ret
+
+    def ask_manual(self, get_results=True, **kwargs):
         '''Parses a set of python objects into a Question object,
         adds the Question object, and returns the results for the Question ID
         of the added Question object
@@ -162,19 +167,27 @@ class Handler(object):
         # to everything (especially query_text)
         q_obj = self.get('question', id=q_obj.id)[0]
 
-        # poll the Question ID returned above to wait for results
-        ask_kwargs = utils.get_ask_kwargs(**kwargs)
-        asker = api.QuestionAsker(self.session, q_obj, **ask_kwargs)
-        asker.run({'ProgressChanged': utils.question_progress})
+        ret = {
+            'question_object': q_obj,
+            'question_results': None,
+        }
 
-        # get the results
-        req_kwargs = utils.get_req_kwargs(**kwargs)
-        result = self.session.getResultData(q_obj, **req_kwargs)
+        if get_results:
+            # poll the Question ID returned above to wait for results
+            ask_kwargs = utils.get_ask_kwargs(**kwargs)
+            asker = api.QuestionAsker(self.session, q_obj, **ask_kwargs)
+            asker.run({'ProgressChanged': utils.question_progress})
 
-        # add the sensors from this question to the ResultSet object
-        # for reporting
-        result.sensors = [x['sensor_obj'] for x in sensor_defs]
-        return result
+            # get the results
+            req_kwargs = utils.get_req_kwargs(**kwargs)
+            result = self.session.getResultData(q_obj, **req_kwargs)
+
+            # add the sensors from this question to the ResultSet object
+            # for reporting
+            result.sensors = [x['sensor_obj'] for x in sensor_defs]
+            ret['question_results'] = result
+
+        return ret
 
     def ask_manual_human(self, **kwargs):
         '''Parses a set of "human" strings into python objects usable
@@ -208,7 +221,7 @@ class Handler(object):
         )
         return result
 
-    def deploy_action(self, run=False, **kwargs):
+    def deploy_action(self, run=False, get_results=True, **kwargs):
 
         # get our defs from kwargs and churn them into what we want
         action_filter_defs = utils.parse_defs(
@@ -268,12 +281,13 @@ class Handler(object):
             pre_action_sensors = ['Online, that = True']
 
         pre_action_sensor_defs = utils.dehumanize_sensors(pre_action_sensors)
-        pre_action_result = self.ask_manual(
+        pre_action_result_ret = self.ask_manual(
             sensor_defs=pre_action_sensor_defs,
             question_filter_defs=action_filter_defs,
             question_option_defs=action_option_defs,
             hide_no_results_flag=1,
         )
+        pre_action_result = pre_action_result_ret['question_results']
 
         if not run:
             report_path, result = self.export_to_report_file(
@@ -334,12 +348,25 @@ class Handler(object):
         m = "Deploy Action Added, ID: {}".format
         mylog.debug(m(action_obj.id))
 
-        rd, progress, as_map = self.deploy_action_asker(
-            action_obj.id, passed_count
-        )
-        m = "Deploy Action Completed {}".format
-        mylog.debug(m(utils.seconds_from_now(0, '')))
-        return rd, progress, as_map
+        action_obj = self.get('action', id=action_obj.id)[0]
+
+        ret = {
+            'action_object': action_obj,
+            'action_results': None,
+            'action_progress_human': None,
+            'action_progress_map': None,
+            'pre_action_question_results': pre_action_result_ret,
+        }
+
+        if get_results:
+            deploy_results = self.deploy_action_asker(
+                action_obj.id, passed_count
+            )
+            ret.update(deploy_results)
+            m = "Deploy Action Completed {}".format
+            mylog.debug(m(utils.seconds_from_now(0, '')))
+
+        return ret
 
     def deploy_action_human(self, **kwargs):
         # the human string describing the sensors/filter that user wants
@@ -491,7 +518,15 @@ class Handler(object):
 
             mylog.debug(progress)
             time.sleep(1)
-        return rd, progress, as_map
+
+        ret = {
+            'action_object': action_obj,
+            'action_results': rd,
+            'action_progress_human': progress,
+            'action_progress_map': as_map,
+        }
+
+        return ret
 
     def export_obj(self, obj, export_format, **kwargs):
         objtype = type(obj)
@@ -664,6 +699,17 @@ class Handler(object):
     def get_result_info(self, obj, **kwargs):
         ri = self.session.getResultInfo(obj, **kwargs)
         return ri
+
+    def stop_action(self, id, **kwargs):
+        action_obj = self.get('action', id=id)[0]
+        add_action_stop_obj = api.ActionStop()
+        add_action_stop_obj.action = action_obj
+        action_stop_obj = self.session.add(add_action_stop_obj)
+        m = (
+            'Action stopped successfully, ID of action stop: {}'
+        ).format
+        mylog.debug(m(action_stop_obj.id))
+        return action_stop_obj
 
     # BEGIN PRIVATE METHODS
     def _find(self, api_object, **kwargs):
