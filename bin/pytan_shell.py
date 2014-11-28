@@ -21,7 +21,7 @@ for aa in path_adds:
 
 import pytan
 from pytan import utils
-from pytan import api
+# from pytan import api
 
 # adds readline, autocomplete, history to python interactive console
 import atexit
@@ -121,40 +121,4 @@ if handler.loglevel >= 10:
 
 print ("%s -- now available as 'handler'!" % handler)
 
-
-# package_obj = handler.get('package', id=1096)
-# print "Package object: ", package_obj.to_json(package_obj)
 session = handler.session
-
-sensor_obj = api.Sensor()
-sensor_obj.name = 'Online'
-
-filter_obj = api.Filter()
-filter_obj.sensor = sensor_obj
-filter_obj.operator = 'HashMatch'
-filter_obj.value_type = 'Hash'
-filter_obj.value = 1364049829
-filter_obj.and_flag = 1
-filter_obj.not_flag = 0
-filter_obj.ignore_case_flag = 1
-filter_obj.all_values_flag = 0
-
-targetgroup_obj = api.Group()
-# targetgroup_obj._soap_tag = 'target_group'
-targetgroup_obj.text = 'Online is "True"'
-targetgroup_obj.and_flag = 1
-targetgroup_obj.not_flag = 0
-targetgroup_obj.filters = api.FilterList()
-targetgroup_obj.filters.append(filter_obj)
-
-packagespec_obj = api.PackageSpec()
-packagespec_obj.name = "Clean Stale Tanium Client Data"
-
-add_action_obj = api.Action()
-add_action_obj.name = "Deploy Clean Stale Tanium Client Data"
-add_action_obj.package_spec = packagespec_obj
-add_action_obj.target_group = targetgroup_obj
-
-print utils.xml_pretty(add_action_obj.toSOAPBody(minimal=True))
-action_obj = session.add(add_action_obj)
-print action_obj.id
