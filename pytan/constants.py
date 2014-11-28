@@ -30,6 +30,7 @@ LOG_LEVEL_MAPS = [
         {
             'handler': 'WARN',
             'question_progress': 'WARN',
+            'action_progress': 'WARN',
             'ask_manual': 'WARN',
             'ask_manual_human': 'WARN',
             'api.session': 'WARN',
@@ -38,7 +39,7 @@ LOG_LEVEL_MAPS = [
             'api.session.http.body': 'WARN',
         }
     ),
-    (1, {'question_progress': 'INFO'}),
+    (1, {'question_progress': 'INFO', 'action_progress': 'INFO'}),
     (2, {'handler': 'INFO'}),
     (3, {'handler': 'DEBUG'}),
     (4, {'ask_manual': 'DEBUG'}),
@@ -439,4 +440,19 @@ EXPORT_MAPS = {
         ]
     },
 
+}
+
+ACTION_RESULT_STATUS = {
+    "Waiting.": ['running'],
+    "Downloading.": ['running'],
+    "Copying.": ['running'],
+    "Running.": ['running'],
+    "Stopped.": ['failed', 'done'],
+    "Completed.": ['verify_running', 'no_verify_done', 'no_verify_success'],
+    "PendingVerification.": ['running'],
+    "Failed.": ['failed', 'done'],
+    "NotSucceeded.": ['failed', 'done'],
+    "Expired.": ['failed', 'done'],
+    "Verified.": ['no_verify_done', 'verify_done', 'verify_success'],
+    "Succeeded.": ['done'],
 }

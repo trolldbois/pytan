@@ -25,15 +25,6 @@ import pytan
 from testlib import threaded_http
 from testlib import ddt
 
-SERVER_INFO = {
-    "username": "Tanium User",
-    "password": "T@n!um",
-    "host": "172.16.31.128",
-    "port": "444",
-    "loglevel": 0,
-    "debugformat": False,
-}
-
 # control the amount of output from unittests
 TESTVERBOSITY = 2
 
@@ -42,6 +33,15 @@ FAILFAST = True
 
 # catch control-C to allow current test suite to finish (press 2x to force)
 CATCHBREAK = True
+
+SERVER_INFO = {
+    "username": "Tanium User",
+    "password": "T@n!um",
+    "host": "172.16.31.128",
+    "port": "444",
+    "loglevel": TESTVERBOSITY,
+    "debugformat": False,
+}
 
 
 def spew(m):
@@ -281,11 +281,12 @@ class ExportObjTests(unittest.TestCase):
         # test that sensor with params gets handled properly
         r2_sensor_true = handler.export_obj(header_add_sensor=True, **a2)
         exp = (
-            '"Folder Name Search with RegEx Match[No, Program Files, No, ]: '
-            'Folder Name Search with RegEx Match[No, Program Files, No, ]"'
+            '.*"Folder Name Search with RegEx Match\[No, Program Files, No, '
+            '\]: Folder Name Search with RegEx Match\[No, Program Files, No, '
+            '\]".*'
         )
-        self.assertEquals(
-            exp, r2_sensor_true.splitlines()[0]
+        self.assertRegexpMatches(
+            r2_sensor_true.splitlines()[0], exp
         )
 
         r1_all_opts = handler.export_obj(
@@ -356,6 +357,60 @@ class ValidServerTests(unittest.TestCase):
         spew("")
         return self.handler
 
+    def test_valid_deploy_action(self):
+        handler = self.setup_test()
+        action_filters = ['Operating System, that contains Windows']
+        action_options = ['and']
+
+        from random import randint
+        tag_num = randint(100, 999)
+        package = (
+            'Custom Tagging - Add Tags{$1=tag_should_be_added_%s,$2=tag_should'
+            'be_ignored}'
+        ) % tag_num
+
+        rd, progress, as_map = handler.deploy_action_human(
+            action_filters=action_filters,
+            action_options=action_options,
+            package=package,
+            run=True,
+            report_dir=TEST_OUT,
+        )
+        self.assertTrue(rd)
+        self.assertIsInstance(rd, pytan.api.ResultSet)
+        self.assertGreaterEqual(len(rd.rows), 1)
+        self.assertGreaterEqual(len(rd.columns), 1)
+        for ft in pytan.constants.EXPORT_MAPS['ResultSet'].keys():
+            report_file, result = handler.export_to_report_file(
+                obj=rd, export_format=ft, report_dir=TEST_OUT,
+                prefix=sys._getframe().f_code.co_name + '_',
+            )
+            self.assertTrue(report_file)
+            self.assertTrue(result)
+            self.assertTrue(os.path.isfile(report_file))
+            self.assertGreaterEqual(len(result), 10)
+
+    def test_deploy_action_no_run(self):
+        handler = self.setup_test()
+        action_filters = ['Operating System, that contains Windows']
+        action_options = ['and']
+
+        from random import randint
+        tag_num = randint(100, 999)
+        package = (
+            'Custom Tagging - Add Tags{$1=tag_should_be_added_%s,$2=tag_should'
+            'be_ignored}'
+        ) % tag_num
+
+        e = ''
+        with self.assertRaisesRegexp(pytan.utils.RunFalse, e):
+            handler.deploy_action_human(
+                action_filters=action_filters,
+                action_options=action_options,
+                package=package,
+                report_dir=TEST_OUT,
+            )
+
     @ddt.file_data('ddt/ddt_valid_questions.json')
     def test_valid_question(self, value):
         handler = self.setup_test()
@@ -376,6 +431,7 @@ class ValidServerTests(unittest.TestCase):
         for ft in pytan.constants.EXPORT_MAPS['ResultSet'].keys():
             report_file, result = handler.export_to_report_file(
                 obj=response, export_format=ft, report_dir=TEST_OUT,
+                prefix=sys._getframe().f_code.co_name + '_',
             )
             self.assertTrue(report_file)
             self.assertTrue(result)
@@ -405,6 +461,7 @@ class ValidServerTests(unittest.TestCase):
         for ft in pytan.constants.EXPORT_MAPS['BaseType'].keys():
             report_file, result = handler.export_to_report_file(
                 obj=response, export_format=ft, report_dir=TEST_OUT,
+                prefix=sys._getframe().f_code.co_name + '_',
             )
             self.assertTrue(report_file)
             self.assertTrue(result)

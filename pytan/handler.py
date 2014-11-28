@@ -15,12 +15,15 @@ sys.dont_write_bytecode = True
 import os
 import logging
 import io
+import time
 from . import utils
 from . import constants
 from . import api
 from .utils import HandlerError
+from .utils import RunFalse
 
 mylog = logging.getLogger("handler")
+actionlog = logging.getLogger("action_progress")
 
 
 class Handler(object):
@@ -94,7 +97,7 @@ class Handler(object):
         # poll the Saved Question ID returned above to wait for results
         ask_kwargs = utils.get_ask_kwargs(**kwargs)
         asker = api.QuestionAsker(self.session, q_obj, **ask_kwargs)
-        asker.run({'ProgressChanged': utils.progressChanged})
+        asker.run({'ProgressChanged': utils.question_progress})
 
         # get the results
         req_kwargs = utils.get_req_kwargs(**kwargs)
@@ -112,13 +115,31 @@ class Handler(object):
         '''
 
         # get our defs from kwargs and churn them into what we want
-        sensor_defs = utils.parse_sensor_defs(**kwargs)
-        q_filter_defs = utils.parse_question_filter_defs(**kwargs)
-        q_option_defs = utils.parse_question_option_defs(**kwargs)
+        sensor_defs = utils.parse_defs(
+            defname='sensor_defs',
+            deftypes=['list()', 'str()', 'dict()'],
+            strconv='name',
+            empty_ok=False,
+            **kwargs
+        )
+
+        q_filter_defs = utils.parse_defs(
+            defname='question_filter_defs',
+            deftypes=['list()', 'dict()'],
+            empty_ok=True,
+            **kwargs
+        )
+
+        q_option_defs = utils.parse_defs(
+            defname='question_option_defs',
+            deftypes=['dict()'],
+            empty_ok=True,
+            **kwargs
+        )
 
         # do basic validation of our defs
-        sensor_defs = utils.val_sensor_defs(sensor_defs)
-        q_filter_defs = utils.val_q_filter_defs(q_filter_defs)
+        utils.val_sensor_defs(sensor_defs)
+        utils.val_q_filter_defs(q_filter_defs)
 
         # get the sensor objects that are in our defs and add them as
         # d['sensor_obj']
@@ -137,10 +158,14 @@ class Handler(object):
         # add our Question and get a Question ID back
         q_obj = self.session.add(add_q_obj)
 
+        # refetch the full object of the question so that we have access
+        # to everything (especially query_text)
+        q_obj = self.get('question', id=q_obj.id)[0]
+
         # poll the Question ID returned above to wait for results
         ask_kwargs = utils.get_ask_kwargs(**kwargs)
         asker = api.QuestionAsker(self.session, q_obj, **ask_kwargs)
-        asker.run({'ProgressChanged': utils.progressChanged})
+        asker.run({'ProgressChanged': utils.question_progress})
 
         # get the results
         req_kwargs = utils.get_req_kwargs(**kwargs)
@@ -182,6 +207,286 @@ class Handler(object):
             **kwargs
         )
         return result
+
+    def deploy_action(self, run=False, **kwargs):
+
+        # get our defs from kwargs and churn them into what we want
+        action_filter_defs = utils.parse_defs(
+            defname='action_filter_defs',
+            deftypes=['list()', 'str()', 'dict()'],
+            strconv='name',
+            empty_ok=False,
+            **kwargs
+        )
+
+        action_option_defs = utils.parse_defs(
+            defname='action_option_defs',
+            deftypes=['dict()'],
+            empty_ok=True,
+            **kwargs
+        )
+
+        package_def = utils.parse_defs(
+            defname='package_def',
+            deftypes=['dict()'],
+            empty_ok=False,
+            **kwargs
+        )
+
+        start_seconds_from_now = utils.get_kwargs_int(
+            'start_seconds_from_now', 1, **kwargs
+        )
+
+        expire_seconds = utils.get_kwargs_int('expire_seconds', **kwargs)
+
+        # do basic validation of our defs
+        utils.val_sensor_defs(action_filter_defs)
+        utils.val_package_def(package_def)
+
+        # get the objects that are in our defs and add them as
+        # d['sensor_obj'] / d['package_obj']
+        action_filter_defs = self._get_sensor_defs(action_filter_defs)
+        package_def = self._get_package_def(package_def)
+
+        '''
+        ask the question that pertains to the action filter
+        this will be used to get a count for how many servers should be seen
+        in the deploy action resultdata as 'completed'
+
+        We supply Computer Name and Online = True as the sensors if run is
+        False, then exit out after asking the question to allow the user
+        to verify the contents
+
+        If run is True we just use Online = True for the sensor
+
+        The action filter for the deploy action is used as the question
+        filter in both cases
+        '''
+        if not run:
+            pre_action_sensors = ['Computer Name', 'Online, that = True']
+        else:
+            pre_action_sensors = ['Online, that = True']
+
+        pre_action_sensor_defs = utils.dehumanize_sensors(pre_action_sensors)
+        pre_action_result = self.ask_manual(
+            sensor_defs=pre_action_sensor_defs,
+            question_filter_defs=action_filter_defs,
+            question_option_defs=action_option_defs,
+            hide_no_results_flag=1,
+        )
+
+        if not run:
+            report_path, result = self.export_to_report_file(
+                pre_action_result, 'csv',
+                prefix='VERIFY_BEFORE_DEPLOY_ACTION_', **kwargs
+            )
+            m = (
+                "'Run' is not True!!\n"
+                "View and verify the contents of {} (length: {} bytes)\n"
+                "Re-run this deploy action with run=True after verifying"
+            ).format
+            raise RunFalse(m(report_path, len(result)))
+
+        ''' note from jwk:
+        passed_count == the number of machines that pass the filter and
+        therefore the number that should take the action
+        '''
+        passed_count = pre_action_result.passed
+        m = (
+            "Number of systems that match action filter (passed_count): {}"
+        ).format
+        mylog.debug(m(passed_count))
+
+        targetgroup_obj = utils.build_group_obj(
+            action_filter_defs, action_option_defs
+        )
+
+        package_obj = package_def['package_obj']
+        user_params = package_def['params']
+        param_objlist = utils.build_param_objlist(
+            obj=package_obj,
+            user_params=user_params,
+            delim='',
+            derive_def=False,
+            empty_ok=False,
+        )
+
+        a_package_obj = api.PackageSpec()
+        if param_objlist:
+            a_package_obj.source_id = package_obj.id
+            a_package_obj.parameters = param_objlist
+        else:
+            a_package_obj.name = package_obj.name
+
+        add_action_obj = api.Action()
+        add_action_obj.name = "API Deploy {}".format(package_obj.name)
+        add_action_obj.package_spec = a_package_obj
+        add_action_obj.target_group = targetgroup_obj
+        add_action_obj.start_time = utils.seconds_from_now(
+            start_seconds_from_now
+        )
+
+        if expire_seconds is not None:
+            add_action_obj.expire_seconds = expire_seconds
+
+        action_obj = self.session.add(add_action_obj)
+
+        m = "Deploy Action Added, ID: {}".format
+        mylog.debug(m(action_obj.id))
+
+        rd, progress, as_map = self.deploy_action_asker(
+            action_obj.id, passed_count
+        )
+        m = "Deploy Action Completed {}".format
+        mylog.debug(m(utils.seconds_from_now(0, '')))
+        return rd, progress, as_map
+
+    def deploy_action_human(self, **kwargs):
+        # the human string describing the sensors/filter that user wants
+        # to deploy the action against
+        if 'action_filters' in kwargs:
+            action_filters = kwargs.pop('action_filters')
+        else:
+            action_filters = []
+
+        # the question options to use on the pre-action question and on the
+        # group for the action filters
+        if 'action_options' in kwargs:
+            action_options = kwargs.pop('action_options')
+        else:
+            action_options = []
+
+        # name of package to deploy with params as {key=value1,key2=value2}
+        if 'package' in kwargs:
+            package = kwargs.pop('package')
+        else:
+            package = ''
+
+        action_filter_defs = utils.dehumanize_sensors(action_filters)
+        action_option_defs = utils.dehumanize_question_options(action_options)
+        package_def = utils.dehumanize_package(package)
+
+        deploy_result = self.deploy_action(
+            action_filter_defs=action_filter_defs,
+            action_option_defs=action_option_defs,
+            package_def=package_def,
+            **kwargs
+        )
+        return deploy_result
+
+    def deploy_action_asker(self, action_id, passed_count=0):
+        action_obj = self.get('action', id=action_id)[0]
+
+        if action_obj.package_spec.verify_group:
+            m = "Setting up 'finished' for verify"
+            finished_keys = ['done', 'verify_done']
+            success_keys = ['verify_done']
+            running_keys = ['running', 'verify_running']
+            failed_keys = ['failed']
+        else:
+            m = "Setting up 'finished' for no_verify"
+            finished_keys = ['done', 'no_verify_done']
+            success_keys = ['no_verify_done']
+            running_keys = ['running']
+            failed_keys = ['failed']
+
+        mylog.debug(m)
+        ARS = constants.ACTION_RESULT_STATUS
+        finished_keys = utils.get_dict_list_items(ARS, finished_keys)
+        success_keys = utils.get_dict_list_items(ARS, success_keys)
+        running_keys = utils.get_dict_list_items(ARS, running_keys)
+        failed_keys = utils.get_dict_list_items(ARS, failed_keys)
+
+        passed_count_reached = False
+        finished = False
+        while not passed_count_reached or not finished:
+            m = "Deploy Action Asker loop for {!r}: {}".format
+            mylog.debug(m(action_obj.name, utils.seconds_from_now(0, '')))
+
+            if not passed_count_reached:
+                # get the aggregate resultdata
+                rd = self.get_result_data(action_obj, True)
+
+                current_passed = sum([int(x['Count'][0]) for x in rd.rows])
+                passed_pct = current_passed * (100.0 / float(passed_count))
+
+                m = (
+                    "Deploy Action {} Current Passed: {}, Expected Passed: {}"
+                ).format
+                mylog.debug(m(action_obj.name, current_passed, passed_count))
+
+                m = "Action Results Passed: {1:.0f}% ({0})".format
+                actionlog.info(m(action_obj.name, passed_pct))
+
+                # if current_passed matches passed_count, then set
+                # passed_count_reached = True
+                if current_passed >= passed_count:
+                    passed_count_reached = True
+
+                if not passed_count_reached:
+                    time.sleep(1)
+                    continue
+
+            # if passed_count was reached (the sum of Count from all rows from
+            # the aggregate getresultdata is the same or greater as the number
+            # of servers that matched the pre-action question), determine
+            # if all servers have "finished"
+
+            # get the full resultdata
+            rd = self.get_result_data(action_obj, False)
+
+            # create a dictionary to hold action statuses and the
+            # computer names for each action status
+            as_map = {}
+
+            for row in rd.rows:
+                computer_name = row['Computer Name'][0]
+                action_status = row['Action Statuses'][0]
+                action_status = action_status.split(':')[1]
+                if not action_status in as_map:
+                    as_map[action_status] = []
+                as_map[action_status].append(computer_name)
+
+            total_count = utils.get_dict_list_len(as_map)
+            finished_count = utils.get_dict_list_len(as_map, finished_keys)
+            success_count = utils.get_dict_list_len(as_map, success_keys)
+            running_count = utils.get_dict_list_len(as_map, running_keys)
+            failed_count = utils.get_dict_list_len(as_map, failed_keys)
+            unknown_count = utils.get_dict_list_len(as_map, ARS, True)
+
+            finished_pct = finished_count * (100.0 / float(passed_count))
+
+            m = "Action Results Completed: {1:.0f}% ({0})".format
+            actionlog.info(m(action_obj.name, finished_pct))
+
+            progress = (
+                "{} Result Counts:\n"
+                "\tRunning Count: {}\n"
+                "\tSuccess Count: {}\n"
+                "\tFailed Count: {}\n"
+                "\tUnknown Count: {}\n"
+                "\tFinished Count: {}\n"
+                "\tTotal Count: {}\n"
+                "\tFinished Count must equal: {}"
+            ).format(
+                action_obj.name,
+                running_count,
+                success_count,
+                failed_count,
+                unknown_count,
+                finished_count,
+                total_count,
+                passed_count,
+            )
+
+            if finished_count >= passed_count:
+                actionlog.info(progress)
+                finished = True
+                break
+
+            mylog.debug(progress)
+            time.sleep(1)
+        return rd, progress, as_map
 
     def export_obj(self, obj, export_format, **kwargs):
         objtype = type(obj)
@@ -239,32 +544,53 @@ class Handler(object):
 
     def export_to_report_file(self, obj, export_format, **kwargs):
 
-        report_dir = kwargs.get('report_dir', None)
         report_file = kwargs.get('report_file', None)
 
         if not report_file:
             report_file = "{}_{}.{}".format(
                 type(obj).__name__, utils.get_now(), export_format,
             )
-            report_dir = report_dir or os.getcwd()
-            report_file = os.path.join(report_dir, report_file)
             m = "No report file name supplied, generated name: {!r}".format
             mylog.debug(m(report_file))
 
-        if not report_dir:
-            report_dir = os.path.dirname(report_file) or os.getcwd()
+        # try to get report_dir from the report_file
+        report_dir = os.path.dirname(report_file)
 
+        # try to get report_dir from kwargs
+        if not report_dir:
+            report_dir = kwargs.get('report_dir', None)
+
+        # just use current working dir
+        if not report_dir:
+            report_dir = os.getcwd()
+
+        # make report_dir if it doesnt exist
         if not os.path.isdir(report_dir):
             os.makedirs(report_dir)
 
+        # remove any path from report_file
+        report_file = os.path.basename(report_file)
+
+        # if prefix/postfix, add to report_file
+        prefix = kwargs.get('prefix', '')
+        postfix = kwargs.get('postfix', '')
+        report_file, report_ext = os.path.splitext(report_file)
+        report_file = '{}{}{}{}'.format(
+            prefix, report_file, postfix, report_ext
+        )
+
+        # join the report_dir and report_file to come up with report_path
+        report_path = os.path.join(report_dir, report_file)
+
+        # get the results of exporting the object
         result = self.export_obj(obj, export_format, **kwargs)
 
-        with open(report_file, 'w') as fd:
+        with open(report_path, 'w') as fd:
             fd.write(result)
 
         m = "Report file {!r} written with {} bytes".format
-        mylog.info(m(report_file, len(result)))
-        return report_file, result
+        mylog.info(m(report_path, len(result)))
+        return report_path, result
 
     def get(self, obj, **kwargs):
         obj_map = utils.get_obj_map(obj)
@@ -300,6 +626,39 @@ class Handler(object):
         api_obj_all = getattr(api, obj_map['all'])()
         found = self._find(api_obj_all, **kwargs)
         return found
+
+    def get_result_data(self, obj, aggregate=False, **kwargs):
+        ''' note #1 from jwk:
+        For Action GetResultData:
+        You have to make a ResultInfo request at least once every 2 minutes.
+        The server gathers the result data by asking a saved question.
+        It won't re-issue the saved question unless you make a GetResultInfo
+        request. When you make a GetResultInfo request, if there is no
+        question that is less than 2 minutes old, the server will automatically
+        reissue a new question instance to make sure fresh data is available.
+
+        note #2 from jwk:
+         To get the aggregate data (without computer names),
+         set row_counts_only_flag = 1. To get the computer names,
+         use row_counts_only_flag = 0 (default).
+        '''
+
+        # do a getresultinfo to ensure fresh data is available for
+        # getresultdata
+        self.get_result_info(obj, **kwargs)
+
+        # do a getresultdata
+        if aggregate:
+            rd = self.session.getResultData(
+                obj, row_counts_only_flag=1, **kwargs
+            )
+        else:
+            rd = self.session.getResultData(obj, **kwargs)
+        return rd
+
+    def get_result_info(self, obj, **kwargs):
+        ri = self.session.getResultInfo(obj, **kwargs)
+        return ri
 
     # BEGIN PRIVATE METHODS
     def _find(self, api_object, **kwargs):
@@ -389,8 +748,20 @@ class Handler(object):
             def_search = {s: d.get(s, '') for s in search_keys if d.get(s, '')}
 
             # get the sensor object
-            d['sensor_obj'] = self.get('sensor', **def_search)[0]
+            if not 'sensor_obj' in d:
+                d['sensor_obj'] = self.get('sensor', **def_search)[0]
         return defs
+
+    def _get_package_def(self, d):
+        s_obj_map = constants.GET_OBJ_MAP['package']
+        search_keys = s_obj_map['search']
+
+        def_search = {s: d.get(s, '') for s in search_keys if d.get(s, '')}
+
+        # get the package object
+        if not 'package_obj' in d:
+            d['package_obj'] = self.get('package', **def_search)[0]
+        return d
 
     def _export_class_BaseType(self, obj, export_format, **kwargs):
         # run the handler that is specific to this export_format, if it exists

@@ -191,17 +191,17 @@ class TestDehumanizeSensorUtils(unittest.TestCase):
         self.assertEquals(sensor_defs, exp)
 
     def test_empty_args_str(self):
-        e = "A sensor string or list of strings must be supplied as 'sensors'!"
+        e = "A string or list of strings must be supplied as 'sensors'!"
         with self.assertRaisesRegexp(HumanParserError, e):
             utils.dehumanize_sensors('')
 
     def test_empty_args_list(self):
-        e = "A sensor string or list of strings must be supplied as 'sensors'!"
+        e = "A string or list of strings must be supplied as 'sensors'!"
         with self.assertRaisesRegexp(HumanParserError, e):
             utils.dehumanize_sensors([])
 
     def test_empty_args_dict(self):
-        e = "A sensor string or list of strings must be supplied as 'sensors'!"
+        e = "A string or list of strings must be supplied as 'sensors'!"
         with self.assertRaisesRegexp(HumanParserError, e):
             utils.dehumanize_sensors({})
 
@@ -491,28 +491,52 @@ class TestManualSensorDefParseUtils(unittest.TestCase):
     def test_parse_str1(self):
         '''simple str is parsed into list of same str'''
         kwargs = {'sensor_defs': 'Sensor1'}
-        r = utils.parse_sensor_defs(**kwargs)
+        r = utils.parse_defs(
+            defname='sensor_defs',
+            deftypes=['list()', 'str()', 'dict()'],
+            strconv='name',
+            empty_ok=False,
+            **kwargs
+        )
         exp = [{'name': 'Sensor1'}]
         self.assertEquals(r, exp)
 
     def test_parse_dict_name(self):
         '''dict with name is parsed into list of same dict'''
         kwargs = {'sensor_defs': {'name': 'Sensor1'}}
-        r = utils.parse_sensor_defs(**kwargs)
+        r = utils.parse_defs(
+            defname='sensor_defs',
+            deftypes=['list()', 'str()', 'dict()'],
+            strconv='name',
+            empty_ok=False,
+            **kwargs
+        )
         exp = [{'name': 'Sensor1'}]
         self.assertEquals(r, exp)
 
     def test_parse_dict_id(self):
         '''dict with id is parsed into list of same dict'''
         kwargs = {'sensor_defs': {'id': '1'}}
-        r = utils.parse_sensor_defs(**kwargs)
+        r = utils.parse_defs(
+            defname='sensor_defs',
+            deftypes=['list()', 'str()', 'dict()'],
+            strconv='name',
+            empty_ok=False,
+            **kwargs
+        )
         exp = [{'id': '1'}]
         self.assertEquals(r, exp)
 
     def test_parse_dict_hash(self):
         '''dict with hash is parsed into list of same dict'''
         kwargs = {'sensor_defs': {'hash': '1'}}
-        r = utils.parse_sensor_defs(**kwargs)
+        r = utils.parse_defs(
+            defname='sensor_defs',
+            deftypes=['list()', 'str()', 'dict()'],
+            strconv='name',
+            empty_ok=False,
+            **kwargs
+        )
         exp = [{'hash': '1'}]
         self.assertEquals(r, exp)
 
@@ -560,17 +584,30 @@ class TestManualSensorDefParseUtils(unittest.TestCase):
         ]
         kwargs = {'sensor_defs': sensor_defs}
 
-        r = utils.parse_sensor_defs(**kwargs)
+        r = utils.parse_defs(
+            defname='sensor_defs',
+            deftypes=['list()', 'str()', 'dict()'],
+            strconv='name',
+            empty_ok=False,
+            **kwargs
+        )
         self.assertEquals(r, sensor_defs)
 
     def test_parse_noargs(self):
         '''no args throws exception'''
+        kwargs = {}
         e = (
             "'sensor_defs' requires a non-empty value of type: list\(\) or "
             "str\(\) or dict\(\)"
         )
         with self.assertRaisesRegexp(DefinitionParserError, e):
-            utils.parse_sensor_defs()
+            utils.parse_defs(
+                defname='sensor_defs',
+                deftypes=['list()', 'str()', 'dict()'],
+                strconv='name',
+                empty_ok=False,
+                **kwargs
+            )
 
     def test_parse_none(self):
         '''args==None throws exception'''
@@ -580,7 +617,13 @@ class TestManualSensorDefParseUtils(unittest.TestCase):
         )
         with self.assertRaisesRegexp(DefinitionParserError, e):
             kwargs = {'sensor_defs': None}
-            utils.parse_sensor_defs(**kwargs)
+            utils.parse_defs(
+                defname='sensor_defs',
+                deftypes=['list()', 'str()', 'dict()'],
+                strconv='name',
+                empty_ok=False,
+                **kwargs
+            )
 
     def test_parse_emptystr(self):
         '''args=='' throws exception'''
@@ -590,7 +633,13 @@ class TestManualSensorDefParseUtils(unittest.TestCase):
         )
         with self.assertRaisesRegexp(DefinitionParserError, e):
             kwargs = {'sensor_defs': ''}
-            utils.parse_sensor_defs(**kwargs)
+            utils.parse_defs(
+                defname='sensor_defs',
+                deftypes=['list()', 'str()', 'dict()'],
+                strconv='name',
+                empty_ok=False,
+                **kwargs
+            )
 
     def test_parse_emptylist(self):
         '''args==[] throws exception'''
@@ -600,7 +649,13 @@ class TestManualSensorDefParseUtils(unittest.TestCase):
         )
         with self.assertRaisesRegexp(DefinitionParserError, e):
             kwargs = {'sensor_defs': []}
-            utils.parse_sensor_defs(**kwargs)
+            utils.parse_defs(
+                defname='sensor_defs',
+                deftypes=['list()', 'str()', 'dict()'],
+                strconv='name',
+                empty_ok=False,
+                **kwargs
+            )
 
     def test_parse_emptydict(self):
         '''args=={} throws exception'''
@@ -610,32 +665,64 @@ class TestManualSensorDefParseUtils(unittest.TestCase):
         )
         with self.assertRaisesRegexp(DefinitionParserError, e):
             kwargs = {'sensor_defs': {}}
-            utils.parse_sensor_defs(**kwargs)
+            utils.parse_defs(
+                defname='sensor_defs',
+                deftypes=['list()', 'str()', 'dict()'],
+                strconv='name',
+                empty_ok=False,
+                **kwargs
+            )
 
 
 class TestManualQuestionFilterDefParseUtils(unittest.TestCase):
     def test_parse_noargs(self):
-        r = utils.parse_question_filter_defs()
+        kwargs = {}
+        r = utils.parse_defs(
+            defname='question_filter_defs',
+            deftypes=['list()', 'dict()'],
+            empty_ok=True,
+            **kwargs
+        )
         self.assertFalse(r)
 
     def test_parse_none(self):
         kwargs = {'question_filter_defs': None}
-        r = utils.parse_question_filter_defs(**kwargs)
+        r = utils.parse_defs(
+            defname='question_filter_defs',
+            deftypes=['list()', 'dict()'],
+            empty_ok=True,
+            **kwargs
+        )
         self.assertFalse(r)
 
     def test_parse_emptystr(self):
         kwargs = {'question_filter_defs': ''}
-        r = utils.parse_question_filter_defs(**kwargs)
+        r = utils.parse_defs(
+            defname='question_filter_defs',
+            deftypes=['list()', 'dict()'],
+            empty_ok=True,
+            **kwargs
+        )
         self.assertFalse(r)
 
     def test_parse_emptylist(self):
         kwargs = {'question_filter_defs': []}
-        r = utils.parse_question_filter_defs(**kwargs)
+        r = utils.parse_defs(
+            defname='question_filter_defs',
+            deftypes=['list()', 'dict()'],
+            empty_ok=True,
+            **kwargs
+        )
         self.assertFalse(r)
 
     def test_parse_emptydict(self):
         kwargs = {'question_filter_defs': {}}
-        r = utils.parse_question_filter_defs(**kwargs)
+        r = utils.parse_defs(
+            defname='question_filter_defs',
+            deftypes=['list()', 'dict()'],
+            empty_ok=True,
+            **kwargs
+        )
         self.assertFalse(r)
 
     def test_parse_single_filter(self):
@@ -647,7 +734,12 @@ class TestManualQuestionFilterDefParseUtils(unittest.TestCase):
             },
             'name': 'Operating System',
         }}
-        r = utils.parse_question_filter_defs(**kwargs)
+        r = utils.parse_defs(
+            defname='question_filter_defs',
+            deftypes=['list()', 'dict()'],
+            empty_ok=True,
+            **kwargs
+        )
         self.assertEquals(r, [kwargs['question_filter_defs']])
 
     def test_parse_multi_filter(self):
@@ -669,7 +761,12 @@ class TestManualQuestionFilterDefParseUtils(unittest.TestCase):
                 'name': 'Operating System',
             },
         ]}
-        r = utils.parse_question_filter_defs(**kwargs)
+        r = utils.parse_defs(
+            defname='question_filter_defs',
+            deftypes=['list()', 'dict()'],
+            empty_ok=True,
+            **kwargs
+        )
         self.assertEquals(r, kwargs['question_filter_defs'])
 
     def test_parse_str(self):
@@ -679,32 +776,63 @@ class TestManualQuestionFilterDefParseUtils(unittest.TestCase):
         )
         with self.assertRaisesRegexp(DefinitionParserError, e):
             kwargs = {'question_filter_defs': 'no string allowed'}
-            utils.parse_question_filter_defs(**kwargs)
+            utils.parse_defs(
+                defname='question_filter_defs',
+                deftypes=['list()', 'dict()'],
+                empty_ok=True,
+                **kwargs
+            )
 
 
 class TestManualQuestionOptionDefParseUtils(unittest.TestCase):
     def test_parse_noargs(self):
-        r = utils.parse_question_option_defs()
+        kwargs = {}
+        r = utils.parse_defs(
+            defname='question_option_defs',
+            deftypes=['dict()'],
+            empty_ok=True,
+            **kwargs
+        )
         self.assertFalse(r)
 
     def test_parse_none(self):
         kwargs = {'question_option_defs': None}
-        r = utils.parse_question_option_defs(**kwargs)
+        r = utils.parse_defs(
+            defname='question_option_defs',
+            deftypes=['dict()'],
+            empty_ok=True,
+            **kwargs
+        )
         self.assertFalse(r)
 
     def test_parse_emptystr(self):
         kwargs = {'question_option_defs': ''}
-        r = utils.parse_question_option_defs(**kwargs)
+        r = utils.parse_defs(
+            defname='question_option_defs',
+            deftypes=['dict()'],
+            empty_ok=True,
+            **kwargs
+        )
         self.assertFalse(r)
 
     def test_parse_emptylist(self):
         kwargs = {'question_option_defs': []}
-        r = utils.parse_question_option_defs(**kwargs)
+        r = utils.parse_defs(
+            defname='question_option_defs',
+            deftypes=['dict()'],
+            empty_ok=True,
+            **kwargs
+        )
         self.assertFalse(r)
 
     def test_parse_emptydict(self):
         kwargs = {'question_option_defs': {}}
-        r = utils.parse_question_option_defs(**kwargs)
+        r = utils.parse_defs(
+            defname='question_option_defs',
+            deftypes=['dict()'],
+            empty_ok=True,
+            **kwargs
+        )
         self.assertFalse(r)
 
     def test_parse_options_dict(self):
@@ -715,7 +843,12 @@ class TestManualQuestionOptionDefParseUtils(unittest.TestCase):
             'value_type': 'string',
             'all_times_flag': 0
         }}
-        r = utils.parse_question_option_defs(**kwargs)
+        r = utils.parse_defs(
+            defname='question_option_defs',
+            deftypes=['dict()'],
+            empty_ok=True,
+            **kwargs
+        )
         self.assertEquals(r, kwargs['question_option_defs'])
 
     def test_parse_str(self):
@@ -723,25 +856,59 @@ class TestManualQuestionOptionDefParseUtils(unittest.TestCase):
             "'question_option_defs' requires a non-empty value of type:"
             " dict\(\)"
         )
+        kwargs = {'question_option_defs': 'no string allowed'}
         with self.assertRaisesRegexp(DefinitionParserError, e):
-            kwargs = {'question_option_defs': 'no string allowed'}
-            utils.parse_question_option_defs(**kwargs)
+            utils.parse_defs(
+                defname='question_option_defs',
+                deftypes=['dict()'],
+                empty_ok=True,
+                **kwargs
+            )
 
     def test_parse_list(self):
         e = (
             "'question_option_defs' requires a non-empty value of type:"
             " dict\(\)"
         )
+        kwargs = {'question_option_defs': ['no list allowed']}
         with self.assertRaisesRegexp(DefinitionParserError, e):
-            kwargs = {'question_option_defs': ['no list allowed']}
-            utils.parse_question_option_defs(**kwargs)
+            utils.parse_defs(
+                defname='question_option_defs',
+                deftypes=['dict()'],
+                empty_ok=True,
+                **kwargs
+            )
+
+
+class TestManualPackageDefValidateUtils(unittest.TestCase):
+    def test_valid1(self):
+        kwargs = {'package_def': {'name': 'Package1'}}
+        utils.val_package_def(**kwargs)
+
+    def test_valid2(self):
+        kwargs = {'package_def': {
+            'name': 'Package1',
+            'params': {'dirname': 'Program Files'},
+        }}
+        utils.val_package_def(**kwargs)
+
+    def test_invalid1(self):
+        e = "Package definition.*missing one of id, name!"
+        with self.assertRaisesRegexp(DefinitionParserError, e):
+            kwargs = {'package_def': {'NONAME': 'Package1'}}
+            utils.val_package_def(**kwargs)
+
+    def test_invalid2(self):
+        e = "Package definition.*has more than one of id, name!"
+        with self.assertRaisesRegexp(DefinitionParserError, e):
+            kwargs = {'package_def': {'name': 'test1', 'id': '2'}}
+            utils.val_package_def(**kwargs)
 
 
 class TestManualSensorDefValidateUtils(unittest.TestCase):
     def test_valid1(self):
         kwargs = {'sensor_defs': [{'name': 'Sensor1'}]}
-        r = utils.val_sensor_defs(**kwargs)
-        self.assertEquals(r, kwargs['sensor_defs'])
+        utils.val_sensor_defs(**kwargs)
 
     def test_valid2(self):
         kwargs = {'sensor_defs': [
@@ -754,8 +921,7 @@ class TestManualSensorDefValidateUtils(unittest.TestCase):
                 },
             }
         ]}
-        r = utils.val_sensor_defs(**kwargs)
-        self.assertEquals(r, kwargs['sensor_defs'])
+        utils.val_sensor_defs(**kwargs)
 
     def test_valid3(self):
         kwargs = {'sensor_defs': [
@@ -775,13 +941,11 @@ class TestManualSensorDefValidateUtils(unittest.TestCase):
                 },
             }
         ]}
-        r = utils.val_sensor_defs(**kwargs)
-        self.assertEquals(r, kwargs['sensor_defs'])
+        utils.val_sensor_defs(**kwargs)
 
     def test_valid4(self):
         kwargs = {'sensor_defs': [{'name': 'test1', 'filter': {'n': 'k'}}]}
-        r = utils.val_sensor_defs(**kwargs)
-        self.assertEquals(r, kwargs['sensor_defs'])
+        utils.val_sensor_defs(**kwargs)
 
     def test_invalid1(self):
         e = "Sensor definition.*missing one of id, name, hash!"
@@ -823,13 +987,11 @@ class TestManualQuestionFilterDefValidateUtils(unittest.TestCase):
                 },
             }
         ]}
-        r = utils.val_q_filter_defs(**kwargs)
-        self.assertEquals(r, kwargs['q_filter_defs'])
+        utils.val_q_filter_defs(**kwargs)
 
     def test_valid2(self):
         kwargs = {'q_filter_defs': []}
-        r = utils.val_q_filter_defs(**kwargs)
-        self.assertEquals(r, kwargs['q_filter_defs'])
+        utils.val_q_filter_defs(**kwargs)
 
     def test_invalid1(self):
         e = "Definition.*missing 'filter' key!"
@@ -1177,6 +1339,12 @@ class TestGenericUtils(unittest.TestCase):
 
     def test_is_not_dict(self):
         self.assertFalse(utils.is_dict([]))
+
+    def test_is_num(self):
+        self.assertTrue(utils.is_num(2))
+
+    def test_is_not_num(self):
+        self.assertFalse(utils.is_num({}))
 
     def test_version_lower(self):
         self.assertTrue(utils.version_check('0.0.0'))

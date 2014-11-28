@@ -14,6 +14,7 @@ import time
 import logging
 import json
 import argparse
+import datetime
 from argparse import ArgumentDefaultsHelpFormatter as A1
 from argparse import RawDescriptionHelpFormatter as A2
 from collections import OrderedDict
@@ -39,6 +40,10 @@ class HumanParserError(Exception):
 
 
 class DefinitionParserError(Exception):
+    pass
+
+
+class RunFalse(Exception):
     pass
 
 
@@ -616,6 +621,16 @@ def human_time(t, tformat='%Y_%m_%d-%H_%M_%S-%Z'):
     return time.strftime(tformat, t)
 
 
+def seconds_from_now(secs=0, tz='utc'):
+    if tz == 'utc':
+        now = datetime.datetime.utcnow()
+    else:
+        now = datetime.datetime.now()
+    from_now = now + datetime.timedelta(seconds=secs)
+    #now.strftime('%Y-%m-%dT%H:%M:%S')
+    return from_now.strftime('%Y-%m-%dT%H:%M:%S')
+
+
 def port_check(address, port, timeout=5):
     """Check if address:port can be reached within timeout
 
@@ -696,12 +711,15 @@ def set_all_loglevels(level='DEBUG'):
         v.setLevel(getattr(logging, level))
 
 
-def dehumanize_sensors(sensors):
+def dehumanize_sensors(sensors, key='sensors', empty_ok=False):
     if not sensors:
-        err = (
-            "A sensor string or list of strings must be supplied as 'sensors'!"
-        )
-        raise HumanParserError(err)
+        if not empty_ok:
+            err = (
+                "A string or list of strings must be supplied as '{0}'!"
+            ).format(key)
+            raise HumanParserError(err)
+        else:
+            return []
 
     if not is_list(sensors):
         sensors = [sensors]
@@ -720,12 +738,28 @@ def dehumanize_sensors(sensors):
         sensor_def['options'] = parsed_options
         sensor_def['filter'] = parsed_filter
 
-        dbg = 'parsed sensor string {!r} into sensor definition:\n {}'.format
+        dbg = 'parsed string {!r} into definition:\n {}'.format
         humanlog.debug(dbg(sensor, jsonify(sensor_def)))
 
         sensor_defs.append(sensor_def)
 
     return sensor_defs
+
+
+def dehumanize_package(package):
+    if not is_str(package) or not package:
+        err = "{!r} must be a string supplied as 'package'".format
+        raise HumanParserError(err(package))
+    p, parsed_selector = extract_selector(package)
+    p, parsed_params = extract_params(p)
+    package_def = {}
+    package_def[parsed_selector] = p
+    package_def['params'] = parsed_params
+
+    dbg = 'parsed string {!r} into definition:\n {}'.format
+    humanlog.debug(dbg(package, jsonify(package_def)))
+
+    return package_def
 
 
 def dehumanize_question_filters(question_filters):
@@ -748,8 +782,7 @@ def dehumanize_question_filters(question_filters):
         question_filter_def['filter'] = parsed_filter
 
         dbg = (
-            'parsed question filter string {!r} into question filter '
-            'definition:\n {}'
+            'parsed string {!r} into filter definition:\n {}'
         ).format
         dbg = dbg(question_filter, jsonify(question_filter_def))
         humanlog.debug(dbg)
@@ -769,8 +802,7 @@ def dehumanize_question_options(question_options):
     dest = ['filter', 'group']
     question_option_defs = map_options(question_options, dest)
     dbg = (
-        'parsed question options {!r} into question option '
-        'definition:\n {}'
+        'parsed string {!r} into option definition:\n {}'
     ).format
     dbg = dbg(question_options, jsonify(question_option_defs))
     humanlog.debug(dbg)
@@ -983,35 +1015,16 @@ def map_filter(filter_str):
     return filter_attrs
 
 
-def parse_sensor_defs(**kwargs):
-    sensor_defs = parse_defs(
-        defname='sensor_defs',
-        deftypes=['list()', 'str()', 'dict()'],
-        strconv='name',
-        empty_ok=False,
-        **kwargs
-    )
-    return sensor_defs
-
-
-def parse_question_filter_defs(**kwargs):
-    question_filter_defs = parse_defs(
-        defname='question_filter_defs',
-        deftypes=['list()', 'dict()'],
-        empty_ok=True,
-        **kwargs
-    )
-    return question_filter_defs
-
-
-def parse_question_option_defs(**kwargs):
-    question_option_defs = parse_defs(
-        defname='question_option_defs',
-        deftypes=['dict()'],
-        empty_ok=True,
-        **kwargs
-    )
-    return question_option_defs
+def get_kwargs_int(key, default=None, **kwargs):
+    val = kwargs.get(key, default)
+    if val is None:
+        return val
+    try:
+        val = int(val)
+    except ValueError:
+        err = "'{}' must be an int, you supplied: {}"
+        raise HandlerError(err(key, val))
+    return val
 
 
 def parse_defs(defname, deftypes, strconv=None, empty_ok=True, defs=None,
@@ -1088,7 +1101,28 @@ def val_sensor_defs(sensor_defs):
         chk_def_key(d, 'params', [dict])
         chk_def_key(d, 'options', [dict])
         chk_def_key(d, 'filter', [dict])
-    return sensor_defs
+
+
+def val_package_def(package_def):
+    s_obj_map = constants.GET_OBJ_MAP['package']
+    search_keys = s_obj_map['search']
+
+    # value checking for required keys
+    def_search = {
+        s: package_def.get(s, '')
+        for s in search_keys if package_def.get(s, '')
+    }
+
+    if len(def_search) == 0:
+        err = "Package definition {} missing one of {}!".format
+        raise DefinitionParserError(err(package_def, ', '.join(search_keys)))
+
+    elif len(def_search) > 1:
+        err = "Package definition {} has more than one of {}!".format
+        raise DefinitionParserError(err(package_def, ', '.join(search_keys)))
+
+    # type checking for optional keys
+    chk_def_key(package_def, 'params', [dict])
 
 
 def val_q_filter_defs(q_filter_defs):
@@ -1110,15 +1144,22 @@ def val_q_filter_defs(q_filter_defs):
         # type checking for required filter key
         chk_def_key(d, 'filter', [dict], req=True)
 
-    return q_filter_defs
-
 
 def build_selectlist_obj(sensor_defs):
     select_objlist = api.SelectList()
 
     for d in sensor_defs:
+
         # validate/map sensor params into a ParameterList()
-        param_objlist = get_param_objlist(d)
+        sensor_obj = d['sensor_obj']
+        user_params = d.get('params', {})
+        param_objlist = build_param_objlist(
+            obj=sensor_obj,
+            user_params=user_params,
+            delim='||',
+            derive_def=True,
+            empty_ok=True
+        )
 
         # validate/map sensor filter into a Filter()
         filter_obj = get_filter_obj(d)
@@ -1174,74 +1215,72 @@ def build_manual_q(selectlist_obj, group_obj):
     return add_q_obj
 
 
-def get_param_objlist(sensor_def):
-    sensor_obj = sensor_def['sensor_obj']
-    param_objlist = api.ParameterList()
-
-    # get the user supplied params dict
-    d_params = sensor_def.get('params', {})
-
-    # get the sensor name
-    s_name = str(sensor_obj)
-
-    # get the sensor parameter definitions
-    s_param_def = sensor_obj.parameter_definition or {}
+def get_obj_params(obj):
+    # get the parameter definitions
+    param_def = getattr(obj, 'parameter_definition', {}) or {}
 
     # json load the parameter definitions if they exist
-    if s_param_def:
-        s_param_def = json.loads(s_param_def)
+    if param_def:
+        param_def = json.loads(param_def)
 
     # get the list of parameters from the parameter definitions
-    s_params = s_param_def.get('parameters', [])
+    params = param_def.get('parameters', [])
+    return params
 
+
+def build_param_obj(key, val, delim=''):
+    # create a parameter object
+    param_obj = api.Parameter()
+    param_obj.key = '{0}{1}{0}'.format(delim, key)
+    param_obj.value = val
+    return param_obj
+
+
+def derive_param_default(obj_param):
+    # get the default value for this param if it exists
+    def_val = obj_param.get('defaultValue', '')
+
+    # get requireSelection for this param if it exists (pulldown menus)
+    req_sel = obj_param.get('requireSelection', False)
+
+    # get values for this param if it exists (pulldown menus)
+    values = obj_param.get('values', [])
+
+    # if this param requires a selection and it has a list of values
+    # and there is no default value, use the first value as the
+    # default value
+    if req_sel and values and not def_val:
+        def_val = values[0]
+    return def_val
+
+
+def build_param_objlist(obj, user_params, delim='', derive_def=False,
+                        empty_ok=False):
+    # extract the params from the object
+    obj_params = get_obj_params(obj)
+    obj_name = str(obj)
+    param_objlist = api.ParameterList()
     # if user defined params and this sensor doesn't take params,
     # we will just ignore them
-
-    for s_param in s_params:
+    for obj_param in obj_params:
         # get the key for this param
-        sp_key = s_param["key"]
+        p_key = obj_param["key"]
+        user_val = user_params.get(p_key, '')
 
-        # get the default value for this param if it exists
-        sp_def_val = s_param.get('defaultValue', '')
+        if not user_val and derive_def:
+            user_val = derive_param_default(obj_param)
 
-        # get requireSelection for this param if it exists (pulldown menus)
-        sp_req_sel = s_param.get('requireSelection', False)
-
-        # get values for this param if it exists (pulldown menus)
-        sp_values = s_param.get('values', [])
-
-        # if this param requires a selection and it has a list of values
-        # and there is no default value, use the first value as the
-        # default value
-        if sp_req_sel and sp_values and not sp_def_val:
-            sp_def_val = sp_values[0]
-
-        # get the user defined value if it exists
-        user_val = d_params.get(sp_key, '')
-
-        # if no user defined value, set the user value to the default
-        # value
-        if not user_val:
-            user_val = sp_def_val
-
-        # if still no user defined value, and param requires selection,
-        # throw an exception
-        if not user_val and sp_req_sel:
+        if not user_val and not empty_ok:
             err = (
-                "{} parameter key {!r} requires a value, "
+                "{} parameter key '{}' requires a value, "
                 "parameter definition:\n{}"
             ).format
-            raise DefinitionParserError(err(s_name, sp_key, jsonify(s_param)))
-
-        # create a parameter object
-        param_obj = api.Parameter()
-        param_obj.key = '{0}{1}{0}'.format(constants.PARAM_DELIM, sp_key)
-        param_obj.value = user_val
+            raise Exception(err(obj_name, p_key, jsonify(obj_param)))
+        param_obj = build_param_obj(p_key, user_val, delim)
         param_objlist.append(param_obj)
 
         dbg = "Parameter {} for {} mapped to: {}".format
-        manuallog.debug(dbg(sp_key, s_name, param_obj))
-
+        manuallog.debug(dbg(p_key, obj_name, param_obj))
     return param_objlist
 
 
@@ -1459,8 +1498,9 @@ def get_obj_map(obj):
     return obj_map
 
 
-def progressChanged(asker, pct):
-    progresslog.info("Results {1:.0f}% ({0})".format(asker, pct))
+def question_progress(asker, pct):
+    q_info = asker.question.query_text or asker.question
+    progresslog.info("Results {1:.0f}% ({0})".format(q_info, pct))
 
 
 def check_dictkey(d, key, valid_types, valid_list_types):
@@ -1497,3 +1537,18 @@ def xml_pretty_resultobj(x):
     x_find = x_parsed["result-object"]
     x_unparsed = xmltodict.unparse(x_find, pretty=True, indent='  ')
     return x_unparsed
+
+
+def get_dict_list_items(d, i):
+    return [x for x in d for y in i if y in d[x]]
+
+
+def get_dict_list_len(d, keys=[], negate=False):
+    if keys:
+        if negate:
+            list_len = sum([len(d[k]) for k in d if k not in keys])
+        else:
+            list_len = sum([len(d[k]) for k in d if k in keys])
+    else:
+        list_len = sum([len(d[k]) for k in d])
+    return list_len
