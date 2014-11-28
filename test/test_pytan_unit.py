@@ -10,7 +10,7 @@ import unittest
 
 my_file = os.path.abspath(__file__)
 my_dir = os.path.dirname(my_file)
-root_dir = os.path.join(my_dir, os.pardir, os.pardir)
+root_dir = os.path.join(my_dir, os.pardir)
 root_dir = os.path.abspath(root_dir)
 path_adds = [my_dir, root_dir]
 

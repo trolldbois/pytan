@@ -13,7 +13,7 @@ import json
 
 my_file = os.path.abspath(__file__)
 my_dir = os.path.dirname(my_file)
-root_dir = os.path.join(my_dir, os.pardir, os.pardir)
+root_dir = os.path.join(my_dir, os.pardir)
 root_dir = os.path.abspath(root_dir)
 path_adds = [my_dir, root_dir]
 
@@ -206,12 +206,14 @@ class ExportObjTests(unittest.TestCase):
     def test_export_resultset(self):
         handler = self.setup_test()
         r1_sensors = ["Computer Name", "IP Route Details", "IP Address"]
-        r1 = handler.ask(qtype="manual_human", sensors=r1_sensors)
+        r1_ret = handler.ask(qtype="manual_human", sensors=r1_sensors)
+        r1 = r1_ret['question_results']
         r2_sensors = [
             'Folder Name Search with RegEx Match{dirname=Program Files,'
             'regex=.*}'
         ]
-        r2 = handler.ask(qtype="manual_human", sensors=r2_sensors)
+        r2_ret = handler.ask(qtype="manual_human", sensors=r2_sensors)
+        r2 = r2_ret['question_results']
         self.assertTrue(r1)
         self.assertIsInstance(r1, pytan.api.ResultSet)
         self.assertGreaterEqual(len(r1.rows), 1)
@@ -369,26 +371,52 @@ class ValidServerTests(unittest.TestCase):
             'be_ignored}'
         ) % tag_num
 
-        rd, progress, as_map = handler.deploy_action_human(
+        ret = handler.deploy_action_human(
             action_filters=action_filters,
             action_options=action_options,
             package=package,
             run=True,
             report_dir=TEST_OUT,
         )
-        self.assertTrue(rd)
-        self.assertIsInstance(rd, pytan.api.ResultSet)
-        self.assertGreaterEqual(len(rd.rows), 1)
-        self.assertGreaterEqual(len(rd.columns), 1)
+        self.assertIsInstance(ret['action_object'], pytan.api.Action)
+        self.assertTrue(ret['action_progress_human'])
+        self.assertTrue(ret['action_progress_map'])
+        self.assertTrue(ret['pre_action_question_results'])
+        self.assertIsInstance(ret['action_results'], pytan.api.ResultSet)
+        self.assertGreaterEqual(len(ret['action_results'].rows), 1)
+        self.assertGreaterEqual(len(ret['action_results'].columns), 1)
         for ft in pytan.constants.EXPORT_MAPS['ResultSet'].keys():
             report_file, result = handler.export_to_report_file(
-                obj=rd, export_format=ft, report_dir=TEST_OUT,
+                obj=ret['action_results'],
+                export_format=ft,
+                report_dir=TEST_OUT,
                 prefix=sys._getframe().f_code.co_name + '_',
             )
             self.assertTrue(report_file)
             self.assertTrue(result)
             self.assertTrue(os.path.isfile(report_file))
             self.assertGreaterEqual(len(result), 10)
+
+    def test_valid_deploy_action_no_results(self):
+        handler = self.setup_test()
+        action_filters = ['Operating System, that contains Windows']
+        action_options = ['and']
+
+        tag_num = randint(100, 999)
+        package = (
+            'Custom Tagging - Add Tags{$1=tag_should_be_added_%s,$2=tag_should'
+            'be_ignored}'
+        ) % tag_num
+
+        ret = handler.deploy_action_human(
+            action_filters=action_filters,
+            action_options=action_options,
+            package=package,
+            run=True,
+            get_results=False,
+        )
+        self.assertIsInstance(ret['action_object'], pytan.api.Action)
+        self.assertTrue(ret['pre_action_question_results'])
 
     def test_deploy_action_no_run(self):
         handler = self.setup_test()
@@ -456,14 +484,19 @@ class ValidServerTests(unittest.TestCase):
         ).format
         spew(s(method, args))
 
-        response = getattr(handler, method)(**args)
-        self.assertTrue(response)
-        self.assertIsInstance(response, pytan.api.ResultSet)
-        self.assertGreaterEqual(len(response.rows), 1)
-        self.assertGreaterEqual(len(response.columns), 1)
+        ret = getattr(handler, method)(**args)
+        self.assertIsInstance(
+            ret['question_object'],
+            (pytan.api.Question, pytan.api.SavedQuestion)
+        )
+        self.assertIsInstance(ret['question_results'], pytan.api.ResultSet)
+        self.assertGreaterEqual(len(ret['question_results'].rows), 1)
+        self.assertGreaterEqual(len(ret['question_results'].columns), 1)
         for ft in pytan.constants.EXPORT_MAPS['ResultSet'].keys():
             report_file, result = handler.export_to_report_file(
-                obj=response, export_format=ft, report_dir=TEST_OUT,
+                obj=ret['question_results'],
+                export_format=ft,
+                report_dir=TEST_OUT,
                 prefix=sys._getframe().f_code.co_name + '_',
             )
             self.assertTrue(report_file)
