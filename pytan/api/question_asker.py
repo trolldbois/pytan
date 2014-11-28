@@ -43,7 +43,7 @@ class QuestionAsker(object):
     def setPctCompleteThreshold(self, val):
         self.pct_complete_threshold = val
 
-    def run(self, callbacks={}):
+    def run(self, callbacks={}, **kwargs):
         """Poll for question data and issue callbacks.
 
         Callbacks should be a dict with members:
@@ -74,8 +74,7 @@ class QuestionAsker(object):
         while not self._stop:
             if time.time() - start > self._timeout:
                 raise QuestionTimeoutException()
-            result_info = self.session.getResultInfo(self.question)
-
+            result_info = self.session.getResultInfo(self.question, **kwargs)
             tested_pct = result_info.mr_tested * 100
             estimated_total_pct = result_info.estimated_total + .01
             new_pct = tested_pct / estimated_total_pct

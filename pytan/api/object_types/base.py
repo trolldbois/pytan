@@ -120,7 +120,14 @@ class BaseType(object):
                 if val is not None and not isinstance(val, t):
                     raise IncorrectTypeException(p, t, type(val))
                 if isinstance(val, BaseType):
-                    root.append(val.toSOAPElement(minimal=minimal))
+                    child = val.toSOAPElement(minimal=minimal)
+                    # the tag name is the property name,
+                    # not the property type's soap tag
+                    el = ET.Element(p)
+                    if child.getchildren() is not None:
+                        for child_prop in child.getchildren():
+                            el.append(child_prop)
+                    root.append(el)
                 else:
                     el = ET.Element(p)
                     root.append(el)

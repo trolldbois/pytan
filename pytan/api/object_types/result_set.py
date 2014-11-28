@@ -153,14 +153,15 @@ class ResultSet(object):
                             match = s.name
                             break
 
-                    if not match:
-                        err = (
-                            "Unable to find sensor matching what_hash {} in "
-                            "sensors!"
-                        ).format(h_hash)
-                        raise Exception(err)
+                    if h_name != 'Count':
+                        if not match:
+                            err = (
+                                "Unable to find sensor matching what_hash {} "
+                                "in 'sensors' list!"
+                            ).format(h_hash)
+                            raise Exception(err)
 
-                    h_pre = '{}: '.format(match)
+                        h_pre = '{}: '.format(match)
 
                 '''
                 If kwargs has 'header_add_type=True':
