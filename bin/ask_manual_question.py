@@ -41,13 +41,22 @@ all_args = args.__dict__
 
 handler = process_handler_args(parser, all_args)
 
-q_opts = ['sensors', 'question_filters', 'question_options']
+q_opts = ['sensors', 'question_filters', 'question_options', 'get_results']
 q_args = {k: all_args.pop(k) for k in q_opts}
 
-print "++ Asking manual question: {}".format(q_args)
-response = handler.ask(qtype='manual_human', **q_args)
-print "++ Received Response: ", str(response)
+print "++ Asking manual question:\n{}".format(utils.jsonify(q_args))
+ret = handler.ask(qtype='manual_human', **q_args)
+print "++ Asked Question {!r} ID: {!r}".format(
+    ret['question_object'].query_text, ret['question_object'].id
+)
 
-report_file, result = handler.export_to_report_file(response, **all_args)
-m = "Report file {!r} written with {} bytes".format
-print(m(report_file, len(result)))
+if ret['question_results']:
+    report_file, result = handler.export_to_report_file(
+        obj=ret['question_results'],
+        **all_args)
+    m = "++ Report file {!r} written with {} bytes".format
+    print(m(report_file, len(result)))
+else:
+    print (
+        "++ No action results returned, run get_results.py to get the results"
+    )

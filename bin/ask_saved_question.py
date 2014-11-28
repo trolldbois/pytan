@@ -49,9 +49,14 @@ else:
 handler = process_handler_args(parser, all_args)
 
 print "++ Asking saved question: {}".format(args.id or args.name)
-response = handler.ask(qtype='saved', **q_args)
-print "++ Received Response: ", str(response)
+ret = handler.ask(qtype='saved', **q_args)
+print "++ Saved Question {!r} ID: {!r}".format(
+    ret['question_object'].query_text, ret['question_object'].id
+)
 
-report_file, result = handler.export_to_report_file(response, **all_args)
+report_file, result = handler.export_to_report_file(
+    obj=ret['question_results'],
+    **all_args
+)
 m = "Report file {!r} written with {} bytes".format
 print(m(report_file, len(result)))
