@@ -1,8 +1,5 @@
 # TODO NOW
- * [ ] test verify checks work against package with verification
- * [ ] write tag cleanup func
- * [ ] write bin script for deploy
- * [ ] figure out the "update" object for every type that i'm supporting for "get"
+ * [ ] add delete support
  * [ ] figure out the "create" object for every type that i'm supporting for "get"
  * [ ] DOCS/EXAMPLES
    * [ ] add help to manual stuff
@@ -11,9 +8,11 @@
    * [ ] build API doc from unit test (as start)
    * [ ] Expand API examples in README.md
    * [ ] update readme
-   * [ ] update sensor help for ask_manual_quesiton.py to describe params
+   * [ ] update sensor help for ask_manual_question.py to describe params
 
 # TODO LATER
+ * [ ] test verify checks work against package with verification (unable to do)
+ * [ ] look into update object methods
  * [ ] add method to calculate total time btwn request and response
  * [ ] build "ask all questions" workflow
  * [ ] test against RT
@@ -57,16 +56,19 @@
     * [X] support sensors filters/options/params for manual questions
     * [X] support whole question filters/options for manual questions
     * [X] auto wsdl generator
-      * [X] ResultSet needs a write_csv
-      * [X] figure out ask manual question
-      * [X] UNIT TESTS UPDATE
-      * [X] json for resultset
-      * [X] write unittests for dehumanize_* (and everything else)
-      * [X] update all unit tests to work with new handler
-      * [X] ResultSet needs a to_json
-      * [X] integrate reporting into handler (export_*)
-      * [X] add unittests for export_obj
-   * [X] update all bin/ scripts to work with new handler
-   * [X] figure out deploy action
-   * [X] functests and unittest for deploy action
-   * [X] checkin api changes to taniumpy
+    * [X] ResultSet needs a write_csv
+    * [X] figure out ask manual question
+    * [X] UNIT TESTS UPDATE
+    * [X] json for resultset
+    * [X] write unittests for dehumanize_* (and everything else)
+    * [X] update all unit tests to work with new handler
+    * [X] ResultSet needs a to_json
+    * [X] integrate reporting into handler (export_*)
+    * [X] add unittests for export_obj
+    * [X] update all bin/ scripts to work with new handler
+    * [X] figure out deploy action
+    * [X] functests and unittest for deploy action
+    * [X] checkin api changes to taniumpy
+    * [X] write bin script for deploy
+    * [X] add stop action and bin script
+    * [X] add get action results bin script
