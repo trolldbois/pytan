@@ -1275,7 +1275,7 @@ def build_param_objlist(obj, user_params, delim='', derive_def=False,
                 "{} parameter key '{}' requires a value, "
                 "parameter definition:\n{}"
             ).format
-            raise Exception(err(obj_name, p_key, jsonify(obj_param)))
+            raise HandlerError(err(obj_name, p_key, jsonify(obj_param)))
         param_obj = build_param_obj(p_key, user_val, delim)
         param_objlist.append(param_obj)
 

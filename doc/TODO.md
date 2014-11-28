@@ -1,5 +1,4 @@
 # TODO NOW
- * [ ] checkin api changes to taniumpy
  * [ ] test verify checks work against package with verification
  * [ ] write tag cleanup func
  * [ ] write bin script for deploy
@@ -70,3 +69,4 @@
    * [X] update all bin/ scripts to work with new handler
    * [X] figure out deploy action
    * [X] functests and unittest for deploy action
+   * [X] checkin api changes to taniumpy

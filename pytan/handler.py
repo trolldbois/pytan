@@ -376,8 +376,13 @@ class Handler(object):
 
     def deploy_action_asker(self, action_id, passed_count=0):
         action_obj = self.get('action', id=action_id)[0]
-
-        if action_obj.package_spec.verify_group:
+        ps = action_obj.package_spec
+        '''
+        A package_spec has to have a verify_group defined on it in order
+        for deploy action verification to trigger. That can be only done
+        at package_spec create or update time
+        '''
+        if ps.verify_group or ps.verify_group_id:
             m = "Setting up 'finished' for verify"
             finished_keys = ['done', 'verify_done']
             success_keys = ['verify_done']

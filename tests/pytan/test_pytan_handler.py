@@ -22,6 +22,7 @@ for aa in path_adds:
         sys.path.insert(0, aa)
 
 import pytan
+from random import randint
 from testlib import threaded_http
 from testlib import ddt
 
@@ -362,7 +363,6 @@ class ValidServerTests(unittest.TestCase):
         action_filters = ['Operating System, that contains Windows']
         action_options = ['and']
 
-        from random import randint
         tag_num = randint(100, 999)
         package = (
             'Custom Tagging - Add Tags{$1=tag_should_be_added_%s,$2=tag_should'
@@ -395,20 +395,53 @@ class ValidServerTests(unittest.TestCase):
         action_filters = ['Operating System, that contains Windows']
         action_options = ['and']
 
-        from random import randint
         tag_num = randint(100, 999)
         package = (
             'Custom Tagging - Add Tags{$1=tag_should_be_added_%s,$2=tag_should'
             'be_ignored}'
         ) % tag_num
 
-        e = ''
+        e = ".*'Run' is not True.*"
         with self.assertRaisesRegexp(pytan.utils.RunFalse, e):
             handler.deploy_action_human(
                 action_filters=action_filters,
                 action_options=action_options,
                 package=package,
                 report_dir=TEST_OUT,
+            )
+
+    def test_deploy_action_missing_params(self):
+        handler = self.setup_test()
+        action_filters = ['Operating System, that contains Windows']
+        action_options = ['and']
+
+        package = 'Custom Tagging - Add Tags'
+
+        e = 'parameter key.*requires a value, parameter definition'
+        with self.assertRaisesRegexp(pytan.utils.HandlerError, e):
+            handler.deploy_action_human(
+                action_filters=action_filters,
+                action_options=action_options,
+                package=package,
+                report_dir=TEST_OUT,
+                run=True,
+            )
+
+    def test_deploy_action_missing_package(self):
+        handler = self.setup_test()
+        action_filters = ['Operating System, that contains Windows']
+        action_options = ['and']
+
+        package = ''
+
+        e = "'' must be a string supplied as 'package'"
+        with self.assertRaisesRegexp(pytan.utils.HumanParserError, e):
+            handler.deploy_action_human(
+                action_filters=action_filters,
+                action_options=action_options,
+                package=package,
+                report_dir=TEST_OUT,
+                run=True,
             )
 
     @ddt.file_data('ddt/ddt_valid_questions.json')
