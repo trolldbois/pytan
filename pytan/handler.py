@@ -221,6 +221,24 @@ class Handler(object):
         )
         return result
 
+    def create_user(self, username, rolename=None, roleid=None):
+        rolelist_obj = self.get('userrole', id=roleid, name=rolename)
+        add_user_obj = api.User()
+        add_user_obj.name = username
+        add_user_obj.roles = rolelist_obj
+        user_obj = self.session.add(add_user_obj)
+        m = (
+            "New user {!r} created with ID {!r}, roles: {!r}"
+        ).format
+        mylog.info(m(
+            user_obj.name, user_obj.id, [x.name for x in rolelist_obj]
+        ))
+        return user_obj
+
+    # def delete(self, obj, **kwargs):
+        # del_obj = self.get(obj, **kwargs)
+        # del_user_obj = self.session.delete()
+
     def deploy_action(self, run=False, get_results=True, **kwargs):
 
         # get our defs from kwargs and churn them into what we want
@@ -634,12 +652,14 @@ class Handler(object):
 
     def get(self, obj, **kwargs):
         obj_map = utils.get_obj_map(obj)
+        manual_search = obj_map['manual']
         api_attrs = obj_map['search']
         api_kwattrs = [kwargs.get(x, '') for x in api_attrs]
 
         # if the api doesn't support filtering for this object,
-        # get all objects of this type and manually filter
-        if not api_attrs:
+        # or if the user didn't supply any api_kwattrs and manual_search
+        # is true, get all objects of this type and manually filter
+        if not api_attrs or (not any(api_kwattrs) and manual_search):
             all_objs = self.get_all(obj, **kwargs)
             return_objs = getattr(api, all_objs.__class__.__name__)()
             for k, v in kwargs.iteritems():
@@ -647,13 +667,13 @@ class Handler(object):
                     continue
                 if not utils.is_list(v):
                     v = [v]
-                for obj in all_objs:
-                    if not getattr(obj, k) in v:
+                for aobj in all_objs:
+                    if not getattr(aobj, k) in v:
                         continue
-                    return_objs.append(obj)
+                    return_objs.append(aobj)
             if not return_objs:
-                err = "No results found searching for {}!!".format
-                raise HandlerError(err(kwargs))
+                err = "No results found searching for {} with {}!!".format
+                raise HandlerError(err(obj, kwargs))
             return return_objs
 
         # if api supports filtering for this object,
@@ -663,13 +683,13 @@ class Handler(object):
             raise HandlerError(err(obj, api_attrs))
 
         # if there is a multi in obj_map, that means we can pass a list
-        # type to the api. the list will an entry for each api_kw
+        # type to the api. the list will have an entry for each api_kw
         if obj_map['multi']:
             return self._get_multi(obj_map, **kwargs)
 
         # if there is a single in obj_map but not multi, that means
         # we have to find each object individually
-        if obj_map['single']:
+        elif obj_map['single']:
             return self._get_single(obj_map, **kwargs)
 
         err = "No single or multi search defined for {}".format
@@ -795,14 +815,24 @@ class Handler(object):
 
             if utils.is_list(v):
                 for i in v:
-                    api_obj_single = getattr(api, obj_map['single'])()
-                    setattr(api_obj_single, k, i)
-                    found.append(self._find(api_obj_single, **kwargs))
+                    for x in self._single_find(obj_map, k, i, **kwargs):
+                        found.append(x)
             else:
-                api_obj_single = getattr(api, obj_map['single'])()
-                setattr(api_obj_single, k, v)
-                found.append(self._find(api_obj_single, **kwargs))
+                for x in self._single_find(obj_map, k, v, **kwargs):
+                    found.append(x)
 
+        return found
+
+    def _single_find(self, obj_map, k, v, **kwargs):
+        found = []
+        api_obj_single = getattr(api, obj_map['single'])()
+        setattr(api_obj_single, k, v)
+        obj_ret = self._find(api_obj_single, **kwargs)
+        if getattr(obj_ret, '_list_properties', ''):
+            for i in obj_ret:
+                found.append(i)
+        else:
+            found.append(obj_ret)
         return found
 
     def _get_sensor_defs(self, defs):

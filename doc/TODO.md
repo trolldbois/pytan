@@ -1,6 +1,7 @@
 # TODO NOW
- * [ ] add delete support
  * [ ] figure out the "create" object for every type that i'm supporting for "get"
+ * [ ] add delete support
+ * [ ] add manual to get_obj support
  * [ ] DOCS/EXAMPLES
    * [ ] add help to manual stuff
    * [ ] incorporate mdocbuild for bin scripts

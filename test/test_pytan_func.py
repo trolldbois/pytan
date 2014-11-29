@@ -522,6 +522,7 @@ class ValidServerTests(unittest.TestCase):
         self.assertTrue(response)
         self.assertIsInstance(response, pytan.api.BaseType)
         for x in tests:
+            spew("+++ EVAL TEST: %s" % x)
             self.assertTrue(eval(x))
 
         for ft in pytan.constants.EXPORT_MAPS['BaseType'].keys():
