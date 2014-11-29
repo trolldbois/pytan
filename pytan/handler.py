@@ -638,9 +638,23 @@ class Handler(object):
         api_kwattrs = [kwargs.get(x, '') for x in api_attrs]
 
         # if the api doesn't support filtering for this object,
-        # return all objects of this type
+        # get all objects of this type and manually filter
         if not api_attrs:
-            return self.get_all(obj, **kwargs)
+            all_objs = self.get_all(obj, **kwargs)
+            return_objs = getattr(api, all_objs.__class__.__name__)()
+            for k, v in kwargs.iteritems():
+                if not hasattr(all_objs[0], k):
+                    continue
+                if not utils.is_list(v):
+                    v = [v]
+                for obj in all_objs:
+                    if not getattr(obj, k) in v:
+                        continue
+                    return_objs.append(obj)
+            if not return_objs:
+                err = "No results found searching for {}!!".format
+                raise HandlerError(err(kwargs))
+            return return_objs
 
         # if api supports filtering for this object,
         # but no filters supplied in kwargs, raise
