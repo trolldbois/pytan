@@ -161,7 +161,6 @@
         ]
     },
     "get_whitelisted_url_single_by_id": {
-        "COMMENT": "NO WHITELISTED URLS EXIST BY DEFAULT",
         "method": "get",
         "args": {"obj": "whitelisted_url", "id": 4},
         "tests": [

@@ -121,4 +121,35 @@ if handler.loglevel >= 10:
 
 print ("%s -- now available as 'handler'!" % handler)
 
+self = handler
 session = handler.session
+api = pytan.api
+
+# kwargs = {
+#     'name': 'die49',
+#     'command': 'die45 $1 $2 $3 $4 $5 $6 $7 $8',
+#     # 'command': 'die45',
+#     'display_name': 'die48 test',
+#     'command_timeout_seconds': 9999,
+#     'expire_seconds': 1500,
+#     'parameters_json_file': (
+#         'gh/pytan/doc/example_of_all_package_parameters.json'
+#     ),
+#     'file_urls': [
+#         '33223::testing.vbs||https://content.tanium.com/files/'
+#         'initialcontent/bundles/2014-10-01_11-32-15-7844/'
+#         'custom_tagging_-_remove_tags_[non-windows]/CustomTagRemove.sh'
+#     ],
+#     'verify_filters': ['Custom Tags, that contains tag'],
+#     'verify_filter_options': ['and'],
+#     'verify_expire_seconds': 3600,
+# }
+
+# try:
+#     handler.delete('package', name='die49')
+# except:
+#     pass
+
+# p = handler.create_package(**kwargs)
+
+# print pytan.utils.xml_pretty(p.toSOAPBody(True))

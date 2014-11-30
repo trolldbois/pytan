@@ -1,7 +1,5 @@
 # TODO NOW
- * [ ] figure out the "create" object for every type that i'm supporting for "get"
- * [ ] add delete support
- * [ ] add manual to get_obj support
+ * [ ] bin scripts for create
  * [ ] DOCS/EXAMPLES
    * [ ] add help to manual stuff
    * [ ] incorporate mdocbuild for bin scripts
@@ -12,6 +10,8 @@
    * [ ] update sensor help for ask_manual_question.py to describe params
 
 # TODO LATER
+ * [ ] add non id/name/hash search support to get_$object.py
+ * [ ] add print_user bin script
  * [ ] test verify checks work against package with verification (unable to do)
  * [ ] look into update object methods
  * [ ] add method to calculate total time btwn request and response
@@ -73,3 +73,11 @@
     * [X] write bin script for deploy
     * [X] add stop action and bin script
     * [X] add get action results bin script
+    * [X] add delete support
+    * [X] figure out the "create" object for every type that i'm supporting for "get"
+    * [X] add create_from_json for each create type
+    * [X] create_from_json(): NEED TO TEST FOR REST OF create_json = True, sensor working
+    * [X] unittests for create/delete
+    * [X] add whitelisted_urls to unittests for class setup
+    * [X] bin scripts for delete
+

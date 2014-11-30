@@ -37,3 +37,16 @@ for i in constants.GET_OBJ_MAP:
     i_h.close()
     os.chmod(i_f, 0755)
     print "Generated {} from {}".format(i_f, go_f)
+
+do_f = os.path.join(build_bin, 'delete_object_template.py')
+do_s = open(do_f).read()
+
+for i in constants.GET_OBJ_MAP:
+    if not constants.GET_OBJ_MAP[i]['delete']:
+        continue
+    i_f = os.path.join(output_bin, 'delete_{}.py'.format(i))
+    i_h = open(i_f, 'w')
+    i_h.write(do_s.replace('OBJECTNAME', i))
+    i_h.close()
+    os.chmod(i_f, 0755)
+    print "Generated {} from {}".format(i_f, do_f)

@@ -1415,6 +1415,8 @@ class TestGenericUtils(unittest.TestCase):
             'all': 'SensorList',
             'search': ['id', 'name', 'hash'],
             'manual': False,
+            'delete': True,
+            'create_json': True,
         }
         self.assertEqual(utils.get_obj_map(obj), exp)
 

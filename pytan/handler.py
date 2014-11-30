@@ -16,6 +16,7 @@ import os
 import logging
 import io
 import time
+import json
 from . import utils
 from . import constants
 from . import api
@@ -221,23 +222,271 @@ class Handler(object):
         )
         return result
 
-    def create_user(self, username, rolename=None, roleid=None):
+    def load_api_from_json(self, json_file):
+        try:
+            fh = open(json_file)
+        except Exception as e:
+            m = "Unable to open json_file {!r}, {}".format
+            raise HandlerError(m(json_file, e))
+
+        howto_m = (
+            "Use get_${OBJECT_TYPE}.py with --include-type and "
+            "--no-explode-json to export a valid JSON file that can be used "
+            "for importing"
+        )
+
+        try:
+            json_dict = json.load(fh)
+        except:
+            m = "Unable to parse json_file {!r}, {}\n{}".format
+            raise HandlerError(m(json_file, e, howto_m))
+
+        if '_type' not in json_dict:
+            m = "Missing '_type' key in JSON loaded dictionary!\n{}".format
+            raise HandlerError(m(howto_m))
+
+        try:
+            obj = api.BaseType.from_jsonable(json_dict)
+        except Exception as e:
+            m = (
+                "Unable to parse json_file {!r} into an API {} object\n"
+                "Exception from API.from_jsonable(): {}\n{}"
+            ).format
+            raise HandlerError(m(json_file, json_dict['_type'], e, howto_m))
+        return obj
+
+    def create_from_json(self, obj, json_file):
+        obj_map = utils.get_obj_map(obj)
+        create_json_ok = obj_map['create_json']
+        if not create_json_ok:
+            json_createable = ', '.join([
+                x for x, y in constants.GET_OBJ_MAP.items() if y['create_json']
+            ])
+            m = (
+                "{} is not a json createable object! Supported objects: {}"
+            ).format
+            raise HandlerError(m(obj, json_createable))
+
+        add_obj = self.load_api_from_json(json_file)
+
+        if getattr(add_obj, '_list_properties', ''):
+            obj_list = [x for x in add_obj]
+        else:
+            obj_list = [add_obj]
+
+        del_keys = ['id', 'hash']
+        [
+            setattr(y, x, None)
+            for y in obj_list for x in del_keys
+            if hasattr(y, x)
+        ]
+
+        if obj_map.get('allfix'):
+            ret = getattr(api, obj_map['allfix'])()
+        else:
+            ret = getattr(api, obj_map['all'])()
+
+        for x in obj_list:
+            try:
+                list_obj = self.session.add(x)
+            except Exception as e:
+                m = (
+                    "Failure while importing {}: {}\nJSON Dump of object: {}"
+                ).format
+                raise HandlerError(m(x, e, x.to_json(x)))
+
+            list_obj = self.session.find(list_obj)
+            m = "New {} (ID: {}) created successfully!".format
+            mylog.info(m(list_obj, getattr(list_obj, 'id', 'Unknown')))
+
+            ret.append(list_obj)
+        return ret
+
+    def create_sensor(self):
+        m = (
+            "Sensor creation not supported via PyTan as of yet, too complex\n"
+            "Use create_from_json() instead!"
+        )
+        raise HandlerError(m)
+
+    def create_package(
+            self,
+            name,
+            command,
+            display_name='',
+            file_urls=[],
+            command_timeout_seconds=600,
+            expire_seconds=600,
+            parameters_json_file='',
+            verify_filters=[],
+            verify_filter_options=[],
+            verify_expire_seconds=600):
+
+        # bare minimum arguments for new package: name, command
+        add_package_obj = api.PackageSpec()
+        add_package_obj.name = name
+        if display_name:
+            add_package_obj.display_name = display_name
+        add_package_obj.command = command
+        add_package_obj.command_timeout = command_timeout_seconds
+        add_package_obj.expire_seconds = expire_seconds
+
+        # VERIFY FILTERS
+        if verify_filters:
+            verify_filter_defs = utils.dehumanize_question_filters(
+                verify_filters
+            )
+            verify_option_defs = utils.dehumanize_question_options(
+                verify_filter_options
+            )
+            verify_filter_defs = self._get_sensor_defs(verify_filter_defs)
+            add_verify_group = utils.build_group_obj(
+                verify_filter_defs, verify_option_defs
+            )
+            verify_group = self.session.add(add_verify_group)
+            # this didn't work:
+            # add_package_obj.verify_group = verify_group
+            add_package_obj.verify_group_id = verify_group.id
+            add_package_obj.verify_expire_seconds = verify_expire_seconds
+
+        # PARAMETERS
+        if parameters_json_file:
+            try:
+                pd = json.load(open(parameters_json_file))
+            except Exception as e:
+                m = (
+                    "Failed to load JSON parameter file {!r}, error {!r}!!\n"
+                    "Refer to doc/example_of_all_package_parameters.json "
+                    "file for examples of each parameter type"
+                ).format
+                raise HandlerError(m(parameters_json_file, e))
+            try:
+                pd_params = pd['parameters']
+            except:
+                m = (
+                    "JSON parameter file {!r} is missing a 'parameters' "
+                    "list!!\n"
+                    "Refer to doc/example_of_all_package_parameters.json "
+                    "file for examples of each parameter type"
+                ).format
+                raise HandlerError(m(parameters_json_file))
+
+            for pd_param in pd_params:
+                try:
+                    pd_key = pd_param['key']
+                except:
+                    m = (
+                        "JSON parameter file {!r} is missing a 'key' "
+                        "in the parameter {!r}!!\n"
+                        "Refer to doc/example_of_all_package_parameters.json "
+                        "file for examples of each parameter type"
+                    ).format
+                    raise HandlerError(m(parameters_json_file, pd_param))
+                if pd_key not in command:
+                    m = (
+                        "command {!r} is missing the parameter key '{}' "
+                        "referenced in the JSON parameter file {!r}!!\n"
+                        "Ensure all parameters are referenced in the command"
+                    ).format
+                    raise HandlerError(m(
+                        command, pd_key, parameters_json_file
+                    ))
+
+            add_package_obj.parameter_definition = json.dumps(pd)
+
+        # FILES
+        if file_urls:
+            filelist_obj = api.PackageFileList()
+            for file_url in file_urls:
+                # if :: is in file_url, split on it and use 0 as
+                # download_seconds
+                if '::' in file_url:
+                    download_seconds, file_url = file_url.split('::')
+                else:
+                    download_seconds = 0
+                # if || is in file_url, split on it and use 0 as file name
+                # else wise get file name from basename of URL
+                if '||' in file_url:
+                    filename, file_url = file_url.split('||')
+                else:
+                    filename = os.path.basename(file_url)
+                file_obj = api.PackageFile()
+                file_obj.name = filename
+                file_obj.source = file_url
+                file_obj.download_seconds = download_seconds
+                filelist_obj.append(file_obj)
+            add_package_obj.files = filelist_obj
+
+        package_obj = self.session.add(add_package_obj)
+        package_obj = self.session.find(package_obj)
+        m = "New package {!r} created with ID {!r}, command: {!r}".format
+        mylog.info(m(package_obj.name, package_obj.id, package_obj.command))
+        return package_obj
+
+    def create_group(self, groupname, filters=[], filter_options=[]):
+        filter_defs = utils.dehumanize_question_filters(filters)
+        filter_defs = self._get_sensor_defs(filter_defs)
+        option_defs = utils.dehumanize_question_options(filter_options)
+        add_group_obj = utils.build_group_obj(filter_defs, option_defs)
+        add_group_obj.name = groupname
+        group_obj = self.session.add(add_group_obj)
+        group_obj = self.session.find(group_obj)
+        m = "New group {!r} created with ID {!r}, filter text: {!r}".format
+        mylog.info(m(group_obj.name, group_obj.id, group_obj.text))
+        return group_obj
+
+    def create_user(self, username, rolename=None, roleid=None, properties={}):
         rolelist_obj = self.get('userrole', id=roleid, name=rolename)
+        metadatalist_obj = utils.build_metadatalist_obj(
+            properties, 'TConsole.User.Property',
+        )
         add_user_obj = api.User()
         add_user_obj.name = username
         add_user_obj.roles = rolelist_obj
+        add_user_obj.metadata = metadatalist_obj
         user_obj = self.session.add(add_user_obj)
-        m = (
-            "New user {!r} created with ID {!r}, roles: {!r}"
-        ).format
+        m = "New user {!r} created with ID {!r}, roles: {!r}".format
         mylog.info(m(
             user_obj.name, user_obj.id, [x.name for x in rolelist_obj]
         ))
         return user_obj
 
-    # def delete(self, obj, **kwargs):
-        # del_obj = self.get(obj, **kwargs)
-        # del_user_obj = self.session.delete()
+    def create_whitelisted_url(self, url, regex=False, download_seconds=86400,
+                               properties={}):
+
+        if regex:
+            url = 'regex:' + url
+
+        metadatalist_obj = utils.build_metadatalist_obj(
+            properties, 'TConsole.WhitelistedURL',
+        )
+        add_url_obj = api.WhiteListedUrl()
+        add_url_obj.url_regex = url
+        add_url_obj.download_seconds = download_seconds
+        add_url_obj.metadata = metadatalist_obj
+        url_obj = self.session.add(add_url_obj)
+        url_obj = self.session.find(url_obj)
+        m = "New Whitelisted URL {!r} created with ID {!r}".format
+        mylog.info(m(url_obj.url_regex, url_obj.id))
+        return url_obj
+
+    def delete(self, obj, **kwargs):
+        obj_map = utils.get_obj_map(obj)
+        delete_ok = obj_map['delete']
+        if not delete_ok:
+            deletable = ', '.join([
+                x for x, y in constants.GET_OBJ_MAP.items() if y['delete']
+            ])
+            m = "{} is not a deletable object! Deletable objects: {}".format
+            raise HandlerError(m(obj, deletable))
+        objs_to_del = self.get(obj, **kwargs)
+        deleted_objects = []
+        for obj_to_del in objs_to_del:
+            del_obj = self.session.delete(obj_to_del)
+            deleted_objects.append(del_obj)
+            m = "Deleted {!r}".format
+            mylog.info(m(str(del_obj)))
+        return deleted_objects
 
     def deploy_action(self, run=False, get_results=True, **kwargs):
 

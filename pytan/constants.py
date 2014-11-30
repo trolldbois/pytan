@@ -83,6 +83,8 @@ GET_OBJ_MAP = {
         'all': 'ActionList',
         'search': ['id'],
         'manual': False,
+        'delete': False,
+        'create_json': True,
     },
     'client': {
         'single': None,
@@ -90,6 +92,8 @@ GET_OBJ_MAP = {
         'all': 'ClientStatus',
         'search': [],
         'manual': True,
+        'delete': False,
+        'create_json': False,
     },
     'group': {
         'single': 'Group',
@@ -97,6 +101,8 @@ GET_OBJ_MAP = {
         'all': 'GroupList',
         'search': ['id', 'name'],
         'manual': True,
+        'delete': True,
+        'create_json': True,
     },
     'package': {
         'single': 'PackageSpec',
@@ -105,6 +111,8 @@ GET_OBJ_MAP = {
         'all': 'PackageSpec',
         'search': ['id', 'name'],
         'manual': True,
+        'delete': True,
+        'create_json': True,
     },
     'question': {
         'single': 'Question',
@@ -112,6 +120,8 @@ GET_OBJ_MAP = {
         'all': 'QuestionList',
         'search': ['id'],
         'manual': False,
+        'delete': False,
+        'create_json': True,
     },
     'saved_action': {
         'single': 'SavedAction',
@@ -119,6 +129,8 @@ GET_OBJ_MAP = {
         'all': 'SavedActionList',
         'search': ['id', 'name'],
         'manual': True,
+        'delete': False,
+        'create_json': False,  # AddObject returns null, unknown why
     },
     'saved_question': {
         'single': 'SavedQuestion',
@@ -126,6 +138,8 @@ GET_OBJ_MAP = {
         'all': 'SavedQuestionList',
         'search': ['id', 'name'],
         'manual': True,
+        'delete': True,
+        'create_json': True,
     },
     'sensor': {
         'single': 'Sensor',
@@ -133,6 +147,8 @@ GET_OBJ_MAP = {
         'all': 'SensorList',
         'search': ['id', 'name', 'hash'],
         'manual': False,
+        'delete': True,
+        'create_json': True,
     },
     'setting': {
         'single': 'SystemSetting',
@@ -140,6 +156,8 @@ GET_OBJ_MAP = {
         'all': 'SystemSettingsList',
         'search': ['id', 'name'],
         'manual': True,
+        'delete': False,
+        'create_json': False,
     },
     'user': {
         'single': 'User',
@@ -147,6 +165,8 @@ GET_OBJ_MAP = {
         'all': 'UserList',
         'search': ['id'],
         'manual': True,
+        'delete': True,
+        'create_json': True,
     },
     'userrole': {
         'single': None,
@@ -154,6 +174,8 @@ GET_OBJ_MAP = {
         'all': 'UserRoleList',
         'search': [],
         'manual': True,
+        'delete': False,
+        'create_json': False,
     },
     'whitelisted_url': {
         'single': 'WhiteListedUrlList',
@@ -161,6 +183,8 @@ GET_OBJ_MAP = {
         'all': 'WhiteListedUrlList',
         'search': [],
         'manual': True,
+        'delete': True,
+        'create_json': True,
     },
 }
 

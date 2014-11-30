@@ -209,6 +209,30 @@ def setup_get_object_argparser(obj, doc):
     return parser
 
 
+def setup_delete_object_argparser(obj, doc):
+    parent_parser = setup_parser(doc)
+    parser = CustomArgParse(
+        description=doc,
+        parents=[parent_parser],
+    )
+    get_object_group = parser.add_argument_group(
+        'Delete {} Options'.format(obj.replace('_', ' ').capitalize())
+    )
+
+    obj_map = get_obj_map(obj)
+    search_keys = obj_map['search']
+    for k in search_keys:
+        get_object_group.add_argument(
+            '--{}'.format(k),
+            required=False,
+            action='append',
+            default=[],
+            dest=k,
+            help='{} of {} to get'.format(k, obj),
+        )
+    return parser
+
+
 def setup_ask_saved_argparser(doc):
     obj = 'saved_question'
     parent_parser = setup_parser(doc)
@@ -702,6 +726,23 @@ def add_get_object_report_argparser(parser):
     )
 
     return parser
+
+
+def process_delete_object_args(parser, handler, obj, all_args):
+    # put our query args into their own dict and remove them from all_args
+    delobj_grp_names = [
+        'Delete {} Options'.format(obj.replace('_', ' ').capitalize())
+    ]
+    delobj_grp_opts = get_grp_opts(parser, delobj_grp_names)
+    delobj_grp_args = {k: all_args.pop(k) for k in delobj_grp_opts}
+    try:
+        response = handler.delete(obj, **delobj_grp_args)
+    except Exception as e:
+        print e
+        sys.exit(100)
+    for i in response:
+        print "Deleted item: ", i
+    return response
 
 
 def process_get_object_args(parser, handler, obj, all_args):
@@ -1723,3 +1764,13 @@ def get_dict_list_len(d, keys=[], negate=False):
     else:
         list_len = sum([len(d[k]) for k in d])
     return list_len
+
+
+def build_metadatalist_obj(properties, nameprefix):
+    metadatalist_obj = api.MetadataList()
+    for k, v in properties.iteritems():
+        metadata_obj = api.MetadataItem()
+        metadata_obj.name = "{}.{}".format(nameprefix, k)
+        metadata_obj.value = v
+        metadatalist_obj.append(metadata_obj)
+    return metadatalist_obj

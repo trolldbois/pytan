@@ -88,6 +88,439 @@ class InvalidServerTests(unittest.TestCase):
             pytan.Handler(**mykwargs)
 
 
+class CreateObjectTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.handler = pytan.Handler(**SERVER_INFO)
+        spew('\n' + str(cls.handler))
+
+    def setup_test(self):
+        spew("")
+        return self.handler
+
+    def test_create_sensor(self):
+        handler = self.setup_test()
+        e = "Sensor creation not supported via PyTan as of yet, too complex.*"
+        with self.assertRaisesRegexp(pytan.utils.HandlerError, e):
+            handler.create_sensor()
+
+    def test_create_package(self):
+        handler = self.setup_test()
+        kwargs = {
+            'name': 'die49',
+            'command': 'die49 $1 $2 $3 $4 $5 $6 $7 $8',
+            'display_name': 'die49 test',
+            'command_timeout_seconds': 9999,
+            'expire_seconds': 1500,
+            'parameters_json_file': os.path.join(
+                root_dir,
+                'doc/example_of_all_package_parameters.json'
+            ),
+            'file_urls': [
+                '3600::testing.vbs||https://content.tanium.com/files/'
+                'initialcontent/bundles/2014-10-01_11-32-15-7844/'
+                'custom_tagging_-_remove_tags_[non-windows]/CustomTagRemove.sh'
+            ],
+            'verify_filters': ['Custom Tags, that contains tag'],
+            'verify_filter_options': ['and'],
+            'verify_expire_seconds': 3600,
+        }
+
+        try:
+            handler.delete('package', name=kwargs['name'])
+        except:
+            pass
+
+        package_obj = handler.create_package(**kwargs)
+        self.assertIsInstance(package_obj, pytan.api.PackageSpec)
+        self.assertTrue(package_obj.verify_group_id)
+        self.assertEquals(package_obj.name, kwargs['name'])
+        self.assertEquals(package_obj.command, kwargs['command'])
+        self.assertEquals(package_obj.display_name, kwargs['display_name'])
+        self.assertEquals(
+            package_obj.command_timeout, kwargs['command_timeout_seconds']
+        )
+        self.assertEquals(package_obj.expire_seconds, kwargs['expire_seconds'])
+        pd = json.loads(package_obj.parameter_definition)
+        params = pd['parameters']
+        self.assertEquals(len(params), 8)
+        self.assertIsInstance(package_obj.files, pytan.api.PackageFileList)
+        for x in package_obj.files:
+            self.assertIsInstance(x, pytan.api.PackageFile)
+        self.assertEquals(
+            package_obj.files[0].source,
+            'https://content.tanium.com/files/'
+            'initialcontent/bundles/2014-10-01_11-32-15-7844/'
+            'custom_tagging_-_remove_tags_[non-windows]/CustomTagRemove.sh',
+        )
+        self.assertEquals(package_obj.files[0].download_seconds, 3600)
+        self.assertEquals(package_obj.files[0].name, 'testing.vbs')
+
+        delete_obj = handler.delete('package', name=package_obj.name)
+        for x in delete_obj:
+            self.assertIsInstance(x, pytan.api.PackageSpec)
+
+    def test_create_group(self):
+        handler = self.setup_test()
+        kwargs = {
+            'groupname': 'All Windows Computers API Test',
+            'filters': ['Operating System, that contains WIndows'],
+            'filter_options': ['and'],
+        }
+
+        try:
+            handler.delete('group', name=kwargs['groupname'])
+        except:
+            pass
+
+        group_obj = handler.create_group(**kwargs)
+        self.assertIsInstance(group_obj, pytan.api.Group)
+        self.assertIsInstance(group_obj.filters, pytan.api.FilterList)
+        for x in group_obj.filters:
+            self.assertIsInstance(x, pytan.api.Filter)
+            self.assertIsInstance(x.sensor, pytan.api.Sensor)
+        self.assertTrue(group_obj.text)
+        self.assertEquals(group_obj.and_flag, 1)
+
+        delete_obj = handler.delete('group', name=group_obj.name)
+        for x in delete_obj:
+            self.assertIsInstance(x, pytan.api.Group)
+
+    def test_create_user(self):
+        handler = self.setup_test()
+        kwargs = {
+            'username': 'API Test User',
+            'rolename': 'Administrator',
+            'properties': {'property1': 'value1'},
+        }
+
+        try:
+            handler.delete('user', name=kwargs['username'])
+        except:
+            pass
+
+        user_obj = handler.create_user(**kwargs)
+        self.assertIsInstance(user_obj, pytan.api.User)
+        self.assertIsInstance(user_obj.roles, pytan.api.UserRoleList)
+        for x in user_obj.roles:
+            self.assertIsInstance(x, pytan.api.UserRole)
+            self.assertEquals(x.name, 'Administrator')
+
+        self.assertIsInstance(user_obj.metadata, pytan.api.MetadataList)
+        for x in user_obj.metadata:
+            self.assertIsInstance(x, pytan.api.MetadataItem)
+        self.assertEquals(
+            user_obj.metadata[0].name, 'TConsole.User.Property.property1'
+        )
+        self.assertEquals(
+            user_obj.metadata[0].value, 'value1'
+        )
+
+        self.assertEquals(user_obj.name, kwargs['username'])
+        delete_obj = handler.delete('user', name=user_obj.name)
+        for x in delete_obj:
+            self.assertIsInstance(x, pytan.api.User)
+
+    def test_create_whitelisted_url(self):
+        handler = self.setup_test()
+        kwargs = {
+            'url': 'http://test.com/.*API_Test.*URL',
+            'regex': True,
+            'download_seconds': 3600,
+            'properties': {'property1': 'value1'},
+        }
+
+        try:
+            handler.delete(
+                'whitelisted_url',
+                url_regex='regex:%s' % kwargs['url'])
+        except:
+            pass
+
+        whitelisted_url_obj = handler.create_whitelisted_url(**kwargs)
+        self.assertIsInstance(whitelisted_url_obj, pytan.api.WhiteListedUrl)
+        self.assertIsInstance(
+            whitelisted_url_obj.metadata, pytan.api.MetadataList
+        )
+        for x in whitelisted_url_obj.metadata:
+            self.assertIsInstance(x, pytan.api.MetadataItem)
+        self.assertEquals(
+            whitelisted_url_obj.metadata[0].name,
+            'TConsole.WhitelistedURL.property1'
+        )
+        self.assertEquals(
+            whitelisted_url_obj.metadata[0].value, 'value1'
+        )
+
+        self.assertEquals(
+            whitelisted_url_obj.url_regex,
+            'regex:%s' % kwargs['url']
+        )
+        delete_obj = handler.delete(
+            'whitelisted_url',
+            url_regex=whitelisted_url_obj.url_regex
+        )
+        for x in delete_obj:
+            self.assertIsInstance(x, pytan.api.WhiteListedUrl)
+
+
+class CreateObjFromJsonTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.handler = pytan.Handler(**SERVER_INFO)
+        spew('\n' + str(cls.handler))
+
+    def setup_test(self):
+        spew("")
+        return self.handler
+
+    def test_create_from_json_action(self):
+        handler = self.setup_test()
+        # adding a new action ("redeploying it")
+        orig_objs = handler.get('action', id=1)
+        json_file, results = handler.export_to_report_file(
+            obj=orig_objs,
+            export_format='json',
+            report_dir=TEST_OUT,
+            prefix=sys._getframe().f_code.co_name + '_',
+        )
+        new_obj = handler.create_from_json('action', json_file)
+        self.assertIsInstance(new_obj, pytan.api.ActionList)
+        for x in new_obj:
+            self.assertIsInstance(x, pytan.api.Action)
+
+    def test_create_from_json_client(self):
+        handler = self.setup_test()
+        # client not supported:
+        orig_objs = handler.get('client', status='Leader')
+        json_file, results = handler.export_to_report_file(
+            obj=orig_objs,
+            export_format='json',
+            report_dir=TEST_OUT,
+            prefix=sys._getframe().f_code.co_name + '_',
+        )
+        e = ".*is not a json createable object! Supported objects.*"
+        with self.assertRaisesRegexp(pytan.utils.HandlerError, e):
+            handler.create_from_json('client', json_file)
+
+    def test_create_from_json_sensor(self):
+        handler = self.setup_test()
+        # adding and deleting a new sensor
+        orig_objs = handler.get('sensor', name="IP Route Details")
+        for x in orig_objs:
+            x.name += " API TEST"
+            # make sure the test object is gone before we create it
+            try:
+                handler.delete('sensor', name=x.name)
+            except:
+                pass
+        json_file, results = handler.export_to_report_file(
+            obj=orig_objs,
+            export_format='json',
+            report_dir=TEST_OUT,
+            prefix=sys._getframe().f_code.co_name + '_',
+        )
+        new_obj = handler.create_from_json('sensor', json_file)
+        self.assertIsInstance(new_obj, pytan.api.SensorList)
+        for x in new_obj:
+            self.assertIsInstance(x, pytan.api.Sensor)
+            delete_obj = handler.delete('sensor', name=x.name)
+            for i in delete_obj:
+                self.assertIsInstance(i, pytan.api.Sensor)
+
+    def test_create_from_json_group(self):
+        handler = self.setup_test()
+        # adding and deleting a new group
+        orig_objs = handler.get('group', name="All Computers")
+        for x in orig_objs:
+            x.name += " API TEST"
+            # make sure the test object is gone before we create it
+            try:
+                handler.delete('group', name=x.name)
+            except:
+                pass
+        json_file, results = handler.export_to_report_file(
+            obj=orig_objs,
+            export_format='json',
+            report_dir=TEST_OUT,
+            prefix=sys._getframe().f_code.co_name + '_',
+        )
+        new_obj = handler.create_from_json('group', json_file)
+        self.assertIsInstance(new_obj, pytan.api.GroupList)
+        for x in new_obj:
+            self.assertIsInstance(x, pytan.api.Group)
+            delete_obj = handler.delete('group', name=x.name)
+            for i in delete_obj:
+                self.assertIsInstance(i, pytan.api.Group)
+
+    def test_create_from_json_package(self):
+        handler = self.setup_test()
+        # adding and deleting a new package
+        orig_objs = handler.get('package', name="Custom Tagging - Add Tags")
+        for x in orig_objs:
+            x.name += " API TEST"
+            # make sure the test object is gone before we create it
+            try:
+                handler.delete('package', name=x.name)
+            except:
+                pass
+
+        json_file, results = handler.export_to_report_file(
+            obj=orig_objs,
+            export_format='json',
+            report_dir=TEST_OUT,
+            prefix=sys._getframe().f_code.co_name + '_',
+        )
+        new_obj = handler.create_from_json('package', json_file)
+        self.assertIsInstance(new_obj, pytan.api.PackageSpecList)
+        for x in new_obj:
+            self.assertIsInstance(x, pytan.api.PackageSpec)
+            delete_obj = handler.delete('package', name=x.name)
+            for i in delete_obj:
+                self.assertIsInstance(i, pytan.api.PackageSpec)
+
+    def test_create_from_json_question(self):
+        handler = self.setup_test()
+        # adding a new question
+        orig_objs = handler.get('question', id=1)
+        json_file, results = handler.export_to_report_file(
+            obj=orig_objs,
+            export_format='json',
+            report_dir=TEST_OUT,
+            prefix=sys._getframe().f_code.co_name + '_',
+        )
+        new_obj = handler.create_from_json('question', json_file)
+        self.assertIsInstance(new_obj, pytan.api.QuestionList)
+        for x in new_obj:
+            self.assertIsInstance(x, pytan.api.Question)
+
+    def test_create_from_json_saved_action(self):
+        handler = self.setup_test()
+        # saved_action does not work (AddObject returns nothing, ??)
+        orig_objs = handler.get(
+            'saved_action', name="Distribute Tanium Standard Utilities"
+        )
+        for x in orig_objs:
+            x.name += " API TEST"
+        json_file, results = handler.export_to_report_file(
+            obj=orig_objs,
+            export_format='json',
+            report_dir=TEST_OUT,
+            prefix=sys._getframe().f_code.co_name + '_',
+        )
+        e = ".*is not a json createable object! Supported objects.*"
+        with self.assertRaisesRegexp(pytan.utils.HandlerError, e):
+            handler.create_from_json('saved_action', json_file)
+
+    def test_create_from_json_saved_question(self):
+        handler = self.setup_test()
+        # adding and deleting a saved_question
+        orig_objs = handler.get(
+            'saved_question', name="Computer Name"
+        )
+        for x in orig_objs:
+            x.name += " API TEST"
+            # make sure the test object is gone before we create it
+            try:
+                handler.delete('saved_question', name=x.name)
+            except:
+                pass
+        json_file, results = handler.export_to_report_file(
+            obj=orig_objs,
+            export_format='json',
+            report_dir=TEST_OUT,
+            prefix=sys._getframe().f_code.co_name + '_',
+        )
+        new_obj = handler.create_from_json('saved_question', json_file)
+        self.assertIsInstance(new_obj, pytan.api.SavedQuestionList)
+        for x in new_obj:
+            self.assertIsInstance(x, pytan.api.SavedQuestion)
+            delete_obj = handler.delete('saved_question', name=x.name)
+            for i in delete_obj:
+                self.assertIsInstance(i, pytan.api.SavedQuestion)
+
+    def test_create_from_json_setting(self):
+        handler = self.setup_test()
+        # setting not supported:
+        orig_objs = handler.get('setting', id='1')
+        json_file, results = handler.export_to_report_file(
+            obj=orig_objs,
+            export_format='json',
+            report_dir=TEST_OUT,
+            prefix=sys._getframe().f_code.co_name + '_',
+        )
+        e = ".*is not a json createable object! Supported objects.*"
+        with self.assertRaisesRegexp(pytan.utils.HandlerError, e):
+            handler.create_from_json('setting', json_file)
+
+    def test_create_from_json_user(self):
+        handler = self.setup_test()
+        # adding and deleting a user
+        orig_objs = handler.get('user', id=1)
+        for x in orig_objs:
+            x.name += " API TEST"
+            # make sure the test object is gone before we create it
+            try:
+                handler.delete('user', name=x.name)
+            except:
+                pass
+
+        json_file, results = handler.export_to_report_file(
+            obj=orig_objs,
+            export_format='json',
+            report_dir=TEST_OUT,
+            prefix=sys._getframe().f_code.co_name + '_',
+        )
+        new_obj = handler.create_from_json('user', json_file)
+        self.assertIsInstance(new_obj, pytan.api.UserList)
+        for x in new_obj:
+            self.assertIsInstance(x, pytan.api.User)
+            delete_obj = handler.delete('user', name=x.name)
+            for i in delete_obj:
+                self.assertIsInstance(i, pytan.api.User)
+
+    def test_create_from_json_userrole(self):
+        handler = self.setup_test()
+        # userrole not supported:
+        orig_objs = handler.get('userrole', name='Administrator')
+        json_file, results = handler.export_to_report_file(
+            obj=orig_objs,
+            export_format='json',
+            report_dir=TEST_OUT,
+            prefix=sys._getframe().f_code.co_name + '_',
+        )
+        e = ".*is not a json createable object! Supported objects.*"
+        with self.assertRaisesRegexp(pytan.utils.HandlerError, e):
+            handler.create_from_json('userrole', json_file)
+
+    def test_create_from_json_whitelisted_url(self):
+        handler = self.setup_test()
+        # adding and deleting a whitelisted_url
+        orig_obj = handler.get_all('whitelisted_url')[0]
+        orig_obj.url_regex += " API TEST"
+        json_file, results = handler.export_to_report_file(
+            obj=orig_obj,
+            export_format='json',
+            report_dir=TEST_OUT,
+            prefix=sys._getframe().f_code.co_name + '_',
+        )
+        # make sure the test object is gone before we create it
+        try:
+            handler.delete('whitelisted_url', url_regex=orig_obj.url_regex)
+        except:
+            pass
+
+        new_obj = handler.create_from_json('whitelisted_url', json_file)
+        self.assertIsInstance(new_obj, pytan.api.WhiteListedUrlList)
+        for x in new_obj:
+            self.assertIsInstance(x, pytan.api.WhiteListedUrl)
+            delete_obj = handler.delete(
+                'whitelisted_url', url_regex=orig_obj.url_regex
+            )
+            for i in delete_obj:
+                self.assertIsInstance(i, pytan.api.WhiteListedUrl)
+
+
 class ExportObjTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -354,6 +787,14 @@ class ValidServerTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.handler = pytan.Handler(**SERVER_INFO)
+        # create whitelisted_url for getobject tests
+        try:
+            cls.handler.create_whitelisted_url(url='test1')
+            cls.handler.create_whitelisted_url(url='test2')
+            cls.handler.create_whitelisted_url(url='test3')
+        except:
+            pass
+
         spew('\n' + str(cls.handler))
 
     def setup_test(self):
