@@ -50,3 +50,16 @@ for i in constants.GET_OBJ_MAP:
     i_h.close()
     os.chmod(i_f, 0755)
     print "Generated {} from {}".format(i_f, do_f)
+
+cjo_f = os.path.join(build_bin, 'create_object_from_json_template.py')
+cjo_s = open(cjo_f).read()
+
+for i in constants.GET_OBJ_MAP:
+    if not constants.GET_OBJ_MAP[i]['create_json']:
+        continue
+    i_f = os.path.join(output_bin, 'create_{}_from_json.py'.format(i))
+    i_h = open(i_f, 'w')
+    i_h.write(cjo_s.replace('OBJECTNAME', i))
+    i_h.close()
+    os.chmod(i_f, 0755)
+    print "Generated {} from {}".format(i_f, cjo_f)

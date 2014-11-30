@@ -1,5 +1,4 @@
 # TODO NOW
- * [ ] bin scripts for create
  * [ ] DOCS/EXAMPLES
    * [ ] add help to manual stuff
    * [ ] incorporate mdocbuild for bin scripts
@@ -80,4 +79,6 @@
     * [X] unittests for create/delete
     * [X] add whitelisted_urls to unittests for class setup
     * [X] bin scripts for delete
+    * [X] bin scripts for create_from_json
+    * [X] bin scripts for create
 

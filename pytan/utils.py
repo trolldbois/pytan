@@ -209,20 +209,44 @@ def setup_get_object_argparser(obj, doc):
     return parser
 
 
+def setup_create_json_object_argparser(obj, doc):
+    parent_parser = setup_parser(doc)
+    parser = CustomArgParse(
+        description=doc,
+        parents=[parent_parser],
+    )
+    arggroup = parser.add_argument_group(
+        'Create {} from JSON Options'.format(
+            obj.replace('_', ' ').capitalize()
+        )
+    )
+
+    arggroup.add_argument(
+        '-j',
+        '--json',
+        required=True,
+        action='store',
+        default='',
+        dest='json_file',
+        help='JSON file to use for creating the object',
+    )
+    return parser
+
+
 def setup_delete_object_argparser(obj, doc):
     parent_parser = setup_parser(doc)
     parser = CustomArgParse(
         description=doc,
         parents=[parent_parser],
     )
-    get_object_group = parser.add_argument_group(
+    arggroup = parser.add_argument_group(
         'Delete {} Options'.format(obj.replace('_', ' ').capitalize())
     )
 
     obj_map = get_obj_map(obj)
     search_keys = obj_map['search']
     for k in search_keys:
-        get_object_group.add_argument(
+        arggroup.add_argument(
             '--{}'.format(k),
             required=False,
             action='append',
@@ -240,8 +264,8 @@ def setup_ask_saved_argparser(doc):
         description=doc,
         parents=[parent_parser],
     )
-    ask_arggroup = parser.add_argument_group('Saved Question Selectors')
-    group = ask_arggroup.add_mutually_exclusive_group()
+    arggroup = parser.add_argument_group('Saved Question Selectors')
+    group = arggroup.add_mutually_exclusive_group()
 
     obj_map = get_obj_map(obj)
     search_keys = obj_map['search']
@@ -262,9 +286,9 @@ def setup_stop_action_argparser(doc):
         description=doc,
         parents=[parent_parser],
     )
-    ask_arggroup = parser.add_argument_group('Stop Action Options')
+    arggroup = parser.add_argument_group('Stop Action Options')
 
-    ask_arggroup.add_argument(
+    arggroup.add_argument(
         '-i',
         '--id',
         required=True,
@@ -283,9 +307,9 @@ def setup_deploy_action_argparser(doc):
         description=doc,
         parents=[parent_parser],
     )
-    ask_arggroup = parser.add_argument_group('Deploy Action Options')
+    arggroup = parser.add_argument_group('Deploy Action Options')
 
-    ask_arggroup.add_argument(
+    arggroup.add_argument(
         '--run',
         required=False,
         action='store_true',
@@ -296,7 +320,7 @@ def setup_deploy_action_argparser(doc):
         'csv file for verification',
     )
 
-    group = ask_arggroup.add_mutually_exclusive_group()
+    group = arggroup.add_mutually_exclusive_group()
 
     group.add_argument(
         '--no-results',
@@ -317,7 +341,7 @@ def setup_deploy_action_argparser(doc):
         '(default)',
     )
 
-    ask_arggroup.add_argument(
+    arggroup.add_argument(
         '-k',
         '--package',
         required=True,
@@ -328,7 +352,7 @@ def setup_deploy_action_argparser(doc):
         'pass --package-help to get a full description',
     )
 
-    ask_arggroup.add_argument(
+    arggroup.add_argument(
         '-f',
         '--filter',
         required=True,
@@ -339,7 +363,7 @@ def setup_deploy_action_argparser(doc):
         'to get a full description',
     )
 
-    ask_arggroup.add_argument(
+    arggroup.add_argument(
         '-o',
         '--option',
         required=False,
@@ -350,7 +374,7 @@ def setup_deploy_action_argparser(doc):
         'full description',
     )
 
-    ask_arggroup.add_argument(
+    arggroup.add_argument(
         '--start_seconds_from_now',
         required=False,
         action='store',
@@ -360,7 +384,7 @@ def setup_deploy_action_argparser(doc):
         help='Start the action N seconds from now',
     )
 
-    ask_arggroup.add_argument(
+    arggroup.add_argument(
         '--expire_seconds',
         required=False,
         action='store',
@@ -381,9 +405,9 @@ def setup_get_result_argparser(doc):
         description=doc,
         parents=[parent_parser],
     )
-    ask_arggroup = parser.add_argument_group('Get Result Options')
+    arggroup = parser.add_argument_group('Get Result Options')
 
-    ask_arggroup.add_argument(
+    arggroup.add_argument(
         '-o',
         '--object',
         required=True,
@@ -394,7 +418,7 @@ def setup_get_result_argparser(doc):
         help='Type of object to get results for',
     )
 
-    ask_arggroup.add_argument(
+    arggroup.add_argument(
         '-i',
         '--id',
         required=True,
@@ -413,9 +437,9 @@ def setup_ask_manual_argparser(doc):
         description=doc,
         parents=[parent_parser],
     )
-    ask_arggroup = parser.add_argument_group('Manual Question Options')
+    arggroup = parser.add_argument_group('Manual Question Options')
 
-    ask_arggroup.add_argument(
+    arggroup.add_argument(
         '-s',
         '--sensor',
         required=True,
@@ -426,7 +450,7 @@ def setup_ask_manual_argparser(doc):
         '; pass --sensor-help to get a full description',
     )
 
-    ask_arggroup.add_argument(
+    arggroup.add_argument(
         '-f',
         '--filter',
         required=False,
@@ -437,7 +461,7 @@ def setup_ask_manual_argparser(doc):
         'to get a full description',
     )
 
-    ask_arggroup.add_argument(
+    arggroup.add_argument(
         '-o',
         '--option',
         required=False,
@@ -448,7 +472,7 @@ def setup_ask_manual_argparser(doc):
         'description',
     )
 
-    group = ask_arggroup.add_mutually_exclusive_group()
+    group = arggroup.add_mutually_exclusive_group()
 
     group.add_argument(
         '--no-results',
@@ -728,15 +752,34 @@ def add_get_object_report_argparser(parser):
     return parser
 
 
+def process_create_json_object_args(parser, handler, obj, all_args):
+    # put our query args into their own dict and remove them from all_args
+    obj_grp_names = [
+        'Create {} from JSON Options'.format(
+            obj.replace('_', ' ').capitalize()
+        )
+    ]
+    obj_grp_opts = get_grp_opts(parser, obj_grp_names)
+    obj_grp_args = {k: all_args.pop(k) for k in obj_grp_opts}
+    try:
+        response = handler.create_from_json(obj, **obj_grp_args)
+    except Exception as e:
+        print e
+        sys.exit(100)
+    for i in response:
+        print "Created item: ", i
+    return response
+
+
 def process_delete_object_args(parser, handler, obj, all_args):
     # put our query args into their own dict and remove them from all_args
-    delobj_grp_names = [
+    obj_grp_names = [
         'Delete {} Options'.format(obj.replace('_', ' ').capitalize())
     ]
-    delobj_grp_opts = get_grp_opts(parser, delobj_grp_names)
-    delobj_grp_args = {k: all_args.pop(k) for k in delobj_grp_opts}
+    obj_grp_opts = get_grp_opts(parser, obj_grp_names)
+    obj_grp_args = {k: all_args.pop(k) for k in obj_grp_opts}
     try:
-        response = handler.delete(obj, **delobj_grp_args)
+        response = handler.delete(obj, **obj_grp_args)
     except Exception as e:
         print e
         sys.exit(100)
@@ -747,12 +790,12 @@ def process_delete_object_args(parser, handler, obj, all_args):
 
 def process_get_object_args(parser, handler, obj, all_args):
     # put our query args into their own dict and remove them from all_args
-    getobj_grp_names = [
+    obj_grp_names = [
         'Get {} Options'.format(obj.replace('_', ' ').capitalize())
     ]
-    getobj_grp_opts = get_grp_opts(parser, getobj_grp_names)
-    getobj_grp_args = {k: all_args.pop(k) for k in getobj_grp_opts}
-    get_all = getobj_grp_args.pop('all')
+    obj_grp_opts = get_grp_opts(parser, obj_grp_names)
+    obj_grp_args = {k: all_args.pop(k) for k in obj_grp_opts}
+    get_all = obj_grp_args.pop('all')
     if get_all:
         try:
             response = handler.get_all(obj)
@@ -761,7 +804,7 @@ def process_get_object_args(parser, handler, obj, all_args):
             sys.exit(100)
     else:
         try:
-            response = handler.get(obj, **getobj_grp_args)
+            response = handler.get(obj, **obj_grp_args)
         except Exception as e:
             print e
             sys.exit(100)
@@ -1768,9 +1811,9 @@ def get_dict_list_len(d, keys=[], negate=False):
 
 def build_metadatalist_obj(properties, nameprefix):
     metadatalist_obj = api.MetadataList()
-    for k, v in properties.iteritems():
+    for prop in properties:
         metadata_obj = api.MetadataItem()
-        metadata_obj.name = "{}.{}".format(nameprefix, k)
-        metadata_obj.value = v
+        metadata_obj.name = "{}.{}".format(nameprefix, prop[0])
+        metadata_obj.value = prop[1]
         metadatalist_obj.append(metadata_obj)
     return metadatalist_obj

@@ -305,7 +305,7 @@ class Handler(object):
     def create_sensor(self):
         m = (
             "Sensor creation not supported via PyTan as of yet, too complex\n"
-            "Use create_from_json() instead!"
+            "Use create_sensor_from_json() instead!"
         )
         raise HandlerError(m)
 
@@ -435,8 +435,11 @@ class Handler(object):
         mylog.info(m(group_obj.name, group_obj.id, group_obj.text))
         return group_obj
 
-    def create_user(self, username, rolename=None, roleid=None, properties={}):
-        rolelist_obj = self.get('userrole', id=roleid, name=rolename)
+    def create_user(self, username, rolename=[], roleid=[], properties=[]):
+        if roleid or rolename:
+            rolelist_obj = self.get('userrole', id=roleid, name=rolename)
+        else:
+            rolelist_obj = api.RoleList()
         metadatalist_obj = utils.build_metadatalist_obj(
             properties, 'TConsole.User.Property',
         )
@@ -451,8 +454,12 @@ class Handler(object):
         ))
         return user_obj
 
-    def create_whitelisted_url(self, url, regex=False, download_seconds=86400,
-                               properties={}):
+    def create_whitelisted_url(
+            self,
+            url,
+            regex=False,
+            download_seconds=86400,
+            properties=[]):
 
         if regex:
             url = 'regex:' + url
