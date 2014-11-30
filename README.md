@@ -22,48 +22,20 @@
 [..TOC..](#table-of-contents)
 # What is it
 
-PyTan is a Python library that provides a simple way for programmatically interfacing with Tanium's SOAP API. It also has command line scripts that make it easy for non-programmers to utilize PyTan's library.
-
-The current code base should be considered version "0.5" - It will reach a version "1.0alpha" by sometime around 11/17/2014, and a version "1.0" by sometime around 12/1/2014.
+PyTan is a Python library that provides a simple way for programmatically interfacing with Tanium's SOAP API. It is comprised of three parts:
+  * TaniumPy API: A set of Python objects that are automatically generated from the WSDL that describes the Tanium SOAP API.
+  * PyTan Handler API: An API that makes the objects exposed by TaniumPy easier to use.
+  * PyTan Command Line Scripts: A set of command line scripts that utilize the PyTan Handler API to make it easy for non-programmers to utilize the Tanium SOAP API to create/get/delete/ask/deploy objects.
 
 [..TOC..](#table-of-contents)
 # Why was it created
 
 PyTan was created to solve for the following needs:
   1. Create a python library to provide an easy set of methods for programmatically interfacing with Tanium via the SOAP API
-  2. Create a set of command line scripts that utilize the python library that handle the argument parsing, thereby providing non-python users with command line access to the functionality provided by the methods inside of the python library
-  4. Original Design Goals ([Original Design Approach Doc](doc/DESIGN.md)):
-    * Provide a command line method for asking a question and getting a result
-    * Provide a command line method for asking all questions and getting all results
-    * Make above methods produce output in programmatic output (i.e. CSV)
-    * Make a self contained package with as little external dependencies as possible
-    * Make a self contained package with as little setup required as possible
-
-[..TOC..](#table-of-contents)
-# Things it can do right now
-
-  1. Ask parsed questions (just like in the console)
-  2. Ask manually built questions
-  3. Get object data for the following object types: saved question, question, sensor, package, action, group
-  4. Transform the data and save the transformation into a file for any response into the following types: 
-    1. csv: will transform the response from Tanium into a CSV document
-    7. json: will transform the response from Tanium into a JSON document
-    4. xml: will transform the response from Tanium into an XML document
-    2. raw.xml: will save the raw XML response from Tanium with no transformation
-    3. raw.response: will save the raw HTTP response from Tanium with no transformation
-    5. raw.request: will save the raw HTTP request to Tanium with no transformation
-
-[..TOC..](#table-of-contents)
-# Things it can NOT do right now
-
-  1. Pass parameters for parsed questions
-  2. Pass parameters for manual questions
-  3. Pass filters for manual questions
-  4. Pass Options for anything
-  5. Add object for saved question, sensor, package, action, group
-  6. Deploy actions
-  7. Deploy packages
-  8. See [TODO.md](doc/TODO.md) for the list of things that need to be done and their priority
+  2. Create a set of command line scripts utilizing the python library created above that handle the argument parsing, thereby providing non-python users with command line access to the functionality provided by the methods inside of the python library
+  3. Provide a way to ask questions and get results via Python and/or the command line.
+  4. Provide a way to deploy actions and get results via Python and/or the command line.
+  5. Provide a way to export/import objects in JSON via Python and/or the command line.
  
 [..TOC..](#table-of-contents)
 # How it has been tested

@@ -28,14 +28,23 @@ actionlog = logging.getLogger("action_progress")
 
 
 class Handler(object):
+    '''Creates a connection to a Tanium SOAP Server on host:port
+
+Options:
+  * username: string, required
+  * password: string, required
+  * host: string, required
+  * port: int, optional
+    * port 444 is the default SOAP port
+    * port 443 forwards /soap/ URLs to the SOAP port
+    * Use port 444 if you have direct access to it
+  * loglevel: int, optional, supply a higher level for more verbose logging
+  * debugformat: boolean, optional, use a more verbose logging format
+    '''
 
     def __init__(self, username, password, host, port="444", loglevel=0,
                  debugformat=False, **kwargs):
         super(Handler, self).__init__()
-
-        # use port 444 if you have direct access to it,
-        # port 444 is direct access to API
-        # port 443 uses apache forwarder which then goes to port 444
 
         # setup the console logging handler
         utils.setup_console_logging()
@@ -69,6 +78,11 @@ class Handler(object):
         return ret
 
     def ask(self, **kwargs):
+        '''Ask a type of question and get the results back
+
+Options:
+  * qtype: string, required, type of question to ask
+        '''
         qtype = kwargs.get('qtype', '')
         if not qtype:
             err = (
@@ -81,7 +95,13 @@ class Handler(object):
         return result
 
     def ask_saved(self, **kwargs):
+        '''Ask a saved question and get the results back
 
+Options:
+  * id: int or list of ints, optional, id of saved question to ask
+  * name: string or list of strings, optional, name of saved question to ask
+  * either id or name must be supplied
+        '''
         # get the saved_question object the user passed in
         q_objs = self.get('saved_question', **kwargs)
 
@@ -115,9 +135,23 @@ class Handler(object):
         return ret
 
     def ask_manual(self, get_results=True, **kwargs):
-        '''Parses a set of python objects into a Question object,
-        adds the Question object, and returns the results for the Question ID
-        of the added Question object
+        '''Ask a manual question and get the results back
+
+Options:
+  * sensor_defs: string or dict or list of strings or dicts
+    * if a string is supplied, it must be a sensor name
+    * if a dictionary is supplied, it should be constructed as follows:
+      * id, name, or hash: string, required, id, name, or hash of sensor
+      * params: dictionary, optional
+        * key/value pairs of parameters for sensor
+      * filters: dictionary, optional, filter to apply to this sensor
+      * options: dictionary, optional, options to apply to this filter/sensor
+  * question_filter_defs: dictionary or list of dictionaries, optional
+    * filters to apply to every sensor in the question
+  * question_option_defs: dictionary, optional
+    * question options to apply to question filters
+  * get_results: boolean, optional
+    * supply False to just ask the question and not wait for the results
         '''
 
         # get our defs from kwargs and churn them into what we want
@@ -191,8 +225,18 @@ class Handler(object):
         return ret
 
     def ask_manual_human(self, **kwargs):
-        '''Parses a set of "human" strings into python objects usable
-        by ask_manual()
+        '''Parses a set of strings into python objects usable by ask_manual()
+
+Options:
+  * sensors: string or list of strings, required
+    * each string must describe a sensor
+    * each sensor string can describe a filter, parameters, and/or options
+  * question_filters: string or list of strings, optional
+    * each string must describe a question filter
+  * question_options: string or list of strings, optional
+    * each string must describe a question filter option
+  * get_results: boolean, optional
+    * supply False to just ask the question and not wait for the results
         '''
 
         if 'sensors' in kwargs:
@@ -223,6 +267,11 @@ class Handler(object):
         return result
 
     def load_api_from_json(self, json_file):
+        '''Opens a json file and parses it into an python object
+
+Options:
+  * json_file: string, required, path to JSON file that describes an API object
+        '''
         try:
             fh = open(json_file)
         except Exception as e:
@@ -256,6 +305,12 @@ class Handler(object):
         return obj
 
     def create_from_json(self, obj, json_file):
+        '''Creates a new object using the SOAP api from a json file
+
+Options:
+  * obj: string, required, type of object contained in the json_file
+  * json_file: string, required, path to JSON file that describes an API object
+        '''
         obj_map = utils.get_obj_map(obj)
         create_json_ok = obj_map['create_json']
         if not create_json_ok:
@@ -303,6 +358,7 @@ class Handler(object):
         return ret
 
     def create_sensor(self):
+        '''Create a sensor object, not currently supported'''
         m = (
             "Sensor creation not supported via PyTan as of yet, too complex\n"
             "Use create_sensor_from_json() instead!"
@@ -321,6 +377,27 @@ class Handler(object):
             verify_filters=[],
             verify_filter_options=[],
             verify_expire_seconds=600):
+        '''Create a package object
+
+Options:
+  * name: string, required, name of package to create
+  * command: string, required, command to execute
+  * display_name: string, optional, display name of package to create
+  * file_urls: list of strings, optional
+    * each file_url must be a string
+    * can optionally define download_seconds by using SECONDS::URL
+    * can optionally define file name by using FILENAME||URL
+    * can combine optionals by using SECONDS::FILENAME||URL
+  * command_timeout_seconds: int, optional, time for command in seconds
+  * parameters_json_file: string, optional
+    * path to json file describing parameters for package
+  * expire_seconds: int, optional, time for package in seconds
+  * verify_filters: string or list of strings, optional
+    * each string must describe a filter to be used to verify the package
+  * verify_filter_options: string or list of strings, optional
+    * each string must describe a verify filter option
+  * verify_expire_seconds: int, optional, time for verify expiration in seconds
+        '''
 
         # bare minimum arguments for new package: name, command
         add_package_obj = api.PackageSpec()
@@ -424,6 +501,16 @@ class Handler(object):
         return package_obj
 
     def create_group(self, groupname, filters=[], filter_options=[]):
+        '''Create a group object
+
+Options:
+  * groupname: string, required, name of group to create
+  * filters: string or list of strings, optional
+    * each string must describe a filter for this group
+  * filter_options: string or list of strings, optional
+    * each string must describe a filter option for this group
+        '''
+
         filter_defs = utils.dehumanize_question_filters(filters)
         filter_defs = self._get_sensor_defs(filter_defs)
         option_defs = utils.dehumanize_question_options(filter_options)
@@ -436,6 +523,17 @@ class Handler(object):
         return group_obj
 
     def create_user(self, username, rolename=[], roleid=[], properties=[]):
+        '''Create a user object
+
+Options:
+  * username: string, required, name of user to create
+  * rolename: string or list of strings, optional
+  * roleid: int or list of ints, optional
+  * properties: list of lists, optional
+    * each list must be a 2 item list
+    * item 1 being a property name
+    * item 2 being a property value
+        '''
         if roleid or rolename:
             rolelist_obj = self.get('userrole', id=roleid, name=rolename)
         else:
@@ -460,7 +558,17 @@ class Handler(object):
             regex=False,
             download_seconds=86400,
             properties=[]):
+        '''Create a whitelisted url object
 
+Options:
+  * url: string, required, text of new url
+  * regex: boolean, optional, is url a regex pattern?
+  * download_seconds: int, optional, how often to re-download URL
+  * properties: list of lists, optional
+    * each list must be a 2 item list
+    * item 1 being a property name
+    * item 2 being a property value
+        '''
         if regex:
             url = 'regex:' + url
 
@@ -478,6 +586,13 @@ class Handler(object):
         return url_obj
 
     def delete(self, obj, **kwargs):
+        '''Delete an object
+
+Options:
+  * obj: string, required, type of object to delete
+  * id/name/hash: int or string, at least one required
+    * constants.GET_OBJ_MAP describes the object type mapping to search keys
+        '''
         obj_map = utils.get_obj_map(obj)
         delete_ok = obj_map['delete']
         if not delete_ok:
@@ -496,7 +611,28 @@ class Handler(object):
         return deleted_objects
 
     def deploy_action(self, run=False, get_results=True, **kwargs):
+        '''Deploy an action and get the results back
 
+Options:
+  * package_def: dictionary, required
+    * dictionary that describes a pacakge
+      * id or name: string, required, id or name of package
+      * params: dictionary, optional, key/value pairs of parameters for package
+  * action_filter_defs: string or dict or list of strings or dicts
+    * if a string is supplied, it must be a sensor name
+    * if a dictionary is supplied, it should be constructed as follows:
+      * id, name, or hash: string, required, id, name, or hash of sensor
+      * filters: dictionary, optional, filter to apply to this sensor
+  * action_option_defs: dictionary, optional
+    * options to apply to action filters
+  * start_seconds_from_now: int, optional
+  * expire_seconds: int, optional
+  * run: boolean, optional
+    * supply True to actually deploy the action
+    * by default the pre-action question will be run and the results saved
+  * get_results: boolean, optional
+    * supply False to just ask the question and not wait for the results
+        '''
         # get our defs from kwargs and churn them into what we want
         action_filter_defs = utils.parse_defs(
             defname='action_filter_defs',
@@ -643,6 +779,24 @@ class Handler(object):
         return ret
 
     def deploy_action_human(self, **kwargs):
+        '''Deploy an action and get the results back
+
+Options:
+  * package: string, required
+    * each string must describe a package
+    * each package string can describe parameters
+  * action_filters: string or list of strings, optional
+    * each string must describe a sensor and a filter
+  * action_options: string or list of strings, optional
+    * each string must describe an action filter option
+  * start_seconds_from_now: int, optional
+  * expire_seconds: int, optional
+  * run: boolean, optional
+    * supply True to actually deploy the action
+    * by default the pre-action question will be run and the results saved
+  * get_results: boolean, optional
+    * supply False to just ask the question and not wait for the results
+        '''
         # the human string describing the sensors/filter that user wants
         # to deploy the action against
         if 'action_filters' in kwargs:
@@ -676,6 +830,12 @@ class Handler(object):
         return deploy_result
 
     def deploy_action_asker(self, action_id, passed_count=0):
+        '''Checks the results of a deploy action job and waits for completion
+
+Options:
+  * action_id: int, required, id of deploy action job
+  * passed_count: int, optional, number of servers that must be completed
+        '''
         action_obj = self.get('action', id=action_id)[0]
         ps = action_obj.package_spec
         '''
@@ -803,6 +963,12 @@ class Handler(object):
         return ret
 
     def export_obj(self, obj, export_format, **kwargs):
+        '''Exports a python API object to a given export format
+
+Options:
+  * obj: python object, required, python API object to export
+  * export_format: string, required, format to export obj as
+        '''
         objtype = type(obj)
         try:
             objclassname = objtype.__name__
@@ -857,7 +1023,16 @@ class Handler(object):
         return result
 
     def export_to_report_file(self, obj, export_format, **kwargs):
+        '''Exports a python API object to a file
 
+Options:
+  * obj: python object, required, python API object to export
+  * export_format: string, required, format to export obj as
+  * report_file: string, optional, filename to save report as
+  * report_dir: string, optional, directory to save report to
+  * prefix: string, optional, prefix to add to report_file
+  * postfix: string, optional, postfix to add to report_file
+        '''
         report_file = kwargs.get('report_file', None)
 
         if not report_file:
@@ -907,6 +1082,13 @@ class Handler(object):
         return report_path, result
 
     def get(self, obj, **kwargs):
+        '''Get an object
+
+Options:
+  * obj: string, required, type of object to get
+  * id/name/hash: int or string, at least one required
+    * constants.GET_OBJ_MAP describes the object type mapping to search keys
+        '''
         obj_map = utils.get_obj_map(obj)
         manual_search = obj_map['manual']
         api_attrs = obj_map['search']
@@ -952,12 +1134,26 @@ class Handler(object):
         raise HandlerError(err(obj))
 
     def get_all(self, obj, **kwargs):
+        '''Get all objects of a type
+
+Options:
+  * obj: string, required, type of object to get
+        '''
         obj_map = utils.get_obj_map(obj)
         api_obj_all = getattr(api, obj_map['all'])()
         found = self._find(api_obj_all, **kwargs)
         return found
 
     def get_result_data(self, obj, aggregate=False, **kwargs):
+        '''Get the result data for a python API object
+
+Options:
+  * obj: python object, required, python API object get result data for
+  * aggregate: boolean, optional, get all data or just the aggregate data
+        '''
+        # do a getresultinfo to ensure fresh data is available for
+        # getresultdata
+        self.get_result_info(obj, **kwargs)
         ''' note #1 from jwk:
         For Action GetResultData:
         You have to make a ResultInfo request at least once every 2 minutes.
@@ -972,11 +1168,6 @@ class Handler(object):
          set row_counts_only_flag = 1. To get the computer names,
          use row_counts_only_flag = 0 (default).
         '''
-
-        # do a getresultinfo to ensure fresh data is available for
-        # getresultdata
-        self.get_result_info(obj, **kwargs)
-
         # do a getresultdata
         if aggregate:
             rd = self.session.getResultData(
@@ -987,10 +1178,20 @@ class Handler(object):
         return rd
 
     def get_result_info(self, obj, **kwargs):
+        '''Get the result info for a python API object
+
+Options:
+  * obj: python object, required, python API object get result data for
+        '''
         ri = self.session.getResultInfo(obj, **kwargs)
         return ri
 
     def stop_action(self, id, **kwargs):
+        '''Stop an action
+
+Options:
+  * id: int, required, id of action to stop
+        '''
         action_obj = self.get('action', id=id)[0]
         add_action_stop_obj = api.ActionStop()
         add_action_stop_obj.action = action_obj
