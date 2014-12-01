@@ -77,7 +77,7 @@ Setup a Handler() object::
 __title__ = 'pytan'
 __version__ = '1.0.0'
 __author__ = 'Jim Olsen <jim.olsen@tanium.com>'
-__license__ = 'TBD'
+__license__ = 'MIT'
 __copyright__ = 'Copyright 2014 Tanium'
 
 import sys
