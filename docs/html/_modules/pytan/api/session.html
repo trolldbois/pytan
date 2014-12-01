@@ -1,0 +1,476 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pytan.api.session &mdash; PyTan 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="PyTan 1.0.0 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">PyTan 1.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pytan.api.session</h1><div class="highlight"><pre>
+<span class="c"># -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-</span>
+<span class="c"># ex: set tabstop=4</span>
+<span class="c"># Please do not change the two lines above. See PEP 8, PEP 263.</span>
+<span class="sd">&#39;&#39;&#39;Session handler for Tanium API&#39;&#39;&#39;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">httplib</span>
+<span class="kn">import</span> <span class="nn">string</span>
+<span class="kn">import</span> <span class="nn">xml.etree.ElementTree</span> <span class="kn">as</span> <span class="nn">ET</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="kn">from</span> <span class="nn">base64</span> <span class="kn">import</span> <span class="n">b64encode</span>
+<span class="kn">from</span> <span class="nn">.object_types.base</span> <span class="kn">import</span> <span class="n">BaseType</span>
+<span class="kn">from</span> <span class="nn">.object_types.result_info</span> <span class="kn">import</span> <span class="n">ResultInfo</span>
+<span class="kn">from</span> <span class="nn">.object_types.result_set</span> <span class="kn">import</span> <span class="n">ResultSet</span>
+
+<span class="n">my_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
+<span class="n">my_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">my_file</span><span class="p">)</span>
+<span class="n">mylog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;api.session&quot;</span><span class="p">)</span>
+<span class="n">authlog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;api.session.auth&quot;</span><span class="p">)</span>
+<span class="n">httplog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;api.session.http&quot;</span><span class="p">)</span>
+<span class="n">bodyhttplog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;api.session.http.body&quot;</span><span class="p">)</span>
+
+<span class="n">request_body_template_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">my_dir</span><span class="p">,</span> <span class="s">&#39;request_body_template.xml&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="HttpError"><a class="viewcode-back" href="../../../pytan.api.session.html#pytan.api.session.HttpError">[docs]</a><span class="k">class</span> <span class="nc">HttpError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+</div>
+<div class="viewcode-block" id="AuthorizationError"><a class="viewcode-back" href="../../../pytan.api.session.html#pytan.api.session.AuthorizationError">[docs]</a><span class="k">class</span> <span class="nc">AuthorizationError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+</div>
+<div class="viewcode-block" id="BadResponseError"><a class="viewcode-back" href="../../../pytan.api.session.html#pytan.api.session.BadResponseError">[docs]</a><span class="k">class</span> <span class="nc">BadResponseError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+</div>
+<div class="viewcode-block" id="load_file"><a class="viewcode-back" href="../../../pytan.api.session.html#pytan.api.session.load_file">[docs]</a><span class="k">def</span> <span class="nf">load_file</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">fd</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">content</span>
+
+</div>
+<div class="viewcode-block" id="http_post"><a class="viewcode-back" href="../../../pytan.api.session.html#pytan.api.session.http_post">[docs]</a><span class="k">def</span> <span class="nf">http_post</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">http</span> <span class="o">=</span> <span class="n">httplib</span><span class="o">.</span><span class="n">HTTPSConnection</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+    <span class="n">req_args</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">req_args</span><span class="p">[</span><span class="s">&#39;method&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;POST&#39;</span>
+    <span class="n">req_args</span><span class="p">[</span><span class="s">&#39;url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">url</span>
+    <span class="k">if</span> <span class="n">body</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">req_args</span><span class="p">[</span><span class="s">&#39;body&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">body</span>
+    <span class="k">if</span> <span class="n">headers</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">req_args</span><span class="p">[</span><span class="s">&#39;headers&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">headers</span>
+
+    <span class="n">full_url</span> <span class="o">=</span> <span class="s">&quot;https://{0}:{1}/{2}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+
+    <span class="n">httplog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Sending POST to {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">full_url</span><span class="p">,</span> <span class="n">headers</span><span class="p">))</span>
+    <span class="n">bodyhttplog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;request headers: {}, body:</span><span class="se">\n</span><span class="s">{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">headers</span><span class="p">,</span> <span class="n">body</span><span class="p">))</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">http</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+        <span class="n">http</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="o">**</span><span class="n">req_args</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">http</span><span class="o">.</span><span class="n">getresponse</span><span class="p">()</span>
+        <span class="n">response_body</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">http</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="n">httplog</span><span class="o">.</span><span class="n">debug</span><span class="p">((</span>
+        <span class="s">&quot;HTTP response from {0!r} len:{1}, status:{2.status} {2.reason}&quot;</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">full_url</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">response_body</span><span class="p">),</span> <span class="n">response</span><span class="p">))</span>
+    <span class="n">bodyhttplog</span><span class="o">.</span><span class="n">debug</span><span class="p">((</span>
+        <span class="s">&quot;response headers: {}, body:</span><span class="se">\n</span><span class="s">{}&quot;</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">getheaders</span><span class="p">(),</span> <span class="n">response_body</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">response_body</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">HttpError</span><span class="p">(</span><span class="s">&quot;POST request to {} returned nothing&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">full_url</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">200</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="n">HttpError</span><span class="p">(</span><span class="n">response_body</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">response_body</span>
+
+</div>
+<div class="viewcode-block" id="DynamicFormatter"><a class="viewcode-back" href="../../../pytan.api.session.html#pytan.api.session.DynamicFormatter">[docs]</a><span class="k">class</span> <span class="nc">DynamicFormatter</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">Formatter</span><span class="p">):</span>
+
+<div class="viewcode-block" id="DynamicFormatter.get_value"><a class="viewcode-back" href="../../../pytan.api.session.html#pytan.api.session.DynamicFormatter.get_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">string</span><span class="o">.</span><span class="n">Formatter</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="Session"><a class="viewcode-back" href="../../../pytan.api.session.html#pytan.api.session.Session">[docs]</a><span class="k">class</span> <span class="nc">Session</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="n">GET_OBJECT</span> <span class="o">=</span> <span class="s">&#39;GetObject&#39;</span>
+    <span class="n">UPDATE_OBJECT</span> <span class="o">=</span> <span class="s">&#39;UpdateObject&#39;</span>
+    <span class="n">ADD_OBJECT</span> <span class="o">=</span> <span class="s">&#39;AddObject&#39;</span>
+    <span class="n">DELETE_OBJECT</span> <span class="o">=</span> <span class="s">&#39;DeleteObject&#39;</span>
+    <span class="n">GET_RESULT_INFO</span> <span class="o">=</span> <span class="s">&#39;GetResultInfo&#39;</span>
+    <span class="n">GET_RESULT_DATA</span> <span class="o">=</span> <span class="s">&#39;GetResultData&#39;</span>
+    <span class="n">REQUEST_BODY</span> <span class="o">=</span> <span class="n">load_file</span><span class="p">(</span><span class="n">request_body_template_file</span><span class="p">)</span>
+    <span class="n">FORMATTER</span> <span class="o">=</span> <span class="n">DynamicFormatter</span><span class="p">()</span><span class="o">.</span><span class="n">format</span>
+    <span class="n">AUTH_RES</span> <span class="o">=</span> <span class="s">&#39;/auth&#39;</span>
+    <span class="n">SOAP_RES</span> <span class="o">=</span> <span class="s">&#39;/soap&#39;</span>
+    <span class="n">INFO_RES</span> <span class="o">=</span> <span class="s">&#39;/info.json&#39;</span>
+    <span class="c"># only used for get_server_info()</span>
+    <span class="n">SOAP_PORT</span> <span class="o">=</span> <span class="mi">444</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">server</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">443</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="n">server</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="n">port</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">class_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span>
+        <span class="n">str_tpl</span> <span class="o">=</span> <span class="s">&quot;{} to {}:{}, Authenticated: {}, Version: {}&quot;</span><span class="o">.</span><span class="n">format</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">str_tpl</span><span class="p">(</span>
+            <span class="n">class_name</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_auth</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span>
+
+<div class="viewcode-block" id="Session.authenticate"><a class="viewcode-back" href="../../../pytan.api.session.html#pytan.api.session.Session.authenticate">[docs]</a>    <span class="k">def</span> <span class="nf">authenticate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;_auth_headers&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">username</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">AuthorizationError</span><span class="p">(</span><span class="s">&quot;Must supply username&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">password</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">AuthorizationError</span><span class="p">(</span><span class="s">&quot;Must supply username&quot;</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_auth_headers</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s">&#39;username&#39;</span><span class="p">:</span> <span class="n">b64encode</span><span class="p">(</span><span class="n">username</span><span class="p">),</span>
+                <span class="s">&#39;password&#39;</span><span class="p">:</span> <span class="n">b64encode</span><span class="p">(</span><span class="n">password</span><span class="p">),</span>
+            <span class="p">}</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_http_post</span><span class="p">(</span>
+                <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">AUTH_RES</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_auth_headers</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">AuthorizationError</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">session_id</span> <span class="o">=</span> <span class="n">body</span>
+        <span class="n">authlog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Successfully authenticated&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">server_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_server_info</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Session.find"><a class="viewcode-back" href="../../../pytan.api.session.html#pytan.api.session.Session.find">[docs]</a>    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">object_type</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">request_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_createGetObjectBody</span><span class="p">(</span><span class="n">object_type</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">response_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getResponse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request_body</span><span class="p">)</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">BaseType</span><span class="o">.</span><span class="n">fromSOAPBody</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">response_body</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">obj</span>
+</div>
+<div class="viewcode-block" id="Session.save"><a class="viewcode-back" href="../../../pytan.api.session.html#pytan.api.session.Session.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">request_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_createUpdateObjectBody</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">response_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getResponse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request_body</span><span class="p">)</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">BaseType</span><span class="o">.</span><span class="n">fromSOAPBody</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">response_body</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">obj</span>
+</div>
+<div class="viewcode-block" id="Session.add"><a class="viewcode-back" href="../../../pytan.api.session.html#pytan.api.session.Session.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">request_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_createAddObjectBody</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">response_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getResponse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request_body</span><span class="p">)</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">BaseType</span><span class="o">.</span><span class="n">fromSOAPBody</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">response_body</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">obj</span>
+</div>
+<div class="viewcode-block" id="Session.delete"><a class="viewcode-back" href="../../../pytan.api.session.html#pytan.api.session.Session.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">request_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_createDeleteObjectBody</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">response_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getResponse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request_body</span><span class="p">)</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">BaseType</span><span class="o">.</span><span class="n">fromSOAPBody</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">response_body</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">obj</span>
+</div>
+<div class="viewcode-block" id="Session.getResultInfo"><a class="viewcode-back" href="../../../pytan.api.session.html#pytan.api.session.Session.getResultInfo">[docs]</a>    <span class="k">def</span> <span class="nf">getResultInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">request_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_createGetResultInfoBody</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">response_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getResponse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request_body</span><span class="p">)</span>
+        <span class="c"># parse the single result_info into an Element and create a ResultInfo</span>
+        <span class="n">el</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">response_body</span><span class="p">)</span>
+        <span class="n">cdata</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;.//ResultXML&#39;</span><span class="p">)</span>
+        <span class="n">result_info</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">cdata</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="c"># TODO: maybe this should be ResultInfoList</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">ResultInfo</span><span class="o">.</span><span class="n">fromSOAPElement</span><span class="p">(</span><span class="n">result_info</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">obj</span>
+</div>
+<div class="viewcode-block" id="Session.getResultData"><a class="viewcode-back" href="../../../pytan.api.session.html#pytan.api.session.Session.getResultData">[docs]</a>    <span class="k">def</span> <span class="nf">getResultData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">request_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_createGetResultDataBody</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">response_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getResponse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request_body</span><span class="p">)</span>
+        <span class="c"># parse the single result_info into an Element and create a ResultData</span>
+        <span class="n">el</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">response_body</span><span class="p">)</span>
+        <span class="n">cdata</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;.//ResultXML&#39;</span><span class="p">)</span>
+        <span class="n">result_info</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">cdata</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="c"># TODO: maybe this should be ResultSetList</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">ResultSet</span><span class="o">.</span><span class="n">fromSOAPElement</span><span class="p">(</span><span class="n">result_info</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">obj</span>
+</div>
+<div class="viewcode-block" id="Session.get_server_info"><a class="viewcode-back" href="../../../pytan.api.session.html#pytan.api.session.Session.get_server_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_server_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_auth</span><span class="p">()</span>
+        <span class="c"># we can&#39;t use _http_post, because INFO_RES is only available on</span>
+        <span class="c"># SOAP_PORT</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">body</span> <span class="o">=</span> <span class="n">http_post</span><span class="p">(</span>
+                <span class="n">host</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">,</span>
+                <span class="n">port</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SOAP_PORT</span><span class="p">,</span>
+                <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">INFO_RES</span><span class="p">,</span>
+                <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_auth_headers</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+            <span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">((</span>
+                <span class="s">&quot;Successfully retrieved server info from {}&quot;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">INFO_RES</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">mylog</span><span class="o">.</span><span class="n">warn</span><span class="p">((</span>
+                <span class="s">&quot;Failed to retriev server info from {}, {}&quot;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">INFO_RES</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
+            <span class="n">body</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;server_info_error&#39;</span><span class="p">:</span> <span class="n">e</span><span class="p">}</span>
+        <span class="k">return</span> <span class="n">body</span>
+</div>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">session_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;_session_id&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s">&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session_id</span>
+
+    <span class="nd">@session_id.setter</span>
+    <span class="k">def</span> <span class="nf">session_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_session_id</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="n">authlog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Session ID updated to: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_auth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">session_id</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">server_version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">server_version</span> <span class="o">=</span> <span class="s">&quot;Unable to determine&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">server_info</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;server_info&#39;</span><span class="p">)</span>
+            <span class="n">diagnostics</span> <span class="o">=</span> <span class="n">server_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;Diagnostics&#39;</span><span class="p">)</span>
+            <span class="n">settings</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">diagnostics</span> <span class="k">if</span> <span class="s">&#39;Settings&#39;</span> <span class="ow">in</span> <span class="n">x</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">server_version</span> <span class="o">=</span> <span class="n">settings</span><span class="p">[</span><span class="s">&#39;Settings&#39;</span><span class="p">][</span><span class="s">&#39;Version&#39;</span><span class="p">]</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">return</span> <span class="n">server_version</span>
+
+    <span class="k">def</span> <span class="nf">_http_post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">body</span> <span class="o">=</span> <span class="n">http_post</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">body</span>
+
+    <span class="k">def</span> <span class="nf">_createAddObjectBody</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">obj_soap</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">toSOAPBody</span><span class="p">(</span><span class="n">minimal</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+        <span class="n">obj_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">FORMATTER</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">REQUEST_BODY</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">session_id</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ADD_OBJECT</span><span class="p">,</span>
+            <span class="n">obj_soap</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">obj_body</span>
+
+    <span class="k">def</span> <span class="nf">_createDeleteObjectBody</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">obj_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">FORMATTER</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">REQUEST_BODY</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">session_id</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">DELETE_OBJECT</span><span class="p">,</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">toSOAPBody</span><span class="p">(),</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">obj_body</span>
+
+    <span class="k">def</span> <span class="nf">_createGetResultInfoBody</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">obj_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">FORMATTER</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">REQUEST_BODY</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">session_id</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">GET_RESULT_INFO</span><span class="p">,</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">toSOAPBody</span><span class="p">(),</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">obj_body</span>
+
+    <span class="k">def</span> <span class="nf">_createGetResultDataBody</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">obj_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">FORMATTER</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">REQUEST_BODY</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">session_id</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">GET_RESULT_DATA</span><span class="p">,</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">toSOAPBody</span><span class="p">(),</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">obj_body</span>
+
+    <span class="k">def</span> <span class="nf">_createGetObjectBody</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">object_or_type</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">object_or_type</span><span class="p">,</span> <span class="n">BaseType</span><span class="p">):</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">object_or_type</span><span class="o">.</span><span class="n">toSOAPBody</span><span class="p">(</span><span class="n">minimal</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="s">&#39;&lt;{}/&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">object_or_type</span><span class="o">.</span><span class="n">_soap_tag</span><span class="p">)</span>
+        <span class="n">obj_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">FORMATTER</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">REQUEST_BODY</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">session_id</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">GET_OBJECT</span><span class="p">,</span>
+            <span class="n">obj</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">obj_body</span>
+
+    <span class="k">def</span> <span class="nf">_createUpdateObjectBody</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">obj_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">FORMATTER</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">REQUEST_BODY</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">session_id</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">UPDATE_OBJECT</span><span class="p">,</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">toSOAPBody</span><span class="p">(),</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">obj_body</span>
+
+    <span class="k">def</span> <span class="nf">_check_auth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_auth</span><span class="p">:</span>
+            <span class="n">class_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span>
+            <span class="n">err</span> <span class="o">=</span> <span class="s">&quot;Not yet authenticated, use {}.authenticate()!&quot;</span><span class="o">.</span><span class="n">format</span>
+            <span class="k">raise</span> <span class="n">AuthorizationError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="n">class_name</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_getResponse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request_body</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_auth</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">request_body_el</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">request_body</span><span class="p">)</span>
+        <span class="n">request_command</span> <span class="o">=</span> <span class="n">request_body_el</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;.//command&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last</span><span class="p">[</span><span class="s">&#39;request_command&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request_command</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">last</span><span class="p">[</span><span class="s">&#39;sent&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;Content-Type&#39;</span><span class="p">:</span> <span class="s">&#39;text/xml&#39;</span><span class="p">}</span>
+        <span class="n">response_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_http_post</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SOAP_RES</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">request_body</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">last</span><span class="p">[</span><span class="s">&#39;received&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="n">elapsed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last</span><span class="p">[</span><span class="s">&#39;received&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">last</span><span class="p">[</span><span class="s">&#39;sent&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last</span><span class="p">[</span><span class="s">&#39;elapsed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">elapsed</span>
+
+        <span class="n">response_body_el</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">response_body</span><span class="p">)</span>
+        <span class="n">response_command</span> <span class="o">=</span> <span class="n">response_body_el</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;.//command&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last</span><span class="p">[</span><span class="s">&#39;response_command&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response_command</span>
+
+        <span class="k">if</span> <span class="s">&#39;forbidden&#39;</span> <span class="ow">in</span> <span class="n">response_command</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+            <span class="n">authlog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                <span class="s">&quot;Last request failed, re-authenticating with user/pass&quot;</span>
+            <span class="p">)</span>
+
+            <span class="c"># we may have hit the 5 minute expiration for session_id</span>
+            <span class="c"># re-auth with self._auth_headers and re-try</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">authenticate</span><span class="p">()</span>
+
+            <span class="c"># Update session id in request body</span>
+            <span class="n">request_body_el</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;.//session&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session_id</span>
+            <span class="n">request_body</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span><span class="n">request_body_el</span><span class="p">)</span>
+
+            <span class="c"># resend request_body</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">last</span><span class="p">[</span><span class="s">&#39;sent&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+            <span class="n">response_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_http_post</span><span class="p">(</span>
+                <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SOAP_RES</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">request_body</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">last</span><span class="p">[</span><span class="s">&#39;response_body&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response_body</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">last</span><span class="p">[</span><span class="s">&#39;received&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+            <span class="n">elapsed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last</span><span class="p">[</span><span class="s">&#39;received&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">last</span><span class="p">[</span><span class="s">&#39;sent&#39;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">last</span><span class="p">[</span><span class="s">&#39;elapsed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">elapsed</span>
+            <span class="n">response_body_el</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">response_body</span><span class="p">)</span>
+            <span class="n">response_command</span> <span class="o">=</span> <span class="n">response_body_el</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;.//command&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">last</span><span class="p">[</span><span class="s">&#39;response_command&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response_command</span>
+            <span class="k">if</span> <span class="s">&#39;forbidden&#39;</span> <span class="ow">in</span> <span class="n">response_command</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                <span class="k">raise</span> <span class="n">AuthorizationError</span><span class="p">(</span><span class="n">response_command</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">response_command</span> <span class="o">!=</span> <span class="n">request_command</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">BadResponseError</span><span class="p">(</span><span class="n">response_command</span><span class="p">)</span>
+
+        <span class="c"># update session_id, in case new one issued</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session_id</span> <span class="o">=</span> <span class="n">response_body_el</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;.//session&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+
+        <span class="sd">&#39;&#39;&#39;to fix elementtree from thowing:</span>
+<span class="sd">        UnicodeEncodeError: &#39;ascii&#39; codec can&#39;t encode character</span>
+<span class="sd">        u&#39;\xa0&#39; in position 5705: ordinal not in range(128)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">response_body</span> <span class="o">=</span> <span class="n">response_body</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="n">response_body</span> <span class="o">=</span> <span class="n">response_body</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">u&quot;</span><span class="se">\xa0</span><span class="s">&quot;</span><span class="p">,</span> <span class="s">u&quot; &quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response_body</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">PyTan 1.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Jim Olsen.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+    </div>
+  </body>
+</html>

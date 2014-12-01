@@ -30,16 +30,23 @@ actionlog = logging.getLogger("action_progress")
 class Handler(object):
     '''Creates a connection to a Tanium SOAP Server on host:port
 
-Options:
-  * username: string, required
-  * password: string, required
-  * host: string, required
-  * port: int, optional
-    * port 444 is the default SOAP port
-    * port 443 forwards /soap/ URLs to the SOAP port
-    * Use port 444 if you have direct access to it
-  * loglevel: int, optional, supply a higher level for more verbose logging
-  * debugformat: boolean, optional, use a more verbose logging format
+    :param username: **required**, username to connect with
+    :type username: str
+    :param password: **required**, password to connect with
+    :type password: str
+    :param host: **required**, host to connect to
+    :type host: str
+    :param port: **optional**, port to connect to
+    :type port: int
+    :param loglevel: **optional**, verbosity level
+    :type loglevel: int
+    :param debugformat: **optional**, enable debugging log format
+    :type debugformat: bool
+
+    .. note::
+      * port 444 is the default SOAP port
+      * port 443 forwards /soap/ URLs to the SOAP port
+      * Use port 444 if you have direct access to it
     '''
 
     def __init__(self, username, password, host, port="444", loglevel=0,
@@ -80,8 +87,13 @@ Options:
     def ask(self, **kwargs):
         '''Ask a type of question and get the results back
 
-Options:
-  * qtype: string, required, type of question to ask
+        :param qtype: **required**, type of question to ask: saved_question,
+            manual, or manual_human
+        :type qtype: str
+        :return: result of asked question
+        :rtype: dict
+
+        .. seealso:: constants.Q_OBJ_MAP maps qtype to a method in Handler()
         '''
         qtype = kwargs.get('qtype', '')
         if not qtype:
@@ -97,10 +109,14 @@ Options:
     def ask_saved(self, **kwargs):
         '''Ask a saved question and get the results back
 
-Options:
-  * id: int or list of ints, optional, id of saved question to ask
-  * name: string or list of strings, optional, name of saved question to ask
-  * either id or name must be supplied
+        :param id: **optional**, id of saved question to ask
+        :type id: int, list
+        :param name: **optional**, name of saved question
+        :type name: str, list
+        :return: result of saved question
+        :rtype: dict
+
+        .. note:: id or name must be supplied
         '''
         # get the saved_question object the user passed in
         q_objs = self.get('saved_question', **kwargs)
@@ -137,15 +153,35 @@ Options:
     def ask_manual(self, get_results=True, **kwargs):
         '''Ask a manual question and get the results back
 
+        :param sensor_defs: sensor definition
+        :type sensor_defs: str, dict, list
+        :param name: **optional**, name of saved question
+        :type name: str, list
+        :return: result of saved question
+        :rtype: dict
+
+        .. note::
+          * if a string is supplied for sensor_defs, it must be a sensor name
+          * example of dict for sensor_defs:
+        ``{
+                'name': 'Sensor1',
+                'filter': {
+                    'operator': 'RegexMatch',
+                    'not_flag': 0,
+                    'value': '.*'
+                },
+                'params': {'key': 'value'},
+                'options': {'and_flag': 1}
+        }``
+          * example of dict for question_filter_defs: {
+                'operator': 'RegexMatch',
+                'not_flag': 0,
+                'value': '.*'
+            }
+
 Options:
   * sensor_defs: string or dict or list of strings or dicts
-    * if a string is supplied, it must be a sensor name
     * if a dictionary is supplied, it should be constructed as follows:
-      * id, name, or hash: string, required, id, name, or hash of sensor
-      * params: dictionary, optional
-        * key/value pairs of parameters for sensor
-      * filters: dictionary, optional, filter to apply to this sensor
-      * options: dictionary, optional, options to apply to this filter/sensor
   * question_filter_defs: dictionary or list of dictionaries, optional
     * filters to apply to every sensor in the question
   * question_option_defs: dictionary, optional

@@ -8,6 +8,7 @@ __version__ = '0.8.0'
 
 import os
 import sys
+import glob
 
 sys.dont_write_bytecode = True
 my_file = os.path.abspath(__file__)
@@ -24,10 +25,12 @@ from pytan import constants
 
 utils.version_check(__version__)
 
-build_bin = os.path.join(my_dir, 'build_bin')
+template_dir = os.path.join(my_dir, 'TEMPLATES')
 output_bin = os.path.join(parent_dir, 'bin')
+output_winbin = os.path.join(parent_dir, 'winbin')
 
-go_f = os.path.join(build_bin, 'get_object_template.py')
+print "## Generating bin/get_object scripts"
+go_f = os.path.join(template_dir, 'get_object_template.py')
 go_s = open(go_f).read()
 
 for i in constants.GET_OBJ_MAP:
@@ -38,7 +41,8 @@ for i in constants.GET_OBJ_MAP:
     os.chmod(i_f, 0755)
     print "Generated {} from {}".format(i_f, go_f)
 
-do_f = os.path.join(build_bin, 'delete_object_template.py')
+print "## Generating bin/delete_object scripts"
+do_f = os.path.join(template_dir, 'delete_object_template.py')
 do_s = open(do_f).read()
 
 for i in constants.GET_OBJ_MAP:
@@ -51,7 +55,8 @@ for i in constants.GET_OBJ_MAP:
     os.chmod(i_f, 0755)
     print "Generated {} from {}".format(i_f, do_f)
 
-cjo_f = os.path.join(build_bin, 'create_object_from_json_template.py')
+print "## Generating bin/create_from_json scripts"
+cjo_f = os.path.join(template_dir, 'create_object_from_json_template.py')
 cjo_s = open(cjo_f).read()
 
 for i in constants.GET_OBJ_MAP:
@@ -63,3 +68,27 @@ for i in constants.GET_OBJ_MAP:
     i_h.close()
     os.chmod(i_f, 0755)
     print "Generated {} from {}".format(i_f, cjo_f)
+
+
+print "## Generating winbin/ scripts"
+wb_f = os.path.join(template_dir, 'TEMPLATE.bat')
+wb_s = open(wb_f).read()
+wbi_f = os.path.join(template_dir, 'IA_TEMPLATE.bat')
+wbi_s = open(wbi_f).read()
+
+for i in glob.glob(os.path.join(output_bin, '*.py')):
+    bin_basename = os.path.basename(i)
+    bin_filename, bin_ext = os.path.splitext(bin_basename)
+    bin_contents = open(i).read()
+    if '-i' in bin_contents.splitlines()[0]:
+        bin_template_f = wbi_f
+        bin_template = wbi_s
+    else:
+        bin_template_f = wb_f
+        bin_template = wb_s
+    i_f = os.path.join(output_winbin, bin_filename + '.bat')
+    i_h = open(i_f, 'w')
+    i_h.write(bin_template)
+    i_h.close()
+    os.chmod(i_f, 0755)
+    print "Generated {} from {}".format(i_f, bin_template_f)

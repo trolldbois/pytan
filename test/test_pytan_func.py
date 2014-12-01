@@ -191,7 +191,7 @@ class CreateObjectTests(unittest.TestCase):
         kwargs = {
             'username': 'API Test User',
             'rolename': 'Administrator',
-            'properties': {'property1': 'value1'},
+            'properties': [['property1', 'value1']],
         }
 
         try:
@@ -227,7 +227,7 @@ class CreateObjectTests(unittest.TestCase):
             'url': 'http://test.com/.*API_Test.*URL',
             'regex': True,
             'download_seconds': 3600,
-            'properties': {'property1': 'value1'},
+            'properties': [['property1', 'value1']],
         }
 
         try:
