@@ -1,0 +1,7 @@
+
+pytan.api.object_types.cache_filter module
+******************************************
+
+class class pytan.api.object_types.cache_filter.CacheFilter
+
+   Bases: "pytan.api.object_types.base.BaseType"

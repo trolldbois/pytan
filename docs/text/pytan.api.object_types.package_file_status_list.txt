@@ -1,0 +1,7 @@
+
+pytan.api.object_types.package_file_status_list module
+******************************************************
+
+class class pytan.api.object_types.package_file_status_list.PackageFileStatusList
+
+   Bases: "pytan.api.object_types.base.BaseType"

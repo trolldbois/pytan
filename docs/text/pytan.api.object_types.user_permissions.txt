@@ -1,0 +1,7 @@
+
+pytan.api.object_types.user_permissions module
+**********************************************
+
+class class pytan.api.object_types.user_permissions.UserPermissions
+
+   Bases: "pytan.api.object_types.base.BaseType"

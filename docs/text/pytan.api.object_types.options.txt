@@ -1,0 +1,7 @@
+
+pytan.api.object_types.options module
+*************************************
+
+class class pytan.api.object_types.options.Options
+
+   Bases: "pytan.api.object_types.base.BaseType"

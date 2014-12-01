@@ -1,0 +1,7 @@
+
+pytan.api.object_types.saved_action_row_id_list module
+******************************************************
+
+class class pytan.api.object_types.saved_action_row_id_list.SavedActionRowIdList
+
+   Bases: "pytan.api.object_types.base.BaseType"

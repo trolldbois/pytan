@@ -1,0 +1,7 @@
+
+pytan.api.object_types.user module
+**********************************
+
+class class pytan.api.object_types.user.User
+
+   Bases: "pytan.api.object_types.base.BaseType"

@@ -1,0 +1,7 @@
+
+pytan.api.object_types.saved_action_policy module
+*************************************************
+
+class class pytan.api.object_types.saved_action_policy.SavedActionPolicy
+
+   Bases: "pytan.api.object_types.base.BaseType"

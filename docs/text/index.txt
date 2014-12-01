@@ -1,0 +1,41 @@
+
+Welcome to PyTan's documentation!
+*********************************
+
+* pytan package
+
+  * PyTan Description
+
+  * Why PyTan was created
+
+  * Installation
+
+  * Example Usage
+
+  * Subpackages
+
+    * pytan.api package
+
+      * Subpackages
+
+      * Submodules
+
+  * Submodules
+
+    * pytan.constants module
+
+    * pytan.handler module
+
+    * pytan.utils module
+
+    * pytan.xmltodict module
+
+
+Indices and tables
+******************
+
+* *Index*
+
+* *Module Index*
+
+* *Search Page*

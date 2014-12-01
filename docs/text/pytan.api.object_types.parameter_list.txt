@@ -1,0 +1,7 @@
+
+pytan.api.object_types.parameter_list module
+********************************************
+
+class class pytan.api.object_types.parameter_list.ParameterList
+
+   Bases: "pytan.api.object_types.base.BaseType"

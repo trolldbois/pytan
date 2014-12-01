@@ -1,0 +1,7 @@
+
+pytan.api.object_types.xml_error module
+***************************************
+
+class class pytan.api.object_types.xml_error.XmlError
+
+   Bases: "pytan.api.object_types.base.BaseType"

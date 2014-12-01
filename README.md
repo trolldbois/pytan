@@ -1,4 +1,6 @@
-** DOCUMENTATION IS CURRENTLY BEING REBUILT/ADDED USING SPHINX - THIS IS ALL OLD **
+**DOCUMENTATION IS CURRENTLY BEING REBUILT/ADDED USING SPHINX - THIS IS ALL OLD**
+
+**Refer to docs/html directory for work in progress documentation!**
 
 # Table of Contents
  * [What is it](#what-is-it)

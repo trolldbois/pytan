@@ -1,0 +1,15 @@
+
+pytan.api.object_types.result_info module
+*****************************************
+
+class class pytan.api.object_types.result_info.ResultInfo
+
+   Bases: "object"
+
+   Wrap the result of GetResultInfo
+
+   classmethod fromSOAPElement(el)
+
+      Deserialize a ResultInfo from a result_info SOAPElement
+
+      Assumes all properties are integer values (true today)

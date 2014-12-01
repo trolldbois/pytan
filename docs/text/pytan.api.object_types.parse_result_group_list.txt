@@ -1,0 +1,7 @@
+
+pytan.api.object_types.parse_result_group_list module
+*****************************************************
+
+class class pytan.api.object_types.parse_result_group_list.ParseResultGroupList
+
+   Bases: "pytan.api.object_types.base.BaseType"
