@@ -1,0 +1,156 @@
+{
+    "ask_saved_question_single_str": {
+        "method": "ask",
+        "args": {
+            "qtype": "saved",
+            "name": "Installed Applications"
+        }
+    },
+    "ask_saved_question_single_list": {
+        "method": "ask",
+        "args": {
+            "qtype": "saved",
+            "name": ["Installed Applications"]
+        }
+    },
+    "ask_manual_human_question_simple": {
+        "method": "ask",
+        "args": {
+            "qtype": "manual_human",
+            "sensors": "Computer Name"
+        }
+    },
+    "ask_manual_human_question_multiple": {
+        "method": "ask",
+        "args": {
+            "qtype": "manual_human",
+            "sensors": ["Computer Name", "Installed Applications"]
+        }
+    },
+    "ask_manual_human_question_param_sensor_noparams": {
+        "method": "ask",
+        "args": {
+            "qtype": "manual_human",
+            "sensors": "Folder Name Search with RegEx Match"
+        }
+    },
+    "ask_manual_human_question_nonparamsensor_params": {
+        "method": "ask",
+        "args": {
+            "qtype": "manual_human",
+            "sensors": "Computer Name{fake=Dweedle}"
+        }
+    },
+    "ask_manual_human_question_params_single": {
+        "method": "ask",
+        "args": {
+            "qtype": "manual_human",
+            "sensors": "Folder Name Search with RegEx Match{dirname=Program Files,regex=.*}"
+        }
+    },
+    "ask_manual_human_question_params_multiple": {
+        "method": "ask",
+        "args": {
+            "qtype": "manual_human",
+            "sensors": [
+                "Folder Name Search with RegEx Match{dirname=Program Files,regex=.*}",
+                "Computer Name"
+            ]
+        }
+    },
+    "ask_manual_human_question_multiple_selector": {
+        "method": "ask",
+        "args": {
+            "qtype": "manual_human",
+            "sensors": ["name:Computer Name", "name:Installed Applications"]
+        }
+    },
+    "ask_manual_human_question_paramsandfilter": {
+        "method": "ask",
+        "args": {
+            "qtype": "manual_human",
+            "sensors": "Folder Name Search with RegEx Match{dirname=Program Files,regex=.*}, that contains .*"
+        }
+    },
+    "ask_manual_human_question_paramsandfilterandoptions": {
+        "method": "ask",
+        "args": {
+            "qtype": "manual_human",
+            "sensors": "Folder Name Search with RegEx Match{dirname=Program Files,regex=.*}, that is .*, opt:max_data_age:3600"
+        }
+    },
+    "ask_manual_human_question_options": {
+        "method": "ask",
+        "args": {
+            "qtype": "manual_human",
+            "sensors": "Operating System, opt:match_all_values, opt:ignore_case, opt:max_data_age:3600"
+        }
+    },
+    "ask_manual_human_question_filter": {
+        "method": "ask",
+        "args": {
+            "qtype": "manual_human",
+            "sensors": "Operating System, that contains Windows"
+        }
+    },
+    "ask_manual_human_question_filterandoptions": {
+        "method": "ask",
+        "args": {
+            "qtype": "manual_human",
+            "sensors": "Operating System, that contains Windows, opt:max_data_age:3600, opt:value_type:string"
+        }
+    },
+    "ask_manual_human_question_complex": {
+        "method": "ask",
+        "args": {
+            "qtype": "manual_human",
+            "sensors": [
+                "Computer Name",
+                "Folder Name Search with RegEx Match{dirname=Program Files,regex=.*, invalidparam=test}, that is .*, opt:max_data_age:3600"
+            ],
+            "question_filters": [
+                "Operating System, that contains Windows",
+                "Operating System, that does not contain Windows"
+            ],
+            "question_options": ["ignore_case", "or"]
+        }
+    },
+    "ask_manual_question_sensor_complex": {
+        "method": "ask",
+        "args": {
+            "qtype": "manual",
+            "sensor_defs": [
+                "Computer Name",
+                {
+                    "name": "Folder Name Search with RegEx Match",
+                    "params": {"dirname": "Program Files"},
+                    "filter": {
+                        "operator": "RegexMatch",
+                        "not_flag": 0,
+                        "value": ".*"
+                    },
+                    "options": {
+                        "max_age_seconds": 3600,
+                        "ignore_case_flag": 0,
+                        "value_type": "string"
+                    }
+                }
+            ],
+            "question_filter_defs": [
+                {
+                    "name": "Operating System",
+                    "filter": {
+                        "operator": "RegexMatch",
+                        "not_flag": 0,
+                        "value": ".*Windows.*"
+                    }
+                }
+            ],
+            "question_option_defs": {
+                "max_age_seconds": 3600,
+                "ignore_case_flag": 0,
+                "and_flag": 0
+            }
+        }
+    }
+}

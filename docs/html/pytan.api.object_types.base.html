@@ -1,0 +1,238 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pytan.api.object_types.base module &mdash; PyTan 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PyTan 1.0.0 documentation" href="index.html" />
+    <link rel="up" title="pytan.api.object_types package" href="pytan.api.object_types.html" />
+    <link rel="next" title="pytan.api.object_types.cache_filter module" href="pytan.api.object_types.cache_filter.html" />
+    <link rel="prev" title="pytan.api.object_types.audit_data module" href="pytan.api.object_types.audit_data.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pytan.api.object_types.cache_filter.html" title="pytan.api.object_types.cache_filter module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pytan.api.object_types.audit_data.html" title="pytan.api.object_types.audit_data module"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">PyTan 1.0.0 documentation</a> &raquo;</li>
+          <li><a href="pytan.html" >pytan package</a> &raquo;</li>
+          <li><a href="pytan.api.html" >pytan.api package</a> &raquo;</li>
+          <li><a href="pytan.api.object_types.html" accesskey="U">pytan.api.object_types package</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pytan.api.object_types.base">
+<span id="pytan-api-object-types-base-module"></span><h1>pytan.api.object_types.base module<a class="headerlink" href="#module-pytan.api.object_types.base" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pytan.api.object_types.base.BaseType">
+<em class="property">class </em><code class="descclassname">pytan.api.object_types.base.</code><code class="descname">BaseType</code><span class="sig-paren">(</span><em>simple_properties</em>, <em>complex_properties</em>, <em>list_properties</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/api/object_types/base.html#BaseType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.api.object_types.base.BaseType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="pytan.api.object_types.base.BaseType.append">
+<code class="descname">append</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/api/object_types/base.html#BaseType.append"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.api.object_types.base.BaseType.append" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allow adding to list.</p>
+<p>Only supported on types that have a single property
+that is in list_properties</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.api.object_types.base.BaseType.explode_json">
+<code class="descname">explode_json</code><span class="sig-paren">(</span><em>val</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/api/object_types/base.html#BaseType.explode_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.api.object_types.base.BaseType.explode_json" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pytan.api.object_types.base.BaseType.flatten_jsonable">
+<code class="descname">flatten_jsonable</code><span class="sig-paren">(</span><em>val</em>, <em>prefix</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/api/object_types/base.html#BaseType.flatten_jsonable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.api.object_types.base.BaseType.flatten_jsonable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="pytan.api.object_types.base.BaseType.fromSOAPBody">
+<em class="property">classmethod </em><code class="descname">fromSOAPBody</code><span class="sig-paren">(</span><em>body</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/api/object_types/base.html#BaseType.fromSOAPBody"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.api.object_types.base.BaseType.fromSOAPBody" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse body (text) and produce Python tanium objects.</p>
+<p>This method assumes a single result_object, which
+may be a list or a single object.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pytan.api.object_types.base.BaseType.fromSOAPElement">
+<em class="property">classmethod </em><code class="descname">fromSOAPElement</code><span class="sig-paren">(</span><em>el</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/api/object_types/base.html#BaseType.fromSOAPElement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.api.object_types.base.BaseType.fromSOAPElement" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="pytan.api.object_types.base.BaseType.from_jsonable">
+<em class="property">static </em><code class="descname">from_jsonable</code><span class="sig-paren">(</span><em>jsonable</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/api/object_types/base.html#BaseType.from_jsonable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.api.object_types.base.BaseType.from_jsonable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inverse of to_jsonable, with explode_json_string_values=False.</p>
+<p>This can be used to import objects from serialized JSON. This JSON
+should come from BaseType.to_jsonable(explode_json_string_values=False,
+include+type=True)</p>
+<p>Example:
+with open(&#8216;question_list.json&#8217;) as fd:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>questions = json.loads(fd.read())</dt>
+<dd># is a list of serialized questions</dd>
+</dl>
+<p>question_objects = BaseType.from_jsonable(questions)
+# will return a list of api.Question</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.api.object_types.base.BaseType.toSOAPBody">
+<code class="descname">toSOAPBody</code><span class="sig-paren">(</span><em>minimal=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/api/object_types/base.html#BaseType.toSOAPBody"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.api.object_types.base.BaseType.toSOAPBody" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pytan.api.object_types.base.BaseType.toSOAPElement">
+<code class="descname">toSOAPElement</code><span class="sig-paren">(</span><em>minimal=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/api/object_types/base.html#BaseType.toSOAPElement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.api.object_types.base.BaseType.toSOAPElement" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pytan.api.object_types.base.BaseType.to_flat_dict">
+<code class="descname">to_flat_dict</code><span class="sig-paren">(</span><em>prefix=''</em>, <em>explode_json_string_values=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/api/object_types/base.html#BaseType.to_flat_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.api.object_types.base.BaseType.to_flat_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert the object to a dict, flattening any lists or nested types</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.api.object_types.base.BaseType.to_flat_dict_explode_json">
+<code class="descname">to_flat_dict_explode_json</code><span class="sig-paren">(</span><em>val</em>, <em>prefix=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/api/object_types/base.html#BaseType.to_flat_dict_explode_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.api.object_types.base.BaseType.to_flat_dict_explode_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>see if the value is json. If so, flatten it out into a dict</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pytan.api.object_types.base.BaseType.to_json">
+<em class="property">static </em><code class="descname">to_json</code><span class="sig-paren">(</span><em>jsonable</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/api/object_types/base.html#BaseType.to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.api.object_types.base.BaseType.to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to a json string.</p>
+<p>jsonable can be a single BaseType instance of a list
+of BaseType</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.api.object_types.base.BaseType.to_jsonable">
+<code class="descname">to_jsonable</code><span class="sig-paren">(</span><em>explode_json_string_values=False</em>, <em>include_type=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/api/object_types/base.html#BaseType.to_jsonable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.api.object_types.base.BaseType.to_jsonable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="pytan.api.object_types.base.BaseType.write_csv">
+<em class="property">static </em><code class="descname">write_csv</code><span class="sig-paren">(</span><em>fd</em>, <em>val</em>, <em>explode_json_string_values=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/api/object_types/base.html#BaseType.write_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.api.object_types.base.BaseType.write_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write &#8216;val&#8217; to CSV. val can be a BaseType instance or a list of
+BaseType</p>
+<p>This does a two-pass, calling to_flat_dict for each object, then
+finding the union of all headers,
+then writing out the value of each column for each object
+sorted by header name</p>
+<p>explode_json_string_values attempts to see if any of the str values
+are parseable by json.loads, and if so treat each property as a column
+value</p>
+<p>fd is a file-like object</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="pytan.api.object_types.base.IncorrectTypeException">
+<em class="property">exception </em><code class="descclassname">pytan.api.object_types.base.</code><code class="descname">IncorrectTypeException</code><span class="sig-paren">(</span><em>property</em>, <em>expected</em>, <em>actual</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/api/object_types/base.html#IncorrectTypeException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.api.object_types.base.IncorrectTypeException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></p>
+<p>Raised when a property is not of the expected type</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pytan.api.object_types.audit_data.html"
+                        title="previous chapter">pytan.api.object_types.audit_data module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pytan.api.object_types.cache_filter.html"
+                        title="next chapter">pytan.api.object_types.cache_filter module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pytan.api.object_types.base.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pytan.api.object_types.cache_filter.html" title="pytan.api.object_types.cache_filter module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pytan.api.object_types.audit_data.html" title="pytan.api.object_types.audit_data module"
+             >previous</a> |</li>
+        <li><a href="index.html">PyTan 1.0.0 documentation</a> &raquo;</li>
+          <li><a href="pytan.html" >pytan package</a> &raquo;</li>
+          <li><a href="pytan.api.html" >pytan.api package</a> &raquo;</li>
+          <li><a href="pytan.api.object_types.html" >pytan.api.object_types package</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Jim Olsen.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+    </div>
+  </body>
+</html>

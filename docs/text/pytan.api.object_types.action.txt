@@ -1,0 +1,7 @@
+
+pytan.api.object_types.action module
+************************************
+
+class class pytan.api.object_types.action.Action
+
+   Bases: "pytan.api.object_types.base.BaseType"

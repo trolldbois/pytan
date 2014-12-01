@@ -1,0 +1,7 @@
+
+pytan.api.object_types.computer_group_list module
+*************************************************
+
+class class pytan.api.object_types.computer_group_list.ComputerGroupList
+
+   Bases: "pytan.api.object_types.base.BaseType"

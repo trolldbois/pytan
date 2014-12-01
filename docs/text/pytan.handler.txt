@@ -1,0 +1,410 @@
+
+pytan.handler module
+********************
+
+PyTan: A wrapper around Tanium's SOAP API in Python
+
+Like saran wrap. But not.
+
+This requires Python 2.7
+
+class class pytan.handler.Handler(username, password, host, port='444', loglevel=0, debugformat=False, **kwargs)
+
+   Bases: "object"
+
+   Creates a connection to a Tanium SOAP Server on host:port
+
+   Parameters:
+      * **username** (*str*) -- **required**, username to connect
+        with
+
+      * **password** (*str*) -- **required**, password to connect
+        with
+
+      * **host** (*str*) -- **required**, host to connect to
+
+      * **port** (*int*) -- **optional**, port to connect to
+
+      * **loglevel** (*int*) -- **optional**, verbosity level
+
+      * **debugformat** (*bool*) -- **optional**, enable debugging
+        log format
+
+   Note: * port 444 is the default SOAP port
+
+
+     * port 443 forwards /soap/ URLs to the SOAP port
+
+     * Use port 444 if you have direct access to it
+
+   ask(**kwargs)
+
+      Ask a type of question and get the results back
+
+      Parameters:
+         **qtype** (*str*) -- **required**, type of question to ask:
+         saved_question, manual, or manual_human
+
+      Returns:
+         result of asked question
+
+      Return type:
+         dict
+
+      See also: constants.Q_OBJ_MAP maps qtype to a method in
+        Handler()
+
+   ask_manual(get_results=True, **kwargs)
+
+      Ask a manual question and get the results back
+
+         param sensor_defs:
+            sensor definition
+
+         type sensor_defs:
+            str, dict, list
+
+         param name:
+            **optional**, name of saved question
+
+         type name:
+            str, list
+
+         return:
+            result of saved question
+
+         rtype:
+            dict
+
+         Note: * if a string is supplied for sensor_defs, it must be
+           a
+
+             sensor name
+
+           * example of dict for sensor_defs:
+
+         >>``<<{
+            'name': 'Sensor1', 'filter': {
+
+               'operator': 'RegexMatch', 'not_flag': 0, 'value': '.*'
+
+            }, 'params': {'key': 'value'}, 'options': {'and_flag': 1}
+
+         }``
+            * example of dict for question_filter_defs: {
+
+                 'operator': 'RegexMatch', 'not_flag': 0, 'value':
+                 '.*'
+
+              }
+
+      Options:
+         * sensor_defs: string or dict or list of strings or dicts *
+           if a dictionary is supplied, it should be constructed as
+           follows:
+
+         * question_filter_defs: dictionary or list of dictionaries,
+           optional * filters to apply to every sensor in the question
+
+         * question_option_defs: dictionary, optional * question
+           options to apply to question filters
+
+         * get_results: boolean, optional * supply False to just ask
+           the question and not wait for the results
+
+   ask_manual_human(**kwargs)
+
+      Parses a set of strings into python objects usable by
+      ask_manual()
+
+      Options:
+         * sensors: string or list of strings, required * each
+           string must describe a sensor * each sensor string can
+           describe a filter, parameters, and/or options
+
+         * question_filters: string or list of strings, optional *
+           each string must describe a question filter
+
+         * question_options: string or list of strings, optional *
+           each string must describe a question filter option
+
+         * get_results: boolean, optional * supply False to just ask
+           the question and not wait for the results
+
+   ask_saved(**kwargs)
+
+      Ask a saved question and get the results back
+
+      Parameters:
+         * **id** (*int, list*) -- **optional**, id of saved
+           question to ask
+
+         * **name** (*str, list*) -- **optional**, name of saved
+           question
+
+      Returns:
+         result of saved question
+
+      Return type:
+         dict
+
+      Note: id or name must be supplied
+
+   create_from_json(obj, json_file)
+
+      Creates a new object using the SOAP api from a json file
+
+      Options:
+         * obj: string, required, type of object contained in the
+           json_file
+
+         * json_file: string, required, path to JSON file that
+           describes an API object
+
+   create_group(groupname, filters=[], filter_options=[])
+
+      Create a group object
+
+      Options:
+         * groupname: string, required, name of group to create
+
+         * filters: string or list of strings, optional * each
+           string must describe a filter for this group
+
+         * filter_options: string or list of strings, optional *
+           each string must describe a filter option for this group
+
+   create_package(name, command, display_name='', file_urls=[], command_timeout_seconds=600, expire_seconds=600, parameters_json_file='', verify_filters=[], verify_filter_options=[], verify_expire_seconds=600)
+
+      Create a package object
+
+      Options:
+         * name: string, required, name of package to create
+
+         * command: string, required, command to execute
+
+         * display_name: string, optional, display name of package
+           to create
+
+         * file_urls: list of strings, optional * each file_url must
+           be a string * can optionally define download_seconds by
+           using SECONDS::URL * can optionally define file name by
+           using FILENAME||URL * can combine optionals by using
+           SECONDS::FILENAME||URL
+
+         * command_timeout_seconds: int, optional, time for command
+           in seconds
+
+         * parameters_json_file: string, optional * path to json
+           file describing parameters for package
+
+         * expire_seconds: int, optional, time for package in
+           seconds
+
+         * verify_filters: string or list of strings, optional *
+           each string must describe a filter to be used to verify the
+           package
+
+         * verify_filter_options: string or list of strings,
+           optional * each string must describe a verify filter option
+
+         * verify_expire_seconds: int, optional, time for verify
+           expiration in seconds
+
+   create_sensor()
+
+      Create a sensor object, not currently supported
+
+   create_user(username, rolename=[], roleid=[], properties=[])
+
+      Create a user object
+
+      Options:
+         * username: string, required, name of user to create
+
+         * rolename: string or list of strings, optional
+
+         * roleid: int or list of ints, optional
+
+         * properties: list of lists, optional * each list must be a
+           2 item list * item 1 being a property name * item 2 being a
+           property value
+
+   create_whitelisted_url(url, regex=False, download_seconds=86400, properties=[])
+
+      Create a whitelisted url object
+
+      Options:
+         * url: string, required, text of new url
+
+         * regex: boolean, optional, is url a regex pattern?
+
+         * download_seconds: int, optional, how often to re-download
+           URL
+
+         * properties: list of lists, optional * each list must be a
+           2 item list * item 1 being a property name * item 2 being a
+           property value
+
+   delete(obj, **kwargs)
+
+      Delete an object
+
+      Options:
+         * obj: string, required, type of object to delete
+
+         * id/name/hash: int or string, at least one required *
+           constants.GET_OBJ_MAP describes the object type mapping to
+           search keys
+
+   deploy_action(run=False, get_results=True, **kwargs)
+
+      Deploy an action and get the results back
+
+      Options:
+         * package_def: dictionary, required * dictionary that
+           describes a pacakge
+
+              * id or name: string, required, id or name of package
+
+              * params: dictionary, optional, key/value pairs of
+                parameters for package
+
+         * action_filter_defs: string or dict or list of strings or
+           dicts * if a string is supplied, it must be a sensor name *
+           if a dictionary is supplied, it should be constructed as
+           follows:
+
+              * id, name, or hash: string, required, id, name, or
+                hash of sensor
+
+              * filters: dictionary, optional, filter to apply to
+                this sensor
+
+         * action_option_defs: dictionary, optional * options to
+           apply to action filters
+
+         * start_seconds_from_now: int, optional
+
+         * expire_seconds: int, optional
+
+         * run: boolean, optional * supply True to actually deploy
+           the action * by default the pre-action question will be run
+           and the results saved
+
+         * get_results: boolean, optional * supply False to just ask
+           the question and not wait for the results
+
+   deploy_action_asker(action_id, passed_count=0)
+
+      Checks the results of a deploy action job and waits for
+      completion
+
+      Options:
+         * action_id: int, required, id of deploy action job
+
+         * passed_count: int, optional, number of servers that must
+           be completed
+
+   deploy_action_human(**kwargs)
+
+      Deploy an action and get the results back
+
+      Options:
+         * package: string, required * each string must describe a
+           package * each package string can describe parameters
+
+         * action_filters: string or list of strings, optional *
+           each string must describe a sensor and a filter
+
+         * action_options: string or list of strings, optional *
+           each string must describe an action filter option
+
+         * start_seconds_from_now: int, optional
+
+         * expire_seconds: int, optional
+
+         * run: boolean, optional * supply True to actually deploy
+           the action * by default the pre-action question will be run
+           and the results saved
+
+         * get_results: boolean, optional * supply False to just ask
+           the question and not wait for the results
+
+   export_obj(obj, export_format, **kwargs)
+
+      Exports a python API object to a given export format
+
+      Options:
+         * obj: python object, required, python API object to export
+
+         * export_format: string, required, format to export obj as
+
+   export_to_report_file(obj, export_format, **kwargs)
+
+      Exports a python API object to a file
+
+      Options:
+         * obj: python object, required, python API object to export
+
+         * export_format: string, required, format to export obj as
+
+         * report_file: string, optional, filename to save report as
+
+         * report_dir: string, optional, directory to save report to
+
+         * prefix: string, optional, prefix to add to report_file
+
+         * postfix: string, optional, postfix to add to report_file
+
+   get(obj, **kwargs)
+
+      Get an object
+
+      Options:
+         * obj: string, required, type of object to get
+
+         * id/name/hash: int or string, at least one required *
+           constants.GET_OBJ_MAP describes the object type mapping to
+           search keys
+
+   get_all(obj, **kwargs)
+
+      Get all objects of a type
+
+      Options:
+         * obj: string, required, type of object to get
+
+   get_result_data(obj, aggregate=False, **kwargs)
+
+      Get the result data for a python API object
+
+      Options:
+         * obj: python object, required, python API object get
+           result data for
+
+         * aggregate: boolean, optional, get all data or just the
+           aggregate data
+
+   get_result_info(obj, **kwargs)
+
+      Get the result info for a python API object
+
+      Options:
+         * obj: python object, required, python API object get
+           result data for
+
+   load_api_from_json(json_file)
+
+      Opens a json file and parses it into an python object
+
+      Options:
+         * json_file: string, required, path to JSON file that
+           describes an API object
+
+   stop_action(id, **kwargs)
+
+      Stop an action
+
+      Options:
+         * id: int, required, id of action to stop

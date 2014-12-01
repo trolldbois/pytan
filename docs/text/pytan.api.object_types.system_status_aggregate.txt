@@ -1,0 +1,7 @@
+
+pytan.api.object_types.system_status_aggregate module
+*****************************************************
+
+class class pytan.api.object_types.system_status_aggregate.SystemStatusAggregate
+
+   Bases: "pytan.api.object_types.base.BaseType"

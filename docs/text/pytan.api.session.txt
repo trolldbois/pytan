@@ -1,0 +1,77 @@
+
+pytan.api.session module
+************************
+
+Session handler for Tanium API
+
+exception exception pytan.api.session.AuthorizationError
+
+   Bases: "exceptions.Exception"
+
+exception exception pytan.api.session.BadResponseError
+
+   Bases: "exceptions.Exception"
+
+class class pytan.api.session.DynamicFormatter
+
+   Bases: "string.Formatter"
+
+   get_value(key, args, kwargs)
+
+exception exception pytan.api.session.HttpError
+
+   Bases: "exceptions.Exception"
+
+class class pytan.api.session.Session(server, port=443)
+
+   Bases: "object"
+
+   ADD_OBJECT = 'AddObject'
+
+   AUTH_RES = '/auth'
+
+   DELETE_OBJECT = 'DeleteObject'
+
+   FORMATTER(format_string, *args, **kwargs)
+
+   GET_OBJECT = 'GetObject'
+
+   GET_RESULT_DATA = 'GetResultData'
+
+   GET_RESULT_INFO = 'GetResultInfo'
+
+   INFO_RES = '/info.json'
+
+   REQUEST_BODY = u'<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">\n<SOAP-ENV:Body>\n  <typens:tanium_soap_request xmlns:typens="urn:TaniumSOAP">\n    <session>{0}</session>\n    <command>{1}</command>\n    <object_list>\n      {2}\n    </object_list>\n    <options>\n      <flags>{flags}</flags>\n      <hide_errors_flag>{hide_errors_flag}</hide_errors_flag>\n      <include_answer_times_flag>{include_answer_times_flag}</include_answer_times_flag>\n      <row_counts_only_flag>{row_counts_only_flag}</row_counts_only_flag>\n      <aggregate_over_time_flag>{aggregate_over_time_flag}</aggregate_over_time_flag>\n      <most_recent_flag>{most_recent_flag}</most_recent_flag>\n      <include_hashes_flag>{include_hashes_flag}</include_hashes_flag>\n      <hide_no_results_flag>{hide_no_results_flag}</hide_no_results_flag>\n      <use_user_context_flag>{use_user_context_flag}</use_user_context_flag>\n      <script_data>{script_data}</script_data>\n      <return_lists_flag>{return_lists_flag}</return_lists_flag>\n      <return_cdata_flag>{return_cdata_flag}</return_cdata_flag>\n      <pct_done_limit>{pct_done_limit}</pct_done_limit>\n      <context_id>{context_id}</context_id>\n      <sample_frequency>{sample_frequency}</sample_frequency>\n      <sample_start>{sample_start}</sample_start>\n      <sample_count>{sample_count}</sample_count>\n      <suppress_scripts>{suppress_scripts}</suppress_scripts>\n      <suppress_object_list>{suppress_object_list}</suppress_object_list>\n      <row_start>{row_start}</row_start>\n      <row_count>{row_count}</row_count>\n      <sort_order>{sort_order}</sort_order>\n      <filter_string>{filter_string}</filter_string>\n      <filter_not_flag>{filter_not_flag}</filter_not_flag>\n      <recent_result_buckets>{recent_result_buckets}</recent_result_buckets>\n      <cache_id>{cache_id}</cache_id>\n      <cache_expiration>{cache_expiration}</cache_expiration>\n      <cache_sort_fields>{cache_sort_fields}</cache_sort_fields>\n      <include_user_details>{include_user_details}</include_user_details>\n      <include_hidden_flag>{include_hidden_flag}</include_hidden_flag>\n      <use_error_objects>{use_error_objects}</use_error_objects>\n      <use_json>{use_json}</use_json>\n      <json_pretty_print>{json_pretty_print}</json_pretty_print>\n      <cache_filters/>\n    </options>\n  </typens:tanium_soap_request>\n</SOAP-ENV:Body>\n</SOAP-ENV:Envelope>\n'
+
+   SOAP_PORT = 444
+
+   SOAP_RES = '/soap'
+
+   UPDATE_OBJECT = 'UpdateObject'
+
+   add(obj, **kwargs)
+
+   authenticate(username=None, password=None)
+
+   delete(obj, **kwargs)
+
+   find(object_type, **kwargs)
+
+   getResultData(obj, **kwargs)
+
+   getResultInfo(obj, **kwargs)
+
+   get_server_info()
+
+   is_auth
+
+   save(obj, **kwargs)
+
+   server_version
+
+   session_id
+
+pytan.api.session.http_post(host, port, url, body=None, headers=None, timeout=5)
+
+pytan.api.session.load_file(filename)

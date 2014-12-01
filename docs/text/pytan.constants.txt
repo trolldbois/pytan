@@ -1,0 +1,5 @@
+
+pytan.constants module
+**********************
+
+Constant variables

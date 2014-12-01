@@ -1,0 +1,9 @@
+
+pytan.api.object_types.column_set module
+****************************************
+
+class class pytan.api.object_types.column_set.ColumnSet
+
+   Bases: "object"
+
+   classmethod fromSOAPElement(el)

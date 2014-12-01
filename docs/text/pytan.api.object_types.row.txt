@@ -1,0 +1,13 @@
+
+pytan.api.object_types.row module
+*********************************
+
+class class pytan.api.object_types.row.Row(columns)
+
+   Bases: "object"
+
+   A row in a result set.
+
+   Values are stored in column order, also accessible by key using []
+
+   classmethod fromSOAPElement(el, columns)

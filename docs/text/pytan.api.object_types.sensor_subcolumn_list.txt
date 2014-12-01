@@ -1,0 +1,7 @@
+
+pytan.api.object_types.sensor_subcolumn_list module
+***************************************************
+
+class class pytan.api.object_types.sensor_subcolumn_list.SensorSubcolumnList
+
+   Bases: "pytan.api.object_types.base.BaseType"

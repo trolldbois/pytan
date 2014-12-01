@@ -4,7 +4,7 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 '''Ask a saved question and save the results as a report format'''
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
-__version__ = '0.1'
+__version__ = '0.8.0'
 
 import os
 import sys
@@ -13,57 +13,50 @@ sys.dont_write_bytecode = True
 my_file = os.path.abspath(__file__)
 my_dir = os.path.dirname(my_file)
 parent_dir = os.path.dirname(my_dir)
-lib_dir = os.path.join(parent_dir, 'lib')
-path_adds = [lib_dir]
+path_adds = [parent_dir]
 
 for aa in path_adds:
     if aa not in sys.path:
         sys.path.append(aa)
 
-import customparser
-import SoapWrap
-import SoapUtil
+import pytan
+from pytan import utils
 
-SoapUtil.version_check(__version__)
-parent_parser = customparser.setup_parser(__doc__)
-parser = customparser.CustomParser(
-    description=__doc__,
-    parents=[parent_parser],
-)
-parser = customparser.setup_report_parser(parser)
-parser = customparser.setup_question_report_parser(parser)
-parser = customparser.setup_report_sort_parser(parser)
-ask_question_group = parser.add_argument_group('Ask Saved Question Options')
-ask_question_group.add_argument(
-    '--query',
-    required=True,
-    action='store',
-    dest='query',
-    help='Saved question to ask - can prepend with id:, name:, '
-    ' or hash: - name: will be prepended by default',
-)
+
+def process_handler_args(parser, all_args):
+    handler_grp_names = ['Handler Authentication', 'Handler Options']
+    handler_opts = utils.get_grp_opts(parser, handler_grp_names)
+    handler_args = {k: all_args.pop(k) for k in handler_opts}
+
+    h = pytan.Handler(**handler_args)
+    print str(h)
+    return h
+
+utils.version_check(__version__)
+parser = utils.setup_ask_saved_argparser(__doc__)
+parser = utils.add_ask_report_argparser(parser)
+
 args = parser.parse_args()
-swargs = args.__dict__
+all_args = args.__dict__
 
-# put our query args into their own dict and remove them from swargs
-qgrp_names = ['Ask Saved Question Options']
-qgrp_opts = customparser.get_grp_opts(parser, qgrp_names)
-qgrp_args = {k: swargs.pop(k) for k in qgrp_opts}
+if args.id:
+    q_args = {'id': args.id}
+elif args.name:
+    q_args = {'name': args.name}
+else:
+    parser.error("Must supply --id or --name")
 
-# put our transform args into their own dict and remove them from swargs
-tgrp_names = [
-    'Report Options',
-    'Question Report Options',
-    'Report Sort Options',
-]
-tgrp_opts = customparser.get_grp_opts(parser, tgrp_names)
-tgrp_args = {k: swargs.pop(k) for k in tgrp_opts if k in swargs}
+handler = process_handler_args(parser, all_args)
 
-sw = SoapWrap.SoapWrap(**swargs)
-print str(sw)
+print "++ Asking saved question: {}".format(args.id or args.name)
+ret = handler.ask(qtype='saved', **q_args)
+print "++ Saved Question {!r} ID: {!r}".format(
+    ret['question_object'].query_text, ret['question_object'].id
+)
 
-print "++ Asking saved question: ", SoapUtil.json.dumps(qgrp_args)
-response = sw.ask_saved_question(**qgrp_args)
-print "++ Received Response: ", str(response)
-
-SoapUtil.write_object(sw, response, tgrp_args)
+report_file, result = handler.export_to_report_file(
+    obj=ret['question_results'],
+    **all_args
+)
+m = "Report file {!r} written with {} bytes".format
+print(m(report_file, len(result)))

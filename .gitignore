@@ -1,3 +1,9 @@
 *.pyc
 TEST_OUT/
 .idea/
+api.*/
+*.sublime-workspace
+
+pytan.sublime-workspace
+
+die*.csv

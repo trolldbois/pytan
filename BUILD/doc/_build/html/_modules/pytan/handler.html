@@ -1,0 +1,1511 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pytan.handler &mdash; PyTan 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="PyTan 1.0.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">PyTan 1.0.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pytan.handler</h1><div class="highlight"><pre>
+<span class="c"># -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-</span>
+<span class="c"># ex: set tabstop=4</span>
+<span class="c"># Please do not change the two lines above. See PEP 8, PEP 263.</span>
+<span class="sd">&quot;&quot;&quot;PyTan: A wrapper around Tanium&#39;s SOAP API in Python</span>
+
+<span class="sd">Like saran wrap. But not.</span>
+
+<span class="sd">This requires Python 2.7</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="c"># disable python from creating .pyc files everywhere</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">dont_write_bytecode</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">utils</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">constants</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">api</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">HandlerError</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">RunFalse</span>
+
+<span class="n">mylog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;handler&quot;</span><span class="p">)</span>
+<span class="n">actionlog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;action_progress&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Handler"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler">[docs]</a><span class="k">class</span> <span class="nc">Handler</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Creates a connection to a Tanium SOAP Server on host:port</span>
+
+<span class="sd">    :param username: **required**, username to connect with</span>
+<span class="sd">    :type username: str</span>
+<span class="sd">    :param password: **required**, password to connect with</span>
+<span class="sd">    :type password: str</span>
+<span class="sd">    :param host: **required**, host to connect to</span>
+<span class="sd">    :type host: str</span>
+<span class="sd">    :param port: **optional**, port to connect to</span>
+<span class="sd">    :type port: int</span>
+<span class="sd">    :param loglevel: **optional**, verbosity level</span>
+<span class="sd">    :type loglevel: int</span>
+<span class="sd">    :param debugformat: **optional**, enable debugging log format</span>
+<span class="sd">    :type debugformat: bool</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">      * port 444 is the default SOAP port</span>
+<span class="sd">      * port 443 forwards /soap/ URLs to the SOAP port</span>
+<span class="sd">      * Use port 444 if you have direct access to it</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="s">&quot;444&quot;</span><span class="p">,</span> <span class="n">loglevel</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                 <span class="n">debugformat</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Handler</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+
+        <span class="c"># setup the console logging handler</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">setup_console_logging</span><span class="p">()</span>
+        <span class="c"># create all the loggers and set their levels based on loglevel</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">set_log_levels</span><span class="p">(</span><span class="n">loglevel</span><span class="p">)</span>
+        <span class="c"># change the format of console logging handler if need be</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">change_console_format</span><span class="p">(</span><span class="n">debugformat</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">loglevel</span> <span class="o">=</span> <span class="n">loglevel</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">username</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">HandlerError</span><span class="p">(</span><span class="s">&quot;Must supply username!&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">password</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">HandlerError</span><span class="p">(</span><span class="s">&quot;Must supply password!&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">host</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">HandlerError</span><span class="p">(</span><span class="s">&quot;Must supply host!&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">port</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">HandlerError</span><span class="p">(</span><span class="s">&quot;Must supply port!&quot;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">port</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">port</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">HandlerError</span><span class="p">(</span><span class="s">&quot;port must be an integer!&quot;</span><span class="p">)</span>
+
+        <span class="n">utils</span><span class="o">.</span><span class="n">test_app_port</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">authenticate</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">str_tpl</span> <span class="o">=</span> <span class="s">&quot;Handler for {}&quot;</span><span class="o">.</span><span class="n">format</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">str_tpl</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span>
+
+<div class="viewcode-block" id="Handler.ask"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.ask">[docs]</a>    <span class="k">def</span> <span class="nf">ask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Ask a type of question and get the results back</span>
+
+<span class="sd">        :param qtype: **required**, type of question to ask: saved_question,</span>
+<span class="sd">            manual, or manual_human</span>
+<span class="sd">        :type qtype: str</span>
+<span class="sd">        :return: result of asked question</span>
+<span class="sd">        :rtype: dict</span>
+
+<span class="sd">        .. seealso:: constants.Q_OBJ_MAP maps qtype to a method in Handler()</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">qtype</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;qtype&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">qtype</span><span class="p">:</span>
+            <span class="n">err</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s">&quot;Must supply question type as &#39;qtype&#39;! Valid choices: {}&quot;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">format</span>
+            <span class="k">raise</span> <span class="n">HandlerError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="s">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">Q_OBJ_MAP</span><span class="p">)))</span>
+        <span class="n">q_obj_map</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_q_obj_map</span><span class="p">(</span><span class="n">qtype</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;qtype&#39;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q_obj_map</span><span class="p">[</span><span class="s">&#39;handler&#39;</span><span class="p">])(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+</div>
+<div class="viewcode-block" id="Handler.ask_saved"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.ask_saved">[docs]</a>    <span class="k">def</span> <span class="nf">ask_saved</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Ask a saved question and get the results back</span>
+
+<span class="sd">        :param id: **optional**, id of saved question to ask</span>
+<span class="sd">        :type id: int, list</span>
+<span class="sd">        :param name: **optional**, name of saved question</span>
+<span class="sd">        :type name: str, list</span>
+<span class="sd">        :return: result of saved question</span>
+<span class="sd">        :rtype: dict</span>
+
+<span class="sd">        .. note:: id or name must be supplied</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c"># get the saved_question object the user passed in</span>
+        <span class="n">q_objs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;saved_question&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">q_objs</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">err</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s">&quot;Multiple saved questions returned, can only ask one &quot;</span>
+                <span class="s">&quot;saved question!</span><span class="se">\n</span><span class="s">Args: {}</span><span class="se">\n</span><span class="s">Returned saved questions:</span><span class="se">\n\t</span><span class="s">{}&quot;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">format</span>
+            <span class="n">q_obj_str</span> <span class="o">=</span> <span class="s">&#39;</span><span class="se">\n\t</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">q_objs</span><span class="p">])</span>
+            <span class="k">raise</span> <span class="n">HandlerError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">q_obj_str</span><span class="p">))</span>
+
+        <span class="n">q_obj</span> <span class="o">=</span> <span class="n">q_objs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c"># poll the Saved Question ID returned above to wait for results</span>
+        <span class="n">ask_kwargs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_ask_kwargs</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">asker</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">QuestionAsker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">,</span> <span class="n">q_obj</span><span class="p">,</span> <span class="o">**</span><span class="n">ask_kwargs</span><span class="p">)</span>
+        <span class="n">asker</span><span class="o">.</span><span class="n">run</span><span class="p">({</span><span class="s">&#39;ProgressChanged&#39;</span><span class="p">:</span> <span class="n">utils</span><span class="o">.</span><span class="n">question_progress</span><span class="p">})</span>
+
+        <span class="c"># get the results</span>
+        <span class="n">req_kwargs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_req_kwargs</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">getResultData</span><span class="p">(</span><span class="n">q_obj</span><span class="p">,</span> <span class="o">**</span><span class="n">req_kwargs</span><span class="p">)</span>
+
+        <span class="c"># add the sensors from this question to the ResultSet object</span>
+        <span class="c"># for reporting</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">sensors</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">sensor</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">q_obj</span><span class="o">.</span><span class="n">question</span><span class="o">.</span><span class="n">selects</span><span class="p">]</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;question_object&#39;</span><span class="p">:</span> <span class="n">q_obj</span><span class="p">,</span>
+            <span class="s">&#39;question_results&#39;</span><span class="p">:</span> <span class="n">result</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">ret</span>
+</div>
+<div class="viewcode-block" id="Handler.ask_manual"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.ask_manual">[docs]</a>    <span class="k">def</span> <span class="nf">ask_manual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">get_results</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Ask a manual question and get the results back</span>
+
+<span class="sd">        :param sensor_defs: sensor definition</span>
+<span class="sd">        :type sensor_defs: str, dict, list</span>
+<span class="sd">        :param name: **optional**, name of saved question</span>
+<span class="sd">        :type name: str, list</span>
+<span class="sd">        :return: result of saved question</span>
+<span class="sd">        :rtype: dict</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">          * if a string is supplied for sensor_defs, it must be a sensor name</span>
+<span class="sd">          * example of dict for sensor_defs:</span>
+<span class="sd">        ``{</span>
+<span class="sd">                &#39;name&#39;: &#39;Sensor1&#39;,</span>
+<span class="sd">                &#39;filter&#39;: {</span>
+<span class="sd">                    &#39;operator&#39;: &#39;RegexMatch&#39;,</span>
+<span class="sd">                    &#39;not_flag&#39;: 0,</span>
+<span class="sd">                    &#39;value&#39;: &#39;.*&#39;</span>
+<span class="sd">                },</span>
+<span class="sd">                &#39;params&#39;: {&#39;key&#39;: &#39;value&#39;},</span>
+<span class="sd">                &#39;options&#39;: {&#39;and_flag&#39;: 1}</span>
+<span class="sd">        }``</span>
+<span class="sd">          * example of dict for question_filter_defs: {</span>
+<span class="sd">                &#39;operator&#39;: &#39;RegexMatch&#39;,</span>
+<span class="sd">                &#39;not_flag&#39;: 0,</span>
+<span class="sd">                &#39;value&#39;: &#39;.*&#39;</span>
+<span class="sd">            }</span>
+
+<span class="sd">Options:</span>
+<span class="sd">  * sensor_defs: string or dict or list of strings or dicts</span>
+<span class="sd">    * if a dictionary is supplied, it should be constructed as follows:</span>
+<span class="sd">  * question_filter_defs: dictionary or list of dictionaries, optional</span>
+<span class="sd">    * filters to apply to every sensor in the question</span>
+<span class="sd">  * question_option_defs: dictionary, optional</span>
+<span class="sd">    * question options to apply to question filters</span>
+<span class="sd">  * get_results: boolean, optional</span>
+<span class="sd">    * supply False to just ask the question and not wait for the results</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="c"># get our defs from kwargs and churn them into what we want</span>
+        <span class="n">sensor_defs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">parse_defs</span><span class="p">(</span>
+            <span class="n">defname</span><span class="o">=</span><span class="s">&#39;sensor_defs&#39;</span><span class="p">,</span>
+            <span class="n">deftypes</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;list()&#39;</span><span class="p">,</span> <span class="s">&#39;str()&#39;</span><span class="p">,</span> <span class="s">&#39;dict()&#39;</span><span class="p">],</span>
+            <span class="n">strconv</span><span class="o">=</span><span class="s">&#39;name&#39;</span><span class="p">,</span>
+            <span class="n">empty_ok</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="n">q_filter_defs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">parse_defs</span><span class="p">(</span>
+            <span class="n">defname</span><span class="o">=</span><span class="s">&#39;question_filter_defs&#39;</span><span class="p">,</span>
+            <span class="n">deftypes</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;list()&#39;</span><span class="p">,</span> <span class="s">&#39;dict()&#39;</span><span class="p">],</span>
+            <span class="n">empty_ok</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="n">q_option_defs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">parse_defs</span><span class="p">(</span>
+            <span class="n">defname</span><span class="o">=</span><span class="s">&#39;question_option_defs&#39;</span><span class="p">,</span>
+            <span class="n">deftypes</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;dict()&#39;</span><span class="p">],</span>
+            <span class="n">empty_ok</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="c"># do basic validation of our defs</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">val_sensor_defs</span><span class="p">(</span><span class="n">sensor_defs</span><span class="p">)</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">val_q_filter_defs</span><span class="p">(</span><span class="n">q_filter_defs</span><span class="p">)</span>
+
+        <span class="c"># get the sensor objects that are in our defs and add them as</span>
+        <span class="c"># d[&#39;sensor_obj&#39;]</span>
+        <span class="n">sensor_defs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_sensor_defs</span><span class="p">(</span><span class="n">sensor_defs</span><span class="p">)</span>
+        <span class="n">q_filter_defs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_sensor_defs</span><span class="p">(</span><span class="n">q_filter_defs</span><span class="p">)</span>
+
+        <span class="c"># build a SelectList object from our sensor_defs</span>
+        <span class="n">selectlist_obj</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">build_selectlist_obj</span><span class="p">(</span><span class="n">sensor_defs</span><span class="p">)</span>
+
+        <span class="c"># build a Group object from our question filters/options</span>
+        <span class="n">group_obj</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">build_group_obj</span><span class="p">(</span><span class="n">q_filter_defs</span><span class="p">,</span> <span class="n">q_option_defs</span><span class="p">)</span>
+
+        <span class="c"># build a Question object from selectlist_obj and group_obj</span>
+        <span class="n">add_q_obj</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">build_manual_q</span><span class="p">(</span><span class="n">selectlist_obj</span><span class="p">,</span> <span class="n">group_obj</span><span class="p">)</span>
+
+        <span class="c"># add our Question and get a Question ID back</span>
+        <span class="n">q_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">add_q_obj</span><span class="p">)</span>
+
+        <span class="c"># refetch the full object of the question so that we have access</span>
+        <span class="c"># to everything (especially query_text)</span>
+        <span class="n">q_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;question&#39;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">q_obj</span><span class="o">.</span><span class="n">id</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">ret</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;question_object&#39;</span><span class="p">:</span> <span class="n">q_obj</span><span class="p">,</span>
+            <span class="s">&#39;question_results&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="n">get_results</span><span class="p">:</span>
+            <span class="c"># poll the Question ID returned above to wait for results</span>
+            <span class="n">ask_kwargs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_ask_kwargs</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">asker</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">QuestionAsker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">,</span> <span class="n">q_obj</span><span class="p">,</span> <span class="o">**</span><span class="n">ask_kwargs</span><span class="p">)</span>
+            <span class="n">asker</span><span class="o">.</span><span class="n">run</span><span class="p">({</span><span class="s">&#39;ProgressChanged&#39;</span><span class="p">:</span> <span class="n">utils</span><span class="o">.</span><span class="n">question_progress</span><span class="p">})</span>
+
+            <span class="c"># get the results</span>
+            <span class="n">req_kwargs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_req_kwargs</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">getResultData</span><span class="p">(</span><span class="n">q_obj</span><span class="p">,</span> <span class="o">**</span><span class="n">req_kwargs</span><span class="p">)</span>
+
+            <span class="c"># add the sensors from this question to the ResultSet object</span>
+            <span class="c"># for reporting</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">sensors</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="s">&#39;sensor_obj&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">sensor_defs</span><span class="p">]</span>
+            <span class="n">ret</span><span class="p">[</span><span class="s">&#39;question_results&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
+
+        <span class="k">return</span> <span class="n">ret</span>
+</div>
+<div class="viewcode-block" id="Handler.ask_manual_human"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.ask_manual_human">[docs]</a>    <span class="k">def</span> <span class="nf">ask_manual_human</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Parses a set of strings into python objects usable by ask_manual()</span>
+
+<span class="sd">Options:</span>
+<span class="sd">  * sensors: string or list of strings, required</span>
+<span class="sd">    * each string must describe a sensor</span>
+<span class="sd">    * each sensor string can describe a filter, parameters, and/or options</span>
+<span class="sd">  * question_filters: string or list of strings, optional</span>
+<span class="sd">    * each string must describe a question filter</span>
+<span class="sd">  * question_options: string or list of strings, optional</span>
+<span class="sd">    * each string must describe a question filter option</span>
+<span class="sd">  * get_results: boolean, optional</span>
+<span class="sd">    * supply False to just ask the question and not wait for the results</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="k">if</span> <span class="s">&#39;sensors&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">sensors</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;sensors&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sensors</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">if</span> <span class="s">&#39;question_filters&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">q_filters</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;question_filters&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">q_filters</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">if</span> <span class="s">&#39;question_options&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">q_options</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;question_options&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">q_options</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">sensor_defs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">dehumanize_sensors</span><span class="p">(</span><span class="n">sensors</span><span class="p">)</span>
+        <span class="n">q_filter_defs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">dehumanize_question_filters</span><span class="p">(</span><span class="n">q_filters</span><span class="p">)</span>
+        <span class="n">q_option_defs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">dehumanize_question_options</span><span class="p">(</span><span class="n">q_options</span><span class="p">)</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ask_manual</span><span class="p">(</span>
+            <span class="n">sensor_defs</span><span class="o">=</span><span class="n">sensor_defs</span><span class="p">,</span>
+            <span class="n">question_filter_defs</span><span class="o">=</span><span class="n">q_filter_defs</span><span class="p">,</span>
+            <span class="n">question_option_defs</span><span class="o">=</span><span class="n">q_option_defs</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+</div>
+<div class="viewcode-block" id="Handler.load_api_from_json"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.load_api_from_json">[docs]</a>    <span class="k">def</span> <span class="nf">load_api_from_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_file</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Opens a json file and parses it into an python object</span>
+
+<span class="sd">Options:</span>
+<span class="sd">  * json_file: string, required, path to JSON file that describes an API object</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">fh</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Unable to open json_file {!r}, {}&quot;</span><span class="o">.</span><span class="n">format</span>
+            <span class="k">raise</span> <span class="n">HandlerError</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">json_file</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
+
+        <span class="n">howto_m</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s">&quot;Use get_${OBJECT_TYPE}.py with --include-type and &quot;</span>
+            <span class="s">&quot;--no-explode-json to export a valid JSON file that can be used &quot;</span>
+            <span class="s">&quot;for importing&quot;</span>
+        <span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">json_dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Unable to parse json_file {!r}, {}</span><span class="se">\n</span><span class="s">{}&quot;</span><span class="o">.</span><span class="n">format</span>
+            <span class="k">raise</span> <span class="n">HandlerError</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">json_file</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">howto_m</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="s">&#39;_type&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">json_dict</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Missing &#39;_type&#39; key in JSON loaded dictionary!</span><span class="se">\n</span><span class="s">{}&quot;</span><span class="o">.</span><span class="n">format</span>
+            <span class="k">raise</span> <span class="n">HandlerError</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">howto_m</span><span class="p">))</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">BaseType</span><span class="o">.</span><span class="n">from_jsonable</span><span class="p">(</span><span class="n">json_dict</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s">&quot;Unable to parse json_file {!r} into an API {} object</span><span class="se">\n</span><span class="s">&quot;</span>
+                <span class="s">&quot;Exception from API.from_jsonable(): {}</span><span class="se">\n</span><span class="s">{}&quot;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">format</span>
+            <span class="k">raise</span> <span class="n">HandlerError</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">json_file</span><span class="p">,</span> <span class="n">json_dict</span><span class="p">[</span><span class="s">&#39;_type&#39;</span><span class="p">],</span> <span class="n">e</span><span class="p">,</span> <span class="n">howto_m</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">obj</span>
+</div>
+<div class="viewcode-block" id="Handler.create_from_json"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.create_from_json">[docs]</a>    <span class="k">def</span> <span class="nf">create_from_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">json_file</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Creates a new object using the SOAP api from a json file</span>
+
+<span class="sd">Options:</span>
+<span class="sd">  * obj: string, required, type of object contained in the json_file</span>
+<span class="sd">  * json_file: string, required, path to JSON file that describes an API object</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">obj_map</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_obj_map</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="n">create_json_ok</span> <span class="o">=</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;create_json&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">create_json_ok</span><span class="p">:</span>
+            <span class="n">json_createable</span> <span class="o">=</span> <span class="s">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span>
+                <span class="n">x</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">constants</span><span class="o">.</span><span class="n">GET_OBJ_MAP</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">y</span><span class="p">[</span><span class="s">&#39;create_json&#39;</span><span class="p">]</span>
+            <span class="p">])</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s">&quot;{} is not a json createable object! Supported objects: {}&quot;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">format</span>
+            <span class="k">raise</span> <span class="n">HandlerError</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">json_createable</span><span class="p">))</span>
+
+        <span class="n">add_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_api_from_json</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">add_obj</span><span class="p">,</span> <span class="s">&#39;_list_properties&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">):</span>
+            <span class="n">obj_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">add_obj</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">obj_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">add_obj</span><span class="p">]</span>
+
+        <span class="n">del_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="s">&#39;hash&#39;</span><span class="p">]</span>
+        <span class="p">[</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">obj_list</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">del_keys</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+        <span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">obj_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;allfix&#39;</span><span class="p">):</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;allfix&#39;</span><span class="p">])()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;all&#39;</span><span class="p">])()</span>
+
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">obj_list</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">list_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">m</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="s">&quot;Failure while importing {}: {}</span><span class="se">\n</span><span class="s">JSON Dump of object: {}&quot;</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">format</span>
+                <span class="k">raise</span> <span class="n">HandlerError</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+
+            <span class="n">list_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">list_obj</span><span class="p">)</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;New {} (ID: {}) created successfully!&quot;</span><span class="o">.</span><span class="n">format</span>
+            <span class="n">mylog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">list_obj</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">list_obj</span><span class="p">,</span> <span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="s">&#39;Unknown&#39;</span><span class="p">)))</span>
+
+            <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">list_obj</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span>
+</div>
+<div class="viewcode-block" id="Handler.create_sensor"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.create_sensor">[docs]</a>    <span class="k">def</span> <span class="nf">create_sensor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Create a sensor object, not currently supported&#39;&#39;&#39;</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s">&quot;Sensor creation not supported via PyTan as of yet, too complex</span><span class="se">\n</span><span class="s">&quot;</span>
+            <span class="s">&quot;Use create_sensor_from_json() instead!&quot;</span>
+        <span class="p">)</span>
+        <span class="k">raise</span> <span class="n">HandlerError</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Handler.create_package"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.create_package">[docs]</a>    <span class="k">def</span> <span class="nf">create_package</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">name</span><span class="p">,</span>
+            <span class="n">command</span><span class="p">,</span>
+            <span class="n">display_name</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span>
+            <span class="n">file_urls</span><span class="o">=</span><span class="p">[],</span>
+            <span class="n">command_timeout_seconds</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+            <span class="n">expire_seconds</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+            <span class="n">parameters_json_file</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span>
+            <span class="n">verify_filters</span><span class="o">=</span><span class="p">[],</span>
+            <span class="n">verify_filter_options</span><span class="o">=</span><span class="p">[],</span>
+            <span class="n">verify_expire_seconds</span><span class="o">=</span><span class="mi">600</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Create a package object</span>
+
+<span class="sd">Options:</span>
+<span class="sd">  * name: string, required, name of package to create</span>
+<span class="sd">  * command: string, required, command to execute</span>
+<span class="sd">  * display_name: string, optional, display name of package to create</span>
+<span class="sd">  * file_urls: list of strings, optional</span>
+<span class="sd">    * each file_url must be a string</span>
+<span class="sd">    * can optionally define download_seconds by using SECONDS::URL</span>
+<span class="sd">    * can optionally define file name by using FILENAME||URL</span>
+<span class="sd">    * can combine optionals by using SECONDS::FILENAME||URL</span>
+<span class="sd">  * command_timeout_seconds: int, optional, time for command in seconds</span>
+<span class="sd">  * parameters_json_file: string, optional</span>
+<span class="sd">    * path to json file describing parameters for package</span>
+<span class="sd">  * expire_seconds: int, optional, time for package in seconds</span>
+<span class="sd">  * verify_filters: string or list of strings, optional</span>
+<span class="sd">    * each string must describe a filter to be used to verify the package</span>
+<span class="sd">  * verify_filter_options: string or list of strings, optional</span>
+<span class="sd">    * each string must describe a verify filter option</span>
+<span class="sd">  * verify_expire_seconds: int, optional, time for verify expiration in seconds</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="c"># bare minimum arguments for new package: name, command</span>
+        <span class="n">add_package_obj</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">PackageSpec</span><span class="p">()</span>
+        <span class="n">add_package_obj</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="k">if</span> <span class="n">display_name</span><span class="p">:</span>
+            <span class="n">add_package_obj</span><span class="o">.</span><span class="n">display_name</span> <span class="o">=</span> <span class="n">display_name</span>
+        <span class="n">add_package_obj</span><span class="o">.</span><span class="n">command</span> <span class="o">=</span> <span class="n">command</span>
+        <span class="n">add_package_obj</span><span class="o">.</span><span class="n">command_timeout</span> <span class="o">=</span> <span class="n">command_timeout_seconds</span>
+        <span class="n">add_package_obj</span><span class="o">.</span><span class="n">expire_seconds</span> <span class="o">=</span> <span class="n">expire_seconds</span>
+
+        <span class="c"># VERIFY FILTERS</span>
+        <span class="k">if</span> <span class="n">verify_filters</span><span class="p">:</span>
+            <span class="n">verify_filter_defs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">dehumanize_question_filters</span><span class="p">(</span>
+                <span class="n">verify_filters</span>
+            <span class="p">)</span>
+            <span class="n">verify_option_defs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">dehumanize_question_options</span><span class="p">(</span>
+                <span class="n">verify_filter_options</span>
+            <span class="p">)</span>
+            <span class="n">verify_filter_defs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_sensor_defs</span><span class="p">(</span><span class="n">verify_filter_defs</span><span class="p">)</span>
+            <span class="n">add_verify_group</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">build_group_obj</span><span class="p">(</span>
+                <span class="n">verify_filter_defs</span><span class="p">,</span> <span class="n">verify_option_defs</span>
+            <span class="p">)</span>
+            <span class="n">verify_group</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">add_verify_group</span><span class="p">)</span>
+            <span class="c"># this didn&#39;t work:</span>
+            <span class="c"># add_package_obj.verify_group = verify_group</span>
+            <span class="n">add_package_obj</span><span class="o">.</span><span class="n">verify_group_id</span> <span class="o">=</span> <span class="n">verify_group</span><span class="o">.</span><span class="n">id</span>
+            <span class="n">add_package_obj</span><span class="o">.</span><span class="n">verify_expire_seconds</span> <span class="o">=</span> <span class="n">verify_expire_seconds</span>
+
+        <span class="c"># PARAMETERS</span>
+        <span class="k">if</span> <span class="n">parameters_json_file</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">pd</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">parameters_json_file</span><span class="p">))</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">m</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="s">&quot;Failed to load JSON parameter file {!r}, error {!r}!!</span><span class="se">\n</span><span class="s">&quot;</span>
+                    <span class="s">&quot;Refer to doc/example_of_all_package_parameters.json &quot;</span>
+                    <span class="s">&quot;file for examples of each parameter type&quot;</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">format</span>
+                <span class="k">raise</span> <span class="n">HandlerError</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">parameters_json_file</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">pd_params</span> <span class="o">=</span> <span class="n">pd</span><span class="p">[</span><span class="s">&#39;parameters&#39;</span><span class="p">]</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">m</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="s">&quot;JSON parameter file {!r} is missing a &#39;parameters&#39; &quot;</span>
+                    <span class="s">&quot;list!!</span><span class="se">\n</span><span class="s">&quot;</span>
+                    <span class="s">&quot;Refer to doc/example_of_all_package_parameters.json &quot;</span>
+                    <span class="s">&quot;file for examples of each parameter type&quot;</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">format</span>
+                <span class="k">raise</span> <span class="n">HandlerError</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">parameters_json_file</span><span class="p">))</span>
+
+            <span class="k">for</span> <span class="n">pd_param</span> <span class="ow">in</span> <span class="n">pd_params</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">pd_key</span> <span class="o">=</span> <span class="n">pd_param</span><span class="p">[</span><span class="s">&#39;key&#39;</span><span class="p">]</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="n">m</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="s">&quot;JSON parameter file {!r} is missing a &#39;key&#39; &quot;</span>
+                        <span class="s">&quot;in the parameter {!r}!!</span><span class="se">\n</span><span class="s">&quot;</span>
+                        <span class="s">&quot;Refer to doc/example_of_all_package_parameters.json &quot;</span>
+                        <span class="s">&quot;file for examples of each parameter type&quot;</span>
+                    <span class="p">)</span><span class="o">.</span><span class="n">format</span>
+                    <span class="k">raise</span> <span class="n">HandlerError</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">parameters_json_file</span><span class="p">,</span> <span class="n">pd_param</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">pd_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">command</span><span class="p">:</span>
+                    <span class="n">m</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="s">&quot;command {!r} is missing the parameter key &#39;{}&#39; &quot;</span>
+                        <span class="s">&quot;referenced in the JSON parameter file {!r}!!</span><span class="se">\n</span><span class="s">&quot;</span>
+                        <span class="s">&quot;Ensure all parameters are referenced in the command&quot;</span>
+                    <span class="p">)</span><span class="o">.</span><span class="n">format</span>
+                    <span class="k">raise</span> <span class="n">HandlerError</span><span class="p">(</span><span class="n">m</span><span class="p">(</span>
+                        <span class="n">command</span><span class="p">,</span> <span class="n">pd_key</span><span class="p">,</span> <span class="n">parameters_json_file</span>
+                    <span class="p">))</span>
+
+            <span class="n">add_package_obj</span><span class="o">.</span><span class="n">parameter_definition</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">pd</span><span class="p">)</span>
+
+        <span class="c"># FILES</span>
+        <span class="k">if</span> <span class="n">file_urls</span><span class="p">:</span>
+            <span class="n">filelist_obj</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">PackageFileList</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">file_url</span> <span class="ow">in</span> <span class="n">file_urls</span><span class="p">:</span>
+                <span class="c"># if :: is in file_url, split on it and use 0 as</span>
+                <span class="c"># download_seconds</span>
+                <span class="k">if</span> <span class="s">&#39;::&#39;</span> <span class="ow">in</span> <span class="n">file_url</span><span class="p">:</span>
+                    <span class="n">download_seconds</span><span class="p">,</span> <span class="n">file_url</span> <span class="o">=</span> <span class="n">file_url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;::&#39;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">download_seconds</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="c"># if || is in file_url, split on it and use 0 as file name</span>
+                <span class="c"># else wise get file name from basename of URL</span>
+                <span class="k">if</span> <span class="s">&#39;||&#39;</span> <span class="ow">in</span> <span class="n">file_url</span><span class="p">:</span>
+                    <span class="n">filename</span><span class="p">,</span> <span class="n">file_url</span> <span class="o">=</span> <span class="n">file_url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;||&#39;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">file_url</span><span class="p">)</span>
+                <span class="n">file_obj</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">PackageFile</span><span class="p">()</span>
+                <span class="n">file_obj</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">filename</span>
+                <span class="n">file_obj</span><span class="o">.</span><span class="n">source</span> <span class="o">=</span> <span class="n">file_url</span>
+                <span class="n">file_obj</span><span class="o">.</span><span class="n">download_seconds</span> <span class="o">=</span> <span class="n">download_seconds</span>
+                <span class="n">filelist_obj</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file_obj</span><span class="p">)</span>
+            <span class="n">add_package_obj</span><span class="o">.</span><span class="n">files</span> <span class="o">=</span> <span class="n">filelist_obj</span>
+
+        <span class="n">package_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">add_package_obj</span><span class="p">)</span>
+        <span class="n">package_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">package_obj</span><span class="p">)</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;New package {!r} created with ID {!r}, command: {!r}&quot;</span><span class="o">.</span><span class="n">format</span>
+        <span class="n">mylog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">package_obj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">package_obj</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">package_obj</span><span class="o">.</span><span class="n">command</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">package_obj</span>
+</div>
+<div class="viewcode-block" id="Handler.create_group"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.create_group">[docs]</a>    <span class="k">def</span> <span class="nf">create_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">groupname</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="p">[],</span> <span class="n">filter_options</span><span class="o">=</span><span class="p">[]):</span>
+        <span class="sd">&#39;&#39;&#39;Create a group object</span>
+
+<span class="sd">Options:</span>
+<span class="sd">  * groupname: string, required, name of group to create</span>
+<span class="sd">  * filters: string or list of strings, optional</span>
+<span class="sd">    * each string must describe a filter for this group</span>
+<span class="sd">  * filter_options: string or list of strings, optional</span>
+<span class="sd">    * each string must describe a filter option for this group</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="n">filter_defs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">dehumanize_question_filters</span><span class="p">(</span><span class="n">filters</span><span class="p">)</span>
+        <span class="n">filter_defs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_sensor_defs</span><span class="p">(</span><span class="n">filter_defs</span><span class="p">)</span>
+        <span class="n">option_defs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">dehumanize_question_options</span><span class="p">(</span><span class="n">filter_options</span><span class="p">)</span>
+        <span class="n">add_group_obj</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">build_group_obj</span><span class="p">(</span><span class="n">filter_defs</span><span class="p">,</span> <span class="n">option_defs</span><span class="p">)</span>
+        <span class="n">add_group_obj</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">groupname</span>
+        <span class="n">group_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">add_group_obj</span><span class="p">)</span>
+        <span class="n">group_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">group_obj</span><span class="p">)</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;New group {!r} created with ID {!r}, filter text: {!r}&quot;</span><span class="o">.</span><span class="n">format</span>
+        <span class="n">mylog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">group_obj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">group_obj</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">group_obj</span><span class="o">.</span><span class="n">text</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">group_obj</span>
+</div>
+<div class="viewcode-block" id="Handler.create_user"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.create_user">[docs]</a>    <span class="k">def</span> <span class="nf">create_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">rolename</span><span class="o">=</span><span class="p">[],</span> <span class="n">roleid</span><span class="o">=</span><span class="p">[],</span> <span class="n">properties</span><span class="o">=</span><span class="p">[]):</span>
+        <span class="sd">&#39;&#39;&#39;Create a user object</span>
+
+<span class="sd">Options:</span>
+<span class="sd">  * username: string, required, name of user to create</span>
+<span class="sd">  * rolename: string or list of strings, optional</span>
+<span class="sd">  * roleid: int or list of ints, optional</span>
+<span class="sd">  * properties: list of lists, optional</span>
+<span class="sd">    * each list must be a 2 item list</span>
+<span class="sd">    * item 1 being a property name</span>
+<span class="sd">    * item 2 being a property value</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">roleid</span> <span class="ow">or</span> <span class="n">rolename</span><span class="p">:</span>
+            <span class="n">rolelist_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;userrole&#39;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">roleid</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">rolename</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">rolelist_obj</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">RoleList</span><span class="p">()</span>
+        <span class="n">metadatalist_obj</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">build_metadatalist_obj</span><span class="p">(</span>
+            <span class="n">properties</span><span class="p">,</span> <span class="s">&#39;TConsole.User.Property&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">add_user_obj</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">User</span><span class="p">()</span>
+        <span class="n">add_user_obj</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">username</span>
+        <span class="n">add_user_obj</span><span class="o">.</span><span class="n">roles</span> <span class="o">=</span> <span class="n">rolelist_obj</span>
+        <span class="n">add_user_obj</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="n">metadatalist_obj</span>
+        <span class="n">user_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">add_user_obj</span><span class="p">)</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;New user {!r} created with ID {!r}, roles: {!r}&quot;</span><span class="o">.</span><span class="n">format</span>
+        <span class="n">mylog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span>
+            <span class="n">user_obj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">user_obj</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">rolelist_obj</span><span class="p">]</span>
+        <span class="p">))</span>
+        <span class="k">return</span> <span class="n">user_obj</span>
+</div>
+<div class="viewcode-block" id="Handler.create_whitelisted_url"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.create_whitelisted_url">[docs]</a>    <span class="k">def</span> <span class="nf">create_whitelisted_url</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">url</span><span class="p">,</span>
+            <span class="n">regex</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+            <span class="n">download_seconds</span><span class="o">=</span><span class="mi">86400</span><span class="p">,</span>
+            <span class="n">properties</span><span class="o">=</span><span class="p">[]):</span>
+        <span class="sd">&#39;&#39;&#39;Create a whitelisted url object</span>
+
+<span class="sd">Options:</span>
+<span class="sd">  * url: string, required, text of new url</span>
+<span class="sd">  * regex: boolean, optional, is url a regex pattern?</span>
+<span class="sd">  * download_seconds: int, optional, how often to re-download URL</span>
+<span class="sd">  * properties: list of lists, optional</span>
+<span class="sd">    * each list must be a 2 item list</span>
+<span class="sd">    * item 1 being a property name</span>
+<span class="sd">    * item 2 being a property value</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">regex</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="s">&#39;regex:&#39;</span> <span class="o">+</span> <span class="n">url</span>
+
+        <span class="n">metadatalist_obj</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">build_metadatalist_obj</span><span class="p">(</span>
+            <span class="n">properties</span><span class="p">,</span> <span class="s">&#39;TConsole.WhitelistedURL&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">add_url_obj</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">WhiteListedUrl</span><span class="p">()</span>
+        <span class="n">add_url_obj</span><span class="o">.</span><span class="n">url_regex</span> <span class="o">=</span> <span class="n">url</span>
+        <span class="n">add_url_obj</span><span class="o">.</span><span class="n">download_seconds</span> <span class="o">=</span> <span class="n">download_seconds</span>
+        <span class="n">add_url_obj</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="n">metadatalist_obj</span>
+        <span class="n">url_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">add_url_obj</span><span class="p">)</span>
+        <span class="n">url_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">url_obj</span><span class="p">)</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;New Whitelisted URL {!r} created with ID {!r}&quot;</span><span class="o">.</span><span class="n">format</span>
+        <span class="n">mylog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">url_obj</span><span class="o">.</span><span class="n">url_regex</span><span class="p">,</span> <span class="n">url_obj</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">url_obj</span>
+</div>
+<div class="viewcode-block" id="Handler.delete"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Delete an object</span>
+
+<span class="sd">Options:</span>
+<span class="sd">  * obj: string, required, type of object to delete</span>
+<span class="sd">  * id/name/hash: int or string, at least one required</span>
+<span class="sd">    * constants.GET_OBJ_MAP describes the object type mapping to search keys</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">obj_map</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_obj_map</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="n">delete_ok</span> <span class="o">=</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;delete&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">delete_ok</span><span class="p">:</span>
+            <span class="n">deletable</span> <span class="o">=</span> <span class="s">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span>
+                <span class="n">x</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">constants</span><span class="o">.</span><span class="n">GET_OBJ_MAP</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">y</span><span class="p">[</span><span class="s">&#39;delete&#39;</span><span class="p">]</span>
+            <span class="p">])</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{} is not a deletable object! Deletable objects: {}&quot;</span><span class="o">.</span><span class="n">format</span>
+            <span class="k">raise</span> <span class="n">HandlerError</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">deletable</span><span class="p">))</span>
+        <span class="n">objs_to_del</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">deleted_objects</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">obj_to_del</span> <span class="ow">in</span> <span class="n">objs_to_del</span><span class="p">:</span>
+            <span class="n">del_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">obj_to_del</span><span class="p">)</span>
+            <span class="n">deleted_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">del_obj</span><span class="p">)</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Deleted {!r}&quot;</span><span class="o">.</span><span class="n">format</span>
+            <span class="n">mylog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">del_obj</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="n">deleted_objects</span>
+</div>
+<div class="viewcode-block" id="Handler.deploy_action"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.deploy_action">[docs]</a>    <span class="k">def</span> <span class="nf">deploy_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">get_results</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Deploy an action and get the results back</span>
+
+<span class="sd">Options:</span>
+<span class="sd">  * package_def: dictionary, required</span>
+<span class="sd">    * dictionary that describes a pacakge</span>
+<span class="sd">      * id or name: string, required, id or name of package</span>
+<span class="sd">      * params: dictionary, optional, key/value pairs of parameters for package</span>
+<span class="sd">  * action_filter_defs: string or dict or list of strings or dicts</span>
+<span class="sd">    * if a string is supplied, it must be a sensor name</span>
+<span class="sd">    * if a dictionary is supplied, it should be constructed as follows:</span>
+<span class="sd">      * id, name, or hash: string, required, id, name, or hash of sensor</span>
+<span class="sd">      * filters: dictionary, optional, filter to apply to this sensor</span>
+<span class="sd">  * action_option_defs: dictionary, optional</span>
+<span class="sd">    * options to apply to action filters</span>
+<span class="sd">  * start_seconds_from_now: int, optional</span>
+<span class="sd">  * expire_seconds: int, optional</span>
+<span class="sd">  * run: boolean, optional</span>
+<span class="sd">    * supply True to actually deploy the action</span>
+<span class="sd">    * by default the pre-action question will be run and the results saved</span>
+<span class="sd">  * get_results: boolean, optional</span>
+<span class="sd">    * supply False to just ask the question and not wait for the results</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c"># get our defs from kwargs and churn them into what we want</span>
+        <span class="n">action_filter_defs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">parse_defs</span><span class="p">(</span>
+            <span class="n">defname</span><span class="o">=</span><span class="s">&#39;action_filter_defs&#39;</span><span class="p">,</span>
+            <span class="n">deftypes</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;list()&#39;</span><span class="p">,</span> <span class="s">&#39;str()&#39;</span><span class="p">,</span> <span class="s">&#39;dict()&#39;</span><span class="p">],</span>
+            <span class="n">strconv</span><span class="o">=</span><span class="s">&#39;name&#39;</span><span class="p">,</span>
+            <span class="n">empty_ok</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="n">action_option_defs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">parse_defs</span><span class="p">(</span>
+            <span class="n">defname</span><span class="o">=</span><span class="s">&#39;action_option_defs&#39;</span><span class="p">,</span>
+            <span class="n">deftypes</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;dict()&#39;</span><span class="p">],</span>
+            <span class="n">empty_ok</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="n">package_def</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">parse_defs</span><span class="p">(</span>
+            <span class="n">defname</span><span class="o">=</span><span class="s">&#39;package_def&#39;</span><span class="p">,</span>
+            <span class="n">deftypes</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;dict()&#39;</span><span class="p">],</span>
+            <span class="n">empty_ok</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="n">start_seconds_from_now</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_kwargs_int</span><span class="p">(</span>
+            <span class="s">&#39;start_seconds_from_now&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="n">expire_seconds</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_kwargs_int</span><span class="p">(</span><span class="s">&#39;expire_seconds&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c"># do basic validation of our defs</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">val_sensor_defs</span><span class="p">(</span><span class="n">action_filter_defs</span><span class="p">)</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">val_package_def</span><span class="p">(</span><span class="n">package_def</span><span class="p">)</span>
+
+        <span class="c"># get the objects that are in our defs and add them as</span>
+        <span class="c"># d[&#39;sensor_obj&#39;] / d[&#39;package_obj&#39;]</span>
+        <span class="n">action_filter_defs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_sensor_defs</span><span class="p">(</span><span class="n">action_filter_defs</span><span class="p">)</span>
+        <span class="n">package_def</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_package_def</span><span class="p">(</span><span class="n">package_def</span><span class="p">)</span>
+
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        ask the question that pertains to the action filter</span>
+<span class="sd">        this will be used to get a count for how many servers should be seen</span>
+<span class="sd">        in the deploy action resultdata as &#39;completed&#39;</span>
+
+<span class="sd">        We supply Computer Name and Online = True as the sensors if run is</span>
+<span class="sd">        False, then exit out after asking the question to allow the user</span>
+<span class="sd">        to verify the contents</span>
+
+<span class="sd">        If run is True we just use Online = True for the sensor</span>
+
+<span class="sd">        The action filter for the deploy action is used as the question</span>
+<span class="sd">        filter in both cases</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">run</span><span class="p">:</span>
+            <span class="n">pre_action_sensors</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;Computer Name&#39;</span><span class="p">,</span> <span class="s">&#39;Online, that = True&#39;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pre_action_sensors</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;Online, that = True&#39;</span><span class="p">]</span>
+
+        <span class="n">pre_action_sensor_defs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">dehumanize_sensors</span><span class="p">(</span><span class="n">pre_action_sensors</span><span class="p">)</span>
+        <span class="n">pre_action_result_ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ask_manual</span><span class="p">(</span>
+            <span class="n">sensor_defs</span><span class="o">=</span><span class="n">pre_action_sensor_defs</span><span class="p">,</span>
+            <span class="n">question_filter_defs</span><span class="o">=</span><span class="n">action_filter_defs</span><span class="p">,</span>
+            <span class="n">question_option_defs</span><span class="o">=</span><span class="n">action_option_defs</span><span class="p">,</span>
+            <span class="n">hide_no_results_flag</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">pre_action_result</span> <span class="o">=</span> <span class="n">pre_action_result_ret</span><span class="p">[</span><span class="s">&#39;question_results&#39;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">run</span><span class="p">:</span>
+            <span class="n">report_path</span><span class="p">,</span> <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">export_to_report_file</span><span class="p">(</span>
+                <span class="n">pre_action_result</span><span class="p">,</span> <span class="s">&#39;csv&#39;</span><span class="p">,</span>
+                <span class="n">prefix</span><span class="o">=</span><span class="s">&#39;VERIFY_BEFORE_DEPLOY_ACTION_&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+            <span class="p">)</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s">&quot;&#39;Run&#39; is not True!!</span><span class="se">\n</span><span class="s">&quot;</span>
+                <span class="s">&quot;View and verify the contents of {} (length: {} bytes)</span><span class="se">\n</span><span class="s">&quot;</span>
+                <span class="s">&quot;Re-run this deploy action with run=True after verifying&quot;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">format</span>
+            <span class="k">raise</span> <span class="n">RunFalse</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">report_path</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)))</span>
+
+        <span class="sd">&#39;&#39;&#39; note from jwk:</span>
+<span class="sd">        passed_count == the number of machines that pass the filter and</span>
+<span class="sd">        therefore the number that should take the action</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">passed_count</span> <span class="o">=</span> <span class="n">pre_action_result</span><span class="o">.</span><span class="n">passed</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s">&quot;Number of systems that match action filter (passed_count): {}&quot;</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">format</span>
+        <span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">passed_count</span><span class="p">))</span>
+
+        <span class="n">targetgroup_obj</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">build_group_obj</span><span class="p">(</span>
+            <span class="n">action_filter_defs</span><span class="p">,</span> <span class="n">action_option_defs</span>
+        <span class="p">)</span>
+
+        <span class="n">package_obj</span> <span class="o">=</span> <span class="n">package_def</span><span class="p">[</span><span class="s">&#39;package_obj&#39;</span><span class="p">]</span>
+        <span class="n">user_params</span> <span class="o">=</span> <span class="n">package_def</span><span class="p">[</span><span class="s">&#39;params&#39;</span><span class="p">]</span>
+        <span class="n">param_objlist</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">build_param_objlist</span><span class="p">(</span>
+            <span class="n">obj</span><span class="o">=</span><span class="n">package_obj</span><span class="p">,</span>
+            <span class="n">user_params</span><span class="o">=</span><span class="n">user_params</span><span class="p">,</span>
+            <span class="n">delim</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span>
+            <span class="n">derive_def</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+            <span class="n">empty_ok</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">a_package_obj</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">PackageSpec</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">param_objlist</span><span class="p">:</span>
+            <span class="n">a_package_obj</span><span class="o">.</span><span class="n">source_id</span> <span class="o">=</span> <span class="n">package_obj</span><span class="o">.</span><span class="n">id</span>
+            <span class="n">a_package_obj</span><span class="o">.</span><span class="n">parameters</span> <span class="o">=</span> <span class="n">param_objlist</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">a_package_obj</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">package_obj</span><span class="o">.</span><span class="n">name</span>
+
+        <span class="n">add_action_obj</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Action</span><span class="p">()</span>
+        <span class="n">add_action_obj</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;API Deploy {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">package_obj</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">add_action_obj</span><span class="o">.</span><span class="n">package_spec</span> <span class="o">=</span> <span class="n">a_package_obj</span>
+        <span class="n">add_action_obj</span><span class="o">.</span><span class="n">target_group</span> <span class="o">=</span> <span class="n">targetgroup_obj</span>
+        <span class="n">add_action_obj</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">seconds_from_now</span><span class="p">(</span>
+            <span class="n">start_seconds_from_now</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">expire_seconds</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">add_action_obj</span><span class="o">.</span><span class="n">expire_seconds</span> <span class="o">=</span> <span class="n">expire_seconds</span>
+
+        <span class="n">action_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">add_action_obj</span><span class="p">)</span>
+
+        <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Deploy Action Added, ID: {}&quot;</span><span class="o">.</span><span class="n">format</span>
+        <span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">action_obj</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+
+        <span class="n">action_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;action&#39;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">action_obj</span><span class="o">.</span><span class="n">id</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">ret</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;action_object&#39;</span><span class="p">:</span> <span class="n">action_obj</span><span class="p">,</span>
+            <span class="s">&#39;action_results&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;action_progress_human&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;action_progress_map&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;pre_action_question_results&#39;</span><span class="p">:</span> <span class="n">pre_action_result_ret</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="n">get_results</span><span class="p">:</span>
+            <span class="n">deploy_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">deploy_action_asker</span><span class="p">(</span>
+                <span class="n">action_obj</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">passed_count</span>
+            <span class="p">)</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">deploy_results</span><span class="p">)</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Deploy Action Completed {}&quot;</span><span class="o">.</span><span class="n">format</span>
+            <span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">seconds_from_now</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)))</span>
+
+        <span class="k">return</span> <span class="n">ret</span>
+</div>
+<div class="viewcode-block" id="Handler.deploy_action_human"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.deploy_action_human">[docs]</a>    <span class="k">def</span> <span class="nf">deploy_action_human</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Deploy an action and get the results back</span>
+
+<span class="sd">Options:</span>
+<span class="sd">  * package: string, required</span>
+<span class="sd">    * each string must describe a package</span>
+<span class="sd">    * each package string can describe parameters</span>
+<span class="sd">  * action_filters: string or list of strings, optional</span>
+<span class="sd">    * each string must describe a sensor and a filter</span>
+<span class="sd">  * action_options: string or list of strings, optional</span>
+<span class="sd">    * each string must describe an action filter option</span>
+<span class="sd">  * start_seconds_from_now: int, optional</span>
+<span class="sd">  * expire_seconds: int, optional</span>
+<span class="sd">  * run: boolean, optional</span>
+<span class="sd">    * supply True to actually deploy the action</span>
+<span class="sd">    * by default the pre-action question will be run and the results saved</span>
+<span class="sd">  * get_results: boolean, optional</span>
+<span class="sd">    * supply False to just ask the question and not wait for the results</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c"># the human string describing the sensors/filter that user wants</span>
+        <span class="c"># to deploy the action against</span>
+        <span class="k">if</span> <span class="s">&#39;action_filters&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">action_filters</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;action_filters&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">action_filters</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c"># the question options to use on the pre-action question and on the</span>
+        <span class="c"># group for the action filters</span>
+        <span class="k">if</span> <span class="s">&#39;action_options&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">action_options</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;action_options&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">action_options</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c"># name of package to deploy with params as {key=value1,key2=value2}</span>
+        <span class="k">if</span> <span class="s">&#39;package&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">package</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;package&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">package</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+
+        <span class="n">action_filter_defs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">dehumanize_sensors</span><span class="p">(</span><span class="n">action_filters</span><span class="p">)</span>
+        <span class="n">action_option_defs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">dehumanize_question_options</span><span class="p">(</span><span class="n">action_options</span><span class="p">)</span>
+        <span class="n">package_def</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">dehumanize_package</span><span class="p">(</span><span class="n">package</span><span class="p">)</span>
+
+        <span class="n">deploy_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">deploy_action</span><span class="p">(</span>
+            <span class="n">action_filter_defs</span><span class="o">=</span><span class="n">action_filter_defs</span><span class="p">,</span>
+            <span class="n">action_option_defs</span><span class="o">=</span><span class="n">action_option_defs</span><span class="p">,</span>
+            <span class="n">package_def</span><span class="o">=</span><span class="n">package_def</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">deploy_result</span>
+</div>
+<div class="viewcode-block" id="Handler.deploy_action_asker"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.deploy_action_asker">[docs]</a>    <span class="k">def</span> <span class="nf">deploy_action_asker</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action_id</span><span class="p">,</span> <span class="n">passed_count</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Checks the results of a deploy action job and waits for completion</span>
+
+<span class="sd">Options:</span>
+<span class="sd">  * action_id: int, required, id of deploy action job</span>
+<span class="sd">  * passed_count: int, optional, number of servers that must be completed</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">action_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;action&#39;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">action_id</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">ps</span> <span class="o">=</span> <span class="n">action_obj</span><span class="o">.</span><span class="n">package_spec</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        A package_spec has to have a verify_group defined on it in order</span>
+<span class="sd">        for deploy action verification to trigger. That can be only done</span>
+<span class="sd">        at package_spec create or update time</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">ps</span><span class="o">.</span><span class="n">verify_group</span> <span class="ow">or</span> <span class="n">ps</span><span class="o">.</span><span class="n">verify_group_id</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Setting up &#39;finished&#39; for verify&quot;</span>
+            <span class="n">finished_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;done&#39;</span><span class="p">,</span> <span class="s">&#39;verify_done&#39;</span><span class="p">]</span>
+            <span class="n">success_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;verify_done&#39;</span><span class="p">]</span>
+            <span class="n">running_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;running&#39;</span><span class="p">,</span> <span class="s">&#39;verify_running&#39;</span><span class="p">]</span>
+            <span class="n">failed_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;failed&#39;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Setting up &#39;finished&#39; for no_verify&quot;</span>
+            <span class="n">finished_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;done&#39;</span><span class="p">,</span> <span class="s">&#39;no_verify_done&#39;</span><span class="p">]</span>
+            <span class="n">success_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;no_verify_done&#39;</span><span class="p">]</span>
+            <span class="n">running_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;running&#39;</span><span class="p">]</span>
+            <span class="n">failed_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;failed&#39;</span><span class="p">]</span>
+
+        <span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+        <span class="n">ARS</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">ACTION_RESULT_STATUS</span>
+        <span class="n">finished_keys</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_dict_list_items</span><span class="p">(</span><span class="n">ARS</span><span class="p">,</span> <span class="n">finished_keys</span><span class="p">)</span>
+        <span class="n">success_keys</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_dict_list_items</span><span class="p">(</span><span class="n">ARS</span><span class="p">,</span> <span class="n">success_keys</span><span class="p">)</span>
+        <span class="n">running_keys</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_dict_list_items</span><span class="p">(</span><span class="n">ARS</span><span class="p">,</span> <span class="n">running_keys</span><span class="p">)</span>
+        <span class="n">failed_keys</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_dict_list_items</span><span class="p">(</span><span class="n">ARS</span><span class="p">,</span> <span class="n">failed_keys</span><span class="p">)</span>
+
+        <span class="n">passed_count_reached</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">finished</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">passed_count_reached</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">finished</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Deploy Action Asker loop for {!r}: {}&quot;</span><span class="o">.</span><span class="n">format</span>
+            <span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">action_obj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">utils</span><span class="o">.</span><span class="n">seconds_from_now</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)))</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">passed_count_reached</span><span class="p">:</span>
+                <span class="c"># get the aggregate resultdata</span>
+                <span class="n">rd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_result_data</span><span class="p">(</span><span class="n">action_obj</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+
+                <span class="n">current_passed</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s">&#39;Count&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">rd</span><span class="o">.</span><span class="n">rows</span><span class="p">])</span>
+                <span class="n">passed_pct</span> <span class="o">=</span> <span class="n">current_passed</span> <span class="o">*</span> <span class="p">(</span><span class="mf">100.0</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">passed_count</span><span class="p">))</span>
+
+                <span class="n">m</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="s">&quot;Deploy Action {} Current Passed: {}, Expected Passed: {}&quot;</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">format</span>
+                <span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">action_obj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">current_passed</span><span class="p">,</span> <span class="n">passed_count</span><span class="p">))</span>
+
+                <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Action Results Passed: {1:.0f}% ({0})&quot;</span><span class="o">.</span><span class="n">format</span>
+                <span class="n">actionlog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">action_obj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">passed_pct</span><span class="p">))</span>
+
+                <span class="c"># if current_passed matches passed_count, then set</span>
+                <span class="c"># passed_count_reached = True</span>
+                <span class="k">if</span> <span class="n">current_passed</span> <span class="o">&gt;=</span> <span class="n">passed_count</span><span class="p">:</span>
+                    <span class="n">passed_count_reached</span> <span class="o">=</span> <span class="bp">True</span>
+
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">passed_count_reached</span><span class="p">:</span>
+                    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="k">continue</span>
+
+            <span class="c"># if passed_count was reached (the sum of Count from all rows from</span>
+            <span class="c"># the aggregate getresultdata is the same or greater as the number</span>
+            <span class="c"># of servers that matched the pre-action question), determine</span>
+            <span class="c"># if all servers have &quot;finished&quot;</span>
+
+            <span class="c"># get the full resultdata</span>
+            <span class="n">rd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_result_data</span><span class="p">(</span><span class="n">action_obj</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+
+            <span class="c"># create a dictionary to hold action statuses and the</span>
+            <span class="c"># computer names for each action status</span>
+            <span class="n">as_map</span> <span class="o">=</span> <span class="p">{}</span>
+
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rd</span><span class="o">.</span><span class="n">rows</span><span class="p">:</span>
+                <span class="n">computer_name</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s">&#39;Computer Name&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">action_status</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s">&#39;Action Statuses&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">action_status</span> <span class="o">=</span> <span class="n">action_status</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;:&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">action_status</span> <span class="ow">in</span> <span class="n">as_map</span><span class="p">:</span>
+                    <span class="n">as_map</span><span class="p">[</span><span class="n">action_status</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">as_map</span><span class="p">[</span><span class="n">action_status</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">computer_name</span><span class="p">)</span>
+
+            <span class="n">total_count</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_dict_list_len</span><span class="p">(</span><span class="n">as_map</span><span class="p">)</span>
+            <span class="n">finished_count</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_dict_list_len</span><span class="p">(</span><span class="n">as_map</span><span class="p">,</span> <span class="n">finished_keys</span><span class="p">)</span>
+            <span class="n">success_count</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_dict_list_len</span><span class="p">(</span><span class="n">as_map</span><span class="p">,</span> <span class="n">success_keys</span><span class="p">)</span>
+            <span class="n">running_count</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_dict_list_len</span><span class="p">(</span><span class="n">as_map</span><span class="p">,</span> <span class="n">running_keys</span><span class="p">)</span>
+            <span class="n">failed_count</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_dict_list_len</span><span class="p">(</span><span class="n">as_map</span><span class="p">,</span> <span class="n">failed_keys</span><span class="p">)</span>
+            <span class="n">unknown_count</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_dict_list_len</span><span class="p">(</span><span class="n">as_map</span><span class="p">,</span> <span class="n">ARS</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+
+            <span class="n">finished_pct</span> <span class="o">=</span> <span class="n">finished_count</span> <span class="o">*</span> <span class="p">(</span><span class="mf">100.0</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">passed_count</span><span class="p">))</span>
+
+            <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Action Results Completed: {1:.0f}% ({0})&quot;</span><span class="o">.</span><span class="n">format</span>
+            <span class="n">actionlog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">action_obj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">finished_pct</span><span class="p">))</span>
+
+            <span class="n">progress</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s">&quot;{} Result Counts:</span><span class="se">\n</span><span class="s">&quot;</span>
+                <span class="s">&quot;</span><span class="se">\t</span><span class="s">Running Count: {}</span><span class="se">\n</span><span class="s">&quot;</span>
+                <span class="s">&quot;</span><span class="se">\t</span><span class="s">Success Count: {}</span><span class="se">\n</span><span class="s">&quot;</span>
+                <span class="s">&quot;</span><span class="se">\t</span><span class="s">Failed Count: {}</span><span class="se">\n</span><span class="s">&quot;</span>
+                <span class="s">&quot;</span><span class="se">\t</span><span class="s">Unknown Count: {}</span><span class="se">\n</span><span class="s">&quot;</span>
+                <span class="s">&quot;</span><span class="se">\t</span><span class="s">Finished Count: {}</span><span class="se">\n</span><span class="s">&quot;</span>
+                <span class="s">&quot;</span><span class="se">\t</span><span class="s">Total Count: {}</span><span class="se">\n</span><span class="s">&quot;</span>
+                <span class="s">&quot;</span><span class="se">\t</span><span class="s">Finished Count must equal: {}&quot;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">action_obj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="n">running_count</span><span class="p">,</span>
+                <span class="n">success_count</span><span class="p">,</span>
+                <span class="n">failed_count</span><span class="p">,</span>
+                <span class="n">unknown_count</span><span class="p">,</span>
+                <span class="n">finished_count</span><span class="p">,</span>
+                <span class="n">total_count</span><span class="p">,</span>
+                <span class="n">passed_count</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">finished_count</span> <span class="o">&gt;=</span> <span class="n">passed_count</span><span class="p">:</span>
+                <span class="n">actionlog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">progress</span><span class="p">)</span>
+                <span class="n">finished</span> <span class="o">=</span> <span class="bp">True</span>
+                <span class="k">break</span>
+
+            <span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">progress</span><span class="p">)</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">ret</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;action_object&#39;</span><span class="p">:</span> <span class="n">action_obj</span><span class="p">,</span>
+            <span class="s">&#39;action_results&#39;</span><span class="p">:</span> <span class="n">rd</span><span class="p">,</span>
+            <span class="s">&#39;action_progress_human&#39;</span><span class="p">:</span> <span class="n">progress</span><span class="p">,</span>
+            <span class="s">&#39;action_progress_map&#39;</span><span class="p">:</span> <span class="n">as_map</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">ret</span>
+</div>
+<div class="viewcode-block" id="Handler.export_obj"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.export_obj">[docs]</a>    <span class="k">def</span> <span class="nf">export_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">export_format</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Exports a python API object to a given export format</span>
+
+<span class="sd">Options:</span>
+<span class="sd">  * obj: python object, required, python API object to export</span>
+<span class="sd">  * export_format: string, required, format to export obj as</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">objtype</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">objclassname</span> <span class="o">=</span> <span class="n">objtype</span><span class="o">.</span><span class="n">__name__</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">objclassname</span> <span class="o">=</span> <span class="s">&#39;Unknown&#39;</span>
+
+        <span class="n">export_maps</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">EXPORT_MAPS</span>
+
+        <span class="c"># build a list of supported object types</span>
+        <span class="n">supp_types</span> <span class="o">=</span> <span class="s">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">export_maps</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+        <span class="c"># see if supplied obj is a supported object type</span>
+        <span class="n">type_match</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">export_maps</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span>
+        <span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">type_match</span><span class="p">:</span>
+            <span class="n">err</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s">&quot;{} not a supported object to export, must be one of: {}&quot;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">format</span>
+            <span class="k">raise</span> <span class="n">HandlerError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="n">objtype</span><span class="p">,</span> <span class="n">supp_types</span><span class="p">))</span>
+
+        <span class="c"># get the export formats for this obj type</span>
+        <span class="n">export_formats</span> <span class="o">=</span> <span class="n">export_maps</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">type_match</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">export_format</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">export_formats</span><span class="p">:</span>
+            <span class="n">err</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s">&quot;{!r} not a supported export format for {}, must be one of: {}&quot;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">export_format</span><span class="p">,</span> <span class="n">objclassname</span><span class="p">,</span> <span class="s">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">export_formats</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="n">HandlerError</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+
+        <span class="c"># perform validation on optional kwargs, if they exist</span>
+        <span class="n">opt_keys</span> <span class="o">=</span> <span class="n">export_formats</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">export_format</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">for</span> <span class="n">opt_key</span> <span class="ow">in</span> <span class="n">opt_keys</span><span class="p">:</span>
+            <span class="n">check_args</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">opt_key</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="o">+</span> <span class="p">{</span><span class="s">&#39;d&#39;</span><span class="p">:</span> <span class="n">kwargs</span><span class="p">}</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+            <span class="n">utils</span><span class="o">.</span><span class="n">check_dictkey</span><span class="p">(</span><span class="o">**</span><span class="n">check_args</span><span class="p">)</span>
+
+        <span class="c"># filter out the kwargs that are specific to this obj type and</span>
+        <span class="c"># format type</span>
+        <span class="n">format_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">iteritems</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">[</span><span class="n">a</span><span class="p">[</span><span class="s">&#39;key&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">opt_keys</span><span class="p">]</span>
+        <span class="p">}</span>
+
+        <span class="c"># run the handler that is specific to this objtype, if it exists</span>
+        <span class="n">class_method_str</span> <span class="o">=</span> <span class="s">&#39;_export_class_&#39;</span> <span class="o">+</span> <span class="n">type_match</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">class_handler</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">class_method_str</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">class_handler</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">class_handler</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">export_format</span><span class="p">,</span> <span class="o">**</span><span class="n">format_kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">err</span> <span class="o">=</span> <span class="s">&quot;{!r} not supported by Handler!&quot;</span><span class="o">.</span><span class="n">format</span>
+            <span class="k">raise</span> <span class="n">HandlerError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="n">objclassname</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">result</span>
+</div>
+<div class="viewcode-block" id="Handler.export_to_report_file"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.export_to_report_file">[docs]</a>    <span class="k">def</span> <span class="nf">export_to_report_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">export_format</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Exports a python API object to a file</span>
+
+<span class="sd">Options:</span>
+<span class="sd">  * obj: python object, required, python API object to export</span>
+<span class="sd">  * export_format: string, required, format to export obj as</span>
+<span class="sd">  * report_file: string, optional, filename to save report as</span>
+<span class="sd">  * report_dir: string, optional, directory to save report to</span>
+<span class="sd">  * prefix: string, optional, prefix to add to report_file</span>
+<span class="sd">  * postfix: string, optional, postfix to add to report_file</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">report_file</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;report_file&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">report_file</span><span class="p">:</span>
+            <span class="n">report_file</span> <span class="o">=</span> <span class="s">&quot;{}_{}.{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_now</span><span class="p">(),</span> <span class="n">export_format</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;No report file name supplied, generated name: {!r}&quot;</span><span class="o">.</span><span class="n">format</span>
+            <span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">report_file</span><span class="p">))</span>
+
+        <span class="c"># try to get report_dir from the report_file</span>
+        <span class="n">report_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">report_file</span><span class="p">)</span>
+
+        <span class="c"># try to get report_dir from kwargs</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">report_dir</span><span class="p">:</span>
+            <span class="n">report_dir</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;report_dir&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+
+        <span class="c"># just use current working dir</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">report_dir</span><span class="p">:</span>
+            <span class="n">report_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+
+        <span class="c"># make report_dir if it doesnt exist</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">report_dir</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">report_dir</span><span class="p">)</span>
+
+        <span class="c"># remove any path from report_file</span>
+        <span class="n">report_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">report_file</span><span class="p">)</span>
+
+        <span class="c"># if prefix/postfix, add to report_file</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;prefix&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">postfix</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;postfix&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">report_file</span><span class="p">,</span> <span class="n">report_ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">report_file</span><span class="p">)</span>
+        <span class="n">report_file</span> <span class="o">=</span> <span class="s">&#39;{}{}{}{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">prefix</span><span class="p">,</span> <span class="n">report_file</span><span class="p">,</span> <span class="n">postfix</span><span class="p">,</span> <span class="n">report_ext</span>
+        <span class="p">)</span>
+
+        <span class="c"># join the report_dir and report_file to come up with report_path</span>
+        <span class="n">report_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">report_dir</span><span class="p">,</span> <span class="n">report_file</span><span class="p">)</span>
+
+        <span class="c"># get the results of exporting the object</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">export_obj</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">export_format</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">report_path</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+            <span class="n">fd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+        <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Report file {!r} written with {} bytes&quot;</span><span class="o">.</span><span class="n">format</span>
+        <span class="n">mylog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">report_path</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="n">report_path</span><span class="p">,</span> <span class="n">result</span>
+</div>
+<div class="viewcode-block" id="Handler.get"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Get an object</span>
+
+<span class="sd">Options:</span>
+<span class="sd">  * obj: string, required, type of object to get</span>
+<span class="sd">  * id/name/hash: int or string, at least one required</span>
+<span class="sd">    * constants.GET_OBJ_MAP describes the object type mapping to search keys</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">obj_map</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_obj_map</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="n">manual_search</span> <span class="o">=</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;manual&#39;</span><span class="p">]</span>
+        <span class="n">api_attrs</span> <span class="o">=</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;search&#39;</span><span class="p">]</span>
+        <span class="n">api_kwattrs</span> <span class="o">=</span> <span class="p">[</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">api_attrs</span><span class="p">]</span>
+
+        <span class="c"># if the api doesn&#39;t support filtering for this object,</span>
+        <span class="c"># or if the user didn&#39;t supply any api_kwattrs and manual_search</span>
+        <span class="c"># is true, get all objects of this type and manually filter</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">api_attrs</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">api_kwattrs</span><span class="p">)</span> <span class="ow">and</span> <span class="n">manual_search</span><span class="p">):</span>
+            <span class="n">all_objs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">return_objs</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">all_objs</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)()</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">all_objs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">k</span><span class="p">):</span>
+                    <span class="k">continue</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">utils</span><span class="o">.</span><span class="n">is_list</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+                    <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">aobj</span> <span class="ow">in</span> <span class="n">all_objs</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">aobj</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="n">return_objs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">aobj</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">return_objs</span><span class="p">:</span>
+                <span class="n">err</span> <span class="o">=</span> <span class="s">&quot;No results found searching for {} with {}!!&quot;</span><span class="o">.</span><span class="n">format</span>
+                <span class="k">raise</span> <span class="n">HandlerError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">return_objs</span>
+
+        <span class="c"># if api supports filtering for this object,</span>
+        <span class="c"># but no filters supplied in kwargs, raise</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">api_kwattrs</span><span class="p">):</span>
+            <span class="n">err</span> <span class="o">=</span> <span class="s">&quot;Getting a {} requires at least one filter: {}&quot;</span><span class="o">.</span><span class="n">format</span>
+            <span class="k">raise</span> <span class="n">HandlerError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">api_attrs</span><span class="p">))</span>
+
+        <span class="c"># if there is a multi in obj_map, that means we can pass a list</span>
+        <span class="c"># type to the api. the list will have an entry for each api_kw</span>
+        <span class="k">if</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;multi&#39;</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_multi</span><span class="p">(</span><span class="n">obj_map</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c"># if there is a single in obj_map but not multi, that means</span>
+        <span class="c"># we have to find each object individually</span>
+        <span class="k">elif</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;single&#39;</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_single</span><span class="p">(</span><span class="n">obj_map</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="n">err</span> <span class="o">=</span> <span class="s">&quot;No single or multi search defined for {}&quot;</span><span class="o">.</span><span class="n">format</span>
+        <span class="k">raise</span> <span class="n">HandlerError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="Handler.get_all"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.get_all">[docs]</a>    <span class="k">def</span> <span class="nf">get_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Get all objects of a type</span>
+
+<span class="sd">Options:</span>
+<span class="sd">  * obj: string, required, type of object to get</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">obj_map</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_obj_map</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="n">api_obj_all</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;all&#39;</span><span class="p">])()</span>
+        <span class="n">found</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find</span><span class="p">(</span><span class="n">api_obj_all</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">found</span>
+</div>
+<div class="viewcode-block" id="Handler.get_result_data"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.get_result_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_result_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">aggregate</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Get the result data for a python API object</span>
+
+<span class="sd">Options:</span>
+<span class="sd">  * obj: python object, required, python API object get result data for</span>
+<span class="sd">  * aggregate: boolean, optional, get all data or just the aggregate data</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c"># do a getresultinfo to ensure fresh data is available for</span>
+        <span class="c"># getresultdata</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_result_info</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="sd">&#39;&#39;&#39; note #1 from jwk:</span>
+<span class="sd">        For Action GetResultData:</span>
+<span class="sd">        You have to make a ResultInfo request at least once every 2 minutes.</span>
+<span class="sd">        The server gathers the result data by asking a saved question.</span>
+<span class="sd">        It won&#39;t re-issue the saved question unless you make a GetResultInfo</span>
+<span class="sd">        request. When you make a GetResultInfo request, if there is no</span>
+<span class="sd">        question that is less than 2 minutes old, the server will automatically</span>
+<span class="sd">        reissue a new question instance to make sure fresh data is available.</span>
+
+<span class="sd">        note #2 from jwk:</span>
+<span class="sd">         To get the aggregate data (without computer names),</span>
+<span class="sd">         set row_counts_only_flag = 1. To get the computer names,</span>
+<span class="sd">         use row_counts_only_flag = 0 (default).</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c"># do a getresultdata</span>
+        <span class="k">if</span> <span class="n">aggregate</span><span class="p">:</span>
+            <span class="n">rd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">getResultData</span><span class="p">(</span>
+                <span class="n">obj</span><span class="p">,</span> <span class="n">row_counts_only_flag</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">rd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">getResultData</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">rd</span>
+</div>
+<div class="viewcode-block" id="Handler.get_result_info"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.get_result_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_result_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Get the result info for a python API object</span>
+
+<span class="sd">Options:</span>
+<span class="sd">  * obj: python object, required, python API object get result data for</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">ri</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">getResultInfo</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ri</span>
+</div>
+<div class="viewcode-block" id="Handler.stop_action"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.stop_action">[docs]</a>    <span class="k">def</span> <span class="nf">stop_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Stop an action</span>
+
+<span class="sd">Options:</span>
+<span class="sd">  * id: int, required, id of action to stop</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">action_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;action&#39;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">add_action_stop_obj</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">ActionStop</span><span class="p">()</span>
+        <span class="n">add_action_stop_obj</span><span class="o">.</span><span class="n">action</span> <span class="o">=</span> <span class="n">action_obj</span>
+        <span class="n">action_stop_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">add_action_stop_obj</span><span class="p">)</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s">&#39;Action stopped successfully, ID of action stop: {}&#39;</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">format</span>
+        <span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">action_stop_obj</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">action_stop_obj</span>
+
+    <span class="c"># BEGIN PRIVATE METHODS</span></div>
+    <span class="k">def</span> <span class="nf">_find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api_object</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">req_kwargs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_req_kwargs</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">search_str</span> <span class="o">=</span> <span class="s">&#39;; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">api_object</span><span class="p">])</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">search_str</span> <span class="o">=</span> <span class="n">api_object</span>
+        <span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Searching for {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">search_str</span><span class="p">))</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">found</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">api_object</span><span class="p">,</span> <span class="o">**</span><span class="n">req_kwargs</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">mylog</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="n">err</span> <span class="o">=</span> <span class="s">&quot;No results found searching for {}!!&quot;</span><span class="o">.</span><span class="n">format</span>
+            <span class="k">raise</span> <span class="n">HandlerError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="n">search_str</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">utils</span><span class="o">.</span><span class="n">empty_obj</span><span class="p">(</span><span class="n">found</span><span class="p">):</span>
+            <span class="n">err</span> <span class="o">=</span> <span class="s">&quot;No results found searching for {}!!&quot;</span><span class="o">.</span><span class="n">format</span>
+            <span class="k">raise</span> <span class="n">HandlerError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="n">search_str</span><span class="p">))</span>
+
+        <span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Found {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">found</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">found</span>
+
+    <span class="k">def</span> <span class="nf">_get_multi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_map</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">api_attrs</span> <span class="o">=</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;search&#39;</span><span class="p">]</span>
+        <span class="n">api_kwattrs</span> <span class="o">=</span> <span class="p">[</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">api_attrs</span><span class="p">]</span>
+        <span class="n">api_kw</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">api_attrs</span><span class="p">,</span> <span class="n">api_kwattrs</span><span class="p">)}</span>
+
+        <span class="c"># create a list object to append our searches to</span>
+        <span class="n">api_obj_multi</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;multi&#39;</span><span class="p">])()</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">api_kw</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">v</span> <span class="ow">and</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;search&#39;</span><span class="p">]:</span>
+                <span class="k">continue</span>  <span class="c"># if we can&#39;t search for k, skip</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">v</span><span class="p">:</span>
+                <span class="k">continue</span>  <span class="c"># if v empty, skip</span>
+
+            <span class="k">if</span> <span class="n">utils</span><span class="o">.</span><span class="n">is_list</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="n">api_obj_single</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;single&#39;</span><span class="p">])()</span>
+                    <span class="nb">setattr</span><span class="p">(</span><span class="n">api_obj_single</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                    <span class="n">api_obj_multi</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">api_obj_single</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">api_obj_single</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;single&#39;</span><span class="p">])()</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">api_obj_single</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+                <span class="n">api_obj_multi</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">api_obj_single</span><span class="p">)</span>
+
+        <span class="c"># find the multi list object</span>
+        <span class="n">found</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find</span><span class="p">(</span><span class="n">api_obj_multi</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">found</span>
+
+    <span class="k">def</span> <span class="nf">_get_single</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_map</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">api_attrs</span> <span class="o">=</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;search&#39;</span><span class="p">]</span>
+        <span class="n">api_kwattrs</span> <span class="o">=</span> <span class="p">[</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">api_attrs</span><span class="p">]</span>
+        <span class="n">api_kw</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">api_attrs</span><span class="p">,</span> <span class="n">api_kwattrs</span><span class="p">)}</span>
+
+        <span class="c"># we create a list object to append our single item searches to</span>
+        <span class="k">if</span> <span class="n">obj_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;allfix&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">):</span>
+            <span class="n">found</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;allfix&#39;</span><span class="p">])()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">found</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;all&#39;</span><span class="p">])()</span>
+
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">api_kw</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">v</span> <span class="ow">and</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;search&#39;</span><span class="p">]:</span>
+                <span class="k">continue</span>  <span class="c"># if we can&#39;t search for k, skip</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">v</span><span class="p">:</span>
+                <span class="k">continue</span>  <span class="c"># if v empty, skip</span>
+
+            <span class="k">if</span> <span class="n">utils</span><span class="o">.</span><span class="n">is_list</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_single_find</span><span class="p">(</span><span class="n">obj_map</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+                        <span class="n">found</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_single_find</span><span class="p">(</span><span class="n">obj_map</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+                    <span class="n">found</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">found</span>
+
+    <span class="k">def</span> <span class="nf">_single_find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_map</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">found</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">api_obj_single</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;single&#39;</span><span class="p">])()</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">api_obj_single</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+        <span class="n">obj_ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find</span><span class="p">(</span><span class="n">api_obj_single</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj_ret</span><span class="p">,</span> <span class="s">&#39;_list_properties&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">obj_ret</span><span class="p">:</span>
+                <span class="n">found</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">found</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj_ret</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">found</span>
+
+    <span class="k">def</span> <span class="nf">_get_sensor_defs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">defs</span><span class="p">):</span>
+        <span class="n">s_obj_map</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">GET_OBJ_MAP</span><span class="p">[</span><span class="s">&#39;sensor&#39;</span><span class="p">]</span>
+        <span class="n">search_keys</span> <span class="o">=</span> <span class="n">s_obj_map</span><span class="p">[</span><span class="s">&#39;search&#39;</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">defs</span><span class="p">:</span>
+            <span class="n">def_search</span> <span class="o">=</span> <span class="p">{</span><span class="n">s</span><span class="p">:</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">search_keys</span> <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)}</span>
+
+            <span class="c"># get the sensor object</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="s">&#39;sensor_obj&#39;</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
+                <span class="n">d</span><span class="p">[</span><span class="s">&#39;sensor_obj&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;sensor&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">def_search</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">defs</span>
+
+    <span class="k">def</span> <span class="nf">_get_package_def</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+        <span class="n">s_obj_map</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">GET_OBJ_MAP</span><span class="p">[</span><span class="s">&#39;package&#39;</span><span class="p">]</span>
+        <span class="n">search_keys</span> <span class="o">=</span> <span class="n">s_obj_map</span><span class="p">[</span><span class="s">&#39;search&#39;</span><span class="p">]</span>
+
+        <span class="n">def_search</span> <span class="o">=</span> <span class="p">{</span><span class="n">s</span><span class="p">:</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">search_keys</span> <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)}</span>
+
+        <span class="c"># get the package object</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="s">&#39;package_obj&#39;</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
+            <span class="n">d</span><span class="p">[</span><span class="s">&#39;package_obj&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;package&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">def_search</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">d</span>
+
+    <span class="k">def</span> <span class="nf">_export_class_BaseType</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">export_format</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c"># run the handler that is specific to this export_format, if it exists</span>
+        <span class="n">format_method_str</span> <span class="o">=</span> <span class="s">&#39;_export_format_&#39;</span> <span class="o">+</span> <span class="n">export_format</span>
+        <span class="n">format_handler</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">format_method_str</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">format_handler</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">format_handler</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">err</span> <span class="o">=</span> <span class="s">&quot;{!r} not coded for in Handler!&quot;</span><span class="o">.</span><span class="n">format</span>
+            <span class="k">raise</span> <span class="n">HandlerError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="n">export_format</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">_export_class_ResultSet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">export_format</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        ensure kwargs[sensors] has all the sensors that correlate</span>
+<span class="sd">        to the what_hash of each column, but only if header_add_sensor=True</span>
+<span class="sd">        needed for: ResultSet.write_csv(header_add_sensor=True)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">header_add_sensor</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;header_add_sensor&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+        <span class="n">sensors</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;sensors&#39;</span><span class="p">,</span> <span class="p">[])</span> <span class="ow">or</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s">&#39;sensors&#39;</span><span class="p">,</span> <span class="p">[])</span>
+
+        <span class="k">if</span> <span class="n">header_add_sensor</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;sensors&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sensors</span>
+            <span class="n">sensor_hashes</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">hash</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">sensors</span><span class="p">]</span>
+            <span class="n">column_hashes</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">what_hash</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+            <span class="n">missing_hashes</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">column_hashes</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sensor_hashes</span> <span class="ow">and</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">1</span>
+            <span class="p">]</span>
+            <span class="k">if</span> <span class="n">missing_hashes</span><span class="p">:</span>
+                <span class="n">missing_sensors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;sensor&#39;</span><span class="p">,</span> <span class="nb">hash</span><span class="o">=</span><span class="n">missing_hashes</span><span class="p">)</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;sensors&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="n">missing_sensors</span><span class="p">)</span>
+
+        <span class="c"># run the handler that is specific to this export_format, if it exists</span>
+        <span class="n">format_method_str</span> <span class="o">=</span> <span class="s">&#39;_export_format_&#39;</span> <span class="o">+</span> <span class="n">export_format</span>
+        <span class="n">format_handler</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">format_method_str</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">format_handler</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">format_handler</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">err</span> <span class="o">=</span> <span class="s">&quot;{!r} not coded for in Handler!&quot;</span><span class="o">.</span><span class="n">format</span>
+            <span class="k">raise</span> <span class="n">HandlerError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="n">export_format</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">_export_format_csv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s">&#39;write_csv&#39;</span><span class="p">):</span>
+            <span class="n">err</span> <span class="o">=</span> <span class="s">&quot;{!r} has no write_csv() method!&quot;</span><span class="o">.</span><span class="n">format</span>
+            <span class="k">raise</span> <span class="n">HandlerError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s">&#39;_list_properties&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">):</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">write_csv</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">obj</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">write_csv</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">_export_format_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s">&#39;to_json&#39;</span><span class="p">):</span>
+            <span class="n">err</span> <span class="o">=</span> <span class="s">&quot;{!r} has no to_json() method!&quot;</span><span class="o">.</span><span class="n">format</span>
+            <span class="k">raise</span> <span class="n">HandlerError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">jsonable</span><span class="o">=</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">_export_format_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s">&#39;toSOAPBody&#39;</span><span class="p">):</span>
+            <span class="n">err</span> <span class="o">=</span> <span class="s">&quot;{!r} has no toSOAPBody() method!&quot;</span><span class="o">.</span><span class="n">format</span>
+            <span class="k">raise</span> <span class="n">HandlerError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">toSOAPBody</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">PyTan 1.0.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Jim Olsen.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+    </div>
+  </body>
+</html>

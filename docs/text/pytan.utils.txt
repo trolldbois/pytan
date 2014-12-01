@@ -1,0 +1,230 @@
+
+pytan.utils module
+******************
+
+Generic Utility Functions
+
+class class pytan.utils.CustomArgFormat(prog, indent_increment=2, max_help_position=24, width=None)
+
+   Bases: "argparse.ArgumentDefaultsHelpFormatter",
+   "argparse.RawDescriptionHelpFormatter"
+
+class class pytan.utils.CustomArgParse(*args, **kwargs)
+
+   Bases: "argparse.ArgumentParser"
+
+   error(message)
+
+   print_help(**kwargs)
+
+exception exception pytan.utils.DefinitionParserError
+
+   Bases: "exceptions.Exception"
+
+exception exception pytan.utils.HandlerError
+
+   Bases: "exceptions.Exception"
+
+exception exception pytan.utils.HumanParserError
+
+   Bases: "exceptions.Exception"
+
+exception exception pytan.utils.RunFalse
+
+   Bases: "exceptions.Exception"
+
+class class pytan.utils.SplitStreamHandler
+
+   Bases: "logging.Handler"
+
+   sends info and below to stdout, warning and above to stderr
+
+   emit(record)
+
+pytan.utils.add_ask_report_argparser(parser)
+
+pytan.utils.add_get_object_report_argparser(parser)
+
+pytan.utils.add_report_file_options(parser)
+
+pytan.utils.apply_options_obj(options, obj, dest)
+
+pytan.utils.build_group_obj(q_filter_defs, q_option_defs)
+
+pytan.utils.build_manual_q(selectlist_obj, group_obj)
+
+pytan.utils.build_metadatalist_obj(properties, nameprefix)
+
+pytan.utils.build_param_obj(key, val, delim='')
+
+pytan.utils.build_param_objlist(obj, user_params, delim='', derive_def=False, empty_ok=False)
+
+pytan.utils.build_selectlist_obj(sensor_defs)
+
+pytan.utils.change_console_format(debug=False)
+
+   changes the logging format to DEBUG_FORMAT or INFO_FORMAT
+
+pytan.utils.check_dictkey(d, key, valid_types, valid_list_types)
+
+pytan.utils.chk_def_key(def_dict, key, keytypes, keysubtypes=None, req=False)
+
+pytan.utils.dehumanize_package(package)
+
+pytan.utils.dehumanize_question_filters(question_filters)
+
+pytan.utils.dehumanize_question_options(question_options)
+
+pytan.utils.dehumanize_sensors(sensors, key='sensors', empty_ok=False)
+
+pytan.utils.derive_param_default(obj_param)
+
+pytan.utils.empty_obj(api_object)
+
+pytan.utils.extract_filter(s)
+
+pytan.utils.extract_options(s)
+
+pytan.utils.extract_params(s)
+
+pytan.utils.extract_selector(s)
+
+pytan.utils.get_ask_kwargs(**kwargs)
+
+pytan.utils.get_dict_list_items(d, i)
+
+pytan.utils.get_dict_list_len(d, keys=[], negate=False)
+
+pytan.utils.get_filter_obj(sensor_def)
+
+pytan.utils.get_grp_opts(parser, grp_names)
+
+pytan.utils.get_kwargs_int(key, default=None, **kwargs)
+
+pytan.utils.get_now()
+
+   return current time in human friendly format
+
+   Returns:
+      "str"
+
+pytan.utils.get_obj_map(obj)
+
+pytan.utils.get_obj_params(obj)
+
+pytan.utils.get_q_obj_map(qtype)
+
+pytan.utils.get_req_kwargs(**kwargs)
+
+pytan.utils.human_time(t, tformat='%Y_%m_%d-%H_%M_%S-%Z')
+
+   return time in human friendly format
+
+   Parameters:
+      * **t** -- either a epoch or struct_time time object
+
+      * **tformat** -- strftime format string
+
+   Returns:
+      "str"
+
+pytan.utils.is_dict(l)
+
+pytan.utils.is_list(l)
+
+pytan.utils.is_num(l)
+
+pytan.utils.is_str(l)
+
+pytan.utils.jsonify(v, indent=2, sort_keys=True)
+
+   json pretty printer
+
+pytan.utils.map_filter(filter_str)
+
+pytan.utils.map_option(opt, dest)
+
+pytan.utils.map_options(options, dest)
+
+pytan.utils.parse_defs(defname, deftypes, strconv=None, empty_ok=True, defs=None, **kwargs)
+
+pytan.utils.port_check(address, port, timeout=5)
+
+   Check if address:port can be reached within timeout
+
+   Parameters:
+      * **address** -- string of host to connect to
+
+      * **port** -- string of port to connect to
+
+      * **timeout** -- int of seconds to wait until connection fails
+
+   Returns:
+      "bool"
+
+pytan.utils.process_create_json_object_args(parser, handler, obj, all_args)
+
+pytan.utils.process_delete_object_args(parser, handler, obj, all_args)
+
+pytan.utils.process_get_object_args(parser, handler, obj, all_args)
+
+pytan.utils.question_progress(asker, pct)
+
+pytan.utils.remove_logging_handler(name)
+
+   used to remove a handler (or all handlers if name == all)
+
+pytan.utils.seconds_from_now(secs=0, tz='utc')
+
+pytan.utils.set_all_loglevels(level='DEBUG')
+
+   sets all loggers that the logging system knows about to a given
+   level
+
+pytan.utils.set_log_levels(loglevel=0)
+
+   used to set the loggers in constants.LOG_LEVEL_MAP to their
+   respective level depending on loglevel
+
+pytan.utils.setup_ask_manual_argparser(doc)
+
+pytan.utils.setup_ask_saved_argparser(doc)
+
+pytan.utils.setup_console_logging()
+
+pytan.utils.setup_create_json_object_argparser(obj, doc)
+
+pytan.utils.setup_delete_object_argparser(obj, doc)
+
+pytan.utils.setup_deploy_action_argparser(doc)
+
+pytan.utils.setup_get_object_argparser(obj, doc)
+
+pytan.utils.setup_get_result_argparser(doc)
+
+pytan.utils.setup_parser(desc, help=False)
+
+pytan.utils.setup_stop_action_argparser(doc)
+
+pytan.utils.test_app_port(host, port)
+
+   validates that the SOAP port on the SOAP host can be reached
+
+pytan.utils.val_package_def(package_def)
+
+pytan.utils.val_q_filter_defs(q_filter_defs)
+
+pytan.utils.val_sensor_defs(sensor_defs)
+
+pytan.utils.version_check(reqver)
+
+   for scripts using this API to validate the version of the API
+
+   Parameters:
+      **reqver** -- string containing version number to check against
+
+pytan.utils.xml_pretty(x)
+
+pytan.utils.xml_pretty_resultobj(x)
+
+pytan.utils.xml_pretty_resultxml(x)

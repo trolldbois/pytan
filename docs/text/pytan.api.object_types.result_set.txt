@@ -1,0 +1,25 @@
+
+pytan.api.object_types.result_set module
+****************************************
+
+class class pytan.api.object_types.result_set.ResultSet
+
+   Bases: "object"
+
+   Wrap the result of GetResultData
+
+   classmethod fromSOAPElement(el)
+
+      Deserialize a ResultInfo from a result_info SOAPElement
+
+      Assumes all properties are integer values (true today)
+
+   static to_json(jsonable, **kwargs)
+
+      Convert to a json string.
+
+      jsonable must be a ResultSet instance
+
+   to_jsonable(**kwargs)
+
+   static write_csv(fd, val, **kwargs)

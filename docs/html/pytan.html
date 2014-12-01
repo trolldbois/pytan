@@ -1,0 +1,336 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pytan package &mdash; PyTan 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PyTan 1.0.0 documentation" href="index.html" />
+    <link rel="next" title="pytan.api package" href="pytan.api.html" />
+    <link rel="prev" title="Welcome to PyTan’s documentation!" href="index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pytan.api.html" title="pytan.api package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to PyTan’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">PyTan 1.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pytan">
+<span id="pytan-package"></span><h1>pytan package<a class="headerlink" href="#module-pytan" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="pytan-description">
+<h2>PyTan Description<a class="headerlink" href="#pytan-description" title="Permalink to this headline">¶</a></h2>
+<p>A Python library that provides a simple way for programmatically interfacing
+with Tanium&#8217;s SOAP API. It is comprised of three parts:</p>
+<ul class="simple">
+<li>TaniumPy API: A set of Python objects that are automatically generated
+from the WSDL that describes the Tanium SOAP API.</li>
+<li>PyTan Handler API: An API that makes the objects exposed by TaniumPy
+easier to use.</li>
+<li>PyTan Command Line Scripts: A set of command line scripts that utilize
+the PyTan Handler API to make it easy for non-programmers to utilize the
+Tanium SOAP API to create/get/delete/ask/deploy objects.</li>
+</ul>
+</div>
+<div class="section" id="why-pytan-was-created">
+<h2>Why PyTan was created<a class="headerlink" href="#why-pytan-was-created" title="Permalink to this headline">¶</a></h2>
+<p>PyTan was created to solve for the following needs:</p>
+<ul class="simple">
+<li>Create a python library to provide an easy set of methods for
+programmatically interfacing with Tanium via the SOAP API</li>
+<li>Create a set of command line scripts utilizing the python library created
+above that handle the argument parsing, thereby providing non-python users
+with command line access to the functionality provided by the methods
+inside of the python library</li>
+<li>Provide a way to ask questions and get results via Python and/or the
+command line.</li>
+<li>Provide a way to deploy actions and get results via Python and/or the
+command line.</li>
+<li>Provide a way to export/import objects in JSON via Python and/or the
+command line.</li>
+</ul>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Windows Installation</dt>
+<dd><ul class="first last simple">
+<li>Download Python 2.7 from <a class="reference external" href="https://www.python.org/downloads/windows/">https://www.python.org/downloads/windows/</a></li>
+<li>Install Python 2.7 &#8211; if you accept the default paths it will install
+to C:Python27</li>
+<li>Copy PyTan from github to your local machine somewhere</li>
+<li>If you did not accept the default install path for Python 2.7, edit
+<code class="docutils literal"><span class="pre">pytan\winbin\CONFIG.bat</span></code> to change the <em>PYTHON</em> variable to point
+to the full path of <em>python.exe</em></li>
+</ul>
+</dd>
+<dt>OS X Installation</dt>
+<dd><ul class="first last simple">
+<li>OS X 10.8 and higher come with Python 2.7 out of the box</li>
+<li>Copy PyTan from github to your local machine somewhere</li>
+</ul>
+</dd>
+<dt>Linux Installation</dt>
+<dd><ul class="first last simple">
+<li>Ensure Python 2.7 is installed</li>
+<li>Ensure the first <em>python</em> binary in your path points to your Python 2.7
+installation</li>
+<li>Copy PyTan from github to your local machine somewhere</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="example-usage">
+<h2>Example Usage<a class="headerlink" href="#example-usage" title="Permalink to this headline">¶</a></h2>
+<p>Setup a Handler() object:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;/path/to/pytan/&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">pytan</span>
+<span class="n">handler</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">Handler</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">host</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pytan.api.html">pytan.api package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pytan.api.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pytan.api.object_types.html">pytan.api.object_types package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pytan.api.object_types.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.action.html">pytan.api.object_types.action module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.action_list.html">pytan.api.object_types.action_list module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.action_list_info.html">pytan.api.object_types.action_list_info module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.action_stop.html">pytan.api.object_types.action_stop module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.action_stop_list.html">pytan.api.object_types.action_stop_list module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.all_objects.html">pytan.api.object_types.all_objects module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.archived_question.html">pytan.api.object_types.archived_question module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.archived_question_list.html">pytan.api.object_types.archived_question_list module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.audit_data.html">pytan.api.object_types.audit_data module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.base.html">pytan.api.object_types.base module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.cache_filter.html">pytan.api.object_types.cache_filter module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.cache_filter_list.html">pytan.api.object_types.cache_filter_list module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.cache_info.html">pytan.api.object_types.cache_info module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.client_count.html">pytan.api.object_types.client_count module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.client_status.html">pytan.api.object_types.client_status module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.column.html">pytan.api.object_types.column module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.column_set.html">pytan.api.object_types.column_set module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.computer_group.html">pytan.api.object_types.computer_group module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.computer_group_list.html">pytan.api.object_types.computer_group_list module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.computer_group_spec.html">pytan.api.object_types.computer_group_spec module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.computer_spec_list.html">pytan.api.object_types.computer_spec_list module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.error_list.html">pytan.api.object_types.error_list module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.filter.html">pytan.api.object_types.filter module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.filter_list.html">pytan.api.object_types.filter_list module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.group.html">pytan.api.object_types.group module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.group_list.html">pytan.api.object_types.group_list module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.metadata_item.html">pytan.api.object_types.metadata_item module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.metadata_list.html">pytan.api.object_types.metadata_list module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.object_list.html">pytan.api.object_types.object_list module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.object_list_types.html">pytan.api.object_types.object_list_types module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.options.html">pytan.api.object_types.options module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.package_file.html">pytan.api.object_types.package_file module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.package_file_list.html">pytan.api.object_types.package_file_list module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.package_file_status.html">pytan.api.object_types.package_file_status module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.package_file_status_list.html">pytan.api.object_types.package_file_status_list module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.package_file_template.html">pytan.api.object_types.package_file_template module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.package_file_template_list.html">pytan.api.object_types.package_file_template_list module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.package_spec.html">pytan.api.object_types.package_spec module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.package_spec_list.html">pytan.api.object_types.package_spec_list module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.parameter.html">pytan.api.object_types.parameter module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.parameter_list.html">pytan.api.object_types.parameter_list module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.parse_job.html">pytan.api.object_types.parse_job module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.parse_job_list.html">pytan.api.object_types.parse_job_list module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.parse_result.html">pytan.api.object_types.parse_result module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.parse_result_group.html">pytan.api.object_types.parse_result_group module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.parse_result_group_list.html">pytan.api.object_types.parse_result_group_list module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.parse_result_list.html">pytan.api.object_types.parse_result_list module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.plugin.html">pytan.api.object_types.plugin module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.plugin_argument.html">pytan.api.object_types.plugin_argument module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.plugin_argument_list.html">pytan.api.object_types.plugin_argument_list module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.plugin_command_list.html">pytan.api.object_types.plugin_command_list module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.plugin_list.html">pytan.api.object_types.plugin_list module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.plugin_schedule.html">pytan.api.object_types.plugin_schedule module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.plugin_schedule_list.html">pytan.api.object_types.plugin_schedule_list module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.plugin_sql.html">pytan.api.object_types.plugin_sql module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.plugin_sql_column.html">pytan.api.object_types.plugin_sql_column module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.plugin_sql_result.html">pytan.api.object_types.plugin_sql_result module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.question.html">pytan.api.object_types.question module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.question_list.html">pytan.api.object_types.question_list module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.question_list_info.html">pytan.api.object_types.question_list_info module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.result_info.html">pytan.api.object_types.result_info module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.result_set.html">pytan.api.object_types.result_set module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.row.html">pytan.api.object_types.row module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.saved_action.html">pytan.api.object_types.saved_action module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.saved_action_approval.html">pytan.api.object_types.saved_action_approval module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.saved_action_list.html">pytan.api.object_types.saved_action_list module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.saved_action_policy.html">pytan.api.object_types.saved_action_policy module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.saved_action_row_id_list.html">pytan.api.object_types.saved_action_row_id_list module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.saved_question.html">pytan.api.object_types.saved_question module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.saved_question_list.html">pytan.api.object_types.saved_question_list module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.select.html">pytan.api.object_types.select module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.select_list.html">pytan.api.object_types.select_list module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.sensor.html">pytan.api.object_types.sensor module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.sensor_list.html">pytan.api.object_types.sensor_list module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.sensor_query.html">pytan.api.object_types.sensor_query module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.sensor_query_list.html">pytan.api.object_types.sensor_query_list module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.sensor_string_hints.html">pytan.api.object_types.sensor_string_hints module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.sensor_subcolumn.html">pytan.api.object_types.sensor_subcolumn module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.sensor_subcolumn_list.html">pytan.api.object_types.sensor_subcolumn_list module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.sensor_types.html">pytan.api.object_types.sensor_types module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.soap_error.html">pytan.api.object_types.soap_error module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.system_setting.html">pytan.api.object_types.system_setting module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.system_settings_list.html">pytan.api.object_types.system_settings_list module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.system_status_aggregate.html">pytan.api.object_types.system_status_aggregate module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.system_status_list.html">pytan.api.object_types.system_status_list module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.upload_file.html">pytan.api.object_types.upload_file module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.upload_file_list.html">pytan.api.object_types.upload_file_list module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.upload_file_status.html">pytan.api.object_types.upload_file_status module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.user.html">pytan.api.object_types.user module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.user_list.html">pytan.api.object_types.user_list module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.user_permissions.html">pytan.api.object_types.user_permissions module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.user_role.html">pytan.api.object_types.user_role module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.user_role_list.html">pytan.api.object_types.user_role_list module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.version_aggregate.html">pytan.api.object_types.version_aggregate module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.version_aggregate_list.html">pytan.api.object_types.version_aggregate_list module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.white_listed_url.html">pytan.api.object_types.white_listed_url module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.white_listed_url_list.html">pytan.api.object_types.white_listed_url_list module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="pytan.api.object_types.xml_error.html">pytan.api.object_types.xml_error module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.api.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pytan.api.question_asker.html">pytan.api.question_asker module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytan.api.session.html">pytan.api.session module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pytan.constants.html">pytan.constants module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pytan.handler.html">pytan.handler module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pytan.utils.html">pytan.utils module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pytan.xmltodict.html">pytan.xmltodict module</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">pytan package</a><ul>
+<li><a class="reference internal" href="#pytan-description">PyTan Description</a></li>
+<li><a class="reference internal" href="#why-pytan-was-created">Why PyTan was created</a></li>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#example-usage">Example Usage</a></li>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to PyTan&#8217;s documentation!</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pytan.api.html"
+                        title="next chapter">pytan.api package</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pytan.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pytan.api.html" title="pytan.api package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to PyTan’s documentation!"
+             >previous</a> |</li>
+        <li><a href="index.html">PyTan 1.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Jim Olsen.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+    </div>
+  </body>
+</html>
