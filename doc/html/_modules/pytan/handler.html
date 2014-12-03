@@ -67,7 +67,7 @@
 <span class="c"># -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-</span>
 <span class="c"># ex: set tabstop=4</span>
 <span class="c"># Please do not change the two lines above. See PEP 8, PEP 263.</span>
-<span class="sd">&quot;&quot;&quot;Handler: An API wrapper created to make using TaniumPy (:mod:`api`) more human friendly.</span>
+<span class="sd">&quot;&quot;&quot;Handler: An API wrapper created to make using (:mod:`taniumpy`) more human friendly.</span>
 
 <span class="sd">Handler Class</span>
 <span class="sd">-------------</span>
@@ -96,11 +96,21 @@
 <span class="kn">import</span> <span class="nn">io</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">utils</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">constants</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">api</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">HandlerError</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">RunFalse</span>
+
+<span class="n">my_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
+<span class="n">my_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">my_file</span><span class="p">)</span>
+<span class="n">parent_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">my_dir</span><span class="p">)</span>
+<span class="n">path_adds</span> <span class="o">=</span> <span class="p">[</span><span class="n">parent_dir</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">aa</span> <span class="ow">in</span> <span class="n">path_adds</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">aa</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">aa</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">taniumpy</span>
+<span class="kn">from</span> <span class="nn">pytan</span> <span class="kn">import</span> <span class="n">utils</span>
+<span class="kn">from</span> <span class="nn">pytan</span> <span class="kn">import</span> <span class="n">constants</span>
+<span class="kn">from</span> <span class="nn">pytan.utils</span> <span class="kn">import</span> <span class="n">HandlerError</span>
+<span class="kn">from</span> <span class="nn">pytan.utils</span> <span class="kn">import</span> <span class="n">RunFalse</span>
 
 <span class="n">mylog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;handler&quot;</span><span class="p">)</span>
 <span class="n">actionlog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;action_progress&quot;</span><span class="p">)</span>
@@ -158,7 +168,7 @@
             <span class="k">raise</span> <span class="n">HandlerError</span><span class="p">(</span><span class="s">&quot;port must be an integer!&quot;</span><span class="p">)</span>
 
         <span class="n">utils</span><span class="o">.</span><span class="n">test_app_port</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">authenticate</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -178,9 +188,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        result : dict, containing:</span>
 <span class="sd">            * `question_object` : one of the following depending on `qtype`</span>
-<span class="sd">                * :class:`api.object_types.question.Question`</span>
-<span class="sd">                * :class:`api.object_types.saved_question.SavedQuestion`</span>
-<span class="sd">            * `question_results` : :class:`api.object_types.result_set.ResultSet`</span>
+<span class="sd">                * :class:`taniumpy.object_types.question.Question`</span>
+<span class="sd">                * :class:`taniumpy.object_types.saved_question.SavedQuestion`</span>
+<span class="sd">            * `question_results` : :class:`taniumpy.object_types.result_set.ResultSet`</span>
 
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
@@ -210,8 +220,8 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        ret : dict, containing</span>
-<span class="sd">            * `question_object` : :class:`api.object_types.saved_question.SavedQuestion`</span>
-<span class="sd">            * `question_results` : :class:`api.object_types.result_set.ResultSet`</span>
+<span class="sd">            * `question_object` : :class:`taniumpy.object_types.saved_question.SavedQuestion`</span>
+<span class="sd">            * `question_results` : :class:`taniumpy.object_types.result_set.ResultSet`</span>
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
@@ -232,7 +242,7 @@
 
         <span class="c"># poll the Saved Question ID returned above to wait for results</span>
         <span class="n">ask_kwargs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_ask_kwargs</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="n">asker</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">QuestionAsker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">,</span> <span class="n">q_obj</span><span class="p">,</span> <span class="o">**</span><span class="n">ask_kwargs</span><span class="p">)</span>
+        <span class="n">asker</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">QuestionAsker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">,</span> <span class="n">q_obj</span><span class="p">,</span> <span class="o">**</span><span class="n">ask_kwargs</span><span class="p">)</span>
         <span class="n">asker</span><span class="o">.</span><span class="n">run</span><span class="p">({</span><span class="s">&#39;ProgressChanged&#39;</span><span class="p">:</span> <span class="n">utils</span><span class="o">.</span><span class="n">question_progress</span><span class="p">})</span>
 
         <span class="c"># get the results</span>
@@ -270,8 +280,8 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        ret : dict, containing:</span>
-<span class="sd">            * `question_object` : :class:`api.object_types.question.Question`</span>
-<span class="sd">            * `question_results` : :class:`api.object_types.result_set.ResultSet`</span>
+<span class="sd">            * `question_object` : :class:`taniumpy.object_types.question.Question`</span>
+<span class="sd">            * `question_results` : :class:`taniumpy.object_types.result_set.ResultSet`</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
@@ -359,7 +369,7 @@
         <span class="k">if</span> <span class="n">get_results</span><span class="p">:</span>
             <span class="c"># poll the Question ID returned above to wait for results</span>
             <span class="n">ask_kwargs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_ask_kwargs</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-            <span class="n">asker</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">QuestionAsker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">,</span> <span class="n">q_obj</span><span class="p">,</span> <span class="o">**</span><span class="n">ask_kwargs</span><span class="p">)</span>
+            <span class="n">asker</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">QuestionAsker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">,</span> <span class="n">q_obj</span><span class="p">,</span> <span class="o">**</span><span class="n">ask_kwargs</span><span class="p">)</span>
             <span class="n">asker</span><span class="o">.</span><span class="n">run</span><span class="p">({</span><span class="s">&#39;ProgressChanged&#39;</span><span class="p">:</span> <span class="n">utils</span><span class="o">.</span><span class="n">question_progress</span><span class="p">})</span>
 
             <span class="c"># get the results</span>
@@ -394,8 +404,8 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        result : dict, containing:</span>
-<span class="sd">            * `question_object` : :class:`api.object_types.question.Question`</span>
-<span class="sd">            * `question_results` : :class:`api.object_types.result_set.ResultSet`</span>
+<span class="sd">            * `question_object` : :class:`taniumpy.object_types.question.Question`</span>
+<span class="sd">            * `question_results` : :class:`taniumpy.object_types.result_set.ResultSet`</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
@@ -453,8 +463,8 @@
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span>
 </div>
-<div class="viewcode-block" id="Handler.load_api_from_json"><a class="viewcode-back" href="../../pytan/pytan.handler.html#pytan.handler.Handler.load_api_from_json">[docs]</a>    <span class="k">def</span> <span class="nf">load_api_from_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_file</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Opens a json file and parses it into an python object</span>
+<div class="viewcode-block" id="Handler.load_taniumpy_from_json"><a class="viewcode-back" href="../../pytan/pytan.handler.html#pytan.handler.Handler.load_taniumpy_from_json">[docs]</a>    <span class="k">def</span> <span class="nf">load_taniumpy_from_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">json_file</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Opens a json file and parses it into an taniumpy object</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -463,7 +473,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        obj : :class:`api.object_types.base.BaseType`</span>
+<span class="sd">        obj : :class:`taniumpy.object_types.base.BaseType`</span>
 <span class="sd">            TaniumPy object converted from json file</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
@@ -489,7 +499,7 @@
             <span class="k">raise</span> <span class="n">HandlerError</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">howto_m</span><span class="p">))</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">obj</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">BaseType</span><span class="o">.</span><span class="n">from_jsonable</span><span class="p">(</span><span class="n">json_dict</span><span class="p">)</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">BaseType</span><span class="o">.</span><span class="n">from_jsonable</span><span class="p">(</span><span class="n">json_dict</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">m</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="s">&quot;Unable to parse json_file {!r} into an API {} object</span><span class="se">\n</span><span class="s">&quot;</span>
@@ -510,7 +520,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        ret : :class:`api.object_types.base.BaseType`</span>
+<span class="sd">        ret : :class:`taniumpy.object_types.base.BaseType`</span>
 <span class="sd">            TaniumPy object added to Tanium SOAP Server</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">obj_map</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_obj_map</span><span class="p">(</span><span class="n">objtype</span><span class="p">)</span>
@@ -524,7 +534,7 @@
             <span class="p">)</span><span class="o">.</span><span class="n">format</span>
             <span class="k">raise</span> <span class="n">HandlerError</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">objtype</span><span class="p">,</span> <span class="n">json_createable</span><span class="p">))</span>
 
-        <span class="n">add_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_api_from_json</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
+        <span class="n">add_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_taniumpy_from_json</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">add_obj</span><span class="p">,</span> <span class="s">&#39;_list_properties&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">):</span>
             <span class="n">obj_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">add_obj</span><span class="p">]</span>
@@ -539,9 +549,9 @@
         <span class="p">]</span>
 
         <span class="k">if</span> <span class="n">obj_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;allfix&#39;</span><span class="p">):</span>
-            <span class="n">ret</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;allfix&#39;</span><span class="p">])()</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">taniumpy</span><span class="p">,</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;allfix&#39;</span><span class="p">])()</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">ret</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;all&#39;</span><span class="p">])()</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">taniumpy</span><span class="p">,</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;all&#39;</span><span class="p">])()</span>
 
         <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">obj_list</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
@@ -620,7 +630,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        package_obj : :class:`api.object_types.package_spec.PackageSpec`</span>
+<span class="sd">        package_obj : :class:`taniumpy.object_types.package_spec.PackageSpec`</span>
 <span class="sd">            TaniumPy object added to Tanium SOAP Server</span>
 
 <span class="sd">        See Also</span>
@@ -630,7 +640,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c"># bare minimum arguments for new package: name, command</span>
-        <span class="n">add_package_obj</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">PackageSpec</span><span class="p">()</span>
+        <span class="n">add_package_obj</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">PackageSpec</span><span class="p">()</span>
         <span class="n">add_package_obj</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="k">if</span> <span class="n">display_name</span><span class="p">:</span>
             <span class="n">add_package_obj</span><span class="o">.</span><span class="n">display_name</span> <span class="o">=</span> <span class="n">display_name</span>
@@ -703,7 +713,7 @@
 
         <span class="c"># FILES</span>
         <span class="k">if</span> <span class="n">file_urls</span><span class="p">:</span>
-            <span class="n">filelist_obj</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">PackageFileList</span><span class="p">()</span>
+            <span class="n">filelist_obj</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">PackageFileList</span><span class="p">()</span>
             <span class="k">for</span> <span class="n">file_url</span> <span class="ow">in</span> <span class="n">file_urls</span><span class="p">:</span>
                 <span class="c"># if :: is in file_url, split on it and use 0 as</span>
                 <span class="c"># download_seconds</span>
@@ -717,7 +727,7 @@
                     <span class="n">filename</span><span class="p">,</span> <span class="n">file_url</span> <span class="o">=</span> <span class="n">file_url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;||&#39;</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">file_url</span><span class="p">)</span>
-                <span class="n">file_obj</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">PackageFile</span><span class="p">()</span>
+                <span class="n">file_obj</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">PackageFile</span><span class="p">()</span>
                 <span class="n">file_obj</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">filename</span>
                 <span class="n">file_obj</span><span class="o">.</span><span class="n">source</span> <span class="o">=</span> <span class="n">file_url</span>
                 <span class="n">file_obj</span><span class="o">.</span><span class="n">download_seconds</span> <span class="o">=</span> <span class="n">download_seconds</span>
@@ -744,7 +754,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        group_obj : :class:`api.object_types.group.Group`</span>
+<span class="sd">        group_obj : :class:`taniumpy.object_types.group.Group`</span>
 <span class="sd">            TaniumPy object added to Tanium SOAP Server</span>
 
 <span class="sd">        See Also</span>
@@ -782,17 +792,17 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        user_obj : :class:`api.object_types.user.User`</span>
+<span class="sd">        user_obj : :class:`taniumpy.object_types.user.User`</span>
 <span class="sd">            TaniumPy object added to Tanium SOAP Server</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">roleid</span> <span class="ow">or</span> <span class="n">rolename</span><span class="p">:</span>
             <span class="n">rolelist_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;userrole&#39;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">roleid</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">rolename</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">rolelist_obj</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">RoleList</span><span class="p">()</span>
+            <span class="n">rolelist_obj</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">RoleList</span><span class="p">()</span>
         <span class="n">metadatalist_obj</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">build_metadatalist_obj</span><span class="p">(</span>
             <span class="n">properties</span><span class="p">,</span> <span class="s">&#39;TConsole.User.Property&#39;</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">add_user_obj</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">User</span><span class="p">()</span>
+        <span class="n">add_user_obj</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">User</span><span class="p">()</span>
         <span class="n">add_user_obj</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">username</span>
         <span class="n">add_user_obj</span><span class="o">.</span><span class="n">roles</span> <span class="o">=</span> <span class="n">rolelist_obj</span>
         <span class="n">add_user_obj</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="n">metadatalist_obj</span>
@@ -827,7 +837,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        url_obj : :class:`api.object_types.white_listed_url.WhiteListedUrl`</span>
+<span class="sd">        url_obj : :class:`taniumpy.object_types.white_listed_url.WhiteListedUrl`</span>
 <span class="sd">            TaniumPy object added to Tanium SOAP Server</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">regex</span><span class="p">:</span>
@@ -836,7 +846,7 @@
         <span class="n">metadatalist_obj</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">build_metadatalist_obj</span><span class="p">(</span>
             <span class="n">properties</span><span class="p">,</span> <span class="s">&#39;TConsole.WhitelistedURL&#39;</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">add_url_obj</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">WhiteListedUrl</span><span class="p">()</span>
+        <span class="n">add_url_obj</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">WhiteListedUrl</span><span class="p">()</span>
         <span class="n">add_url_obj</span><span class="o">.</span><span class="n">url_regex</span> <span class="o">=</span> <span class="n">url</span>
         <span class="n">add_url_obj</span><span class="o">.</span><span class="n">download_seconds</span> <span class="o">=</span> <span class="n">download_seconds</span>
         <span class="n">add_url_obj</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="n">metadatalist_obj</span>
@@ -909,11 +919,11 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        ret : dict, containing:</span>
-<span class="sd">            * `action_object` : :class:`api.object_types.action.Action`</span>
-<span class="sd">            * `action_results` : :class:`api.object_types.result_set.ResultSet`</span>
+<span class="sd">            * `action_object` : :class:`taniumpy.object_types.action.Action`</span>
+<span class="sd">            * `action_results` : :class:`taniumpy.object_types.result_set.ResultSet`</span>
 <span class="sd">            * `action_progress_human` : str, progress map in human form</span>
 <span class="sd">            * `action_progress_map` : dict, progress map in dictionary form</span>
-<span class="sd">            * `pre_action_question_results` : :class:`api.object_types.result_set.ResultSet`</span>
+<span class="sd">            * `pre_action_question_results` : :class:`taniumpy.object_types.result_set.ResultSet`</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
@@ -1042,14 +1052,14 @@
             <span class="n">empty_ok</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="n">a_package_obj</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">PackageSpec</span><span class="p">()</span>
+        <span class="n">a_package_obj</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">PackageSpec</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">param_objlist</span><span class="p">:</span>
             <span class="n">a_package_obj</span><span class="o">.</span><span class="n">source_id</span> <span class="o">=</span> <span class="n">package_obj</span><span class="o">.</span><span class="n">id</span>
             <span class="n">a_package_obj</span><span class="o">.</span><span class="n">parameters</span> <span class="o">=</span> <span class="n">param_objlist</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">a_package_obj</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">package_obj</span><span class="o">.</span><span class="n">name</span>
 
-        <span class="n">add_action_obj</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">Action</span><span class="p">()</span>
+        <span class="n">add_action_obj</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">Action</span><span class="p">()</span>
         <span class="n">add_action_obj</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;API Deploy {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">package_obj</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="n">add_action_obj</span><span class="o">.</span><span class="n">package_spec</span> <span class="o">=</span> <span class="n">a_package_obj</span>
         <span class="n">add_action_obj</span><span class="o">.</span><span class="n">target_group</span> <span class="o">=</span> <span class="n">targetgroup_obj</span>
@@ -1113,11 +1123,11 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        ret : dict, containing:</span>
-<span class="sd">            * `action_object` : :class:`api.object_types.action.Action`</span>
-<span class="sd">            * `action_results` : :class:`api.object_types.result_set.ResultSet`</span>
+<span class="sd">            * `action_object` : :class:`taniumpy.object_types.action.Action`</span>
+<span class="sd">            * `action_results` : :class:`taniumpy.object_types.result_set.ResultSet`</span>
 <span class="sd">            * `action_progress_human` : str, progress map in human form</span>
 <span class="sd">            * `action_progress_map` : dict, progress map in dictionary form</span>
-<span class="sd">            * `pre_action_question_results` : :class:`api.object_types.result_set.ResultSet`</span>
+<span class="sd">            * `pre_action_question_results` : :class:`taniumpy.object_types.result_set.ResultSet`</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
@@ -1183,8 +1193,8 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        ret : dict, containing:</span>
-<span class="sd">            * `action_object` : :class:`api.object_types.action.Action`</span>
-<span class="sd">            * `action_results` : :class:`api.object_types.result_set.ResultSet`</span>
+<span class="sd">            * `action_object` : :class:`taniumpy.object_types.action.Action`</span>
+<span class="sd">            * `action_results` : :class:`taniumpy.object_types.result_set.ResultSet`</span>
 <span class="sd">            * `action_progress_human` : str, progress map in human form</span>
 <span class="sd">            * `action_progress_map` : dict, progress map in dictionary form</span>
 
@@ -1323,33 +1333,33 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        obj : :class:`api.object_types.base.BaseType` or :class:`api.object_types.result_set.ResultSet`</span>
+<span class="sd">        obj : :class:`taniumpy.object_types.base.BaseType` or :class:`taniumpy.object_types.result_set.ResultSet`</span>
 <span class="sd">            TaniumPy object to export</span>
 <span class="sd">        export_format : str</span>
 <span class="sd">            the number of servers that must equate &quot;completed&quot; in order for deploy action to be recognized as completed</span>
 <span class="sd">        header_sort : list of str, bool, optional</span>
-<span class="sd">            * for `export_format` csv and `obj` types :class:`api.object_types.base.BaseType` or :class:`api.object_types.result_set.ResultSet`</span>
+<span class="sd">            * for `export_format` csv and `obj` types :class:`taniumpy.object_types.base.BaseType` or :class:`taniumpy.object_types.result_set.ResultSet`</span>
 <span class="sd">            * True: sort the headers automatically</span>
 <span class="sd">            * False: do not sort the headers at all</span>
 <span class="sd">            * list of str: sort the headers returned by priority based on provided list</span>
 <span class="sd">        header_add_sensor : bool, optional</span>
-<span class="sd">            * for `export_format` csv and `obj` type :class:`api.object_types.result_set.ResultSet`</span>
+<span class="sd">            * for `export_format` csv and `obj` type :class:`taniumpy.object_types.result_set.ResultSet`</span>
 <span class="sd">            * False: do not prefix the headers with the associated sensor name for each column</span>
 <span class="sd">            * True: prefix the headers with the associated sensor name for each column</span>
 <span class="sd">        header_add_type : bool, optional</span>
-<span class="sd">            * for `export_format` csv and `obj` type :class:`api.object_types.result_set.ResultSet`</span>
+<span class="sd">            * for `export_format` csv and `obj` type :class:`taniumpy.object_types.result_set.ResultSet`</span>
 <span class="sd">            * False: do not postfix the headers with the result type for each column</span>
 <span class="sd">            * True: postfix the headers with the result type for each column</span>
 <span class="sd">        expand_grouped_columns : bool, optional</span>
-<span class="sd">            * for `export_format` csv and `obj` type :class:`api.object_types.result_set.ResultSet`</span>
+<span class="sd">            * for `export_format` csv and `obj` type :class:`taniumpy.object_types.result_set.ResultSet`</span>
 <span class="sd">            * False: do not expand multiline row entries into their own rows</span>
 <span class="sd">            * True: expand multiline row entries into their own rows</span>
 <span class="sd">        explode_json_string_values : bool, optional</span>
-<span class="sd">            * for `export_format` json or csv and `obj` type :class:`api.object_types.base.BaseType`</span>
+<span class="sd">            * for `export_format` json or csv and `obj` type :class:`taniumpy.object_types.base.BaseType`</span>
 <span class="sd">            * False: do not explode JSON strings in object attributes into their own object attributes</span>
 <span class="sd">            * True: explode JSON strings in object attributes into their own object attributes</span>
 <span class="sd">        minimal : bool, optional</span>
-<span class="sd">            * for `export_format` xml and `obj` type :class:`api.object_types.base.BaseType`</span>
+<span class="sd">            * for `export_format` xml and `obj` type :class:`taniumpy.object_types.base.BaseType`</span>
 <span class="sd">            * False: include empty attributes in XML output</span>
 <span class="sd">            * True: do not include empty attributes in XML output</span>
 
@@ -1375,7 +1385,7 @@
 
         <span class="c"># see if supplied obj is a supported object type</span>
         <span class="n">type_match</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">export_maps</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span>
+            <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">export_maps</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">taniumpy</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span>
         <span class="p">]</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">type_match</span><span class="p">:</span>
@@ -1420,33 +1430,33 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        obj : :class:`api.object_types.base.BaseType` or :class:`api.object_types.result_set.ResultSet`</span>
+<span class="sd">        obj : :class:`taniumpy.object_types.base.BaseType` or :class:`taniumpy.object_types.result_set.ResultSet`</span>
 <span class="sd">            TaniumPy object to export</span>
 <span class="sd">        export_format : str</span>
 <span class="sd">            the number of servers that must equate &quot;completed&quot; in order for deploy action to be recognized as completed</span>
 <span class="sd">        header_sort : list of str, bool, optional</span>
-<span class="sd">            * for `export_format` csv and `obj` types :class:`api.object_types.base.BaseType` or :class:`api.object_types.result_set.ResultSet`</span>
+<span class="sd">            * for `export_format` csv and `obj` types :class:`taniumpy.object_types.base.BaseType` or :class:`taniumpy.object_types.result_set.ResultSet`</span>
 <span class="sd">            * True: sort the headers automatically</span>
 <span class="sd">            * False: do not sort the headers at all</span>
 <span class="sd">            * list of str: sort the headers returned by priority based on provided list</span>
 <span class="sd">        header_add_sensor : bool, optional</span>
-<span class="sd">            * for `export_format` csv and `obj` type :class:`api.object_types.result_set.ResultSet`</span>
+<span class="sd">            * for `export_format` csv and `obj` type :class:`taniumpy.object_types.result_set.ResultSet`</span>
 <span class="sd">            * False: do not prefix the headers with the associated sensor name for each column</span>
 <span class="sd">            * True: prefix the headers with the associated sensor name for each column</span>
 <span class="sd">        header_add_type : bool, optional</span>
-<span class="sd">            * for `export_format` csv and `obj` type :class:`api.object_types.result_set.ResultSet`</span>
+<span class="sd">            * for `export_format` csv and `obj` type :class:`taniumpy.object_types.result_set.ResultSet`</span>
 <span class="sd">            * False: do not postfix the headers with the result type for each column</span>
 <span class="sd">            * True: postfix the headers with the result type for each column</span>
 <span class="sd">        expand_grouped_columns : bool, optional</span>
-<span class="sd">            * for `export_format` csv and `obj` type :class:`api.object_types.result_set.ResultSet`</span>
+<span class="sd">            * for `export_format` csv and `obj` type :class:`taniumpy.object_types.result_set.ResultSet`</span>
 <span class="sd">            * False: do not expand multiline row entries into their own rows</span>
 <span class="sd">            * True: expand multiline row entries into their own rows</span>
 <span class="sd">        explode_json_string_values : bool, optional</span>
-<span class="sd">            * for `export_format` json or csv and `obj` type :class:`api.object_types.base.BaseType`</span>
+<span class="sd">            * for `export_format` json or csv and `obj` type :class:`taniumpy.object_types.base.BaseType`</span>
 <span class="sd">            * False: do not explode JSON strings in object attributes into their own object attributes</span>
 <span class="sd">            * True: explode JSON strings in object attributes into their own object attributes</span>
 <span class="sd">        minimal : bool, optional</span>
-<span class="sd">            * for `export_format` xml and `obj` type :class:`api.object_types.base.BaseType`</span>
+<span class="sd">            * for `export_format` xml and `obj` type :class:`taniumpy.object_types.base.BaseType`</span>
 <span class="sd">            * False: include empty attributes in XML output</span>
 <span class="sd">            * True: do not include empty attributes in XML output</span>
 <span class="sd">        report_file: str, optional</span>
@@ -1537,7 +1547,7 @@
         <span class="c"># is true, get all objects of this type and manually filter</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">api_attrs</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">api_kwattrs</span><span class="p">)</span> <span class="ow">and</span> <span class="n">manual_search</span><span class="p">):</span>
             <span class="n">all_objs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all</span><span class="p">(</span><span class="n">objtype</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-            <span class="n">return_objs</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">all_objs</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)()</span>
+            <span class="n">return_objs</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">taniumpy</span><span class="p">,</span> <span class="n">all_objs</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)()</span>
             <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">all_objs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">k</span><span class="p">):</span>
                     <span class="k">continue</span>
@@ -1559,7 +1569,7 @@
             <span class="k">raise</span> <span class="n">HandlerError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="n">objtype</span><span class="p">,</span> <span class="n">api_attrs</span><span class="p">))</span>
 
         <span class="c"># if there is a multi in obj_map, that means we can pass a list</span>
-        <span class="c"># type to the api. the list will have an entry for each api_kw</span>
+        <span class="c"># type to the taniumpy. the list will have an entry for each api_kw</span>
         <span class="k">if</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;multi&#39;</span><span class="p">]:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_multi</span><span class="p">(</span><span class="n">obj_map</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -1584,7 +1594,7 @@
 <span class="sd">        constants.GET_OBJ_MAP : maps objtype to supported &#39;search&#39; keys</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">obj_map</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_obj_map</span><span class="p">(</span><span class="n">objtype</span><span class="p">)</span>
-        <span class="n">api_obj_all</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;all&#39;</span><span class="p">])()</span>
+        <span class="n">api_obj_all</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">taniumpy</span><span class="p">,</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;all&#39;</span><span class="p">])()</span>
         <span class="n">found</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find</span><span class="p">(</span><span class="n">api_obj_all</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">found</span>
 </div>
@@ -1595,7 +1605,7 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        obj : :class:`api.object_types.base.BaseType`</span>
+<span class="sd">        obj : :class:`taniumpy.object_types.base.BaseType`</span>
 <span class="sd">            object to get result data for</span>
 <span class="sd">        aggregate : bool, optional</span>
 <span class="sd">            * False: get all the data</span>
@@ -1603,7 +1613,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        rd : :class:`api.object_types.result_set.ResultSet`</span>
+<span class="sd">        rd : :class:`taniumpy.object_types.result_set.ResultSet`</span>
 <span class="sd">            The return of GetResultData for `obj`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c"># do a getresultinfo to ensure fresh data is available for</span>
@@ -1640,12 +1650,12 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        obj : :class:`api.object_types.base.BaseType`</span>
+<span class="sd">        obj : :class:`taniumpy.object_types.base.BaseType`</span>
 <span class="sd">            object to get result data for</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        ri : :class:`api.object_types.result_info.ResultInfo`</span>
+<span class="sd">        ri : :class:`taniumpy.object_types.result_info.ResultInfo`</span>
 <span class="sd">            The return of GetResultData for `obj`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">ri</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">getResultInfo</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -1661,11 +1671,11 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        action_stop_obj : :class:`api.object_types.action_stop.ActionStop`</span>
+<span class="sd">        action_stop_obj : :class:`taniumpy.object_types.action_stop.ActionStop`</span>
 <span class="sd">            The object containing the ID of the action stop job</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">action_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;action&#39;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">add_action_stop_obj</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">ActionStop</span><span class="p">()</span>
+        <span class="n">add_action_stop_obj</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">ActionStop</span><span class="p">()</span>
         <span class="n">add_action_stop_obj</span><span class="o">.</span><span class="n">action</span> <span class="o">=</span> <span class="n">action_obj</span>
         <span class="n">action_stop_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">add_action_stop_obj</span><span class="p">)</span>
         <span class="n">m</span> <span class="o">=</span> <span class="p">(</span>
@@ -1676,7 +1686,7 @@
 
     <span class="c"># BEGIN PRIVATE METHODS</span></div>
 <div class="viewcode-block" id="Handler._find"><a class="viewcode-back" href="../../pytan/pytan.handler.html#pytan.handler.Handler._find">[docs]</a>    <span class="k">def</span> <span class="nf">_find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api_object</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Wrapper for interfacing with :func:`api.session.Session.find`&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Wrapper for interfacing with :func:`taniumpy.session.Session.find`&quot;&quot;&quot;</span>
         <span class="n">req_kwargs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_req_kwargs</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">search_str</span> <span class="o">=</span> <span class="s">&#39;; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">api_object</span><span class="p">])</span>
@@ -1704,7 +1714,7 @@
         <span class="n">api_kw</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">api_attrs</span><span class="p">,</span> <span class="n">api_kwattrs</span><span class="p">)}</span>
 
         <span class="c"># create a list object to append our searches to</span>
-        <span class="n">api_obj_multi</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;multi&#39;</span><span class="p">])()</span>
+        <span class="n">api_obj_multi</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">taniumpy</span><span class="p">,</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;multi&#39;</span><span class="p">])()</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">api_kw</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">v</span> <span class="ow">and</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;search&#39;</span><span class="p">]:</span>
                 <span class="k">continue</span>  <span class="c"># if we can&#39;t search for k, skip</span>
@@ -1714,11 +1724,11 @@
 
             <span class="k">if</span> <span class="n">utils</span><span class="o">.</span><span class="n">is_list</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
-                    <span class="n">api_obj_single</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;single&#39;</span><span class="p">])()</span>
+                    <span class="n">api_obj_single</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">taniumpy</span><span class="p">,</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;single&#39;</span><span class="p">])()</span>
                     <span class="nb">setattr</span><span class="p">(</span><span class="n">api_obj_single</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
                     <span class="n">api_obj_multi</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">api_obj_single</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">api_obj_single</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;single&#39;</span><span class="p">])()</span>
+                <span class="n">api_obj_single</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">taniumpy</span><span class="p">,</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;single&#39;</span><span class="p">])()</span>
                 <span class="nb">setattr</span><span class="p">(</span><span class="n">api_obj_single</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
                 <span class="n">api_obj_multi</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">api_obj_single</span><span class="p">)</span>
 
@@ -1734,9 +1744,9 @@
 
         <span class="c"># we create a list object to append our single item searches to</span>
         <span class="k">if</span> <span class="n">obj_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;allfix&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">):</span>
-            <span class="n">found</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;allfix&#39;</span><span class="p">])()</span>
+            <span class="n">found</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">taniumpy</span><span class="p">,</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;allfix&#39;</span><span class="p">])()</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">found</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;all&#39;</span><span class="p">])()</span>
+            <span class="n">found</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">taniumpy</span><span class="p">,</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;all&#39;</span><span class="p">])()</span>
 
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">api_kw</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">v</span> <span class="ow">and</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;search&#39;</span><span class="p">]:</span>
@@ -1756,9 +1766,9 @@
         <span class="k">return</span> <span class="n">found</span>
 </div>
 <div class="viewcode-block" id="Handler._single_find"><a class="viewcode-back" href="../../pytan/pytan.handler.html#pytan.handler.Handler._single_find">[docs]</a>    <span class="k">def</span> <span class="nf">_single_find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_map</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Wrapper for single item searches interfacing with :func:`api.session.Session.find`&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Wrapper for single item searches interfacing with :func:`taniumpy.session.Session.find`&quot;&quot;&quot;</span>
         <span class="n">found</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">api_obj_single</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;single&#39;</span><span class="p">])()</span>
+        <span class="n">api_obj_single</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">taniumpy</span><span class="p">,</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;single&#39;</span><span class="p">])()</span>
         <span class="nb">setattr</span><span class="p">(</span><span class="n">api_obj_single</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
         <span class="n">obj_ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find</span><span class="p">(</span><span class="n">api_obj_single</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj_ret</span><span class="p">,</span> <span class="s">&#39;_list_properties&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">):</span>
@@ -1794,7 +1804,7 @@
         <span class="k">return</span> <span class="n">d</span>
 </div>
 <div class="viewcode-block" id="Handler._export_class_BaseType"><a class="viewcode-back" href="../../pytan/pytan.handler.html#pytan.handler.Handler._export_class_BaseType">[docs]</a>    <span class="k">def</span> <span class="nf">_export_class_BaseType</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">export_format</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Handles exporting :class:`api.object_types.base.BaseType`&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Handles exporting :class:`taniumpy.object_types.base.BaseType`&quot;&quot;&quot;</span>
         <span class="c"># run the handler that is specific to this export_format, if it exists</span>
         <span class="n">format_method_str</span> <span class="o">=</span> <span class="s">&#39;_export_format_&#39;</span> <span class="o">+</span> <span class="n">export_format</span>
         <span class="n">format_handler</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">format_method_str</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
@@ -1806,7 +1816,7 @@
         <span class="k">return</span> <span class="n">result</span>
 </div>
 <div class="viewcode-block" id="Handler._export_class_ResultSet"><a class="viewcode-back" href="../../pytan/pytan.handler.html#pytan.handler.Handler._export_class_ResultSet">[docs]</a>    <span class="k">def</span> <span class="nf">_export_class_ResultSet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">export_format</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Handles exporting :class:`api.object_types.result_set.ResultSet`&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Handles exporting :class:`taniumpy.object_types.result_set.ResultSet`&quot;&quot;&quot;</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        ensure kwargs[sensors] has all the sensors that correlate</span>
 <span class="sd">        to the what_hash of each column, but only if header_add_sensor=True</span>

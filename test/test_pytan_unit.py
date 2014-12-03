@@ -1,5 +1,9 @@
 #!/usr/bin/env python -ttB
+"""
+This contains unit tests for pytan.
 
+These unit tests do not require a connection to a Tanium server in order to run.
+"""
 import sys
 
 # disable python from creating .pyc files everywhere

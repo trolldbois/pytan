@@ -1,0 +1,1 @@
+<roles><role><description>Administrators can perform all functions in the system, including creating other users, viewing the System Status, changing Global Settings, and creating Computer Groups.</description><id>1</id><name>Administrator</name><permissions><permission>admin</permission></permissions></role></roles>

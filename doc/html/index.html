@@ -87,15 +87,15 @@
 <dt>PyTan is comprised of 3 parts:</dt>
 <dd><ul class="first last simple">
 <li>Tanium Server SOAP API: The SOAP server embedded into the Tanium server itself, listens on port 444 but is also available via port 443.</li>
-<li>TaniumPy (<a class="reference internal" href="pytan/api/api.html#module-api" title="api"><code class="xref py py-mod docutils literal"><span class="pre">api</span></code></a>): A python package comprised of a set of python objects automatically generated from the WSDL file that describes the Tanium SOAP API. These python objects handle the serialization and deserialization of XML to and from the Tanium Server SOAP API. Located in <code class="docutils literal"><span class="pre">pytan/</span></code></li>
-<li>PyTan: (<a class="reference internal" href="pytan/pytan.html#module-pytan" title="pytan"><code class="xref py py-mod docutils literal"><span class="pre">pytan</span></code></a>): A python package that provides a set of methods to make interfacing with TaniumPy more human friendly. Located in <code class="docutils literal"><span class="pre">pytan/api/</span></code></li>
+<li>TaniumPy (<a class="reference internal" href="taniumpy/taniumpy.html#module-taniumpy" title="taniumpy"><code class="xref py py-mod docutils literal"><span class="pre">taniumpy</span></code></a>): A python package comprised of a set of python objects automatically generated from the WSDL file that describes the Tanium SOAP API. These python objects handle the serialization and deserialization of XML to and from the Tanium Server SOAP API. Located in <code class="docutils literal"><span class="pre">lib/taniumpy</span></code></li>
+<li>PyTan: (<a class="reference internal" href="pytan/pytan.html#module-pytan" title="pytan"><code class="xref py py-mod docutils literal"><span class="pre">pytan</span></code></a>): A python package that provides a set of methods to make interfacing with TaniumPy more human friendly. Located in <code class="docutils literal"><span class="pre">lib/pytan</span></code></li>
 </ul>
 </dd>
 </dl>
 <p>Contents:</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="pytan/pytan.html">1. PyTan package: An API wrapper around TaniumPy, the api package.</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="pytan/pytan.html">1. PyTan package: An API wrapper around TaniumPy</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="pytan/pytan.html#pytan-description">1.1. PyTan Description</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pytan/pytan.html#why-pytan-was-created">1.2. Why PyTan was created</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pytan/pytan.html#requirements">1.3. Requirements</a></li>
@@ -144,116 +144,115 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pytan/pytan.utils.html">1.6.3. pytan.utils module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pytan/pytan.xmltodict.html">1.6.4. pytan.xmltodict module</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="pytan/api/api.html">2. TaniumPy - The api package: An XML serializer/deserializer for Taniums SOAP API</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pytan/api/api.html#submodules">2.1. Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan/api/api.html#module-api.session">2.2. api.session module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan/api/api.html#module-api.question_asker">2.3. api.question_asker module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan/api/api.html#subpackages">2.4. Subpackages</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="pytan/api/api.object_types.html">2.4.1. api.object_types package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#submodules">2.4.1.1. Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.action">2.4.1.2. api.object_types.action module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.action_list">2.4.1.3. api.object_types.action_list module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.action_list_info">2.4.1.4. api.object_types.action_list_info module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.action_stop">2.4.1.5. api.object_types.action_stop module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.action_stop_list">2.4.1.6. api.object_types.action_stop_list module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.all_objects">2.4.1.7. api.object_types.all_objects module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.archived_question">2.4.1.8. api.object_types.archived_question module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.archived_question_list">2.4.1.9. api.object_types.archived_question_list module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.audit_data">2.4.1.10. api.object_types.audit_data module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.base">2.4.1.11. api.object_types.base module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.cache_filter">2.4.1.12. api.object_types.cache_filter module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.cache_filter_list">2.4.1.13. api.object_types.cache_filter_list module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.cache_info">2.4.1.14. api.object_types.cache_info module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.client_count">2.4.1.15. api.object_types.client_count module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.client_status">2.4.1.16. api.object_types.client_status module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.column">2.4.1.17. api.object_types.column module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.column_set">2.4.1.18. api.object_types.column_set module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.computer_group">2.4.1.19. api.object_types.computer_group module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.computer_group_list">2.4.1.20. api.object_types.computer_group_list module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.computer_group_spec">2.4.1.21. api.object_types.computer_group_spec module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.computer_spec_list">2.4.1.22. api.object_types.computer_spec_list module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.error_list">2.4.1.23. api.object_types.error_list module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.filter">2.4.1.24. api.object_types.filter module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.filter_list">2.4.1.25. api.object_types.filter_list module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.group">2.4.1.26. api.object_types.group module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.group_list">2.4.1.27. api.object_types.group_list module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.metadata_item">2.4.1.28. api.object_types.metadata_item module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.metadata_list">2.4.1.29. api.object_types.metadata_list module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.object_list">2.4.1.30. api.object_types.object_list module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.object_list_types">2.4.1.31. api.object_types.object_list_types module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.options">2.4.1.32. api.object_types.options module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.package_file">2.4.1.33. api.object_types.package_file module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.package_file_list">2.4.1.34. api.object_types.package_file_list module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.package_file_status">2.4.1.35. api.object_types.package_file_status module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.package_file_status_list">2.4.1.36. api.object_types.package_file_status_list module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.package_file_template">2.4.1.37. api.object_types.package_file_template module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.package_file_template_list">2.4.1.38. api.object_types.package_file_template_list module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.package_spec">2.4.1.39. api.object_types.package_spec module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.package_spec_list">2.4.1.40. api.object_types.package_spec_list module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.parameter">2.4.1.41. api.object_types.parameter module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.parameter_list">2.4.1.42. api.object_types.parameter_list module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.parse_job">2.4.1.43. api.object_types.parse_job module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.parse_job_list">2.4.1.44. api.object_types.parse_job_list module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.parse_result">2.4.1.45. api.object_types.parse_result module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.parse_result_group">2.4.1.46. api.object_types.parse_result_group module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.parse_result_group_list">2.4.1.47. api.object_types.parse_result_group_list module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.parse_result_list">2.4.1.48. api.object_types.parse_result_list module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.plugin">2.4.1.49. api.object_types.plugin module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.plugin_argument">2.4.1.50. api.object_types.plugin_argument module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.plugin_argument_list">2.4.1.51. api.object_types.plugin_argument_list module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.plugin_command_list">2.4.1.52. api.object_types.plugin_command_list module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.plugin_list">2.4.1.53. api.object_types.plugin_list module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.plugin_schedule">2.4.1.54. api.object_types.plugin_schedule module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.plugin_schedule_list">2.4.1.55. api.object_types.plugin_schedule_list module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.plugin_sql">2.4.1.56. api.object_types.plugin_sql module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.plugin_sql_column">2.4.1.57. api.object_types.plugin_sql_column module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.plugin_sql_result">2.4.1.58. api.object_types.plugin_sql_result module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.question">2.4.1.59. api.object_types.question module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.question_list">2.4.1.60. api.object_types.question_list module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.question_list_info">2.4.1.61. api.object_types.question_list_info module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.result_info">2.4.1.62. api.object_types.result_info module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.result_set">2.4.1.63. api.object_types.result_set module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.row">2.4.1.64. api.object_types.row module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.saved_action">2.4.1.65. api.object_types.saved_action module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.saved_action_approval">2.4.1.66. api.object_types.saved_action_approval module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.saved_action_list">2.4.1.67. api.object_types.saved_action_list module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.saved_action_policy">2.4.1.68. api.object_types.saved_action_policy module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.saved_action_row_id_list">2.4.1.69. api.object_types.saved_action_row_id_list module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.saved_question">2.4.1.70. api.object_types.saved_question module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.saved_question_list">2.4.1.71. api.object_types.saved_question_list module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.select">2.4.1.72. api.object_types.select module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.select_list">2.4.1.73. api.object_types.select_list module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.sensor">2.4.1.74. api.object_types.sensor module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.sensor_list">2.4.1.75. api.object_types.sensor_list module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.sensor_query">2.4.1.76. api.object_types.sensor_query module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.sensor_query_list">2.4.1.77. api.object_types.sensor_query_list module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.sensor_string_hints">2.4.1.78. api.object_types.sensor_string_hints module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.sensor_subcolumn">2.4.1.79. api.object_types.sensor_subcolumn module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.sensor_subcolumn_list">2.4.1.80. api.object_types.sensor_subcolumn_list module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.sensor_types">2.4.1.81. api.object_types.sensor_types module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.soap_error">2.4.1.82. api.object_types.soap_error module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.system_setting">2.4.1.83. api.object_types.system_setting module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.system_settings_list">2.4.1.84. api.object_types.system_settings_list module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.system_status_aggregate">2.4.1.85. api.object_types.system_status_aggregate module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.system_status_list">2.4.1.86. api.object_types.system_status_list module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.upload_file">2.4.1.87. api.object_types.upload_file module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.upload_file_list">2.4.1.88. api.object_types.upload_file_list module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.upload_file_status">2.4.1.89. api.object_types.upload_file_status module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.user">2.4.1.90. api.object_types.user module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.user_list">2.4.1.91. api.object_types.user_list module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.user_permissions">2.4.1.92. api.object_types.user_permissions module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.user_role">2.4.1.93. api.object_types.user_role module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.user_role_list">2.4.1.94. api.object_types.user_role_list module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.version_aggregate">2.4.1.95. api.object_types.version_aggregate module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.version_aggregate_list">2.4.1.96. api.object_types.version_aggregate_list module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.white_listed_url">2.4.1.97. api.object_types.white_listed_url module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.white_listed_url_list">2.4.1.98. api.object_types.white_listed_url_list module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pytan/api/api.object_types.html#module-api.object_types.xml_error">2.4.1.99. api.object_types.xml_error module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="taniumpy/taniumpy.html">2. TaniumPy package: An XML serializer/deserializer for Taniums SOAP API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy/taniumpy.html#submodules">2.1. Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy/taniumpy.html#module-taniumpy.session">2.2. taniumpy.session module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy/taniumpy.html#module-taniumpy.question_asker">2.3. taniumpy.question_asker module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy/taniumpy.html#subpackages">2.4. Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="taniumpy/taniumpy.object_types.html">2.4.1. taniumpy.object_types package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#submodules">2.4.1.1. Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.action">2.4.1.2. taniumpy.object_types.action module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.action_list">2.4.1.3. taniumpy.object_types.action_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.action_list_info">2.4.1.4. taniumpy.object_types.action_list_info module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.action_stop">2.4.1.5. taniumpy.object_types.action_stop module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.action_stop_list">2.4.1.6. taniumpy.object_types.action_stop_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.all_objects">2.4.1.7. taniumpy.object_types.all_objects module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.archived_question">2.4.1.8. taniumpy.object_types.archived_question module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.archived_question_list">2.4.1.9. taniumpy.object_types.archived_question_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.audit_data">2.4.1.10. taniumpy.object_types.audit_data module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.base">2.4.1.11. taniumpy.object_types.base module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.cache_filter">2.4.1.12. taniumpy.object_types.cache_filter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.cache_filter_list">2.4.1.13. taniumpy.object_types.cache_filter_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.cache_info">2.4.1.14. taniumpy.object_types.cache_info module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.client_count">2.4.1.15. taniumpy.object_types.client_count module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.client_status">2.4.1.16. taniumpy.object_types.client_status module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.column">2.4.1.17. taniumpy.object_types.column module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.column_set">2.4.1.18. taniumpy.object_types.column_set module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.computer_group">2.4.1.19. taniumpy.object_types.computer_group module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.computer_group_list">2.4.1.20. taniumpy.object_types.computer_group_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.computer_group_spec">2.4.1.21. taniumpy.object_types.computer_group_spec module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.computer_spec_list">2.4.1.22. taniumpy.object_types.computer_spec_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.error_list">2.4.1.23. taniumpy.object_types.error_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.filter">2.4.1.24. taniumpy.object_types.filter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.filter_list">2.4.1.25. taniumpy.object_types.filter_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.group">2.4.1.26. taniumpy.object_types.group module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.group_list">2.4.1.27. taniumpy.object_types.group_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.metadata_item">2.4.1.28. taniumpy.object_types.metadata_item module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.metadata_list">2.4.1.29. taniumpy.object_types.metadata_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.object_list">2.4.1.30. taniumpy.object_types.object_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.object_list_types">2.4.1.31. taniumpy.object_types.object_list_types module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.options">2.4.1.32. taniumpy.object_types.options module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.package_file">2.4.1.33. taniumpy.object_types.package_file module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.package_file_list">2.4.1.34. taniumpy.object_types.package_file_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.package_file_status">2.4.1.35. taniumpy.object_types.package_file_status module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.package_file_status_list">2.4.1.36. taniumpy.object_types.package_file_status_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.package_file_template">2.4.1.37. taniumpy.object_types.package_file_template module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.package_file_template_list">2.4.1.38. taniumpy.object_types.package_file_template_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.package_spec">2.4.1.39. taniumpy.object_types.package_spec module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.package_spec_list">2.4.1.40. taniumpy.object_types.package_spec_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.parameter">2.4.1.41. taniumpy.object_types.parameter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.parameter_list">2.4.1.42. taniumpy.object_types.parameter_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.parse_job">2.4.1.43. taniumpy.object_types.parse_job module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.parse_job_list">2.4.1.44. taniumpy.object_types.parse_job_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.parse_result">2.4.1.45. taniumpy.object_types.parse_result module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.parse_result_group">2.4.1.46. taniumpy.object_types.parse_result_group module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.parse_result_group_list">2.4.1.47. taniumpy.object_types.parse_result_group_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.parse_result_list">2.4.1.48. taniumpy.object_types.parse_result_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.plugin">2.4.1.49. taniumpy.object_types.plugin module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.plugin_argument">2.4.1.50. taniumpy.object_types.plugin_argument module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.plugin_argument_list">2.4.1.51. taniumpy.object_types.plugin_argument_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.plugin_command_list">2.4.1.52. taniumpy.object_types.plugin_command_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.plugin_list">2.4.1.53. taniumpy.object_types.plugin_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.plugin_schedule">2.4.1.54. taniumpy.object_types.plugin_schedule module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.plugin_schedule_list">2.4.1.55. taniumpy.object_types.plugin_schedule_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.plugin_sql">2.4.1.56. taniumpy.object_types.plugin_sql module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.plugin_sql_column">2.4.1.57. taniumpy.object_types.plugin_sql_column module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.plugin_sql_result">2.4.1.58. taniumpy.object_types.plugin_sql_result module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.question">2.4.1.59. taniumpy.object_types.question module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.question_list">2.4.1.60. taniumpy.object_types.question_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.question_list_info">2.4.1.61. taniumpy.object_types.question_list_info module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.result_info">2.4.1.62. taniumpy.object_types.result_info module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.result_set">2.4.1.63. taniumpy.object_types.result_set module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.row">2.4.1.64. taniumpy.object_types.row module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.saved_action">2.4.1.65. taniumpy.object_types.saved_action module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.saved_action_approval">2.4.1.66. taniumpy.object_types.saved_action_approval module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.saved_action_list">2.4.1.67. taniumpy.object_types.saved_action_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.saved_action_policy">2.4.1.68. taniumpy.object_types.saved_action_policy module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.saved_action_row_id_list">2.4.1.69. taniumpy.object_types.saved_action_row_id_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.saved_question">2.4.1.70. taniumpy.object_types.saved_question module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.saved_question_list">2.4.1.71. taniumpy.object_types.saved_question_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.select">2.4.1.72. taniumpy.object_types.select module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.select_list">2.4.1.73. taniumpy.object_types.select_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.sensor">2.4.1.74. taniumpy.object_types.sensor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.sensor_list">2.4.1.75. taniumpy.object_types.sensor_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.sensor_query">2.4.1.76. taniumpy.object_types.sensor_query module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.sensor_query_list">2.4.1.77. taniumpy.object_types.sensor_query_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.sensor_string_hints">2.4.1.78. taniumpy.object_types.sensor_string_hints module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.sensor_subcolumn">2.4.1.79. taniumpy.object_types.sensor_subcolumn module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.sensor_subcolumn_list">2.4.1.80. taniumpy.object_types.sensor_subcolumn_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.sensor_types">2.4.1.81. taniumpy.object_types.sensor_types module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.soap_error">2.4.1.82. taniumpy.object_types.soap_error module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.system_setting">2.4.1.83. taniumpy.object_types.system_setting module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.system_settings_list">2.4.1.84. taniumpy.object_types.system_settings_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.system_status_aggregate">2.4.1.85. taniumpy.object_types.system_status_aggregate module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.system_status_list">2.4.1.86. taniumpy.object_types.system_status_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.upload_file">2.4.1.87. taniumpy.object_types.upload_file module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.upload_file_list">2.4.1.88. taniumpy.object_types.upload_file_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.upload_file_status">2.4.1.89. taniumpy.object_types.upload_file_status module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.user">2.4.1.90. taniumpy.object_types.user module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.user_list">2.4.1.91. taniumpy.object_types.user_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.user_permissions">2.4.1.92. taniumpy.object_types.user_permissions module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.user_role">2.4.1.93. taniumpy.object_types.user_role module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.user_role_list">2.4.1.94. taniumpy.object_types.user_role_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.version_aggregate">2.4.1.95. taniumpy.object_types.version_aggregate module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.version_aggregate_list">2.4.1.96. taniumpy.object_types.version_aggregate_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.white_listed_url">2.4.1.97. taniumpy.object_types.white_listed_url module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.white_listed_url_list">2.4.1.98. taniumpy.object_types.white_listed_url_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="taniumpy/taniumpy.object_types.html#module-taniumpy.object_types.xml_error">2.4.1.99. taniumpy.object_types.xml_error module</a></li>
 </ul>
 </li>
 </ul>

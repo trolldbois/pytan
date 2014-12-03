@@ -1,5 +1,10 @@
 #!/usr/bin/env python -ttB
+"""
+This contains functional tests for pytan.
 
+These functional tests require a connection to a Tanium server in order to run.
+The connection info is pulled from the SERVER_INFO dictionary in test/API_INFO.py.
+"""
 import sys
 
 # disable python from creating .pyc files everywhere
@@ -28,6 +33,9 @@ import taniumpy
 import threaded_http
 import ddt
 
+# get our server connection info
+from API_INFO import SERVER_INFO
+
 # control the amount of output from unittests
 TESTVERBOSITY = 2
 
@@ -36,15 +44,6 @@ FAILFAST = True
 
 # catch control-C to allow current test suite to finish (press 2x to force)
 CATCHBREAK = True
-
-SERVER_INFO = {
-    "username": "Tanium User",
-    "password": "T@n!um",
-    "host": "172.16.31.128",
-    "port": "444",
-    "loglevel": TESTVERBOSITY,
-    "debugformat": False,
-}
 
 
 def spew(m):

@@ -1,0 +1,540 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>taniumpy.object_types.base &mdash; PyTan 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="PyTan 1.0.0 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">PyTan 1.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for taniumpy.object_types.base</h1><div class="highlight"><pre>
+<span class="c"># Copyright (c) 2014 Tanium Inc</span>
+<span class="c">#</span>
+
+<span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">xml.etree.ElementTree</span> <span class="kn">as</span> <span class="nn">ET</span>
+
+
+<div class="viewcode-block" id="IncorrectTypeException"><a class="viewcode-back" href="../../../taniumpy/taniumpy.object_types.html#taniumpy.object_types.base.IncorrectTypeException">[docs]</a><span class="k">class</span> <span class="nc">IncorrectTypeException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Raised when a property is not of the expected type&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">property</span><span class="p">,</span> <span class="n">expected</span><span class="p">,</span> <span class="n">actual</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">property</span> <span class="o">=</span> <span class="nb">property</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">expected</span> <span class="o">=</span> <span class="n">expected</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actual</span> <span class="o">=</span> <span class="n">actual</span>
+        <span class="n">err</span> <span class="o">=</span> <span class="s">&#39;Property {} is not of type {}, got {}&#39;</span><span class="o">.</span><span class="n">format</span>
+        <span class="ne">Exception</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">err</span><span class="p">(</span><span class="nb">property</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">expected</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">actual</span><span class="p">)))</span>
+
+</div>
+<div class="viewcode-block" id="BaseType"><a class="viewcode-back" href="../../../taniumpy/taniumpy.object_types.html#taniumpy.object_types.base.BaseType">[docs]</a><span class="k">class</span> <span class="nc">BaseType</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="n">_soap_tag</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simple_properties</span><span class="p">,</span> <span class="n">complex_properties</span><span class="p">,</span>
+                 <span class="n">list_properties</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_initialized</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_simple_properties</span> <span class="o">=</span> <span class="n">simple_properties</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_complex_properties</span> <span class="o">=</span> <span class="n">complex_properties</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_list_properties</span> <span class="o">=</span> <span class="n">list_properties</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_initialized</span> <span class="o">=</span> <span class="bp">True</span>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Allow automatic indexing into lists.</span>
+
+<span class="sd">        Only supported on types that have a single property</span>
+<span class="sd">        that is in list_properties</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_list_properties</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list_properties</span><span class="o">.</span><span class="n">items</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])[</span><span class="n">n</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
+                <span class="s">&#39;Not simply a list type, __getitem__ not supported&#39;</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Allow len() for lists.</span>
+
+<span class="sd">        Only supported on types that have a single property</span>
+<span class="sd">        that is in list_properties</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_list_properties</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list_properties</span><span class="o">.</span><span class="n">items</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;Not simply a list type, len() not supported&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">class_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_list_properties</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="s">&#39;, len: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">):</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="s">&#39;, name: {!r}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">):</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="s">&#39;, id: {!r}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">vals</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="s">&#39;{}: {!r}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">))</span>
+                    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_simple_properties</span><span class="p">)</span>
+                <span class="p">]</span>
+                <span class="k">if</span> <span class="n">vals</span><span class="p">:</span>
+                    <span class="n">vals</span> <span class="o">=</span> <span class="s">&quot;</span><span class="se">\t</span><span class="s">&quot;</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n\t</span><span class="s">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span>
+                    <span class="n">val</span> <span class="o">=</span> <span class="s">&#39;, vals:</span><span class="se">\n</span><span class="s">{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="s">&#39;{}{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">class_name</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span>
+
+    <span class="k">def</span> <span class="nf">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Enforce type, if name is a complex property&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> \
+                <span class="n">name</span> <span class="o">!=</span> <span class="s">&#39;_initialized&#39;</span> <span class="ow">and</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">_initialized</span> <span class="ow">and</span> \
+                <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_complex_properties</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_complex_properties</span><span class="p">[</span><span class="n">name</span><span class="p">]):</span>
+                <span class="k">raise</span> <span class="n">IncorrectTypeException</span><span class="p">(</span>
+                    <span class="n">value</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_complex_properties</span><span class="p">[</span><span class="n">name</span><span class="p">],</span>
+                    <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">BaseType</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__setattr__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BaseType.append"><a class="viewcode-back" href="../../../taniumpy/taniumpy.object_types.html#taniumpy.object_types.base.BaseType.append">[docs]</a>    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Allow adding to list.</span>
+
+<span class="sd">        Only supported on types that have a single property</span>
+<span class="sd">        that is in list_properties</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_list_properties</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list_properties</span><span class="o">.</span><span class="n">items</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
+                <span class="s">&#39;Not simply a list type, append not supported&#39;</span>
+            <span class="p">)</span>
+</div>
+<div class="viewcode-block" id="BaseType.toSOAPElement"><a class="viewcode-back" href="../../../taniumpy/taniumpy.object_types.html#taniumpy.object_types.base.BaseType.toSOAPElement">[docs]</a>    <span class="k">def</span> <span class="nf">toSOAPElement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_soap_tag</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simple_properties</span><span class="p">:</span>
+            <span class="n">el</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">el</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">minimal</span><span class="p">:</span>
+                <span class="n">root</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">el</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_complex_properties</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">minimal</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="n">IncorrectTypeException</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">BaseType</span><span class="p">):</span>
+                    <span class="n">child</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">toSOAPElement</span><span class="p">(</span><span class="n">minimal</span><span class="o">=</span><span class="n">minimal</span><span class="p">)</span>
+                    <span class="c"># the tag name is the property name,</span>
+                    <span class="c"># not the property type&#39;s soap tag</span>
+                    <span class="n">el</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">child</span><span class="o">.</span><span class="n">getchildren</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                        <span class="k">for</span> <span class="n">child_prop</span> <span class="ow">in</span> <span class="n">child</span><span class="o">.</span><span class="n">getchildren</span><span class="p">():</span>
+                            <span class="n">el</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child_prop</span><span class="p">)</span>
+                    <span class="n">root</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">el</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">el</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+                    <span class="n">root</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">el</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                        <span class="n">el</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list_properties</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="n">vals</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">vals</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">:</span>
+                <span class="n">root</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">toSOAPElement</span><span class="p">(</span><span class="n">minimal</span><span class="o">=</span><span class="n">minimal</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">root</span>
+</div>
+<div class="viewcode-block" id="BaseType.toSOAPBody"><a class="viewcode-back" href="../../../taniumpy/taniumpy.object_types.html#taniumpy.object_types.base.BaseType.toSOAPBody">[docs]</a>    <span class="k">def</span> <span class="nf">toSOAPBody</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">()</span>
+        <span class="n">ET</span><span class="o">.</span><span class="n">ElementTree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">toSOAPElement</span><span class="p">(</span><span class="n">minimal</span><span class="o">=</span><span class="n">minimal</span><span class="p">))</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">out</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="BaseType.fromSOAPElement"><a class="viewcode-back" href="../../../taniumpy/taniumpy.object_types.html#taniumpy.object_types.base.BaseType.fromSOAPElement">[docs]</a>    <span class="k">def</span> <span class="nf">fromSOAPElement</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">el</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">cls</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">_simple_properties</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="n">pel</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;./{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">p</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">pel</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">pel</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">t</span><span class="p">(</span><span class="n">pel</span><span class="o">.</span><span class="n">text</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">_complex_properties</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="n">elems</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s">&#39;./{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">p</span><span class="p">))</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">elems</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
+                    <span class="s">&#39;Unexpected: {} elements for property&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+                <span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">elems</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="nb">setattr</span><span class="p">(</span>
+                    <span class="n">result</span><span class="p">,</span>
+                    <span class="n">p</span><span class="p">,</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">_complex_properties</span><span class="p">[</span><span class="n">p</span><span class="p">]</span><span class="o">.</span><span class="n">fromSOAPElement</span><span class="p">(</span><span class="n">elems</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">_list_properties</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="n">elems</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s">&#39;./{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">p</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">elems</span><span class="p">:</span>
+                <span class="nb">getattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">fromSOAPElement</span><span class="p">(</span><span class="n">elem</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">result</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="BaseType.fromSOAPBody"><a class="viewcode-back" href="../../../taniumpy/taniumpy.object_types.html#taniumpy.object_types.base.BaseType.fromSOAPBody">[docs]</a>    <span class="k">def</span> <span class="nf">fromSOAPBody</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">body</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Parse body (text) and produce Python tanium objects.</span>
+
+<span class="sd">        This method assumes a single result_object, which</span>
+<span class="sd">        may be a list or a single object.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+        <span class="n">result_object</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;.//result_object/*&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">result_object</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>  <span class="c"># no results, not an error</span>
+        <span class="c"># based on the tag of the matching element,</span>
+        <span class="c"># find the appropriate tanium_type and deserialize</span>
+        <span class="kn">from</span> <span class="nn">object_list_types</span> <span class="kn">import</span> <span class="n">OBJECT_LIST_TYPES</span>
+        <span class="k">if</span> <span class="n">result_object</span><span class="o">.</span><span class="n">tag</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">OBJECT_LIST_TYPES</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;Unknown type {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">result_object</span><span class="o">.</span><span class="n">tag</span><span class="p">))</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">OBJECT_LIST_TYPES</span><span class="p">[</span><span class="n">result_object</span><span class="o">.</span><span class="n">tag</span><span class="p">]</span><span class="o">.</span><span class="n">fromSOAPElement</span><span class="p">(</span><span class="n">result_object</span><span class="p">)</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">_RESULT_OBJECT</span> <span class="o">=</span> <span class="n">result_object</span>
+        <span class="k">return</span> <span class="n">r</span>
+</div>
+<div class="viewcode-block" id="BaseType.flatten_jsonable"><a class="viewcode-back" href="../../../taniumpy/taniumpy.object_types.html#taniumpy.object_types.base.BaseType.flatten_jsonable">[docs]</a>    <span class="k">def</span> <span class="nf">flatten_jsonable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">prefix</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">flatten_jsonable</span><span class="p">(</span>
+                    <span class="n">v</span><span class="p">,</span>
+                    <span class="s">&#39;_&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">prefix</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]))</span>
+                <span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">==</span> <span class="nb">dict</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">val</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">flatten_jsonable</span><span class="p">(</span>
+                    <span class="n">v</span><span class="p">,</span>
+                    <span class="s">&#39;_&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">prefix</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="k">if</span> <span class="n">prefix</span> <span class="k">else</span> <span class="n">k</span><span class="p">))</span>
+                <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">prefix</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="k">return</span> <span class="n">result</span>
+</div>
+<div class="viewcode-block" id="BaseType.to_flat_dict_explode_json"><a class="viewcode-back" href="../../../taniumpy/taniumpy.object_types.html#taniumpy.object_types.base.BaseType.to_flat_dict_explode_json">[docs]</a>    <span class="k">def</span> <span class="nf">to_flat_dict_explode_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;see if the value is json. If so, flatten it out into a dict&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">js</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">flatten_jsonable</span><span class="p">(</span><span class="n">js</span><span class="p">,</span> <span class="n">prefix</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="BaseType.to_flat_dict"><a class="viewcode-back" href="../../../taniumpy/taniumpy.object_types.html#taniumpy.object_types.base.BaseType.to_flat_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_flat_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">explode_json_string_values</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert the object to a dict, flattening any lists or nested types</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">prop_start</span> <span class="o">=</span> <span class="s">&#39;{}_&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span> <span class="k">if</span> <span class="n">prefix</span> <span class="k">else</span> <span class="s">&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simple_properties</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">json_out</span> <span class="o">=</span> <span class="bp">None</span>
+                <span class="k">if</span> <span class="n">explode_json_string_values</span><span class="p">:</span>
+                    <span class="n">json_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_flat_dict_explode_json</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">json_out</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">json_out</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">result</span><span class="p">[</span><span class="s">&#39;{}{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prop_start</span><span class="p">,</span> <span class="n">p</span><span class="p">)]</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_complex_properties</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">to_flat_dict</span><span class="p">(</span>
+                    <span class="n">prefix</span><span class="o">=</span><span class="s">&#39;{}{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prop_start</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span>
+                    <span class="n">explode_json_string_values</span><span class="o">=</span><span class="n">explode_json_string_values</span><span class="p">,</span>
+                <span class="p">))</span>
+        <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list_properties</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+                    <span class="n">prefix</span> <span class="o">=</span> <span class="s">&#39;{}{}_{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prop_start</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">ind</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">BaseType</span><span class="p">):</span>
+                        <span class="n">result</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">to_flat_dict</span><span class="p">(</span>
+                            <span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">,</span>
+                            <span class="n">explode_json_string_values</span><span class="o">=</span><span class="n">explode_json_string_values</span><span class="p">,</span>
+                        <span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">result</span><span class="p">[</span><span class="n">prefix</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span>
+        <span class="k">return</span> <span class="n">result</span>
+</div>
+<div class="viewcode-block" id="BaseType.explode_json"><a class="viewcode-back" href="../../../taniumpy/taniumpy.object_types.html#taniumpy.object_types.base.BaseType.explode_json">[docs]</a>    <span class="k">def</span> <span class="nf">explode_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="BaseType.to_jsonable"><a class="viewcode-back" href="../../../taniumpy/taniumpy.object_types.html#taniumpy.object_types.base.BaseType.to_jsonable">[docs]</a>    <span class="k">def</span> <span class="nf">to_jsonable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">explode_json_string_values</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">include_type</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">include_type</span><span class="p">:</span>
+            <span class="n">result</span><span class="p">[</span><span class="s">&#39;_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_soap_tag</span>
+        <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simple_properties</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">json_out</span> <span class="o">=</span> <span class="bp">None</span>
+                <span class="k">if</span> <span class="n">explode_json_string_values</span><span class="p">:</span>
+                    <span class="n">json_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">explode_json</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">json_out</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="n">result</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">json_out</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">result</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_complex_properties</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">result</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">to_jsonable</span><span class="p">(</span>
+                    <span class="n">explode_json_string_values</span><span class="o">=</span><span class="n">explode_json_string_values</span><span class="p">,</span>
+                    <span class="n">include_type</span><span class="o">=</span><span class="n">include_type</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list_properties</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">result</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">BaseType</span><span class="p">):</span>
+                        <span class="n">result</span><span class="p">[</span><span class="n">p</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">to_jsonable</span><span class="p">(</span>
+                            <span class="n">explode_json_string_values</span><span class="o">=</span><span class="n">explode_json_string_values</span><span class="p">,</span>
+                            <span class="n">include_type</span><span class="o">=</span><span class="n">include_type</span><span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">result</span><span class="p">[</span><span class="n">p</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="BaseType.to_json"><a class="viewcode-back" href="../../../taniumpy/taniumpy.object_types.html#taniumpy.object_types.base.BaseType.to_json">[docs]</a>    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="n">jsonable</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert to a json string.</span>
+
+<span class="sd">        jsonable can be a single BaseType instance of a list</span>
+<span class="sd">        of BaseType</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">jsonable</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">to_jsonable</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">jsonable</span><span class="p">],</span>
+                <span class="n">sort_keys</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
+                <span class="n">jsonable</span><span class="o">.</span><span class="n">to_jsonable</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">),</span>
+                <span class="n">sort_keys</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="p">)</span>
+</div>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_from_json</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">jsonable</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Private helper to parse from JSON after type is instantiated&quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">cls</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">_simple_properties</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">jsonable</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">t</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">_complex_properties</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">jsonable</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">BaseType</span><span class="o">.</span><span class="n">from_jsonable</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">_list_properties</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">jsonable</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">vals</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">val</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">BaseType</span><span class="p">):</span>
+                        <span class="n">vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">BaseType</span><span class="o">.</span><span class="n">from_jsonable</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">vals</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="BaseType.from_jsonable"><a class="viewcode-back" href="../../../taniumpy/taniumpy.object_types.html#taniumpy.object_types.base.BaseType.from_jsonable">[docs]</a>    <span class="k">def</span> <span class="nf">from_jsonable</span><span class="p">(</span><span class="n">jsonable</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Inverse of to_jsonable, with explode_json_string_values=False.</span>
+
+<span class="sd">        This can be used to import objects from serialized JSON. This JSON should come from BaseType.to_jsonable(explode_json_string_values=False, include+type=True)</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; with open(&#39;question_list.json&#39;) as fd:</span>
+<span class="sd">        ...    questions = json.loads(fd.read())</span>
+<span class="sd">        ...    # is a list of serialized questions</span>
+<span class="sd">        ...    question_objects = BaseType.from_jsonable(questions)</span>
+<span class="sd">        ...    # will return a list of api.Question</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">jsonable</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">BaseType</span><span class="o">.</span><span class="n">from_jsonable</span><span class="p">(</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">)]</span>
+        <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">jsonable</span><span class="p">)</span> <span class="o">==</span> <span class="nb">dict</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">jsonable</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;_type&#39;</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;JSON must contain _type to be deserialized&#39;</span><span class="p">)</span>
+            <span class="kn">from</span> <span class="nn">object_list_types</span> <span class="kn">import</span> <span class="n">OBJECT_LIST_TYPES</span>
+            <span class="k">if</span> <span class="n">jsonable</span><span class="p">[</span><span class="s">&#39;_type&#39;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">OBJECT_LIST_TYPES</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;Unknown type {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">jsonable</span><span class="p">[</span><span class="s">&#39;_type&#39;</span><span class="p">]))</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">OBJECT_LIST_TYPES</span><span class="p">[</span><span class="n">jsonable</span><span class="p">[</span><span class="s">&#39;_type&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">_from_json</span><span class="p">(</span><span class="n">jsonable</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">result</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;Expected list or dict to deserialize&#39;</span><span class="p">)</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="BaseType.write_csv"><a class="viewcode-back" href="../../../taniumpy/taniumpy.object_types.html#taniumpy.object_types.base.BaseType.write_csv">[docs]</a>    <span class="k">def</span> <span class="nf">write_csv</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">explode_json_string_values</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Write &#39;val&#39; to CSV. val can be a BaseType instance or a list of</span>
+<span class="sd">        BaseType</span>
+
+<span class="sd">        This does a two-pass, calling to_flat_dict for each object, then</span>
+<span class="sd">        finding the union of all headers,</span>
+<span class="sd">        then writing out the value of each column for each object</span>
+<span class="sd">        sorted by header name</span>
+
+<span class="sd">        explode_json_string_values attempts to see if any of the str values</span>
+<span class="sd">        are parseable by json.loads, and if so treat each property as a column</span>
+<span class="sd">        value</span>
+
+<span class="sd">        fd is a file-like object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">sort_headers</span><span class="p">(</span><span class="n">headers</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="sd">&#39;&#39;&#39;returns a list of sorted headers (Column names)</span>
+<span class="sd">            If kwargs has &#39;header_sort&#39;:</span>
+<span class="sd">              if header_sort == False, do no sorting</span>
+<span class="sd">              if header_sort == [] or True, do sorted(headers)</span>
+<span class="sd">              if header_sort == [&#39;col1&#39;, &#39;col2&#39;], do sorted(headers), then</span>
+<span class="sd">                put those headers first in order if they exist</span>
+<span class="sd">            &#39;&#39;&#39;</span>
+            <span class="n">header_sort</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;header_sort&#39;</span><span class="p">,</span> <span class="p">[])</span>
+
+            <span class="k">if</span> <span class="n">header_sort</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">headers</span>
+            <span class="k">elif</span> <span class="n">header_sort</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">elif</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">header_sort</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">]:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;header_sort must be a list!&quot;</span><span class="p">)</span>
+
+            <span class="n">headers</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">header_sort</span> <span class="ow">is</span> <span class="bp">True</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">header_sort</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">headers</span>
+
+            <span class="n">custom_sorted_headers</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">hs</span> <span class="ow">in</span> <span class="n">header_sort</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">hidx</span><span class="p">,</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">headers</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">h</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">hs</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                        <span class="n">custom_sorted_headers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">headers</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">hidx</span><span class="p">))</span>
+
+            <span class="c"># append the rest of the sorted_headers that didn&#39;t</span>
+            <span class="c"># match header_sort</span>
+            <span class="n">custom_sorted_headers</span> <span class="o">+=</span> <span class="n">headers</span>
+            <span class="k">return</span> <span class="n">custom_sorted_headers</span>
+
+        <span class="k">def</span> <span class="nf">fix_newlines</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
+            <span class="c"># turn \n into \r\n</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">r&quot;([^\r])\n&quot;</span><span class="p">,</span> <span class="s">r&quot;\1\r\n&quot;</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">val</span>
+
+        <span class="n">base_type_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">val</span><span class="p">]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">BaseType</span><span class="p">)</span> <span class="k">else</span> <span class="n">val</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">base_type</span> <span class="ow">in</span> <span class="n">base_type_list</span><span class="p">:</span>
+            <span class="n">row</span> <span class="o">=</span> <span class="n">base_type</span><span class="o">.</span><span class="n">to_flat_dict</span><span class="p">(</span><span class="n">explode_json_string_values</span><span class="o">=</span><span class="n">explode_json_string_values</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span>
+                <span class="n">headers</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+
+        <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span>
+
+        <span class="n">headers_sorted</span> <span class="o">=</span> <span class="n">sort_headers</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">headers</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">headers_sorted</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">base_type</span> <span class="ow">in</span> <span class="n">base_type_list</span><span class="p">:</span>
+            <span class="n">row</span> <span class="o">=</span> <span class="n">base_type</span><span class="o">.</span><span class="n">to_flat_dict</span><span class="p">(</span><span class="n">explode_json_string_values</span><span class="o">=</span><span class="n">explode_json_string_values</span><span class="p">)</span>
+            <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">fix_newlines</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">))</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">headers_sorted</span><span class="p">]</span>
+            <span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">PyTan 1.0.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Tanium.
+      Last updated on Dec 03, 2014.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+    </div>
+  </body>
+</html>

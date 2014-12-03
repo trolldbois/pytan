@@ -51,7 +51,7 @@ Import an API Object from JSON
 Load a Python Object from JSON
 ***************************************************************
 
-.. automethod:: pytan.handler.Handler.load_api_from_json
+.. automethod:: pytan.handler.Handler.load_taniumpy_from_json
 
 Export Object
 ***************************************************************

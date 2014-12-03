@@ -15,5 +15,4 @@ Submodules
    pytan.constants
    pytan.handler
    pytan.utils
-   pytan.xmltodict
 

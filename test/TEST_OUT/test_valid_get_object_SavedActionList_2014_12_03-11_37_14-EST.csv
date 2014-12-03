@@ -1,0 +1,210 @@
+action_group_id,cache_row_id,comment,creation_time,distribute_seconds,end_time,expire_seconds,id,issue_count,issue_seconds,last_action_id,last_action_start_time,name,package_spec_id,policy_flag,policy_max_age,policy_min_count,policy_row_filter_group_id,policy_saved_question_group_id,policy_saved_question_id,status,user_id
+0,0,Scans for unmanaged assets on the network.,2014-10-01T20:12:45,600,Never,1800,1,1020,3600,8919,2014-12-03T16:12:45,Unmanaged Asset Tracking - Run Scan,6,1,3600,0,66,0,1,0,1
+0,1,Distributes the tools needed to be able to scan for unmanaged assets on the network and then run initial scan.,2014-10-01T20:12:45,0,Never,1800,2,4,3000,3775,2014-11-06T17:02:45,Unmanaged Asset Tracking - Deploy Scan Tools and Scan,19,1,3000,0,71,0,2,0,1
+0,2,"Will remove data from Tanium Client directory which is stale, and will safely kill any stale sensor or action processes.  Action processes are only terminated when they are run from the Downloads directory.",2014-10-01T20:12:46,0,Never,1800,3,59,14400,6671,2014-11-27T16:13:13,Tanium - Clean Stale Tanium Client Data,26,1,86400,0,86,0,3,0,1
+0,3,Removes files that may exist due to Client deployment jobs.,2014-10-01T20:12:46,0,Never,780,4,1,3600,4,Never,Remove Tanium Client Install Files,11,1,3600,0,95,0,4,0,1
+0,4,Runs a patch scan using the Microsoft Windows Update offline cab file.  Scans for patches up to 2 minutes after issue time.,2014-10-01T20:12:46,600,Never,1800,5,194,14400,7911,2014-12-01T20:53:00,Patch Management - Run Patch Scan,7,1,3600,0,103,0,5,0,1
+0,5,Batch installs all patches that have been deployed to targeted machines.,2014-10-01T20:12:46,0,Never,1800,6,1,300,6,Never,Patch Management - Install Delivered Patch Files,45,1,300,0,113,0,6,0,1
+0,6,This package will force a patch scan on machines with results older than 2 days.,2014-10-01T20:12:47,0,Never,1800,7,26,3600,8921,2014-12-03T16:12:47,Patch Management - Force Patch Scan for Stale Results,7,1,3600,0,126,0,7,0,1
+0,7,"This action will distribute the latest patch tools to machines that do not have any, or the correct versions, of patch tool files, or are missing the update scan CAB file.",2014-10-01T20:12:47,7200,Never,1800,8,3,7200,3792,2014-11-07T04:12:47,Patch Management - Deploy Patch Scan Files and Scan,21,1,7200,0,136,0,8,0,1
+0,8,Deploys an updated version of the Microsoft Windows Update offline patch cab and VBScript files needed for patch scanning to machines with old patch tools.,2014-10-01T20:12:47,0,Never,660,9,276,3600,8920,2014-12-03T16:12:47,Patch Management - Deploy Patch Scan Files,22,1,3600,0,146,0,9,0,1
+0,9,Update any out of date DAT files and re-run the scan,2014-10-01T20:12:47,0,Never,660,10,41,43200,7906,2014-11-30T20:12:47,Managed Applications - Update DAT and Run Scan,23,1,43200,0,160,0,11,0,1
+0,10,Periodically run the Managed Applications scanner,2014-10-01T20:12:47,0,Never,1200,11,106,21600,7908,2014-11-30T20:12:47,Managed Applications - Run Scan,9,1,21600,0,174,0,10,0,1
+0,11,"Deploy tools needed for Managed Applications scan, kick off initial scan.",2014-10-01T20:12:48,0,Never,660,12,2,3000,3794,2014-11-07T04:42:48,Managed Applications - Initialize and Run Scan,23,1,3000,0,189,0,11,0,1
+0,12,Distribute Tanium Standard Utilities,2014-10-01T20:12:48,3600,Never,3300,13,5,10800,3800,2014-11-07T08:12:48,Distribute Tanium Standard Utilities,20,1,10800,0,202,0,12,0,1
+0,13,Distributes the Hardware Tools used for hardware identification.,2014-10-01T20:12:48,0,Never,660,14,3,86400,3859,2014-11-08T20:12:48,Distribute Hardware Tools,24,1,86400,0,208,0,13,0,1
+0,14,Distributes the Application Management Tools which are required for certain Actions to complete.,2014-10-01T20:12:48,0,Never,2400,15,3,1800,3789,2014-11-07T04:12:48,Distribute Application Management Tools,25,1,1800,0,215,0,14,0,1
+0,15,,2014-10-01T20:50:19,0,Never,660,16,1,0,17,2014-10-01T20:50:19,Deploy Custom Tagging - Add Tags,89,0,,,,,,0,1
+0,16,,2014-10-01T21:13:06,0,Never,660,17,1,0,20,2014-10-01T21:13:06,Deploy Custom Tagging - Add Tags (Non-Windows),90,0,,,,,,0,1
+0,17,,2014-10-01T21:16:20,0,Never,660,18,1,0,21,2014-10-01T21:16:20,Deploy Custom Tagging - Add Tags (Non-Windows),91,0,,,,,,0,1
+0,18,,2014-10-06T15:10:41,0,Never,660,19,1,0,123,2014-10-06T15:10:41,Deploy Custom Tagging - Add Tags (Non-Windows),92,0,,,,,,0,1
+0,19,,2014-10-06T15:20:35,0,Never,660,1019,1,0,1124,2014-10-06T15:20:35,Deploy Custom Tagging - Add Tags (Non-Windows),1092,0,,,,,,0,1
+0,20,,2014-10-06T15:52:13,0,Never,660,1020,1,0,1125,2014-10-06T15:52:13,Deploy Custom Tagging - Add Tags (Non-Windows),1093,0,,,,,,0,1
+0,21,,2014-10-06T15:58:13,0,Never,660,1021,1,0,1126,2014-10-06T15:58:13,Deploy Custom Tagging - Add Tags (Non-Windows),1094,0,,,,,,0,1
+0,22,,2014-11-24T21:52:55,0,Never,660,1022,1,0,6455,2014-11-24T21:52:55,Deploy Custom Tagging - Add Tags,1095,0,,,,,,0,3
+0,23,,2014-11-25T13:27:50,0,Never,660,1023,1,0,6497,2014-11-25T13:27:50,Deploy Custom Tagging - Add Tags,1096,0,,,,,,0,3
+0,24,,2014-11-25T02:42:54,0,Never,3000,1024,1,0,6510,2014-11-25T02:42:54,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,25,,2014-11-25T02:42:58,0,Never,3000,1025,1,0,6511,2014-11-25T02:42:58,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,26,,2014-11-25T02:44:06,0,Never,3000,1026,1,0,6512,2014-11-25T02:44:06,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,27,,2014-11-25T02:52:35,0,Never,3000,1027,1,0,6513,2014-11-25T02:52:35,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,28,Unmanaged Asset Tracking - Run Scan,2014-11-25T18:58:30,600,Never,1800,1028,1,0,6514,2014-11-25T18:58:30,Reissue action: Unmanaged Asset Tracking - Run Scan,6,0,,,,,,0,3
+0,29,,2014-11-25T19:34:07,0,Never,1800,1029,1,0,6517,2014-11-25T19:34:07,Deploy Run Unmanaged Asset Scanner,6,0,,,,,,0,3
+0,30,Deploy Run Unmanaged Asset Scanner,2014-11-25T19:39:05,0,Never,1800,1030,1,0,6518,2014-11-25T19:39:05,Reissue action: Deploy Run Unmanaged Asset Scanner,6,0,,,,,,0,3
+0,31,,2014-11-25T19:41:07,0,Never,1800,1031,1,0,6519,2014-11-25T19:41:07,Deploy Run Unmanaged Asset Scanner,6,0,,,,,,0,3
+0,32,,2014-11-25T03:37:16,0,Never,3000,1032,1,0,6520,2014-11-25T03:37:16,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,33,,2014-11-25T03:42:57,0,Never,3000,1033,1,0,6521,2014-11-25T03:42:57,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,34,,2014-11-25T03:45:11,0,Never,3000,1034,1,0,6522,2014-11-25T03:45:11,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,35,,2014-11-25T04:18:02,0,Never,3000,1035,1,0,6525,2014-11-25T04:18:02,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,36,,2014-11-25T04:42:39,0,Never,3000,1036,1,0,6526,2014-11-25T04:42:39,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,37,,2014-11-25T04:44:33,0,Never,3000,1037,1,0,6527,2014-11-25T04:44:33,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,38,,2014-11-25T04:44:53,0,Never,3000,1038,1,0,6528,2014-11-25T04:44:53,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,39,,2014-11-25T05:02:33,0,Never,3000,1039,1,0,6529,2014-11-25T05:02:33,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,40,,2014-11-25T05:14:38,0,Never,3000,1040,1,0,6532,2014-11-25T05:14:38,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,41,,2014-11-25T05:15:55,0,Never,3000,1041,1,0,6533,2014-11-25T05:15:55,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,42,,2014-11-25T16:22:00,0,Never,3000,1042,1,0,6534,2014-11-25T16:22:00,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,43,,2014-11-25T16:22:00,0,Never,3000,1043,1,0,6535,2014-11-25T16:22:00,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,44,,2014-11-25T16:22:00,0,Never,3000,1044,1,0,6536,2014-11-25T16:22:00,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,45,,2014-11-25T16:30:00,0,Never,3000,1045,1,0,6537,2014-11-25T16:30:00,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,46,,2014-11-25T16:36:00,0,Never,3000,1046,1,0,6538,2014-11-25T16:36:00,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,47,,2014-11-25T21:36:00,0,Never,3000,1047,1,0,6539,2014-11-25T21:36:00,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,48,,2014-11-25T21:36:00,0,Never,3000,1048,1,0,6540,2014-11-25T21:36:00,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,49,,2014-11-25T17:22:21,0,Never,3000,1049,1,0,6543,2014-11-25T17:22:21,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,50,,2014-11-25T22:31:02,0,Never,3000,1050,1,0,6544,2014-11-25T22:31:02,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,51,,2014-11-25T22:35:50,0,Never,3000,1051,1,0,6545,2014-11-25T22:35:50,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,52,,2014-11-25T22:39:12,0,Never,3000,1052,1,0,6546,2014-11-25T22:39:12,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,53,,2014-11-25T22:51:30,0,Never,3000,1053,1,0,6547,2014-11-25T22:51:30,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,54,,2014-11-25T22:52:59,0,Never,3000,1054,1,0,6548,2014-11-25T22:52:59,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,55,,2014-11-25T22:53:11,0,Never,3000,1055,1,0,6549,2014-11-25T22:53:11,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,56,,2014-11-25T23:02:57,0,Never,3000,1056,1,0,6550,2014-11-25T23:02:57,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,57,,2014-11-25T23:03:05,0,Never,3000,1057,1,0,6551,2014-11-25T23:03:05,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,58,,2014-11-25T23:02:55,0,Never,3000,1058,1,0,6552,2014-11-25T23:02:55,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,59,,2014-11-25T23:28:09,0,Never,3000,1059,1,0,6555,2014-11-25T23:28:09,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,60,,2014-11-25T23:36:53,0,Never,3000,1060,1,0,6556,2014-11-25T23:36:53,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,61,,2014-11-25T23:45:13,0,Never,3000,1061,1,0,6557,2014-11-25T23:45:13,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,62,,2014-11-25T23:48:59,0,Never,3000,1062,1,0,6558,2014-11-25T23:48:59,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,63,,2014-11-25T23:49:17,0,Never,3000,1063,1,0,6559,2014-11-25T23:49:17,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,64,,2014-11-26T00:03:30,0,Never,3000,1064,1,0,6560,2014-11-26T00:03:30,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,65,,2014-11-26T11:11:30,0,Never,3000,1065,1,0,6587,2014-11-26T11:11:30,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,66,,2014-11-26T11:12:35,0,Never,3000,1066,1,0,6588,2014-11-26T11:12:35,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,67,,2014-11-26T11:12:39,0,Never,3000,1067,1,0,6589,2014-11-26T11:12:39,Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,68,,2014-11-26T11:24:00,0,Never,3000,1068,1,0,6592,2014-11-26T11:24:00,API Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,69,,2014-11-26T11:42:04,0,Never,3000,1069,1,0,6593,2014-11-26T11:42:04,API Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,70,,2014-11-26T11:54:55,0,Never,3000,1070,1,0,6594,2014-11-26T11:54:55,API Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,71,,2014-11-26T11:55:30,0,Never,3000,1071,1,0,6595,2014-11-26T11:55:30,API Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,72,,2014-11-26T11:57:20,0,Never,3000,1072,1,0,6596,2014-11-26T11:57:20,API Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,73,,2014-11-26T11:58:45,0,Never,3000,1073,1,0,6597,2014-11-26T11:58:45,API Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,74,,2014-11-26T12:00:19,0,Never,3000,1074,1,0,6598,2014-11-26T12:00:19,API Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,75,,2014-11-26T12:08:49,0,Never,3000,1075,1,0,6599,2014-11-26T12:08:49,API Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,1
+0,76,,2014-11-26T12:11:56,0,Never,3000,1077,1,0,6601,2014-11-26T12:11:56,API Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,3
+0,77,,2014-11-26T12:12:23,0,Never,3000,1078,1,0,6602,2014-11-26T12:12:23,API Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,3
+0,78,,2014-11-26T12:13:06,0,Never,3000,1079,1,0,6603,2014-11-26T12:13:06,API Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,3
+0,79,,2014-11-26T12:41:07,0,Never,3000,1080,1,0,6609,2014-11-26T12:41:07,API Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,3
+0,80,,2014-11-26T13:07:03,0,Never,3000,1081,1,0,6610,2014-11-26T13:07:03,API Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,3
+0,81,,2014-11-26T13:07:44,0,Never,3000,1082,1,0,6611,2014-11-26T13:07:44,API Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,3
+0,82,,2014-11-26T13:08:41,0,Never,3000,1083,1,0,6612,2014-11-26T13:08:41,API Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,3
+0,83,,2014-11-26T13:13:19,0,Never,3000,1084,1,0,6614,2014-11-26T13:13:19,API Deploy Clean Stale Tanium Client Data,26,0,,,,,,0,3
+0,84,,2014-11-26T15:42:20,0,Never,720,1085,1,0,6617,2014-11-26T15:42:20,API Deploy Custom Tagging - Add Tags,1097,0,,,,,,0,3
+0,85,,2014-11-26T15:44:12,0,Never,720,1086,1,0,6618,2014-11-26T15:44:12,API Deploy Custom Tagging - Add Tags,1098,0,,,,,,0,3
+0,86,,2014-11-26T17:26:42,0,Never,720,1087,1,0,6621,2014-11-26T17:26:42,API Deploy Custom Tagging - Add Tags,1099,0,,,,,,0,3
+0,87,,2014-11-26T17:31:21,0,Never,720,1088,1,0,6622,2014-11-26T17:31:21,API Deploy Custom Tagging - Add Tags,1100,0,,,,,,0,3
+0,88,,2014-11-26T17:36:37,0,Never,720,1089,1,0,6623,2014-11-26T17:36:37,API Deploy Custom Tagging - Add Tags,1101,0,,,,,,0,3
+0,89,,2014-11-26T17:38:30,0,Never,720,1090,1,0,6624,2014-11-26T17:38:30,API Deploy Custom Tagging - Add Tags,1102,0,,,,,,0,3
+0,90,,2014-11-26T17:43:40,0,Never,720,1091,1,0,6625,2014-11-26T17:43:40,API Deploy Custom Tagging - Add Tags,1103,0,,,,,,0,3
+0,91,,2014-11-26T17:47:59,0,Never,720,1092,1,0,6626,2014-11-26T17:47:59,API Deploy Custom Tagging - Add Tags,1104,0,,,,,,0,3
+0,92,,2014-11-27T01:39:27,0,Never,720,1093,1,0,6635,2014-11-27T01:39:27,API Deploy Custom Tagging - Add Tags,1105,0,,,,,,0,3
+0,93,,2014-11-27T02:18:49,0,Never,720,1094,1,0,6637,2014-11-27T02:18:49,API Deploy Custom Tagging - Add Tags,1106,0,,,,,,0,3
+0,94,,2014-11-27T13:01:13,0,Never,720,1095,1,0,6661,2014-11-27T13:01:13,API Deploy Custom Tagging - Add Tags,1107,0,,,,,,0,3
+0,95,,2014-11-27T13:05:37,0,Never,720,1096,1,0,6662,2014-11-27T13:05:37,API Deploy Custom Tagging - Add Tags,1108,0,,,,,,0,3
+0,96,,2014-11-27T13:13:35,0,Never,720,1097,1,0,6664,2014-11-27T13:13:35,API Deploy Custom Tagging - Add Tags,1109,0,,,,,,0,3
+0,97,,2014-11-27T17:42:17,0,Never,720,1098,1,0,6676,2014-11-27T17:42:17,API Deploy Custom Tagging - Add Tags,1110,0,,,,,,0,3
+0,98,,2014-11-27T17:42:59,0,Never,720,1099,1,0,6677,2014-11-27T17:42:59,API Deploy Custom Tagging - Add Tags,1111,0,,,,,,0,3
+0,99,,2014-11-27T17:45:03,0,Never,720,1100,1,0,6678,2014-11-27T17:45:03,API Deploy Custom Tagging - Add Tags,1112,0,,,,,,0,3
+0,100,,2014-11-27T17:46:10,0,Never,720,1101,1,0,6679,2014-11-27T17:46:10,API Deploy Custom Tagging - Add Tags,1113,0,,,,,,0,3
+0,101,,2014-11-27T18:13:42,0,Never,720,1102,1,0,6681,2014-11-27T18:13:42,API Deploy Custom Tagging - Add Tags,1114,0,,,,,,0,3
+0,102,,2014-11-27T18:16:23,0,Never,720,1103,1,0,6682,2014-11-27T18:16:23,API Deploy Custom Tagging - Add Tags,1115,0,,,,,,0,3
+0,103,,2014-11-27T18:17:44,0,Never,720,1104,1,0,6683,2014-11-27T18:17:44,API Deploy Custom Tagging - Add Tags,1116,0,,,,,,0,3
+0,104,,2014-11-27T18:21:07,0,Never,720,1105,1,0,6686,2014-11-27T18:21:07,API Deploy Custom Tagging - Add Tags,1117,0,,,,,,0,3
+0,105,,2014-11-27T18:22:22,0,Never,720,1106,1,0,6687,2014-11-27T18:22:22,API Deploy Custom Tagging - Add Tags,1118,0,,,,,,0,3
+0,106,,2014-11-27T18:23:16,0,Never,720,1107,1,0,6688,2014-11-27T18:23:16,API Deploy Custom Tagging - Add Tags,1119,0,,,,,,0,3
+0,107,,2014-11-27T18:23:59,0,Never,720,1108,1,0,6689,2014-11-27T18:23:59,API Deploy Custom Tagging - Add Tags,1120,0,,,,,,0,3
+0,108,,2014-11-27T18:43:34,0,Never,720,1109,1,0,6690,2014-11-27T18:43:34,API Deploy Custom Tagging - Add Tags,1121,0,,,,,,0,3
+0,109,,2014-11-27T18:45:24,0,Never,720,1110,1,0,6691,2014-11-27T18:45:24,API Deploy Custom Tagging - Add Tags,1122,0,,,,,,0,3
+0,110,,2014-11-27T19:00:58,0,Never,720,1111,1,0,6692,2014-11-27T19:00:58,API Deploy Custom Tagging - Add Tags,1123,0,,,,,,0,3
+0,111,,2014-11-27T19:01:46,0,Never,720,1112,1,0,6693,2014-11-27T19:01:46,API Deploy Custom Tagging - Add Tags,1124,0,,,,,,0,3
+0,112,,2014-11-27T19:04:50,0,Never,720,1113,1,0,6694,2014-11-27T19:04:50,API Deploy Custom Tagging - Add Tags,1125,0,,,,,,0,3
+0,113,,2014-11-27T19:05:42,0,Never,720,1114,1,0,6695,2014-11-27T19:05:42,API Deploy Custom Tagging - Add Tags,1126,0,,,,,,0,3
+0,114,,2014-11-27T19:06:40,0,Never,720,1115,1,0,6696,2014-11-27T19:06:40,API Deploy Custom Tagging - Add Tags,1127,0,,,,,,0,3
+0,115,,2014-11-27T19:54:13,0,Never,720,1116,1,0,6699,2014-11-27T19:54:13,API Deploy Custom Tagging - Add Tags,1128,0,,,,,,0,3
+0,116,,2014-11-27T20:21:49,0,Never,720,1125,1,0,6710,2014-11-27T20:21:49,API Deploy Custom Tagging - Add Tags,1133,0,,,,,,0,3
+0,117,,2014-11-27T20:22:37,0,Never,720,1126,1,0,6711,2014-11-27T20:22:37,API Deploy Custom Tagging - Add Tags,1134,0,,,,,,0,3
+0,118,,2014-11-27T20:24:52,0,Never,720,1127,1,0,6712,2014-11-27T20:24:52,API Deploy Custom Tagging - Add Tags,1135,0,,,,,,0,3
+0,119,,2014-11-27T20:26:56,0,Never,720,1128,1,0,6713,2014-11-27T20:26:56,API Deploy Custom Tagging - Add Tags,1136,0,,,,,,0,3
+0,120,,2014-11-27T21:03:29,0,Never,720,1129,1,0,6715,2014-11-27T21:03:29,API Deploy Custom Tagging - Add Tags,1137,0,,,,,,0,3
+0,121,,2014-11-27T21:04:38,0,Never,720,1130,1,0,6716,2014-11-27T21:04:38,API Deploy Custom Tagging - Add Tags,1138,0,,,,,,0,3
+0,122,,2014-11-27T21:05:21,0,Never,720,1131,1,0,6717,2014-11-27T21:05:21,API Deploy Custom Tagging - Add Tags,1139,0,,,,,,0,3
+0,123,,2014-11-27T21:09:04,0,Never,720,1132,1,0,6718,2014-11-27T21:09:04,API Deploy Custom Tagging - Add Tags,1140,0,,,,,,0,3
+0,124,,2014-11-27T21:12:55,0,Never,720,1133,1,0,6719,2014-11-27T21:12:55,API Deploy Custom Tagging - Add Tags,1141,0,,,,,,0,3
+0,125,,2014-11-27T21:14:09,0,Never,720,1134,1,0,6721,2014-11-27T21:14:09,API Deploy Custom Tagging - Add Tags,1142,0,,,,,,0,3
+0,126,,2014-11-27T22:57:07,0,Never,720,1135,1,0,6725,2014-11-27T22:57:07,API Deploy Custom Tagging - Add Tags,1143,0,,,,,,0,3
+0,127,,2014-11-27T23:33:45,0,Never,720,1136,1,0,6728,2014-11-27T23:33:45,API Deploy Custom Tagging - Add Tags,1144,0,,,,,,0,3
+0,128,,2014-11-27T23:41:10,0,Never,720,1137,1,0,6729,2014-11-27T23:41:10,API Deploy Custom Tagging - Add Tags,1145,0,,,,,,0,3
+0,129,,2014-11-27T23:41:32,0,Never,720,1138,1,0,6730,2014-11-27T23:41:32,API Deploy Custom Tagging - Add Tags,1146,0,,,,,,0,3
+0,130,,2014-11-27T23:42:31,0,Never,720,1139,1,0,6731,2014-11-27T23:42:31,API Deploy Custom Tagging - Add Tags,1147,0,,,,,,0,3
+0,131,,2014-11-28T00:22:38,0,Never,720,1140,1,0,6736,2014-11-28T00:22:38,API Deploy Custom Tagging - Add Tags,1148,0,,,,,,0,1
+0,132,,2014-11-28T04:18:01,0,Never,720,1141,1,0,6746,2014-11-28T04:18:01,API Deploy Custom Tagging - Add Tags,1149,0,,,,,,0,3
+0,133,,2014-11-28T04:19:32,0,Never,720,1142,1,0,6747,2014-11-28T04:19:32,API Deploy Custom Tagging - Add Tags,1150,0,,,,,,0,3
+0,134,,2014-11-28T04:26:44,0,Never,720,1143,1,0,6748,2014-11-28T04:26:44,API Deploy Custom Tagging - Add Tags,1151,0,,,,,,0,3
+0,135,,2014-11-28T04:31:10,0,Never,720,1144,1,0,6749,2014-11-28T04:31:10,API Deploy Custom Tagging - Add Tags,1152,0,,,,,,0,3
+0,136,,2014-11-28T05:09:26,0,Never,720,1145,1,0,6750,2014-11-28T05:09:26,API Deploy Custom Tagging - Add Tags,1153,0,,,,,,0,3
+0,137,,2014-11-28T05:39:20,0,Never,720,1146,1,0,6754,2014-11-28T05:39:20,API Deploy Custom Tagging - Add Tags,1154,0,,,,,,0,3
+0,138,,2014-11-28T05:40:16,0,Never,720,1147,1,0,6755,2014-11-28T05:40:16,API Deploy Custom Tagging - Add Tags,1155,0,,,,,,0,3
+0,139,,2014-11-28T05:42:15,0,Never,720,1148,1,0,6756,2014-11-28T05:42:15,API Deploy Custom Tagging - Add Tags,1156,0,,,,,,0,3
+0,140,,2014-11-28T05:43:26,0,Never,720,1149,1,0,6757,2014-11-28T05:43:26,API Deploy Custom Tagging - Add Tags,1157,0,,,,,,0,3
+0,141,,2014-11-28T05:43:26,0,Never,720,1150,1,0,6758,2014-11-28T05:43:26,API Deploy Custom Tagging - Add Tags,1158,0,,,,,,0,3
+0,142,,2014-11-28T05:43:26,0,Never,720,1151,1,0,6759,2014-11-28T05:43:26,API Deploy Custom Tagging - Add Tags,1159,0,,,,,,0,3
+0,143,,2014-11-28T05:43:26,0,Never,720,1152,1,0,6760,2014-11-28T05:43:26,API Deploy Custom Tagging - Add Tags,1160,0,,,,,,0,3
+0,144,,2014-11-28T18:42:04,0,Never,720,1153,1,0,6765,2014-11-28T18:42:04,API Deploy Custom Tagging - Add Tags,1161,0,,,,,,0,3
+0,145,,2014-11-28T18:46:50,0,Never,720,1154,1,0,6766,2014-11-28T18:46:50,API Deploy Custom Tagging - Add Tags,1162,0,,,,,,0,3
+0,146,,2014-11-28T18:48:29,0,Never,720,1155,1,0,6767,2014-11-28T18:48:29,API Deploy Custom Tagging - Add Tags,1163,0,,,,,,0,3
+0,147,,2014-11-28T18:49:25,0,Never,720,1156,1,0,6768,2014-11-28T18:49:25,API Deploy Custom Tagging - Add Tags,1164,0,,,,,,0,3
+0,148,,2014-11-28T19:18:58,0,Never,720,1157,1,0,6771,2014-11-28T19:18:58,API Deploy Custom Tagging - Add Tags,1165,0,,,,,,0,3
+0,149,,2014-11-28T19:19:45,0,Never,720,1158,1,0,6772,2014-11-28T19:19:45,API Deploy Custom Tagging - Add Tags,1166,0,,,,,,0,3
+0,150,,2014-11-28T19:23:18,0,Never,720,1159,1,0,6773,2014-11-28T19:23:18,API Deploy Custom Tagging - Add Tags,1167,0,,,,,,0,3
+0,151,,2014-11-28T19:24:25,0,Never,720,1160,1,0,6774,2014-11-28T19:24:25,API Deploy Custom Tagging - Add Tags,1168,0,,,,,,0,3
+0,152,,2014-11-28T19:27:48,0,Never,720,1161,1,0,6775,2014-11-28T19:27:48,API Deploy Custom Tagging - Add Tags,1169,0,,,,,,0,3
+0,153,,2014-11-28T19:32:25,0,Never,720,1162,1,0,6776,2014-11-28T19:32:25,API Deploy Custom Tagging - Add Tags,1170,0,,,,,,0,3
+0,154,,2014-11-28T19:37:08,0,Never,720,1163,1,0,6777,2014-11-28T19:37:08,API Deploy Custom Tagging - Add Tags,1171,0,,,,,,0,3
+0,155,,2014-11-28T19:51:03,0,Never,720,1164,1,0,6778,2014-11-28T19:51:03,API Deploy Custom Tagging - Add Tags,1172,0,,,,,,0,3
+0,156,,2014-11-28T19:52:02,0,Never,720,1165,1,0,6779,2014-11-28T19:52:02,API Deploy Custom Tagging - Add Tags,1173,0,,,,,,0,3
+0,157,,2014-11-28T19:52:54,0,Never,720,1166,1,0,6780,2014-11-28T19:52:54,API Deploy Custom Tagging - Add Tags,1174,0,,,,,,0,3
+0,158,,2014-11-28T21:12:20,0,Never,720,1167,1,0,6785,2014-11-28T21:12:20,API Deploy Custom Tagging - Add Tags,1175,0,,,,,,0,3
+0,159,,2014-11-28T21:15:56,0,Never,720,1168,1,0,6787,2014-11-28T21:15:56,API Deploy Custom Tagging - Add Tags,1176,0,,,,,,0,3
+0,160,,2014-11-28T21:16:31,0,Never,720,1169,1,0,6788,2014-11-28T21:16:31,API Deploy Custom Tagging - Add Tags,1177,0,,,,,,0,3
+0,161,,2014-11-28T21:19:57,0,Never,720,1170,1,0,6789,2014-11-28T21:19:57,API Deploy Custom Tagging - Add Tags,1178,0,,,,,,0,3
+0,162,,2014-11-28T21:21:46,0,Never,720,1171,1,0,6790,2014-11-28T21:21:46,API Deploy Custom Tagging - Add Tags,1179,0,,,,,,0,3
+0,163,,2014-11-28T21:37:56,0,Never,720,1172,1,0,6791,2014-11-28T21:37:56,API Deploy Custom Tagging - Add Tags,1180,0,,,,,,0,3
+0,164,,2014-11-28T21:38:31,0,Never,720,1173,1,0,6792,2014-11-28T21:38:31,API Deploy Custom Tagging - Add Tags,1181,0,,,,,,0,3
+0,165,,2014-11-28T21:46:24,0,Never,720,1174,1,0,6793,2014-11-28T21:46:24,API Deploy Custom Tagging - Add Tags,1182,0,,,,,,0,3
+0,166,,2014-11-28T21:46:58,0,Never,720,1175,1,0,6794,2014-11-28T21:46:58,API Deploy Custom Tagging - Add Tags,1183,0,,,,,,0,3
+0,167,,2014-11-29T03:21:28,0,Never,720,1176,1,0,6803,2014-11-29T03:21:28,API Deploy Custom Tagging - Add Tags,1184,0,,,,,,0,3
+0,168,,2014-11-29T03:23:20,0,Never,720,1177,1,0,6804,2014-11-29T03:23:20,API Deploy Custom Tagging - Add Tags,1185,0,,,,,,0,3
+0,169,,2014-11-29T03:26:00,0,Never,720,1178,1,0,6805,2014-11-29T03:26:00,API Deploy Custom Tagging - Add Tags,1186,0,,,,,,0,3
+0,170,,2014-11-29T04:11:15,0,Never,720,1179,1,0,6806,2014-11-29T04:11:15,API Deploy Custom Tagging - Add Tags,1187,0,,,,,,0,3
+0,171,,2014-11-29T04:11:43,0,Never,720,1180,1,0,6807,2014-11-29T04:11:43,API Deploy Custom Tagging - Add Tags,1188,0,,,,,,0,3
+0,172,Scans for unmanaged assets on the network.,2014-11-29T20:41:31,600,Never,3000,1181,1,0,6836,2014-11-29T20:41:31,Unmanaged Asset Tracking - Run Scan,6,0,,,,,,0,3
+0,173,Scans for unmanaged assets on the network.,2014-11-29T20:43:08,600,Never,3000,1182,1,0,6837,2014-11-29T20:43:08,Unmanaged Asset Tracking - Run Scan,6,0,,,,,,0,3
+0,174,Scans for unmanaged assets on the network.,2014-11-29T20:48:56,600,Never,3000,1183,1,0,6838,2014-11-29T20:48:56,Unmanaged Asset Tracking - Run Scan,6,0,,,,,,0,3
+0,175,Scans for unmanaged assets on the network.,2014-11-29T20:50:13,600,Never,3000,1184,1,0,6839,2014-11-29T20:50:13,Unmanaged Asset Tracking - Run Scan,6,0,,,,,,0,3
+0,176,Scans for unmanaged assets on the network.,2014-11-29T20:52:04,600,Never,3000,1185,1,0,6840,2014-11-29T20:52:04,Unmanaged Asset Tracking - Run Scan,6,0,,,,,,0,3
+0,177,Scans for unmanaged assets on the network.,2014-11-29T20:53:01,600,Never,3000,1186,1,0,6841,2014-11-29T20:53:01,Unmanaged Asset Tracking - Run Scan,6,0,,,,,,0,3
+0,178,Scans for unmanaged assets on the network.,2014-11-29T21:04:34,600,Never,3000,1187,1,0,6842,2014-11-29T21:04:34,Unmanaged Asset Tracking - Run Scan,6,0,,,,,,0,3
+0,179,Scans for unmanaged assets on the network.,2014-11-29T21:35:20,600,Never,3000,1188,1,0,6844,2014-11-29T21:35:20,Unmanaged Asset Tracking - Run Scan,6,0,,,,,,0,3
+0,180,Scans for unmanaged assets on the network.,2014-11-29T21:38:12,600,Never,3000,1189,1,0,6845,2014-11-29T21:38:12,Unmanaged Asset Tracking - Run Scan,6,0,,,,,,0,3
+0,181,Scans for unmanaged assets on the network.,2014-11-29T23:30:10,600,Never,3000,1190,1,0,6848,2014-11-29T23:30:10,Unmanaged Asset Tracking - Run Scan,6,0,,,,,,0,3
+0,182,Scans for unmanaged assets on the network.,2014-11-29T23:33:48,600,Never,3000,1191,1,0,6849,2014-11-29T23:33:48,Unmanaged Asset Tracking - Run Scan,6,0,,,,,,0,3
+0,183,Scans for unmanaged assets on the network.,2014-11-29T23:34:11,600,Never,3000,1192,1,0,6850,2014-11-29T23:34:11,Unmanaged Asset Tracking - Run Scan,6,0,,,,,,0,3
+0,184,Scans for unmanaged assets on the network.,2014-11-29T23:41:36,600,Never,3000,1193,1,0,6851,2014-11-29T23:41:36,Unmanaged Asset Tracking - Run Scan,6,0,,,,,,0,3
+0,185,Scans for unmanaged assets on the network.,2014-11-29T23:42:06,600,Never,3000,1194,1,0,6852,2014-11-29T23:42:06,Unmanaged Asset Tracking - Run Scan,6,0,,,,,,0,3
+0,186,Scans for unmanaged assets on the network.,2014-11-29T23:42:56,600,Never,3000,1195,1,0,6853,2014-11-29T23:42:56,Unmanaged Asset Tracking - Run Scan,6,0,,,,,,0,3
+0,187,,2014-11-29T23:44:44,0,Never,720,1196,1,0,6854,2014-11-29T23:44:44,API Deploy Custom Tagging - Add Tags,2211,0,,,,,,0,3
+0,188,,2014-11-29T23:46:42,0,Never,720,1197,1,0,6855,2014-11-29T23:46:42,API Deploy Custom Tagging - Add Tags,2212,0,,,,,,0,3
+0,189,Scans for unmanaged assets on the network.,2014-11-30T00:53:46,600,Never,3000,1198,1,0,6858,2014-11-30T00:53:46,Unmanaged Asset Tracking - Run Scan,6,0,,,,,,0,3
+0,190,Scans for unmanaged assets on the network.,2014-11-30T01:39:07,600,Never,3000,1199,1,0,6860,2014-11-30T01:39:07,Unmanaged Asset Tracking - Run Scan,6,0,,,,,,0,3
+0,191,,2014-11-30T01:40:19,0,Never,720,1200,1,0,6861,2014-11-30T01:40:19,API Deploy Custom Tagging - Add Tags,2234,0,,,,,,0,3
+0,192,,2014-11-30T01:40:49,0,Never,720,1201,1,0,6862,2014-11-30T01:40:49,API Deploy Custom Tagging - Add Tags,2235,0,,,,,,0,3
+0,193,Scans for unmanaged assets on the network.,2014-11-30T02:21:21,600,Never,3000,1202,1,0,6865,2014-11-30T02:21:21,Unmanaged Asset Tracking - Run Scan,6,0,,,,,,0,3
+0,194,,2014-11-30T02:22:34,0,Never,720,1203,1,0,6866,2014-11-30T02:22:34,API Deploy Custom Tagging - Add Tags,2238,0,,,,,,0,3
+0,195,,2014-11-30T02:23:01,0,Never,720,1204,1,0,6867,2014-11-30T02:23:01,API Deploy Custom Tagging - Add Tags,2239,0,,,,,,0,3
+0,196,Scans for unmanaged assets on the network.,2014-11-30T14:48:36,600,Never,3000,2202,1,0,7891,2014-11-30T14:48:36,Unmanaged Asset Tracking - Run Scan,6,0,,,,,,0,3
+0,197,Scans for unmanaged assets on the network.,2014-11-30T14:49:38,600,Never,3000,2203,1,0,7892,2014-11-30T14:49:38,Unmanaged Asset Tracking - Run Scan,6,0,,,,,,0,3
+0,198,,2014-12-01T14:15:11,0,Never,720,2204,1,0,7893,2014-12-01T14:15:11,API Deploy Custom Tagging - Add Tags,3241,0,,,,,,0,3
+0,199,,2014-12-01T14:15:46,0,Never,720,2205,1,0,7894,2014-12-01T14:15:46,API Deploy Custom Tagging - Add Tags,3242,0,,,,,,0,3
+0,200,,2014-12-01T20:59:43,0,Never,6000,2206,1,0,7912,2014-12-01T20:59:43,API Deploy Distribute Tanium Standard Utilities,20,0,,,,,,0,3
+0,201,,2014-12-01T21:03:52,0,Never,720,2207,1,0,7913,2014-12-01T21:03:52,API Deploy Custom Tagging - Add Tags,3243,0,,,,,,0,3
+0,202,,2014-12-01T21:05:05,0,Never,720,2208,1,0,7914,2014-12-01T21:05:05,API Deploy Custom Tagging - Add Tags,3244,0,,,,,,0,3
+0,203,Scans for unmanaged assets on the network.,2014-12-03T16:27:40,600,Never,3000,2209,1,0,8922,2014-12-03T16:27:40,Unmanaged Asset Tracking - Run Scan,6,0,,,,,,0,3
+0,204,Scans for unmanaged assets on the network.,2014-12-03T16:31:37,600,Never,3000,2210,0,0,4294967295,Never,Unmanaged Asset Tracking - Run Scan,4294967295,0,,,,,,0,3
+0,205,,2014-12-03T16:33:30,0,Never,720,2211,0,0,4294967295,Never,API Deploy Custom Tagging - Add Tags,4294967295,0,,,,,,0,3
+0,206,Scans for unmanaged assets on the network.,2014-12-03T16:33:00,600,Never,3000,2212,0,0,4294967295,Never,Unmanaged Asset Tracking - Run Scan,4294967295,0,,,,,,0,3
+0,207,,2014-12-03T16:35:13,0,Never,720,2213,0,0,4294967295,Never,API Deploy Custom Tagging - Add Tags,4294967295,0,,,,,,0,3
+0,208,,2014-12-03T16:36:55,0,Never,720,2214,0,0,4294967295,Never,API Deploy Custom Tagging - Add Tags,4294967295,0,,,,,,0,3

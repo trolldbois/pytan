@@ -21,10 +21,10 @@ import os
 #sys.path.insert(0, os.path.abspath('.'))
 my_file = os.path.abspath(__file__)
 my_dir = os.path.dirname(my_file)
-pytan_dir = os.path.join(my_dir, os.pardir, os.pardir, os.pardir)
-pytan_dir = os.path.abspath(pytan_dir)
-api_dir = os.path.join(pytan_dir, 'pytan')
-path_adds = [my_dir, pytan_dir, api_dir]
+root_dir = os.path.join(my_dir, os.pardir, os.pardir, os.pardir)
+root_dir = os.path.abspath(root_dir)
+lib_dir = os.path.join(root_dir, 'lib')
+path_adds = [my_dir, lib_dir]
 
 for aa in path_adds:
     if aa not in sys.path:

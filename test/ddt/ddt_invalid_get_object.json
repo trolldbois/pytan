@@ -2,7 +2,7 @@
     "get_action_object_single_by_name": {
         "method": "get",
         "args": {
-            "obj": "action",
+            "objtype": "action",
             "name": "Distribute Tanium Standard Utilities"
         },
         "exception": "pytan.utils.HandlerError",
@@ -11,7 +11,7 @@
     "get_question_object_fail_by_name": {
         "method": "get",
         "args": {
-            "obj": "question",
+            "objtype": "question",
             "name": "dweedle"
         },
         "exception": "pytan.utils.HandlerError",

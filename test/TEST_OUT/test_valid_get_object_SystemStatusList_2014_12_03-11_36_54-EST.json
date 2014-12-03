@@ -1,0 +1,35 @@
+{
+  "_type": "system_status", 
+  "client_status": [
+    {
+      "_type": "client_status", 
+      "cache_row_id": 2, 
+      "computer_id": "3163791039", 
+      "full_version": "6.0.314.1190", 
+      "host_name": "WIN-A12SC6N6T7Q", 
+      "ipaddress_client": "172.16.31.145", 
+      "ipaddress_server": "172.16.31.145", 
+      "last_registration": "2014-11-27T14:09:28", 
+      "port_number": 17472, 
+      "protocol_version": 314, 
+      "receive_state": "Previous Only", 
+      "send_state": "Backward Only", 
+      "status": "Leader"
+    }, 
+    {
+      "_type": "client_status", 
+      "cache_row_id": 3, 
+      "computer_id": "2105785071", 
+      "full_version": "6.0.314.1190", 
+      "host_name": "jtanium1.localdomain", 
+      "ipaddress_client": "172.16.31.128", 
+      "ipaddress_server": "172.16.31.128", 
+      "last_registration": "2014-12-03T16:36:13", 
+      "port_number": 17473, 
+      "protocol_version": 314, 
+      "receive_state": "Previous Only", 
+      "send_state": "Backward Only", 
+      "status": "Leader"
+    }
+  ]
+}

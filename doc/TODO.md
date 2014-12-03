@@ -1,5 +1,4 @@
 # TODO NOW
- * add question_asker args to get_ask_kwargs
  * [ ] DOCS/EXAMPLES
    * [ ] add help to manual stuff
    * [ ] incorporate mdocbuild for bin scripts
@@ -53,7 +52,7 @@
     * [X] support parameters in manual questions
       * [X] handle escaped commas
     * [X] add script / method to return all sensor names for discovery of manual question builder
-  * 0.7.0
+  * 1.0.0
     * [X] support sensors filters/options/params for manual questions
     * [X] support whole question filters/options for manual questions
     * [X] auto wsdl generator
@@ -82,4 +81,14 @@
     * [X] bin scripts for delete
     * [X] bin scripts for create_from_json
     * [X] bin scripts for create
+  * 1.0.1
+    * [X] add question_asker args to get_ask_kwargs
+    * [X] API documentation added via sphinx
+    * [X] API examples added to sphinx
+    * [X] Command line documentation added via mddoctest
+    * [X] restructured pytan dir into lib dir
+      * [X] pytan/api ->> lib/taniumpy
+      * [X] pytan ->> lib/pytan
+      * [X] pytan/xmltodict.py ->> lib/xmltodict
+    * [X] changed relative imports everywhere to explicit imports via PYTHONPATH (package issues during relative import)
 

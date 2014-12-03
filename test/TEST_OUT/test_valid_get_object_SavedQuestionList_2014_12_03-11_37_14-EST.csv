@@ -1,0 +1,426 @@
+action_tracking_flag,archive_enabled_flag,archive_owner_id,archive_owner_name,expire_seconds,hidden_flag,id,issue_seconds,issue_seconds_never_flag,keep_seconds,metadata_item_0_admin_flag,metadata_item_0_name,metadata_item_0_value,metadata_item_1_admin_flag,metadata_item_1_name,metadata_item_1_value,mod_time,mod_user_name,most_recent_question_id,name,public_flag,query_text,question_action_tracking_flag,question_expiration,question_expire_seconds,question_force_computer_id_flag,question_hidden_flag,question_id,question_management_rights_group_id,question_query_text,question_saved_question_id,question_selects_select_0_filter_all_times_flag,question_selects_select_0_filter_all_values_flag,question_selects_select_0_filter_delimiter_index,question_selects_select_0_filter_end_time,question_selects_select_0_filter_ignore_case_flag,question_selects_select_0_filter_max_age_seconds,question_selects_select_0_filter_not_flag,question_selects_select_0_filter_operator,question_selects_select_0_filter_start_time,question_selects_select_0_filter_substring_flag,question_selects_select_0_filter_substring_length,question_selects_select_0_filter_substring_start,question_selects_select_0_filter_utf8_flag,question_selects_select_0_filter_value_type,question_selects_select_0_sensor_category,question_selects_select_0_sensor_creation_time,question_selects_select_0_sensor_delimiter,question_selects_select_0_sensor_description,question_selects_select_0_sensor_exclude_from_parse_flag,question_selects_select_0_sensor_hash,question_selects_select_0_sensor_hidden_flag,question_selects_select_0_sensor_id,question_selects_select_0_sensor_ignore_case_flag,question_selects_select_0_sensor_last_modified_by,question_selects_select_0_sensor_max_age_seconds,question_selects_select_0_sensor_metadata_item_0_admin_flag,question_selects_select_0_sensor_metadata_item_0_name,question_selects_select_0_sensor_metadata_item_0_value,question_selects_select_0_sensor_modification_time,question_selects_select_0_sensor_name,question_selects_select_0_sensor_queries_query_0_platform,question_selects_select_0_sensor_queries_query_0_script,question_selects_select_0_sensor_queries_query_0_script_type,question_selects_select_0_sensor_queries_query_1_platform,question_selects_select_0_sensor_queries_query_1_script,question_selects_select_0_sensor_queries_query_1_script_type,question_selects_select_0_sensor_queries_query_2_platform,question_selects_select_0_sensor_queries_query_2_script,question_selects_select_0_sensor_queries_query_2_script_type,question_selects_select_0_sensor_source_id,question_selects_select_0_sensor_string_count,question_selects_select_0_sensor_subcolumns_subcolumn_0_hidden_flag,question_selects_select_0_sensor_subcolumns_subcolumn_0_ignore_case_flag,question_selects_select_0_sensor_subcolumns_subcolumn_0_index,question_selects_select_0_sensor_subcolumns_subcolumn_0_name,question_selects_select_0_sensor_subcolumns_subcolumn_0_value_type,question_selects_select_0_sensor_subcolumns_subcolumn_1_hidden_flag,question_selects_select_0_sensor_subcolumns_subcolumn_1_ignore_case_flag,question_selects_select_0_sensor_subcolumns_subcolumn_1_index,question_selects_select_0_sensor_subcolumns_subcolumn_1_name,question_selects_select_0_sensor_subcolumns_subcolumn_1_value_type,question_selects_select_0_sensor_subcolumns_subcolumn_2_hidden_flag,question_selects_select_0_sensor_subcolumns_subcolumn_2_ignore_case_flag,question_selects_select_0_sensor_subcolumns_subcolumn_2_index,question_selects_select_0_sensor_subcolumns_subcolumn_2_name,question_selects_select_0_sensor_subcolumns_subcolumn_2_value_type,question_selects_select_0_sensor_subcolumns_subcolumn_3_hidden_flag,question_selects_select_0_sensor_subcolumns_subcolumn_3_ignore_case_flag,question_selects_select_0_sensor_subcolumns_subcolumn_3_index,question_selects_select_0_sensor_subcolumns_subcolumn_3_name,question_selects_select_0_sensor_subcolumns_subcolumn_3_value_type,question_selects_select_0_sensor_value_type,question_skip_lock_flag,question_user_id,question_user_name,row_count_flag,sort_column,user_id,user_name
+0,0,1,Jim Olsen,600,0,92,120,0,3600,0,defined,Tanium,0,category,Tanium,2014-10-01T20:12:23,Jim Olsen,56614,Installed Applications,1,Get Installed Applications from all machines,0,2014-12-01T14:29:51,0,0,0,56614,0,Get Installed Applications from all machines,92,0,0,0,2001-01-01T00:00:00,1,0,0,Less,2001-01-01T00:00:00,0,0,0,0,String,Applications,2014-10-01T20:11:04,|,"List of the applications and versions of those applications installed on the client machine.
+Example: Mozilla Firefox | 16.0.1",1,1511329504,0,41,1,Jim Olsen,600,0,defined,Tanium,2014-10-01T20:11:04,Installed Applications,Windows,"&#039;========================================
+&#039; Installed Applications
+&#039;========================================
+&#039;@INCLUDE=utils/SensorRandomization/SensorRandomizationFunctions.vbs
+&#039; This sensor will return information in the uninstall areas of the registry.
+&#039; There are two hidden columns which can be filtered on despite the fact that
+&#039; they&#039;re hidden, and can also feed actions.
+&#039; if the uninstallstring is msi based, it is altered to show the
+&#039; silent uninstall options and marked as &quot;Is Uninstallable&quot;
+&#039; finally, if it&#039;s a user installed application, it will note that
+&#039; The columns look like:
+&#039; Name|Version|Silent Uninstall String|Uninstallable
+
+SensorRandomize()
+
+Set objRegistry = Getx64RegistryProvider()
+
+keyPath = &quot;SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall&quot;
+key64Path = &quot;SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall&quot;
+
+Const HKLM = &amp;H80000002
+Const HKEY_USERS = &amp;H80000003
+
+&#039; list out 32-bit applications on a 64-bit system
+If RegKeyExists(HKLM, key64Path) Then
+	objRegistry.EnumKey HKLM, key64Path, arrSubKeys
+	GetApplications HKLM,key64path,arrSubKeys
+End If
+
+&#039; list out 32-bit applications on a 32-bit system, or 64-bit applications
+&#039; on a 64-bit system.
+If RegKeyExists(HKLM, keyPath) Then
+	objRegistry.EnumKey HKLM, keypath, arrSubKeys
+	GetApplications HKLM,keypath,arrSubKeys
+End If
+
+&#039; Also list out applications installed to HKEY_Users areas
+&#039; which will be appended to the arrSubKeys
+objRegistry.EnumKey HKEY_USERS, &quot;&quot;, arrUserKeys
+For Each strSIDkey In arrUserKeys
+	If RegKeyExists(HKEY_USERS, strSIDKEY&amp;&quot;\&quot;&amp;keyPath) Then
+		objRegistry.EnumKey HKEY_USERS, strSIDkey&amp;&quot;\&quot;&amp;keyPath, arrSubKeys
+		GetApplications HKEY_USERS,strSIDKey&amp;&quot;\&quot;&amp;keyPath,arrSubKeys
+	End If
+Next
+
+
+Function GetApplications(HIVE, keypath,arrSubKeys)
+	Set applications = CreateObject(&quot;Scripting.Dictionary&quot;)
+	On Error Resume Next
+	For Each key in arrSubKeys
+		objRegistry.GetStringValue HIVE,keyPath &amp; &quot;\&quot; &amp; key,&quot;DisplayName&quot;, displayName
+		objRegistry.GetStringValue HIVE,keyPath &amp; &quot;\&quot; &amp; key,&quot;DisplayVersion&quot;, version
+		objRegistry.GetDWORDValue HIVE,keyPath &amp; &quot;\&quot; &amp; key,&quot;SystemComponent&quot;, systemComponent	
+		objRegistry.GetStringValue HIVE,keyPath &amp; &quot;\&quot; &amp; key,&quot;UninstallString&quot;, uninstallString	
+		objRegistry.GetStringValue HIVE,keyPath &amp; &quot;\&quot; &amp; key,&quot;ParentKeyName&quot;, parentKey	
+		&#039; on error goto 0
+		&#039; assume it&#039;s not uninstallable
+		bUninstallable = &quot;Not Uninstallable&quot;
+				
+		If displayName &lt;&gt; &quot;&quot; _
+			And Not IsNull(uninstallString) _ 
+			And IsNull(parentKey) _
+			And InStr(displayName, &quot;Hotfix&quot;) = 0 _
+			And InStr(displayName, &quot;Update for&quot;) = 0 _
+	 		And InStr(displayName, &quot;Security Update for&quot;) = 0 _
+	 	Then 
+	 		If InStr(LCase(uninstallString), &quot;msiexec&quot;) Then
+	 			&#039; replace any /I with /X and add silent flags
+	 			uninstallString = Replace(uninstallString,&quot;/I&quot;,&quot;/X&quot;) &amp; &quot; /qn /noreboot&quot; 
+	  			bUninstallable = &quot;Is Uninstallable&quot;
+	  		End If
+	 		If IsNull(systemComponent) Or systemComponent = 0 Then
+				If IsNull(version) Then
+					version = GetVersionInString(displayName)
+				End If
+				&#039; This is a multi-column sensor.  Last two columns are hidden.
+
+				displayString = displayName &amp; &quot;|&quot; &amp; version &amp; &quot;|&quot; &amp; uninstallString &amp; &quot;|&quot; &amp; bUninstallable
+
+				&#039; treat displayString as the unique value - cannot be listed twice.
+				If Not applications.Exists(displayString) Then
+					applications.Add displayString, &quot;&quot;
+				End If 	
+			End If 	
+		End If 
+	Next
+	On Error Goto 0
+	
+	SortDictionary applications, 1 &#039; This calls a sorting function specific to dictionaries
+	arrApplicationsKeys = applications.Keys
+	For Each application In arrApplicationsKeys
+		&#039; final output of the sensor
+		WScript.Echo CleanCharacters(application)
+	Next
+End Function &#039;GetApplications
+
+Function RegKeyExists(sHive, sRegKey)
+	Dim aValueNames, aValueTypes
+	If objRegistry.EnumValues(sHive, sRegKey, aValueNames, aValueTypes) = 0 Then
+		RegKeyExists = True
+	Else
+		RegKeyExists = False
+	End If
+End Function
+
+Function SortDictionary(objDict, intSort)
+ &#039;   objDict - the dictionary to sort
+ &#039;   intSort - the field to sort (1=key, 2=item)
+ 
+   &#039; declare constants
+   Const dictKey  = 1
+   Const dictItem = 2
+ 
+   &#039; declare our variables
+   Dim strDict()
+   Dim objKey
+   Dim strKey,strItem
+   Dim X,Y,Z
+ 
+   &#039; get the dictionary count
+   Z = objDict.Count
+ 
+   &#039; we need more than one item to warrant sorting
+   If Z &gt; 1 Then
+     &#039; create an array to store dictionary information
+     ReDim strDict(Z,2)
+     X = 0
+     &#039; populate the string array
+     For Each objKey In objDict
+         strDict(X,dictKey)  = CStr(objKey)
+         strDict(X,dictItem) = CStr(objDict(objKey))
+         X = X + 1
+     Next
+ 
+     &#039; perform a a shell sort of the string array
+     For X = 0 To (Z - 2)
+       For Y = X To (Z - 1)
+         If StrComp(strDict(X,intSort),strDict(Y,intSort),vbTextCompare) &gt; 0 Then
+             strKey  = strDict(X,dictKey)
+             strItem = strDict(X,dictItem)
+             strDict(X,dictKey)  = strDict(Y,dictKey)
+             strDict(X,dictItem) = strDict(Y,dictItem)
+             strDict(Y,dictKey)  = strKey
+             strDict(Y,dictItem) = strItem
+         End If
+       Next
+     Next
+ 
+     &#039; erase the contents of the dictionary object
+     objDict.RemoveAll
+ 
+     &#039; repopulate the dictionary with the sorted information
+     For X = 0 To (Z - 1)
+       objDict.Add strDict(X,dictKey), strDict(X,dictItem)
+     Next
+ 
+   End If
+ End Function &#039;SortDictionary
+
+Function GetVersionInString(ByVal strTemp)
+&#039; examines a string and returns a version string at the end of it
+	Dim strOut
+	strOut = &quot;&quot;
+	If Not IsNull(strTemp) Then
+		strTemp = StrReverse(strTemp)
+		Dim strLookAtChar,intCurPos
+		Dim bNumbersStartMarked : bNumbersStartMarked = False
+
+		For intCurPos = 1 To Len(strTemp)		
+			strLookAtChar = Mid(strTemp,intCurPos,1)
+			If IsNumeric(strLookAtChar) Or strLookAtChar = &quot;.&quot; Or strLookAtChar = &quot;-&quot; Then
+				bNumbersStartMarked = True
+				strOut = strOut &amp; strLookAtChar
+			End If
+		If bNumbersStartMarked And ( (Not IsNumeric(strLookAtChar) And strLookAtChar &lt;&gt; &quot;.&quot; And strLookAtChar &lt;&gt; &quot;-&quot;) ) Then
+			Exit For
+		End If	
+		Next
+		strOut = StrReverse(strOut)
+	Else
+		strOut = &quot;&quot;
+	End If
+	
+	If Len(strOut) = 0 Then strOut = &quot;N/A&quot;
+	
+	GetVersionInString = strOut
+	
+End Function &#039;GetVersionInString
+
+Function CleanCharacters(strTest)
+&#039; String returned will not have characters in the output which
+&#039; are not friendly to the console app
+	strPattern = &quot;[^\x20-\x7E]&quot;
+	strReplace = &quot;&quot;
+	Set objRegExp = New RegExp
+	objRegExp.Global = True
+	objRegExp.IgnoreCase = True
+	objRegExp.Pattern = strPattern
+	objRegExp.Global = True
+	CleanCharacters = objRegExp.Replace(strTest, strReplace)
+End Function
+
+Function Getx64RegistryProvider
+    &#039; Returns the best available registry provider:  32 bit on 32 bit systems, 64 bit on 64 bit systems
+    Dim objWMIService, colItems, objItem, iArchType, objCtx, objLocator, objServices, objRegProv
+    Set objWMIService = GetObject(&quot;winmgmts:\\.\root\CIMV2&quot;)
+    Set colItems = objWMIService.ExecQuery(&quot;Select SystemType from Win32_ComputerSystem&quot;)    
+    For Each objItem In colItems
+        If InStr(LCase(objItem.SystemType), &quot;x64&quot;) &gt; 0 Then
+            iArchType = 64
+        Else
+            iArchType = 32
+        End If
+    Next
+    
+    Set objCtx = CreateObject(&quot;WbemScripting.SWbemNamedValueSet&quot;)
+    objCtx.Add &quot;__ProviderArchitecture&quot;, iArchType
+    Set objLocator = CreateObject(&quot;Wbemscripting.SWbemLocator&quot;)
+    Set objServices = objLocator.ConnectServer(&quot;&quot;,&quot;root\default&quot;,&quot;&quot;,&quot;&quot;,,,,objCtx)
+    Set objRegProv = objServices.Get(&quot;StdRegProv&quot;)   
+    
+    Set Getx64RegistryProvider = objRegProv
+End Function &#039; Getx64RegistryProvider
+&#039;------------ INCLUDES after this line. Do not edit past this point -----
+&#039;- Begin file: utils/SensorRandomization/SensorRandomizationFunctions.vbs
+&#039;&#039; -- Begin Random Sleep Functions -- &#039;&#039;
+
+Dim bSensorRandomizeDebugOutput : bSensorRandomizeDebugOutput = False
+
+Function SensorRandomizeLow()
+    Dim intSensorRandomizeWaitLow : intSensorRandomizeWaitLow = 10
+    SensorRandomizeRandomSleep(intSensorRandomizeWaitLow)
+End Function &#039; SensorRandomizeLow
+
+Function SensorRandomize()
+    Dim intSensorRandomizeWaitMed : intSensorRandomizeWaitMed = 20
+    SensorRandomizeRandomSleep(intSensorRandomizeWaitMed)
+End Function &#039; SensorRandomize
+
+Function SensorRandomizeHigh()
+    Dim intSensorRandomizeWaitHigh : intSensorRandomizeWaitHigh = 30
+    SensorRandomizeRandomSleep(intSensorRandomizeWaitHigh)
+End Function &#039; SensorRandomize
+
+Function SensorRandomizeRandomSleep(intSleepTime)
+&#039; sleeps for a random period of time, intSleepTime is in seconds
+&#039; if the sensor randomize flag is on
+&#039; RandomizeScalingFactor is a multiplier on the values hardcoded in the sensor
+&#039; not typically set but can adjust timings per endpoint, optionally
+	Dim intSensorRandomizeWaitTime
+	Dim objShell,intRandomizeFlag,strRandomizeRegPath,intRandomizeScalingPercentage
+	strRandomizeRegPath = SensorRandomizeGetTaniumRegistryPath&amp;&quot;\Sensor Data\Random Sleep&quot;
+	
+	Set objShell = CreateObject(&quot;WScript.Shell&quot;)
+	On Error Resume Next
+	intRandomizeFlag = objShell.RegRead(&quot;HKLM\&quot;&amp;strRandomizeRegPath&amp;&quot;\SensorRandomizeFlag&quot;)
+	intRandomizeScalingPercentage = objShell.RegRead(&quot;HKLM\&quot;&amp;strRandomizeRegPath&amp;&quot;\SensorRandomizeScalingPercentage&quot;)
+	On Error Goto 0
+	If intRandomizeFlag &gt; 0 Then
+		If intRandomizeScalingPercentage &gt; 0 Then
+			intSleepTime = intRandomizeScalingPercentage * .01 * intSleepTime
+			SensorRandomizeEcho &quot;Randomize scaling percentage of &quot; _ 
+				&amp; intRandomizeScalingPercentage &amp; &quot; applied, new sleep time is &quot; &amp; intSleepTime
+		End If
+		intSensorRandomizeWaitTime = CLng(intSleepTime) * 1000 &#039; convert to milliseconds
+		&#039; wait random interval between 0 and the max
+		Randomize(SensorRandomizeTaniumRandomSeed)
+		&#039; assign random value to wait time max value
+		intSensorRandomizeWaitTime = Int( ( intSensorRandomizeWaitTime + 1 ) * Rnd )
+		SensorRandomizeEcho &quot;Sleeping for &quot; &amp; intSensorRandomizeWaitTime &amp; &quot; milliseconds&quot;
+		WScript.Sleep(intSensorRandomizeWaitTime)
+		SensorRandomizeEcho &quot;Done sleeping, continuing ...&quot;
+	Else 
+		SensorRandomizeEcho &quot;SensorRandomize Not Enabled - No Op&quot;
+	End If
+End Function &#039;SensorRandomizeRandomSleep
+
+Function SensorRandomizeTaniumRandomSeed
+&#039; for randomizing sensor code, the default seed is not random enough
+	Dim timerNum
+	timerNum = Timer()
+	If timerNum &lt; 1 Then
+		SensorRandomizeTaniumRandomSeed = (SensorRandomizeGetTaniumComputerID / Timer() * 10 )
+	Else
+		SensorRandomizeTaniumRandomSeed = SensorRandomizeGetTaniumComputerID / Timer
+	End If
+End Function &#039;SensorRandomizeTaniumRandomSeed
+
+Function SensorRandomizeGetTaniumRegistryPath
+&#039;SensorRandomizeGetTaniumRegistryPath works in x64 or x32
+&#039;looks for a valid Path value
+
+	Dim objShell
+	Dim keyNativePath, keyWoWPath, strPath, strFoundTaniumRegistryPath
+	  
+    Set objShell = CreateObject(&quot;WScript.Shell&quot;)
+    
+	keyNativePath = &quot;Software\Tanium\Tanium Client&quot;
+	keyWoWPath = &quot;Software\Wow6432Node\Tanium\Tanium Client&quot;
+    
+    &#039; first check the Software key (valid for 32-bit machines, or 64-bit machines in 32-bit mode)
+    On Error Resume Next
+    strPath = objShell.RegRead(&quot;HKLM\&quot;&amp;keyNativePath&amp;&quot;\Path&quot;)
+    On Error Goto 0
+	strFoundTaniumRegistryPath = keyNativePath
+ 
+  	If strPath = &quot;&quot; Then
+  		&#039; Could not find 32-bit mode path, checking Wow6432Node
+  		On Error Resume Next
+  		strPath = objShell.RegRead(&quot;HKLM\&quot;&amp;keyWoWPath&amp;&quot;\Path&quot;)
+  		On Error Goto 0
+		strFoundTaniumRegistryPath = keyWoWPath
+  	End If
+  	
+  	If Not strPath = &quot;&quot; Then
+  		SensorRandomizeGetTaniumRegistryPath = strFoundTaniumRegistryPath
+  	Else
+  		SensorRandomizeGetTaniumRegistryPath = False
+  		WScript.Echo &quot;Error: Cannot locate Tanium Registry Path&quot;
+  	End If
+End Function &#039;SensorRandomizeGetTaniumRegistryPath
+
+Function SensorRandomizeGetTaniumComputerID
+&#039;&#039; This function gets the Tanium Computer ID
+	Dim objShell
+	Dim intClientID,strID,strKeyPath,strValueName
+	
+    strKeyPath = SensorRandomizeGetTaniumRegistryPath
+    strValueName = &quot;ComputerID&quot;
+    Set objShell = CreateObject(&quot;WScript.Shell&quot;)
+    On Error Resume Next
+    intClientID = objShell.RegRead(&quot;HKLM\&quot;&amp;strKeyPath&amp;&quot;\&quot;&amp;strValueName)
+    If Err.Number &lt;&gt; 0 Then
+    	SensorRandomizeGetTaniumComputerID = 0
+    Else
+		SensorRandomizeGetTaniumComputerID = SensorRandomizeReinterpretSignedAsUnsigned(intClientID)
+	End If
+	On Error Goto 0
+End Function &#039;SensorRandomizeGetTaniumComputerID
+
+Function SensorRandomizeReinterpretSignedAsUnsigned(ByVal x)
+	  If x &lt; 0 Then x = x + 2^32
+	  SensorRandomizeReinterpretSignedAsUnsigned = x
+End Function &#039;SensorRandomizeReinterpretSignedAsUnsigned
+
+Sub SensorRandomizeEcho(str)
+	If bSensorRandomizeDebugOutput = true Then WScript.Echo str
+End Sub &#039;SensorRandomizeEcho
+&#039; -- End Random Sleep Functions --&#039;
+&#039;- End file: utils/SensorRandomization/SensorRandomizationFunctions.vbs",VBScript,Linux,"#!/bin/sh
+# Detects which OS and if it is Linux then it will detect which Linux
+# Distribution.
+
+# Can be used as a starting point for shell scripts that need to work differently on
+# Mac, and various flavors of Linux
+
+OS=`uname -s`
+
+GetVersionFromFile()
+{
+    VERSION=`cat $1 | tr &quot;\n&quot; &#039; &#039; | sed s/.*VERSION.*=\ // `
+}
+
+if [ &quot;${OS}&quot; = &quot;Linux&quot; ] ; then
+    KERNEL=`uname -r`
+    if [ -f /etc/redhat-release ] ; then
+        # Redhat based system
+        rpm -qa --queryformat &quot;%{NAME}|%{VERSION}|nothing|Not Uninstallable\n&quot;
+    elif [ -f /etc/SuSE-release ] ; then
+        # SuSE / OpenSuSE based system
+        rpm -qa --queryformat &quot;%{NAME}|%{VERSION}|nothing|Not Uninstallable\n&quot;
+    elif [ -f /etc/lsb-release ] ; then
+        # Usually Ubuntu -- this is a Linux Standard Based system, which
+        # Ubuntu is by far the biggest.  But general LSB commands should work
+        dpkg -l | awk &#039;{print $2&quot;|&quot;$3&quot;|nothing|Not Uninstallable&quot;}&#039;
+    elif [ -f /etc/debian_version ] ; then
+        # Debian -- note that Ubuntu is Debian based, but Debian does not have a
+        # lsb-release file
+        dpkg -l | awk &#039;{print $2&quot;|&quot;$3&quot;|nothing|Not Uninstallable&quot;}&#039;
+        #else
+	# a less common distribution.  Most all really popular distributions will
+        # be caught by the tree above.
+    fi
+#else
+   # not Linux -- could be anything, BSD / Solaris / AIX / etc
+fi
+
+echo ${OSSTR}
+",UnixShell,Mac,"#!/bin/bash
+
+notcontains() {
+    string=&quot;$1&quot;
+    substring=&quot;$2&quot;
+    if test &quot;${string#*$substring}&quot; != &quot;$string&quot;
+    then
+        return 1    # $substring is not in $string
+    else
+        return 0    # $substring is in $string
+    fi
+}
+
+ftemp=$(mktemp -t &#039;apps.xml&#039;)
+system_profiler -xml SPApplicationsDataType &gt; &quot;$ftemp&quot;
+
+count=1
+
+while true
+do
+        app=`/usr/libexec/PlistBuddy -c &quot;Print :0:_items:$count:_name&quot; $ftemp 2&gt;/dev/null`
+        version=`/usr/libexec/PlistBuddy -c &quot;Print :0:_items:$count:version&quot; $ftemp 2&gt;/dev/null`
+        if [ -z &quot;$app&quot; ]; then
+                break
+        fi
+        test=&quot;VMware&quot;
+        if notcontains &quot;$version&quot; &quot;$test&quot;; then
+                echo $app&quot;|&quot;$version&quot;|nothing|Not Uninstallable&quot;
+        fi
+        let count=count+1
+done
+rm -rf &quot;$ftemp&quot;
+",UnixShell,0,3209,0,1,0,Name,String,0,1,1,Version,Version,1,1,2,Silent Uninstall String,String,1,1,3,Uninstallable,String,String,0,3,Tanium User,0,0,1,Jim Olsen
+0,0,1,Jim Olsen,600,0,110,120,0,3600,0,defined,Tanium,0,category,Tanium,2014-10-01T20:12:27,Jim Olsen,56899,Computer Name,1,Get Computer Name from all machines,0,2014-12-01T20:27:47,0,1,0,56899,0,Get Computer Name from all machines,110,0,0,0,2001-01-01T00:00:00,1,0,0,Less,2001-01-01T00:00:00,0,0,0,0,String,Reserved,,,"The assigned name of the client machine.
+Example: workstation-1.company.com",0,3409330187,0,3,1,,86400,,,,,Computer Name,Windows,select CSName from win32_operatingsystem,WMIQuery,,,,,,,0,7,,,,,,,,,,,,,,,,,,,,,String,0,3,Tanium User,0,0,1,Jim Olsen

@@ -1,0 +1,22 @@
+{
+  "_type": "groups", 
+  "group": [
+    {
+      "_type": "group", 
+      "and_flag": 0, 
+      "deleted_flag": 0, 
+      "filters": {
+        "_type": "filters", 
+        "filter": []
+      }, 
+      "id": 1, 
+      "name": "All Computers", 
+      "not_flag": 0, 
+      "sub_groups": {
+        "_type": "groups", 
+        "group": []
+      }, 
+      "type": 0
+    }
+  ]
+}

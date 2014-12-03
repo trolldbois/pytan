@@ -1,7 +1,7 @@
 {
     "get_action_single_by_id": {
         "method": "get",
-        "args": {"obj": "action", "id": 1},
+        "args": {"objtype": "action", "id": 1},
         "tests": [
             "len(response) == 1",
             "isinstance(response, taniumpy.ActionList)",
@@ -10,7 +10,7 @@
     },
     "get_group_single_by_name": {
         "method": "get",
-        "args": {"obj": "group", "name": "All Computers"},
+        "args": {"objtype": "group", "name": "All Computers"},
         "tests": [
             "len(response) == 1",
             "isinstance(response, taniumpy.GroupList)",
@@ -19,7 +19,7 @@
     },
     "get_package_single_by_name": {
         "method": "get",
-        "args": {"obj": "package", "name": "Distribute Patch Tools"},
+        "args": {"objtype": "package", "name": "Distribute Patch Tools"},
         "tests": [
             "len(response) == 1",
             "isinstance(response, taniumpy.PackageSpecList)",
@@ -28,7 +28,7 @@
     },
     "get_question_single_by_id": {
         "method": "get",
-        "args": {"obj": "question", "id": 1},
+        "args": {"objtype": "question", "id": 1},
         "tests": [
             "len(response) == 1",
             "isinstance(response, taniumpy.QuestionList)",
@@ -38,7 +38,7 @@
     "get_saved_action_single_by_name": {
         "method": "get",
         "args": {
-            "obj": "saved_action",
+            "objtype": "saved_action",
             "name": "Distribute Tanium Standard Utilities"
         },
         "tests": [
@@ -50,7 +50,7 @@
     "get_saved_question_single_by_name": {
         "method": "get",
         "args": {
-            "obj": "saved_question",
+            "objtype": "saved_question",
             "name": "Installed Applications"
         },
         "tests": [
@@ -62,7 +62,7 @@
     "get_saved_question_multiple": {
         "method": "get",
         "args": {
-            "obj": "saved_question",
+            "objtype": "saved_question",
             "name": ["Installed Applications", "Computer Name"]
         },
         "tests": [
@@ -73,7 +73,7 @@
     },
     "get_sensor_single_by_name": {
         "method": "get",
-        "args": {"obj": "sensor", "name": "Computer Name"},
+        "args": {"objtype": "sensor", "name": "Computer Name"},
         "tests": [
             "len(response) == 1",
             "isinstance(response, taniumpy.SensorList)",
@@ -82,7 +82,7 @@
     },
     "get_sensor_single_by_id": {
         "method": "get",
-        "args": {"obj": "sensor", "id": 1},
+        "args": {"objtype": "sensor", "id": 1},
         "tests": [
             "len(response) == 1",
             "isinstance(response, taniumpy.SensorList)",
@@ -91,7 +91,7 @@
     },
     "get_sensor_single_by_hash": {
         "method": "get",
-        "args": {"obj": "sensor", "hash": "322086833"},
+        "args": {"objtype": "sensor", "hash": "322086833"},
         "tests": [
             "len(response) == 1",
             "isinstance(response, taniumpy.SensorList)",
@@ -101,7 +101,7 @@
     "get_sensor_multiple": {
         "method": "get",
         "args": {
-            "obj": "sensor",
+            "objtype": "sensor",
             "name": ["Computer Name", "Action Statuses"]
         },
         "tests": [
@@ -113,7 +113,7 @@
     "get_sensor_multiple_selectors": {
         "method": "get",
         "args": {
-            "obj": "sensor",
+            "objtype": "sensor",
             "name": ["Computer Name"],
             "id": [1, 2],
             "hash": ["322086833"]
@@ -126,7 +126,7 @@
     },
     "get_setting_single_by_name": {
         "method": "get",
-        "args": {"obj": "setting", "name": "control_address"},
+        "args": {"objtype": "setting", "name": "control_address"},
         "tests": [
             "len(response) == 1",
             "isinstance(response, taniumpy.SystemSettingsList)",
@@ -135,7 +135,7 @@
     },
     "get_user_single_by_id": {
         "method": "get",
-        "args": {"obj": "user", "id": 1},
+        "args": {"objtype": "user", "id": 1},
         "tests": [
             "len(response) == 1",
             "isinstance(response, taniumpy.UserList)",
@@ -144,7 +144,7 @@
     },
     "get_user_single_by_name": {
         "method": "get",
-        "args": {"obj": "user", "name": "Tanium User"},
+        "args": {"objtype": "user", "name": "Tanium User"},
         "tests": [
             "len(response) == 1",
             "isinstance(response, taniumpy.UserList)",
@@ -153,7 +153,7 @@
     },
     "get_userrole_single_by_id": {
         "method": "get",
-        "args": {"obj": "userrole", "id": 1},
+        "args": {"objtype": "userrole", "id": 1},
         "tests": [
             "len(response) == 1",
             "isinstance(response, taniumpy.UserRoleList)",
@@ -162,7 +162,7 @@
     },
     "get_whitelisted_url_single_by_id": {
         "method": "get",
-        "args": {"obj": "whitelisted_url", "id": 4},
+        "args": {"objtype": "whitelisted_url", "id": 4},
         "tests": [
             "len(response) == 1",
             "isinstance(response, taniumpy.WhiteListedUrlList)",
@@ -171,7 +171,7 @@
     },
     "get_leader_clients": {
         "method": "get",
-        "args": {"obj": "client", "status": "Leader"},
+        "args": {"objtype": "client", "status": "Leader"},
         "tests": [
             "len(response) >= 1",
             "isinstance(response, taniumpy.SystemStatusList)",
@@ -180,7 +180,7 @@
     },
     "get_all_actions": {
         "method": "get_all",
-        "args": {"obj": "action"},
+        "args": {"objtype": "action"},
         "tests": [
             "len(response) >= 1",
             "isinstance(response, taniumpy.ActionList)",
@@ -189,7 +189,7 @@
     },
     "get_all_clients": {
         "method": "get_all",
-        "args": {"obj": "client"},
+        "args": {"objtype": "client"},
         "tests": [
             "len(response) >= 1",
             "isinstance(response, taniumpy.SystemStatusList)",
@@ -198,7 +198,7 @@
     },
     "get_all_groups": {
         "method": "get_all",
-        "args": {"obj": "group"},
+        "args": {"objtype": "group"},
         "tests": [
             "len(response) >= 1",
             "isinstance(response, taniumpy.GroupList)",
@@ -207,7 +207,7 @@
     },
     "get_all_packages": {
         "method": "get_all",
-        "args": {"obj": "package"},
+        "args": {"objtype": "package"},
         "tests": [
             "len(response) >= 1",
             "isinstance(response, taniumpy.PackageSpecList)",
@@ -216,7 +216,7 @@
     },
     "get_all_questions": {
         "method": "get_all",
-        "args": {"obj": "question"},
+        "args": {"objtype": "question"},
         "tests": [
             "len(response) >= 1",
             "isinstance(response, taniumpy.QuestionList)",
@@ -225,7 +225,7 @@
     },
     "get_all_saved_actions": {
         "method": "get_all",
-        "args": {"obj": "saved_action"},
+        "args": {"objtype": "saved_action"},
         "tests": [
             "len(response) >= 1",
             "isinstance(response, taniumpy.SavedActionList)",
@@ -234,7 +234,7 @@
     },
     "get_all_saved_questions": {
         "method": "get_all",
-        "args": {"obj": "saved_question"},
+        "args": {"objtype": "saved_question"},
         "tests": [
             "len(response) >= 1",
             "isinstance(response, taniumpy.SavedQuestionList)",
@@ -243,7 +243,7 @@
     },
     "get_all_sensors": {
         "method": "get_all",
-        "args": {"obj": "sensor"},
+        "args": {"objtype": "sensor"},
         "tests": [
             "len(response) >= 1",
             "isinstance(response, taniumpy.SensorList)",
@@ -252,7 +252,7 @@
     },
     "get_all_settings": {
         "method": "get_all",
-        "args": {"obj": "setting"},
+        "args": {"objtype": "setting"},
         "tests": [
             "len(response) >= 1",
             "isinstance(response, taniumpy.SystemSettingsList)",
@@ -261,7 +261,7 @@
     },
     "get_all_users": {
         "method": "get_all",
-        "args": {"obj": "user"},
+        "args": {"objtype": "user"},
         "tests": [
             "len(response) >= 1",
             "isinstance(response, taniumpy.UserList)",
@@ -270,7 +270,7 @@
     },
     "get_all_userroless": {
         "method": "get_all",
-        "args": {"obj": "userrole"},
+        "args": {"objtype": "userrole"},
         "tests": [
             "len(response) >= 1",
             "isinstance(response, taniumpy.UserRoleList)",
@@ -279,7 +279,7 @@
     },
     "get_all_whitelisted_urls": {
         "method": "get_all",
-        "args": {"obj": "whitelisted_url"},
+        "args": {"objtype": "whitelisted_url"},
         "tests": [
             "len(response) >= 1",
             "isinstance(response, taniumpy.WhiteListedUrlList)",

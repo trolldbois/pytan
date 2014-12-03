@@ -1,0 +1,132 @@
+{
+  "_type": "system_status", 
+  "aggregate": {
+    "_type": "aggregate", 
+    "blocked_count": 0, 
+    "leader_count": 4, 
+    "normal_count": 2, 
+    "receive_backward_count": 2, 
+    "receive_forward_count": 0, 
+    "receive_none_count": 0, 
+    "receive_ok_count": 4, 
+    "send_backward_count": 2, 
+    "send_forward_count": 1, 
+    "send_none_count": 0, 
+    "send_ok_count": 3, 
+    "slowlink_count": 2, 
+    "versions": {
+      "_type": "versions", 
+      "version": [
+        {
+          "_type": "version", 
+          "count": 2, 
+          "filtered": 2, 
+          "version_string": "5.1.314.7724"
+        }, 
+        {
+          "_type": "version", 
+          "count": 2, 
+          "filtered": 2, 
+          "version_string": "5.1.314.7778"
+        }, 
+        {
+          "_type": "version", 
+          "count": 2, 
+          "filtered": 2, 
+          "version_string": "6.0.314.1190"
+        }
+      ]
+    }
+  }, 
+  "cache_info": {
+    "_type": "cache_info", 
+    "cache_id": 1716778095, 
+    "cache_row_count": 6, 
+    "expiration": "2014-12-03T16:37:34", 
+    "filtered_row_count": 6, 
+    "page_row_count": 6
+  }, 
+  "client_status": [
+    {
+      "_type": "client_status", 
+      "cache_row_id": 0, 
+      "computer_id": "3799824155", 
+      "full_version": "5.1.314.7724", 
+      "host_name": "Casus-Belli.local", 
+      "ipaddress_client": "172.16.31.1", 
+      "ipaddress_server": "172.16.31.1", 
+      "last_registration": "2014-12-03T16:36:16", 
+      "port_number": 17472, 
+      "protocol_version": 314, 
+      "send_state": "Forward Only", 
+      "status": "Leader, Slow Link Behind"
+    }, 
+    {
+      "_type": "client_status", 
+      "cache_row_id": 1, 
+      "computer_id": "4259288444", 
+      "full_version": "5.1.314.7724", 
+      "host_name": "Jims-Mac.local", 
+      "ipaddress_client": "172.16.31.131", 
+      "ipaddress_server": "172.16.31.131", 
+      "last_registration": "2014-11-27T14:09:37", 
+      "port_number": 17472, 
+      "protocol_version": 314
+    }, 
+    {
+      "_type": "client_status", 
+      "cache_row_id": 2, 
+      "computer_id": "3163791039", 
+      "full_version": "6.0.314.1190", 
+      "host_name": "WIN-A12SC6N6T7Q", 
+      "ipaddress_client": "172.16.31.145", 
+      "ipaddress_server": "172.16.31.145", 
+      "last_registration": "2014-11-27T14:09:28", 
+      "port_number": 17472, 
+      "protocol_version": 314, 
+      "receive_state": "Previous Only", 
+      "send_state": "Backward Only", 
+      "status": "Leader"
+    }, 
+    {
+      "_type": "client_status", 
+      "cache_row_id": 3, 
+      "computer_id": "2105785071", 
+      "full_version": "6.0.314.1190", 
+      "host_name": "jtanium1.localdomain", 
+      "ipaddress_client": "172.16.31.128", 
+      "ipaddress_server": "172.16.31.128", 
+      "last_registration": "2014-12-03T16:36:23", 
+      "port_number": 17473, 
+      "protocol_version": 314, 
+      "receive_state": "Previous Only", 
+      "send_state": "Backward Only", 
+      "status": "Leader"
+    }, 
+    {
+      "_type": "client_status", 
+      "cache_row_id": 4, 
+      "computer_id": "1582616067", 
+      "full_version": "5.1.314.7778", 
+      "host_name": "localhost.(none)", 
+      "ipaddress_client": "172.16.31.143", 
+      "ipaddress_server": "172.16.31.143", 
+      "last_registration": "2014-11-27T14:09:17", 
+      "port_number": 17472, 
+      "protocol_version": 314, 
+      "status": "Leader, Slow Link Ahead, Slow Link Behind"
+    }, 
+    {
+      "_type": "client_status", 
+      "cache_row_id": 5, 
+      "computer_id": "1073923434", 
+      "full_version": "5.1.314.7778", 
+      "host_name": "ubuntu.(none)", 
+      "ipaddress_client": "172.16.31.144", 
+      "ipaddress_server": "172.16.31.144", 
+      "last_registration": "2014-11-27T14:09:29", 
+      "port_number": 17472, 
+      "protocol_version": 314
+    }
+  ]
+}
