@@ -68,7 +68,10 @@ class HistoryConsole(code.InteractiveConsole):
     def __init__(self, locals=None, filename="<console>",
                  histfile=os.path.expanduser("~/.console-history")):
         code.InteractiveConsole.__init__(self, locals, filename)
-        self.rldoc = rlcompleter.__doc__
+        try:
+            self.rldoc = rlcompleter.__doc__
+        except:
+            pass
         try:
             self.init_history(histfile)
         except:
