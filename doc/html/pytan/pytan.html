@@ -1,0 +1,233 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>1. PyTan package &mdash; PyTan 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="PyTan 1.0.0 documentation" href="../index.html" />
+    <link rel="next" title="1.6.1. pytan.constants module" href="pytan.constants.html" />
+    <link rel="prev" title="Welcome to PyTan’s documentation!" href="../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pytan.constants.html" title="1.6.1. pytan.constants module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="Welcome to PyTan’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">PyTan 1.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">1. PyTan package</a><ul>
+<li><a class="reference internal" href="#pytan-description">1.1. PyTan Description</a></li>
+<li><a class="reference internal" href="#why-pytan-was-created">1.2. Why PyTan was created</a></li>
+<li><a class="reference internal" href="#requirements">1.3. Requirements</a></li>
+<li><a class="reference internal" href="#installation">1.4. Installation</a></li>
+<li><a class="reference internal" href="#api-usage">1.5. API Usage</a></li>
+<li><a class="reference internal" href="#submodules">1.6. Submodules</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../index.html"
+                        title="previous chapter">Welcome to PyTan&#8217;s documentation!</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pytan.constants.html"
+                        title="next chapter">1.6.1. pytan.constants module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/pytan/pytan.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pytan">
+<span id="pytan-package"></span><h1>1. PyTan package<a class="headerlink" href="#module-pytan" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="pytan-description">
+<h2>1.1. PyTan Description<a class="headerlink" href="#pytan-description" title="Permalink to this headline">¶</a></h2>
+<p>A Python library that provides a simple way for programmatically interfacing
+with Tanium&#8217;s SOAP API. It is comprised of three parts:</p>
+<ul class="simple">
+<li>TaniumPy API: A set of Python objects that are automatically generated
+from the WSDL that describes the Tanium SOAP API.</li>
+<li>PyTan Handler API: An API that makes the objects exposed by TaniumPy
+easier to use.</li>
+<li>PyTan Command Line Scripts: A set of command line scripts that utilize
+the PyTan Handler API to make it easy for non-programmers to utilize the
+Tanium SOAP API to create/get/delete/ask/deploy objects.</li>
+</ul>
+</div>
+<div class="section" id="why-pytan-was-created">
+<h2>1.2. Why PyTan was created<a class="headerlink" href="#why-pytan-was-created" title="Permalink to this headline">¶</a></h2>
+<p>PyTan was created to solve for the following needs:</p>
+<ul class="simple">
+<li>Create a python library to provide an easy set of methods for
+programmatically interfacing with Tanium via the SOAP API</li>
+<li>Create a set of command line scripts utilizing the python library created
+above that handle the argument parsing, thereby providing non-python users
+with command line access to the functionality provided by the methods
+inside of the python library</li>
+<li>Provide a way to ask questions and get results via Python and/or the
+command line.</li>
+<li>Provide a way to deploy actions and get results via Python and/or the
+command line.</li>
+<li>Provide a way to export/import objects in JSON via Python and/or the
+command line.</li>
+</ul>
+</div>
+<div class="section" id="requirements">
+<h2>1.3. Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Python 2.7</li>
+<li>A working install of Tanium Server 6.2</li>
+</ul>
+</div>
+<div class="section" id="installation">
+<h2>1.4. Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Windows Installation</dt>
+<dd><ul class="first last simple">
+<li>Download Python 2.7 from <a class="reference external" href="https://www.python.org/downloads/windows/">https://www.python.org/downloads/windows/</a></li>
+<li>Install Python 2.7 &#8211; if you accept the default paths it will install
+to C:Python27</li>
+<li>Copy PyTan from github to your local machine somewhere</li>
+<li>If you did not accept the default install path for Python 2.7, edit
+<code class="docutils literal"><span class="pre">pytan\winbin\CONFIG.bat</span></code> to change the <em>PYTHON</em> variable to point
+to the full path of <em>python.exe</em></li>
+</ul>
+</dd>
+<dt>OS X Installation</dt>
+<dd><ul class="first last simple">
+<li>OS X 10.8 and higher come with Python 2.7 out of the box</li>
+<li>Copy PyTan from github to your local machine somewhere</li>
+</ul>
+</dd>
+<dt>Linux Installation</dt>
+<dd><ul class="first last simple">
+<li>Ensure Python 2.7 is installed</li>
+<li>Ensure the first <em>python</em> binary in your path points to your Python 2.7
+installation</li>
+<li>Copy PyTan from github to your local machine somewhere</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="api-usage">
+<h2>1.5. API Usage<a class="headerlink" href="#api-usage" title="Permalink to this headline">¶</a></h2>
+<p>See <a class="reference internal" href="pytan.handler.html#module-pytan.handler" title="pytan.handler"><code class="xref py py-mod docutils literal"><span class="pre">pytan.handler</span></code></a> submodule for API Usage</p>
+</div>
+<div class="section" id="submodules">
+<h2>1.6. Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pytan.constants.html">1.6.1. pytan.constants module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pytan.handler.html">1.6.2. pytan.handler module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pytan.handler.html#handler-class">1.6.2.1. Handler Class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pytan.handler.html#example-create-a-handler-object">1.6.2.1.1. Example: Create a Handler object</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytan.handler.html#handler-methods-asking-questions">1.6.2.1.2. Handler Methods: Asking Questions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pytan.handler.html#ask-a-question">1.6.2.1.2.1. Ask a Question</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pytan.handler.html#ask-a-saved-question">1.6.2.1.2.2. Ask a Saved Question</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pytan.handler.html#asking-a-manual-question">1.6.2.1.2.3. Asking a Manual Question</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pytan.handler.html#handler-methods-json-import">1.6.2.1.3. Handler Methods: JSON Import</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pytan.handler.html#create-api-object-from-json">1.6.2.1.3.1. Create API Object from JSON</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pytan.handler.html#create-python-object-from-json">1.6.2.1.3.2. Create Python Object from JSON</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pytan.utils.html">1.6.3. pytan.utils module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pytan.xmltodict.html">1.6.4. pytan.xmltodict module</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pytan.constants.html" title="1.6.1. pytan.constants module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="Welcome to PyTan’s documentation!"
+             >previous</a> |</li>
+        <li><a href="../index.html">PyTan 1.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Tanium.
+      Last updated on Dec 03, 2014.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+    </div>
+  </body>
+</html>

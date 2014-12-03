@@ -1,7 +1,0 @@
-
-pytan.api.object_types.action_list_info module
-**********************************************
-
-class class pytan.api.object_types.action_list_info.ActionListInfo
-
-   Bases: "pytan.api.object_types.base.BaseType"

@@ -349,16 +349,15 @@ class BaseType(object):
     def from_jsonable(jsonable):
         """Inverse of to_jsonable, with explode_json_string_values=False.
 
-        This can be used to import objects from serialized JSON. This JSON
-        should come from BaseType.to_jsonable(explode_json_string_values=False,
-        include+type=True)
+        This can be used to import objects from serialized JSON. This JSON should come from BaseType.to_jsonable(explode_json_string_values=False, include+type=True)
 
-        Example:
-        with open('question_list.json') as fd:
-            questions = json.loads(fd.read())
-               # is a list of serialized questions
-            question_objects = BaseType.from_jsonable(questions)
-            # will return a list of api.Question
+        Examples
+        --------
+        >>> with open('question_list.json') as fd:
+        ...    questions = json.loads(fd.read())
+        ...    # is a list of serialized questions
+        ...    question_objects = BaseType.from_jsonable(questions)
+        ...    # will return a list of api.Question
 
         """
         if type(jsonable) == list:

@@ -1,0 +1,1239 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2.4.1. api.object_types package &mdash; PyTan 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="PyTan 1.0.0 documentation" href="../../index.html" />
+    <link rel="up" title="2. api package" href="api.html" />
+    <link rel="prev" title="2. api package" href="api.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="api.html" title="2. api package"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">PyTan 1.0.0 documentation</a> &raquo;</li>
+          <li><a href="api.html" accesskey="U">2. api package</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">2.4.1. api.object_types package</a><ul>
+<li><a class="reference internal" href="#submodules">2.4.1.1. Submodules</a></li>
+<li><a class="reference internal" href="#module-api.object_types.action">2.4.1.2. api.object_types.action module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.action_list">2.4.1.3. api.object_types.action_list module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.action_list_info">2.4.1.4. api.object_types.action_list_info module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.action_stop">2.4.1.5. api.object_types.action_stop module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.action_stop_list">2.4.1.6. api.object_types.action_stop_list module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.all_objects">2.4.1.7. api.object_types.all_objects module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.archived_question">2.4.1.8. api.object_types.archived_question module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.archived_question_list">2.4.1.9. api.object_types.archived_question_list module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.audit_data">2.4.1.10. api.object_types.audit_data module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.base">2.4.1.11. api.object_types.base module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.cache_filter">2.4.1.12. api.object_types.cache_filter module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.cache_filter_list">2.4.1.13. api.object_types.cache_filter_list module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.cache_info">2.4.1.14. api.object_types.cache_info module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.client_count">2.4.1.15. api.object_types.client_count module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.client_status">2.4.1.16. api.object_types.client_status module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.column">2.4.1.17. api.object_types.column module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.column_set">2.4.1.18. api.object_types.column_set module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.computer_group">2.4.1.19. api.object_types.computer_group module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.computer_group_list">2.4.1.20. api.object_types.computer_group_list module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.computer_group_spec">2.4.1.21. api.object_types.computer_group_spec module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.computer_spec_list">2.4.1.22. api.object_types.computer_spec_list module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.error_list">2.4.1.23. api.object_types.error_list module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.filter">2.4.1.24. api.object_types.filter module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.filter_list">2.4.1.25. api.object_types.filter_list module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.group">2.4.1.26. api.object_types.group module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.group_list">2.4.1.27. api.object_types.group_list module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.metadata_item">2.4.1.28. api.object_types.metadata_item module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.metadata_list">2.4.1.29. api.object_types.metadata_list module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.object_list">2.4.1.30. api.object_types.object_list module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.object_list_types">2.4.1.31. api.object_types.object_list_types module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.options">2.4.1.32. api.object_types.options module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.package_file">2.4.1.33. api.object_types.package_file module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.package_file_list">2.4.1.34. api.object_types.package_file_list module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.package_file_status">2.4.1.35. api.object_types.package_file_status module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.package_file_status_list">2.4.1.36. api.object_types.package_file_status_list module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.package_file_template">2.4.1.37. api.object_types.package_file_template module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.package_file_template_list">2.4.1.38. api.object_types.package_file_template_list module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.package_spec">2.4.1.39. api.object_types.package_spec module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.package_spec_list">2.4.1.40. api.object_types.package_spec_list module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.parameter">2.4.1.41. api.object_types.parameter module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.parameter_list">2.4.1.42. api.object_types.parameter_list module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.parse_job">2.4.1.43. api.object_types.parse_job module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.parse_job_list">2.4.1.44. api.object_types.parse_job_list module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.parse_result">2.4.1.45. api.object_types.parse_result module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.parse_result_group">2.4.1.46. api.object_types.parse_result_group module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.parse_result_group_list">2.4.1.47. api.object_types.parse_result_group_list module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.parse_result_list">2.4.1.48. api.object_types.parse_result_list module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.plugin">2.4.1.49. api.object_types.plugin module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.plugin_argument">2.4.1.50. api.object_types.plugin_argument module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.plugin_argument_list">2.4.1.51. api.object_types.plugin_argument_list module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.plugin_command_list">2.4.1.52. api.object_types.plugin_command_list module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.plugin_list">2.4.1.53. api.object_types.plugin_list module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.plugin_schedule">2.4.1.54. api.object_types.plugin_schedule module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.plugin_schedule_list">2.4.1.55. api.object_types.plugin_schedule_list module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.plugin_sql">2.4.1.56. api.object_types.plugin_sql module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.plugin_sql_column">2.4.1.57. api.object_types.plugin_sql_column module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.plugin_sql_result">2.4.1.58. api.object_types.plugin_sql_result module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.question">2.4.1.59. api.object_types.question module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.question_list">2.4.1.60. api.object_types.question_list module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.question_list_info">2.4.1.61. api.object_types.question_list_info module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.result_info">2.4.1.62. api.object_types.result_info module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.result_set">2.4.1.63. api.object_types.result_set module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.row">2.4.1.64. api.object_types.row module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.saved_action">2.4.1.65. api.object_types.saved_action module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.saved_action_approval">2.4.1.66. api.object_types.saved_action_approval module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.saved_action_list">2.4.1.67. api.object_types.saved_action_list module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.saved_action_policy">2.4.1.68. api.object_types.saved_action_policy module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.saved_action_row_id_list">2.4.1.69. api.object_types.saved_action_row_id_list module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.saved_question">2.4.1.70. api.object_types.saved_question module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.saved_question_list">2.4.1.71. api.object_types.saved_question_list module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.select">2.4.1.72. api.object_types.select module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.select_list">2.4.1.73. api.object_types.select_list module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.sensor">2.4.1.74. api.object_types.sensor module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.sensor_list">2.4.1.75. api.object_types.sensor_list module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.sensor_query">2.4.1.76. api.object_types.sensor_query module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.sensor_query_list">2.4.1.77. api.object_types.sensor_query_list module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.sensor_string_hints">2.4.1.78. api.object_types.sensor_string_hints module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.sensor_subcolumn">2.4.1.79. api.object_types.sensor_subcolumn module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.sensor_subcolumn_list">2.4.1.80. api.object_types.sensor_subcolumn_list module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.sensor_types">2.4.1.81. api.object_types.sensor_types module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.soap_error">2.4.1.82. api.object_types.soap_error module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.system_setting">2.4.1.83. api.object_types.system_setting module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.system_settings_list">2.4.1.84. api.object_types.system_settings_list module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.system_status_aggregate">2.4.1.85. api.object_types.system_status_aggregate module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.system_status_list">2.4.1.86. api.object_types.system_status_list module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.upload_file">2.4.1.87. api.object_types.upload_file module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.upload_file_list">2.4.1.88. api.object_types.upload_file_list module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.upload_file_status">2.4.1.89. api.object_types.upload_file_status module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.user">2.4.1.90. api.object_types.user module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.user_list">2.4.1.91. api.object_types.user_list module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.user_permissions">2.4.1.92. api.object_types.user_permissions module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.user_role">2.4.1.93. api.object_types.user_role module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.user_role_list">2.4.1.94. api.object_types.user_role_list module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.version_aggregate">2.4.1.95. api.object_types.version_aggregate module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.version_aggregate_list">2.4.1.96. api.object_types.version_aggregate_list module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.white_listed_url">2.4.1.97. api.object_types.white_listed_url module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.white_listed_url_list">2.4.1.98. api.object_types.white_listed_url_list module</a></li>
+<li><a class="reference internal" href="#module-api.object_types.xml_error">2.4.1.99. api.object_types.xml_error module</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="api.html"
+                        title="previous chapter">2. api package</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/pytan/api/api.object_types.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-api.object_types">
+<span id="api-object-types-package"></span><h1>2.4.1. api.object_types package<a class="headerlink" href="#module-api.object_types" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>2.4.1.1. Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-api.object_types.action">
+<span id="api-object-types-action-module"></span><h2>2.4.1.2. api.object_types.action module<a class="headerlink" href="#module-api.object_types.action" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.action.Action">
+<em class="property">class </em><code class="descclassname">api.object_types.action.</code><code class="descname">Action</code><a class="reference internal" href="../../_modules/api/object_types/action.html#Action"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.action.Action" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.action_list">
+<span id="api-object-types-action-list-module"></span><h2>2.4.1.3. api.object_types.action_list module<a class="headerlink" href="#module-api.object_types.action_list" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.action_list.ActionList">
+<em class="property">class </em><code class="descclassname">api.object_types.action_list.</code><code class="descname">ActionList</code><a class="reference internal" href="../../_modules/api/object_types/action_list.html#ActionList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.action_list.ActionList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.action_list_info">
+<span id="api-object-types-action-list-info-module"></span><h2>2.4.1.4. api.object_types.action_list_info module<a class="headerlink" href="#module-api.object_types.action_list_info" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.action_list_info.ActionListInfo">
+<em class="property">class </em><code class="descclassname">api.object_types.action_list_info.</code><code class="descname">ActionListInfo</code><a class="reference internal" href="../../_modules/api/object_types/action_list_info.html#ActionListInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.action_list_info.ActionListInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.action_stop">
+<span id="api-object-types-action-stop-module"></span><h2>2.4.1.5. api.object_types.action_stop module<a class="headerlink" href="#module-api.object_types.action_stop" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.action_stop.ActionStop">
+<em class="property">class </em><code class="descclassname">api.object_types.action_stop.</code><code class="descname">ActionStop</code><a class="reference internal" href="../../_modules/api/object_types/action_stop.html#ActionStop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.action_stop.ActionStop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.action_stop_list">
+<span id="api-object-types-action-stop-list-module"></span><h2>2.4.1.6. api.object_types.action_stop_list module<a class="headerlink" href="#module-api.object_types.action_stop_list" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.action_stop_list.ActionStopList">
+<em class="property">class </em><code class="descclassname">api.object_types.action_stop_list.</code><code class="descname">ActionStopList</code><a class="reference internal" href="../../_modules/api/object_types/action_stop_list.html#ActionStopList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.action_stop_list.ActionStopList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.all_objects">
+<span id="api-object-types-all-objects-module"></span><h2>2.4.1.7. api.object_types.all_objects module<a class="headerlink" href="#module-api.object_types.all_objects" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-api.object_types.archived_question">
+<span id="api-object-types-archived-question-module"></span><h2>2.4.1.8. api.object_types.archived_question module<a class="headerlink" href="#module-api.object_types.archived_question" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.archived_question.ArchivedQuestion">
+<em class="property">class </em><code class="descclassname">api.object_types.archived_question.</code><code class="descname">ArchivedQuestion</code><a class="reference internal" href="../../_modules/api/object_types/archived_question.html#ArchivedQuestion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.archived_question.ArchivedQuestion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.archived_question_list">
+<span id="api-object-types-archived-question-list-module"></span><h2>2.4.1.9. api.object_types.archived_question_list module<a class="headerlink" href="#module-api.object_types.archived_question_list" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.archived_question_list.ArchivedQuestionList">
+<em class="property">class </em><code class="descclassname">api.object_types.archived_question_list.</code><code class="descname">ArchivedQuestionList</code><a class="reference internal" href="../../_modules/api/object_types/archived_question_list.html#ArchivedQuestionList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.archived_question_list.ArchivedQuestionList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.audit_data">
+<span id="api-object-types-audit-data-module"></span><h2>2.4.1.10. api.object_types.audit_data module<a class="headerlink" href="#module-api.object_types.audit_data" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.audit_data.AuditData">
+<em class="property">class </em><code class="descclassname">api.object_types.audit_data.</code><code class="descname">AuditData</code><a class="reference internal" href="../../_modules/api/object_types/audit_data.html#AuditData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.audit_data.AuditData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.base">
+<span id="api-object-types-base-module"></span><h2>2.4.1.11. api.object_types.base module<a class="headerlink" href="#module-api.object_types.base" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.base.BaseType">
+<em class="property">class </em><code class="descclassname">api.object_types.base.</code><code class="descname">BaseType</code><span class="sig-paren">(</span><em>simple_properties</em>, <em>complex_properties</em>, <em>list_properties</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/api/object_types/base.html#BaseType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.base.BaseType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="api.object_types.base.BaseType.append">
+<code class="descname">append</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/api/object_types/base.html#BaseType.append"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.base.BaseType.append" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allow adding to list.</p>
+<p>Only supported on types that have a single property
+that is in list_properties</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="api.object_types.base.BaseType.explode_json">
+<code class="descname">explode_json</code><span class="sig-paren">(</span><em>val</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/api/object_types/base.html#BaseType.explode_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.base.BaseType.explode_json" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="api.object_types.base.BaseType.flatten_jsonable">
+<code class="descname">flatten_jsonable</code><span class="sig-paren">(</span><em>val</em>, <em>prefix</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/api/object_types/base.html#BaseType.flatten_jsonable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.base.BaseType.flatten_jsonable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="api.object_types.base.BaseType.fromSOAPBody">
+<em class="property">classmethod </em><code class="descname">fromSOAPBody</code><span class="sig-paren">(</span><em>body</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/api/object_types/base.html#BaseType.fromSOAPBody"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.base.BaseType.fromSOAPBody" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse body (text) and produce Python tanium objects.</p>
+<p>This method assumes a single result_object, which
+may be a list or a single object.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="api.object_types.base.BaseType.fromSOAPElement">
+<em class="property">classmethod </em><code class="descname">fromSOAPElement</code><span class="sig-paren">(</span><em>el</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/api/object_types/base.html#BaseType.fromSOAPElement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.base.BaseType.fromSOAPElement" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="api.object_types.base.BaseType.from_jsonable">
+<em class="property">static </em><code class="descname">from_jsonable</code><span class="sig-paren">(</span><em>jsonable</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/api/object_types/base.html#BaseType.from_jsonable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.base.BaseType.from_jsonable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inverse of to_jsonable, with explode_json_string_values=False.</p>
+<p>This can be used to import objects from serialized JSON. This JSON should come from BaseType.to_jsonable(explode_json_string_values=False, include+type=True)</p>
+<p class="rubric">Examples</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;question_list.json&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+<span class="gp">... </span>   <span class="n">questions</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">fd</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+<span class="gp">... </span>   <span class="c"># is a list of serialized questions</span>
+<span class="gp">... </span>   <span class="n">question_objects</span> <span class="o">=</span> <span class="n">BaseType</span><span class="o">.</span><span class="n">from_jsonable</span><span class="p">(</span><span class="n">questions</span><span class="p">)</span>
+<span class="gp">... </span>   <span class="c"># will return a list of api.Question</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="api.object_types.base.BaseType.toSOAPBody">
+<code class="descname">toSOAPBody</code><span class="sig-paren">(</span><em>minimal=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/api/object_types/base.html#BaseType.toSOAPBody"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.base.BaseType.toSOAPBody" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="api.object_types.base.BaseType.toSOAPElement">
+<code class="descname">toSOAPElement</code><span class="sig-paren">(</span><em>minimal=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/api/object_types/base.html#BaseType.toSOAPElement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.base.BaseType.toSOAPElement" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="api.object_types.base.BaseType.to_flat_dict">
+<code class="descname">to_flat_dict</code><span class="sig-paren">(</span><em>prefix=''</em>, <em>explode_json_string_values=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/api/object_types/base.html#BaseType.to_flat_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.base.BaseType.to_flat_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert the object to a dict, flattening any lists or nested types</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="api.object_types.base.BaseType.to_flat_dict_explode_json">
+<code class="descname">to_flat_dict_explode_json</code><span class="sig-paren">(</span><em>val</em>, <em>prefix=''</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/api/object_types/base.html#BaseType.to_flat_dict_explode_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.base.BaseType.to_flat_dict_explode_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>see if the value is json. If so, flatten it out into a dict</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="api.object_types.base.BaseType.to_json">
+<em class="property">static </em><code class="descname">to_json</code><span class="sig-paren">(</span><em>jsonable</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/api/object_types/base.html#BaseType.to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.base.BaseType.to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to a json string.</p>
+<p>jsonable can be a single BaseType instance of a list
+of BaseType</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="api.object_types.base.BaseType.to_jsonable">
+<code class="descname">to_jsonable</code><span class="sig-paren">(</span><em>explode_json_string_values=False</em>, <em>include_type=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/api/object_types/base.html#BaseType.to_jsonable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.base.BaseType.to_jsonable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="api.object_types.base.BaseType.write_csv">
+<em class="property">static </em><code class="descname">write_csv</code><span class="sig-paren">(</span><em>fd</em>, <em>val</em>, <em>explode_json_string_values=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/api/object_types/base.html#BaseType.write_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.base.BaseType.write_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write &#8216;val&#8217; to CSV. val can be a BaseType instance or a list of
+BaseType</p>
+<p>This does a two-pass, calling to_flat_dict for each object, then
+finding the union of all headers,
+then writing out the value of each column for each object
+sorted by header name</p>
+<p>explode_json_string_values attempts to see if any of the str values
+are parseable by json.loads, and if so treat each property as a column
+value</p>
+<p>fd is a file-like object</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="api.object_types.base.IncorrectTypeException">
+<em class="property">exception </em><code class="descclassname">api.object_types.base.</code><code class="descname">IncorrectTypeException</code><span class="sig-paren">(</span><em>property</em>, <em>expected</em>, <em>actual</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/api/object_types/base.html#IncorrectTypeException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.base.IncorrectTypeException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></p>
+<p>Raised when a property is not of the expected type</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.cache_filter">
+<span id="api-object-types-cache-filter-module"></span><h2>2.4.1.12. api.object_types.cache_filter module<a class="headerlink" href="#module-api.object_types.cache_filter" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.cache_filter.CacheFilter">
+<em class="property">class </em><code class="descclassname">api.object_types.cache_filter.</code><code class="descname">CacheFilter</code><a class="reference internal" href="../../_modules/api/object_types/cache_filter.html#CacheFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.cache_filter.CacheFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.cache_filter_list">
+<span id="api-object-types-cache-filter-list-module"></span><h2>2.4.1.13. api.object_types.cache_filter_list module<a class="headerlink" href="#module-api.object_types.cache_filter_list" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.cache_filter_list.CacheFilterList">
+<em class="property">class </em><code class="descclassname">api.object_types.cache_filter_list.</code><code class="descname">CacheFilterList</code><a class="reference internal" href="../../_modules/api/object_types/cache_filter_list.html#CacheFilterList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.cache_filter_list.CacheFilterList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.cache_info">
+<span id="api-object-types-cache-info-module"></span><h2>2.4.1.14. api.object_types.cache_info module<a class="headerlink" href="#module-api.object_types.cache_info" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.cache_info.CacheInfo">
+<em class="property">class </em><code class="descclassname">api.object_types.cache_info.</code><code class="descname">CacheInfo</code><a class="reference internal" href="../../_modules/api/object_types/cache_info.html#CacheInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.cache_info.CacheInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.client_count">
+<span id="api-object-types-client-count-module"></span><h2>2.4.1.15. api.object_types.client_count module<a class="headerlink" href="#module-api.object_types.client_count" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.client_count.ClientCount">
+<em class="property">class </em><code class="descclassname">api.object_types.client_count.</code><code class="descname">ClientCount</code><a class="reference internal" href="../../_modules/api/object_types/client_count.html#ClientCount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.client_count.ClientCount" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.client_status">
+<span id="api-object-types-client-status-module"></span><h2>2.4.1.16. api.object_types.client_status module<a class="headerlink" href="#module-api.object_types.client_status" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.client_status.ClientStatus">
+<em class="property">class </em><code class="descclassname">api.object_types.client_status.</code><code class="descname">ClientStatus</code><a class="reference internal" href="../../_modules/api/object_types/client_status.html#ClientStatus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.client_status.ClientStatus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.column">
+<span id="api-object-types-column-module"></span><h2>2.4.1.17. api.object_types.column module<a class="headerlink" href="#module-api.object_types.column" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.column.Column">
+<em class="property">class </em><code class="descclassname">api.object_types.column.</code><code class="descname">Column</code><a class="reference internal" href="../../_modules/api/object_types/column.html#Column"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.column.Column" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="classmethod">
+<dt id="api.object_types.column.Column.fromSOAPElement">
+<em class="property">classmethod </em><code class="descname">fromSOAPElement</code><span class="sig-paren">(</span><em>el</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/api/object_types/column.html#Column.fromSOAPElement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.column.Column.fromSOAPElement" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.column_set">
+<span id="api-object-types-column-set-module"></span><h2>2.4.1.18. api.object_types.column_set module<a class="headerlink" href="#module-api.object_types.column_set" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.column_set.ColumnSet">
+<em class="property">class </em><code class="descclassname">api.object_types.column_set.</code><code class="descname">ColumnSet</code><a class="reference internal" href="../../_modules/api/object_types/column_set.html#ColumnSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.column_set.ColumnSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="classmethod">
+<dt id="api.object_types.column_set.ColumnSet.fromSOAPElement">
+<em class="property">classmethod </em><code class="descname">fromSOAPElement</code><span class="sig-paren">(</span><em>el</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/api/object_types/column_set.html#ColumnSet.fromSOAPElement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.column_set.ColumnSet.fromSOAPElement" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.computer_group">
+<span id="api-object-types-computer-group-module"></span><h2>2.4.1.19. api.object_types.computer_group module<a class="headerlink" href="#module-api.object_types.computer_group" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.computer_group.ComputerGroup">
+<em class="property">class </em><code class="descclassname">api.object_types.computer_group.</code><code class="descname">ComputerGroup</code><a class="reference internal" href="../../_modules/api/object_types/computer_group.html#ComputerGroup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.computer_group.ComputerGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.computer_group_list">
+<span id="api-object-types-computer-group-list-module"></span><h2>2.4.1.20. api.object_types.computer_group_list module<a class="headerlink" href="#module-api.object_types.computer_group_list" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.computer_group_list.ComputerGroupList">
+<em class="property">class </em><code class="descclassname">api.object_types.computer_group_list.</code><code class="descname">ComputerGroupList</code><a class="reference internal" href="../../_modules/api/object_types/computer_group_list.html#ComputerGroupList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.computer_group_list.ComputerGroupList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.computer_group_spec">
+<span id="api-object-types-computer-group-spec-module"></span><h2>2.4.1.21. api.object_types.computer_group_spec module<a class="headerlink" href="#module-api.object_types.computer_group_spec" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.computer_group_spec.ComputerGroupSpec">
+<em class="property">class </em><code class="descclassname">api.object_types.computer_group_spec.</code><code class="descname">ComputerGroupSpec</code><a class="reference internal" href="../../_modules/api/object_types/computer_group_spec.html#ComputerGroupSpec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.computer_group_spec.ComputerGroupSpec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.computer_spec_list">
+<span id="api-object-types-computer-spec-list-module"></span><h2>2.4.1.22. api.object_types.computer_spec_list module<a class="headerlink" href="#module-api.object_types.computer_spec_list" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.computer_spec_list.ComputerSpecList">
+<em class="property">class </em><code class="descclassname">api.object_types.computer_spec_list.</code><code class="descname">ComputerSpecList</code><a class="reference internal" href="../../_modules/api/object_types/computer_spec_list.html#ComputerSpecList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.computer_spec_list.ComputerSpecList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.error_list">
+<span id="api-object-types-error-list-module"></span><h2>2.4.1.23. api.object_types.error_list module<a class="headerlink" href="#module-api.object_types.error_list" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.error_list.ErrorList">
+<em class="property">class </em><code class="descclassname">api.object_types.error_list.</code><code class="descname">ErrorList</code><a class="reference internal" href="../../_modules/api/object_types/error_list.html#ErrorList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.error_list.ErrorList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.filter">
+<span id="api-object-types-filter-module"></span><h2>2.4.1.24. api.object_types.filter module<a class="headerlink" href="#module-api.object_types.filter" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.filter.Filter">
+<em class="property">class </em><code class="descclassname">api.object_types.filter.</code><code class="descname">Filter</code><a class="reference internal" href="../../_modules/api/object_types/filter.html#Filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.filter.Filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.filter_list">
+<span id="api-object-types-filter-list-module"></span><h2>2.4.1.25. api.object_types.filter_list module<a class="headerlink" href="#module-api.object_types.filter_list" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.filter_list.FilterList">
+<em class="property">class </em><code class="descclassname">api.object_types.filter_list.</code><code class="descname">FilterList</code><a class="reference internal" href="../../_modules/api/object_types/filter_list.html#FilterList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.filter_list.FilterList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.group">
+<span id="api-object-types-group-module"></span><h2>2.4.1.26. api.object_types.group module<a class="headerlink" href="#module-api.object_types.group" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.group.Group">
+<em class="property">class </em><code class="descclassname">api.object_types.group.</code><code class="descname">Group</code><a class="reference internal" href="../../_modules/api/object_types/group.html#Group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.group.Group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.group_list">
+<span id="api-object-types-group-list-module"></span><h2>2.4.1.27. api.object_types.group_list module<a class="headerlink" href="#module-api.object_types.group_list" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.group_list.GroupList">
+<em class="property">class </em><code class="descclassname">api.object_types.group_list.</code><code class="descname">GroupList</code><a class="reference internal" href="../../_modules/api/object_types/group_list.html#GroupList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.group_list.GroupList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.metadata_item">
+<span id="api-object-types-metadata-item-module"></span><h2>2.4.1.28. api.object_types.metadata_item module<a class="headerlink" href="#module-api.object_types.metadata_item" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.metadata_item.MetadataItem">
+<em class="property">class </em><code class="descclassname">api.object_types.metadata_item.</code><code class="descname">MetadataItem</code><a class="reference internal" href="../../_modules/api/object_types/metadata_item.html#MetadataItem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.metadata_item.MetadataItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.metadata_list">
+<span id="api-object-types-metadata-list-module"></span><h2>2.4.1.29. api.object_types.metadata_list module<a class="headerlink" href="#module-api.object_types.metadata_list" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.metadata_list.MetadataList">
+<em class="property">class </em><code class="descclassname">api.object_types.metadata_list.</code><code class="descname">MetadataList</code><a class="reference internal" href="../../_modules/api/object_types/metadata_list.html#MetadataList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.metadata_list.MetadataList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.object_list">
+<span id="api-object-types-object-list-module"></span><h2>2.4.1.30. api.object_types.object_list module<a class="headerlink" href="#module-api.object_types.object_list" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.object_list.ObjectList">
+<em class="property">class </em><code class="descclassname">api.object_types.object_list.</code><code class="descname">ObjectList</code><a class="reference internal" href="../../_modules/api/object_types/object_list.html#ObjectList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.object_list.ObjectList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.object_list_types">
+<span id="api-object-types-object-list-types-module"></span><h2>2.4.1.31. api.object_types.object_list_types module<a class="headerlink" href="#module-api.object_types.object_list_types" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-api.object_types.options">
+<span id="api-object-types-options-module"></span><h2>2.4.1.32. api.object_types.options module<a class="headerlink" href="#module-api.object_types.options" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.options.Options">
+<em class="property">class </em><code class="descclassname">api.object_types.options.</code><code class="descname">Options</code><a class="reference internal" href="../../_modules/api/object_types/options.html#Options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.options.Options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.package_file">
+<span id="api-object-types-package-file-module"></span><h2>2.4.1.33. api.object_types.package_file module<a class="headerlink" href="#module-api.object_types.package_file" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.package_file.PackageFile">
+<em class="property">class </em><code class="descclassname">api.object_types.package_file.</code><code class="descname">PackageFile</code><a class="reference internal" href="../../_modules/api/object_types/package_file.html#PackageFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.package_file.PackageFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.package_file_list">
+<span id="api-object-types-package-file-list-module"></span><h2>2.4.1.34. api.object_types.package_file_list module<a class="headerlink" href="#module-api.object_types.package_file_list" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.package_file_list.PackageFileList">
+<em class="property">class </em><code class="descclassname">api.object_types.package_file_list.</code><code class="descname">PackageFileList</code><a class="reference internal" href="../../_modules/api/object_types/package_file_list.html#PackageFileList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.package_file_list.PackageFileList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.package_file_status">
+<span id="api-object-types-package-file-status-module"></span><h2>2.4.1.35. api.object_types.package_file_status module<a class="headerlink" href="#module-api.object_types.package_file_status" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.package_file_status.PackageFileStatus">
+<em class="property">class </em><code class="descclassname">api.object_types.package_file_status.</code><code class="descname">PackageFileStatus</code><a class="reference internal" href="../../_modules/api/object_types/package_file_status.html#PackageFileStatus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.package_file_status.PackageFileStatus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.package_file_status_list">
+<span id="api-object-types-package-file-status-list-module"></span><h2>2.4.1.36. api.object_types.package_file_status_list module<a class="headerlink" href="#module-api.object_types.package_file_status_list" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.package_file_status_list.PackageFileStatusList">
+<em class="property">class </em><code class="descclassname">api.object_types.package_file_status_list.</code><code class="descname">PackageFileStatusList</code><a class="reference internal" href="../../_modules/api/object_types/package_file_status_list.html#PackageFileStatusList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.package_file_status_list.PackageFileStatusList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.package_file_template">
+<span id="api-object-types-package-file-template-module"></span><h2>2.4.1.37. api.object_types.package_file_template module<a class="headerlink" href="#module-api.object_types.package_file_template" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.package_file_template.PackageFileTemplate">
+<em class="property">class </em><code class="descclassname">api.object_types.package_file_template.</code><code class="descname">PackageFileTemplate</code><a class="reference internal" href="../../_modules/api/object_types/package_file_template.html#PackageFileTemplate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.package_file_template.PackageFileTemplate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.package_file_template_list">
+<span id="api-object-types-package-file-template-list-module"></span><h2>2.4.1.38. api.object_types.package_file_template_list module<a class="headerlink" href="#module-api.object_types.package_file_template_list" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.package_file_template_list.PackageFileTemplateList">
+<em class="property">class </em><code class="descclassname">api.object_types.package_file_template_list.</code><code class="descname">PackageFileTemplateList</code><a class="reference internal" href="../../_modules/api/object_types/package_file_template_list.html#PackageFileTemplateList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.package_file_template_list.PackageFileTemplateList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.package_spec">
+<span id="api-object-types-package-spec-module"></span><h2>2.4.1.39. api.object_types.package_spec module<a class="headerlink" href="#module-api.object_types.package_spec" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.package_spec.PackageSpec">
+<em class="property">class </em><code class="descclassname">api.object_types.package_spec.</code><code class="descname">PackageSpec</code><a class="reference internal" href="../../_modules/api/object_types/package_spec.html#PackageSpec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.package_spec.PackageSpec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.package_spec_list">
+<span id="api-object-types-package-spec-list-module"></span><h2>2.4.1.40. api.object_types.package_spec_list module<a class="headerlink" href="#module-api.object_types.package_spec_list" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.package_spec_list.PackageSpecList">
+<em class="property">class </em><code class="descclassname">api.object_types.package_spec_list.</code><code class="descname">PackageSpecList</code><a class="reference internal" href="../../_modules/api/object_types/package_spec_list.html#PackageSpecList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.package_spec_list.PackageSpecList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.parameter">
+<span id="api-object-types-parameter-module"></span><h2>2.4.1.41. api.object_types.parameter module<a class="headerlink" href="#module-api.object_types.parameter" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.parameter.Parameter">
+<em class="property">class </em><code class="descclassname">api.object_types.parameter.</code><code class="descname">Parameter</code><a class="reference internal" href="../../_modules/api/object_types/parameter.html#Parameter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.parameter.Parameter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.parameter_list">
+<span id="api-object-types-parameter-list-module"></span><h2>2.4.1.42. api.object_types.parameter_list module<a class="headerlink" href="#module-api.object_types.parameter_list" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.parameter_list.ParameterList">
+<em class="property">class </em><code class="descclassname">api.object_types.parameter_list.</code><code class="descname">ParameterList</code><a class="reference internal" href="../../_modules/api/object_types/parameter_list.html#ParameterList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.parameter_list.ParameterList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.parse_job">
+<span id="api-object-types-parse-job-module"></span><h2>2.4.1.43. api.object_types.parse_job module<a class="headerlink" href="#module-api.object_types.parse_job" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.parse_job.ParseJob">
+<em class="property">class </em><code class="descclassname">api.object_types.parse_job.</code><code class="descname">ParseJob</code><a class="reference internal" href="../../_modules/api/object_types/parse_job.html#ParseJob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.parse_job.ParseJob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.parse_job_list">
+<span id="api-object-types-parse-job-list-module"></span><h2>2.4.1.44. api.object_types.parse_job_list module<a class="headerlink" href="#module-api.object_types.parse_job_list" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.parse_job_list.ParseJobList">
+<em class="property">class </em><code class="descclassname">api.object_types.parse_job_list.</code><code class="descname">ParseJobList</code><a class="reference internal" href="../../_modules/api/object_types/parse_job_list.html#ParseJobList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.parse_job_list.ParseJobList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.parse_result">
+<span id="api-object-types-parse-result-module"></span><h2>2.4.1.45. api.object_types.parse_result module<a class="headerlink" href="#module-api.object_types.parse_result" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.parse_result.ParseResult">
+<em class="property">class </em><code class="descclassname">api.object_types.parse_result.</code><code class="descname">ParseResult</code><a class="reference internal" href="../../_modules/api/object_types/parse_result.html#ParseResult"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.parse_result.ParseResult" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.parse_result_group">
+<span id="api-object-types-parse-result-group-module"></span><h2>2.4.1.46. api.object_types.parse_result_group module<a class="headerlink" href="#module-api.object_types.parse_result_group" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.parse_result_group.ParseResultGroup">
+<em class="property">class </em><code class="descclassname">api.object_types.parse_result_group.</code><code class="descname">ParseResultGroup</code><a class="reference internal" href="../../_modules/api/object_types/parse_result_group.html#ParseResultGroup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.parse_result_group.ParseResultGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.parse_result_group_list">
+<span id="api-object-types-parse-result-group-list-module"></span><h2>2.4.1.47. api.object_types.parse_result_group_list module<a class="headerlink" href="#module-api.object_types.parse_result_group_list" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.parse_result_group_list.ParseResultGroupList">
+<em class="property">class </em><code class="descclassname">api.object_types.parse_result_group_list.</code><code class="descname">ParseResultGroupList</code><a class="reference internal" href="../../_modules/api/object_types/parse_result_group_list.html#ParseResultGroupList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.parse_result_group_list.ParseResultGroupList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.parse_result_list">
+<span id="api-object-types-parse-result-list-module"></span><h2>2.4.1.48. api.object_types.parse_result_list module<a class="headerlink" href="#module-api.object_types.parse_result_list" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.parse_result_list.ParseResultList">
+<em class="property">class </em><code class="descclassname">api.object_types.parse_result_list.</code><code class="descname">ParseResultList</code><a class="reference internal" href="../../_modules/api/object_types/parse_result_list.html#ParseResultList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.parse_result_list.ParseResultList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.plugin">
+<span id="api-object-types-plugin-module"></span><h2>2.4.1.49. api.object_types.plugin module<a class="headerlink" href="#module-api.object_types.plugin" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.plugin.Plugin">
+<em class="property">class </em><code class="descclassname">api.object_types.plugin.</code><code class="descname">Plugin</code><a class="reference internal" href="../../_modules/api/object_types/plugin.html#Plugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.plugin.Plugin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.plugin_argument">
+<span id="api-object-types-plugin-argument-module"></span><h2>2.4.1.50. api.object_types.plugin_argument module<a class="headerlink" href="#module-api.object_types.plugin_argument" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.plugin_argument.PluginArgument">
+<em class="property">class </em><code class="descclassname">api.object_types.plugin_argument.</code><code class="descname">PluginArgument</code><a class="reference internal" href="../../_modules/api/object_types/plugin_argument.html#PluginArgument"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.plugin_argument.PluginArgument" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.plugin_argument_list">
+<span id="api-object-types-plugin-argument-list-module"></span><h2>2.4.1.51. api.object_types.plugin_argument_list module<a class="headerlink" href="#module-api.object_types.plugin_argument_list" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.plugin_argument_list.PluginArgumentList">
+<em class="property">class </em><code class="descclassname">api.object_types.plugin_argument_list.</code><code class="descname">PluginArgumentList</code><a class="reference internal" href="../../_modules/api/object_types/plugin_argument_list.html#PluginArgumentList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.plugin_argument_list.PluginArgumentList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.plugin_command_list">
+<span id="api-object-types-plugin-command-list-module"></span><h2>2.4.1.52. api.object_types.plugin_command_list module<a class="headerlink" href="#module-api.object_types.plugin_command_list" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.plugin_command_list.PluginCommandList">
+<em class="property">class </em><code class="descclassname">api.object_types.plugin_command_list.</code><code class="descname">PluginCommandList</code><a class="reference internal" href="../../_modules/api/object_types/plugin_command_list.html#PluginCommandList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.plugin_command_list.PluginCommandList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.plugin_list">
+<span id="api-object-types-plugin-list-module"></span><h2>2.4.1.53. api.object_types.plugin_list module<a class="headerlink" href="#module-api.object_types.plugin_list" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.plugin_list.PluginList">
+<em class="property">class </em><code class="descclassname">api.object_types.plugin_list.</code><code class="descname">PluginList</code><a class="reference internal" href="../../_modules/api/object_types/plugin_list.html#PluginList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.plugin_list.PluginList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.plugin_schedule">
+<span id="api-object-types-plugin-schedule-module"></span><h2>2.4.1.54. api.object_types.plugin_schedule module<a class="headerlink" href="#module-api.object_types.plugin_schedule" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.plugin_schedule.PluginSchedule">
+<em class="property">class </em><code class="descclassname">api.object_types.plugin_schedule.</code><code class="descname">PluginSchedule</code><a class="reference internal" href="../../_modules/api/object_types/plugin_schedule.html#PluginSchedule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.plugin_schedule.PluginSchedule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.plugin_schedule_list">
+<span id="api-object-types-plugin-schedule-list-module"></span><h2>2.4.1.55. api.object_types.plugin_schedule_list module<a class="headerlink" href="#module-api.object_types.plugin_schedule_list" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.plugin_schedule_list.PluginScheduleList">
+<em class="property">class </em><code class="descclassname">api.object_types.plugin_schedule_list.</code><code class="descname">PluginScheduleList</code><a class="reference internal" href="../../_modules/api/object_types/plugin_schedule_list.html#PluginScheduleList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.plugin_schedule_list.PluginScheduleList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.plugin_sql">
+<span id="api-object-types-plugin-sql-module"></span><h2>2.4.1.56. api.object_types.plugin_sql module<a class="headerlink" href="#module-api.object_types.plugin_sql" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.plugin_sql.PluginSql">
+<em class="property">class </em><code class="descclassname">api.object_types.plugin_sql.</code><code class="descname">PluginSql</code><a class="reference internal" href="../../_modules/api/object_types/plugin_sql.html#PluginSql"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.plugin_sql.PluginSql" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.plugin_sql_column">
+<span id="api-object-types-plugin-sql-column-module"></span><h2>2.4.1.57. api.object_types.plugin_sql_column module<a class="headerlink" href="#module-api.object_types.plugin_sql_column" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.plugin_sql_column.PluginSqlColumn">
+<em class="property">class </em><code class="descclassname">api.object_types.plugin_sql_column.</code><code class="descname">PluginSqlColumn</code><a class="reference internal" href="../../_modules/api/object_types/plugin_sql_column.html#PluginSqlColumn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.plugin_sql_column.PluginSqlColumn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.plugin_sql_result">
+<span id="api-object-types-plugin-sql-result-module"></span><h2>2.4.1.58. api.object_types.plugin_sql_result module<a class="headerlink" href="#module-api.object_types.plugin_sql_result" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.plugin_sql_result.PluginSqlResult">
+<em class="property">class </em><code class="descclassname">api.object_types.plugin_sql_result.</code><code class="descname">PluginSqlResult</code><a class="reference internal" href="../../_modules/api/object_types/plugin_sql_result.html#PluginSqlResult"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.plugin_sql_result.PluginSqlResult" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.question">
+<span id="api-object-types-question-module"></span><h2>2.4.1.59. api.object_types.question module<a class="headerlink" href="#module-api.object_types.question" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.question.Question">
+<em class="property">class </em><code class="descclassname">api.object_types.question.</code><code class="descname">Question</code><a class="reference internal" href="../../_modules/api/object_types/question.html#Question"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.question.Question" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.question_list">
+<span id="api-object-types-question-list-module"></span><h2>2.4.1.60. api.object_types.question_list module<a class="headerlink" href="#module-api.object_types.question_list" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.question_list.QuestionList">
+<em class="property">class </em><code class="descclassname">api.object_types.question_list.</code><code class="descname">QuestionList</code><a class="reference internal" href="../../_modules/api/object_types/question_list.html#QuestionList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.question_list.QuestionList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.question_list_info">
+<span id="api-object-types-question-list-info-module"></span><h2>2.4.1.61. api.object_types.question_list_info module<a class="headerlink" href="#module-api.object_types.question_list_info" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.question_list_info.QuestionListInfo">
+<em class="property">class </em><code class="descclassname">api.object_types.question_list_info.</code><code class="descname">QuestionListInfo</code><a class="reference internal" href="../../_modules/api/object_types/question_list_info.html#QuestionListInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.question_list_info.QuestionListInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.result_info">
+<span id="api-object-types-result-info-module"></span><h2>2.4.1.62. api.object_types.result_info module<a class="headerlink" href="#module-api.object_types.result_info" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.result_info.ResultInfo">
+<em class="property">class </em><code class="descclassname">api.object_types.result_info.</code><code class="descname">ResultInfo</code><a class="reference internal" href="../../_modules/api/object_types/result_info.html#ResultInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.result_info.ResultInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Wrap the result of GetResultInfo</p>
+<dl class="classmethod">
+<dt id="api.object_types.result_info.ResultInfo.fromSOAPElement">
+<em class="property">classmethod </em><code class="descname">fromSOAPElement</code><span class="sig-paren">(</span><em>el</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/api/object_types/result_info.html#ResultInfo.fromSOAPElement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.result_info.ResultInfo.fromSOAPElement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deserialize a ResultInfo from a result_info SOAPElement</p>
+<p>Assumes all properties are integer values (true today)</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.result_set">
+<span id="api-object-types-result-set-module"></span><h2>2.4.1.63. api.object_types.result_set module<a class="headerlink" href="#module-api.object_types.result_set" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.result_set.ResultSet">
+<em class="property">class </em><code class="descclassname">api.object_types.result_set.</code><code class="descname">ResultSet</code><a class="reference internal" href="../../_modules/api/object_types/result_set.html#ResultSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.result_set.ResultSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Wrap the result of GetResultData</p>
+<dl class="classmethod">
+<dt id="api.object_types.result_set.ResultSet.fromSOAPElement">
+<em class="property">classmethod </em><code class="descname">fromSOAPElement</code><span class="sig-paren">(</span><em>el</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/api/object_types/result_set.html#ResultSet.fromSOAPElement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.result_set.ResultSet.fromSOAPElement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deserialize a ResultInfo from a result_info SOAPElement</p>
+<p>Assumes all properties are integer values (true today)</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="api.object_types.result_set.ResultSet.to_json">
+<em class="property">static </em><code class="descname">to_json</code><span class="sig-paren">(</span><em>jsonable</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/api/object_types/result_set.html#ResultSet.to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.result_set.ResultSet.to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to a json string.</p>
+<p>jsonable must be a ResultSet instance</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="api.object_types.result_set.ResultSet.to_jsonable">
+<code class="descname">to_jsonable</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/api/object_types/result_set.html#ResultSet.to_jsonable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.result_set.ResultSet.to_jsonable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="api.object_types.result_set.ResultSet.write_csv">
+<em class="property">static </em><code class="descname">write_csv</code><span class="sig-paren">(</span><em>fd</em>, <em>val</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/api/object_types/result_set.html#ResultSet.write_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.result_set.ResultSet.write_csv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.row">
+<span id="api-object-types-row-module"></span><h2>2.4.1.64. api.object_types.row module<a class="headerlink" href="#module-api.object_types.row" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.row.Row">
+<em class="property">class </em><code class="descclassname">api.object_types.row.</code><code class="descname">Row</code><span class="sig-paren">(</span><em>columns</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/api/object_types/row.html#Row"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.row.Row" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>A row in a result set.</p>
+<p>Values are stored in column order, also accessible
+by key using []</p>
+<dl class="classmethod">
+<dt id="api.object_types.row.Row.fromSOAPElement">
+<em class="property">classmethod </em><code class="descname">fromSOAPElement</code><span class="sig-paren">(</span><em>el</em>, <em>columns</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/api/object_types/row.html#Row.fromSOAPElement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.row.Row.fromSOAPElement" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.saved_action">
+<span id="api-object-types-saved-action-module"></span><h2>2.4.1.65. api.object_types.saved_action module<a class="headerlink" href="#module-api.object_types.saved_action" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.saved_action.SavedAction">
+<em class="property">class </em><code class="descclassname">api.object_types.saved_action.</code><code class="descname">SavedAction</code><a class="reference internal" href="../../_modules/api/object_types/saved_action.html#SavedAction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.saved_action.SavedAction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.saved_action_approval">
+<span id="api-object-types-saved-action-approval-module"></span><h2>2.4.1.66. api.object_types.saved_action_approval module<a class="headerlink" href="#module-api.object_types.saved_action_approval" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.saved_action_approval.SavedActionApproval">
+<em class="property">class </em><code class="descclassname">api.object_types.saved_action_approval.</code><code class="descname">SavedActionApproval</code><a class="reference internal" href="../../_modules/api/object_types/saved_action_approval.html#SavedActionApproval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.saved_action_approval.SavedActionApproval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.saved_action_list">
+<span id="api-object-types-saved-action-list-module"></span><h2>2.4.1.67. api.object_types.saved_action_list module<a class="headerlink" href="#module-api.object_types.saved_action_list" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.saved_action_list.SavedActionList">
+<em class="property">class </em><code class="descclassname">api.object_types.saved_action_list.</code><code class="descname">SavedActionList</code><a class="reference internal" href="../../_modules/api/object_types/saved_action_list.html#SavedActionList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.saved_action_list.SavedActionList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.saved_action_policy">
+<span id="api-object-types-saved-action-policy-module"></span><h2>2.4.1.68. api.object_types.saved_action_policy module<a class="headerlink" href="#module-api.object_types.saved_action_policy" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.saved_action_policy.SavedActionPolicy">
+<em class="property">class </em><code class="descclassname">api.object_types.saved_action_policy.</code><code class="descname">SavedActionPolicy</code><a class="reference internal" href="../../_modules/api/object_types/saved_action_policy.html#SavedActionPolicy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.saved_action_policy.SavedActionPolicy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.saved_action_row_id_list">
+<span id="api-object-types-saved-action-row-id-list-module"></span><h2>2.4.1.69. api.object_types.saved_action_row_id_list module<a class="headerlink" href="#module-api.object_types.saved_action_row_id_list" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.saved_action_row_id_list.SavedActionRowIdList">
+<em class="property">class </em><code class="descclassname">api.object_types.saved_action_row_id_list.</code><code class="descname">SavedActionRowIdList</code><a class="reference internal" href="../../_modules/api/object_types/saved_action_row_id_list.html#SavedActionRowIdList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.saved_action_row_id_list.SavedActionRowIdList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.saved_question">
+<span id="api-object-types-saved-question-module"></span><h2>2.4.1.70. api.object_types.saved_question module<a class="headerlink" href="#module-api.object_types.saved_question" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.saved_question.SavedQuestion">
+<em class="property">class </em><code class="descclassname">api.object_types.saved_question.</code><code class="descname">SavedQuestion</code><a class="reference internal" href="../../_modules/api/object_types/saved_question.html#SavedQuestion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.saved_question.SavedQuestion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.saved_question_list">
+<span id="api-object-types-saved-question-list-module"></span><h2>2.4.1.71. api.object_types.saved_question_list module<a class="headerlink" href="#module-api.object_types.saved_question_list" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.saved_question_list.SavedQuestionList">
+<em class="property">class </em><code class="descclassname">api.object_types.saved_question_list.</code><code class="descname">SavedQuestionList</code><a class="reference internal" href="../../_modules/api/object_types/saved_question_list.html#SavedQuestionList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.saved_question_list.SavedQuestionList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.select">
+<span id="api-object-types-select-module"></span><h2>2.4.1.72. api.object_types.select module<a class="headerlink" href="#module-api.object_types.select" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.select.Select">
+<em class="property">class </em><code class="descclassname">api.object_types.select.</code><code class="descname">Select</code><a class="reference internal" href="../../_modules/api/object_types/select.html#Select"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.select.Select" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.select_list">
+<span id="api-object-types-select-list-module"></span><h2>2.4.1.73. api.object_types.select_list module<a class="headerlink" href="#module-api.object_types.select_list" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.select_list.SelectList">
+<em class="property">class </em><code class="descclassname">api.object_types.select_list.</code><code class="descname">SelectList</code><a class="reference internal" href="../../_modules/api/object_types/select_list.html#SelectList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.select_list.SelectList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.sensor">
+<span id="api-object-types-sensor-module"></span><h2>2.4.1.74. api.object_types.sensor module<a class="headerlink" href="#module-api.object_types.sensor" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.sensor.Sensor">
+<em class="property">class </em><code class="descclassname">api.object_types.sensor.</code><code class="descname">Sensor</code><a class="reference internal" href="../../_modules/api/object_types/sensor.html#Sensor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.sensor.Sensor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.sensor_list">
+<span id="api-object-types-sensor-list-module"></span><h2>2.4.1.75. api.object_types.sensor_list module<a class="headerlink" href="#module-api.object_types.sensor_list" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.sensor_list.SensorList">
+<em class="property">class </em><code class="descclassname">api.object_types.sensor_list.</code><code class="descname">SensorList</code><a class="reference internal" href="../../_modules/api/object_types/sensor_list.html#SensorList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.sensor_list.SensorList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.sensor_query">
+<span id="api-object-types-sensor-query-module"></span><h2>2.4.1.76. api.object_types.sensor_query module<a class="headerlink" href="#module-api.object_types.sensor_query" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.sensor_query.SensorQuery">
+<em class="property">class </em><code class="descclassname">api.object_types.sensor_query.</code><code class="descname">SensorQuery</code><a class="reference internal" href="../../_modules/api/object_types/sensor_query.html#SensorQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.sensor_query.SensorQuery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.sensor_query_list">
+<span id="api-object-types-sensor-query-list-module"></span><h2>2.4.1.77. api.object_types.sensor_query_list module<a class="headerlink" href="#module-api.object_types.sensor_query_list" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.sensor_query_list.SensorQueryList">
+<em class="property">class </em><code class="descclassname">api.object_types.sensor_query_list.</code><code class="descname">SensorQueryList</code><a class="reference internal" href="../../_modules/api/object_types/sensor_query_list.html#SensorQueryList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.sensor_query_list.SensorQueryList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.sensor_string_hints">
+<span id="api-object-types-sensor-string-hints-module"></span><h2>2.4.1.78. api.object_types.sensor_string_hints module<a class="headerlink" href="#module-api.object_types.sensor_string_hints" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.sensor_string_hints.SensorStringHints">
+<em class="property">class </em><code class="descclassname">api.object_types.sensor_string_hints.</code><code class="descname">SensorStringHints</code><a class="reference internal" href="../../_modules/api/object_types/sensor_string_hints.html#SensorStringHints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.sensor_string_hints.SensorStringHints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.sensor_subcolumn">
+<span id="api-object-types-sensor-subcolumn-module"></span><h2>2.4.1.79. api.object_types.sensor_subcolumn module<a class="headerlink" href="#module-api.object_types.sensor_subcolumn" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.sensor_subcolumn.SensorSubcolumn">
+<em class="property">class </em><code class="descclassname">api.object_types.sensor_subcolumn.</code><code class="descname">SensorSubcolumn</code><a class="reference internal" href="../../_modules/api/object_types/sensor_subcolumn.html#SensorSubcolumn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.sensor_subcolumn.SensorSubcolumn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.sensor_subcolumn_list">
+<span id="api-object-types-sensor-subcolumn-list-module"></span><h2>2.4.1.80. api.object_types.sensor_subcolumn_list module<a class="headerlink" href="#module-api.object_types.sensor_subcolumn_list" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.sensor_subcolumn_list.SensorSubcolumnList">
+<em class="property">class </em><code class="descclassname">api.object_types.sensor_subcolumn_list.</code><code class="descname">SensorSubcolumnList</code><a class="reference internal" href="../../_modules/api/object_types/sensor_subcolumn_list.html#SensorSubcolumnList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.sensor_subcolumn_list.SensorSubcolumnList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.sensor_types">
+<span id="api-object-types-sensor-types-module"></span><h2>2.4.1.81. api.object_types.sensor_types module<a class="headerlink" href="#module-api.object_types.sensor_types" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-api.object_types.soap_error">
+<span id="api-object-types-soap-error-module"></span><h2>2.4.1.82. api.object_types.soap_error module<a class="headerlink" href="#module-api.object_types.soap_error" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.soap_error.SoapError">
+<em class="property">class </em><code class="descclassname">api.object_types.soap_error.</code><code class="descname">SoapError</code><a class="reference internal" href="../../_modules/api/object_types/soap_error.html#SoapError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.soap_error.SoapError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.system_setting">
+<span id="api-object-types-system-setting-module"></span><h2>2.4.1.83. api.object_types.system_setting module<a class="headerlink" href="#module-api.object_types.system_setting" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.system_setting.SystemSetting">
+<em class="property">class </em><code class="descclassname">api.object_types.system_setting.</code><code class="descname">SystemSetting</code><a class="reference internal" href="../../_modules/api/object_types/system_setting.html#SystemSetting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.system_setting.SystemSetting" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.system_settings_list">
+<span id="api-object-types-system-settings-list-module"></span><h2>2.4.1.84. api.object_types.system_settings_list module<a class="headerlink" href="#module-api.object_types.system_settings_list" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.system_settings_list.SystemSettingsList">
+<em class="property">class </em><code class="descclassname">api.object_types.system_settings_list.</code><code class="descname">SystemSettingsList</code><a class="reference internal" href="../../_modules/api/object_types/system_settings_list.html#SystemSettingsList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.system_settings_list.SystemSettingsList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.system_status_aggregate">
+<span id="api-object-types-system-status-aggregate-module"></span><h2>2.4.1.85. api.object_types.system_status_aggregate module<a class="headerlink" href="#module-api.object_types.system_status_aggregate" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.system_status_aggregate.SystemStatusAggregate">
+<em class="property">class </em><code class="descclassname">api.object_types.system_status_aggregate.</code><code class="descname">SystemStatusAggregate</code><a class="reference internal" href="../../_modules/api/object_types/system_status_aggregate.html#SystemStatusAggregate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.system_status_aggregate.SystemStatusAggregate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.system_status_list">
+<span id="api-object-types-system-status-list-module"></span><h2>2.4.1.86. api.object_types.system_status_list module<a class="headerlink" href="#module-api.object_types.system_status_list" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.system_status_list.SystemStatusList">
+<em class="property">class </em><code class="descclassname">api.object_types.system_status_list.</code><code class="descname">SystemStatusList</code><a class="reference internal" href="../../_modules/api/object_types/system_status_list.html#SystemStatusList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.system_status_list.SystemStatusList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.upload_file">
+<span id="api-object-types-upload-file-module"></span><h2>2.4.1.87. api.object_types.upload_file module<a class="headerlink" href="#module-api.object_types.upload_file" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.upload_file.UploadFile">
+<em class="property">class </em><code class="descclassname">api.object_types.upload_file.</code><code class="descname">UploadFile</code><a class="reference internal" href="../../_modules/api/object_types/upload_file.html#UploadFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.upload_file.UploadFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.upload_file_list">
+<span id="api-object-types-upload-file-list-module"></span><h2>2.4.1.88. api.object_types.upload_file_list module<a class="headerlink" href="#module-api.object_types.upload_file_list" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.upload_file_list.UploadFileList">
+<em class="property">class </em><code class="descclassname">api.object_types.upload_file_list.</code><code class="descname">UploadFileList</code><a class="reference internal" href="../../_modules/api/object_types/upload_file_list.html#UploadFileList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.upload_file_list.UploadFileList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.upload_file_status">
+<span id="api-object-types-upload-file-status-module"></span><h2>2.4.1.89. api.object_types.upload_file_status module<a class="headerlink" href="#module-api.object_types.upload_file_status" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.upload_file_status.UploadFileStatus">
+<em class="property">class </em><code class="descclassname">api.object_types.upload_file_status.</code><code class="descname">UploadFileStatus</code><a class="reference internal" href="../../_modules/api/object_types/upload_file_status.html#UploadFileStatus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.upload_file_status.UploadFileStatus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.user">
+<span id="api-object-types-user-module"></span><h2>2.4.1.90. api.object_types.user module<a class="headerlink" href="#module-api.object_types.user" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.user.User">
+<em class="property">class </em><code class="descclassname">api.object_types.user.</code><code class="descname">User</code><a class="reference internal" href="../../_modules/api/object_types/user.html#User"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.user.User" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.user_list">
+<span id="api-object-types-user-list-module"></span><h2>2.4.1.91. api.object_types.user_list module<a class="headerlink" href="#module-api.object_types.user_list" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.user_list.UserList">
+<em class="property">class </em><code class="descclassname">api.object_types.user_list.</code><code class="descname">UserList</code><a class="reference internal" href="../../_modules/api/object_types/user_list.html#UserList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.user_list.UserList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.user_permissions">
+<span id="api-object-types-user-permissions-module"></span><h2>2.4.1.92. api.object_types.user_permissions module<a class="headerlink" href="#module-api.object_types.user_permissions" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.user_permissions.UserPermissions">
+<em class="property">class </em><code class="descclassname">api.object_types.user_permissions.</code><code class="descname">UserPermissions</code><a class="reference internal" href="../../_modules/api/object_types/user_permissions.html#UserPermissions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.user_permissions.UserPermissions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.user_role">
+<span id="api-object-types-user-role-module"></span><h2>2.4.1.93. api.object_types.user_role module<a class="headerlink" href="#module-api.object_types.user_role" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.user_role.UserRole">
+<em class="property">class </em><code class="descclassname">api.object_types.user_role.</code><code class="descname">UserRole</code><a class="reference internal" href="../../_modules/api/object_types/user_role.html#UserRole"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.user_role.UserRole" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.user_role_list">
+<span id="api-object-types-user-role-list-module"></span><h2>2.4.1.94. api.object_types.user_role_list module<a class="headerlink" href="#module-api.object_types.user_role_list" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.user_role_list.UserRoleList">
+<em class="property">class </em><code class="descclassname">api.object_types.user_role_list.</code><code class="descname">UserRoleList</code><a class="reference internal" href="../../_modules/api/object_types/user_role_list.html#UserRoleList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.user_role_list.UserRoleList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.version_aggregate">
+<span id="api-object-types-version-aggregate-module"></span><h2>2.4.1.95. api.object_types.version_aggregate module<a class="headerlink" href="#module-api.object_types.version_aggregate" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.version_aggregate.VersionAggregate">
+<em class="property">class </em><code class="descclassname">api.object_types.version_aggregate.</code><code class="descname">VersionAggregate</code><a class="reference internal" href="../../_modules/api/object_types/version_aggregate.html#VersionAggregate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.version_aggregate.VersionAggregate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.version_aggregate_list">
+<span id="api-object-types-version-aggregate-list-module"></span><h2>2.4.1.96. api.object_types.version_aggregate_list module<a class="headerlink" href="#module-api.object_types.version_aggregate_list" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.version_aggregate_list.VersionAggregateList">
+<em class="property">class </em><code class="descclassname">api.object_types.version_aggregate_list.</code><code class="descname">VersionAggregateList</code><a class="reference internal" href="../../_modules/api/object_types/version_aggregate_list.html#VersionAggregateList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.version_aggregate_list.VersionAggregateList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.white_listed_url">
+<span id="api-object-types-white-listed-url-module"></span><h2>2.4.1.97. api.object_types.white_listed_url module<a class="headerlink" href="#module-api.object_types.white_listed_url" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.white_listed_url.WhiteListedUrl">
+<em class="property">class </em><code class="descclassname">api.object_types.white_listed_url.</code><code class="descname">WhiteListedUrl</code><a class="reference internal" href="../../_modules/api/object_types/white_listed_url.html#WhiteListedUrl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.white_listed_url.WhiteListedUrl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.white_listed_url_list">
+<span id="api-object-types-white-listed-url-list-module"></span><h2>2.4.1.98. api.object_types.white_listed_url_list module<a class="headerlink" href="#module-api.object_types.white_listed_url_list" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.white_listed_url_list.WhiteListedUrlList">
+<em class="property">class </em><code class="descclassname">api.object_types.white_listed_url_list.</code><code class="descname">WhiteListedUrlList</code><a class="reference internal" href="../../_modules/api/object_types/white_listed_url_list.html#WhiteListedUrlList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.white_listed_url_list.WhiteListedUrlList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-api.object_types.xml_error">
+<span id="api-object-types-xml-error-module"></span><h2>2.4.1.99. api.object_types.xml_error module<a class="headerlink" href="#module-api.object_types.xml_error" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="api.object_types.xml_error.XmlError">
+<em class="property">class </em><code class="descclassname">api.object_types.xml_error.</code><code class="descname">XmlError</code><a class="reference internal" href="../../_modules/api/object_types/xml_error.html#XmlError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#api.object_types.xml_error.XmlError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="api.html" title="2. api package"
+             >previous</a> |</li>
+        <li><a href="../../index.html">PyTan 1.0.0 documentation</a> &raquo;</li>
+          <li><a href="api.html" >2. api package</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Tanium.
+      Last updated on Dec 03, 2014.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+    </div>
+  </body>
+</html>

@@ -1,7 +1,0 @@
-
-pytan.api.object_types.filter_list module
-*****************************************
-
-class class pytan.api.object_types.filter_list.FilterList
-
-   Bases: "pytan.api.object_types.base.BaseType"

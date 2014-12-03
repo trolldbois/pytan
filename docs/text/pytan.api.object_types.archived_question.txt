@@ -1,7 +1,0 @@
-
-pytan.api.object_types.archived_question module
-***********************************************
-
-class class pytan.api.object_types.archived_question.ArchivedQuestion
-
-   Bases: "pytan.api.object_types.base.BaseType"

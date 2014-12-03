@@ -1,7 +1,0 @@
-
-pytan.api.object_types.package_file module
-******************************************
-
-class class pytan.api.object_types.package_file.PackageFile
-
-   Bases: "pytan.api.object_types.base.BaseType"

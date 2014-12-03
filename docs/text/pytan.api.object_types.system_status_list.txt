@@ -1,7 +1,0 @@
-
-pytan.api.object_types.system_status_list module
-************************************************
-
-class class pytan.api.object_types.system_status_list.SystemStatusList
-
-   Bases: "pytan.api.object_types.base.BaseType"

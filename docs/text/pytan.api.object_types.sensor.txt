@@ -1,7 +1,0 @@
-
-pytan.api.object_types.sensor module
-************************************
-
-class class pytan.api.object_types.sensor.Sensor
-
-   Bases: "pytan.api.object_types.base.BaseType"

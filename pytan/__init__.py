@@ -3,7 +3,7 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 '''
 PyTan Description
-============
+=================
 
 A Python library that provides a simple way for programmatically interfacing
 with Tanium's SOAP API. It is comprised of three parts:
@@ -36,6 +36,13 @@ PyTan was created to solve for the following needs:
 -  Provide a way to export/import objects in JSON via Python and/or the
    command line.
 
+.. Requirements:
+
+Requirements
+============
+-  Python 2.7
+-  A working install of Tanium Server 6.2
+
 .. Installation:
 
 Installation
@@ -60,17 +67,13 @@ Linux Installation
       installation
     * Copy PyTan from github to your local machine somewhere
 
+.. API Usage:
 
-.. Example_Usage:
+API Usage
+============
 
-Example Usage
-===================
-Setup a Handler() object::
+See :mod:`pytan.handler` submodule for API Usage
 
-    import sys
-    sys.path.append('/path/to/pytan/')
-    import pytan
-    handler = pytan.Handler(username, password, host)
 
 '''
 

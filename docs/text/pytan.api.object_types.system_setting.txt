@@ -1,7 +1,0 @@
-
-pytan.api.object_types.system_setting module
-********************************************
-
-class class pytan.api.object_types.system_setting.SystemSetting
-
-   Bases: "pytan.api.object_types.base.BaseType"

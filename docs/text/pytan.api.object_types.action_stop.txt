@@ -1,7 +1,0 @@
-
-pytan.api.object_types.action_stop module
-*****************************************
-
-class class pytan.api.object_types.action_stop.ActionStop
-
-   Bases: "pytan.api.object_types.base.BaseType"

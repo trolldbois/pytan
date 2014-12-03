@@ -1,7 +1,0 @@
-
-pytan.api.object_types.saved_action module
-******************************************
-
-class class pytan.api.object_types.saved_action.SavedAction
-
-   Bases: "pytan.api.object_types.base.BaseType"

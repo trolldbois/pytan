@@ -1,7 +1,0 @@
-
-pytan.api.object_types.package_spec_list module
-***********************************************
-
-class class pytan.api.object_types.package_spec_list.PackageSpecList
-
-   Bases: "pytan.api.object_types.base.BaseType"

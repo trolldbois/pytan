@@ -1,7 +1,0 @@
-
-pytan.api.object_types.plugin_argument module
-*********************************************
-
-class class pytan.api.object_types.plugin_argument.PluginArgument
-
-   Bases: "pytan.api.object_types.base.BaseType"

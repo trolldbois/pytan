@@ -1,0 +1,510 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>1.6.2. pytan.handler module &mdash; PyTan 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="PyTan 1.0.0 documentation" href="../index.html" />
+    <link rel="up" title="1. PyTan package" href="pytan.html" />
+    <link rel="next" title="1.6.3. pytan.utils module" href="pytan.utils.html" />
+    <link rel="prev" title="1.6.1. pytan.constants module" href="pytan.constants.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pytan.utils.html" title="1.6.3. pytan.utils module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pytan.constants.html" title="1.6.1. pytan.constants module"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">PyTan 1.0.0 documentation</a> &raquo;</li>
+          <li><a href="pytan.html" accesskey="U">1. PyTan package</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">1.6.2. pytan.handler module</a><ul>
+<li><a class="reference internal" href="#handler-class">1.6.2.1. Handler Class</a><ul>
+<li><a class="reference internal" href="#example-create-a-handler-object">1.6.2.1.1. Example: Create a Handler object</a></li>
+<li><a class="reference internal" href="#handler-methods-asking-questions">1.6.2.1.2. Handler Methods: Asking Questions</a><ul>
+<li><a class="reference internal" href="#ask-a-question">1.6.2.1.2.1. Ask a Question</a></li>
+<li><a class="reference internal" href="#ask-a-saved-question">1.6.2.1.2.2. Ask a Saved Question</a></li>
+<li><a class="reference internal" href="#asking-a-manual-question">1.6.2.1.2.3. Asking a Manual Question</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#handler-methods-json-import">1.6.2.1.3. Handler Methods: JSON Import</a><ul>
+<li><a class="reference internal" href="#create-api-object-from-json">1.6.2.1.3.1. Create API Object from JSON</a></li>
+<li><a class="reference internal" href="#create-python-object-from-json">1.6.2.1.3.2. Create Python Object from JSON</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pytan.constants.html"
+                        title="previous chapter">1.6.1. pytan.constants module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pytan.utils.html"
+                        title="next chapter">1.6.3. pytan.utils module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/pytan/pytan.handler.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pytan.handler">
+<span id="pytan-handler-module"></span><h1>1.6.2. pytan.handler module<a class="headerlink" href="#module-pytan.handler" title="Permalink to this headline">¶</a></h1>
+<p>Handler: An API wrapper created to make using TaniumPy (<a class="reference internal" href="api/api.html#module-api" title="api"><code class="xref py py-mod docutils literal"><span class="pre">api</span></code></a>) more human friendly.</p>
+<div class="section" id="handler-class">
+<h2>1.6.2.1. Handler Class<a class="headerlink" href="#handler-class" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pytan.handler.Handler">
+<em class="property">class </em><code class="descclassname">pytan.handler.</code><code class="descname">Handler</code><span class="sig-paren">(</span><em>username</em>, <em>password</em>, <em>host</em>, <em>port='444'</em>, <em>loglevel=0</em>, <em>debugformat=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pytan/handler.html#Handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Creates a connection to a Tanium SOAP Server on host:port</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>username</strong> : str</p>
+<blockquote>
+<div><p><cite>username</cite> to connect to <cite>host</cite> with</p>
+</div></blockquote>
+<p><strong>password</strong> : str</p>
+<blockquote>
+<div><p><cite>password</cite> to connect to <cite>host</cite> with</p>
+</div></blockquote>
+<p><strong>host</strong> : str</p>
+<blockquote>
+<div><p>hostname or ip of Tanium SOAP Server</p>
+</div></blockquote>
+<p><strong>port</strong> : int, optional</p>
+<blockquote>
+<div><p>port of Tanium SOAP Server on <cite>host</cite></p>
+</div></blockquote>
+<p><strong>loglevel</strong> : int, optional</p>
+<blockquote>
+<div><p>0 should not print anything, 1 and higher will print more</p>
+</div></blockquote>
+<p><strong>debugformat</strong> : bool, optional</p>
+<blockquote class="last">
+<div><p>False use one line logformat, True use two lines</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li>port 444 is the default SOAP port</li>
+<li>port 443 forwards /soap/ URLs to the SOAP port</li>
+<li>Use port 444 if you have direct access to it</li>
+</ul>
+</dd></dl>
+
+<div class="section" id="example-create-a-handler-object">
+<h3>1.6.2.1.1. Example: Create a Handler object<a class="headerlink" href="#example-create-a-handler-object" title="Permalink to this headline">¶</a></h3>
+<p>Setup a Handler() object:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;/path/to/pytan/&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pytan</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handler</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">Handler</span><span class="p">(</span><span class="s">&#39;username&#39;</span><span class="p">,</span> <span class="s">&#39;password&#39;</span><span class="p">,</span> <span class="s">&#39;host&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="handler-methods-asking-questions">
+<h3>1.6.2.1.2. Handler Methods: Asking Questions<a class="headerlink" href="#handler-methods-asking-questions" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="ask-a-question">
+<h4>1.6.2.1.2.1. Ask a Question<a class="headerlink" href="#ask-a-question" title="Permalink to this headline">¶</a></h4>
+<dl class="method">
+<dt id="pytan.handler.Handler.ask">
+<code class="descclassname">Handler.</code><code class="descname">ask</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pytan/handler.html#Handler.ask"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.ask" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ask a type of question and get the results back</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>qtype</strong> : str</p>
+<blockquote>
+<div><p>type of question to ask: saved_question, manual, or manual_human</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>result</strong> : dict, containing:</p>
+<blockquote class="last">
+<div><ul>
+<li><dl class="first docutils">
+<dt><cite>question_object</cite> <span class="classifier-delimiter">:</span> <span class="classifier">one of the following depending on <cite>qtype</cite></span></dt>
+<dd><ul class="first last simple">
+<li><a class="reference internal" href="api/api.object_types.html#api.object_types.question.Question" title="api.object_types.question.Question"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.question.Question</span></code></a></li>
+<li><a class="reference internal" href="api/api.object_types.html#api.object_types.saved_question.SavedQuestion" title="api.object_types.saved_question.SavedQuestion"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.saved_question.SavedQuestion</span></code></a></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first"><cite>question_results</cite> : <a class="reference internal" href="api/api.object_types.html#api.object_types.result_set.ResultSet" title="api.object_types.result_set.ResultSet"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.result_set.ResultSet</span></code></a></p>
+</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<dl class="last docutils">
+<dt><code class="xref py py-obj docutils literal"><span class="pre">constants.Q_OBJ_MAP</span></code></dt>
+<dd>maps qtype to a method in Handler()</dd>
+</dl>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="ask-a-saved-question">
+<h4>1.6.2.1.2.2. Ask a Saved Question<a class="headerlink" href="#ask-a-saved-question" title="Permalink to this headline">¶</a></h4>
+<dl class="method">
+<dt id="pytan.handler.Handler.ask_saved">
+<code class="descclassname">Handler.</code><code class="descname">ask_saved</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pytan/handler.html#Handler.ask_saved"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.ask_saved" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ask a saved question and get the results back</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>id</strong> : int, list of int, optional</p>
+<blockquote>
+<div><p>id of saved question to ask</p>
+</div></blockquote>
+<p><strong>name</strong> : str, list of str</p>
+<blockquote>
+<div><p>name of saved question</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>ret</strong> : dict, containing</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><cite>question_object</cite> : <a class="reference internal" href="api/api.object_types.html#api.object_types.saved_question.SavedQuestion" title="api.object_types.saved_question.SavedQuestion"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.saved_question.SavedQuestion</span></code></a></li>
+<li><cite>question_results</cite> : <a class="reference internal" href="api/api.object_types.html#api.object_types.result_set.ResultSet" title="api.object_types.result_set.ResultSet"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.result_set.ResultSet</span></code></a></li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>id or name must be supplied</p>
+</dd></dl>
+
+</div>
+<div class="section" id="asking-a-manual-question">
+<h4>1.6.2.1.2.3. Asking a Manual Question<a class="headerlink" href="#asking-a-manual-question" title="Permalink to this headline">¶</a></h4>
+<dl class="method">
+<dt id="pytan.handler.Handler.ask_manual">
+<code class="descclassname">Handler.</code><code class="descname">ask_manual</code><span class="sig-paren">(</span><em>get_results=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pytan/handler.html#Handler.ask_manual"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.ask_manual" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ask a manual question using definitions and get the results back</p>
+<p>This method requires in-depth knowledge of how filters and options are created in the API,
+and as such is not meant for human consumption. Use <a class="reference internal" href="#pytan.handler.Handler.ask_manual_human" title="pytan.handler.Handler.ask_manual_human"><code class="xref py py-func docutils literal"><span class="pre">ask_manual_human()</span></code></a> instead.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>sensor_defs</strong> : str, dict, list of str or dict</p>
+<blockquote>
+<div><p>sensor definitions</p>
+</div></blockquote>
+<p><strong>question_filter_defs</strong> : dict, list of dict, optional</p>
+<blockquote>
+<div><p>question filter definitions</p>
+</div></blockquote>
+<p><strong>question_option_defs</strong> : dict, list of dict, optional</p>
+<blockquote>
+<div><p>question option definitions</p>
+</div></blockquote>
+<p><strong>get_results</strong> : bool, optional</p>
+<blockquote>
+<div><ul class="simple">
+<li>True: wait for result completion after asking question</li>
+<li>False: just ask the question and return it in <cite>ret</cite></li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>ret</strong> : dict, containing:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><cite>question_object</cite> : <a class="reference internal" href="api/api.object_types.html#api.object_types.question.Question" title="api.object_types.question.Question"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.question.Question</span></code></a></li>
+<li><cite>question_results</cite> : <a class="reference internal" href="api/api.object_types.html#api.object_types.result_set.ResultSet" title="api.object_types.result_set.ResultSet"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.result_set.ResultSet</span></code></a></li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<dl class="last docutils">
+<dt><code class="xref py py-obj docutils literal"><span class="pre">constants.FILTER_MAPS</span></code></dt>
+<dd>valid filter dictionaries for filters</dd>
+<dt><code class="xref py py-obj docutils literal"><span class="pre">constants.OPTION_MAPS</span></code></dt>
+<dd>valid option dictionaries for options</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># example of str for sensor_defs</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sensor_defs</span> <span class="o">=</span> <span class="s">&#39;Sensor1&#39;</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># example of dict for sensor_defs</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sensor_defs</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;Sensor1&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s">&#39;filter&#39;</span><span class="p">:</span> <span class="p">{</span>
+<span class="gp">... </span>        <span class="s">&#39;operator&#39;</span><span class="p">:</span> <span class="s">&#39;RegexMatch&#39;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s">&#39;not_flag&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="s">&#39;.*&#39;</span>
+<span class="gp">... </span>    <span class="p">},</span>
+<span class="gp">... </span>    <span class="s">&#39;params&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;key&#39;</span><span class="p">:</span> <span class="s">&#39;value&#39;</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="s">&#39;options&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;and_flag&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+<span class="gp">... </span><span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># example of dict for question_filter_defs</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">question_filter_defs</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s">&#39;operator&#39;</span><span class="p">:</span> <span class="s">&#39;RegexMatch&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s">&#39;not_flag&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="s">&#39;.*&#39;</span>
+<span class="gp">... </span><span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.handler.Handler.ask_manual_human">
+<code class="descclassname">Handler.</code><code class="descname">ask_manual_human</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pytan/handler.html#Handler.ask_manual_human"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.ask_manual_human" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ask a manual question using human strings and get the results back</p>
+<p>This method takes a string or list of strings and parses them into
+their corresponding definitions needed by <a class="reference internal" href="#pytan.handler.Handler.ask_manual" title="pytan.handler.Handler.ask_manual"><code class="xref py py-func docutils literal"><span class="pre">ask_manual()</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>sensors</strong> : str, list of str</p>
+<blockquote>
+<div><p>sensors (columns) to include in question</p>
+</div></blockquote>
+<p><strong>question_filters</strong> : str, list of str, optional</p>
+<blockquote>
+<div><p>filters that apply to the whole question</p>
+</div></blockquote>
+<p><strong>question_options</strong> : str, list of str, optional</p>
+<blockquote>
+<div><p>options that apply to the whole question</p>
+</div></blockquote>
+<p><strong>get_results</strong> : bool, optional</p>
+<blockquote>
+<div><p>True: wait for result completion after asking question
+False: just ask the question and return it in result</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>result</strong> : dict, containing:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><cite>question_object</cite> : <a class="reference internal" href="api/api.object_types.html#api.object_types.question.Question" title="api.object_types.question.Question"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.question.Question</span></code></a></li>
+<li><cite>question_results</cite> : <a class="reference internal" href="api/api.object_types.html#api.object_types.result_set.ResultSet" title="api.object_types.result_set.ResultSet"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.result_set.ResultSet</span></code></a></li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<dl class="last docutils">
+<dt><code class="xref py py-obj docutils literal"><span class="pre">constants.FILTER_MAPS</span></code></dt>
+<dd>valid filter dictionaries for filters</dd>
+<dt><code class="xref py py-obj docutils literal"><span class="pre">constants.OPTION_MAPS</span></code></dt>
+<dd>valid option dictionaries for options</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># example of str for `sensors`</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sensors</span> <span class="o">=</span> <span class="s">&#39;Sensor1&#39;</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># example of str for `sensors` with params</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sensors</span> <span class="o">=</span> <span class="s">&#39;Sensor1{key:value}&#39;</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># example of str for `sensors` with params and filter</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sensors</span> <span class="o">=</span> <span class="s">&#39;Sensor1{key:value}, that contains example text&#39;</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># example of str for `sensors` with params and filter and options</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sensors</span> <span class="o">=</span> <span class="p">(</span>
+<span class="gp">... </span>    <span class="s">&#39;Sensor1{key:value}, that contains example text,&#39;</span>
+<span class="gp">... </span>    <span class="s">&#39;opt:ignore_case, opt:max_data_age:60&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># example of str for question_filters</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">question_filters</span> <span class="o">=</span> <span class="s">&#39;Sensor2, that contains example test&#39;</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># example of list of str for question_options</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">question_options</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;max_data_age:3600&#39;</span><span class="p">,</span> <span class="s">&#39;and&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="handler-methods-json-import">
+<h3>1.6.2.1.3. Handler Methods: JSON Import<a class="headerlink" href="#handler-methods-json-import" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="create-api-object-from-json">
+<h4>1.6.2.1.3.1. Create API Object from JSON<a class="headerlink" href="#create-api-object-from-json" title="Permalink to this headline">¶</a></h4>
+<dl class="method">
+<dt id="pytan.handler.Handler.create_from_json">
+<code class="descclassname">Handler.</code><code class="descname">create_from_json</code><span class="sig-paren">(</span><em>objtype</em>, <em>json_file</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pytan/handler.html#Handler.create_from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.create_from_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new object using the SOAP api from a json file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>objtype</strong> : str</p>
+<blockquote>
+<div><p>Type of object described in <cite>json_file</cite></p>
+</div></blockquote>
+<p><strong>json_file</strong> : str</p>
+<blockquote>
+<div><p>path to JSON file that describes an API object</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>ret</strong> : <a class="reference internal" href="api/api.object_types.html#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+<blockquote class="last">
+<div><p>TaniumPy object added to Tanium SOAP Server</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="create-python-object-from-json">
+<h4>1.6.2.1.3.2. Create Python Object from JSON<a class="headerlink" href="#create-python-object-from-json" title="Permalink to this headline">¶</a></h4>
+<dl class="method">
+<dt id="pytan.handler.Handler.load_api_from_json">
+<code class="descclassname">Handler.</code><code class="descname">load_api_from_json</code><span class="sig-paren">(</span><em>json_file</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pytan/handler.html#Handler.load_api_from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.load_api_from_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Opens a json file and parses it into an python object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>json_file</strong> : str</p>
+<blockquote>
+<div><p>path to JSON file that describes an API object</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>obj</strong> : <a class="reference internal" href="api/api.object_types.html#api.object_types.base.BaseType" title="api.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">api.object_types.base.BaseType</span></code></a></p>
+<blockquote class="last">
+<div><p>TaniumPy object converted from json file</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pytan.utils.html" title="1.6.3. pytan.utils module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pytan.constants.html" title="1.6.1. pytan.constants module"
+             >previous</a> |</li>
+        <li><a href="../index.html">PyTan 1.0.0 documentation</a> &raquo;</li>
+          <li><a href="pytan.html" >1. PyTan package</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2014, Tanium.
+      Last updated on Dec 03, 2014.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
+    </div>
+  </body>
+</html>
