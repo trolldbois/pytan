@@ -1,0 +1,171 @@
+{
+  "model": "com.tanium.components.parameters::ParametersArray",
+  "parameterType": "com.tanium.components.parameters::ParametersArray",
+  "parameters": [
+    {
+      "defaultValue": "defaulttex",
+      "helpString": "helptext",
+      "key": "$1",
+      "label": "textinput",
+      "maxChars": 10,
+      "model": "com.tanium.components.parameters::TextInputParameter",
+      "parameterType": "com.tanium.components.parameters::TextInputParameter",
+      "promptText": "prompttext",
+      "restrict": null,
+      "validationExpressions": [
+        {
+          "expression": "\\S",
+          "flags": "",
+          "helpString": "must be word",
+          "model": "com.tanium.models::ValidationExpression",
+          "parameterType": "com.tanium.models::ValidationExpression"
+        }
+      ],
+      "value": "defaulttex"
+    },
+    {
+      "defaultValue": "",
+      "helpString": "helptext",
+      "key": "$2",
+      "label": "dropdown",
+      "model": "com.tanium.components.parameters::DropDownParameter",
+      "parameterType": "com.tanium.components.parameters::DropDownParameter",
+      "promptText": "prompttext",
+      "requireSelection": true,
+      "value": "v1",
+      "values": [
+        "v1",
+        "v2"
+      ]
+    },
+    {
+      "defaultValue": "1",
+      "helpString": "helptext",
+      "key": "$3",
+      "label": "checkbox",
+      "model": "com.tanium.components.parameters::CheckBoxParameter",
+      "parameterType": "com.tanium.components.parameters::CheckBoxParameter",
+      "value": "1"
+    },
+    {
+      "defaultValue": "1",
+      "helpString": "helptext",
+      "key": "$4",
+      "label": "numeric",
+      "maximum": 8,
+      "minimum": 1,
+      "model": "com.tanium.components.parameters::NumericParameter",
+      "parameterType": "com.tanium.components.parameters::NumericParameter",
+      "snapInterval": 2,
+      "stepSize": 4,
+      "value": "1"
+    },
+    {
+      "componentType": 3,
+      "defaultValue": "",
+      "end_date_restriction": {
+        "interval": null,
+        "intervalCount": null,
+        "model": "com.tanium.models::PointInTime",
+        "parameterType": "com.tanium.models::PointInTime",
+        "type": 3,
+        "unix_time_stamp": 1420174800000
+      },
+      "end_time_restriction": {
+        "interval": null,
+        "intervalCount": null,
+        "model": "com.tanium.models::PointInTime",
+        "parameterType": "com.tanium.models::PointInTime",
+        "type": 3,
+        "unix_time_stamp": 69923000
+      },
+      "helpString": "helptext",
+      "key": "$5",
+      "label": "datetime",
+      "model": "com.tanium.components.parameters::DateTimeParameter",
+      "parameterType": "com.tanium.components.parameters::DateTimeParameter",
+      "start_date_restriction": {
+        "interval": null,
+        "intervalCount": null,
+        "model": "com.tanium.models::PointInTime",
+        "parameterType": "com.tanium.models::PointInTime",
+        "type": 3,
+        "unix_time_stamp": 1414814400000
+      },
+      "start_time_restriction": {
+        "interval": 3600,
+        "intervalCount": 5,
+        "model": "com.tanium.models::PointInTime",
+        "parameterType": "com.tanium.models::PointInTime",
+        "type": 1,
+        "unix_time_stamp": null
+      },
+      "value": ""
+    },
+    {
+      "defaultValue": "",
+      "default_range_end": {
+        "interval": 86400,
+        "intervalCount": 1,
+        "model": "com.tanium.models::PointInTime",
+        "parameterType": "com.tanium.models::PointInTime",
+        "type": 1,
+        "unix_time_stamp": null
+      },
+      "default_range_start": {
+        "interval": 86400,
+        "intervalCount": 1,
+        "model": "com.tanium.models::PointInTime",
+        "parameterType": "com.tanium.models::PointInTime",
+        "type": 2,
+        "unix_time_stamp": null
+      },
+      "helpString": "helptext",
+      "key": "$6",
+      "label": "daterange",
+      "model": "com.tanium.components.parameters::DateTimeRangeParameter",
+      "parameterType": "com.tanium.components.parameters::DateTimeRangeParameter",
+      "value": "1417159750000|1417332550000"
+    },
+    {
+      "allowEmptyList": false,
+      "defaultText": "",
+      "defaultValue": "",
+      "helpString": null,
+      "key": "$7",
+      "label": "list",
+      "maxChars": 0,
+      "model": "com.tanium.components.parameters::ListParameter",
+      "parameterType": "com.tanium.components.parameters::ListParameter",
+      "promptText": "",
+      "restrict": null,
+      "validationExpressions": [],
+      "value": "",
+      "values": [
+        ""
+      ]
+    },
+    {
+      "defaultValue": "defaulttext",
+      "heightInLines": 5,
+      "helpString": "helptext",
+      "key": "$8",
+      "label": "textarea",
+      "maxChars": 2000,
+      "model": "com.tanium.components.parameters::TextAreaParameter",
+      "parameterType": "com.tanium.components.parameters::TextAreaParameter",
+      "promptText": "prompttext",
+      "restrict": null,
+      "validationExpressions": [
+        {
+          "expression": "\\W",
+          "flags": "",
+          "helpString": "word",
+          "model": "com.tanium.models::ValidationExpression",
+          "parameterType": "com.tanium.models::ValidationExpression"
+        }
+      ],
+      "value": "defaulttext"
+    }
+  ]
+}

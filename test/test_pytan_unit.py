@@ -7,21 +7,22 @@ sys.dont_write_bytecode = True
 
 import os
 import unittest
+import json
 
 my_file = os.path.abspath(__file__)
 my_dir = os.path.dirname(my_file)
 root_dir = os.path.join(my_dir, os.pardir)
 root_dir = os.path.abspath(root_dir)
-path_adds = [my_dir, root_dir]
+lib_dir = os.path.join(root_dir, 'lib')
+path_adds = [my_dir, lib_dir]
 
 for aa in path_adds:
     if aa not in sys.path:
         sys.path.insert(0, aa)
 
-import json
 import pytan
+import taniumpy
 from pytan import utils
-from pytan import api
 from pytan.utils import HumanParserError
 from pytan.utils import DefinitionParserError
 from pytan.utils import HandlerError
@@ -1007,7 +1008,7 @@ class TestManualBuildObjectUtils(unittest.TestCase):
         def load_sensor(n):
             sensor_obj_json_path = os.path.join(my_dir, n)
             sensor_obj_json = json.load(open(sensor_obj_json_path))
-            return api.BaseType.from_jsonable(sensor_obj_json)
+            return taniumpy.BaseType.from_jsonable(sensor_obj_json)
 
         # load in our JSON sensor object for testing
         cls.sensor_obj_with_params = load_sensor('sensor_obj_with_params.json')
@@ -1040,11 +1041,11 @@ class TestManualBuildObjectUtils(unittest.TestCase):
 
         r = utils.build_selectlist_obj(**kwargs)
 
-        self.assertIsInstance(r, api.SelectList)
-        self.assertIsInstance(r.select[0], api.Select)
+        self.assertIsInstance(r, taniumpy.SelectList)
+        self.assertIsInstance(r.select[0], taniumpy.Select)
         self.assertEqual(len(r.select), 1)
-        self.assertIsInstance(r.select[0].filter, api.Filter)
-        self.assertIsInstance(r.select[0].sensor, api.Sensor)
+        self.assertIsInstance(r.select[0].filter, taniumpy.Filter)
+        self.assertIsInstance(r.select[0].sensor, taniumpy.Sensor)
         self.assertEqual(
             r.select[0].sensor.hash, self.sensor_obj_no_params.hash)
         self.assertEqual(
@@ -1091,11 +1092,11 @@ class TestManualBuildObjectUtils(unittest.TestCase):
 
         r = utils.build_selectlist_obj(**kwargs)
 
-        self.assertIsInstance(r, api.SelectList)
-        self.assertIsInstance(r.select[0], api.Select)
+        self.assertIsInstance(r, taniumpy.SelectList)
+        self.assertIsInstance(r.select[0], taniumpy.Select)
         self.assertEqual(len(r.select), 1)
-        self.assertIsInstance(r.select[0].filter, api.Filter)
-        self.assertIsInstance(r.select[0].sensor, api.Sensor)
+        self.assertIsInstance(r.select[0].filter, taniumpy.Filter)
+        self.assertIsInstance(r.select[0].sensor, taniumpy.Sensor)
         self.assertEqual(
             r.select[0].sensor.hash, self.sensor_obj_no_params.hash)
         self.assertEqual(
@@ -1139,11 +1140,11 @@ class TestManualBuildObjectUtils(unittest.TestCase):
 
         r = utils.build_selectlist_obj(**kwargs)
 
-        self.assertIsInstance(r, api.SelectList)
-        self.assertIsInstance(r.select[0], api.Select)
+        self.assertIsInstance(r, taniumpy.SelectList)
+        self.assertIsInstance(r.select[0], taniumpy.Select)
         self.assertEqual(len(r.select), 1)
-        self.assertIsInstance(r.select[0].filter, api.Filter)
-        self.assertIsInstance(r.select[0].sensor, api.Sensor)
+        self.assertIsInstance(r.select[0].filter, taniumpy.Filter)
+        self.assertIsInstance(r.select[0].sensor, taniumpy.Sensor)
         self.assertEqual(
             r.select[0].sensor.source_id, self.sensor_obj_with_params.id)
         self.assertEqual(
@@ -1201,11 +1202,11 @@ class TestManualBuildObjectUtils(unittest.TestCase):
 
         r = utils.build_selectlist_obj(**kwargs)
 
-        self.assertIsInstance(r, api.SelectList)
-        self.assertIsInstance(r.select[0], api.Select)
+        self.assertIsInstance(r, taniumpy.SelectList)
+        self.assertIsInstance(r.select[0], taniumpy.Select)
         self.assertEqual(len(r.select), 1)
-        self.assertIsInstance(r.select[0].filter, api.Filter)
-        self.assertIsInstance(r.select[0].sensor, api.Sensor)
+        self.assertIsInstance(r.select[0].filter, taniumpy.Filter)
+        self.assertIsInstance(r.select[0].sensor, taniumpy.Sensor)
         self.assertEqual(
             r.select[0].sensor.source_id, self.sensor_obj_with_params.id)
         self.assertEqual(
@@ -1264,10 +1265,10 @@ class TestManualBuildObjectUtils(unittest.TestCase):
 
         r = utils.build_group_obj(**kwargs)
 
-        self.assertIsInstance(r, api.Group)
-        self.assertIsInstance(r.filters, api.FilterList)
+        self.assertIsInstance(r, taniumpy.Group)
+        self.assertIsInstance(r.filters, taniumpy.FilterList)
         self.assertEqual(len(r.filters), 1)
-        self.assertIsInstance(r.filters[0], api.Filter)
+        self.assertIsInstance(r.filters[0], taniumpy.Filter)
         self.assertEqual(
             r.filters[0].sensor.hash, self.sensor_obj_no_params.hash)
         self.assertEqual(r.filters[0].operator, 'RegexMatch')
@@ -1281,10 +1282,10 @@ class TestManualBuildObjectUtils(unittest.TestCase):
         self.assertFalse(hasattr(r.filters[0], 'ignored_option'))
 
     def test_build_manual_q(self):
-        r = utils.build_manual_q(api.SelectList(), api.Group())
-        self.assertIsInstance(r, api.Question)
-        self.assertIsInstance(r.group, api.Group)
-        self.assertIsInstance(r.selects, api.SelectList)
+        r = utils.build_manual_q(taniumpy.SelectList(), taniumpy.Group())
+        self.assertIsInstance(r, taniumpy.Question)
+        self.assertIsInstance(r.group, taniumpy.Group)
+        self.assertIsInstance(r.selects, taniumpy.SelectList)
 
     def test_build_selectlist_obj_invalid_filter(self):
 
@@ -1368,7 +1369,7 @@ class TestGenericUtils(unittest.TestCase):
             utils.version_check(req_ver)
 
     def test_empty_obj(self):
-        obj = api.SensorList()
+        obj = taniumpy.SensorList()
         self.assertTrue(utils.empty_obj(obj))
         self.assertTrue(utils.empty_obj(''))
 

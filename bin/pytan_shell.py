@@ -4,7 +4,7 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 '''get an interactive console with pytan available as handler'''
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
-__version__ = '0.8.0'
+__version__ = '1.0.0'
 
 import os
 import sys
@@ -13,7 +13,8 @@ sys.dont_write_bytecode = True
 my_file = os.path.abspath(__file__)
 my_dir = os.path.dirname(my_file)
 parent_dir = os.path.dirname(my_dir)
-path_adds = [parent_dir]
+lib_dir = os.path.join(parent_dir, 'lib')
+path_adds = [lib_dir]
 
 for aa in path_adds:
     if aa not in sys.path:
@@ -21,7 +22,6 @@ for aa in path_adds:
 
 import pytan
 from pytan import utils
-# from pytan import api
 
 # adds readline, autocomplete, history to python interactive console
 import atexit
@@ -123,36 +123,3 @@ if handler.loglevel >= 10:
     utils.set_all_loglevels()
 
 print ("%s -- now available as 'handler'!" % handler)
-
-self = handler
-session = handler.session
-api = pytan.api
-
-# kwargs = {
-#     'name': 'die49',
-#     'command': 'die45 $1 $2 $3 $4 $5 $6 $7 $8',
-#     # 'command': 'die45',
-#     'display_name': 'die48 test',
-#     'command_timeout_seconds': 9999,
-#     'expire_seconds': 1500,
-#     'parameters_json_file': (
-#         'gh/pytan/doc/example_of_all_package_parameters.json'
-#     ),
-#     'file_urls': [
-#         '33223::testing.vbs||https://content.tanium.com/files/'
-#         'initialcontent/bundles/2014-10-01_11-32-15-7844/'
-#         'custom_tagging_-_remove_tags_[non-windows]/CustomTagRemove.sh'
-#     ],
-#     'verify_filters': ['Custom Tags, that contains tag'],
-#     'verify_filter_options': ['and'],
-#     'verify_expire_seconds': 3600,
-# }
-
-# try:
-#     handler.delete('package', name='die49')
-# except:
-#     pass
-
-# p = handler.create_package(**kwargs)
-
-# print pytan.utils.xml_pretty(p.toSOAPBody(True))

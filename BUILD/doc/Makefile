@@ -7,6 +7,7 @@ SPHINXBUILD   = sphinx-build
 PAPER         =
 BUILDDIR      = build
 REALBUILDDIR  = ../../doc
+STATIC_DOCDIR = static_doc
 
 # User-friendly check for sphinx-build
 ifeq ($(shell which $(SPHINXBUILD) >/dev/null 2>&1; echo $$?), 1)
@@ -47,6 +48,8 @@ help:
 	@echo "  linkcheck  to check all external links for integrity"
 	@echo "  doctest    to run all doctests embedded in the documentation (if enabled)"
 	@echo "  coverage   to run coverage check of the documentation (if enabled)"
+	@echo "  staticdoc  to copy static docs to realbuilddir"
+	@echo "  all        to run clean, html, staticdoc"
 
 clean:
 	rm -rf $(BUILDDIR)/*
@@ -183,3 +186,9 @@ pseudoxml:
 	$(SPHINXBUILD) -b pseudoxml $(ALLSPHINXOPTS) $(BUILDDIR)/pseudoxml
 	@echo
 	@echo "Build finished. The pseudo-XML files are in $(BUILDDIR)/pseudoxml."
+
+staticdoc:
+	cp $(STATIC_DOCDIR)/* $(REALBUILDDIR)/
+	@echo "Static docs copied to $(REALBUILDDIR)"
+
+all: clean html staticdoc

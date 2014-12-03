@@ -19,10 +19,19 @@ from argparse import ArgumentDefaultsHelpFormatter as A1
 from argparse import RawDescriptionHelpFormatter as A2
 from collections import OrderedDict
 
-from . import __version__
-from . import constants
-from . import api
-from . import xmltodict
+my_file = os.path.abspath(__file__)
+my_dir = os.path.dirname(my_file)
+parent_dir = os.path.dirname(my_dir)
+path_adds = [parent_dir]
+
+for aa in path_adds:
+    if aa not in sys.path:
+        sys.path.append(aa)
+
+import taniumpy
+import xmltodict
+from pytan import __version__
+from pytan import constants
 
 mylog = logging.getLogger("handler")
 humanlog = logging.getLogger("ask_manual_human")
@@ -1401,7 +1410,7 @@ def val_q_filter_defs(q_filter_defs):
 
 
 def build_selectlist_obj(sensor_defs):
-    select_objlist = api.SelectList()
+    select_objlist = taniumpy.SelectList()
 
     for d in sensor_defs:
 
@@ -1426,8 +1435,8 @@ def build_selectlist_obj(sensor_defs):
         filter_obj = apply_options_obj(options, filter_obj, 'filter')
 
         # create a select object for this sensor
-        select_obj = api.Select()
-        select_obj.sensor = api.Sensor()
+        select_obj = taniumpy.Select()
+        select_obj.sensor = taniumpy.Sensor()
         select_obj.filter = filter_obj
 
         # if there are parameters, we need to set the following to
@@ -1446,7 +1455,7 @@ def build_selectlist_obj(sensor_defs):
 
 
 def build_group_obj(q_filter_defs, q_option_defs):
-    filter_objlist = api.FilterList()
+    filter_objlist = taniumpy.FilterList()
 
     for d in q_filter_defs:
         # validate/map question filter into a Filter()
@@ -1456,7 +1465,7 @@ def build_group_obj(q_filter_defs, q_option_defs):
         filter_obj = apply_options_obj(q_option_defs, filter_obj, 'filter')
         filter_objlist.filter.append(filter_obj)
 
-    group_obj = api.Group()
+    group_obj = taniumpy.Group()
     group_obj.filters = filter_objlist
     group_obj = apply_options_obj(q_option_defs, group_obj, 'group')
 
@@ -1464,7 +1473,7 @@ def build_group_obj(q_filter_defs, q_option_defs):
 
 
 def build_manual_q(selectlist_obj, group_obj):
-    add_q_obj = api.Question()
+    add_q_obj = taniumpy.Question()
     add_q_obj.selects = selectlist_obj
     add_q_obj.group = group_obj
     return add_q_obj
@@ -1485,7 +1494,7 @@ def get_obj_params(obj):
 
 def build_param_obj(key, val, delim=''):
     # create a parameter object
-    param_obj = api.Parameter()
+    param_obj = taniumpy.Parameter()
     param_obj.key = '{0}{1}{0}'.format(delim, key)
     param_obj.value = val
     return param_obj
@@ -1514,7 +1523,7 @@ def build_param_objlist(obj, user_params, delim='', derive_def=False,
     # extract the params from the object
     obj_params = get_obj_params(obj)
     obj_name = str(obj)
-    param_objlist = api.ParameterList()
+    param_objlist = taniumpy.ParameterList()
     # if user defined params and this sensor doesn't take params,
     # we will just ignore them
     for obj_param in obj_params:
@@ -1543,8 +1552,8 @@ def get_filter_obj(sensor_def):
     sensor_obj = sensor_def['sensor_obj']
 
     # create our basic filter that is needed no matter what
-    filter_obj = api.Filter()
-    filter_obj.sensor = api.Sensor()
+    filter_obj = taniumpy.Filter()
+    filter_obj.sensor = taniumpy.Sensor()
     filter_obj.sensor.hash = sensor_obj.hash
 
     # get the filter the user supplied
@@ -1709,18 +1718,20 @@ def chk_def_key(def_dict, key, keytypes, keysubtypes=None, req=False):
         raise DefinitionParserError(err(key, keytypes, keysubtypes, subtypes))
 
 
-def empty_obj(api_object):
-    v = [getattr(api_object, '_list_properties', {}), is_str(api_object)]
-    if any(v) and not api_object:
+def empty_obj(taniumpy_object):
+    v = [getattr(taniumpy_object, '_list_properties', {}), is_str(taniumpy_object)]
+    if any(v) and not taniumpy_object:
         return True
     else:
         return False
 
 
 def get_ask_kwargs(**kwargs):
+    ASK_KWARGS = constants.ASK_KWARGS
     ask_kwargs = {}
-    if 'timeout' in kwargs:
-        ask_kwargs['timeout'] = kwargs.pop('timeout')
+    for i in kwargs:
+        if i in ASK_KWARGS:
+            ask_kwargs[i] = kwargs[i]
     return ask_kwargs
 
 
@@ -1810,9 +1821,9 @@ def get_dict_list_len(d, keys=[], negate=False):
 
 
 def build_metadatalist_obj(properties, nameprefix):
-    metadatalist_obj = api.MetadataList()
+    metadatalist_obj = taniumpy.MetadataList()
     for prop in properties:
-        metadata_obj = api.MetadataItem()
+        metadata_obj = taniumpy.MetadataItem()
         metadata_obj.name = "{}.{}".format(nameprefix, prop[0])
         metadata_obj.value = prop[1]
         metadatalist_obj.append(metadata_obj)

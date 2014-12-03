@@ -1,7 +1,7 @@
 # -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
-"""Handler: An API wrapper created to make using TaniumPy (:mod:`api`) more human friendly.
+"""Handler: An API wrapper created to make using (:mod:`taniumpy`) more human friendly.
 
 Handler Class
 -------------
@@ -19,48 +19,6 @@ Setup a Handler() object::
     >>> import pytan
     >>> handler = pytan.Handler('username', 'password', 'host')
 
-
-Handler Methods: Asking Questions
-'''''''''''''''''''''''''''''''''
-
-Ask a Question
-**************
-
-.. automethod:: pytan.handler.Handler.ask
-
-Ask a Saved Question
-********************
-
-.. automethod:: pytan.handler.Handler.ask_saved
-
-Asking a Manual Question
-************************
-
-.. automethod:: pytan.handler.Handler.ask_manual
-.. automethod:: pytan.handler.Handler.ask_manual_human
-
-Handler Methods: JSON Import
-''''''''''''''''''''''''''''
-
-Create API Object from JSON
-***************************
-
-.. automethod:: pytan.handler.Handler.create_from_json
-
-Create Python Object from JSON
-******************************
-
-.. automethod:: pytan.handler.Handler.load_api_from_json
-
-Handler Methods: Creating Objects
-'''''''''''''''''''''''''''''''''
-
-Create User
-***************************
-
-.. automethod:: pytan.handler.Handler.create_user
-
-
 """
 import sys
 
@@ -72,11 +30,21 @@ import logging
 import io
 import time
 import json
-from . import utils
-from . import constants
-from . import api
-from .utils import HandlerError
-from .utils import RunFalse
+
+my_file = os.path.abspath(__file__)
+my_dir = os.path.dirname(my_file)
+parent_dir = os.path.dirname(my_dir)
+path_adds = [parent_dir]
+
+for aa in path_adds:
+    if aa not in sys.path:
+        sys.path.append(aa)
+
+import taniumpy
+from pytan import utils
+from pytan import constants
+from pytan.utils import HandlerError
+from pytan.utils import RunFalse
 
 mylog = logging.getLogger("handler")
 actionlog = logging.getLogger("action_progress")
@@ -134,7 +102,7 @@ class Handler(object):
             raise HandlerError("port must be an integer!")
 
         utils.test_app_port(host, port)
-        self.session = api.Session(host, port)
+        self.session = taniumpy.Session(host, port)
         self.session.authenticate(username, password)
 
     def __str__(self):
@@ -154,9 +122,9 @@ class Handler(object):
         -------
         result : dict, containing:
             * `question_object` : one of the following depending on `qtype`
-                * :class:`api.object_types.question.Question`
-                * :class:`api.object_types.saved_question.SavedQuestion`
-            * `question_results` : :class:`api.object_types.result_set.ResultSet`
+                * :class:`taniumpy.object_types.question.Question`
+                * :class:`taniumpy.object_types.saved_question.SavedQuestion`
+            * `question_results` : :class:`taniumpy.object_types.result_set.ResultSet`
 
         See Also
         --------
@@ -186,8 +154,8 @@ class Handler(object):
         Returns
         -------
         ret : dict, containing
-            * `question_object` : :class:`api.object_types.saved_question.SavedQuestion`
-            * `question_results` : :class:`api.object_types.result_set.ResultSet`
+            * `question_object` : :class:`taniumpy.object_types.saved_question.SavedQuestion`
+            * `question_results` : :class:`taniumpy.object_types.result_set.ResultSet`
 
         Notes
         -----
@@ -208,7 +176,7 @@ class Handler(object):
 
         # poll the Saved Question ID returned above to wait for results
         ask_kwargs = utils.get_ask_kwargs(**kwargs)
-        asker = api.QuestionAsker(self.session, q_obj, **ask_kwargs)
+        asker = taniumpy.QuestionAsker(self.session, q_obj, **ask_kwargs)
         asker.run({'ProgressChanged': utils.question_progress})
 
         # get the results
@@ -246,8 +214,8 @@ class Handler(object):
         Returns
         -------
         ret : dict, containing:
-            * `question_object` : :class:`api.object_types.question.Question`
-            * `question_results` : :class:`api.object_types.result_set.ResultSet`
+            * `question_object` : :class:`taniumpy.object_types.question.Question`
+            * `question_results` : :class:`taniumpy.object_types.result_set.ResultSet`
 
         Examples
         --------
@@ -335,7 +303,7 @@ class Handler(object):
         if get_results:
             # poll the Question ID returned above to wait for results
             ask_kwargs = utils.get_ask_kwargs(**kwargs)
-            asker = api.QuestionAsker(self.session, q_obj, **ask_kwargs)
+            asker = taniumpy.QuestionAsker(self.session, q_obj, **ask_kwargs)
             asker.run({'ProgressChanged': utils.question_progress})
 
             # get the results
@@ -370,8 +338,8 @@ class Handler(object):
         Returns
         -------
         result : dict, containing:
-            * `question_object` : :class:`api.object_types.question.Question`
-            * `question_results` : :class:`api.object_types.result_set.ResultSet`
+            * `question_object` : :class:`taniumpy.object_types.question.Question`
+            * `question_results` : :class:`taniumpy.object_types.result_set.ResultSet`
 
         Examples
         --------
@@ -429,8 +397,8 @@ class Handler(object):
         )
         return result
 
-    def load_api_from_json(self, json_file):
-        """Opens a json file and parses it into an python object
+    def load_taniumpy_from_json(self, json_file):
+        """Opens a json file and parses it into an taniumpy object
 
         Parameters
         ----------
@@ -439,7 +407,7 @@ class Handler(object):
 
         Returns
         -------
-        obj : :class:`api.object_types.base.BaseType`
+        obj : :class:`taniumpy.object_types.base.BaseType`
             TaniumPy object converted from json file
         """
         try:
@@ -465,7 +433,7 @@ class Handler(object):
             raise HandlerError(m(howto_m))
 
         try:
-            obj = api.BaseType.from_jsonable(json_dict)
+            obj = taniumpy.BaseType.from_jsonable(json_dict)
         except Exception as e:
             m = (
                 "Unable to parse json_file {!r} into an API {} object\n"
@@ -486,7 +454,7 @@ class Handler(object):
 
         Returns
         -------
-        ret : :class:`api.object_types.base.BaseType`
+        ret : :class:`taniumpy.object_types.base.BaseType`
             TaniumPy object added to Tanium SOAP Server
         """
         obj_map = utils.get_obj_map(objtype)
@@ -500,7 +468,7 @@ class Handler(object):
             ).format
             raise HandlerError(m(objtype, json_createable))
 
-        add_obj = self.load_api_from_json(json_file)
+        add_obj = self.load_taniumpy_from_json(json_file)
 
         if getattr(add_obj, '_list_properties', ''):
             obj_list = [x for x in add_obj]
@@ -515,9 +483,9 @@ class Handler(object):
         ]
 
         if obj_map.get('allfix'):
-            ret = getattr(api, obj_map['allfix'])()
+            ret = getattr(taniumpy, obj_map['allfix'])()
         else:
-            ret = getattr(api, obj_map['all'])()
+            ret = getattr(taniumpy, obj_map['all'])()
 
         for x in obj_list:
             try:
@@ -596,7 +564,7 @@ class Handler(object):
 
         Returns
         -------
-        package_obj : :class:`api.object_types.package_spec.PackageSpec`
+        package_obj : :class:`taniumpy.object_types.package_spec.PackageSpec`
             TaniumPy object added to Tanium SOAP Server
 
         See Also
@@ -606,7 +574,7 @@ class Handler(object):
         """
 
         # bare minimum arguments for new package: name, command
-        add_package_obj = api.PackageSpec()
+        add_package_obj = taniumpy.PackageSpec()
         add_package_obj.name = name
         if display_name:
             add_package_obj.display_name = display_name
@@ -679,7 +647,7 @@ class Handler(object):
 
         # FILES
         if file_urls:
-            filelist_obj = api.PackageFileList()
+            filelist_obj = taniumpy.PackageFileList()
             for file_url in file_urls:
                 # if :: is in file_url, split on it and use 0 as
                 # download_seconds
@@ -693,7 +661,7 @@ class Handler(object):
                     filename, file_url = file_url.split('||')
                 else:
                     filename = os.path.basename(file_url)
-                file_obj = api.PackageFile()
+                file_obj = taniumpy.PackageFile()
                 file_obj.name = filename
                 file_obj.source = file_url
                 file_obj.download_seconds = download_seconds
@@ -720,7 +688,7 @@ class Handler(object):
 
         Returns
         -------
-        group_obj : :class:`api.object_types.group.Group`
+        group_obj : :class:`taniumpy.object_types.group.Group`
             TaniumPy object added to Tanium SOAP Server
 
         See Also
@@ -758,17 +726,17 @@ class Handler(object):
 
         Returns
         -------
-        user_obj : :class:`api.object_types.user.User`
+        user_obj : :class:`taniumpy.object_types.user.User`
             TaniumPy object added to Tanium SOAP Server
         """
         if roleid or rolename:
             rolelist_obj = self.get('userrole', id=roleid, name=rolename)
         else:
-            rolelist_obj = api.RoleList()
+            rolelist_obj = taniumpy.RoleList()
         metadatalist_obj = utils.build_metadatalist_obj(
             properties, 'TConsole.User.Property',
         )
-        add_user_obj = api.User()
+        add_user_obj = taniumpy.User()
         add_user_obj.name = username
         add_user_obj.roles = rolelist_obj
         add_user_obj.metadata = metadatalist_obj
@@ -803,7 +771,7 @@ class Handler(object):
 
         Returns
         -------
-        url_obj : :class:`api.object_types.white_listed_url.WhiteListedUrl`
+        url_obj : :class:`taniumpy.object_types.white_listed_url.WhiteListedUrl`
             TaniumPy object added to Tanium SOAP Server
         """
         if regex:
@@ -812,7 +780,7 @@ class Handler(object):
         metadatalist_obj = utils.build_metadatalist_obj(
             properties, 'TConsole.WhitelistedURL',
         )
-        add_url_obj = api.WhiteListedUrl()
+        add_url_obj = taniumpy.WhiteListedUrl()
         add_url_obj.url_regex = url
         add_url_obj.download_seconds = download_seconds
         add_url_obj.metadata = metadatalist_obj
@@ -885,11 +853,11 @@ class Handler(object):
         Returns
         -------
         ret : dict, containing:
-            * `action_object` : :class:`api.object_types.action.Action`
-            * `action_results` : :class:`api.object_types.result_set.ResultSet`
+            * `action_object` : :class:`taniumpy.object_types.action.Action`
+            * `action_results` : :class:`taniumpy.object_types.result_set.ResultSet`
             * `action_progress_human` : str, progress map in human form
             * `action_progress_map` : dict, progress map in dictionary form
-            * `pre_action_question_results` : :class:`api.object_types.result_set.ResultSet`
+            * `pre_action_question_results` : :class:`taniumpy.object_types.result_set.ResultSet`
 
         Examples
         --------
@@ -1018,14 +986,14 @@ class Handler(object):
             empty_ok=False,
         )
 
-        a_package_obj = api.PackageSpec()
+        a_package_obj = taniumpy.PackageSpec()
         if param_objlist:
             a_package_obj.source_id = package_obj.id
             a_package_obj.parameters = param_objlist
         else:
             a_package_obj.name = package_obj.name
 
-        add_action_obj = api.Action()
+        add_action_obj = taniumpy.Action()
         add_action_obj.name = "API Deploy {}".format(package_obj.name)
         add_action_obj.package_spec = a_package_obj
         add_action_obj.target_group = targetgroup_obj
@@ -1089,11 +1057,11 @@ class Handler(object):
         Returns
         -------
         ret : dict, containing:
-            * `action_object` : :class:`api.object_types.action.Action`
-            * `action_results` : :class:`api.object_types.result_set.ResultSet`
+            * `action_object` : :class:`taniumpy.object_types.action.Action`
+            * `action_results` : :class:`taniumpy.object_types.result_set.ResultSet`
             * `action_progress_human` : str, progress map in human form
             * `action_progress_map` : dict, progress map in dictionary form
-            * `pre_action_question_results` : :class:`api.object_types.result_set.ResultSet`
+            * `pre_action_question_results` : :class:`taniumpy.object_types.result_set.ResultSet`
 
         Examples
         --------
@@ -1159,8 +1127,8 @@ class Handler(object):
         Returns
         -------
         ret : dict, containing:
-            * `action_object` : :class:`api.object_types.action.Action`
-            * `action_results` : :class:`api.object_types.result_set.ResultSet`
+            * `action_object` : :class:`taniumpy.object_types.action.Action`
+            * `action_results` : :class:`taniumpy.object_types.result_set.ResultSet`
             * `action_progress_human` : str, progress map in human form
             * `action_progress_map` : dict, progress map in dictionary form
 
@@ -1299,33 +1267,33 @@ class Handler(object):
 
         Parameters
         ----------
-        obj : :class:`api.object_types.base.BaseType` or :class:`api.object_types.result_set.ResultSet`
+        obj : :class:`taniumpy.object_types.base.BaseType` or :class:`taniumpy.object_types.result_set.ResultSet`
             TaniumPy object to export
         export_format : str
             the number of servers that must equate "completed" in order for deploy action to be recognized as completed
         header_sort : list of str, bool, optional
-            * for `export_format` csv and `obj` types :class:`api.object_types.base.BaseType` or :class:`api.object_types.result_set.ResultSet`
+            * for `export_format` csv and `obj` types :class:`taniumpy.object_types.base.BaseType` or :class:`taniumpy.object_types.result_set.ResultSet`
             * True: sort the headers automatically
             * False: do not sort the headers at all
             * list of str: sort the headers returned by priority based on provided list
         header_add_sensor : bool, optional
-            * for `export_format` csv and `obj` type :class:`api.object_types.result_set.ResultSet`
+            * for `export_format` csv and `obj` type :class:`taniumpy.object_types.result_set.ResultSet`
             * False: do not prefix the headers with the associated sensor name for each column
             * True: prefix the headers with the associated sensor name for each column
         header_add_type : bool, optional
-            * for `export_format` csv and `obj` type :class:`api.object_types.result_set.ResultSet`
+            * for `export_format` csv and `obj` type :class:`taniumpy.object_types.result_set.ResultSet`
             * False: do not postfix the headers with the result type for each column
             * True: postfix the headers with the result type for each column
         expand_grouped_columns : bool, optional
-            * for `export_format` csv and `obj` type :class:`api.object_types.result_set.ResultSet`
+            * for `export_format` csv and `obj` type :class:`taniumpy.object_types.result_set.ResultSet`
             * False: do not expand multiline row entries into their own rows
             * True: expand multiline row entries into their own rows
         explode_json_string_values : bool, optional
-            * for `export_format` json or csv and `obj` type :class:`api.object_types.base.BaseType`
+            * for `export_format` json or csv and `obj` type :class:`taniumpy.object_types.base.BaseType`
             * False: do not explode JSON strings in object attributes into their own object attributes
             * True: explode JSON strings in object attributes into their own object attributes
         minimal : bool, optional
-            * for `export_format` xml and `obj` type :class:`api.object_types.base.BaseType`
+            * for `export_format` xml and `obj` type :class:`taniumpy.object_types.base.BaseType`
             * False: include empty attributes in XML output
             * True: do not include empty attributes in XML output
 
@@ -1351,7 +1319,7 @@ class Handler(object):
 
         # see if supplied obj is a supported object type
         type_match = [
-            x for x in export_maps if isinstance(obj, getattr(api, x))
+            x for x in export_maps if isinstance(obj, getattr(taniumpy, x))
         ]
 
         if not type_match:
@@ -1396,33 +1364,33 @@ class Handler(object):
 
         Parameters
         ----------
-        obj : :class:`api.object_types.base.BaseType` or :class:`api.object_types.result_set.ResultSet`
+        obj : :class:`taniumpy.object_types.base.BaseType` or :class:`taniumpy.object_types.result_set.ResultSet`
             TaniumPy object to export
         export_format : str
             the number of servers that must equate "completed" in order for deploy action to be recognized as completed
         header_sort : list of str, bool, optional
-            * for `export_format` csv and `obj` types :class:`api.object_types.base.BaseType` or :class:`api.object_types.result_set.ResultSet`
+            * for `export_format` csv and `obj` types :class:`taniumpy.object_types.base.BaseType` or :class:`taniumpy.object_types.result_set.ResultSet`
             * True: sort the headers automatically
             * False: do not sort the headers at all
             * list of str: sort the headers returned by priority based on provided list
         header_add_sensor : bool, optional
-            * for `export_format` csv and `obj` type :class:`api.object_types.result_set.ResultSet`
+            * for `export_format` csv and `obj` type :class:`taniumpy.object_types.result_set.ResultSet`
             * False: do not prefix the headers with the associated sensor name for each column
             * True: prefix the headers with the associated sensor name for each column
         header_add_type : bool, optional
-            * for `export_format` csv and `obj` type :class:`api.object_types.result_set.ResultSet`
+            * for `export_format` csv and `obj` type :class:`taniumpy.object_types.result_set.ResultSet`
             * False: do not postfix the headers with the result type for each column
             * True: postfix the headers with the result type for each column
         expand_grouped_columns : bool, optional
-            * for `export_format` csv and `obj` type :class:`api.object_types.result_set.ResultSet`
+            * for `export_format` csv and `obj` type :class:`taniumpy.object_types.result_set.ResultSet`
             * False: do not expand multiline row entries into their own rows
             * True: expand multiline row entries into their own rows
         explode_json_string_values : bool, optional
-            * for `export_format` json or csv and `obj` type :class:`api.object_types.base.BaseType`
+            * for `export_format` json or csv and `obj` type :class:`taniumpy.object_types.base.BaseType`
             * False: do not explode JSON strings in object attributes into their own object attributes
             * True: explode JSON strings in object attributes into their own object attributes
         minimal : bool, optional
-            * for `export_format` xml and `obj` type :class:`api.object_types.base.BaseType`
+            * for `export_format` xml and `obj` type :class:`taniumpy.object_types.base.BaseType`
             * False: include empty attributes in XML output
             * True: do not include empty attributes in XML output
         report_file: str, optional
@@ -1513,7 +1481,7 @@ class Handler(object):
         # is true, get all objects of this type and manually filter
         if not api_attrs or (not any(api_kwattrs) and manual_search):
             all_objs = self.get_all(objtype, **kwargs)
-            return_objs = getattr(api, all_objs.__class__.__name__)()
+            return_objs = getattr(taniumpy, all_objs.__class__.__name__)()
             for k, v in kwargs.iteritems():
                 if not hasattr(all_objs[0], k):
                     continue
@@ -1535,7 +1503,7 @@ class Handler(object):
             raise HandlerError(err(objtype, api_attrs))
 
         # if there is a multi in obj_map, that means we can pass a list
-        # type to the api. the list will have an entry for each api_kw
+        # type to the taniumpy. the list will have an entry for each api_kw
         if obj_map['multi']:
             return self._get_multi(obj_map, **kwargs)
 
@@ -1560,7 +1528,7 @@ class Handler(object):
         constants.GET_OBJ_MAP : maps objtype to supported 'search' keys
         """
         obj_map = utils.get_obj_map(objtype)
-        api_obj_all = getattr(api, obj_map['all'])()
+        api_obj_all = getattr(taniumpy, obj_map['all'])()
         found = self._find(api_obj_all, **kwargs)
         return found
 
@@ -1571,7 +1539,7 @@ class Handler(object):
 
         Parameters
         ----------
-        obj : :class:`api.object_types.base.BaseType`
+        obj : :class:`taniumpy.object_types.base.BaseType`
             object to get result data for
         aggregate : bool, optional
             * False: get all the data
@@ -1579,7 +1547,7 @@ class Handler(object):
 
         Returns
         -------
-        rd : :class:`api.object_types.result_set.ResultSet`
+        rd : :class:`taniumpy.object_types.result_set.ResultSet`
             The return of GetResultData for `obj`
         """
         # do a getresultinfo to ensure fresh data is available for
@@ -1616,12 +1584,12 @@ class Handler(object):
 
         Parameters
         ----------
-        obj : :class:`api.object_types.base.BaseType`
+        obj : :class:`taniumpy.object_types.base.BaseType`
             object to get result data for
 
         Returns
         -------
-        ri : :class:`api.object_types.result_info.ResultInfo`
+        ri : :class:`taniumpy.object_types.result_info.ResultInfo`
             The return of GetResultData for `obj`
         """
         ri = self.session.getResultInfo(obj, **kwargs)
@@ -1637,11 +1605,11 @@ class Handler(object):
 
         Returns
         -------
-        action_stop_obj : :class:`api.object_types.action_stop.ActionStop`
+        action_stop_obj : :class:`taniumpy.object_types.action_stop.ActionStop`
             The object containing the ID of the action stop job
         """
         action_obj = self.get('action', id=id)[0]
-        add_action_stop_obj = api.ActionStop()
+        add_action_stop_obj = taniumpy.ActionStop()
         add_action_stop_obj.action = action_obj
         action_stop_obj = self.session.add(add_action_stop_obj)
         m = (
@@ -1652,6 +1620,7 @@ class Handler(object):
 
     # BEGIN PRIVATE METHODS
     def _find(self, api_object, **kwargs):
+        """Wrapper for interfacing with :func:`taniumpy.session.Session.find`"""
         req_kwargs = utils.get_req_kwargs(**kwargs)
         try:
             search_str = '; '.join([str(x) for x in api_object])
@@ -1673,12 +1642,13 @@ class Handler(object):
         return found
 
     def _get_multi(self, obj_map, **kwargs):
+        """Find multiple item wrapper using :func:`_find`"""
         api_attrs = obj_map['search']
         api_kwattrs = [kwargs.get(x, '') for x in api_attrs]
         api_kw = {k: v for k, v in zip(api_attrs, api_kwattrs)}
 
         # create a list object to append our searches to
-        api_obj_multi = getattr(api, obj_map['multi'])()
+        api_obj_multi = getattr(taniumpy, obj_map['multi'])()
         for k, v in api_kw.iteritems():
             if v and k not in obj_map['search']:
                 continue  # if we can't search for k, skip
@@ -1688,11 +1658,11 @@ class Handler(object):
 
             if utils.is_list(v):
                 for i in v:
-                    api_obj_single = getattr(api, obj_map['single'])()
+                    api_obj_single = getattr(taniumpy, obj_map['single'])()
                     setattr(api_obj_single, k, i)
                     api_obj_multi.append(api_obj_single)
             else:
-                api_obj_single = getattr(api, obj_map['single'])()
+                api_obj_single = getattr(taniumpy, obj_map['single'])()
                 setattr(api_obj_single, k, v)
                 api_obj_multi.append(api_obj_single)
 
@@ -1701,15 +1671,16 @@ class Handler(object):
         return found
 
     def _get_single(self, obj_map, **kwargs):
+        """Find single item wrapper using :func:`_find`"""
         api_attrs = obj_map['search']
         api_kwattrs = [kwargs.get(x, '') for x in api_attrs]
         api_kw = {k: v for k, v in zip(api_attrs, api_kwattrs)}
 
         # we create a list object to append our single item searches to
         if obj_map.get('allfix', ''):
-            found = getattr(api, obj_map['allfix'])()
+            found = getattr(taniumpy, obj_map['allfix'])()
         else:
-            found = getattr(api, obj_map['all'])()
+            found = getattr(taniumpy, obj_map['all'])()
 
         for k, v in api_kw.iteritems():
             if v and k not in obj_map['search']:
@@ -1729,8 +1700,9 @@ class Handler(object):
         return found
 
     def _single_find(self, obj_map, k, v, **kwargs):
+        """Wrapper for single item searches interfacing with :func:`taniumpy.session.Session.find`"""
         found = []
-        api_obj_single = getattr(api, obj_map['single'])()
+        api_obj_single = getattr(taniumpy, obj_map['single'])()
         setattr(api_obj_single, k, v)
         obj_ret = self._find(api_obj_single, **kwargs)
         if getattr(obj_ret, '_list_properties', ''):
@@ -1741,6 +1713,7 @@ class Handler(object):
         return found
 
     def _get_sensor_defs(self, defs):
+        """Uses :func:`get` to update a definition with a sensor object"""
         s_obj_map = constants.GET_OBJ_MAP['sensor']
         search_keys = s_obj_map['search']
 
@@ -1753,6 +1726,7 @@ class Handler(object):
         return defs
 
     def _get_package_def(self, d):
+        """Uses :func:`get` to update a definition with a package object"""
         s_obj_map = constants.GET_OBJ_MAP['package']
         search_keys = s_obj_map['search']
 
@@ -1764,6 +1738,7 @@ class Handler(object):
         return d
 
     def _export_class_BaseType(self, obj, export_format, **kwargs):
+        """Handles exporting :class:`taniumpy.object_types.base.BaseType`"""
         # run the handler that is specific to this export_format, if it exists
         format_method_str = '_export_format_' + export_format
         format_handler = getattr(self, format_method_str, '')
@@ -1775,6 +1750,7 @@ class Handler(object):
         return result
 
     def _export_class_ResultSet(self, obj, export_format, **kwargs):
+        """Handles exporting :class:`taniumpy.object_types.result_set.ResultSet`"""
         """
         ensure kwargs[sensors] has all the sensors that correlate
         to the what_hash of each column, but only if header_add_sensor=True
@@ -1805,6 +1781,7 @@ class Handler(object):
         return result
 
     def _export_format_csv(self, obj, **kwargs):
+        """Handles exporting format: CSV"""
         if not hasattr(obj, 'write_csv'):
             err = "{!r} has no write_csv() method!".format
             raise HandlerError(err(obj))
@@ -1817,6 +1794,7 @@ class Handler(object):
         return result
 
     def _export_format_json(self, obj, **kwargs):
+        """Handles exporting format: JSON"""
         if not hasattr(obj, 'to_json'):
             err = "{!r} has no to_json() method!".format
             raise HandlerError(err(obj))
@@ -1824,6 +1802,7 @@ class Handler(object):
         return result
 
     def _export_format_xml(self, obj, **kwargs):
+        """Handles exporting format: XML"""
         if not hasattr(obj, 'toSOAPBody'):
             err = "{!r} has no toSOAPBody() method!".format
             raise HandlerError(err(obj))

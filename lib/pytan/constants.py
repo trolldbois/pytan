@@ -10,7 +10,18 @@ sys.dont_write_bytecode = True
 
 import logging
 import re
-from . import api
+import os
+
+my_file = os.path.abspath(__file__)
+my_dir = os.path.dirname(my_file)
+parent_dir = os.path.dirname(my_dir)
+path_adds = [parent_dir]
+
+for aa in path_adds:
+    if aa not in sys.path:
+        sys.path.append(aa)
+
+import taniumpy
 
 # debug log format
 DEBUG_FORMAT = logging.Formatter(
@@ -422,7 +433,7 @@ EXPORT_MAPS = {
             {
                 'key': 'sensors',
                 'valid_types': [list, tuple],
-                'valid_list_types': [api.Sensor],
+                'valid_list_types': [taniumpy.Sensor],
             },
             {
                 'key': 'header_add_sensor',
@@ -492,3 +503,9 @@ ACTION_RESULT_STATUS = {
     "Verified.": ['no_verify_done', 'verify_done', 'verify_success'],
     "Succeeded.": ['done'],
 }
+
+ASK_KWARGS = [
+    'timeout',
+    'polling_interval',
+    'pct_complete_threshold',
+]

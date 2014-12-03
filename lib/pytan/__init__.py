@@ -77,22 +77,32 @@ See :mod:`pytan.handler` submodule for API Usage
 
 '''
 
-__title__ = 'pytan'
+__title__ = 'PyTan'
 __version__ = '1.0.0'
 __author__ = 'Jim Olsen <jim.olsen@tanium.com>'
 __license__ = 'MIT'
 __copyright__ = 'Copyright 2014 Tanium'
 
 import sys
+import os
 
 # disable python from creating .pyc files everywhere
 sys.dont_write_bytecode = True
 
-from .handler import Handler
-from . import utils
-from . import constants
-from . import api
+my_file = os.path.abspath(__file__)
+my_dir = os.path.dirname(my_file)
+parent_dir = os.path.dirname(my_dir)
+path_adds = [parent_dir]
 
+for aa in path_adds:
+    if aa not in sys.path:
+        sys.path.append(aa)
+
+import pytan  # noqa
+import taniumpy  # noqa
+from pytan.handler import Handler  # noqa
+from pytan import utils  # noqa
+from pytan import constants  # noqa
 
 # Set default logging handler to avoid "No handler found" warnings.
 import logging

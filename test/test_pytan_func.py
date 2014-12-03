@@ -10,21 +10,23 @@ import glob
 import copy
 import unittest
 import json
+from random import randint
 
 my_file = os.path.abspath(__file__)
 my_dir = os.path.dirname(my_file)
 root_dir = os.path.join(my_dir, os.pardir)
 root_dir = os.path.abspath(root_dir)
-path_adds = [my_dir, root_dir]
+lib_dir = os.path.join(root_dir, 'lib')
+path_adds = [my_dir, lib_dir]
 
 for aa in path_adds:
     if aa not in sys.path:
         sys.path.insert(0, aa)
 
 import pytan
-from random import randint
-from testlib import threaded_http
-from testlib import ddt
+import taniumpy
+import threaded_http
+import ddt
 
 # control the amount of output from unittests
 TESTVERBOSITY = 2
@@ -132,7 +134,7 @@ class CreateObjectTests(unittest.TestCase):
             pass
 
         package_obj = handler.create_package(**kwargs)
-        self.assertIsInstance(package_obj, pytan.api.PackageSpec)
+        self.assertIsInstance(package_obj, taniumpy.PackageSpec)
         self.assertTrue(package_obj.verify_group_id)
         self.assertEquals(package_obj.name, kwargs['name'])
         self.assertEquals(package_obj.command, kwargs['command'])
@@ -144,9 +146,9 @@ class CreateObjectTests(unittest.TestCase):
         pd = json.loads(package_obj.parameter_definition)
         params = pd['parameters']
         self.assertEquals(len(params), 8)
-        self.assertIsInstance(package_obj.files, pytan.api.PackageFileList)
+        self.assertIsInstance(package_obj.files, taniumpy.PackageFileList)
         for x in package_obj.files:
-            self.assertIsInstance(x, pytan.api.PackageFile)
+            self.assertIsInstance(x, taniumpy.PackageFile)
         self.assertEquals(
             package_obj.files[0].source,
             'https://content.tanium.com/files/'
@@ -158,7 +160,7 @@ class CreateObjectTests(unittest.TestCase):
 
         delete_obj = handler.delete('package', name=package_obj.name)
         for x in delete_obj:
-            self.assertIsInstance(x, pytan.api.PackageSpec)
+            self.assertIsInstance(x, taniumpy.PackageSpec)
 
     def test_create_group(self):
         handler = self.setup_test()
@@ -174,17 +176,17 @@ class CreateObjectTests(unittest.TestCase):
             pass
 
         group_obj = handler.create_group(**kwargs)
-        self.assertIsInstance(group_obj, pytan.api.Group)
-        self.assertIsInstance(group_obj.filters, pytan.api.FilterList)
+        self.assertIsInstance(group_obj, taniumpy.Group)
+        self.assertIsInstance(group_obj.filters, taniumpy.FilterList)
         for x in group_obj.filters:
-            self.assertIsInstance(x, pytan.api.Filter)
-            self.assertIsInstance(x.sensor, pytan.api.Sensor)
+            self.assertIsInstance(x, taniumpy.Filter)
+            self.assertIsInstance(x.sensor, taniumpy.Sensor)
         self.assertTrue(group_obj.text)
         self.assertEquals(group_obj.and_flag, 1)
 
         delete_obj = handler.delete('group', name=group_obj.name)
         for x in delete_obj:
-            self.assertIsInstance(x, pytan.api.Group)
+            self.assertIsInstance(x, taniumpy.Group)
 
     def test_create_user(self):
         handler = self.setup_test()
@@ -200,15 +202,15 @@ class CreateObjectTests(unittest.TestCase):
             pass
 
         user_obj = handler.create_user(**kwargs)
-        self.assertIsInstance(user_obj, pytan.api.User)
-        self.assertIsInstance(user_obj.roles, pytan.api.UserRoleList)
+        self.assertIsInstance(user_obj, taniumpy.User)
+        self.assertIsInstance(user_obj.roles, taniumpy.UserRoleList)
         for x in user_obj.roles:
-            self.assertIsInstance(x, pytan.api.UserRole)
+            self.assertIsInstance(x, taniumpy.UserRole)
             self.assertEquals(x.name, 'Administrator')
 
-        self.assertIsInstance(user_obj.metadata, pytan.api.MetadataList)
+        self.assertIsInstance(user_obj.metadata, taniumpy.MetadataList)
         for x in user_obj.metadata:
-            self.assertIsInstance(x, pytan.api.MetadataItem)
+            self.assertIsInstance(x, taniumpy.MetadataItem)
         self.assertEquals(
             user_obj.metadata[0].name, 'TConsole.User.Property.property1'
         )
@@ -219,7 +221,7 @@ class CreateObjectTests(unittest.TestCase):
         self.assertEquals(user_obj.name, kwargs['username'])
         delete_obj = handler.delete('user', name=user_obj.name)
         for x in delete_obj:
-            self.assertIsInstance(x, pytan.api.User)
+            self.assertIsInstance(x, taniumpy.User)
 
     def test_create_whitelisted_url(self):
         handler = self.setup_test()
@@ -238,12 +240,12 @@ class CreateObjectTests(unittest.TestCase):
             pass
 
         whitelisted_url_obj = handler.create_whitelisted_url(**kwargs)
-        self.assertIsInstance(whitelisted_url_obj, pytan.api.WhiteListedUrl)
+        self.assertIsInstance(whitelisted_url_obj, taniumpy.WhiteListedUrl)
         self.assertIsInstance(
-            whitelisted_url_obj.metadata, pytan.api.MetadataList
+            whitelisted_url_obj.metadata, taniumpy.MetadataList
         )
         for x in whitelisted_url_obj.metadata:
-            self.assertIsInstance(x, pytan.api.MetadataItem)
+            self.assertIsInstance(x, taniumpy.MetadataItem)
         self.assertEquals(
             whitelisted_url_obj.metadata[0].name,
             'TConsole.WhitelistedURL.property1'
@@ -261,7 +263,7 @@ class CreateObjectTests(unittest.TestCase):
             url_regex=whitelisted_url_obj.url_regex
         )
         for x in delete_obj:
-            self.assertIsInstance(x, pytan.api.WhiteListedUrl)
+            self.assertIsInstance(x, taniumpy.WhiteListedUrl)
 
 
 class CreateObjFromJsonTests(unittest.TestCase):
@@ -285,9 +287,9 @@ class CreateObjFromJsonTests(unittest.TestCase):
             prefix=sys._getframe().f_code.co_name + '_',
         )
         new_obj = handler.create_from_json('action', json_file)
-        self.assertIsInstance(new_obj, pytan.api.ActionList)
+        self.assertIsInstance(new_obj, taniumpy.ActionList)
         for x in new_obj:
-            self.assertIsInstance(x, pytan.api.Action)
+            self.assertIsInstance(x, taniumpy.Action)
 
     def test_create_from_json_client(self):
         handler = self.setup_test()
@@ -321,12 +323,12 @@ class CreateObjFromJsonTests(unittest.TestCase):
             prefix=sys._getframe().f_code.co_name + '_',
         )
         new_obj = handler.create_from_json('sensor', json_file)
-        self.assertIsInstance(new_obj, pytan.api.SensorList)
+        self.assertIsInstance(new_obj, taniumpy.SensorList)
         for x in new_obj:
-            self.assertIsInstance(x, pytan.api.Sensor)
+            self.assertIsInstance(x, taniumpy.Sensor)
             delete_obj = handler.delete('sensor', name=x.name)
             for i in delete_obj:
-                self.assertIsInstance(i, pytan.api.Sensor)
+                self.assertIsInstance(i, taniumpy.Sensor)
 
     def test_create_from_json_group(self):
         handler = self.setup_test()
@@ -346,12 +348,12 @@ class CreateObjFromJsonTests(unittest.TestCase):
             prefix=sys._getframe().f_code.co_name + '_',
         )
         new_obj = handler.create_from_json('group', json_file)
-        self.assertIsInstance(new_obj, pytan.api.GroupList)
+        self.assertIsInstance(new_obj, taniumpy.GroupList)
         for x in new_obj:
-            self.assertIsInstance(x, pytan.api.Group)
+            self.assertIsInstance(x, taniumpy.Group)
             delete_obj = handler.delete('group', name=x.name)
             for i in delete_obj:
-                self.assertIsInstance(i, pytan.api.Group)
+                self.assertIsInstance(i, taniumpy.Group)
 
     def test_create_from_json_package(self):
         handler = self.setup_test()
@@ -372,12 +374,12 @@ class CreateObjFromJsonTests(unittest.TestCase):
             prefix=sys._getframe().f_code.co_name + '_',
         )
         new_obj = handler.create_from_json('package', json_file)
-        self.assertIsInstance(new_obj, pytan.api.PackageSpecList)
+        self.assertIsInstance(new_obj, taniumpy.PackageSpecList)
         for x in new_obj:
-            self.assertIsInstance(x, pytan.api.PackageSpec)
+            self.assertIsInstance(x, taniumpy.PackageSpec)
             delete_obj = handler.delete('package', name=x.name)
             for i in delete_obj:
-                self.assertIsInstance(i, pytan.api.PackageSpec)
+                self.assertIsInstance(i, taniumpy.PackageSpec)
 
     def test_create_from_json_question(self):
         handler = self.setup_test()
@@ -390,9 +392,9 @@ class CreateObjFromJsonTests(unittest.TestCase):
             prefix=sys._getframe().f_code.co_name + '_',
         )
         new_obj = handler.create_from_json('question', json_file)
-        self.assertIsInstance(new_obj, pytan.api.QuestionList)
+        self.assertIsInstance(new_obj, taniumpy.QuestionList)
         for x in new_obj:
-            self.assertIsInstance(x, pytan.api.Question)
+            self.assertIsInstance(x, taniumpy.Question)
 
     def test_create_from_json_saved_action(self):
         handler = self.setup_test()
@@ -432,12 +434,12 @@ class CreateObjFromJsonTests(unittest.TestCase):
             prefix=sys._getframe().f_code.co_name + '_',
         )
         new_obj = handler.create_from_json('saved_question', json_file)
-        self.assertIsInstance(new_obj, pytan.api.SavedQuestionList)
+        self.assertIsInstance(new_obj, taniumpy.SavedQuestionList)
         for x in new_obj:
-            self.assertIsInstance(x, pytan.api.SavedQuestion)
+            self.assertIsInstance(x, taniumpy.SavedQuestion)
             delete_obj = handler.delete('saved_question', name=x.name)
             for i in delete_obj:
-                self.assertIsInstance(i, pytan.api.SavedQuestion)
+                self.assertIsInstance(i, taniumpy.SavedQuestion)
 
     def test_create_from_json_setting(self):
         handler = self.setup_test()
@@ -472,12 +474,12 @@ class CreateObjFromJsonTests(unittest.TestCase):
             prefix=sys._getframe().f_code.co_name + '_',
         )
         new_obj = handler.create_from_json('user', json_file)
-        self.assertIsInstance(new_obj, pytan.api.UserList)
+        self.assertIsInstance(new_obj, taniumpy.UserList)
         for x in new_obj:
-            self.assertIsInstance(x, pytan.api.User)
+            self.assertIsInstance(x, taniumpy.User)
             delete_obj = handler.delete('user', name=x.name)
             for i in delete_obj:
-                self.assertIsInstance(i, pytan.api.User)
+                self.assertIsInstance(i, taniumpy.User)
 
     def test_create_from_json_userrole(self):
         handler = self.setup_test()
@@ -511,14 +513,14 @@ class CreateObjFromJsonTests(unittest.TestCase):
             pass
 
         new_obj = handler.create_from_json('whitelisted_url', json_file)
-        self.assertIsInstance(new_obj, pytan.api.WhiteListedUrlList)
+        self.assertIsInstance(new_obj, taniumpy.WhiteListedUrlList)
         for x in new_obj:
-            self.assertIsInstance(x, pytan.api.WhiteListedUrl)
+            self.assertIsInstance(x, taniumpy.WhiteListedUrl)
             delete_obj = handler.delete(
                 'whitelisted_url', url_regex=orig_obj.url_regex
             )
             for i in delete_obj:
-                self.assertIsInstance(i, pytan.api.WhiteListedUrl)
+                self.assertIsInstance(i, taniumpy.WhiteListedUrl)
 
 
 class ExportObjTests(unittest.TestCase):
@@ -539,7 +541,7 @@ class ExportObjTests(unittest.TestCase):
         ]
         r1 = handler.get('sensor', name=sensors)
         self.assertTrue(r1)
-        self.assertIsInstance(r1, pytan.api.BaseType)
+        self.assertIsInstance(r1, taniumpy.BaseType)
         self.assertEquals(len(r1), 4)
 
         # CSV
@@ -648,11 +650,11 @@ class ExportObjTests(unittest.TestCase):
         r2_ret = handler.ask(qtype="manual_human", sensors=r2_sensors)
         r2 = r2_ret['question_results']
         self.assertTrue(r1)
-        self.assertIsInstance(r1, pytan.api.ResultSet)
+        self.assertIsInstance(r1, taniumpy.ResultSet)
         self.assertGreaterEqual(len(r1.rows), 1)
         self.assertGreaterEqual(len(r1.columns), 1)
         self.assertTrue(r2)
-        self.assertIsInstance(r2, pytan.api.ResultSet)
+        self.assertIsInstance(r2, taniumpy.ResultSet)
         self.assertGreaterEqual(len(r2.rows), 1)
         self.assertGreaterEqual(len(r2.columns), 1)
 
@@ -819,11 +821,11 @@ class ValidServerTests(unittest.TestCase):
             run=True,
             report_dir=TEST_OUT,
         )
-        self.assertIsInstance(ret['action_object'], pytan.api.Action)
+        self.assertIsInstance(ret['action_object'], taniumpy.Action)
         self.assertTrue(ret['action_progress_human'])
         self.assertTrue(ret['action_progress_map'])
         self.assertTrue(ret['pre_action_question_results'])
-        self.assertIsInstance(ret['action_results'], pytan.api.ResultSet)
+        self.assertIsInstance(ret['action_results'], taniumpy.ResultSet)
         self.assertGreaterEqual(len(ret['action_results'].rows), 1)
         self.assertGreaterEqual(len(ret['action_results'].columns), 1)
         for ft in pytan.constants.EXPORT_MAPS['ResultSet'].keys():
@@ -856,7 +858,7 @@ class ValidServerTests(unittest.TestCase):
             run=True,
             get_results=False,
         )
-        self.assertIsInstance(ret['action_object'], pytan.api.Action)
+        self.assertIsInstance(ret['action_object'], taniumpy.Action)
         self.assertTrue(ret['pre_action_question_results'])
 
     def test_deploy_action_no_run(self):
@@ -928,9 +930,9 @@ class ValidServerTests(unittest.TestCase):
         ret = getattr(handler, method)(**args)
         self.assertIsInstance(
             ret['question_object'],
-            (pytan.api.Question, pytan.api.SavedQuestion)
+            (taniumpy.Question, taniumpy.SavedQuestion)
         )
-        self.assertIsInstance(ret['question_results'], pytan.api.ResultSet)
+        self.assertIsInstance(ret['question_results'], taniumpy.ResultSet)
         self.assertGreaterEqual(len(ret['question_results'].rows), 1)
         self.assertGreaterEqual(len(ret['question_results'].columns), 1)
         for ft in pytan.constants.EXPORT_MAPS['ResultSet'].keys():
@@ -961,7 +963,7 @@ class ValidServerTests(unittest.TestCase):
         response = getattr(handler, method)(**args)
 
         self.assertTrue(response)
-        self.assertIsInstance(response, pytan.api.BaseType)
+        self.assertIsInstance(response, taniumpy.BaseType)
         for x in tests:
             spew("+++ EVAL TEST: %s" % x)
             self.assertTrue(eval(x))
