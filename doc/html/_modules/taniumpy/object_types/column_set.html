@@ -67,7 +67,7 @@
 <span class="kn">from</span> <span class="nn">.column</span> <span class="kn">import</span> <span class="n">Column</span>
 
 
-<div class="viewcode-block" id="ColumnSet"><a class="viewcode-back" href="../../../taniumpy/taniumpy.object_types.html#taniumpy.object_types.column_set.ColumnSet">[docs]</a><span class="k">class</span> <span class="nc">ColumnSet</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="ColumnSet"><a class="viewcode-back" href="../../../taniumpy.object_types.html#taniumpy.object_types.column_set.ColumnSet">[docs]</a><span class="k">class</span> <span class="nc">ColumnSet</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[]</span>
@@ -79,7 +79,7 @@
         <span class="k">return</span> <span class="n">ret</span>
 
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="ColumnSet.fromSOAPElement"><a class="viewcode-back" href="../../../taniumpy/taniumpy.object_types.html#taniumpy.object_types.column_set.ColumnSet.fromSOAPElement">[docs]</a>    <span class="k">def</span> <span class="nf">fromSOAPElement</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">el</span><span class="p">):</span>
+<div class="viewcode-block" id="ColumnSet.fromSOAPElement"><a class="viewcode-back" href="../../../taniumpy.object_types.html#taniumpy.object_types.column_set.ColumnSet.fromSOAPElement">[docs]</a>    <span class="k">def</span> <span class="nf">fromSOAPElement</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">el</span><span class="p">):</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">ColumnSet</span><span class="p">()</span>
         <span class="n">columns</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s">&#39;./c&#39;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
@@ -113,7 +113,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &copy; Copyright 2014, Tanium.
-      Last updated on Dec 03, 2014.
+      Last updated on Dec 04, 2014.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
     </div>
   </body>

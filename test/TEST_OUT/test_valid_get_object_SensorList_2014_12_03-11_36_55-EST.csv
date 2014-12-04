@@ -1,9 +1,0 @@
-category,description,exclude_from_parse_flag,hash,hidden_flag,id,ignore_case_flag,max_age_seconds,name,queries_query_0_platform,queries_query_0_script,queries_query_0_script_type,source_id,string_count,value_type
-Reserved,"The recorded state of each download a client has made recently in the form of hash:completion percentage.
-Example: 05839407baccdfccfd8e2c1ffc0ff27541cc053d15b52cfd4ed904510e59b428:100",0,322086833,0,4,1,900,Download Statuses,Windows,Reserved,WMIQuery,0,249,String
-Reserved,"The recorded state of each action a client has taken recently in the form of id:status.
-Example: 1:Completed",1,1792443391,0,1,1,3600,Action Statuses,Windows,Reserved,WMIQuery,0,3065,String
-Reserved,"A unique identifier of each computer for internal use.
-Example: 4202979704",1,3556221173,0,2,1,300,Computer ID,Windows,Reserved,WMIQuery,0,58,String
-Reserved,"The assigned name of the client machine.
-Example: workstation-1.company.com",0,3409330187,0,3,1,86400,Computer Name,Windows,select CSName from win32_operatingsystem,WMIQuery,0,7,String

@@ -32,7 +32,7 @@ from pytan.utils import DefinitionParserError
 from pytan.utils import HandlerError
 
 # control the amount of output from unittests
-TESTVERBOSITY = 2
+TESTVERBOSITY = 10
 
 # have unittest exit immediately on unexpected error
 FAILFAST = True
@@ -41,6 +41,7 @@ FAILFAST = True
 CATCHBREAK = True
 
 # set logging for all logs in pytan to same level as TESTVERBOSITY
+utils.setup_console_logging()
 utils.set_log_levels(TESTVERBOSITY)
 
 

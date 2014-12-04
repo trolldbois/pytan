@@ -1,8 +1,0 @@
-download_seconds,id,metadata_item_0_admin_flag,metadata_item_0_name,metadata_item_0_value,url_regex
-86400,4,,,,test
-86400,5,,,,test
-345600,9,0,TConsole.WhitelistedURL.test1,value1,regex:test4
-86400,28,,,,test1
-86400,29,,,,test2
-86400,30,,,,test3
-0,1026,0,TConsole.WhitelistedURL.k,v,regex:test 1234

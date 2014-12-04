@@ -92,25 +92,25 @@
 <span class="n">request_body_template_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">my_dir</span><span class="p">,</span> <span class="s">&#39;request_body_template.xml&#39;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="HttpError"><a class="viewcode-back" href="../../taniumpy/taniumpy.html#taniumpy.session.HttpError">[docs]</a><span class="k">class</span> <span class="nc">HttpError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<div class="viewcode-block" id="HttpError"><a class="viewcode-back" href="../../taniumpy.session.html#taniumpy.session.HttpError">[docs]</a><span class="k">class</span> <span class="nc">HttpError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
     <span class="k">pass</span>
 
 </div>
-<div class="viewcode-block" id="AuthorizationError"><a class="viewcode-back" href="../../taniumpy/taniumpy.html#taniumpy.session.AuthorizationError">[docs]</a><span class="k">class</span> <span class="nc">AuthorizationError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<div class="viewcode-block" id="AuthorizationError"><a class="viewcode-back" href="../../taniumpy.session.html#taniumpy.session.AuthorizationError">[docs]</a><span class="k">class</span> <span class="nc">AuthorizationError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
     <span class="k">pass</span>
 
 </div>
-<div class="viewcode-block" id="BadResponseError"><a class="viewcode-back" href="../../taniumpy/taniumpy.html#taniumpy.session.BadResponseError">[docs]</a><span class="k">class</span> <span class="nc">BadResponseError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<div class="viewcode-block" id="BadResponseError"><a class="viewcode-back" href="../../taniumpy.session.html#taniumpy.session.BadResponseError">[docs]</a><span class="k">class</span> <span class="nc">BadResponseError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
     <span class="k">pass</span>
 
 </div>
-<div class="viewcode-block" id="load_file"><a class="viewcode-back" href="../../taniumpy/taniumpy.html#taniumpy.session.load_file">[docs]</a><span class="k">def</span> <span class="nf">load_file</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="load_file"><a class="viewcode-back" href="../../taniumpy.session.html#taniumpy.session.load_file">[docs]</a><span class="k">def</span> <span class="nf">load_file</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
         <span class="n">content</span> <span class="o">=</span> <span class="n">fd</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">content</span>
 
 </div>
-<div class="viewcode-block" id="http_post"><a class="viewcode-back" href="../../taniumpy/taniumpy.html#taniumpy.session.http_post">[docs]</a><span class="k">def</span> <span class="nf">http_post</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<div class="viewcode-block" id="http_post"><a class="viewcode-back" href="../../taniumpy.session.html#taniumpy.session.http_post">[docs]</a><span class="k">def</span> <span class="nf">http_post</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
     <span class="n">http</span> <span class="o">=</span> <span class="n">httplib</span><span class="o">.</span><span class="n">HTTPSConnection</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
 
     <span class="n">req_args</span> <span class="o">=</span> <span class="p">{}</span>
@@ -148,15 +148,15 @@
     <span class="k">return</span> <span class="n">response_body</span>
 
 </div>
-<div class="viewcode-block" id="DynamicFormatter"><a class="viewcode-back" href="../../taniumpy/taniumpy.html#taniumpy.session.DynamicFormatter">[docs]</a><span class="k">class</span> <span class="nc">DynamicFormatter</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">Formatter</span><span class="p">):</span>
+<div class="viewcode-block" id="DynamicFormatter"><a class="viewcode-back" href="../../taniumpy.session.html#taniumpy.session.DynamicFormatter">[docs]</a><span class="k">class</span> <span class="nc">DynamicFormatter</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">Formatter</span><span class="p">):</span>
 
-<div class="viewcode-block" id="DynamicFormatter.get_value"><a class="viewcode-back" href="../../taniumpy/taniumpy.html#taniumpy.session.DynamicFormatter.get_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="DynamicFormatter.get_value"><a class="viewcode-back" href="../../taniumpy.session.html#taniumpy.session.DynamicFormatter.get_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">]:</span>
             <span class="k">return</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">string</span><span class="o">.</span><span class="n">Formatter</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
 
 </div></div>
-<div class="viewcode-block" id="Session"><a class="viewcode-back" href="../../taniumpy/taniumpy.html#taniumpy.session.Session">[docs]</a><span class="k">class</span> <span class="nc">Session</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Session"><a class="viewcode-back" href="../../taniumpy.session.html#taniumpy.session.Session">[docs]</a><span class="k">class</span> <span class="nc">Session</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
     <span class="n">GET_OBJECT</span> <span class="o">=</span> <span class="s">&#39;GetObject&#39;</span>
     <span class="n">UPDATE_OBJECT</span> <span class="o">=</span> <span class="s">&#39;UpdateObject&#39;</span>
@@ -189,7 +189,7 @@
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">ret</span>
 
-<div class="viewcode-block" id="Session.authenticate"><a class="viewcode-back" href="../../taniumpy/taniumpy.html#taniumpy.session.Session.authenticate">[docs]</a>    <span class="k">def</span> <span class="nf">authenticate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Session.authenticate"><a class="viewcode-back" href="../../taniumpy.session.html#taniumpy.session.Session.authenticate">[docs]</a>    <span class="k">def</span> <span class="nf">authenticate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;_auth_headers&#39;</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">username</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">AuthorizationError</span><span class="p">(</span><span class="s">&quot;Must supply username&quot;</span><span class="p">)</span>
@@ -212,31 +212,31 @@
         <span class="n">authlog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Successfully authenticated&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">server_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_server_info</span><span class="p">()</span>
 </div>
-<div class="viewcode-block" id="Session.find"><a class="viewcode-back" href="../../taniumpy/taniumpy.html#taniumpy.session.Session.find">[docs]</a>    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">object_type</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Session.find"><a class="viewcode-back" href="../../taniumpy.session.html#taniumpy.session.Session.find">[docs]</a>    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">object_type</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">request_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_createGetObjectBody</span><span class="p">(</span><span class="n">object_type</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">response_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getResponse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request_body</span><span class="p">)</span>
         <span class="n">obj</span> <span class="o">=</span> <span class="n">BaseType</span><span class="o">.</span><span class="n">fromSOAPBody</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">response_body</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">obj</span>
 </div>
-<div class="viewcode-block" id="Session.save"><a class="viewcode-back" href="../../taniumpy/taniumpy.html#taniumpy.session.Session.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Session.save"><a class="viewcode-back" href="../../taniumpy.session.html#taniumpy.session.Session.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">request_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_createUpdateObjectBody</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">response_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getResponse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request_body</span><span class="p">)</span>
         <span class="n">obj</span> <span class="o">=</span> <span class="n">BaseType</span><span class="o">.</span><span class="n">fromSOAPBody</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">response_body</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">obj</span>
 </div>
-<div class="viewcode-block" id="Session.add"><a class="viewcode-back" href="../../taniumpy/taniumpy.html#taniumpy.session.Session.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Session.add"><a class="viewcode-back" href="../../taniumpy.session.html#taniumpy.session.Session.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">request_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_createAddObjectBody</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">response_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getResponse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request_body</span><span class="p">)</span>
         <span class="n">obj</span> <span class="o">=</span> <span class="n">BaseType</span><span class="o">.</span><span class="n">fromSOAPBody</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">response_body</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">obj</span>
 </div>
-<div class="viewcode-block" id="Session.delete"><a class="viewcode-back" href="../../taniumpy/taniumpy.html#taniumpy.session.Session.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Session.delete"><a class="viewcode-back" href="../../taniumpy.session.html#taniumpy.session.Session.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">request_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_createDeleteObjectBody</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">response_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getResponse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request_body</span><span class="p">)</span>
         <span class="n">obj</span> <span class="o">=</span> <span class="n">BaseType</span><span class="o">.</span><span class="n">fromSOAPBody</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">response_body</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">obj</span>
 </div>
-<div class="viewcode-block" id="Session.getResultInfo"><a class="viewcode-back" href="../../taniumpy/taniumpy.html#taniumpy.session.Session.getResultInfo">[docs]</a>    <span class="k">def</span> <span class="nf">getResultInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Session.getResultInfo"><a class="viewcode-back" href="../../taniumpy.session.html#taniumpy.session.Session.getResultInfo">[docs]</a>    <span class="k">def</span> <span class="nf">getResultInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">request_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_createGetResultInfoBody</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">response_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getResponse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request_body</span><span class="p">)</span>
         <span class="c"># parse the single result_info into an Element and create a ResultInfo</span>
@@ -247,7 +247,7 @@
         <span class="n">obj</span> <span class="o">=</span> <span class="n">ResultInfo</span><span class="o">.</span><span class="n">fromSOAPElement</span><span class="p">(</span><span class="n">result_info</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">obj</span>
 </div>
-<div class="viewcode-block" id="Session.getResultData"><a class="viewcode-back" href="../../taniumpy/taniumpy.html#taniumpy.session.Session.getResultData">[docs]</a>    <span class="k">def</span> <span class="nf">getResultData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Session.getResultData"><a class="viewcode-back" href="../../taniumpy.session.html#taniumpy.session.Session.getResultData">[docs]</a>    <span class="k">def</span> <span class="nf">getResultData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">request_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_createGetResultDataBody</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">response_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getResponse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request_body</span><span class="p">)</span>
         <span class="c"># parse the single result_info into an Element and create a ResultData</span>
@@ -258,7 +258,7 @@
         <span class="n">obj</span> <span class="o">=</span> <span class="n">ResultSet</span><span class="o">.</span><span class="n">fromSOAPElement</span><span class="p">(</span><span class="n">result_info</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">obj</span>
 </div>
-<div class="viewcode-block" id="Session.get_server_info"><a class="viewcode-back" href="../../taniumpy/taniumpy.html#taniumpy.session.Session.get_server_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_server_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Session.get_server_info"><a class="viewcode-back" href="../../taniumpy.session.html#taniumpy.session.Session.get_server_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_server_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_auth</span><span class="p">()</span>
         <span class="c"># we can&#39;t use _http_post, because INFO_RES is only available on</span>
         <span class="c"># SOAP_PORT</span>
@@ -470,7 +470,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &copy; Copyright 2014, Tanium.
-      Last updated on Dec 03, 2014.
+      Last updated on Dec 04, 2014.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
     </div>
   </body>

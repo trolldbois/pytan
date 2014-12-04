@@ -1,25 +1,7 @@
 # -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
-"""Handler: An API wrapper created to make using (:mod:`taniumpy`) more human friendly.
-
-Handler Class
--------------
-
-.. autoclass:: pytan.handler.Handler
-    :show-inheritance:
-
-Example: Create a Handler object
-'''''''''''''''''''''''''''''''''
-
-Setup a Handler() object::
-
-    >>> import sys
-    >>> sys.path.append('/path/to/pytan/')
-    >>> import pytan
-    >>> handler = pytan.Handler('username', 'password', 'host')
-
-"""
+"""The main :mod:`pytan` module that provides methods for programmatic use."""
 import sys
 
 # disable python from creating .pyc files everywhere
@@ -73,6 +55,12 @@ class Handler(object):
       * port 444 is the default SOAP port
       * port 443 forwards /soap/ URLs to the SOAP port
       * Use port 444 if you have direct access to it
+
+    See Also
+    --------
+    :data:`pytan.constants.LOG_LEVEL_MAPS` : maps a given `loglevel` to respective logger names and their logger levels
+    :data:`pytan.constants.INFO_FORMAT` : debugformat=False
+    :data:`pytan.constants.DEBUG_FORMAT` : debugformat=True
     """
 
     def __init__(self, username, password, host, port="444", loglevel=0,
@@ -128,7 +116,7 @@ class Handler(object):
 
         See Also
         --------
-        constants.Q_OBJ_MAP : maps qtype to a method in Handler()
+        :data:`pytan.constants.Q_OBJ_MAP` : maps qtype to a method in Handler()
         """
         qtype = kwargs.get('qtype', '')
         if not qtype:
@@ -160,6 +148,10 @@ class Handler(object):
         Notes
         -----
         id or name must be supplied
+
+        See Also
+        --------
+        :data:`pytan.constants.ASK_KWARGS`: list of kwargs that can be passed to :class:`taniumpy.question_asker.QuestionAsker`
         """
         # get the saved_question object the user passed in
         q_objs = self.get('saved_question', **kwargs)
@@ -243,8 +235,9 @@ class Handler(object):
 
         See Also
         --------
-        constants.FILTER_MAPS : valid filter dictionaries for filters
-        constants.OPTION_MAPS : valid option dictionaries for options
+        :data:`pytan.constants.FILTER_MAPS` : valid filter dictionaries for filters
+        :data:`pytan.constants.OPTION_MAPS` : valid option dictionaries for options
+        :data:`pytan.constants.ASK_KWARGS` : list of kwargs that can be passed to :class:`taniumpy.question_asker.QuestionAsker`
         """
 
         # get our defs from kwargs and churn them into what we want
@@ -366,8 +359,9 @@ class Handler(object):
 
         See Also
         --------
-        constants.FILTER_MAPS : valid filter dictionaries for filters
-        constants.OPTION_MAPS : valid option dictionaries for options
+        :data:`pytan.constants.FILTER_MAPS` : valid filter dictionaries for filters
+        :data:`pytan.constants.OPTION_MAPS` : valid option dictionaries for options
+        :data:`pytan.constants.ASK_KWARGS` : list of kwargs that can be passed to :class:`taniumpy.question_asker.QuestionAsker`
         """
 
         if 'sensors' in kwargs:
@@ -456,6 +450,10 @@ class Handler(object):
         -------
         ret : :class:`taniumpy.object_types.base.BaseType`
             TaniumPy object added to Tanium SOAP Server
+
+        See Also
+        --------
+        :data:`pytan.constants.GET_OBJ_MAP` : maps objtype to supported 'create_json' types
         """
         obj_map = utils.get_obj_map(objtype)
         create_json_ok = obj_map['create_json']
@@ -513,7 +511,7 @@ class Handler(object):
 
         Raises
         ------
-        pytan.utils.HandlerError
+        HandlerError : :exc:`pytan.utils.HandlerError`
         """
         m = (
             "Sensor creation not supported via PyTan as of yet, too complex\n"
@@ -569,8 +567,8 @@ class Handler(object):
 
         See Also
         --------
-        constants.FILTER_MAPS : valid filters for verify_filters
-        constants.OPTION_MAPS : valid options for verify_filter_options
+        :data:`pytan.constants.FILTER_MAPS` : valid filters for verify_filters
+        :data:`pytan.constants.OPTION_MAPS` : valid options for verify_filter_options
         """
 
         # bare minimum arguments for new package: name, command
@@ -693,8 +691,8 @@ class Handler(object):
 
         See Also
         --------
-        constants.FILTER_MAPS : valid filters for filters
-        constants.OPTION_MAPS : valid options for filter_options
+        :data:`pytan.constants.FILTER_MAPS` : valid filters for filters
+        :data:`pytan.constants.OPTION_MAPS` : valid options for filter_options
         """
 
         filter_defs = utils.dehumanize_question_filters(filters)
@@ -807,7 +805,7 @@ class Handler(object):
 
         See Also
         --------
-        constants.GET_OBJ_MAP : maps objtype to supported 'search' keys
+        :data:`pytan.constants.GET_OBJ_MAP` : maps objtype to supported 'search' keys
         """
         obj_map = utils.get_obj_map(objtype)
         delete_ok = obj_map['delete']
@@ -880,8 +878,8 @@ class Handler(object):
 
         See Also
         --------
-        constants.FILTER_MAPS : valid filter dictionaries for filters
-        constants.OPTION_MAPS : valid option dictionaries for options
+        :data:`pytan.constants.FILTER_MAPS` : valid filter dictionaries for filters
+        :data:`pytan.constants.OPTION_MAPS` : valid option dictionaries for options
         """
 
         # get our defs from kwargs and churn them into what we want
@@ -1079,8 +1077,8 @@ class Handler(object):
 
         See Also
         --------
-        constants.FILTER_MAPS : valid filter dictionaries for filters
-        constants.OPTION_MAPS : valid option dictionaries for options
+        :data:`pytan.constants.FILTER_MAPS` : valid filter dictionaries for filters
+        :data:`pytan.constants.OPTION_MAPS` : valid option dictionaries for options
         """
         # the human string describing the sensors/filter that user wants
         # to deploy the action against
@@ -1134,7 +1132,7 @@ class Handler(object):
 
         See Also
         --------
-        constants.ACTION_RESULT_STATUS : maps the values in *Action Statuses* columns to success/completed/failed/etc
+        :data:`pytan.constants.ACTION_RESULT_STATUS` : maps the values in *Action Statuses* columns to success/completed/failed/etc
         """
         action_obj = self.get('action', id=action_id)[0]
         ps = action_obj.package_spec
@@ -1304,7 +1302,7 @@ class Handler(object):
 
         See Also
         --------
-        constants.EXPORT_MAPS : maps the type `obj` to `export_format` and the optional args supported for each
+        :data:`pytan.constants.EXPORT_MAPS` : maps the type `obj` to `export_format` and the optional args supported for each
         """
         objtype = type(obj)
         try:
@@ -1469,7 +1467,7 @@ class Handler(object):
 
         See Also
         --------
-        constants.GET_OBJ_MAP : maps objtype to supported 'search' keys
+        :data:`pytan.constants.GET_OBJ_MAP` : maps objtype to supported 'search' keys
         """
         obj_map = utils.get_obj_map(objtype)
         manual_search = obj_map['manual']
@@ -1525,7 +1523,7 @@ class Handler(object):
 
         See Also
         --------
-        constants.GET_OBJ_MAP : maps objtype to supported 'search' keys
+        :data:`pytan.constants.GET_OBJ_MAP` : maps objtype to supported 'search' keys
         """
         obj_map = utils.get_obj_map(objtype)
         api_obj_all = getattr(taniumpy, obj_map['all'])()

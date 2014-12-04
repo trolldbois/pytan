@@ -1,2 +1,0 @@
-action_group_id,comment,creation_time,distribute_seconds,end_time,expire_seconds,id,issue_count,issue_seconds,last_action_id,last_action_start_time,name,package_spec_id,policy_flag,policy_max_age,policy_min_count,policy_row_filter_group_id,policy_saved_question_group_id,policy_saved_question_id,status,user_id
-0,Distributes the Hardware Tools used for hardware identification.,2014-10-01T20:12:48,0,Never,660,14,3,86400,3859,2014-11-08T20:12:48,Distribute Hardware Tools,24,1,86400,0,208,0,13,0,1

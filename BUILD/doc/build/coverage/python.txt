@@ -1,0 +1,7 @@
+Undocumented Python objects
+===========================
+xmltodict
+---------
+Classes:
+ * ParsingInterrupted
+

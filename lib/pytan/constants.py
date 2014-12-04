@@ -2,37 +2,31 @@
 # -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
-"""Constant variables"""
+"""PyTan Constants
+
+This contains a number of constants that drive PyTan.
+"""
 import sys
 
 # disable python from creating .pyc files everywhere
 sys.dont_write_bytecode = True
 
-import logging
-import re
-import os
-
-my_file = os.path.abspath(__file__)
-my_dir = os.path.dirname(my_file)
-parent_dir = os.path.dirname(my_dir)
-path_adds = [parent_dir]
-
-for aa in path_adds:
-    if aa not in sys.path:
-        sys.path.append(aa)
-
-import taniumpy
-
 # debug log format
-DEBUG_FORMAT = logging.Formatter(
+DEBUG_FORMAT = (
     '[%(lineno)-5d - %(filename)20s:%(funcName)s()] %(asctime)s\n'
     '%(levelname)-8s %(name)s %(message)s'
 )
+"""
+Logging format for debugformat=True
+"""
 
 # info log format
-INFO_FORMAT = logging.Formatter(
+INFO_FORMAT = (
     '%(asctime)s %(levelname)-8s %(name)s: %(message)s'
 )
+"""
+Logging format for debugformat=False
+"""
 
 # log levels to turn on extra loggers (higher the level the more verbose)
 LOG_LEVEL_MAPS = [
@@ -60,6 +54,11 @@ LOG_LEVEL_MAPS = [
     (9, {'api.session.http': 'DEBUG'}),
     (10, {'api.session.http.body': 'DEBUG'}),
 ]
+"""
+Map for loglevel(int) -> logger -> logger level(logging.INFO|WARN|DEBUG|...). Higher loglevels will include all levels up to and including that level. Contains a list of tuples, each tuple consisting of:
+    * int, loglevel
+    * dict, `{{logger_name: logger_level}}` for this loglevel
+"""
 
 SENSOR_TYPE_MAP = {
     0: 'Hash',
@@ -86,6 +85,9 @@ SENSOR_TYPE_MAP = {
     11: 'RegexMatch',
     12: 'LastOperatorType',
 }
+"""
+Maps a Result type from the Tanium SOAP API from an int to a string
+"""
 
 GET_OBJ_MAP = {
     'action': {
@@ -198,6 +200,16 @@ GET_OBJ_MAP = {
         'create_json': True,
     },
 }
+"""
+Maps an object type from a human friendly string into various aspects:
+    * single: The :mod:`TaniumPy` object used to find singular instances of this object type
+    * multi: The :mod:`TaniumPy` object used to find multiple instances of this object type
+    * all: The :mod:`TaniumPy` object used to find all instances of this object type
+    * search: The list of attributes that can be used with the Tanium SOAP API for searches
+    * manual: Whether or not this object type is allowed to do a manual search, that is -- allow the user to specify an attribute that is not in search, which will get ALL objects of that type then search for a match based on attribute values for EVERY key/value pair supplied
+    * delete: Whether or not this object type can be deleted
+    * create_json: Whether or not this object type can be created by importing from JSON
+"""
 
 Q_OBJ_MAP = {
     'saved': {
@@ -210,6 +222,9 @@ Q_OBJ_MAP = {
         'handler': 'ask_manual_human',
     },
 }
+"""
+Maps a question type from a human friendly string into the handler method that supports each type
+"""
 
 REQ_KWARGS = [
     'hide_errors_flag',
@@ -245,14 +260,44 @@ REQ_KWARGS = [
     'use_json',
     'json_pretty_print',
 ]
+"""
+A list of arguments that will be pulled from any respective kwargs for most calls to :class:`taniumpy.session.Session`
+"""
 
-PARAM_RE = re.compile(r'\{(.*?)\}')
-PARAM_SPLIT_RE = re.compile(r'(?<!\\),')
+PARAM_RE = r'\{(.*?)\}'
+"""
+The regex that is used to parse parameters from a human string. Ex: ala {key1=value1}
+"""
+
+PARAM_SPLIT_RE = r'(?<!\\),'
+"""
+The regex that is used to split multiple parameters. Ex: key1=value1, key2=value2
+"""
+
 PARAM_KEY_SPLIT = '='
-FILTER_RE = re.compile(r',\s*that', re.IGNORECASE)
-OPTION_RE = re.compile(r',\s*opt:', re.IGNORECASE)
+"""
+The string that is used to split parameter key from parameter value. Ex: `key1`\ ``=``\ `value1`
+"""
+
+FILTER_RE = r',\s*that'
+"""
+The regex that is used to find filters in a string. Ex: `Sensor1`\ ``, that`` `contains blah`
+"""
+
+OPTION_RE = r',\s*opt:'
+"""
+The regex that is used to find options in a string. Ex: `Sensor1, that contains blah`\ ``, opt:``\ `ignore_case`\ ``, opt:``\ `max_data_age:3600`
+"""
+
 SELECTORS = ['id', 'name', 'hash']
+"""
+The search selectors that can be extracted from a string. Ex: ``name``:`Sensor1,` or ``id``:`1`, or ``hash``:`1111111`
+"""
+
 PARAM_DELIM = '||'
+"""
+The string to surround a parameter with when passing parameters to the SOAP API for a sensor in a question. Ex: ``||``\ `parameter_key`\ ``||``
+"""
 
 FILTER_MAPS = [
     {
@@ -367,6 +412,14 @@ FILTER_MAPS = [
         'not_flag': 0,
     },
 ]
+"""
+Maps a given set of human strings into the various filter attributes used by the SOAP API. Also used to verify that a manually supplied filter via a definition is valid. Construct:
+    * human: a list of human strings that can be used after '`, that`'. Ex: '`, that` ``contains`` ``value``'
+    * operator: the filter operator used by the SOAP API when building a filter that matches `human`
+    * not_flag: the value to set on `not_flag` when building a filter that matches `human`
+    * pre_value: the prefix to add to the ``value`` when building a filter
+    * post_value: the postfix to add to the ``value`` when building a filter
+"""
 
 OPTION_MAPS = [
     {
@@ -421,6 +474,17 @@ OPTION_MAPS = [
         'valid_type': int,
     },
 ]
+"""
+Maps a given human string into the various options for filters used by the SOAP API. Also used to verify that a manually supplied option via a definition is valid. Construct:
+    * human: the human string that can be used after '`opt:`'. Ex: '`opt`:``value_type``:``value``'
+    * destination: the type of object this option can be applied to (filter or group)
+    * attrs: the attributes and their values used by the SOAP API when building a filter with an option that matches `human`
+    * attr: the attribute used by the SOAP API when building a filter with an option that matches `human`. ``value`` is pulled from after a `:` when only attr exists for an option map, and not attrs.
+    * valid_values: if supplied, the list of valid values for this option
+    * valid_type: performs type checking on the value supplied to verify it is correct
+    * human_type: the human string for the value type if the option requires a value
+"""
+
 
 EXPORT_MAPS = {
     'ResultSet': {
@@ -428,12 +492,12 @@ EXPORT_MAPS = {
             {
                 'key': 'header_sort',
                 'valid_types': [bool, list, tuple],
-                'valid_list_types': [str, unicode],
+                'valid_list_types': ['str', 'unicode'],
             },
             {
                 'key': 'sensors',
                 'valid_types': [list, tuple],
-                'valid_list_types': [taniumpy.Sensor],
+                'valid_list_types': ['taniumpy.Sensor'],
             },
             {
                 'key': 'header_add_sensor',
@@ -458,7 +522,7 @@ EXPORT_MAPS = {
             {
                 'key': 'header_sort',
                 'valid_types': [bool, list, tuple],
-                'valid_list_types': [str, unicode],
+                'valid_list_types': ['str', 'unicode'],
             },
             {
                 'key': 'explode_json_string_values',
@@ -488,6 +552,12 @@ EXPORT_MAPS = {
     },
 
 }
+"""
+Maps a given TaniumPy object to the list of supported export formats for each object type, and the valid optional arguments for each export format. Optional arguments construct:
+    * key: the optional argument name itself
+    * valid_types: the valid python types that are allowed to be passed as a value to `key`
+    * valid_list_types: the valid python types in str format that are allowed to be passed in a list, if list is one of the `valid_types`
+"""
 
 ACTION_RESULT_STATUS = {
     "Waiting.": ['running'],
@@ -503,9 +573,15 @@ ACTION_RESULT_STATUS = {
     "Verified.": ['no_verify_done', 'verify_done', 'verify_success'],
     "Succeeded.": ['done'],
 }
+"""
+Maps a deploy action result status to it's respective end states.
+"""
 
 ASK_KWARGS = [
     'timeout',
     'polling_interval',
     'pct_complete_threshold',
 ]
+"""
+A list of arguments that will be passed on to the question asker/poller :class:`taniumpy.question_asker.QuestionAsker`
+"""

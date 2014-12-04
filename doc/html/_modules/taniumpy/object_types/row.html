@@ -66,7 +66,7 @@
   <h1>Source code for taniumpy.object_types.row</h1><div class="highlight"><pre>
 <span class="k">class</span> <span class="nc">Row</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A row in a result set.</span>
-<div class="viewcode-block" id="Row"><a class="viewcode-back" href="../../../taniumpy/taniumpy.object_types.html#taniumpy.object_types.row.Row">[docs]</a>
+<div class="viewcode-block" id="Row"><a class="viewcode-back" href="../../../taniumpy.object_types.html#taniumpy.object_types.row.Row">[docs]</a>
 <span class="sd">    Values are stored in column order, also accessible</span>
 <span class="sd">    by key using []</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -92,7 +92,7 @@
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">fromSOAPElement</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">el</span><span class="p">,</span> <span class="n">columns</span><span class="p">):</span>
         <span class="n">row</span> <span class="o">=</span> <span class="n">Row</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span>
-<div class="viewcode-block" id="Row.fromSOAPElement"><a class="viewcode-back" href="../../../taniumpy/taniumpy.object_types.html#taniumpy.object_types.row.Row.fromSOAPElement">[docs]</a>        <span class="n">val</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="Row.fromSOAPElement"><a class="viewcode-back" href="../../../taniumpy.object_types.html#taniumpy.object_types.row.Row.fromSOAPElement">[docs]</a>        <span class="n">val</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">row</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">text</span>
         <span class="n">val</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;cid&quot;</span><span class="p">)</span>
@@ -135,7 +135,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &copy; Copyright 2014, Tanium.
-      Last updated on Dec 03, 2014.
+      Last updated on Dec 04, 2014.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
     </div>
   </body>

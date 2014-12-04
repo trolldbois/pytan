@@ -1,0 +1,9 @@
+pytan tests
+======================
+
+.. toctree::
+   :maxdepth: 3
+   :numbered:
+
+   pytan.unittest
+   pytan.functest

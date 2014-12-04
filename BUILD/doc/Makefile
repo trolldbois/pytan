@@ -191,4 +191,4 @@ staticdoc:
 	cp $(STATIC_DOCDIR)/* $(REALBUILDDIR)/
 	@echo "Static docs copied to $(REALBUILDDIR)"
 
-all: clean html staticdoc
+all: clean html staticdoc coverage

@@ -24,7 +24,8 @@ my_dir = os.path.dirname(my_file)
 root_dir = os.path.join(my_dir, os.pardir, os.pardir, os.pardir)
 root_dir = os.path.abspath(root_dir)
 lib_dir = os.path.join(root_dir, 'lib')
-path_adds = [my_dir, lib_dir]
+test_dir = os.path.join(root_dir, 'test')
+path_adds = [my_dir, lib_dir, test_dir]
 
 for aa in path_adds:
     if aa not in sys.path:
@@ -47,6 +48,7 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx.ext.autosummary',
     'sphinx.ext.inheritance_diagram',
+    'sphinx.ext.intersphinx',
     'numpydoc',
 ]
 
@@ -301,3 +303,5 @@ texinfo_documents = [
 
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 #texinfo_no_detailmenu = False
+
+intersphinx_mapping = {'python': ('http://docs.python.org/2.7', None)}

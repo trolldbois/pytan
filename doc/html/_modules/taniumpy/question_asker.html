@@ -67,11 +67,11 @@
 <span class="kn">import</span> <span class="nn">time</span>
 
 
-<div class="viewcode-block" id="QuestionTimeoutException"><a class="viewcode-back" href="../../taniumpy/taniumpy.html#taniumpy.question_asker.QuestionTimeoutException">[docs]</a><span class="k">class</span> <span class="nc">QuestionTimeoutException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<div class="viewcode-block" id="QuestionTimeoutException"><a class="viewcode-back" href="../../taniumpy.question_asker.html#taniumpy.question_asker.QuestionTimeoutException">[docs]</a><span class="k">class</span> <span class="nc">QuestionTimeoutException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
     <span class="k">pass</span>
 
 </div>
-<div class="viewcode-block" id="QuestionAsker"><a class="viewcode-back" href="../../taniumpy/taniumpy.html#taniumpy.question_asker.QuestionAsker">[docs]</a><span class="k">class</span> <span class="nc">QuestionAsker</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="QuestionAsker"><a class="viewcode-back" href="../../taniumpy.question_asker.html#taniumpy.question_asker.QuestionAsker">[docs]</a><span class="k">class</span> <span class="nc">QuestionAsker</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A class to aid in asking a Question.</span>
 
 <span class="sd">    The primary function of this class is to poll for</span>
@@ -106,10 +106,10 @@
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">ret</span>
 
-<div class="viewcode-block" id="QuestionAsker.setPctCompleteThreshold"><a class="viewcode-back" href="../../taniumpy/taniumpy.html#taniumpy.question_asker.QuestionAsker.setPctCompleteThreshold">[docs]</a>    <span class="k">def</span> <span class="nf">setPctCompleteThreshold</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+<div class="viewcode-block" id="QuestionAsker.setPctCompleteThreshold"><a class="viewcode-back" href="../../taniumpy.question_asker.html#taniumpy.question_asker.QuestionAsker.setPctCompleteThreshold">[docs]</a>    <span class="k">def</span> <span class="nf">setPctCompleteThreshold</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pct_complete_threshold</span> <span class="o">=</span> <span class="n">val</span>
 </div>
-<div class="viewcode-block" id="QuestionAsker.run"><a class="viewcode-back" href="../../taniumpy/taniumpy.html#taniumpy.question_asker.QuestionAsker.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callbacks</span><span class="o">=</span><span class="p">{},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="QuestionAsker.run"><a class="viewcode-back" href="../../taniumpy.question_asker.html#taniumpy.question_asker.QuestionAsker.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callbacks</span><span class="o">=</span><span class="p">{},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Poll for question data and issue callbacks.</span>
 
 <span class="sd">        Callbacks should be a dict with members:</span>
@@ -187,7 +187,7 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop</span><span class="p">:</span>
                 <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_polling_interval</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="QuestionAsker.stop"><a class="viewcode-back" href="../../taniumpy/taniumpy.html#taniumpy.question_asker.QuestionAsker.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="QuestionAsker.stop"><a class="viewcode-back" href="../../taniumpy.question_asker.html#taniumpy.question_asker.QuestionAsker.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_stop</span> <span class="o">=</span> <span class="bp">True</span></div></div>
 </pre></div>
 
@@ -211,7 +211,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &copy; Copyright 2014, Tanium.
-      Last updated on Dec 03, 2014.
+      Last updated on Dec 04, 2014.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b2.
     </div>
   </body>
