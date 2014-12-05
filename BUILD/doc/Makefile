@@ -191,9 +191,4 @@ staticdoc:
 	cp $(STATIC_DOCDIR)/* $(REALBUILDDIR)/
 	@echo "Static docs copied to $(REALBUILDDIR)"
 
-rst:
-	mkdir -p $(REALBUILDDIR)/rst
-	$(SPHINXBUILD) -b rst source $(REALBUILDDIR)/rst
-	@echo "Build finished. The RST files are in $(REALBUILDDIR)/rst"
-
-all: clean html rst staticdoc coverage
+all: clean html staticdoc coverage

@@ -31,8 +31,6 @@ for aa in path_adds:
     if aa not in sys.path:
         sys.path.append(aa)
 
-sys.path.append(os.path.abspath('_exts'))
-
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
@@ -51,27 +49,8 @@ extensions = [
     'sphinx.ext.autosummary',
     'sphinx.ext.inheritance_diagram',
     'sphinx.ext.intersphinx',
-    'sphinxcontrib.restbuilder',
     'numpydoc',
 ]
-
-# rst_file_suffix = '.rst'
-# rst_link_suffix = ''
-# rst_line_width = 100
-# rst_indent = 4
-
-
-# def rst_file_transform(docname):
-#     if docname == 'index':
-#         docname = 'home'
-#     return docname.title() + rst_file_suffix
-
-
-# def rst_link_transform(docname):
-#     if docname == 'index':
-#         return 'wiki'
-#     return 'wiki/' + docname.title()
-
 
 # autodoc_default_flags = ['members', 'show-inheritance']
 autosummary_generate = True
