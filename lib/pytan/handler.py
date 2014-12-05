@@ -109,9 +109,7 @@ class Handler(object):
         Returns
         -------
         result : dict, containing:
-            * `question_object` : one of the following depending on `qtype`
-                * :class:`taniumpy.object_types.question.Question`
-                * :class:`taniumpy.object_types.saved_question.SavedQuestion`
+            * `question_object` : one of the following depending on `qtype`: :class:`taniumpy.object_types.question.Question` or :class:`taniumpy.object_types.saved_question.SavedQuestion`
             * `question_results` : :class:`taniumpy.object_types.result_set.ResultSet`
 
         See Also

@@ -31,6 +31,8 @@ for aa in path_adds:
     if aa not in sys.path:
         sys.path.append(aa)
 
+sys.path.append(os.path.abspath('_exts'))
+
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
@@ -49,8 +51,27 @@ extensions = [
     'sphinx.ext.autosummary',
     'sphinx.ext.inheritance_diagram',
     'sphinx.ext.intersphinx',
+    'sphinxcontrib.restbuilder',
     'numpydoc',
 ]
+
+rst_file_suffix = '.rst'
+rst_link_suffix = ''
+rst_line_width = 78
+rst_indent = 4
+
+
+# def rst_file_transform(docname):
+#     if docname == 'index':
+#         docname = 'home'
+#     return docname.title() + rst_file_suffix
+
+
+# def rst_link_transform(docname):
+#     if docname == 'index':
+#         return 'wiki'
+#     return 'wiki/' + docname.title()
+
 
 # autodoc_default_flags = ['members', 'show-inheritance']
 autosummary_generate = True
@@ -128,7 +149,9 @@ keep_warnings = True
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'sphinxdoc'
+# html_theme = 'sphinxdoc'
+html_theme = "sphinx_rtd_theme"
+html_theme_path = ["_themes", ]
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the

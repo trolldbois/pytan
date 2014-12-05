@@ -48,7 +48,7 @@
         "folder_exclude_patterns": [".svn", ".git", ".hg", "CVS"],
         "font_face": "Ubuntu Mono",
         "font_options": ["subpixel_antialias"],
-        "font_size": 15,
+        "font_size": 18,
         "gpu_window_buffer": "auto",
         "gutter": true,
         "highlight_line": true,
