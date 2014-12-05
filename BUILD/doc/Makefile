@@ -120,7 +120,9 @@ latexpdf:
 	$(SPHINXBUILD) -b latex $(ALLSPHINXOPTS) $(BUILDDIR)/latex
 	@echo "Running LaTeX files through pdflatex..."
 	$(MAKE) -C $(BUILDDIR)/latex all-pdf
-	@echo "pdflatex finished; the PDF files are in $(BUILDDIR)/latex."
+	mkdir -p $(REALBUILDDIR)/pdf
+	cp $(BUILDDIR)/latex/*.pdf $(REALBUILDDIR)/pdf
+	@echo "pdflatex finished; the PDF files are in $(BUILDDIR)/latex and $(REALBUILDDIR)/pdf"
 
 latexpdfja:
 	$(SPHINXBUILD) -b latex $(ALLSPHINXOPTS) $(BUILDDIR)/latex
@@ -191,4 +193,4 @@ staticdoc:
 	cp $(STATIC_DOCDIR)/* $(REALBUILDDIR)/
 	@echo "Static docs copied to $(REALBUILDDIR)"
 
-all: clean html staticdoc coverage
+all: clean html staticdoc coverage latexpdf

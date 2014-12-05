@@ -1,0 +1,166 @@
+\select@language {english}
+\contentsline {chapter}{\numberline {1}Table of Contents}{1}{chapter.1}
+\contentsline {section}{\numberline {1.1}Description}{1}{section.1.1}
+\contentsline {section}{\numberline {1.2}Why it was created}{1}{section.1.2}
+\contentsline {section}{\numberline {1.3}Requirements}{1}{section.1.3}
+\contentsline {section}{\numberline {1.4}Installation}{2}{section.1.4}
+\contentsline {section}{\numberline {1.5}pytan package}{2}{section.1.5}
+\contentsline {subsection}{\numberline {1.5.1}pytan.handler module}{2}{subsection.1.5.1}
+\contentsline {subsubsection}{Handler Class}{2}{subsubsection*.7}
+\contentsline {paragraph}{Notes}{3}{paragraph*.9}
+\contentsline {paragraph}{Example: Create a Handler object}{3}{paragraph*.10}
+\contentsline {paragraph}{Handler Methods: Questions and Actions}{3}{paragraph*.11}
+\contentsline {subparagraph}{Ask a Question}{3}{subparagraph*.12}
+\contentsline {subparagraph}{Ask a Saved Question}{4}{subparagraph*.14}
+\contentsline {paragraph}{Notes}{4}{paragraph*.16}
+\contentsline {subparagraph}{Asking a Manual Question}{4}{subparagraph*.17}
+\contentsline {paragraph}{Examples}{5}{paragraph*.19}
+\contentsline {paragraph}{Examples}{6}{paragraph*.21}
+\contentsline {subparagraph}{Deploy an Action}{6}{subparagraph*.22}
+\contentsline {paragraph}{Examples}{7}{paragraph*.24}
+\contentsline {paragraph}{Examples}{8}{paragraph*.26}
+\contentsline {subparagraph}{Stopping an Action}{9}{subparagraph*.28}
+\contentsline {paragraph}{Handler Methods: Exporting/Importing Objects}{9}{paragraph*.30}
+\contentsline {subparagraph}{Import an API Object from JSON}{9}{subparagraph*.31}
+\contentsline {subparagraph}{Load a Python Object from JSON}{10}{subparagraph*.33}
+\contentsline {subparagraph}{Export Object}{10}{subparagraph*.35}
+\contentsline {subparagraph}{Export Object to Report File}{11}{subparagraph*.37}
+\contentsline {paragraph}{Handler Methods: Creating Objects}{13}{paragraph*.39}
+\contentsline {subparagraph}{Create a Group}{13}{subparagraph*.40}
+\contentsline {subparagraph}{Create a Package}{13}{subparagraph*.42}
+\contentsline {subparagraph}{Create a Sensor}{14}{subparagraph*.44}
+\contentsline {subparagraph}{Create a User}{14}{subparagraph*.46}
+\contentsline {subparagraph}{Create a Whitelisted URL}{15}{subparagraph*.48}
+\contentsline {paragraph}{Handler Methods: Deleting Objects}{15}{paragraph*.50}
+\contentsline {subparagraph}{Delete an Object}{15}{subparagraph*.51}
+\contentsline {paragraph}{Handler Methods: Getting Objects}{15}{paragraph*.53}
+\contentsline {subparagraph}{Get Single or Multiple Objects of a type}{15}{subparagraph*.54}
+\contentsline {subparagraph}{Get All Objects of a type}{16}{subparagraph*.56}
+\contentsline {paragraph}{Handler Methods: Getting Result Data / Result Info}{16}{paragraph*.58}
+\contentsline {paragraph}{Handler Methods: Private Methods}{17}{paragraph*.61}
+\contentsline {subsection}{\numberline {1.5.2}pytan.constants module}{17}{subsection.1.5.2}
+\contentsline {subsection}{\numberline {1.5.3}pytan.utils module}{19}{subsection.1.5.3}
+\contentsline {subsubsection}{Utility Classes: Exceptions}{19}{subsubsection*.92}
+\contentsline {subsubsection}{Utility Classes: Logging handlers}{20}{subsubsection*.97}
+\contentsline {subsubsection}{Utility Classes: Argument Parsers for Command Line Scripts}{20}{subsubsection*.100}
+\contentsline {subsubsection}{Utility Functions: Logging}{20}{subsubsection*.105}
+\contentsline {subsubsection}{Utility Functions: Type Checking}{21}{subsubsection*.111}
+\contentsline {subsubsection}{Utility Functions: Misc}{21}{subsubsection*.116}
+\contentsline {subsubsection}{Utility Functions: Argument Parsers for Command Line Scripts}{23}{subsubsection*.129}
+\contentsline {subsubsection}{Utility Functions: Dehumanize human strings}{26}{subsubsection*.146}
+\contentsline {subsubsection}{Utility Functions: kwargs getters}{28}{subsubsection*.158}
+\contentsline {subsubsection}{Utility Functions: Object mappers}{29}{subsubsection*.162}
+\contentsline {subsubsection}{Utility Functions: TaniumPy objects}{29}{subsubsection*.165}
+\contentsline {subsubsection}{Utility Functions: Definition objects}{32}{subsubsection*.178}
+\contentsline {subsection}{\numberline {1.5.4}pytan Unit Tests}{33}{subsection.1.5.4}
+\contentsline {subsection}{\numberline {1.5.5}pytan Functional Tests}{38}{subsection.1.5.5}
+\contentsline {section}{\numberline {1.6}taniumpy package}{41}{section.1.6}
+\contentsline {subsection}{\numberline {1.6.1}taniumpy.session module}{41}{subsection.1.6.1}
+\contentsline {subsection}{\numberline {1.6.2}taniumpy.question\_asker module}{42}{subsection.1.6.2}
+\contentsline {subsection}{\numberline {1.6.3}taniumpy.object\_types package}{43}{subsection.1.6.3}
+\contentsline {subsubsection}{taniumpy.object\_types module}{43}{subsubsection*.460}
+\contentsline {subsubsection}{taniumpy.object\_types.action module}{43}{subsubsection*.461}
+\contentsline {subsubsection}{taniumpy.object\_types.action\_list module}{43}{subsubsection*.463}
+\contentsline {subsubsection}{taniumpy.object\_types.action\_list\_info module}{43}{subsubsection*.465}
+\contentsline {subsubsection}{taniumpy.object\_types.action\_stop module}{43}{subsubsection*.467}
+\contentsline {subsubsection}{taniumpy.object\_types.action\_stop\_list module}{43}{subsubsection*.469}
+\contentsline {subsubsection}{taniumpy.object\_types.all\_objects module}{43}{subsubsection*.471}
+\contentsline {subsubsection}{taniumpy.object\_types.archived\_question module}{43}{subsubsection*.472}
+\contentsline {subsubsection}{taniumpy.object\_types.archived\_question\_list module}{43}{subsubsection*.474}
+\contentsline {subsubsection}{taniumpy.object\_types.audit\_data module}{43}{subsubsection*.476}
+\contentsline {subsubsection}{taniumpy.object\_types.base module}{44}{subsubsection*.478}
+\contentsline {paragraph}{Examples}{44}{paragraph*.486}
+\contentsline {subsubsection}{taniumpy.object\_types.cache\_filter module}{45}{subsubsection*.495}
+\contentsline {subsubsection}{taniumpy.object\_types.cache\_filter\_list module}{45}{subsubsection*.497}
+\contentsline {subsubsection}{taniumpy.object\_types.cache\_info module}{45}{subsubsection*.499}
+\contentsline {subsubsection}{taniumpy.object\_types.client\_count module}{45}{subsubsection*.501}
+\contentsline {subsubsection}{taniumpy.object\_types.client\_status module}{45}{subsubsection*.503}
+\contentsline {subsubsection}{taniumpy.object\_types.column module}{45}{subsubsection*.505}
+\contentsline {subsubsection}{taniumpy.object\_types.column\_set module}{45}{subsubsection*.508}
+\contentsline {subsubsection}{taniumpy.object\_types.computer\_group module}{45}{subsubsection*.511}
+\contentsline {subsubsection}{taniumpy.object\_types.computer\_group\_list module}{46}{subsubsection*.513}
+\contentsline {subsubsection}{taniumpy.object\_types.computer\_group\_spec module}{46}{subsubsection*.515}
+\contentsline {subsubsection}{taniumpy.object\_types.computer\_spec\_list module}{46}{subsubsection*.517}
+\contentsline {subsubsection}{taniumpy.object\_types.error\_list module}{46}{subsubsection*.519}
+\contentsline {subsubsection}{taniumpy.object\_types.filter module}{46}{subsubsection*.521}
+\contentsline {subsubsection}{taniumpy.object\_types.filter\_list module}{46}{subsubsection*.523}
+\contentsline {subsubsection}{taniumpy.object\_types.group module}{46}{subsubsection*.525}
+\contentsline {subsubsection}{taniumpy.object\_types.group\_list module}{46}{subsubsection*.527}
+\contentsline {subsubsection}{taniumpy.object\_types.metadata\_item module}{46}{subsubsection*.529}
+\contentsline {subsubsection}{taniumpy.object\_types.metadata\_list module}{47}{subsubsection*.531}
+\contentsline {subsubsection}{taniumpy.object\_types.object\_list module}{47}{subsubsection*.533}
+\contentsline {subsubsection}{taniumpy.object\_types.object\_list\_types module}{47}{subsubsection*.535}
+\contentsline {subsubsection}{taniumpy.object\_types.options module}{47}{subsubsection*.536}
+\contentsline {subsubsection}{taniumpy.object\_types.package\_file module}{47}{subsubsection*.538}
+\contentsline {subsubsection}{taniumpy.object\_types.package\_file\_list module}{47}{subsubsection*.540}
+\contentsline {subsubsection}{taniumpy.object\_types.package\_file\_status module}{47}{subsubsection*.542}
+\contentsline {subsubsection}{taniumpy.object\_types.package\_file\_status\_list module}{47}{subsubsection*.544}
+\contentsline {subsubsection}{taniumpy.object\_types.package\_file\_template module}{47}{subsubsection*.546}
+\contentsline {subsubsection}{taniumpy.object\_types.package\_file\_template\_list module}{47}{subsubsection*.548}
+\contentsline {subsubsection}{taniumpy.object\_types.package\_spec module}{48}{subsubsection*.550}
+\contentsline {subsubsection}{taniumpy.object\_types.package\_spec\_list module}{48}{subsubsection*.552}
+\contentsline {subsubsection}{taniumpy.object\_types.parameter module}{48}{subsubsection*.554}
+\contentsline {subsubsection}{taniumpy.object\_types.parameter\_list module}{48}{subsubsection*.556}
+\contentsline {subsubsection}{taniumpy.object\_types.parse\_job module}{48}{subsubsection*.558}
+\contentsline {subsubsection}{taniumpy.object\_types.parse\_job\_list module}{48}{subsubsection*.560}
+\contentsline {subsubsection}{taniumpy.object\_types.parse\_result module}{48}{subsubsection*.562}
+\contentsline {subsubsection}{taniumpy.object\_types.parse\_result\_group module}{48}{subsubsection*.564}
+\contentsline {subsubsection}{taniumpy.object\_types.parse\_result\_group\_list module}{48}{subsubsection*.566}
+\contentsline {subsubsection}{taniumpy.object\_types.parse\_result\_list module}{49}{subsubsection*.568}
+\contentsline {subsubsection}{taniumpy.object\_types.plugin module}{49}{subsubsection*.570}
+\contentsline {subsubsection}{taniumpy.object\_types.plugin\_argument module}{49}{subsubsection*.572}
+\contentsline {subsubsection}{taniumpy.object\_types.plugin\_argument\_list module}{49}{subsubsection*.574}
+\contentsline {subsubsection}{taniumpy.object\_types.plugin\_command\_list module}{49}{subsubsection*.576}
+\contentsline {subsubsection}{taniumpy.object\_types.plugin\_list module}{49}{subsubsection*.578}
+\contentsline {subsubsection}{taniumpy.object\_types.plugin\_schedule module}{49}{subsubsection*.580}
+\contentsline {subsubsection}{taniumpy.object\_types.plugin\_schedule\_list module}{49}{subsubsection*.582}
+\contentsline {subsubsection}{taniumpy.object\_types.plugin\_sql module}{49}{subsubsection*.584}
+\contentsline {subsubsection}{taniumpy.object\_types.plugin\_sql\_column module}{50}{subsubsection*.586}
+\contentsline {subsubsection}{taniumpy.object\_types.plugin\_sql\_result module}{50}{subsubsection*.588}
+\contentsline {subsubsection}{taniumpy.object\_types.question module}{50}{subsubsection*.590}
+\contentsline {subsubsection}{taniumpy.object\_types.question\_list module}{50}{subsubsection*.592}
+\contentsline {subsubsection}{taniumpy.object\_types.question\_list\_info module}{50}{subsubsection*.594}
+\contentsline {subsubsection}{taniumpy.object\_types.result\_info module}{50}{subsubsection*.596}
+\contentsline {subsubsection}{taniumpy.object\_types.result\_set module}{50}{subsubsection*.599}
+\contentsline {subsubsection}{taniumpy.object\_types.row module}{51}{subsubsection*.605}
+\contentsline {subsubsection}{taniumpy.object\_types.saved\_action module}{51}{subsubsection*.608}
+\contentsline {subsubsection}{taniumpy.object\_types.saved\_action\_approval module}{51}{subsubsection*.610}
+\contentsline {subsubsection}{taniumpy.object\_types.saved\_action\_list module}{51}{subsubsection*.612}
+\contentsline {subsubsection}{taniumpy.object\_types.saved\_action\_policy module}{51}{subsubsection*.614}
+\contentsline {subsubsection}{taniumpy.object\_types.saved\_action\_row\_id\_list module}{51}{subsubsection*.616}
+\contentsline {subsubsection}{taniumpy.object\_types.saved\_question module}{51}{subsubsection*.618}
+\contentsline {subsubsection}{taniumpy.object\_types.saved\_question\_list module}{51}{subsubsection*.620}
+\contentsline {subsubsection}{taniumpy.object\_types.select module}{52}{subsubsection*.622}
+\contentsline {subsubsection}{taniumpy.object\_types.select\_list module}{52}{subsubsection*.624}
+\contentsline {subsubsection}{taniumpy.object\_types.sensor module}{52}{subsubsection*.626}
+\contentsline {subsubsection}{taniumpy.object\_types.sensor\_list module}{52}{subsubsection*.628}
+\contentsline {subsubsection}{taniumpy.object\_types.sensor\_query module}{52}{subsubsection*.630}
+\contentsline {subsubsection}{taniumpy.object\_types.sensor\_query\_list module}{52}{subsubsection*.632}
+\contentsline {subsubsection}{taniumpy.object\_types.sensor\_string\_hints module}{52}{subsubsection*.634}
+\contentsline {subsubsection}{taniumpy.object\_types.sensor\_subcolumn module}{52}{subsubsection*.636}
+\contentsline {subsubsection}{taniumpy.object\_types.sensor\_subcolumn\_list module}{52}{subsubsection*.638}
+\contentsline {subsubsection}{taniumpy.object\_types.sensor\_types module}{53}{subsubsection*.640}
+\contentsline {subsubsection}{taniumpy.object\_types.soap\_error module}{53}{subsubsection*.641}
+\contentsline {subsubsection}{taniumpy.object\_types.system\_setting module}{53}{subsubsection*.643}
+\contentsline {subsubsection}{taniumpy.object\_types.system\_settings\_list module}{53}{subsubsection*.645}
+\contentsline {subsubsection}{taniumpy.object\_types.system\_status\_aggregate module}{53}{subsubsection*.647}
+\contentsline {subsubsection}{taniumpy.object\_types.system\_status\_list module}{53}{subsubsection*.649}
+\contentsline {subsubsection}{taniumpy.object\_types.upload\_file module}{53}{subsubsection*.651}
+\contentsline {subsubsection}{taniumpy.object\_types.upload\_file\_list module}{53}{subsubsection*.653}
+\contentsline {subsubsection}{taniumpy.object\_types.upload\_file\_status module}{53}{subsubsection*.655}
+\contentsline {subsubsection}{taniumpy.object\_types.user module}{53}{subsubsection*.657}
+\contentsline {subsubsection}{taniumpy.object\_types.user\_list module}{54}{subsubsection*.659}
+\contentsline {subsubsection}{taniumpy.object\_types.user\_permissions module}{54}{subsubsection*.661}
+\contentsline {subsubsection}{taniumpy.object\_types.user\_role module}{54}{subsubsection*.663}
+\contentsline {subsubsection}{taniumpy.object\_types.user\_role\_list module}{54}{subsubsection*.665}
+\contentsline {subsubsection}{taniumpy.object\_types.version\_aggregate module}{54}{subsubsection*.667}
+\contentsline {subsubsection}{taniumpy.object\_types.version\_aggregate\_list module}{54}{subsubsection*.669}
+\contentsline {subsubsection}{taniumpy.object\_types.white\_listed\_url module}{54}{subsubsection*.671}
+\contentsline {subsubsection}{taniumpy.object\_types.white\_listed\_url\_list module}{54}{subsubsection*.673}
+\contentsline {subsubsection}{taniumpy.object\_types.xml\_error module}{54}{subsubsection*.675}
+\contentsline {section}{\numberline {1.7}xmltodict module}{55}{section.1.7}
+\contentsline {section}{\numberline {1.8}ddt module}{56}{section.1.8}
+\contentsline {section}{\numberline {1.9}threaded\_http module}{57}{section.1.9}
+\contentsline {chapter}{\numberline {2}Indices and tables}{59}{chapter.2}
+\contentsline {chapter}{Python Module Index}{61}{section*.692}
+\contentsline {chapter}{Index}{63}{section*.693}
