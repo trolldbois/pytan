@@ -16,7 +16,7 @@ Running.': ['running']}``
 
    A list of arguments that will be passed on to the question
    asker/poller `taniumpy.question_asker.QuestionAsker
-   <taniumpy.question_asker#taniumpy.question_asker.QuestionAsker>`_
+   <taniumpy.question_asker.rst#taniumpy.question_asker.QuestionAsker>`_
 
 ``pytan.constants.DEBUG_FORMAT = '[%(lineno)-5d - %(f ... s %(name)s
 %(message)s'``
@@ -175,7 +175,7 @@ Running.': ['running']}``
 
    A list of arguments that will be pulled from any respective kwargs
    for most calls to `taniumpy.session.Session
-   <taniumpy.session#taniumpy.session.Session>`_
+   <taniumpy.session.rst#taniumpy.session.Session>`_
 
 ``pytan.constants.SELECTORS = ['id', 'name', 'hash']``
 

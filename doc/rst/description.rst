@@ -12,20 +12,20 @@ of four parts:
      server itself, listens on port 444 but is also available via port
      443.
 
-   * TaniumPy Python Package (`taniumpy <taniumpy#module-taniumpy>`_):
-     A python package comprised of a set of python objects
-     automatically generated from the WSDL file that describe the
-     Tanium SOAP API. These python objects handle the serialization
-     and deserialization of XML to and from the Tanium Server SOAP
-     API. Located in ``lib/taniumpy``
+   * TaniumPy Python Package (`taniumpy
+     <taniumpy.rst#module-taniumpy>`_): A python package comprised of
+     a set of python objects automatically generated from the WSDL
+     file that describe the Tanium SOAP API. These python objects
+     handle the serialization and deserialization of XML to and from
+     the Tanium Server SOAP API. Located in ``lib/taniumpy``
 
-   * PyTan Python Package: (`pytan <pytan#module-pytan>`_): A python
-     package that provides a set of methods to make interfacing with
-     TaniumPy more human friendly. Located in ``lib/pytan``
+   * PyTan Python Package: (`pytan <pytan.rst#module-pytan>`_): A
+     python package that provides a set of methods to make interfacing
+     with TaniumPy more human friendly. Located in ``lib/pytan``
 
    * PyTan Command Line Scripts: A set of command line scripts that
-     utilize the PyTan Package (`pytan <pytan#module-pytan>`_) to make
-     it easy for non-programmers to create/get/delete/ask/deploy
+     utilize the PyTan Package (`pytan <pytan.rst#module-pytan>`_) to
+     make it easy for non-programmers to create/get/delete/ask/deploy
      objects via the Tanium Server SOAP API.
 
 
@@ -36,12 +36,13 @@ This was created to solve for the following needs:
 
 ..
 
-   * Create a python module (`taniumpy <taniumpy#module-taniumpy>`_)
-     to provide a set of methods for making it easier to
-     programmatically interface with Tanium via the SOAP API.
+   * Create a python module (`taniumpy
+     <taniumpy.rst#module-taniumpy>`_) to provide a set of methods for
+     making it easier to programmatically interface with Tanium via
+     the SOAP API.
 
    * Create a set of command line scripts utilizing the `taniumpy
-     <taniumpy#module-taniumpy>`_ module that handle the argument
+     <taniumpy.rst#module-taniumpy>`_ module that handle the argument
      parsing, thereby providing non-programmers with command line
      access to the functionality therein.
 

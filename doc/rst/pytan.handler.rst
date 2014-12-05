@@ -2,8 +2,8 @@
 pytan.handler module
 ********************
 
-The main `pytan <pytan#module-pytan>`_ module that provides methods
-for programmatic use.
+The main `pytan <pytan.rst#module-pytan>`_ module that provides
+methods for programmatic use.
 
 
 Handler Class
@@ -55,16 +55,16 @@ loglevel=0, debugformat=False, **kwargs)**
          False use one line logformat, True use two lines
 
    `pytan.constants.LOG_LEVEL_MAPS
-      <pytan.constants#pytan.constants.LOG_LEVEL_MAPS>`_
+      <pytan.constants.rst#pytan.constants.LOG_LEVEL_MAPS>`_
          maps a given *loglevel* to respective logger names and their
          logger levels
 
       `pytan.constants.INFO_FORMAT
-      <pytan.constants#pytan.constants.INFO_FORMAT>`_
+      <pytan.constants.rst#pytan.constants.INFO_FORMAT>`_
          debugformat=False
 
       `pytan.constants.DEBUG_FORMAT
-      <pytan.constants#pytan.constants.DEBUG_FORMAT>`_
+      <pytan.constants.rst#pytan.constants.DEBUG_FORMAT>`_
          debugformat=True
 
    -[ Notes ]-
@@ -117,16 +117,16 @@ Ask a Question
 
          * *question_object* : one of the following depending on
            *qtype*: `taniumpy.object_types.question.Question
-           <taniumpy.object_types#taniumpy.object_types.question.Question>`_
+           <taniumpy.object_types.rst#taniumpy.object_types.question.Question>`_
            or `taniumpy.object_types.saved_question.SavedQuestion
-           <taniumpy.object_types#taniumpy.object_types.saved_question.SavedQuestion>`_
+           <taniumpy.object_types.rst#taniumpy.object_types.saved_question.SavedQuestion>`_
 
          * *question_results* :
            `taniumpy.object_types.result_set.ResultSet
-           <taniumpy.object_types#taniumpy.object_types.result_set.ResultSet>`_
+           <taniumpy.object_types.rst#taniumpy.object_types.result_set.ResultSet>`_
 
    `pytan.constants.Q_OBJ_MAP
-      <pytan.constants#pytan.constants.Q_OBJ_MAP>`_
+      <pytan.constants.rst#pytan.constants.Q_OBJ_MAP>`_
          maps qtype to a method in Handler()
 
 
@@ -157,17 +157,17 @@ Ask a Saved Question
 
          * *question_object* :
            `taniumpy.object_types.saved_question.SavedQuestion
-           <taniumpy.object_types#taniumpy.object_types.saved_question.SavedQuestion>`_
+           <taniumpy.object_types.rst#taniumpy.object_types.saved_question.SavedQuestion>`_
 
          * *question_results* :
            `taniumpy.object_types.result_set.ResultSet
-           <taniumpy.object_types#taniumpy.object_types.result_set.ResultSet>`_
+           <taniumpy.object_types.rst#taniumpy.object_types.result_set.ResultSet>`_
 
    `pytan.constants.ASK_KWARGS
-      <pytan.constants#pytan.constants.ASK_KWARGS>`_
+      <pytan.constants.rst#pytan.constants.ASK_KWARGS>`_
          list of kwargs that can be passed to
          `taniumpy.question_asker.QuestionAsker
-         <taniumpy.question_asker#taniumpy.question_asker.QuestionAsker>`_
+         <taniumpy.question_asker.rst#taniumpy.question_asker.QuestionAsker>`_
 
    -[ Notes ]-
 
@@ -219,25 +219,25 @@ Asking a Manual Question
 
          * *question_object* :
            `taniumpy.object_types.question.Question
-           <taniumpy.object_types#taniumpy.object_types.question.Question>`_
+           <taniumpy.object_types.rst#taniumpy.object_types.question.Question>`_
 
          * *question_results* :
            `taniumpy.object_types.result_set.ResultSet
-           <taniumpy.object_types#taniumpy.object_types.result_set.ResultSet>`_
+           <taniumpy.object_types.rst#taniumpy.object_types.result_set.ResultSet>`_
 
    `pytan.constants.FILTER_MAPS
-      <pytan.constants#pytan.constants.FILTER_MAPS>`_
+      <pytan.constants.rst#pytan.constants.FILTER_MAPS>`_
          valid filter dictionaries for filters
 
       `pytan.constants.OPTION_MAPS
-      <pytan.constants#pytan.constants.OPTION_MAPS>`_
+      <pytan.constants.rst#pytan.constants.OPTION_MAPS>`_
          valid option dictionaries for options
 
       `pytan.constants.ASK_KWARGS
-      <pytan.constants#pytan.constants.ASK_KWARGS>`_
+      <pytan.constants.rst#pytan.constants.ASK_KWARGS>`_
          list of kwargs that can be passed to
          `taniumpy.question_asker.QuestionAsker
-         <taniumpy.question_asker#taniumpy.question_asker.QuestionAsker>`_
+         <taniumpy.question_asker.rst#taniumpy.question_asker.QuestionAsker>`_
 
    -[ Examples ]-
 
@@ -303,25 +303,25 @@ Asking a Manual Question
 
          * *question_object* :
            `taniumpy.object_types.question.Question
-           <taniumpy.object_types#taniumpy.object_types.question.Question>`_
+           <taniumpy.object_types.rst#taniumpy.object_types.question.Question>`_
 
          * *question_results* :
            `taniumpy.object_types.result_set.ResultSet
-           <taniumpy.object_types#taniumpy.object_types.result_set.ResultSet>`_
+           <taniumpy.object_types.rst#taniumpy.object_types.result_set.ResultSet>`_
 
    `pytan.constants.FILTER_MAPS
-      <pytan.constants#pytan.constants.FILTER_MAPS>`_
+      <pytan.constants.rst#pytan.constants.FILTER_MAPS>`_
          valid filter dictionaries for filters
 
       `pytan.constants.OPTION_MAPS
-      <pytan.constants#pytan.constants.OPTION_MAPS>`_
+      <pytan.constants.rst#pytan.constants.OPTION_MAPS>`_
          valid option dictionaries for options
 
       `pytan.constants.ASK_KWARGS
-      <pytan.constants#pytan.constants.ASK_KWARGS>`_
+      <pytan.constants.rst#pytan.constants.ASK_KWARGS>`_
          list of kwargs that can be passed to
          `taniumpy.question_asker.QuestionAsker
-         <taniumpy.question_asker#taniumpy.question_asker.QuestionAsker>`_
+         <taniumpy.question_asker.rst#taniumpy.question_asker.QuestionAsker>`_
 
    -[ Examples ]-
 
@@ -416,11 +416,11 @@ Deploy an Action
       ..
 
          * *action_object* : `taniumpy.object_types.action.Action
-           <taniumpy.object_types#taniumpy.object_types.action.Action>`_
+           <taniumpy.object_types.rst#taniumpy.object_types.action.Action>`_
 
          * *action_results* :
            `taniumpy.object_types.result_set.ResultSet
-           <taniumpy.object_types#taniumpy.object_types.result_set.ResultSet>`_
+           <taniumpy.object_types.rst#taniumpy.object_types.result_set.ResultSet>`_
 
          * *action_progress_human* : str, progress map in human form
 
@@ -429,14 +429,14 @@ Deploy an Action
 
          * *pre_action_question_results* :
            `taniumpy.object_types.result_set.ResultSet
-           <taniumpy.object_types#taniumpy.object_types.result_set.ResultSet>`_
+           <taniumpy.object_types.rst#taniumpy.object_types.result_set.ResultSet>`_
 
    `pytan.constants.FILTER_MAPS
-      <pytan.constants#pytan.constants.FILTER_MAPS>`_
+      <pytan.constants.rst#pytan.constants.FILTER_MAPS>`_
          valid filter dictionaries for filters
 
       `pytan.constants.OPTION_MAPS
-      <pytan.constants#pytan.constants.OPTION_MAPS>`_
+      <pytan.constants.rst#pytan.constants.OPTION_MAPS>`_
          valid option dictionaries for options
 
    -[ Examples ]-
@@ -523,11 +523,11 @@ Deploy an Action
       ..
 
          * *action_object* : `taniumpy.object_types.action.Action
-           <taniumpy.object_types#taniumpy.object_types.action.Action>`_
+           <taniumpy.object_types.rst#taniumpy.object_types.action.Action>`_
 
          * *action_results* :
            `taniumpy.object_types.result_set.ResultSet
-           <taniumpy.object_types#taniumpy.object_types.result_set.ResultSet>`_
+           <taniumpy.object_types.rst#taniumpy.object_types.result_set.ResultSet>`_
 
          * *action_progress_human* : str, progress map in human form
 
@@ -536,14 +536,14 @@ Deploy an Action
 
          * *pre_action_question_results* :
            `taniumpy.object_types.result_set.ResultSet
-           <taniumpy.object_types#taniumpy.object_types.result_set.ResultSet>`_
+           <taniumpy.object_types.rst#taniumpy.object_types.result_set.ResultSet>`_
 
    `pytan.constants.FILTER_MAPS
-      <pytan.constants#pytan.constants.FILTER_MAPS>`_
+      <pytan.constants.rst#pytan.constants.FILTER_MAPS>`_
          valid filter dictionaries for filters
 
       `pytan.constants.OPTION_MAPS
-      <pytan.constants#pytan.constants.OPTION_MAPS>`_
+      <pytan.constants.rst#pytan.constants.OPTION_MAPS>`_
          valid option dictionaries for options
 
    -[ Examples ]-
@@ -584,11 +584,11 @@ Deploy an Action
       ..
 
          * *action_object* : `taniumpy.object_types.action.Action
-           <taniumpy.object_types#taniumpy.object_types.action.Action>`_
+           <taniumpy.object_types.rst#taniumpy.object_types.action.Action>`_
 
          * *action_results* :
            `taniumpy.object_types.result_set.ResultSet
-           <taniumpy.object_types#taniumpy.object_types.result_set.ResultSet>`_
+           <taniumpy.object_types.rst#taniumpy.object_types.result_set.ResultSet>`_
 
          * *action_progress_human* : str, progress map in human form
 
@@ -596,7 +596,7 @@ Deploy an Action
            form
 
    `pytan.constants.ACTION_RESULT_STATUS
-      <pytan.constants#pytan.constants.ACTION_RESULT_STATUS>`_
+      <pytan.constants.rst#pytan.constants.ACTION_RESULT_STATUS>`_
          maps the values in *Action Statuses* columns to
          success/completed/failed/etc
 
@@ -618,7 +618,7 @@ Stopping an Action
    :Returns:
       **action_stop_obj** :
       `taniumpy.object_types.action_stop.ActionStop
-      <taniumpy.object_types#taniumpy.object_types.action_stop.ActionStop>`_
+      <taniumpy.object_types.rst#taniumpy.object_types.action_stop.ActionStop>`_
 
       ..
 
@@ -653,14 +653,14 @@ Import an API Object from JSON
 
    :Returns:
       **ret** : `taniumpy.object_types.base.BaseType
-      <taniumpy.object_types#taniumpy.object_types.base.BaseType>`_
+      <taniumpy.object_types.rst#taniumpy.object_types.base.BaseType>`_
 
       ..
 
          TaniumPy object added to Tanium SOAP Server
 
    `pytan.constants.GET_OBJ_MAP
-      <pytan.constants#pytan.constants.GET_OBJ_MAP>`_
+      <pytan.constants.rst#pytan.constants.GET_OBJ_MAP>`_
          maps objtype to supported 'create_json' types
 
 
@@ -680,7 +680,7 @@ Load a Python Object from JSON
 
    :Returns:
       **obj** : `taniumpy.object_types.base.BaseType
-      <taniumpy.object_types#taniumpy.object_types.base.BaseType>`_
+      <taniumpy.object_types.rst#taniumpy.object_types.base.BaseType>`_
 
       ..
 
@@ -696,9 +696,9 @@ Export Object
 
    :Parameters:
       **obj** : `taniumpy.object_types.base.BaseType
-      <taniumpy.object_types#taniumpy.object_types.base.BaseType>`_ or
-      `taniumpy.object_types.result_set.ResultSet
-      <taniumpy.object_types#taniumpy.object_types.result_set.ResultSet>`_
+      <taniumpy.object_types.rst#taniumpy.object_types.base.BaseType>`_
+      or `taniumpy.object_types.result_set.ResultSet
+      <taniumpy.object_types.rst#taniumpy.object_types.result_set.ResultSet>`_
 
       ..
 
@@ -717,9 +717,9 @@ Export Object
 
          * for *export_format* csv and *obj* types
            `taniumpy.object_types.base.BaseType
-           <taniumpy.object_types#taniumpy.object_types.base.BaseType>`_
+           <taniumpy.object_types.rst#taniumpy.object_types.base.BaseType>`_
            or `taniumpy.object_types.result_set.ResultSet
-           <taniumpy.object_types#taniumpy.object_types.result_set.ResultSet>`_
+           <taniumpy.object_types.rst#taniumpy.object_types.result_set.ResultSet>`_
 
          * True: sort the headers automatically
 
@@ -734,7 +734,7 @@ Export Object
 
          * for *export_format* csv and *obj* type
            `taniumpy.object_types.result_set.ResultSet
-           <taniumpy.object_types#taniumpy.object_types.result_set.ResultSet>`_
+           <taniumpy.object_types.rst#taniumpy.object_types.result_set.ResultSet>`_
 
          * False: do not prefix the headers with the associated sensor
            name for each column
@@ -748,7 +748,7 @@ Export Object
 
          * for *export_format* csv and *obj* type
            `taniumpy.object_types.result_set.ResultSet
-           <taniumpy.object_types#taniumpy.object_types.result_set.ResultSet>`_
+           <taniumpy.object_types.rst#taniumpy.object_types.result_set.ResultSet>`_
 
          * False: do not postfix the headers with the result type for
            each column
@@ -762,7 +762,7 @@ Export Object
 
          * for *export_format* csv and *obj* type
            `taniumpy.object_types.result_set.ResultSet
-           <taniumpy.object_types#taniumpy.object_types.result_set.ResultSet>`_
+           <taniumpy.object_types.rst#taniumpy.object_types.result_set.ResultSet>`_
 
          * False: do not expand multiline row entries into their own
            rows
@@ -775,7 +775,7 @@ Export Object
 
          * for *export_format* json or csv and *obj* type
            `taniumpy.object_types.base.BaseType
-           <taniumpy.object_types#taniumpy.object_types.base.BaseType>`_
+           <taniumpy.object_types.rst#taniumpy.object_types.base.BaseType>`_
 
          * False: do not explode JSON strings in object attributes
            into their own object attributes
@@ -789,7 +789,7 @@ Export Object
 
          * for *export_format* xml and *obj* type
            `taniumpy.object_types.base.BaseType
-           <taniumpy.object_types#taniumpy.object_types.base.BaseType>`_
+           <taniumpy.object_types.rst#taniumpy.object_types.base.BaseType>`_
 
          * False: include empty attributes in XML output
 
@@ -803,7 +803,7 @@ Export Object
          the contents of exporting *export_format*
 
    `pytan.constants.EXPORT_MAPS
-      <pytan.constants#pytan.constants.EXPORT_MAPS>`_
+      <pytan.constants.rst#pytan.constants.EXPORT_MAPS>`_
          maps the type *obj* to *export_format* and the optional args
          supported for each
 
@@ -817,9 +817,9 @@ Export Object to Report File
 
    :Parameters:
       **obj** : `taniumpy.object_types.base.BaseType
-      <taniumpy.object_types#taniumpy.object_types.base.BaseType>`_ or
-      `taniumpy.object_types.result_set.ResultSet
-      <taniumpy.object_types#taniumpy.object_types.result_set.ResultSet>`_
+      <taniumpy.object_types.rst#taniumpy.object_types.base.BaseType>`_
+      or `taniumpy.object_types.result_set.ResultSet
+      <taniumpy.object_types.rst#taniumpy.object_types.result_set.ResultSet>`_
 
       ..
 
@@ -838,9 +838,9 @@ Export Object to Report File
 
          * for *export_format* csv and *obj* types
            `taniumpy.object_types.base.BaseType
-           <taniumpy.object_types#taniumpy.object_types.base.BaseType>`_
+           <taniumpy.object_types.rst#taniumpy.object_types.base.BaseType>`_
            or `taniumpy.object_types.result_set.ResultSet
-           <taniumpy.object_types#taniumpy.object_types.result_set.ResultSet>`_
+           <taniumpy.object_types.rst#taniumpy.object_types.result_set.ResultSet>`_
 
          * True: sort the headers automatically
 
@@ -855,7 +855,7 @@ Export Object to Report File
 
          * for *export_format* csv and *obj* type
            `taniumpy.object_types.result_set.ResultSet
-           <taniumpy.object_types#taniumpy.object_types.result_set.ResultSet>`_
+           <taniumpy.object_types.rst#taniumpy.object_types.result_set.ResultSet>`_
 
          * False: do not prefix the headers with the associated sensor
            name for each column
@@ -869,7 +869,7 @@ Export Object to Report File
 
          * for *export_format* csv and *obj* type
            `taniumpy.object_types.result_set.ResultSet
-           <taniumpy.object_types#taniumpy.object_types.result_set.ResultSet>`_
+           <taniumpy.object_types.rst#taniumpy.object_types.result_set.ResultSet>`_
 
          * False: do not postfix the headers with the result type for
            each column
@@ -883,7 +883,7 @@ Export Object to Report File
 
          * for *export_format* csv and *obj* type
            `taniumpy.object_types.result_set.ResultSet
-           <taniumpy.object_types#taniumpy.object_types.result_set.ResultSet>`_
+           <taniumpy.object_types.rst#taniumpy.object_types.result_set.ResultSet>`_
 
          * False: do not expand multiline row entries into their own
            rows
@@ -896,7 +896,7 @@ Export Object to Report File
 
          * for *export_format* json or csv and *obj* type
            `taniumpy.object_types.base.BaseType
-           <taniumpy.object_types#taniumpy.object_types.base.BaseType>`_
+           <taniumpy.object_types.rst#taniumpy.object_types.base.BaseType>`_
 
          * False: do not explode JSON strings in object attributes
            into their own object attributes
@@ -910,7 +910,7 @@ Export Object to Report File
 
          * for *export_format* xml and *obj* type
            `taniumpy.object_types.base.BaseType
-           <taniumpy.object_types#taniumpy.object_types.base.BaseType>`_
+           <taniumpy.object_types.rst#taniumpy.object_types.base.BaseType>`_
 
          * False: include empty attributes in XML output
 
@@ -992,18 +992,18 @@ Create a Group
 
    :Returns:
       **group_obj** : `taniumpy.object_types.group.Group
-      <taniumpy.object_types#taniumpy.object_types.group.Group>`_
+      <taniumpy.object_types.rst#taniumpy.object_types.group.Group>`_
 
       ..
 
          TaniumPy object added to Tanium SOAP Server
 
    `pytan.constants.FILTER_MAPS
-      <pytan.constants#pytan.constants.FILTER_MAPS>`_
+      <pytan.constants.rst#pytan.constants.FILTER_MAPS>`_
          valid filters for filters
 
       `pytan.constants.OPTION_MAPS
-      <pytan.constants#pytan.constants.OPTION_MAPS>`_
+      <pytan.constants.rst#pytan.constants.OPTION_MAPS>`_
          valid options for filter_options
 
 
@@ -1092,18 +1092,18 @@ verify_expire_seconds=600)**
    :Returns:
       **package_obj** :
       `taniumpy.object_types.package_spec.PackageSpec
-      <taniumpy.object_types#taniumpy.object_types.package_spec.PackageSpec>`_
+      <taniumpy.object_types.rst#taniumpy.object_types.package_spec.PackageSpec>`_
 
       ..
 
          TaniumPy object added to Tanium SOAP Server
 
    `pytan.constants.FILTER_MAPS
-      <pytan.constants#pytan.constants.FILTER_MAPS>`_
+      <pytan.constants.rst#pytan.constants.FILTER_MAPS>`_
          valid filters for verify_filters
 
       `pytan.constants.OPTION_MAPS
-      <pytan.constants#pytan.constants.OPTION_MAPS>`_
+      <pytan.constants.rst#pytan.constants.OPTION_MAPS>`_
          valid options for verify_filter_options
 
 
@@ -1116,7 +1116,7 @@ Create a Sensor
 
    :Raises:
       **HandlerError** : `pytan.utils.HandlerError
-      <pytan.utils#pytan.utils.HandlerError>`_
+      <pytan.utils.rst#pytan.utils.HandlerError>`_
 
    Warning: Not currently supported, too complicated to add. Use
      ``create_from_json()`` instead for this object type!
@@ -1161,7 +1161,7 @@ properties=[])**
 
    :Returns:
       **user_obj** : `taniumpy.object_types.user.User
-      <taniumpy.object_types#taniumpy.object_types.user.User>`_
+      <taniumpy.object_types.rst#taniumpy.object_types.user.User>`_
 
       ..
 
@@ -1210,7 +1210,7 @@ download_seconds=86400, properties=[])**
    :Returns:
       **url_obj** :
       `taniumpy.object_types.white_listed_url.WhiteListedUrl
-      <taniumpy.object_types#taniumpy.object_types.white_listed_url.WhiteListedUrl>`_
+      <taniumpy.object_types.rst#taniumpy.object_types.white_listed_url.WhiteListedUrl>`_
 
       ..
 
@@ -1253,7 +1253,7 @@ Delete an Object
          action
 
    `pytan.constants.GET_OBJ_MAP
-      <pytan.constants#pytan.constants.GET_OBJ_MAP>`_
+      <pytan.constants.rst#pytan.constants.GET_OBJ_MAP>`_
          maps objtype to supported 'search' keys
 
 ======================================================================
@@ -1285,7 +1285,7 @@ Get Single or Multiple Objects of a type
          valid search attr
 
    `pytan.constants.GET_OBJ_MAP
-      <pytan.constants#pytan.constants.GET_OBJ_MAP>`_
+      <pytan.constants.rst#pytan.constants.GET_OBJ_MAP>`_
          maps objtype to supported 'search' keys
 
 
@@ -1304,7 +1304,7 @@ Get All Objects of a type
          type of object to get
 
    `pytan.constants.GET_OBJ_MAP
-      <pytan.constants#pytan.constants.GET_OBJ_MAP>`_
+      <pytan.constants.rst#pytan.constants.GET_OBJ_MAP>`_
          maps objtype to supported 'search' keys
 
 
@@ -1321,7 +1321,7 @@ Handler Methods: Getting Result Data / Result Info
 
    :Parameters:
       **obj** : `taniumpy.object_types.base.BaseType
-      <taniumpy.object_types#taniumpy.object_types.base.BaseType>`_
+      <taniumpy.object_types.rst#taniumpy.object_types.base.BaseType>`_
 
       ..
 
@@ -1337,7 +1337,7 @@ Handler Methods: Getting Result Data / Result Info
 
    :Returns:
       **rd** : `taniumpy.object_types.result_set.ResultSet
-      <taniumpy.object_types#taniumpy.object_types.result_set.ResultSet>`_
+      <taniumpy.object_types.rst#taniumpy.object_types.result_set.ResultSet>`_
 
       ..
 
@@ -1353,7 +1353,7 @@ Handler Methods: Getting Result Data / Result Info
 
    :Parameters:
       **obj** : `taniumpy.object_types.base.BaseType
-      <taniumpy.object_types#taniumpy.object_types.base.BaseType>`_
+      <taniumpy.object_types.rst#taniumpy.object_types.base.BaseType>`_
 
       ..
 
@@ -1361,7 +1361,7 @@ Handler Methods: Getting Result Data / Result Info
 
    :Returns:
       **ri** : `taniumpy.object_types.result_info.ResultInfo
-      <taniumpy.object_types#taniumpy.object_types.result_info.ResultInfo>`_
+      <taniumpy.object_types.rst#taniumpy.object_types.result_info.ResultInfo>`_
 
       ..
 
@@ -1376,7 +1376,7 @@ Handler Methods: Private Methods
 **Handler._find(api_object, **kwargs)**
 
    Wrapper for interfacing with `taniumpy.session.Session.find()
-   <taniumpy.session#taniumpy.session.Session.find>`_
+   <taniumpy.session.rst#taniumpy.session.Session.find>`_
 
 **Handler._get_multi(obj_map, **kwargs)**
 
@@ -1390,7 +1390,7 @@ Handler Methods: Private Methods
 
    Wrapper for single item searches interfacing with
    `taniumpy.session.Session.find()
-   <taniumpy.session#taniumpy.session.Session.find>`_
+   <taniumpy.session.rst#taniumpy.session.Session.find>`_
 
 **Handler._get_sensor_defs(defs)**
 
@@ -1403,12 +1403,12 @@ Handler Methods: Private Methods
 **Handler._export_class_BaseType(obj, export_format, **kwargs)**
 
    Handles exporting `taniumpy.object_types.base.BaseType
-   <taniumpy.object_types#taniumpy.object_types.base.BaseType>`_
+   <taniumpy.object_types.rst#taniumpy.object_types.base.BaseType>`_
 
 **Handler._export_class_ResultSet(obj, export_format, **kwargs)**
 
    Handles exporting `taniumpy.object_types.result_set.ResultSet
-   <taniumpy.object_types#taniumpy.object_types.result_set.ResultSet>`_
+   <taniumpy.object_types.rst#taniumpy.object_types.result_set.ResultSet>`_
 
 **Handler._export_format_csv(obj, **kwargs)**
 

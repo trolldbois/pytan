@@ -55,10 +55,10 @@ extensions = [
     'numpydoc',
 ]
 
-rst_file_suffix = '.rst'
-rst_link_suffix = ''
-rst_line_width = 78
-rst_indent = 4
+# rst_file_suffix = '.rst'
+# rst_link_suffix = ''
+# rst_line_width = 100
+# rst_indent = 4
 
 
 # def rst_file_transform(docname):

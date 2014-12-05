@@ -3,13 +3,13 @@ pytan.utils module
 ******************
 
 Collection of exceptions, classes, and methods used throughout `pytan
-<pytan#module-pytan>`_
+<pytan.rst#module-pytan>`_
 
 
 Utility Classes: Exceptions
 ===========================
 
-Exceptions used throughout `pytan <pytan#module-pytan>`_:
+Exceptions used throughout `pytan <pytan.rst#module-pytan>`_:
 
 **exception pytan.utils.HandlerError**
 
@@ -17,7 +17,7 @@ Exceptions used throughout `pytan <pytan#module-pytan>`_:
    <http://docs.python.org/2.7/library/exceptions.html#exceptions.Exception>`_
 
    Exception thrown for most errors in `pytan.handler
-   <pytan.handler#module-pytan.handler>`_
+   <pytan.handler.rst#module-pytan.handler>`_
 
 **exception pytan.utils.HumanParserError**
 
@@ -25,7 +25,7 @@ Exceptions used throughout `pytan <pytan#module-pytan>`_:
    <http://docs.python.org/2.7/library/exceptions.html#exceptions.Exception>`_
 
    Exception thrown for errors while parsing human strings from
-   `pytan.handler <pytan.handler#module-pytan.handler>`_
+   `pytan.handler <pytan.handler.rst#module-pytan.handler>`_
 
 **exception pytan.utils.DefinitionParserError**
 
@@ -33,7 +33,7 @@ Exceptions used throughout `pytan <pytan#module-pytan>`_:
    <http://docs.python.org/2.7/library/exceptions.html#exceptions.Exception>`_
 
    Exception thrown for errors while parsing definitions from
-   `pytan.handler <pytan.handler#module-pytan.handler>`_
+   `pytan.handler <pytan.handler.rst#module-pytan.handler>`_
 
 **exception pytan.utils.RunFalse**
 
@@ -42,7 +42,7 @@ Exceptions used throughout `pytan <pytan#module-pytan>`_:
 
    Exception thrown when run=False from
    `pytan.handler.Handler.deploy_action()
-   <pytan.handler#pytan.handler.Handler.deploy_action>`_
+   <pytan.handler.rst#pytan.handler.Handler.deploy_action>`_
 
 
 Utility Classes: Logging handlers
@@ -106,9 +106,9 @@ Utility Functions: Logging
 
    Changes the logging format for console handler to
    `pytan.constants.DEBUG_FORMAT
-   <pytan.constants#pytan.constants.DEBUG_FORMAT>`_ or
+   <pytan.constants.rst#pytan.constants.DEBUG_FORMAT>`_ or
    `pytan.constants.INFO_FORMAT
-   <pytan.constants#pytan.constants.INFO_FORMAT>`_
+   <pytan.constants.rst#pytan.constants.INFO_FORMAT>`_
 
    :Parameters:
       **debug** : bool, optional
@@ -117,11 +117,11 @@ Utility Functions: Logging
 
          * False : set logging format for console handler to
            `pytan.constants.INFO_FORMAT
-           <pytan.constants#pytan.constants.INFO_FORMAT>`_
+           <pytan.constants.rst#pytan.constants.INFO_FORMAT>`_
 
          * True :  set logging format for console handler to
            `pytan.constants.DEBUG_FORMAT
-           <pytan.constants#pytan.constants.DEBUG_FORMAT>`_
+           <pytan.constants.rst#pytan.constants.DEBUG_FORMAT>`_
 
 **pytan.utils.remove_logging_handler(name)**
 
@@ -144,7 +144,7 @@ Utility Functions: Logging
 
    Enables loggers based on loglevel and
    `pytan.constants.LOG_LEVEL_MAPS
-   <pytan.constants#pytan.constants.LOG_LEVEL_MAPS>`_
+   <pytan.constants.rst#pytan.constants.LOG_LEVEL_MAPS>`_
 
    :Parameters:
       **loglevel** : int, optional
@@ -153,7 +153,7 @@ Utility Functions: Logging
 
          loglevel to match against each item in
          `pytan.constants.LOG_LEVEL_MAPS
-         <pytan.constants#pytan.constants.LOG_LEVEL_MAPS>`_ - each
+         <pytan.constants.rst#pytan.constants.LOG_LEVEL_MAPS>`_ - each
          item that is greater than or equal to loglevel will have the
          according loggers set to their respective levels identified
          there-in.
@@ -395,9 +395,9 @@ Utility Functions: Misc
 
 **pytan.utils.version_check(reqver)**
 
-   Allows scripts using `pytan <pytan#module-pytan>`_ to validate the
-   version of the script aginst the version of `pytan
-   <pytan#module-pytan>`_
+   Allows scripts using `pytan <pytan.rst#module-pytan>`_ to validate
+   the version of the script aginst the version of `pytan
+   <pytan.rst#module-pytan>`_
 
    :Parameters:
       **reqver** : str
@@ -412,13 +412,13 @@ Utility Functions: Misc
 
       ..
 
-         if `pytan.__version__ <pytan#pytan.__version__>`_ is not
+         if `pytan.__version__ <pytan.rst#pytan.__version__>`_ is not
          greater or equal to *reqver*
 
 **pytan.utils.xml_pretty(x)**
 
-   Uses `xmltodict <xmltodict#module-xmltodict>`_ to pretty print an
-   XML str *x*
+   Uses `xmltodict <xmltodict.rst#module-xmltodict>`_ to pretty print
+   an XML str *x*
 
    :Parameters:
       **x** : str
@@ -436,8 +436,8 @@ Utility Functions: Misc
 
 **pytan.utils.xml_pretty_resultobj(x)**
 
-   Uses `xmltodict <xmltodict#module-xmltodict>`_ to pretty print an
-   the result-object element in XML str *x*
+   Uses `xmltodict <xmltodict.rst#module-xmltodict>`_ to pretty print
+   an the result-object element in XML str *x*
 
    :Parameters:
       **x** : str
@@ -455,8 +455,8 @@ Utility Functions: Misc
 
 **pytan.utils.xml_pretty_resultxml(x)**
 
-   Uses `xmltodict <xmltodict#module-xmltodict>`_ to pretty print an
-   the ResultXML element in XML str *x*
+   Uses `xmltodict <xmltodict.rst#module-xmltodict>`_ to pretty print
+   an the ResultXML element in XML str *x*
 
    :Parameters:
       **x** : str
@@ -479,8 +479,8 @@ Utility Functions: Argument Parsers for Command Line Scripts
 **pytan.utils.setup_parser(desc, help=False)**
 
    Method to setup the base ``pytan.utils.CustomArgParse`` class for
-   command line scripts that use `pytan <pytan#module-pytan>`_. This
-   establishes the basic arguments that are needed by all such
+   command line scripts that use `pytan <pytan.rst#module-pytan>`_.
+   This establishes the basic arguments that are needed by all such
    scripts, such as:
 
    * --help
@@ -502,56 +502,56 @@ Utility Functions: Argument Parsers for Command Line Scripts
    Method to setup the base ``pytan.utils.CustomArgParse`` class for
    command line scripts using ``pytan.utils.setup_parser()``, then add
    specific arguments for scripts that use `pytan
-   <pytan#module-pytan>`_ to get objects.
+   <pytan.rst#module-pytan>`_ to get objects.
 
 **pytan.utils.setup_create_json_object_argparser(obj, doc)**
 
    Method to setup the base ``pytan.utils.CustomArgParse`` class for
    command line scripts using ``pytan.utils.setup_parser()``, then add
    specific arguments for scripts that use `pytan
-   <pytan#module-pytan>`_ to create objects from json files.
+   <pytan.rst#module-pytan>`_ to create objects from json files.
 
 **pytan.utils.setup_delete_object_argparser(obj, doc)**
 
    Method to setup the base ``pytan.utils.CustomArgParse`` class for
    command line scripts using ``pytan.utils.setup_parser()``, then add
    specific arguments for scripts that use `pytan
-   <pytan#module-pytan>`_ to delete objects.
+   <pytan.rst#module-pytan>`_ to delete objects.
 
 **pytan.utils.setup_ask_saved_argparser(doc)**
 
    Method to setup the base ``pytan.utils.CustomArgParse`` class for
    command line scripts using ``pytan.utils.setup_parser()``, then add
    specific arguments for scripts that use `pytan
-   <pytan#module-pytan>`_ to ask saved questions.
+   <pytan.rst#module-pytan>`_ to ask saved questions.
 
 **pytan.utils.setup_stop_action_argparser(doc)**
 
    Method to setup the base ``pytan.utils.CustomArgParse`` class for
    command line scripts using ``pytan.utils.setup_parser()``, then add
    specific arguments for scripts that use `pytan
-   <pytan#module-pytan>`_ to stop actions.
+   <pytan.rst#module-pytan>`_ to stop actions.
 
 **pytan.utils.setup_deploy_action_argparser(doc)**
 
    Method to setup the base ``pytan.utils.CustomArgParse`` class for
    command line scripts using ``pytan.utils.setup_parser()``, then add
    specific arguments for scripts that use `pytan
-   <pytan#module-pytan>`_ to deploy actions.
+   <pytan.rst#module-pytan>`_ to deploy actions.
 
 **pytan.utils.setup_get_result_argparser(doc)**
 
    Method to setup the base ``pytan.utils.CustomArgParse`` class for
    command line scripts using ``pytan.utils.setup_parser()``, then add
    specific arguments for scripts that use `pytan
-   <pytan#module-pytan>`_ to get results for questions or actions.
+   <pytan.rst#module-pytan>`_ to get results for questions or actions.
 
 **pytan.utils.setup_ask_manual_argparser(doc)**
 
    Method to setup the base ``pytan.utils.CustomArgParse`` class for
    command line scripts using ``pytan.utils.setup_parser()``, then add
    specific arguments for scripts that use `pytan
-   <pytan#module-pytan>`_ to ask manual questions.
+   <pytan.rst#module-pytan>`_ to ask manual questions.
 
 **pytan.utils.add_ask_report_argparser(parser)**
 
@@ -610,7 +610,7 @@ all_args)**
          ArgParse object used to parse *all_args*
 
       **handler** : `pytan.handler.Handler
-      <pytan.handler#pytan.handler.Handler>`_
+      <pytan.handler.rst#pytan.handler.Handler>`_
 
       ..
 
@@ -630,12 +630,12 @@ all_args)**
 
    :Returns:
       **response** : `taniumpy.object_types.base.BaseType
-      <taniumpy.object_types#taniumpy.object_types.base.BaseType>`_
+      <taniumpy.object_types.rst#taniumpy.object_types.base.BaseType>`_
 
       ..
 
          response from `pytan.handler.Handler.create_from_json()
-         <pytan.handler#pytan.handler.Handler.create_from_json>`_
+         <pytan.handler.rst#pytan.handler.Handler.create_from_json>`_
 
 **pytan.utils.process_delete_object_args(parser, handler, obj,
 all_args)**
@@ -650,7 +650,7 @@ all_args)**
          ArgParse object used to parse *all_args*
 
       **handler** : `pytan.handler.Handler
-      <pytan.handler#pytan.handler.Handler>`_
+      <pytan.handler.rst#pytan.handler.Handler>`_
 
       ..
 
@@ -670,12 +670,12 @@ all_args)**
 
    :Returns:
       **response** : `taniumpy.object_types.base.BaseType
-      <taniumpy.object_types#taniumpy.object_types.base.BaseType>`_
+      <taniumpy.object_types.rst#taniumpy.object_types.base.BaseType>`_
 
       ..
 
          response from `pytan.handler.Handler.delete()
-         <pytan.handler#pytan.handler.Handler.delete>`_
+         <pytan.handler.rst#pytan.handler.Handler.delete>`_
 
 **pytan.utils.process_get_object_args(parser, handler, obj,
 all_args)**
@@ -690,7 +690,7 @@ all_args)**
          ArgParse object used to parse *all_args*
 
       **handler** : `pytan.handler.Handler
-      <pytan.handler#pytan.handler.Handler>`_
+      <pytan.handler.rst#pytan.handler.Handler>`_
 
       ..
 
@@ -710,12 +710,12 @@ all_args)**
 
    :Returns:
       **response** : `taniumpy.object_types.base.BaseType
-      <taniumpy.object_types#taniumpy.object_types.base.BaseType>`_
+      <taniumpy.object_types.rst#taniumpy.object_types.base.BaseType>`_
 
       ..
 
          response from `pytan.handler.Handler.get()
-         <pytan.handler#pytan.handler.Handler.get>`_
+         <pytan.handler.rst#pytan.handler.Handler.get>`_
 
 
 Utility Functions: Dehumanize human strings
@@ -1003,7 +1003,7 @@ Utility Functions: kwargs getters
 
          args from kwargs that are found in
          `pytan.constants.ASK_KWARGS
-         <pytan.constants#pytan.constants.ASK_KWARGS>`_
+         <pytan.constants.rst#pytan.constants.ASK_KWARGS>`_
 
 **pytan.utils.get_kwargs_int(key, default=None, **kwargs)**
 
@@ -1054,7 +1054,7 @@ Utility Functions: kwargs getters
 
          args from kwargs that are found in
          `pytan.constants.REQ_KWARGS
-         <pytan.constants#pytan.constants.REQ_KWARGS>`_
+         <pytan.constants.rst#pytan.constants.REQ_KWARGS>`_
 
 
 Utility Functions: Object mappers
@@ -1071,7 +1071,7 @@ Utility Functions: Object mappers
 
          object type to get object map from in
          `pytan.constants.GET_OBJ_MAP
-         <pytan.constants#pytan.constants.GET_OBJ_MAP>`_
+         <pytan.constants.rst#pytan.constants.GET_OBJ_MAP>`_
 
    :Returns:
       **obj_map** : dict
@@ -1080,7 +1080,7 @@ Utility Functions: Object mappers
 
          matching object map for *objtype* from
          `pytan.constants.GET_OBJ_MAP
-         <pytan.constants#pytan.constants.GET_OBJ_MAP>`_
+         <pytan.constants.rst#pytan.constants.GET_OBJ_MAP>`_
 
 **pytan.utils.get_q_obj_map(qtype)**
 
@@ -1093,7 +1093,7 @@ Utility Functions: Object mappers
 
          question type to get object map from in
          `pytan.constants.Q_OBJ_MAP
-         <pytan.constants#pytan.constants.Q_OBJ_MAP>`_
+         <pytan.constants.rst#pytan.constants.Q_OBJ_MAP>`_
 
    :Returns:
       **obj_map** : dict
@@ -1102,7 +1102,7 @@ Utility Functions: Object mappers
 
          matching object map for *qtype* from
          `pytan.constants.Q_OBJ_MAP
-         <pytan.constants#pytan.constants.Q_OBJ_MAP>`_
+         <pytan.constants.rst#pytan.constants.Q_OBJ_MAP>`_
 
 
 Utility Functions: TaniumPy objects
@@ -1120,7 +1120,7 @@ Utility Functions: TaniumPy objects
          dict containing options definition
 
       **obj** : `taniumpy.object_types.base.BaseType
-      <taniumpy.object_types#taniumpy.object_types.base.BaseType>`_
+      <taniumpy.object_types.rst#taniumpy.object_types.base.BaseType>`_
 
       ..
 
@@ -1134,7 +1134,7 @@ Utility Functions: TaniumPy objects
 
    :Returns:
       **obj** : `taniumpy.object_types.base.BaseType
-      <taniumpy.object_types#taniumpy.object_types.base.BaseType>`_
+      <taniumpy.object_types.rst#taniumpy.object_types.base.BaseType>`_
 
       ..
 
@@ -1159,13 +1159,13 @@ Utility Functions: TaniumPy objects
 
    :Returns:
       **group_obj** : `taniumpy.object_types.group.Group
-      <taniumpy.object_types#taniumpy.object_types.group.Group>`_
+      <taniumpy.object_types.rst#taniumpy.object_types.group.Group>`_
 
       ..
 
          Group object with list of
          `taniumpy.object_types.filter.Filter
-         <taniumpy.object_types#taniumpy.object_types.filter.Filter>`_
+         <taniumpy.object_types.rst#taniumpy.object_types.filter.Filter>`_
          built from *q_filter_defs* and *q_option_defs*
 
 **pytan.utils.build_manual_q(selectlist_obj, group_obj)**
@@ -1175,14 +1175,14 @@ Utility Functions: TaniumPy objects
    :Parameters:
       **selectlist_obj** :
       `taniumpy.object_types.select_list.SelectList
-      <taniumpy.object_types#taniumpy.object_types.select_list.SelectList>`_
+      <taniumpy.object_types.rst#taniumpy.object_types.select_list.SelectList>`_
 
       ..
 
          SelectList object to add to Question object
 
       **group_obj** : `taniumpy.object_types.group.Group
-      <taniumpy.object_types#taniumpy.object_types.group.Group>`_
+      <taniumpy.object_types.rst#taniumpy.object_types.group.Group>`_
 
       ..
 
@@ -1190,7 +1190,7 @@ Utility Functions: TaniumPy objects
 
    :Returns:
       **add_q_obj** : `taniumpy.object_types.question.Question
-      <taniumpy.object_types#taniumpy.object_types.question.Question>`_
+      <taniumpy.object_types.rst#taniumpy.object_types.question.Question>`_
 
       ..
 
@@ -1218,13 +1218,13 @@ Utility Functions: TaniumPy objects
    :Returns:
       **metadatalist_obj** :
       `taniumpy.object_types.metadata_list.MetadataList
-      <taniumpy.object_types#taniumpy.object_types.metadata_list.MetadataList>`_
+      <taniumpy.object_types.rst#taniumpy.object_types.metadata_list.MetadataList>`_
 
       ..
 
          MetadataList object with list of
          `taniumpy.object_types.metadata_item.MetadataItem
-         <taniumpy.object_types#taniumpy.object_types.metadata_item.MetadataItem>`_
+         <taniumpy.object_types.rst#taniumpy.object_types.metadata_item.MetadataItem>`_
          built from *properties*
 
 **pytan.utils.build_param_obj(key, val, delim='')**
@@ -1253,7 +1253,7 @@ Utility Functions: TaniumPy objects
 
    :Returns:
       **param_obj** : `taniumpy.object_types.parameter.Parameter
-      <taniumpy.object_types#taniumpy.object_types.parameter.Parameter>`_
+      <taniumpy.object_types.rst#taniumpy.object_types.parameter.Parameter>`_
 
       ..
 
@@ -1266,7 +1266,7 @@ derive_def=False, empty_ok=False)**
 
    :Parameters:
       **obj** : `taniumpy.object_types.base.BaseType
-      <taniumpy.object_types#taniumpy.object_types.base.BaseType>`_
+      <taniumpy.object_types.rst#taniumpy.object_types.base.BaseType>`_
 
       ..
 
@@ -1308,13 +1308,13 @@ derive_def=False, empty_ok=False)**
    :Returns:
       **param_objlist** :
       `taniumpy.object_types.parameter_list.ParameterList
-      <taniumpy.object_types#taniumpy.object_types.parameter_list.ParameterList>`_
+      <taniumpy.object_types.rst#taniumpy.object_types.parameter_list.ParameterList>`_
 
       ..
 
          ParameterList object with list of
          `taniumpy.object_types.parameter.Parameter
-         <taniumpy.object_types#taniumpy.object_types.parameter.Parameter>`_
+         <taniumpy.object_types.rst#taniumpy.object_types.parameter.Parameter>`_
          built from user_params
 
 **pytan.utils.build_selectlist_obj(sensor_defs)**
@@ -1331,13 +1331,13 @@ derive_def=False, empty_ok=False)**
    :Returns:
       **select_objlist** :
       `taniumpy.object_types.select_list.SelectList
-      <taniumpy.object_types#taniumpy.object_types.select_list.SelectList>`_
+      <taniumpy.object_types.rst#taniumpy.object_types.select_list.SelectList>`_
 
       ..
 
          SelectList object with list of
          `taniumpy.object_types.select.Select
-         <taniumpy.object_types#taniumpy.object_types.select.Select>`_
+         <taniumpy.object_types.rst#taniumpy.object_types.select.Select>`_
          built from *sensor_defs*
 
 **pytan.utils.derive_param_default(obj_param)**
@@ -1364,7 +1364,7 @@ derive_def=False, empty_ok=False)**
 
    :Parameters:
       **taniumpy_object** : `taniumpy.object_types.base.BaseType
-      <taniumpy.object_types#taniumpy.object_types.base.BaseType>`_
+      <taniumpy.object_types.rst#taniumpy.object_types.base.BaseType>`_
 
       ..
 
@@ -1391,7 +1391,7 @@ derive_def=False, empty_ok=False)**
 
    :Returns:
       **filter_obj** : `taniumpy.object_types.filter.Filter
-      <taniumpy.object_types#taniumpy.object_types.filter.Filter>`_
+      <taniumpy.object_types.rst#taniumpy.object_types.filter.Filter>`_
 
       ..
 
@@ -1402,7 +1402,7 @@ derive_def=False, empty_ok=False)**
    Get the parameters from a TaniumPy object and JSON load them
 
    obj : `taniumpy.object_types.base.BaseType
-   <taniumpy.object_types#taniumpy.object_types.base.BaseType>`_
+   <taniumpy.object_types.rst#taniumpy.object_types.base.BaseType>`_
       TaniumPy object to get parameters from
 
    :Returns:
@@ -1415,12 +1415,12 @@ derive_def=False, empty_ok=False)**
 **pytan.utils.question_progress(asker, pct)**
 
    Call back method for `taniumpy.question_asker.QuestionAsker.run()
-   <taniumpy.question_asker#taniumpy.question_asker.QuestionAsker.run>`_
+   <taniumpy.question_asker.rst#taniumpy.question_asker.QuestionAsker.run>`_
    to report progress while waiting for results from a question
 
    :Parameters:
       **asker** : `taniumpy.question_asker.QuestionAsker
-      <taniumpy.question_asker#taniumpy.question_asker.QuestionAsker>`_
+      <taniumpy.question_asker.rst#taniumpy.question_asker.QuestionAsker>`_
 
       ..
 
