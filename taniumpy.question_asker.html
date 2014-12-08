@@ -1,0 +1,254 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>2. taniumpy.question_asker module &mdash; PyTan 1.0.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="PyTan 1.0.0 documentation" href="index.html"/>
+        <link rel="up" title="7. taniumpy package" href="taniumpy.html"/>
+        <link rel="next" title="3. taniumpy.object_types package" href="taniumpy.object_types.html"/>
+        <link rel="prev" title="1. taniumpy.session module" href="taniumpy.session.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="index.html" class="fa fa-home"> PyTan</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="description.html">1. Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="description.html#why-it-was-created">2. Why it was created</a></li>
+<li class="toctree-l1"><a class="reference internal" href="description.html#requirements">3. Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="description.html#installation">4. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="description.html#usage">5. Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pytan.html">6. pytan package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/pytan_examples.html">6.1. pytan API examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.handler.html">6.2. pytan.handler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.constants.html">6.3. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html">6.4. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.unittest.html">6.5. pytan Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.functest.html">6.6. pytan Functional Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="taniumpy.html">7. taniumpy package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.session.html">1. taniumpy.session module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">2. taniumpy.question_asker module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html">3. taniumpy.object_types package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="xmltodict.html">7. xmltodict module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ddt.html">8. ddt module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="threaded_http.html">9. threaded_http module</a><ul class="simple">
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">PyTan</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="taniumpy.html">7. taniumpy package</a> &raquo;</li>
+      
+    <li>2. taniumpy.question_asker module</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/taniumpy.question_asker.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="module-taniumpy.question_asker">
+<span id="taniumpy-question-asker-module"></span><h1>2. taniumpy.question_asker module<a class="headerlink" href="#module-taniumpy.question_asker" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="taniumpy.question_asker.QuestionAsker">
+<em class="property">class </em><code class="descclassname">taniumpy.question_asker.</code><code class="descname">QuestionAsker</code><span class="sig-paren">(</span><em>session</em>, <em>question</em>, <em>polling_interval=None</em>, <em>pct_complete_threshold=99</em>, <em>timeout=300</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/taniumpy/question_asker.html#QuestionAsker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#taniumpy.question_asker.QuestionAsker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/2.7/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>A class to aid in asking a Question.</p>
+<p>The primary function of this class is to poll for
+result info for question, and fire off events:</p>
+<p>ProgressChanged
+AnswersChanged
+AnswersComplete</p>
+<dl class="attribute">
+<dt id="taniumpy.question_asker.QuestionAsker.POLLING_INTERVAL">
+<code class="descname">POLLING_INTERVAL</code><em class="property"> = 5</em><a class="headerlink" href="#taniumpy.question_asker.QuestionAsker.POLLING_INTERVAL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="taniumpy.question_asker.QuestionAsker.run">
+<code class="descname">run</code><span class="sig-paren">(</span><em>callbacks={}</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/taniumpy/question_asker.html#QuestionAsker.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#taniumpy.question_asker.QuestionAsker.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Poll for question data and issue callbacks.</p>
+<p>Callbacks should be a dict with members:
+&#8216;ProgressChanged&#8217;
+&#8216;AnswersChanged&#8217;
+&#8216;AnswersComplete&#8217;</p>
+<p>Each should be a function that accepts a QuestionAsker
+and a percent complete.</p>
+<p>Any callback can choose to get data from the session
+by calling asker.session.getResultData(asker.question)</p>
+<p>Polling will be stopped only when one of the callbacks
+calls the stop() method or the answers are complete. Note
+that callbacks can call setPercentCompleteThreshold to
+change what done means on the fly</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="taniumpy.question_asker.QuestionAsker.setPctCompleteThreshold">
+<code class="descname">setPctCompleteThreshold</code><span class="sig-paren">(</span><em>val</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/taniumpy/question_asker.html#QuestionAsker.setPctCompleteThreshold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#taniumpy.question_asker.QuestionAsker.setPctCompleteThreshold" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="taniumpy.question_asker.QuestionAsker.stop">
+<code class="descname">stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/taniumpy/question_asker.html#QuestionAsker.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#taniumpy.question_asker.QuestionAsker.stop" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="taniumpy.question_asker.QuestionTimeoutException">
+<em class="property">exception </em><code class="descclassname">taniumpy.question_asker.</code><code class="descname">QuestionTimeoutException</code><a class="reference internal" href="_modules/taniumpy/question_asker.html#QuestionTimeoutException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#taniumpy.question_asker.QuestionTimeoutException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/2.7/library/exceptions.html#exceptions.Exception" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></a></p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="taniumpy.object_types.html" class="btn btn-neutral float-right" title="3. taniumpy.object_types package">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="taniumpy.session.html" class="btn btn-neutral" title="1. taniumpy.session module"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Tanium.
+      Last updated on Dec 08, 2014.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

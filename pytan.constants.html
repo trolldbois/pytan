@@ -1,0 +1,368 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>6.3. pytan.constants module &mdash; PyTan 1.0.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="PyTan 1.0.0 documentation" href="index.html"/>
+        <link rel="up" title="6. pytan package" href="pytan.html"/>
+        <link rel="next" title="6.4. pytan.utils module" href="pytan.utils.html"/>
+        <link rel="prev" title="6.2. pytan.handler module" href="pytan.handler.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="index.html" class="fa fa-home"> PyTan</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="description.html">1. Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="description.html#why-it-was-created">2. Why it was created</a></li>
+<li class="toctree-l1"><a class="reference internal" href="description.html#requirements">3. Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="description.html#installation">4. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="description.html#usage">5. Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="pytan.html">6. pytan package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="examples/pytan_examples.html">6.1. pytan API examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.handler.html">6.2. pytan.handler module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">6.3. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html">6.4. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.unittest.html">6.5. pytan Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.functest.html">6.6. pytan Functional Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="taniumpy.html">7. taniumpy package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.session.html">1. taniumpy.session module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.question_asker.html">2. taniumpy.question_asker module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html">3. taniumpy.object_types package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="xmltodict.html">7. xmltodict module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ddt.html">8. ddt module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="threaded_http.html">9. threaded_http module</a><ul class="simple">
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">PyTan</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="pytan.html">6. pytan package</a> &raquo;</li>
+      
+    <li>6.3. pytan.constants module</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/pytan.constants.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="module-pytan.constants">
+<span id="pytan-constants-module"></span><h1>6.3. pytan.constants module<a class="headerlink" href="#module-pytan.constants" title="Permalink to this headline">¶</a></h1>
+<p>PyTan Constants</p>
+<p>This contains a number of constants that drive PyTan.</p>
+<dl class="data">
+<dt id="pytan.constants.ACTION_RESULT_STATUS">
+<code class="descclassname">pytan.constants.</code><code class="descname">ACTION_RESULT_STATUS</code><em class="property"> = {'Verified.': ['no_verify_done', 'verify_done', 'verify_success'], 'Succeeded.': ['done'], 'Completed.': ['verify_running', 'no_verify_done', 'no_verify_success'], 'PendingVerification.': ['running'], 'Copying.': ['running'], 'Expired.': ['failed', 'done'], 'Waiting.': ['running'], 'Downloading.': ['running'], 'Stopped.': ['failed', 'done'], 'NotSucceeded.': ['failed', 'done'], 'Failed.': ['failed', 'done'], 'Running.': ['running']}</em><a class="headerlink" href="#pytan.constants.ACTION_RESULT_STATUS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maps a deploy action result status to it&#8217;s respective end states.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="pytan.constants.ASK_KWARGS">
+<code class="descclassname">pytan.constants.</code><code class="descname">ASK_KWARGS</code><em class="property"> = ['timeout', 'polling_interval', 'pct_complete_threshold']</em><a class="headerlink" href="#pytan.constants.ASK_KWARGS" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of arguments that will be passed on to the question asker/poller <a class="reference internal" href="taniumpy.question_asker.html#taniumpy.question_asker.QuestionAsker" title="taniumpy.question_asker.QuestionAsker"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.question_asker.QuestionAsker</span></code></a></p>
+</dd></dl>
+
+<dl class="data">
+<dt id="pytan.constants.DEBUG_FORMAT">
+<code class="descclassname">pytan.constants.</code><code class="descname">DEBUG_FORMAT</code><em class="property"> = '[%(lineno)-5d - %(filename)20s:%(funcName)s()] %(asctime)s\n%(levelname)-8s %(name)s %(message)s'</em><a class="headerlink" href="#pytan.constants.DEBUG_FORMAT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logging format for debugformat=True</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="pytan.constants.EXPORT_MAPS">
+<code class="descclassname">pytan.constants.</code><code class="descname">EXPORT_MAPS</code><em class="property"> = {'ResultSet': {'json': [], 'csv': [{'valid_list_types': ['str', 'unicode'], 'key': 'header_sort', 'valid_types': [&lt;type 'bool'&gt;, &lt;type 'list'&gt;, &lt;type 'tuple'&gt;]}, {'valid_list_types': ['taniumpy.Sensor'], 'key': 'sensors', 'valid_types': [&lt;type 'list'&gt;, &lt;type 'tuple'&gt;]}, {'valid_list_types': [], 'key': 'header_add_sensor', 'valid_types': [&lt;type 'bool'&gt;]}, {'valid_list_types': [], 'key': 'header_add_type', 'valid_types': [&lt;type 'bool'&gt;]}, {'valid_list_types': [], 'key': 'expand_grouped_columns', 'valid_types': [&lt;type 'bool'&gt;]}]}, 'BaseType': {'xml': [{'valid_list_types': [], 'key': 'minimal', 'valid_types': [&lt;type 'bool'&gt;]}], 'json': [{'valid_list_types': [], 'key': 'include_type', 'valid_types': [&lt;type 'bool'&gt;]}, {'valid_list_types': [], 'key': 'explode_json_string_values', 'valid_types': [&lt;type 'bool'&gt;]}], 'csv': [{'valid_list_types': ['str', 'unicode'], 'key': 'header_sort', 'valid_types': [&lt;type 'bool'&gt;, &lt;type 'list'&gt;, &lt;type 'tuple'&gt;]}, {'valid_list_types': [], 'key': 'explode_json_string_values', 'valid_types': [&lt;type 'bool'&gt;]}]}}</em><a class="headerlink" href="#pytan.constants.EXPORT_MAPS" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Maps a given TaniumPy object to the list of supported export formats for each object type, and the valid optional arguments for each export format. Optional arguments construct:</dt>
+<dd><ul class="first last simple">
+<li>key: the optional argument name itself</li>
+<li>valid_types: the valid python types that are allowed to be passed as a value to <cite>key</cite></li>
+<li>valid_list_types: the valid python types in str format that are allowed to be passed in a list, if list is one of the <cite>valid_types</cite></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="data">
+<dt id="pytan.constants.FILTER_MAPS">
+<code class="descclassname">pytan.constants.</code><code class="descname">FILTER_MAPS</code><em class="property"> = [{'operator': 'Less', 'not_flag': 0, 'help': 'Filter for less than VALUE', 'human': ['&lt;', 'less', 'lt', 'less than']}, {'operator': 'Less', 'not_flag': 1, 'help': 'Filter for not less than VALUE', 'human': ['!&lt;', 'notless', 'not less', 'not less than']}, {'operator': 'LessEqual', 'not_flag': 0, 'help': 'Filter for less than or equal to VALUE', 'human': ['&lt;=', 'less equal', 'lessequal', 'le']}, {'operator': 'LessEqual', 'not_flag': 1, 'help': 'Filter for not less than or equal to VALUE', 'human': ['!&lt;=', 'not less equal', 'not lessequal']}, {'operator': 'Greater', 'not_flag': 0, 'help': 'Filter for greater than VALUE', 'human': ['&gt;', 'greater', 'gt', 'greater than']}, {'operator': 'Greater', 'not_flag': 1, 'help': 'Filter for not greater than VALUE', 'human': ['!&gt;', 'not greater', 'notgreater', 'not greater than']}, {'operator': 'GreaterEqual', 'not_flag': 0, 'help': 'Filter for greater than or equal to VALUE', 'human': ['=&gt;', 'greater equal', 'greaterequal', 'ge']}, {'operator': 'GreaterEqual', 'not_flag': 1, 'help': 'Filter for not greater than VALUE', 'human': ['!=&gt;', 'not greater equal', 'notgreaterequal']}, {'operator': 'Equal', 'not_flag': 0, 'help': 'Filter for equals to VALUE', 'human': ['=', 'equal', 'equals', 'eq']}, {'operator': 'Equal', 'not_flag': 0, 'help': 'Filter for not equals to VALUE', 'human': ['!=', 'not equal', 'notequal', 'not equals', 'notequals', 'ne']}, {'pre_value': '.*', 'not_flag': 0, 'help': 'Filter for contains VALUE (adds .* before and after VALUE)', 'post_value': '.*', 'human': ['contains'], 'operator': 'RegexMatch'}, {'pre_value': '.*', 'not_flag': 1, 'help': 'Filter for does not contain VALUE (adds .* before and after VALUE)', 'post_value': '.*', 'human': ['does not contain', 'doesnotcontain', 'not contains', 'notcontains'], 'operator': 'RegexMatch'}, {'operator': 'RegexMatch', 'not_flag': 0, 'post_value': '.*', 'human': ['starts with', 'startswith'], 'help': 'Filter for starts with VALUE (adds .* after VALUE)'}, {'operator': 'RegexMatch', 'not_flag': 1, 'post_value': '.*', 'human': ['does not start with', 'doesnotstartwith', 'not starts with', 'notstartswith'], 'help': 'Filter for does not start with VALUE (adds .* after VALUE)'}, {'operator': 'RegexMatch', 'pre_value': '.*', 'not_flag': 0, 'help': 'Filter for ends with VALUE (adds .* before VALUE)', 'human': ['ends with', 'endswith']}, {'operator': 'RegexMatch', 'pre_value': '.*', 'not_flag': 1, 'help': 'Filter for does bit end with VALUE (adds .* before VALUE)', 'human': ['does not end with', 'doesnotendwith', 'not ends with', 'notstartswith']}, {'operator': 'RegexMatch', 'not_flag': 1, 'help': 'Filter for non regular expression match for VALUE', 'human': ['is not', 'not regex', 'notregex', 'not regex match', 'notregexmatch', 'nre']}, {'operator': 'RegexMatch', 'not_flag': 0, 'help': 'Filter for regular expression match for VALUE', 'human': ['is', 'regex', 'regex match', 'regexmatch', 're']}]</em><a class="headerlink" href="#pytan.constants.FILTER_MAPS" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Maps a given set of human strings into the various filter attributes used by the SOAP API. Also used to verify that a manually supplied filter via a definition is valid. Construct:</dt>
+<dd><ul class="first last simple">
+<li>human: a list of human strings that can be used after &#8216;<cite>, that</cite>&#8216;. Ex: &#8216;<cite>, that</cite> <code class="docutils literal"><span class="pre">contains</span></code> <code class="docutils literal"><span class="pre">value</span></code>&#8216;</li>
+<li>operator: the filter operator used by the SOAP API when building a filter that matches <cite>human</cite></li>
+<li>not_flag: the value to set on <cite>not_flag</cite> when building a filter that matches <cite>human</cite></li>
+<li>pre_value: the prefix to add to the <code class="docutils literal"><span class="pre">value</span></code> when building a filter</li>
+<li>post_value: the postfix to add to the <code class="docutils literal"><span class="pre">value</span></code> when building a filter</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="data">
+<dt id="pytan.constants.FILTER_RE">
+<code class="descclassname">pytan.constants.</code><code class="descname">FILTER_RE</code><em class="property"> = ',\\s*that'</em><a class="headerlink" href="#pytan.constants.FILTER_RE" title="Permalink to this definition">¶</a></dt>
+<dd><p>The regex that is used to find filters in a string. Ex: <cite>Sensor1</cite><code class="docutils literal"><span class="pre">,</span> <span class="pre">that</span></code> <cite>contains blah</cite></p>
+</dd></dl>
+
+<dl class="data">
+<dt id="pytan.constants.GET_OBJ_MAP">
+<code class="descclassname">pytan.constants.</code><code class="descname">GET_OBJ_MAP</code><em class="property"> = {'user': {'search': ['id'], 'all': 'UserList', 'manual': True, 'multi': None, 'single': 'User', 'create_json': True, 'delete': True}, 'whitelisted_url': {'search': [], 'all': 'WhiteListedUrlList', 'manual': True, 'multi': None, 'single': 'WhiteListedUrlList', 'create_json': True, 'delete': True}, 'saved_question': {'search': ['id', 'name'], 'all': 'SavedQuestionList', 'manual': True, 'multi': None, 'single': 'SavedQuestion', 'create_json': True, 'delete': True}, 'group': {'search': ['id', 'name'], 'all': 'GroupList', 'manual': True, 'multi': 'GroupList', 'single': 'Group', 'create_json': True, 'delete': True}, 'package': {'manual': True, 'single': 'PackageSpec', 'all': 'PackageSpec', 'search': ['id', 'name'], 'allfix': 'PackageSpecList', 'multi': None, 'create_json': True, 'delete': True}, 'question': {'search': ['id'], 'all': 'QuestionList', 'manual': False, 'multi': None, 'single': 'Question', 'create_json': True, 'delete': False}, 'client': {'search': [], 'all': 'ClientStatus', 'manual': True, 'multi': None, 'single': None, 'create_json': False, 'delete': False}, 'saved_action': {'search': ['id', 'name'], 'all': 'SavedActionList', 'manual': True, 'multi': 'SavedActionList', 'single': 'SavedAction', 'create_json': False, 'delete': False}, 'action': {'search': ['id'], 'all': 'ActionList', 'manual': False, 'multi': None, 'single': 'Action', 'create_json': True, 'delete': False}, 'sensor': {'search': ['id', 'name', 'hash'], 'all': 'SensorList', 'manual': False, 'multi': 'SensorList', 'single': 'Sensor', 'create_json': True, 'delete': True}, 'setting': {'search': ['id', 'name'], 'all': 'SystemSettingsList', 'manual': True, 'multi': 'SystemSettingsList', 'single': 'SystemSetting', 'create_json': False, 'delete': False}, 'userrole': {'search': [], 'all': 'UserRoleList', 'manual': True, 'multi': None, 'single': None, 'create_json': False, 'delete': False}}</em><a class="headerlink" href="#pytan.constants.GET_OBJ_MAP" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Maps an object type from a human friendly string into various aspects:</dt>
+<dd><ul class="first last simple">
+<li>single: The <code class="xref py py-mod docutils literal"><span class="pre">TaniumPy</span></code> object used to find singular instances of this object type</li>
+<li>multi: The <code class="xref py py-mod docutils literal"><span class="pre">TaniumPy</span></code> object used to find multiple instances of this object type</li>
+<li>all: The <code class="xref py py-mod docutils literal"><span class="pre">TaniumPy</span></code> object used to find all instances of this object type</li>
+<li>search: The list of attributes that can be used with the Tanium SOAP API for searches</li>
+<li>manual: Whether or not this object type is allowed to do a manual search, that is &#8211; allow the user to specify an attribute that is not in search, which will get ALL objects of that type then search for a match based on attribute values for EVERY key/value pair supplied</li>
+<li>delete: Whether or not this object type can be deleted</li>
+<li>create_json: Whether or not this object type can be created by importing from JSON</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="data">
+<dt id="pytan.constants.INFO_FORMAT">
+<code class="descclassname">pytan.constants.</code><code class="descname">INFO_FORMAT</code><em class="property"> = '%(asctime)s %(levelname)-8s %(name)s: %(message)s'</em><a class="headerlink" href="#pytan.constants.INFO_FORMAT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logging format for debugformat=False</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="pytan.constants.LOG_LEVEL_MAPS">
+<code class="descclassname">pytan.constants.</code><code class="descname">LOG_LEVEL_MAPS</code><em class="property"> = [(0, {'api.session.http': 'WARN', 'api.session': 'WARN', 'handler': 'WARN', 'question_progress': 'WARN', 'ask_manual_human': 'WARN', 'api.session.http.body': 'WARN', 'api.session.auth': 'WARN', 'ask_manual': 'WARN', 'action_progress': 'WARN'}), (1, {'action_progress': 'INFO', 'question_progress': 'INFO'}), (2, {'handler': 'INFO'}), (3, {'handler': 'DEBUG'}), (4, {'ask_manual': 'DEBUG'}), (5, {'ask_manual_human': 'DEBUG'}), (7, {'api.session': 'DEBUG'}), (8, {'api.session.auth': 'DEBUG'}), (9, {'api.session.http': 'DEBUG'}), (10, {'api.session.http.body': 'DEBUG'})]</em><a class="headerlink" href="#pytan.constants.LOG_LEVEL_MAPS" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Map for loglevel(int) -&gt; logger -&gt; logger level(logging.INFO|WARN|DEBUG|...). Higher loglevels will include all levels up to and including that level. Contains a list of tuples, each tuple consisting of:</dt>
+<dd><ul class="first last simple">
+<li>int, loglevel</li>
+<li>dict, <cite>{{logger_name: logger_level}}</cite> for this loglevel</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="data">
+<dt id="pytan.constants.OPTION_MAPS">
+<code class="descclassname">pytan.constants.</code><code class="descname">OPTION_MAPS</code><em class="property"> = [{'destination': 'filter', 'help': 'Make the filter do a case insensitive match', 'attrs': {'ignore_case_flag': 1}, 'human': 'ignore_case', 'valid_type': &lt;type 'int'&gt;}, {'destination': 'filter', 'help': 'Make the filter do a case sensitive match', 'attrs': {'ignore_case_flag': 0}, 'human': 'match_case', 'valid_type': &lt;type 'int'&gt;}, {'destination': 'filter', 'help': 'Make the filter match any value', 'attrs': {'all_values_flag': 0, 'all_times_flag': 0}, 'human': 'match_any_value', 'valid_type': &lt;type 'int'&gt;}, {'destination': 'filter', 'help': 'Make the filter match all values', 'attrs': {'all_values_flag': 1, 'all_times_flag': 1}, 'human': 'match_all_values', 'valid_type': &lt;type 'int'&gt;}, {'help': 'Re-fetch cached values older than N seconds', 'destination': 'filter', 'valid_type': &lt;type 'int'&gt;, 'human': 'max_data_age', 'human_type': 'seconds', 'attr': 'max_age_seconds'}, {'attr': 'value_type', 'destination': 'filter', 'valid_type': &lt;type 'str'&gt;, 'valid_values': 'constants.SENSOR_TYPE_MAP.values()', 'human': 'value_type', 'human_type': 'value_type', 'help': 'Make the filter consider the value type as VALUE_TYPE'}, {'destination': 'group', 'help': &quot;Use 'and' for all of the filters supplied&quot;, 'attrs': {'and_flag': 1}, 'human': 'and', 'valid_type': &lt;type 'int'&gt;}, {'destination': 'group', 'help': &quot;Use 'or' for all of the filters supplied&quot;, 'attrs': {'and_flag': 0}, 'human': 'or', 'valid_type': &lt;type 'int'&gt;}]</em><a class="headerlink" href="#pytan.constants.OPTION_MAPS" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Maps a given human string into the various options for filters used by the SOAP API. Also used to verify that a manually supplied option via a definition is valid. Construct:</dt>
+<dd><ul class="first last simple">
+<li>human: the human string that can be used after &#8216;<cite>opt:</cite>&#8216;. Ex: &#8216;<cite>opt</cite>:<code class="docutils literal"><span class="pre">value_type</span></code>:<code class="docutils literal"><span class="pre">value</span></code>&#8216;</li>
+<li>destination: the type of object this option can be applied to (filter or group)</li>
+<li>attrs: the attributes and their values used by the SOAP API when building a filter with an option that matches <cite>human</cite></li>
+<li>attr: the attribute used by the SOAP API when building a filter with an option that matches <cite>human</cite>. <code class="docutils literal"><span class="pre">value</span></code> is pulled from after a <cite>:</cite> when only attr exists for an option map, and not attrs.</li>
+<li>valid_values: if supplied, the list of valid values for this option</li>
+<li>valid_type: performs type checking on the value supplied to verify it is correct</li>
+<li>human_type: the human string for the value type if the option requires a value</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="data">
+<dt id="pytan.constants.OPTION_RE">
+<code class="descclassname">pytan.constants.</code><code class="descname">OPTION_RE</code><em class="property"> = ',\\s*opt:'</em><a class="headerlink" href="#pytan.constants.OPTION_RE" title="Permalink to this definition">¶</a></dt>
+<dd><p>The regex that is used to find options in a string. Ex: <cite>Sensor1, that contains blah</cite><code class="docutils literal"><span class="pre">,</span> <span class="pre">opt:</span></code><cite>ignore_case</cite><code class="docutils literal"><span class="pre">,</span> <span class="pre">opt:</span></code><cite>max_data_age:3600</cite></p>
+</dd></dl>
+
+<dl class="data">
+<dt id="pytan.constants.PARAM_DELIM">
+<code class="descclassname">pytan.constants.</code><code class="descname">PARAM_DELIM</code><em class="property"> = '||'</em><a class="headerlink" href="#pytan.constants.PARAM_DELIM" title="Permalink to this definition">¶</a></dt>
+<dd><p>The string to surround a parameter with when passing parameters to the SOAP API for a sensor in a question. Ex: <code class="docutils literal"><span class="pre">||</span></code><cite>parameter_key</cite><code class="docutils literal"><span class="pre">||</span></code></p>
+</dd></dl>
+
+<dl class="data">
+<dt id="pytan.constants.PARAM_KEY_SPLIT">
+<code class="descclassname">pytan.constants.</code><code class="descname">PARAM_KEY_SPLIT</code><em class="property"> = '='</em><a class="headerlink" href="#pytan.constants.PARAM_KEY_SPLIT" title="Permalink to this definition">¶</a></dt>
+<dd><p>The string that is used to split parameter key from parameter value. Ex: <cite>key1</cite><code class="docutils literal"><span class="pre">=</span></code><cite>value1</cite></p>
+</dd></dl>
+
+<dl class="data">
+<dt id="pytan.constants.PARAM_RE">
+<code class="descclassname">pytan.constants.</code><code class="descname">PARAM_RE</code><em class="property"> = '\\{(.*?)\\}'</em><a class="headerlink" href="#pytan.constants.PARAM_RE" title="Permalink to this definition">¶</a></dt>
+<dd><p>The regex that is used to parse parameters from a human string. Ex: ala {key1=value1}</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="pytan.constants.PARAM_SPLIT_RE">
+<code class="descclassname">pytan.constants.</code><code class="descname">PARAM_SPLIT_RE</code><em class="property"> = '(?&lt;!\\\\),'</em><a class="headerlink" href="#pytan.constants.PARAM_SPLIT_RE" title="Permalink to this definition">¶</a></dt>
+<dd><p>The regex that is used to split multiple parameters. Ex: key1=value1, key2=value2</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="pytan.constants.Q_OBJ_MAP">
+<code class="descclassname">pytan.constants.</code><code class="descname">Q_OBJ_MAP</code><em class="property"> = {'manual': {'handler': 'ask_manual'}, 'saved': {'handler': 'ask_saved'}, 'manual_human': {'handler': 'ask_manual_human'}}</em><a class="headerlink" href="#pytan.constants.Q_OBJ_MAP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maps a question type from a human friendly string into the handler method that supports each type</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="pytan.constants.REQ_KWARGS">
+<code class="descclassname">pytan.constants.</code><code class="descname">REQ_KWARGS</code><em class="property"> = ['hide_errors_flag', 'include_answer_times_flag', 'row_counts_only_flag', 'aggregate_over_time_flag', 'most_recent_flag', 'include_hashes_flag', 'hide_no_results_flag', 'use_user_context_flag', 'script_data', 'return_lists_flag', 'return_cdata_flag', 'pct_done_limit', 'context_id', 'sample_frequency', 'sample_start', 'sample_count', 'suppress_scripts', 'suppress_object_list', 'row_start', 'row_count', 'sort_order', 'filter_string', 'filter_not_flag', 'recent_result_buckets', 'cache_id', 'cache_expiration', 'cache_sort_fields', 'include_user_details', 'include_hidden_flag', 'use_error_objects', 'use_json', 'json_pretty_print']</em><a class="headerlink" href="#pytan.constants.REQ_KWARGS" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of arguments that will be pulled from any respective kwargs for most calls to <a class="reference internal" href="taniumpy.session.html#taniumpy.session.Session" title="taniumpy.session.Session"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.session.Session</span></code></a></p>
+</dd></dl>
+
+<dl class="data">
+<dt id="pytan.constants.SELECTORS">
+<code class="descclassname">pytan.constants.</code><code class="descname">SELECTORS</code><em class="property"> = ['id', 'name', 'hash']</em><a class="headerlink" href="#pytan.constants.SELECTORS" title="Permalink to this definition">¶</a></dt>
+<dd><p>The search selectors that can be extracted from a string. Ex: <code class="docutils literal"><span class="pre">name</span></code>:<cite>Sensor1,</cite> or <code class="docutils literal"><span class="pre">id</span></code>:<cite>1</cite>, or <code class="docutils literal"><span class="pre">hash</span></code>:<cite>1111111</cite></p>
+</dd></dl>
+
+<dl class="data">
+<dt id="pytan.constants.SENSOR_TYPE_MAP">
+<code class="descclassname">pytan.constants.</code><code class="descname">SENSOR_TYPE_MAP</code><em class="property"> = {0: 'Hash', 1: 'String', 2: 'Version', 3: 'NumericDecimal', 4: 'BESDate', 5: 'IPAddress', 6: 'WMIDate', 7: 'TimeDiff', 8: 'DataSize', 9: 'NumericInteger', 10: 'VariousDate', 11: 'RegexMatch', 12: 'LastOperatorType'}</em><a class="headerlink" href="#pytan.constants.SENSOR_TYPE_MAP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maps a Result type from the Tanium SOAP API from an int to a string</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pytan.utils.html" class="btn btn-neutral float-right" title="6.4. pytan.utils module">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pytan.handler.html" class="btn btn-neutral" title="6.2. pytan.handler module"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Tanium.
+      Last updated on Dec 08, 2014.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

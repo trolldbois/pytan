@@ -1,0 +1,808 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>13. Get package by name &mdash; PyTan 1.0.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="PyTan 1.0.0 documentation" href="../index.html"/>
+        <link rel="up" title="pytan API Valid Get Object Examples" href="valid_get_objects.html"/>
+        <link rel="next" title="14. Get sensor by names" href="get_sensor_by_names.html"/>
+        <link rel="prev" title="12. Get sensor by hash" href="get_sensor_by_hash.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../index.html" class="fa fa-home"> PyTan</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../description.html">1. Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../description.html#why-it-was-created">2. Why it was created</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../description.html#requirements">3. Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../description.html#installation">4. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../description.html#usage">5. Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../pytan.html">6. pytan package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pytan_examples.html">6.1. pytan API examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.handler.html">6.2. pytan.handler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.constants.html">6.3. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.utils.html">6.4. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.unittest.html">6.5. pytan Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.functest.html">6.6. pytan Functional Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../taniumpy.html">taniumpy package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../taniumpy.session.html">1. taniumpy.session module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taniumpy.question_asker.html">2. taniumpy.question_asker module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taniumpy.object_types.html">3. taniumpy.object_types package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../xmltodict.html">7. xmltodict module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ddt.html">8. ddt module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../threaded_http.html">9. threaded_http module</a><ul class="simple">
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">PyTan</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../pytan.html">6. pytan package</a> &raquo;</li>
+      
+          <li><a href="pytan_examples.html">6.1. pytan API examples</a> &raquo;</li>
+      
+          <li><a href="valid_get_objects.html">pytan API Valid Get Object Examples</a> &raquo;</li>
+      
+    <li>13. Get package by name</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="../_sources/examples/get_package_by_name.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="get-package-by-name">
+<h1>13. Get package by name<a class="headerlink" href="#get-package-by-name" title="Permalink to this headline">¶</a></h1>
+<p>Get a package by name</p>
+<div class="section" id="example-python-code">
+<h2>13.1. Example Python Code<a class="headerlink" href="#example-python-code" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50</pre></div></td><td class="code"><div class="highlight"><pre><span class="c"># Path to lib directory which contains pytan package</span>
+<span class="n">PYTAN_LIB_PATH</span> <span class="o">=</span> <span class="s">&#39;../lib&#39;</span>
+
+<span class="c"># connection info for Tanium Server</span>
+<span class="n">USERNAME</span> <span class="o">=</span> <span class="s">&quot;Tanium User&quot;</span>
+<span class="n">PASSWORD</span> <span class="o">=</span> <span class="s">&quot;T@n!um&quot;</span>
+<span class="n">HOST</span> <span class="o">=</span> <span class="s">&quot;172.16.31.128&quot;</span>
+<span class="n">PORT</span> <span class="o">=</span> <span class="s">&quot;444&quot;</span>
+
+<span class="c"># Logging conrols</span>
+<span class="n">LOGLEVEL</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">DEBUGFORMAT</span> <span class="o">=</span> <span class="bp">False</span>
+
+<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">tempfile</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">PYTAN_LIB_PATH</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">pytan</span>
+<span class="n">handler</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">Handler</span><span class="p">(</span>
+    <span class="n">username</span><span class="o">=</span><span class="n">USERNAME</span><span class="p">,</span>
+    <span class="n">password</span><span class="o">=</span><span class="n">PASSWORD</span><span class="p">,</span>
+    <span class="n">host</span><span class="o">=</span><span class="n">HOST</span><span class="p">,</span>
+    <span class="n">port</span><span class="o">=</span><span class="n">PORT</span><span class="p">,</span>
+    <span class="n">loglevel</span><span class="o">=</span><span class="n">LOGLEVEL</span><span class="p">,</span>
+    <span class="n">debugformat</span><span class="o">=</span><span class="n">DEBUGFORMAT</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="k">print</span> <span class="n">handler</span>
+
+<span class="c"># setup the arguments for the handler method</span>
+<span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">kwargs</span><span class="p">[</span><span class="s">&quot;objtype&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;package&#39;</span>
+<span class="n">kwargs</span><span class="p">[</span><span class="s">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;Distribute Patch Tools&#39;</span>
+
+<span class="c"># call the handler with the get method, passing in kwargs for arguments</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="s">&quot;&quot;</span>
+<span class="k">print</span> <span class="s">&quot;Type of response: &quot;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="s">&quot;&quot;</span>
+<span class="k">print</span> <span class="s">&quot;print of response:&quot;</span>
+<span class="k">print</span> <span class="n">response</span>
+
+<span class="k">print</span> <span class="s">&quot;&quot;</span>
+<span class="k">print</span> <span class="s">&quot;length of response (number of objects returned): &quot;</span>
+<span class="k">print</span> <span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="s">&quot;&quot;</span>
+<span class="k">print</span> <span class="s">&quot;print the first object returned in JSON format:&quot;</span>
+<span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="output-from-python-code">
+<h2>13.2. Output from Python Code<a class="headerlink" href="#output-from-python-code" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-none"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246</pre></div></td><td class="code"><div class="highlight"><pre>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+
+Type of response:  &lt;class &#39;taniumpy.object_types.package_spec_list.PackageSpecList&#39;&gt;
+
+print of response:
+PackageSpecList, len: 1
+
+length of response (number of objects returned):
+1
+
+print the first object returned in JSON format:
+{
+  &quot;_type&quot;: &quot;package_spec&quot;,
+  &quot;available_time&quot;: &quot;2014-12-06T18:04:38&quot;,
+  &quot;command&quot;: &quot;cmd /c cscript //T:1800 copy-to-tanium-dir.vbs \&quot;Tools\&quot;&quot;,
+  &quot;command_timeout&quot;: 1800,
+  &quot;creation_time&quot;: &quot;2014-12-06T18:00:48&quot;,
+  &quot;deleted_flag&quot;: 0,
+  &quot;display_name&quot;: &quot;Distribute Patch Tools&quot;,
+  &quot;expire_seconds&quot;: 2400,
+  &quot;files&quot;: {
+    &quot;_type&quot;: &quot;package_files&quot;,
+    &quot;file&quot;: [
+      {
+        &quot;_type&quot;: &quot;file&quot;,
+        &quot;bytes_downloaded&quot;: 3041,
+        &quot;bytes_total&quot;: 3041,
+        &quot;cache_status&quot;: &quot;CACHED&quot;,
+        &quot;download_seconds&quot;: 0,
+        &quot;download_start_time&quot;: &quot;2014-12-06T18:02:29&quot;,
+        &quot;hash&quot;: &quot;9bcb986d4be0c4f42ab27df25f8604cac85b90e3a95bf016be519805aba79823&quot;,
+        &quot;id&quot;: 45,
+        &quot;last_download_progress_time&quot;: &quot;2014-12-06T18:02:40&quot;,
+        &quot;name&quot;: &quot;copy-to-tanium-dir.vbs&quot;,
+        &quot;size&quot;: 3041,
+        &quot;source&quot;: &quot;https://content.tanium.com/files/initialcontent/bundles/2014-11-05_12-56-07-8513/distribute_patch_tools/copy-to-tanium-dir.vbs&quot;,
+        &quot;status&quot;: 200
+      },
+      {
+        &quot;_type&quot;: &quot;file&quot;,
+        &quot;bytes_downloaded&quot;: 2224,
+        &quot;bytes_total&quot;: 2224,
+        &quot;cache_status&quot;: &quot;CACHED&quot;,
+        &quot;download_seconds&quot;: 0,
+        &quot;download_start_time&quot;: &quot;2014-12-06T18:02:29&quot;,
+        &quot;hash&quot;: &quot;2642ab14c1dc1b55df076a28a4eadaccb3e0cdb4b8810ca7eb6cd3a6d055b99f&quot;,
+        &quot;id&quot;: 46,
+        &quot;last_download_progress_time&quot;: &quot;2014-12-06T18:02:40&quot;,
+        &quot;name&quot;: &quot;copy-patch-files.vbs&quot;,
+        &quot;size&quot;: 2224,
+        &quot;source&quot;: &quot;https://content.tanium.com/files/initialcontent/bundles/2014-11-05_12-56-07-8513/distribute_patch_tools/copy-patch-files.vbs&quot;,
+        &quot;status&quot;: 200
+      },
+      {
+        &quot;_type&quot;: &quot;file&quot;,
+        &quot;bytes_downloaded&quot;: 2853,
+        &quot;bytes_total&quot;: 2853,
+        &quot;cache_status&quot;: &quot;CACHED&quot;,
+        &quot;download_seconds&quot;: 0,
+        &quot;download_start_time&quot;: &quot;2014-12-06T18:02:29&quot;,
+        &quot;hash&quot;: &quot;09cdcde9d227d991da568b27f90395980472c451aa8d2012a01f22dbade76957&quot;,
+        &quot;id&quot;: 47,
+        &quot;last_download_progress_time&quot;: &quot;2014-12-06T18:02:40&quot;,
+        &quot;name&quot;: &quot;copy-patch-scanner-and-scan.vbs&quot;,
+        &quot;size&quot;: 2853,
+        &quot;source&quot;: &quot;https://content.tanium.com/files/initialcontent/bundles/2014-11-05_12-56-07-8513/distribute_patch_tools/copy-patch-scanner-and-scan.vbs&quot;,
+        &quot;status&quot;: 200
+      },
+      {
+        &quot;_type&quot;: &quot;file&quot;,
+        &quot;bytes_downloaded&quot;: 128080,
+        &quot;bytes_total&quot;: 128080,
+        &quot;cache_status&quot;: &quot;CACHED&quot;,
+        &quot;download_seconds&quot;: 0,
+        &quot;download_start_time&quot;: &quot;2014-12-06T18:02:29&quot;,
+        &quot;hash&quot;: &quot;71bb11a395d0f22c975095475567c36ace86973c8b22b69e8f2c615cbd3eb4f4&quot;,
+        &quot;id&quot;: 48,
+        &quot;last_download_progress_time&quot;: &quot;2014-12-06T18:02:51&quot;,
+        &quot;name&quot;: &quot;install-patches.vbs&quot;,
+        &quot;size&quot;: 128080,
+        &quot;source&quot;: &quot;https://content.tanium.com/files/initialcontent/bundles/2014-11-05_12-56-07-8513/distribute_patch_tools/install-patches.vbs&quot;,
+        &quot;status&quot;: 200
+      },
+      {
+        &quot;_type&quot;: &quot;file&quot;,
+        &quot;bytes_downloaded&quot;: 130098,
+        &quot;bytes_total&quot;: 130098,
+        &quot;cache_status&quot;: &quot;CACHED&quot;,
+        &quot;download_seconds&quot;: 0,
+        &quot;download_start_time&quot;: &quot;2014-12-06T18:02:40&quot;,
+        &quot;hash&quot;: &quot;c66d83bcf491e3df2d7a427718b0ec5c4a471b058141a40473ef4df8e6e9ce08&quot;,
+        &quot;id&quot;: 49,
+        &quot;last_download_progress_time&quot;: &quot;2014-12-06T18:03:01&quot;,
+        &quot;name&quot;: &quot;run-patch-scan.vbs&quot;,
+        &quot;size&quot;: 130098,
+        &quot;source&quot;: &quot;https://content.tanium.com/files/initialcontent/bundles/2014-11-05_12-56-07-8513/distribute_patch_tools/run-patch-scan.vbs&quot;,
+        &quot;status&quot;: 200
+      },
+      {
+        &quot;_type&quot;: &quot;file&quot;,
+        &quot;bytes_downloaded&quot;: 43162,
+        &quot;bytes_total&quot;: 43162,
+        &quot;cache_status&quot;: &quot;CACHED&quot;,
+        &quot;download_seconds&quot;: 0,
+        &quot;download_start_time&quot;: &quot;2014-12-06T18:02:40&quot;,
+        &quot;hash&quot;: &quot;9cc2229dfe2da8a1c629d0232af02f18c9a942e880c0332e88ec4b59a4153bb2&quot;,
+        &quot;id&quot;: 50,
+        &quot;last_download_progress_time&quot;: &quot;2014-12-06T18:03:01&quot;,
+        &quot;name&quot;: &quot;uninstall-patch.vbs&quot;,
+        &quot;size&quot;: 43162,
+        &quot;source&quot;: &quot;https://content.tanium.com/files/initialcontent/bundles/2014-11-05_12-56-07-8513/distribute_patch_tools/uninstall-patch.vbs&quot;,
+        &quot;status&quot;: 200
+      },
+      {
+        &quot;_type&quot;: &quot;file&quot;,
+        &quot;bytes_downloaded&quot;: 2922,
+        &quot;bytes_total&quot;: 2922,
+        &quot;cache_status&quot;: &quot;CACHED&quot;,
+        &quot;download_seconds&quot;: 0,
+        &quot;download_start_time&quot;: &quot;2014-12-06T18:02:40&quot;,
+        &quot;hash&quot;: &quot;b72e877348660979b4886576ace522834ed0fa2b8a401b2c5c647b2c475ea67a&quot;,
+        &quot;id&quot;: 51,
+        &quot;last_download_progress_time&quot;: &quot;2014-12-06T18:02:51&quot;,
+        &quot;name&quot;: &quot;add-patch-exclusion.vbs&quot;,
+        &quot;size&quot;: 2922,
+        &quot;source&quot;: &quot;https://content.tanium.com/files/initialcontent/bundles/2014-11-05_12-56-07-8513/distribute_patch_tools/add-patch-exclusion.vbs&quot;,
+        &quot;status&quot;: 200
+      },
+      {
+        &quot;_type&quot;: &quot;file&quot;,
+        &quot;bytes_downloaded&quot;: 3205,
+        &quot;bytes_total&quot;: 3205,
+        &quot;cache_status&quot;: &quot;CACHED&quot;,
+        &quot;download_seconds&quot;: 0,
+        &quot;download_start_time&quot;: &quot;2014-12-06T18:02:40&quot;,
+        &quot;hash&quot;: &quot;6cbce3cc4d3ea581ca3836151612c8e6e0deecfd7d1af7485ce6995fa60827f8&quot;,
+        &quot;id&quot;: 52,
+        &quot;last_download_progress_time&quot;: &quot;2014-12-06T18:02:51&quot;,
+        &quot;name&quot;: &quot;remove-patch-exclusion.vbs&quot;,
+        &quot;size&quot;: 3205,
+        &quot;source&quot;: &quot;https://content.tanium.com/files/initialcontent/bundles/2014-11-05_12-56-07-8513/distribute_patch_tools/remove-patch-exclusion.vbs&quot;,
+        &quot;status&quot;: 200
+      },
+      {
+        &quot;_type&quot;: &quot;file&quot;,
+        &quot;bytes_downloaded&quot;: 2888,
+        &quot;bytes_total&quot;: 2888,
+        &quot;cache_status&quot;: &quot;CACHED&quot;,
+        &quot;download_seconds&quot;: 0,
+        &quot;download_start_time&quot;: &quot;2014-12-06T18:02:51&quot;,
+        &quot;hash&quot;: &quot;c1ba18b6f5bf7754237a5e6b530cf650ad84ab936c1e49e736998e2ed6779d6c&quot;,
+        &quot;id&quot;: 53,
+        &quot;last_download_progress_time&quot;: &quot;2014-12-06T18:03:01&quot;,
+        &quot;name&quot;: &quot;add-patch-whitelist-entry.vbs&quot;,
+        &quot;size&quot;: 2888,
+        &quot;source&quot;: &quot;https://content.tanium.com/files/initialcontent/bundles/2014-11-05_12-56-07-8513/distribute_patch_tools/add-patch-whitelist-entry.vbs&quot;,
+        &quot;status&quot;: 200
+      },
+      {
+        &quot;_type&quot;: &quot;file&quot;,
+        &quot;bytes_downloaded&quot;: 3171,
+        &quot;bytes_total&quot;: 3171,
+        &quot;cache_status&quot;: &quot;CACHED&quot;,
+        &quot;download_seconds&quot;: 0,
+        &quot;download_start_time&quot;: &quot;2014-12-06T18:02:51&quot;,
+        &quot;hash&quot;: &quot;3c86d99f232755ba4a1edcc4782cdd5ea9f637c2873b137931ced9b86c03f77a&quot;,
+        &quot;id&quot;: 54,
+        &quot;last_download_progress_time&quot;: &quot;2014-12-06T18:03:01&quot;,
+        &quot;name&quot;: &quot;remove-patch-whitelist-entry.vbs&quot;,
+        &quot;size&quot;: 3171,
+        &quot;source&quot;: &quot;https://content.tanium.com/files/initialcontent/bundles/2014-11-05_12-56-07-8513/distribute_patch_tools/remove-patch-whitelist-entry.vbs&quot;,
+        &quot;status&quot;: 200
+      },
+      {
+        &quot;_type&quot;: &quot;file&quot;,
+        &quot;bytes_downloaded&quot;: 2844,
+        &quot;bytes_total&quot;: 2844,
+        &quot;cache_status&quot;: &quot;CACHED&quot;,
+        &quot;download_seconds&quot;: 0,
+        &quot;download_start_time&quot;: &quot;2014-12-06T18:02:51&quot;,
+        &quot;hash&quot;: &quot;55ab7016031bb8a8c4a030e28b21d17fcfba1e05d9e522d473a452daea79a5d2&quot;,
+        &quot;id&quot;: 55,
+        &quot;last_download_progress_time&quot;: &quot;2014-12-06T18:03:01&quot;,
+        &quot;name&quot;: &quot;delete-queued-patch.vbs&quot;,
+        &quot;size&quot;: 2844,
+        &quot;source&quot;: &quot;https://content.tanium.com/files/initialcontent/bundles/2014-11-05_12-56-07-8513/distribute_patch_tools/delete-queued-patch.vbs&quot;,
+        &quot;status&quot;: 200
+      },
+      {
+        &quot;_type&quot;: &quot;file&quot;,
+        &quot;bytes_downloaded&quot;: 104296332,
+        &quot;bytes_total&quot;: 104296332,
+        &quot;cache_status&quot;: &quot;CACHED&quot;,
+        &quot;download_seconds&quot;: 3600,
+        &quot;download_start_time&quot;: &quot;2014-12-07T06:04:13&quot;,
+        &quot;hash&quot;: &quot;7789bacbbd31f45349030e5cb23f46caeb03252d50cc5a30f43f13a54cf40887&quot;,
+        &quot;id&quot;: 56,
+        &quot;last_download_progress_time&quot;: &quot;2014-12-07T06:04:23&quot;,
+        &quot;name&quot;: &quot;wsusscn2.cab&quot;,
+        &quot;size&quot;: 104296332,
+        &quot;source&quot;: &quot;https://go.microsoft.com/fwlink/?LinkID=74689&quot;,
+        &quot;status&quot;: 200
+      },
+      {
+        &quot;_type&quot;: &quot;file&quot;,
+        &quot;bytes_downloaded&quot;: 305351,
+        &quot;bytes_total&quot;: 305351,
+        &quot;cache_status&quot;: &quot;CACHED&quot;,
+        &quot;download_seconds&quot;: 3600,
+        &quot;download_start_time&quot;: &quot;2014-12-07T06:04:23&quot;,
+        &quot;hash&quot;: &quot;203a3da688fed8992d3fbf872a7b02d4a0209f3e47ae3f5512b578820540dfb0&quot;,
+        &quot;id&quot;: 57,
+        &quot;last_download_progress_time&quot;: &quot;2014-12-07T06:04:34&quot;,
+        &quot;name&quot;: &quot;cveData.html&quot;,
+        &quot;size&quot;: 305351,
+        &quot;source&quot;: &quot;https://cve.mitre.org/data/refs/refmap/source-MS.html&quot;,
+        &quot;status&quot;: 200
+      }
+    ]
+  },
+  &quot;hidden_flag&quot;: 0,
+  &quot;id&quot;: 22,
+  &quot;last_modified_by&quot;: &quot;Jim Olsen&quot;,
+  &quot;last_update&quot;: &quot;2014-12-06T18:00:48&quot;,
+  &quot;metadata&quot;: {
+    &quot;_type&quot;: &quot;metadata&quot;,
+    &quot;item&quot;: [
+      {
+        &quot;_type&quot;: &quot;item&quot;,
+        &quot;admin_flag&quot;: 0,
+        &quot;name&quot;: &quot;defined&quot;,
+        &quot;value&quot;: &quot;Tanium&quot;
+      },
+      {
+        &quot;_type&quot;: &quot;item&quot;,
+        &quot;admin_flag&quot;: 0,
+        &quot;name&quot;: &quot;category&quot;,
+        &quot;value&quot;: &quot;Tanium&quot;
+      }
+    ]
+  },
+  &quot;modification_time&quot;: &quot;2014-12-06T18:00:48&quot;,
+  &quot;name&quot;: &quot;Distribute Patch Tools&quot;,
+  &quot;source_id&quot;: 0,
+  &quot;verify_group_id&quot;: 0
+}
+</pre></div>
+</td></tr></table></div>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="get_sensor_by_names.html" class="btn btn-neutral float-right" title="14. Get sensor by names">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="get_sensor_by_hash.html" class="btn btn-neutral" title="12. Get sensor by hash"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Tanium.
+      Last updated on Dec 08, 2014.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

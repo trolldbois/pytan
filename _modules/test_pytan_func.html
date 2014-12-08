@@ -1,0 +1,677 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>test_pytan_func &mdash; PyTan 1.0.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="PyTan 1.0.0 documentation" href="../index.html"/>
+        <link rel="up" title="Module code" href="index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../index.html" class="fa fa-home"> PyTan</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../description.html">1. Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../description.html#why-it-was-created">2. Why it was created</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../description.html#requirements">3. Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../description.html#installation">4. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../description.html#usage">5. Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pytan.html">6. pytan package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples/pytan_examples.html">6.1. pytan API examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.handler.html">6.2. pytan.handler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.constants.html">6.3. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.utils.html">6.4. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.unittest.html">6.5. pytan Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.functest.html">6.6. pytan Functional Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../taniumpy.html">7. taniumpy package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../taniumpy.session.html">1. taniumpy.session module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taniumpy.question_asker.html">2. taniumpy.question_asker module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taniumpy.object_types.html">3. taniumpy.object_types package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../xmltodict.html">7. xmltodict module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ddt.html">8. ddt module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../threaded_http.html">9. threaded_http module</a><ul class="simple">
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">PyTan</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Module code</a> &raquo;</li>
+      
+    <li>test_pytan_func</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <h1>Source code for test_pytan_func</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/env python -ttB</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This contains functional tests for pytan.</span>
+
+<span class="sd">These functional tests require a connection to a Tanium server in order to run.</span>
+<span class="sd">The connection info is pulled from the SERVER_INFO dictionary in test/API_INFO.py.</span>
+
+<span class="sd">These tests all use :mod:`ddt`, a package that provides for data driven tests via JSON files.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="c"># disable python from creating .pyc files everywhere</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">dont_write_bytecode</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">unittest</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">json</span>  <span class="c"># noqa</span>
+
+<span class="n">my_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
+<span class="n">my_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">my_file</span><span class="p">)</span>
+<span class="n">root_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">my_dir</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">pardir</span><span class="p">)</span>
+<span class="n">root_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">root_dir</span><span class="p">)</span>
+<span class="n">lib_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root_dir</span><span class="p">,</span> <span class="s">&#39;lib&#39;</span><span class="p">)</span>
+<span class="n">path_adds</span> <span class="o">=</span> <span class="p">[</span><span class="n">my_dir</span><span class="p">,</span> <span class="n">lib_dir</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">aa</span> <span class="ow">in</span> <span class="n">path_adds</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">aa</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">aa</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">pytan</span>
+<span class="kn">import</span> <span class="nn">taniumpy</span>
+<span class="kn">import</span> <span class="nn">ddt</span>
+<span class="kn">import</span> <span class="nn">threaded_http</span>
+
+<span class="c"># get our server connection info</span>
+<span class="kn">from</span> <span class="nn">API_INFO</span> <span class="kn">import</span> <span class="n">SERVER_INFO</span>
+
+<span class="c"># control the amount of output from unittests</span>
+<span class="n">TESTVERBOSITY</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="c"># have unittest exit immediately on unexpected error</span>
+<span class="n">FAILFAST</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="c"># catch control-C to allow current test suite to finish (press 2x to force)</span>
+<span class="n">CATCHBREAK</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="c"># where the output files from the tests will be stored</span>
+<span class="n">TEST_OUT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">my_dir</span><span class="p">,</span> <span class="s">&#39;TEST_OUT&#39;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">TEST_OUT</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">TEST_OUT</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="spew"><a class="viewcode-back" href="../pytan.functest.html#test_pytan_func.spew">[docs]</a><span class="k">def</span> <span class="nf">spew</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">TESTVERBOSITY</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">print</span> <span class="p">(</span><span class="n">m</span><span class="p">)</span>
+
+</div>
+<span class="nd">@ddt.ddt</span>
+<div class="viewcode-block" id="InvalidServerTests"><a class="viewcode-back" href="../pytan.functest.html#test_pytan_func.InvalidServerTests">[docs]</a><span class="k">class</span> <span class="nc">InvalidServerTests</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="InvalidServerTests.setUpClass"><a class="viewcode-back" href="../pytan.functest.html#test_pytan_func.InvalidServerTests.setUpClass">[docs]</a>    <span class="k">def</span> <span class="nf">setUpClass</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="n">cls</span><span class="o">.</span><span class="n">__http</span> <span class="o">=</span> <span class="n">threaded_http</span><span class="o">.</span><span class="n">threaded_http</span><span class="p">(</span>
+            <span class="n">port</span><span class="o">=</span><span class="mi">4433</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="n">TESTVERBOSITY</span>
+        <span class="p">)</span>
+</div>
+    <span class="nd">@ddt.file_data</span><span class="p">(</span><span class="s">&#39;ddt/ddt_invalid_connects.json&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_invalid_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+
+        <span class="n">args</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;args&#39;</span><span class="p">]</span>
+        <span class="n">exc</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s">&#39;exception&#39;</span><span class="p">])</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;error_str&#39;</span><span class="p">]</span>
+
+        <span class="n">mykwargs</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">SERVER_INFO</span><span class="p">)</span>
+        <span class="n">mykwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="n">spew</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">spew</span><span class="p">(</span><span class="s">&quot;+++ TESTING EXPECTED FAILURE Handler() with kwargs </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="n">mykwargs</span><span class="p">))</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">assertRaisesRegexp</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+            <span class="n">pytan</span><span class="o">.</span><span class="n">Handler</span><span class="p">(</span><span class="o">**</span><span class="n">mykwargs</span><span class="p">)</span>
+
+</div>
+<span class="nd">@ddt.ddt</span>
+<div class="viewcode-block" id="ValidServerTests"><a class="viewcode-back" href="../pytan.functest.html#test_pytan_func.ValidServerTests">[docs]</a><span class="k">class</span> <span class="nc">ValidServerTests</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="ValidServerTests.setUpClass"><a class="viewcode-back" href="../pytan.functest.html#test_pytan_func.ValidServerTests.setUpClass">[docs]</a>    <span class="k">def</span> <span class="nf">setUpClass</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="n">cls</span><span class="o">.</span><span class="n">handler</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">Handler</span><span class="p">(</span><span class="o">**</span><span class="n">SERVER_INFO</span><span class="p">)</span>
+
+        <span class="c"># create whitelisted_urls for getobject tests</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">cls</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">create_whitelisted_url</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s">&#39;test1&#39;</span><span class="p">)</span>
+            <span class="n">cls</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">create_whitelisted_url</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s">&#39;test2&#39;</span><span class="p">)</span>
+            <span class="n">cls</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">create_whitelisted_url</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s">&#39;test3&#39;</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="c"># fetch objects for export tests</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s">&quot;Computer Name&quot;</span><span class="p">,</span> <span class="s">&quot;IP Route Details&quot;</span><span class="p">,</span> <span class="s">&quot;IP Address&quot;</span><span class="p">,</span>
+                <span class="s">&#39;Folder Name Search with RegEx Match&#39;</span><span class="p">,</span>
+            <span class="p">],</span>
+            <span class="s">&#39;objtype&#39;</span><span class="p">:</span> <span class="s">&#39;sensor&#39;</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="n">cls</span><span class="o">.</span><span class="n">base_type_objs</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c"># ask questions for export tests</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;qtype&#39;</span><span class="p">:</span> <span class="s">&#39;manual_human&#39;</span><span class="p">,</span>
+            <span class="s">&#39;sensors&#39;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s">&quot;Computer Name&quot;</span><span class="p">,</span> <span class="s">&quot;IP Route Details&quot;</span><span class="p">,</span> <span class="s">&quot;IP Address&quot;</span><span class="p">,</span>
+                <span class="s">&#39;Folder Name Search with RegEx Match{dirname=Program Files,regex=.*Shared.*}&#39;</span><span class="p">,</span>
+            <span class="p">],</span>
+        <span class="p">}</span>
+        <span class="n">cls</span><span class="o">.</span><span class="n">result_set_objs</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">ask</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="n">spew</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">cls</span><span class="o">.</span><span class="n">handler</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="ValidServerTests.setup_test"><a class="viewcode-back" href="../pytan.functest.html#test_pytan_func.ValidServerTests.setup_test">[docs]</a>    <span class="k">def</span> <span class="nf">setup_test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">spew</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">handler</span>
+</div>
+    <span class="nd">@ddt.file_data</span><span class="p">(</span><span class="s">&#39;ddt/ddt_valid_export_resultset.json&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_valid_export_resultset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_test</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result_set_objs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result_set_objs</span><span class="p">[</span><span class="s">&#39;question_object&#39;</span><span class="p">],</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">Question</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result_set_objs</span><span class="p">[</span><span class="s">&#39;question_results&#39;</span><span class="p">],</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">ResultSet</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertGreaterEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result_set_objs</span><span class="p">[</span><span class="s">&#39;question_results&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">rows</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertGreaterEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result_set_objs</span><span class="p">[</span><span class="s">&#39;question_results&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;obj&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">result_set_objs</span><span class="p">[</span><span class="s">&#39;question_results&#39;</span><span class="p">]}</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s">&#39;args&#39;</span><span class="p">])</span>
+
+        <span class="n">tests</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;tests&#39;</span><span class="p">]</span>
+
+        <span class="n">s</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s">&quot;+++ TESTING EXPECTED EXPORT OBJECT ResultSet SUCCESS Handler.{}() with kwargs {}&quot;</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">format</span>
+        <span class="n">spew</span><span class="p">(</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;export_obj&#39;</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span>
+
+        <span class="n">export_str</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">export_obj</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">export_str</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">export_str</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">tests</span><span class="p">:</span>
+            <span class="n">spew</span><span class="p">(</span><span class="s">&quot;+++ EVAL TEST: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">x</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="nb">eval</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+    <span class="nd">@ddt.file_data</span><span class="p">(</span><span class="s">&#39;ddt/ddt_valid_export_basetype.json&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_valid_export_basetype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_test</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_type_objs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_type_objs</span><span class="p">,</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">BaseType</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_type_objs</span><span class="p">),</span> <span class="mi">4</span><span class="p">)</span>
+
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;obj&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_type_objs</span><span class="p">}</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s">&#39;args&#39;</span><span class="p">])</span>
+
+        <span class="n">tests</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;tests&#39;</span><span class="p">]</span>
+
+        <span class="n">s</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s">&quot;+++ TESTING EXPECTED EXPORT OBJECT BaseType SUCCESS Handler.{}() with kwargs {}&quot;</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">format</span>
+        <span class="n">spew</span><span class="p">(</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;export_obj&#39;</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span>
+
+        <span class="n">export_str</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">export_obj</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">export_str</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">export_str</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">tests</span><span class="p">:</span>
+            <span class="n">spew</span><span class="p">(</span><span class="s">&quot;+++ EVAL TEST: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">x</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="nb">eval</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+    <span class="nd">@ddt.file_data</span><span class="p">(</span><span class="s">&#39;ddt/ddt_valid_deploy_action.json&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_valid_deploy_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_test</span><span class="p">()</span>
+
+        <span class="n">method</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;method&#39;</span><span class="p">]</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;args&#39;</span><span class="p">]</span>
+
+        <span class="n">s</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s">&quot;+++ TESTING EXPECTED DEPLOY ACTION SUCCESS Handler.{}() with kwargs {}&quot;</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">format</span>
+        <span class="n">spew</span><span class="p">(</span><span class="n">s</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">args</span><span class="p">))</span>
+
+        <span class="n">ret</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">handler</span><span class="p">,</span> <span class="n">method</span><span class="p">)(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;action_object&#39;</span><span class="p">],</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">Action</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;pre_action_question_results&#39;</span><span class="p">])</span>
+        <span class="n">get_results</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;get_results&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">get_results</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;action_results&#39;</span><span class="p">],</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">ResultSet</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;action_progress_human&#39;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;action_progress_map&#39;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertGreaterEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;action_results&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">rows</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertGreaterEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;action_results&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">ft</span> <span class="ow">in</span> <span class="n">pytan</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">EXPORT_MAPS</span><span class="p">[</span><span class="s">&#39;ResultSet&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">report_file</span><span class="p">,</span> <span class="n">result</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">export_to_report_file</span><span class="p">(</span>
+                    <span class="n">obj</span><span class="o">=</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;action_results&#39;</span><span class="p">],</span>
+                    <span class="n">export_format</span><span class="o">=</span><span class="n">ft</span><span class="p">,</span>
+                    <span class="n">report_dir</span><span class="o">=</span><span class="n">TEST_OUT</span><span class="p">,</span>
+                    <span class="n">prefix</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_name</span> <span class="o">+</span> <span class="s">&#39;_&#39;</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">report_file</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">report_file</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">assertGreaterEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="mi">10</span><span class="p">)</span>
+
+    <span class="nd">@ddt.file_data</span><span class="p">(</span><span class="s">&#39;ddt/ddt_valid_create_object.json&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_valid_create_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_test</span><span class="p">()</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">my_dir</span><span class="p">)</span>
+
+        <span class="n">method</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;method&#39;</span><span class="p">]</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;args&#39;</span><span class="p">]</span>
+        <span class="n">t_obj</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s">&#39;taniumpyobj&#39;</span><span class="p">])</span>
+        <span class="n">delete_args</span> <span class="o">=</span> <span class="p">{</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">):</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;delete&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iteritems</span><span class="p">()}</span>
+
+        <span class="n">s</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s">&quot;+++ TESTING EXPECTED CREATE OBJECT SUCCESS Handler.{}() with kwargs {}&quot;</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">format</span>
+        <span class="n">spew</span><span class="p">(</span><span class="n">s</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">args</span><span class="p">))</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">handler</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="o">**</span><span class="n">delete_args</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">print</span> <span class="n">e</span>
+            <span class="k">pass</span>
+
+        <span class="n">ret</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">handler</span><span class="p">,</span> <span class="n">method</span><span class="p">)(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="n">t_obj</span><span class="p">)</span>
+
+        <span class="n">delete_obj</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="o">**</span><span class="n">delete_args</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">delete_obj</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">t_obj</span><span class="p">)</span>
+
+    <span class="nd">@ddt.file_data</span><span class="p">(</span><span class="s">&#39;ddt/ddt_valid_create_object_from_json.json&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_valid_create_object_from_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_test</span><span class="p">()</span>
+
+        <span class="n">orig_objs</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="o">**</span><span class="n">value</span><span class="p">[</span><span class="s">&#39;get&#39;</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;transform&#39;</span><span class="p">]:</span>
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">orig_objs</span><span class="p">:</span>
+                <span class="n">transform_val</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;transform&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">transform_val</span> <span class="o">+=</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;transform&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;transform&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">transform_val</span><span class="p">)</span>
+                <span class="n">del_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">del_kwargs</span><span class="p">[</span><span class="s">&#39;objtype&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;objtype&#39;</span><span class="p">]</span>
+                <span class="n">del_kwargs</span><span class="p">[</span><span class="n">value</span><span class="p">[</span><span class="s">&#39;transform&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">transform_val</span>
+                <span class="k">if</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;delete&#39;</span><span class="p">]:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">handler</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="o">**</span><span class="n">del_kwargs</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                        <span class="k">print</span> <span class="n">e</span>
+                        <span class="k">pass</span>
+
+        <span class="n">json_file</span><span class="p">,</span> <span class="n">results</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">export_to_report_file</span><span class="p">(</span>
+            <span class="n">obj</span><span class="o">=</span><span class="n">orig_objs</span><span class="p">,</span>
+            <span class="n">export_format</span><span class="o">=</span><span class="s">&#39;json&#39;</span><span class="p">,</span>
+            <span class="n">report_dir</span><span class="o">=</span><span class="n">TEST_OUT</span><span class="p">,</span>
+            <span class="n">prefix</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_name</span> <span class="o">+</span> <span class="s">&#39;_&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;objtype&#39;</span><span class="p">:</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;objtype&#39;</span><span class="p">],</span> <span class="s">&#39;json_file&#39;</span><span class="p">:</span> <span class="n">json_file</span><span class="p">}</span>
+
+        <span class="n">s</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s">&quot;+++ TESTING EXPECTED CREATE OBJECT FROM JSON SUCCESS Handler.{}() with kwargs {}&quot;</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">format</span>
+
+        <span class="n">spew</span><span class="p">(</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;create_from_json&#39;</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span>
+
+        <span class="n">new_obj</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">create_from_json</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">new_obj</span><span class="p">,</span> <span class="nb">eval</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s">&#39;listobj&#39;</span><span class="p">]))</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">new_obj</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">eval</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s">&#39;singleobj&#39;</span><span class="p">]))</span>
+
+    <span class="nd">@ddt.file_data</span><span class="p">(</span><span class="s">&#39;ddt/ddt_valid_questions.json&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_valid_question</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_test</span><span class="p">()</span>
+
+        <span class="n">method</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;method&#39;</span><span class="p">]</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;args&#39;</span><span class="p">]</span>
+
+        <span class="n">s</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s">&quot;+++ TESTING EXPECTED QUESTION SUCCESS Handler.{}() with kwargs {}&quot;</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">format</span>
+        <span class="n">spew</span><span class="p">(</span><span class="n">s</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">args</span><span class="p">))</span>
+
+        <span class="n">ret</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">handler</span><span class="p">,</span> <span class="n">method</span><span class="p">)(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span>
+            <span class="n">ret</span><span class="p">[</span><span class="s">&#39;question_object&#39;</span><span class="p">],</span>
+            <span class="p">(</span><span class="n">taniumpy</span><span class="o">.</span><span class="n">Question</span><span class="p">,</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">SavedQuestion</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">get_results</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;get_results&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">get_results</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;question_results&#39;</span><span class="p">],</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">ResultSet</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertGreaterEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;question_results&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">rows</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertGreaterEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;question_results&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">ft</span> <span class="ow">in</span> <span class="n">pytan</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">EXPORT_MAPS</span><span class="p">[</span><span class="s">&#39;ResultSet&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">report_file</span><span class="p">,</span> <span class="n">result</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">export_to_report_file</span><span class="p">(</span>
+                    <span class="n">obj</span><span class="o">=</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;question_results&#39;</span><span class="p">],</span>
+                    <span class="n">export_format</span><span class="o">=</span><span class="n">ft</span><span class="p">,</span>
+                    <span class="n">report_dir</span><span class="o">=</span><span class="n">TEST_OUT</span><span class="p">,</span>
+                    <span class="n">prefix</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_name</span> <span class="o">+</span> <span class="s">&#39;_&#39;</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">report_file</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">report_file</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">assertGreaterEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="mi">10</span><span class="p">)</span>
+
+    <span class="nd">@ddt.file_data</span><span class="p">(</span><span class="s">&#39;ddt/ddt_valid_get_object.json&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_valid_get_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_test</span><span class="p">()</span>
+
+        <span class="n">method</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;method&#39;</span><span class="p">]</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;args&#39;</span><span class="p">]</span>
+        <span class="n">tests</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;tests&#39;</span><span class="p">]</span>
+
+        <span class="n">s</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s">&quot;+++ TESTING EXPECTED GET SUCCESS Handler.{}() with kwargs {}&quot;</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">format</span>
+        <span class="n">spew</span><span class="p">(</span><span class="n">s</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">args</span><span class="p">))</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">handler</span><span class="p">,</span> <span class="n">method</span><span class="p">)(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">BaseType</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">tests</span><span class="p">:</span>
+            <span class="n">spew</span><span class="p">(</span><span class="s">&quot;+++ EVAL TEST: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">x</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="nb">eval</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">ft</span> <span class="ow">in</span> <span class="n">pytan</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">EXPORT_MAPS</span><span class="p">[</span><span class="s">&#39;BaseType&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">report_file</span><span class="p">,</span> <span class="n">result</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">export_to_report_file</span><span class="p">(</span>
+                <span class="n">obj</span><span class="o">=</span><span class="n">response</span><span class="p">,</span> <span class="n">export_format</span><span class="o">=</span><span class="n">ft</span><span class="p">,</span> <span class="n">report_dir</span><span class="o">=</span><span class="n">TEST_OUT</span><span class="p">,</span>
+                <span class="n">prefix</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_name</span> <span class="o">+</span> <span class="s">&#39;_&#39;</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">report_file</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">report_file</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertGreaterEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="mi">10</span><span class="p">)</span>
+
+    <span class="nd">@ddt.file_data</span><span class="p">(</span><span class="s">&#39;ddt/ddt_invalid_export_basetype.json&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_invalid_export_basetype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_test</span><span class="p">()</span>
+
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;obj&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_type_objs</span><span class="p">}</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s">&#39;args&#39;</span><span class="p">])</span>
+        <span class="n">exc</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s">&#39;exception&#39;</span><span class="p">])</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;error_str&#39;</span><span class="p">]</span>
+
+        <span class="n">s</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s">&quot;+++ TESTING EXPECTED EXPORT OBJECT BaseType FAILURE Handler.{}() with kwargs {}&quot;</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">format</span>
+        <span class="n">spew</span><span class="p">(</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;export_obj&#39;</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">assertRaisesRegexp</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+            <span class="n">handler</span><span class="o">.</span><span class="n">export_obj</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="nd">@ddt.file_data</span><span class="p">(</span><span class="s">&#39;ddt/ddt_invalid_create_object_from_json.json&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_invalid_create_object_from_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_test</span><span class="p">()</span>
+
+        <span class="n">orig_objs</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="o">**</span><span class="n">value</span><span class="p">[</span><span class="s">&#39;get&#39;</span><span class="p">])</span>
+
+        <span class="n">json_file</span><span class="p">,</span> <span class="n">results</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">export_to_report_file</span><span class="p">(</span>
+            <span class="n">obj</span><span class="o">=</span><span class="n">orig_objs</span><span class="p">,</span>
+            <span class="n">export_format</span><span class="o">=</span><span class="s">&#39;json&#39;</span><span class="p">,</span>
+            <span class="n">report_dir</span><span class="o">=</span><span class="n">TEST_OUT</span><span class="p">,</span>
+            <span class="n">prefix</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_name</span> <span class="o">+</span> <span class="s">&#39;_&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;objtype&#39;</span><span class="p">:</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;objtype&#39;</span><span class="p">],</span> <span class="s">&#39;json_file&#39;</span><span class="p">:</span> <span class="n">json_file</span><span class="p">}</span>
+        <span class="n">exc</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s">&#39;exception&#39;</span><span class="p">])</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;error_str&#39;</span><span class="p">]</span>
+
+        <span class="n">s</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s">&quot;+++ TESTING EXPECTED CREATE OBJECT FROM JSON FAILURE Handler.{}() with kwargs {}&quot;</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">format</span>
+        <span class="n">spew</span><span class="p">(</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;create_from_json&#39;</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">assertRaisesRegexp</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+            <span class="n">handler</span><span class="o">.</span><span class="n">create_from_json</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="nd">@ddt.file_data</span><span class="p">(</span><span class="s">&#39;ddt/ddt_invalid_questions.json&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_invalid_question</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_test</span><span class="p">()</span>
+
+        <span class="n">method</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;method&#39;</span><span class="p">]</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;args&#39;</span><span class="p">]</span>
+        <span class="n">exc</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s">&#39;exception&#39;</span><span class="p">])</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;error_str&#39;</span><span class="p">]</span>
+
+        <span class="n">s</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s">&quot;+++ TESTING EXPECTED QUESTION FAILURE Handler.{}() with kwargs {}&quot;</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">format</span>
+        <span class="n">spew</span><span class="p">(</span><span class="n">s</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">args</span><span class="p">))</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">assertRaisesRegexp</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+            <span class="nb">getattr</span><span class="p">(</span><span class="n">handler</span><span class="p">,</span> <span class="n">method</span><span class="p">)(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="nd">@ddt.file_data</span><span class="p">(</span><span class="s">&#39;ddt/ddt_invalid_get_object.json&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_invalid_get_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_test</span><span class="p">()</span>
+
+        <span class="n">method</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;method&#39;</span><span class="p">]</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;args&#39;</span><span class="p">]</span>
+        <span class="n">exc</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s">&#39;exception&#39;</span><span class="p">])</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;error_str&#39;</span><span class="p">]</span>
+
+        <span class="n">s</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s">&quot;+++ TESTING EXPECTED GET FAILURE Handler.{}() with kwargs {}&quot;</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">format</span>
+        <span class="n">spew</span><span class="p">(</span><span class="n">s</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">args</span><span class="p">))</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">assertRaisesRegexp</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+            <span class="nb">getattr</span><span class="p">(</span><span class="n">handler</span><span class="p">,</span> <span class="n">method</span><span class="p">)(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="nd">@ddt.file_data</span><span class="p">(</span><span class="s">&#39;ddt/ddt_invalid_create_object.json&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_invalid_create_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_test</span><span class="p">()</span>
+
+        <span class="n">method</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;method&#39;</span><span class="p">]</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;args&#39;</span><span class="p">]</span>
+        <span class="n">exc</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s">&#39;exception&#39;</span><span class="p">])</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;error_str&#39;</span><span class="p">]</span>
+
+        <span class="n">s</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s">&quot;+++ TESTING EXPECTED CREATE OBJECT FAILURE Handler.{}() with kwargs {}&quot;</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">format</span>
+        <span class="n">spew</span><span class="p">(</span><span class="n">s</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">args</span><span class="p">))</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">assertRaisesRegexp</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+            <span class="nb">getattr</span><span class="p">(</span><span class="n">handler</span><span class="p">,</span> <span class="n">method</span><span class="p">)(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="nd">@ddt.file_data</span><span class="p">(</span><span class="s">&#39;ddt/ddt_invalid_deploy_action.json&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_invalid_deploy_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_test</span><span class="p">()</span>
+
+        <span class="n">method</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;method&#39;</span><span class="p">]</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;args&#39;</span><span class="p">]</span>
+        <span class="n">args</span><span class="p">[</span><span class="s">&#39;report_dir&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">TEST_OUT</span>
+        <span class="n">exc</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s">&#39;exception&#39;</span><span class="p">])</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;error_str&#39;</span><span class="p">]</span>
+
+        <span class="n">s</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s">&quot;+++ TESTING EXPECTED DEPLOY ACTION FAILURE Handler.{}() with kwargs {}&quot;</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">format</span>
+        <span class="n">spew</span><span class="p">(</span><span class="n">s</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">args</span><span class="p">))</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">assertRaisesRegexp</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+            <span class="nb">getattr</span><span class="p">(</span><span class="n">handler</span><span class="p">,</span> <span class="n">method</span><span class="p">)(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="nd">@ddt.file_data</span><span class="p">(</span><span class="s">&#39;ddt/ddt_invalid_export_resultset.json&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_invalid_export_resultset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_test</span><span class="p">()</span>
+
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;obj&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">result_set_objs</span><span class="p">[</span><span class="s">&#39;question_results&#39;</span><span class="p">]}</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s">&#39;args&#39;</span><span class="p">])</span>
+        <span class="n">exc</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s">&#39;exception&#39;</span><span class="p">])</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;error_str&#39;</span><span class="p">]</span>
+
+        <span class="n">s</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s">&quot;+++ TESTING EXPECTED EXPORT OBJECT ResultSet FAILURE Handler.{}() with kwargs {}&quot;</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">format</span>
+        <span class="n">spew</span><span class="p">(</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;export_obj&#39;</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">assertRaisesRegexp</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+            <span class="n">handler</span><span class="o">.</span><span class="n">export_obj</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+</div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">test_files</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">TEST_OUT</span> <span class="o">+</span> <span class="s">&#39;/*.*&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">test_files</span><span class="p">:</span>
+        <span class="n">spew</span><span class="p">(</span><span class="s">&quot;Cleaning up </span><span class="si">%s</span><span class="s"> old test files&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_files</span><span class="p">))</span>
+        <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">test_files</span><span class="p">]</span>
+
+    <span class="n">unittest</span><span class="o">.</span><span class="n">main</span><span class="p">(</span>
+        <span class="n">verbosity</span><span class="o">=</span><span class="n">TESTVERBOSITY</span><span class="p">,</span>
+        <span class="n">failfast</span><span class="o">=</span><span class="n">FAILFAST</span><span class="p">,</span>
+        <span class="n">catchbreak</span><span class="o">=</span><span class="n">CATCHBREAK</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Tanium.
+      Last updated on Dec 08, 2014.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,407 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ddt &mdash; PyTan 1.0.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="PyTan 1.0.0 documentation" href="../index.html"/>
+        <link rel="up" title="Module code" href="index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../index.html" class="fa fa-home"> PyTan</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../description.html">1. Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../description.html#why-it-was-created">2. Why it was created</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../description.html#requirements">3. Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../description.html#installation">4. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../description.html#usage">5. Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pytan.html">6. pytan package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples/pytan_examples.html">6.1. pytan API examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.handler.html">6.2. pytan.handler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.constants.html">6.3. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.utils.html">6.4. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.unittest.html">6.5. pytan Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.functest.html">6.6. pytan Functional Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../taniumpy.html">7. taniumpy package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../taniumpy.session.html">1. taniumpy.session module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taniumpy.question_asker.html">2. taniumpy.question_asker module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taniumpy.object_types.html">3. taniumpy.object_types package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../xmltodict.html">7. xmltodict module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ddt.html">8. ddt module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../threaded_http.html">9. threaded_http module</a><ul class="simple">
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">PyTan</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Module code</a> &raquo;</li>
+      
+    <li>ddt</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <h1>Source code for ddt</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
+
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&#39;0.8.0&#39;</span>
+
+<span class="c"># These attributes will not conflict with any real python attribute</span>
+<span class="c"># They are added to the decorated test method and processed later</span>
+<span class="c"># by the `ddt` class decorator.</span>
+
+<span class="n">DATA_ATTR</span> <span class="o">=</span> <span class="s">&#39;%values&#39;</span>      <span class="c"># store the data the test must run with</span>
+<span class="n">FILE_ATTR</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%f</span><span class="s">ile_path&#39;</span>   <span class="c"># store the path to JSON file</span>
+<span class="n">UNPACK_ATTR</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%u</span><span class="s">npack&#39;</span>    <span class="c"># remember that we have to unpack values</span>
+
+
+<div class="viewcode-block" id="unpack"><a class="viewcode-back" href="../ddt.html#ddt.unpack">[docs]</a><span class="k">def</span> <span class="nf">unpack</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Method decorator to add unpack feature.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">setattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">UNPACK_ATTR</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">func</span>
+
+</div>
+<div class="viewcode-block" id="data"><a class="viewcode-back" href="../ddt.html#ddt.data">[docs]</a><span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="o">*</span><span class="n">values</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Method decorator to add to your test methods.</span>
+
+<span class="sd">    Should be added to methods of instances of ``unittest.TestCase``.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">DATA_ATTR</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">func</span>
+    <span class="k">return</span> <span class="n">wrapper</span>
+
+</div>
+<div class="viewcode-block" id="file_data"><a class="viewcode-back" href="../ddt.html#ddt.file_data">[docs]</a><span class="k">def</span> <span class="nf">file_data</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Method decorator to add to your test methods.</span>
+
+<span class="sd">    Should be added to methods of instances of ``unittest.TestCase``.</span>
+
+<span class="sd">    ``value`` should be a path relative to the directory of the file</span>
+<span class="sd">    containing the decorated ``unittest.TestCase``. The file</span>
+<span class="sd">    should contain JSON encoded data, that can either be a list or a</span>
+<span class="sd">    dict.</span>
+
+<span class="sd">    In case of a list, each value in the list will correspond to one</span>
+<span class="sd">    test case, and the value will be concatenated to the test method</span>
+<span class="sd">    name.</span>
+
+<span class="sd">    In case of a dict, keys will be used as suffixes to the name of the</span>
+<span class="sd">    test case, and values will be fed as test data.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">FILE_ATTR</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">func</span>
+    <span class="k">return</span> <span class="n">wrapper</span>
+
+</div>
+<div class="viewcode-block" id="is_hash_randomized"><a class="viewcode-back" href="../ddt.html#ddt.is_hash_randomized">[docs]</a><span class="k">def</span> <span class="nf">is_hash_randomized</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">(((</span><span class="n">sys</span><span class="o">.</span><span class="n">hexversion</span> <span class="o">&gt;=</span> <span class="mh">0x02070300</span> <span class="ow">and</span>
+              <span class="n">sys</span><span class="o">.</span><span class="n">hexversion</span> <span class="o">&lt;</span> <span class="mh">0x03000000</span><span class="p">)</span> <span class="ow">or</span>
+             <span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">hexversion</span> <span class="o">&gt;=</span> <span class="mh">0x03020300</span><span class="p">))</span> <span class="ow">and</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">hash_randomization</span> <span class="ow">and</span>
+            <span class="s">&#39;PYTHONHASHSEED&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="mk_test_name"><a class="viewcode-back" href="../ddt.html#ddt.mk_test_name">[docs]</a><span class="k">def</span> <span class="nf">mk_test_name</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate a new name for a test case.</span>
+
+<span class="sd">    It will take the original test name and append an ordinal index and a</span>
+<span class="sd">    string representation of the value, and convert the result into a valid</span>
+<span class="sd">    python identifier by replacing extraneous characters with ``_``.</span>
+
+<span class="sd">    If hash randomization is enabled (a feature available since 2.7.3/3.2.3</span>
+<span class="sd">    and enabled by default since 3.3) and a &quot;non-trivial&quot; value is passed</span>
+<span class="sd">    this will omit the name argument by default. Set `PYTHONHASHSEED`</span>
+<span class="sd">    to a fixed value before running tests in these cases to get the</span>
+<span class="sd">    names back consistently or use the `__name__` attribute on data values.</span>
+
+<span class="sd">    A &quot;trivial&quot; value is a plain scalar, or a tuple or list consisting</span>
+<span class="sd">    only of trivial values.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c"># We avoid doing str(value) if all of the following hold:</span>
+    <span class="c">#</span>
+    <span class="c"># * Python version is 2.7.3 or newer (for 2 series) or 3.2.3 or</span>
+    <span class="c">#   newer (for 3 series). Also sys.flags.hash_randomization didn&#39;t</span>
+    <span class="c">#   exist before these.</span>
+    <span class="c"># * sys.flags.hash_randomization is set to True</span>
+    <span class="c"># * PYTHONHASHSEED is **not** defined in the environment</span>
+    <span class="c"># * Given `value` argument is not a trivial scalar (None, str,</span>
+    <span class="c">#   int, float).</span>
+    <span class="c">#</span>
+    <span class="c"># Trivial scalar values are passed as is in all cases.</span>
+
+    <span class="n">trivial_types</span> <span class="o">=</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">None</span><span class="p">),</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">trivial_types</span> <span class="o">+=</span> <span class="p">(</span><span class="nb">unicode</span><span class="p">,)</span>
+    <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">is_trivial</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">trivial_types</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">True</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">is_trivial</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="bp">False</span>
+
+    <span class="k">if</span> <span class="n">is_hash_randomized</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_trivial</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot;{0}_{1}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">UnicodeEncodeError</span><span class="p">:</span>
+        <span class="c"># fallback for python2</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;ascii&#39;</span><span class="p">,</span> <span class="s">&#39;backslashreplace&#39;</span><span class="p">)</span>
+    <span class="n">test_name</span> <span class="o">=</span> <span class="s">&quot;{0}_{1}_{2}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&#39;\W|^(?=\d)&#39;</span><span class="p">,</span> <span class="s">&#39;_&#39;</span><span class="p">,</span> <span class="n">test_name</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="ddt"><a class="viewcode-back" href="../ddt.html#ddt.ddt">[docs]</a><span class="k">def</span> <span class="nf">ddt</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class decorator for subclasses of ``unittest.TestCase``.</span>
+
+<span class="sd">    Apply this decorator to the test case class, and then</span>
+<span class="sd">    decorate test methods with ``@data``.</span>
+
+<span class="sd">    For each method decorated with ``@data``, this will effectively create as</span>
+<span class="sd">    many methods as data items are passed as parameters to ``@data``.</span>
+
+<span class="sd">    The names of the test methods follow the pattern</span>
+<span class="sd">    ``original_test_name_{ordinal}_{data}``. ``ordinal`` is the position of the</span>
+<span class="sd">    data argument, starting with 1.</span>
+
+<span class="sd">    For data we use a string representation of the data value converted into a</span>
+<span class="sd">    valid python identifier.  If ``data.__name__`` exists, we use that instead.</span>
+
+<span class="sd">    For each method decorated with ``@file_data(&#39;test_data.json&#39;)``, the</span>
+<span class="sd">    decorator will try to load the test_data.json file located relative</span>
+<span class="sd">    to the python file containing the method that is decorated. It will,</span>
+<span class="sd">    for each ``test_name`` key create as many methods in the list of values</span>
+<span class="sd">    from the ``data`` key.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">feed_data</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">new_name</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This internal method decorator feeds the test data item to the test.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">wrapper</span><span class="o">.</span><span class="n">__name__</span> <span class="o">=</span> <span class="n">new_name</span>
+        <span class="k">return</span> <span class="n">wrapper</span>
+
+    <span class="k">def</span> <span class="nf">add_test</span><span class="p">(</span><span class="n">test_name</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a test case to this class.</span>
+
+<span class="sd">        The test will be based on an existing function but will give it a new</span>
+<span class="sd">        name.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">test_name</span><span class="p">,</span> <span class="n">feed_data</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">test_name</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">process_file_data</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">file_attr</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Process the parameter in the `file_data` decorator.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cls_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">getsourcefile</span><span class="p">(</span><span class="n">cls</span><span class="p">))</span>
+        <span class="n">data_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">cls_path</span><span class="p">),</span> <span class="n">file_attr</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">_raise_ve</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s"> does not exist&quot;</span> <span class="o">%</span> <span class="n">file_attr</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">data_file_path</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+            <span class="n">test_name</span> <span class="o">=</span> <span class="n">mk_test_name</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s">&quot;error&quot;</span><span class="p">)</span>
+            <span class="n">add_test</span><span class="p">(</span><span class="n">test_name</span><span class="p">,</span> <span class="n">_raise_ve</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">data_file_path</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">elem</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                    <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">elem</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">elem</span><span class="p">]</span>
+                    <span class="n">test_name</span> <span class="o">=</span> <span class="n">mk_test_name</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="n">elem</span>
+                    <span class="n">test_name</span> <span class="o">=</span> <span class="n">mk_test_name</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                <span class="n">add_test</span><span class="p">(</span><span class="n">test_name</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">func</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">cls</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">DATA_ATTR</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">DATA_ATTR</span><span class="p">)):</span>
+                <span class="n">test_name</span> <span class="o">=</span> <span class="n">mk_test_name</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s">&quot;__name__&quot;</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="n">i</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">UNPACK_ATTR</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                        <span class="n">add_test</span><span class="p">(</span><span class="n">test_name</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">v</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="c"># unpack dictionary</span>
+                        <span class="n">add_test</span><span class="p">(</span><span class="n">test_name</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">**</span><span class="n">v</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">add_test</span><span class="p">(</span><span class="n">test_name</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+            <span class="nb">delattr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">FILE_ATTR</span><span class="p">):</span>
+            <span class="n">file_attr</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">FILE_ATTR</span><span class="p">)</span>
+            <span class="n">process_file_data</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">file_attr</span><span class="p">)</span>
+            <span class="nb">delattr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cls</span></div>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Tanium.
+      Last updated on Dec 08, 2014.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
