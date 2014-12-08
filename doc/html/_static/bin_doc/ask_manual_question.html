@@ -1,0 +1,1991 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>body
+{
+  font-size:15px;
+  line-height:1.7;
+  overflow-x:hidden;
+
+    background-color: white;
+    border-radius: 3px;
+    border: 3px solid #EEE;
+    box-shadow: inset 0 0 0 1px #CECECE;
+    font-family: Helvetica, arial, freesans, clean, sans-serif;
+    max-width: 912px;
+    padding: 30px;
+    margin: 2em auto;
+
+    color:#333333;
+}
+
+
+.body-classic{
+  color:#444;
+  font-family:Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', "Hiragino Sans GB", "STXihei", "微软雅黑", serif;
+  font-size:16px;
+  line-height:1.5em;
+  background:#fefefe;
+  width: 65em;
+  margin: 10px auto;
+  padding: 1em;
+  outline: 1300px solid #FAFAFA;
+}
+
+body>:first-child
+{
+  margin-top:0!important;
+}
+
+body>:last-child
+{
+  margin-bottom:0!important;
+}
+
+blockquote,dl,ol,p,pre,table,ul {
+  border: 0;
+  margin: 15px 0;
+  padding: 0;
+}
+
+body a {
+  color: #4183c4;
+  text-decoration: none;
+}
+
+body a:hover {
+  text-decoration: underline;
+}
+
+body a.absent
+{
+  color:#c00;
+}
+
+body a.anchor
+{
+  display:block;
+  padding-left:30px;
+  margin-left:-30px;
+  cursor:pointer;
+  position:absolute;
+  top:0;
+  left:0;
+  bottom:0
+}
+
+/*h4,h5,h6{ font-weight: bold; }*/
+
+.octicon{
+  font:normal normal 16px sans-serif;
+  width: 1em;
+  height: 1em;
+  line-height:1;
+  display:inline-block;
+  text-decoration:none;
+  -webkit-font-smoothing:antialiased
+}
+
+.octicon-link {
+  background: url("data:image/svg+xml;utf8,<?xml version='1.0' standalone='no'?> <!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'> <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 832'> <metadata>Copyright (C) 2013 by GitHub</metadata> <!-- scale(0.01565557729941) --> <path transform='' d='M768 64h-192s-254 0-256 256c0 22 3 43 8 64h137c-11-19-18-41-18-64 0-128 128-128 128-128h192s128 0 128 128-128 128-128 128 0 64-64 128h64s256 0 256-256-256-256-256-256z m-72 192h-137c11 19 18 41 18 64 0 128-128 128-128 128h-192s-128 0-128-128 128-128 128-128-4-65 66-128h-66s-256 0-256 256 256 256 256 256h192s256 0 256-256c0-22-4-44-8-64z'/> </svg>");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: bottom;
+}
+
+.octicon-link:before{
+  content:'\a0';
+}
+
+body h1,body h2,body h3,body h4,body h5,body h6{
+  margin:1em 0 15px;
+  padding:0;
+  font-weight:bold;
+  line-height:1.7;
+  cursor:text;
+  position:relative
+}
+
+body h1 .octicon-link,body h2 .octicon-link,body h3 .octicon-link,body h4 .octicon-link,body h5 .octicon-link,body h6 .octicon-link{
+  display:none;
+  color:#000
+}
+
+body h1:hover a.anchor,body h2:hover a.anchor,body h3:hover a.anchor,body h4:hover a.anchor,body h5:hover a.anchor,body h6:hover a.anchor{
+  text-decoration:none;
+  line-height:1;
+  padding-left:0;
+  margin-left:-22px;
+  top:15%
+}
+
+body h1:hover a.anchor .octicon-link,body h2:hover a.anchor .octicon-link,body h3:hover a.anchor .octicon-link,body h4:hover a.anchor .octicon-link,body h5:hover a.anchor .octicon-link,body h6:hover a.anchor .octicon-link{
+  display:inline-block
+}
+
+body h1 tt,body h1 code,body h2 tt,body h2 code,body h3 tt,body h3 code,body h4 tt,body h4 code,body h5 tt,body h5 code,body h6 tt,body h6 code{
+  font-size:inherit
+}
+
+body h1{
+  font-size:2.5em;
+  border-bottom:1px solid #ddd
+}
+
+body h2{
+  font-size:2em;
+  border-bottom:1px solid #eee
+}
+
+body h3{
+  font-size:1.5em
+}
+
+body h4{
+  font-size:1.2em
+}
+
+body h5{
+  font-size:1em
+}
+
+body h6{
+  color:#777;
+  font-size:1em
+}
+
+body p,body blockquote,body ul,body ol,body dl,body table,body pre{
+  margin:15px 0
+}
+
+body h1 tt,body h1 code,body h2 tt,body h2 code,body h3 tt,body h3 code,body h4 tt,body h4 code,body h5 tt,body h5 code,body h6 tt,body h6 code
+{
+  font-size:inherit;
+}
+
+
+body hr
+{
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAYAAACtBE5DAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OENDRjNBN0E2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OENDRjNBN0I2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4Q0NGM0E3ODY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4Q0NGM0E3OTY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqqezsUAAAAfSURBVHjaYmRABcYwBiM2QSA4y4hNEKYDQxAEAAIMAHNGAzhkPOlYAAAAAElFTkSuQmCC);
+  background-repeat: repeat-x;
+  /*background:transparent url(http://overblown.net/files/markdown/dirty-shade.png) repeat-x 0 0;*/
+  background-color: transparent;
+  background-position: 0;
+  border:0 none;
+  color:#ccc;
+  height:4px;
+  margin:15px 0;
+  padding:0;
+}
+
+body li p.first
+{
+  display:inline-block;
+}
+
+body ul,body ol
+{
+  padding-left:30px;
+}
+
+body ul.no-list,body ol.no-list
+{
+  list-style-type:none;
+  padding:0;
+}
+
+body ul ul,body ul ol,body ol ol,body ol ul
+{
+  margin-bottom:0;
+  margin-top:0;
+}
+
+body dl
+{
+  padding:0;
+}
+
+body dl dt
+{
+  font-size:14px;
+  font-style:italic;
+  font-weight:700;
+  margin-top:15px;
+  padding:0;
+}
+
+body dl dd
+{
+  margin-bottom:15px;
+  padding:0 15px;
+}
+
+body blockquote
+{
+  border-left:4px solid #DDD;
+  color:#777;
+  padding:0 15px;
+}
+
+body blockquote>:first-child
+{
+  margin-top:0;
+}
+
+body blockquote>:last-child
+{
+  margin-bottom:0;
+}
+
+body table
+{
+  display:block;
+  overflow:auto;
+  width:100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  padding: 0;
+}
+
+body table th
+{
+  font-weight:700;
+}
+
+body table th,body table td
+{
+  border:1px solid #ddd;
+  padding:6px 13px;
+}
+
+body table tr
+{
+  background-color:#fff;
+  border-top:1px solid #ccc;
+}
+
+body table tr:nth-child(2n)
+{
+  background-color:#f8f8f8;
+}
+
+body img
+{
+  -moz-box-sizing:border-box;
+  box-sizing:border-box;
+  max-width:100%;
+}
+
+body span.frame
+{
+  display:block;
+  overflow:hidden;
+}
+
+body span.frame>span
+{
+  border:1px solid #ddd;
+  display:block;
+  float:left;
+  margin:13px 0 0;
+  overflow:hidden;
+  padding:7px;
+  width:auto;
+}
+
+body span.frame span img
+{
+  display:block;
+  float:left;
+}
+
+body span.frame span span
+{
+  clear:both;
+  color:#333;
+  display:block;
+  padding:5px 0 0;
+}
+
+body span.align-center
+{
+  clear:both;
+  display:block;
+  overflow:hidden;
+}
+
+body span.align-center>span
+{
+  display:block;
+  margin:13px auto 0;
+  overflow:hidden;
+  text-align:center;
+}
+
+body span.align-center span img
+{
+  margin:0 auto;
+  text-align:center;
+}
+
+body span.align-right
+{
+  clear:both;
+  display:block;
+  overflow:hidden;
+}
+
+body span.align-right>span
+{
+  display:block;
+  margin:13px 0 0;
+  overflow:hidden;
+  text-align:right;
+}
+
+body span.align-right span img
+{
+  margin:0;
+  text-align:right;
+}
+
+body span.float-left
+{
+  display:block;
+  float:left;
+  margin-right:13px;
+  overflow:hidden;
+}
+
+body span.float-left span
+{
+  margin:13px 0 0;
+}
+
+body span.float-right
+{
+  display:block;
+  float:right;
+  margin-left:13px;
+  overflow:hidden;
+}
+
+body span.float-right>span
+{
+  display:block;
+  margin:13px auto 0;
+  overflow:hidden;
+  text-align:right;
+}
+
+body code,body tt
+{
+  background-color:#f8f8f8;
+  border:1px solid #ddd;
+  border-radius:3px;
+  margin:0 2px;
+  padding:0 5px;
+}
+
+body code
+{
+  white-space:nowrap;
+}
+
+
+code,pre{
+  font-family:Consolas, "Liberation Mono", Courier, monospace;
+  font-size:12px
+}
+
+body pre>code
+{
+  background:transparent;
+  border:none;
+  margin:0;
+  padding:0;
+  white-space:pre;
+}
+
+body .highlight pre,body pre
+{
+  background-color:#f8f8f8;
+  border:1px solid #ddd;
+  font-size:13px;
+  line-height:19px;
+  overflow:auto;
+  padding:6px 10px;
+  border-radius:3px
+}
+
+body pre code,body pre tt
+{
+  background-color:transparent;
+  border:none;
+  margin:0;
+  padding:0;
+}
+
+body .task-list{
+  list-style-type:none;
+  padding-left:10px
+}
+
+.task-list-item{
+  padding-left:20px
+}
+
+.task-list-item label{
+  font-weight:normal
+}
+
+.task-list-item.enabled label{
+  cursor:pointer
+}
+
+.task-list-item+.task-list-item{
+  margin-top:5px
+}
+
+.task-list-item-checkbox{
+  float:left;
+  margin-left:-20px;
+  margin-top:7px
+}
+
+
+.highlight{
+  background:#ffffff
+}
+
+.highlight .c{
+  color:#999988;
+  font-style:italic
+}
+
+.highlight .err{
+  color:#a61717;
+  background-color:#e3d2d2
+}
+
+.highlight .k{
+  font-weight:bold
+}
+
+.highlight .o{
+  font-weight:bold
+}
+
+.highlight .cm{
+  color:#999988;
+  font-style:italic
+}
+
+.highlight .cp{
+  color:#999999;
+  font-weight:bold
+}
+
+.highlight .c1{
+  color:#999988;
+  font-style:italic
+}
+
+.highlight .cs{
+  color:#999999;
+  font-weight:bold;
+  font-style:italic
+}
+
+.highlight .gd{
+  color:#000000;
+  background-color:#ffdddd
+}
+
+.highlight .gd .x{
+  color:#000000;
+  background-color:#ffaaaa
+}
+
+.highlight .ge{
+  font-style:italic
+}
+
+.highlight .gr{
+  color:#aa0000
+}
+
+.highlight .gh{
+  color:#999999
+}
+
+.highlight .gi{
+  color:#000000;
+  background-color:#ddffdd
+}
+
+.highlight .gi .x{
+  color:#000000;
+  background-color:#aaffaa
+}
+
+.highlight .go{
+  color:#888888
+}
+
+.highlight .gp{
+  color:#555555
+}
+
+.highlight .gs{
+  font-weight:bold
+}
+
+.highlight .gu{
+  color:#800080;
+  font-weight:bold
+}
+
+.highlight .gt{
+  color:#aa0000
+}
+
+.highlight .kc{
+  font-weight:bold
+}
+
+.highlight .kd{
+  font-weight:bold
+}
+
+.highlight .kn{
+  font-weight:bold
+}
+
+.highlight .kp{
+  font-weight:bold
+}
+
+.highlight .kr{
+  font-weight:bold
+}
+
+.highlight .kt{
+  color:#445588;
+  font-weight:bold
+}
+
+.highlight .m{
+  color:#009999
+}
+
+.highlight .s{
+  color:#d14
+}
+
+.highlight .n{
+  color:#333333
+}
+
+.highlight .na{
+  color:#008080
+}
+
+.highlight .nb{
+  color:#0086B3
+}
+
+.highlight .nc{
+  color:#445588;
+  font-weight:bold
+}
+
+.highlight .no{
+  color:#008080
+}
+
+.highlight .ni{
+  color:#800080
+}
+
+.highlight .ne{
+  color:#990000;
+  font-weight:bold
+}
+
+.highlight .nf{
+  color:#990000;
+  font-weight:bold
+}
+
+.highlight .nn{
+  color:#555555
+}
+
+.highlight .nt{
+  color:#000080
+}
+
+.highlight .nv{
+  color:#008080
+}
+
+.highlight .ow{
+  font-weight:bold
+}
+
+.highlight .w{
+  color:#bbbbbb
+}
+
+.highlight .mf{
+  color:#009999
+}
+
+.highlight .mh{
+  color:#009999
+}
+
+.highlight .mi{
+  color:#009999
+}
+
+.highlight .mo{
+  color:#009999
+}
+
+.highlight .sb{
+  color:#d14
+}
+
+.highlight .sc{
+  color:#d14
+}
+
+.highlight .sd{
+  color:#d14
+}
+
+.highlight .s2{
+  color:#d14
+}
+
+.highlight .se{
+  color:#d14
+}
+
+.highlight .sh{
+  color:#d14
+}
+
+.highlight .si{
+  color:#d14
+}
+
+.highlight .sx{
+  color:#d14
+}
+
+.highlight .sr{
+  color:#009926
+}
+
+.highlight .s1{
+  color:#d14
+}
+
+.highlight .ss{
+  color:#990073
+}
+
+.highlight .bp{
+  color:#999999
+}
+
+.highlight .vc{
+  color:#008080
+}
+
+.highlight .vg{
+  color:#008080
+}
+
+.highlight .vi{
+  color:#008080
+}
+
+.highlight .il{
+  color:#009999
+}
+
+.highlight .gc{
+  color:#999;
+  background-color:#EAF2F5
+}
+
+.type-csharp .highlight .k{
+  color:#0000FF
+}
+
+.type-csharp .highlight .kt{
+  color:#0000FF
+}
+
+.type-csharp .highlight .nf{
+  color:#000000;
+  font-weight:normal
+}
+
+.type-csharp .highlight .nc{
+  color:#2B91AF
+}
+
+.type-csharp .highlight .nn{
+  color:#000000
+}
+
+.type-csharp .highlight .s{
+  color:#A31515
+}
+
+.type-csharp .highlight .sc{
+  color:#A31515
+}
+
+</style>
+<title>ask_manual_question</title>
+</head><body>
+<h1>
+<a id="user-content-ask-manual-question-readme" class="anchor" href="#ask-manual-question-readme" aria-hidden="true"><span class="octicon octicon-link"></span></a>Ask Manual Question Readme</h1>
+
+<hr>
+
+<p><a name="user-content-toc">Table of contents:</a></p>
+
+<ul>
+<li><a href="#user-content-ask-manual-question-help">Ask Manual Question Help</a></li>
+<li><a href="#user-content-print-the-help-for-sensors">Print the help for sensors</a></li>
+<li><a href="#user-content-print-the-help-for-filters">Print the help for filters</a></li>
+<li><a href="#user-content-print-the-help-for-options">Print the help for options</a></li>
+<li><a href="#user-content-ask-a-question-example-1">Ask a question example 1</a></li>
+<li><a href="#user-content-ask-a-question-example-2">Ask a question example 2</a></li>
+<li><a href="#user-content-ask-a-question-example-3">Ask a question example 3</a></li>
+<li><a href="#user-content-ask-a-question-example-4">Ask a question example 4</a></li>
+<li><a href="#user-content-ask-a-question-example-5">Ask a question example 5</a></li>
+<li><a href="#user-content-ask-a-question-example-6">Ask a question example 6</a></li>
+<li><a href="#user-content-ask-a-question-example-7">Ask a question example 7</a></li>
+</ul>
+
+<hr>
+
+<h1>
+<a id="user-content-ask-manual-question-help" class="anchor" href="#ask-manual-question-help" aria-hidden="true"><span class="octicon octicon-link"></span></a>Ask Manual Question Help</h1>
+
+<ul>
+<li>Ask a manual question and save the results as a report format</li>
+</ul>
+
+<div class="highlight highlight-bash"><pre>ask_manual_question.py -h</pre></div>
+
+<pre><code>usage: ask_manual_question.py [-h] -u USERNAME -p PASSWORD --host HOST
+                              [--port PORT] [-l LOGLEVEL] [-s SENSORS]
+                              [-f QUESTION_FILTERS] [-o QUESTION_OPTIONS]
+                              [--sensors-help] [--filters-help]
+                              [--options-help] [--no-results | --results]
+                              [--file REPORT_FILE] [--dir REPORT_DIR]
+                              {csv,json} ...
+
+Ask a manual question and save the results as a report format
+
+optional arguments:
+  -h, --help            show this help message and exit
+
+Handler Authentication:
+  -u USERNAME, --username USERNAME
+                        Name of user (default: None)
+  -p PASSWORD, --password PASSWORD
+                        Password of user (default: None)
+  --host HOST           Hostname/ip of SOAP Server (default: None)
+  --port PORT           Port to use when connecting to SOAP Server (default:
+                        444)
+
+Handler Options:
+  -l LOGLEVEL, --loglevel LOGLEVEL
+                        Logging level to use, increase for more verbosity
+                        (default: 0)
+
+Manual Question Options:
+  -s SENSORS, --sensor SENSORS
+                        Sensor, optionally describe parameters, options, and a
+                        filter; pass --sensors-help to get a full description
+                        (default: [])
+  -f QUESTION_FILTERS, --filter QUESTION_FILTERS
+                        Whole question filter; pass --filters-help to get a
+                        full description (default: [])
+  -o QUESTION_OPTIONS, --option QUESTION_OPTIONS
+                        Whole question option; pass --options-help to get a
+                        full description (default: [])
+  --sensors-help        Get the full help for sensor strings (default: False)
+  --filters-help        Get the full help for filters strings (default: False)
+  --options-help        Get the full help for options strings (default: False)
+  --no-results          Do not get the results after asking the quesiton
+                        action
+  --results             Get the results after asking the quesiton (default)
+                        (default: True)
+
+Report File Options:
+  --file REPORT_FILE    File to save report to (will be automatically
+                        generated if not supplied) (default: None)
+  --dir REPORT_DIR      Directory to save report to (current directory will be
+                        used if not supplied) (default: None)
+
+Export Formats:
+  {csv,json}            Export Format choices
+    csv                 Produce a CSV report, supply "csv -h" to see CSV
+                        options
+    json                Produce a JSON report, supply "json -h" to see JSON
+                        options
+
+usage: ask_manual_question.py csv [-h]
+                                  [--sort HEADER_SORT | --no-sort | --auto_sort]
+                                  [--add-sensor | --no-add-sensor]
+                                  [--add-type | --no-add-type]
+                                  [--expand-columns | --no-columns]
+
+CSV Export Options
+
+optional arguments:
+  -h, --help          show this help message and exit
+  --sort HEADER_SORT  Sort headers by given names (default: [])
+  --no-sort           Do not sort the headers at all
+  --auto_sort         Sort the headers with a basic alphanumeric sort
+                      (default)
+  --add-sensor        Add the sensor names to each header
+  --no-add-sensor     Do not add the sensor names to each header (default)
+  --add-type          Add the result type to each header
+  --no-add-type       Do not add the result type to each header (default)
+  --expand-columns    Expand multi-line cells into their own rows that have
+                      sensor correlated columns in the new rows
+  --no-columns        Do not add expand multi-line cells into their own rows
+                      (default)
+
+usage: ask_manual_question.py json [-h]
+
+JSON Export Options
+
+optional arguments:
+  -h, --help  show this help message and exit
+</code></pre>
+
+<ul>
+<li>Validation Test: exitcode
+
+<ul>
+<li>Valid: <strong>True</strong>
+</li>
+<li>Messages: Exit Code is 0</li>
+</ul>
+</li>
+</ul>
+
+<p><a href="#user-content-toc">TOC</a></p>
+
+<h1>
+<a id="user-content-print-the-help-for-sensors" class="anchor" href="#print-the-help-for-sensors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Print the help for sensors</h1>
+
+<div class="highlight highlight-bash"><pre>ask_manual_question.py -u <span class="pl-s1"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s1"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s1"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 --sensors-help csv</pre></div>
+
+<pre><code>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+++ Asking manual question:
+{
+  "filters_help": false, 
+  "get_results": true, 
+  "options_help": false, 
+  "question_filters": [], 
+  "question_options": [], 
+  "sensors": [], 
+  "sensors_help": true
+}
+
+Sensors Help
+============
+
+Supplying sensors controls what columns will be showed when you ask a
+question.
+
+A sensor string is a human string that describes, at a minimum, a sensor.
+It can also optionally define a selector for the sensor, parameters for
+the sensor, a filter for the sensor, and options for the filter for the
+sensor. Sensors can be provided as a string or a list of strings.
+
+Examples for basic sensors
+---------------------------------
+
+Supplying a single sensor:
+
+    'Computer Name'
+
+Supplying two sensors in a list of strings:
+
+    ['Computer Name', 'IP Route Details']
+
+Supplying multiple sensors with selectors (name is the default
+selector if none is supplied):
+
+    [
+        'Computer Name',
+        'name:Computer Name',
+        'id:1',
+        'hash:123456789',
+    ]
+
+Sensor Parameters
+-----------------
+
+Supplying parameters to a sensor can control the arguments that are
+supplied to a sensor, if that sensor takes any arguments.
+
+Sensor parameters must be surrounded with curly braces '{}',
+and must have a key and value specified that is separated by
+an equals '='. Multiple parameters must be seperated by
+a comma ','. The key should match up to a valid parameter key
+for the sensor in question.
+
+If a parameter is supplied and the sensor doesn't have a
+corresponding key name, it will be ignored. If the sensor has
+parameters and a parameter is NOT supplied then one of two
+paths will be taken:
+
+    * if the parameter does not require a default value, the
+    parameter is left blank and not supplied.
+    * if the parameter does require a value (pulldowns, for
+    example), a default value is derived (for pulldowns,
+    the first value available as a pulldown entry is used).
+
+Examples for sensors with parameters
+------------------------------------
+
+Supplying a single sensor with a single parameter 'dirname':
+
+    'Sensor With Params{dirname=Program Files}'
+
+Supplying a single sensor with two parameters, 'param1' and
+'param2':
+
+    'Sensor With Params{param1=value1,param2=value2}'
+
+Sensor Filters
+--------------
+
+Supplying a filter to a sensor controls what data will be shown in
+those columns (sensors) you've provided.
+
+Sensor filters can be supplied by adding ', that FILTER:VALUE',
+where FILTER is a valid filter string, and VALUE is the string
+that you want FILTER to match on.
+
+See filter help for a list of all possible FILTER strings.
+
+See options help for a list of options that can control how
+the filter works.
+
+Examples for sensors with filters
+---------------------------------
+
+Supplying a sensor with a filter that limits the results to only
+show column data that matches the regular expression
+'.*Windows.*' (Tanium does a case insensitive match by default):
+
+    'Computer Name, that contains:Windows'
+
+Supplying a sensor with a filter that limits the results to only
+show column data that matches the regular expression
+'Microsoft.*':
+
+    'Computer Name, that starts with:Microsoft'
+
+Supply a sensor with a filter that limits the results to only
+show column data that has a version greater or equal to
+'39.0.0.0'. Since this sensor uses Version as its default result
+type, there is no need to change the value type using filter
+options.
+
+    'Installed Application Version' \
+    '{Application Name=Google Chrome}, that =&gt;:39.0.0.0'
+
+Sensor Options
+--------------
+
+Supplying options to a sensor can change how the filter for
+that sensor works.
+
+Sensor options can be supplied by adding ', opt:OPTION' or
+', opt:OPTION:VALUE' for those options that require values,
+where OPTION is a valid option string, and VALUE is the
+appropriate value required by accordant OPTION.
+
+See options help for a list of options that can control how
+the filter works.
+
+Examples for sensors with options
+---------------------------------
+
+Supplying a sensor with an option that forces tanium to
+re-fetch any cached column data that is older than 1 minute:
+
+    'Computer Name, opt:max_data_age:60'
+
+Supplying a sensor with filter and an option that causes
+Tanium to match case for the filter value:
+
+    'Computer Name, that contains:Windows, opt:match_case'
+
+Supplying a sensor with a filter and an option that causes
+Tanium to match all values supplied:
+
+    'Computer Name, that contains:Windows, opt:match_all_values'
+
+Supplying a sensor with a filter and a set of options that
+causes Tanium to recognize the value type as String (which is
+the default type for most sensors), re-fetch data older than
+10 minutes, match any values, and match case:
+
+    'Computer Name', that contains:Windows, ' \
+    opt:value_type:string, opt:max_data_age:600, ' \
+    'opt:match_any_value, opt:match_case'
+</code></pre>
+
+<ul>
+<li>Validation Test: notexitcode
+
+<ul>
+<li>Valid: <strong>True</strong>
+</li>
+<li>Messages: Exit Code is not 0</li>
+</ul>
+</li>
+</ul>
+
+<p><a href="#user-content-toc">TOC</a></p>
+
+<h1>
+<a id="user-content-print-the-help-for-filters" class="anchor" href="#print-the-help-for-filters" aria-hidden="true"><span class="octicon octicon-link"></span></a>Print the help for filters</h1>
+
+<div class="highlight highlight-bash"><pre>ask_manual_question.py -u <span class="pl-s1"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s1"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s1"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 --filters-help csv</pre></div>
+
+<pre><code>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+++ Asking manual question:
+{
+  "filters_help": true, 
+  "get_results": true, 
+  "options_help": false, 
+  "question_filters": [], 
+  "question_options": [], 
+  "sensors": [], 
+  "sensors_help": false
+}
+
+Filters Help
+============
+
+Filters are used generously throughout pytan. When used as part of a
+sensor string, they control what data is shown for the columns that
+the sensor returns. When filters are used for whole question filters,
+they control what rows will be returned. They are used by Groups to
+define group membership, deploy actions to determine which machines
+should have the action deployed to it, and more.
+
+A filter string is a human string that describes, a sensor followed
+by ', that FILTER:VALUE', where FILTER is a valid filter string,
+and VALUE is the string that you want FILTER to match on.
+
+Valid Filters
+-------------
+
+    '&lt;'                      
+        Help: Filter for less than VALUE
+        Example: "Sensor1, that &lt;:VALUE"
+
+    'less'                   
+        Help: Filter for less than VALUE
+        Example: "Sensor1, that less:VALUE"
+
+    'lt'                     
+        Help: Filter for less than VALUE
+        Example: "Sensor1, that lt:VALUE"
+
+    'less than'              
+        Help: Filter for less than VALUE
+        Example: "Sensor1, that less than:VALUE"
+
+    '!&lt;'                     
+        Help: Filter for not less than VALUE
+        Example: "Sensor1, that !&lt;:VALUE"
+
+    'notless'                
+        Help: Filter for not less than VALUE
+        Example: "Sensor1, that notless:VALUE"
+
+    'not less'               
+        Help: Filter for not less than VALUE
+        Example: "Sensor1, that not less:VALUE"
+
+    'not less than'          
+        Help: Filter for not less than VALUE
+        Example: "Sensor1, that not less than:VALUE"
+
+    '&lt;='                     
+        Help: Filter for less than or equal to VALUE
+        Example: "Sensor1, that &lt;=:VALUE"
+
+    'less equal'             
+        Help: Filter for less than or equal to VALUE
+        Example: "Sensor1, that less equal:VALUE"
+
+    'lessequal'              
+        Help: Filter for less than or equal to VALUE
+        Example: "Sensor1, that lessequal:VALUE"
+
+    'le'                     
+        Help: Filter for less than or equal to VALUE
+        Example: "Sensor1, that le:VALUE"
+
+    '!&lt;='                    
+        Help: Filter for not less than or equal to VALUE
+        Example: "Sensor1, that !&lt;=:VALUE"
+
+    'not less equal'         
+        Help: Filter for not less than or equal to VALUE
+        Example: "Sensor1, that not less equal:VALUE"
+
+    'not lessequal'          
+        Help: Filter for not less than or equal to VALUE
+        Example: "Sensor1, that not lessequal:VALUE"
+
+    '&gt;'                      
+        Help: Filter for greater than VALUE
+        Example: "Sensor1, that &gt;:VALUE"
+
+    'greater'                
+        Help: Filter for greater than VALUE
+        Example: "Sensor1, that greater:VALUE"
+
+    'gt'                     
+        Help: Filter for greater than VALUE
+        Example: "Sensor1, that gt:VALUE"
+
+    'greater than'           
+        Help: Filter for greater than VALUE
+        Example: "Sensor1, that greater than:VALUE"
+
+    '!&gt;'                     
+        Help: Filter for not greater than VALUE
+        Example: "Sensor1, that !&gt;:VALUE"
+
+    'not greater'            
+        Help: Filter for not greater than VALUE
+        Example: "Sensor1, that not greater:VALUE"
+
+    'notgreater'             
+        Help: Filter for not greater than VALUE
+        Example: "Sensor1, that notgreater:VALUE"
+
+    'not greater than'       
+        Help: Filter for not greater than VALUE
+        Example: "Sensor1, that not greater than:VALUE"
+
+    '=&gt;'                     
+        Help: Filter for greater than or equal to VALUE
+        Example: "Sensor1, that =&gt;:VALUE"
+
+    'greater equal'          
+        Help: Filter for greater than or equal to VALUE
+        Example: "Sensor1, that greater equal:VALUE"
+
+    'greaterequal'           
+        Help: Filter for greater than or equal to VALUE
+        Example: "Sensor1, that greaterequal:VALUE"
+
+    'ge'                     
+        Help: Filter for greater than or equal to VALUE
+        Example: "Sensor1, that ge:VALUE"
+
+    '!=&gt;'                    
+        Help: Filter for not greater than VALUE
+        Example: "Sensor1, that !=&gt;:VALUE"
+
+    'not greater equal'      
+        Help: Filter for not greater than VALUE
+        Example: "Sensor1, that not greater equal:VALUE"
+
+    'notgreaterequal'        
+        Help: Filter for not greater than VALUE
+        Example: "Sensor1, that notgreaterequal:VALUE"
+
+    '='                      
+        Help: Filter for equals to VALUE
+        Example: "Sensor1, that =:VALUE"
+
+    'equal'                  
+        Help: Filter for equals to VALUE
+        Example: "Sensor1, that equal:VALUE"
+
+    'equals'                 
+        Help: Filter for equals to VALUE
+        Example: "Sensor1, that equals:VALUE"
+
+    'eq'                     
+        Help: Filter for equals to VALUE
+        Example: "Sensor1, that eq:VALUE"
+
+    '!='                     
+        Help: Filter for not equals to VALUE
+        Example: "Sensor1, that !=:VALUE"
+
+    'not equal'              
+        Help: Filter for not equals to VALUE
+        Example: "Sensor1, that not equal:VALUE"
+
+    'notequal'               
+        Help: Filter for not equals to VALUE
+        Example: "Sensor1, that notequal:VALUE"
+
+    'not equals'             
+        Help: Filter for not equals to VALUE
+        Example: "Sensor1, that not equals:VALUE"
+
+    'notequals'              
+        Help: Filter for not equals to VALUE
+        Example: "Sensor1, that notequals:VALUE"
+
+    'ne'                     
+        Help: Filter for not equals to VALUE
+        Example: "Sensor1, that ne:VALUE"
+
+    'contains'               
+        Help: Filter for contains VALUE (adds .* before and after VALUE)
+        Example: "Sensor1, that contains:VALUE"
+
+    'does not contain'       
+        Help: Filter for does not contain VALUE (adds .* before and after VALUE)
+        Example: "Sensor1, that does not contain:VALUE"
+
+    'doesnotcontain'         
+        Help: Filter for does not contain VALUE (adds .* before and after VALUE)
+        Example: "Sensor1, that doesnotcontain:VALUE"
+
+    'not contains'           
+        Help: Filter for does not contain VALUE (adds .* before and after VALUE)
+        Example: "Sensor1, that not contains:VALUE"
+
+    'notcontains'            
+        Help: Filter for does not contain VALUE (adds .* before and after VALUE)
+        Example: "Sensor1, that notcontains:VALUE"
+
+    'starts with'            
+        Help: Filter for starts with VALUE (adds .* after VALUE)
+        Example: "Sensor1, that starts with:VALUE"
+
+    'startswith'             
+        Help: Filter for starts with VALUE (adds .* after VALUE)
+        Example: "Sensor1, that startswith:VALUE"
+
+    'does not start with'    
+        Help: Filter for does not start with VALUE (adds .* after VALUE)
+        Example: "Sensor1, that does not start with:VALUE"
+
+    'doesnotstartwith'       
+        Help: Filter for does not start with VALUE (adds .* after VALUE)
+        Example: "Sensor1, that doesnotstartwith:VALUE"
+
+    'not starts with'        
+        Help: Filter for does not start with VALUE (adds .* after VALUE)
+        Example: "Sensor1, that not starts with:VALUE"
+
+    'notstartswith'          
+        Help: Filter for does not start with VALUE (adds .* after VALUE)
+        Example: "Sensor1, that notstartswith:VALUE"
+
+    'ends with'              
+        Help: Filter for ends with VALUE (adds .* before VALUE)
+        Example: "Sensor1, that ends with:VALUE"
+
+    'endswith'               
+        Help: Filter for ends with VALUE (adds .* before VALUE)
+        Example: "Sensor1, that endswith:VALUE"
+
+    'does not end with'      
+        Help: Filter for does bit end with VALUE (adds .* before VALUE)
+        Example: "Sensor1, that does not end with:VALUE"
+
+    'doesnotendwith'         
+        Help: Filter for does bit end with VALUE (adds .* before VALUE)
+        Example: "Sensor1, that doesnotendwith:VALUE"
+
+    'not ends with'          
+        Help: Filter for does bit end with VALUE (adds .* before VALUE)
+        Example: "Sensor1, that not ends with:VALUE"
+
+    'notstartswith'          
+        Help: Filter for does bit end with VALUE (adds .* before VALUE)
+        Example: "Sensor1, that notstartswith:VALUE"
+
+    'is not'                 
+        Help: Filter for non regular expression match for VALUE
+        Example: "Sensor1, that is not:VALUE"
+
+    'not regex'              
+        Help: Filter for non regular expression match for VALUE
+        Example: "Sensor1, that not regex:VALUE"
+
+    'notregex'               
+        Help: Filter for non regular expression match for VALUE
+        Example: "Sensor1, that notregex:VALUE"
+
+    'not regex match'        
+        Help: Filter for non regular expression match for VALUE
+        Example: "Sensor1, that not regex match:VALUE"
+
+    'notregexmatch'          
+        Help: Filter for non regular expression match for VALUE
+        Example: "Sensor1, that notregexmatch:VALUE"
+
+    'nre'                    
+        Help: Filter for non regular expression match for VALUE
+        Example: "Sensor1, that nre:VALUE"
+
+    'is'                     
+        Help: Filter for regular expression match for VALUE
+        Example: "Sensor1, that is:VALUE"
+
+    'regex'                  
+        Help: Filter for regular expression match for VALUE
+        Example: "Sensor1, that regex:VALUE"
+
+    'regex match'            
+        Help: Filter for regular expression match for VALUE
+        Example: "Sensor1, that regex match:VALUE"
+
+    'regexmatch'             
+        Help: Filter for regular expression match for VALUE
+        Example: "Sensor1, that regexmatch:VALUE"
+
+    're'                     
+        Help: Filter for regular expression match for VALUE
+        Example: "Sensor1, that re:VALUE"
+</code></pre>
+
+<ul>
+<li>Validation Test: notexitcode
+
+<ul>
+<li>Valid: <strong>True</strong>
+</li>
+<li>Messages: Exit Code is not 0</li>
+</ul>
+</li>
+</ul>
+
+<p><a href="#user-content-toc">TOC</a></p>
+
+<h1>
+<a id="user-content-print-the-help-for-options" class="anchor" href="#print-the-help-for-options" aria-hidden="true"><span class="octicon octicon-link"></span></a>Print the help for options</h1>
+
+<div class="highlight highlight-bash"><pre>ask_manual_question.py -u <span class="pl-s1"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s1"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s1"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 --options-help csv</pre></div>
+
+<pre><code>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+++ Asking manual question:
+{
+  "filters_help": false, 
+  "get_results": true, 
+  "options_help": true, 
+  "question_filters": [], 
+  "question_options": [], 
+  "sensors": [], 
+  "sensors_help": false
+}
+
+Options Help
+============
+
+Options are used for controlling how filters act. When options are
+used as part of a sensor string, they change how the filters
+supplied as part of that sensor operate. When options are used for
+whole question options, they change how all of the question filters
+operate.
+
+When options are supplied for a sensor string, they must be
+supplied as ', opt:OPTION' or ', opt:OPTION:VALUE' for options
+that require a value.
+
+When options are supplied for question options, they must be
+supplied as 'OPTION' or 'OPTION:VALUE' for options that require
+a value.
+
+Options can be used on 'filter' or 'group', where 'group' pertains
+to group filters or question filters. All 'filter' options are also
+applicable to 'group' for question options.
+
+Valid Options
+-------------
+
+    'ignore_case'            
+        Help: Make the filter do a case insensitive match
+        Usable on: filter
+        Example for sensor: "Sensor1, opt:ignore_case"
+        Example for question: "ignore_case"
+
+    'match_case'             
+        Help: Make the filter do a case sensitive match
+        Usable on: filter
+        Example for sensor: "Sensor1, opt:match_case"
+        Example for question: "match_case"
+
+    'match_any_value'        
+        Help: Make the filter match any value
+        Usable on: filter
+        Example for sensor: "Sensor1, opt:match_any_value"
+        Example for question: "match_any_value"
+
+    'match_all_values'       
+        Help: Make the filter match all values
+        Usable on: filter
+        Example for sensor: "Sensor1, opt:match_all_values"
+        Example for question: "match_all_values"
+
+    'max_data_age'           
+        Help: Re-fetch cached values older than N seconds
+        Usable on: filter
+        VALUE description and type: seconds, &lt;type 'int'&gt;
+        Example for sensor: "Sensor1, opt:max_data_age:seconds"
+        Example for question: "max_data_age:seconds"
+
+    'value_type'             
+        Help: Make the filter consider the value type as VALUE_TYPE
+        Usable on: filter
+        VALUE description and type: value_type, &lt;type 'str'&gt;
+        Example for sensor: "Sensor1, opt:value_type:value_type"
+        Example for question: "value_type:value_type"
+
+    'and'                    
+        Help: Use 'and' for all of the filters supplied
+        Usable on: group
+        Example for sensor: "Sensor1, opt:and"
+        Example for question: "and"
+
+    'or'                     
+        Help: Use 'or' for all of the filters supplied
+        Usable on: group
+        Example for sensor: "Sensor1, opt:or"
+        Example for question: "or"
+</code></pre>
+
+<ul>
+<li>Validation Test: notexitcode
+
+<ul>
+<li>Valid: <strong>True</strong>
+</li>
+<li>Messages: Exit Code is not 0</li>
+</ul>
+</li>
+</ul>
+
+<p><a href="#user-content-toc">TOC</a></p>
+
+<h1>
+<a id="user-content-ask-a-question-example-1" class="anchor" href="#ask-a-question-example-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Ask a question example 1</h1>
+
+<ul>
+<li>Ask a question with a single sensor</li>
+<li>Save the results to a CSV file</li>
+</ul>
+
+<div class="highlight highlight-bash"><pre>ask_manual_question.py -u <span class="pl-s1"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s1"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s1"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 --sensor <span class="pl-s1"><span class="pl-pds">"</span>Computer Name<span class="pl-pds">"</span></span> --file <span class="pl-s1"><span class="pl-pds">"</span>/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv<span class="pl-pds">"</span></span> csv</pre></div>
+
+<pre><code>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+++ Asking manual question:
+{
+  "filters_help": false, 
+  "get_results": true, 
+  "options_help": false, 
+  "question_filters": [], 
+  "question_options": [], 
+  "sensors": [
+    "Computer Name"
+  ], 
+  "sensors_help": false
+}
+2014-12-08 14:56:45,412 INFO     question_progress: Results 0% (Get Computer Name from all machines)
+2014-12-08 14:56:50,427 INFO     question_progress: Results 0% (Get Computer Name from all machines)
+2014-12-08 14:56:55,445 INFO     question_progress: Results 100% (Get Computer Name from all machines)
+++ Asked Question 'Get Computer Name from all machines' ID: 255
+++ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 122 bytes
+</code></pre>
+
+<ul>
+<li>
+<p>Validation Test: exitcode</p>
+
+<ul>
+<li>Valid: <strong>True</strong>
+</li>
+<li>Messages: Exit Code is 0</li>
+</ul>
+</li>
+<li>
+<p>Validation Test: file_exist_contents</p>
+
+<ul>
+<li>Valid: <strong>True</strong>
+</li>
+<li>Messages: File /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv exists, content:</li>
+</ul>
+</li>
+</ul>
+
+<pre><code>Computer Name
+Casus-Belli.local
+jtanium1.localdomain
+ubuntu.(none)
+localhost.(none)
+Jims-Mac.local
+WIN-A12SC6N6T7Q
+</code></pre>
+
+<p><a href="#user-content-toc">TOC</a></p>
+
+<h1>
+<a id="user-content-ask-a-question-example-2" class="anchor" href="#ask-a-question-example-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>Ask a question example 2</h1>
+
+<ul>
+<li>Ask a question with a single sensor by id</li>
+<li>Save the results to a CSV file</li>
+</ul>
+
+<div class="highlight highlight-bash"><pre>ask_manual_question.py -u <span class="pl-s1"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s1"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s1"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 --sensor <span class="pl-s1"><span class="pl-pds">"</span>id:1<span class="pl-pds">"</span></span> --file <span class="pl-s1"><span class="pl-pds">"</span>/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv<span class="pl-pds">"</span></span> csv</pre></div>
+
+<pre><code>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+++ Asking manual question:
+{
+  "filters_help": false, 
+  "get_results": true, 
+  "options_help": false, 
+  "question_filters": [], 
+  "question_options": [], 
+  "sensors": [
+    "id:1"
+  ], 
+  "sensors_help": false
+}
+2014-12-08 14:56:55,632 INFO     question_progress: Results 0% (Get Action Statuses from all machines)
+2014-12-08 14:57:00,645 INFO     question_progress: Results 50% (Get Action Statuses from all machines)
+2014-12-08 14:57:05,658 INFO     question_progress: Results 100% (Get Action Statuses from all machines)
+++ Asked Question 'Get Action Statuses from all machines' ID: 256
+++ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 176 bytes
+</code></pre>
+
+<ul>
+<li>
+<p>Validation Test: exitcode</p>
+
+<ul>
+<li>Valid: <strong>True</strong>
+</li>
+<li>Messages: Exit Code is 0</li>
+</ul>
+</li>
+<li>
+<p>Validation Test: file_exist_contents</p>
+
+<ul>
+<li>Valid: <strong>True</strong>
+</li>
+<li>Messages: File /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv exists, content:</li>
+</ul>
+</li>
+</ul>
+
+<pre><code>Action Statuses,Count
+16:Completed.,2
+24:Completed.,1
+23:Completed.,6
+21:Completed.,6
+17:Completed.,2
+20:Completed.,2
+18:Completed.,2
+19:Completed.,6
+22:Completed.,2
+</code></pre>
+
+<p><a href="#user-content-toc">TOC</a></p>
+
+<h1>
+<a id="user-content-ask-a-question-example-3" class="anchor" href="#ask-a-question-example-3" aria-hidden="true"><span class="octicon octicon-link"></span></a>Ask a question example 3</h1>
+
+<ul>
+<li>Ask a question with two sensors</li>
+<li>Save the results to a CSV file</li>
+</ul>
+
+<div class="highlight highlight-bash"><pre>ask_manual_question.py -u <span class="pl-s1"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s1"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s1"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 --sensor <span class="pl-s1"><span class="pl-pds">"</span>Computer Name<span class="pl-pds">"</span></span> --sensor <span class="pl-s1"><span class="pl-pds">"</span>Installed Applications<span class="pl-pds">"</span></span>  --file <span class="pl-s1"><span class="pl-pds">"</span>/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv<span class="pl-pds">"</span></span> csv</pre></div>
+
+<pre><code>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+++ Asking manual question:
+{
+  "filters_help": false, 
+  "get_results": true, 
+  "options_help": false, 
+  "question_filters": [], 
+  "question_options": [], 
+  "sensors": [
+    "Computer Name", 
+    "Installed Applications"
+  ], 
+  "sensors_help": false
+}
+2014-12-08 14:57:05,863 INFO     question_progress: Results 0% (Get Computer Name and Installed Applications from all machines)
+2014-12-08 14:57:10,883 INFO     question_progress: Results 0% (Get Computer Name and Installed Applications from all machines)
+2014-12-08 14:57:15,906 INFO     question_progress: Results 100% (Get Computer Name and Installed Applications from all machines)
+++ Asked Question 'Get Computer Name and Installed Applications from all machines' ID: 257
+++ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 187795 bytes
+</code></pre>
+
+<ul>
+<li>
+<p>Validation Test: exitcode</p>
+
+<ul>
+<li>Valid: <strong>True</strong>
+</li>
+<li>Messages: Exit Code is 0</li>
+</ul>
+</li>
+<li>
+<p>Validation Test: file_exist_contents</p>
+
+<ul>
+<li>Valid: <strong>True</strong>
+</li>
+<li>Messages: File /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv exists, content:</li>
+</ul>
+</li>
+</ul>
+
+<pre><code>Computer Name,Name,Silent Uninstall String,Uninstallable,Version
+Casus-Belli.local,"Google Search
+MakePDF
+Wish
+Time Machine
+AppleGraphicsWarning
+soagent
+SpeechService
+AinuIM
+Pass Viewer
+...trimmed for brevity...
+</code></pre>
+
+<p><a href="#user-content-toc">TOC</a></p>
+
+<h1>
+<a id="user-content-ask-a-question-example-4" class="anchor" href="#ask-a-question-example-4" aria-hidden="true"><span class="octicon octicon-link"></span></a>Ask a question example 4</h1>
+
+<ul>
+<li>Ask a question with a sensor that requires parameters</li>
+<li>Save the results to a CSV file</li>
+</ul>
+
+<div class="highlight highlight-bash"><pre>ask_manual_question.py -u <span class="pl-s1"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s1"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s1"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 --sensor <span class="pl-s1"><span class="pl-pds">"</span>Folder Name Search with RegEx Match{dirname=Program Files,regex=Microsoft.*}<span class="pl-pds">"</span></span> --file <span class="pl-s1"><span class="pl-pds">"</span>/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv<span class="pl-pds">"</span></span> csv</pre></div>
+
+<pre><code>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+++ Asking manual question:
+{
+  "filters_help": false, 
+  "get_results": true, 
+  "options_help": false, 
+  "question_filters": [], 
+  "question_options": [], 
+  "sensors": [
+    "Folder Name Search with RegEx Match{dirname=Program Files,regex=Microsoft.*}"
+  ], 
+  "sensors_help": false
+}
+2014-12-08 14:57:16,305 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 14:57:21,323 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 14:57:26,340 INFO     question_progress: Results 33% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 14:57:31,356 INFO     question_progress: Results 50% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 14:57:36,375 INFO     question_progress: Results 50% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 14:57:41,395 INFO     question_progress: Results 83% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 14:57:46,412 INFO     question_progress: Results 83% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 14:57:51,429 INFO     question_progress: Results 83% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 14:57:56,447 INFO     question_progress: Results 83% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 14:58:01,465 INFO     question_progress: Results 83% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 14:58:06,483 INFO     question_progress: Results 83% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 14:58:11,501 INFO     question_progress: Results 83% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 14:58:16,519 INFO     question_progress: Results 83% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 14:58:21,536 INFO     question_progress: Results 83% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 14:58:26,553 INFO     question_progress: Results 83% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 14:58:31,570 INFO     question_progress: Results 83% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 14:58:36,585 INFO     question_progress: Results 83% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 14:58:41,601 INFO     question_progress: Results 83% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 14:58:46,618 INFO     question_progress: Results 100% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+++ Asked Question 'Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines' ID: 258
+++ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 34959 bytes
+</code></pre>
+
+<ul>
+<li>
+<p>Validation Test: exitcode</p>
+
+<ul>
+<li>Valid: <strong>True</strong>
+</li>
+<li>Messages: Exit Code is 0</li>
+</ul>
+</li>
+<li>
+<p>Validation Test: file_exist_contents</p>
+
+<ul>
+<li>Valid: <strong>True</strong>
+</li>
+<li>Messages: File /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv exists, content:</li>
+</ul>
+</li>
+</ul>
+
+<pre><code>Count,"Folder Name Search with RegEx Match[No, Program Files, No, ]"
+1,C:\Program Files\Tanium\Tanium Server\ApacheBackup2014-09-16-20-44-23\cgi-bin
+2,C:\Program Files\VMware\VMware Tools\plugins\vmsvc
+1,C:\Program Files\Microsoft SQL Server\110\Setup Bootstrap\SQLServer2012\1040_ITA_LP\x64\1040\help
+1,C:\Program Files\Common Files\Microsoft Shared\VS7Debug
+1,C:\Program Files\Tanium\Tanium Server\Apache24\manual\style
+1,C:\Program Files\Tanium\Tanium Server\Apache24\htdocs\console\history
+2,C:\Program Files\Common Files\VMware\Drivers\vmci\sockets\include
+2,C:\Program Files\Common Files\Microsoft Shared\ink\ar-SA
+1,C:\Program Files\Tanium\Tanium Server\plugins\console\Dashboards
+...trimmed for brevity...
+</code></pre>
+
+<p><a href="#user-content-toc">TOC</a></p>
+
+<h1>
+<a id="user-content-ask-a-question-example-5" class="anchor" href="#ask-a-question-example-5" aria-hidden="true"><span class="octicon octicon-link"></span></a>Ask a question example 5</h1>
+
+<ul>
+<li>Ask a question with a single sensor</li>
+<li>Supply a filter in the sensor that limits the column data to .<em>Windows.</em> matches</li>
+<li>Supply an option in the sensor that ignores case in the filter</li>
+<li>Supply an option in the sensor that re-fetches cached data older than 1 minute</li>
+<li>Save the results to a CSV file</li>
+</ul>
+
+<div class="highlight highlight-bash"><pre>ask_manual_question.py -u <span class="pl-s1"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s1"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s1"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 --sensor <span class="pl-s1"><span class="pl-pds">"</span>Operating System, that contains:Windows, opt:ignore_case, opt:max_data_age:60<span class="pl-pds">"</span></span> --file <span class="pl-s1"><span class="pl-pds">"</span>/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv<span class="pl-pds">"</span></span> csv</pre></div>
+
+<pre><code>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+++ Asking manual question:
+{
+  "filters_help": false, 
+  "get_results": true, 
+  "options_help": false, 
+  "question_filters": [], 
+  "question_options": [], 
+  "sensors": [
+    "Operating System, that contains:Windows, opt:ignore_case, opt:max_data_age:60"
+  ], 
+  "sensors_help": false
+}
+2014-12-08 14:58:46,874 INFO     question_progress: Results 0% (Get Operating System contains "Windows" from all machines)
+2014-12-08 14:58:51,891 INFO     question_progress: Results 50% (Get Operating System contains "Windows" from all machines)
+2014-12-08 14:58:56,905 INFO     question_progress: Results 100% (Get Operating System contains "Windows" from all machines)
+++ Asked Question 'Get Operating System contains "Windows" from all machines' ID: 260
+++ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 75 bytes
+</code></pre>
+
+<ul>
+<li>
+<p>Validation Test: exitcode</p>
+
+<ul>
+<li>Valid: <strong>True</strong>
+</li>
+<li>Messages: Exit Code is 0</li>
+</ul>
+</li>
+<li>
+<p>Validation Test: file_exist_contents</p>
+
+<ul>
+<li>Valid: <strong>True</strong>
+</li>
+<li>Messages: File /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv exists, content:</li>
+</ul>
+</li>
+</ul>
+
+<pre><code>Count,Operating System
+4,[no results]
+2,Windows Server 2008 R2 Standard
+</code></pre>
+
+<p><a href="#user-content-toc">TOC</a></p>
+
+<h1>
+<a id="user-content-ask-a-question-example-6" class="anchor" href="#ask-a-question-example-6" aria-hidden="true"><span class="octicon octicon-link"></span></a>Ask a question example 6</h1>
+
+<ul>
+<li>Ask a question with two sensors</li>
+<li>Supply parameters to the 2nd sensor</li>
+<li>Supply a filter in the 2nd sensor that limits the column data to .<em>Shared.</em>
+</li>
+<li>Supply an option in the 2nd sensor that re-fetches cached data older than 1 minute</li>
+<li>Supply a question filter that limits the rows returned to machines whose Operating System sensor match .<em>Windows.</em>
+</li>
+<li>Supply a question filter that limits the rows returned to machines whose IP Address filter does not equal 10.10.10.10</li>
+<li>Supply two question options, one to OR the question filters supplied, and another to ignore the case while matching the question filters</li>
+<li>Save the results to a CSV file</li>
+</ul>
+
+<div class="highlight highlight-bash"><pre>ask_manual_question.py -u <span class="pl-s1"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s1"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s1"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 -s <span class="pl-s1"><span class="pl-pds">"</span>Computer Name<span class="pl-pds">"</span></span> -s <span class="pl-s1"><span class="pl-pds">"</span>Folder Name Search with RegEx Match{dirname=Program Files,regex=Microsoft.*, invalidparam=test}, that regex match:.*Shared.*, opt:max_data_age:3600<span class="pl-pds">"</span></span> -f <span class="pl-s1"><span class="pl-pds">"</span>Operating System, that contains:Windows<span class="pl-pds">"</span></span> -f <span class="pl-s1"><span class="pl-pds">"</span>IP Address, that not equals:10.10.10.10<span class="pl-pds">"</span></span> -o <span class="pl-s1"><span class="pl-pds">"</span>or<span class="pl-pds">"</span></span> -o <span class="pl-s1"><span class="pl-pds">"</span>ignore_case<span class="pl-pds">"</span></span> --file <span class="pl-s1"><span class="pl-pds">"</span>/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv<span class="pl-pds">"</span></span> csv</pre></div>
+
+<pre><code>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+++ Asking manual question:
+{
+  "filters_help": false, 
+  "get_results": true, 
+  "options_help": false, 
+  "question_filters": [
+    "Operating System, that contains:Windows", 
+    "IP Address, that not equals:10.10.10.10"
+  ], 
+  "question_options": [
+    "or", 
+    "ignore_case"
+  ], 
+  "sensors": [
+    "Computer Name", 
+    "Folder Name Search with RegEx Match{dirname=Program Files,regex=Microsoft.*, invalidparam=test}, that regex match:.*Shared.*, opt:max_data_age:3600"
+  ], 
+  "sensors_help": false
+}
+2014-12-08 14:58:57,146 INFO     question_progress: Results 0% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines where Operating System contains "Windows" or IP Address = "10.10.10.10")
+2014-12-08 14:59:02,170 INFO     question_progress: Results 33% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines where Operating System contains "Windows" or IP Address = "10.10.10.10")
+2014-12-08 14:59:07,193 INFO     question_progress: Results 67% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines where Operating System contains "Windows" or IP Address = "10.10.10.10")
+2014-12-08 14:59:12,212 INFO     question_progress: Results 67% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines where Operating System contains "Windows" or IP Address = "10.10.10.10")
+2014-12-08 14:59:17,235 INFO     question_progress: Results 83% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines where Operating System contains "Windows" or IP Address = "10.10.10.10")
+2014-12-08 14:59:22,256 INFO     question_progress: Results 83% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines where Operating System contains "Windows" or IP Address = "10.10.10.10")
+2014-12-08 14:59:27,279 INFO     question_progress: Results 83% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines where Operating System contains "Windows" or IP Address = "10.10.10.10")
+2014-12-08 14:59:32,302 INFO     question_progress: Results 100% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines where Operating System contains "Windows" or IP Address = "10.10.10.10")
+++ Asked Question 'Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines where Operating System contains "Windows" or IP Address = "10.10.10.10"' ID: 261
+++ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 7906 bytes
+</code></pre>
+
+<ul>
+<li>
+<p>Validation Test: exitcode</p>
+
+<ul>
+<li>Valid: <strong>True</strong>
+</li>
+<li>Messages: Exit Code is 0</li>
+</ul>
+</li>
+<li>
+<p>Validation Test: file_exist_contents</p>
+
+<ul>
+<li>Valid: <strong>True</strong>
+</li>
+<li>Messages: File /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv exists, content:</li>
+</ul>
+</li>
+</ul>
+
+<pre><code>Computer Name,"Folder Name Search with RegEx Match[No, Program Files, No, ]"
+jtanium1.localdomain,"C:\Program Files\Common Files\Microsoft Shared\VS7Debug
+C:\Program Files\Common Files\Microsoft Shared\ink\ar-SA
+C:\Program Files\Common Files\Microsoft Shared\ink\ru-RU
+C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\keypad
+C:\Program Files\Common Files\Microsoft Shared\ink
+C:\Program Files\Common Files\Microsoft Shared\ink\sv-SE
+C:\Program Files\Common Files\Microsoft Shared\ink\uk-UA
+C:\Program Files\Common Files\Microsoft Shared\ink\sl-SI
+C:\Program Files\Common Files\Microsoft Shared\ink\hu-HU
+...trimmed for brevity...
+</code></pre>
+
+<p><a href="#user-content-toc">TOC</a></p>
+
+<h1>
+<a id="user-content-ask-a-question-example-7" class="anchor" href="#ask-a-question-example-7" aria-hidden="true"><span class="octicon octicon-link"></span></a>Ask a question example 7</h1>
+
+<ul>
+<li>Ask a question with 4 sensors</li>
+<li>Use filters on 3rd and 4th sensor to limit the column data to only show certain apps</li>
+<li>Use 2 question filters to limit the row data to only show the same apps used in the sensor filters</li>
+<li>Supply two question options, one to AND the question filters supplied, and another to ignore the case while matching the question filters</li>
+<li>Save the results to a CSV file</li>
+</ul>
+
+<div class="highlight highlight-bash"><pre>ask_manual_question.py -u <span class="pl-s1"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s1"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s1"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 -s <span class="pl-s1"><span class="pl-pds">"</span>Computer Name<span class="pl-pds">"</span></span> -s <span class="pl-s1"><span class="pl-pds">"</span>Last Logged In User<span class="pl-pds">"</span></span> -s <span class="pl-s1"><span class="pl-pds">"</span>Installed Applications, that contains:Google Search<span class="pl-pds">"</span></span> -s <span class="pl-s1"><span class="pl-pds">"</span>Installed Applications, that contains:Google Chrome<span class="pl-pds">"</span></span> -f <span class="pl-s1"><span class="pl-pds">"</span>Installed Applications, that contains:Google Search<span class="pl-pds">"</span></span> -f <span class="pl-s1"><span class="pl-pds">"</span>Installed Applications, that contains:Google Chrome<span class="pl-pds">"</span></span> -o <span class="pl-s1"><span class="pl-pds">"</span>and<span class="pl-pds">"</span></span> -o <span class="pl-s1"><span class="pl-pds">"</span>ignore_case<span class="pl-pds">"</span></span> --file <span class="pl-s1"><span class="pl-pds">"</span>/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv<span class="pl-pds">"</span></span> csv</pre></div>
+
+<pre><code>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+++ Asking manual question:
+{
+  "filters_help": false, 
+  "get_results": true, 
+  "options_help": false, 
+  "question_filters": [
+    "Installed Applications, that contains:Google Search", 
+    "Installed Applications, that contains:Google Chrome"
+  ], 
+  "question_options": [
+    "and", 
+    "ignore_case"
+  ], 
+  "sensors": [
+    "Computer Name", 
+    "Last Logged In User", 
+    "Installed Applications, that contains:Google Search", 
+    "Installed Applications, that contains:Google Chrome"
+  ], 
+  "sensors_help": false
+}
+2014-12-08 14:59:32,583 INFO     question_progress: Results 0% (Get Computer Name and Last Logged In User and Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome" from all machines where Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome")
+2014-12-08 14:59:37,613 INFO     question_progress: Results 50% (Get Computer Name and Last Logged In User and Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome" from all machines where Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome")
+2014-12-08 14:59:42,643 INFO     question_progress: Results 100% (Get Computer Name and Last Logged In User and Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome" from all machines where Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome")
+++ Asked Question 'Get Computer Name and Last Logged In User and Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome" from all machines where Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome"' ID: 262
+++ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 275 bytes
+</code></pre>
+
+<ul>
+<li>
+<p>Validation Test: exitcode</p>
+
+<ul>
+<li>Valid: <strong>True</strong>
+</li>
+<li>Messages: Exit Code is 0</li>
+</ul>
+</li>
+<li>
+<p>Validation Test: file_exist_contents</p>
+
+<ul>
+<li>Valid: <strong>True</strong>
+</li>
+<li>Messages: File /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv exists, content:</li>
+</ul>
+</li>
+</ul>
+
+<pre><code>Computer Name,Last Logged In User,Name,Name,Silent Uninstall String,Silent Uninstall String,Uninstallable,Uninstallable,Version,Version
+Casus-Belli.local,N/A on Mac,Google Search,Google Search,nothing,nothing,Not Uninstallable,Not Uninstallable,37.0.2062.120,37.0.2062.120
+</code></pre>
+
+<p><a href="#user-content-toc">TOC</a></p>
+
+<h6>
+<a id="user-content-generated-by-build_bin_doc-v145-date-mon-dec--8-145942-2014-est-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v145-date-mon-dec--8-145942-2014-est-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v1.4.5</code>, date: Mon Dec  8 14:59:42 2014 EST, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
+</h6>
+
+</body></html>
