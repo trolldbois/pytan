@@ -59,10 +59,10 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
 Type of response:  <class 'taniumpy.object_types.question_list.QuestionList'>
 
 print of response:
-QuestionList, len: 830
+QuestionList, len: 123
 
 length of response (number of objects returned): 
-830
+123
 
 print the first object returned in JSON format:
 {
@@ -73,7 +73,7 @@ print the first object returned in JSON format:
     "_type": "group", 
     "id": 0
   }, 
-  "expiration": "2014-12-06T18:08:58", 
+  "expiration": "2014-12-08T19:30:12", 
   "expire_seconds": 600, 
   "hidden_flag": 0, 
   "id": 1, 

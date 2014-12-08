@@ -86,7 +86,7 @@ Output from Python Code
       "deleted_flag": 0, 
       "group_id": 0, 
       "id": 2, 
-      "last_login": "2014-12-07T06:08:50", 
+      "last_login": "2014-12-08T20:14:41", 
       "name": "Tanium User", 
       "permissions": {
         "_type": "permissions", 

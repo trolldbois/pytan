@@ -89,7 +89,7 @@ print the first object returned in JSON format:
     ]
   }, 
   "source_id": 0, 
-  "string_count": 3354, 
+  "string_count": 3524, 
   "value_type": "String"
 }
 

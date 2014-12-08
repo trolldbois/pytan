@@ -1,6 +1,6 @@
 
 """
-This provides an example for asking a manual question without using sensors without using human strings.
+This provides an example for asking a manual question without using human strings.
 
 It uses the Computer Name and Folder Name Search with RegEx Match sensors.
 
@@ -85,19 +85,20 @@ print out.getvalue()
 
 '''Output from running this:
 Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-2014-12-07 01:08:20,351 INFO     question_progress: Results 0% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" matching case from all machines where Operating System contains "Windows" matching case)
-2014-12-07 01:08:25,370 INFO     question_progress: Results 0% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" matching case from all machines where Operating System contains "Windows" matching case)
-2014-12-07 01:08:30,394 INFO     question_progress: Results 0% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" matching case from all machines where Operating System contains "Windows" matching case)
-2014-12-07 01:08:35,414 INFO     question_progress: Results 0% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" matching case from all machines where Operating System contains "Windows" matching case)
-2014-12-07 01:08:40,432 INFO     question_progress: Results 0% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" matching case from all machines where Operating System contains "Windows" matching case)
-2014-12-07 01:08:45,454 INFO     question_progress: Results 50% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" matching case from all machines where Operating System contains "Windows" matching case)
-2014-12-07 01:08:50,477 INFO     question_progress: Results 100% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" matching case from all machines where Operating System contains "Windows" matching case)
+2014-12-08 15:14:05,486 INFO     question_progress: Results 0% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" matching case from all machines where Operating System contains "Windows" matching case)
+2014-12-08 15:14:10,509 INFO     question_progress: Results 0% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" matching case from all machines where Operating System contains "Windows" matching case)
+2014-12-08 15:14:15,536 INFO     question_progress: Results 33% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" matching case from all machines where Operating System contains "Windows" matching case)
+2014-12-08 15:14:20,558 INFO     question_progress: Results 67% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" matching case from all machines where Operating System contains "Windows" matching case)
+2014-12-08 15:14:25,582 INFO     question_progress: Results 83% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" matching case from all machines where Operating System contains "Windows" matching case)
+2014-12-08 15:14:30,600 INFO     question_progress: Results 83% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" matching case from all machines where Operating System contains "Windows" matching case)
+2014-12-08 15:14:35,619 INFO     question_progress: Results 83% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" matching case from all machines where Operating System contains "Windows" matching case)
+2014-12-08 15:14:40,640 INFO     question_progress: Results 100% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" matching case from all machines where Operating System contains "Windows" matching case)
 
 Type of response:  <type 'dict'>
 
 Pretty print of response:
-{'question_object': <taniumpy.object_types.question.Question object at 0x102322410>,
- 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x102259cd0>}
+{'question_object': <taniumpy.object_types.question.Question object at 0x10e1bd690>,
+ 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x10e03b1d0>}
 
 Equivalent Question if it were to be asked in the Tanium Console: 
 Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" matching case from all machines where Operating System contains "Windows" matching case
@@ -178,6 +179,62 @@ C:\Program Files\Common Files\Microsoft Shared\ink\pl-PL
 C:\Program Files\Common Files\Microsoft Shared\Stationery
 C:\Program Files\Common Files\Microsoft Shared\VS7Debug\1033
 C:\Program Files\Microsoft SQL Server\110\Shared\ErrorDumps"
+WIN-A12SC6N6T7Q,"C:\Program Files\Common Files\Microsoft Shared\ink\ar-SA
+C:\Program Files\Common Files\Microsoft Shared\ink\ru-RU
+C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\keypad
+C:\Program Files\Common Files\Microsoft Shared\ink
+C:\Program Files\Common Files\Microsoft Shared\ink\sv-SE
+C:\Program Files\Common Files\Microsoft Shared\ink\uk-UA
+C:\Program Files\Common Files\Microsoft Shared\ink\sl-SI
+C:\Program Files\Common Files\Microsoft Shared\ink\hu-HU
+C:\Program Files\Common Files\Microsoft Shared\ink\zh-TW
+C:\Program Files\Common Files\Microsoft Shared\ink\zh-CN
+C:\Program Files\Common Files\Microsoft Shared\ink\fi-FI
+C:\Program Files\Common Files\Microsoft Shared
+C:\Program Files\Common Files\Microsoft Shared\ink\da-DK
+C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\oskmenu
+C:\Program Files\Common Files\Microsoft Shared\ink\ko-KR
+C:\Program Files\Common Files\Microsoft Shared\ink\it-IT
+C:\Program Files\Common Files\Microsoft Shared\Triedit
+C:\Program Files\Common Files\Microsoft Shared\ink\he-IL
+C:\Program Files\Common Files\Microsoft Shared\ink\ro-RO
+C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\oskpred
+C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\numbers
+C:\Program Files\Common Files\Microsoft Shared\ink\nb-NO
+C:\Program Files\Common Files\Microsoft Shared\ink\lv-LV
+C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\auxpad
+C:\Program Files\Common Files\Microsoft Shared\TextConv
+C:\Program Files\Common Files\Microsoft Shared\MSInfo\en-US
+C:\Program Files\Common Files\Microsoft Shared\ink\nl-NL
+C:\Program Files\Common Files\Microsoft Shared\ink\fr-FR
+C:\Program Files\Common Files\Microsoft Shared\ink\tr-TR
+C:\Program Files\Common Files\Microsoft Shared\VC
+C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\symbols
+C:\Program Files\Common Files\Microsoft Shared\ink\lt-LT
+C:\Program Files\Common Files\Microsoft Shared\ink\et-EE
+C:\Program Files\Common Files\Microsoft Shared\ink\cs-CZ
+C:\Program Files\Common Files\Microsoft Shared\ink\en-US
+C:\Program Files\Common Files\Microsoft Shared\ink\bg-BG
+C:\Program Files\Common Files\Microsoft Shared\ink\es-ES
+C:\Program Files\Common Files\Microsoft Shared\MSInfo
+C:\Program Files\Common Files\Microsoft Shared\ink\de-DE
+C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\main
+C:\Program Files\Common Files\Microsoft Shared\ink\sr-Latn-CS
+C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\osknumpad
+C:\Program Files\Common Files\Microsoft Shared\ink\pt-BR
+C:\Program Files\Common Files\Microsoft Shared\ink\pt-PT
+C:\Program Files\Common Files\Microsoft Shared\ink\el-GR
+C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\web
+C:\Program Files\Common Files\Microsoft Shared\ink\ja-JP
+C:\Program Files\Common Files\Microsoft Shared\ink\sk-SK
+C:\Program Files\Common Files\Microsoft Shared\ink\hr-HR
+C:\Program Files\Common Files\Microsoft Shared\VGX
+C:\Program Files\Common Files\Microsoft Shared\Triedit\en-US
+C:\Program Files\Common Files\Microsoft Shared\TextConv\en-US
+C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions
+C:\Program Files\Common Files\Microsoft Shared\ink\th-TH
+C:\Program Files\Common Files\Microsoft Shared\ink\pl-PL
+C:\Program Files\Common Files\Microsoft Shared\Stationery"
 
 
 '''

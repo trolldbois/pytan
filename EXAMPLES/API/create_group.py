@@ -39,7 +39,7 @@ delete_kwargs["name"] = 'All Windows Computers API Test'
 # setup the arguments for the handler method
 kwargs = {}
 kwargs["groupname"] = u'All Windows Computers API Test'
-kwargs["filters"] = [u'Operating System, that contains WIndows']
+kwargs["filters"] = [u'Operating System, that contains:Windows']
 kwargs["filter_options"] = [u'and']
 
 # delete the object in case it already exists
@@ -74,7 +74,7 @@ except Exception as e:
 '''Output from running this:
 Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
 No results found searching for Group, name: 'All Windows Computers API Test'!!
-2014-12-07 01:12:11,156 INFO     handler: New group 'All Windows Computers API Test' created with ID 523, filter text: ' Operating System contains "WIndows"'
+2014-12-08 15:17:04,640 INFO     handler: New group 'All Windows Computers API Test' created with ID 310, filter text: ' Operating System contains "Windows"'
 
 Type of response:  <class 'taniumpy.object_types.group.Group'>
 
@@ -106,21 +106,21 @@ print the object returned in JSON format:
         "substring_length": 0, 
         "substring_start": 0, 
         "utf8_flag": 0, 
-        "value": ".*WIndows.*", 
+        "value": ".*Windows.*", 
         "value_type": "String"
       }
     ]
   }, 
-  "id": 523, 
+  "id": 310, 
   "name": "All Windows Computers API Test", 
   "not_flag": 0, 
   "sub_groups": {
     "_type": "groups", 
     "group": []
   }, 
-  "text": " Operating System contains \"WIndows\"", 
+  "text": " Operating System contains \"Windows\"", 
   "type": 0
 }
-2014-12-07 01:12:11,173 INFO     handler: Deleted 'Group, id: 523'
+2014-12-08 15:17:04,654 INFO     handler: Deleted 'Group, id: 310'
 
 '''

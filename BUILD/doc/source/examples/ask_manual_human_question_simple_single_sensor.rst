@@ -81,14 +81,15 @@ Output from Python Code
 
 
     Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-    2014-12-07 01:02:22,381 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-    2014-12-07 01:02:27,400 INFO     question_progress: Results 100% (Get Computer Name from all machines)
+    2014-12-08 15:05:31,484 INFO     question_progress: Results 0% (Get Computer Name from all machines)
+    2014-12-08 15:05:36,502 INFO     question_progress: Results 83% (Get Computer Name from all machines)
+    2014-12-08 15:05:41,517 INFO     question_progress: Results 100% (Get Computer Name from all machines)
     
     Type of response:  <type 'dict'>
     
     Pretty print of response:
-    {'question_object': <taniumpy.object_types.question.Question object at 0x1022d4890>,
-     'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x1023230d0>}
+    {'question_object': <taniumpy.object_types.question.Question object at 0x10e5414d0>,
+     'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x10e0fae90>}
     
     Equivalent Question if it were to be asked in the Tanium Console: 
     Get Computer Name from all machines
@@ -97,4 +98,8 @@ Output from Python Code
     Computer Name
     Casus-Belli.local
     jtanium1.localdomain
+    ubuntu.(none)
+    localhost.(none)
+    Jims-Mac.local
+    WIN-A12SC6N6T7Q
     

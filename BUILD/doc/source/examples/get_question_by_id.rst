@@ -88,7 +88,7 @@ Output from Python Code
         "_type": "group", 
         "id": 0
       }, 
-      "expiration": "2014-12-06T18:08:58", 
+      "expiration": "2014-12-08T19:30:12", 
       "expire_seconds": 0, 
       "force_computer_id_flag": 1, 
       "hidden_flag": 0, 
@@ -148,7 +148,7 @@ Output from Python Code
                 ]
               }, 
               "source_id": 0, 
-              "string_count": 3354, 
+              "string_count": 3524, 
               "value_type": "String"
             }
           }

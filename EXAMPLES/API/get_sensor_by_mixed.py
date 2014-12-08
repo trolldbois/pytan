@@ -91,7 +91,7 @@ print the first object returned in JSON format:
     ]
   }, 
   "source_id": 0, 
-  "string_count": 301, 
+  "string_count": 307, 
   "value_type": "String"
 }
 

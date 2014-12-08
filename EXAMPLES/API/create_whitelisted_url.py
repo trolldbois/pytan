@@ -75,18 +75,18 @@ except Exception as e:
 '''Output from running this:
 Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
 No results found searching for whitelisted_url with {'url_regex': 'regex:http://test.com/.*API_Test.*URL'}!!
-2014-12-07 01:12:11,203 INFO     handler: New Whitelisted URL 'regex:http://test.com/.*API_Test.*URL' created with ID 17
+2014-12-08 15:17:04,687 INFO     handler: New Whitelisted URL 'regex:http://test.com/.*API_Test.*URL' created with ID 26
 
 Type of response:  <class 'taniumpy.object_types.white_listed_url.WhiteListedUrl'>
 
 print of response:
-WhiteListedUrl, id: 17
+WhiteListedUrl, id: 26
 
 print the object returned in JSON format:
 {
   "_type": "white_listed_url", 
   "download_seconds": 3600, 
-  "id": 17, 
+  "id": 26, 
   "metadata": {
     "_type": "metadata", 
     "item": [
@@ -100,6 +100,6 @@ print the object returned in JSON format:
   }, 
   "url_regex": "regex:http://test.com/.*API_Test.*URL"
 }
-2014-12-07 01:12:11,216 INFO     handler: Deleted 'WhiteListedUrl, id: 17'
+2014-12-08 15:17:04,703 INFO     handler: Deleted 'WhiteListedUrl, id: 26'
 
 '''

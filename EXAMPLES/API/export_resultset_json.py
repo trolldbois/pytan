@@ -57,28 +57,213 @@ print export_str
 
 '''Output from running this:
 Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-2014-12-07 01:15:28,809 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2014-12-07 01:15:33,833 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2014-12-07 01:15:38,859 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2014-12-07 01:15:43,887 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2014-12-07 01:15:48,911 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2014-12-07 01:15:53,945 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2014-12-07 01:15:58,972 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2014-12-07 01:16:03,999 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2014-12-07 01:16:09,024 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2014-12-07 01:16:14,053 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2014-12-07 01:16:19,082 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2014-12-07 01:16:24,116 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2014-12-07 01:16:29,147 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2014-12-07 01:16:34,174 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2014-12-07 01:16:39,202 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2014-12-07 01:16:44,231 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2014-12-07 01:16:49,259 INFO     question_progress: Results 100% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 15:20:17,372 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 15:20:22,401 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 15:20:27,430 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 15:20:32,458 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 15:20:37,487 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 15:20:42,513 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 15:20:47,546 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 15:20:52,572 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 15:20:57,602 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 15:21:02,629 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 15:21:07,661 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 15:21:12,692 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 15:21:17,720 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 15:21:22,751 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 15:21:27,780 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 15:21:32,810 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 15:21:37,836 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 15:21:42,864 INFO     question_progress: Results 83% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 15:21:47,893 INFO     question_progress: Results 83% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 15:21:52,922 INFO     question_progress: Results 83% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 15:21:57,951 INFO     question_progress: Results 83% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+2014-12-08 15:22:02,990 INFO     question_progress: Results 100% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
 
 print the export_str returned from export_obj():
 [
   {
     "row0": [
+      {
+        "column.display_name": "Computer Name", 
+        "column.result_type": "String", 
+        "column.values": [
+          "ubuntu.(none)"
+        ], 
+        "column.what_hash": 3409330187
+      }, 
+      {
+        "column.display_name": "Destination", 
+        "column.result_type": "IPAddress", 
+        "column.values": [
+          "172.16.31.0", 
+          "0.0.0.0"
+        ], 
+        "column.what_hash": 435227963
+      }, 
+      {
+        "column.display_name": "Gateway", 
+        "column.result_type": "IPAddress", 
+        "column.values": [
+          "0.0.0.0", 
+          "172.16.31.2"
+        ], 
+        "column.what_hash": 435227963
+      }, 
+      {
+        "column.display_name": "Mask", 
+        "column.result_type": "String", 
+        "column.values": [
+          "255.255.255.0", 
+          "0.0.0.0"
+        ], 
+        "column.what_hash": 435227963
+      }, 
+      {
+        "column.display_name": "Flags", 
+        "column.result_type": "String", 
+        "column.values": [
+          "U", 
+          "UG"
+        ], 
+        "column.what_hash": 435227963
+      }, 
+      {
+        "column.display_name": "Metric", 
+        "column.result_type": "NumericInteger", 
+        "column.values": [
+          "1", 
+          "0"
+        ], 
+        "column.what_hash": 435227963
+      }, 
+      {
+        "column.display_name": "Interface", 
+        "column.result_type": "String", 
+        "column.values": [
+          "eth0", 
+          "eth0"
+        ], 
+        "column.what_hash": 435227963
+      }, 
+      {
+        "column.display_name": "IP Address", 
+        "column.result_type": "IPAddress", 
+        "column.values": [
+          "172.16.31.144"
+        ], 
+        "column.what_hash": 3209138996
+      }, 
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "Windows Only"
+        ], 
+        "column.what_hash": 1488751418
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row1": [
+      {
+        "column.display_name": "Computer Name", 
+        "column.result_type": "String", 
+        "column.values": [
+          "localhost.(none)"
+        ], 
+        "column.what_hash": 3409330187
+      }, 
+      {
+        "column.display_name": "Destination", 
+        "column.result_type": "IPAddress", 
+        "column.values": [
+          "172.16.31.0", 
+          "0.0.0.0"
+        ], 
+        "column.what_hash": 435227963
+      }, 
+      {
+        "column.display_name": "Gateway", 
+        "column.result_type": "IPAddress", 
+        "column.values": [
+          "0.0.0.0", 
+          "172.16.31.2"
+        ], 
+        "column.what_hash": 435227963
+      }, 
+      {
+        "column.display_name": "Mask", 
+        "column.result_type": "String", 
+        "column.values": [
+          "255.255.255.0", 
+          "0.0.0.0"
+        ], 
+        "column.what_hash": 435227963
+      }, 
+      {
+        "column.display_name": "Flags", 
+        "column.result_type": "String", 
+        "column.values": [
+          "U", 
+          "UG"
+        ], 
+        "column.what_hash": 435227963
+      }, 
+      {
+        "column.display_name": "Metric", 
+        "column.result_type": "NumericInteger", 
+        "column.values": [
+          "1", 
+          "0"
+        ], 
+        "column.what_hash": 435227963
+      }, 
+      {
+        "column.display_name": "Interface", 
+        "column.result_type": "String", 
+        "column.values": [
+          "eth0", 
+          "eth0"
+        ], 
+        "column.what_hash": 435227963
+      }, 
+      {
+        "column.display_name": "IP Address", 
+        "column.result_type": "IPAddress", 
+        "column.values": [
+          "172.16.31.143"
+        ], 
+        "column.what_hash": 3209138996
+      }, 
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "Windows Only"
+        ], 
+        "column.what_hash": 1488751418
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row2": [
       {
         "column.display_name": "Computer Name", 
         "column.result_type": "String", 
@@ -92,12 +277,12 @@ print the export_str returned from export_obj():
         "column.result_type": "IPAddress", 
         "column.values": [
           "default", 
+          "192.168.0.5/32", 
           "192.168.0", 
           "169.254", 
           "172.16.31/24", 
           "192.168.0.1/32", 
-          "172.16.152/24", 
-          "192.168.0.3/32"
+          "172.16.152/24"
         ], 
         "column.what_hash": 435227963
       }, 
@@ -108,10 +293,10 @@ print the export_str returned from export_obj():
           "192.168.0.1", 
           "link#4", 
           "link#4", 
+          "link#4", 
           "link#13", 
           "link#4", 
-          "link#12", 
-          "link#4"
+          "link#12"
         ], 
         "column.what_hash": 435227963
       }, 
@@ -136,10 +321,10 @@ print the export_str returned from export_obj():
           "UGSc", 
           "UCS", 
           "UCS", 
-          "UC", 
           "UCS", 
           "UC", 
-          "UCS"
+          "UCS", 
+          "UC"
         ], 
         "column.what_hash": 435227963
       }, 
@@ -164,10 +349,10 @@ print the export_str returned from export_obj():
           "en0", 
           "en0", 
           "en0", 
+          "en0", 
           "vmnet8", 
           "en0", 
-          "vmnet1", 
-          "en0"
+          "vmnet1"
         ], 
         "column.what_hash": 435227963
       }, 
@@ -177,12 +362,12 @@ print the export_str returned from export_obj():
         "column.values": [
           "fe80::e896:c1c9:d927:bbe0", 
           "2604:2000:69e6:1a00:82e6:50ff:fe1d:1dca", 
+          "2604:2000:69e6:1a00:69b0:3aaf:72b:d81d", 
           "172.16.31.1", 
           "fe80::82e6:50ff:fe1d:1dca", 
           "172.16.152.1", 
-          "192.168.0.3", 
+          "192.168.0.5", 
           "fe80::2886:21ff:fe7f:3ef4", 
-          "2604:2000:69e6:1a00:95ad:5fe5:cf9e:5403", 
           "fd1b:56a6:50eb:cd49:e896:c1c9:d927:bbe0"
         ], 
         "column.what_hash": 3209138996
@@ -193,7 +378,7 @@ print the export_str returned from export_obj():
         "column.values": [
           "Windows Only"
         ], 
-        "column.what_hash": 2945266020
+        "column.what_hash": 1488751418
       }, 
       {
         "column.display_name": "Count", 
@@ -206,7 +391,104 @@ print the export_str returned from export_obj():
     ]
   }, 
   {
-    "row1": [
+    "row3": [
+      {
+        "column.display_name": "Computer Name", 
+        "column.result_type": "String", 
+        "column.values": [
+          "Jims-Mac.local"
+        ], 
+        "column.what_hash": 3409330187
+      }, 
+      {
+        "column.display_name": "Destination", 
+        "column.result_type": "IPAddress", 
+        "column.values": [
+          "default", 
+          "172.16.31/24", 
+          "169.254"
+        ], 
+        "column.what_hash": 435227963
+      }, 
+      {
+        "column.display_name": "Gateway", 
+        "column.result_type": "IPAddress", 
+        "column.values": [
+          "172.16.31.2", 
+          "link#4", 
+          "link#4"
+        ], 
+        "column.what_hash": 435227963
+      }, 
+      {
+        "column.display_name": "Mask", 
+        "column.result_type": "String", 
+        "column.values": [
+          null, 
+          null, 
+          null
+        ], 
+        "column.what_hash": 435227963
+      }, 
+      {
+        "column.display_name": "Flags", 
+        "column.result_type": "String", 
+        "column.values": [
+          "UGSc", 
+          "UCS", 
+          "UCS"
+        ], 
+        "column.what_hash": 435227963
+      }, 
+      {
+        "column.display_name": "Metric", 
+        "column.result_type": "NumericInteger", 
+        "column.values": [
+          null, 
+          null, 
+          null
+        ], 
+        "column.what_hash": 435227963
+      }, 
+      {
+        "column.display_name": "Interface", 
+        "column.result_type": "String", 
+        "column.values": [
+          "en0", 
+          "en0", 
+          "en0"
+        ], 
+        "column.what_hash": 435227963
+      }, 
+      {
+        "column.display_name": "IP Address", 
+        "column.result_type": "IPAddress", 
+        "column.values": [
+          "172.16.31.131", 
+          "fe80::20c:29ff:fe88:8051"
+        ], 
+        "column.what_hash": 3209138996
+      }, 
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "Windows Only"
+        ], 
+        "column.what_hash": 1488751418
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row4": [
       {
         "column.display_name": "Computer Name", 
         "column.result_type": "String", 
@@ -801,7 +1083,237 @@ print the export_str returned from export_obj():
           "C:\\Program Files\\Microsoft SQL Server\\110\\Setup Bootstrap\\SQLServer2012\\1036_FRA_LP", 
           "C:\\Program Files\\Microsoft SQL Server\\110\\DTS\\Tasks"
         ], 
-        "column.what_hash": 2945266020
+        "column.what_hash": 1488751418
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row5": [
+      {
+        "column.display_name": "Computer Name", 
+        "column.result_type": "String", 
+        "column.values": [
+          "WIN-A12SC6N6T7Q"
+        ], 
+        "column.what_hash": 3409330187
+      }, 
+      {
+        "column.display_name": "Destination", 
+        "column.result_type": "IPAddress", 
+        "column.values": [
+          "0.0.0.0", 
+          "172.16.31.0", 
+          "127.0.0.1", 
+          "127.0.0.0", 
+          "172.16.31.145"
+        ], 
+        "column.what_hash": 435227963
+      }, 
+      {
+        "column.display_name": "Gateway", 
+        "column.result_type": "IPAddress", 
+        "column.values": [
+          "172.16.31.2", 
+          "0.0.0.0", 
+          "0.0.0.0", 
+          "0.0.0.0", 
+          "0.0.0.0"
+        ], 
+        "column.what_hash": 435227963
+      }, 
+      {
+        "column.display_name": "Mask", 
+        "column.result_type": "String", 
+        "column.values": [
+          "0.0.0.0", 
+          "255.255.255.0", 
+          "255.255.255.255", 
+          "255.0.0.0", 
+          "255.255.255.255"
+        ], 
+        "column.what_hash": 435227963
+      }, 
+      {
+        "column.display_name": "Flags", 
+        "column.result_type": "String", 
+        "column.values": [
+          "-", 
+          "-", 
+          "-", 
+          "-", 
+          "-"
+        ], 
+        "column.what_hash": 435227963
+      }, 
+      {
+        "column.display_name": "Metric", 
+        "column.result_type": "NumericInteger", 
+        "column.values": [
+          "10", 
+          "266", 
+          "306", 
+          "306", 
+          "266"
+        ], 
+        "column.what_hash": 435227963
+      }, 
+      {
+        "column.display_name": "Interface", 
+        "column.result_type": "String", 
+        "column.values": [
+          "-", 
+          "-", 
+          "-", 
+          "-", 
+          "-"
+        ], 
+        "column.what_hash": 435227963
+      }, 
+      {
+        "column.display_name": "IP Address", 
+        "column.result_type": "IPAddress", 
+        "column.values": [
+          "172.16.31.145", 
+          "fe80::2877:8743:cdb2:496a"
+        ], 
+        "column.what_hash": 3209138996
+      }, 
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\VMware\\VMware Tools\\plugins\\vmsvc", 
+          "C:\\Program Files\\Common Files\\VMware\\Drivers\\vmci\\sockets\\include", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\ar-SA", 
+          "C:\\Program Files\\Common Files\\SpeechEngines\\Microsoft", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\ru-RU", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\fsdefinitions\\keypad", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\sv-SE", 
+          "C:\\Program Files\\VMware\\VMware Tools\\messages", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\uk-UA", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\sl-SI", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\hu-HU", 
+          "C:\\Program Files\\Common Files\\System\\en-US", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\zh-TW", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\zh-CN", 
+          "C:\\Program Files\\Common Files\\VMware\\Drivers\\video_wddm", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\fi-FI", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\da-DK", 
+          "C:\\Program Files\\Windows Mail", 
+          "C:\\Program Files\\Common Files\\VMware\\Drivers\\vmci\\sockets\\bin\\win64", 
+          "C:\\Program Files\\Common Files\\VMware\\Drivers\\vmci\\sockets\\bin\\win32", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\fsdefinitions\\oskmenu", 
+          "C:\\Program Files\\Windows NT\\Accessories", 
+          "C:\\Program Files\\Windows NT\\TableTextService\\en-US", 
+          "C:\\Program Files\\Common Files\\VMware\\Drivers\\Virtual Printer\\TPOG3\\amd64", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\ko-KR", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\it-IT", 
+          "C:\\Program Files\\Windows NT", 
+          "C:\\Program Files\\Common Files\\SpeechEngines\\Microsoft\\TTS20", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\Triedit", 
+          "C:\\Program Files\\Common Files\\VMware\\Drivers\\memctl", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\he-IL", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\ro-RO", 
+          "C:\\Program Files\\Common Files\\VMware\\Drivers\\pvscsi", 
+          "C:\\Program Files\\Common Files\\Services", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\fsdefinitions\\oskpred", 
+          "C:\\Program Files\\Common Files\\SpeechEngines\\Microsoft\\TTS20\\en-US", 
+          "C:\\Program Files\\Common Files\\VMware\\Drivers\\vmci\\device", 
+          "C:\\Program Files\\Common Files", 
+          "C:\\Program Files\\Common Files\\VMware\\Drivers\\vmci", 
+          "C:\\Program Files\\Common Files\\System\\msadc\\en-US", 
+          "C:\\Program Files\\Common Files\\System", 
+          "C:\\Program Files\\Windows NT\\Accessories\\en-US", 
+          "C:\\Program Files\\VMware\\VMware Tools", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\fsdefinitions\\numbers", 
+          "C:\\Program Files\\Windows NT\\TableTextService", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\nb-NO", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\lv-LV", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\fsdefinitions\\auxpad", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\TextConv", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\MSInfo\\en-US", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\nl-NL", 
+          "C:\\Program Files\\VMware\\VMware Tools\\messages\\zh_CN", 
+          "C:\\Program Files\\Common Files\\VMware\\Drivers\\vmci\\sockets", 
+          "C:\\Program Files\\Common Files\\VMware", 
+          "C:\\Program Files\\Common Files\\System\\msadc", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\fr-FR", 
+          "C:\\Program Files\\Common Files\\VMware\\Drivers\\vss", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\tr-TR", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\VC", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\fsdefinitions\\symbols", 
+          "C:\\Program Files\\Common Files\\System\\Ole DB\\en-US", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\lt-LT", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\et-EE", 
+          "C:\\Program Files\\Common Files\\VMware\\Drivers\\Virtual Printer\\TPOGPS", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\cs-CZ", 
+          "C:\\Program Files\\VMware", 
+          "C:\\Program Files\\Common Files\\VMware\\Drivers\\mouse", 
+          "C:\\Program Files\\Common Files\\VMware\\Drivers\\vmci\\sockets\\bin", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\en-US", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\bg-BG", 
+          "C:\\Program Files\\Common Files\\System\\Ole DB", 
+          "C:\\Program Files\\Common Files\\VMware\\Drivers\\audio", 
+          "C:\\Program Files\\Internet Explorer\\SIGNUP", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\es-ES", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\MSInfo", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\de-DE", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\fsdefinitions\\main", 
+          "C:\\Program Files\\Common Files\\SpeechEngines", 
+          "C:\\Program Files\\VMware\\VMware Tools\\Drivers\\hgfs", 
+          "C:\\Program Files\\Uninstall Information", 
+          "C:\\Program Files\\VMware\\VMware Tools\\Drivers", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\sr-Latn-CS", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\fsdefinitions\\osknumpad", 
+          "C:\\Program Files\\Common Files\\VMware\\Drivers\\vmxnet", 
+          "C:\\Program Files\\Common Files\\VMware\\Drivers\\Virtual Printer\\TPOGPS\\amd64", 
+          "C:\\Program Files\\Common Files\\VMware\\Drivers\\Virtual Printer", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\pt-BR", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\pt-PT", 
+          "C:\\Program Files\\Common Files\\System\\ado", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\el-GR", 
+          "C:\\Program Files\\VMware\\VMware Tools\\win32", 
+          "C:\\Program Files\\VMware\\VMware Tools\\win64", 
+          "C:\\Program Files\\Internet Explorer", 
+          "C:\\Program Files\\Common Files\\VMware\\Drivers\\vmxnet3", 
+          "C:\\Program Files\\VMware\\VMware Tools\\Drivers\\hgfs\\wow64", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\fsdefinitions\\web", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\ja-JP", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\sk-SK", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\hr-HR", 
+          "C:\\Program Files\\Common Files\\VMware\\Drivers", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\VGX", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\Triedit\\en-US", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\TextConv\\en-US", 
+          "C:\\Program Files\\VMware\\VMware Tools\\plugins", 
+          "C:\\Program Files\\Common Files\\System\\ado\\en-US", 
+          "C:\\Program Files\\VMware\\VMware Tools\\plugins\\vmusr", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\fsdefinitions", 
+          "C:\\Program Files\\Common Files\\VMware\\Drivers\\Virtual Printer\\TPOG3", 
+          "C:\\Program Files\\VMware\\VMware Tools\\plugins\\common", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\th-TH", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\pl-PL", 
+          "C:\\Program Files\\Common Files\\SpeechEngines\\Microsoft\\TTS20\\en-US\\enu-dsk", 
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\Stationery", 
+          "C:\\Program Files\\Internet Explorer\\en-US", 
+          "C:\\Program Files\\VMware\\VMware Tools\\messages\\it", 
+          "C:\\Program Files\\VMware\\VMware Tools\\messages\\ja", 
+          "C:\\Program Files\\VMware\\VMware Tools\\messages\\ko", 
+          "C:\\Program Files\\VMware\\VMware Tools\\messages\\de", 
+          "C:\\Program Files\\VMware\\VMware Tools\\messages\\es", 
+          "C:\\Program Files\\VMware\\VMware Tools\\messages\\fr"
+        ], 
+        "column.what_hash": 1488751418
       }, 
       {
         "column.display_name": "Count", 

@@ -98,12 +98,12 @@ print the first object returned in JSON format:
       }
     ]
   }, 
-  "mod_time": "2014-12-06T18:01:38", 
+  "mod_time": "2014-12-08T19:22:05", 
   "mod_user": {
     "_type": "user", 
     "name": "Jim Olsen"
   }, 
-  "most_recent_question_id": 989, 
+  "most_recent_question_id": 274, 
   "name": "Installed Applications", 
   "packages": {
     "_type": "package_specs", 
@@ -114,11 +114,11 @@ print the first object returned in JSON format:
   "question": {
     "_type": "question", 
     "action_tracking_flag": 0, 
-    "expiration": "2014-12-07T06:12:22", 
+    "expiration": "2014-12-08T20:15:30", 
     "expire_seconds": 0, 
     "force_computer_id_flag": 0, 
     "hidden_flag": 0, 
-    "id": 989, 
+    "id": 274, 
     "management_rights_group": {
       "_type": "group", 
       "id": 0
@@ -153,7 +153,7 @@ print the first object returned in JSON format:
           "sensor": {
             "_type": "sensor", 
             "category": "Applications", 
-            "creation_time": "2014-12-06T18:00:21", 
+            "creation_time": "2014-12-08T19:20:40", 
             "delimiter": "|", 
             "description": "List of the applications and versions of those applications installed on the client machine.\nExample: Mozilla Firefox | 16.0.1", 
             "exclude_from_parse_flag": 1, 
@@ -174,7 +174,7 @@ print the first object returned in JSON format:
                 }
               ]
             }, 
-            "modification_time": "2014-12-06T18:00:21", 
+            "modification_time": "2014-12-08T19:20:40", 
             "name": "Installed Applications", 
             "queries": {
               "_type": "queries", 

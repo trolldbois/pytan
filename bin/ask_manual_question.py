@@ -4,7 +4,7 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 '''Ask a manual question and save the results as a report format'''
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
-__version__ = '1.0.0'
+__version__ = '1.0.1'
 
 import os
 import sys
@@ -72,7 +72,7 @@ examples = [
         'name': 'Ask a question example 4',
         'cmd': (
             'ask_manual_question.py $API_INFO --sensor "Folder Name Search with RegEx Match'
-            '{{dirname=Program Files,regex=Microsoft.*}}"'
+            '{dirname=Program Files,regex=Microsoft.*}"'
             ' --file "$TMP/out.csv" csv'
         ),
         'notes': [
@@ -106,8 +106,8 @@ examples = [
         'cmd': (
             'ask_manual_question.py $API_INFO '
             '-s "Computer Name" '
-            '-s "Folder Name Search with RegEx Match{{dirname=Program Files,regex=Microsoft.*, '
-            'invalidparam=test}}, that regex match:.*Shared.*, opt:max_data_age:3600" '
+            '-s "Folder Name Search with RegEx Match{dirname=Program Files,regex=Microsoft.*, '
+            'invalidparam=test}, that regex match:.*Shared.*, opt:max_data_age:3600" '
             '-f "Operating System, that contains:Windows" '
             '-f "IP Address, that not equals:10.10.10.10" '
             '-o "or" -o "ignore_case" '
@@ -156,7 +156,6 @@ examples = [
         'tests': 'exitcode, file_exist_contents',
     },
 ]
-examples = []
 
 
 def process_handler_args(parser, all_args):

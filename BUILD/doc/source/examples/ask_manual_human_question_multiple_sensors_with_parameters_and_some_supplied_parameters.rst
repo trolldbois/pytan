@@ -82,29 +82,32 @@ Output from Python Code
 
 
     Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-    2014-12-07 01:03:28,207 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-    2014-12-07 01:03:33,226 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-    2014-12-07 01:03:38,242 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-    2014-12-07 01:03:43,258 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-    2014-12-07 01:03:48,279 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-    2014-12-07 01:03:53,296 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-    2014-12-07 01:03:58,313 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-    2014-12-07 01:04:03,331 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-    2014-12-07 01:04:08,345 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-    2014-12-07 01:04:13,359 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-    2014-12-07 01:04:18,378 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-    2014-12-07 01:04:23,391 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-    2014-12-07 01:04:28,407 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-    2014-12-07 01:04:33,425 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-    2014-12-07 01:04:38,442 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-    2014-12-07 01:04:43,460 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-    2014-12-07 01:04:48,478 INFO     question_progress: Results 100% (Get Computer Name from all machines)
+    2014-12-08 15:06:32,653 INFO     question_progress: Results 0% (Get Computer Name from all machines)
+    2014-12-08 15:06:37,670 INFO     question_progress: Results 0% (Get Computer Name from all machines)
+    2014-12-08 15:06:42,685 INFO     question_progress: Results 33% (Get Computer Name from all machines)
+    2014-12-08 15:06:47,701 INFO     question_progress: Results 50% (Get Computer Name from all machines)
+    2014-12-08 15:06:52,715 INFO     question_progress: Results 50% (Get Computer Name from all machines)
+    2014-12-08 15:06:57,733 INFO     question_progress: Results 67% (Get Computer Name from all machines)
+    2014-12-08 15:07:02,748 INFO     question_progress: Results 67% (Get Computer Name from all machines)
+    2014-12-08 15:07:07,766 INFO     question_progress: Results 83% (Get Computer Name from all machines)
+    2014-12-08 15:07:12,795 INFO     question_progress: Results 83% (Get Computer Name from all machines)
+    2014-12-08 15:07:17,809 INFO     question_progress: Results 83% (Get Computer Name from all machines)
+    2014-12-08 15:07:22,827 INFO     question_progress: Results 83% (Get Computer Name from all machines)
+    2014-12-08 15:07:27,848 INFO     question_progress: Results 83% (Get Computer Name from all machines)
+    2014-12-08 15:07:32,867 INFO     question_progress: Results 83% (Get Computer Name from all machines)
+    2014-12-08 15:07:37,882 INFO     question_progress: Results 83% (Get Computer Name from all machines)
+    2014-12-08 15:07:42,897 INFO     question_progress: Results 83% (Get Computer Name from all machines)
+    2014-12-08 15:07:47,916 INFO     question_progress: Results 83% (Get Computer Name from all machines)
+    2014-12-08 15:07:52,929 INFO     question_progress: Results 83% (Get Computer Name from all machines)
+    2014-12-08 15:07:57,944 INFO     question_progress: Results 83% (Get Computer Name from all machines)
+    2014-12-08 15:08:02,960 INFO     question_progress: Results 83% (Get Computer Name from all machines)
+    2014-12-08 15:08:07,977 INFO     question_progress: Results 100% (Get Computer Name from all machines)
     
     Type of response:  <type 'dict'>
     
     Pretty print of response:
-    {'question_object': <taniumpy.object_types.question.Question object at 0x10214d550>,
-     'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x1022e14d0>}
+    {'question_object': <taniumpy.object_types.question.Question object at 0x10e644c10>,
+     'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x10e7f0d50>}
     
     Equivalent Question if it were to be asked in the Tanium Console: 
     Get Computer Name from all machines
@@ -112,6 +115,9 @@ Output from Python Code
     CSV Results of response: 
     Computer Name,"Folder Name Search with RegEx Match[No, Program Files, No, ]"
     Casus-Belli.local,Windows Only
+    ubuntu.(none),Windows Only
+    localhost.(none),Windows Only
+    Jims-Mac.local,Windows Only
     jtanium1.localdomain,"C:\Program Files\Tanium\Tanium Server\ApacheBackup2014-09-16-20-44-23\cgi-bin
     C:\Program Files\VMware\VMware Tools\plugins\vmsvc
     C:\Program Files\Microsoft SQL Server\110\Setup Bootstrap\SQLServer2012\1040_ITA_LP\x64\1040\help
@@ -612,4 +618,126 @@ Output from Python Code
     C:\Program Files\VMware\VMware Tools\messages\fr
     C:\Program Files\Microsoft SQL Server\110\Setup Bootstrap\SQLServer2012\1036_FRA_LP
     C:\Program Files\Microsoft SQL Server\110\DTS\Tasks"
+    WIN-A12SC6N6T7Q,"C:\Program Files\VMware\VMware Tools\plugins\vmsvc
+    C:\Program Files\Common Files\VMware\Drivers\vmci\sockets\include
+    C:\Program Files\Common Files\Microsoft Shared\ink\ar-SA
+    C:\Program Files\Common Files\SpeechEngines\Microsoft
+    C:\Program Files\Common Files\Microsoft Shared\ink\ru-RU
+    C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\keypad
+    C:\Program Files\Common Files\Microsoft Shared\ink
+    C:\Program Files\Common Files\Microsoft Shared\ink\sv-SE
+    C:\Program Files\VMware\VMware Tools\messages
+    C:\Program Files\Common Files\Microsoft Shared\ink\uk-UA
+    C:\Program Files\Common Files\Microsoft Shared\ink\sl-SI
+    C:\Program Files\Common Files\Microsoft Shared\ink\hu-HU
+    C:\Program Files\Common Files\System\en-US
+    C:\Program Files\Common Files\Microsoft Shared\ink\zh-TW
+    C:\Program Files\Common Files\Microsoft Shared\ink\zh-CN
+    C:\Program Files\Common Files\VMware\Drivers\video_wddm
+    C:\Program Files\Common Files\Microsoft Shared\ink\fi-FI
+    C:\Program Files\Common Files\Microsoft Shared
+    C:\Program Files\Common Files\Microsoft Shared\ink\da-DK
+    C:\Program Files\Windows Mail
+    C:\Program Files\Common Files\VMware\Drivers\vmci\sockets\bin\win64
+    C:\Program Files\Common Files\VMware\Drivers\vmci\sockets\bin\win32
+    C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\oskmenu
+    C:\Program Files\Windows NT\Accessories
+    C:\Program Files\Windows NT\TableTextService\en-US
+    C:\Program Files\Common Files\VMware\Drivers\Virtual Printer\TPOG3\amd64
+    C:\Program Files\Common Files\Microsoft Shared\ink\ko-KR
+    C:\Program Files\Common Files\Microsoft Shared\ink\it-IT
+    C:\Program Files\Windows NT
+    C:\Program Files\Common Files\SpeechEngines\Microsoft\TTS20
+    C:\Program Files\Common Files\Microsoft Shared\Triedit
+    C:\Program Files\Common Files\VMware\Drivers\memctl
+    C:\Program Files\Common Files\Microsoft Shared\ink\he-IL
+    C:\Program Files\Common Files\Microsoft Shared\ink\ro-RO
+    C:\Program Files\Common Files\VMware\Drivers\pvscsi
+    C:\Program Files\Common Files\Services
+    C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\oskpred
+    C:\Program Files\Common Files\SpeechEngines\Microsoft\TTS20\en-US
+    C:\Program Files\Common Files\VMware\Drivers\vmci\device
+    C:\Program Files\Common Files
+    C:\Program Files\Common Files\VMware\Drivers\vmci
+    C:\Program Files\Common Files\System\msadc\en-US
+    C:\Program Files\Common Files\System
+    C:\Program Files\Windows NT\Accessories\en-US
+    C:\Program Files\VMware\VMware Tools
+    C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\numbers
+    C:\Program Files\Windows NT\TableTextService
+    C:\Program Files\Common Files\Microsoft Shared\ink\nb-NO
+    C:\Program Files\Common Files\Microsoft Shared\ink\lv-LV
+    C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\auxpad
+    C:\Program Files\Common Files\Microsoft Shared\TextConv
+    C:\Program Files\Common Files\Microsoft Shared\MSInfo\en-US
+    C:\Program Files\Common Files\Microsoft Shared\ink\nl-NL
+    C:\Program Files\VMware\VMware Tools\messages\zh_CN
+    C:\Program Files\Common Files\VMware\Drivers\vmci\sockets
+    C:\Program Files\Common Files\VMware
+    C:\Program Files\Common Files\System\msadc
+    C:\Program Files\Common Files\Microsoft Shared\ink\fr-FR
+    C:\Program Files\Common Files\VMware\Drivers\vss
+    C:\Program Files\Common Files\Microsoft Shared\ink\tr-TR
+    C:\Program Files\Common Files\Microsoft Shared\VC
+    C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\symbols
+    C:\Program Files\Common Files\System\Ole DB\en-US
+    C:\Program Files\Common Files\Microsoft Shared\ink\lt-LT
+    C:\Program Files\Common Files\Microsoft Shared\ink\et-EE
+    C:\Program Files\Common Files\VMware\Drivers\Virtual Printer\TPOGPS
+    C:\Program Files\Common Files\Microsoft Shared\ink\cs-CZ
+    C:\Program Files\VMware
+    C:\Program Files\Common Files\VMware\Drivers\mouse
+    C:\Program Files\Common Files\VMware\Drivers\vmci\sockets\bin
+    C:\Program Files\Common Files\Microsoft Shared\ink\en-US
+    C:\Program Files\Common Files\Microsoft Shared\ink\bg-BG
+    C:\Program Files\Common Files\System\Ole DB
+    C:\Program Files\Common Files\VMware\Drivers\audio
+    C:\Program Files\Internet Explorer\SIGNUP
+    C:\Program Files\Common Files\Microsoft Shared\ink\es-ES
+    C:\Program Files\Common Files\Microsoft Shared\MSInfo
+    C:\Program Files\Common Files\Microsoft Shared\ink\de-DE
+    C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\main
+    C:\Program Files\Common Files\SpeechEngines
+    C:\Program Files\VMware\VMware Tools\Drivers\hgfs
+    C:\Program Files\Uninstall Information
+    C:\Program Files\VMware\VMware Tools\Drivers
+    C:\Program Files\Common Files\Microsoft Shared\ink\sr-Latn-CS
+    C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\osknumpad
+    C:\Program Files\Common Files\VMware\Drivers\vmxnet
+    C:\Program Files\Common Files\VMware\Drivers\Virtual Printer\TPOGPS\amd64
+    C:\Program Files\Common Files\VMware\Drivers\Virtual Printer
+    C:\Program Files\Common Files\Microsoft Shared\ink\pt-BR
+    C:\Program Files\Common Files\Microsoft Shared\ink\pt-PT
+    C:\Program Files\Common Files\System\ado
+    C:\Program Files\Common Files\Microsoft Shared\ink\el-GR
+    C:\Program Files\VMware\VMware Tools\win32
+    C:\Program Files\VMware\VMware Tools\win64
+    C:\Program Files\Internet Explorer
+    C:\Program Files\Common Files\VMware\Drivers\vmxnet3
+    C:\Program Files\VMware\VMware Tools\Drivers\hgfs\wow64
+    C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\web
+    C:\Program Files\Common Files\Microsoft Shared\ink\ja-JP
+    C:\Program Files\Common Files\Microsoft Shared\ink\sk-SK
+    C:\Program Files\Common Files\Microsoft Shared\ink\hr-HR
+    C:\Program Files\Common Files\VMware\Drivers
+    C:\Program Files\Common Files\Microsoft Shared\VGX
+    C:\Program Files\Common Files\Microsoft Shared\Triedit\en-US
+    C:\Program Files\Common Files\Microsoft Shared\TextConv\en-US
+    C:\Program Files\VMware\VMware Tools\plugins
+    C:\Program Files\Common Files\System\ado\en-US
+    C:\Program Files\VMware\VMware Tools\plugins\vmusr
+    C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions
+    C:\Program Files\Common Files\VMware\Drivers\Virtual Printer\TPOG3
+    C:\Program Files\VMware\VMware Tools\plugins\common
+    C:\Program Files\Common Files\Microsoft Shared\ink\th-TH
+    C:\Program Files\Common Files\Microsoft Shared\ink\pl-PL
+    C:\Program Files\Common Files\SpeechEngines\Microsoft\TTS20\en-US\enu-dsk
+    C:\Program Files\Common Files\Microsoft Shared\Stationery
+    C:\Program Files\Internet Explorer\en-US
+    C:\Program Files\VMware\VMware Tools\messages\it
+    C:\Program Files\VMware\VMware Tools\messages\ja
+    C:\Program Files\VMware\VMware Tools\messages\ko
+    C:\Program Files\VMware\VMware Tools\messages\de
+    C:\Program Files\VMware\VMware Tools\messages\es
+    C:\Program Files\VMware\VMware Tools\messages\fr"
     

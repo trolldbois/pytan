@@ -74,10 +74,10 @@ Output from Python Code
     Type of response:  <class 'taniumpy.object_types.saved_action_list.SavedActionList'>
     
     print of response:
-    SavedActionList, len: 49
+    SavedActionList, len: 26
     
     length of response (number of objects returned): 
-    49
+    26
     
     print the first object returned in JSON format:
     {
@@ -85,22 +85,22 @@ Output from Python Code
       "action_group_id": 0, 
       "cache_row_id": 0, 
       "comment": "Scans for unmanaged assets on the network.", 
-      "creation_time": "2014-12-06T18:02:01", 
+      "creation_time": "2014-12-08T19:22:33", 
       "distribute_seconds": 600, 
       "end_time": "Never", 
       "expire_seconds": 1800, 
       "id": 1, 
-      "issue_count": 13, 
+      "issue_count": 0, 
       "issue_seconds": 3600, 
       "last_action": {
         "_type": "action", 
-        "id": 68, 
-        "start_time": "2014-12-07T06:02:01"
+        "id": 4294967295, 
+        "start_time": "Never"
       }, 
       "name": "Unmanaged Asset Tracking - Run Scan", 
       "package_spec": {
         "_type": "package_spec", 
-        "id": 6
+        "id": 4294967295
       }, 
       "policy": {
         "_type": "policy", 

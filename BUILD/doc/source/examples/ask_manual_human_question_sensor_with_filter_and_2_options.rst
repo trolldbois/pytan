@@ -46,7 +46,7 @@ Example Python Code
     
     # setup the arguments for the handler method
     kwargs = {}
-    kwargs["sensors"] = u'Operating System, that contains Windows, opt:max_data_age:3600, opt:value_type:string'
+    kwargs["sensors"] = u'Operating System, that contains:Windows, opt:max_data_age:3600, opt:value_type:string'
     kwargs["qtype"] = u'manual_human'
     
     # call the handler with the ask method, passing in kwargs for arguments
@@ -85,20 +85,21 @@ Output from Python Code
 
 
     Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-    2014-12-07 01:07:29,645 INFO     question_progress: Results 0% (Get Operating System contains "Windows" from all machines)
-    2014-12-07 01:07:34,662 INFO     question_progress: Results 100% (Get Operating System contains "Windows" from all machines)
+    2014-12-08 15:13:09,723 INFO     question_progress: Results 0% (Get Operating System contains "Windows" from all machines)
+    2014-12-08 15:13:14,740 INFO     question_progress: Results 50% (Get Operating System contains "Windows" from all machines)
+    2014-12-08 15:13:19,754 INFO     question_progress: Results 100% (Get Operating System contains "Windows" from all machines)
     
     Type of response:  <type 'dict'>
     
     Pretty print of response:
-    {'question_object': <taniumpy.object_types.question.Question object at 0x1023344d0>,
-     'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x10205a450>}
+    {'question_object': <taniumpy.object_types.question.Question object at 0x10e016190>,
+     'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x10e028f10>}
     
     Equivalent Question if it were to be asked in the Tanium Console: 
     Get Operating System contains "Windows" from all machines
     
     CSV Results of response: 
-    Operating System
-    [no results]
-    Windows Server 2008 R2 Standard
+    Count,Operating System
+    4,[no results]
+    2,Windows Server 2008 R2 Standard
     

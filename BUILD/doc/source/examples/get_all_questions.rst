@@ -74,10 +74,10 @@ Output from Python Code
     Type of response:  <class 'taniumpy.object_types.question_list.QuestionList'>
     
     print of response:
-    QuestionList, len: 830
+    QuestionList, len: 123
     
     length of response (number of objects returned): 
-    830
+    123
     
     print the first object returned in JSON format:
     {
@@ -88,7 +88,7 @@ Output from Python Code
         "_type": "group", 
         "id": 0
       }, 
-      "expiration": "2014-12-06T18:08:58", 
+      "expiration": "2014-12-08T19:30:12", 
       "expire_seconds": 600, 
       "hidden_flag": 0, 
       "id": 1, 

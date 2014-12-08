@@ -1,7 +1,6 @@
 # TODO NOW
   * [ ] DOCS/EXAMPLES
     * [ ] update readme
-    * [ ] add usage to docs
 
 # TODO LATER
   * [ ] explain get == select col data, from == select row data
@@ -101,4 +100,5 @@
     * [X] add help to manual stuff
     * [X] incorporate mdocbuild for bin scripts
     * [X] build markdown docs for bin scripts
+    * [X] add usage to docs
 

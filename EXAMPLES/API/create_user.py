@@ -74,7 +74,7 @@ except Exception as e:
 '''Output from running this:
 Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
 No results found searching for user with {'name': 'API Test User'}!!
-2014-12-07 01:12:11,021 INFO     handler: New user 'API Test User' created with ID 16, roles: ['Administrator']
+2014-12-08 15:17:04,492 INFO     handler: New user 'API Test User' created with ID 11, roles: ['Administrator']
 
 Type of response:  <class 'taniumpy.object_types.user.User'>
 
@@ -86,7 +86,7 @@ print the object returned in JSON format:
   "_type": "user", 
   "deleted_flag": 0, 
   "group_id": 0, 
-  "id": 16, 
+  "id": 11, 
   "last_login": "2001-01-01T00:00:00", 
   "metadata": {
     "_type": "metadata", 
@@ -120,6 +120,6 @@ print the object returned in JSON format:
     ]
   }
 }
-2014-12-07 01:12:11,039 INFO     handler: Deleted "User, name: 'API Test User'"
+2014-12-08 15:17:04,517 INFO     handler: Deleted "User, name: 'API Test User'"
 
 '''

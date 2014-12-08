@@ -4,7 +4,7 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 '''Get results from a deploy action, saved question, or question'''
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
-__version__ = '1.0.0'
+__version__ = '1.0.1'
 
 examples = []
 
@@ -38,9 +38,9 @@ examples = [
     {
         'name': 'Get the results for a question',
         'cmd': (
-            'get_results.py $API_INFO -o "question" --id 2929 --file "$TMP/out.csv" csv'
+            'get_results.py $API_INFO -o "question" --id 249 --file "$TMP/out.csv" csv'
         ),
-        'notes': ['Get the results for Question ID 2929', 'Save the results to a CSV file'],
+        'notes': ['Get the results for Question ID 249', 'Save the results to a CSV file'],
         'precleanup': 'rm -f $TMP/out.csv',
         'file_exist': '$TMP/out.csv',
         'tests': 'exitcode, file_exist_contents',
@@ -48,9 +48,9 @@ examples = [
     {
         'name': 'Get the results for a action',
         'cmd': (
-            'get_results.py $API_INFO -o "action" --id 122 --file "$TMP/out.csv" csv'
+            'get_results.py $API_INFO -o "action" --id 24 --file "$TMP/out.csv" csv'
         ),
-        'notes': ['Get the results for action ID 122', 'Save the results to a CSV file'],
+        'notes': ['Get the results for action ID 24', 'Save the results to a CSV file'],
         'precleanup': 'rm -f $TMP/out.csv',
         'file_exist': '$TMP/out.csv',
         'tests': 'exitcode, file_exist_contents',

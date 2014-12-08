@@ -58,14 +58,15 @@ except Exception as e:
 
 '''Output from running this:
 Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-2014-12-07 01:24:38,528 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-2014-12-07 01:24:43,544 INFO     question_progress: Results 50% (Get Computer Name from all machines)
-2014-12-07 01:24:48,562 INFO     question_progress: Results 100% (Get Computer Name from all machines)
+2014-12-08 15:29:52,446 INFO     question_progress: Results 0% (Get Computer Name from all machines)
+2014-12-08 15:29:57,463 INFO     question_progress: Results 50% (Get Computer Name from all machines)
+2014-12-08 15:30:02,479 INFO     question_progress: Results 50% (Get Computer Name from all machines)
+2014-12-08 15:30:07,496 INFO     question_progress: Results 100% (Get Computer Name from all machines)
 Traceback (most recent call last):
   File "<string>", line 49, in <module>
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1339, in export_obj
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1402, in export_obj
     utils.check_dictkey(**check_args)
-  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2433, in check_dictkey
+  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2509, in check_dictkey
     raise HandlerError(err(key, valid_types, k_type))
 HandlerError: 'expand_grouped_columns' must be one of [<type 'bool'>], you supplied <type 'unicode'>!
 

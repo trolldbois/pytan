@@ -74,10 +74,10 @@ Output from Python Code
     Type of response:  <class 'taniumpy.object_types.white_listed_url_list.WhiteListedUrlList'>
     
     print of response:
-    WhiteListedUrlList, len: 4
+    WhiteListedUrlList, len: 22
     
     length of response (number of objects returned): 
-    4
+    22
     
     print the first object returned in JSON format:
     {

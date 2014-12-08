@@ -1,0 +1,2 @@
+description,id,name,permissions_permission
+"Administrators can perform all functions in the system, including creating other users, viewing the System Status, changing Global Settings, and creating Computer Groups.",1,Administrator,admin

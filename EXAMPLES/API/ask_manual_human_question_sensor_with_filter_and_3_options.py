@@ -38,7 +38,7 @@ print handler
 
 # setup the arguments for the handler method
 kwargs = {}
-kwargs["sensors"] = u'Operating System, that contains Windows, opt:match_all_values, opt:ignore_case, opt:max_data_age:3600'
+kwargs["sensors"] = u'Operating System, that contains:Windows, opt:match_all_values, opt:ignore_case, opt:max_data_age:3600'
 kwargs["qtype"] = u'manual_human'
 
 # call the handler with the ask method, passing in kwargs for arguments
@@ -70,22 +70,23 @@ print out.getvalue()
 
 '''Output from running this:
 Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-2014-12-07 01:06:54,330 INFO     question_progress: Results 0% (Get Operating System contains "Windows" from all machines)
-2014-12-07 01:06:59,349 INFO     question_progress: Results 100% (Get Operating System contains "Windows" from all machines)
+2014-12-08 15:12:34,369 INFO     question_progress: Results 0% (Get Operating System contains "Windows" from all machines)
+2014-12-08 15:12:39,383 INFO     question_progress: Results 50% (Get Operating System contains "Windows" from all machines)
+2014-12-08 15:12:44,399 INFO     question_progress: Results 100% (Get Operating System contains "Windows" from all machines)
 
 Type of response:  <type 'dict'>
 
 Pretty print of response:
-{'question_object': <taniumpy.object_types.question.Question object at 0x102334a50>,
- 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x102057c90>}
+{'question_object': <taniumpy.object_types.question.Question object at 0x10e35a790>,
+ 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x10e629210>}
 
 Equivalent Question if it were to be asked in the Tanium Console: 
 Get Operating System contains "Windows" from all machines
 
 CSV Results of response: 
-Operating System
-[no results]
-Windows Server 2008 R2 Standard
+Count,Operating System
+4,[no results]
+2,Windows Server 2008 R2 Standard
 
 
 '''

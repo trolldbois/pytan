@@ -877,8 +877,8 @@ optional arguments:
 
 <pre><code>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
 ++ Found object: SavedQuestion, name: 'Custom Tags'
-++ Found results for object: ResultSet for 2935, ColumnSet: Custom Tags, Count
-++ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 77 bytes
+++ Found results for object: ResultSet for 271, ColumnSet: Custom Tags, Count
+++ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 1479 bytes
 </code></pre>
 
 <ul>
@@ -902,13 +902,17 @@ optional arguments:
 </li>
 </ul>
 
-<pre><code>Custom Tags
-[no results]
-TestTag2
-TestTag1
-TestTag7
-TestTag6
-TestTag5
+<pre><code>Count,Custom Tags
+1,tag_should_be_added_971
+1,tag_should_be_added_905
+1,tag_should_be_added_924
+1,$data
+1,tag_should_be_added_882
+1,tag_should_be_added_860
+1,tag_should_be_added_842
+1,tag_should_be_added_809
+1,tag_should_be_added_502
+...trimmed for brevity...
 </code></pre>
 
 <p><a href="#user-content-toc">TOC</a></p>
@@ -917,16 +921,15 @@ TestTag5
 <a id="user-content-get-the-results-for-a-question" class="anchor" href="#get-the-results-for-a-question" aria-hidden="true"><span class="octicon octicon-link"></span></a>Get the results for a question</h1>
 
 <ul>
-<li>Get the results for Question ID 2929</li>
+<li>Get the results for Question ID 249</li>
 <li>Save the results to a CSV file</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>get_results.py -u <span class="pl-s1"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s1"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s1"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 -o <span class="pl-s1"><span class="pl-pds">"</span>question<span class="pl-pds">"</span></span> --id 2929 --file <span class="pl-s1"><span class="pl-pds">"</span>/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv<span class="pl-pds">"</span></span> csv</pre></div>
+<div class="highlight highlight-bash"><pre>get_results.py -u <span class="pl-s1"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s1"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s1"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 -o <span class="pl-s1"><span class="pl-pds">"</span>question<span class="pl-pds">"</span></span> --id 249 --file <span class="pl-s1"><span class="pl-pds">"</span>/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv<span class="pl-pds">"</span></span> csv</pre></div>
 
 <pre><code>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-++ Found object: Question, id: 2929
-++ Found results for object: ResultSet for 2929, ColumnSet: Last Logged In User, Count
-++ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 91 bytes
+++ Found object: Question, id: 249
+++ No rows returned for results: ResultSet for 249, None
 </code></pre>
 
 <ul>
@@ -943,19 +946,12 @@ TestTag5
 <p>Validation Test: file_exist_contents</p>
 
 <ul>
-<li>Valid: <strong>True</strong>
+<li>Valid: <strong>False</strong>
 </li>
-<li>Messages: File /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv exists, content:</li>
+<li>Messages: File /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv does not exist</li>
 </ul>
 </li>
 </ul>
-
-<pre><code>Count,Last Logged In User
-1,JTANIUM1\Jim Olsen
-5,N/A on Mac
-6,N/A on Mac
-1,N/A on Mac
-</code></pre>
 
 <p><a href="#user-content-toc">TOC</a></p>
 
@@ -963,16 +959,16 @@ TestTag5
 <a id="user-content-get-the-results-for-a-action" class="anchor" href="#get-the-results-for-a-action" aria-hidden="true"><span class="octicon octicon-link"></span></a>Get the results for a action</h1>
 
 <ul>
-<li>Get the results for action ID 122</li>
+<li>Get the results for action ID 24</li>
 <li>Save the results to a CSV file</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>get_results.py -u <span class="pl-s1"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s1"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s1"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 -o <span class="pl-s1"><span class="pl-pds">"</span>action<span class="pl-pds">"</span></span> --id 122 --file <span class="pl-s1"><span class="pl-pds">"</span>/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv<span class="pl-pds">"</span></span> csv</pre></div>
+<div class="highlight highlight-bash"><pre>get_results.py -u <span class="pl-s1"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s1"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s1"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 -o <span class="pl-s1"><span class="pl-pds">"</span>action<span class="pl-pds">"</span></span> --id 24 --file <span class="pl-s1"><span class="pl-pds">"</span>/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv<span class="pl-pds">"</span></span> csv</pre></div>
 
 <pre><code>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-++ Found object: Action, name: 'API Deploy Distribute Tanium Standard Utilities'
-++ Found results for object: ResultSet for 2922, ColumnSet: Computer Name, Action Statuses, Count
-++ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 102 bytes
+++ Found object: Action, name: 'Distribute Application Management Tools'
+++ Found results for object: ResultSet for 328, ColumnSet: Computer Name, Action Statuses, Count
+++ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 62 bytes
 </code></pre>
 
 <ul>
@@ -997,14 +993,13 @@ TestTag5
 </ul>
 
 <pre><code>Action Statuses,Computer Name
-122:Completed.,Casus-Belli.local
-122:Completed.,jtanium1.localdomain
+24:Completed.,WIN-A12SC6N6T7Q
 </code></pre>
 
 <p><a href="#user-content-toc">TOC</a></p>
 
 <h6>
-<a id="user-content-generated-by-build_bin_doc-v145-date-mon-dec--8-123316-2014-est-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v145-date-mon-dec--8-123316-2014-est-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v1.4.5</code>, date: Mon Dec  8 12:33:16 2014 EST, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
+<a id="user-content-generated-by-build_bin_doc-v145-date-mon-dec--8-153545-2014-est-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v145-date-mon-dec--8-153545-2014-est-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v1.4.5</code>, date: Mon Dec  8 15:35:45 2014 EST, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
 </h6>
 
 </body></html>

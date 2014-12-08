@@ -86,7 +86,7 @@ Output from Python Code
       "deleted_flag": 0, 
       "group_id": 0, 
       "id": 1, 
-      "last_login": "2014-12-06T18:02:13", 
+      "last_login": "2014-12-08T19:28:09", 
       "name": "Jim Olsen", 
       "permissions": {
         "_type": "permissions", 

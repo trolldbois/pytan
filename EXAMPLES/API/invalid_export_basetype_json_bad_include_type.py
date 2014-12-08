@@ -61,9 +61,9 @@ except Exception as e:
 Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
 Traceback (most recent call last):
   File "<string>", line 50, in <module>
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1339, in export_obj
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1402, in export_obj
     utils.check_dictkey(**check_args)
-  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2433, in check_dictkey
+  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2509, in check_dictkey
     raise HandlerError(err(key, valid_types, k_type))
 HandlerError: 'include_type' must be one of [<type 'bool'>], you supplied <type 'unicode'>!
 

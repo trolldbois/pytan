@@ -60,7 +60,7 @@ except Exception as e:
 Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
 Traceback (most recent call last):
   File "<string>", line 49, in <module>
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1333, in export_obj
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1396, in export_obj
     raise HandlerError(err)
 HandlerError: u'bad' not a supported export format for SensorList, must be one of: xml, json, csv
 

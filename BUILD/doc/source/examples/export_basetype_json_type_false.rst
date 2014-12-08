@@ -102,7 +102,7 @@ Output from Python Code
         }, 
         {
           "category": "Network", 
-          "creation_time": "2014-12-06T18:00:24", 
+          "creation_time": "2014-12-08T19:20:42", 
           "delimiter": "|", 
           "description": "Returns IPv4 network routes, filtered to exclude noise. With Flags, Metric, Interface columns.\nExample:  172.16.0.0|192.168.1.1|255.255.0.0|UG|100|eth0", 
           "exclude_from_parse_flag": 1, 
@@ -121,7 +121,7 @@ Output from Python Code
               }
             ]
           }, 
-          "modification_time": "2014-12-06T18:00:24", 
+          "modification_time": "2014-12-08T19:20:42", 
           "name": "IP Route Details", 
           "queries": {
             "query": [
@@ -143,7 +143,7 @@ Output from Python Code
             ]
           }, 
           "source_id": 0, 
-          "string_count": 48, 
+          "string_count": 49, 
           "subcolumns": {
             "subcolumn": [
               {
@@ -194,7 +194,7 @@ Output from Python Code
         }, 
         {
           "category": "Network", 
-          "creation_time": "2014-12-06T18:00:22", 
+          "creation_time": "2014-12-08T19:20:40", 
           "delimiter": ",", 
           "description": "Current IP Addresses of client machine.\nExample: 192.168.1.1", 
           "exclude_from_parse_flag": 1, 
@@ -213,7 +213,7 @@ Output from Python Code
               }
             ]
           }, 
-          "modification_time": "2014-12-06T18:00:22", 
+          "modification_time": "2014-12-08T19:20:40", 
           "name": "IP Address", 
           "queries": {
             "query": [
@@ -235,12 +235,12 @@ Output from Python Code
             ]
           }, 
           "source_id": 0, 
-          "string_count": 86, 
+          "string_count": 89, 
           "value_type": "IPAddress"
         }, 
         {
           "category": "File System", 
-          "creation_time": "2014-12-06T18:00:23", 
+          "creation_time": "2014-12-08T19:20:41", 
           "delimiter": ",", 
           "description": "Finds the specified folder and provides the full path if the folder exists on the client machine. Takes regular expression to match.\nExample: C:\\WINDOWS\\System32", 
           "exclude_from_parse_flag": 1, 
@@ -259,9 +259,9 @@ Output from Python Code
               }
             ]
           }, 
-          "modification_time": "2014-12-06T18:00:23", 
+          "modification_time": "2014-12-08T19:20:41", 
           "name": "Folder Name Search with RegEx Match", 
-          "parameter_definition": "{\"parameters\":[{\"restrict\":null,\"validationExpressions\":[{\"flags\":\"\",\"expression\":\"\\\\S{3}\",\"helpString\":\"Value must be at least 3 characters\",\"model\":\"com.tanium.models::ValidationExpression\",\"parameterType\":\"com.tanium.models::ValidationExpression\"}],\"helpString\":\"Enter the folder name to search for\",\"value\":\"\",\"promptText\":\"e.g Program Files\",\"defaultValue\":\"\",\"label\":\"Search for Folder Name\",\"maxChars\":0,\"key\":\"dirname\",\"model\":\"com.tanium.components.parameters::TextInputParameter\",\"parameterType\":\"com.tanium.components.parameters::TextInputParameter\"},{\"restrict\":null,\"validationExpressions\":[{\"flags\":\"\",\"expression\":\"\\\\S{3}\",\"helpString\":\"Value must be at least 3 characters\",\"model\":\"com.tanium.models::ValidationExpression\",\"parameterType\":\"com.tanium.models::ValidationExpression\"}],\"helpString\":\"Enter the regular expression to search for.\",\"value\":\"\",\"promptText\":\"e.g. test*.exe\",\"defaultValue\":\"\",\"label\":\"Regular Expression\",\"maxChars\":0,\"key\":\"regexp\",\"model\":\"com.tanium.components.parameters::TextInputParameter\",\"parameterType\":\"com.tanium.components.parameters::TextInputParameter\"},{\"helpString\":\"Enter Yes/No for case sensitivity of search.\",\"value\":\"\",\"promptText\":\"\",\"defaultValue\":\"\",\"requireSelection\":true,\"label\":\"Case sensitive?\",\"key\":\"casesensitive\",\"values\":[\"No\",\"Yes\"],\"model\":\"com.tanium.components.parameters::DropDownParameter\",\"parameterType\":\"com.tanium.components.parameters::DropDownParameter\"},{\"helpString\":\"Enter Yes/No whether the search is global.\",\"value\":\"\",\"promptText\":\"\",\"defaultValue\":\"\",\"requireSelection\":true,\"label\":\"Global\",\"key\":\"global\",\"values\":[\"No\",\"Yes\"],\"model\":\"com.tanium.components.parameters::DropDownParameter\",\"parameterType\":\"com.tanium.components.parameters::DropDownParameter\"}],\"model\":\"com.tanium.components.parameters::ParametersArray\",\"parameterType\":\"com.tanium.components.parameters::ParametersArray\"}", 
+          "parameter_definition": "{\"parameters\":[{\"restrict\":null,\"validationExpressions\":[{\"helpString\":\"Value must be at least 3 characters\",\"flags\":\"\",\"expression\":\"\\\\S{3}\",\"parameterType\":\"com.tanium.models::ValidationExpression\",\"model\":\"com.tanium.models::ValidationExpression\"}],\"helpString\":\"Enter the folder name to search for\",\"promptText\":\"e.g Program Files\",\"defaultValue\":\"\",\"value\":\"\",\"label\":\"Search for Folder Name\",\"maxChars\":0,\"key\":\"dirname\",\"parameterType\":\"com.tanium.components.parameters::TextInputParameter\",\"model\":\"com.tanium.components.parameters::TextInputParameter\"},{\"restrict\":null,\"validationExpressions\":[{\"helpString\":\"Value must be at least 3 characters\",\"flags\":\"\",\"expression\":\"\\\\S{3}\",\"parameterType\":\"com.tanium.models::ValidationExpression\",\"model\":\"com.tanium.models::ValidationExpression\"}],\"helpString\":\"Enter the regular expression to search for.\",\"promptText\":\"e.g. test*.exe\",\"defaultValue\":\"\",\"value\":\"\",\"label\":\"Regular Expression\",\"maxChars\":0,\"key\":\"regexp\",\"parameterType\":\"com.tanium.components.parameters::TextInputParameter\",\"model\":\"com.tanium.components.parameters::TextInputParameter\"},{\"values\":[\"No\",\"Yes\"],\"helpString\":\"Enter Yes/No for case sensitivity of search.\",\"requireSelection\":true,\"promptText\":\"\",\"defaultValue\":\"\",\"value\":\"\",\"label\":\"Case sensitive?\",\"key\":\"casesensitive\",\"parameterType\":\"com.tanium.components.parameters::DropDownParameter\",\"model\":\"com.tanium.components.parameters::DropDownParameter\"},{\"values\":[\"No\",\"Yes\"],\"helpString\":\"Enter Yes/No whether the search is global.\",\"requireSelection\":true,\"promptText\":\"\",\"defaultValue\":\"\",\"value\":\"\",\"label\":\"Global\",\"key\":\"global\",\"parameterType\":\"com.tanium.components.parameters::DropDownParameter\",\"model\":\"com.tanium.components.parameters::DropDownParameter\"}],\"parameterType\":\"com.tanium.components.parameters::ParametersArray\",\"model\":\"com.tanium.components.parameters::ParametersArray\"}", 
           "queries": {
             "query": [
               {

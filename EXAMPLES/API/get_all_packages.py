@@ -59,19 +59,19 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
 Type of response:  <class 'taniumpy.object_types.package_spec_list.PackageSpecList'>
 
 print of response:
-PackageSpecList, len: 89
+PackageSpecList, len: 91
 
 length of response (number of objects returned): 
-89
+91
 
 print the first object returned in JSON format:
 {
   "_type": "package_spec", 
-  "available_time": "2014-12-06T18:01:03", 
+  "available_time": "2014-12-08T19:21:15", 
   "cache_row_id": 0, 
   "command": "cmd /c cscript //T:900 java-installer.vbs /KillAppsUsingJava:Yes /RebootIfNeeded:Yes /MaxWaitTimeInSeconds:300", 
   "command_timeout": 900, 
-  "creation_time": "2014-12-06T18:00:27", 
+  "creation_time": "2014-12-08T19:20:46", 
   "deleted_flag": 0, 
   "display_name": "Update Java 64-bit - Kill / Reboot", 
   "expire_seconds": 1500, 
@@ -84,10 +84,10 @@ print the first object returned in JSON format:
         "bytes_total": 17509, 
         "cache_status": "CACHED", 
         "download_seconds": 0, 
-        "download_start_time": "2014-12-06T18:00:31", 
+        "download_start_time": "2014-12-08T19:20:54", 
         "hash": "30bf532c4c1c5bb9599487712f88ff42190ccd2678192f7e61b160e6592cfbfe", 
         "id": 1, 
-        "last_download_progress_time": "2014-12-06T18:00:53", 
+        "last_download_progress_time": "2014-12-08T19:21:05", 
         "name": "java-installer.vbs", 
         "size": 17509, 
         "source": "https://content.tanium.com/files/initialcontent/bundles/2014-11-05_12-56-07-8513/update_java_64-bit_-_kill_-_reboot/java-installer.vbs", 
@@ -98,7 +98,7 @@ print the first object returned in JSON format:
   "hidden_flag": 0, 
   "id": 1, 
   "last_modified_by": "Jim Olsen", 
-  "last_update": "2014-12-06T18:00:27", 
+  "last_update": "2014-12-08T19:20:46", 
   "metadata": {
     "_type": "metadata", 
     "item": [
@@ -116,7 +116,7 @@ print the first object returned in JSON format:
       }
     ]
   }, 
-  "modification_time": "2014-12-06T18:00:27", 
+  "modification_time": "2014-12-08T19:20:46", 
   "name": "Update Java 64-bit - Kill / Reboot", 
   "source_id": 0, 
   "verify_group_id": 0

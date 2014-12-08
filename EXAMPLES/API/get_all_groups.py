@@ -59,10 +59,10 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
 Type of response:  <class 'taniumpy.object_types.group_list.GroupList'>
 
 print of response:
-GroupList, len: 2
+GroupList, len: 4
 
 length of response (number of objects returned): 
-2
+4
 
 print the first object returned in JSON format:
 {

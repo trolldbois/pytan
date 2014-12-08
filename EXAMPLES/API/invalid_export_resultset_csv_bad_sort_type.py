@@ -58,14 +58,13 @@ except Exception as e:
 
 '''Output from running this:
 Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-2014-12-07 01:24:28,414 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-2014-12-07 01:24:33,431 INFO     question_progress: Results 50% (Get Computer Name from all machines)
-2014-12-07 01:24:38,448 INFO     question_progress: Results 100% (Get Computer Name from all machines)
+2014-12-08 15:29:47,355 INFO     question_progress: Results 0% (Get Computer Name from all machines)
+2014-12-08 15:29:52,370 INFO     question_progress: Results 100% (Get Computer Name from all machines)
 Traceback (most recent call last):
   File "<string>", line 49, in <module>
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1339, in export_obj
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1402, in export_obj
     utils.check_dictkey(**check_args)
-  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2433, in check_dictkey
+  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2509, in check_dictkey
     raise HandlerError(err(key, valid_types, k_type))
 HandlerError: 'header_sort' must be one of [<type 'bool'>, <type 'list'>, <type 'tuple'>], you supplied <type 'unicode'>!
 

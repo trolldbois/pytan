@@ -65,6 +65,6 @@ Output from Python Code
     Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
     Traceback (most recent call last):
       File "<string>", line 39, in <module>
-      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1499, in get
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1562, in get
         raise HandlerError(err(objtype, api_attrs))
     HandlerError: Getting a action requires at least one filter: ['id']

@@ -59,10 +59,10 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
 Type of response:  <class 'taniumpy.object_types.sensor_list.SensorList'>
 
 print of response:
-SensorList, len: 657
+SensorList, len: 477
 
 length of response (number of objects returned): 
-657
+477
 
 print the first object returned in JSON format:
 {
@@ -89,7 +89,7 @@ print the first object returned in JSON format:
     ]
   }, 
   "source_id": 0, 
-  "string_count": 3354, 
+  "string_count": 3524, 
   "value_type": "String"
 }
 

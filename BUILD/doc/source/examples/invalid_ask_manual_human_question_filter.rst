@@ -40,7 +40,7 @@ Example Python Code
     
     # setup the arguments for the handler method
     kwargs = {}
-    kwargs["sensors"] = u'Computer name, that does not meet little'
+    kwargs["sensors"] = u'Computer name, that does not meet:little'
     kwargs["qtype"] = u'manual_human'
     
     
@@ -65,12 +65,12 @@ Output from Python Code
     Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
     Traceback (most recent call last):
       File "<string>", line 39, in <module>
-      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 127, in ask
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 128, in ask
         result = getattr(self, q_obj_map['handler'])(**kwargs)
-      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 380, in ask_manual_human
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 399, in ask_manual_human
         sensor_defs = utils.dehumanize_sensors(sensors)
-      File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 1235, in dehumanize_sensors
+      File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 1304, in dehumanize_sensors
         s, parsed_filter = extract_filter(s)
-      File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 1597, in extract_filter
+      File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 1666, in extract_filter
         raise HumanParserError(err(split_filter[1]))
-    HumanParserError: Filter u' does not meet little' is not a valid filter!
+    HumanParserError: Filter u' does not meet:little' is not a valid filter!

@@ -63,7 +63,7 @@ Output from Python Code
     Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
     Traceback (most recent call last):
       File "<string>", line 37, in <module>
-      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 518, in create_sensor
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 537, in create_sensor
         raise HandlerError(m)
     HandlerError: Sensor creation not supported via PyTan as of yet, too complex
     Use create_sensor_from_json() instead!
