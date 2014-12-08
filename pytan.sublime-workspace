@@ -1,0 +1,811 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"my",
+				"my_file"
+			],
+			[
+				"get",
+				"gettempdir"
+			],
+			[
+				"example",
+				"example_py_out"
+			],
+			[
+				"lo",
+				"load_api_from_json"
+			],
+			[
+				"TEST",
+				"TEST_OUT"
+			],
+			[
+				"H",
+				"HTTPDLOG"
+			],
+			[
+				"Q",
+				"QRET_TPL"
+			],
+			[
+				"assert",
+				"assertIsNotNone"
+			],
+			[
+				"check",
+				"check_auth_ok"
+			],
+			[
+				"build",
+				"build_xml"
+			],
+			[
+				"xml",
+				"xmlcreatelog"
+			],
+			[
+				"soap",
+				"soap_url"
+			],
+			[
+				"NS",
+				"NS_DICT"
+			],
+			[
+				"req",
+				"reqok"
+			],
+			[
+				"update",
+				"update_token"
+			],
+			[
+				"via",
+				"via_session_id"
+			],
+			[
+				"fall",
+				"auth_fallback"
+			],
+			[
+				"token_type_detai",
+				"token_type_details"
+			],
+			[
+				"auth",
+				"auth_via_sessionid"
+			],
+			[
+				"__update",
+				"__update_session_id"
+			],
+			[
+				"date",
+				"datetime_diff"
+			],
+			[
+				"mana",
+				"manage_boot_clients_script"
+			],
+			[
+				"resour",
+				"resource_match"
+			],
+			[
+				"show_",
+				"show_changelog"
+			],
+			[
+				"show",
+				"show_example"
+			],
+			[
+				"is",
+				"isValidMAC"
+			],
+			[
+				"mk",
+				"makedirs"
+			],
+			[
+				"SSH_",
+				"SSH_FAC_TEMP"
+			],
+			[
+				"head",
+				"headerdepth"
+			],
+			[
+				"md",
+				"mdtext"
+			],
+			[
+				"my_",
+				"my_dir"
+			],
+			[
+				"config",
+				"CONFIGSECTION"
+			],
+			[
+				"get_custom",
+				"get_customer_ref"
+			],
+			[
+				"valid_cml",
+				"valid_cml_scripts"
+			],
+			[
+				"valid_",
+				"valid_parsers"
+			],
+			[
+				"va",
+				"valog_d"
+			],
+			[
+				"load",
+				"load_into_attr"
+			],
+			[
+				"valog",
+				"valog_d"
+			],
+			[
+				"Au",
+				"AuthorizationDeniedException"
+			],
+			[
+				"admin",
+				"admin_check"
+			],
+			[
+				"t_",
+				"t_warn"
+			],
+			[
+				"current",
+				"current_path"
+			],
+			[
+				"exis",
+				"exists"
+			],
+			[
+				"track_check",
+				"track_check_fail"
+			],
+			[
+				"track",
+				"track_check"
+			],
+			[
+				"succe",
+				"success_track"
+			],
+			[
+				"track_",
+				"track_finish"
+			],
+			[
+				"meta",
+				"metadata_ext"
+			],
+			[
+				"fail",
+				"failed_track	statement"
+			],
+			[
+				"m",
+				"msg"
+			],
+			[
+				"lf",
+				"lfdebug"
+			],
+			[
+				"DEBUG",
+				"DEBUG"
+			],
+			[
+				"L",
+				"L	statement"
+			],
+			[
+				"F",
+				"F"
+			],
+			[
+				"Formatter",
+				"Formatter"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 294.0,
+		"selected_items":
+		[
+			[
+				"packin",
+				"Package Control: Install Package"
+			],
+			[
+				"packa",
+				"Package Control: Install Package"
+			],
+			[
+				"pack",
+				"Package Control: List Packages"
+			],
+			[
+				"paca",
+				"Package Control: Install Package"
+			],
+			[
+				"package",
+				"Package Control: List Packages"
+			],
+			[
+				"previ",
+				"Markdown Preview: Copy to Clipboard"
+			],
+			[
+				"preview",
+				"Markdown Preview: Copy to Clipboard"
+			],
+			[
+				"pre",
+				"Markdown Preview: Copy to Clipboard"
+			],
+			[
+				"prev",
+				"Markdown Preview: Copy to Clipboard"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"package install",
+				"Package Control: Install Package"
+			],
+			[
+				"previe",
+				"Markdown Preview: Copy to Clipboard"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"package con",
+				"Package Control: List Packages"
+			],
+			[
+				"copy",
+				"Markdown Preview: Copy to Clipboard"
+			],
+			[
+				"clip",
+				"Markdown Preview: Copy to Clipboard"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"remov",
+				"Package Control: Remove Package"
+			],
+			[
+				"in",
+				"Package Control: Install Package"
+			],
+			[
+				"gfm",
+				"GitHub Flavored Markdown: Preview"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"Previe",
+				"Markdown Preview: Copy to Clipboard"
+			],
+			[
+				"",
+				"Convert Case: Lower Case"
+			],
+			[
+				"preiv",
+				"Markdown Preview: Github Flavored Markdown: Copy to Clipboard"
+			],
+			[
+				"packi",
+				"Package Control: Install Package"
+			],
+			[
+				"markdow",
+				"Markdown Preview: Github Flavored Markdown: Copy to Clipboard"
+			],
+			[
+				"preivew",
+				"Markdown Preview: Github Flavored Markdown: Preview in Browser"
+			],
+			[
+				"markdown",
+				"Set Syntax: Markdown"
+			],
+			[
+				"toc",
+				"MarkdownTOC:Insert TOC"
+			],
+			[
+				"brow",
+				"Preferences: Browse Packages"
+			],
+			[
+				"cheat",
+				"Markdown Preview: Open Markdown Cheat sheet"
+			],
+			[
+				"mrk",
+				"Markdown Preview: Python Markdown: Export HTML in Sublime Text"
+			],
+			[
+				"markdo",
+				"Markdown Preview: Python Markdown: Preview in Browser"
+			],
+			[
+				"markd",
+				"Set Syntax: Markdown GFM"
+			],
+			[
+				"lint",
+				"User: Python Flake8 Lint"
+			],
+			[
+				"flake",
+				"User: Python Flake8 Lint"
+			],
+			[
+				"python",
+				"User: Python Flake8 Lint"
+			],
+			[
+				"pak",
+				"Package Control: Install Package"
+			],
+			[
+				"pep",
+				"User: Python PEP8 Autoformat"
+			],
+			[
+				"linter",
+				"SublimeLinter: Show All Errors"
+			]
+		],
+		"width": 417.0
+	},
+	"console":
+	{
+		"height": 271.0,
+		"history":
+		[
+			"dir()",
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/jolsen/gh/pytan"
+	],
+	"file_history":
+	[
+		"/Users/jolsen/gh/pytan/BUILD/doc/source/description.rst",
+		"/Users/jolsen/gh/pytan/README.md",
+		"/Users/jolsen/gh/pytan/BUILD/doc/source/taniumpy.rst",
+		"/Users/jolsen/gh/pytan/BUILD/TEMPLATES/create_object_from_json_template.py",
+		"/Users/jolsen/gh/pytan/BUILD/TEMPLATES/delete_object_template.py",
+		"/Users/jolsen/gh/pytan/BUILD/TEMPLATES/get_object_template.py",
+		"/Users/jolsen/gh/pytan/BUILD/doc/static_doc/TODO.md",
+		"/Users/jolsen/gh/pytan/BUILD/build_bin_doc.py",
+		"/Users/jolsen/gh/pytan/BUILD/doc/source/_static/bin_doc/deploy_action.md",
+		"/Users/jolsen/gh/pytan/bin/deploy_action.py",
+		"/Users/jolsen/gh/pytan/bin/get_results.py",
+		"/Users/jolsen/gh/pytan/lib/pytan/utils.py",
+		"/Users/jolsen/gh/pytan/bin/ask_manual_question.py",
+		"/Users/jolsen/gh/pytan/bin/ask_saved_question.py",
+		"/Users/jolsen/gh/pytan/test/ddt/ddt_valid_deploy_action.json",
+		"/Users/jolsen/gh/pytan/index.html",
+		"/Users/jolsen/gh/pytan/bin/stop_action.py",
+		"/Users/jolsen/gh/pytan/bin/print_server_info.py",
+		"/Users/jolsen/gh/pytan/bin/print_sensor.py",
+		"/Users/jolsen/gh/pytan/BUILD/doc/source/_static/bin_doc/get_results.md",
+		"/Users/jolsen/gh/pytan/bin/create_user.py",
+		"/Users/jolsen/gh/pytan/bin/create_whitelisted_url.py",
+		"/Users/jolsen/gh/pytan/lib/pytan/handler.py",
+		"/Users/jolsen/gh/pytan/BUILD/doc/source/_static/bin_doc/create_user.md",
+		"/Users/jolsen/gh/pytan/bin/create_package.py",
+		"/Users/jolsen/gh/pytan/BUILD/doc/source/_static/bin_doc/create_package.md",
+		"/Users/jolsen/gh/pytan/bin/create_group.py",
+		"/Users/jolsen/gh/pytan/test/test_pytan_func.py",
+		"/Users/jolsen/gh/pytan/BUILD/doc/source/_static/bin_doc/create_group_from_json.md",
+		"/Users/jolsen/gh/pytan/BUILD/doc/source/_static/bin_doc/create_sensor_from_json.md",
+		"/Users/jolsen/gh/pytan/lib/md_doctester.py",
+		"/Users/jolsen/gh/pytan/test/ddt/ddt_valid_questions.json",
+		"/Users/jolsen/gh/pytan/BUILD/doc/source/_static/bin_doc/ask_manual_question.md",
+		"/Users/jolsen/gh/pytan/bin/pytan_shell.py",
+		"/Users/jolsen/gh/pytan/bin/create_sensor.py",
+		"/Users/jolsen/gh/pytan/BUILD/bin_doc/build_bin_doc.py",
+		"/Users/jolsen/gh/pytan/deploy_action_ResultSet_2014_12_07-17_36_07-EST.csv",
+		"/Users/jolsen/gh/pytan/lib/pytan/constants.py",
+		"/Users/jolsen/gh/pytan/test/ddt/ddt_invalid_questions.json",
+		"/Users/jolsen/gh/pytan/test/ddt/ddt_invalid_deploy_action.json",
+		"/Users/jolsen/gh/pytan/test/test_pytan_unit.py",
+		"/Users/jolsen/gh/pytan/test/ddt/ddt_valid_create_object.json",
+		"/Users/jolsen/gh/pytan/BUILD/doc/Makefile",
+		"/Users/jolsen/gh/pytan/test/ddt/ddt_invalid_create_object.json",
+		"/Users/jolsen/gh/pytan/test/ddt/ddt_invalid_create_object_from_json.json",
+		"/Users/jolsen/gh/pytan/test/ddt/ddt_invalid_export_basetype.json",
+		"/Users/jolsen/gh/pytan/test/ddt/ddt_invalid_export_resultset.json",
+		"/Users/jolsen/gh/pytan/test/ddt/ddt_invalid_get_object.json",
+		"/Users/jolsen/gh/pytan/BUILD/build_examples.py",
+		"/Users/jolsen/gh/pytan/test/ddt/ddt_valid_get_object.json",
+		"/Users/jolsen/gh/pytan/test/ddt/ddt_valid_export_resultset.json",
+		"/Users/jolsen/gh/pytan/test/ddt/ddt_valid_export_basetype.json",
+		"/Users/jolsen/gh/pytan/test/test_pytan_func_invalid_connects.py",
+		"/Users/jolsen/gh/pytan/test/test_pytan_func_invalid_tests.py",
+		"/Users/jolsen/gh/pytan/test/ddt/ddt_invalid_connects.json",
+		"/Users/jolsen/gh/pytan/doc/TODO.md",
+		"/Users/jolsen/gh/pytan/test/ddt/test_pytan_func_invalid_connects.py",
+		"/Users/jolsen/gh/pytan/BUILD/doc/source/pytan.rst",
+		"/Users/jolsen/gh/pytan/BUILD/doc/source/index.rst",
+		"/Users/jolsen/gh/pytan/BUILD/doc/source/examples/ask_manual_human_question_multiple_sensors_with_parameters_and_some_supplied_parameters.rst",
+		"/Users/jolsen/gh/pytan/BUILD/doc/source/examples/pytan_examples.rst",
+		"/Users/jolsen/gh/pytan/BUILD/doc/source/examples/examples.rst",
+		"/Users/jolsen/gh/pytan/BUILD/doc/source/examples/base_example.rst",
+		"/Users/jolsen/gh/pytan/EXAMPLE/example_handler.py",
+		"/Users/jolsen/gh/pytan/BUILD/example_handler.py",
+		"/Users/jolsen/gh/pytan/BUILD/doc/source/conf.py",
+		"/Users/jolsen/gh/pytan/doc/rst/index.rst",
+		"/Users/jolsen/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/jolsen/gh/pytan/pytan.sublime-project",
+		"/Users/jolsen/gh/pytan/BUILD/build_api.sh",
+		"/Users/jolsen/gh/pytan/BUILD/doc/source/pytan.functest.rst",
+		"/Users/jolsen/gh/pytan/BUILD/doc/source/threaded_http.rst",
+		"/Users/jolsen/gh/pytan/BUILD/doc/source/pytan.tests.rst",
+		"/Users/jolsen/gh/pytan/BUILD/doc/source/pytan.unittest.rst",
+		"/Users/jolsen/gh/pytan/BUILD/doc/source/pytan.utils.rst",
+		"/Users/jolsen/gh/pytan/lib/pytan/__init__.py",
+		"/Users/jolsen/gh/pytan/BUILD/doc/source/xmltodict.rst",
+		"/Users/jolsen/gh/pytan/BUILD/doc/source/pytan.constants.rst",
+		"/Users/jolsen/gh/pytan/BUILD/doc/build/coverage/python.txt",
+		"/Users/jolsen/gh/pytan/BUILD/doc/source/pytan.handler.rst",
+		"/Users/jolsen/gh/pytan/BUILD/doc/source/taniumpy.question_asker.rst",
+		"/Users/jolsen/gh/pytan/BUILD/doc/source/taniumpy.session.rst",
+		"/Users/jolsen/gh/pytan/BUILD/doc/source/taniumpy.object_types.rst",
+		"/Users/jolsen/gh/pytan/BUILD/doc/source/pytan_modules.rst",
+		"/Users/jolsen/gh/pytan/BUILD/doc/source/taniumpy/taniumpy.object_types.rst",
+		"/Users/jolsen/gh/pytan/BUILD/doc/source/pytan/pytan.rst",
+		"/Users/jolsen/gh/pytan/BUILD/doc/source/pytan/pytan.constants.rst",
+		"/Users/jolsen/gh/pytan/BUILD/doc/source/pytan/pytan.utils.rst",
+		"/Users/jolsen/gh/pytan/BUILD/doc/source/pytan/pytan.handler.rst",
+		"/Users/jolsen/gh/pytan/BUILD/build_bin_scripts.py",
+		"/Users/jolsen/gh/pytan/lib/taniumpy/__init__.py",
+		"/Users/jolsen/gh/pytan/BUILD/doc/source/taniumpy/taniumpy.rst",
+		"/Users/jolsen/gh/pytan/BUILD/doc/source/pytan/api/api.rst",
+		"/Users/jolsen/gh/pytan/pytan/api/object_types/base.py",
+		"/Users/jolsen/gh/pytan/pytan/xmltodict.py",
+		"/Users/jolsen/gh/pytan/BUILD/z/source/pytan/api/index.rst",
+		"/Users/jolsen/gh/pytan/BUILD/z/source/pytan/pytan.rst",
+		"/Users/jolsen/gh/pytan/BUILD/z/source/conf.py",
+		"/Users/jolsen/gh/pytan/BUILD/z/source/index.rst",
+		"/Users/jolsen/gh/pytan/pytan/handler.py",
+		"/Users/jolsen/gh/pytan/BUILD/doc/conf.py",
+		"/Users/jolsen/gh/pytan/pytan/__init__.py",
+		"/Users/jolsen/gh/pytan/BUILD/doc/pytan/pytan.handler.rst",
+		"/Users/jolsen/gh/pytan/BUILD/doc/ResultSet_2014_12_01-15_48_20-EST.csv",
+		"/Users/jolsen/gh/pytan/BUILD/doc/TODO.md",
+		"/Users/jolsen/gh/pytan/BUILD/doc/ResultSet_2014_12_01-15_39_35-EST.csv",
+		"/Users/jolsen/gh/pytan/BUILD/doc/ResultSet_2014_12_01-15_47_14-EST.csv",
+		"/Users/jolsen/Library/Application Support/Sublime Text 3/Packages/User/Flake8Lint.sublime-settings",
+		"/Users/jolsen/gh/pytan/BUILD/doc/pytan.rst",
+		"/Users/jolsen/gh/pytan/BUILD/doc/pytan.handler.rst",
+		"/Users/jolsen/gh/pytan/doc/index.rst",
+		"/Users/jolsen/gh/pytan/doc/conf.py",
+		"/Users/jolsen/gh/pytan/docs/index.rst",
+		"/Users/jolsen/gh/pytan/pytan/utils.py",
+		"/Users/jolsen/gh/pytan/BUILD/build_bin/create_object_from_json_template.py",
+		"/Users/jolsen/gh/pytan/BUILD/build_bin/create_object_from_json.py",
+		"/Users/jolsen/gh/pytan/BUILD/build_bin/delete_object_template.py",
+		"/Users/jolsen/gh/pytan/pytan/constants.py",
+		"/Users/jolsen/gh/pytan/tests/test_pytan_func.py",
+		"/Users/jolsen/gh/pytan/tests/pytan/test_pytan_handler.py",
+		"/Users/jolsen/Desktop/action.xml",
+		"/Users/jolsen/gh/pytan/tests/pytan/test_pytan_utils.py",
+		"/Users/jolsen/gh/pytan/pytan/api/object_types/result_set.py",
+		"/Users/jolsen/gh/pytan/pytan/api/question_asker.py",
+		"/Users/jolsen/gh/taniumpy/BUILD/console.wsdl",
+		"/Users/jolsen/add_object_debug_out.txt",
+		"/Users/jolsen/gh/pytan/doc/action_deploy_workflow.txt",
+		"/Users/jolsen/gh/taniumpy/BUILD/generate_api.py"
+	],
+	"find":
+	{
+		"height": 36.0
+	},
+	"find_in_files":
+	{
+		"height": 94.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"1",
+			"args",
+			"add_report_file_options",
+			"{{",
+			"**False",
+			"ask_manual_question",
+			"1",
+			"2",
+			"3",
+			"write_file",
+			"1",
+			"question",
+			"saved",
+			"search_keys",
+			"GROUP",
+			"group",
+			"GROUP",
+			"group",
+			"GROUP",
+			"group",
+			"GROUP",
+			"group",
+			"GROUP",
+			"group",
+			"GROUP",
+			"group",
+			"_",
+			"create_group",
+			"ask_manual_question",
+			"GROUP",
+			"group",
+			"GROUP",
+			"group",
+			"GROUP",
+			"group",
+			".format(my_file)",
+			"{}",
+			"Get the first",
+			"csv",
+			"CSV",
+			"json",
+			"filters",
+			"**False",
+			"filters",
+			"DEPTHDEF",
+			"depth",
+			"val_test_file_exist",
+			"create_content",
+			"example_subs",
+			"cmd_subst",
+			"ini_output_dir",
+			"outdir",
+			"gfm_curl",
+			"github_token",
+			"Github API",
+			"Github",
+			"mdtext",
+			"SafeConfigParser",
+			"DEFAULT_CONF",
+			"MDTest",
+			"setup_parser",
+			"rst_out_dir",
+			"example_out_dir",
+			"output_dir",
+			"ask_manual",
+			"sensors-help",
+			"required=True",
+			"missing one of",
+			"sensors",
+			"PytanHelp",
+			"filters",
+			"sensor",
+			"Sensor",
+			"package",
+			"sensors",
+			"manual",
+			"sensors",
+			"filter",
+			"sensor",
+			"filters",
+			"'filter',",
+			"dest",
+			"dest=",
+			"destination",
+			"sys.exit",
+			"sensors",
+			"regex match",
+			", that",
+			"=",
+			"that",
+			"valid filter",
+			"that",
+			"filter_str",
+			", that",
+			"FILTER",
+			"latex",
+			"VER",
+			"ver",
+			"invalid_",
+			"TEST_OUT",
+			"example",
+			"ask_kwargs",
+			"ResultSet",
+			"resultset",
+			"RESULTSET",
+			"EXPORT RESULTSET",
+			"invalid_create_objects_from_json",
+			"ddt_invalid_create_object_from_json",
+			"result_set",
+			"kwargs",
+			"Get an action by id",
+			"\"args\"",
+			"client",
+			"\"objtype\"",
+			"create_",
+			"create",
+			"attr_value",
+			"value",
+			"create_object",
+			"CREATE OBJECT",
+			"Get Object",
+			"get_object",
+			"GET OBJECT",
+			"tempdir",
+			"target_group",
+			"Deploy",
+			"Get Object",
+			"get_object"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"2.4",
+			"2.3",
+			"/",
+			"Service / File Manager\n\nCan be used to update content and permissions of a file, and if an update\nto the content is performed, backup the current file and optionally perform\nthe following tasks:\n - start the service\n - enable the service\n - run a command\n\nThe name of the custom attribute should be \"managed:/path/to/file\". For\nexample, to manage /etc/ntp.conf, the custom attribute would be named:\n\"managed:/etc/ntp.conf\"\n\nThe value of the custom attribute should be a Python 2.6 string.Template.\nVariable substitution will be performed before the file is generated, using\ncustom attribute names to match up to variables specified in the template.\nFor example, in order to generate /etc/ntp.conf using the custom attributes\nntp_server_1 and ntp_server_2, the custom attribute value would be:\n\ntinker panic 0\nrestrict 127.0.0.1\nserver ${ntp_server_1}\nserver ${ntp_server_2}\ndriftfile /etc/ntp/drift\nbroadcastdelay  0.008\nkeys            /etc/ntp/keys\n\nGiven the above example of ntp.conf, if you ran this program as such:\n\n./svc_file_manager -f /etc/ntp.conf -s ntpd -c \"touch /tmp/1\" -c \"ls /tmp\"\n\nThe workflow for this set of arguments is as follows:\n - Check for a custom attribute named \"managed:/etc/ntp.conf\"\n - If the custom attribute does not exist, exit with an error\n - If the custom attribute does exist, convert the value of the custom\n   attribute to a python string Template\n - Substitute all bash variables ($variable and ${variable}) in the\n   python string Template with any matching custom attribute names. Any\n   variables that do not have matching custom attribute names will be\n   left alone. In this case, if the custom attributes ntp_server_1 and\n   ntp_server_2 exist on the server, then their values will be populated\n   into the Template.\n - If /etc/ntp.conf exists, and the converted Template matches the current\n   file, then the current file is left alone. If the converted Template\n   does not match the current file, then the current file is copied as a\n   backup to /etc/ntp.conf.manager_backup.$date-time, then the converted\n   Template is written to /etc/ntp.conf.\n - If /etc/ntp.conf does not exist, the directory /etc will be created\n   if it does not exist, then the converted Template is written to\n   /etc/ntp.conf.\n - If the permissions of /etc/ntp.conf are not 0644 (the default, can be\n   overridden with -p), then the permissions are changed to 0644.\n - If /etc/ntp.conf was not updated above, the service start/enable (-s)\n   and the commands (-c) are not run.\n - If /etc/ntp.conf was updated above, then the following two commands are\n   run in order to start and enable the service:\n     - chkconfig ntpd on\n     - service ntpd restart\n - If /etc/ntp.conf was updated above, then the following two commands are\n   run:\n     - touch /tmp/1\n     - ls /tmp/1\n\nLast validated to work with:\n- Python 2.6.6\n- HP SA 10.01",
+			"usertoken=BLAH,"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 27.0
+	},
+	"input":
+	{
+		"height": 33.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 279.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.markdown":
+	{
+		"height": 110.0
+	},
+	"project": "pytan.sublime-project",
+	"replace":
+	{
+		"height": 50.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 374.0,
+		"selected_items":
+		[
+		],
+		"width": 360.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": false,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 290.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
