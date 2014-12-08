@@ -1,6 +1,6 @@
 
 Create group from json
-====================================================================================================
+==========================================================================================
 Export a group object to a JSON file, adding ' API TEST' to the name of the group before exporting the JSON file and deleting any pre-existing group with the same (new) name, then create a new group object from the exported JSON file
 
 Example Python Code
@@ -104,9 +104,9 @@ Output from Python Code
 
 
     Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-    2014-12-07 01:12:11,692 INFO     handler: Deleted 'Group, id: 495'
-    2014-12-07 01:12:11,693 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/GroupList_2014_12_07-01_12_11-EST.json' written with 381 bytes
-    2014-12-07 01:12:11,712 INFO     handler: New Group, name: 'All Computers API TEST' (ID: 524) created successfully!
+    2014-12-08 16:28:45,264 INFO     handler: Deleted 'Group, id: 311'
+    2014-12-08 16:28:45,265 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/GroupList_2014_12_08-16_28_45-EST.json' written with 381 bytes
+    2014-12-08 16:28:45,289 INFO     handler: New Group, name: 'All Computers API TEST' (ID: 398) created successfully!
     
     Type of response:  <class 'taniumpy.object_types.group_list.GroupList'>
     
@@ -125,7 +125,7 @@ Output from Python Code
             "_type": "filters", 
             "filter": []
           }, 
-          "id": 524, 
+          "id": 398, 
           "name": "All Computers API TEST", 
           "not_flag": 0, 
           "sub_groups": {

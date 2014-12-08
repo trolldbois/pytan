@@ -48,3 +48,14 @@ Usage
     * For command line usage, refer to `Command Line Help Index <_static/bin_doc/index.html>`_
     * For API Examples, refer to the :doc:`examples/pytan_examples`
     * For in depth API Documentation, refer to the :doc:`pytan`, especially the :doc:`pytan.handler`
+
+Directory Layout
+================
+
+    * **EXAMPLES/ directory**: contains a set of example python files that show how to use the various methods exposed by (:mod:`pytan`)
+    * **BUILD/ directory**: contains the scripts that build the HTML and PDF documentation in doc/, generate the (:mod:`taniumpy`), generate the python examples in EXAMPLES/, generate some of the command line scripts in bin/, and generate all of the documentation for the command line scripts in doc/_static/bin_doc
+    * **bin/ directory**: contains all of the command line scripts that utilize the (:mod:`pytan`)
+    * **doc/ directory**: contains the HTML and PDF documentation
+    * **lib/ directory**: contains the python libraries (:mod:`pytan`) and (:mod:`taniumpy`), as well as other python libraries
+    * **test/ directory**: contains the unit and functional tests for (:mod:`pytan`)
+    * **winbin/ directory**: contains the Windows batch scripts which wrap around the python command line scripts in bin/

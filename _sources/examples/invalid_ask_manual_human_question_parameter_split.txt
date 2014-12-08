@@ -1,6 +1,6 @@
 
 Invalid ask manual human question parameter split
-====================================================================================================
+==========================================================================================
 Ask a question with parameters that are missing a splitter (=) to designate the key from value.
 
 Example Python Code
@@ -65,12 +65,12 @@ Output from Python Code
     Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
     Traceback (most recent call last):
       File "<string>", line 39, in <module>
-      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 127, in ask
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 128, in ask
         result = getattr(self, q_obj_map['handler'])(**kwargs)
-      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 380, in ask_manual_human
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 399, in ask_manual_human
         sensor_defs = utils.dehumanize_sensors(sensors)
-      File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 1233, in dehumanize_sensors
+      File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 1302, in dehumanize_sensors
         s, parsed_params = extract_params(s)
-      File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 1421, in extract_params
+      File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 1490, in extract_params
         raise HumanParserError(err(sp, constants.PARAM_KEY_SPLIT))
     HumanParserError: Parameter Dweedle missing key/value seperator (=)

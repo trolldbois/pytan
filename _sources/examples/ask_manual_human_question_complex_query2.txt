@@ -1,6 +1,6 @@
 
 Ask manual human question complex query2
-====================================================================================================
+==========================================================================================
 This is another complex query that gets the Computer Name and Last Logged in User and Installed Applications that contains Google Search or Google Chrome and limits the rows that are displayed to computers that contain the Installed Applications of Google Search AND Google Chrome
 
 Example Python Code
@@ -40,12 +40,12 @@ Example Python Code
     
     # setup the arguments for the handler method
     kwargs = {}
-    kwargs["question_filters"] = [u'Installed Applications, that contains Google Search',
-     u'Installed Applications, that contains Google Chrome']
+    kwargs["question_filters"] = [u'Installed Applications, that contains:Google Search',
+     u'Installed Applications, that contains:Google Chrome']
     kwargs["sensors"] = [u'Computer Name',
      u'Last Logged In User',
-     u'Installed Applications, that contains Google Search',
-     u'Installed Applications, that contains Google Chrome']
+     u'Installed Applications, that contains:Google Search',
+     u'Installed Applications, that contains:Google Chrome']
     kwargs["question_options"] = [u'ignore_case', u'and']
     kwargs["qtype"] = u'manual_human'
     
@@ -72,8 +72,12 @@ Example Python Code
     
     print ""
     print "CSV Results of response: "
-    print out.getvalue()
-    
+    out = out.getvalue()
+    if len(out.splitlines()) > 15:
+        out = out.splitlines()[0:15]
+        out.append('..trimmed for brevity..')
+        out = '\n'.join(out)
+    print out
     
 
 
@@ -85,19 +89,20 @@ Output from Python Code
 
 
     Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-    2014-12-07 01:08:15,186 INFO     question_progress: Results 0% (Get Computer Name and Last Logged In User and Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome" from all machines where Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome")
-    2014-12-07 01:08:20,216 INFO     question_progress: Results 100% (Get Computer Name and Last Logged In User and Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome" from all machines where Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome")
+    2014-12-08 16:26:01,111 INFO     question_progress: Results 0% (Get Computer Name and Last Logged In User and Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome" from all machines where Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome")
+    2014-12-08 16:26:06,148 INFO     question_progress: Results 67% (Get Computer Name and Last Logged In User and Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome" from all machines where Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome")
+    2014-12-08 16:26:11,188 INFO     question_progress: Results 100% (Get Computer Name and Last Logged In User and Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome" from all machines where Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome")
     
     Type of response:  <type 'dict'>
     
     Pretty print of response:
-    {'question_object': <taniumpy.object_types.question.Question object at 0x102303890>,
-     'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x1022e4750>}
+    {'question_object': <taniumpy.object_types.question.Question object at 0x102b0c790>,
+     'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x1029cf510>}
     
     Equivalent Question if it were to be asked in the Tanium Console: 
     Get Computer Name and Last Logged In User and Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome" from all machines where Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome"
     
     CSV Results of response: 
     Computer Name,Last Logged In User,Name,Name,Silent Uninstall String,Silent Uninstall String,Uninstallable,Uninstallable,Version,Version
-    Casus-Belli.local,[no results],Google Search,Google Search,nothing,nothing,Not Uninstallable,Not Uninstallable,37.0.2062.120,37.0.2062.120
+    Casus-Belli.local,N/A on Mac,Google Search,Google Search,nothing,nothing,Not Uninstallable,Not Uninstallable,37.0.2062.120,37.0.2062.120
     

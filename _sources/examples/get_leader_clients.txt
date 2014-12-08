@@ -1,6 +1,6 @@
 
 Get leader clients
-====================================================================================================
+==========================================================================================
 Get all clients that are Leader status
 
 Example Python Code
@@ -59,7 +59,14 @@ Example Python Code
     
     print ""
     print "print the first object returned in JSON format:"
-    print response.to_json(response[0])
+    out = response.to_json(response[0])
+    if len(out.splitlines()) > 15:
+        out = out.splitlines()[0:15]
+        out.append('..trimmed for brevity..')
+        out = '\n'.join(out)
+    
+    print out
+    
     
 
 
@@ -83,14 +90,14 @@ Output from Python Code
     print the first object returned in JSON format:
     {
       "_type": "client_status", 
-      "cache_row_id": 1, 
-      "computer_id": "255106209", 
+      "cache_row_id": 2, 
+      "computer_id": "3508795802", 
       "full_version": "6.0.314.1190", 
-      "host_name": "jtanium1.localdomain", 
-      "ipaddress_client": "172.16.31.128", 
-      "ipaddress_server": "172.16.31.128", 
-      "last_registration": "2014-12-07T06:08:41", 
-      "port_number": 17473, 
+      "host_name": "WIN-A12SC6N6T7Q", 
+      "ipaddress_client": "172.16.31.145", 
+      "ipaddress_server": "172.16.31.145", 
+      "last_registration": "2014-12-08T21:26:21", 
+      "port_number": 17472, 
       "protocol_version": 314, 
       "receive_state": "Previous Only", 
       "send_state": "Backward Only", 

@@ -1,6 +1,6 @@
 
 Invalid deploy action missing parameters
-====================================================================================================
+==========================================================================================
 Deploy an action using a package that requires parameters but do not supply any parameters.
 
 Example Python Code
@@ -64,16 +64,17 @@ Output from Python Code
 
 
     Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-    2014-12-07 01:11:50,769 INFO     question_progress: Results 0% (Get Online = "True" from all machines)
-    2014-12-07 01:11:55,787 INFO     question_progress: Results 50% (Get Online = "True" from all machines)
-    2014-12-07 01:12:00,804 INFO     question_progress: Results 100% (Get Online = "True" from all machines)
+    2014-12-08 16:28:29,332 INFO     question_progress: Results 0% (Get Online = "True" from all machines)
+    2014-12-08 16:28:34,353 INFO     question_progress: Results 50% (Get Online = "True" from all machines)
+    2014-12-08 16:28:39,370 INFO     question_progress: Results 83% (Get Online = "True" from all machines)
+    2014-12-08 16:28:44,391 INFO     question_progress: Results 100% (Get Online = "True" from all machines)
     Traceback (most recent call last):
       File "<string>", line 40, in <module>
-      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1109, in deploy_action_human
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1172, in deploy_action_human
         **kwargs
-      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 982, in deploy_action
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1026, in deploy_action
         empty_ok=False,
-      File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2071, in build_param_objlist
+      File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2147, in build_param_objlist
         raise HandlerError(err(obj_name, p_key, jsonify(obj_param)))
     HandlerError: PackageSpec, name: 'Custom Tagging - Add Tags' parameter key '$1' requires a value, parameter definition:
     {

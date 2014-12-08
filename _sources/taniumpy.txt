@@ -2,9 +2,11 @@ taniumpy package
 ================
 
 .. automodule:: taniumpy
+    :show-inheritance:
     :members:
     :undoc-members:
-    :show-inheritance:
+    :private-members:
+    :special-members:
 
 .. toctree::
    :maxdepth: 3

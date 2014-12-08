@@ -1,6 +1,6 @@
 
 Ask manual human question sensor with filter
-====================================================================================================
+==========================================================================================
 Ask a manual question using human strings by referencing the name of a single sensor.
 
 Also supply a sensor filter that limits the column data that is shown to values that contain Windows (which is short hand for regex match against .*Windows.*).
@@ -44,7 +44,7 @@ Example Python Code
     
     # setup the arguments for the handler method
     kwargs = {}
-    kwargs["sensors"] = u'Operating System, that contains Windows'
+    kwargs["sensors"] = u'Operating System, that contains:Windows'
     kwargs["qtype"] = u'manual_human'
     
     # call the handler with the ask method, passing in kwargs for arguments
@@ -70,8 +70,12 @@ Example Python Code
     
     print ""
     print "CSV Results of response: "
-    print out.getvalue()
-    
+    out = out.getvalue()
+    if len(out.splitlines()) > 15:
+        out = out.splitlines()[0:15]
+        out.append('..trimmed for brevity..')
+        out = '\n'.join(out)
+    print out
     
 
 
@@ -83,22 +87,21 @@ Output from Python Code
 
 
     Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-    2014-12-07 01:07:34,744 INFO     question_progress: Results 0% (Get Operating System contains "Windows" from all machines)
-    2014-12-07 01:07:39,757 INFO     question_progress: Results 0% (Get Operating System contains "Windows" from all machines)
-    2014-12-07 01:07:44,770 INFO     question_progress: Results 0% (Get Operating System contains "Windows" from all machines)
-    2014-12-07 01:07:49,787 INFO     question_progress: Results 100% (Get Operating System contains "Windows" from all machines)
+    2014-12-08 16:25:25,602 INFO     question_progress: Results 0% (Get Operating System contains "Windows" from all machines)
+    2014-12-08 16:25:30,621 INFO     question_progress: Results 50% (Get Operating System contains "Windows" from all machines)
+    2014-12-08 16:25:35,641 INFO     question_progress: Results 100% (Get Operating System contains "Windows" from all machines)
     
     Type of response:  <type 'dict'>
     
     Pretty print of response:
-    {'question_object': <taniumpy.object_types.question.Question object at 0x10213c210>,
-     'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x102035810>}
+    {'question_object': <taniumpy.object_types.question.Question object at 0x102123ed0>,
+     'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x10218fc50>}
     
     Equivalent Question if it were to be asked in the Tanium Console: 
     Get Operating System contains "Windows" from all machines
     
     CSV Results of response: 
-    Operating System
-    [no results]
-    Windows Server 2008 R2 Standard
+    Count,Operating System
+    4,[no results]
+    2,Windows Server 2008 R2 Standard
     

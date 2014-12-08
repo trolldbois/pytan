@@ -1,6 +1,6 @@
 
 Get saved action by name
-====================================================================================================
+==========================================================================================
 Get a saved action by name
 
 Example Python Code
@@ -59,7 +59,14 @@ Example Python Code
     
     print ""
     print "print the first object returned in JSON format:"
-    print response.to_json(response[0])
+    out = response.to_json(response[0])
+    if len(out.splitlines()) > 15:
+        out = out.splitlines()[0:15]
+        out.append('..trimmed for brevity..')
+        out = '\n'.join(out)
+    
+    print out
+    
     
 
 
@@ -85,7 +92,7 @@ Output from Python Code
       "_type": "saved_action", 
       "action_group_id": 0, 
       "comment": "Distributes the Hardware Tools used for hardware identification.", 
-      "creation_time": "2014-12-06T18:02:04", 
+      "creation_time": "2014-12-08T19:22:36", 
       "distribute_seconds": 0, 
       "end_time": "Never", 
       "expire_seconds": 660, 
@@ -96,24 +103,4 @@ Output from Python Code
         "_type": "action", 
         "id": 4294967295, 
         "start_time": "Never"
-      }, 
-      "name": "Distribute Hardware Tools", 
-      "package_spec": {
-        "_type": "package_spec", 
-        "id": 4294967295
-      }, 
-      "policy": {
-        "_type": "policy", 
-        "max_age": 86400, 
-        "min_count": 0, 
-        "row_filter_group_id": 208, 
-        "saved_question_group_id": 0, 
-        "saved_question_id": 13
-      }, 
-      "policy_flag": 1, 
-      "status": 0, 
-      "user": {
-        "_type": "user", 
-        "id": 1
-      }
-    }
+    ..trimmed for brevity..
