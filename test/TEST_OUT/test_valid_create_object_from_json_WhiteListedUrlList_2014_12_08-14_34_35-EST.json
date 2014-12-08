@@ -1,0 +1,11 @@
+{
+  "_type": "white_listed_urls", 
+  "white_listed_url": [
+    {
+      "_type": "white_listed_url", 
+      "download_seconds": 86400, 
+      "id": 1, 
+      "url_regex": "test1 API TEST"
+    }
+  ]
+}

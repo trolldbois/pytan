@@ -1,7 +1,0 @@
-
-pytan.api.object_types.client_status module
-*******************************************
-
-class class pytan.api.object_types.client_status.ClientStatus
-
-   Bases: "pytan.api.object_types.base.BaseType"

@@ -48,7 +48,7 @@
         "folder_exclude_patterns": [".svn", ".git", ".hg", "CVS"],
         "font_face": "Ubuntu Mono",
         "font_options": ["subpixel_antialias"],
-        "font_size": 15,
+        "font_size": 18,
         "gpu_window_buffer": "auto",
         "gutter": true,
         "highlight_line": true,
@@ -75,7 +75,7 @@
         "overlay_scroll_bars": "system",
         "preview_on_click": true,
         "remember_open_files": true,
-        "rulers": [79],
+        "rulers": [100],
         "save_on_focus_lost": false,
         "scroll_past_end": true,
         "scroll_speed": 1.0,
@@ -98,7 +98,7 @@
         "use_tab_stops": true,
         "word_separators": "./\\()\"'-:,.;<>~!@#$%^&*|+=[]{}`~?",
         "word_wrap": "true",
-        "wrap_width": 80,
+        "wrap_width": 100,
         "file_exclude_patterns":
         [
             "*.pyc",

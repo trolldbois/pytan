@@ -1,7 +1,0 @@
-
-pytan.api.object_types.upload_file_list module
-**********************************************
-
-class class pytan.api.object_types.upload_file_list.UploadFileList
-
-   Bases: "pytan.api.object_types.base.BaseType"

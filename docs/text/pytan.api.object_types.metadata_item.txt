@@ -1,7 +1,0 @@
-
-pytan.api.object_types.metadata_item module
-*******************************************
-
-class class pytan.api.object_types.metadata_item.MetadataItem
-
-   Bases: "pytan.api.object_types.base.BaseType"

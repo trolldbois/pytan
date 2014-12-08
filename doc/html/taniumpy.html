@@ -1,0 +1,309 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>taniumpy package &mdash; PyTan 1.0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="PyTan 1.0.1 documentation" href="index.html"/>
+        <link rel="next" title="1. taniumpy.session module" href="taniumpy.session.html"/>
+        <link rel="prev" title="7.6. pytan Functional Tests" href="pytan.functest.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="index.html" class="fa fa-home"> PyTan</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="description.html">1. Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="description.html#why-it-was-created">2. Why it was created</a></li>
+<li class="toctree-l1"><a class="reference internal" href="description.html#requirements">3. Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="description.html#installation">4. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="description.html#usage">5. Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="description.html#directory-layout">6. Directory Layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pytan.html">7. pytan package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/pytan_examples.html">7.1. pytan API examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.handler.html">7.2. pytan.handler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.constants.html">7.3. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html">7.4. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.unittest.html">7.5. pytan Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.functest.html">7.6. pytan Functional Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">taniumpy package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.session.html">1. taniumpy.session module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.question_asker.html">2. taniumpy.question_asker module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html">3. taniumpy.object_types package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="xmltodict.html">8. xmltodict module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ddt.html">9. ddt module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="threaded_http.html">10. threaded_http module</a><ul class="simple">
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">PyTan</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>taniumpy package</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/taniumpy.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="module-taniumpy">
+<span id="taniumpy-package"></span><h1>taniumpy package<a class="headerlink" href="#module-taniumpy" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="taniumpy.session.html">1. taniumpy.session module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="taniumpy.question_asker.html">2. taniumpy.question_asker module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="taniumpy.object_types.html">3. taniumpy.object_types package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types">3.1. taniumpy.object_types module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.action">3.2. taniumpy.object_types.action module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.action_list">3.3. taniumpy.object_types.action_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.action_list_info">3.4. taniumpy.object_types.action_list_info module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.action_stop">3.5. taniumpy.object_types.action_stop module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.action_stop_list">3.6. taniumpy.object_types.action_stop_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.all_objects">3.7. taniumpy.object_types.all_objects module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.archived_question">3.8. taniumpy.object_types.archived_question module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.archived_question_list">3.9. taniumpy.object_types.archived_question_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.audit_data">3.10. taniumpy.object_types.audit_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.base">3.11. taniumpy.object_types.base module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.cache_filter">3.12. taniumpy.object_types.cache_filter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.cache_filter_list">3.13. taniumpy.object_types.cache_filter_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.cache_info">3.14. taniumpy.object_types.cache_info module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.client_count">3.15. taniumpy.object_types.client_count module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.client_status">3.16. taniumpy.object_types.client_status module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.column">3.17. taniumpy.object_types.column module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.column_set">3.18. taniumpy.object_types.column_set module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.computer_group">3.19. taniumpy.object_types.computer_group module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.computer_group_list">3.20. taniumpy.object_types.computer_group_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.computer_group_spec">3.21. taniumpy.object_types.computer_group_spec module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.computer_spec_list">3.22. taniumpy.object_types.computer_spec_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.error_list">3.23. taniumpy.object_types.error_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.filter">3.24. taniumpy.object_types.filter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.filter_list">3.25. taniumpy.object_types.filter_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.group">3.26. taniumpy.object_types.group module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.group_list">3.27. taniumpy.object_types.group_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.metadata_item">3.28. taniumpy.object_types.metadata_item module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.metadata_list">3.29. taniumpy.object_types.metadata_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.object_list">3.30. taniumpy.object_types.object_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.object_list_types">3.31. taniumpy.object_types.object_list_types module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.options">3.32. taniumpy.object_types.options module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.package_file">3.33. taniumpy.object_types.package_file module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.package_file_list">3.34. taniumpy.object_types.package_file_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.package_file_status">3.35. taniumpy.object_types.package_file_status module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.package_file_status_list">3.36. taniumpy.object_types.package_file_status_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.package_file_template">3.37. taniumpy.object_types.package_file_template module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.package_file_template_list">3.38. taniumpy.object_types.package_file_template_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.package_spec">3.39. taniumpy.object_types.package_spec module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.package_spec_list">3.40. taniumpy.object_types.package_spec_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.parameter">3.41. taniumpy.object_types.parameter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.parameter_list">3.42. taniumpy.object_types.parameter_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.parse_job">3.43. taniumpy.object_types.parse_job module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.parse_job_list">3.44. taniumpy.object_types.parse_job_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.parse_result">3.45. taniumpy.object_types.parse_result module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.parse_result_group">3.46. taniumpy.object_types.parse_result_group module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.parse_result_group_list">3.47. taniumpy.object_types.parse_result_group_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.parse_result_list">3.48. taniumpy.object_types.parse_result_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.plugin">3.49. taniumpy.object_types.plugin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.plugin_argument">3.50. taniumpy.object_types.plugin_argument module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.plugin_argument_list">3.51. taniumpy.object_types.plugin_argument_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.plugin_command_list">3.52. taniumpy.object_types.plugin_command_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.plugin_list">3.53. taniumpy.object_types.plugin_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.plugin_schedule">3.54. taniumpy.object_types.plugin_schedule module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.plugin_schedule_list">3.55. taniumpy.object_types.plugin_schedule_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.plugin_sql">3.56. taniumpy.object_types.plugin_sql module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.plugin_sql_column">3.57. taniumpy.object_types.plugin_sql_column module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.plugin_sql_result">3.58. taniumpy.object_types.plugin_sql_result module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.question">3.59. taniumpy.object_types.question module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.question_list">3.60. taniumpy.object_types.question_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.question_list_info">3.61. taniumpy.object_types.question_list_info module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.result_info">3.62. taniumpy.object_types.result_info module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.result_set">3.63. taniumpy.object_types.result_set module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.row">3.64. taniumpy.object_types.row module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.saved_action">3.65. taniumpy.object_types.saved_action module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.saved_action_approval">3.66. taniumpy.object_types.saved_action_approval module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.saved_action_list">3.67. taniumpy.object_types.saved_action_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.saved_action_policy">3.68. taniumpy.object_types.saved_action_policy module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.saved_action_row_id_list">3.69. taniumpy.object_types.saved_action_row_id_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.saved_question">3.70. taniumpy.object_types.saved_question module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.saved_question_list">3.71. taniumpy.object_types.saved_question_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.select">3.72. taniumpy.object_types.select module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.select_list">3.73. taniumpy.object_types.select_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.sensor">3.74. taniumpy.object_types.sensor module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.sensor_list">3.75. taniumpy.object_types.sensor_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.sensor_query">3.76. taniumpy.object_types.sensor_query module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.sensor_query_list">3.77. taniumpy.object_types.sensor_query_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.sensor_string_hints">3.78. taniumpy.object_types.sensor_string_hints module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.sensor_subcolumn">3.79. taniumpy.object_types.sensor_subcolumn module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.sensor_subcolumn_list">3.80. taniumpy.object_types.sensor_subcolumn_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.sensor_types">3.81. taniumpy.object_types.sensor_types module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.soap_error">3.82. taniumpy.object_types.soap_error module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.system_setting">3.83. taniumpy.object_types.system_setting module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.system_settings_list">3.84. taniumpy.object_types.system_settings_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.system_status_aggregate">3.85. taniumpy.object_types.system_status_aggregate module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.system_status_list">3.86. taniumpy.object_types.system_status_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.upload_file">3.87. taniumpy.object_types.upload_file module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.upload_file_list">3.88. taniumpy.object_types.upload_file_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.upload_file_status">3.89. taniumpy.object_types.upload_file_status module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.user">3.90. taniumpy.object_types.user module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.user_list">3.91. taniumpy.object_types.user_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.user_permissions">3.92. taniumpy.object_types.user_permissions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.user_role">3.93. taniumpy.object_types.user_role module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.user_role_list">3.94. taniumpy.object_types.user_role_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.version_aggregate">3.95. taniumpy.object_types.version_aggregate module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.version_aggregate_list">3.96. taniumpy.object_types.version_aggregate_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.white_listed_url">3.97. taniumpy.object_types.white_listed_url module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.white_listed_url_list">3.98. taniumpy.object_types.white_listed_url_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html#module-taniumpy.object_types.xml_error">3.99. taniumpy.object_types.xml_error module</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="taniumpy.session.html" class="btn btn-neutral float-right" title="1. taniumpy.session module">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pytan.functest.html" class="btn btn-neutral" title="7.6. pytan Functional Tests"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Tanium.
+      Last updated on Dec 08, 2014.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

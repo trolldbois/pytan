@@ -1,7 +1,0 @@
-
-pytan.api.object_types.parse_job_list module
-********************************************
-
-class class pytan.api.object_types.parse_job_list.ParseJobList
-
-   Bases: "pytan.api.object_types.base.BaseType"

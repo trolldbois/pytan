@@ -4,16 +4,17 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 '''Create a action object from a json file'''
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
-__version__ = '0.8.0'
+__version__ = '1.0.1'
+
 
 import os
 import sys
-
 sys.dont_write_bytecode = True
 my_file = os.path.abspath(__file__)
 my_dir = os.path.dirname(my_file)
 parent_dir = os.path.dirname(my_dir)
-path_adds = [parent_dir]
+lib_dir = os.path.join(parent_dir, 'lib')
+path_adds = [lib_dir]
 
 for aa in path_adds:
     if aa not in sys.path:
@@ -22,24 +23,63 @@ for aa in path_adds:
 import pytan
 from pytan import utils
 
+from random import randint
+
+examples = [
+    {
+        'name': 'Export action id 1 as JSON',
+        'cmd': 'get_action.py $API_INFO --id 1 --file "$TMP/out.json" json',
+        'notes': ['Get the first action object', 'Save the results to a JSON file'],
+        'precleanup': 'rm -f $TMP/out.json',
+        'file_exist': '$TMP/out.json',
+        'tests': 'exitcode, file_exist_contents',
+    },
+    {
+        'name': 'Change name or url_regex in the JSON',
+        'cmd': (
+            """perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST {}"/gm'"""
+            """ $TMP/out.json && cat $TMP/out.json""".format(randint(1, 9999))
+        ),
+        'notes': ['Add CMDLINE TEST to name or url_regex in the JSON file'],
+        'file_exist': '$TMP/out.json',
+        'tests': 'exitcode, file_exist',
+    },
+    {
+        'name': 'Create a new action from the modified JSON file',
+        'cmd': 'create_action_from_json.py $API_INFO -j "$TMP/out.json"',
+        'precleanup': 'rm -f $TMP/create.out',
+        'tests': 'exitcode',
+    },
+
+]
+
 
 def process_handler_args(parser, all_args):
     handler_grp_names = ['Handler Authentication', 'Handler Options']
     handler_opts = utils.get_grp_opts(parser, handler_grp_names)
     handler_args = {k: all_args.pop(k) for k in handler_opts}
 
-    h = pytan.Handler(**handler_args)
-    print str(h)
+    try:
+        h = pytan.Handler(**handler_args)
+        print str(h)
+    except Exception as e:
+        print e
+        sys.exit(99)
     return h
 
 
-utils.version_check(__version__)
-parser = utils.setup_create_json_object_argparser('action', __doc__)
-args = parser.parse_args()
-all_args = args.__dict__
+if __name__ == "__main__":
+    utils.version_check(__version__)
+    parser = utils.setup_create_json_object_argparser('action', __doc__)
+    args = parser.parse_args()
+    all_args = args.__dict__
 
-handler = process_handler_args(parser, all_args)
+    handler = process_handler_args(parser, all_args)
 
-response = utils.process_create_json_object_args(
-    parser, handler, 'action', all_args
-)
+    try:
+        response = utils.process_create_json_object_args(
+            parser, handler, 'action', all_args
+        )
+    except Exception as e:
+        print e
+        sys.exit(99)

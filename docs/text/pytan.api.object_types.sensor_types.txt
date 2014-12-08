@@ -1,3 +1,0 @@
-
-pytan.api.object_types.sensor_types module
-******************************************

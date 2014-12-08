@@ -1,0 +1,738 @@
+{
+  "_type": "saved_actions", 
+  "cache_info": {
+    "_type": "cache_info", 
+    "cache_id": 1286889017, 
+    "cache_row_count": 21, 
+    "expiration": "2014-12-08T19:39:07", 
+    "filtered_row_count": 21, 
+    "page_row_count": 21
+  }, 
+  "saved_action": [
+    {
+      "_type": "saved_action", 
+      "action_group_id": 0, 
+      "cache_row_id": 0, 
+      "comment": "Scans for unmanaged assets on the network.", 
+      "creation_time": "2014-12-08T19:22:33", 
+      "distribute_seconds": 600, 
+      "end_time": "Never", 
+      "expire_seconds": 1800, 
+      "id": 1, 
+      "issue_count": 0, 
+      "issue_seconds": 3600, 
+      "last_action": {
+        "_type": "action", 
+        "id": 4294967295, 
+        "start_time": "Never"
+      }, 
+      "name": "Unmanaged Asset Tracking - Run Scan", 
+      "package_spec": {
+        "_type": "package_spec", 
+        "id": 4294967295
+      }, 
+      "policy": {
+        "_type": "policy", 
+        "max_age": 3600, 
+        "min_count": 0, 
+        "row_filter_group_id": 66, 
+        "saved_question_group_id": 0, 
+        "saved_question_id": 1
+      }, 
+      "policy_flag": 1, 
+      "status": 0, 
+      "user": {
+        "_type": "user", 
+        "id": 1
+      }
+    }, 
+    {
+      "_type": "saved_action", 
+      "action_group_id": 0, 
+      "cache_row_id": 1, 
+      "comment": "Distributes the tools needed to be able to scan for unmanaged assets on the network and then run initial scan.", 
+      "creation_time": "2014-12-08T19:22:33", 
+      "distribute_seconds": 0, 
+      "end_time": "Never", 
+      "expire_seconds": 1800, 
+      "id": 2, 
+      "issue_count": 0, 
+      "issue_seconds": 3000, 
+      "last_action": {
+        "_type": "action", 
+        "id": 4294967295, 
+        "start_time": "Never"
+      }, 
+      "name": "Unmanaged Asset Tracking - Deploy Scan Tools and Scan", 
+      "package_spec": {
+        "_type": "package_spec", 
+        "id": 4294967295
+      }, 
+      "policy": {
+        "_type": "policy", 
+        "max_age": 3000, 
+        "min_count": 0, 
+        "row_filter_group_id": 71, 
+        "saved_question_group_id": 0, 
+        "saved_question_id": 2
+      }, 
+      "policy_flag": 1, 
+      "status": 0, 
+      "user": {
+        "_type": "user", 
+        "id": 1
+      }
+    }, 
+    {
+      "_type": "saved_action", 
+      "action_group_id": 0, 
+      "cache_row_id": 2, 
+      "comment": "Will remove data from Tanium Client directory which is stale, and will safely kill any stale sensor or action processes.  Action processes are only terminated when they are run from the Downloads directory.", 
+      "creation_time": "2014-12-08T19:22:33", 
+      "distribute_seconds": 0, 
+      "end_time": "Never", 
+      "expire_seconds": 1800, 
+      "id": 3, 
+      "issue_count": 0, 
+      "issue_seconds": 14400, 
+      "last_action": {
+        "_type": "action", 
+        "id": 4294967295, 
+        "start_time": "Never"
+      }, 
+      "name": "Tanium - Clean Stale Tanium Client Data", 
+      "package_spec": {
+        "_type": "package_spec", 
+        "id": 4294967295
+      }, 
+      "policy": {
+        "_type": "policy", 
+        "max_age": 86400, 
+        "min_count": 0, 
+        "row_filter_group_id": 86, 
+        "saved_question_group_id": 0, 
+        "saved_question_id": 3
+      }, 
+      "policy_flag": 1, 
+      "status": 0, 
+      "user": {
+        "_type": "user", 
+        "id": 1
+      }
+    }, 
+    {
+      "_type": "saved_action", 
+      "action_group_id": 0, 
+      "cache_row_id": 3, 
+      "comment": "Removes files that may exist due to Client deployment jobs.", 
+      "creation_time": "2014-12-08T19:22:34", 
+      "distribute_seconds": 0, 
+      "end_time": "Never", 
+      "expire_seconds": 780, 
+      "id": 4, 
+      "issue_count": 0, 
+      "issue_seconds": 3600, 
+      "last_action": {
+        "_type": "action", 
+        "id": 4294967295, 
+        "start_time": "Never"
+      }, 
+      "name": "Remove Tanium Client Install Files", 
+      "package_spec": {
+        "_type": "package_spec", 
+        "id": 4294967295
+      }, 
+      "policy": {
+        "_type": "policy", 
+        "max_age": 3600, 
+        "min_count": 0, 
+        "row_filter_group_id": 95, 
+        "saved_question_group_id": 0, 
+        "saved_question_id": 4
+      }, 
+      "policy_flag": 1, 
+      "status": 0, 
+      "user": {
+        "_type": "user", 
+        "id": 1
+      }
+    }, 
+    {
+      "_type": "saved_action", 
+      "action_group_id": 0, 
+      "cache_row_id": 4, 
+      "comment": "Runs a patch scan using the Microsoft Windows Update offline cab file.  Scans for patches up to 2 minutes after issue time.", 
+      "creation_time": "2014-12-08T19:22:34", 
+      "distribute_seconds": 600, 
+      "end_time": "Never", 
+      "expire_seconds": 1800, 
+      "id": 5, 
+      "issue_count": 0, 
+      "issue_seconds": 14400, 
+      "last_action": {
+        "_type": "action", 
+        "id": 4294967295, 
+        "start_time": "Never"
+      }, 
+      "name": "Patch Management - Run Patch Scan", 
+      "package_spec": {
+        "_type": "package_spec", 
+        "id": 4294967295
+      }, 
+      "policy": {
+        "_type": "policy", 
+        "max_age": 3600, 
+        "min_count": 0, 
+        "row_filter_group_id": 103, 
+        "saved_question_group_id": 0, 
+        "saved_question_id": 5
+      }, 
+      "policy_flag": 1, 
+      "status": 0, 
+      "user": {
+        "_type": "user", 
+        "id": 1
+      }
+    }, 
+    {
+      "_type": "saved_action", 
+      "action_group_id": 0, 
+      "cache_row_id": 5, 
+      "comment": "Batch installs all patches that have been deployed to targeted machines.", 
+      "creation_time": "2014-12-08T19:22:34", 
+      "distribute_seconds": 0, 
+      "end_time": "Never", 
+      "expire_seconds": 1800, 
+      "id": 6, 
+      "issue_count": 0, 
+      "issue_seconds": 300, 
+      "last_action": {
+        "_type": "action", 
+        "id": 4294967295, 
+        "start_time": "Never"
+      }, 
+      "name": "Patch Management - Install Delivered Patch Files", 
+      "package_spec": {
+        "_type": "package_spec", 
+        "id": 4294967295
+      }, 
+      "policy": {
+        "_type": "policy", 
+        "max_age": 300, 
+        "min_count": 0, 
+        "row_filter_group_id": 113, 
+        "saved_question_group_id": 0, 
+        "saved_question_id": 6
+      }, 
+      "policy_flag": 1, 
+      "status": 0, 
+      "user": {
+        "_type": "user", 
+        "id": 1
+      }
+    }, 
+    {
+      "_type": "saved_action", 
+      "action_group_id": 0, 
+      "cache_row_id": 6, 
+      "comment": "This package will force a patch scan on machines with results older than 2 days.", 
+      "creation_time": "2014-12-08T19:22:35", 
+      "distribute_seconds": 0, 
+      "end_time": "Never", 
+      "expire_seconds": 1800, 
+      "id": 7, 
+      "issue_count": 0, 
+      "issue_seconds": 3600, 
+      "last_action": {
+        "_type": "action", 
+        "id": 4294967295, 
+        "start_time": "Never"
+      }, 
+      "name": "Patch Management - Force Patch Scan for Stale Results", 
+      "package_spec": {
+        "_type": "package_spec", 
+        "id": 4294967295
+      }, 
+      "policy": {
+        "_type": "policy", 
+        "max_age": 3600, 
+        "min_count": 0, 
+        "row_filter_group_id": 126, 
+        "saved_question_group_id": 0, 
+        "saved_question_id": 7
+      }, 
+      "policy_flag": 1, 
+      "status": 0, 
+      "user": {
+        "_type": "user", 
+        "id": 1
+      }
+    }, 
+    {
+      "_type": "saved_action", 
+      "action_group_id": 0, 
+      "cache_row_id": 7, 
+      "comment": "This action will distribute the latest patch tools to machines that do not have any, or the correct versions, of patch tool files, or are missing the update scan CAB file.", 
+      "creation_time": "2014-12-08T19:22:35", 
+      "distribute_seconds": 7200, 
+      "end_time": "Never", 
+      "expire_seconds": 1800, 
+      "id": 8, 
+      "issue_count": 0, 
+      "issue_seconds": 7200, 
+      "last_action": {
+        "_type": "action", 
+        "id": 4294967295, 
+        "start_time": "Never"
+      }, 
+      "name": "Patch Management - Deploy Patch Scan Files and Scan", 
+      "package_spec": {
+        "_type": "package_spec", 
+        "id": 4294967295
+      }, 
+      "policy": {
+        "_type": "policy", 
+        "max_age": 7200, 
+        "min_count": 0, 
+        "row_filter_group_id": 136, 
+        "saved_question_group_id": 0, 
+        "saved_question_id": 8
+      }, 
+      "policy_flag": 1, 
+      "status": 0, 
+      "user": {
+        "_type": "user", 
+        "id": 1
+      }
+    }, 
+    {
+      "_type": "saved_action", 
+      "action_group_id": 0, 
+      "cache_row_id": 8, 
+      "comment": "Deploys an updated version of the Microsoft Windows Update offline patch cab and VBScript files needed for patch scanning to machines with old patch tools.", 
+      "creation_time": "2014-12-08T19:22:35", 
+      "distribute_seconds": 0, 
+      "end_time": "Never", 
+      "expire_seconds": 660, 
+      "id": 9, 
+      "issue_count": 0, 
+      "issue_seconds": 3600, 
+      "last_action": {
+        "_type": "action", 
+        "id": 4294967295, 
+        "start_time": "Never"
+      }, 
+      "name": "Patch Management - Deploy Patch Scan Files", 
+      "package_spec": {
+        "_type": "package_spec", 
+        "id": 4294967295
+      }, 
+      "policy": {
+        "_type": "policy", 
+        "max_age": 3600, 
+        "min_count": 0, 
+        "row_filter_group_id": 146, 
+        "saved_question_group_id": 0, 
+        "saved_question_id": 9
+      }, 
+      "policy_flag": 1, 
+      "status": 0, 
+      "user": {
+        "_type": "user", 
+        "id": 1
+      }
+    }, 
+    {
+      "_type": "saved_action", 
+      "action_group_id": 0, 
+      "cache_row_id": 9, 
+      "comment": "Update any out of date DAT files and re-run the scan", 
+      "creation_time": "2014-12-08T19:22:35", 
+      "distribute_seconds": 0, 
+      "end_time": "Never", 
+      "expire_seconds": 660, 
+      "id": 10, 
+      "issue_count": 0, 
+      "issue_seconds": 43200, 
+      "last_action": {
+        "_type": "action", 
+        "id": 4294967295, 
+        "start_time": "Never"
+      }, 
+      "name": "Managed Applications - Update DAT and Run Scan", 
+      "package_spec": {
+        "_type": "package_spec", 
+        "id": 4294967295
+      }, 
+      "policy": {
+        "_type": "policy", 
+        "max_age": 43200, 
+        "min_count": 0, 
+        "row_filter_group_id": 160, 
+        "saved_question_group_id": 0, 
+        "saved_question_id": 11
+      }, 
+      "policy_flag": 1, 
+      "status": 0, 
+      "user": {
+        "_type": "user", 
+        "id": 1
+      }
+    }, 
+    {
+      "_type": "saved_action", 
+      "action_group_id": 0, 
+      "cache_row_id": 10, 
+      "comment": "Periodically run the Managed Applications scanner", 
+      "creation_time": "2014-12-08T19:22:35", 
+      "distribute_seconds": 0, 
+      "end_time": "Never", 
+      "expire_seconds": 1200, 
+      "id": 11, 
+      "issue_count": 0, 
+      "issue_seconds": 21600, 
+      "last_action": {
+        "_type": "action", 
+        "id": 4294967295, 
+        "start_time": "Never"
+      }, 
+      "name": "Managed Applications - Run Scan", 
+      "package_spec": {
+        "_type": "package_spec", 
+        "id": 4294967295
+      }, 
+      "policy": {
+        "_type": "policy", 
+        "max_age": 21600, 
+        "min_count": 0, 
+        "row_filter_group_id": 174, 
+        "saved_question_group_id": 0, 
+        "saved_question_id": 10
+      }, 
+      "policy_flag": 1, 
+      "status": 0, 
+      "user": {
+        "_type": "user", 
+        "id": 1
+      }
+    }, 
+    {
+      "_type": "saved_action", 
+      "action_group_id": 0, 
+      "cache_row_id": 11, 
+      "comment": "Deploy tools needed for Managed Applications scan, kick off initial scan.", 
+      "creation_time": "2014-12-08T19:22:36", 
+      "distribute_seconds": 0, 
+      "end_time": "Never", 
+      "expire_seconds": 660, 
+      "id": 12, 
+      "issue_count": 0, 
+      "issue_seconds": 3000, 
+      "last_action": {
+        "_type": "action", 
+        "id": 4294967295, 
+        "start_time": "Never"
+      }, 
+      "name": "Managed Applications - Initialize and Run Scan", 
+      "package_spec": {
+        "_type": "package_spec", 
+        "id": 4294967295
+      }, 
+      "policy": {
+        "_type": "policy", 
+        "max_age": 3000, 
+        "min_count": 0, 
+        "row_filter_group_id": 189, 
+        "saved_question_group_id": 0, 
+        "saved_question_id": 11
+      }, 
+      "policy_flag": 1, 
+      "status": 0, 
+      "user": {
+        "_type": "user", 
+        "id": 1
+      }
+    }, 
+    {
+      "_type": "saved_action", 
+      "action_group_id": 0, 
+      "cache_row_id": 12, 
+      "comment": "Distribute Tanium Standard Utilities", 
+      "creation_time": "2014-12-08T19:22:36", 
+      "distribute_seconds": 3600, 
+      "end_time": "Never", 
+      "expire_seconds": 3300, 
+      "id": 13, 
+      "issue_count": 0, 
+      "issue_seconds": 10800, 
+      "last_action": {
+        "_type": "action", 
+        "id": 4294967295, 
+        "start_time": "Never"
+      }, 
+      "name": "Distribute Tanium Standard Utilities", 
+      "package_spec": {
+        "_type": "package_spec", 
+        "id": 4294967295
+      }, 
+      "policy": {
+        "_type": "policy", 
+        "max_age": 10800, 
+        "min_count": 0, 
+        "row_filter_group_id": 202, 
+        "saved_question_group_id": 0, 
+        "saved_question_id": 12
+      }, 
+      "policy_flag": 1, 
+      "status": 0, 
+      "user": {
+        "_type": "user", 
+        "id": 1
+      }
+    }, 
+    {
+      "_type": "saved_action", 
+      "action_group_id": 0, 
+      "cache_row_id": 13, 
+      "comment": "Distributes the Hardware Tools used for hardware identification.", 
+      "creation_time": "2014-12-08T19:22:36", 
+      "distribute_seconds": 0, 
+      "end_time": "Never", 
+      "expire_seconds": 660, 
+      "id": 14, 
+      "issue_count": 0, 
+      "issue_seconds": 86400, 
+      "last_action": {
+        "_type": "action", 
+        "id": 4294967295, 
+        "start_time": "Never"
+      }, 
+      "name": "Distribute Hardware Tools", 
+      "package_spec": {
+        "_type": "package_spec", 
+        "id": 4294967295
+      }, 
+      "policy": {
+        "_type": "policy", 
+        "max_age": 86400, 
+        "min_count": 0, 
+        "row_filter_group_id": 208, 
+        "saved_question_group_id": 0, 
+        "saved_question_id": 13
+      }, 
+      "policy_flag": 1, 
+      "status": 0, 
+      "user": {
+        "_type": "user", 
+        "id": 1
+      }
+    }, 
+    {
+      "_type": "saved_action", 
+      "action_group_id": 0, 
+      "cache_row_id": 14, 
+      "comment": "Distributes the Application Management Tools which are required for certain Actions to complete.", 
+      "creation_time": "2014-12-08T19:22:36", 
+      "distribute_seconds": 0, 
+      "end_time": "Never", 
+      "expire_seconds": 2400, 
+      "id": 15, 
+      "issue_count": 0, 
+      "issue_seconds": 1800, 
+      "last_action": {
+        "_type": "action", 
+        "id": 4294967295, 
+        "start_time": "Never"
+      }, 
+      "name": "Distribute Application Management Tools", 
+      "package_spec": {
+        "_type": "package_spec", 
+        "id": 4294967295
+      }, 
+      "policy": {
+        "_type": "policy", 
+        "max_age": 1800, 
+        "min_count": 0, 
+        "row_filter_group_id": 215, 
+        "saved_question_group_id": 0, 
+        "saved_question_id": 14
+      }, 
+      "policy_flag": 1, 
+      "status": 0, 
+      "user": {
+        "_type": "user", 
+        "id": 1
+      }
+    }, 
+    {
+      "_type": "saved_action", 
+      "action_group_id": 0, 
+      "cache_row_id": 15, 
+      "comment": "Scans for unmanaged assets on the network.", 
+      "creation_time": "2014-12-08T19:26:36", 
+      "distribute_seconds": 600, 
+      "end_time": "Never", 
+      "expire_seconds": 3000, 
+      "id": 16, 
+      "issue_count": 0, 
+      "issue_seconds": 0, 
+      "last_action": {
+        "_type": "action", 
+        "id": 4294967295, 
+        "start_time": "Never"
+      }, 
+      "name": "Unmanaged Asset Tracking - Run Scan", 
+      "package_spec": {
+        "_type": "package_spec", 
+        "id": 4294967295
+      }, 
+      "policy_flag": 0, 
+      "status": 0, 
+      "user": {
+        "_type": "user", 
+        "id": 2
+      }
+    }, 
+    {
+      "_type": "saved_action", 
+      "action_group_id": 0, 
+      "cache_row_id": 16, 
+      "comment": "Scans for unmanaged assets on the network.", 
+      "creation_time": "2014-12-08T19:34:35", 
+      "distribute_seconds": 600, 
+      "end_time": "Never", 
+      "expire_seconds": 3000, 
+      "id": 17, 
+      "issue_count": 1, 
+      "issue_seconds": 0, 
+      "last_action": {
+        "_type": "action", 
+        "id": 17, 
+        "start_time": "2014-12-08T19:34:35"
+      }, 
+      "name": "Unmanaged Asset Tracking - Run Scan", 
+      "package_spec": {
+        "_type": "package_spec", 
+        "id": 6
+      }, 
+      "policy_flag": 0, 
+      "status": 0, 
+      "user": {
+        "_type": "user", 
+        "id": 2
+      }
+    }, 
+    {
+      "_type": "saved_action", 
+      "action_group_id": 0, 
+      "cache_row_id": 17, 
+      "creation_time": "2014-12-08T19:34:46", 
+      "distribute_seconds": 0, 
+      "end_time": "Never", 
+      "expire_seconds": 6000, 
+      "id": 18, 
+      "issue_count": 1, 
+      "issue_seconds": 0, 
+      "last_action": {
+        "_type": "action", 
+        "id": 18, 
+        "start_time": "2014-12-08T19:34:46"
+      }, 
+      "name": "API Deploy Distribute Tanium Standard Utilities", 
+      "package_spec": {
+        "_type": "package_spec", 
+        "id": 20
+      }, 
+      "policy_flag": 0, 
+      "status": 0, 
+      "user": {
+        "_type": "user", 
+        "id": 2
+      }
+    }, 
+    {
+      "_type": "saved_action", 
+      "action_group_id": 0, 
+      "cache_row_id": 18, 
+      "creation_time": "2014-12-08T19:36:55", 
+      "distribute_seconds": 0, 
+      "end_time": "Never", 
+      "expire_seconds": 6000, 
+      "id": 19, 
+      "issue_count": 1, 
+      "issue_seconds": 0, 
+      "last_action": {
+        "_type": "action", 
+        "id": 19, 
+        "start_time": "2014-12-08T19:36:55"
+      }, 
+      "name": "API Deploy Distribute Tanium Standard Utilities", 
+      "package_spec": {
+        "_type": "package_spec", 
+        "id": 20
+      }, 
+      "policy_flag": 0, 
+      "status": 0, 
+      "user": {
+        "_type": "user", 
+        "id": 2
+      }
+    }, 
+    {
+      "_type": "saved_action", 
+      "action_group_id": 0, 
+      "cache_row_id": 19, 
+      "creation_time": "2014-12-08T19:37:10", 
+      "distribute_seconds": 0, 
+      "end_time": "Never", 
+      "expire_seconds": 720, 
+      "id": 20, 
+      "issue_count": 1, 
+      "issue_seconds": 0, 
+      "last_action": {
+        "_type": "action", 
+        "id": 20, 
+        "start_time": "2014-12-08T19:37:10"
+      }, 
+      "name": "API Deploy Custom Tagging - Add Tags", 
+      "package_spec": {
+        "_type": "package_spec", 
+        "id": 93
+      }, 
+      "policy_flag": 0, 
+      "status": 0, 
+      "user": {
+        "_type": "user", 
+        "id": 2
+      }
+    }, 
+    {
+      "_type": "saved_action", 
+      "action_group_id": 0, 
+      "cache_row_id": 20, 
+      "creation_time": "2014-12-08T19:37:36", 
+      "distribute_seconds": 0, 
+      "end_time": "Never", 
+      "expire_seconds": 6000, 
+      "id": 21, 
+      "issue_count": 1, 
+      "issue_seconds": 0, 
+      "last_action": {
+        "_type": "action", 
+        "id": 21, 
+        "start_time": "2014-12-08T19:37:36"
+      }, 
+      "name": "API Deploy Distribute Tanium Standard Utilities", 
+      "package_spec": {
+        "_type": "package_spec", 
+        "id": 20
+      }, 
+      "policy_flag": 0, 
+      "status": 0, 
+      "user": {
+        "_type": "user", 
+        "id": 2
+      }
+    }
+  ]
+}

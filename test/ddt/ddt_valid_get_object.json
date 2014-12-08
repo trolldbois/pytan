@@ -1,289 +1,349 @@
 {
-    "get_action_single_by_id": {
+    "get_action_by_id": {
+        "desc": "Get an action by id",
+        "priority": "1",
         "method": "get",
-        "args": {"obj": "action", "id": 1},
+        "args": {"objtype": "action", "id": 1},
         "tests": [
             "len(response) == 1",
-            "isinstance(response, pytan.api.ActionList)",
-            "all([isinstance(x, pytan.api.Action) for x in response])"
+            "isinstance(response, taniumpy.ActionList)",
+            "all([isinstance(x, taniumpy.Action) for x in response])"
         ]
     },
-    "get_group_single_by_name": {
+    "get_group_by_name": {
+        "desc": "Get a group by name",
+        "priority": "1",
         "method": "get",
-        "args": {"obj": "group", "name": "All Computers"},
+        "args": {"objtype": "group", "name": "All Computers"},
         "tests": [
             "len(response) == 1",
-            "isinstance(response, pytan.api.GroupList)",
-            "all([isinstance(x, pytan.api.Group) for x in response])"
+            "isinstance(response, taniumpy.GroupList)",
+            "all([isinstance(x, taniumpy.Group) for x in response])"
         ]
     },
-    "get_package_single_by_name": {
+    "get_package_by_name": {
+        "desc": "Get a package by name",
+        "priority": "1",
         "method": "get",
-        "args": {"obj": "package", "name": "Distribute Patch Tools"},
+        "args": {"objtype": "package", "name": "Distribute Patch Tools"},
         "tests": [
             "len(response) == 1",
-            "isinstance(response, pytan.api.PackageSpecList)",
-            "all([isinstance(x, pytan.api.PackageSpec) for x in response])"
+            "isinstance(response, taniumpy.PackageSpecList)",
+            "all([isinstance(x, taniumpy.PackageSpec) for x in response])"
         ]
     },
-    "get_question_single_by_id": {
+    "get_question_by_id": {
+        "desc": "Get a question by id",
+        "priority": "1",
         "method": "get",
-        "args": {"obj": "question", "id": 1},
+        "args": {"objtype": "question", "id": 1},
         "tests": [
             "len(response) == 1",
-            "isinstance(response, pytan.api.QuestionList)",
-            "all([isinstance(x, pytan.api.Question) for x in response])"
+            "isinstance(response, taniumpy.QuestionList)",
+            "all([isinstance(x, taniumpy.Question) for x in response])"
         ]
     },
-    "get_saved_action_single_by_name": {
+    "get_saved_action_by_name": {
+        "desc": "Get a saved action by name",
+        "priority": "1",
         "method": "get",
         "args": {
-            "obj": "saved_action",
+            "objtype": "saved_action",
             "name": "Distribute Tanium Standard Utilities"
         },
         "tests": [
             "len(response) == 1",
-            "isinstance(response, pytan.api.SavedActionList)",
-            "all([isinstance(x, pytan.api.SavedAction) for x in response])"
+            "isinstance(response, taniumpy.SavedActionList)",
+            "all([isinstance(x, taniumpy.SavedAction) for x in response])"
         ]
     },
-    "get_saved_question_single_by_name": {
+    "get_saved_question_by_name": {
+        "desc": "Get saved question by name",
+        "priority": "1",
         "method": "get",
         "args": {
-            "obj": "saved_question",
+            "objtype": "saved_question",
             "name": "Installed Applications"
         },
         "tests": [
             "len(response) == 1",
-            "isinstance(response, pytan.api.SavedQuestionList)",
-            "all([isinstance(x, pytan.api.SavedQuestion) for x in response])"
+            "isinstance(response, taniumpy.SavedQuestionList)",
+            "all([isinstance(x, taniumpy.SavedQuestion) for x in response])"
         ]
     },
-    "get_saved_question_multiple": {
+    "get_saved_question_by_names": {
+        "desc": "Get two saved questions by name",
+        "priority": "1",
         "method": "get",
         "args": {
-            "obj": "saved_question",
+            "objtype": "saved_question",
             "name": ["Installed Applications", "Computer Name"]
         },
         "tests": [
             "len(response) == 2",
-            "isinstance(response, pytan.api.SavedQuestionList)",
-            "all([isinstance(x, pytan.api.SavedQuestion) for x in response])"
+            "isinstance(response, taniumpy.SavedQuestionList)",
+            "all([isinstance(x, taniumpy.SavedQuestion) for x in response])"
         ]
     },
-    "get_sensor_single_by_name": {
+    "get_sensor_by_name": {
+        "desc": "Get a sensor by name",
+        "priority": "1",
         "method": "get",
-        "args": {"obj": "sensor", "name": "Computer Name"},
+        "args": {"objtype": "sensor", "name": "Computer Name"},
         "tests": [
             "len(response) == 1",
-            "isinstance(response, pytan.api.SensorList)",
-            "all([isinstance(x, pytan.api.Sensor) for x in response])"
+            "isinstance(response, taniumpy.SensorList)",
+            "all([isinstance(x, taniumpy.Sensor) for x in response])"
         ]
     },
-    "get_sensor_single_by_id": {
+    "get_sensor_by_id": {
+        "desc": "Get a sensor by id",
+        "priority": "1",
         "method": "get",
-        "args": {"obj": "sensor", "id": 1},
+        "args": {"objtype": "sensor", "id": 1},
         "tests": [
             "len(response) == 1",
-            "isinstance(response, pytan.api.SensorList)",
-            "all([isinstance(x, pytan.api.Sensor) for x in response])"
+            "isinstance(response, taniumpy.SensorList)",
+            "all([isinstance(x, taniumpy.Sensor) for x in response])"
         ]
     },
-    "get_sensor_single_by_hash": {
+    "get_sensor_by_hash": {
+        "desc": "Get a sensor by hash",
+        "priority": "1",
         "method": "get",
-        "args": {"obj": "sensor", "hash": "322086833"},
+        "args": {"objtype": "sensor", "hash": "322086833"},
         "tests": [
             "len(response) == 1",
-            "isinstance(response, pytan.api.SensorList)",
-            "all([isinstance(x, pytan.api.Sensor) for x in response])"
+            "isinstance(response, taniumpy.SensorList)",
+            "all([isinstance(x, taniumpy.Sensor) for x in response])"
         ]
     },
-    "get_sensor_multiple": {
+    "get_sensor_by_names": {
+        "desc": "Get multiple sensors by name",
+        "priority": "1",
         "method": "get",
         "args": {
-            "obj": "sensor",
+            "objtype": "sensor",
             "name": ["Computer Name", "Action Statuses"]
         },
         "tests": [
             "len(response) == 2",
-            "isinstance(response, pytan.api.SensorList)",
-            "all([isinstance(x, pytan.api.Sensor) for x in response])"
+            "isinstance(response, taniumpy.SensorList)",
+            "all([isinstance(x, taniumpy.Sensor) for x in response])"
         ]
     },
-    "get_sensor_multiple_selectors": {
+    "get_sensor_by_mixed": {
+        "desc": "Get multiple sensors by id, name, and hash",
+        "priority": "1",
         "method": "get",
         "args": {
-            "obj": "sensor",
+            "objtype": "sensor",
             "name": ["Computer Name"],
             "id": [1, 2],
             "hash": ["322086833"]
         },
         "tests": [
             "len(response) == 4",
-            "isinstance(response, pytan.api.SensorList)",
-            "all([isinstance(x, pytan.api.Sensor) for x in response])"
+            "isinstance(response, taniumpy.SensorList)",
+            "all([isinstance(x, taniumpy.Sensor) for x in response])"
         ]
     },
-    "get_setting_single_by_name": {
+    "get_setting_by_name": {
+        "desc": "Get a system setting by name",
+        "priority": "1",
         "method": "get",
-        "args": {"obj": "setting", "name": "control_address"},
+        "args": {"objtype": "setting", "name": "control_address"},
         "tests": [
             "len(response) == 1",
-            "isinstance(response, pytan.api.SystemSettingsList)",
-            "all([isinstance(x, pytan.api.SystemSetting) for x in response])"
+            "isinstance(response, taniumpy.SystemSettingsList)",
+            "all([isinstance(x, taniumpy.SystemSetting) for x in response])"
         ]
     },
-    "get_user_single_by_id": {
+    "get_user_by_id": {
+        "desc": "Get a user by id",
+        "priority": "1",
         "method": "get",
-        "args": {"obj": "user", "id": 1},
+        "args": {"objtype": "user", "id": 1},
         "tests": [
             "len(response) == 1",
-            "isinstance(response, pytan.api.UserList)",
-            "all([isinstance(x, pytan.api.User) for x in response])"
+            "isinstance(response, taniumpy.UserList)",
+            "all([isinstance(x, taniumpy.User) for x in response])"
         ]
     },
-    "get_user_single_by_name": {
+    "get_user_by_name": {
+        "desc": "Get a user by name",
+        "priority": "1",
         "method": "get",
-        "args": {"obj": "user", "name": "Tanium User"},
+        "args": {"objtype": "user", "name": "Tanium User"},
         "tests": [
             "len(response) == 1",
-            "isinstance(response, pytan.api.UserList)",
-            "all([isinstance(x, pytan.api.User) for x in response])"
+            "isinstance(response, taniumpy.UserList)",
+            "all([isinstance(x, taniumpy.User) for x in response])"
         ]
     },
-    "get_userrole_single_by_id": {
+    "get_userrole_by_id": {
+        "desc": "Get a user role by id.",
+        "priority": "1",
         "method": "get",
-        "args": {"obj": "userrole", "id": 1},
+        "args": {"objtype": "userrole", "id": 1},
         "tests": [
             "len(response) == 1",
-            "isinstance(response, pytan.api.UserRoleList)",
-            "all([isinstance(x, pytan.api.UserRole) for x in response])"
+            "isinstance(response, taniumpy.UserRoleList)",
+            "all([isinstance(x, taniumpy.UserRole) for x in response])"
         ]
     },
-    "get_whitelisted_url_single_by_id": {
+    "get_whitelisted_url_by_id": {
+        "desc": "Get a whitelisted url by id",
+        "priority": "1",
         "method": "get",
-        "args": {"obj": "whitelisted_url", "id": 4},
+        "args": {"objtype": "whitelisted_url", "id": 1},
         "tests": [
             "len(response) == 1",
-            "isinstance(response, pytan.api.WhiteListedUrlList)",
-            "all([isinstance(x, pytan.api.WhiteListedUrl) for x in response])"
+            "isinstance(response, taniumpy.WhiteListedUrlList)",
+            "all([isinstance(x, taniumpy.WhiteListedUrl) for x in response])"
         ]
     },
     "get_leader_clients": {
+        "desc": "Get all clients that are Leader status",
+        "priority": "1",
         "method": "get",
-        "args": {"obj": "client", "status": "Leader"},
+        "args": {"objtype": "client", "status": "Leader"},
         "tests": [
             "len(response) >= 1",
-            "isinstance(response, pytan.api.SystemStatusList)",
-            "all([isinstance(x, pytan.api.ClientStatus) for x in response])"
+            "isinstance(response, taniumpy.SystemStatusList)",
+            "all([isinstance(x, taniumpy.ClientStatus) for x in response])"
         ]
     },
     "get_all_actions": {
+        "desc": "Get all actions",
+        "priority": "2",
         "method": "get_all",
-        "args": {"obj": "action"},
+        "args": {"objtype": "action"},
         "tests": [
             "len(response) >= 1",
-            "isinstance(response, pytan.api.ActionList)",
-            "all([isinstance(x, pytan.api.Action) for x in response])"
+            "isinstance(response, taniumpy.ActionList)",
+            "all([isinstance(x, taniumpy.Action) for x in response])"
         ]
     },
     "get_all_clients": {
+        "desc": "Get all clients",
+        "priority": "2",
         "method": "get_all",
-        "args": {"obj": "client"},
+        "args": {"objtype": "client"},
         "tests": [
             "len(response) >= 1",
-            "isinstance(response, pytan.api.SystemStatusList)",
-            "all([isinstance(x, pytan.api.ClientStatus) for x in response])"
+            "isinstance(response, taniumpy.SystemStatusList)",
+            "all([isinstance(x, taniumpy.ClientStatus) for x in response])"
         ]
     },
     "get_all_groups": {
+        "desc": "Get all groups",
+        "priority": "2",
         "method": "get_all",
-        "args": {"obj": "group"},
+        "args": {"objtype": "group"},
         "tests": [
             "len(response) >= 1",
-            "isinstance(response, pytan.api.GroupList)",
-            "all([isinstance(x, pytan.api.Group) for x in response])"
+            "isinstance(response, taniumpy.GroupList)",
+            "all([isinstance(x, taniumpy.Group) for x in response])"
         ]
     },
     "get_all_packages": {
+        "desc": "Get all packages",
+        "priority": "2",
         "method": "get_all",
-        "args": {"obj": "package"},
+        "args": {"objtype": "package"},
         "tests": [
             "len(response) >= 1",
-            "isinstance(response, pytan.api.PackageSpecList)",
-            "all([isinstance(x, pytan.api.PackageSpec) for x in response])"
+            "isinstance(response, taniumpy.PackageSpecList)",
+            "all([isinstance(x, taniumpy.PackageSpec) for x in response])"
         ]
     },
     "get_all_questions": {
+        "desc": "Get all questions",
+        "priority": "2",
         "method": "get_all",
-        "args": {"obj": "question"},
+        "args": {"objtype": "question"},
         "tests": [
             "len(response) >= 1",
-            "isinstance(response, pytan.api.QuestionList)",
-            "all([isinstance(x, pytan.api.Question) for x in response])"
+            "isinstance(response, taniumpy.QuestionList)",
+            "all([isinstance(x, taniumpy.Question) for x in response])"
         ]
     },
     "get_all_saved_actions": {
+        "desc": "Get all saved actions",
+        "priority": "2",
         "method": "get_all",
-        "args": {"obj": "saved_action"},
+        "args": {"objtype": "saved_action"},
         "tests": [
             "len(response) >= 1",
-            "isinstance(response, pytan.api.SavedActionList)",
-            "all([isinstance(x, pytan.api.SavedAction) for x in response])"
+            "isinstance(response, taniumpy.SavedActionList)",
+            "all([isinstance(x, taniumpy.SavedAction) for x in response])"
         ]
     },
     "get_all_saved_questions": {
+        "desc": "Get all saved questions",
+        "priority": "2",
         "method": "get_all",
-        "args": {"obj": "saved_question"},
+        "args": {"objtype": "saved_question"},
         "tests": [
             "len(response) >= 1",
-            "isinstance(response, pytan.api.SavedQuestionList)",
-            "all([isinstance(x, pytan.api.SavedQuestion) for x in response])"
+            "isinstance(response, taniumpy.SavedQuestionList)",
+            "all([isinstance(x, taniumpy.SavedQuestion) for x in response])"
         ]
     },
     "get_all_sensors": {
+        "desc": "Get all sensors",
+        "priority": "2",
         "method": "get_all",
-        "args": {"obj": "sensor"},
+        "args": {"objtype": "sensor"},
         "tests": [
             "len(response) >= 1",
-            "isinstance(response, pytan.api.SensorList)",
-            "all([isinstance(x, pytan.api.Sensor) for x in response])"
+            "isinstance(response, taniumpy.SensorList)",
+            "all([isinstance(x, taniumpy.Sensor) for x in response])"
         ]
     },
     "get_all_settings": {
+        "desc": "Get all system settings",
+        "priority": "2",
         "method": "get_all",
-        "args": {"obj": "setting"},
+        "args": {"objtype": "setting"},
         "tests": [
             "len(response) >= 1",
-            "isinstance(response, pytan.api.SystemSettingsList)",
-            "all([isinstance(x, pytan.api.SystemSetting) for x in response])"
+            "isinstance(response, taniumpy.SystemSettingsList)",
+            "all([isinstance(x, taniumpy.SystemSetting) for x in response])"
         ]
     },
     "get_all_users": {
+        "desc": "Get all users",
+        "priority": "2",
         "method": "get_all",
-        "args": {"obj": "user"},
+        "args": {"objtype": "user"},
         "tests": [
             "len(response) >= 1",
-            "isinstance(response, pytan.api.UserList)",
-            "all([isinstance(x, pytan.api.User) for x in response])"
+            "isinstance(response, taniumpy.UserList)",
+            "all([isinstance(x, taniumpy.User) for x in response])"
         ]
     },
     "get_all_userroless": {
+        "desc": "Get all user roles",
+        "priority": "2",
         "method": "get_all",
-        "args": {"obj": "userrole"},
+        "args": {"objtype": "userrole"},
         "tests": [
             "len(response) >= 1",
-            "isinstance(response, pytan.api.UserRoleList)",
-            "all([isinstance(x, pytan.api.UserRole) for x in response])"
+            "isinstance(response, taniumpy.UserRoleList)",
+            "all([isinstance(x, taniumpy.UserRole) for x in response])"
         ]
     },
     "get_all_whitelisted_urls": {
+        "desc": "Get all whitelisted urls",
+        "priority": "2",
         "method": "get_all",
-        "args": {"obj": "whitelisted_url"},
+        "args": {"objtype": "whitelisted_url"},
         "tests": [
             "len(response) >= 1",
-            "isinstance(response, pytan.api.WhiteListedUrlList)",
-            "all([isinstance(x, pytan.api.WhiteListedUrl) for x in response])"
+            "isinstance(response, taniumpy.WhiteListedUrlList)",
+            "all([isinstance(x, taniumpy.WhiteListedUrl) for x in response])"
         ]
     }
 }

@@ -1,7 +1,0 @@
-
-pytan.api.object_types.saved_question module
-********************************************
-
-class class pytan.api.object_types.saved_question.SavedQuestion
-
-   Bases: "pytan.api.object_types.base.BaseType"

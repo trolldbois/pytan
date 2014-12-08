@@ -1,9 +1,5 @@
 *.pyc
-TEST_OUT/
 .idea/
-api.*/
+taniumpy.*/
 *.sublime-workspace
-
 pytan.sublime-workspace
-
-die*.csv

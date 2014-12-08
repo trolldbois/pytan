@@ -1,0 +1,282 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>1. Description &mdash; PyTan 1.0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="PyTan 1.0.1 documentation" href="index.html"/>
+        <link rel="next" title="7. pytan package" href="pytan.html"/>
+        <link rel="prev" title="Welcome to PyTan’s documentation!" href="index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="index.html" class="fa fa-home"> PyTan</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">1. Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#why-it-was-created">2. Why it was created</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#requirements">3. Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#installation">4. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#usage">5. Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#directory-layout">6. Directory Layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pytan.html">7. pytan package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/pytan_examples.html">7.1. pytan API examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.handler.html">7.2. pytan.handler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.constants.html">7.3. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html">7.4. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.unittest.html">7.5. pytan Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.functest.html">7.6. pytan Functional Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="taniumpy.html">taniumpy package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.session.html">1. taniumpy.session module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.question_asker.html">2. taniumpy.question_asker module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html">3. taniumpy.object_types package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="xmltodict.html">8. xmltodict module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ddt.html">9. ddt module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="threaded_http.html">10. threaded_http module</a><ul class="simple">
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">PyTan</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>1. Description</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/description.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="description">
+<h1>1. Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h1>
+<p>This is a set of packages and scripts that provides a simple way for programmatically interfacing with Tanium&#8217;s SOAP API. It is comprised of four parts:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Tanium Server SOAP API: The SOAP server embedded into the Tanium server itself, listens on port 444 but is also available via port 443.</li>
+<li>TaniumPy Python Package (<a class="reference internal" href="taniumpy.html#module-taniumpy" title="taniumpy"><code class="xref py py-mod docutils literal"><span class="pre">taniumpy</span></code></a>): A python package comprised of a set of python objects automatically generated from the WSDL file that describes the Tanium SOAP API. These python objects handle the serialization and deserialization of XML to and from the Tanium Server SOAP API. Located in <code class="docutils literal"><span class="pre">lib/taniumpy</span></code></li>
+<li>PyTan Python Package: (<a class="reference internal" href="pytan.html#module-pytan" title="pytan"><code class="xref py py-mod docutils literal"><span class="pre">pytan</span></code></a>): A python package that provides a set of methods to make interfacing with TaniumPy more human friendly. Located in <code class="docutils literal"><span class="pre">lib/pytan</span></code></li>
+<li>PyTan Command Line Scripts: A set of command line scripts that utilize the PyTan Package (<a class="reference internal" href="pytan.html#module-pytan" title="pytan"><code class="xref py py-mod docutils literal"><span class="pre">pytan</span></code></a>) to make it easy for non-programmers to create/get/delete/ask/deploy objects via the Tanium Server SOAP API.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="why-it-was-created">
+<h1>2. Why it was created<a class="headerlink" href="#why-it-was-created" title="Permalink to this headline">¶</a></h1>
+<p>This was created to solve for the following needs:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Create a python package (<a class="reference internal" href="pytan.html#module-pytan" title="pytan"><code class="xref py py-mod docutils literal"><span class="pre">pytan</span></code></a>) to provide a set of methods for making it easier to programmatically interface with Tanium via the SOAP API.</li>
+<li>Create a set of command line scripts utilizing the <a class="reference internal" href="pytan.html#module-pytan" title="pytan"><code class="xref py py-mod docutils literal"><span class="pre">pytan</span></code></a> package that handle the argument parsing, thereby providing non-programmers with command line access to the functionality therein.</li>
+<li>Provide a way to ask questions and get results via Python and/or the command line.</li>
+<li>Provide a way to deploy actions and get results via Python and/or the command line.</li>
+<li>Provide a way to export/import objects in JSON via Python and/or the command line.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="requirements">
+<h1>3. Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h1>
+<blockquote>
+<div><ul class="simple">
+<li>Python 2.7</li>
+<li>A working install of Tanium Server 6.2</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="installation">
+<h1>4. Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<dl class="docutils">
+<dt>Windows Installation</dt>
+<dd><ul class="first last simple">
+<li>Download Python 2.7 from <a class="reference external" href="https://www.python.org/downloads/windows/">https://www.python.org/downloads/windows/</a></li>
+<li>Install Python 2.7 &#8211; if you accept the default paths it will install to <code class="docutils literal"><span class="pre">C:\Python27</span></code></li>
+<li>Copy PyTan from github to your local machine somewhere</li>
+<li>If you did not accept the default install path for Python 2.7, edit <code class="docutils literal"><span class="pre">pytan\winbin\CONFIG.bat</span></code> to change the <em>PYTHON</em> variable to point to the full path of <em>python.exe</em></li>
+</ul>
+</dd>
+<dt>OS X Installation</dt>
+<dd><ul class="first last simple">
+<li>OS X 10.8 and higher come with Python 2.7 out of the box</li>
+<li>Copy PyTan from github to your local machine somewhere</li>
+</ul>
+</dd>
+<dt>Linux Installation</dt>
+<dd><ul class="first last simple">
+<li>Ensure Python 2.7 is installed</li>
+<li>Ensure the first <em>python</em> binary in your path points to your Python 2.7 installation</li>
+<li>Copy PyTan from github to your local machine somewhere</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="usage">
+<h1>5. Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
+<blockquote>
+<div><ul class="simple">
+<li>For command line usage, refer to <a class="reference external" href="_static/bin_doc/index.html">Command Line Help Index</a></li>
+<li>For API Examples, refer to the <a class="reference internal" href="examples/pytan_examples.html"><em>pytan API examples</em></a></li>
+<li>For in depth API Documentation, refer to the <a class="reference internal" href="pytan.html"><em>pytan package</em></a>, especially the <a class="reference internal" href="pytan.handler.html"><em>pytan.handler module</em></a></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="directory-layout">
+<h1>6. Directory Layout<a class="headerlink" href="#directory-layout" title="Permalink to this headline">¶</a></h1>
+<blockquote>
+<div><ul class="simple">
+<li><strong>EXAMPLES/ directory</strong>: contains a set of example python files that show how to use the various methods exposed by (<a class="reference internal" href="pytan.html#module-pytan" title="pytan"><code class="xref py py-mod docutils literal"><span class="pre">pytan</span></code></a>)</li>
+<li><strong>BUILD/ directory</strong>: contains the scripts that build the HTML and PDF documentation in doc/, generate the (<a class="reference internal" href="taniumpy.html#module-taniumpy" title="taniumpy"><code class="xref py py-mod docutils literal"><span class="pre">taniumpy</span></code></a>), generate the python examples in EXAMPLES/, generate some of the command line scripts in bin/, and generate all of the documentation for the command line scripts in doc/_static/bin_doc</li>
+<li><strong>bin/ directory</strong>: contains all of the command line scripts that utilize the (<a class="reference internal" href="pytan.html#module-pytan" title="pytan"><code class="xref py py-mod docutils literal"><span class="pre">pytan</span></code></a>)</li>
+<li><strong>doc/ directory</strong>: contains the HTML and PDF documentation</li>
+<li><strong>lib/ directory</strong>: contains the python libraries (<a class="reference internal" href="pytan.html#module-pytan" title="pytan"><code class="xref py py-mod docutils literal"><span class="pre">pytan</span></code></a>) and (<a class="reference internal" href="taniumpy.html#module-taniumpy" title="taniumpy"><code class="xref py py-mod docutils literal"><span class="pre">taniumpy</span></code></a>), as well as other python libraries</li>
+<li><strong>test/ directory</strong>: contains the unit and functional tests for (<a class="reference internal" href="pytan.html#module-pytan" title="pytan"><code class="xref py py-mod docutils literal"><span class="pre">pytan</span></code></a>)</li>
+<li><strong>winbin/ directory</strong>: contains the Windows batch scripts which wrap around the python command line scripts in bin/</li>
+</ul>
+</div></blockquote>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pytan.html" class="btn btn-neutral float-right" title="7. pytan package">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Welcome to PyTan’s documentation!"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Tanium.
+      Last updated on Dec 08, 2014.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,7 +1,0 @@
-
-pytan.api.object_types.select module
-************************************
-
-class class pytan.api.object_types.select.Select
-
-   Bases: "pytan.api.object_types.base.BaseType"

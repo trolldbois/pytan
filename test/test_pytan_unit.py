@@ -1,5 +1,9 @@
 #!/usr/bin/env python -ttB
+"""
+This contains unit tests for pytan.
 
+These unit tests do not require a connection to a Tanium server in order to run.
+"""
 import sys
 
 # disable python from creating .pyc files everywhere
@@ -7,27 +11,29 @@ sys.dont_write_bytecode = True
 
 import os
 import unittest
+import json
 
 my_file = os.path.abspath(__file__)
 my_dir = os.path.dirname(my_file)
 root_dir = os.path.join(my_dir, os.pardir)
 root_dir = os.path.abspath(root_dir)
-path_adds = [my_dir, root_dir]
+lib_dir = os.path.join(root_dir, 'lib')
+path_adds = [my_dir, lib_dir]
 
 for aa in path_adds:
     if aa not in sys.path:
         sys.path.insert(0, aa)
 
-import json
 import pytan
+import taniumpy
 from pytan import utils
-from pytan import api
+from pytan import constants
 from pytan.utils import HumanParserError
 from pytan.utils import DefinitionParserError
 from pytan.utils import HandlerError
 
 # control the amount of output from unittests
-TESTVERBOSITY = 2
+TESTVERBOSITY = 10
 
 # have unittest exit immediately on unexpected error
 FAILFAST = True
@@ -36,6 +42,7 @@ FAILFAST = True
 CATCHBREAK = True
 
 # set logging for all logs in pytan to same level as TESTVERBOSITY
+utils.setup_console_logging()
 utils.set_log_levels(TESTVERBOSITY)
 
 
@@ -47,7 +54,7 @@ class TestDehumanizeSensorUtils(unittest.TestCase):
         self.assertEquals(sensor_defs, exp)
 
     def test_single_str_with_filter(self):
-        sensors = 'Sensor1, that is .*'
+        sensors = 'Sensor1, that is:.*'
         sensor_defs = utils.dehumanize_sensors(sensors)
         exp = [
             {
@@ -65,7 +72,7 @@ class TestDehumanizeSensorUtils(unittest.TestCase):
 
     def test_single_str_complex1(self):
         sensors = (
-            'Sensor1, that is .*, opt:value_type:string, opt:ignore_case, '
+            'Sensor1, that is:.*, opt:value_type:string, opt:ignore_case, '
             'opt:max_data_age:3600, opt:match_any_value'
         )
         sensor_defs = utils.dehumanize_sensors(sensors)
@@ -91,7 +98,7 @@ class TestDehumanizeSensorUtils(unittest.TestCase):
 
     def test_single_str_complex2(self):
         sensors = (
-            'Sensor1{k1=v1,k2=v2}, that is .*, opt:value_type:string, '
+            'Sensor1{k1=v1,k2=v2}, that is:.*, opt:value_type:string, '
             'opt:ignore_case, opt:max_data_age:3600, opt:match_any_value'
         )
         sensor_defs = utils.dehumanize_sensors(sensors)
@@ -119,8 +126,8 @@ class TestDehumanizeSensorUtils(unittest.TestCase):
         sensors = [
             'Computer Name',
             'id:1',
-            'Operating System, that contains Windows',
-            ('Sensor1{k1=v1,k2=v2}, that is .*, opt:value_type:string, '
+            'Operating System, that contains:Windows',
+            ('Sensor1{k1=v1,k2=v2}, that is:.*, opt:value_type:string, '
              'opt:ignore_case, opt:max_data_age:3600, opt:match_any_value'),
         ]
         sensor_defs = utils.dehumanize_sensors(sensors)
@@ -208,7 +215,7 @@ class TestDehumanizeSensorUtils(unittest.TestCase):
 
 class TestDehumanizeQuestionFilterUtils(unittest.TestCase):
     def test_single_filter_str(self):
-        question_filters = 'Sensor1, that contains Windows'
+        question_filters = 'Sensor1, that contains:Windows'
         question_filter_defs = utils.dehumanize_question_filters(
             question_filters
         )
@@ -225,7 +232,7 @@ class TestDehumanizeQuestionFilterUtils(unittest.TestCase):
         self.assertEquals(question_filter_defs, exp)
 
     def test_single_filter_list(self):
-        question_filters = ['Sensor1, that contains Windows']
+        question_filters = ['Sensor1, that contains:Windows']
         question_filter_defs = utils.dehumanize_question_filters(
             question_filters
         )
@@ -243,8 +250,8 @@ class TestDehumanizeQuestionFilterUtils(unittest.TestCase):
 
     def test_multi_filter_list(self):
         question_filters = [
-            'Sensor1, that contains Windows',
-            'Sensor2, that does not contain 10.10.10.10',
+            'Sensor1, that contains:Windows',
+            'Sensor2, that does not contain:10.10.10.10',
         ]
         question_filter_defs = utils.dehumanize_question_filters(
             question_filters
@@ -286,20 +293,20 @@ class TestDehumanizeQuestionFilterUtils(unittest.TestCase):
         self.assertEquals(question_filter_defs, exp)
 
     def test_invalid_filter1(self):
-        o = 'Sensor1, that feels funny'
-        e = "Filter ' feels funny' is not a valid filter!"
+        o = 'Sensor1, that feels:funny'
+        e = "Filter .* is not a valid filter!"
         with self.assertRaisesRegexp(HumanParserError, e):
             utils.dehumanize_question_filters(o)
 
     def test_invalid_filter2(self):
         o = 'Sensor1'
-        e = "Filter 'Sensor1' is not a valid filter!"
+        e = "Filter .* is not a valid filter!"
         with self.assertRaisesRegexp(HumanParserError, e):
             utils.dehumanize_question_filters(o)
 
     def test_invalid_filter3(self):
         o = 'Sensor1, th'
-        e = "Filter 'Sensor1, th' is not a valid filter!"
+        e = "Filter .* is not a valid filter!"
         with self.assertRaisesRegexp(HumanParserError, e):
             utils.dehumanize_question_filters(o)
 
@@ -430,13 +437,22 @@ class TestDehumanizeExtractionUtils(unittest.TestCase):
         self.assertEquals(r, exp)
 
     def test_extract_filter_valid(self):
-        s = 'Sensor1, that is .*'
+        s = 'Sensor1, that is:.*'
         exp = (
             'Sensor1',
             {'operator': 'RegexMatch', 'not_flag': 0, 'value': '.*'}
         )
         r = utils.extract_filter(s)
         self.assertEquals(r, exp)
+
+    def test_extract_filter_valid_all(self):
+        for x in constants.FILTER_MAPS:
+            for y in x['human']:
+                z = utils.extract_filter('Sensor1, that {}:test value'.format(y))
+                self.assertTrue(z)
+                self.assertEquals(len(z), 2)
+                self.assertEquals(z[0], 'Sensor1')
+                self.assertIn('test value', z[1]['value'])
 
     def test_extract_filter_nofilter(self):
         s = 'Sensor1'
@@ -481,8 +497,8 @@ class TestDehumanizeExtractionUtils(unittest.TestCase):
             utils.extract_options(s)
 
     def test_extract_filter_invalid(self):
-        s = 'Sensor1, that meets .*'
-        e = "Filter ' meets \.\*' is not a valid filter!"
+        s = 'Sensor1, that meets:.*'
+        e = "Filter .* is not a valid filter!"
         with self.assertRaisesRegexp(HumanParserError, e):
             utils.extract_filter(s)
 
@@ -1007,7 +1023,7 @@ class TestManualBuildObjectUtils(unittest.TestCase):
         def load_sensor(n):
             sensor_obj_json_path = os.path.join(my_dir, n)
             sensor_obj_json = json.load(open(sensor_obj_json_path))
-            return api.BaseType.from_jsonable(sensor_obj_json)
+            return taniumpy.BaseType.from_jsonable(sensor_obj_json)
 
         # load in our JSON sensor object for testing
         cls.sensor_obj_with_params = load_sensor('sensor_obj_with_params.json')
@@ -1040,11 +1056,11 @@ class TestManualBuildObjectUtils(unittest.TestCase):
 
         r = utils.build_selectlist_obj(**kwargs)
 
-        self.assertIsInstance(r, api.SelectList)
-        self.assertIsInstance(r.select[0], api.Select)
+        self.assertIsInstance(r, taniumpy.SelectList)
+        self.assertIsInstance(r.select[0], taniumpy.Select)
         self.assertEqual(len(r.select), 1)
-        self.assertIsInstance(r.select[0].filter, api.Filter)
-        self.assertIsInstance(r.select[0].sensor, api.Sensor)
+        self.assertIsInstance(r.select[0].filter, taniumpy.Filter)
+        self.assertIsInstance(r.select[0].sensor, taniumpy.Sensor)
         self.assertEqual(
             r.select[0].sensor.hash, self.sensor_obj_no_params.hash)
         self.assertEqual(
@@ -1091,11 +1107,11 @@ class TestManualBuildObjectUtils(unittest.TestCase):
 
         r = utils.build_selectlist_obj(**kwargs)
 
-        self.assertIsInstance(r, api.SelectList)
-        self.assertIsInstance(r.select[0], api.Select)
+        self.assertIsInstance(r, taniumpy.SelectList)
+        self.assertIsInstance(r.select[0], taniumpy.Select)
         self.assertEqual(len(r.select), 1)
-        self.assertIsInstance(r.select[0].filter, api.Filter)
-        self.assertIsInstance(r.select[0].sensor, api.Sensor)
+        self.assertIsInstance(r.select[0].filter, taniumpy.Filter)
+        self.assertIsInstance(r.select[0].sensor, taniumpy.Sensor)
         self.assertEqual(
             r.select[0].sensor.hash, self.sensor_obj_no_params.hash)
         self.assertEqual(
@@ -1139,11 +1155,11 @@ class TestManualBuildObjectUtils(unittest.TestCase):
 
         r = utils.build_selectlist_obj(**kwargs)
 
-        self.assertIsInstance(r, api.SelectList)
-        self.assertIsInstance(r.select[0], api.Select)
+        self.assertIsInstance(r, taniumpy.SelectList)
+        self.assertIsInstance(r.select[0], taniumpy.Select)
         self.assertEqual(len(r.select), 1)
-        self.assertIsInstance(r.select[0].filter, api.Filter)
-        self.assertIsInstance(r.select[0].sensor, api.Sensor)
+        self.assertIsInstance(r.select[0].filter, taniumpy.Filter)
+        self.assertIsInstance(r.select[0].sensor, taniumpy.Sensor)
         self.assertEqual(
             r.select[0].sensor.source_id, self.sensor_obj_with_params.id)
         self.assertEqual(
@@ -1201,11 +1217,11 @@ class TestManualBuildObjectUtils(unittest.TestCase):
 
         r = utils.build_selectlist_obj(**kwargs)
 
-        self.assertIsInstance(r, api.SelectList)
-        self.assertIsInstance(r.select[0], api.Select)
+        self.assertIsInstance(r, taniumpy.SelectList)
+        self.assertIsInstance(r.select[0], taniumpy.Select)
         self.assertEqual(len(r.select), 1)
-        self.assertIsInstance(r.select[0].filter, api.Filter)
-        self.assertIsInstance(r.select[0].sensor, api.Sensor)
+        self.assertIsInstance(r.select[0].filter, taniumpy.Filter)
+        self.assertIsInstance(r.select[0].sensor, taniumpy.Sensor)
         self.assertEqual(
             r.select[0].sensor.source_id, self.sensor_obj_with_params.id)
         self.assertEqual(
@@ -1264,10 +1280,10 @@ class TestManualBuildObjectUtils(unittest.TestCase):
 
         r = utils.build_group_obj(**kwargs)
 
-        self.assertIsInstance(r, api.Group)
-        self.assertIsInstance(r.filters, api.FilterList)
+        self.assertIsInstance(r, taniumpy.Group)
+        self.assertIsInstance(r.filters, taniumpy.FilterList)
         self.assertEqual(len(r.filters), 1)
-        self.assertIsInstance(r.filters[0], api.Filter)
+        self.assertIsInstance(r.filters[0], taniumpy.Filter)
         self.assertEqual(
             r.filters[0].sensor.hash, self.sensor_obj_no_params.hash)
         self.assertEqual(r.filters[0].operator, 'RegexMatch')
@@ -1281,10 +1297,10 @@ class TestManualBuildObjectUtils(unittest.TestCase):
         self.assertFalse(hasattr(r.filters[0], 'ignored_option'))
 
     def test_build_manual_q(self):
-        r = utils.build_manual_q(api.SelectList(), api.Group())
-        self.assertIsInstance(r, api.Question)
-        self.assertIsInstance(r.group, api.Group)
-        self.assertIsInstance(r.selects, api.SelectList)
+        r = utils.build_manual_q(taniumpy.SelectList(), taniumpy.Group())
+        self.assertIsInstance(r, taniumpy.Question)
+        self.assertIsInstance(r.group, taniumpy.Group)
+        self.assertIsInstance(r.selects, taniumpy.SelectList)
 
     def test_build_selectlist_obj_invalid_filter(self):
 
@@ -1368,7 +1384,7 @@ class TestGenericUtils(unittest.TestCase):
             utils.version_check(req_ver)
 
     def test_empty_obj(self):
-        obj = api.SensorList()
+        obj = taniumpy.SensorList()
         self.assertTrue(utils.empty_obj(obj))
         self.assertTrue(utils.empty_obj(''))
 

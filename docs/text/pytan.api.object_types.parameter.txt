@@ -1,7 +1,0 @@
-
-pytan.api.object_types.parameter module
-***************************************
-
-class class pytan.api.object_types.parameter.Parameter
-
-   Bases: "pytan.api.object_types.base.BaseType"

@@ -1,7 +1,0 @@
-
-pytan.api.object_types.question module
-**************************************
-
-class class pytan.api.object_types.question.Question
-
-   Bases: "pytan.api.object_types.base.BaseType"

@@ -1,0 +1,1871 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>7.4. pytan.utils module &mdash; PyTan 1.0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="PyTan 1.0.1 documentation" href="index.html"/>
+        <link rel="up" title="7. pytan package" href="pytan.html"/>
+        <link rel="next" title="7.5. pytan Unit Tests" href="pytan.unittest.html"/>
+        <link rel="prev" title="7.3. pytan.constants module" href="pytan.constants.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="index.html" class="fa fa-home"> PyTan</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="description.html">1. Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="description.html#why-it-was-created">2. Why it was created</a></li>
+<li class="toctree-l1"><a class="reference internal" href="description.html#requirements">3. Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="description.html#installation">4. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="description.html#usage">5. Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="description.html#directory-layout">6. Directory Layout</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="pytan.html">7. pytan package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="examples/pytan_examples.html">7.1. pytan API examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.handler.html">7.2. pytan.handler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.constants.html">7.3. pytan.constants module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">7.4. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.unittest.html">7.5. pytan Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.functest.html">7.6. pytan Functional Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="taniumpy.html">taniumpy package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.session.html">1. taniumpy.session module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.question_asker.html">2. taniumpy.question_asker module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html">3. taniumpy.object_types package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="xmltodict.html">8. xmltodict module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ddt.html">9. ddt module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="threaded_http.html">10. threaded_http module</a><ul class="simple">
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">PyTan</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="pytan.html">7. pytan package</a> &raquo;</li>
+      
+    <li>7.4. pytan.utils module</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/pytan.utils.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="module-pytan.utils">
+<span id="pytan-utils-module"></span><h1>7.4. pytan.utils module<a class="headerlink" href="#module-pytan.utils" title="Permalink to this headline">¶</a></h1>
+<p>Collection of exceptions, classes, and methods used throughout <a class="reference internal" href="pytan.html#module-pytan" title="pytan"><code class="xref py py-mod docutils literal"><span class="pre">pytan</span></code></a></p>
+<div class="section" id="utility-classes-exceptions">
+<h2>7.4.1. Utility Classes: Exceptions<a class="headerlink" href="#utility-classes-exceptions" title="Permalink to this headline">¶</a></h2>
+<p>Exceptions used throughout <a class="reference internal" href="pytan.html#module-pytan" title="pytan"><code class="xref py py-mod docutils literal"><span class="pre">pytan</span></code></a>:</p>
+<dl class="exception">
+<dt id="pytan.utils.HandlerError">
+<em class="property">exception </em><code class="descclassname">pytan.utils.</code><code class="descname">HandlerError</code><a class="reference internal" href="_modules/pytan/utils.html#HandlerError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.HandlerError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/2.7/library/exceptions.html#exceptions.Exception" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></a></p>
+<p>Exception thrown for most errors in <a class="reference internal" href="pytan.handler.html#module-pytan.handler" title="pytan.handler"><code class="xref py py-mod docutils literal"><span class="pre">pytan.handler</span></code></a></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="pytan.utils.HumanParserError">
+<em class="property">exception </em><code class="descclassname">pytan.utils.</code><code class="descname">HumanParserError</code><a class="reference internal" href="_modules/pytan/utils.html#HumanParserError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.HumanParserError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/2.7/library/exceptions.html#exceptions.Exception" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></a></p>
+<p>Exception thrown for errors while parsing human strings from <a class="reference internal" href="pytan.handler.html#module-pytan.handler" title="pytan.handler"><code class="xref py py-mod docutils literal"><span class="pre">pytan.handler</span></code></a></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="pytan.utils.DefinitionParserError">
+<em class="property">exception </em><code class="descclassname">pytan.utils.</code><code class="descname">DefinitionParserError</code><a class="reference internal" href="_modules/pytan/utils.html#DefinitionParserError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.DefinitionParserError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/2.7/library/exceptions.html#exceptions.Exception" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></a></p>
+<p>Exception thrown for errors while parsing definitions from <a class="reference internal" href="pytan.handler.html#module-pytan.handler" title="pytan.handler"><code class="xref py py-mod docutils literal"><span class="pre">pytan.handler</span></code></a></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="pytan.utils.RunFalse">
+<em class="property">exception </em><code class="descclassname">pytan.utils.</code><code class="descname">RunFalse</code><a class="reference internal" href="_modules/pytan/utils.html#RunFalse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.RunFalse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/2.7/library/exceptions.html#exceptions.Exception" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></a></p>
+<p>Exception thrown when run=False from <a class="reference internal" href="pytan.handler.html#pytan.handler.Handler.deploy_action" title="pytan.handler.Handler.deploy_action"><code class="xref py py-func docutils literal"><span class="pre">pytan.handler.Handler.deploy_action()</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="utility-classes-logging-handlers">
+<h2>7.4.2. Utility Classes: Logging handlers<a class="headerlink" href="#utility-classes-logging-handlers" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pytan.utils.SplitStreamHandler">
+<em class="property">class </em><code class="descclassname">pytan.utils.</code><code class="descname">SplitStreamHandler</code><a class="reference internal" href="_modules/pytan/utils.html#SplitStreamHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.SplitStreamHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">logging.Handler</span></code></p>
+<p>Custom <code class="xref py py-class docutils literal"><span class="pre">logging.Handler</span></code> class that sends all messages that are logging.INFO and below to STDOUT, and all messages that are logging.WARNING and above to STDERR</p>
+<dl class="method">
+<dt id="pytan.utils.SplitStreamHandler.emit">
+<code class="descname">emit</code><span class="sig-paren">(</span><em>record</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#SplitStreamHandler.emit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.SplitStreamHandler.emit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="utility-classes-argument-parsers-for-command-line-scripts">
+<h2>7.4.3. Utility Classes: Argument Parsers for Command Line Scripts<a class="headerlink" href="#utility-classes-argument-parsers-for-command-line-scripts" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pytan.utils.CustomArgFormat">
+<em class="property">class </em><code class="descclassname">pytan.utils.</code><code class="descname">CustomArgFormat</code><span class="sig-paren">(</span><em>prog</em>, <em>indent_increment=2</em>, <em>max_help_position=24</em>, <em>width=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#CustomArgFormat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.CustomArgFormat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/2.7/library/argparse.html#argparse.ArgumentDefaultsHelpFormatter" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">argparse.ArgumentDefaultsHelpFormatter</span></code></a>, <a class="reference external" href="http://docs.python.org/2.7/library/argparse.html#argparse.RawDescriptionHelpFormatter" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">argparse.RawDescriptionHelpFormatter</span></code></a></p>
+<p>Multiple inheritance Formatter class for <a class="reference external" href="http://docs.python.org/2.7/library/argparse.html#argparse.ArgumentParser" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">argparse.ArgumentParser</span></code></a>.</p>
+<p>If a <a class="reference external" href="http://docs.python.org/2.7/library/argparse.html#argparse.ArgumentParser" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">argparse.ArgumentParser</span></code></a> class uses this as it&#8217;s Formatter class, it will show the defaults for each argument in the <cite>help</cite> output</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pytan.utils.CustomArgParse">
+<em class="property">class </em><code class="descclassname">pytan.utils.</code><code class="descname">CustomArgParse</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#CustomArgParse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.CustomArgParse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/2.7/library/argparse.html#argparse.ArgumentParser" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">argparse.ArgumentParser</span></code></a></p>
+<p>Custom <a class="reference external" href="http://docs.python.org/2.7/library/argparse.html#argparse.ArgumentParser" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">argparse.ArgumentParser</span></code></a> class which does a number of things:</p>
+<ul class="simple">
+<li>Uses <a class="reference internal" href="#pytan.utils.CustomArgFormat" title="pytan.utils.CustomArgFormat"><code class="xref py py-class docutils literal"><span class="pre">pytan.utils.CustomArgFormat</span></code></a> as it&#8217;s Formatter class, if none was passed in</li>
+<li>Prints help if there is an error</li>
+<li>Prints the help for any subparsers that exist</li>
+</ul>
+<dl class="method">
+<dt id="pytan.utils.CustomArgParse.error">
+<code class="descname">error</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#CustomArgParse.error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.CustomArgParse.error" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pytan.utils.CustomArgParse.print_help">
+<code class="descname">print_help</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#CustomArgParse.print_help"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.CustomArgParse.print_help" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="utility-functions-logging">
+<h2>7.4.4. Utility Functions: Logging<a class="headerlink" href="#utility-functions-logging" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pytan.utils.change_console_format">
+<code class="descclassname">pytan.utils.</code><code class="descname">change_console_format</code><span class="sig-paren">(</span><em>debug=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#change_console_format"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.change_console_format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Changes the logging format for console handler to <a class="reference internal" href="pytan.constants.html#pytan.constants.DEBUG_FORMAT" title="pytan.constants.DEBUG_FORMAT"><code class="xref py py-data docutils literal"><span class="pre">pytan.constants.DEBUG_FORMAT</span></code></a> or <a class="reference internal" href="pytan.constants.html#pytan.constants.INFO_FORMAT" title="pytan.constants.INFO_FORMAT"><code class="xref py py-data docutils literal"><span class="pre">pytan.constants.INFO_FORMAT</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>debug</strong> : bool, optional</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>False : set logging format for console handler to <a class="reference internal" href="pytan.constants.html#pytan.constants.INFO_FORMAT" title="pytan.constants.INFO_FORMAT"><code class="xref py py-data docutils literal"><span class="pre">pytan.constants.INFO_FORMAT</span></code></a></li>
+<li>True :  set logging format for console handler to <a class="reference internal" href="pytan.constants.html#pytan.constants.DEBUG_FORMAT" title="pytan.constants.DEBUG_FORMAT"><code class="xref py py-data docutils literal"><span class="pre">pytan.constants.DEBUG_FORMAT</span></code></a></li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.remove_logging_handler">
+<code class="descclassname">pytan.utils.</code><code class="descname">remove_logging_handler</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#remove_logging_handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.remove_logging_handler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes a logging handler</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>name</strong> : str</p>
+<blockquote class="last">
+<div><p>name of logging handler to remove. if name == &#8216;all&#8217; then all logging handlers are removed</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.set_all_loglevels">
+<code class="descclassname">pytan.utils.</code><code class="descname">set_all_loglevels</code><span class="sig-paren">(</span><em>level='DEBUG'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#set_all_loglevels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.set_all_loglevels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets all loggers that the logging system knows about to a given logger level</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.set_log_levels">
+<code class="descclassname">pytan.utils.</code><code class="descname">set_log_levels</code><span class="sig-paren">(</span><em>loglevel=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#set_log_levels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.set_log_levels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enables loggers based on loglevel and <a class="reference internal" href="pytan.constants.html#pytan.constants.LOG_LEVEL_MAPS" title="pytan.constants.LOG_LEVEL_MAPS"><code class="xref py py-data docutils literal"><span class="pre">pytan.constants.LOG_LEVEL_MAPS</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>loglevel</strong> : int, optional</p>
+<blockquote class="last">
+<div><p>loglevel to match against each item in <a class="reference internal" href="pytan.constants.html#pytan.constants.LOG_LEVEL_MAPS" title="pytan.constants.LOG_LEVEL_MAPS"><code class="xref py py-data docutils literal"><span class="pre">pytan.constants.LOG_LEVEL_MAPS</span></code></a> - each item that is greater than or equal to loglevel will have the according loggers set to their respective levels identified there-in.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.setup_console_logging">
+<code class="descclassname">pytan.utils.</code><code class="descname">setup_console_logging</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#setup_console_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.setup_console_logging" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a console logging handler using <a class="reference internal" href="#pytan.utils.SplitStreamHandler" title="pytan.utils.SplitStreamHandler"><code class="xref py py-class docutils literal"><span class="pre">SplitStreamHandler</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="utility-functions-type-checking">
+<h2>7.4.5. Utility Functions: Type Checking<a class="headerlink" href="#utility-functions-type-checking" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pytan.utils.is_dict">
+<code class="descclassname">pytan.utils.</code><code class="descname">is_dict</code><span class="sig-paren">(</span><em>l</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#is_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.is_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns True if <cite>l</cite> is a dictionary, False if not</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.is_list">
+<code class="descclassname">pytan.utils.</code><code class="descname">is_list</code><span class="sig-paren">(</span><em>l</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#is_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.is_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns True if <cite>l</cite> is a list, False if not</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.is_num">
+<code class="descclassname">pytan.utils.</code><code class="descname">is_num</code><span class="sig-paren">(</span><em>l</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#is_num"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.is_num" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns True if <cite>l</cite> is a number, False if not</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.is_str">
+<code class="descclassname">pytan.utils.</code><code class="descname">is_str</code><span class="sig-paren">(</span><em>l</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#is_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.is_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns True if <cite>l</cite> is a string, False if not</p>
+</dd></dl>
+
+</div>
+<div class="section" id="utility-functions-misc">
+<h2>7.4.6. Utility Functions: Misc<a class="headerlink" href="#utility-functions-misc" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pytan.utils.get_dict_list_items">
+<code class="descclassname">pytan.utils.</code><code class="descname">get_dict_list_items</code><span class="sig-paren">(</span><em>d</em>, <em>i</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#get_dict_list_items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.get_dict_list_items" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets keys from dict <cite>d</cite> if any item in list <cite>i</cite> is in the list value for each key</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>d</strong> : dict of str</p>
+<blockquote>
+<div><p>dict to get strs from if list contains any item from <cite>i</cite></p>
+</div></blockquote>
+<p><strong>i</strong> : list of str</p>
+<blockquote>
+<div><p>list of strs to check if for existence in any lists in <cite>d</cite></p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list</strong> : list of str</p>
+<blockquote class="last">
+<div><p>list of strings from <cite>d</cite> that have <cite>i</cite> in their values</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.get_dict_list_len">
+<code class="descclassname">pytan.utils.</code><code class="descname">get_dict_list_len</code><span class="sig-paren">(</span><em>d</em>, <em>keys=[]</em>, <em>negate=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#get_dict_list_len"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.get_dict_list_len" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the sum of each list in dict <cite>d</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>d</strong> : dict of str</p>
+<blockquote>
+<div><p>dict to sums of</p>
+</div></blockquote>
+<p><strong>keys</strong> : list of str</p>
+<blockquote>
+<div><p>list of keys to get sums of, if empty gets a sum of all keys</p>
+</div></blockquote>
+<p><strong>negate</strong> : bool</p>
+<blockquote>
+<div><ul class="simple">
+<li>only used if keys supplied</li>
+<li>False : get the sums of <cite>d</cite> that do match keys</li>
+<li>True : get the sums of <cite>d</cite> that do not match keys</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>list_len</strong> : int</p>
+<blockquote class="last">
+<div><p>sum of lists in <cite>d</cite> that match keys</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.get_now">
+<code class="descclassname">pytan.utils.</code><code class="descname">get_now</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#get_now"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.get_now" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get current time in human friendly format</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">str :</p>
+<blockquote class="last">
+<div><p>str of current time return from <a class="reference internal" href="#pytan.utils.human_time" title="pytan.utils.human_time"><code class="xref py py-func docutils literal"><span class="pre">human_time()</span></code></a></p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.human_time">
+<code class="descclassname">pytan.utils.</code><code class="descname">human_time</code><span class="sig-paren">(</span><em>t</em>, <em>tformat='%Y_%m_%d-%H_%M_%S-%Z'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#human_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.human_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get time in human friendly format</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>t</strong> : int, float, time</p>
+<blockquote>
+<div><p>either a unix epoch or struct_time object to convert to string</p>
+</div></blockquote>
+<p><strong>tformat</strong> : str, optional</p>
+<blockquote>
+<div><p>format of string to convert time to</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">str :</p>
+<blockquote class="last">
+<div><p><cite>t</cite> converted to str</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.jsonify">
+<code class="descclassname">pytan.utils.</code><code class="descname">jsonify</code><span class="sig-paren">(</span><em>v</em>, <em>indent=2</em>, <em>sort_keys=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#jsonify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.jsonify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turns python object <cite>v</cite> into a pretty printed JSON string</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>v</strong> : object</p>
+<blockquote>
+<div><p>python object to convert to JSON</p>
+</div></blockquote>
+<p><strong>indent</strong> : int, 2</p>
+<blockquote>
+<div><p>number of spaces to indent JSON string when pretty printing</p>
+</div></blockquote>
+<p><strong>sort_keys</strong> : bool, True</p>
+<blockquote>
+<div><p>sort keys of JSON string when pretty printing</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">str :</p>
+<blockquote class="last">
+<div><p>JSON pretty printed string</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.port_check">
+<code class="descclassname">pytan.utils.</code><code class="descname">port_check</code><span class="sig-paren">(</span><em>address</em>, <em>port</em>, <em>timeout=5</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#port_check"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.port_check" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if <cite>address</cite>:<cite>port</cite> can be reached within <cite>timeout</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>address</strong> : str</p>
+<blockquote>
+<div><p>hostname/ip address to check <cite>port</cite> on</p>
+</div></blockquote>
+<p><strong>port</strong> : int</p>
+<blockquote>
+<div><p>port to check on <cite>address</cite></p>
+</div></blockquote>
+<p><strong>timeout</strong> : int, optional</p>
+<blockquote>
+<div><p>timeout after N seconds of not being able to connect</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><a class="reference external" href="http://docs.python.org/2.7/library/socket.html#module-socket" title="(in Python v2.7)"><code class="xref py py-mod docutils literal"><span class="pre">socket</span></code></a> or False :</p>
+<blockquote class="last">
+<div><p>if connection succeeds, the socket object is returned, else False is returned</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.seconds_from_now">
+<code class="descclassname">pytan.utils.</code><code class="descname">seconds_from_now</code><span class="sig-paren">(</span><em>secs=0</em>, <em>tz='utc'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#seconds_from_now"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.seconds_from_now" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get time in Tanium SOAP API format <cite>secs</cite> from now</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>secs</strong> : int</p>
+<blockquote>
+<div><p>seconds from now to get time str</p>
+</div></blockquote>
+<p><strong>tz</strong> : str, optional</p>
+<blockquote>
+<div><p>time zone to return string in, default is &#8216;utc&#8217; - supplying anything else will supply local time</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">str :</p>
+<blockquote class="last">
+<div><p>time <cite>secs</cite> from now in Tanium SOAP API format</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.test_app_port">
+<code class="descclassname">pytan.utils.</code><code class="descname">test_app_port</code><span class="sig-paren">(</span><em>host</em>, <em>port</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#test_app_port"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.test_app_port" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates that <cite>host</cite>:<cite>port</cite> can be reached using <a class="reference internal" href="#pytan.utils.port_check" title="pytan.utils.port_check"><code class="xref py py-func docutils literal"><span class="pre">port_check()</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>host</strong> : str</p>
+<blockquote>
+<div><p>hostname/ip address to check <cite>port</cite> on</p>
+</div></blockquote>
+<p><strong>port</strong> : int</p>
+<blockquote>
+<div><p>port to check on <cite>host</cite></p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><strong>HandlerError</strong> : <a class="reference internal" href="#pytan.utils.HandlerError" title="pytan.utils.HandlerError"><code class="xref py py-exc docutils literal"><span class="pre">pytan.utils.HandlerError</span></code></a></p>
+<blockquote class="last">
+<div><p>if <cite>host</cite>:<cite>port</cite> can not be reached</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.version_check">
+<code class="descclassname">pytan.utils.</code><code class="descname">version_check</code><span class="sig-paren">(</span><em>reqver</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#version_check"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.version_check" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allows scripts using <a class="reference internal" href="pytan.html#module-pytan" title="pytan"><code class="xref py py-mod docutils literal"><span class="pre">pytan</span></code></a> to validate the version of the script
+aginst the version of <a class="reference internal" href="pytan.html#module-pytan" title="pytan"><code class="xref py py-mod docutils literal"><span class="pre">pytan</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>reqver</strong> : str</p>
+<blockquote>
+<div><p>string containing version number to check against <code class="xref py py-exc docutils literal"><span class="pre">Exception</span></code></p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><strong>Exception</strong> : <code class="xref py py-exc docutils literal"><span class="pre">Exception</span></code></p>
+<blockquote class="last">
+<div><p>if <a class="reference internal" href="pytan.html#pytan.__version__" title="pytan.__version__"><code class="xref py py-data docutils literal"><span class="pre">pytan.__version__</span></code></a> is not greater or equal to <cite>reqver</cite></p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.xml_pretty">
+<code class="descclassname">pytan.utils.</code><code class="descname">xml_pretty</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#xml_pretty"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.xml_pretty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses <a class="reference internal" href="xmltodict.html#module-xmltodict" title="xmltodict"><code class="xref py py-mod docutils literal"><span class="pre">xmltodict</span></code></a> to pretty print an XML str <cite>x</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>x</strong> : str</p>
+<blockquote>
+<div><p>XML string to pretty print</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">str :</p>
+<blockquote class="last">
+<div><p>The pretty printed string of <cite>x</cite></p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.xml_pretty_resultobj">
+<code class="descclassname">pytan.utils.</code><code class="descname">xml_pretty_resultobj</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#xml_pretty_resultobj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.xml_pretty_resultobj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses <a class="reference internal" href="xmltodict.html#module-xmltodict" title="xmltodict"><code class="xref py py-mod docutils literal"><span class="pre">xmltodict</span></code></a> to pretty print an the result-object element in XML str <cite>x</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>x</strong> : str</p>
+<blockquote>
+<div><p>XML string to pretty print</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">str :</p>
+<blockquote class="last">
+<div><p>The pretty printed string of result-object in <cite>x</cite></p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.xml_pretty_resultxml">
+<code class="descclassname">pytan.utils.</code><code class="descname">xml_pretty_resultxml</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#xml_pretty_resultxml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.xml_pretty_resultxml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses <a class="reference internal" href="xmltodict.html#module-xmltodict" title="xmltodict"><code class="xref py py-mod docutils literal"><span class="pre">xmltodict</span></code></a> to pretty print an the ResultXML element in XML str <cite>x</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>x</strong> : str</p>
+<blockquote>
+<div><p>XML string to pretty print</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">str :</p>
+<blockquote class="last">
+<div><p>The pretty printed string of ResultXML in <cite>x</cite></p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="utility-functions-argument-parsers-for-command-line-scripts">
+<h2>7.4.7. Utility Functions: Argument Parsers for Command Line Scripts<a class="headerlink" href="#utility-functions-argument-parsers-for-command-line-scripts" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pytan.utils.setup_parser">
+<code class="descclassname">pytan.utils.</code><code class="descname">setup_parser</code><span class="sig-paren">(</span><em>desc</em>, <em>help=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#setup_parser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.setup_parser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to setup the base <a class="reference internal" href="#pytan.utils.CustomArgParse" title="pytan.utils.CustomArgParse"><code class="xref py py-class docutils literal"><span class="pre">pytan.utils.CustomArgParse</span></code></a> class for command line scripts that use <a class="reference internal" href="pytan.html#module-pytan" title="pytan"><code class="xref py py-mod docutils literal"><span class="pre">pytan</span></code></a>. This establishes the basic arguments that are needed by all such scripts, such as:</p>
+<ul class="simple">
+<li>&#8211;help</li>
+<li>&#8211;username</li>
+<li>&#8211;password</li>
+<li>&#8211;host</li>
+<li>&#8211;port</li>
+<li>&#8211;loglevel</li>
+<li>&#8211;debugformat (not shown in &#8211;help)</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.setup_get_object_argparser">
+<code class="descclassname">pytan.utils.</code><code class="descname">setup_get_object_argparser</code><span class="sig-paren">(</span><em>obj</em>, <em>doc</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#setup_get_object_argparser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.setup_get_object_argparser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to setup the base <a class="reference internal" href="#pytan.utils.CustomArgParse" title="pytan.utils.CustomArgParse"><code class="xref py py-class docutils literal"><span class="pre">pytan.utils.CustomArgParse</span></code></a> class for command line scripts using <a class="reference internal" href="#pytan.utils.setup_parser" title="pytan.utils.setup_parser"><code class="xref py py-func docutils literal"><span class="pre">pytan.utils.setup_parser()</span></code></a>, then add specific arguments for scripts that use <a class="reference internal" href="pytan.html#module-pytan" title="pytan"><code class="xref py py-mod docutils literal"><span class="pre">pytan</span></code></a> to get objects.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.setup_create_json_object_argparser">
+<code class="descclassname">pytan.utils.</code><code class="descname">setup_create_json_object_argparser</code><span class="sig-paren">(</span><em>obj</em>, <em>doc</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#setup_create_json_object_argparser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.setup_create_json_object_argparser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to setup the base <a class="reference internal" href="#pytan.utils.CustomArgParse" title="pytan.utils.CustomArgParse"><code class="xref py py-class docutils literal"><span class="pre">pytan.utils.CustomArgParse</span></code></a> class for command line scripts using <a class="reference internal" href="#pytan.utils.setup_parser" title="pytan.utils.setup_parser"><code class="xref py py-func docutils literal"><span class="pre">pytan.utils.setup_parser()</span></code></a>, then add specific arguments for scripts that use <a class="reference internal" href="pytan.html#module-pytan" title="pytan"><code class="xref py py-mod docutils literal"><span class="pre">pytan</span></code></a> to create objects from json files.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.setup_delete_object_argparser">
+<code class="descclassname">pytan.utils.</code><code class="descname">setup_delete_object_argparser</code><span class="sig-paren">(</span><em>obj</em>, <em>doc</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#setup_delete_object_argparser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.setup_delete_object_argparser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to setup the base <a class="reference internal" href="#pytan.utils.CustomArgParse" title="pytan.utils.CustomArgParse"><code class="xref py py-class docutils literal"><span class="pre">pytan.utils.CustomArgParse</span></code></a> class for command line scripts using <a class="reference internal" href="#pytan.utils.setup_parser" title="pytan.utils.setup_parser"><code class="xref py py-func docutils literal"><span class="pre">pytan.utils.setup_parser()</span></code></a>, then add specific arguments for scripts that use <a class="reference internal" href="pytan.html#module-pytan" title="pytan"><code class="xref py py-mod docutils literal"><span class="pre">pytan</span></code></a> to delete objects.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.setup_ask_saved_argparser">
+<code class="descclassname">pytan.utils.</code><code class="descname">setup_ask_saved_argparser</code><span class="sig-paren">(</span><em>doc</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#setup_ask_saved_argparser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.setup_ask_saved_argparser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to setup the base <a class="reference internal" href="#pytan.utils.CustomArgParse" title="pytan.utils.CustomArgParse"><code class="xref py py-class docutils literal"><span class="pre">pytan.utils.CustomArgParse</span></code></a> class for command line scripts using <a class="reference internal" href="#pytan.utils.setup_parser" title="pytan.utils.setup_parser"><code class="xref py py-func docutils literal"><span class="pre">pytan.utils.setup_parser()</span></code></a>, then add specific arguments for scripts that use <a class="reference internal" href="pytan.html#module-pytan" title="pytan"><code class="xref py py-mod docutils literal"><span class="pre">pytan</span></code></a> to ask saved questions.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.setup_stop_action_argparser">
+<code class="descclassname">pytan.utils.</code><code class="descname">setup_stop_action_argparser</code><span class="sig-paren">(</span><em>doc</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#setup_stop_action_argparser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.setup_stop_action_argparser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to setup the base <a class="reference internal" href="#pytan.utils.CustomArgParse" title="pytan.utils.CustomArgParse"><code class="xref py py-class docutils literal"><span class="pre">pytan.utils.CustomArgParse</span></code></a> class for command line scripts using <a class="reference internal" href="#pytan.utils.setup_parser" title="pytan.utils.setup_parser"><code class="xref py py-func docutils literal"><span class="pre">pytan.utils.setup_parser()</span></code></a>, then add specific arguments for scripts that use <a class="reference internal" href="pytan.html#module-pytan" title="pytan"><code class="xref py py-mod docutils literal"><span class="pre">pytan</span></code></a> to stop actions.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.setup_deploy_action_argparser">
+<code class="descclassname">pytan.utils.</code><code class="descname">setup_deploy_action_argparser</code><span class="sig-paren">(</span><em>doc</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#setup_deploy_action_argparser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.setup_deploy_action_argparser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to setup the base <a class="reference internal" href="#pytan.utils.CustomArgParse" title="pytan.utils.CustomArgParse"><code class="xref py py-class docutils literal"><span class="pre">pytan.utils.CustomArgParse</span></code></a> class for command line scripts using <a class="reference internal" href="#pytan.utils.setup_parser" title="pytan.utils.setup_parser"><code class="xref py py-func docutils literal"><span class="pre">pytan.utils.setup_parser()</span></code></a>, then add specific arguments for scripts that use <a class="reference internal" href="pytan.html#module-pytan" title="pytan"><code class="xref py py-mod docutils literal"><span class="pre">pytan</span></code></a> to deploy actions.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.setup_get_result_argparser">
+<code class="descclassname">pytan.utils.</code><code class="descname">setup_get_result_argparser</code><span class="sig-paren">(</span><em>doc</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#setup_get_result_argparser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.setup_get_result_argparser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to setup the base <a class="reference internal" href="#pytan.utils.CustomArgParse" title="pytan.utils.CustomArgParse"><code class="xref py py-class docutils literal"><span class="pre">pytan.utils.CustomArgParse</span></code></a> class for command line scripts using <a class="reference internal" href="#pytan.utils.setup_parser" title="pytan.utils.setup_parser"><code class="xref py py-func docutils literal"><span class="pre">pytan.utils.setup_parser()</span></code></a>, then add specific arguments for scripts that use <a class="reference internal" href="pytan.html#module-pytan" title="pytan"><code class="xref py py-mod docutils literal"><span class="pre">pytan</span></code></a> to get results for questions or actions.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.setup_ask_manual_argparser">
+<code class="descclassname">pytan.utils.</code><code class="descname">setup_ask_manual_argparser</code><span class="sig-paren">(</span><em>doc</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#setup_ask_manual_argparser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.setup_ask_manual_argparser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to setup the base <a class="reference internal" href="#pytan.utils.CustomArgParse" title="pytan.utils.CustomArgParse"><code class="xref py py-class docutils literal"><span class="pre">pytan.utils.CustomArgParse</span></code></a> class for command line scripts using <a class="reference internal" href="#pytan.utils.setup_parser" title="pytan.utils.setup_parser"><code class="xref py py-func docutils literal"><span class="pre">pytan.utils.setup_parser()</span></code></a>, then add specific arguments for scripts that use <a class="reference internal" href="pytan.html#module-pytan" title="pytan"><code class="xref py py-mod docutils literal"><span class="pre">pytan</span></code></a> to ask manual questions.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.add_ask_report_argparser">
+<code class="descclassname">pytan.utils.</code><code class="descname">add_ask_report_argparser</code><span class="sig-paren">(</span><em>parser</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#add_ask_report_argparser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.add_ask_report_argparser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to extend a <a class="reference internal" href="#pytan.utils.CustomArgParse" title="pytan.utils.CustomArgParse"><code class="xref py py-class docutils literal"><span class="pre">pytan.utils.CustomArgParse</span></code></a> class for command line scripts with arguments for scripts that need to supply export format subparsers for asking questions.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.add_report_file_options">
+<code class="descclassname">pytan.utils.</code><code class="descname">add_report_file_options</code><span class="sig-paren">(</span><em>parser</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#add_report_file_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.add_report_file_options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to extend a <a class="reference internal" href="#pytan.utils.CustomArgParse" title="pytan.utils.CustomArgParse"><code class="xref py py-class docutils literal"><span class="pre">pytan.utils.CustomArgParse</span></code></a> class for command line scripts with arguments for scripts that need to supply export file and directory options.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.add_get_object_report_argparser">
+<code class="descclassname">pytan.utils.</code><code class="descname">add_get_object_report_argparser</code><span class="sig-paren">(</span><em>parser</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#add_get_object_report_argparser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.add_get_object_report_argparser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to extend a <a class="reference internal" href="#pytan.utils.CustomArgParse" title="pytan.utils.CustomArgParse"><code class="xref py py-class docutils literal"><span class="pre">pytan.utils.CustomArgParse</span></code></a> class for command line scripts with arguments for scripts that need to supply export format subparsers for getting objects.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.get_grp_opts">
+<code class="descclassname">pytan.utils.</code><code class="descname">get_grp_opts</code><span class="sig-paren">(</span><em>parser</em>, <em>grp_names</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#get_grp_opts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.get_grp_opts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used to get arguments in <cite>parser</cite> that match argument group names in <cite>grp_names</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>parser</strong> : <code class="xref py py-class docutils literal"><span class="pre">argparse.ArgParse</span></code></p>
+<blockquote>
+<div><p>ArgParse object</p>
+</div></blockquote>
+<p><strong>grp_names</strong> : list of str</p>
+<blockquote>
+<div><p>list of str of argument group names to get arguments for</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>grp_opts</strong> : list of str</p>
+<blockquote class="last">
+<div><p>list of arguments gathered from argument group names in <cite>grp_names</cite></p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.process_create_json_object_args">
+<code class="descclassname">pytan.utils.</code><code class="descname">process_create_json_object_args</code><span class="sig-paren">(</span><em>parser</em>, <em>handler</em>, <em>obj</em>, <em>all_args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#process_create_json_object_args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.process_create_json_object_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process command line args supplied by user for create json object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>parser</strong> : <code class="xref py py-class docutils literal"><span class="pre">argparse.ArgParse</span></code></p>
+<blockquote>
+<div><p>ArgParse object used to parse <cite>all_args</cite></p>
+</div></blockquote>
+<p><strong>handler</strong> : <a class="reference internal" href="pytan.handler.html#pytan.handler.Handler" title="pytan.handler.Handler"><code class="xref py py-class docutils literal"><span class="pre">pytan.handler.Handler</span></code></a></p>
+<blockquote>
+<div><p>Instance of Handler created from command line args</p>
+</div></blockquote>
+<p><strong>obj</strong> : str</p>
+<blockquote>
+<div><p>Object type for create json object</p>
+</div></blockquote>
+<p><strong>all_args</strong> : dict</p>
+<blockquote>
+<div><p>dict of args parsed from <cite>parser</cite></p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>response</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a></p>
+<blockquote class="last">
+<div><p>response from <a class="reference internal" href="pytan.handler.html#pytan.handler.Handler.create_from_json" title="pytan.handler.Handler.create_from_json"><code class="xref py py-func docutils literal"><span class="pre">pytan.handler.Handler.create_from_json()</span></code></a></p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.process_delete_object_args">
+<code class="descclassname">pytan.utils.</code><code class="descname">process_delete_object_args</code><span class="sig-paren">(</span><em>parser</em>, <em>handler</em>, <em>obj</em>, <em>all_args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#process_delete_object_args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.process_delete_object_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process command line args supplied by user for delete object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>parser</strong> : <code class="xref py py-class docutils literal"><span class="pre">argparse.ArgParse</span></code></p>
+<blockquote>
+<div><p>ArgParse object used to parse <cite>all_args</cite></p>
+</div></blockquote>
+<p><strong>handler</strong> : <a class="reference internal" href="pytan.handler.html#pytan.handler.Handler" title="pytan.handler.Handler"><code class="xref py py-class docutils literal"><span class="pre">pytan.handler.Handler</span></code></a></p>
+<blockquote>
+<div><p>Instance of Handler created from command line args</p>
+</div></blockquote>
+<p><strong>obj</strong> : str</p>
+<blockquote>
+<div><p>Object type for delete object</p>
+</div></blockquote>
+<p><strong>all_args</strong> : dict</p>
+<blockquote>
+<div><p>dict of args parsed from <cite>parser</cite></p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>response</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a></p>
+<blockquote class="last">
+<div><p>response from <a class="reference internal" href="pytan.handler.html#pytan.handler.Handler.delete" title="pytan.handler.Handler.delete"><code class="xref py py-func docutils literal"><span class="pre">pytan.handler.Handler.delete()</span></code></a></p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.process_get_object_args">
+<code class="descclassname">pytan.utils.</code><code class="descname">process_get_object_args</code><span class="sig-paren">(</span><em>parser</em>, <em>handler</em>, <em>obj</em>, <em>all_args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#process_get_object_args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.process_get_object_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process command line args supplied by user for get object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>parser</strong> : <code class="xref py py-class docutils literal"><span class="pre">argparse.ArgParse</span></code></p>
+<blockquote>
+<div><p>ArgParse object used to parse <cite>all_args</cite></p>
+</div></blockquote>
+<p><strong>handler</strong> : <a class="reference internal" href="pytan.handler.html#pytan.handler.Handler" title="pytan.handler.Handler"><code class="xref py py-class docutils literal"><span class="pre">pytan.handler.Handler</span></code></a></p>
+<blockquote>
+<div><p>Instance of Handler created from command line args</p>
+</div></blockquote>
+<p><strong>obj</strong> : str</p>
+<blockquote>
+<div><p>Object type for get object</p>
+</div></blockquote>
+<p><strong>all_args</strong> : dict</p>
+<blockquote>
+<div><p>dict of args parsed from <cite>parser</cite></p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>response</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a></p>
+<blockquote class="last">
+<div><p>response from <a class="reference internal" href="pytan.handler.html#pytan.handler.Handler.get" title="pytan.handler.Handler.get"><code class="xref py py-func docutils literal"><span class="pre">pytan.handler.Handler.get()</span></code></a></p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="utility-functions-dehumanize-human-strings">
+<h2>7.4.8. Utility Functions: Dehumanize human strings<a class="headerlink" href="#utility-functions-dehumanize-human-strings" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pytan.utils.dehumanize_package">
+<code class="descclassname">pytan.utils.</code><code class="descname">dehumanize_package</code><span class="sig-paren">(</span><em>package</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#dehumanize_package"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.dehumanize_package" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turns a package str into a package definition</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>package</strong> : str</p>
+<blockquote>
+<div><p>A str that describes a package and optionally a selector and/or parameters</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>package_def</strong> : dict</p>
+<blockquote class="last">
+<div><p>dict parsed from <cite>sensors</cite></p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.dehumanize_question_filters">
+<code class="descclassname">pytan.utils.</code><code class="descname">dehumanize_question_filters</code><span class="sig-paren">(</span><em>question_filters</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#dehumanize_question_filters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.dehumanize_question_filters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turns a question_filters str or list of str into a question filter definition</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>question_filters</strong> : str, list of str</p>
+<blockquote>
+<div><p>A str or list of str that describes a sensor for a question filter(s) and optionally a selector and/or filter</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>question_filter_defs</strong> : list of dict</p>
+<blockquote class="last">
+<div><p>list of dict parsed from <cite>question_filters</cite></p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.dehumanize_question_options">
+<code class="descclassname">pytan.utils.</code><code class="descname">dehumanize_question_options</code><span class="sig-paren">(</span><em>question_options</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#dehumanize_question_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.dehumanize_question_options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turns a question_options str or list of str into a question option definition</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>question_options</strong> : str, list of str</p>
+<blockquote>
+<div><p>A str or list of str that describes question options</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>question_option_defs</strong> : list of dict</p>
+<blockquote class="last">
+<div><p>list of dict parsed from <cite>question_options</cite></p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.dehumanize_sensors">
+<code class="descclassname">pytan.utils.</code><code class="descname">dehumanize_sensors</code><span class="sig-paren">(</span><em>sensors</em>, <em>key='sensors'</em>, <em>empty_ok=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#dehumanize_sensors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.dehumanize_sensors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turns a sensors str or list of str into a sensor definition</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>sensors</strong> : str, list of str</p>
+<blockquote>
+<div><p>A str or list of str that describes a sensor(s) and optionally a selector, parameters, filter, and/or options</p>
+</div></blockquote>
+<p><strong>key</strong> : str, optional</p>
+<blockquote>
+<div><p>Name of key that user should have provided <cite>sensors</cite> as</p>
+</div></blockquote>
+<p><strong>empty_ok</strong> : bool, optional</p>
+<blockquote>
+<div><p>False: <cite>sensors</cite> is not allowed to be empty, throw <a class="reference internal" href="#pytan.utils.HumanParserError" title="pytan.utils.HumanParserError"><code class="xref py py-exc docutils literal"><span class="pre">HumanParserError</span></code></a> if it is empty
+True: <cite>sensors</cite> is allowed to be empty</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>sensor_defs</strong> : list of dict</p>
+<blockquote class="last">
+<div><p>list of dict parsed from <cite>sensors</cite></p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.extract_filter">
+<code class="descclassname">pytan.utils.</code><code class="descname">extract_filter</code><span class="sig-paren">(</span><em>s</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#extract_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.extract_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts a filter from str <cite>s</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>s</strong> : str</p>
+<blockquote>
+<div><p>A str that may or may not have a filter identified by &#8216;, that HUMAN VALUE&#8217;</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>s</strong> : str</p>
+<blockquote>
+<div><p>str <cite>s</cite> without the parsed_filter included</p>
+</div></blockquote>
+<p><strong>parsed_filter</strong> : dict</p>
+<blockquote class="last">
+<div><p>filter attributes mapped from filter from <cite>s</cite> if any found</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.extract_options">
+<code class="descclassname">pytan.utils.</code><code class="descname">extract_options</code><span class="sig-paren">(</span><em>s</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#extract_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.extract_options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts options from str <cite>s</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>s</strong> : str</p>
+<blockquote>
+<div><p>A str that may or may not have options identified by &#8216;, opt:name[:value]&#8217;</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>s</strong> : str</p>
+<blockquote>
+<div><p>str <cite>s</cite> without the parsed_options included</p>
+</div></blockquote>
+<p><strong>parsed_options</strong> : list</p>
+<blockquote class="last">
+<div><p>options extracted from <cite>s</cite> if any found</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.extract_params">
+<code class="descclassname">pytan.utils.</code><code class="descname">extract_params</code><span class="sig-paren">(</span><em>s</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#extract_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.extract_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts parameters from str <cite>s</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>s</strong> : str</p>
+<blockquote>
+<div><p>A str that may or may not have parameters identified by {key=value}</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>s</strong> : str</p>
+<blockquote>
+<div><p>str <cite>s</cite> without the parsed_params included</p>
+</div></blockquote>
+<p><strong>parsed_params</strong> : list</p>
+<blockquote class="last">
+<div><p>parameters extracted from <cite>s</cite> if any found</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.extract_selector">
+<code class="descclassname">pytan.utils.</code><code class="descname">extract_selector</code><span class="sig-paren">(</span><em>s</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#extract_selector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.extract_selector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts a selector from str <cite>s</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>s</strong> : str</p>
+<blockquote>
+<div><p>A str that may or may not have a selector in the beginning in the form of id:, name:, or :hash &#8211; if no selector found, name will be assumed as the default selector</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>s</strong> : str</p>
+<blockquote>
+<div><p>str <cite>s</cite> without the parsed_selector included</p>
+</div></blockquote>
+<p><strong>parsed_selector</strong> : str</p>
+<blockquote class="last">
+<div><p>selector extracted from <cite>s</cite>, or &#8216;name&#8217; if none found</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.map_filter">
+<code class="descclassname">pytan.utils.</code><code class="descname">map_filter</code><span class="sig-paren">(</span><em>filter_str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#map_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.map_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maps a filter str against <code class="xref py py-data docutils literal"><span class="pre">constants.FILTER_MAPS</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>filter_str</strong> : str</p>
+<blockquote>
+<div><p>filter_str str that should be validated</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>filter_attrs</strong> : dict</p>
+<blockquote class="last">
+<div><p>dict containing mapped filter attributes for SOAP API</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.map_option">
+<code class="descclassname">pytan.utils.</code><code class="descname">map_option</code><span class="sig-paren">(</span><em>opt</em>, <em>dest</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#map_option"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.map_option" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maps an opt str against <code class="xref py py-data docutils literal"><span class="pre">constants.OPTION_MAPS</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>opt</strong> : str</p>
+<blockquote>
+<div><p>option str that should be validated</p>
+</div></blockquote>
+<p><strong>dest</strong> : list of str</p>
+<blockquote>
+<div><p>list of valid destinations (i.e. <cite>filter</cite> or <cite>group</cite>)</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>opt_attrs</strong> : dict</p>
+<blockquote class="last">
+<div><p>dict containing mapped option attributes for SOAP API</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.map_options">
+<code class="descclassname">pytan.utils.</code><code class="descname">map_options</code><span class="sig-paren">(</span><em>options</em>, <em>dest</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#map_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.map_options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maps a list of options using <a class="reference internal" href="#pytan.utils.map_option" title="pytan.utils.map_option"><code class="xref py py-func docutils literal"><span class="pre">map_option()</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>options</strong> : list of str</p>
+<blockquote>
+<div><p>list of str that should be validated</p>
+</div></blockquote>
+<p><strong>dest</strong> : list of str</p>
+<blockquote>
+<div><p>list of valid destinations (i.e. <cite>filter</cite> or <cite>group</cite>)</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>mapped_options</strong> : dict</p>
+<blockquote class="last">
+<div><p>dict of all mapped_options</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="utility-functions-kwargs-getters">
+<h2>7.4.9. Utility Functions: kwargs getters<a class="headerlink" href="#utility-functions-kwargs-getters" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pytan.utils.get_ask_kwargs">
+<code class="descclassname">pytan.utils.</code><code class="descname">get_ask_kwargs</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#get_ask_kwargs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.get_ask_kwargs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets QuestionAsker args from kwargs and returns a dict with just those matching args</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>**kwargs</strong> : dict</p>
+<blockquote>
+<div><p>kwargs to get keys from</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>ask_kwargs</strong> : dict</p>
+<blockquote class="last">
+<div><p>args from kwargs that are found in <a class="reference internal" href="pytan.constants.html#pytan.constants.ASK_KWARGS" title="pytan.constants.ASK_KWARGS"><code class="xref py py-data docutils literal"><span class="pre">pytan.constants.ASK_KWARGS</span></code></a></p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.get_kwargs_int">
+<code class="descclassname">pytan.utils.</code><code class="descname">get_kwargs_int</code><span class="sig-paren">(</span><em>key</em>, <em>default=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#get_kwargs_int"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.get_kwargs_int" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets key from kwargs and validates it is an int</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>key</strong> : str</p>
+<blockquote>
+<div><p>key to get from kwargs</p>
+</div></blockquote>
+<p><strong>default</strong> : int, optional</p>
+<blockquote>
+<div><p>default value to use if key not found in kwargs</p>
+</div></blockquote>
+<p><strong>**kwargs</strong> : dict</p>
+<blockquote>
+<div><p>kwargs to get key from</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>val</strong> : int</p>
+<blockquote class="last">
+<div><p>value from key, or default if supplied</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.get_req_kwargs">
+<code class="descclassname">pytan.utils.</code><code class="descname">get_req_kwargs</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#get_req_kwargs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.get_req_kwargs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets SOAP API request args from kwargs and returns a dict with just those matching args</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>**kwargs</strong> : dict</p>
+<blockquote>
+<div><p>kwargs to get keys from</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>req_kwargs</strong> : dict</p>
+<blockquote class="last">
+<div><p>args from kwargs that are found in <a class="reference internal" href="pytan.constants.html#pytan.constants.REQ_KWARGS" title="pytan.constants.REQ_KWARGS"><code class="xref py py-data docutils literal"><span class="pre">pytan.constants.REQ_KWARGS</span></code></a></p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="utility-functions-object-mappers">
+<h2>7.4.10. Utility Functions: Object mappers<a class="headerlink" href="#utility-functions-object-mappers" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pytan.utils.get_obj_map">
+<code class="descclassname">pytan.utils.</code><code class="descname">get_obj_map</code><span class="sig-paren">(</span><em>objtype</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#get_obj_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.get_obj_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets an object map for <cite>objtype</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>objtype</strong> : str</p>
+<blockquote>
+<div><p>object type to get object map from in <a class="reference internal" href="pytan.constants.html#pytan.constants.GET_OBJ_MAP" title="pytan.constants.GET_OBJ_MAP"><code class="xref py py-data docutils literal"><span class="pre">pytan.constants.GET_OBJ_MAP</span></code></a></p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>obj_map</strong> : dict</p>
+<blockquote class="last">
+<div><p>matching object map for <cite>objtype</cite> from <a class="reference internal" href="pytan.constants.html#pytan.constants.GET_OBJ_MAP" title="pytan.constants.GET_OBJ_MAP"><code class="xref py py-data docutils literal"><span class="pre">pytan.constants.GET_OBJ_MAP</span></code></a></p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.get_q_obj_map">
+<code class="descclassname">pytan.utils.</code><code class="descname">get_q_obj_map</code><span class="sig-paren">(</span><em>qtype</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#get_q_obj_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.get_q_obj_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets an object map for <cite>qtype</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>qtype</strong> : str</p>
+<blockquote>
+<div><p>question type to get object map from in <a class="reference internal" href="pytan.constants.html#pytan.constants.Q_OBJ_MAP" title="pytan.constants.Q_OBJ_MAP"><code class="xref py py-data docutils literal"><span class="pre">pytan.constants.Q_OBJ_MAP</span></code></a></p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>obj_map</strong> : dict</p>
+<blockquote class="last">
+<div><p>matching object map for <cite>qtype</cite> from <a class="reference internal" href="pytan.constants.html#pytan.constants.Q_OBJ_MAP" title="pytan.constants.Q_OBJ_MAP"><code class="xref py py-data docutils literal"><span class="pre">pytan.constants.Q_OBJ_MAP</span></code></a></p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="utility-functions-taniumpy-objects">
+<h2>7.4.11. Utility Functions: TaniumPy objects<a class="headerlink" href="#utility-functions-taniumpy-objects" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pytan.utils.apply_options_obj">
+<code class="descclassname">pytan.utils.</code><code class="descname">apply_options_obj</code><span class="sig-paren">(</span><em>options</em>, <em>obj</em>, <em>dest</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#apply_options_obj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.apply_options_obj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates an object with options</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>options</strong> : dict</p>
+<blockquote>
+<div><p>dict containing options definition</p>
+</div></blockquote>
+<p><strong>obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a></p>
+<blockquote>
+<div><p>TaniumPy object to apply <cite>options</cite> to</p>
+</div></blockquote>
+<p><strong>dest</strong> : list of str</p>
+<blockquote>
+<div><p>list of valid destinations (i.e. <cite>filter</cite> or <cite>group</cite>)</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a></p>
+<blockquote class="last">
+<div><p>TaniumPy object updated with attributes from <cite>options</cite></p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.build_group_obj">
+<code class="descclassname">pytan.utils.</code><code class="descname">build_group_obj</code><span class="sig-paren">(</span><em>q_filter_defs</em>, <em>q_option_defs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#build_group_obj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.build_group_obj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a Group object from q_filter_defs and q_option_defs</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>q_filter_defs</strong> : list of dict</p>
+<blockquote>
+<div><p>List of dict that are question filter definitions</p>
+</div></blockquote>
+<p><strong>q_option_defs</strong> : dict</p>
+<blockquote>
+<div><p>dict of question filter options</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>group_obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.group.Group" title="taniumpy.object_types.group.Group"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.group.Group</span></code></a></p>
+<blockquote class="last">
+<div><p>Group object with list of <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.filter.Filter" title="taniumpy.object_types.filter.Filter"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.filter.Filter</span></code></a> built from <cite>q_filter_defs</cite> and <cite>q_option_defs</cite></p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.build_manual_q">
+<code class="descclassname">pytan.utils.</code><code class="descname">build_manual_q</code><span class="sig-paren">(</span><em>selectlist_obj</em>, <em>group_obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#build_manual_q"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.build_manual_q" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a Question object from selectlist_obj and group_obj</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>selectlist_obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.select_list.SelectList" title="taniumpy.object_types.select_list.SelectList"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.select_list.SelectList</span></code></a></p>
+<blockquote>
+<div><p>SelectList object to add to Question object</p>
+</div></blockquote>
+<p><strong>group_obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.group.Group" title="taniumpy.object_types.group.Group"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.group.Group</span></code></a></p>
+<blockquote>
+<div><p>Group object to add to Question object</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>add_q_obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.question.Question" title="taniumpy.object_types.question.Question"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.question.Question</span></code></a></p>
+<blockquote class="last">
+<div><p>Question object built from selectlist_obj and group_obj</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.build_metadatalist_obj">
+<code class="descclassname">pytan.utils.</code><code class="descname">build_metadatalist_obj</code><span class="sig-paren">(</span><em>properties</em>, <em>nameprefix</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#build_metadatalist_obj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.build_metadatalist_obj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a MetadataList object from properties</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>properties</strong> : list of list of strs</p>
+<blockquote>
+<div><p>list of lists, each list having two strs - str 1: property key, str2: property value</p>
+</div></blockquote>
+<p><strong>nameprefix</strong> : str</p>
+<blockquote>
+<div><p>prefix to insert in front of property key when creating MetadataItem</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>metadatalist_obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.metadata_list.MetadataList" title="taniumpy.object_types.metadata_list.MetadataList"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.metadata_list.MetadataList</span></code></a></p>
+<blockquote class="last">
+<div><p>MetadataList object with list of <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.metadata_item.MetadataItem" title="taniumpy.object_types.metadata_item.MetadataItem"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.metadata_item.MetadataItem</span></code></a> built from <cite>properties</cite></p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.build_param_obj">
+<code class="descclassname">pytan.utils.</code><code class="descname">build_param_obj</code><span class="sig-paren">(</span><em>key</em>, <em>val</em>, <em>delim=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#build_param_obj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.build_param_obj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a Parameter object from key and value, surrounding key with delim</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>key</strong> : str</p>
+<blockquote>
+<div><p>key to use for parameter</p>
+</div></blockquote>
+<p><strong>value</strong> : str</p>
+<blockquote>
+<div><p>value to use for parameter</p>
+</div></blockquote>
+<p><strong>delim</strong> : str</p>
+<blockquote>
+<div><p>str to surround key with when adding to parameter object</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>param_obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.parameter.Parameter" title="taniumpy.object_types.parameter.Parameter"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.parameter.Parameter</span></code></a></p>
+<blockquote class="last">
+<div><p>Parameter object built from key and val</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.build_param_objlist">
+<code class="descclassname">pytan.utils.</code><code class="descname">build_param_objlist</code><span class="sig-paren">(</span><em>obj</em>, <em>user_params</em>, <em>delim=''</em>, <em>derive_def=False</em>, <em>empty_ok=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#build_param_objlist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.build_param_objlist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a ParameterList object from user_params</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a></p>
+<blockquote>
+<div><p>TaniumPy object to verify parameters against</p>
+</div></blockquote>
+<p><strong>user_params</strong> : dict</p>
+<blockquote>
+<div><p>dict describing key and value of user supplied params</p>
+</div></blockquote>
+<p><strong>delim</strong> : str</p>
+<blockquote>
+<div><p>str to surround key with when adding to parameter object</p>
+</div></blockquote>
+<p><strong>derive_def</strong> : bool, optional</p>
+<blockquote>
+<div><ul class="simple">
+<li>False: Do not derive default values, and throw a <a class="reference internal" href="#pytan.utils.HandlerError" title="pytan.utils.HandlerError"><code class="xref py py-exc docutils literal"><span class="pre">HandlerError</span></code></a> if user did not supply a value for a given parameter</li>
+<li>True: Try to derive a default value for each parameter if user did not supply one</li>
+</ul>
+</div></blockquote>
+<p><strong>empty_ok</strong> : bool, optional</p>
+<blockquote>
+<div><ul class="simple">
+<li>False: If user did not supply a value for a given parameter, throw a <a class="reference internal" href="#pytan.utils.HandlerError" title="pytan.utils.HandlerError"><code class="xref py py-exc docutils literal"><span class="pre">HandlerError</span></code></a></li>
+<li>True: If user did not supply a value for a given parameter, do not add the parameter to the ParameterList object</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>param_objlist</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.parameter_list.ParameterList" title="taniumpy.object_types.parameter_list.ParameterList"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.parameter_list.ParameterList</span></code></a></p>
+<blockquote class="last">
+<div><p>ParameterList object with list of <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.parameter.Parameter" title="taniumpy.object_types.parameter.Parameter"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.parameter.Parameter</span></code></a> built from user_params</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.build_selectlist_obj">
+<code class="descclassname">pytan.utils.</code><code class="descname">build_selectlist_obj</code><span class="sig-paren">(</span><em>sensor_defs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#build_selectlist_obj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.build_selectlist_obj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a SelectList object from sensor_defs</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>sensor_defs</strong> : list of dict</p>
+<blockquote>
+<div><p>List of dict that are sensor definitions</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>select_objlist</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.select_list.SelectList" title="taniumpy.object_types.select_list.SelectList"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.select_list.SelectList</span></code></a></p>
+<blockquote class="last">
+<div><p>SelectList object with list of <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.select.Select" title="taniumpy.object_types.select.Select"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.select.Select</span></code></a> built from <cite>sensor_defs</cite></p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.derive_param_default">
+<code class="descclassname">pytan.utils.</code><code class="descname">derive_param_default</code><span class="sig-paren">(</span><em>obj_param</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#derive_param_default"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.derive_param_default" title="Permalink to this definition">¶</a></dt>
+<dd><p>Derive a parameter default</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>obj_param</strong> : dict</p>
+<blockquote>
+<div><p>parameter dict from TaniumPy object</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>def_val</strong> : str</p>
+<blockquote class="last">
+<div><p>default value derived from obj_param</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.empty_obj">
+<code class="descclassname">pytan.utils.</code><code class="descname">empty_obj</code><span class="sig-paren">(</span><em>taniumpy_object</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#empty_obj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.empty_obj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validate that a given TaniumPy object is not empty</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>taniumpy_object</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a></p>
+<blockquote>
+<div><p>object to check if empty</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">bool</p>
+<blockquote class="last">
+<div><p>True if <cite>taniumpy_object</cite> is considered empty, False otherwise</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.get_filter_obj">
+<code class="descclassname">pytan.utils.</code><code class="descname">get_filter_obj</code><span class="sig-paren">(</span><em>sensor_def</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#get_filter_obj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.get_filter_obj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a Filter object from sensor_def</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>sensor_def</strong> : dict</p>
+<blockquote>
+<div><p>dict containing sensor definition</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>filter_obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.filter.Filter" title="taniumpy.object_types.filter.Filter"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.filter.Filter</span></code></a></p>
+<blockquote class="last">
+<div><p>Filter object created from <cite>sensor_def</cite></p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.get_obj_params">
+<code class="descclassname">pytan.utils.</code><code class="descname">get_obj_params</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#get_obj_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.get_obj_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the parameters from a TaniumPy object and JSON load them</p>
+<dl class="docutils">
+<dt>obj <span class="classifier-delimiter">:</span> <span class="classifier"><a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a></span></dt>
+<dd>TaniumPy object to get parameters from</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>params</strong> : dict</p>
+<blockquote class="last">
+<div><p>JSON loaded dict of parameters from <cite>obj</cite></p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.question_progress">
+<code class="descclassname">pytan.utils.</code><code class="descname">question_progress</code><span class="sig-paren">(</span><em>asker</em>, <em>pct</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#question_progress"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.question_progress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call back method for <a class="reference internal" href="taniumpy.question_asker.html#taniumpy.question_asker.QuestionAsker.run" title="taniumpy.question_asker.QuestionAsker.run"><code class="xref py py-func docutils literal"><span class="pre">taniumpy.question_asker.QuestionAsker.run()</span></code></a> to report progress while waiting for results from a question</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>asker</strong> : <a class="reference internal" href="taniumpy.question_asker.html#taniumpy.question_asker.QuestionAsker" title="taniumpy.question_asker.QuestionAsker"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.question_asker.QuestionAsker</span></code></a></p>
+<blockquote>
+<div><p>QuestionAsker instance</p>
+</div></blockquote>
+<p><strong>pct</strong> : float</p>
+<blockquote class="last">
+<div><p>Percentage completion of question</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="utility-functions-definition-objects">
+<h2>7.4.12. Utility Functions: Definition objects<a class="headerlink" href="#utility-functions-definition-objects" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pytan.utils.check_dictkey">
+<code class="descclassname">pytan.utils.</code><code class="descname">check_dictkey</code><span class="sig-paren">(</span><em>d</em>, <em>key</em>, <em>valid_types</em>, <em>valid_list_types</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#check_dictkey"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.check_dictkey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yet another method to check a dictionary for a key</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>d</strong> : dict</p>
+<blockquote>
+<div><p>dictionary to check for key</p>
+</div></blockquote>
+<p><strong>key</strong> : str</p>
+<blockquote>
+<div><p>key to check for in d</p>
+</div></blockquote>
+<p><strong>valid_types</strong> : list of str</p>
+<blockquote>
+<div><p>list of str of valid types for key</p>
+</div></blockquote>
+<p><strong>valid_list_types</strong> : list of str</p>
+<blockquote class="last">
+<div><p>if key is a list, validate that all values of list are in valid_list_types</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.chk_def_key">
+<code class="descclassname">pytan.utils.</code><code class="descname">chk_def_key</code><span class="sig-paren">(</span><em>def_dict</em>, <em>key</em>, <em>keytypes</em>, <em>keysubtypes=None</em>, <em>req=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#chk_def_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.chk_def_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that def_dict has key</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>def_dict</strong> : dict</p>
+<blockquote>
+<div><p>Definition dictionary</p>
+</div></blockquote>
+<p><strong>key</strong> : str</p>
+<blockquote>
+<div><p>key to check for in def_dict</p>
+</div></blockquote>
+<p><strong>keytypes</strong> : list of str</p>
+<blockquote>
+<div><p>list of str of valid types for key</p>
+</div></blockquote>
+<p><strong>keysubtypes</strong> : list of str</p>
+<blockquote>
+<div><p>if key is a dict or list, validate that all values of dict or list are in keysubtypes</p>
+</div></blockquote>
+<p><strong>req</strong> : bool</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>False: key does not have to be in def_dict</li>
+<li>True: key must be in def_dict, throw <a class="reference internal" href="#pytan.utils.DefinitionParserError" title="pytan.utils.DefinitionParserError"><code class="xref py py-exc docutils literal"><span class="pre">DefinitionParserError</span></code></a> if not</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.parse_defs">
+<code class="descclassname">pytan.utils.</code><code class="descname">parse_defs</code><span class="sig-paren">(</span><em>defname</em>, <em>deftypes</em>, <em>strconv=None</em>, <em>empty_ok=True</em>, <em>defs=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#parse_defs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.parse_defs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses and validates defs into new_defs</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>defname</strong> : str</p>
+<blockquote>
+<div><p>Name of definition</p>
+</div></blockquote>
+<p><strong>deftypes</strong> : list of str</p>
+<blockquote>
+<div><p>list of valid types that defs can be</p>
+</div></blockquote>
+<p><strong>strconv</strong> : str</p>
+<blockquote>
+<div><p>if supplied, and defs is a str, turn defs into a dict with key = strconv, value = defs</p>
+</div></blockquote>
+<p><strong>empty_ok</strong> : bool</p>
+<blockquote>
+<div><ul class="simple">
+<li>True: defs is allowed to be empty</li>
+<li>False: defs is not allowed to be empty</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>new_defs</strong> : list of dict</p>
+<blockquote class="last">
+<div><p>parsed and validated defs</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.val_package_def">
+<code class="descclassname">pytan.utils.</code><code class="descname">val_package_def</code><span class="sig-paren">(</span><em>package_def</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#val_package_def"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.val_package_def" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates package definitions</p>
+<p>Ensures package definition has a selector, and if a package definition has a params key, that key is valid</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>package_def</strong> : dict</p>
+<blockquote class="last">
+<div><p>package definition</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.val_q_filter_defs">
+<code class="descclassname">pytan.utils.</code><code class="descname">val_q_filter_defs</code><span class="sig-paren">(</span><em>q_filter_defs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#val_q_filter_defs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.val_q_filter_defs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates question filter definitions</p>
+<p>Ensures each question filter definition has a selector, and if a question filter definition has a filter key, that key is valid</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>q_filter_defs</strong> : list of dict</p>
+<blockquote class="last">
+<div><p>list of question filter definitions</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.val_sensor_defs">
+<code class="descclassname">pytan.utils.</code><code class="descname">val_sensor_defs</code><span class="sig-paren">(</span><em>sensor_defs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#val_sensor_defs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.val_sensor_defs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates sensor definitions</p>
+<p>Ensures each sensor definition has a selector, and if a sensor definition has a params, options, or filter key, that each key is valid</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>sensor_defs</strong> : list of dict</p>
+<blockquote class="last">
+<div><p>list of sensor definitions</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pytan.unittest.html" class="btn btn-neutral float-right" title="7.5. pytan Unit Tests">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pytan.constants.html" class="btn btn-neutral" title="7.3. pytan.constants module"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Tanium.
+      Last updated on Dec 08, 2014.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

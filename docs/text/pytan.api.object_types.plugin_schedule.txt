@@ -1,7 +1,0 @@
-
-pytan.api.object_types.plugin_schedule module
-*********************************************
-
-class class pytan.api.object_types.plugin_schedule.PluginSchedule
-
-   Bases: "pytan.api.object_types.base.BaseType"

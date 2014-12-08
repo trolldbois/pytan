@@ -1,0 +1,436 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>7. pytan package &mdash; PyTan 1.0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="PyTan 1.0.1 documentation" href="index.html"/>
+        <link rel="next" title="7.1. pytan API examples" href="examples/pytan_examples.html"/>
+        <link rel="prev" title="1. Description" href="description.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="index.html" class="fa fa-home"> PyTan</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="description.html">1. Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="description.html#why-it-was-created">2. Why it was created</a></li>
+<li class="toctree-l1"><a class="reference internal" href="description.html#requirements">3. Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="description.html#installation">4. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="description.html#usage">5. Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="description.html#directory-layout">6. Directory Layout</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">7. pytan package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/pytan_examples.html">7.1. pytan API examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.handler.html">7.2. pytan.handler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.constants.html">7.3. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html">7.4. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.unittest.html">7.5. pytan Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.functest.html">7.6. pytan Functional Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="taniumpy.html">taniumpy package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.session.html">1. taniumpy.session module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.question_asker.html">2. taniumpy.question_asker module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html">3. taniumpy.object_types package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="xmltodict.html">8. xmltodict module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ddt.html">9. ddt module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="threaded_http.html">10. threaded_http module</a><ul class="simple">
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">PyTan</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>7. pytan package</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/pytan.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="module-pytan">
+<span id="pytan-package"></span><h1>7. pytan package<a class="headerlink" href="#module-pytan" title="Permalink to this headline">¶</a></h1>
+<p>A python package that makes using (<a class="reference internal" href="taniumpy.html#module-taniumpy" title="taniumpy"><code class="xref py py-mod docutils literal"><span class="pre">taniumpy</span></code></a>) more human friendly.</p>
+<dl class="data">
+<dt id="pytan.__version__">
+<code class="descclassname">pytan.</code><code class="descname">__version__</code><em class="property"> = '1.0.1'</em><a class="headerlink" href="#pytan.__version__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Version of PyTan</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="pytan.__copyright__">
+<code class="descclassname">pytan.</code><code class="descname">__copyright__</code><em class="property"> = 'Copyright 2014 Tanium'</em><a class="headerlink" href="#pytan.__copyright__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copyright for PyTan</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="pytan.__license__">
+<code class="descclassname">pytan.</code><code class="descname">__license__</code><em class="property"> = 'MIT'</em><a class="headerlink" href="#pytan.__license__" title="Permalink to this definition">¶</a></dt>
+<dd><p>License for PyTan</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="pytan.__author__">
+<code class="descclassname">pytan.</code><code class="descname">__author__</code><em class="property"> = 'Jim Olsen &lt;jim.olsen&#64;tanium.com&gt;'</em><a class="headerlink" href="#pytan.__author__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Author of Pytan</p>
+</dd></dl>
+
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="examples/pytan_examples.html">7.1. pytan API examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/pytan_api_basic_handler_example.html">7.1.1. Pytan api basic handler example</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples/pytan_api_basic_handler_example.html#example-python-code">7.1.1.1. Example Python Code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/pytan_api_basic_handler_example.html#output-from-python-code">7.1.1.2. Output from Python Code</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="examples/valid_questions.html">7.1.2. pytan API Valid Question Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples/ask_saved_question_by_name_in_list.html">7.1.2.1. Ask saved question by name in list</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/ask_saved_question_by_name.html">7.1.2.2. Ask saved question by name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/ask_manual_human_question_simple_single_sensor.html">7.1.2.3. Ask manual human question simple single sensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/ask_manual_human_question_simple_multiple_sensors.html">7.1.2.4. Ask manual human question simple multiple sensors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/ask_manual_human_question_multiple_sensors_identified_by_name.html">7.1.2.5. Ask manual human question multiple sensors identified by name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/ask_manual_human_question_sensor_with_parameters_and_some_supplied_parameters.html">7.1.2.6. Ask manual human question sensor with parameters and some supplied parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/ask_manual_human_question_sensor_without_parameters_and_supplied_parameters.html">7.1.2.7. Ask manual human question sensor without parameters and supplied parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/ask_manual_human_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html">7.1.2.8. Ask manual human question multiple sensors with parameters and some supplied parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/ask_manual_human_question_sensor_with_parameters_and_no_supplied_parameters.html">7.1.2.9. Ask manual human question sensor with parameters and no supplied parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/ask_manual_human_question_sensor_with_parameters_and_filter.html">7.1.2.10. Ask manual human question sensor with parameters and filter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/ask_manual_human_question_sensor_with_filter_and_3_options.html">7.1.2.11. Ask manual human question sensor with filter and 3 options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/ask_manual_human_question_sensor_with_parameters_and_filter_and_options.html">7.1.2.12. Ask manual human question sensor with parameters and filter and options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/ask_manual_human_question_sensor_with_filter_and_2_options.html">7.1.2.13. Ask manual human question sensor with filter and 2 options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/ask_manual_human_question_sensor_with_filter.html">7.1.2.14. Ask manual human question sensor with filter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/ask_manual_human_question_complex_query1.html">7.1.2.15. Ask manual human question complex query1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/ask_manual_human_question_complex_query2.html">7.1.2.16. Ask manual human question complex query2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/ask_manual_question_sensor_complex.html">7.1.2.17. Ask manual question sensor complex</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="examples/invalid_questions.html">pytan API Invalid Question Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples/invalid_ask_manual_human_question_filter_help.html">1. Invalid ask manual human question filter help</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/invalid_ask_manual_human_question_option_help.html">2. Invalid ask manual human question option help</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/invalid_ask_manual_human_question_sensor_help.html">3. Invalid ask manual human question sensor help</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/invalid_ask_manual_human_question_filter.html">4. Invalid ask manual human question filter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/invalid_ask_manual_question_sensor.html">5. Invalid ask manual question sensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/invalid_ask_manual_human_question_paramater_too_many.html">6. Invalid ask manual human question paramater too many</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/invalid_ask_manual_human_question_option.html">7. Invalid ask manual human question option</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/invalid_ask_manual_human_question_parameter_split.html">8. Invalid ask manual human question parameter split</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="examples/valid_get_objects.html">pytan API Valid Get Object Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples/get_action_by_id.html">1. Get action by id</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/get_question_by_id.html">2. Get question by id</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/get_saved_question_by_names.html">3. Get saved question by names</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/get_userrole_by_id.html">4. Get userrole by id</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/get_leader_clients.html">5. Get leader clients</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/get_setting_by_name.html">6. Get setting by name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/get_user_by_name.html">7. Get user by name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/get_sensor_by_id.html">8. Get sensor by id</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/get_sensor_by_mixed.html">9. Get sensor by mixed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/get_whitelisted_url_by_id.html">10. Get whitelisted url by id</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/get_group_by_name.html">11. Get group by name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/get_sensor_by_hash.html">12. Get sensor by hash</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/get_package_by_name.html">13. Get package by name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/get_sensor_by_names.html">14. Get sensor by names</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/get_saved_question_by_name.html">15. Get saved question by name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/get_user_by_id.html">16. Get user by id</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/get_sensor_by_name.html">17. Get sensor by name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/get_saved_action_by_name.html">18. Get saved action by name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/get_all_users.html">19. Get all users</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/get_all_saved_actions.html">20. Get all saved actions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/get_all_settings.html">21. Get all settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/get_all_saved_questions.html">22. Get all saved questions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/get_all_userroless.html">23. Get all userroless</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/get_all_questions.html">24. Get all questions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/get_all_groups.html">25. Get all groups</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/get_all_sensors.html">26. Get all sensors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/get_all_whitelisted_urls.html">27. Get all whitelisted urls</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/get_all_clients.html">28. Get all clients</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/get_all_packages.html">29. Get all packages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/get_all_actions.html">30. Get all actions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="examples/invalid_get_objects.html">7.1.3. pytan API Invalid Get Object Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples/invalid_get_action_single_by_name.html">7.1.3.1. Invalid get action single by name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/invalid_get_question_by_name.html">7.1.3.2. Invalid get question by name</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="examples/valid_deploy_actions.html">7.1.4. pytan API Valid Deploy Action Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples/deploy_action_simple.html">7.1.4.1. Deploy action simple</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/deploy_action_simple_without_results.html">7.1.4.2. Deploy action simple without results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/deploy_action_simple_against_windows_computers.html">7.1.4.3. Deploy action simple against windows computers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/deploy_action_with_params_against_windows_computers.html">7.1.4.4. Deploy action with params against windows computers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="examples/invalid_deploy_actions.html">7.1.5. pytan API Invalid Deploy Action Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples/invalid_deploy_action_run_false.html">7.1.5.1. Invalid deploy action run false</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/invalid_deploy_action_package_help.html">7.1.5.2. Invalid deploy action package help</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/invalid_deploy_action_package.html">7.1.5.3. Invalid deploy action package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/invalid_deploy_action_options_help.html">7.1.5.4. Invalid deploy action options help</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/invalid_deploy_action_empty_package.html">7.1.5.5. Invalid deploy action empty package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/invalid_deploy_action_filters_help.html">7.1.5.6. Invalid deploy action filters help</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/invalid_deploy_action_missing_parameters.html">7.1.5.7. Invalid deploy action missing parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="examples/valid_create_objects.html">7.1.6. pytan API Valid Create Object Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples/create_user.html">7.1.6.1. Create user</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/create_package.html">7.1.6.2. Create package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/create_group.html">7.1.6.3. Create group</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/create_whitelisted_url.html">7.1.6.4. Create whitelisted url</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="examples/invalid_create_objects.html">7.1.7. pytan API Invalid Create Object Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples/invalid_create_sensor.html">7.1.7.1. Invalid create sensor</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="examples/valid_create_objects_from_json.html">7.1.8. pytan API Valid Create Object From JSON Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples/create_package_from_json.html">7.1.8.1. Create package from json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/create_user_from_json.html">7.1.8.2. Create user from json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/create_saved_question_from_json.html">7.1.8.3. Create saved question from json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/create_action_from_json.html">7.1.8.4. Create action from json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/create_sensor_from_json.html">7.1.8.5. Create sensor from json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/create_question_from_json.html">7.1.8.6. Create question from json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/create_whitelisted_url_from_json.html">7.1.8.7. Create whitelisted url from json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/create_group_from_json.html">7.1.8.8. Create group from json</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="examples/invalid_create_objects_from_json.html">7.1.9. pytan API Invalid Create Object From JSON Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples/invalid_create_saved_action_from_json.html">7.1.9.1. Invalid create saved action from json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/invalid_create_client_from_json.html">7.1.9.2. Invalid create client from json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/invalid_create_userrole_from_json.html">7.1.9.3. Invalid create userrole from json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/invalid_create_setting_from_json.html">7.1.9.4. Invalid create setting from json</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="examples/valid_export_resultset.html">7.1.10. pytan API Valid Export ResultSet Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples/export_resultset_csv_default_options.html">7.1.10.1. Export resultset csv default options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/export_resultset_csv_expand_false.html">7.1.10.2. Export resultset csv expand false</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/export_resultset_csv_expand_true.html">7.1.10.3. Export resultset csv expand true</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/export_resultset_csv_all_options.html">7.1.10.4. Export resultset csv all options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/export_resultset_json.html">7.1.10.5. Export resultset json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/export_resultset_csv_sort_empty.html">7.1.10.6. Export resultset csv sort empty</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/export_resultset_csv_sort_true.html">7.1.10.7. Export resultset csv sort true</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/export_resultset_csv_sort_false.html">7.1.10.8. Export resultset csv sort false</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/export_resultset_csv_sort_list.html">7.1.10.9. Export resultset csv sort list</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/export_resultset_csv_type_false.html">7.1.10.10. Export resultset csv type false</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/export_resultset_csv_type_true.html">7.1.10.11. Export resultset csv type true</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/export_resultset_csv_sensor_false.html">7.1.10.12. Export resultset csv sensor false</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/export_resultset_csv_sensor_true.html">7.1.10.13. Export resultset csv sensor true</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="examples/invalid_export_resultset.html">pytan API Invalid Export ResultSet Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples/invalid_export_resultset_csv_bad_sort_sub_type.html">1. Invalid export resultset csv bad sort sub type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/invalid_export_resultset_csv_bad_sort_type.html">2. Invalid export resultset csv bad sort type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/invalid_export_resultset_csv_bad_expand_type.html">3. Invalid export resultset csv bad expand type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/invalid_export_resultset_csv_bad_sensors_sub_type.html">4. Invalid export resultset csv bad sensors sub type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/invalid_export_resultset_bad_format.html">5. Invalid export resultset bad format</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="examples/valid_export_basetype.html">7.1.11. pytan API Valid Export BaseType Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples/export_basetype_csv_default_options.html">7.1.11.1. Export basetype csv default options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/export_basetype_json_type_false.html">7.1.11.2. Export basetype json type false</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/export_basetype_json_explode_false.html">7.1.11.3. Export basetype json explode false</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/export_basetype_json_explode_true.html">7.1.11.4. Export basetype json explode true</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/export_basetype_xml_default_options.html">7.1.11.5. Export basetype xml default options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/export_basetype_xml_minimal_false.html">7.1.11.6. Export basetype xml minimal false</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/export_basetype_xml_minimal_true.html">7.1.11.7. Export basetype xml minimal true</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/export_basetype_csv_with_explode_false.html">7.1.11.8. Export basetype csv with explode false</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/export_basetype_csv_with_explode_true.html">7.1.11.9. Export basetype csv with explode true</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/export_basetype_csv_with_sort_empty_list.html">7.1.11.10. Export basetype csv with sort empty list</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/export_basetype_csv_with_sort_true.html">7.1.11.11. Export basetype csv with sort true</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/export_basetype_csv_with_sort_list.html">7.1.11.12. Export basetype csv with sort list</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/export_basetype_json_default_options.html">7.1.11.13. Export basetype json default options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/export_basetype_json_type_true.html">7.1.11.14. Export basetype json type true</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="examples/invalid_export_basetype.html">7.1.12. pytan API Invalid Export BaseType Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples/invalid_export_basetype_csv_bad_explode_type.html">7.1.12.1. Invalid export basetype csv bad explode type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/invalid_export_basetype_csv_bad_sort_sub_type.html">7.1.12.2. Invalid export basetype csv bad sort sub type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/invalid_export_basetype_csv_bad_sort_type.html">7.1.12.3. Invalid export basetype csv bad sort type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/invalid_export_basetype_xml_bad_minimal_type.html">7.1.12.4. Invalid export basetype xml bad minimal type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/invalid_export_basetype_json_bad_include_type.html">7.1.12.5. Invalid export basetype json bad include type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/invalid_export_basetype_json_bad_explode_type.html">7.1.12.6. Invalid export basetype json bad explode type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/invalid_export_basetype_bad_format.html">7.1.12.7. Invalid export basetype bad format</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pytan.handler.html">7.2. pytan.handler module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pytan.handler.html#handler-class">7.2.1. Handler Class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pytan.handler.html#example-create-a-handler-object">7.2.1.1. Example: Create a Handler object</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytan.handler.html#handler-methods-questions-and-actions">7.2.1.2. Handler Methods: Questions and Actions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytan.handler.html#handler-methods-exporting-importing-objects">7.2.1.3. Handler Methods: Exporting/Importing Objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytan.handler.html#handler-methods-creating-objects">7.2.1.4. Handler Methods: Creating Objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytan.handler.html#handler-methods-deleting-objects">7.2.1.5. Handler Methods: Deleting Objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytan.handler.html#handler-methods-getting-objects">7.2.1.6. Handler Methods: Getting Objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytan.handler.html#handler-methods-getting-result-data-result-info">7.2.1.7. Handler Methods: Getting Result Data / Result Info</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytan.handler.html#handler-methods-private-methods">7.2.1.8. Handler Methods: Private Methods</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pytan.constants.html">7.3. pytan.constants module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pytan.utils.html">7.4. pytan.utils module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html#utility-classes-exceptions">7.4.1. Utility Classes: Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html#utility-classes-logging-handlers">7.4.2. Utility Classes: Logging handlers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html#utility-classes-argument-parsers-for-command-line-scripts">7.4.3. Utility Classes: Argument Parsers for Command Line Scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html#utility-functions-logging">7.4.4. Utility Functions: Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html#utility-functions-type-checking">7.4.5. Utility Functions: Type Checking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html#utility-functions-misc">7.4.6. Utility Functions: Misc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html#utility-functions-argument-parsers-for-command-line-scripts">7.4.7. Utility Functions: Argument Parsers for Command Line Scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html#utility-functions-dehumanize-human-strings">7.4.8. Utility Functions: Dehumanize human strings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html#utility-functions-kwargs-getters">7.4.9. Utility Functions: kwargs getters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html#utility-functions-object-mappers">7.4.10. Utility Functions: Object mappers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html#utility-functions-taniumpy-objects">7.4.11. Utility Functions: TaniumPy objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html#utility-functions-definition-objects">7.4.12. Utility Functions: Definition objects</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pytan.unittest.html">7.5. pytan Unit Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pytan.functest.html">7.6. pytan Functional Tests</a></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="examples/pytan_examples.html" class="btn btn-neutral float-right" title="7.1. pytan API examples">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="description.html" class="btn btn-neutral" title="1. Description"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Tanium.
+      Last updated on Dec 08, 2014.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

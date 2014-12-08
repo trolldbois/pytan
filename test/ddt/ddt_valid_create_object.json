@@ -1,0 +1,78 @@
+{
+    "create_package": {
+        "desc": "Create a package called package49",
+        "priority": "1",
+        "method": "create_package",
+        "delete": {"objtype": "package", "name": "package49"},
+        "taniumpyobj": "taniumpy.PackageSpec",
+        "args": {
+            "file_urls": [
+                "3600::testing.vbs||https://content.tanium.com/files/initialcontent/bundles/2014-10-01_11-32-15-7844/custom_tagging_-_remove_tags_[non-windows]/CustomTagRemove.sh"
+            ],
+            "expire_seconds": 1500,
+            "command": "package49 $1 $2 $3 $4 $5 $6 $7 $8",
+            "name": "package49",
+            "parameters_json_file": "../doc/example_of_all_package_parameters.json",
+            "verify_expire_seconds": 3600,
+            "display_name": "package49 API test",
+            "verify_filter_options": [
+                "and"
+            ],
+            "verify_filters": [
+                "Custom Tags, that contains:tag"
+            ],
+            "command_timeout_seconds": 9999
+        }
+    },
+    "create_group": {
+        "desc": "Create a group called All Windows Computers API Test",
+        "priority": "1",
+        "method": "create_group",
+        "delete": {"objtype": "group", "name": "All Windows Computers API Test"},
+        "taniumpyobj": "taniumpy.Group",
+        "args": {
+            "groupname": "All Windows Computers API Test",
+            "filters": [
+                "Operating System, that contains:Windows"
+            ],
+            "filter_options": [
+                "and"
+            ]
+        }
+    },
+    "create_user": {
+        "desc": "Create a user called API Test User",
+        "priority": "1",
+        "method": "create_user",
+        "delete": {"objtype": "user", "name": "API Test User"},
+        "taniumpyobj": "taniumpy.User",
+        "args": {
+            "username": "API Test User",
+            "rolename": "Administrator",
+            "properties": [
+                [
+                    "property1",
+                    "value1"
+                ]
+            ]
+        }
+    },
+    "create_whitelisted_url": {
+        "desc": "Create a whitelisted url",
+        "priority": "1",
+        "method": "create_whitelisted_url",
+        "delete": {"objtype": "whitelisted_url", "url_regex": "regex:http://test.com/.*API_Test.*URL"},
+        "taniumpyobj": "taniumpy.WhiteListedUrl",
+        "args": {
+            "url": "http://test.com/.*API_Test.*URL",
+            "regex": true,
+            "properties": [
+                [
+                    "property1",
+                    "value1"
+                ]
+            ],
+            "download_seconds": 3600
+        }
+    }
+}

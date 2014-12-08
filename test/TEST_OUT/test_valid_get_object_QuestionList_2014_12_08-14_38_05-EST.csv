@@ -1,0 +1,37 @@
+action_tracking_flag,cache_row_id,context_group_id,expiration,expire_seconds,hidden_flag,id,management_rights_group_id,name,query_text,saved_question_id,skip_lock_flag,user_group_id,user_id,user_last_login,user_name
+0,0,0,2014-12-08T19:30:12,600,0,1,0,,"Get Action Statuses matches ""Nil"" from all machines",4294967295,0,0,1,,Jim Olsen
+0,1,0,2014-12-08T19:32:38,600,0,175,0,Run Unmanaged Asset Scan on All Machines,Get Is Windows from all machines,1,0,0,1,2014-12-08T19:22:39,Jim Olsen
+0,2,0,2014-12-08T19:32:38,600,0,176,0,Unmanaged Asset Scanner Exists,Get Unmanaged Asset Scanner Exists from all machines,2,0,0,1,2014-12-08T19:22:39,Jim Olsen
+0,3,0,2014-12-08T19:32:38,600,0,177,0,Clean Stale Tanium Client Data Scheduled Action,Get Has Stale Tanium Client Data from all machines,3,0,0,1,2014-12-08T19:22:39,Jim Olsen
+0,4,0,2014-12-08T19:32:38,600,0,178,0,Has Tanium Client Install Files,Get Has Tanium Client Install Files from all machines,4,0,0,1,2014-12-08T19:22:39,Jim Olsen
+0,5,0,2014-12-08T19:32:38,600,0,179,0,Is Patch Scan Time,Get Is Patch Scan Time from all machines,5,0,0,1,2014-12-08T19:22:39,Jim Olsen
+0,6,0,2014-12-08T19:32:38,600,0,180,0,Has Windows Patch Files to Install,Get Has Patch Files from all machines,6,0,0,1,2014-12-08T19:22:39,Jim Olsen
+0,7,0,2014-12-08T19:32:38,600,0,181,0,Is Patch Scan Force Time,Get Is Patch Scan Force Time from all machines,7,0,0,1,2014-12-08T19:22:39,Jim Olsen
+0,8,0,2014-12-08T19:32:38,600,0,182,0,Patch Management - Has Patch Tools (For Distribution),Get Has Patch Tools from all machines,8,0,0,1,2014-12-08T19:22:39,Jim Olsen
+0,9,0,2014-12-08T19:32:38,600,0,183,0,Windows Patch Cab Out of Date,Get Patch Cab Out of Date from all machines,9,0,0,1,2014-12-08T19:22:39,Jim Olsen
+0,10,0,2014-12-08T19:32:38,600,0,184,0,Managed Applications Status,Get Managed Applications Status from all machines,11,0,0,1,2014-12-08T19:22:39,Jim Olsen
+0,11,0,2014-12-08T19:32:38,600,0,185,0,Online Machines to Scan Managed Applications,Get Online from all machines,10,0,0,1,2014-12-08T19:22:39,Jim Olsen
+0,12,0,2014-12-08T19:32:38,600,0,186,0,Has Tanium Standard Utilities,Get Has Tanium Standard Utilities from all machines,12,0,0,1,2014-12-08T19:22:39,Jim Olsen
+0,13,0,2014-12-08T19:32:38,600,0,187,0,Distribute Hardware Tools,Get Has Hardware Tools from all machines,13,0,0,1,2014-12-08T19:22:39,Jim Olsen
+0,14,0,2014-12-08T19:32:38,600,0,188,0,Distribute Application Management Tools,Get Has Application Management Tools from all machines,14,0,0,1,2014-12-08T19:22:39,Jim Olsen
+0,15,0,2014-12-08T19:34:23,600,0,189,0,Disabled Firewall Profiles,"Get Firewall Status contains ""disabled"" from all machines where Firewall Status contains ""disabled""",29,0,0,1,2014-12-08T19:22:42,Jim Olsen
+0,16,0,2014-12-08T19:35:40,600,0,190,0,,"Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines",4294967295,0,0,2,2014-12-08T19:25:45,Tanium User
+0,17,0,2014-12-08T19:36:16,600,0,191,0,,"Get Computer Name and Online = ""True"" from all machines",4294967295,0,0,2,2014-12-08T19:26:16,Tanium User
+0,18,0,2014-12-08T19:36:26,600,0,192,0,,"Get Online = ""True"" from all machines",4294967295,0,0,2,2014-12-08T19:26:26,Tanium User
+0,19,0,2014-12-08T19:36:36,600,0,193,0,,"Get Action Statuses matches ""Nil"" from all machines",4294967295,0,0,2,2014-12-08T19:26:37,Tanium User
+0,20,0,2014-12-08T19:36:37,600,0,194,0,,"Get Online = ""True"" from all machines where Operating System contains ""Windows""",4294967295,0,0,2,2014-12-08T19:26:37,Tanium User
+0,21,0,2014-12-08T19:36:43,600,0,195,0,Running Applications,Get Running Applications from all machines,91,0,0,1,2014-12-08T19:25:37,Jim Olsen
+0,23,0,2014-12-08T19:40:13,600,0,197,0,,"Get Action Statuses matches ""Nil"" from all machines",4294967295,0,0,1,2014-12-08T19:28:09,Jim Olsen
+0,24,0,2014-12-08T19:40:36,600,0,198,0,Local User Information,"Get Computer Name and Last Date of Local Administrator Login from all machines where Last Date of Local Administrator Login does not contain ""no results""",27,0,0,1,2014-12-08T19:28:09,Jim Olsen
+0,25,0,2014-12-08T19:40:51,600,0,199,0,Last Logged In User,Get Last Logged In User from all machines,111,0,0,1,2014-12-08T19:28:09,Jim Olsen
+0,26,0,2014-12-08T19:41:38,600,0,200,0,,"Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines",4294967295,0,0,2,2014-12-08T19:31:39,Tanium User
+0,27,0,2014-12-08T19:41:53,600,0,201,0,Running Applications,Get Running Applications from all machines,91,0,0,1,2014-12-08T19:28:09,Jim Olsen
+0,28,0,2014-12-08T19:42:40,600,0,202,0,Has Windows Patch Files to Install,Get Has Patch Files from all machines,6,0,0,1,2014-12-08T19:28:09,Jim Olsen
+0,29,0,2014-12-08T19:44:14,600,0,203,0,,"Get Computer Name and Online = ""True"" from all machines",4294967295,0,0,2,2014-12-08T19:34:20,Tanium User
+0,30,0,2014-12-08T19:44:25,600,0,204,0,,"Get Online = ""True"" from all machines",4294967295,0,0,2,2014-12-08T19:34:35,Tanium User
+0,31,0,2014-12-08T19:44:35,600,0,205,0,,"Get Action Statuses matches ""Nil"" from all machines",4294967295,0,0,2,2014-12-08T19:34:40,Tanium User
+0,32,0,2014-12-08T19:44:35,600,0,206,0,,"Get Online = ""True"" from all machines where Operating System contains ""Windows""",4294967295,0,0,2,2014-12-08T19:34:40,Tanium User
+0,33,0,2014-12-08T19:46:44,600,0,207,0,,"Get Online = ""True"" from all machines",4294967295,0,0,2,2014-12-08T19:36:49,Tanium User
+0,34,0,2014-12-08T19:46:54,600,0,208,0,,"Get Online = ""True"" from all machines where Operating System contains ""Windows""",4294967295,0,0,2,2014-12-08T19:36:59,Tanium User
+0,35,0,2014-12-08T19:47:04,600,0,209,0,Running Applications,Get Running Applications from all machines,91,0,0,1,2014-12-08T19:28:09,Jim Olsen
+0,36,0,2014-12-08T19:47:30,600,0,210,0,,"Get Online = ""True"" from all machines",4294967295,0,0,2,2014-12-08T19:37:30,Tanium User

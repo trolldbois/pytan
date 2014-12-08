@@ -1,0 +1,16 @@
+{
+  "_type": "system_settings", 
+  "system_setting": [
+    {
+      "_type": "system_setting", 
+      "default_value": "0", 
+      "hidden_flag": 0, 
+      "id": 1, 
+      "name": "load_initial_content", 
+      "read_only_flag": 0, 
+      "setting_type": "Server", 
+      "value": "0", 
+      "value_type": "Numeric"
+    }
+  ]
+}

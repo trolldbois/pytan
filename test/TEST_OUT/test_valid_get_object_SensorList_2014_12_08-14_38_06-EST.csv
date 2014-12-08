@@ -1,0 +1,3 @@
+category,description,exclude_from_parse_flag,hash,hidden_flag,id,ignore_case_flag,max_age_seconds,name,queries_query_0_platform,queries_query_0_script,queries_query_0_script_type,source_id,string_count,value_type
+Reserved,"The assigned name of the client machine.
+Example: workstation-1.company.com",0,3409330187,0,3,1,86400,Computer Name,Windows,select CSName from win32_operatingsystem,WMIQuery,0,7,String
