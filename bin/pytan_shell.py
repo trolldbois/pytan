@@ -6,6 +6,8 @@
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
 __version__ = '1.0.0'
 
+examples = []
+
 import os
 import sys
 
@@ -22,6 +24,7 @@ for aa in path_adds:
 
 import pytan
 from pytan import utils
+from pytan import constants  # noqa
 
 # adds readline, autocomplete, history to python interactive console
 import atexit
@@ -102,24 +105,31 @@ def process_handler_args(parser, all_args):
     handler_opts = utils.get_grp_opts(parser, handler_grp_names)
     handler_args = {k: all_args.pop(k) for k in handler_opts}
 
-    h = pytan.Handler(**handler_args)
+    try:
+        h = pytan.Handler(**handler_args)
+        print str(h)
+    except Exception as e:
+        print e
+        sys.exit(99)
     return h
 
 
-console = HistoryConsole()
+if __name__ == "__main__":
 
-utils.version_check(__version__)
-parent_parser = utils.setup_parser(__doc__)
-parser = utils.CustomArgParse(
-    description=__doc__,
-    parents=[parent_parser],
-)
-args = parser.parse_args()
-all_args = args.__dict__
+    console = HistoryConsole()
 
-handler = process_handler_args(parser, all_args)
+    utils.version_check(__version__)
+    parent_parser = utils.setup_parser(__doc__)
+    parser = utils.CustomArgParse(
+        description=__doc__,
+        parents=[parent_parser],
+    )
+    args = parser.parse_args()
+    all_args = args.__dict__
 
-if handler.loglevel >= 10:
-    utils.set_all_loglevels()
+    handler = process_handler_args(parser, all_args)
 
-print ("%s -- now available as 'handler'!" % handler)
+    if handler.loglevel >= 10:
+        utils.set_all_loglevels()
+
+    print ("%s -- now available as 'handler'!" % handler)

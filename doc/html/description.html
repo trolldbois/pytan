@@ -29,7 +29,7 @@
 
   
     <link rel="top" title="PyTan 1.0.0 documentation" href="index.html"/>
-        <link rel="next" title="5. pytan package" href="pytan.html"/>
+        <link rel="next" title="6. pytan package" href="pytan.html"/>
         <link rel="prev" title="Welcome to PyTan’s documentation!" href="index.html"/> 
 
   
@@ -66,18 +66,20 @@
 <li class="toctree-l1"><a class="reference internal" href="#why-it-was-created">2. Why it was created</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#requirements">3. Requirements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#installation">4. Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pytan.html">5. pytan package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pytan.handler.html">5.1. pytan.handler module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.constants.html">5.2. pytan.constants module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html">5.3. pytan.utils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.unittest.html">5.4. pytan Unit Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.functest.html">5.5. pytan Functional Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#usage">5. Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pytan.html">6. pytan package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/pytan_examples.html">6.1. pytan API examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.handler.html">6.2. pytan.handler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.constants.html">6.3. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html">6.4. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.unittest.html">6.5. pytan Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.functest.html">6.6. pytan Functional Tests</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="taniumpy.html">6. taniumpy package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="taniumpy.session.html">6.1. taniumpy.session module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="taniumpy.question_asker.html">6.2. taniumpy.question_asker module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html">6.3. taniumpy.object_types package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="taniumpy.html">7. taniumpy package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.session.html">1. taniumpy.session module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.question_asker.html">2. taniumpy.question_asker module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html">3. taniumpy.object_types package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="xmltodict.html">7. xmltodict module</a><ul class="simple">
@@ -130,7 +132,7 @@
 <blockquote>
 <div><ul class="simple">
 <li>Tanium Server SOAP API: The SOAP server embedded into the Tanium server itself, listens on port 444 but is also available via port 443.</li>
-<li>TaniumPy Python Package (<a class="reference internal" href="taniumpy.html#module-taniumpy" title="taniumpy"><code class="xref py py-mod docutils literal"><span class="pre">taniumpy</span></code></a>): A python package comprised of a set of python objects automatically generated from the WSDL file that describe the Tanium SOAP API. These python objects handle the serialization and deserialization of XML to and from the Tanium Server SOAP API. Located in <code class="docutils literal"><span class="pre">lib/taniumpy</span></code></li>
+<li>TaniumPy Python Package (<a class="reference internal" href="taniumpy.html#module-taniumpy" title="taniumpy"><code class="xref py py-mod docutils literal"><span class="pre">taniumpy</span></code></a>): A python package comprised of a set of python objects automatically generated from the WSDL file that describes the Tanium SOAP API. These python objects handle the serialization and deserialization of XML to and from the Tanium Server SOAP API. Located in <code class="docutils literal"><span class="pre">lib/taniumpy</span></code></li>
 <li>PyTan Python Package: (<a class="reference internal" href="pytan.html#module-pytan" title="pytan"><code class="xref py py-mod docutils literal"><span class="pre">pytan</span></code></a>): A python package that provides a set of methods to make interfacing with TaniumPy more human friendly. Located in <code class="docutils literal"><span class="pre">lib/pytan</span></code></li>
 <li>PyTan Command Line Scripts: A set of command line scripts that utilize the PyTan Package (<a class="reference internal" href="pytan.html#module-pytan" title="pytan"><code class="xref py py-mod docutils literal"><span class="pre">pytan</span></code></a>) to make it easy for non-programmers to create/get/delete/ask/deploy objects via the Tanium Server SOAP API.</li>
 </ul>
@@ -141,8 +143,8 @@
 <p>This was created to solve for the following needs:</p>
 <blockquote>
 <div><ul class="simple">
-<li>Create a python module (<a class="reference internal" href="taniumpy.html#module-taniumpy" title="taniumpy"><code class="xref py py-mod docutils literal"><span class="pre">taniumpy</span></code></a>) to provide a set of methods for making it easier to programmatically interface with Tanium via the SOAP API.</li>
-<li>Create a set of command line scripts utilizing the <a class="reference internal" href="taniumpy.html#module-taniumpy" title="taniumpy"><code class="xref py py-mod docutils literal"><span class="pre">taniumpy</span></code></a> module that handle the argument parsing, thereby providing non-programmers with command line access to the functionality therein.</li>
+<li>Create a python package (<a class="reference internal" href="pytan.html#module-pytan" title="pytan"><code class="xref py py-mod docutils literal"><span class="pre">pytan</span></code></a>) to provide a set of methods for making it easier to programmatically interface with Tanium via the SOAP API.</li>
+<li>Create a set of command line scripts utilizing the <a class="reference internal" href="pytan.html#module-pytan" title="pytan"><code class="xref py py-mod docutils literal"><span class="pre">pytan</span></code></a> package that handle the argument parsing, thereby providing non-programmers with command line access to the functionality therein.</li>
 <li>Provide a way to ask questions and get results via Python and/or the command line.</li>
 <li>Provide a way to deploy actions and get results via Python and/or the command line.</li>
 <li>Provide a way to export/import objects in JSON via Python and/or the command line.</li>
@@ -184,6 +186,16 @@
 </dd>
 </dl>
 </div>
+<div class="section" id="usage">
+<h1>5. Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
+<blockquote>
+<div><ul class="simple">
+<li>For command line usage, refer to <a class="reference external" href="_static/bin_doc/index.html">Command Line Help Index</a></li>
+<li>For API Examples, refer to the <a class="reference internal" href="examples/pytan_examples.html"><em>pytan API examples</em></a></li>
+<li>For in depth API Documentation, refer to the <a class="reference internal" href="pytan.html"><em>pytan package</em></a>, especially the <a class="reference internal" href="pytan.handler.html"><em>pytan.handler module</em></a></li>
+</ul>
+</div></blockquote>
+</div>
 
 
           </div>
@@ -191,7 +203,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="pytan.html" class="btn btn-neutral float-right" title="5. pytan package">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="pytan.html" class="btn btn-neutral float-right" title="6. pytan package">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="index.html" class="btn btn-neutral" title="Welcome to PyTan’s documentation!"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -204,7 +216,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2014, Tanium.
-      Last updated on Dec 05, 2014.
+      Last updated on Dec 08, 2014.
     </p>
   </div>
 

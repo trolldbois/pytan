@@ -2,12 +2,12 @@
     "bad_password": {
         "args": {"password": "INVALID_PASSWORD"},
         "exception": "taniumpy.session.AuthorizationError",
-        "error_str": "Authentication Failed - Not Authenticated"
+        "error_str": "Authentication Failed.*"
     },
     "bad_username": {
         "args": {"username": "INVALID_USERNAME"},
         "exception": "taniumpy.session.AuthorizationError",
-        "error_str": "Authentication Failed - Incorrect User"
+        "error_str": "Authentication Failed.*"
     },
     "bad_host_and_non_ssl_port": {
         "args": {"host": "localhost", "port": "4433"},

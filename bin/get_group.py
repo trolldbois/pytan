@@ -6,6 +6,7 @@
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
 __version__ = '1.0.0'
 
+
 import os
 import sys
 sys.dont_write_bytecode = True
@@ -22,28 +23,65 @@ for aa in path_adds:
 import pytan
 from pytan import utils
 
+examples = [
+    {
+        'name': 'Export all group as JSON',
+        'cmd': 'get_group.py $API_INFO --all --file "$TMP/out.json" json',
+        'notes': ['Get all group objects', 'Save the results to a JSON file'],
+        'precleanup': 'rm -f $TMP/out.json',
+        'file_exist': '$TMP/out.json',
+        'tests': 'exitcode, file_exist',
+    },
+    {
+        'name': 'Export all group as CSV',
+        'cmd': 'get_group.py $API_INFO --all --file "$TMP/out.csv" csv',
+        'notes': ['Get all group objects', 'Save the results to a csv file'],
+        'precleanup': 'rm -f $TMP/out.csv',
+        'file_exist': '$TMP/out.csv',
+        'tests': 'exitcode, file_exist',
+    },
+    {
+        'name': 'Export all group as xml',
+        'cmd': 'get_group.py $API_INFO --all --file "$TMP/out.xml" xml',
+        'notes': ['Get all group objects', 'Save the results to a xml file'],
+        'precleanup': 'rm -f $TMP/out.xml',
+        'file_exist': '$TMP/out.xml',
+        'tests': 'exitcode, file_exist',
+    },
+]
+
 
 def process_handler_args(parser, all_args):
     handler_grp_names = ['Handler Authentication', 'Handler Options']
     handler_opts = utils.get_grp_opts(parser, handler_grp_names)
     handler_args = {k: all_args.pop(k) for k in handler_opts}
 
-    h = pytan.Handler(**handler_args)
-    print str(h)
+    try:
+        h = pytan.Handler(**handler_args)
+        print str(h)
+    except Exception as e:
+        print e
+        sys.exit(99)
     return h
 
+if __name__ == "__main__":
 
-utils.version_check(__version__)
-parser = utils.setup_get_object_argparser('group', __doc__)
-parser = utils.add_get_object_report_argparser(parser)
-args = parser.parse_args()
-all_args = args.__dict__
+    utils.version_check(__version__)
+    parser = utils.setup_get_object_argparser('group', __doc__)
+    parser = utils.add_get_object_report_argparser(parser)
+    args = parser.parse_args()
+    all_args = args.__dict__
 
-handler = process_handler_args(parser, all_args)
+    handler = process_handler_args(parser, all_args)
 
-response = utils.process_get_object_args(
-    parser, handler, 'group', all_args
-)
-report_file, result = handler.export_to_report_file(response, **all_args)
-m = "Report file {!r} written with {} bytes".format
-print(m(report_file, len(result)))
+    try:
+        response = utils.process_get_object_args(
+            parser, handler, 'group', all_args
+        )
+        report_file, result = handler.export_to_report_file(response, **all_args)
+    except Exception as e:
+        print e
+        sys.exit(99)
+
+    m = "Report file {!r} written with {} bytes".format
+    print(m(report_file, len(result)))

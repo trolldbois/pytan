@@ -6,6 +6,8 @@
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
 __version__ = '1.0.0'
 
+examples = []
+
 import os
 import sys
 sys.dont_write_bytecode = True
@@ -33,17 +35,19 @@ def process_handler_args(parser, all_args):
     return h
 
 
-utils.version_check(__version__)
-# parser = utils.setup_parser(__doc__)
-# arggroup = parser.add_argument_group('Create User Options')
+if __name__ == "__main__":
 
-# args = parser.parse_args()
-# all_args = args.__dict__
-# handler = process_handler_args(parser, all_args)
+    utils.version_check(__version__)
+    # parser = utils.setup_parser(__doc__)
+    # arggroup = parser.add_argument_group('Create User Options')
 
-m = (
-    "Sensor creation not supported via PyTan as of yet, too complex\n"
-    "Use create_sensor_from_json() instead!"
-)
-print m
-sys.exit(100)
+    # args = parser.parse_args()
+    # all_args = args.__dict__
+    # handler = process_handler_args(parser, all_args)
+
+    m = (
+        "Sensor creation not supported via PyTan as of yet, too complex\n"
+        "Use create_sensor_from_json() instead!"
+    )
+    print m
+    sys.exit(100)

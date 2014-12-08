@@ -27,6 +27,7 @@ from pytan import utils
 from pytan import constants
 from pytan.utils import HandlerError
 from pytan.utils import RunFalse
+from pytan.utils import PytanHelp
 
 mylog = logging.getLogger("handler")
 actionlog = logging.getLogger("action_progress")
@@ -323,8 +324,17 @@ class Handler(object):
         question_options : str, list of str, optional
             options that apply to the whole question
         get_results : bool, optional
-            True: wait for result completion after asking question
-            False: just ask the question and return it in result
+            * True: wait for result completion after asking question
+            * False: just ask the question and return it in result
+        sensors_help : bool, optional
+            * False: do not print the help string for sensors
+            * True: print the help string for sensors and exit
+        filters_help : bool, optional
+            * False: do not print the help string for filters
+            * True: print the help string for filters and exit
+        options_help : bool, optional
+            * False: do not print the help string for options
+            * True: print the help string for options and exit
 
         Returns
         -------
@@ -341,16 +351,16 @@ class Handler(object):
         >>> sensors = 'Sensor1{key:value}'
 
         >>> # example of str for `sensors` with params and filter
-        >>> sensors = 'Sensor1{key:value}, that contains example text'
+        >>> sensors = 'Sensor1{key:value}, that contains:example text'
 
         >>> # example of str for `sensors` with params and filter and options
         >>> sensors = (
-        ...     'Sensor1{key:value}, that contains example text,'
+        ...     'Sensor1{key:value}, that contains:example text,'
         ...     'opt:ignore_case, opt:max_data_age:60'
         ... )
 
         >>> # example of str for question_filters
-        >>> question_filters = 'Sensor2, that contains example test'
+        >>> question_filters = 'Sensor2, that contains:example test'
 
         >>> # example of list of str for question_options
         >>> question_options = ['max_data_age:3600', 'and']
@@ -361,6 +371,15 @@ class Handler(object):
         :data:`pytan.constants.OPTION_MAPS` : valid option dictionaries for options
         :data:`pytan.constants.ASK_KWARGS` : list of kwargs that can be passed to :class:`taniumpy.question_asker.QuestionAsker`
         """
+
+        if kwargs.get('sensors_help', False):
+            raise PytanHelp(utils.help_sensors())
+
+        if kwargs.get('filters_help', False):
+            raise PytanHelp(utils.help_filters())
+
+        if kwargs.get('options_help', False):
+            raise PytanHelp(utils.help_options())
 
         if 'sensors' in kwargs:
             sensors = kwargs.pop('sensors')
@@ -528,7 +547,8 @@ class Handler(object):
             parameters_json_file='',
             verify_filters=[],
             verify_filter_options=[],
-            verify_expire_seconds=600):
+            verify_expire_seconds=600,
+            **kwargs):
         """Create a package object
 
         Parameters
@@ -557,6 +577,12 @@ class Handler(object):
             each string must describe an option for `verify_filters`
         verify_expire_seconds : int, optional
             timeout for verify action expiry in seconds
+        filters_help : bool, optional
+            * False: do not print the help string for filters
+            * True: print the help string for filters and exit
+        options_help : bool, optional
+            * False: do not print the help string for options
+            * True: print the help string for options and exit
 
         Returns
         -------
@@ -568,6 +594,12 @@ class Handler(object):
         :data:`pytan.constants.FILTER_MAPS` : valid filters for verify_filters
         :data:`pytan.constants.OPTION_MAPS` : valid options for verify_filter_options
         """
+
+        if kwargs.get('filters_help', False):
+            raise PytanHelp(utils.help_filters())
+
+        if kwargs.get('options_help', False):
+            raise PytanHelp(utils.help_options())
 
         # bare minimum arguments for new package: name, command
         add_package_obj = taniumpy.PackageSpec()
@@ -670,7 +702,7 @@ class Handler(object):
         mylog.info(m(package_obj.name, package_obj.id, package_obj.command))
         return package_obj
 
-    def create_group(self, groupname, filters=[], filter_options=[]):
+    def create_group(self, groupname, filters=[], filter_options=[], **kwargs):
         """Create a group object
 
         Parameters
@@ -681,6 +713,12 @@ class Handler(object):
             each string must describe a filter
         filter_options : str or list of str, optional
             each string must describe an option for `filters`
+        filters_help : bool, optional
+            * False: do not print the help string for filters
+            * True: print the help string for filters and exit
+        options_help : bool, optional
+            * False: do not print the help string for options
+            * True: print the help string for options and exit
 
         Returns
         -------
@@ -692,6 +730,12 @@ class Handler(object):
         :data:`pytan.constants.FILTER_MAPS` : valid filters for filters
         :data:`pytan.constants.OPTION_MAPS` : valid options for filter_options
         """
+
+        if kwargs.get('filters_help', False):
+            raise PytanHelp(utils.help_filters())
+
+        if kwargs.get('options_help', False):
+            raise PytanHelp(utils.help_options())
 
         filter_defs = utils.dehumanize_question_filters(filters)
         filter_defs = self._get_sensor_defs(filter_defs)
@@ -885,7 +929,7 @@ class Handler(object):
             defname='action_filter_defs',
             deftypes=['list()', 'str()', 'dict()'],
             strconv='name',
-            empty_ok=False,
+            empty_ok=True,
             **kwargs
         )
 
@@ -933,9 +977,9 @@ class Handler(object):
         filter in both cases
         """
         if not run:
-            pre_action_sensors = ['Computer Name', 'Online, that = True']
+            pre_action_sensors = ['Computer Name', 'Online, that =:True']
         else:
-            pre_action_sensors = ['Online, that = True']
+            pre_action_sensors = ['Online, that =:True']
 
         pre_action_sensor_defs = utils.dehumanize_sensors(pre_action_sensors)
         pre_action_result_ret = self.ask_manual(
@@ -1049,6 +1093,15 @@ class Handler(object):
         get_results : bool, optional
             * True: wait for result completion after deploying action
             * False: just deploy the action and return the object in `ret`
+        package_help : bool, optional
+            * False: do not print the help string for package
+            * True: print the help string for package and exit
+        filters_help : bool, optional
+            * False: do not print the help string for filters
+            * True: print the help string for filters and exit
+        options_help : bool, optional
+            * False: do not print the help string for options
+            * True: print the help string for options and exit
 
         Returns
         -------
@@ -1068,7 +1121,7 @@ class Handler(object):
         >>> package = 'Package1{key:value}'
 
         >>> # example of str for `action_filters` with params and filter for sensors
-        >>> action_filters = 'Sensor1{key:value}, that contains example text'
+        >>> action_filters = 'Sensor1{key:value}, that contains:example text'
 
         >>> # example of list of str for `action_options`
         >>> action_options = ['max_data_age:3600', 'and']
@@ -1078,6 +1131,16 @@ class Handler(object):
         :data:`pytan.constants.FILTER_MAPS` : valid filter dictionaries for filters
         :data:`pytan.constants.OPTION_MAPS` : valid option dictionaries for options
         """
+
+        if kwargs.get('package_help', False):
+            raise PytanHelp(utils.help_package())
+
+        if kwargs.get('filters_help', False):
+            raise PytanHelp(utils.help_filters())
+
+        if kwargs.get('options_help', False):
+            raise PytanHelp(utils.help_options())
+
         # the human string describing the sensors/filter that user wants
         # to deploy the action against
         if 'action_filters' in kwargs:
@@ -1098,7 +1161,7 @@ class Handler(object):
         else:
             package = ''
 
-        action_filter_defs = utils.dehumanize_sensors(action_filters)
+        action_filter_defs = utils.dehumanize_sensors(action_filters, 'action_filters', True)
         action_option_defs = utils.dehumanize_question_options(action_options)
         package_def = utils.dehumanize_package(package)
 

@@ -65,18 +65,20 @@
 <li class="toctree-l1"><a class="reference internal" href="../description.html#why-it-was-created">2. Why it was created</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../description.html#requirements">3. Requirements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../description.html#installation">4. Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../pytan.html">5. pytan package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.handler.html">5.1. pytan.handler module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.constants.html">5.2. pytan.constants module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.utils.html">5.3. pytan.utils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.unittest.html">5.4. pytan Unit Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.functest.html">5.5. pytan Functional Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../description.html#usage">5. Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pytan.html">6. pytan package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples/pytan_examples.html">6.1. pytan API examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.handler.html">6.2. pytan.handler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.constants.html">6.3. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.utils.html">6.4. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.unittest.html">6.5. pytan Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.functest.html">6.6. pytan Functional Tests</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../taniumpy.html">6. taniumpy package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../taniumpy.session.html">6.1. taniumpy.session module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../taniumpy.question_asker.html">6.2. taniumpy.question_asker module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../taniumpy.object_types.html">6.3. taniumpy.object_types package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../taniumpy.html">7. taniumpy package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../taniumpy.session.html">1. taniumpy.session module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taniumpy.question_asker.html">2. taniumpy.question_asker module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taniumpy.object_types.html">3. taniumpy.object_types package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../xmltodict.html">7. xmltodict module</a><ul class="simple">
@@ -153,6 +155,7 @@
 <span class="kn">import</span> <span class="nn">pytan</span>
 <span class="kn">import</span> <span class="nn">taniumpy</span>
 <span class="kn">from</span> <span class="nn">pytan</span> <span class="kn">import</span> <span class="n">utils</span>
+<span class="kn">from</span> <span class="nn">pytan</span> <span class="kn">import</span> <span class="n">constants</span>
 <span class="kn">from</span> <span class="nn">pytan.utils</span> <span class="kn">import</span> <span class="n">HumanParserError</span>
 <span class="kn">from</span> <span class="nn">pytan.utils</span> <span class="kn">import</span> <span class="n">DefinitionParserError</span>
 <span class="kn">from</span> <span class="nn">pytan.utils</span> <span class="kn">import</span> <span class="n">HandlerError</span>
@@ -179,7 +182,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="n">sensor_defs</span><span class="p">,</span> <span class="n">exp</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="TestDehumanizeSensorUtils.test_single_str_with_filter"><a class="viewcode-back" href="../pytan.unittest.html#test_pytan_unit.TestDehumanizeSensorUtils.test_single_str_with_filter">[docs]</a>    <span class="k">def</span> <span class="nf">test_single_str_with_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">sensors</span> <span class="o">=</span> <span class="s">&#39;Sensor1, that is .*&#39;</span>
+        <span class="n">sensors</span> <span class="o">=</span> <span class="s">&#39;Sensor1, that is:.*&#39;</span>
         <span class="n">sensor_defs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">dehumanize_sensors</span><span class="p">(</span><span class="n">sensors</span><span class="p">)</span>
         <span class="n">exp</span> <span class="o">=</span> <span class="p">[</span>
             <span class="p">{</span>
@@ -197,7 +200,7 @@
 </div>
 <div class="viewcode-block" id="TestDehumanizeSensorUtils.test_single_str_complex1"><a class="viewcode-back" href="../pytan.unittest.html#test_pytan_unit.TestDehumanizeSensorUtils.test_single_str_complex1">[docs]</a>    <span class="k">def</span> <span class="nf">test_single_str_complex1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">sensors</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="s">&#39;Sensor1, that is .*, opt:value_type:string, opt:ignore_case, &#39;</span>
+            <span class="s">&#39;Sensor1, that is:.*, opt:value_type:string, opt:ignore_case, &#39;</span>
             <span class="s">&#39;opt:max_data_age:3600, opt:match_any_value&#39;</span>
         <span class="p">)</span>
         <span class="n">sensor_defs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">dehumanize_sensors</span><span class="p">(</span><span class="n">sensors</span><span class="p">)</span>
@@ -223,7 +226,7 @@
 </div>
 <div class="viewcode-block" id="TestDehumanizeSensorUtils.test_single_str_complex2"><a class="viewcode-back" href="../pytan.unittest.html#test_pytan_unit.TestDehumanizeSensorUtils.test_single_str_complex2">[docs]</a>    <span class="k">def</span> <span class="nf">test_single_str_complex2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">sensors</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="s">&#39;Sensor1{k1=v1,k2=v2}, that is .*, opt:value_type:string, &#39;</span>
+            <span class="s">&#39;Sensor1{k1=v1,k2=v2}, that is:.*, opt:value_type:string, &#39;</span>
             <span class="s">&#39;opt:ignore_case, opt:max_data_age:3600, opt:match_any_value&#39;</span>
         <span class="p">)</span>
         <span class="n">sensor_defs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">dehumanize_sensors</span><span class="p">(</span><span class="n">sensors</span><span class="p">)</span>
@@ -251,8 +254,8 @@
         <span class="n">sensors</span> <span class="o">=</span> <span class="p">[</span>
             <span class="s">&#39;Computer Name&#39;</span><span class="p">,</span>
             <span class="s">&#39;id:1&#39;</span><span class="p">,</span>
-            <span class="s">&#39;Operating System, that contains Windows&#39;</span><span class="p">,</span>
-            <span class="p">(</span><span class="s">&#39;Sensor1{k1=v1,k2=v2}, that is .*, opt:value_type:string, &#39;</span>
+            <span class="s">&#39;Operating System, that contains:Windows&#39;</span><span class="p">,</span>
+            <span class="p">(</span><span class="s">&#39;Sensor1{k1=v1,k2=v2}, that is:.*, opt:value_type:string, &#39;</span>
              <span class="s">&#39;opt:ignore_case, opt:max_data_age:3600, opt:match_any_value&#39;</span><span class="p">),</span>
         <span class="p">]</span>
         <span class="n">sensor_defs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">dehumanize_sensors</span><span class="p">(</span><span class="n">sensors</span><span class="p">)</span>
@@ -340,7 +343,7 @@
 </div></div>
 <div class="viewcode-block" id="TestDehumanizeQuestionFilterUtils"><a class="viewcode-back" href="../pytan.unittest.html#test_pytan_unit.TestDehumanizeQuestionFilterUtils">[docs]</a><span class="k">class</span> <span class="nc">TestDehumanizeQuestionFilterUtils</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
 <div class="viewcode-block" id="TestDehumanizeQuestionFilterUtils.test_single_filter_str"><a class="viewcode-back" href="../pytan.unittest.html#test_pytan_unit.TestDehumanizeQuestionFilterUtils.test_single_filter_str">[docs]</a>    <span class="k">def</span> <span class="nf">test_single_filter_str</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">question_filters</span> <span class="o">=</span> <span class="s">&#39;Sensor1, that contains Windows&#39;</span>
+        <span class="n">question_filters</span> <span class="o">=</span> <span class="s">&#39;Sensor1, that contains:Windows&#39;</span>
         <span class="n">question_filter_defs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">dehumanize_question_filters</span><span class="p">(</span>
             <span class="n">question_filters</span>
         <span class="p">)</span>
@@ -357,7 +360,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="n">question_filter_defs</span><span class="p">,</span> <span class="n">exp</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="TestDehumanizeQuestionFilterUtils.test_single_filter_list"><a class="viewcode-back" href="../pytan.unittest.html#test_pytan_unit.TestDehumanizeQuestionFilterUtils.test_single_filter_list">[docs]</a>    <span class="k">def</span> <span class="nf">test_single_filter_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">question_filters</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;Sensor1, that contains Windows&#39;</span><span class="p">]</span>
+        <span class="n">question_filters</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;Sensor1, that contains:Windows&#39;</span><span class="p">]</span>
         <span class="n">question_filter_defs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">dehumanize_question_filters</span><span class="p">(</span>
             <span class="n">question_filters</span>
         <span class="p">)</span>
@@ -375,8 +378,8 @@
 </div>
 <div class="viewcode-block" id="TestDehumanizeQuestionFilterUtils.test_multi_filter_list"><a class="viewcode-back" href="../pytan.unittest.html#test_pytan_unit.TestDehumanizeQuestionFilterUtils.test_multi_filter_list">[docs]</a>    <span class="k">def</span> <span class="nf">test_multi_filter_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">question_filters</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="s">&#39;Sensor1, that contains Windows&#39;</span><span class="p">,</span>
-            <span class="s">&#39;Sensor2, that does not contain 10.10.10.10&#39;</span><span class="p">,</span>
+            <span class="s">&#39;Sensor1, that contains:Windows&#39;</span><span class="p">,</span>
+            <span class="s">&#39;Sensor2, that does not contain:10.10.10.10&#39;</span><span class="p">,</span>
         <span class="p">]</span>
         <span class="n">question_filter_defs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">dehumanize_question_filters</span><span class="p">(</span>
             <span class="n">question_filters</span>
@@ -418,20 +421,20 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="n">question_filter_defs</span><span class="p">,</span> <span class="n">exp</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="TestDehumanizeQuestionFilterUtils.test_invalid_filter1"><a class="viewcode-back" href="../pytan.unittest.html#test_pytan_unit.TestDehumanizeQuestionFilterUtils.test_invalid_filter1">[docs]</a>    <span class="k">def</span> <span class="nf">test_invalid_filter1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">o</span> <span class="o">=</span> <span class="s">&#39;Sensor1, that feels funny&#39;</span>
-        <span class="n">e</span> <span class="o">=</span> <span class="s">&quot;Filter &#39; feels funny&#39; is not a valid filter!&quot;</span>
+        <span class="n">o</span> <span class="o">=</span> <span class="s">&#39;Sensor1, that feels:funny&#39;</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="s">&quot;Filter .* is not a valid filter!&quot;</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">assertRaisesRegexp</span><span class="p">(</span><span class="n">HumanParserError</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
             <span class="n">utils</span><span class="o">.</span><span class="n">dehumanize_question_filters</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="TestDehumanizeQuestionFilterUtils.test_invalid_filter2"><a class="viewcode-back" href="../pytan.unittest.html#test_pytan_unit.TestDehumanizeQuestionFilterUtils.test_invalid_filter2">[docs]</a>    <span class="k">def</span> <span class="nf">test_invalid_filter2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">o</span> <span class="o">=</span> <span class="s">&#39;Sensor1&#39;</span>
-        <span class="n">e</span> <span class="o">=</span> <span class="s">&quot;Filter &#39;Sensor1&#39; is not a valid filter!&quot;</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="s">&quot;Filter .* is not a valid filter!&quot;</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">assertRaisesRegexp</span><span class="p">(</span><span class="n">HumanParserError</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
             <span class="n">utils</span><span class="o">.</span><span class="n">dehumanize_question_filters</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="TestDehumanizeQuestionFilterUtils.test_invalid_filter3"><a class="viewcode-back" href="../pytan.unittest.html#test_pytan_unit.TestDehumanizeQuestionFilterUtils.test_invalid_filter3">[docs]</a>    <span class="k">def</span> <span class="nf">test_invalid_filter3</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">o</span> <span class="o">=</span> <span class="s">&#39;Sensor1, th&#39;</span>
-        <span class="n">e</span> <span class="o">=</span> <span class="s">&quot;Filter &#39;Sensor1, th&#39; is not a valid filter!&quot;</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="s">&quot;Filter .* is not a valid filter!&quot;</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">assertRaisesRegexp</span><span class="p">(</span><span class="n">HumanParserError</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
             <span class="n">utils</span><span class="o">.</span><span class="n">dehumanize_question_filters</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
 
@@ -562,13 +565,22 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">exp</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="TestDehumanizeExtractionUtils.test_extract_filter_valid"><a class="viewcode-back" href="../pytan.unittest.html#test_pytan_unit.TestDehumanizeExtractionUtils.test_extract_filter_valid">[docs]</a>    <span class="k">def</span> <span class="nf">test_extract_filter_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">s</span> <span class="o">=</span> <span class="s">&#39;Sensor1, that is .*&#39;</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="s">&#39;Sensor1, that is:.*&#39;</span>
         <span class="n">exp</span> <span class="o">=</span> <span class="p">(</span>
             <span class="s">&#39;Sensor1&#39;</span><span class="p">,</span>
             <span class="p">{</span><span class="s">&#39;operator&#39;</span><span class="p">:</span> <span class="s">&#39;RegexMatch&#39;</span><span class="p">,</span> <span class="s">&#39;not_flag&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="s">&#39;.*&#39;</span><span class="p">}</span>
         <span class="p">)</span>
         <span class="n">r</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">extract_filter</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">exp</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TestDehumanizeExtractionUtils.test_extract_filter_valid_all"><a class="viewcode-back" href="../pytan.unittest.html#test_pytan_unit.TestDehumanizeExtractionUtils.test_extract_filter_valid_all">[docs]</a>    <span class="k">def</span> <span class="nf">test_extract_filter_valid_all</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">constants</span><span class="o">.</span><span class="n">FILTER_MAPS</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">x</span><span class="p">[</span><span class="s">&#39;human&#39;</span><span class="p">]:</span>
+                <span class="n">z</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">extract_filter</span><span class="p">(</span><span class="s">&#39;Sensor1, that {}:test value&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">z</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s">&#39;Sensor1&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="s">&#39;test value&#39;</span><span class="p">,</span> <span class="n">z</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s">&#39;value&#39;</span><span class="p">])</span>
 </div>
 <div class="viewcode-block" id="TestDehumanizeExtractionUtils.test_extract_filter_nofilter"><a class="viewcode-back" href="../pytan.unittest.html#test_pytan_unit.TestDehumanizeExtractionUtils.test_extract_filter_nofilter">[docs]</a>    <span class="k">def</span> <span class="nf">test_extract_filter_nofilter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">s</span> <span class="o">=</span> <span class="s">&#39;Sensor1&#39;</span>
@@ -613,8 +625,8 @@
             <span class="n">utils</span><span class="o">.</span><span class="n">extract_options</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="TestDehumanizeExtractionUtils.test_extract_filter_invalid"><a class="viewcode-back" href="../pytan.unittest.html#test_pytan_unit.TestDehumanizeExtractionUtils.test_extract_filter_invalid">[docs]</a>    <span class="k">def</span> <span class="nf">test_extract_filter_invalid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">s</span> <span class="o">=</span> <span class="s">&#39;Sensor1, that meets .*&#39;</span>
-        <span class="n">e</span> <span class="o">=</span> <span class="s">&quot;Filter &#39; meets \.\*&#39; is not a valid filter!&quot;</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="s">&#39;Sensor1, that meets:.*&#39;</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="s">&quot;Filter .* is not a valid filter!&quot;</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">assertRaisesRegexp</span><span class="p">(</span><span class="n">HumanParserError</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
             <span class="n">utils</span><span class="o">.</span><span class="n">extract_filter</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
 
@@ -1576,7 +1588,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2014, Tanium.
-      Last updated on Dec 05, 2014.
+      Last updated on Dec 08, 2014.
     </p>
   </div>
 

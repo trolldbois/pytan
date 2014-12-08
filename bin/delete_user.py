@@ -22,24 +22,44 @@ for aa in path_adds:
 import pytan
 from pytan import utils
 
+examples = [
+    {
+        'name': 'Delete user',
+        'cmd': 'delete_user.py $API_INFO --id 123456',
+        'notes': ['This example does not actually run'],
+        'norun': 'true',
+        'tests': '',
+    }
+]
+
 
 def process_handler_args(parser, all_args):
     handler_grp_names = ['Handler Authentication', 'Handler Options']
     handler_opts = utils.get_grp_opts(parser, handler_grp_names)
     handler_args = {k: all_args.pop(k) for k in handler_opts}
 
-    h = pytan.Handler(**handler_args)
-    print str(h)
+    try:
+        h = pytan.Handler(**handler_args)
+        print str(h)
+    except Exception as e:
+        print e
+        sys.exit(99)
     return h
 
 
-utils.version_check(__version__)
-parser = utils.setup_delete_object_argparser('user', __doc__)
-args = parser.parse_args()
-all_args = args.__dict__
+if __name__ == "__main__":
 
-handler = process_handler_args(parser, all_args)
+    utils.version_check(__version__)
+    parser = utils.setup_delete_object_argparser('user', __doc__)
+    args = parser.parse_args()
+    all_args = args.__dict__
 
-response = utils.process_delete_object_args(
-    parser, handler, 'user', all_args
-)
+    handler = process_handler_args(parser, all_args)
+
+    try:
+        response = utils.process_delete_object_args(
+            parser, handler, 'user', all_args
+        )
+    except Exception as e:
+        print e
+        sys.exit(99)

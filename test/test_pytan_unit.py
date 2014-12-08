@@ -27,6 +27,7 @@ for aa in path_adds:
 import pytan
 import taniumpy
 from pytan import utils
+from pytan import constants
 from pytan.utils import HumanParserError
 from pytan.utils import DefinitionParserError
 from pytan.utils import HandlerError
@@ -53,7 +54,7 @@ class TestDehumanizeSensorUtils(unittest.TestCase):
         self.assertEquals(sensor_defs, exp)
 
     def test_single_str_with_filter(self):
-        sensors = 'Sensor1, that is .*'
+        sensors = 'Sensor1, that is:.*'
         sensor_defs = utils.dehumanize_sensors(sensors)
         exp = [
             {
@@ -71,7 +72,7 @@ class TestDehumanizeSensorUtils(unittest.TestCase):
 
     def test_single_str_complex1(self):
         sensors = (
-            'Sensor1, that is .*, opt:value_type:string, opt:ignore_case, '
+            'Sensor1, that is:.*, opt:value_type:string, opt:ignore_case, '
             'opt:max_data_age:3600, opt:match_any_value'
         )
         sensor_defs = utils.dehumanize_sensors(sensors)
@@ -97,7 +98,7 @@ class TestDehumanizeSensorUtils(unittest.TestCase):
 
     def test_single_str_complex2(self):
         sensors = (
-            'Sensor1{k1=v1,k2=v2}, that is .*, opt:value_type:string, '
+            'Sensor1{k1=v1,k2=v2}, that is:.*, opt:value_type:string, '
             'opt:ignore_case, opt:max_data_age:3600, opt:match_any_value'
         )
         sensor_defs = utils.dehumanize_sensors(sensors)
@@ -125,8 +126,8 @@ class TestDehumanizeSensorUtils(unittest.TestCase):
         sensors = [
             'Computer Name',
             'id:1',
-            'Operating System, that contains Windows',
-            ('Sensor1{k1=v1,k2=v2}, that is .*, opt:value_type:string, '
+            'Operating System, that contains:Windows',
+            ('Sensor1{k1=v1,k2=v2}, that is:.*, opt:value_type:string, '
              'opt:ignore_case, opt:max_data_age:3600, opt:match_any_value'),
         ]
         sensor_defs = utils.dehumanize_sensors(sensors)
@@ -214,7 +215,7 @@ class TestDehumanizeSensorUtils(unittest.TestCase):
 
 class TestDehumanizeQuestionFilterUtils(unittest.TestCase):
     def test_single_filter_str(self):
-        question_filters = 'Sensor1, that contains Windows'
+        question_filters = 'Sensor1, that contains:Windows'
         question_filter_defs = utils.dehumanize_question_filters(
             question_filters
         )
@@ -231,7 +232,7 @@ class TestDehumanizeQuestionFilterUtils(unittest.TestCase):
         self.assertEquals(question_filter_defs, exp)
 
     def test_single_filter_list(self):
-        question_filters = ['Sensor1, that contains Windows']
+        question_filters = ['Sensor1, that contains:Windows']
         question_filter_defs = utils.dehumanize_question_filters(
             question_filters
         )
@@ -249,8 +250,8 @@ class TestDehumanizeQuestionFilterUtils(unittest.TestCase):
 
     def test_multi_filter_list(self):
         question_filters = [
-            'Sensor1, that contains Windows',
-            'Sensor2, that does not contain 10.10.10.10',
+            'Sensor1, that contains:Windows',
+            'Sensor2, that does not contain:10.10.10.10',
         ]
         question_filter_defs = utils.dehumanize_question_filters(
             question_filters
@@ -292,20 +293,20 @@ class TestDehumanizeQuestionFilterUtils(unittest.TestCase):
         self.assertEquals(question_filter_defs, exp)
 
     def test_invalid_filter1(self):
-        o = 'Sensor1, that feels funny'
-        e = "Filter ' feels funny' is not a valid filter!"
+        o = 'Sensor1, that feels:funny'
+        e = "Filter .* is not a valid filter!"
         with self.assertRaisesRegexp(HumanParserError, e):
             utils.dehumanize_question_filters(o)
 
     def test_invalid_filter2(self):
         o = 'Sensor1'
-        e = "Filter 'Sensor1' is not a valid filter!"
+        e = "Filter .* is not a valid filter!"
         with self.assertRaisesRegexp(HumanParserError, e):
             utils.dehumanize_question_filters(o)
 
     def test_invalid_filter3(self):
         o = 'Sensor1, th'
-        e = "Filter 'Sensor1, th' is not a valid filter!"
+        e = "Filter .* is not a valid filter!"
         with self.assertRaisesRegexp(HumanParserError, e):
             utils.dehumanize_question_filters(o)
 
@@ -436,13 +437,22 @@ class TestDehumanizeExtractionUtils(unittest.TestCase):
         self.assertEquals(r, exp)
 
     def test_extract_filter_valid(self):
-        s = 'Sensor1, that is .*'
+        s = 'Sensor1, that is:.*'
         exp = (
             'Sensor1',
             {'operator': 'RegexMatch', 'not_flag': 0, 'value': '.*'}
         )
         r = utils.extract_filter(s)
         self.assertEquals(r, exp)
+
+    def test_extract_filter_valid_all(self):
+        for x in constants.FILTER_MAPS:
+            for y in x['human']:
+                z = utils.extract_filter('Sensor1, that {}:test value'.format(y))
+                self.assertTrue(z)
+                self.assertEquals(len(z), 2)
+                self.assertEquals(z[0], 'Sensor1')
+                self.assertIn('test value', z[1]['value'])
 
     def test_extract_filter_nofilter(self):
         s = 'Sensor1'
@@ -487,8 +497,8 @@ class TestDehumanizeExtractionUtils(unittest.TestCase):
             utils.extract_options(s)
 
     def test_extract_filter_invalid(self):
-        s = 'Sensor1, that meets .*'
-        e = "Filter ' meets \.\*' is not a valid filter!"
+        s = 'Sensor1, that meets:.*'
+        e = "Filter .* is not a valid filter!"
         with self.assertRaisesRegexp(HumanParserError, e):
             utils.extract_filter(s)
 

@@ -20,6 +20,8 @@ PAPEROPT_letter = -D latex_paper_size=letter
 ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) source
 # the i18n builder cannot share the environment and doctrees with the others
 I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) source
+VERSION         = $(shell cat ../../lib/pytan/__init__.py|grep __version__|cut -d\' -f2)
+
 
 .PHONY: help clean html dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf text man changes linkcheck doctest coverage gettext
 
@@ -121,7 +123,8 @@ latexpdf:
 	@echo "Running LaTeX files through pdflatex..."
 	$(MAKE) -C $(BUILDDIR)/latex all-pdf
 	mkdir -p $(REALBUILDDIR)/pdf
-	cp $(BUILDDIR)/latex/*.pdf $(REALBUILDDIR)/pdf
+	@echo $(VERSION)
+	cp $(BUILDDIR)/latex/PyTan.pdf $(REALBUILDDIR)/pdf/PyTan-$(VERSION).pdf
 	@echo "pdflatex finished; the PDF files are in $(BUILDDIR)/latex and $(REALBUILDDIR)/pdf"
 
 latexpdfja:

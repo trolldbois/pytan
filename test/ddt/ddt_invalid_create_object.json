@@ -1,0 +1,10 @@
+{
+    "invalid_create_sensor": {
+        "desc": "Create a sensor (Unsupported!)",
+        "priority": "1",
+        "method": "create_sensor",
+        "args": {},
+        "exception": "pytan.utils.HandlerError",
+        "error_str": "Sensor creation not supported via PyTan as of yet, too complex.*"
+    }
+}

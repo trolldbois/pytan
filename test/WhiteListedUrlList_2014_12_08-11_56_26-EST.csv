@@ -1,0 +1,5 @@
+download_seconds,id,metadata_item_0_admin_flag,metadata_item_0_name,metadata_item_0_value,url_regex
+3600,13473,0,TConsole.WhitelistedURL.property name,property value,regex:https://testing.com
+86400,13474,,,,test1
+86400,13475,,,,test2
+86400,13476,,,,test3

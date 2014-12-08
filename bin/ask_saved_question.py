@@ -22,41 +22,66 @@ for aa in path_adds:
 import pytan
 from pytan import utils
 
+examples = [
+    {
+        'name': 'Ask a saved question',
+        'cmd': (
+            'ask_saved_question.py $API_INFO '
+            '--name "Installed Applications" --file "$TMP/out.csv" csv'
+        ),
+        'precleanup': 'rm -f $TMP/out.csv',
+        'file_exist': '$TMP/out.csv',
+        'tests': 'exitcode, file_exist_contents',
+    },
+]
+examples = []
+
 
 def process_handler_args(parser, all_args):
     handler_grp_names = ['Handler Authentication', 'Handler Options']
     handler_opts = utils.get_grp_opts(parser, handler_grp_names)
     handler_args = {k: all_args.pop(k) for k in handler_opts}
 
-    h = pytan.Handler(**handler_args)
-    print str(h)
+    try:
+        h = pytan.Handler(**handler_args)
+        print str(h)
+    except Exception as e:
+        print e
+        sys.exit(99)
     return h
 
-utils.version_check(__version__)
-parser = utils.setup_ask_saved_argparser(__doc__)
-parser = utils.add_ask_report_argparser(parser)
 
-args = parser.parse_args()
-all_args = args.__dict__
+if __name__ == "__main__":
 
-if args.id:
-    q_args = {'id': args.id}
-elif args.name:
-    q_args = {'name': args.name}
-else:
-    parser.error("Must supply --id or --name")
+    utils.version_check(__version__)
+    parser = utils.setup_ask_saved_argparser(__doc__)
+    parser = utils.add_ask_report_argparser(parser)
 
-handler = process_handler_args(parser, all_args)
+    args = parser.parse_args()
+    all_args = args.__dict__
 
-print "++ Asking saved question: {}".format(args.id or args.name)
-ret = handler.ask(qtype='saved', **q_args)
-print "++ Saved Question {!r} ID: {!r}".format(
-    ret['question_object'].query_text, ret['question_object'].id
-)
+    if args.id:
+        q_args = {'id': args.id}
+    elif args.name:
+        q_args = {'name': args.name}
+    else:
+        parser.error("Must supply --id or --name")
 
-report_file, result = handler.export_to_report_file(
-    obj=ret['question_results'],
-    **all_args
-)
-m = "Report file {!r} written with {} bytes".format
-print(m(report_file, len(result)))
+    handler = process_handler_args(parser, all_args)
+
+    try:
+        print "++ Asking saved question: {}".format(args.id or args.name)
+        ret = handler.ask(qtype='saved', **q_args)
+        print "++ Saved Question {!r} ID: {!r}".format(
+            ret['question_object'].query_text, ret['question_object'].id
+        )
+
+        report_file, result = handler.export_to_report_file(
+            obj=ret['question_results'],
+            **all_args
+        )
+        m = "Report file {!r} written with {} bytes".format
+        print(m(report_file, len(result)))
+    except Exception as e:
+        print e
+        sys.exit(99)

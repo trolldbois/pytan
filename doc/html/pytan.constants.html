@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>5.2. pytan.constants module &mdash; PyTan 1.0.0 documentation</title>
+  <title>6.3. pytan.constants module &mdash; PyTan 1.0.0 documentation</title>
   
 
   
@@ -29,9 +29,9 @@
 
   
     <link rel="top" title="PyTan 1.0.0 documentation" href="index.html"/>
-        <link rel="up" title="5. pytan package" href="pytan.html"/>
-        <link rel="next" title="5.3. pytan.utils module" href="pytan.utils.html"/>
-        <link rel="prev" title="5.1. pytan.handler module" href="pytan.handler.html"/> 
+        <link rel="up" title="6. pytan package" href="pytan.html"/>
+        <link rel="next" title="6.4. pytan.utils module" href="pytan.utils.html"/>
+        <link rel="prev" title="6.2. pytan.handler module" href="pytan.handler.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -67,18 +67,20 @@
 <li class="toctree-l1"><a class="reference internal" href="description.html#why-it-was-created">2. Why it was created</a></li>
 <li class="toctree-l1"><a class="reference internal" href="description.html#requirements">3. Requirements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="description.html#installation">4. Installation</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="pytan.html">5. pytan package</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="pytan.handler.html">5.1. pytan.handler module</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">5.2. pytan.constants module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html">5.3. pytan.utils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.unittest.html">5.4. pytan Unit Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.functest.html">5.5. pytan Functional Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="description.html#usage">5. Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="pytan.html">6. pytan package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="examples/pytan_examples.html">6.1. pytan API examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.handler.html">6.2. pytan.handler module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">6.3. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html">6.4. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.unittest.html">6.5. pytan Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.functest.html">6.6. pytan Functional Tests</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="taniumpy.html">6. taniumpy package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="taniumpy.session.html">6.1. taniumpy.session module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="taniumpy.question_asker.html">6.2. taniumpy.question_asker module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html">6.3. taniumpy.object_types package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="taniumpy.html">7. taniumpy package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.session.html">1. taniumpy.session module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.question_asker.html">2. taniumpy.question_asker module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html">3. taniumpy.object_types package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="xmltodict.html">7. xmltodict module</a><ul class="simple">
@@ -114,9 +116,9 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-          <li><a href="pytan.html">5. pytan package</a> &raquo;</li>
+          <li><a href="pytan.html">6. pytan package</a> &raquo;</li>
       
-    <li>5.2. pytan.constants module</li>
+    <li>6.3. pytan.constants module</li>
       <li class="wy-breadcrumbs-aside">
         
           <a href="_sources/pytan.constants.txt" rel="nofollow"> View page source</a>
@@ -128,7 +130,7 @@
           <div role="main" class="document">
             
   <div class="section" id="module-pytan.constants">
-<span id="pytan-constants-module"></span><h1>5.2. pytan.constants module<a class="headerlink" href="#module-pytan.constants" title="Permalink to this headline">¶</a></h1>
+<span id="pytan-constants-module"></span><h1>6.3. pytan.constants module<a class="headerlink" href="#module-pytan.constants" title="Permalink to this headline">¶</a></h1>
 <p>PyTan Constants</p>
 <p>This contains a number of constants that drive PyTan.</p>
 <dl class="data">
@@ -165,7 +167,7 @@
 
 <dl class="data">
 <dt id="pytan.constants.FILTER_MAPS">
-<code class="descclassname">pytan.constants.</code><code class="descname">FILTER_MAPS</code><em class="property"> = [{'operator': 'Less', 'not_flag': 0, 'human': ['&lt;', 'less', 'lt']}, {'operator': 'Less', 'not_flag': 1, 'human': ['!&lt;', 'notless', 'not less']}, {'operator': 'LessEqual', 'not_flag': 0, 'human': ['&lt;=', 'less equal', 'lessequal', 'le']}, {'operator': 'LessEqual', 'not_flag': 1, 'human': ['!&lt;=', 'not less equal', 'not lessequal']}, {'operator': 'Greater', 'not_flag': 0, 'human': ['&gt;', 'greater', 'gt']}, {'operator': 'Greater', 'not_flag': 1, 'human': ['!&gt;', 'not greater', 'notgreater']}, {'operator': 'GreaterEqual', 'not_flag': 0, 'human': ['=&gt;', 'greater equal', 'greaterequal', 'ge']}, {'operator': 'GreaterEqual', 'not_flag': 1, 'human': ['!=&gt;', 'not greater equal', 'notgreaterequal']}, {'operator': 'Equal', 'not_flag': 0, 'human': ['=', 'equal', 'equals', 'eq']}, {'operator': 'Equal', 'not_flag': 0, 'human': ['!=', 'not equal', 'notequal', 'not equals', 'notequals', 'ne']}, {'operator': 'RegexMatch', 'pre_value': '.*', 'not_flag': 0, 'post_value': '.*', 'human': ['contains']}, {'operator': 'RegexMatch', 'pre_value': '.*', 'not_flag': 1, 'post_value': '.*', 'human': ['does not contain', 'doesnotcontain', 'not contains', 'notcontains']}, {'operator': 'RegexMatch', 'not_flag': 0, 'post_value': '.*', 'human': ['starts with', 'startswith']}, {'operator': 'RegexMatch', 'not_flag': 1, 'post_value': '.*', 'human': ['does not start with', 'doesnotstartwith', 'not starts with', 'notstartswith']}, {'operator': 'RegexMatch', 'pre_value': '.*', 'not_flag': 0, 'human': ['ends with', 'endswith']}, {'operator': 'RegexMatch', 'pre_value': '.*', 'not_flag': 1, 'human': ['does not end with', 'doesnotendwith', 'not ends with', 'notstartswith']}, {'operator': 'RegexMatch', 'not_flag': 1, 'human': ['is not', 'not regex', 'notregex', 'not regex match', 'notregexmatch', 'nre']}, {'operator': 'RegexMatch', 'not_flag': 0, 'human': ['is', 'regex', 'regex match', 'regexmatch', 're']}]</em><a class="headerlink" href="#pytan.constants.FILTER_MAPS" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pytan.constants.</code><code class="descname">FILTER_MAPS</code><em class="property"> = [{'operator': 'Less', 'not_flag': 0, 'help': 'Filter for less than VALUE', 'human': ['&lt;', 'less', 'lt', 'less than']}, {'operator': 'Less', 'not_flag': 1, 'help': 'Filter for not less than VALUE', 'human': ['!&lt;', 'notless', 'not less', 'not less than']}, {'operator': 'LessEqual', 'not_flag': 0, 'help': 'Filter for less than or equal to VALUE', 'human': ['&lt;=', 'less equal', 'lessequal', 'le']}, {'operator': 'LessEqual', 'not_flag': 1, 'help': 'Filter for not less than or equal to VALUE', 'human': ['!&lt;=', 'not less equal', 'not lessequal']}, {'operator': 'Greater', 'not_flag': 0, 'help': 'Filter for greater than VALUE', 'human': ['&gt;', 'greater', 'gt', 'greater than']}, {'operator': 'Greater', 'not_flag': 1, 'help': 'Filter for not greater than VALUE', 'human': ['!&gt;', 'not greater', 'notgreater', 'not greater than']}, {'operator': 'GreaterEqual', 'not_flag': 0, 'help': 'Filter for greater than or equal to VALUE', 'human': ['=&gt;', 'greater equal', 'greaterequal', 'ge']}, {'operator': 'GreaterEqual', 'not_flag': 1, 'help': 'Filter for not greater than VALUE', 'human': ['!=&gt;', 'not greater equal', 'notgreaterequal']}, {'operator': 'Equal', 'not_flag': 0, 'help': 'Filter for equals to VALUE', 'human': ['=', 'equal', 'equals', 'eq']}, {'operator': 'Equal', 'not_flag': 0, 'help': 'Filter for not equals to VALUE', 'human': ['!=', 'not equal', 'notequal', 'not equals', 'notequals', 'ne']}, {'pre_value': '.*', 'not_flag': 0, 'help': 'Filter for contains VALUE (adds .* before and after VALUE)', 'post_value': '.*', 'human': ['contains'], 'operator': 'RegexMatch'}, {'pre_value': '.*', 'not_flag': 1, 'help': 'Filter for does not contain VALUE (adds .* before and after VALUE)', 'post_value': '.*', 'human': ['does not contain', 'doesnotcontain', 'not contains', 'notcontains'], 'operator': 'RegexMatch'}, {'operator': 'RegexMatch', 'not_flag': 0, 'post_value': '.*', 'human': ['starts with', 'startswith'], 'help': 'Filter for starts with VALUE (adds .* after VALUE)'}, {'operator': 'RegexMatch', 'not_flag': 1, 'post_value': '.*', 'human': ['does not start with', 'doesnotstartwith', 'not starts with', 'notstartswith'], 'help': 'Filter for does not start with VALUE (adds .* after VALUE)'}, {'operator': 'RegexMatch', 'pre_value': '.*', 'not_flag': 0, 'help': 'Filter for ends with VALUE (adds .* before VALUE)', 'human': ['ends with', 'endswith']}, {'operator': 'RegexMatch', 'pre_value': '.*', 'not_flag': 1, 'help': 'Filter for does bit end with VALUE (adds .* before VALUE)', 'human': ['does not end with', 'doesnotendwith', 'not ends with', 'notstartswith']}, {'operator': 'RegexMatch', 'not_flag': 1, 'help': 'Filter for non regular expression match for VALUE', 'human': ['is not', 'not regex', 'notregex', 'not regex match', 'notregexmatch', 'nre']}, {'operator': 'RegexMatch', 'not_flag': 0, 'help': 'Filter for regular expression match for VALUE', 'human': ['is', 'regex', 'regex match', 'regexmatch', 're']}]</em><a class="headerlink" href="#pytan.constants.FILTER_MAPS" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt>Maps a given set of human strings into the various filter attributes used by the SOAP API. Also used to verify that a manually supplied filter via a definition is valid. Construct:</dt>
 <dd><ul class="first last simple">
@@ -224,7 +226,7 @@
 
 <dl class="data">
 <dt id="pytan.constants.OPTION_MAPS">
-<code class="descclassname">pytan.constants.</code><code class="descname">OPTION_MAPS</code><em class="property"> = [{'destination': 'filter', 'attrs': {'ignore_case_flag': 1}, 'human': 'ignore_case', 'valid_type': &lt;type 'int'&gt;}, {'destination': 'filter', 'attrs': {'ignore_case_flag': 0}, 'human': 'match_case', 'valid_type': &lt;type 'int'&gt;}, {'destination': 'filter', 'attrs': {'all_values_flag': 0, 'all_times_flag': 0}, 'human': 'match_any_value', 'valid_type': &lt;type 'int'&gt;}, {'destination': 'filter', 'attrs': {'all_values_flag': 1, 'all_times_flag': 1}, 'human': 'match_all_values', 'valid_type': &lt;type 'int'&gt;}, {'destination': 'filter', 'human_type': 'seconds', 'attr': 'max_age_seconds', 'human': 'max_data_age', 'valid_type': &lt;type 'int'&gt;}, {'attr': 'value_type', 'destination': 'filter', 'valid_type': &lt;type 'str'&gt;, 'valid_values': 'constants.SENSOR_TYPE_MAP.values()', 'human': 'value_type', 'human_type': 'value_type'}, {'destination': 'group', 'attrs': {'and_flag': 1}, 'human': 'and', 'valid_type': &lt;type 'int'&gt;}, {'destination': 'group', 'attrs': {'and_flag': 0}, 'human': 'or', 'valid_type': &lt;type 'int'&gt;}]</em><a class="headerlink" href="#pytan.constants.OPTION_MAPS" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pytan.constants.</code><code class="descname">OPTION_MAPS</code><em class="property"> = [{'destination': 'filter', 'help': 'Make the filter do a case insensitive match', 'attrs': {'ignore_case_flag': 1}, 'human': 'ignore_case', 'valid_type': &lt;type 'int'&gt;}, {'destination': 'filter', 'help': 'Make the filter do a case sensitive match', 'attrs': {'ignore_case_flag': 0}, 'human': 'match_case', 'valid_type': &lt;type 'int'&gt;}, {'destination': 'filter', 'help': 'Make the filter match any value', 'attrs': {'all_values_flag': 0, 'all_times_flag': 0}, 'human': 'match_any_value', 'valid_type': &lt;type 'int'&gt;}, {'destination': 'filter', 'help': 'Make the filter match all values', 'attrs': {'all_values_flag': 1, 'all_times_flag': 1}, 'human': 'match_all_values', 'valid_type': &lt;type 'int'&gt;}, {'help': 'Re-fetch cached values older than N seconds', 'destination': 'filter', 'valid_type': &lt;type 'int'&gt;, 'human': 'max_data_age', 'human_type': 'seconds', 'attr': 'max_age_seconds'}, {'attr': 'value_type', 'destination': 'filter', 'valid_type': &lt;type 'str'&gt;, 'valid_values': 'constants.SENSOR_TYPE_MAP.values()', 'human': 'value_type', 'human_type': 'value_type', 'help': 'Make the filter consider the value type as VALUE_TYPE'}, {'destination': 'group', 'help': &quot;Use 'and' for all of the filters supplied&quot;, 'attrs': {'and_flag': 1}, 'human': 'and', 'valid_type': &lt;type 'int'&gt;}, {'destination': 'group', 'help': &quot;Use 'or' for all of the filters supplied&quot;, 'attrs': {'and_flag': 0}, 'human': 'or', 'valid_type': &lt;type 'int'&gt;}]</em><a class="headerlink" href="#pytan.constants.OPTION_MAPS" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt>Maps a given human string into the various options for filters used by the SOAP API. Also used to verify that a manually supplied option via a definition is valid. Construct:</dt>
 <dd><ul class="first last simple">
@@ -302,10 +304,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="pytan.utils.html" class="btn btn-neutral float-right" title="5.3. pytan.utils module">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="pytan.utils.html" class="btn btn-neutral float-right" title="6.4. pytan.utils module">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="pytan.handler.html" class="btn btn-neutral" title="5.1. pytan.handler module"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="pytan.handler.html" class="btn btn-neutral" title="6.2. pytan.handler module"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -315,7 +317,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2014, Tanium.
-      Last updated on Dec 05, 2014.
+      Last updated on Dec 08, 2014.
     </p>
   </div>
 

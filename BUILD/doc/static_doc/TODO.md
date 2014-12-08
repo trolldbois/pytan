@@ -1,27 +1,27 @@
 # TODO NOW
- * [ ] DOCS/EXAMPLES
-   * [ ] add help to manual stuff
-   * [ ] incorporate mdocbuild for bin scripts
-   * [ ] build EXAMPLE from source scripts
-   * [ ] build API doc from unit test (as start)
-   * [ ] Expand API examples in README.md
-   * [ ] update readme
-   * [ ] update sensor help for ask_manual_question.py to describe params
+  * [ ] DOCS/EXAMPLES
+    * [ ] update readme
 
 # TODO LATER
- * [ ] add non id/name/hash search support to get_$object.py
- * [ ] add print_user bin script
- * [ ] test verify checks work against package with verification (unable to do)
- * [ ] look into update object methods
- * [ ] add method to calculate total time btwn request and response
- * [ ] build "ask all questions" workflow
- * [ ] test against RT
- * [ ] test against all the different levels of user privs
- * [ ] logfile support
- * [ ] email out
- * [ ] test against demo tanium
- * [ ] add caching
- * [ ] figure out cert based auth/plugin based auth?
+  * [ ] explain get == select col data, from == select row data
+  * [ ] add pointers to KB articles
+  * [ ] add readme.md to examples
+  * [ ] fix search attrs for cmdline scripts
+  * [ ] add non id/name/hash search support to get_$object.py
+  * [ ] question filters get params too??
+  * [ ] better error messages for deploy action when error in filters
+  * [ ] add print_user bin script
+  * [ ] test verify checks work against package with verification (unable to do)
+  * [ ] look into update object methods
+  * [ ] add method to calculate total time btwn request and response
+  * [ ] build "ask all questions" workflow
+  * [ ] test against RT
+  * [ ] test against all the different levels of user privs
+  * [ ] logfile support
+  * [ ] email out
+  * [ ] test against demo tanium
+  * [ ] add caching
+  * [ ] figure out cert based auth/plugin based auth?
 
 # DONE
   * 0.5.0
@@ -91,4 +91,14 @@
       * [X] pytan ->> lib/pytan
       * [X] pytan/xmltodict.py ->> lib/xmltodict
     * [X] changed relative imports everywhere to explicit imports via PYTHONPATH (package issues during relative import)
+    * [X] convert all func tests to DDT
+    * [X] build API doc examples/API examples from ddt func test
+    * [X] add complicated query examples
+    * [X] add version to pdf
+    * [X] change filters to use : between filter choice and value
+    * [X] update sensor help for ask_manual_question.py to describe params
+    * [X] add help to manual stuff
+    * [X] incorporate mdocbuild for bin scripts
+    * [X] build markdown docs for bin scripts
+    * [X] add usage to docs
 

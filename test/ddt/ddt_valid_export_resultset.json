@@ -1,0 +1,114 @@
+{
+    "export_resultset_csv_default_options": {
+        "desc": "Export a ResultSet from asking a question as CSV with the default options",
+        "priority": "1",
+        "args": {"export_format": "csv"},
+        "tests": [
+            "'Computer Name,Destination,Flags,\"Folder Name Search with RegEx Match[No, Program Files, No, ]\",Gateway,IP Address,Interface,Mask,Metric' == export_str.splitlines()[0]"
+        ]
+    },
+    "export_resultset_csv_sort_empty": {
+        "desc": "Export a ResultSet from asking a question as CSV with an empty list for header_sort",
+        "priority": "2",
+        "args": {"export_format": "csv", "header_sort": []},
+        "tests": [
+            "'Computer Name,Destination,Flags,\"Folder Name Search with RegEx Match[No, Program Files, No, ]\",Gateway,IP Address,Interface,Mask,Metric' == export_str.splitlines()[0]"
+        ]
+    },
+    "export_resultset_csv_sort_true": {
+        "desc": "Export a ResultSet from asking a question as CSV with true for header_sort",
+        "priority": "3",
+        "args": {"export_format": "csv", "header_sort": true},
+        "tests": [
+            "'Computer Name,Destination,Flags,\"Folder Name Search with RegEx Match[No, Program Files, No, ]\",Gateway,IP Address,Interface,Mask,Metric' == export_str.splitlines()[0]"
+        ]
+    },
+    "export_resultset_csv_sort_false": {
+        "desc": "Export a ResultSet from asking a question as CSV with false for header_sort",
+        "priority": "4",
+        "args": {"export_format": "csv", "header_sort": false},
+        "tests": [
+            "'Computer Name,Destination,Gateway,Mask,Flags,Metric,Interface,IP Address,\"Folder Name Search with RegEx Match[No, Program Files, No, ]\"' == export_str.splitlines()[0]"
+        ]
+    },
+    "export_resultset_csv_sort_list": {
+        "desc": "Export a ResultSet from asking a question as CSV with Computer Name and IP Address for the header_sort",
+        "priority": "5",
+        "args": {"export_format": "csv", "header_sort": ["Computer Name", "IP Address"]},
+        "tests": [
+            "['Computer Name', 'IP Address'] == export_str.splitlines()[0].split(',')[0:2]"
+        ]
+    },
+    "export_resultset_csv_type_false": {
+        "desc": "Export a ResultSet from asking a question as CSV with false for header_add_type",
+        "priority": "6",
+        "args": {"export_format": "csv", "header_add_type": false},
+        "tests": [
+            "'Computer Name,Destination,Flags,\"Folder Name Search with RegEx Match[No, Program Files, No, ]\",Gateway,IP Address,Interface,Mask,Metric' == export_str.splitlines()[0]"
+        ]
+    },
+    "export_resultset_csv_type_true": {
+        "desc": "Export a ResultSet from asking a question as CSV with true for header_add_type",
+        "priority": "7",
+        "args": {"export_format": "csv", "header_add_type": true},
+        "tests": [
+            "'Computer Name (String)' in export_str.splitlines()[0].split(',')"
+        ]
+    },
+    "export_resultset_csv_sensor_false": {
+        "desc": "Export a ResultSet from asking a question as CSV with false for header_add_sensor",
+        "priority": "8",
+        "args": {"export_format": "csv", "header_add_sensor": false},
+        "tests": [
+            "'Computer Name,Destination,Flags,\"Folder Name Search with RegEx Match[No, Program Files, No, ]\",Gateway,IP Address,Interface,Mask,Metric' == export_str.splitlines()[0]"
+        ]
+    },
+    "export_resultset_csv_sensor_true": {
+        "desc": "Export a ResultSet from asking a question as CSV with true for header_add_sensor",
+        "priority": "9",
+        "args": {"export_format": "csv", "header_add_sensor": true},
+        "tests": [
+            "'Computer Name: Computer Name' in export_str.splitlines()[0].split(',')"
+        ]
+    },
+    "export_resultset_csv_expand_false": {
+        "desc": "Export a ResultSet from asking a question as CSV with false for expand_grouped_columns",
+        "priority": "10",
+        "args": {"export_format": "csv", "expand_grouped_columns": false},
+        "tests": [
+            "'Computer Name,Destination,Flags,\"Folder Name Search with RegEx Match[No, Program Files, No, ]\",Gateway,IP Address,Interface,Mask,Metric' == export_str.splitlines()[0]"
+        ]
+    },
+    "export_resultset_csv_expand_true": {
+        "desc": "Export a ResultSet from asking a question as CSV with true for expand_grouped_columns",
+        "priority": "11",
+        "args": {"export_format": "csv", "expand_grouped_columns": true},
+        "tests": [
+            "'Computer Name,Destination,Flags,\"Folder Name Search with RegEx Match[No, Program Files, No, ]\",Gateway,IP Address,Interface,Mask,Metric' == export_str.splitlines()[0]",
+            "'UNRELATED TO IP Address' in export_str"
+        ]
+    },
+    "export_resultset_csv_all_options": {
+        "desc": "Export a ResultSet from asking a question as CSV with true for header_add_sensor, true for header_add_type, true for header_sort, and true for expand_grouped_columns",
+        "priority": "12",
+        "args": {
+            "export_format": "csv",
+            "header_add_sensor": true,
+            "header_add_type": true,
+            "header_sort": true,
+            "expand_grouped_columns": true
+        },
+        "tests": [
+            "'Computer Name: Computer Name (String),\"Folder Name Search with RegEx Match[No, Program Files, No, ]: Folder Name Search with RegEx Match[No, Program Files, No, ] (String)\",IP Address: IP Address (IPAddress),IP Route Details: Destination (IPAddress),IP Route Details: Flags (String),IP Route Details: Gateway (IPAddress),IP Route Details: Interface (String),IP Route Details: Mask (String),IP Route Details: Metric (NumericInteger)' == export_str.splitlines()[0]",
+            "'UNRELATED TO IP Address' in export_str"
+        ]
+    },
+    "export_resultset_json": {
+        "desc": "Export a ResultSet from asking a question as JSON with the default options",
+        "priority": "13",
+        "args": {"export_format": "json"},
+        "tests": [
+            "'Computer Name' == json.loads(export_str)[0]['row0'][0]['column.display_name']"
+        ]
+    }
+}

@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>5.4. pytan Unit Tests &mdash; PyTan 1.0.0 documentation</title>
+  <title>6.5. pytan Unit Tests &mdash; PyTan 1.0.0 documentation</title>
   
 
   
@@ -29,9 +29,9 @@
 
   
     <link rel="top" title="PyTan 1.0.0 documentation" href="index.html"/>
-        <link rel="up" title="5. pytan package" href="pytan.html"/>
-        <link rel="next" title="5.5. pytan Functional Tests" href="pytan.functest.html"/>
-        <link rel="prev" title="5.3. pytan.utils module" href="pytan.utils.html"/> 
+        <link rel="up" title="6. pytan package" href="pytan.html"/>
+        <link rel="next" title="6.6. pytan Functional Tests" href="pytan.functest.html"/>
+        <link rel="prev" title="6.4. pytan.utils module" href="pytan.utils.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -67,18 +67,20 @@
 <li class="toctree-l1"><a class="reference internal" href="description.html#why-it-was-created">2. Why it was created</a></li>
 <li class="toctree-l1"><a class="reference internal" href="description.html#requirements">3. Requirements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="description.html#installation">4. Installation</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="pytan.html">5. pytan package</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="pytan.handler.html">5.1. pytan.handler module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.constants.html">5.2. pytan.constants module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html">5.3. pytan.utils module</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">5.4. pytan Unit Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.functest.html">5.5. pytan Functional Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="description.html#usage">5. Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="pytan.html">6. pytan package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="examples/pytan_examples.html">6.1. pytan API examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.handler.html">6.2. pytan.handler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.constants.html">6.3. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html">6.4. pytan.utils module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">6.5. pytan Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.functest.html">6.6. pytan Functional Tests</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="taniumpy.html">6. taniumpy package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="taniumpy.session.html">6.1. taniumpy.session module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="taniumpy.question_asker.html">6.2. taniumpy.question_asker module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html">6.3. taniumpy.object_types package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="taniumpy.html">7. taniumpy package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.session.html">1. taniumpy.session module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.question_asker.html">2. taniumpy.question_asker module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html">3. taniumpy.object_types package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="xmltodict.html">7. xmltodict module</a><ul class="simple">
@@ -114,9 +116,9 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-          <li><a href="pytan.html">5. pytan package</a> &raquo;</li>
+          <li><a href="pytan.html">6. pytan package</a> &raquo;</li>
       
-    <li>5.4. pytan Unit Tests</li>
+    <li>6.5. pytan Unit Tests</li>
       <li class="wy-breadcrumbs-aside">
         
           <a href="_sources/pytan.unittest.txt" rel="nofollow"> View page source</a>
@@ -128,7 +130,7 @@
           <div role="main" class="document">
             
   <div class="section" id="module-test_pytan_unit">
-<span id="pytan-unit-tests"></span><h1>5.4. pytan Unit Tests<a class="headerlink" href="#module-test_pytan_unit" title="Permalink to this headline">¶</a></h1>
+<span id="pytan-unit-tests"></span><h1>6.5. pytan Unit Tests<a class="headerlink" href="#module-test_pytan_unit" title="Permalink to this headline">¶</a></h1>
 <p>This contains unit tests for pytan.</p>
 <p>These unit tests do not require a connection to a Tanium server in order to run.</p>
 <dl class="class">
@@ -153,6 +155,11 @@
 <dl class="method">
 <dt id="test_pytan_unit.TestDehumanizeExtractionUtils.test_extract_filter_valid">
 <code class="descname">test_extract_filter_valid</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/test_pytan_unit.html#TestDehumanizeExtractionUtils.test_extract_filter_valid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#test_pytan_unit.TestDehumanizeExtractionUtils.test_extract_filter_valid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="test_pytan_unit.TestDehumanizeExtractionUtils.test_extract_filter_valid_all">
+<code class="descname">test_extract_filter_valid_all</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/test_pytan_unit.html#TestDehumanizeExtractionUtils.test_extract_filter_valid_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#test_pytan_unit.TestDehumanizeExtractionUtils.test_extract_filter_valid_all" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -843,10 +850,10 @@ but supplying a value for only one param</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="pytan.functest.html" class="btn btn-neutral float-right" title="5.5. pytan Functional Tests">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="pytan.functest.html" class="btn btn-neutral float-right" title="6.6. pytan Functional Tests">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="pytan.utils.html" class="btn btn-neutral" title="5.3. pytan.utils module"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="pytan.utils.html" class="btn btn-neutral" title="6.4. pytan.utils module"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -856,7 +863,7 @@ but supplying a value for only one param</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2014, Tanium.
-      Last updated on Dec 05, 2014.
+      Last updated on Dec 08, 2014.
     </p>
   </div>
 

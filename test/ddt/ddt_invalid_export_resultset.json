@@ -1,0 +1,37 @@
+{
+    "invalid_export_resultset_bad_format": {
+        "desc": "Export a ResultSet from asking a question using a bad export_format",
+        "priority": "1",
+        "args": {"export_format": "bad"},
+        "exception": "pytan.utils.HandlerError",
+        "error_str": ".*not a supported export format for ResultSet, must be one of.*"
+    },
+    "invalid_export_resultset_csv_bad_expand_type": {
+        "desc": "Export a ResultSet from asking a question using a bad expand_grouped_columns",
+        "priority": "1",
+        "args": {"export_format": "csv", "expand_grouped_columns": "bad"},
+        "exception": "pytan.utils.HandlerError",
+        "error_str": ".*must be one of.*you supplied.*"
+    },
+    "invalid_export_resultset_csv_bad_sort_type": {
+        "desc": "Export a ResultSet from asking a question using a bad header_sort",
+        "priority": "1",
+        "args": {"export_format": "csv", "header_sort": "bad"},
+        "exception": "pytan.utils.HandlerError",
+        "error_str": ".*must be one of.*you supplied.*"
+    },
+    "invalid_export_resultset_csv_bad_sort_sub_type": {
+        "desc": "Export a ResultSet from asking a question using a bad header_sort",
+        "priority": "1",
+        "args": {"export_format": "csv", "header_sort": [[]]},
+        "exception": "pytan.utils.HandlerError",
+        "error_str": ".*must be a list of.*you supplied.*"
+    },
+    "invalid_export_resultset_csv_bad_sensors_sub_type": {
+        "desc": "Export a ResultSet from asking a question using a bad sensors",
+        "priority": "1",
+        "args": {"export_format": "csv", "header_add_sensor": true, "sensors": [[]]},
+        "exception": "pytan.utils.HandlerError",
+        "error_str": ".*must be a list of.*you supplied.*"
+    }
+}

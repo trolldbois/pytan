@@ -17,6 +17,7 @@ pytan package
    :maxdepth: 3
    :numbered:
 
+   examples/pytan_examples.rst
    pytan.handler
    pytan.constants
    pytan.utils

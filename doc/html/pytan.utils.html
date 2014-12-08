@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>5.3. pytan.utils module &mdash; PyTan 1.0.0 documentation</title>
+  <title>6.4. pytan.utils module &mdash; PyTan 1.0.0 documentation</title>
   
 
   
@@ -29,9 +29,9 @@
 
   
     <link rel="top" title="PyTan 1.0.0 documentation" href="index.html"/>
-        <link rel="up" title="5. pytan package" href="pytan.html"/>
-        <link rel="next" title="5.4. pytan Unit Tests" href="pytan.unittest.html"/>
-        <link rel="prev" title="5.2. pytan.constants module" href="pytan.constants.html"/> 
+        <link rel="up" title="6. pytan package" href="pytan.html"/>
+        <link rel="next" title="6.5. pytan Unit Tests" href="pytan.unittest.html"/>
+        <link rel="prev" title="6.3. pytan.constants module" href="pytan.constants.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -67,18 +67,20 @@
 <li class="toctree-l1"><a class="reference internal" href="description.html#why-it-was-created">2. Why it was created</a></li>
 <li class="toctree-l1"><a class="reference internal" href="description.html#requirements">3. Requirements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="description.html#installation">4. Installation</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="pytan.html">5. pytan package</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="pytan.handler.html">5.1. pytan.handler module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.constants.html">5.2. pytan.constants module</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">5.3. pytan.utils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.unittest.html">5.4. pytan Unit Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.functest.html">5.5. pytan Functional Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="description.html#usage">5. Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="pytan.html">6. pytan package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="examples/pytan_examples.html">6.1. pytan API examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.handler.html">6.2. pytan.handler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.constants.html">6.3. pytan.constants module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">6.4. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.unittest.html">6.5. pytan Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.functest.html">6.6. pytan Functional Tests</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="taniumpy.html">6. taniumpy package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="taniumpy.session.html">6.1. taniumpy.session module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="taniumpy.question_asker.html">6.2. taniumpy.question_asker module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html">6.3. taniumpy.object_types package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="taniumpy.html">7. taniumpy package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.session.html">1. taniumpy.session module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.question_asker.html">2. taniumpy.question_asker module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html">3. taniumpy.object_types package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="xmltodict.html">7. xmltodict module</a><ul class="simple">
@@ -114,9 +116,9 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-          <li><a href="pytan.html">5. pytan package</a> &raquo;</li>
+          <li><a href="pytan.html">6. pytan package</a> &raquo;</li>
       
-    <li>5.3. pytan.utils module</li>
+    <li>6.4. pytan.utils module</li>
       <li class="wy-breadcrumbs-aside">
         
           <a href="_sources/pytan.utils.txt" rel="nofollow"> View page source</a>
@@ -128,10 +130,10 @@
           <div role="main" class="document">
             
   <div class="section" id="module-pytan.utils">
-<span id="pytan-utils-module"></span><h1>5.3. pytan.utils module<a class="headerlink" href="#module-pytan.utils" title="Permalink to this headline">¶</a></h1>
+<span id="pytan-utils-module"></span><h1>6.4. pytan.utils module<a class="headerlink" href="#module-pytan.utils" title="Permalink to this headline">¶</a></h1>
 <p>Collection of exceptions, classes, and methods used throughout <a class="reference internal" href="pytan.html#module-pytan" title="pytan"><code class="xref py py-mod docutils literal"><span class="pre">pytan</span></code></a></p>
 <div class="section" id="utility-classes-exceptions">
-<h2>5.3.1. Utility Classes: Exceptions<a class="headerlink" href="#utility-classes-exceptions" title="Permalink to this headline">¶</a></h2>
+<h2>6.4.1. Utility Classes: Exceptions<a class="headerlink" href="#utility-classes-exceptions" title="Permalink to this headline">¶</a></h2>
 <p>Exceptions used throughout <a class="reference internal" href="pytan.html#module-pytan" title="pytan"><code class="xref py py-mod docutils literal"><span class="pre">pytan</span></code></a>:</p>
 <dl class="exception">
 <dt id="pytan.utils.HandlerError">
@@ -163,7 +165,7 @@
 
 </div>
 <div class="section" id="utility-classes-logging-handlers">
-<h2>5.3.2. Utility Classes: Logging handlers<a class="headerlink" href="#utility-classes-logging-handlers" title="Permalink to this headline">¶</a></h2>
+<h2>6.4.2. Utility Classes: Logging handlers<a class="headerlink" href="#utility-classes-logging-handlers" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="pytan.utils.SplitStreamHandler">
 <em class="property">class </em><code class="descclassname">pytan.utils.</code><code class="descname">SplitStreamHandler</code><a class="reference internal" href="_modules/pytan/utils.html#SplitStreamHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.SplitStreamHandler" title="Permalink to this definition">¶</a></dt>
@@ -178,7 +180,7 @@
 
 </div>
 <div class="section" id="utility-classes-argument-parsers-for-command-line-scripts">
-<h2>5.3.3. Utility Classes: Argument Parsers for Command Line Scripts<a class="headerlink" href="#utility-classes-argument-parsers-for-command-line-scripts" title="Permalink to this headline">¶</a></h2>
+<h2>6.4.3. Utility Classes: Argument Parsers for Command Line Scripts<a class="headerlink" href="#utility-classes-argument-parsers-for-command-line-scripts" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="pytan.utils.CustomArgFormat">
 <em class="property">class </em><code class="descclassname">pytan.utils.</code><code class="descname">CustomArgFormat</code><span class="sig-paren">(</span><em>prog</em>, <em>indent_increment=2</em>, <em>max_help_position=24</em>, <em>width=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#CustomArgFormat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.CustomArgFormat" title="Permalink to this definition">¶</a></dt>
@@ -211,7 +213,7 @@
 
 </div>
 <div class="section" id="utility-functions-logging">
-<h2>5.3.4. Utility Functions: Logging<a class="headerlink" href="#utility-functions-logging" title="Permalink to this headline">¶</a></h2>
+<h2>6.4.4. Utility Functions: Logging<a class="headerlink" href="#utility-functions-logging" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pytan.utils.change_console_format">
 <code class="descclassname">pytan.utils.</code><code class="descname">change_console_format</code><span class="sig-paren">(</span><em>debug=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#change_console_format"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.change_console_format" title="Permalink to this definition">¶</a></dt>
@@ -283,7 +285,7 @@
 
 </div>
 <div class="section" id="utility-functions-type-checking">
-<h2>5.3.5. Utility Functions: Type Checking<a class="headerlink" href="#utility-functions-type-checking" title="Permalink to this headline">¶</a></h2>
+<h2>6.4.5. Utility Functions: Type Checking<a class="headerlink" href="#utility-functions-type-checking" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pytan.utils.is_dict">
 <code class="descclassname">pytan.utils.</code><code class="descname">is_dict</code><span class="sig-paren">(</span><em>l</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#is_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.is_dict" title="Permalink to this definition">¶</a></dt>
@@ -310,7 +312,7 @@
 
 </div>
 <div class="section" id="utility-functions-misc">
-<h2>5.3.6. Utility Functions: Misc<a class="headerlink" href="#utility-functions-misc" title="Permalink to this headline">¶</a></h2>
+<h2>6.4.6. Utility Functions: Misc<a class="headerlink" href="#utility-functions-misc" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pytan.utils.get_dict_list_items">
 <code class="descclassname">pytan.utils.</code><code class="descname">get_dict_list_items</code><span class="sig-paren">(</span><em>d</em>, <em>i</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#get_dict_list_items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.get_dict_list_items" title="Permalink to this definition">¶</a></dt>
@@ -640,7 +642,7 @@ aginst the version of <a class="reference internal" href="pytan.html#module-pyta
 
 </div>
 <div class="section" id="utility-functions-argument-parsers-for-command-line-scripts">
-<h2>5.3.7. Utility Functions: Argument Parsers for Command Line Scripts<a class="headerlink" href="#utility-functions-argument-parsers-for-command-line-scripts" title="Permalink to this headline">¶</a></h2>
+<h2>6.4.7. Utility Functions: Argument Parsers for Command Line Scripts<a class="headerlink" href="#utility-functions-argument-parsers-for-command-line-scripts" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pytan.utils.setup_parser">
 <code class="descclassname">pytan.utils.</code><code class="descname">setup_parser</code><span class="sig-paren">(</span><em>desc</em>, <em>help=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#setup_parser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.setup_parser" title="Permalink to this definition">¶</a></dt>
@@ -860,7 +862,7 @@ aginst the version of <a class="reference internal" href="pytan.html#module-pyta
 
 </div>
 <div class="section" id="utility-functions-dehumanize-human-strings">
-<h2>5.3.8. Utility Functions: Dehumanize human strings<a class="headerlink" href="#utility-functions-dehumanize-human-strings" title="Permalink to this headline">¶</a></h2>
+<h2>6.4.8. Utility Functions: Dehumanize human strings<a class="headerlink" href="#utility-functions-dehumanize-human-strings" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pytan.utils.dehumanize_package">
 <code class="descclassname">pytan.utils.</code><code class="descname">dehumanize_package</code><span class="sig-paren">(</span><em>package</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#dehumanize_package"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.dehumanize_package" title="Permalink to this definition">¶</a></dt>
@@ -1160,7 +1162,7 @@ True: <cite>sensors</cite> is allowed to be empty</p>
 
 </div>
 <div class="section" id="utility-functions-kwargs-getters">
-<h2>5.3.9. Utility Functions: kwargs getters<a class="headerlink" href="#utility-functions-kwargs-getters" title="Permalink to this headline">¶</a></h2>
+<h2>6.4.9. Utility Functions: kwargs getters<a class="headerlink" href="#utility-functions-kwargs-getters" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pytan.utils.get_ask_kwargs">
 <code class="descclassname">pytan.utils.</code><code class="descname">get_ask_kwargs</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#get_ask_kwargs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.get_ask_kwargs" title="Permalink to this definition">¶</a></dt>
@@ -1243,7 +1245,7 @@ True: <cite>sensors</cite> is allowed to be empty</p>
 
 </div>
 <div class="section" id="utility-functions-object-mappers">
-<h2>5.3.10. Utility Functions: Object mappers<a class="headerlink" href="#utility-functions-object-mappers" title="Permalink to this headline">¶</a></h2>
+<h2>6.4.10. Utility Functions: Object mappers<a class="headerlink" href="#utility-functions-object-mappers" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pytan.utils.get_obj_map">
 <code class="descclassname">pytan.utils.</code><code class="descname">get_obj_map</code><span class="sig-paren">(</span><em>objtype</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#get_obj_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.get_obj_map" title="Permalink to this definition">¶</a></dt>
@@ -1294,7 +1296,7 @@ True: <cite>sensors</cite> is allowed to be empty</p>
 
 </div>
 <div class="section" id="utility-functions-taniumpy-objects">
-<h2>5.3.11. Utility Functions: TaniumPy objects<a class="headerlink" href="#utility-functions-taniumpy-objects" title="Permalink to this headline">¶</a></h2>
+<h2>6.4.11. Utility Functions: TaniumPy objects<a class="headerlink" href="#utility-functions-taniumpy-objects" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pytan.utils.apply_options_obj">
 <code class="descclassname">pytan.utils.</code><code class="descname">apply_options_obj</code><span class="sig-paren">(</span><em>options</em>, <em>obj</em>, <em>dest</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#apply_options_obj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.apply_options_obj" title="Permalink to this definition">¶</a></dt>
@@ -1631,7 +1633,7 @@ True: <cite>sensors</cite> is allowed to be empty</p>
 
 </div>
 <div class="section" id="utility-functions-definition-objects">
-<h2>5.3.12. Utility Functions: Definition objects<a class="headerlink" href="#utility-functions-definition-objects" title="Permalink to this headline">¶</a></h2>
+<h2>6.4.12. Utility Functions: Definition objects<a class="headerlink" href="#utility-functions-definition-objects" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pytan.utils.check_dictkey">
 <code class="descclassname">pytan.utils.</code><code class="descname">check_dictkey</code><span class="sig-paren">(</span><em>d</em>, <em>key</em>, <em>valid_types</em>, <em>valid_list_types</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#check_dictkey"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.check_dictkey" title="Permalink to this definition">¶</a></dt>
@@ -1804,10 +1806,10 @@ True: <cite>sensors</cite> is allowed to be empty</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="pytan.unittest.html" class="btn btn-neutral float-right" title="5.4. pytan Unit Tests">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="pytan.unittest.html" class="btn btn-neutral float-right" title="6.5. pytan Unit Tests">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="pytan.constants.html" class="btn btn-neutral" title="5.2. pytan.constants module"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="pytan.constants.html" class="btn btn-neutral" title="6.3. pytan.constants module"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -1817,7 +1819,7 @@ True: <cite>sensors</cite> is allowed to be empty</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2014, Tanium.
-      Last updated on Dec 05, 2014.
+      Last updated on Dec 08, 2014.
     </p>
   </div>
 

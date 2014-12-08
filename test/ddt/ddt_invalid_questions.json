@@ -1,5 +1,40 @@
 {
-    "ask_manual_question_invalid_sensor": {
+    "invalid_ask_manual_human_question_sensor_help": {
+        "desc": "Have ask_manual_human() return the help for sensors",
+        "priority": "1",
+        "method": "ask",
+        "args": {
+            "qtype": "manual_human",
+            "sensors_help": true
+        },
+        "exception": "pytan.utils.PytanHelp",
+        "error_str": ".*Help.*"
+    },
+    "invalid_ask_manual_human_question_filter_help": {
+        "desc": "Have ask_manual_human() return the help for filters",
+        "priority": "1",
+        "method": "ask",
+        "args": {
+            "qtype": "manual_human",
+            "filters_help": true
+        },
+        "exception": "pytan.utils.PytanHelp",
+        "error_str": ".*Help.*"
+    },
+    "invalid_ask_manual_human_question_option_help": {
+        "desc": "Have ask_manual_human() return the help for options",
+        "priority": "1",
+        "method": "ask",
+        "args": {
+            "qtype": "manual_human",
+            "options_help": true
+        },
+        "exception": "pytan.utils.PytanHelp",
+        "error_str": ".*Help.*"
+    },
+    "invalid_ask_manual_question_sensor": {
+        "desc": "Ask a question using a sensor that does not exist",
+        "priority": "2",
         "method": "ask",
         "args": {
             "qtype": "manual",
@@ -8,25 +43,20 @@
         "exception": "pytan.utils.HandlerError",
         "error_str": "No results found searching for Sensor.*"
     },
-    "ask_manual_human_question_invalid_sensor": {
+    "invalid_ask_manual_human_question_filter": {
+        "desc": "Ask a question using an invalid filter.",
+        "priority": "2",
         "method": "ask",
         "args": {
             "qtype": "manual_human",
-            "sensors": "IP Sensor, that ipaddress = 127.0.0.1"
+            "sensors": "Computer name, that does not meet:little"
         },
         "exception": "pytan.utils.HumanParserError",
         "error_str": "Filter.*is not a valid filter!"
     },
-    "ask_manual_human_question_invalid_filter": {
-        "method": "ask",
-        "args": {
-            "qtype": "manual_human",
-            "sensors": "Computer name, that does not meet little"
-        },
-        "exception": "pytan.utils.HumanParserError",
-        "error_str": "Filter.*is not a valid filter!"
-    },
-    "ask_manual_human_question_toomanyparams": {
+    "invalid_ask_manual_human_question_paramater_too_many": {
+        "desc": "Ask a question that supplies too many parameter blocks ({}).",
+        "priority": "3",
         "method": "ask",
         "args": {
             "qtype": "manual_human",
@@ -35,25 +65,21 @@
         "exception": "pytan.utils.HumanParserError",
         "error_str": "More than one parameter.*"
     },
-    "ask_manual_question_filterhelp": {
+
+    "invalid_ask_manual_human_question_option": {
+        "desc": "Ask a question using an invalid option.",
+        "priority": "4",
         "method": "ask",
         "args": {
             "qtype": "manual_human",
-            "sensors": "Operating system, that help"
-        },
-        "exception": "pytan.utils.HumanParserError",
-        "error_str": "Filter.*is not a valid filter!"
-    },
-    "ask_manual_question_optionhelp": {
-        "method": "ask",
-        "args": {
-            "qtype": "manual_human",
-            "sensors": "Operating system, opt:help"
+            "sensors": "Operating system, opt:bad"
         },
         "exception": "pytan.utils.HumanParserError",
         "error_str": "Option.*is not a valid option!"
     },
-    "ask_manual_human_question_param_missing_keysplit": {
+    "invalid_ask_manual_human_question_parameter_split": {
+        "desc": "Ask a question with parameters that are missing a splitter (=) to designate the key from value.",
+        "priority": "5",
         "method": "ask",
         "args": {
             "qtype": "manual_human",

@@ -1,5 +1,7 @@
 {
-    "get_action_single_by_id": {
+    "get_action_by_id": {
+        "desc": "Get an action by id",
+        "priority": "1",
         "method": "get",
         "args": {"objtype": "action", "id": 1},
         "tests": [
@@ -8,7 +10,9 @@
             "all([isinstance(x, taniumpy.Action) for x in response])"
         ]
     },
-    "get_group_single_by_name": {
+    "get_group_by_name": {
+        "desc": "Get a group by name",
+        "priority": "1",
         "method": "get",
         "args": {"objtype": "group", "name": "All Computers"},
         "tests": [
@@ -17,7 +21,9 @@
             "all([isinstance(x, taniumpy.Group) for x in response])"
         ]
     },
-    "get_package_single_by_name": {
+    "get_package_by_name": {
+        "desc": "Get a package by name",
+        "priority": "1",
         "method": "get",
         "args": {"objtype": "package", "name": "Distribute Patch Tools"},
         "tests": [
@@ -26,7 +32,9 @@
             "all([isinstance(x, taniumpy.PackageSpec) for x in response])"
         ]
     },
-    "get_question_single_by_id": {
+    "get_question_by_id": {
+        "desc": "Get a question by id",
+        "priority": "1",
         "method": "get",
         "args": {"objtype": "question", "id": 1},
         "tests": [
@@ -35,7 +43,9 @@
             "all([isinstance(x, taniumpy.Question) for x in response])"
         ]
     },
-    "get_saved_action_single_by_name": {
+    "get_saved_action_by_name": {
+        "desc": "Get a saved action by name",
+        "priority": "1",
         "method": "get",
         "args": {
             "objtype": "saved_action",
@@ -47,7 +57,9 @@
             "all([isinstance(x, taniumpy.SavedAction) for x in response])"
         ]
     },
-    "get_saved_question_single_by_name": {
+    "get_saved_question_by_name": {
+        "desc": "Get saved question by name",
+        "priority": "1",
         "method": "get",
         "args": {
             "objtype": "saved_question",
@@ -59,7 +71,9 @@
             "all([isinstance(x, taniumpy.SavedQuestion) for x in response])"
         ]
     },
-    "get_saved_question_multiple": {
+    "get_saved_question_by_names": {
+        "desc": "Get two saved questions by name",
+        "priority": "1",
         "method": "get",
         "args": {
             "objtype": "saved_question",
@@ -71,7 +85,9 @@
             "all([isinstance(x, taniumpy.SavedQuestion) for x in response])"
         ]
     },
-    "get_sensor_single_by_name": {
+    "get_sensor_by_name": {
+        "desc": "Get a sensor by name",
+        "priority": "1",
         "method": "get",
         "args": {"objtype": "sensor", "name": "Computer Name"},
         "tests": [
@@ -80,7 +96,9 @@
             "all([isinstance(x, taniumpy.Sensor) for x in response])"
         ]
     },
-    "get_sensor_single_by_id": {
+    "get_sensor_by_id": {
+        "desc": "Get a sensor by id",
+        "priority": "1",
         "method": "get",
         "args": {"objtype": "sensor", "id": 1},
         "tests": [
@@ -89,7 +107,9 @@
             "all([isinstance(x, taniumpy.Sensor) for x in response])"
         ]
     },
-    "get_sensor_single_by_hash": {
+    "get_sensor_by_hash": {
+        "desc": "Get a sensor by hash",
+        "priority": "1",
         "method": "get",
         "args": {"objtype": "sensor", "hash": "322086833"},
         "tests": [
@@ -98,7 +118,9 @@
             "all([isinstance(x, taniumpy.Sensor) for x in response])"
         ]
     },
-    "get_sensor_multiple": {
+    "get_sensor_by_names": {
+        "desc": "Get multiple sensors by name",
+        "priority": "1",
         "method": "get",
         "args": {
             "objtype": "sensor",
@@ -110,7 +132,9 @@
             "all([isinstance(x, taniumpy.Sensor) for x in response])"
         ]
     },
-    "get_sensor_multiple_selectors": {
+    "get_sensor_by_mixed": {
+        "desc": "Get multiple sensors by id, name, and hash",
+        "priority": "1",
         "method": "get",
         "args": {
             "objtype": "sensor",
@@ -124,7 +148,9 @@
             "all([isinstance(x, taniumpy.Sensor) for x in response])"
         ]
     },
-    "get_setting_single_by_name": {
+    "get_setting_by_name": {
+        "desc": "Get a system setting by name",
+        "priority": "1",
         "method": "get",
         "args": {"objtype": "setting", "name": "control_address"},
         "tests": [
@@ -133,7 +159,9 @@
             "all([isinstance(x, taniumpy.SystemSetting) for x in response])"
         ]
     },
-    "get_user_single_by_id": {
+    "get_user_by_id": {
+        "desc": "Get a user by id",
+        "priority": "1",
         "method": "get",
         "args": {"objtype": "user", "id": 1},
         "tests": [
@@ -142,7 +170,9 @@
             "all([isinstance(x, taniumpy.User) for x in response])"
         ]
     },
-    "get_user_single_by_name": {
+    "get_user_by_name": {
+        "desc": "Get a user by name",
+        "priority": "1",
         "method": "get",
         "args": {"objtype": "user", "name": "Tanium User"},
         "tests": [
@@ -151,7 +181,9 @@
             "all([isinstance(x, taniumpy.User) for x in response])"
         ]
     },
-    "get_userrole_single_by_id": {
+    "get_userrole_by_id": {
+        "desc": "Get a user role by id.",
+        "priority": "1",
         "method": "get",
         "args": {"objtype": "userrole", "id": 1},
         "tests": [
@@ -160,9 +192,11 @@
             "all([isinstance(x, taniumpy.UserRole) for x in response])"
         ]
     },
-    "get_whitelisted_url_single_by_id": {
+    "get_whitelisted_url_by_id": {
+        "desc": "Get a whitelisted url by id",
+        "priority": "1",
         "method": "get",
-        "args": {"objtype": "whitelisted_url", "id": 4},
+        "args": {"objtype": "whitelisted_url", "id": 1},
         "tests": [
             "len(response) == 1",
             "isinstance(response, taniumpy.WhiteListedUrlList)",
@@ -170,6 +204,8 @@
         ]
     },
     "get_leader_clients": {
+        "desc": "Get all clients that are Leader status",
+        "priority": "1",
         "method": "get",
         "args": {"objtype": "client", "status": "Leader"},
         "tests": [
@@ -179,6 +215,8 @@
         ]
     },
     "get_all_actions": {
+        "desc": "Get all actions",
+        "priority": "2",
         "method": "get_all",
         "args": {"objtype": "action"},
         "tests": [
@@ -188,6 +226,8 @@
         ]
     },
     "get_all_clients": {
+        "desc": "Get all clients",
+        "priority": "2",
         "method": "get_all",
         "args": {"objtype": "client"},
         "tests": [
@@ -197,6 +237,8 @@
         ]
     },
     "get_all_groups": {
+        "desc": "Get all groups",
+        "priority": "2",
         "method": "get_all",
         "args": {"objtype": "group"},
         "tests": [
@@ -206,6 +248,8 @@
         ]
     },
     "get_all_packages": {
+        "desc": "Get all packages",
+        "priority": "2",
         "method": "get_all",
         "args": {"objtype": "package"},
         "tests": [
@@ -215,6 +259,8 @@
         ]
     },
     "get_all_questions": {
+        "desc": "Get all questions",
+        "priority": "2",
         "method": "get_all",
         "args": {"objtype": "question"},
         "tests": [
@@ -224,6 +270,8 @@
         ]
     },
     "get_all_saved_actions": {
+        "desc": "Get all saved actions",
+        "priority": "2",
         "method": "get_all",
         "args": {"objtype": "saved_action"},
         "tests": [
@@ -233,6 +281,8 @@
         ]
     },
     "get_all_saved_questions": {
+        "desc": "Get all saved questions",
+        "priority": "2",
         "method": "get_all",
         "args": {"objtype": "saved_question"},
         "tests": [
@@ -242,6 +292,8 @@
         ]
     },
     "get_all_sensors": {
+        "desc": "Get all sensors",
+        "priority": "2",
         "method": "get_all",
         "args": {"objtype": "sensor"},
         "tests": [
@@ -251,6 +303,8 @@
         ]
     },
     "get_all_settings": {
+        "desc": "Get all system settings",
+        "priority": "2",
         "method": "get_all",
         "args": {"objtype": "setting"},
         "tests": [
@@ -260,6 +314,8 @@
         ]
     },
     "get_all_users": {
+        "desc": "Get all users",
+        "priority": "2",
         "method": "get_all",
         "args": {"objtype": "user"},
         "tests": [
@@ -269,6 +325,8 @@
         ]
     },
     "get_all_userroless": {
+        "desc": "Get all user roles",
+        "priority": "2",
         "method": "get_all",
         "args": {"objtype": "userrole"},
         "tests": [
@@ -278,6 +336,8 @@
         ]
     },
     "get_all_whitelisted_urls": {
+        "desc": "Get all whitelisted urls",
+        "priority": "2",
         "method": "get_all",
         "args": {"objtype": "whitelisted_url"},
         "tests": [

@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>5.1. pytan.handler module &mdash; PyTan 1.0.0 documentation</title>
+  <title>6.2. pytan.handler module &mdash; PyTan 1.0.0 documentation</title>
   
 
   
@@ -29,9 +29,9 @@
 
   
     <link rel="top" title="PyTan 1.0.0 documentation" href="index.html"/>
-        <link rel="up" title="5. pytan package" href="pytan.html"/>
-        <link rel="next" title="5.2. pytan.constants module" href="pytan.constants.html"/>
-        <link rel="prev" title="5. pytan package" href="pytan.html"/> 
+        <link rel="up" title="6. pytan package" href="pytan.html"/>
+        <link rel="next" title="6.3. pytan.constants module" href="pytan.constants.html"/>
+        <link rel="prev" title="6.1.12.7. Invalid export basetype bad format" href="examples/invalid_export_basetype_bad_format.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -67,18 +67,20 @@
 <li class="toctree-l1"><a class="reference internal" href="description.html#why-it-was-created">2. Why it was created</a></li>
 <li class="toctree-l1"><a class="reference internal" href="description.html#requirements">3. Requirements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="description.html#installation">4. Installation</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="pytan.html">5. pytan package</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="">5.1. pytan.handler module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.constants.html">5.2. pytan.constants module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html">5.3. pytan.utils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.unittest.html">5.4. pytan Unit Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.functest.html">5.5. pytan Functional Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="description.html#usage">5. Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="pytan.html">6. pytan package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="examples/pytan_examples.html">6.1. pytan API examples</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">6.2. pytan.handler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.constants.html">6.3. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html">6.4. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.unittest.html">6.5. pytan Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.functest.html">6.6. pytan Functional Tests</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="taniumpy.html">6. taniumpy package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="taniumpy.session.html">6.1. taniumpy.session module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="taniumpy.question_asker.html">6.2. taniumpy.question_asker module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html">6.3. taniumpy.object_types package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="taniumpy.html">7. taniumpy package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.session.html">1. taniumpy.session module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.question_asker.html">2. taniumpy.question_asker module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html">3. taniumpy.object_types package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="xmltodict.html">7. xmltodict module</a><ul class="simple">
@@ -114,9 +116,9 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-          <li><a href="pytan.html">5. pytan package</a> &raquo;</li>
+          <li><a href="pytan.html">6. pytan package</a> &raquo;</li>
       
-    <li>5.1. pytan.handler module</li>
+    <li>6.2. pytan.handler module</li>
       <li class="wy-breadcrumbs-aside">
         
           <a href="_sources/pytan.handler.txt" rel="nofollow"> View page source</a>
@@ -128,10 +130,10 @@
           <div role="main" class="document">
             
   <div class="section" id="module-pytan.handler">
-<span id="pytan-handler-module"></span><h1>5.1. pytan.handler module<a class="headerlink" href="#module-pytan.handler" title="Permalink to this headline">¶</a></h1>
+<span id="pytan-handler-module"></span><h1>6.2. pytan.handler module<a class="headerlink" href="#module-pytan.handler" title="Permalink to this headline">¶</a></h1>
 <p>The main <a class="reference internal" href="pytan.html#module-pytan" title="pytan"><code class="xref py py-mod docutils literal"><span class="pre">pytan</span></code></a> module that provides methods for programmatic use.</p>
 <div class="section" id="handler-class">
-<h2>5.1.1. Handler Class<a class="headerlink" href="#handler-class" title="Permalink to this headline">¶</a></h2>
+<h2>6.2.1. Handler Class<a class="headerlink" href="#handler-class" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="pytan.handler.Handler">
 <em class="property">class </em><code class="descclassname">pytan.handler.</code><code class="descname">Handler</code><span class="sig-paren">(</span><em>username</em>, <em>password</em>, <em>host</em>, <em>port='444'</em>, <em>loglevel=0</em>, <em>debugformat=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler" title="Permalink to this definition">¶</a></dt>
@@ -189,7 +191,7 @@
 </dd></dl>
 
 <div class="section" id="example-create-a-handler-object">
-<h3>5.1.1.1. Example: Create a Handler object<a class="headerlink" href="#example-create-a-handler-object" title="Permalink to this headline">¶</a></h3>
+<h3>6.2.1.1. Example: Create a Handler object<a class="headerlink" href="#example-create-a-handler-object" title="Permalink to this headline">¶</a></h3>
 <p>Setup a Handler() object:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">sys</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;/path/to/pytan/&#39;</span><span class="p">)</span>
@@ -200,9 +202,9 @@
 </div>
 <hr class="docutils" />
 <div class="section" id="handler-methods-questions-and-actions">
-<h3>5.1.1.2. Handler Methods: Questions and Actions<a class="headerlink" href="#handler-methods-questions-and-actions" title="Permalink to this headline">¶</a></h3>
+<h3>6.2.1.2. Handler Methods: Questions and Actions<a class="headerlink" href="#handler-methods-questions-and-actions" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="ask-a-question">
-<h4>5.1.1.2.1. Ask a Question<a class="headerlink" href="#ask-a-question" title="Permalink to this headline">¶</a></h4>
+<h4>6.2.1.2.1. Ask a Question<a class="headerlink" href="#ask-a-question" title="Permalink to this headline">¶</a></h4>
 <dl class="method">
 <dt id="pytan.handler.Handler.ask">
 <code class="descclassname">Handler.</code><code class="descname">ask</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.ask"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.ask" title="Permalink to this definition">¶</a></dt>
@@ -239,7 +241,7 @@
 
 </div>
 <div class="section" id="ask-a-saved-question">
-<h4>5.1.1.2.2. Ask a Saved Question<a class="headerlink" href="#ask-a-saved-question" title="Permalink to this headline">¶</a></h4>
+<h4>6.2.1.2.2. Ask a Saved Question<a class="headerlink" href="#ask-a-saved-question" title="Permalink to this headline">¶</a></h4>
 <dl class="method">
 <dt id="pytan.handler.Handler.ask_saved">
 <code class="descclassname">Handler.</code><code class="descname">ask_saved</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.ask_saved"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.ask_saved" title="Permalink to this definition">¶</a></dt>
@@ -282,7 +284,7 @@
 
 </div>
 <div class="section" id="asking-a-manual-question">
-<h4>5.1.1.2.3. Asking a Manual Question<a class="headerlink" href="#asking-a-manual-question" title="Permalink to this headline">¶</a></h4>
+<h4>6.2.1.2.3. Asking a Manual Question<a class="headerlink" href="#asking-a-manual-question" title="Permalink to this headline">¶</a></h4>
 <dl class="method">
 <dt id="pytan.handler.Handler.ask_manual">
 <code class="descclassname">Handler.</code><code class="descname">ask_manual</code><span class="sig-paren">(</span><em>get_results=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.ask_manual"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.ask_manual" title="Permalink to this definition">¶</a></dt>
@@ -388,8 +390,31 @@ their corresponding definitions needed by <a class="reference internal" href="#p
 </div></blockquote>
 <p><strong>get_results</strong> : bool, optional</p>
 <blockquote>
-<div><p>True: wait for result completion after asking question
-False: just ask the question and return it in result</p>
+<div><ul class="simple">
+<li>True: wait for result completion after asking question</li>
+<li>False: just ask the question and return it in result</li>
+</ul>
+</div></blockquote>
+<p><strong>sensors_help</strong> : bool, optional</p>
+<blockquote>
+<div><ul class="simple">
+<li>False: do not print the help string for sensors</li>
+<li>True: print the help string for sensors and exit</li>
+</ul>
+</div></blockquote>
+<p><strong>filters_help</strong> : bool, optional</p>
+<blockquote>
+<div><ul class="simple">
+<li>False: do not print the help string for filters</li>
+<li>True: print the help string for filters and exit</li>
+</ul>
+</div></blockquote>
+<p><strong>options_help</strong> : bool, optional</p>
+<blockquote>
+<div><ul class="simple">
+<li>False: do not print the help string for options</li>
+<li>True: print the help string for options and exit</li>
+</ul>
 </div></blockquote>
 </td>
 </tr>
@@ -425,18 +450,18 @@ False: just ask the question and return it in result</p>
 </pre></div>
 </div>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># example of str for `sensors` with params and filter</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sensors</span> <span class="o">=</span> <span class="s">&#39;Sensor1{key:value}, that contains example text&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sensors</span> <span class="o">=</span> <span class="s">&#39;Sensor1{key:value}, that contains:example text&#39;</span>
 </pre></div>
 </div>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># example of str for `sensors` with params and filter and options</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sensors</span> <span class="o">=</span> <span class="p">(</span>
-<span class="gp">... </span>    <span class="s">&#39;Sensor1{key:value}, that contains example text,&#39;</span>
+<span class="gp">... </span>    <span class="s">&#39;Sensor1{key:value}, that contains:example text,&#39;</span>
 <span class="gp">... </span>    <span class="s">&#39;opt:ignore_case, opt:max_data_age:60&#39;</span>
 <span class="gp">... </span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># example of str for question_filters</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">question_filters</span> <span class="o">=</span> <span class="s">&#39;Sensor2, that contains example test&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">question_filters</span> <span class="o">=</span> <span class="s">&#39;Sensor2, that contains:example test&#39;</span>
 </pre></div>
 </div>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># example of list of str for question_options</span>
@@ -447,7 +472,7 @@ False: just ask the question and return it in result</p>
 
 </div>
 <div class="section" id="deploy-an-action">
-<h4>5.1.1.2.4. Deploy an Action<a class="headerlink" href="#deploy-an-action" title="Permalink to this headline">¶</a></h4>
+<h4>6.2.1.2.4. Deploy an Action<a class="headerlink" href="#deploy-an-action" title="Permalink to this headline">¶</a></h4>
 <dl class="method">
 <dt id="pytan.handler.Handler.deploy_action">
 <code class="descclassname">Handler.</code><code class="descname">deploy_action</code><span class="sig-paren">(</span><em>run=False</em>, <em>get_results=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.deploy_action"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.deploy_action" title="Permalink to this definition">¶</a></dt>
@@ -583,6 +608,27 @@ their corresponding definitions needed by <a class="reference internal" href="#p
 <li>False: just deploy the action and return the object in <cite>ret</cite></li>
 </ul>
 </div></blockquote>
+<p><strong>package_help</strong> : bool, optional</p>
+<blockquote>
+<div><ul class="simple">
+<li>False: do not print the help string for package</li>
+<li>True: print the help string for package and exit</li>
+</ul>
+</div></blockquote>
+<p><strong>filters_help</strong> : bool, optional</p>
+<blockquote>
+<div><ul class="simple">
+<li>False: do not print the help string for filters</li>
+<li>True: print the help string for filters and exit</li>
+</ul>
+</div></blockquote>
+<p><strong>options_help</strong> : bool, optional</p>
+<blockquote>
+<div><ul class="simple">
+<li>False: do not print the help string for options</li>
+<li>True: print the help string for options and exit</li>
+</ul>
+</div></blockquote>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>ret</strong> : dict, containing:</p>
@@ -618,7 +664,7 @@ their corresponding definitions needed by <a class="reference internal" href="#p
 </pre></div>
 </div>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># example of str for `action_filters` with params and filter for sensors</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">action_filters</span> <span class="o">=</span> <span class="s">&#39;Sensor1{key:value}, that contains example text&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">action_filters</span> <span class="o">=</span> <span class="s">&#39;Sensor1{key:value}, that contains:example text&#39;</span>
 </pre></div>
 </div>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># example of list of str for `action_options`</span>
@@ -669,7 +715,7 @@ their corresponding definitions needed by <a class="reference internal" href="#p
 
 </div>
 <div class="section" id="stopping-an-action">
-<h4>5.1.1.2.5. Stopping an Action<a class="headerlink" href="#stopping-an-action" title="Permalink to this headline">¶</a></h4>
+<h4>6.2.1.2.5. Stopping an Action<a class="headerlink" href="#stopping-an-action" title="Permalink to this headline">¶</a></h4>
 <dl class="method">
 <dt id="pytan.handler.Handler.stop_action">
 <code class="descclassname">Handler.</code><code class="descname">stop_action</code><span class="sig-paren">(</span><em>id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.stop_action"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.stop_action" title="Permalink to this definition">¶</a></dt>
@@ -698,9 +744,9 @@ their corresponding definitions needed by <a class="reference internal" href="#p
 </div>
 <hr class="docutils" />
 <div class="section" id="handler-methods-exporting-importing-objects">
-<h3>5.1.1.3. Handler Methods: Exporting/Importing Objects<a class="headerlink" href="#handler-methods-exporting-importing-objects" title="Permalink to this headline">¶</a></h3>
+<h3>6.2.1.3. Handler Methods: Exporting/Importing Objects<a class="headerlink" href="#handler-methods-exporting-importing-objects" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="import-an-api-object-from-json">
-<h4>5.1.1.3.1. Import an API Object from JSON<a class="headerlink" href="#import-an-api-object-from-json" title="Permalink to this headline">¶</a></h4>
+<h4>6.2.1.3.1. Import an API Object from JSON<a class="headerlink" href="#import-an-api-object-from-json" title="Permalink to this headline">¶</a></h4>
 <dl class="method">
 <dt id="pytan.handler.Handler.create_from_json">
 <code class="descclassname">Handler.</code><code class="descname">create_from_json</code><span class="sig-paren">(</span><em>objtype</em>, <em>json_file</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.create_from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.create_from_json" title="Permalink to this definition">¶</a></dt>
@@ -738,7 +784,7 @@ their corresponding definitions needed by <a class="reference internal" href="#p
 
 </div>
 <div class="section" id="load-a-python-object-from-json">
-<h4>5.1.1.3.2. Load a Python Object from JSON<a class="headerlink" href="#load-a-python-object-from-json" title="Permalink to this headline">¶</a></h4>
+<h4>6.2.1.3.2. Load a Python Object from JSON<a class="headerlink" href="#load-a-python-object-from-json" title="Permalink to this headline">¶</a></h4>
 <dl class="method">
 <dt id="pytan.handler.Handler.load_taniumpy_from_json">
 <code class="descclassname">Handler.</code><code class="descname">load_taniumpy_from_json</code><span class="sig-paren">(</span><em>json_file</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.load_taniumpy_from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.load_taniumpy_from_json" title="Permalink to this definition">¶</a></dt>
@@ -765,7 +811,7 @@ their corresponding definitions needed by <a class="reference internal" href="#p
 
 </div>
 <div class="section" id="export-object">
-<h4>5.1.1.3.3. Export Object<a class="headerlink" href="#export-object" title="Permalink to this headline">¶</a></h4>
+<h4>6.2.1.3.3. Export Object<a class="headerlink" href="#export-object" title="Permalink to this headline">¶</a></h4>
 <dl class="method">
 <dt id="pytan.handler.Handler.export_obj">
 <code class="descclassname">Handler.</code><code class="descname">export_obj</code><span class="sig-paren">(</span><em>obj</em>, <em>export_format</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.export_obj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.export_obj" title="Permalink to this definition">¶</a></dt>
@@ -852,7 +898,7 @@ their corresponding definitions needed by <a class="reference internal" href="#p
 
 </div>
 <div class="section" id="export-object-to-report-file">
-<h4>5.1.1.3.4. Export Object to Report File<a class="headerlink" href="#export-object-to-report-file" title="Permalink to this headline">¶</a></h4>
+<h4>6.2.1.3.4. Export Object to Report File<a class="headerlink" href="#export-object-to-report-file" title="Permalink to this headline">¶</a></h4>
 <dl class="method">
 <dt id="pytan.handler.Handler.export_to_report_file">
 <code class="descclassname">Handler.</code><code class="descname">export_to_report_file</code><span class="sig-paren">(</span><em>obj</em>, <em>export_format</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.export_to_report_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.export_to_report_file" title="Permalink to this definition">¶</a></dt>
@@ -954,12 +1000,12 @@ their corresponding definitions needed by <a class="reference internal" href="#p
 </div>
 <hr class="docutils" />
 <div class="section" id="handler-methods-creating-objects">
-<h3>5.1.1.4. Handler Methods: Creating Objects<a class="headerlink" href="#handler-methods-creating-objects" title="Permalink to this headline">¶</a></h3>
+<h3>6.2.1.4. Handler Methods: Creating Objects<a class="headerlink" href="#handler-methods-creating-objects" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="create-a-group">
-<h4>5.1.1.4.1. Create a Group<a class="headerlink" href="#create-a-group" title="Permalink to this headline">¶</a></h4>
+<h4>6.2.1.4.1. Create a Group<a class="headerlink" href="#create-a-group" title="Permalink to this headline">¶</a></h4>
 <dl class="method">
 <dt id="pytan.handler.Handler.create_group">
-<code class="descclassname">Handler.</code><code class="descname">create_group</code><span class="sig-paren">(</span><em>groupname</em>, <em>filters=[]</em>, <em>filter_options=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.create_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.create_group" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">Handler.</code><code class="descname">create_group</code><span class="sig-paren">(</span><em>groupname</em>, <em>filters=[]</em>, <em>filter_options=[]</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.create_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.create_group" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a group object</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -976,6 +1022,20 @@ their corresponding definitions needed by <a class="reference internal" href="#p
 <p><strong>filter_options</strong> : str or list of str, optional</p>
 <blockquote>
 <div><p>each string must describe an option for <cite>filters</cite></p>
+</div></blockquote>
+<p><strong>filters_help</strong> : bool, optional</p>
+<blockquote>
+<div><ul class="simple">
+<li>False: do not print the help string for filters</li>
+<li>True: print the help string for filters and exit</li>
+</ul>
+</div></blockquote>
+<p><strong>options_help</strong> : bool, optional</p>
+<blockquote>
+<div><ul class="simple">
+<li>False: do not print the help string for options</li>
+<li>True: print the help string for options and exit</li>
+</ul>
 </div></blockquote>
 </td>
 </tr>
@@ -1000,10 +1060,10 @@ their corresponding definitions needed by <a class="reference internal" href="#p
 
 </div>
 <div class="section" id="create-a-package">
-<h4>5.1.1.4.2. Create a Package<a class="headerlink" href="#create-a-package" title="Permalink to this headline">¶</a></h4>
+<h4>6.2.1.4.2. Create a Package<a class="headerlink" href="#create-a-package" title="Permalink to this headline">¶</a></h4>
 <dl class="method">
 <dt id="pytan.handler.Handler.create_package">
-<code class="descclassname">Handler.</code><code class="descname">create_package</code><span class="sig-paren">(</span><em>name</em>, <em>command</em>, <em>display_name=''</em>, <em>file_urls=[]</em>, <em>command_timeout_seconds=600</em>, <em>expire_seconds=600</em>, <em>parameters_json_file=''</em>, <em>verify_filters=[]</em>, <em>verify_filter_options=[]</em>, <em>verify_expire_seconds=600</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.create_package"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.create_package" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">Handler.</code><code class="descname">create_package</code><span class="sig-paren">(</span><em>name</em>, <em>command</em>, <em>display_name=''</em>, <em>file_urls=[]</em>, <em>command_timeout_seconds=600</em>, <em>expire_seconds=600</em>, <em>parameters_json_file=''</em>, <em>verify_filters=[]</em>, <em>verify_filter_options=[]</em>, <em>verify_expire_seconds=600</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.create_package"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.create_package" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a package object</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1055,6 +1115,20 @@ their corresponding definitions needed by <a class="reference internal" href="#p
 <blockquote>
 <div><p>timeout for verify action expiry in seconds</p>
 </div></blockquote>
+<p><strong>filters_help</strong> : bool, optional</p>
+<blockquote>
+<div><ul class="simple">
+<li>False: do not print the help string for filters</li>
+<li>True: print the help string for filters and exit</li>
+</ul>
+</div></blockquote>
+<p><strong>options_help</strong> : bool, optional</p>
+<blockquote>
+<div><ul class="simple">
+<li>False: do not print the help string for options</li>
+<li>True: print the help string for options and exit</li>
+</ul>
+</div></blockquote>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>package_obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.package_spec.PackageSpec" title="taniumpy.object_types.package_spec.PackageSpec"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.package_spec.PackageSpec</span></code></a></p>
@@ -1078,7 +1152,7 @@ their corresponding definitions needed by <a class="reference internal" href="#p
 
 </div>
 <div class="section" id="create-a-sensor">
-<h4>5.1.1.4.3. Create a Sensor<a class="headerlink" href="#create-a-sensor" title="Permalink to this headline">¶</a></h4>
+<h4>6.2.1.4.3. Create a Sensor<a class="headerlink" href="#create-a-sensor" title="Permalink to this headline">¶</a></h4>
 <dl class="method">
 <dt id="pytan.handler.Handler.create_sensor">
 <code class="descclassname">Handler.</code><code class="descname">create_sensor</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.create_sensor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.create_sensor" title="Permalink to this definition">¶</a></dt>
@@ -1100,7 +1174,7 @@ Use <a class="reference internal" href="#pytan.handler.Handler.create_from_json"
 
 </div>
 <div class="section" id="create-a-user">
-<h4>5.1.1.4.4. Create a User<a class="headerlink" href="#create-a-user" title="Permalink to this headline">¶</a></h4>
+<h4>6.2.1.4.4. Create a User<a class="headerlink" href="#create-a-user" title="Permalink to this headline">¶</a></h4>
 <dl class="method">
 <dt id="pytan.handler.Handler.create_user">
 <code class="descclassname">Handler.</code><code class="descname">create_user</code><span class="sig-paren">(</span><em>username</em>, <em>rolename=[]</em>, <em>roleid=[]</em>, <em>properties=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.create_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.create_user" title="Permalink to this definition">¶</a></dt>
@@ -1143,7 +1217,7 @@ Use <a class="reference internal" href="#pytan.handler.Handler.create_from_json"
 
 </div>
 <div class="section" id="create-a-whitelisted-url">
-<h4>5.1.1.4.5. Create a Whitelisted URL<a class="headerlink" href="#create-a-whitelisted-url" title="Permalink to this headline">¶</a></h4>
+<h4>6.2.1.4.5. Create a Whitelisted URL<a class="headerlink" href="#create-a-whitelisted-url" title="Permalink to this headline">¶</a></h4>
 <dl class="method">
 <dt id="pytan.handler.Handler.create_whitelisted_url">
 <code class="descclassname">Handler.</code><code class="descname">create_whitelisted_url</code><span class="sig-paren">(</span><em>url</em>, <em>regex=False</em>, <em>download_seconds=86400</em>, <em>properties=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.create_whitelisted_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.create_whitelisted_url" title="Permalink to this definition">¶</a></dt>
@@ -1191,9 +1265,9 @@ Use <a class="reference internal" href="#pytan.handler.Handler.create_from_json"
 </div>
 <hr class="docutils" />
 <div class="section" id="handler-methods-deleting-objects">
-<h3>5.1.1.5. Handler Methods: Deleting Objects<a class="headerlink" href="#handler-methods-deleting-objects" title="Permalink to this headline">¶</a></h3>
+<h3>6.2.1.5. Handler Methods: Deleting Objects<a class="headerlink" href="#handler-methods-deleting-objects" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="delete-an-object">
-<h4>5.1.1.5.1. Delete an Object<a class="headerlink" href="#delete-an-object" title="Permalink to this headline">¶</a></h4>
+<h4>6.2.1.5.1. Delete an Object<a class="headerlink" href="#delete-an-object" title="Permalink to this headline">¶</a></h4>
 <dl class="method">
 <dt id="pytan.handler.Handler.delete">
 <code class="descclassname">Handler.</code><code class="descname">delete</code><span class="sig-paren">(</span><em>objtype</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.delete" title="Permalink to this definition">¶</a></dt>
@@ -1233,9 +1307,9 @@ Use <a class="reference internal" href="#pytan.handler.Handler.create_from_json"
 </div>
 <hr class="docutils" />
 <div class="section" id="handler-methods-getting-objects">
-<h3>5.1.1.6. Handler Methods: Getting Objects<a class="headerlink" href="#handler-methods-getting-objects" title="Permalink to this headline">¶</a></h3>
+<h3>6.2.1.6. Handler Methods: Getting Objects<a class="headerlink" href="#handler-methods-getting-objects" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="get-single-or-multiple-objects-of-a-type">
-<h4>5.1.1.6.1. Get Single or Multiple Objects of a type<a class="headerlink" href="#get-single-or-multiple-objects-of-a-type" title="Permalink to this headline">¶</a></h4>
+<h4>6.2.1.6.1. Get Single or Multiple Objects of a type<a class="headerlink" href="#get-single-or-multiple-objects-of-a-type" title="Permalink to this headline">¶</a></h4>
 <dl class="method">
 <dt id="pytan.handler.Handler.get">
 <code class="descclassname">Handler.</code><code class="descname">get</code><span class="sig-paren">(</span><em>objtype</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.get" title="Permalink to this definition">¶</a></dt>
@@ -1267,7 +1341,7 @@ Use <a class="reference internal" href="#pytan.handler.Handler.create_from_json"
 
 </div>
 <div class="section" id="get-all-objects-of-a-type">
-<h4>5.1.1.6.2. Get All Objects of a type<a class="headerlink" href="#get-all-objects-of-a-type" title="Permalink to this headline">¶</a></h4>
+<h4>6.2.1.6.2. Get All Objects of a type<a class="headerlink" href="#get-all-objects-of-a-type" title="Permalink to this headline">¶</a></h4>
 <dl class="method">
 <dt id="pytan.handler.Handler.get_all">
 <code class="descclassname">Handler.</code><code class="descname">get_all</code><span class="sig-paren">(</span><em>objtype</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.get_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.get_all" title="Permalink to this definition">¶</a></dt>
@@ -1296,7 +1370,7 @@ Use <a class="reference internal" href="#pytan.handler.Handler.create_from_json"
 </div>
 </div>
 <div class="section" id="handler-methods-getting-result-data-result-info">
-<h3>5.1.1.7. Handler Methods: Getting Result Data / Result Info<a class="headerlink" href="#handler-methods-getting-result-data-result-info" title="Permalink to this headline">¶</a></h3>
+<h3>6.2.1.7. Handler Methods: Getting Result Data / Result Info<a class="headerlink" href="#handler-methods-getting-result-data-result-info" title="Permalink to this headline">¶</a></h3>
 <dl class="method">
 <dt id="pytan.handler.Handler.get_result_data">
 <code class="descclassname">Handler.</code><code class="descname">get_result_data</code><span class="sig-paren">(</span><em>obj</em>, <em>aggregate=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.get_result_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.get_result_data" title="Permalink to this definition">¶</a></dt>
@@ -1357,7 +1431,7 @@ Use <a class="reference internal" href="#pytan.handler.Handler.create_from_json"
 </div>
 <hr class="docutils" />
 <div class="section" id="handler-methods-private-methods">
-<h3>5.1.1.8. Handler Methods: Private Methods<a class="headerlink" href="#handler-methods-private-methods" title="Permalink to this headline">¶</a></h3>
+<h3>6.2.1.8. Handler Methods: Private Methods<a class="headerlink" href="#handler-methods-private-methods" title="Permalink to this headline">¶</a></h3>
 <dl class="method">
 <dt id="pytan.handler.Handler._find">
 <code class="descclassname">Handler.</code><code class="descname">_find</code><span class="sig-paren">(</span><em>api_object</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler._find"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler._find" title="Permalink to this definition">¶</a></dt>
@@ -1434,10 +1508,10 @@ Use <a class="reference internal" href="#pytan.handler.Handler.create_from_json"
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="pytan.constants.html" class="btn btn-neutral float-right" title="5.2. pytan.constants module">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="pytan.constants.html" class="btn btn-neutral float-right" title="6.3. pytan.constants module">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="pytan.html" class="btn btn-neutral" title="5. pytan package"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="examples/invalid_export_basetype_bad_format.html" class="btn btn-neutral" title="6.1.12.7. Invalid export basetype bad format"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -1447,7 +1521,7 @@ Use <a class="reference internal" href="#pytan.handler.Handler.create_from_json"
   <div role="contentinfo">
     <p>
         &copy; Copyright 2014, Tanium.
-      Last updated on Dec 05, 2014.
+      Last updated on Dec 08, 2014.
     </p>
   </div>
 

@@ -301,49 +301,58 @@ The string to surround a parameter with when passing parameters to the SOAP API 
 
 FILTER_MAPS = [
     {
-        'human': ['<', 'less', 'lt'],
+        'human': ['<', 'less', 'lt', 'less than'],
         'operator': 'Less',
         'not_flag': 0,
+        'help': "Filter for less than VALUE",
     },
     {
-        'human': ['!<', 'notless', 'not less'],
+        'human': ['!<', 'notless', 'not less', 'not less than'],
         'operator': 'Less',
         'not_flag': 1,
+        'help': "Filter for not less than VALUE",
     },
     {
         'human': ['<=', 'less equal', 'lessequal', 'le'],
         'operator': 'LessEqual',
         'not_flag': 0,
+        'help': "Filter for less than or equal to VALUE",
     },
     {
         'human': ['!<=', 'not less equal', 'not lessequal'],
         'operator': 'LessEqual',
         'not_flag': 1,
+        'help': "Filter for not less than or equal to VALUE",
     },
     {
-        'human': ['>', 'greater', 'gt'],
+        'human': ['>', 'greater', 'gt', 'greater than'],
         'operator': 'Greater',
         'not_flag': 0,
+        'help': "Filter for greater than VALUE",
     },
     {
-        'human': ['!>', 'not greater', 'notgreater'],
+        'human': ['!>', 'not greater', 'notgreater', 'not greater than'],
         'operator': 'Greater',
         'not_flag': 1,
+        'help': "Filter for not greater than VALUE",
     },
     {
         'human': ['=>', 'greater equal', 'greaterequal', 'ge'],
         'operator': 'GreaterEqual',
         'not_flag': 0,
+        'help': "Filter for greater than or equal to VALUE",
     },
     {
         'human': ['!=>', 'not greater equal', 'notgreaterequal'],
         'operator': 'GreaterEqual',
         'not_flag': 1,
+        'help': "Filter for not greater than VALUE",
     },
     {
         'human': ['=', 'equal', 'equals', 'eq'],
         'operator': 'Equal',
         'not_flag': 0,
+        'help': "Filter for equals to VALUE",
     },
     {
         'human': [
@@ -351,6 +360,7 @@ FILTER_MAPS = [
         ],
         'operator': 'Equal',
         'not_flag': 0,
+        'help': "Filter for not equals to VALUE",
     },
     {
         'human': ['contains'],
@@ -358,6 +368,7 @@ FILTER_MAPS = [
         'pre_value': '.*',
         'post_value': '.*',
         'not_flag': 0,
+        'help': "Filter for contains VALUE (adds .* before and after VALUE)",
     },
     {
         'human': [
@@ -367,12 +378,14 @@ FILTER_MAPS = [
         'pre_value': '.*',
         'post_value': '.*',
         'not_flag': 1,
+        'help': "Filter for does not contain VALUE (adds .* before and after VALUE)",
     },
     {
         'human': ['starts with', 'startswith'],
         'operator': 'RegexMatch',
         'post_value': '.*',
         'not_flag': 0,
+        'help': "Filter for starts with VALUE (adds .* after VALUE)",
     },
     {
         'human': [
@@ -382,12 +395,14 @@ FILTER_MAPS = [
         'operator': 'RegexMatch',
         'post_value': '.*',
         'not_flag': 1,
+        'help': "Filter for does not start with VALUE (adds .* after VALUE)",
     },
     {
         'human': ['ends with', 'endswith'],
         'operator': 'RegexMatch',
         'pre_value': '.*',
         'not_flag': 0,
+        'help': "Filter for ends with VALUE (adds .* before VALUE)",
     },
     {
         'human': [
@@ -397,6 +412,7 @@ FILTER_MAPS = [
         'operator': 'RegexMatch',
         'pre_value': '.*',
         'not_flag': 1,
+        'help': "Filter for does bit end with VALUE (adds .* before VALUE)",
     },
     {
         'human': [
@@ -405,11 +421,13 @@ FILTER_MAPS = [
         ],
         'operator': 'RegexMatch',
         'not_flag': 1,
+        'help': "Filter for non regular expression match for VALUE",
     },
     {
         'human': ['is', 'regex', 'regex match', 'regexmatch', 're'],
         'operator': 'RegexMatch',
         'not_flag': 0,
+        'help': "Filter for regular expression match for VALUE",
     },
 ]
 """
@@ -427,24 +445,28 @@ OPTION_MAPS = [
         'attrs': {'ignore_case_flag': 1},
         'destination': 'filter',
         'valid_type': int,
+        'help': "Make the filter do a case insensitive match",
     },
     {
         'human': 'match_case',
         'attrs': {'ignore_case_flag': 0},
         'destination': 'filter',
         'valid_type': int,
+        'help': "Make the filter do a case sensitive match",
     },
     {
         'human': 'match_any_value',
         'attrs': {'all_values_flag': 0, 'all_times_flag': 0},
         'destination': 'filter',
         'valid_type': int,
+        'help': "Make the filter match any value",
     },
     {
         'human': 'match_all_values',
         'attrs': {'all_values_flag': 1, 'all_times_flag': 1},
         'destination': 'filter',
         'valid_type': int,
+        'help': "Make the filter match all values",
     },
     {
         'human': 'max_data_age',
@@ -452,6 +474,7 @@ OPTION_MAPS = [
         'human_type': 'seconds',
         'valid_type': int,
         'destination': 'filter',
+        'help': "Re-fetch cached values older than N seconds",
     },
     {
         'human': 'value_type',
@@ -460,18 +483,21 @@ OPTION_MAPS = [
         'valid_values': 'constants.SENSOR_TYPE_MAP.values()',
         'destination': 'filter',
         'valid_type': str,
+        'help': "Make the filter consider the value type as VALUE_TYPE",
     },
     {
         'human': 'and',
         'attrs': {'and_flag': 1},
         'destination': 'group',
         'valid_type': int,
+        'help': "Use 'and' for all of the filters supplied",
     },
     {
         'human': 'or',
         'attrs': {'and_flag': 0},
         'destination': 'group',
         'valid_type': int,
+        'help': "Use 'or' for all of the filters supplied",
     },
 ]
 """

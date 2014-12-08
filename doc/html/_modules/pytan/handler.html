@@ -65,18 +65,20 @@
 <li class="toctree-l1"><a class="reference internal" href="../../description.html#why-it-was-created">2. Why it was created</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../description.html#requirements">3. Requirements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../description.html#installation">4. Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../pytan.html">5. pytan package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../pytan.handler.html">5.1. pytan.handler module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../pytan.constants.html">5.2. pytan.constants module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../pytan.utils.html">5.3. pytan.utils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../pytan.unittest.html">5.4. pytan Unit Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../pytan.functest.html">5.5. pytan Functional Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../description.html#usage">5. Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pytan.html">6. pytan package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/pytan_examples.html">6.1. pytan API examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.handler.html">6.2. pytan.handler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.constants.html">6.3. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.utils.html">6.4. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.unittest.html">6.5. pytan Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.functest.html">6.6. pytan Functional Tests</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../taniumpy.html">6. taniumpy package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../taniumpy.session.html">6.1. taniumpy.session module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../taniumpy.question_asker.html">6.2. taniumpy.question_asker module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../taniumpy.object_types.html">6.3. taniumpy.object_types package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../taniumpy.html">7. taniumpy package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../taniumpy.session.html">1. taniumpy.session module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../taniumpy.question_asker.html">2. taniumpy.question_asker module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../taniumpy.object_types.html">3. taniumpy.object_types package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../xmltodict.html">7. xmltodict module</a><ul class="simple">
@@ -153,6 +155,7 @@
 <span class="kn">from</span> <span class="nn">pytan</span> <span class="kn">import</span> <span class="n">constants</span>
 <span class="kn">from</span> <span class="nn">pytan.utils</span> <span class="kn">import</span> <span class="n">HandlerError</span>
 <span class="kn">from</span> <span class="nn">pytan.utils</span> <span class="kn">import</span> <span class="n">RunFalse</span>
+<span class="kn">from</span> <span class="nn">pytan.utils</span> <span class="kn">import</span> <span class="n">PytanHelp</span>
 
 <span class="n">mylog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;handler&quot;</span><span class="p">)</span>
 <span class="n">actionlog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;action_progress&quot;</span><span class="p">)</span>
@@ -449,8 +452,17 @@
 <span class="sd">        question_options : str, list of str, optional</span>
 <span class="sd">            options that apply to the whole question</span>
 <span class="sd">        get_results : bool, optional</span>
-<span class="sd">            True: wait for result completion after asking question</span>
-<span class="sd">            False: just ask the question and return it in result</span>
+<span class="sd">            * True: wait for result completion after asking question</span>
+<span class="sd">            * False: just ask the question and return it in result</span>
+<span class="sd">        sensors_help : bool, optional</span>
+<span class="sd">            * False: do not print the help string for sensors</span>
+<span class="sd">            * True: print the help string for sensors and exit</span>
+<span class="sd">        filters_help : bool, optional</span>
+<span class="sd">            * False: do not print the help string for filters</span>
+<span class="sd">            * True: print the help string for filters and exit</span>
+<span class="sd">        options_help : bool, optional</span>
+<span class="sd">            * False: do not print the help string for options</span>
+<span class="sd">            * True: print the help string for options and exit</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -467,16 +479,16 @@
 <span class="sd">        &gt;&gt;&gt; sensors = &#39;Sensor1{key:value}&#39;</span>
 
 <span class="sd">        &gt;&gt;&gt; # example of str for `sensors` with params and filter</span>
-<span class="sd">        &gt;&gt;&gt; sensors = &#39;Sensor1{key:value}, that contains example text&#39;</span>
+<span class="sd">        &gt;&gt;&gt; sensors = &#39;Sensor1{key:value}, that contains:example text&#39;</span>
 
 <span class="sd">        &gt;&gt;&gt; # example of str for `sensors` with params and filter and options</span>
 <span class="sd">        &gt;&gt;&gt; sensors = (</span>
-<span class="sd">        ...     &#39;Sensor1{key:value}, that contains example text,&#39;</span>
+<span class="sd">        ...     &#39;Sensor1{key:value}, that contains:example text,&#39;</span>
 <span class="sd">        ...     &#39;opt:ignore_case, opt:max_data_age:60&#39;</span>
 <span class="sd">        ... )</span>
 
 <span class="sd">        &gt;&gt;&gt; # example of str for question_filters</span>
-<span class="sd">        &gt;&gt;&gt; question_filters = &#39;Sensor2, that contains example test&#39;</span>
+<span class="sd">        &gt;&gt;&gt; question_filters = &#39;Sensor2, that contains:example test&#39;</span>
 
 <span class="sd">        &gt;&gt;&gt; # example of list of str for question_options</span>
 <span class="sd">        &gt;&gt;&gt; question_options = [&#39;max_data_age:3600&#39;, &#39;and&#39;]</span>
@@ -487,6 +499,15 @@
 <span class="sd">        :data:`pytan.constants.OPTION_MAPS` : valid option dictionaries for options</span>
 <span class="sd">        :data:`pytan.constants.ASK_KWARGS` : list of kwargs that can be passed to :class:`taniumpy.question_asker.QuestionAsker`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;sensors_help&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">PytanHelp</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">help_sensors</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;filters_help&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">PytanHelp</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">help_filters</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;options_help&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">PytanHelp</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">help_options</span><span class="p">())</span>
 
         <span class="k">if</span> <span class="s">&#39;sensors&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
             <span class="n">sensors</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;sensors&#39;</span><span class="p">)</span>
@@ -654,7 +675,8 @@
             <span class="n">parameters_json_file</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span>
             <span class="n">verify_filters</span><span class="o">=</span><span class="p">[],</span>
             <span class="n">verify_filter_options</span><span class="o">=</span><span class="p">[],</span>
-            <span class="n">verify_expire_seconds</span><span class="o">=</span><span class="mi">600</span><span class="p">):</span>
+            <span class="n">verify_expire_seconds</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a package object</span>
 
 <span class="sd">        Parameters</span>
@@ -683,6 +705,12 @@
 <span class="sd">            each string must describe an option for `verify_filters`</span>
 <span class="sd">        verify_expire_seconds : int, optional</span>
 <span class="sd">            timeout for verify action expiry in seconds</span>
+<span class="sd">        filters_help : bool, optional</span>
+<span class="sd">            * False: do not print the help string for filters</span>
+<span class="sd">            * True: print the help string for filters and exit</span>
+<span class="sd">        options_help : bool, optional</span>
+<span class="sd">            * False: do not print the help string for options</span>
+<span class="sd">            * True: print the help string for options and exit</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -694,6 +722,12 @@
 <span class="sd">        :data:`pytan.constants.FILTER_MAPS` : valid filters for verify_filters</span>
 <span class="sd">        :data:`pytan.constants.OPTION_MAPS` : valid options for verify_filter_options</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;filters_help&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">PytanHelp</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">help_filters</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;options_help&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">PytanHelp</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">help_options</span><span class="p">())</span>
 
         <span class="c"># bare minimum arguments for new package: name, command</span>
         <span class="n">add_package_obj</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">PackageSpec</span><span class="p">()</span>
@@ -796,7 +830,7 @@
         <span class="n">mylog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">package_obj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">package_obj</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">package_obj</span><span class="o">.</span><span class="n">command</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">package_obj</span>
 </div>
-<div class="viewcode-block" id="Handler.create_group"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.create_group">[docs]</a>    <span class="k">def</span> <span class="nf">create_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">groupname</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="p">[],</span> <span class="n">filter_options</span><span class="o">=</span><span class="p">[]):</span>
+<div class="viewcode-block" id="Handler.create_group"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.create_group">[docs]</a>    <span class="k">def</span> <span class="nf">create_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">groupname</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="p">[],</span> <span class="n">filter_options</span><span class="o">=</span><span class="p">[],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a group object</span>
 
 <span class="sd">        Parameters</span>
@@ -807,6 +841,12 @@
 <span class="sd">            each string must describe a filter</span>
 <span class="sd">        filter_options : str or list of str, optional</span>
 <span class="sd">            each string must describe an option for `filters`</span>
+<span class="sd">        filters_help : bool, optional</span>
+<span class="sd">            * False: do not print the help string for filters</span>
+<span class="sd">            * True: print the help string for filters and exit</span>
+<span class="sd">        options_help : bool, optional</span>
+<span class="sd">            * False: do not print the help string for options</span>
+<span class="sd">            * True: print the help string for options and exit</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -818,6 +858,12 @@
 <span class="sd">        :data:`pytan.constants.FILTER_MAPS` : valid filters for filters</span>
 <span class="sd">        :data:`pytan.constants.OPTION_MAPS` : valid options for filter_options</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;filters_help&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">PytanHelp</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">help_filters</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;options_help&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">PytanHelp</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">help_options</span><span class="p">())</span>
 
         <span class="n">filter_defs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">dehumanize_question_filters</span><span class="p">(</span><span class="n">filters</span><span class="p">)</span>
         <span class="n">filter_defs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_sensor_defs</span><span class="p">(</span><span class="n">filter_defs</span><span class="p">)</span>
@@ -1011,7 +1057,7 @@
             <span class="n">defname</span><span class="o">=</span><span class="s">&#39;action_filter_defs&#39;</span><span class="p">,</span>
             <span class="n">deftypes</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;list()&#39;</span><span class="p">,</span> <span class="s">&#39;str()&#39;</span><span class="p">,</span> <span class="s">&#39;dict()&#39;</span><span class="p">],</span>
             <span class="n">strconv</span><span class="o">=</span><span class="s">&#39;name&#39;</span><span class="p">,</span>
-            <span class="n">empty_ok</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+            <span class="n">empty_ok</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
             <span class="o">**</span><span class="n">kwargs</span>
         <span class="p">)</span>
 
@@ -1059,9 +1105,9 @@
 <span class="sd">        filter in both cases</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">run</span><span class="p">:</span>
-            <span class="n">pre_action_sensors</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;Computer Name&#39;</span><span class="p">,</span> <span class="s">&#39;Online, that = True&#39;</span><span class="p">]</span>
+            <span class="n">pre_action_sensors</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;Computer Name&#39;</span><span class="p">,</span> <span class="s">&#39;Online, that =:True&#39;</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">pre_action_sensors</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;Online, that = True&#39;</span><span class="p">]</span>
+            <span class="n">pre_action_sensors</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;Online, that =:True&#39;</span><span class="p">]</span>
 
         <span class="n">pre_action_sensor_defs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">dehumanize_sensors</span><span class="p">(</span><span class="n">pre_action_sensors</span><span class="p">)</span>
         <span class="n">pre_action_result_ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ask_manual</span><span class="p">(</span>
@@ -1175,6 +1221,15 @@
 <span class="sd">        get_results : bool, optional</span>
 <span class="sd">            * True: wait for result completion after deploying action</span>
 <span class="sd">            * False: just deploy the action and return the object in `ret`</span>
+<span class="sd">        package_help : bool, optional</span>
+<span class="sd">            * False: do not print the help string for package</span>
+<span class="sd">            * True: print the help string for package and exit</span>
+<span class="sd">        filters_help : bool, optional</span>
+<span class="sd">            * False: do not print the help string for filters</span>
+<span class="sd">            * True: print the help string for filters and exit</span>
+<span class="sd">        options_help : bool, optional</span>
+<span class="sd">            * False: do not print the help string for options</span>
+<span class="sd">            * True: print the help string for options and exit</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1194,7 +1249,7 @@
 <span class="sd">        &gt;&gt;&gt; package = &#39;Package1{key:value}&#39;</span>
 
 <span class="sd">        &gt;&gt;&gt; # example of str for `action_filters` with params and filter for sensors</span>
-<span class="sd">        &gt;&gt;&gt; action_filters = &#39;Sensor1{key:value}, that contains example text&#39;</span>
+<span class="sd">        &gt;&gt;&gt; action_filters = &#39;Sensor1{key:value}, that contains:example text&#39;</span>
 
 <span class="sd">        &gt;&gt;&gt; # example of list of str for `action_options`</span>
 <span class="sd">        &gt;&gt;&gt; action_options = [&#39;max_data_age:3600&#39;, &#39;and&#39;]</span>
@@ -1204,6 +1259,16 @@
 <span class="sd">        :data:`pytan.constants.FILTER_MAPS` : valid filter dictionaries for filters</span>
 <span class="sd">        :data:`pytan.constants.OPTION_MAPS` : valid option dictionaries for options</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;package_help&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">PytanHelp</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">help_package</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;filters_help&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">PytanHelp</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">help_filters</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;options_help&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">PytanHelp</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">help_options</span><span class="p">())</span>
+
         <span class="c"># the human string describing the sensors/filter that user wants</span>
         <span class="c"># to deploy the action against</span>
         <span class="k">if</span> <span class="s">&#39;action_filters&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
@@ -1224,7 +1289,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">package</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
 
-        <span class="n">action_filter_defs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">dehumanize_sensors</span><span class="p">(</span><span class="n">action_filters</span><span class="p">)</span>
+        <span class="n">action_filter_defs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">dehumanize_sensors</span><span class="p">(</span><span class="n">action_filters</span><span class="p">,</span> <span class="s">&#39;action_filters&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
         <span class="n">action_option_defs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">dehumanize_question_options</span><span class="p">(</span><span class="n">action_options</span><span class="p">)</span>
         <span class="n">package_def</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">dehumanize_package</span><span class="p">(</span><span class="n">package</span><span class="p">)</span>
 
@@ -1941,7 +2006,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2014, Tanium.
-      Last updated on Dec 05, 2014.
+      Last updated on Dec 08, 2014.
     </p>
   </div>
 

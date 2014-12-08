@@ -61,6 +61,11 @@ class RunFalse(Exception):
     pass
 
 
+class PytanHelp(Exception):
+    """Exception thrown when printing out help"""
+    pass
+
+
 class SplitStreamHandler(logging.Handler):
     """Custom :class:`logging.Handler` class that sends all messages that are logging.INFO and below to STDOUT, and all messages that are logging.WARNING and above to STDERR
     """
@@ -236,6 +241,13 @@ def setup_get_object_argparser(obj, doc):
 
     obj_map = get_obj_map(obj)
     search_keys = obj_map['search']
+
+    if 'id' not in search_keys:
+        search_keys.append('id')
+
+    if obj == 'whitelisted_url':
+        search_keys.append('url_regex')
+
     for k in search_keys:
         get_object_group.add_argument(
             '--{}'.format(k),
@@ -245,6 +257,7 @@ def setup_get_object_argparser(obj, doc):
             dest=k,
             help='{} of {} to get'.format(k, obj),
         )
+
     return parser
 
 
@@ -289,6 +302,9 @@ def setup_delete_object_argparser(obj, doc):
 
     obj_map = get_obj_map(obj)
     search_keys = obj_map['search']
+    if obj == 'whitelisted_url':
+        search_keys.append('url_regex')
+
     for k in search_keys:
         arggroup.add_argument(
             '--{}'.format(k),
@@ -298,6 +314,7 @@ def setup_delete_object_argparser(obj, doc):
             dest=k,
             help='{} of {} to get'.format(k, obj),
         )
+
     return parser
 
 
@@ -397,7 +414,7 @@ def setup_deploy_action_argparser(doc):
     arggroup.add_argument(
         '-k',
         '--package',
-        required=True,
+        required=False,
         action='store',
         default='',
         dest='package',
@@ -408,11 +425,11 @@ def setup_deploy_action_argparser(doc):
     arggroup.add_argument(
         '-f',
         '--filter',
-        required=True,
+        required=False,
         action='append',
         default=[],
         dest='action_filters',
-        help='Filter to deploy action against; pass --filter-help'
+        help='Filter to deploy action against; pass --filters-help'
         'to get a full description',
     )
 
@@ -423,7 +440,7 @@ def setup_deploy_action_argparser(doc):
         action='append',
         default=[],
         dest='action_options',
-        help='Options for deploy action filter; pass --option-help to get a '
+        help='Options for deploy action filter; pass --options-help to get a '
         'full description',
     )
 
@@ -446,6 +463,33 @@ def setup_deploy_action_argparser(doc):
         dest='expire_seconds',
         help='Expire the action N seconds after it starts, if not supplied '
         'the packages own expire_seconds will be used',
+    )
+
+    arggroup.add_argument(
+        '--package-help',
+        required=False,
+        action='store_true',
+        default=False,
+        dest='package_help',
+        help='Get the full help for package string',
+    )
+
+    arggroup.add_argument(
+        '--filters-help',
+        required=False,
+        action='store_true',
+        default=False,
+        dest='filters_help',
+        help='Get the full help for filters strings',
+    )
+
+    arggroup.add_argument(
+        '--options-help',
+        required=False,
+        action='store_true',
+        default=False,
+        dest='options_help',
+        help='Get the full help for options strings',
     )
     parser = add_report_file_options(parser)
 
@@ -500,12 +544,12 @@ def setup_ask_manual_argparser(doc):
     arggroup.add_argument(
         '-s',
         '--sensor',
-        required=True,
+        required=False,
         action='append',
         default=[],
         dest='sensors',
         help='Sensor, optionally describe parameters, options, and a filter'
-        '; pass --sensor-help to get a full description',
+        '; pass --sensors-help to get a full description',
     )
 
     arggroup.add_argument(
@@ -515,8 +559,7 @@ def setup_ask_manual_argparser(doc):
         action='append',
         default=[],
         dest='question_filters',
-        help='Whole question filter; pass --filter-help'
-        'to get a full description',
+        help='Whole question filter; pass --filters-help to get a full description',
     )
 
     arggroup.add_argument(
@@ -526,10 +569,35 @@ def setup_ask_manual_argparser(doc):
         action='append',
         default=[],
         dest='question_options',
-        help='Whole question option; pass --option-help to get a full '
-        'description',
+        help='Whole question option; pass --options-help to get a full description',
     )
 
+    arggroup.add_argument(
+        '--sensors-help',
+        required=False,
+        action='store_true',
+        default=False,
+        dest='sensors_help',
+        help='Get the full help for sensor strings',
+    )
+
+    arggroup.add_argument(
+        '--filters-help',
+        required=False,
+        action='store_true',
+        default=False,
+        dest='filters_help',
+        help='Get the full help for filters strings',
+    )
+
+    arggroup.add_argument(
+        '--options-help',
+        required=False,
+        action='store_true',
+        default=False,
+        dest='options_help',
+        help='Get the full help for options strings',
+    )
     group = arggroup.add_mutually_exclusive_group()
 
     group.add_argument(
@@ -850,7 +918,8 @@ def process_create_json_object_args(parser, handler, obj, all_args):
         print e
         sys.exit(100)
     for i in response:
-        print "Created item: ", i
+        obj_id = getattr(i, 'id', 'unknown')
+        print "Created item: {}, ID: {}".format(i, obj_id)
     return response
 
 
@@ -1576,7 +1645,7 @@ def extract_filter(s):
         filter attributes mapped from filter from `s` if any found
     """
     split_filter = re.split(constants.FILTER_RE, s, re.IGNORECASE)
-    ## split_filter = ['Folder Name Search with RegEx Match', ' is .*']
+    ## split_filter = ['Folder Name Search with RegEx Match', ' is:.*']
 
     parsed_filter = {}
 
@@ -1589,7 +1658,7 @@ def extract_filter(s):
 
         # get the filter string from index 1
         parsed_filter = split_filter[1].strip()
-        ## parsed_filter='is .*'
+        ## parsed_filter='is:.*'
 
         parsed_filter = map_filter(parsed_filter)
         if not parsed_filter:
@@ -1617,32 +1686,39 @@ def map_filter(filter_str):
     """
     filter_attrs = {}
 
+    filter_split = filter_str.split(':')
+    if len(filter_split) != 2:
+        err = "Invalid filter in {!r}, missing ':' to seperate filter from value?" .format
+        raise HumanParserError(err(filter_str))
+
+    filter_name, filter_value = filter_split
+    filter_name = filter_name.strip().lower()
+
+    if not filter_value:
+        err = "Invalid filter value in {!r}".format
+        raise HumanParserError(err(filter_str))
+
     for fm in constants.FILTER_MAPS:
         for fh in fm['human']:
-            if filter_str.lower().startswith(fh + " "):
-                filter_str = filter_str[len(fh + " "):]
+            if filter_name == fh:
                 filter_attrs = fm
                 break
 
     if filter_attrs:
 
-        if not filter_str:
-            err = "Invalid filter value in {!r}".format
-            raise HumanParserError(err(filter_str))
-
         pre_value = filter_attrs.get('pre_value', '')
         post_value = filter_attrs.get('post_value', '')
 
         if pre_value:
-            filter_str = '{}{}'.format(pre_value, filter_str)
+            filter_value = '{}{}'.format(pre_value, filter_value)
 
         if post_value:
-            filter_str = '{}{}'.format(filter_str, post_value)
+            filter_value = '{}{}'.format(filter_value, post_value)
 
         filter_attrs = {
             'operator': filter_attrs['operator'],
             'not_flag': filter_attrs['not_flag'],
-            'value': filter_str,
+            'value': filter_value,
         }
     return filter_attrs
 
@@ -2569,3 +2645,303 @@ def build_metadatalist_obj(properties, nameprefix):
         metadata_obj.value = prop[1]
         metadatalist_obj.append(metadata_obj)
     return metadatalist_obj
+
+
+def passmein(func):
+    """Decorator method to pass the function to a function that uses this decorator"""
+    def wrapper(*args, **kwargs):
+        return func(func, *args, **kwargs)
+    return wrapper
+
+
+@passmein
+def help_sensors(me):
+    """
+Sensors Help
+============
+
+Supplying sensors controls what columns will be showed when you ask a
+question.
+
+A sensor string is a human string that describes, at a minimum, a sensor.
+It can also optionally define a selector for the sensor, parameters for
+the sensor, a filter for the sensor, and options for the filter for the
+sensor. Sensors can be provided as a string or a list of strings.
+
+Examples for basic sensors
+---------------------------------
+
+Supplying a single sensor:
+
+    'Computer Name'
+
+Supplying two sensors in a list of strings:
+
+    ['Computer Name', 'IP Route Details']
+
+Supplying multiple sensors with selectors (name is the default
+selector if none is supplied):
+
+    [
+        'Computer Name',
+        'name:Computer Name',
+        'id:1',
+        'hash:123456789',
+    ]
+
+Sensor Parameters
+-----------------
+
+Supplying parameters to a sensor can control the arguments that are
+supplied to a sensor, if that sensor takes any arguments.
+
+Sensor parameters must be surrounded with curly braces '{}',
+and must have a key and value specified that is separated by
+an equals '='. Multiple parameters must be seperated by
+a comma ','. The key should match up to a valid parameter key
+for the sensor in question.
+
+If a parameter is supplied and the sensor doesn't have a
+corresponding key name, it will be ignored. If the sensor has
+parameters and a parameter is NOT supplied then one of two
+paths will be taken:
+
+    * if the parameter does not require a default value, the
+    parameter is left blank and not supplied.
+    * if the parameter does require a value (pulldowns, for
+    example), a default value is derived (for pulldowns,
+    the first value available as a pulldown entry is used).
+
+Examples for sensors with parameters
+------------------------------------
+
+Supplying a single sensor with a single parameter 'dirname':
+
+    'Sensor With Params{dirname=Program Files}'
+
+Supplying a single sensor with two parameters, 'param1' and
+'param2':
+
+    'Sensor With Params{param1=value1,param2=value2}'
+
+Sensor Filters
+--------------
+
+Supplying a filter to a sensor controls what data will be shown in
+those columns (sensors) you've provided.
+
+Sensor filters can be supplied by adding ', that FILTER:VALUE',
+where FILTER is a valid filter string, and VALUE is the string
+that you want FILTER to match on.
+
+See filter help for a list of all possible FILTER strings.
+
+See options help for a list of options that can control how
+the filter works.
+
+Examples for sensors with filters
+---------------------------------
+
+Supplying a sensor with a filter that limits the results to only
+show column data that matches the regular expression
+'.*Windows.*' (Tanium does a case insensitive match by default):
+
+    'Computer Name, that contains:Windows'
+
+Supplying a sensor with a filter that limits the results to only
+show column data that matches the regular expression
+'Microsoft.*':
+
+    'Computer Name, that starts with:Microsoft'
+
+Supply a sensor with a filter that limits the results to only
+show column data that has a version greater or equal to
+'39.0.0.0'. Since this sensor uses Version as its default result
+type, there is no need to change the value type using filter
+options.
+
+    'Installed Application Version' \\
+    '{Application Name=Google Chrome}, that =>:39.0.0.0'
+
+Sensor Options
+--------------
+
+Supplying options to a sensor can change how the filter for
+that sensor works.
+
+Sensor options can be supplied by adding ', opt:OPTION' or
+', opt:OPTION:VALUE' for those options that require values,
+where OPTION is a valid option string, and VALUE is the
+appropriate value required by accordant OPTION.
+
+See options help for a list of options that can control how
+the filter works.
+
+Examples for sensors with options
+---------------------------------
+
+Supplying a sensor with an option that forces tanium to
+re-fetch any cached column data that is older than 1 minute:
+
+    'Computer Name, opt:max_data_age:60'
+
+Supplying a sensor with filter and an option that causes
+Tanium to match case for the filter value:
+
+    'Computer Name, that contains:Windows, opt:match_case'
+
+Supplying a sensor with a filter and an option that causes
+Tanium to match all values supplied:
+
+    'Computer Name, that contains:Windows, opt:match_all_values'
+
+Supplying a sensor with a filter and a set of options that
+causes Tanium to recognize the value type as String (which is
+the default type for most sensors), re-fetch data older than
+10 minutes, match any values, and match case:
+
+    'Computer Name', that contains:Windows, ' \\
+    opt:value_type:string, opt:max_data_age:600, ' \\
+    'opt:match_any_value, opt:match_case'
+"""
+    return me.__doc__
+
+
+@passmein
+def help_package(me):
+    """
+Package Help
+============
+
+Supplying package defines what package will be deployed as part of the
+action.
+
+A package string is a human string that describes, at a minimum, a
+package. It can also optionally define a selector for the package,
+and/or parameters for the package. A package must be provided as a string.
+
+Examples for package
+---------------------------------
+
+Supplying a package:
+
+    'Distribute Tanium Standard Utilities'
+
+Supplying a package by id:
+
+    'id:1'
+
+Supplying a package by hash:
+
+    'hash:123456789'
+
+Supplying a package by name:
+
+    'name:Distribute Tanium Standard Utilities'
+
+Package Parameters
+------------------
+
+Supplying parameters to a package can control the arguments
+that are supplied to a package, if that package takes any arguments.
+
+Package parameters must be surrounded with curly braces '{}',
+and must have a key and value specified that is separated by
+an equals '='. Multiple parameters must be seperated by
+a comma ','. The key should match up to a valid parameter key
+for the package in question.
+
+If a parameter is supplied and the package doesn't have a
+corresponding key name, it will be ignored. If the package has
+parameters and a parameter is NOT supplied then an exception
+will be raised, printing out the JSON of the missing paramater
+for the package in question.
+
+Examples for package with parameters
+------------------------------------
+
+Supplying a package with a single parameter '$1':
+
+    'Package With Params{$1=value1}'
+
+Supplying a package with two parameters, '$1' and '$2':
+
+    'Package With Params{$1=value1,$2=value2}'
+"""
+    return me.__doc__
+
+
+@passmein
+def help_filters(me):
+    """
+Filters Help
+============
+
+Filters are used generously throughout pytan. When used as part of a
+sensor string, they control what data is shown for the columns that
+the sensor returns. When filters are used for whole question filters,
+they control what rows will be returned. They are used by Groups to
+define group membership, deploy actions to determine which machines
+should have the action deployed to it, and more.
+
+A filter string is a human string that describes, a sensor followed
+by ', that FILTER:VALUE', where FILTER is a valid filter string,
+and VALUE is the string that you want FILTER to match on.
+
+Valid Filters
+-------------
+
+"""
+    for x in constants.FILTER_MAPS:
+        for y in x['human']:
+            me.__doc__ += '    {!r:<25}\n'.format(y)
+            me.__doc__ += '        Help: {}\n'.format(x['help'])
+            me.__doc__ += '        Example: "Sensor1, that {}:VALUE"\n\n'.format(y)
+    return me.__doc__
+
+
+@passmein
+def help_options(me):
+    """
+Options Help
+============
+
+Options are used for controlling how filters act. When options are
+used as part of a sensor string, they change how the filters
+supplied as part of that sensor operate. When options are used for
+whole question options, they change how all of the question filters
+operate.
+
+When options are supplied for a sensor string, they must be
+supplied as ', opt:OPTION' or ', opt:OPTION:VALUE' for options
+that require a value.
+
+When options are supplied for question options, they must be
+supplied as 'OPTION' or 'OPTION:VALUE' for options that require
+a value.
+
+Options can be used on 'filter' or 'group', where 'group' pertains
+to group filters or question filters. All 'filter' options are also
+applicable to 'group' for question options.
+
+Valid Options
+-------------
+
+"""
+    for x in constants.OPTION_MAPS:
+        me.__doc__ += '    {!r:<25}\n'.format(x['human'])
+        me.__doc__ += '        Help: {}\n'.format(x['help'])
+
+        me.__doc__ += '        Usable on: {}\n'.format(x['destination'])
+        if x.get('human_type', ''):
+            me.__doc__ += '        VALUE description and type: {}, {}\n'.format(
+                x['human_type'], x['valid_type'])
+            me.__doc__ += '        Example for sensor: "Sensor1, opt:{}:{}"\n'.format(
+                x['human'], x['human_type'])
+            me.__doc__ += '        Example for question: "{}:{}"\n'.format(
+                x['human'], x['human_type'])
+        else:
+            me.__doc__ += '        Example for sensor: "Sensor1, opt:{}"\n'.format(x['human'])
+            me.__doc__ += '        Example for question: "{}"\n'.format(x['human'])
+        me.__doc__ += '\n'
+    return me.__doc__

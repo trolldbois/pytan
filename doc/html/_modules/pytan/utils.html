@@ -65,18 +65,20 @@
 <li class="toctree-l1"><a class="reference internal" href="../../description.html#why-it-was-created">2. Why it was created</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../description.html#requirements">3. Requirements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../description.html#installation">4. Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../pytan.html">5. pytan package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../pytan.handler.html">5.1. pytan.handler module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../pytan.constants.html">5.2. pytan.constants module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../pytan.utils.html">5.3. pytan.utils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../pytan.unittest.html">5.4. pytan Unit Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../pytan.functest.html">5.5. pytan Functional Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../description.html#usage">5. Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pytan.html">6. pytan package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/pytan_examples.html">6.1. pytan API examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.handler.html">6.2. pytan.handler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.constants.html">6.3. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.utils.html">6.4. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.unittest.html">6.5. pytan Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.functest.html">6.6. pytan Functional Tests</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../taniumpy.html">6. taniumpy package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../taniumpy.session.html">6.1. taniumpy.session module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../taniumpy.question_asker.html">6.2. taniumpy.question_asker module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../taniumpy.object_types.html">6.3. taniumpy.object_types package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../taniumpy.html">7. taniumpy package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../taniumpy.session.html">1. taniumpy.session module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../taniumpy.question_asker.html">2. taniumpy.question_asker module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../taniumpy.object_types.html">3. taniumpy.object_types package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../xmltodict.html">7. xmltodict module</a><ul class="simple">
@@ -187,6 +189,11 @@
     <span class="k">pass</span>
 
 </div>
+<span class="k">class</span> <span class="nc">PytanHelp</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Exception thrown when printing out help&quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+
+
 <div class="viewcode-block" id="SplitStreamHandler"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.SplitStreamHandler">[docs]</a><span class="k">class</span> <span class="nc">SplitStreamHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Handler</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Custom :class:`logging.Handler` class that sends all messages that are logging.INFO and below to STDOUT, and all messages that are logging.WARNING and above to STDERR</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -362,6 +369,13 @@
 
     <span class="n">obj_map</span> <span class="o">=</span> <span class="n">get_obj_map</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
     <span class="n">search_keys</span> <span class="o">=</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;search&#39;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="s">&#39;id&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">search_keys</span><span class="p">:</span>
+        <span class="n">search_keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">obj</span> <span class="o">==</span> <span class="s">&#39;whitelisted_url&#39;</span><span class="p">:</span>
+        <span class="n">search_keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;url_regex&#39;</span><span class="p">)</span>
+
     <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">search_keys</span><span class="p">:</span>
         <span class="n">get_object_group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
             <span class="s">&#39;--{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">),</span>
@@ -371,6 +385,7 @@
             <span class="n">dest</span><span class="o">=</span><span class="n">k</span><span class="p">,</span>
             <span class="n">help</span><span class="o">=</span><span class="s">&#39;{} of {} to get&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">obj</span><span class="p">),</span>
         <span class="p">)</span>
+
     <span class="k">return</span> <span class="n">parser</span>
 
 </div>
@@ -415,6 +430,9 @@
 
     <span class="n">obj_map</span> <span class="o">=</span> <span class="n">get_obj_map</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
     <span class="n">search_keys</span> <span class="o">=</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;search&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">obj</span> <span class="o">==</span> <span class="s">&#39;whitelisted_url&#39;</span><span class="p">:</span>
+        <span class="n">search_keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;url_regex&#39;</span><span class="p">)</span>
+
     <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">search_keys</span><span class="p">:</span>
         <span class="n">arggroup</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
             <span class="s">&#39;--{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">),</span>
@@ -424,6 +442,7 @@
             <span class="n">dest</span><span class="o">=</span><span class="n">k</span><span class="p">,</span>
             <span class="n">help</span><span class="o">=</span><span class="s">&#39;{} of {} to get&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">obj</span><span class="p">),</span>
         <span class="p">)</span>
+
     <span class="k">return</span> <span class="n">parser</span>
 
 </div>
@@ -523,7 +542,7 @@
     <span class="n">arggroup</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
         <span class="s">&#39;-k&#39;</span><span class="p">,</span>
         <span class="s">&#39;--package&#39;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
         <span class="n">action</span><span class="o">=</span><span class="s">&#39;store&#39;</span><span class="p">,</span>
         <span class="n">default</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span>
         <span class="n">dest</span><span class="o">=</span><span class="s">&#39;package&#39;</span><span class="p">,</span>
@@ -534,11 +553,11 @@
     <span class="n">arggroup</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
         <span class="s">&#39;-f&#39;</span><span class="p">,</span>
         <span class="s">&#39;--filter&#39;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
         <span class="n">action</span><span class="o">=</span><span class="s">&#39;append&#39;</span><span class="p">,</span>
         <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
         <span class="n">dest</span><span class="o">=</span><span class="s">&#39;action_filters&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Filter to deploy action against; pass --filter-help&#39;</span>
+        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Filter to deploy action against; pass --filters-help&#39;</span>
         <span class="s">&#39;to get a full description&#39;</span><span class="p">,</span>
     <span class="p">)</span>
 
@@ -549,7 +568,7 @@
         <span class="n">action</span><span class="o">=</span><span class="s">&#39;append&#39;</span><span class="p">,</span>
         <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
         <span class="n">dest</span><span class="o">=</span><span class="s">&#39;action_options&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Options for deploy action filter; pass --option-help to get a &#39;</span>
+        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Options for deploy action filter; pass --options-help to get a &#39;</span>
         <span class="s">&#39;full description&#39;</span><span class="p">,</span>
     <span class="p">)</span>
 
@@ -572,6 +591,33 @@
         <span class="n">dest</span><span class="o">=</span><span class="s">&#39;expire_seconds&#39;</span><span class="p">,</span>
         <span class="n">help</span><span class="o">=</span><span class="s">&#39;Expire the action N seconds after it starts, if not supplied &#39;</span>
         <span class="s">&#39;the packages own expire_seconds will be used&#39;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">arggroup</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s">&#39;--package-help&#39;</span><span class="p">,</span>
+        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_true&#39;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;package_help&#39;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Get the full help for package string&#39;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">arggroup</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s">&#39;--filters-help&#39;</span><span class="p">,</span>
+        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_true&#39;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;filters_help&#39;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Get the full help for filters strings&#39;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">arggroup</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s">&#39;--options-help&#39;</span><span class="p">,</span>
+        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_true&#39;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;options_help&#39;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Get the full help for options strings&#39;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">add_report_file_options</span><span class="p">(</span><span class="n">parser</span><span class="p">)</span>
 
@@ -626,12 +672,12 @@
     <span class="n">arggroup</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
         <span class="s">&#39;-s&#39;</span><span class="p">,</span>
         <span class="s">&#39;--sensor&#39;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
         <span class="n">action</span><span class="o">=</span><span class="s">&#39;append&#39;</span><span class="p">,</span>
         <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
         <span class="n">dest</span><span class="o">=</span><span class="s">&#39;sensors&#39;</span><span class="p">,</span>
         <span class="n">help</span><span class="o">=</span><span class="s">&#39;Sensor, optionally describe parameters, options, and a filter&#39;</span>
-        <span class="s">&#39;; pass --sensor-help to get a full description&#39;</span><span class="p">,</span>
+        <span class="s">&#39;; pass --sensors-help to get a full description&#39;</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">arggroup</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
@@ -641,8 +687,7 @@
         <span class="n">action</span><span class="o">=</span><span class="s">&#39;append&#39;</span><span class="p">,</span>
         <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
         <span class="n">dest</span><span class="o">=</span><span class="s">&#39;question_filters&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Whole question filter; pass --filter-help&#39;</span>
-        <span class="s">&#39;to get a full description&#39;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Whole question filter; pass --filters-help to get a full description&#39;</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">arggroup</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
@@ -652,10 +697,35 @@
         <span class="n">action</span><span class="o">=</span><span class="s">&#39;append&#39;</span><span class="p">,</span>
         <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
         <span class="n">dest</span><span class="o">=</span><span class="s">&#39;question_options&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Whole question option; pass --option-help to get a full &#39;</span>
-        <span class="s">&#39;description&#39;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Whole question option; pass --options-help to get a full description&#39;</span><span class="p">,</span>
     <span class="p">)</span>
 
+    <span class="n">arggroup</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s">&#39;--sensors-help&#39;</span><span class="p">,</span>
+        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_true&#39;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;sensors_help&#39;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Get the full help for sensor strings&#39;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">arggroup</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s">&#39;--filters-help&#39;</span><span class="p">,</span>
+        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_true&#39;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;filters_help&#39;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Get the full help for filters strings&#39;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">arggroup</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s">&#39;--options-help&#39;</span><span class="p">,</span>
+        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_true&#39;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;options_help&#39;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Get the full help for options strings&#39;</span><span class="p">,</span>
+    <span class="p">)</span>
     <span class="n">group</span> <span class="o">=</span> <span class="n">arggroup</span><span class="o">.</span><span class="n">add_mutually_exclusive_group</span><span class="p">()</span>
 
     <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
@@ -976,7 +1046,8 @@
         <span class="k">print</span> <span class="n">e</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
-        <span class="k">print</span> <span class="s">&quot;Created item: &quot;</span><span class="p">,</span> <span class="n">i</span>
+        <span class="n">obj_id</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="s">&#39;unknown&#39;</span><span class="p">)</span>
+        <span class="k">print</span> <span class="s">&quot;Created item: {}, ID: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">obj_id</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">response</span>
 
 </div>
@@ -1702,7 +1773,7 @@
 <span class="sd">        filter attributes mapped from filter from `s` if any found</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">split_filter</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">FILTER_RE</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
-    <span class="c">## split_filter = [&#39;Folder Name Search with RegEx Match&#39;, &#39; is .*&#39;]</span>
+    <span class="c">## split_filter = [&#39;Folder Name Search with RegEx Match&#39;, &#39; is:.*&#39;]</span>
 
     <span class="n">parsed_filter</span> <span class="o">=</span> <span class="p">{}</span>
 
@@ -1715,7 +1786,7 @@
 
         <span class="c"># get the filter string from index 1</span>
         <span class="n">parsed_filter</span> <span class="o">=</span> <span class="n">split_filter</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-        <span class="c">## parsed_filter=&#39;is .*&#39;</span>
+        <span class="c">## parsed_filter=&#39;is:.*&#39;</span>
 
         <span class="n">parsed_filter</span> <span class="o">=</span> <span class="n">map_filter</span><span class="p">(</span><span class="n">parsed_filter</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">parsed_filter</span><span class="p">:</span>
@@ -1743,32 +1814,39 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">filter_attrs</span> <span class="o">=</span> <span class="p">{}</span>
 
+    <span class="n">filter_split</span> <span class="o">=</span> <span class="n">filter_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;:&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">filter_split</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">err</span> <span class="o">=</span> <span class="s">&quot;Invalid filter in {!r}, missing &#39;:&#39; to seperate filter from value?&quot;</span> <span class="o">.</span><span class="n">format</span>
+        <span class="k">raise</span> <span class="n">HumanParserError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="n">filter_str</span><span class="p">))</span>
+
+    <span class="n">filter_name</span><span class="p">,</span> <span class="n">filter_value</span> <span class="o">=</span> <span class="n">filter_split</span>
+    <span class="n">filter_name</span> <span class="o">=</span> <span class="n">filter_name</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">filter_value</span><span class="p">:</span>
+        <span class="n">err</span> <span class="o">=</span> <span class="s">&quot;Invalid filter value in {!r}&quot;</span><span class="o">.</span><span class="n">format</span>
+        <span class="k">raise</span> <span class="n">HumanParserError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="n">filter_str</span><span class="p">))</span>
+
     <span class="k">for</span> <span class="n">fm</span> <span class="ow">in</span> <span class="n">constants</span><span class="o">.</span><span class="n">FILTER_MAPS</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">fh</span> <span class="ow">in</span> <span class="n">fm</span><span class="p">[</span><span class="s">&#39;human&#39;</span><span class="p">]:</span>
-            <span class="k">if</span> <span class="n">filter_str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">fh</span> <span class="o">+</span> <span class="s">&quot; &quot;</span><span class="p">):</span>
-                <span class="n">filter_str</span> <span class="o">=</span> <span class="n">filter_str</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">fh</span> <span class="o">+</span> <span class="s">&quot; &quot;</span><span class="p">):]</span>
+            <span class="k">if</span> <span class="n">filter_name</span> <span class="o">==</span> <span class="n">fh</span><span class="p">:</span>
                 <span class="n">filter_attrs</span> <span class="o">=</span> <span class="n">fm</span>
                 <span class="k">break</span>
 
     <span class="k">if</span> <span class="n">filter_attrs</span><span class="p">:</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">filter_str</span><span class="p">:</span>
-            <span class="n">err</span> <span class="o">=</span> <span class="s">&quot;Invalid filter value in {!r}&quot;</span><span class="o">.</span><span class="n">format</span>
-            <span class="k">raise</span> <span class="n">HumanParserError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="n">filter_str</span><span class="p">))</span>
-
         <span class="n">pre_value</span> <span class="o">=</span> <span class="n">filter_attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;pre_value&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
         <span class="n">post_value</span> <span class="o">=</span> <span class="n">filter_attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;post_value&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">pre_value</span><span class="p">:</span>
-            <span class="n">filter_str</span> <span class="o">=</span> <span class="s">&#39;{}{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pre_value</span><span class="p">,</span> <span class="n">filter_str</span><span class="p">)</span>
+            <span class="n">filter_value</span> <span class="o">=</span> <span class="s">&#39;{}{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pre_value</span><span class="p">,</span> <span class="n">filter_value</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">post_value</span><span class="p">:</span>
-            <span class="n">filter_str</span> <span class="o">=</span> <span class="s">&#39;{}{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filter_str</span><span class="p">,</span> <span class="n">post_value</span><span class="p">)</span>
+            <span class="n">filter_value</span> <span class="o">=</span> <span class="s">&#39;{}{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filter_value</span><span class="p">,</span> <span class="n">post_value</span><span class="p">)</span>
 
         <span class="n">filter_attrs</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s">&#39;operator&#39;</span><span class="p">:</span> <span class="n">filter_attrs</span><span class="p">[</span><span class="s">&#39;operator&#39;</span><span class="p">],</span>
             <span class="s">&#39;not_flag&#39;</span><span class="p">:</span> <span class="n">filter_attrs</span><span class="p">[</span><span class="s">&#39;not_flag&#39;</span><span class="p">],</span>
-            <span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="n">filter_str</span><span class="p">,</span>
+            <span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="n">filter_value</span><span class="p">,</span>
         <span class="p">}</span>
     <span class="k">return</span> <span class="n">filter_attrs</span>
 
@@ -2694,7 +2772,307 @@
         <span class="n">metadata_obj</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;{}.{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nameprefix</span><span class="p">,</span> <span class="n">prop</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="n">metadata_obj</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">prop</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">metadatalist_obj</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metadata_obj</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">metadatalist_obj</span></div>
+    <span class="k">return</span> <span class="n">metadatalist_obj</span>
+
+</div>
+<span class="k">def</span> <span class="nf">passmein</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Decorator method to pass the function to a function that uses this decorator&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">wrapper</span>
+
+
+<span class="nd">@passmein</span>
+<span class="k">def</span> <span class="nf">help_sensors</span><span class="p">(</span><span class="n">me</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Sensors Help</span>
+<span class="sd">============</span>
+
+<span class="sd">Supplying sensors controls what columns will be showed when you ask a</span>
+<span class="sd">question.</span>
+
+<span class="sd">A sensor string is a human string that describes, at a minimum, a sensor.</span>
+<span class="sd">It can also optionally define a selector for the sensor, parameters for</span>
+<span class="sd">the sensor, a filter for the sensor, and options for the filter for the</span>
+<span class="sd">sensor. Sensors can be provided as a string or a list of strings.</span>
+
+<span class="sd">Examples for basic sensors</span>
+<span class="sd">---------------------------------</span>
+
+<span class="sd">Supplying a single sensor:</span>
+
+<span class="sd">    &#39;Computer Name&#39;</span>
+
+<span class="sd">Supplying two sensors in a list of strings:</span>
+
+<span class="sd">    [&#39;Computer Name&#39;, &#39;IP Route Details&#39;]</span>
+
+<span class="sd">Supplying multiple sensors with selectors (name is the default</span>
+<span class="sd">selector if none is supplied):</span>
+
+<span class="sd">    [</span>
+<span class="sd">        &#39;Computer Name&#39;,</span>
+<span class="sd">        &#39;name:Computer Name&#39;,</span>
+<span class="sd">        &#39;id:1&#39;,</span>
+<span class="sd">        &#39;hash:123456789&#39;,</span>
+<span class="sd">    ]</span>
+
+<span class="sd">Sensor Parameters</span>
+<span class="sd">-----------------</span>
+
+<span class="sd">Supplying parameters to a sensor can control the arguments that are</span>
+<span class="sd">supplied to a sensor, if that sensor takes any arguments.</span>
+
+<span class="sd">Sensor parameters must be surrounded with curly braces &#39;{}&#39;,</span>
+<span class="sd">and must have a key and value specified that is separated by</span>
+<span class="sd">an equals &#39;=&#39;. Multiple parameters must be seperated by</span>
+<span class="sd">a comma &#39;,&#39;. The key should match up to a valid parameter key</span>
+<span class="sd">for the sensor in question.</span>
+
+<span class="sd">If a parameter is supplied and the sensor doesn&#39;t have a</span>
+<span class="sd">corresponding key name, it will be ignored. If the sensor has</span>
+<span class="sd">parameters and a parameter is NOT supplied then one of two</span>
+<span class="sd">paths will be taken:</span>
+
+<span class="sd">    * if the parameter does not require a default value, the</span>
+<span class="sd">    parameter is left blank and not supplied.</span>
+<span class="sd">    * if the parameter does require a value (pulldowns, for</span>
+<span class="sd">    example), a default value is derived (for pulldowns,</span>
+<span class="sd">    the first value available as a pulldown entry is used).</span>
+
+<span class="sd">Examples for sensors with parameters</span>
+<span class="sd">------------------------------------</span>
+
+<span class="sd">Supplying a single sensor with a single parameter &#39;dirname&#39;:</span>
+
+<span class="sd">    &#39;Sensor With Params{dirname=Program Files}&#39;</span>
+
+<span class="sd">Supplying a single sensor with two parameters, &#39;param1&#39; and</span>
+<span class="sd">&#39;param2&#39;:</span>
+
+<span class="sd">    &#39;Sensor With Params{param1=value1,param2=value2}&#39;</span>
+
+<span class="sd">Sensor Filters</span>
+<span class="sd">--------------</span>
+
+<span class="sd">Supplying a filter to a sensor controls what data will be shown in</span>
+<span class="sd">those columns (sensors) you&#39;ve provided.</span>
+
+<span class="sd">Sensor filters can be supplied by adding &#39;, that FILTER:VALUE&#39;,</span>
+<span class="sd">where FILTER is a valid filter string, and VALUE is the string</span>
+<span class="sd">that you want FILTER to match on.</span>
+
+<span class="sd">See filter help for a list of all possible FILTER strings.</span>
+
+<span class="sd">See options help for a list of options that can control how</span>
+<span class="sd">the filter works.</span>
+
+<span class="sd">Examples for sensors with filters</span>
+<span class="sd">---------------------------------</span>
+
+<span class="sd">Supplying a sensor with a filter that limits the results to only</span>
+<span class="sd">show column data that matches the regular expression</span>
+<span class="sd">&#39;.*Windows.*&#39; (Tanium does a case insensitive match by default):</span>
+
+<span class="sd">    &#39;Computer Name, that contains:Windows&#39;</span>
+
+<span class="sd">Supplying a sensor with a filter that limits the results to only</span>
+<span class="sd">show column data that matches the regular expression</span>
+<span class="sd">&#39;Microsoft.*&#39;:</span>
+
+<span class="sd">    &#39;Computer Name, that starts with:Microsoft&#39;</span>
+
+<span class="sd">Supply a sensor with a filter that limits the results to only</span>
+<span class="sd">show column data that has a version greater or equal to</span>
+<span class="sd">&#39;39.0.0.0&#39;. Since this sensor uses Version as its default result</span>
+<span class="sd">type, there is no need to change the value type using filter</span>
+<span class="sd">options.</span>
+
+<span class="sd">    &#39;Installed Application Version&#39; \\</span>
+<span class="sd">    &#39;{Application Name=Google Chrome}, that =&gt;:39.0.0.0&#39;</span>
+
+<span class="sd">Sensor Options</span>
+<span class="sd">--------------</span>
+
+<span class="sd">Supplying options to a sensor can change how the filter for</span>
+<span class="sd">that sensor works.</span>
+
+<span class="sd">Sensor options can be supplied by adding &#39;, opt:OPTION&#39; or</span>
+<span class="sd">&#39;, opt:OPTION:VALUE&#39; for those options that require values,</span>
+<span class="sd">where OPTION is a valid option string, and VALUE is the</span>
+<span class="sd">appropriate value required by accordant OPTION.</span>
+
+<span class="sd">See options help for a list of options that can control how</span>
+<span class="sd">the filter works.</span>
+
+<span class="sd">Examples for sensors with options</span>
+<span class="sd">---------------------------------</span>
+
+<span class="sd">Supplying a sensor with an option that forces tanium to</span>
+<span class="sd">re-fetch any cached column data that is older than 1 minute:</span>
+
+<span class="sd">    &#39;Computer Name, opt:max_data_age:60&#39;</span>
+
+<span class="sd">Supplying a sensor with filter and an option that causes</span>
+<span class="sd">Tanium to match case for the filter value:</span>
+
+<span class="sd">    &#39;Computer Name, that contains:Windows, opt:match_case&#39;</span>
+
+<span class="sd">Supplying a sensor with a filter and an option that causes</span>
+<span class="sd">Tanium to match all values supplied:</span>
+
+<span class="sd">    &#39;Computer Name, that contains:Windows, opt:match_all_values&#39;</span>
+
+<span class="sd">Supplying a sensor with a filter and a set of options that</span>
+<span class="sd">causes Tanium to recognize the value type as String (which is</span>
+<span class="sd">the default type for most sensors), re-fetch data older than</span>
+<span class="sd">10 minutes, match any values, and match case:</span>
+
+<span class="sd">    &#39;Computer Name&#39;, that contains:Windows, &#39; \\</span>
+<span class="sd">    opt:value_type:string, opt:max_data_age:600, &#39; \\</span>
+<span class="sd">    &#39;opt:match_any_value, opt:match_case&#39;</span>
+<span class="sd">&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">me</span><span class="o">.</span><span class="n">__doc__</span>
+
+
+<span class="nd">@passmein</span>
+<span class="k">def</span> <span class="nf">help_package</span><span class="p">(</span><span class="n">me</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Package Help</span>
+<span class="sd">============</span>
+
+<span class="sd">Supplying package defines what package will be deployed as part of the</span>
+<span class="sd">action.</span>
+
+<span class="sd">A package string is a human string that describes, at a minimum, a</span>
+<span class="sd">package. It can also optionally define a selector for the package,</span>
+<span class="sd">and/or parameters for the package. A package must be provided as a string.</span>
+
+<span class="sd">Examples for package</span>
+<span class="sd">---------------------------------</span>
+
+<span class="sd">Supplying a package:</span>
+
+<span class="sd">    &#39;Distribute Tanium Standard Utilities&#39;</span>
+
+<span class="sd">Supplying a package by id:</span>
+
+<span class="sd">    &#39;id:1&#39;</span>
+
+<span class="sd">Supplying a package by hash:</span>
+
+<span class="sd">    &#39;hash:123456789&#39;</span>
+
+<span class="sd">Supplying a package by name:</span>
+
+<span class="sd">    &#39;name:Distribute Tanium Standard Utilities&#39;</span>
+
+<span class="sd">Package Parameters</span>
+<span class="sd">------------------</span>
+
+<span class="sd">Supplying parameters to a package can control the arguments</span>
+<span class="sd">that are supplied to a package, if that package takes any arguments.</span>
+
+<span class="sd">Package parameters must be surrounded with curly braces &#39;{}&#39;,</span>
+<span class="sd">and must have a key and value specified that is separated by</span>
+<span class="sd">an equals &#39;=&#39;. Multiple parameters must be seperated by</span>
+<span class="sd">a comma &#39;,&#39;. The key should match up to a valid parameter key</span>
+<span class="sd">for the package in question.</span>
+
+<span class="sd">If a parameter is supplied and the package doesn&#39;t have a</span>
+<span class="sd">corresponding key name, it will be ignored. If the package has</span>
+<span class="sd">parameters and a parameter is NOT supplied then an exception</span>
+<span class="sd">will be raised, printing out the JSON of the missing paramater</span>
+<span class="sd">for the package in question.</span>
+
+<span class="sd">Examples for package with parameters</span>
+<span class="sd">------------------------------------</span>
+
+<span class="sd">Supplying a package with a single parameter &#39;$1&#39;:</span>
+
+<span class="sd">    &#39;Package With Params{$1=value1}&#39;</span>
+
+<span class="sd">Supplying a package with two parameters, &#39;$1&#39; and &#39;$2&#39;:</span>
+
+<span class="sd">    &#39;Package With Params{$1=value1,$2=value2}&#39;</span>
+<span class="sd">&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">me</span><span class="o">.</span><span class="n">__doc__</span>
+
+
+<span class="nd">@passmein</span>
+<span class="k">def</span> <span class="nf">help_filters</span><span class="p">(</span><span class="n">me</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Filters Help</span>
+<span class="sd">============</span>
+
+<span class="sd">Filters are used generously throughout pytan. When used as part of a</span>
+<span class="sd">sensor string, they control what data is shown for the columns that</span>
+<span class="sd">the sensor returns. When filters are used for whole question filters,</span>
+<span class="sd">they control what rows will be returned. They are used by Groups to</span>
+<span class="sd">define group membership, deploy actions to determine which machines</span>
+<span class="sd">should have the action deployed to it, and more.</span>
+
+<span class="sd">A filter string is a human string that describes, a sensor followed</span>
+<span class="sd">by &#39;, that FILTER:VALUE&#39;, where FILTER is a valid filter string,</span>
+<span class="sd">and VALUE is the string that you want FILTER to match on.</span>
+
+<span class="sd">Valid Filters</span>
+<span class="sd">-------------</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">constants</span><span class="o">.</span><span class="n">FILTER_MAPS</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">x</span><span class="p">[</span><span class="s">&#39;human&#39;</span><span class="p">]:</span>
+            <span class="n">me</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">+=</span> <span class="s">&#39;    {!r:&lt;25}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+            <span class="n">me</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">+=</span> <span class="s">&#39;        Help: {}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s">&#39;help&#39;</span><span class="p">])</span>
+            <span class="n">me</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">+=</span> <span class="s">&#39;        Example: &quot;Sensor1, that {}:VALUE&quot;</span><span class="se">\n\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">me</span><span class="o">.</span><span class="n">__doc__</span>
+
+
+<span class="nd">@passmein</span>
+<span class="k">def</span> <span class="nf">help_options</span><span class="p">(</span><span class="n">me</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Options Help</span>
+<span class="sd">============</span>
+
+<span class="sd">Options are used for controlling how filters act. When options are</span>
+<span class="sd">used as part of a sensor string, they change how the filters</span>
+<span class="sd">supplied as part of that sensor operate. When options are used for</span>
+<span class="sd">whole question options, they change how all of the question filters</span>
+<span class="sd">operate.</span>
+
+<span class="sd">When options are supplied for a sensor string, they must be</span>
+<span class="sd">supplied as &#39;, opt:OPTION&#39; or &#39;, opt:OPTION:VALUE&#39; for options</span>
+<span class="sd">that require a value.</span>
+
+<span class="sd">When options are supplied for question options, they must be</span>
+<span class="sd">supplied as &#39;OPTION&#39; or &#39;OPTION:VALUE&#39; for options that require</span>
+<span class="sd">a value.</span>
+
+<span class="sd">Options can be used on &#39;filter&#39; or &#39;group&#39;, where &#39;group&#39; pertains</span>
+<span class="sd">to group filters or question filters. All &#39;filter&#39; options are also</span>
+<span class="sd">applicable to &#39;group&#39; for question options.</span>
+
+<span class="sd">Valid Options</span>
+<span class="sd">-------------</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">constants</span><span class="o">.</span><span class="n">OPTION_MAPS</span><span class="p">:</span>
+        <span class="n">me</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">+=</span> <span class="s">&#39;    {!r:&lt;25}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s">&#39;human&#39;</span><span class="p">])</span>
+        <span class="n">me</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">+=</span> <span class="s">&#39;        Help: {}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s">&#39;help&#39;</span><span class="p">])</span>
+
+        <span class="n">me</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">+=</span> <span class="s">&#39;        Usable on: {}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s">&#39;destination&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;human_type&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">):</span>
+            <span class="n">me</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">+=</span> <span class="s">&#39;        VALUE description and type: {}, {}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">x</span><span class="p">[</span><span class="s">&#39;human_type&#39;</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="s">&#39;valid_type&#39;</span><span class="p">])</span>
+            <span class="n">me</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">+=</span> <span class="s">&#39;        Example for sensor: &quot;Sensor1, opt:{}:{}&quot;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">x</span><span class="p">[</span><span class="s">&#39;human&#39;</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="s">&#39;human_type&#39;</span><span class="p">])</span>
+            <span class="n">me</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">+=</span> <span class="s">&#39;        Example for question: &quot;{}:{}&quot;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">x</span><span class="p">[</span><span class="s">&#39;human&#39;</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="s">&#39;human_type&#39;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">me</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">+=</span> <span class="s">&#39;        Example for sensor: &quot;Sensor1, opt:{}&quot;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s">&#39;human&#39;</span><span class="p">])</span>
+            <span class="n">me</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">+=</span> <span class="s">&#39;        Example for question: &quot;{}&quot;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s">&#39;human&#39;</span><span class="p">])</span>
+        <span class="n">me</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">+=</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span>
+    <span class="k">return</span> <span class="n">me</span><span class="o">.</span><span class="n">__doc__</span>
 </pre></div>
 
           </div>
@@ -2706,7 +3084,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2014, Tanium.
-      Last updated on Dec 05, 2014.
+      Last updated on Dec 08, 2014.
     </p>
   </div>
 
