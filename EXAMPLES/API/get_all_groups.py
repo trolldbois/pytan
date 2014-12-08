@@ -50,7 +50,14 @@ print len(response)
 
 print ""
 print "print the first object returned in JSON format:"
-print response.to_json(response[0])
+out = response.to_json(response[0])
+if len(out.splitlines()) > 15:
+    out = out.splitlines()[0:15]
+    out.append('..trimmed for brevity..')
+    out = '\n'.join(out)
+
+print out
+
 
 
 '''Output from running this:
@@ -59,10 +66,10 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
 Type of response:  <class 'taniumpy.object_types.group_list.GroupList'>
 
 print of response:
-GroupList, len: 4
+GroupList, len: 5
 
 length of response (number of objects returned): 
-4
+5
 
 print the first object returned in JSON format:
 {
@@ -80,7 +87,6 @@ print the first object returned in JSON format:
     "_type": "groups", 
     "group": []
   }, 
-  "type": 0
-}
+..trimmed for brevity..
 
 '''

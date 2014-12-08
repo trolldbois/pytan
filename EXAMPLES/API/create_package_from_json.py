@@ -89,9 +89,9 @@ print response.to_json(response)
 
 '''Output from running this:
 Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-2014-12-08 15:17:04,751 INFO     handler: Deleted 'PackageSpec, id: 92'
-2014-12-08 15:17:04,751 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/PackageSpecList_2014_12_08-15_17_04-EST.json' written with 2599 bytes
-2014-12-08 15:17:04,775 INFO     handler: New PackageSpec, name: 'Custom Tagging - Add Tags API TEST' (ID: 101) created successfully!
+2014-12-08 16:28:44,729 INFO     handler: Deleted 'PackageSpec, id: 101'
+2014-12-08 16:28:44,730 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/PackageSpecList_2014_12_08-16_28_44-EST.json' written with 2599 bytes
+2014-12-08 16:28:44,761 INFO     handler: New PackageSpec, name: 'Custom Tagging - Add Tags API TEST' (ID: 108) created successfully!
 
 Type of response:  <class 'taniumpy.object_types.package_spec_list.PackageSpecList'>
 
@@ -107,7 +107,7 @@ print the object returned in JSON format:
       "available_time": "1900-01-01T00:00:00", 
       "command": "cmd /c cscript //T:60 add-tags.vbs \"$1\"", 
       "command_timeout": 60, 
-      "creation_time": "2014-12-08T20:17:04", 
+      "creation_time": "2014-12-08T21:28:44", 
       "deleted_flag": 0, 
       "display_name": "Custom Tagging - Add Tags", 
       "expire_seconds": 660, 
@@ -132,9 +132,9 @@ print the object returned in JSON format:
         ]
       }, 
       "hidden_flag": 0, 
-      "id": 101, 
+      "id": 108, 
       "last_modified_by": "Tanium User", 
-      "last_update": "2014-12-08T20:17:04", 
+      "last_update": "2014-12-08T21:28:44", 
       "metadata": {
         "_type": "metadata", 
         "item": [
@@ -152,7 +152,7 @@ print the object returned in JSON format:
           }
         ]
       }, 
-      "modification_time": "2014-12-08T20:17:04", 
+      "modification_time": "2014-12-08T21:28:44", 
       "name": "Custom Tagging - Add Tags API TEST", 
       "parameter_definition": "{\"parameters\":[{\"restrict\":null,\"validationExpressions\":[{\"helpString\":\"You must enter a value\",\"flags\":\"\",\"expression\":\"\\\\S\",\"parameterType\":\"com.tanium.models::ValidationExpression\",\"model\":\"com.tanium.models::ValidationExpression\"}],\"helpString\":\"Enter tags space-delimited.\",\"promptText\":\"e.g. PCI DMZ Decomm\",\"defaultValue\":\"\",\"value\":\"\",\"label\":\"Add tags (space-delimited)\",\"maxChars\":0,\"key\":\"$1\",\"parameterType\":\"com.tanium.components.parameters::TextInputParameter\",\"model\":\"com.tanium.components.parameters::TextInputParameter\"}],\"parameterType\":\"com.tanium.components.parameters::ParametersArray\",\"model\":\"com.tanium.components.parameters::ParametersArray\"}", 
       "source_id": 0, 

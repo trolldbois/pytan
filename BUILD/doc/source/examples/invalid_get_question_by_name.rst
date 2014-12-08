@@ -1,6 +1,6 @@
 
 Invalid get question by name
-====================================================================================================
+==========================================================================================
 Get a question by name (name is not a supported selector for question)
 
 Example Python Code

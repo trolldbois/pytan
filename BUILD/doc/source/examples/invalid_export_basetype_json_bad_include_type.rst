@@ -1,6 +1,6 @@
 
 Invalid export basetype json bad include type
-====================================================================================================
+==========================================================================================
 Export a BaseType from getting objects using a bad include_type
 
 Example Python Code

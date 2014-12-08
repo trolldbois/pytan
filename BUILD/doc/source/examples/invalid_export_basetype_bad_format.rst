@@ -1,6 +1,6 @@
 
 Invalid export basetype bad format
-====================================================================================================
+==========================================================================================
 Export a BaseType from getting objects using a bad export_format
 
 Example Python Code

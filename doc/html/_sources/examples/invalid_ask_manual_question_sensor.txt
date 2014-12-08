@@ -1,6 +1,6 @@
 
-Invalid ask manual human question sensor
-====================================================================================================
+Invalid ask manual question sensor
+==========================================================================================
 Ask a question using a sensor that does not exist
 
 Example Python Code
@@ -65,16 +65,16 @@ Output from Python Code
     Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
     Traceback (most recent call last):
       File "<string>", line 39, in <module>
-      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 127, in ask
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 128, in ask
         result = getattr(self, q_obj_map['handler'])(**kwargs)
-      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 270, in ask_manual
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 271, in ask_manual
         sensor_defs = self._get_sensor_defs(sensor_defs)
-      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1721, in _get_sensor_defs
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1784, in _get_sensor_defs
         d['sensor_obj'] = self.get('sensor', **def_search)[0]
-      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1504, in get
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1567, in get
         return self._get_multi(obj_map, **kwargs)
-      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1666, in _get_multi
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1729, in _get_multi
         found = self._find(api_obj_multi, **kwargs)
-      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1631, in _find
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1694, in _find
         raise HandlerError(err(search_str))
     HandlerError: No results found searching for Sensor, name: u'Dweedle Dee and Dum'!!

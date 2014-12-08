@@ -50,7 +50,14 @@ print len(response)
 
 print ""
 print "print the first object returned in JSON format:"
-print response.to_json(response[0])
+out = response.to_json(response[0])
+if len(out.splitlines()) > 15:
+    out = out.splitlines()[0:15]
+    out.append('..trimmed for brevity..')
+    out = '\n'.join(out)
+
+print out
+
 
 
 '''Output from running this:
@@ -59,10 +66,10 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
 Type of response:  <class 'taniumpy.object_types.saved_question_list.SavedQuestionList'>
 
 print of response:
-SavedQuestionList, len: 175
+SavedQuestionList, len: 176
 
 length of response (number of objects returned): 
-175
+176
 
 print the first object returned in JSON format:
 {
@@ -80,31 +87,6 @@ print the first object returned in JSON format:
   "id": 1, 
   "issue_seconds": 120, 
   "issue_seconds_never_flag": 0, 
-  "keep_seconds": 3600, 
-  "mod_time": "2014-12-08T19:21:26", 
-  "mod_user": {
-    "_type": "user", 
-    "name": "Jim Olsen"
-  }, 
-  "most_recent_question_id": 175, 
-  "name": "Run Unmanaged Asset Scan on All Machines", 
-  "packages": {
-    "_type": "package_specs", 
-    "package_spec": []
-  }, 
-  "public_flag": 1, 
-  "query_text": "Get Is Windows from all machines", 
-  "question": {
-    "_type": "question", 
-    "id": 175
-  }, 
-  "row_count_flag": 1, 
-  "sort_column": 0, 
-  "user": {
-    "_type": "user", 
-    "id": 1, 
-    "name": "Jim Olsen"
-  }
-}
+..trimmed for brevity..
 
 '''

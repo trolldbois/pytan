@@ -1,6 +1,6 @@
 
 Get all actions
-====================================================================================================
+==========================================================================================
 Get all actions
 
 Example Python Code
@@ -58,7 +58,14 @@ Example Python Code
     
     print ""
     print "print the first object returned in JSON format:"
-    print response.to_json(response[0])
+    out = response.to_json(response[0])
+    if len(out.splitlines()) > 15:
+        out = out.splitlines()[0:15]
+        out.append('..trimmed for brevity..')
+        out = '\n'.join(out)
+    
+    print out
+    
     
 
 
@@ -74,10 +81,10 @@ Output from Python Code
     Type of response:  <class 'taniumpy.object_types.action_list.ActionList'>
     
     print of response:
-    ActionList, len: 13
+    ActionList, len: 30
     
     length of response (number of objects returned): 
-    13
+    30
     
     print the first object returned in JSON format:
     {
@@ -95,34 +102,4 @@ Output from Python Code
       "expire_seconds": 3000, 
       "history_saved_question": {
         "_type": "saved_question", 
-        "id": 173
-      }, 
-      "id": 16, 
-      "name": "Unmanaged Asset Tracking - Run Scan", 
-      "package_spec": {
-        "_type": "package_spec", 
-        "command": "cmd /c start /B cscript //T:3600 ..\\..\\Tools\\run-ua-scan.vbs /RANDOM_WAIT_TIME_IN_SECONDS:240", 
-        "id": 6, 
-        "name": "Run Unmanaged Asset Scanner"
-      }, 
-      "saved_action": {
-        "_type": "saved_action", 
-        "id": 16
-      }, 
-      "skip_lock_flag": 0, 
-      "start_time": "2014-12-08T19:26:36", 
-      "status": "Active", 
-      "stopped_flag": 0, 
-      "target_group": {
-        "_type": "group", 
-        "id": 65, 
-        "name": "Default"
-      }, 
-      "user": {
-        "_type": "user", 
-        "group_id": 0, 
-        "id": 2, 
-        "last_login": "2014-12-08T19:26:37", 
-        "name": "Tanium User"
-      }
-    }
+    ..trimmed for brevity..

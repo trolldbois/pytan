@@ -1,6 +1,6 @@
 
 Get all packages
-====================================================================================================
+==========================================================================================
 Get all packages
 
 Example Python Code
@@ -58,7 +58,14 @@ Example Python Code
     
     print ""
     print "print the first object returned in JSON format:"
-    print response.to_json(response[0])
+    out = response.to_json(response[0])
+    if len(out.splitlines()) > 15:
+        out = out.splitlines()[0:15]
+        out.append('..trimmed for brevity..')
+        out = '\n'.join(out)
+    
+    print out
+    
     
 
 
@@ -74,10 +81,10 @@ Output from Python Code
     Type of response:  <class 'taniumpy.object_types.package_spec_list.PackageSpecList'>
     
     print of response:
-    PackageSpecList, len: 91
+    PackageSpecList, len: 92
     
     length of response (number of objects returned): 
-    91
+    92
     
     print the first object returned in JSON format:
     {
@@ -95,44 +102,4 @@ Output from Python Code
         "file": [
           {
             "_type": "file", 
-            "bytes_downloaded": 17509, 
-            "bytes_total": 17509, 
-            "cache_status": "CACHED", 
-            "download_seconds": 0, 
-            "download_start_time": "2014-12-08T19:20:54", 
-            "hash": "30bf532c4c1c5bb9599487712f88ff42190ccd2678192f7e61b160e6592cfbfe", 
-            "id": 1, 
-            "last_download_progress_time": "2014-12-08T19:21:05", 
-            "name": "java-installer.vbs", 
-            "size": 17509, 
-            "source": "https://content.tanium.com/files/initialcontent/bundles/2014-11-05_12-56-07-8513/update_java_64-bit_-_kill_-_reboot/java-installer.vbs", 
-            "status": 200
-          }
-        ]
-      }, 
-      "hidden_flag": 0, 
-      "id": 1, 
-      "last_modified_by": "Jim Olsen", 
-      "last_update": "2014-12-08T19:20:46", 
-      "metadata": {
-        "_type": "metadata", 
-        "item": [
-          {
-            "_type": "item", 
-            "admin_flag": 0, 
-            "name": "defined", 
-            "value": "Tanium"
-          }, 
-          {
-            "_type": "item", 
-            "admin_flag": 0, 
-            "name": "category", 
-            "value": "Tanium"
-          }
-        ]
-      }, 
-      "modification_time": "2014-12-08T19:20:46", 
-      "name": "Update Java 64-bit - Kill / Reboot", 
-      "source_id": 0, 
-      "verify_group_id": 0
-    }
+    ..trimmed for brevity..

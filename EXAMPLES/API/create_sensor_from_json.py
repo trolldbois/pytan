@@ -89,9 +89,9 @@ print response.to_json(response)
 
 '''Output from running this:
 Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-2014-12-08 15:17:05,042 INFO     handler: Deleted 'Sensor, id: 823'
-2014-12-08 15:17:05,042 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/SensorList_2014_12_08-15_17_05-EST.json' written with 15857 bytes
-2014-12-08 15:17:05,074 INFO     handler: New Sensor, name: 'Folder Name Search with RegEx Match API TEST' (ID: 827) created successfully!
+2014-12-08 16:28:45,059 INFO     handler: Deleted 'Sensor, id: 827'
+2014-12-08 16:28:45,060 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/SensorList_2014_12_08-16_28_45-EST.json' written with 15857 bytes
+2014-12-08 16:28:45,102 INFO     handler: New Sensor, name: 'Folder Name Search with RegEx Match API TEST' (ID: 830) created successfully!
 
 Type of response:  <class 'taniumpy.object_types.sensor_list.SensorList'>
 
@@ -105,13 +105,13 @@ print the object returned in JSON format:
     {
       "_type": "sensor", 
       "category": "File System", 
-      "creation_time": "2014-12-08T20:17:05", 
+      "creation_time": "2014-12-08T21:28:45", 
       "delimiter": ",", 
       "description": "Finds the specified folder and provides the full path if the folder exists on the client machine. Takes regular expression to match.\nExample: C:\\WINDOWS\\System32", 
       "exclude_from_parse_flag": 1, 
       "hash": 839342978, 
       "hidden_flag": 0, 
-      "id": 827, 
+      "id": 830, 
       "ignore_case_flag": 1, 
       "last_modified_by": "Tanium User", 
       "max_age_seconds": 600, 
@@ -126,7 +126,7 @@ print the object returned in JSON format:
           }
         ]
       }, 
-      "modification_time": "2014-12-08T20:17:05", 
+      "modification_time": "2014-12-08T21:28:45", 
       "name": "Folder Name Search with RegEx Match API TEST", 
       "parameter_definition": "{\"parameters\":[{\"restrict\":null,\"validationExpressions\":[{\"helpString\":\"Value must be at least 3 characters\",\"flags\":\"\",\"expression\":\"\\\\S{3}\",\"parameterType\":\"com.tanium.models::ValidationExpression\",\"model\":\"com.tanium.models::ValidationExpression\"}],\"helpString\":\"Enter the folder name to search for\",\"promptText\":\"e.g Program Files\",\"defaultValue\":\"\",\"value\":\"\",\"label\":\"Search for Folder Name\",\"maxChars\":0,\"key\":\"dirname\",\"parameterType\":\"com.tanium.components.parameters::TextInputParameter\",\"model\":\"com.tanium.components.parameters::TextInputParameter\"},{\"restrict\":null,\"validationExpressions\":[{\"helpString\":\"Value must be at least 3 characters\",\"flags\":\"\",\"expression\":\"\\\\S{3}\",\"parameterType\":\"com.tanium.models::ValidationExpression\",\"model\":\"com.tanium.models::ValidationExpression\"}],\"helpString\":\"Enter the regular expression to search for.\",\"promptText\":\"e.g. test*.exe\",\"defaultValue\":\"\",\"value\":\"\",\"label\":\"Regular Expression\",\"maxChars\":0,\"key\":\"regexp\",\"parameterType\":\"com.tanium.components.parameters::TextInputParameter\",\"model\":\"com.tanium.components.parameters::TextInputParameter\"},{\"values\":[\"No\",\"Yes\"],\"helpString\":\"Enter Yes/No for case sensitivity of search.\",\"requireSelection\":true,\"promptText\":\"\",\"defaultValue\":\"\",\"value\":\"\",\"label\":\"Case sensitive?\",\"key\":\"casesensitive\",\"parameterType\":\"com.tanium.components.parameters::DropDownParameter\",\"model\":\"com.tanium.components.parameters::DropDownParameter\"},{\"values\":[\"No\",\"Yes\"],\"helpString\":\"Enter Yes/No whether the search is global.\",\"requireSelection\":true,\"promptText\":\"\",\"defaultValue\":\"\",\"value\":\"\",\"label\":\"Global\",\"key\":\"global\",\"parameterType\":\"com.tanium.components.parameters::DropDownParameter\",\"model\":\"com.tanium.components.parameters::DropDownParameter\"}],\"parameterType\":\"com.tanium.components.parameters::ParametersArray\",\"model\":\"com.tanium.components.parameters::ParametersArray\"}", 
       "queries": {

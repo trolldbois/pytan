@@ -58,9 +58,9 @@ except Exception as e:
 
 '''Output from running this:
 Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-2014-12-08 15:29:37,251 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-2014-12-08 15:29:42,267 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-2014-12-08 15:29:47,280 INFO     question_progress: Results 100% (Get Computer Name from all machines)
+2014-12-08 16:43:33,188 INFO     question_progress: Results 0% (Get Computer Name from all machines)
+2014-12-08 16:43:38,204 INFO     question_progress: Results 67% (Get Computer Name from all machines)
+2014-12-08 16:43:43,225 INFO     question_progress: Results 100% (Get Computer Name from all machines)
 Traceback (most recent call last):
   File "<string>", line 49, in <module>
   File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1402, in export_obj

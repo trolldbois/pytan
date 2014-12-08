@@ -1,6 +1,6 @@
 
 Invalid export resultset csv bad expand type
-====================================================================================================
+==========================================================================================
 Export a ResultSet from asking a question using a bad expand_grouped_columns
 
 Example Python Code
@@ -73,10 +73,9 @@ Output from Python Code
 
 
     Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-    2014-12-08 15:29:52,446 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-    2014-12-08 15:29:57,463 INFO     question_progress: Results 50% (Get Computer Name from all machines)
-    2014-12-08 15:30:02,479 INFO     question_progress: Results 50% (Get Computer Name from all machines)
-    2014-12-08 15:30:07,496 INFO     question_progress: Results 100% (Get Computer Name from all machines)
+    2014-12-08 16:43:53,414 INFO     question_progress: Results 0% (Get Computer Name from all machines)
+    2014-12-08 16:43:58,431 INFO     question_progress: Results 0% (Get Computer Name from all machines)
+    2014-12-08 16:44:03,451 INFO     question_progress: Results 100% (Get Computer Name from all machines)
     Traceback (most recent call last):
       File "<string>", line 49, in <module>
       File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1402, in export_obj

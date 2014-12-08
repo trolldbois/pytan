@@ -2,1002 +2,1002 @@
 \def\bigletter#1{{\Large\sffamily#1}\nopagebreak\vspace{1mm}}
 
   \bigletter {Symbols}
-  \item \_\_author\_\_ (in module pytan), \hyperpage{2}
-  \item \_\_copyright\_\_ (in module pytan), \hyperpage{2}
-  \item \_\_license\_\_ (in module pytan), \hyperpage{2}
-  \item \_\_module\_\_ (test\_pytan\_func.InvalidServerTests attribute), \hyperpage{542}
-  \item \_\_module\_\_ (test\_pytan\_func.ValidServerTests attribute), \hyperpage{542}
-  \item \_\_module\_\_ (test\_pytan\_unit.TestDehumanizeExtractionUtils attribute), \hyperpage{537}
+  \item \_\_author\_\_ (in module pytan), \hyperpage{3}
+  \item \_\_copyright\_\_ (in module pytan), \hyperpage{3}
+  \item \_\_license\_\_ (in module pytan), \hyperpage{3}
+  \item \_\_module\_\_ (test\_pytan\_func.InvalidServerTests attribute), \hyperpage{270}
+  \item \_\_module\_\_ (test\_pytan\_func.ValidServerTests attribute), \hyperpage{270}
+  \item \_\_module\_\_ (test\_pytan\_unit.TestDehumanizeExtractionUtils attribute), \hyperpage{265}
   \item \_\_module\_\_ (test\_pytan\_unit.TestDehumanizeQuestionFilterUtils attribute), 
-		\hyperpage{538}
+		\hyperpage{266}
   \item \_\_module\_\_ (test\_pytan\_unit.TestDehumanizeQuestionOptionUtils attribute), 
-		\hyperpage{538}
-  \item \_\_module\_\_ (test\_pytan\_unit.TestDehumanizeSensorUtils attribute), \hyperpage{539}
-  \item \_\_module\_\_ (test\_pytan\_unit.TestGenericUtils attribute), \hyperpage{539}
-  \item \_\_module\_\_ (test\_pytan\_unit.TestManualBuildObjectUtils attribute), \hyperpage{540}
+		\hyperpage{266}
+  \item \_\_module\_\_ (test\_pytan\_unit.TestDehumanizeSensorUtils attribute), \hyperpage{267}
+  \item \_\_module\_\_ (test\_pytan\_unit.TestGenericUtils attribute), \hyperpage{267}
+  \item \_\_module\_\_ (test\_pytan\_unit.TestManualBuildObjectUtils attribute), \hyperpage{268}
   \item \_\_module\_\_ (test\_pytan\_unit.TestManualPackageDefValidateUtils attribute), 
-		\hyperpage{540}
+		\hyperpage{268}
   \item \_\_module\_\_ (test\_pytan\_unit.TestManualQuestionFilterDefParseUtils attribute), 
-		\hyperpage{540}
+		\hyperpage{268}
   \item \_\_module\_\_ (test\_pytan\_unit.TestManualQuestionFilterDefValidateUtils attribute), 
-		\hyperpage{540}
+		\hyperpage{268}
   \item \_\_module\_\_ (test\_pytan\_unit.TestManualQuestionOptionDefParseUtils attribute), 
-		\hyperpage{541}
-  \item \_\_module\_\_ (test\_pytan\_unit.TestManualSensorDefParseUtils attribute), \hyperpage{541}
+		\hyperpage{269}
+  \item \_\_module\_\_ (test\_pytan\_unit.TestManualSensorDefParseUtils attribute), \hyperpage{269}
   \item \_\_module\_\_ (test\_pytan\_unit.TestManualSensorDefValidateUtils attribute), 
-		\hyperpage{541}
-  \item \_\_module\_\_ (threaded\_http.Handler attribute), \hyperpage{562}
-  \item \_\_module\_\_ (threaded\_http.ThreadedHTTPServer attribute), \hyperpage{562}
-  \item \_\_version\_\_ (in module pytan), \hyperpage{2}
-  \item \_export\_class\_BaseType() (pytan.handler.Handler method), \hyperpage{521}
-  \item \_export\_class\_ResultSet() (pytan.handler.Handler method), \hyperpage{521}
-  \item \_export\_format\_csv() (pytan.handler.Handler method), \hyperpage{521}
-  \item \_export\_format\_json() (pytan.handler.Handler method), \hyperpage{521}
-  \item \_export\_format\_xml() (pytan.handler.Handler method), \hyperpage{521}
-  \item \_find() (pytan.handler.Handler method), \hyperpage{521}
-  \item \_get\_multi() (pytan.handler.Handler method), \hyperpage{521}
-  \item \_get\_package\_def() (pytan.handler.Handler method), \hyperpage{521}
-  \item \_get\_sensor\_defs() (pytan.handler.Handler method), \hyperpage{521}
-  \item \_get\_single() (pytan.handler.Handler method), \hyperpage{521}
-  \item \_single\_find() (pytan.handler.Handler method), \hyperpage{521}
+		\hyperpage{269}
+  \item \_\_module\_\_ (threaded\_http.Handler attribute), \hyperpage{290}
+  \item \_\_module\_\_ (threaded\_http.ThreadedHTTPServer attribute), \hyperpage{290}
+  \item \_\_version\_\_ (in module pytan), \hyperpage{3}
+  \item \_export\_class\_BaseType() (pytan.handler.Handler method), \hyperpage{249}
+  \item \_export\_class\_ResultSet() (pytan.handler.Handler method), \hyperpage{249}
+  \item \_export\_format\_csv() (pytan.handler.Handler method), \hyperpage{249}
+  \item \_export\_format\_json() (pytan.handler.Handler method), \hyperpage{249}
+  \item \_export\_format\_xml() (pytan.handler.Handler method), \hyperpage{249}
+  \item \_find() (pytan.handler.Handler method), \hyperpage{249}
+  \item \_get\_multi() (pytan.handler.Handler method), \hyperpage{249}
+  \item \_get\_package\_def() (pytan.handler.Handler method), \hyperpage{249}
+  \item \_get\_sensor\_defs() (pytan.handler.Handler method), \hyperpage{249}
+  \item \_get\_single() (pytan.handler.Handler method), \hyperpage{249}
+  \item \_single\_find() (pytan.handler.Handler method), \hyperpage{249}
 
   \indexspace
   \bigletter A
-  \item Action (class in taniumpy.object\_types.action), \hyperpage{548}
-  \item ACTION\_RESULT\_STATUS (in module pytan.constants), \hyperpage{521}
-  \item ActionList (class in taniumpy.object\_types.action\_list), \hyperpage{548}
-  \item ActionListInfo (class in taniumpy.object\_types.action\_list\_info), \hyperpage{548}
-  \item ActionStop (class in taniumpy.object\_types.action\_stop), \hyperpage{548}
-  \item ActionStopList (class in taniumpy.object\_types.action\_stop\_list), \hyperpage{548}
-  \item add() (taniumpy.session.Session method), \hyperpage{546}
-  \item add\_ask\_report\_argparser() (in module pytan.utils), \hyperpage{528}
-  \item add\_get\_object\_report\_argparser() (in module pytan.utils), \hyperpage{529}
-  \item ADD\_OBJECT (taniumpy.session.Session attribute), \hyperpage{546}
-  \item add\_report\_file\_options() (in module pytan.utils), \hyperpage{528}
-  \item append() (taniumpy.object\_types.base.BaseType method), \hyperpage{549}
-  \item apply\_options\_obj() (in module pytan.utils), \hyperpage{533}
-  \item ArchivedQuestion (class in taniumpy.object\_types.archived\_question), \hyperpage{548}
+  \item Action (class in taniumpy.object\_types.action), \hyperpage{276}
+  \item ACTION\_RESULT\_STATUS (in module pytan.constants), \hyperpage{249}
+  \item ActionList (class in taniumpy.object\_types.action\_list), \hyperpage{276}
+  \item ActionListInfo (class in taniumpy.object\_types.action\_list\_info), \hyperpage{276}
+  \item ActionStop (class in taniumpy.object\_types.action\_stop), \hyperpage{276}
+  \item ActionStopList (class in taniumpy.object\_types.action\_stop\_list), \hyperpage{276}
+  \item add() (taniumpy.session.Session method), \hyperpage{274}
+  \item add\_ask\_report\_argparser() (in module pytan.utils), \hyperpage{256}
+  \item add\_get\_object\_report\_argparser() (in module pytan.utils), \hyperpage{257}
+  \item ADD\_OBJECT (taniumpy.session.Session attribute), \hyperpage{274}
+  \item add\_report\_file\_options() (in module pytan.utils), \hyperpage{256}
+  \item append() (taniumpy.object\_types.base.BaseType method), \hyperpage{277}
+  \item apply\_options\_obj() (in module pytan.utils), \hyperpage{261}
+  \item ArchivedQuestion (class in taniumpy.object\_types.archived\_question), \hyperpage{276}
   \item ArchivedQuestionList (class in taniumpy.object\_types.archived\_question\_list), 
-		\hyperpage{548}
-  \item ask() (pytan.handler.Handler method), \hyperpage{507}
-  \item ASK\_KWARGS (in module pytan.constants), \hyperpage{521}
-  \item ask\_manual() (pytan.handler.Handler method), \hyperpage{508}
-  \item ask\_manual\_human() (pytan.handler.Handler method), \hyperpage{509}
-  \item ask\_saved() (pytan.handler.Handler method), \hyperpage{507}
-  \item AuditData (class in taniumpy.object\_types.audit\_data), \hyperpage{548}
-  \item AUTH\_RES (taniumpy.session.Session attribute), \hyperpage{546}
-  \item authenticate() (taniumpy.session.Session method), \hyperpage{546}
-  \item AuthorizationError, \hyperpage{546}
+		\hyperpage{276}
+  \item ask() (pytan.handler.Handler method), \hyperpage{235}
+  \item ASK\_KWARGS (in module pytan.constants), \hyperpage{249}
+  \item ask\_manual() (pytan.handler.Handler method), \hyperpage{236}
+  \item ask\_manual\_human() (pytan.handler.Handler method), \hyperpage{237}
+  \item ask\_saved() (pytan.handler.Handler method), \hyperpage{235}
+  \item AuditData (class in taniumpy.object\_types.audit\_data), \hyperpage{276}
+  \item AUTH\_RES (taniumpy.session.Session attribute), \hyperpage{274}
+  \item authenticate() (taniumpy.session.Session method), \hyperpage{274}
+  \item AuthorizationError, \hyperpage{274}
 
   \indexspace
   \bigletter B
-  \item BadResponseError, \hyperpage{546}
-  \item BaseType (class in taniumpy.object\_types.base), \hyperpage{549}
-  \item build\_group\_obj() (in module pytan.utils), \hyperpage{533}
-  \item build\_manual\_q() (in module pytan.utils), \hyperpage{534}
-  \item build\_metadatalist\_obj() (in module pytan.utils), \hyperpage{534}
-  \item build\_param\_obj() (in module pytan.utils), \hyperpage{534}
-  \item build\_param\_objlist() (in module pytan.utils), \hyperpage{534}
-  \item build\_selectlist\_obj() (in module pytan.utils), \hyperpage{535}
+  \item BadResponseError, \hyperpage{274}
+  \item BaseType (class in taniumpy.object\_types.base), \hyperpage{277}
+  \item build\_group\_obj() (in module pytan.utils), \hyperpage{261}
+  \item build\_manual\_q() (in module pytan.utils), \hyperpage{262}
+  \item build\_metadatalist\_obj() (in module pytan.utils), \hyperpage{262}
+  \item build\_param\_obj() (in module pytan.utils), \hyperpage{262}
+  \item build\_param\_objlist() (in module pytan.utils), \hyperpage{262}
+  \item build\_selectlist\_obj() (in module pytan.utils), \hyperpage{263}
 
   \indexspace
   \bigletter C
-  \item CacheFilter (class in taniumpy.object\_types.cache\_filter), \hyperpage{550}
-  \item CacheFilterList (class in taniumpy.object\_types.cache\_filter\_list), \hyperpage{550}
-  \item CacheInfo (class in taniumpy.object\_types.cache\_info), \hyperpage{550}
-  \item change\_console\_format() (in module pytan.utils), \hyperpage{524}
-  \item check\_dictkey() (in module pytan.utils), \hyperpage{536}
-  \item chk\_def\_key() (in module pytan.utils), \hyperpage{536}
-  \item ClientCount (class in taniumpy.object\_types.client\_count), \hyperpage{550}
-  \item ClientStatus (class in taniumpy.object\_types.client\_status), \hyperpage{550}
-  \item Column (class in taniumpy.object\_types.column), \hyperpage{550}
-  \item ColumnSet (class in taniumpy.object\_types.column\_set), \hyperpage{550}
-  \item ComputerGroup (class in taniumpy.object\_types.computer\_group), \hyperpage{550}
-  \item ComputerGroupList (class in taniumpy.object\_types.computer\_group\_list), \hyperpage{551}
-  \item ComputerGroupSpec (class in taniumpy.object\_types.computer\_group\_spec), \hyperpage{551}
-  \item ComputerSpecList (class in taniumpy.object\_types.computer\_spec\_list), \hyperpage{551}
-  \item create\_from\_json() (pytan.handler.Handler method), \hyperpage{513}
-  \item create\_group() (pytan.handler.Handler method), \hyperpage{516}
-  \item create\_package() (pytan.handler.Handler method), \hyperpage{517}
-  \item create\_sensor() (pytan.handler.Handler method), \hyperpage{518}
-  \item create\_user() (pytan.handler.Handler method), \hyperpage{518}
-  \item create\_whitelisted\_url() (pytan.handler.Handler method), \hyperpage{519}
-  \item CustomArgFormat (class in pytan.utils), \hyperpage{524}
-  \item CustomArgParse (class in pytan.utils), \hyperpage{524}
+  \item CacheFilter (class in taniumpy.object\_types.cache\_filter), \hyperpage{278}
+  \item CacheFilterList (class in taniumpy.object\_types.cache\_filter\_list), \hyperpage{278}
+  \item CacheInfo (class in taniumpy.object\_types.cache\_info), \hyperpage{278}
+  \item change\_console\_format() (in module pytan.utils), \hyperpage{252}
+  \item check\_dictkey() (in module pytan.utils), \hyperpage{264}
+  \item chk\_def\_key() (in module pytan.utils), \hyperpage{264}
+  \item ClientCount (class in taniumpy.object\_types.client\_count), \hyperpage{278}
+  \item ClientStatus (class in taniumpy.object\_types.client\_status), \hyperpage{278}
+  \item Column (class in taniumpy.object\_types.column), \hyperpage{278}
+  \item ColumnSet (class in taniumpy.object\_types.column\_set), \hyperpage{278}
+  \item ComputerGroup (class in taniumpy.object\_types.computer\_group), \hyperpage{278}
+  \item ComputerGroupList (class in taniumpy.object\_types.computer\_group\_list), \hyperpage{279}
+  \item ComputerGroupSpec (class in taniumpy.object\_types.computer\_group\_spec), \hyperpage{279}
+  \item ComputerSpecList (class in taniumpy.object\_types.computer\_spec\_list), \hyperpage{279}
+  \item create\_from\_json() (pytan.handler.Handler method), \hyperpage{241}
+  \item create\_group() (pytan.handler.Handler method), \hyperpage{244}
+  \item create\_package() (pytan.handler.Handler method), \hyperpage{245}
+  \item create\_sensor() (pytan.handler.Handler method), \hyperpage{246}
+  \item create\_user() (pytan.handler.Handler method), \hyperpage{246}
+  \item create\_whitelisted\_url() (pytan.handler.Handler method), \hyperpage{247}
+  \item CustomArgFormat (class in pytan.utils), \hyperpage{252}
+  \item CustomArgParse (class in pytan.utils), \hyperpage{252}
 
   \indexspace
   \bigletter D
-  \item data() (in module ddt), \hyperpage{561}
-  \item ddt (module), \hyperpage{561}
-  \item ddt() (in module ddt), \hyperpage{561}
-  \item DEBUG\_FORMAT (in module pytan.constants), \hyperpage{521}
-  \item DefinitionParserError, \hyperpage{523}
-  \item dehumanize\_package() (in module pytan.utils), \hyperpage{530}
-  \item dehumanize\_question\_filters() (in module pytan.utils), \hyperpage{530}
-  \item dehumanize\_question\_options() (in module pytan.utils), \hyperpage{530}
-  \item dehumanize\_sensors() (in module pytan.utils), \hyperpage{530}
-  \item delete() (pytan.handler.Handler method), \hyperpage{519}
-  \item delete() (taniumpy.session.Session method), \hyperpage{546}
-  \item DELETE\_OBJECT (taniumpy.session.Session attribute), \hyperpage{546}
-  \item deploy\_action() (pytan.handler.Handler method), \hyperpage{510}
-  \item deploy\_action\_asker() (pytan.handler.Handler method), \hyperpage{513}
-  \item deploy\_action\_human() (pytan.handler.Handler method), \hyperpage{511}
-  \item derive\_param\_default() (in module pytan.utils), \hyperpage{535}
-  \item do\_GET() (threaded\_http.Handler method), \hyperpage{562}
-  \item DynamicFormatter (class in taniumpy.session), \hyperpage{546}
+  \item data() (in module ddt), \hyperpage{289}
+  \item ddt (module), \hyperpage{289}
+  \item ddt() (in module ddt), \hyperpage{289}
+  \item DEBUG\_FORMAT (in module pytan.constants), \hyperpage{249}
+  \item DefinitionParserError, \hyperpage{251}
+  \item dehumanize\_package() (in module pytan.utils), \hyperpage{258}
+  \item dehumanize\_question\_filters() (in module pytan.utils), \hyperpage{258}
+  \item dehumanize\_question\_options() (in module pytan.utils), \hyperpage{258}
+  \item dehumanize\_sensors() (in module pytan.utils), \hyperpage{258}
+  \item delete() (pytan.handler.Handler method), \hyperpage{247}
+  \item delete() (taniumpy.session.Session method), \hyperpage{274}
+  \item DELETE\_OBJECT (taniumpy.session.Session attribute), \hyperpage{274}
+  \item deploy\_action() (pytan.handler.Handler method), \hyperpage{238}
+  \item deploy\_action\_asker() (pytan.handler.Handler method), \hyperpage{241}
+  \item deploy\_action\_human() (pytan.handler.Handler method), \hyperpage{239}
+  \item derive\_param\_default() (in module pytan.utils), \hyperpage{263}
+  \item do\_GET() (threaded\_http.Handler method), \hyperpage{290}
+  \item DynamicFormatter (class in taniumpy.session), \hyperpage{274}
 
   \indexspace
   \bigletter E
-  \item emit() (pytan.utils.SplitStreamHandler method), \hyperpage{524}
-  \item empty\_obj() (in module pytan.utils), \hyperpage{535}
-  \item error() (pytan.utils.CustomArgParse method), \hyperpage{524}
-  \item ErrorList (class in taniumpy.object\_types.error\_list), \hyperpage{551}
-  \item explode\_json() (taniumpy.object\_types.base.BaseType method), \hyperpage{549}
-  \item EXPORT\_MAPS (in module pytan.constants), \hyperpage{521}
-  \item export\_obj() (pytan.handler.Handler method), \hyperpage{514}
-  \item export\_to\_report\_file() (pytan.handler.Handler method), \hyperpage{515}
-  \item extract\_filter() (in module pytan.utils), \hyperpage{531}
-  \item extract\_options() (in module pytan.utils), \hyperpage{531}
-  \item extract\_params() (in module pytan.utils), \hyperpage{531}
-  \item extract\_selector() (in module pytan.utils), \hyperpage{531}
+  \item emit() (pytan.utils.SplitStreamHandler method), \hyperpage{252}
+  \item empty\_obj() (in module pytan.utils), \hyperpage{263}
+  \item error() (pytan.utils.CustomArgParse method), \hyperpage{252}
+  \item ErrorList (class in taniumpy.object\_types.error\_list), \hyperpage{279}
+  \item explode\_json() (taniumpy.object\_types.base.BaseType method), \hyperpage{277}
+  \item EXPORT\_MAPS (in module pytan.constants), \hyperpage{249}
+  \item export\_obj() (pytan.handler.Handler method), \hyperpage{242}
+  \item export\_to\_report\_file() (pytan.handler.Handler method), \hyperpage{243}
+  \item extract\_filter() (in module pytan.utils), \hyperpage{259}
+  \item extract\_options() (in module pytan.utils), \hyperpage{259}
+  \item extract\_params() (in module pytan.utils), \hyperpage{259}
+  \item extract\_selector() (in module pytan.utils), \hyperpage{259}
 
   \indexspace
   \bigletter F
-  \item file\_data() (in module ddt), \hyperpage{561}
-  \item Filter (class in taniumpy.object\_types.filter), \hyperpage{551}
-  \item FILTER\_MAPS (in module pytan.constants), \hyperpage{522}
-  \item FILTER\_RE (in module pytan.constants), \hyperpage{522}
-  \item FilterList (class in taniumpy.object\_types.filter\_list), \hyperpage{551}
-  \item find() (taniumpy.session.Session method), \hyperpage{547}
-  \item flatten\_jsonable() (taniumpy.object\_types.base.BaseType method), \hyperpage{549}
-  \item FORMATTER() (taniumpy.session.Session method), \hyperpage{546}
-  \item from\_jsonable() (taniumpy.object\_types.base.BaseType static method), \hyperpage{549}
-  \item fromSOAPBody() (taniumpy.object\_types.base.BaseType class method), \hyperpage{549}
-  \item fromSOAPElement() (taniumpy.object\_types.base.BaseType class method), \hyperpage{549}
-  \item fromSOAPElement() (taniumpy.object\_types.column.Column class method), \hyperpage{550}
+  \item file\_data() (in module ddt), \hyperpage{289}
+  \item Filter (class in taniumpy.object\_types.filter), \hyperpage{279}
+  \item FILTER\_MAPS (in module pytan.constants), \hyperpage{250}
+  \item FILTER\_RE (in module pytan.constants), \hyperpage{250}
+  \item FilterList (class in taniumpy.object\_types.filter\_list), \hyperpage{279}
+  \item find() (taniumpy.session.Session method), \hyperpage{275}
+  \item flatten\_jsonable() (taniumpy.object\_types.base.BaseType method), \hyperpage{277}
+  \item FORMATTER() (taniumpy.session.Session method), \hyperpage{274}
+  \item from\_jsonable() (taniumpy.object\_types.base.BaseType static method), \hyperpage{277}
+  \item fromSOAPBody() (taniumpy.object\_types.base.BaseType class method), \hyperpage{277}
+  \item fromSOAPElement() (taniumpy.object\_types.base.BaseType class method), \hyperpage{277}
+  \item fromSOAPElement() (taniumpy.object\_types.column.Column class method), \hyperpage{278}
   \item fromSOAPElement() (taniumpy.object\_types.column\_set.ColumnSet class method), 
-		\hyperpage{550}
+		\hyperpage{278}
   \item fromSOAPElement() (taniumpy.object\_types.result\_info.ResultInfo class method), 
-		\hyperpage{555}
+		\hyperpage{283}
   \item fromSOAPElement() (taniumpy.object\_types.result\_set.ResultSet class method), 
-		\hyperpage{555}
-  \item fromSOAPElement() (taniumpy.object\_types.row.Row class method), \hyperpage{556}
+		\hyperpage{283}
+  \item fromSOAPElement() (taniumpy.object\_types.row.Row class method), \hyperpage{284}
 
   \indexspace
   \bigletter G
-  \item get() (pytan.handler.Handler method), \hyperpage{520}
-  \item get\_all() (pytan.handler.Handler method), \hyperpage{520}
-  \item get\_ask\_kwargs() (in module pytan.utils), \hyperpage{532}
-  \item get\_dict\_list\_items() (in module pytan.utils), \hyperpage{525}
-  \item get\_dict\_list\_len() (in module pytan.utils), \hyperpage{525}
-  \item get\_filter\_obj() (in module pytan.utils), \hyperpage{535}
-  \item get\_grp\_opts() (in module pytan.utils), \hyperpage{529}
-  \item get\_kwargs\_int() (in module pytan.utils), \hyperpage{532}
-  \item get\_now() (in module pytan.utils), \hyperpage{526}
-  \item GET\_OBJ\_MAP (in module pytan.constants), \hyperpage{522}
-  \item get\_obj\_map() (in module pytan.utils), \hyperpage{533}
-  \item get\_obj\_params() (in module pytan.utils), \hyperpage{536}
-  \item GET\_OBJECT (taniumpy.session.Session attribute), \hyperpage{546}
-  \item get\_q\_obj\_map() (in module pytan.utils), \hyperpage{533}
-  \item get\_req\_kwargs() (in module pytan.utils), \hyperpage{533}
-  \item GET\_RESULT\_DATA (taniumpy.session.Session attribute), \hyperpage{546}
-  \item get\_result\_data() (pytan.handler.Handler method), \hyperpage{520}
-  \item GET\_RESULT\_INFO (taniumpy.session.Session attribute), \hyperpage{546}
-  \item get\_result\_info() (pytan.handler.Handler method), \hyperpage{520}
-  \item get\_server\_info() (taniumpy.session.Session method), \hyperpage{547}
-  \item get\_value() (taniumpy.session.DynamicFormatter method), \hyperpage{546}
-  \item getResultData() (taniumpy.session.Session method), \hyperpage{547}
-  \item getResultInfo() (taniumpy.session.Session method), \hyperpage{547}
-  \item Group (class in taniumpy.object\_types.group), \hyperpage{551}
-  \item GroupList (class in taniumpy.object\_types.group\_list), \hyperpage{551}
+  \item get() (pytan.handler.Handler method), \hyperpage{248}
+  \item get\_all() (pytan.handler.Handler method), \hyperpage{248}
+  \item get\_ask\_kwargs() (in module pytan.utils), \hyperpage{260}
+  \item get\_dict\_list\_items() (in module pytan.utils), \hyperpage{253}
+  \item get\_dict\_list\_len() (in module pytan.utils), \hyperpage{253}
+  \item get\_filter\_obj() (in module pytan.utils), \hyperpage{263}
+  \item get\_grp\_opts() (in module pytan.utils), \hyperpage{257}
+  \item get\_kwargs\_int() (in module pytan.utils), \hyperpage{260}
+  \item get\_now() (in module pytan.utils), \hyperpage{254}
+  \item GET\_OBJ\_MAP (in module pytan.constants), \hyperpage{250}
+  \item get\_obj\_map() (in module pytan.utils), \hyperpage{261}
+  \item get\_obj\_params() (in module pytan.utils), \hyperpage{264}
+  \item GET\_OBJECT (taniumpy.session.Session attribute), \hyperpage{274}
+  \item get\_q\_obj\_map() (in module pytan.utils), \hyperpage{261}
+  \item get\_req\_kwargs() (in module pytan.utils), \hyperpage{261}
+  \item GET\_RESULT\_DATA (taniumpy.session.Session attribute), \hyperpage{274}
+  \item get\_result\_data() (pytan.handler.Handler method), \hyperpage{248}
+  \item GET\_RESULT\_INFO (taniumpy.session.Session attribute), \hyperpage{274}
+  \item get\_result\_info() (pytan.handler.Handler method), \hyperpage{248}
+  \item get\_server\_info() (taniumpy.session.Session method), \hyperpage{275}
+  \item get\_value() (taniumpy.session.DynamicFormatter method), \hyperpage{274}
+  \item getResultData() (taniumpy.session.Session method), \hyperpage{275}
+  \item getResultInfo() (taniumpy.session.Session method), \hyperpage{275}
+  \item Group (class in taniumpy.object\_types.group), \hyperpage{279}
+  \item GroupList (class in taniumpy.object\_types.group\_list), \hyperpage{279}
 
   \indexspace
   \bigletter H
-  \item Handler (class in pytan.handler), \hyperpage{506}
-  \item Handler (class in threaded\_http), \hyperpage{562}
-  \item HandlerError, \hyperpage{523}
-  \item http\_post() (in module taniumpy.session), \hyperpage{547}
-  \item HttpError, \hyperpage{546}
-  \item human\_time() (in module pytan.utils), \hyperpage{526}
-  \item HumanParserError, \hyperpage{523}
+  \item Handler (class in pytan.handler), \hyperpage{234}
+  \item Handler (class in threaded\_http), \hyperpage{290}
+  \item HandlerError, \hyperpage{251}
+  \item http\_post() (in module taniumpy.session), \hyperpage{275}
+  \item HttpError, \hyperpage{274}
+  \item human\_time() (in module pytan.utils), \hyperpage{254}
+  \item HumanParserError, \hyperpage{251}
 
   \indexspace
   \bigletter I
-  \item IncorrectTypeException, \hyperpage{550}
-  \item INFO\_FORMAT (in module pytan.constants), \hyperpage{522}
-  \item INFO\_RES (taniumpy.session.Session attribute), \hyperpage{546}
-  \item InvalidServerTests (class in test\_pytan\_func), \hyperpage{542}
-  \item is\_auth (taniumpy.session.Session attribute), \hyperpage{547}
-  \item is\_dict() (in module pytan.utils), \hyperpage{525}
-  \item is\_hash\_randomized() (in module ddt), \hyperpage{561}
-  \item is\_list() (in module pytan.utils), \hyperpage{525}
-  \item is\_num() (in module pytan.utils), \hyperpage{525}
-  \item is\_str() (in module pytan.utils), \hyperpage{525}
+  \item IncorrectTypeException, \hyperpage{278}
+  \item INFO\_FORMAT (in module pytan.constants), \hyperpage{250}
+  \item INFO\_RES (taniumpy.session.Session attribute), \hyperpage{274}
+  \item InvalidServerTests (class in test\_pytan\_func), \hyperpage{270}
+  \item is\_auth (taniumpy.session.Session attribute), \hyperpage{275}
+  \item is\_dict() (in module pytan.utils), \hyperpage{253}
+  \item is\_hash\_randomized() (in module ddt), \hyperpage{289}
+  \item is\_list() (in module pytan.utils), \hyperpage{253}
+  \item is\_num() (in module pytan.utils), \hyperpage{253}
+  \item is\_str() (in module pytan.utils), \hyperpage{253}
 
   \indexspace
   \bigletter J
-  \item jsonify() (in module pytan.utils), \hyperpage{526}
+  \item jsonify() (in module pytan.utils), \hyperpage{254}
 
   \indexspace
   \bigletter L
-  \item load\_file() (in module taniumpy.session), \hyperpage{547}
-  \item load\_taniumpy\_from\_json() (pytan.handler.Handler method), \hyperpage{514}
-  \item LOG\_LEVEL\_MAPS (in module pytan.constants), \hyperpage{522}
-  \item log\_message() (threaded\_http.Handler method), \hyperpage{562}
+  \item load\_file() (in module taniumpy.session), \hyperpage{275}
+  \item load\_taniumpy\_from\_json() (pytan.handler.Handler method), \hyperpage{242}
+  \item LOG\_LEVEL\_MAPS (in module pytan.constants), \hyperpage{250}
+  \item log\_message() (threaded\_http.Handler method), \hyperpage{290}
 
   \indexspace
   \bigletter M
-  \item map\_filter() (in module pytan.utils), \hyperpage{532}
-  \item map\_option() (in module pytan.utils), \hyperpage{532}
-  \item map\_options() (in module pytan.utils), \hyperpage{532}
-  \item MetadataItem (class in taniumpy.object\_types.metadata\_item), \hyperpage{551}
-  \item MetadataList (class in taniumpy.object\_types.metadata\_list), \hyperpage{552}
-  \item mk\_test\_name() (in module ddt), \hyperpage{562}
+  \item map\_filter() (in module pytan.utils), \hyperpage{260}
+  \item map\_option() (in module pytan.utils), \hyperpage{260}
+  \item map\_options() (in module pytan.utils), \hyperpage{260}
+  \item MetadataItem (class in taniumpy.object\_types.metadata\_item), \hyperpage{279}
+  \item MetadataList (class in taniumpy.object\_types.metadata\_list), \hyperpage{280}
+  \item mk\_test\_name() (in module ddt), \hyperpage{290}
 
   \indexspace
   \bigletter O
-  \item ObjectList (class in taniumpy.object\_types.object\_list), \hyperpage{552}
-  \item OPTION\_MAPS (in module pytan.constants), \hyperpage{522}
-  \item OPTION\_RE (in module pytan.constants), \hyperpage{523}
-  \item Options (class in taniumpy.object\_types.options), \hyperpage{552}
+  \item ObjectList (class in taniumpy.object\_types.object\_list), \hyperpage{280}
+  \item OPTION\_MAPS (in module pytan.constants), \hyperpage{250}
+  \item OPTION\_RE (in module pytan.constants), \hyperpage{251}
+  \item Options (class in taniumpy.object\_types.options), \hyperpage{280}
 
   \indexspace
   \bigletter P
-  \item PackageFile (class in taniumpy.object\_types.package\_file), \hyperpage{552}
-  \item PackageFileList (class in taniumpy.object\_types.package\_file\_list), \hyperpage{552}
-  \item PackageFileStatus (class in taniumpy.object\_types.package\_file\_status), \hyperpage{552}
+  \item PackageFile (class in taniumpy.object\_types.package\_file), \hyperpage{280}
+  \item PackageFileList (class in taniumpy.object\_types.package\_file\_list), \hyperpage{280}
+  \item PackageFileStatus (class in taniumpy.object\_types.package\_file\_status), \hyperpage{280}
   \item PackageFileStatusList (class in taniumpy.object\_types.package\_file\_status\_list), 
-		\hyperpage{552}
+		\hyperpage{280}
   \item PackageFileTemplate (class in taniumpy.object\_types.package\_file\_template), 
-		\hyperpage{552}
+		\hyperpage{280}
   \item PackageFileTemplateList (class in taniumpy.object\_types.package\_file\_template\_list), 
-		\hyperpage{552}
-  \item PackageSpec (class in taniumpy.object\_types.package\_spec), \hyperpage{553}
-  \item PackageSpecList (class in taniumpy.object\_types.package\_spec\_list), \hyperpage{553}
-  \item PARAM\_DELIM (in module pytan.constants), \hyperpage{523}
-  \item PARAM\_KEY\_SPLIT (in module pytan.constants), \hyperpage{523}
-  \item PARAM\_RE (in module pytan.constants), \hyperpage{523}
-  \item PARAM\_SPLIT\_RE (in module pytan.constants), \hyperpage{523}
-  \item Parameter (class in taniumpy.object\_types.parameter), \hyperpage{553}
-  \item ParameterList (class in taniumpy.object\_types.parameter\_list), \hyperpage{553}
-  \item parse() (in module xmltodict), \hyperpage{560}
-  \item parse\_defs() (in module pytan.utils), \hyperpage{537}
-  \item ParseJob (class in taniumpy.object\_types.parse\_job), \hyperpage{553}
-  \item ParseJobList (class in taniumpy.object\_types.parse\_job\_list), \hyperpage{553}
-  \item ParseResult (class in taniumpy.object\_types.parse\_result), \hyperpage{553}
-  \item ParseResultGroup (class in taniumpy.object\_types.parse\_result\_group), \hyperpage{553}
+		\hyperpage{280}
+  \item PackageSpec (class in taniumpy.object\_types.package\_spec), \hyperpage{281}
+  \item PackageSpecList (class in taniumpy.object\_types.package\_spec\_list), \hyperpage{281}
+  \item PARAM\_DELIM (in module pytan.constants), \hyperpage{251}
+  \item PARAM\_KEY\_SPLIT (in module pytan.constants), \hyperpage{251}
+  \item PARAM\_RE (in module pytan.constants), \hyperpage{251}
+  \item PARAM\_SPLIT\_RE (in module pytan.constants), \hyperpage{251}
+  \item Parameter (class in taniumpy.object\_types.parameter), \hyperpage{281}
+  \item ParameterList (class in taniumpy.object\_types.parameter\_list), \hyperpage{281}
+  \item parse() (in module xmltodict), \hyperpage{288}
+  \item parse\_defs() (in module pytan.utils), \hyperpage{265}
+  \item ParseJob (class in taniumpy.object\_types.parse\_job), \hyperpage{281}
+  \item ParseJobList (class in taniumpy.object\_types.parse\_job\_list), \hyperpage{281}
+  \item ParseResult (class in taniumpy.object\_types.parse\_result), \hyperpage{281}
+  \item ParseResultGroup (class in taniumpy.object\_types.parse\_result\_group), \hyperpage{281}
   \item ParseResultGroupList (class in taniumpy.object\_types.parse\_result\_group\_list), 
-		\hyperpage{553}
-  \item ParseResultList (class in taniumpy.object\_types.parse\_result\_list), \hyperpage{554}
-  \item Plugin (class in taniumpy.object\_types.plugin), \hyperpage{554}
-  \item PluginArgument (class in taniumpy.object\_types.plugin\_argument), \hyperpage{554}
+		\hyperpage{281}
+  \item ParseResultList (class in taniumpy.object\_types.parse\_result\_list), \hyperpage{282}
+  \item Plugin (class in taniumpy.object\_types.plugin), \hyperpage{282}
+  \item PluginArgument (class in taniumpy.object\_types.plugin\_argument), \hyperpage{282}
   \item PluginArgumentList (class in taniumpy.object\_types.plugin\_argument\_list), 
-		\hyperpage{554}
-  \item PluginCommandList (class in taniumpy.object\_types.plugin\_command\_list), \hyperpage{554}
-  \item PluginList (class in taniumpy.object\_types.plugin\_list), \hyperpage{554}
-  \item PluginSchedule (class in taniumpy.object\_types.plugin\_schedule), \hyperpage{554}
+		\hyperpage{282}
+  \item PluginCommandList (class in taniumpy.object\_types.plugin\_command\_list), \hyperpage{282}
+  \item PluginList (class in taniumpy.object\_types.plugin\_list), \hyperpage{282}
+  \item PluginSchedule (class in taniumpy.object\_types.plugin\_schedule), \hyperpage{282}
   \item PluginScheduleList (class in taniumpy.object\_types.plugin\_schedule\_list), 
-		\hyperpage{554}
-  \item PluginSql (class in taniumpy.object\_types.plugin\_sql), \hyperpage{554}
-  \item PluginSqlColumn (class in taniumpy.object\_types.plugin\_sql\_column), \hyperpage{555}
-  \item PluginSqlResult (class in taniumpy.object\_types.plugin\_sql\_result), \hyperpage{555}
-  \item POLLING\_INTERVAL (taniumpy.question\_asker.QuestionAsker attribute), \hyperpage{547}
-  \item port\_check() (in module pytan.utils), \hyperpage{526}
-  \item print\_help() (pytan.utils.CustomArgParse method), \hyperpage{524}
-  \item process\_create\_json\_object\_args() (in module pytan.utils), \hyperpage{529}
-  \item process\_delete\_object\_args() (in module pytan.utils), \hyperpage{529}
-  \item process\_get\_object\_args() (in module pytan.utils), \hyperpage{529}
-  \item pytan (module), \hyperpage{2}
-  \item pytan.constants (module), \hyperpage{521}
-  \item pytan.handler (module), \hyperpage{506}
-  \item pytan.utils (module), \hyperpage{523}
+		\hyperpage{282}
+  \item PluginSql (class in taniumpy.object\_types.plugin\_sql), \hyperpage{282}
+  \item PluginSqlColumn (class in taniumpy.object\_types.plugin\_sql\_column), \hyperpage{283}
+  \item PluginSqlResult (class in taniumpy.object\_types.plugin\_sql\_result), \hyperpage{283}
+  \item POLLING\_INTERVAL (taniumpy.question\_asker.QuestionAsker attribute), \hyperpage{275}
+  \item port\_check() (in module pytan.utils), \hyperpage{254}
+  \item print\_help() (pytan.utils.CustomArgParse method), \hyperpage{252}
+  \item process\_create\_json\_object\_args() (in module pytan.utils), \hyperpage{257}
+  \item process\_delete\_object\_args() (in module pytan.utils), \hyperpage{257}
+  \item process\_get\_object\_args() (in module pytan.utils), \hyperpage{257}
+  \item pytan (module), \hyperpage{3}
+  \item pytan.constants (module), \hyperpage{249}
+  \item pytan.handler (module), \hyperpage{234}
+  \item pytan.utils (module), \hyperpage{251}
 
   \indexspace
   \bigletter Q
-  \item Q\_OBJ\_MAP (in module pytan.constants), \hyperpage{523}
-  \item Question (class in taniumpy.object\_types.question), \hyperpage{555}
-  \item question\_progress() (in module pytan.utils), \hyperpage{536}
-  \item QuestionAsker (class in taniumpy.question\_asker), \hyperpage{547}
-  \item QuestionList (class in taniumpy.object\_types.question\_list), \hyperpage{555}
-  \item QuestionListInfo (class in taniumpy.object\_types.question\_list\_info), \hyperpage{555}
-  \item QuestionTimeoutException, \hyperpage{547}
+  \item Q\_OBJ\_MAP (in module pytan.constants), \hyperpage{251}
+  \item Question (class in taniumpy.object\_types.question), \hyperpage{283}
+  \item question\_progress() (in module pytan.utils), \hyperpage{264}
+  \item QuestionAsker (class in taniumpy.question\_asker), \hyperpage{275}
+  \item QuestionList (class in taniumpy.object\_types.question\_list), \hyperpage{283}
+  \item QuestionListInfo (class in taniumpy.object\_types.question\_list\_info), \hyperpage{283}
+  \item QuestionTimeoutException, \hyperpage{275}
 
   \indexspace
   \bigletter R
-  \item remove\_logging\_handler() (in module pytan.utils), \hyperpage{524}
-  \item REQ\_KWARGS (in module pytan.constants), \hyperpage{523}
-  \item REQUEST\_BODY (taniumpy.session.Session attribute), \hyperpage{546}
-  \item ResultInfo (class in taniumpy.object\_types.result\_info), \hyperpage{555}
-  \item ResultSet (class in taniumpy.object\_types.result\_set), \hyperpage{555}
-  \item Row (class in taniumpy.object\_types.row), \hyperpage{556}
-  \item run() (taniumpy.question\_asker.QuestionAsker method), \hyperpage{547}
-  \item RunFalse, \hyperpage{523}
+  \item remove\_logging\_handler() (in module pytan.utils), \hyperpage{252}
+  \item REQ\_KWARGS (in module pytan.constants), \hyperpage{251}
+  \item REQUEST\_BODY (taniumpy.session.Session attribute), \hyperpage{274}
+  \item ResultInfo (class in taniumpy.object\_types.result\_info), \hyperpage{283}
+  \item ResultSet (class in taniumpy.object\_types.result\_set), \hyperpage{283}
+  \item Row (class in taniumpy.object\_types.row), \hyperpage{284}
+  \item run() (taniumpy.question\_asker.QuestionAsker method), \hyperpage{275}
+  \item RunFalse, \hyperpage{251}
 
   \indexspace
   \bigletter S
-  \item save() (taniumpy.session.Session method), \hyperpage{547}
-  \item SavedAction (class in taniumpy.object\_types.saved\_action), \hyperpage{556}
+  \item save() (taniumpy.session.Session method), \hyperpage{275}
+  \item SavedAction (class in taniumpy.object\_types.saved\_action), \hyperpage{284}
   \item SavedActionApproval (class in taniumpy.object\_types.saved\_action\_approval), 
-		\hyperpage{556}
-  \item SavedActionList (class in taniumpy.object\_types.saved\_action\_list), \hyperpage{556}
-  \item SavedActionPolicy (class in taniumpy.object\_types.saved\_action\_policy), \hyperpage{556}
+		\hyperpage{284}
+  \item SavedActionList (class in taniumpy.object\_types.saved\_action\_list), \hyperpage{284}
+  \item SavedActionPolicy (class in taniumpy.object\_types.saved\_action\_policy), \hyperpage{284}
   \item SavedActionRowIdList (class in taniumpy.object\_types.saved\_action\_row\_id\_list), 
-		\hyperpage{556}
-  \item SavedQuestion (class in taniumpy.object\_types.saved\_question), \hyperpage{556}
-  \item SavedQuestionList (class in taniumpy.object\_types.saved\_question\_list), \hyperpage{556}
-  \item seconds\_from\_now() (in module pytan.utils), \hyperpage{526}
-  \item Select (class in taniumpy.object\_types.select), \hyperpage{557}
-  \item SelectList (class in taniumpy.object\_types.select\_list), \hyperpage{557}
-  \item SELECTORS (in module pytan.constants), \hyperpage{523}
-  \item Sensor (class in taniumpy.object\_types.sensor), \hyperpage{557}
-  \item SENSOR\_TYPE\_MAP (in module pytan.constants), \hyperpage{523}
-  \item SensorList (class in taniumpy.object\_types.sensor\_list), \hyperpage{557}
-  \item SensorQuery (class in taniumpy.object\_types.sensor\_query), \hyperpage{557}
-  \item SensorQueryList (class in taniumpy.object\_types.sensor\_query\_list), \hyperpage{557}
-  \item SensorStringHints (class in taniumpy.object\_types.sensor\_string\_hints), \hyperpage{557}
-  \item SensorSubcolumn (class in taniumpy.object\_types.sensor\_subcolumn), \hyperpage{557}
+		\hyperpage{284}
+  \item SavedQuestion (class in taniumpy.object\_types.saved\_question), \hyperpage{284}
+  \item SavedQuestionList (class in taniumpy.object\_types.saved\_question\_list), \hyperpage{284}
+  \item seconds\_from\_now() (in module pytan.utils), \hyperpage{254}
+  \item Select (class in taniumpy.object\_types.select), \hyperpage{285}
+  \item SelectList (class in taniumpy.object\_types.select\_list), \hyperpage{285}
+  \item SELECTORS (in module pytan.constants), \hyperpage{251}
+  \item Sensor (class in taniumpy.object\_types.sensor), \hyperpage{285}
+  \item SENSOR\_TYPE\_MAP (in module pytan.constants), \hyperpage{251}
+  \item SensorList (class in taniumpy.object\_types.sensor\_list), \hyperpage{285}
+  \item SensorQuery (class in taniumpy.object\_types.sensor\_query), \hyperpage{285}
+  \item SensorQueryList (class in taniumpy.object\_types.sensor\_query\_list), \hyperpage{285}
+  \item SensorStringHints (class in taniumpy.object\_types.sensor\_string\_hints), \hyperpage{285}
+  \item SensorSubcolumn (class in taniumpy.object\_types.sensor\_subcolumn), \hyperpage{285}
   \item SensorSubcolumnList (class in taniumpy.object\_types.sensor\_subcolumn\_list), 
-		\hyperpage{557}
-  \item server\_version (taniumpy.session.Session attribute), \hyperpage{547}
-  \item Session (class in taniumpy.session), \hyperpage{546}
-  \item session\_id (taniumpy.session.Session attribute), \hyperpage{547}
-  \item set\_all\_loglevels() (in module pytan.utils), \hyperpage{524}
-  \item set\_log\_levels() (in module pytan.utils), \hyperpage{525}
-  \item setPctCompleteThreshold() (taniumpy.question\_asker.QuestionAsker method), \hyperpage{547}
-  \item setup\_ask\_manual\_argparser() (in module pytan.utils), \hyperpage{528}
-  \item setup\_ask\_saved\_argparser() (in module pytan.utils), \hyperpage{528}
-  \item setup\_console\_logging() (in module pytan.utils), \hyperpage{525}
-  \item setup\_create\_json\_object\_argparser() (in module pytan.utils), \hyperpage{528}
-  \item setup\_delete\_object\_argparser() (in module pytan.utils), \hyperpage{528}
-  \item setup\_deploy\_action\_argparser() (in module pytan.utils), \hyperpage{528}
-  \item setup\_get\_object\_argparser() (in module pytan.utils), \hyperpage{528}
-  \item setup\_get\_result\_argparser() (in module pytan.utils), \hyperpage{528}
-  \item setup\_parser() (in module pytan.utils), \hyperpage{528}
-  \item setup\_stop\_action\_argparser() (in module pytan.utils), \hyperpage{528}
-  \item setup\_test() (test\_pytan\_func.ValidServerTests method), \hyperpage{542}
-  \item setUpClass() (test\_pytan\_func.InvalidServerTests class method), \hyperpage{542}
-  \item setUpClass() (test\_pytan\_func.ValidServerTests class method), \hyperpage{542}
-  \item setUpClass() (test\_pytan\_unit.TestManualBuildObjectUtils class method), \hyperpage{540}
-  \item SOAP\_PORT (taniumpy.session.Session attribute), \hyperpage{546}
-  \item SOAP\_RES (taniumpy.session.Session attribute), \hyperpage{546}
-  \item SoapError (class in taniumpy.object\_types.soap\_error), \hyperpage{558}
-  \item spew() (in module test\_pytan\_func), \hyperpage{546}
-  \item SplitStreamHandler (class in pytan.utils), \hyperpage{524}
-  \item stop() (taniumpy.question\_asker.QuestionAsker method), \hyperpage{547}
-  \item stop\_action() (pytan.handler.Handler method), \hyperpage{513}
-  \item SystemSetting (class in taniumpy.object\_types.system\_setting), \hyperpage{558}
+		\hyperpage{285}
+  \item server\_version (taniumpy.session.Session attribute), \hyperpage{275}
+  \item Session (class in taniumpy.session), \hyperpage{274}
+  \item session\_id (taniumpy.session.Session attribute), \hyperpage{275}
+  \item set\_all\_loglevels() (in module pytan.utils), \hyperpage{252}
+  \item set\_log\_levels() (in module pytan.utils), \hyperpage{253}
+  \item setPctCompleteThreshold() (taniumpy.question\_asker.QuestionAsker method), \hyperpage{275}
+  \item setup\_ask\_manual\_argparser() (in module pytan.utils), \hyperpage{256}
+  \item setup\_ask\_saved\_argparser() (in module pytan.utils), \hyperpage{256}
+  \item setup\_console\_logging() (in module pytan.utils), \hyperpage{253}
+  \item setup\_create\_json\_object\_argparser() (in module pytan.utils), \hyperpage{256}
+  \item setup\_delete\_object\_argparser() (in module pytan.utils), \hyperpage{256}
+  \item setup\_deploy\_action\_argparser() (in module pytan.utils), \hyperpage{256}
+  \item setup\_get\_object\_argparser() (in module pytan.utils), \hyperpage{256}
+  \item setup\_get\_result\_argparser() (in module pytan.utils), \hyperpage{256}
+  \item setup\_parser() (in module pytan.utils), \hyperpage{256}
+  \item setup\_stop\_action\_argparser() (in module pytan.utils), \hyperpage{256}
+  \item setup\_test() (test\_pytan\_func.ValidServerTests method), \hyperpage{270}
+  \item setUpClass() (test\_pytan\_func.InvalidServerTests class method), \hyperpage{270}
+  \item setUpClass() (test\_pytan\_func.ValidServerTests class method), \hyperpage{270}
+  \item setUpClass() (test\_pytan\_unit.TestManualBuildObjectUtils class method), \hyperpage{268}
+  \item SOAP\_PORT (taniumpy.session.Session attribute), \hyperpage{274}
+  \item SOAP\_RES (taniumpy.session.Session attribute), \hyperpage{274}
+  \item SoapError (class in taniumpy.object\_types.soap\_error), \hyperpage{286}
+  \item spew() (in module test\_pytan\_func), \hyperpage{274}
+  \item SplitStreamHandler (class in pytan.utils), \hyperpage{252}
+  \item stop() (taniumpy.question\_asker.QuestionAsker method), \hyperpage{275}
+  \item stop\_action() (pytan.handler.Handler method), \hyperpage{241}
+  \item SystemSetting (class in taniumpy.object\_types.system\_setting), \hyperpage{286}
   \item SystemSettingsList (class in taniumpy.object\_types.system\_settings\_list), 
-		\hyperpage{558}
+		\hyperpage{286}
   \item SystemStatusAggregate (class in taniumpy.object\_types.system\_status\_aggregate), 
-		\hyperpage{558}
-  \item SystemStatusList (class in taniumpy.object\_types.system\_status\_list), \hyperpage{558}
+		\hyperpage{286}
+  \item SystemStatusList (class in taniumpy.object\_types.system\_status\_list), \hyperpage{286}
 
   \indexspace
   \bigletter T
-  \item taniumpy (module), \hyperpage{546}
-  \item taniumpy.object\_types (module), \hyperpage{548}
-  \item taniumpy.object\_types.action (module), \hyperpage{548}
-  \item taniumpy.object\_types.action\_list (module), \hyperpage{548}
-  \item taniumpy.object\_types.action\_list\_info (module), \hyperpage{548}
-  \item taniumpy.object\_types.action\_stop (module), \hyperpage{548}
-  \item taniumpy.object\_types.action\_stop\_list (module), \hyperpage{548}
-  \item taniumpy.object\_types.all\_objects (module), \hyperpage{548}
-  \item taniumpy.object\_types.archived\_question (module), \hyperpage{548}
-  \item taniumpy.object\_types.archived\_question\_list (module), \hyperpage{548}
-  \item taniumpy.object\_types.audit\_data (module), \hyperpage{548}
-  \item taniumpy.object\_types.base (module), \hyperpage{549}
-  \item taniumpy.object\_types.cache\_filter (module), \hyperpage{550}
-  \item taniumpy.object\_types.cache\_filter\_list (module), \hyperpage{550}
-  \item taniumpy.object\_types.cache\_info (module), \hyperpage{550}
-  \item taniumpy.object\_types.client\_count (module), \hyperpage{550}
-  \item taniumpy.object\_types.client\_status (module), \hyperpage{550}
-  \item taniumpy.object\_types.column (module), \hyperpage{550}
-  \item taniumpy.object\_types.column\_set (module), \hyperpage{550}
-  \item taniumpy.object\_types.computer\_group (module), \hyperpage{550}
-  \item taniumpy.object\_types.computer\_group\_list (module), \hyperpage{551}
-  \item taniumpy.object\_types.computer\_group\_spec (module), \hyperpage{551}
-  \item taniumpy.object\_types.computer\_spec\_list (module), \hyperpage{551}
-  \item taniumpy.object\_types.error\_list (module), \hyperpage{551}
-  \item taniumpy.object\_types.filter (module), \hyperpage{551}
-  \item taniumpy.object\_types.filter\_list (module), \hyperpage{551}
-  \item taniumpy.object\_types.group (module), \hyperpage{551}
-  \item taniumpy.object\_types.group\_list (module), \hyperpage{551}
-  \item taniumpy.object\_types.metadata\_item (module), \hyperpage{551}
-  \item taniumpy.object\_types.metadata\_list (module), \hyperpage{552}
-  \item taniumpy.object\_types.object\_list (module), \hyperpage{552}
-  \item taniumpy.object\_types.object\_list\_types (module), \hyperpage{552}
-  \item taniumpy.object\_types.options (module), \hyperpage{552}
-  \item taniumpy.object\_types.package\_file (module), \hyperpage{552}
-  \item taniumpy.object\_types.package\_file\_list (module), \hyperpage{552}
-  \item taniumpy.object\_types.package\_file\_status (module), \hyperpage{552}
-  \item taniumpy.object\_types.package\_file\_status\_list (module), \hyperpage{552}
-  \item taniumpy.object\_types.package\_file\_template (module), \hyperpage{552}
-  \item taniumpy.object\_types.package\_file\_template\_list (module), \hyperpage{552}
-  \item taniumpy.object\_types.package\_spec (module), \hyperpage{553}
-  \item taniumpy.object\_types.package\_spec\_list (module), \hyperpage{553}
-  \item taniumpy.object\_types.parameter (module), \hyperpage{553}
-  \item taniumpy.object\_types.parameter\_list (module), \hyperpage{553}
-  \item taniumpy.object\_types.parse\_job (module), \hyperpage{553}
-  \item taniumpy.object\_types.parse\_job\_list (module), \hyperpage{553}
-  \item taniumpy.object\_types.parse\_result (module), \hyperpage{553}
-  \item taniumpy.object\_types.parse\_result\_group (module), \hyperpage{553}
-  \item taniumpy.object\_types.parse\_result\_group\_list (module), \hyperpage{553}
-  \item taniumpy.object\_types.parse\_result\_list (module), \hyperpage{554}
-  \item taniumpy.object\_types.plugin (module), \hyperpage{554}
-  \item taniumpy.object\_types.plugin\_argument (module), \hyperpage{554}
-  \item taniumpy.object\_types.plugin\_argument\_list (module), \hyperpage{554}
-  \item taniumpy.object\_types.plugin\_command\_list (module), \hyperpage{554}
-  \item taniumpy.object\_types.plugin\_list (module), \hyperpage{554}
-  \item taniumpy.object\_types.plugin\_schedule (module), \hyperpage{554}
-  \item taniumpy.object\_types.plugin\_schedule\_list (module), \hyperpage{554}
-  \item taniumpy.object\_types.plugin\_sql (module), \hyperpage{554}
-  \item taniumpy.object\_types.plugin\_sql\_column (module), \hyperpage{555}
-  \item taniumpy.object\_types.plugin\_sql\_result (module), \hyperpage{555}
-  \item taniumpy.object\_types.question (module), \hyperpage{555}
-  \item taniumpy.object\_types.question\_list (module), \hyperpage{555}
-  \item taniumpy.object\_types.question\_list\_info (module), \hyperpage{555}
-  \item taniumpy.object\_types.result\_info (module), \hyperpage{555}
-  \item taniumpy.object\_types.result\_set (module), \hyperpage{555}
-  \item taniumpy.object\_types.row (module), \hyperpage{556}
-  \item taniumpy.object\_types.saved\_action (module), \hyperpage{556}
-  \item taniumpy.object\_types.saved\_action\_approval (module), \hyperpage{556}
-  \item taniumpy.object\_types.saved\_action\_list (module), \hyperpage{556}
-  \item taniumpy.object\_types.saved\_action\_policy (module), \hyperpage{556}
-  \item taniumpy.object\_types.saved\_action\_row\_id\_list (module), \hyperpage{556}
-  \item taniumpy.object\_types.saved\_question (module), \hyperpage{556}
-  \item taniumpy.object\_types.saved\_question\_list (module), \hyperpage{556}
-  \item taniumpy.object\_types.select (module), \hyperpage{557}
-  \item taniumpy.object\_types.select\_list (module), \hyperpage{557}
-  \item taniumpy.object\_types.sensor (module), \hyperpage{557}
-  \item taniumpy.object\_types.sensor\_list (module), \hyperpage{557}
-  \item taniumpy.object\_types.sensor\_query (module), \hyperpage{557}
-  \item taniumpy.object\_types.sensor\_query\_list (module), \hyperpage{557}
-  \item taniumpy.object\_types.sensor\_string\_hints (module), \hyperpage{557}
-  \item taniumpy.object\_types.sensor\_subcolumn (module), \hyperpage{557}
-  \item taniumpy.object\_types.sensor\_subcolumn\_list (module), \hyperpage{557}
-  \item taniumpy.object\_types.sensor\_types (module), \hyperpage{558}
-  \item taniumpy.object\_types.soap\_error (module), \hyperpage{558}
-  \item taniumpy.object\_types.system\_setting (module), \hyperpage{558}
-  \item taniumpy.object\_types.system\_settings\_list (module), \hyperpage{558}
-  \item taniumpy.object\_types.system\_status\_aggregate (module), \hyperpage{558}
-  \item taniumpy.object\_types.system\_status\_list (module), \hyperpage{558}
-  \item taniumpy.object\_types.upload\_file (module), \hyperpage{558}
-  \item taniumpy.object\_types.upload\_file\_list (module), \hyperpage{558}
-  \item taniumpy.object\_types.upload\_file\_status (module), \hyperpage{558}
-  \item taniumpy.object\_types.user (module), \hyperpage{558}
-  \item taniumpy.object\_types.user\_list (module), \hyperpage{559}
-  \item taniumpy.object\_types.user\_permissions (module), \hyperpage{559}
-  \item taniumpy.object\_types.user\_role (module), \hyperpage{559}
-  \item taniumpy.object\_types.user\_role\_list (module), \hyperpage{559}
-  \item taniumpy.object\_types.version\_aggregate (module), \hyperpage{559}
-  \item taniumpy.object\_types.version\_aggregate\_list (module), \hyperpage{559}
-  \item taniumpy.object\_types.white\_listed\_url (module), \hyperpage{559}
-  \item taniumpy.object\_types.white\_listed\_url\_list (module), \hyperpage{559}
-  \item taniumpy.object\_types.xml\_error (module), \hyperpage{559}
-  \item taniumpy.question\_asker (module), \hyperpage{547}
-  \item taniumpy.session (module), \hyperpage{546}
-  \item test\_app\_port() (in module pytan.utils), \hyperpage{527}
-  \item test\_ask\_kwargs() (test\_pytan\_unit.TestGenericUtils method), \hyperpage{539}
+  \item taniumpy (module), \hyperpage{274}
+  \item taniumpy.object\_types (module), \hyperpage{276}
+  \item taniumpy.object\_types.action (module), \hyperpage{276}
+  \item taniumpy.object\_types.action\_list (module), \hyperpage{276}
+  \item taniumpy.object\_types.action\_list\_info (module), \hyperpage{276}
+  \item taniumpy.object\_types.action\_stop (module), \hyperpage{276}
+  \item taniumpy.object\_types.action\_stop\_list (module), \hyperpage{276}
+  \item taniumpy.object\_types.all\_objects (module), \hyperpage{276}
+  \item taniumpy.object\_types.archived\_question (module), \hyperpage{276}
+  \item taniumpy.object\_types.archived\_question\_list (module), \hyperpage{276}
+  \item taniumpy.object\_types.audit\_data (module), \hyperpage{276}
+  \item taniumpy.object\_types.base (module), \hyperpage{277}
+  \item taniumpy.object\_types.cache\_filter (module), \hyperpage{278}
+  \item taniumpy.object\_types.cache\_filter\_list (module), \hyperpage{278}
+  \item taniumpy.object\_types.cache\_info (module), \hyperpage{278}
+  \item taniumpy.object\_types.client\_count (module), \hyperpage{278}
+  \item taniumpy.object\_types.client\_status (module), \hyperpage{278}
+  \item taniumpy.object\_types.column (module), \hyperpage{278}
+  \item taniumpy.object\_types.column\_set (module), \hyperpage{278}
+  \item taniumpy.object\_types.computer\_group (module), \hyperpage{278}
+  \item taniumpy.object\_types.computer\_group\_list (module), \hyperpage{279}
+  \item taniumpy.object\_types.computer\_group\_spec (module), \hyperpage{279}
+  \item taniumpy.object\_types.computer\_spec\_list (module), \hyperpage{279}
+  \item taniumpy.object\_types.error\_list (module), \hyperpage{279}
+  \item taniumpy.object\_types.filter (module), \hyperpage{279}
+  \item taniumpy.object\_types.filter\_list (module), \hyperpage{279}
+  \item taniumpy.object\_types.group (module), \hyperpage{279}
+  \item taniumpy.object\_types.group\_list (module), \hyperpage{279}
+  \item taniumpy.object\_types.metadata\_item (module), \hyperpage{279}
+  \item taniumpy.object\_types.metadata\_list (module), \hyperpage{280}
+  \item taniumpy.object\_types.object\_list (module), \hyperpage{280}
+  \item taniumpy.object\_types.object\_list\_types (module), \hyperpage{280}
+  \item taniumpy.object\_types.options (module), \hyperpage{280}
+  \item taniumpy.object\_types.package\_file (module), \hyperpage{280}
+  \item taniumpy.object\_types.package\_file\_list (module), \hyperpage{280}
+  \item taniumpy.object\_types.package\_file\_status (module), \hyperpage{280}
+  \item taniumpy.object\_types.package\_file\_status\_list (module), \hyperpage{280}
+  \item taniumpy.object\_types.package\_file\_template (module), \hyperpage{280}
+  \item taniumpy.object\_types.package\_file\_template\_list (module), \hyperpage{280}
+  \item taniumpy.object\_types.package\_spec (module), \hyperpage{281}
+  \item taniumpy.object\_types.package\_spec\_list (module), \hyperpage{281}
+  \item taniumpy.object\_types.parameter (module), \hyperpage{281}
+  \item taniumpy.object\_types.parameter\_list (module), \hyperpage{281}
+  \item taniumpy.object\_types.parse\_job (module), \hyperpage{281}
+  \item taniumpy.object\_types.parse\_job\_list (module), \hyperpage{281}
+  \item taniumpy.object\_types.parse\_result (module), \hyperpage{281}
+  \item taniumpy.object\_types.parse\_result\_group (module), \hyperpage{281}
+  \item taniumpy.object\_types.parse\_result\_group\_list (module), \hyperpage{281}
+  \item taniumpy.object\_types.parse\_result\_list (module), \hyperpage{282}
+  \item taniumpy.object\_types.plugin (module), \hyperpage{282}
+  \item taniumpy.object\_types.plugin\_argument (module), \hyperpage{282}
+  \item taniumpy.object\_types.plugin\_argument\_list (module), \hyperpage{282}
+  \item taniumpy.object\_types.plugin\_command\_list (module), \hyperpage{282}
+  \item taniumpy.object\_types.plugin\_list (module), \hyperpage{282}
+  \item taniumpy.object\_types.plugin\_schedule (module), \hyperpage{282}
+  \item taniumpy.object\_types.plugin\_schedule\_list (module), \hyperpage{282}
+  \item taniumpy.object\_types.plugin\_sql (module), \hyperpage{282}
+  \item taniumpy.object\_types.plugin\_sql\_column (module), \hyperpage{283}
+  \item taniumpy.object\_types.plugin\_sql\_result (module), \hyperpage{283}
+  \item taniumpy.object\_types.question (module), \hyperpage{283}
+  \item taniumpy.object\_types.question\_list (module), \hyperpage{283}
+  \item taniumpy.object\_types.question\_list\_info (module), \hyperpage{283}
+  \item taniumpy.object\_types.result\_info (module), \hyperpage{283}
+  \item taniumpy.object\_types.result\_set (module), \hyperpage{283}
+  \item taniumpy.object\_types.row (module), \hyperpage{284}
+  \item taniumpy.object\_types.saved\_action (module), \hyperpage{284}
+  \item taniumpy.object\_types.saved\_action\_approval (module), \hyperpage{284}
+  \item taniumpy.object\_types.saved\_action\_list (module), \hyperpage{284}
+  \item taniumpy.object\_types.saved\_action\_policy (module), \hyperpage{284}
+  \item taniumpy.object\_types.saved\_action\_row\_id\_list (module), \hyperpage{284}
+  \item taniumpy.object\_types.saved\_question (module), \hyperpage{284}
+  \item taniumpy.object\_types.saved\_question\_list (module), \hyperpage{284}
+  \item taniumpy.object\_types.select (module), \hyperpage{285}
+  \item taniumpy.object\_types.select\_list (module), \hyperpage{285}
+  \item taniumpy.object\_types.sensor (module), \hyperpage{285}
+  \item taniumpy.object\_types.sensor\_list (module), \hyperpage{285}
+  \item taniumpy.object\_types.sensor\_query (module), \hyperpage{285}
+  \item taniumpy.object\_types.sensor\_query\_list (module), \hyperpage{285}
+  \item taniumpy.object\_types.sensor\_string\_hints (module), \hyperpage{285}
+  \item taniumpy.object\_types.sensor\_subcolumn (module), \hyperpage{285}
+  \item taniumpy.object\_types.sensor\_subcolumn\_list (module), \hyperpage{285}
+  \item taniumpy.object\_types.sensor\_types (module), \hyperpage{286}
+  \item taniumpy.object\_types.soap\_error (module), \hyperpage{286}
+  \item taniumpy.object\_types.system\_setting (module), \hyperpage{286}
+  \item taniumpy.object\_types.system\_settings\_list (module), \hyperpage{286}
+  \item taniumpy.object\_types.system\_status\_aggregate (module), \hyperpage{286}
+  \item taniumpy.object\_types.system\_status\_list (module), \hyperpage{286}
+  \item taniumpy.object\_types.upload\_file (module), \hyperpage{286}
+  \item taniumpy.object\_types.upload\_file\_list (module), \hyperpage{286}
+  \item taniumpy.object\_types.upload\_file\_status (module), \hyperpage{286}
+  \item taniumpy.object\_types.user (module), \hyperpage{286}
+  \item taniumpy.object\_types.user\_list (module), \hyperpage{287}
+  \item taniumpy.object\_types.user\_permissions (module), \hyperpage{287}
+  \item taniumpy.object\_types.user\_role (module), \hyperpage{287}
+  \item taniumpy.object\_types.user\_role\_list (module), \hyperpage{287}
+  \item taniumpy.object\_types.version\_aggregate (module), \hyperpage{287}
+  \item taniumpy.object\_types.version\_aggregate\_list (module), \hyperpage{287}
+  \item taniumpy.object\_types.white\_listed\_url (module), \hyperpage{287}
+  \item taniumpy.object\_types.white\_listed\_url\_list (module), \hyperpage{287}
+  \item taniumpy.object\_types.xml\_error (module), \hyperpage{287}
+  \item taniumpy.question\_asker (module), \hyperpage{275}
+  \item taniumpy.session (module), \hyperpage{274}
+  \item test\_app\_port() (in module pytan.utils), \hyperpage{255}
+  \item test\_ask\_kwargs() (test\_pytan\_unit.TestGenericUtils method), \hyperpage{267}
   \item test\_build\_group\_obj() (test\_pytan\_unit.TestManualBuildObjectUtils method), 
-		\hyperpage{540}
+		\hyperpage{268}
   \item test\_build\_manual\_q() (test\_pytan\_unit.TestManualBuildObjectUtils method), 
-		\hyperpage{540}
+		\hyperpage{268}
   \item test\_build\_selectlist\_obj\_invalid\_filter() (test\_pytan\_unit.TestManualBuildObjectUtils method), 
-		\hyperpage{540}
+		\hyperpage{268}
   \item test\_build\_selectlist\_obj\_missing\_value() (test\_pytan\_unit.TestManualBuildObjectUtils method), 
-		\hyperpage{540}
+		\hyperpage{268}
   \item test\_build\_selectlist\_obj\_noparamssensorobj\_noparams() (test\_pytan\_unit.TestManualBuildObjectUtils method), 
-		\hyperpage{540}
+		\hyperpage{268}
   \item test\_build\_selectlist\_obj\_noparamssensorobj\_withparams() (test\_pytan\_unit.TestManualBuildObjectUtils method), 
-		\hyperpage{540}
+		\hyperpage{268}
   \item test\_build\_selectlist\_obj\_withparamssensorobj\_noparams() (test\_pytan\_unit.TestManualBuildObjectUtils method), 
-		\hyperpage{540}
+		\hyperpage{268}
   \item test\_build\_selectlist\_obj\_withparamssensorobj\_withparams() (test\_pytan\_unit.TestManualBuildObjectUtils method), 
-		\hyperpage{540}
+		\hyperpage{268}
   \item test\_empty\_args\_dict() (test\_pytan\_unit.TestDehumanizeSensorUtils method), 
-		\hyperpage{539}
+		\hyperpage{267}
   \item test\_empty\_args\_list() (test\_pytan\_unit.TestDehumanizeSensorUtils method), 
-		\hyperpage{539}
+		\hyperpage{267}
   \item test\_empty\_args\_str() (test\_pytan\_unit.TestDehumanizeSensorUtils method), 
-		\hyperpage{539}
+		\hyperpage{267}
   \item test\_empty\_filterlist() (test\_pytan\_unit.TestDehumanizeQuestionFilterUtils method), 
-		\hyperpage{538}
+		\hyperpage{266}
   \item test\_empty\_filterstr() (test\_pytan\_unit.TestDehumanizeQuestionFilterUtils method), 
-		\hyperpage{538}
-  \item test\_empty\_obj() (test\_pytan\_unit.TestGenericUtils method), \hyperpage{539}
+		\hyperpage{266}
+  \item test\_empty\_obj() (test\_pytan\_unit.TestGenericUtils method), \hyperpage{267}
   \item test\_empty\_optionlist() (test\_pytan\_unit.TestDehumanizeQuestionOptionUtils method), 
-		\hyperpage{538}
+		\hyperpage{266}
   \item test\_empty\_optionstr() (test\_pytan\_unit.TestDehumanizeQuestionOptionUtils method), 
-		\hyperpage{538}
+		\hyperpage{266}
   \item test\_extract\_filter\_invalid() (test\_pytan\_unit.TestDehumanizeExtractionUtils method), 
-		\hyperpage{537}
+		\hyperpage{265}
   \item test\_extract\_filter\_nofilter() (test\_pytan\_unit.TestDehumanizeExtractionUtils method), 
-		\hyperpage{538}
+		\hyperpage{266}
   \item test\_extract\_filter\_valid() (test\_pytan\_unit.TestDehumanizeExtractionUtils method), 
-		\hyperpage{538}
+		\hyperpage{266}
   \item test\_extract\_filter\_valid\_all() (test\_pytan\_unit.TestDehumanizeExtractionUtils method), 
-		\hyperpage{538}
+		\hyperpage{266}
   \item test\_extract\_options\_invalid\_option() (test\_pytan\_unit.TestDehumanizeExtractionUtils method), 
-		\hyperpage{538}
+		\hyperpage{266}
   \item test\_extract\_options\_many() (test\_pytan\_unit.TestDehumanizeExtractionUtils method), 
-		\hyperpage{538}
+		\hyperpage{266}
   \item test\_extract\_options\_missing\_value\_max\_data\_age() (test\_pytan\_unit.TestDehumanizeExtractionUtils method), 
-		\hyperpage{538}
+		\hyperpage{266}
   \item test\_extract\_options\_missing\_value\_value\_type() (test\_pytan\_unit.TestDehumanizeExtractionUtils method), 
-		\hyperpage{538}
+		\hyperpage{266}
   \item test\_extract\_options\_nooptions() (test\_pytan\_unit.TestDehumanizeExtractionUtils method), 
-		\hyperpage{538}
+		\hyperpage{266}
   \item test\_extract\_options\_single() (test\_pytan\_unit.TestDehumanizeExtractionUtils method), 
-		\hyperpage{538}
+		\hyperpage{266}
   \item test\_extract\_params() (test\_pytan\_unit.TestDehumanizeExtractionUtils method), 
-		\hyperpage{538}
+		\hyperpage{266}
   \item test\_extract\_params\_missing\_seperator() (test\_pytan\_unit.TestDehumanizeExtractionUtils method), 
-		\hyperpage{538}
+		\hyperpage{266}
   \item test\_extract\_params\_multiparams() (test\_pytan\_unit.TestDehumanizeExtractionUtils method), 
-		\hyperpage{538}
+		\hyperpage{266}
   \item test\_extract\_params\_noparams() (test\_pytan\_unit.TestDehumanizeExtractionUtils method), 
-		\hyperpage{538}
+		\hyperpage{266}
   \item test\_extract\_selector() (test\_pytan\_unit.TestDehumanizeExtractionUtils method), 
-		\hyperpage{538}
+		\hyperpage{266}
   \item test\_extract\_selector\_use\_name\_if\_noselector() (test\_pytan\_unit.TestDehumanizeExtractionUtils method), 
-		\hyperpage{538}
-  \item test\_get\_now() (test\_pytan\_unit.TestGenericUtils method), \hyperpage{539}
-  \item test\_get\_obj\_map() (test\_pytan\_unit.TestGenericUtils method), \hyperpage{539}
-  \item test\_get\_q\_obj\_map() (test\_pytan\_unit.TestGenericUtils method), \hyperpage{539}
+		\hyperpage{266}
+  \item test\_get\_now() (test\_pytan\_unit.TestGenericUtils method), \hyperpage{267}
+  \item test\_get\_obj\_map() (test\_pytan\_unit.TestGenericUtils method), \hyperpage{267}
+  \item test\_get\_q\_obj\_map() (test\_pytan\_unit.TestGenericUtils method), \hyperpage{267}
   \item test\_invalid1() (test\_pytan\_unit.TestManualPackageDefValidateUtils method), 
-		\hyperpage{540}
+		\hyperpage{268}
   \item test\_invalid1() (test\_pytan\_unit.TestManualQuestionFilterDefValidateUtils method), 
-		\hyperpage{540}
+		\hyperpage{268}
   \item test\_invalid1() (test\_pytan\_unit.TestManualSensorDefValidateUtils method), 
-		\hyperpage{541}
+		\hyperpage{269}
   \item test\_invalid2() (test\_pytan\_unit.TestManualPackageDefValidateUtils method), 
-		\hyperpage{540}
+		\hyperpage{268}
   \item test\_invalid2() (test\_pytan\_unit.TestManualSensorDefValidateUtils method), 
-		\hyperpage{542}
+		\hyperpage{270}
   \item test\_invalid3() (test\_pytan\_unit.TestManualSensorDefValidateUtils method), 
-		\hyperpage{542}
+		\hyperpage{270}
   \item test\_invalid4() (test\_pytan\_unit.TestManualSensorDefValidateUtils method), 
-		\hyperpage{542}
+		\hyperpage{270}
   \item test\_invalid\_connect\_1\_bad\_username() (test\_pytan\_func.InvalidServerTests method), 
-		\hyperpage{542}
+		\hyperpage{270}
   \item test\_invalid\_connect\_2\_bad\_host\_and\_non\_ssl\_port() (test\_pytan\_func.InvalidServerTests method), 
-		\hyperpage{542}
+		\hyperpage{270}
   \item test\_invalid\_connect\_3\_bad\_password() (test\_pytan\_func.InvalidServerTests method), 
-		\hyperpage{542}
+		\hyperpage{270}
   \item test\_invalid\_connect\_4\_bad\_host\_and\_bad\_port() (test\_pytan\_func.InvalidServerTests method), 
-		\hyperpage{542}
+		\hyperpage{270}
   \item test\_invalid\_create\_object\_1\_invalid\_create\_sensor() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{542}
+		\hyperpage{270}
   \item test\_invalid\_create\_object\_from\_json\_1\_invalid\_create\_saved\_action\_from\_json() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{542}
+		\hyperpage{270}
   \item test\_invalid\_create\_object\_from\_json\_2\_invalid\_create\_client\_from\_json() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{542}
+		\hyperpage{270}
   \item test\_invalid\_create\_object\_from\_json\_3\_invalid\_create\_userrole\_from\_json() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{542}
+		\hyperpage{270}
   \item test\_invalid\_create\_object\_from\_json\_4\_invalid\_create\_setting\_from\_json() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{542}
+		\hyperpage{270}
   \item test\_invalid\_deploy\_action\_1\_invalid\_deploy\_action\_run\_false() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{542}
+		\hyperpage{270}
   \item test\_invalid\_deploy\_action\_2\_invalid\_deploy\_action\_package\_help() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{542}
+		\hyperpage{270}
   \item test\_invalid\_deploy\_action\_3\_invalid\_deploy\_action\_package() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{542}
+		\hyperpage{270}
   \item test\_invalid\_deploy\_action\_4\_invalid\_deploy\_action\_options\_help() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{542}
+		\hyperpage{270}
   \item test\_invalid\_deploy\_action\_5\_invalid\_deploy\_action\_empty\_package() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{542}
+		\hyperpage{270}
   \item test\_invalid\_deploy\_action\_6\_invalid\_deploy\_action\_filters\_help() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{542}
+		\hyperpage{270}
   \item test\_invalid\_deploy\_action\_7\_invalid\_deploy\_action\_missing\_parameters() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{543}
+		\hyperpage{271}
   \item test\_invalid\_export\_basetype\_1\_invalid\_export\_basetype\_csv\_bad\_explode\_type() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{543}
+		\hyperpage{271}
   \item test\_invalid\_export\_basetype\_2\_invalid\_export\_basetype\_csv\_bad\_sort\_sub\_type() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{543}
+		\hyperpage{271}
   \item test\_invalid\_export\_basetype\_3\_invalid\_export\_basetype\_csv\_bad\_sort\_type() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{543}
+		\hyperpage{271}
   \item test\_invalid\_export\_basetype\_4\_invalid\_export\_basetype\_xml\_bad\_minimal\_type() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{543}
+		\hyperpage{271}
   \item test\_invalid\_export\_basetype\_5\_invalid\_export\_basetype\_json\_bad\_include\_type() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{543}
+		\hyperpage{271}
   \item test\_invalid\_export\_basetype\_6\_invalid\_export\_basetype\_json\_bad\_explode\_type() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{543}
+		\hyperpage{271}
   \item test\_invalid\_export\_basetype\_7\_invalid\_export\_basetype\_bad\_format() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{543}
+		\hyperpage{271}
   \item test\_invalid\_export\_resultset\_1\_invalid\_export\_resultset\_csv\_bad\_sort\_sub\_type() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{543}
+		\hyperpage{271}
   \item test\_invalid\_export\_resultset\_2\_invalid\_export\_resultset\_csv\_bad\_sort\_type() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{543}
+		\hyperpage{271}
   \item test\_invalid\_export\_resultset\_3\_invalid\_export\_resultset\_csv\_bad\_expand\_type() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{543}
+		\hyperpage{271}
   \item test\_invalid\_export\_resultset\_4\_invalid\_export\_resultset\_csv\_bad\_sensors\_sub\_type() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{543}
+		\hyperpage{271}
   \item test\_invalid\_export\_resultset\_5\_invalid\_export\_resultset\_bad\_format() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{543}
+		\hyperpage{271}
   \item test\_invalid\_filter1() (test\_pytan\_unit.TestDehumanizeQuestionFilterUtils method), 
-		\hyperpage{538}
+		\hyperpage{266}
   \item test\_invalid\_filter2() (test\_pytan\_unit.TestDehumanizeQuestionFilterUtils method), 
-		\hyperpage{538}
+		\hyperpage{266}
   \item test\_invalid\_filter3() (test\_pytan\_unit.TestDehumanizeQuestionFilterUtils method), 
-		\hyperpage{538}
+		\hyperpage{266}
   \item test\_invalid\_get\_object\_1\_invalid\_get\_action\_single\_by\_name() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{543}
+		\hyperpage{271}
   \item test\_invalid\_get\_object\_2\_invalid\_get\_question\_by\_name() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{543}
+		\hyperpage{271}
   \item test\_invalid\_option1() (test\_pytan\_unit.TestDehumanizeQuestionOptionUtils method), 
-		\hyperpage{538}
+		\hyperpage{266}
   \item test\_invalid\_option2() (test\_pytan\_unit.TestDehumanizeQuestionOptionUtils method), 
-		\hyperpage{538}
-  \item test\_invalid\_port() (test\_pytan\_unit.TestGenericUtils method), \hyperpage{539}
+		\hyperpage{266}
+  \item test\_invalid\_port() (test\_pytan\_unit.TestGenericUtils method), \hyperpage{267}
   \item test\_invalid\_question\_1\_invalid\_ask\_manual\_human\_question\_paramater\_too\_many() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{543}
+		\hyperpage{271}
   \item test\_invalid\_question\_2\_invalid\_ask\_manual\_human\_question\_filter\_help() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{543}
+		\hyperpage{271}
   \item test\_invalid\_question\_3\_invalid\_ask\_manual\_human\_question\_option() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{543}
+		\hyperpage{271}
   \item test\_invalid\_question\_4\_invalid\_ask\_manual\_human\_question\_filter() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{543}
+		\hyperpage{271}
   \item test\_invalid\_question\_5\_invalid\_ask\_manual\_human\_question\_parameter\_split() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{543}
+		\hyperpage{271}
   \item test\_invalid\_question\_6\_invalid\_ask\_manual\_human\_question\_option\_help() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{543}
+		\hyperpage{271}
   \item test\_invalid\_question\_7\_invalid\_ask\_manual\_question\_sensor() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{543}
+		\hyperpage{271}
   \item test\_invalid\_question\_8\_invalid\_ask\_manual\_human\_question\_sensor\_help() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{543}
-  \item test\_is\_dict() (test\_pytan\_unit.TestGenericUtils method), \hyperpage{539}
-  \item test\_is\_list() (test\_pytan\_unit.TestGenericUtils method), \hyperpage{539}
-  \item test\_is\_not\_dict() (test\_pytan\_unit.TestGenericUtils method), \hyperpage{539}
-  \item test\_is\_not\_list() (test\_pytan\_unit.TestGenericUtils method), \hyperpage{539}
-  \item test\_is\_not\_num() (test\_pytan\_unit.TestGenericUtils method), \hyperpage{539}
-  \item test\_is\_not\_str() (test\_pytan\_unit.TestGenericUtils method), \hyperpage{539}
-  \item test\_is\_num() (test\_pytan\_unit.TestGenericUtils method), \hyperpage{539}
-  \item test\_is\_str() (test\_pytan\_unit.TestGenericUtils method), \hyperpage{539}
-  \item test\_jsonify() (test\_pytan\_unit.TestGenericUtils method), \hyperpage{539}
+		\hyperpage{271}
+  \item test\_is\_dict() (test\_pytan\_unit.TestGenericUtils method), \hyperpage{267}
+  \item test\_is\_list() (test\_pytan\_unit.TestGenericUtils method), \hyperpage{267}
+  \item test\_is\_not\_dict() (test\_pytan\_unit.TestGenericUtils method), \hyperpage{267}
+  \item test\_is\_not\_list() (test\_pytan\_unit.TestGenericUtils method), \hyperpage{267}
+  \item test\_is\_not\_num() (test\_pytan\_unit.TestGenericUtils method), \hyperpage{267}
+  \item test\_is\_not\_str() (test\_pytan\_unit.TestGenericUtils method), \hyperpage{267}
+  \item test\_is\_num() (test\_pytan\_unit.TestGenericUtils method), \hyperpage{267}
+  \item test\_is\_str() (test\_pytan\_unit.TestGenericUtils method), \hyperpage{267}
+  \item test\_jsonify() (test\_pytan\_unit.TestGenericUtils method), \hyperpage{267}
   \item test\_multi\_filter\_list() (test\_pytan\_unit.TestDehumanizeQuestionFilterUtils method), 
-		\hyperpage{538}
+		\hyperpage{266}
   \item test\_multi\_list\_complex() (test\_pytan\_unit.TestDehumanizeSensorUtils method), 
-		\hyperpage{539}
+		\hyperpage{267}
   \item test\_option\_list\_many() (test\_pytan\_unit.TestDehumanizeQuestionOptionUtils method), 
-		\hyperpage{538}
+		\hyperpage{266}
   \item test\_option\_list\_multi() (test\_pytan\_unit.TestDehumanizeQuestionOptionUtils method), 
-		\hyperpage{538}
+		\hyperpage{266}
   \item test\_option\_list\_single() (test\_pytan\_unit.TestDehumanizeQuestionOptionUtils method), 
-		\hyperpage{538}
+		\hyperpage{266}
   \item test\_option\_str() (test\_pytan\_unit.TestDehumanizeQuestionOptionUtils method), 
-		\hyperpage{538}
+		\hyperpage{266}
   \item test\_parse\_complex() (test\_pytan\_unit.TestManualSensorDefParseUtils method), 
-		\hyperpage{541}
+		\hyperpage{269}
   \item test\_parse\_dict\_hash() (test\_pytan\_unit.TestManualSensorDefParseUtils method), 
-		\hyperpage{541}
+		\hyperpage{269}
   \item test\_parse\_dict\_id() (test\_pytan\_unit.TestManualSensorDefParseUtils method), 
-		\hyperpage{541}
+		\hyperpage{269}
   \item test\_parse\_dict\_name() (test\_pytan\_unit.TestManualSensorDefParseUtils method), 
-		\hyperpage{541}
+		\hyperpage{269}
   \item test\_parse\_emptydict() (test\_pytan\_unit.TestManualQuestionFilterDefParseUtils method), 
-		\hyperpage{540}
+		\hyperpage{268}
   \item test\_parse\_emptydict() (test\_pytan\_unit.TestManualQuestionOptionDefParseUtils method), 
-		\hyperpage{541}
+		\hyperpage{269}
   \item test\_parse\_emptydict() (test\_pytan\_unit.TestManualSensorDefParseUtils method), 
-		\hyperpage{541}
+		\hyperpage{269}
   \item test\_parse\_emptylist() (test\_pytan\_unit.TestManualQuestionFilterDefParseUtils method), 
-		\hyperpage{540}
+		\hyperpage{268}
   \item test\_parse\_emptylist() (test\_pytan\_unit.TestManualQuestionOptionDefParseUtils method), 
-		\hyperpage{541}
+		\hyperpage{269}
   \item test\_parse\_emptylist() (test\_pytan\_unit.TestManualSensorDefParseUtils method), 
-		\hyperpage{541}
+		\hyperpage{269}
   \item test\_parse\_emptystr() (test\_pytan\_unit.TestManualQuestionFilterDefParseUtils method), 
-		\hyperpage{540}
+		\hyperpage{268}
   \item test\_parse\_emptystr() (test\_pytan\_unit.TestManualQuestionOptionDefParseUtils method), 
-		\hyperpage{541}
+		\hyperpage{269}
   \item test\_parse\_emptystr() (test\_pytan\_unit.TestManualSensorDefParseUtils method), 
-		\hyperpage{541}
+		\hyperpage{269}
   \item test\_parse\_list() (test\_pytan\_unit.TestManualQuestionOptionDefParseUtils method), 
-		\hyperpage{541}
+		\hyperpage{269}
   \item test\_parse\_multi\_filter() (test\_pytan\_unit.TestManualQuestionFilterDefParseUtils method), 
-		\hyperpage{540}
+		\hyperpage{268}
   \item test\_parse\_noargs() (test\_pytan\_unit.TestManualQuestionFilterDefParseUtils method), 
-		\hyperpage{540}
+		\hyperpage{268}
   \item test\_parse\_noargs() (test\_pytan\_unit.TestManualQuestionOptionDefParseUtils method), 
-		\hyperpage{541}
+		\hyperpage{269}
   \item test\_parse\_noargs() (test\_pytan\_unit.TestManualSensorDefParseUtils method), 
-		\hyperpage{541}
+		\hyperpage{269}
   \item test\_parse\_none() (test\_pytan\_unit.TestManualQuestionFilterDefParseUtils method), 
-		\hyperpage{540}
+		\hyperpage{268}
   \item test\_parse\_none() (test\_pytan\_unit.TestManualQuestionOptionDefParseUtils method), 
-		\hyperpage{541}
+		\hyperpage{269}
   \item test\_parse\_none() (test\_pytan\_unit.TestManualSensorDefParseUtils method), 
-		\hyperpage{541}
+		\hyperpage{269}
   \item test\_parse\_options\_dict() (test\_pytan\_unit.TestManualQuestionOptionDefParseUtils method), 
-		\hyperpage{541}
+		\hyperpage{269}
   \item test\_parse\_single\_filter() (test\_pytan\_unit.TestManualQuestionFilterDefParseUtils method), 
-		\hyperpage{540}
+		\hyperpage{268}
   \item test\_parse\_str() (test\_pytan\_unit.TestManualQuestionFilterDefParseUtils method), 
-		\hyperpage{540}
+		\hyperpage{268}
   \item test\_parse\_str() (test\_pytan\_unit.TestManualQuestionOptionDefParseUtils method), 
-		\hyperpage{541}
+		\hyperpage{269}
   \item test\_parse\_str1() (test\_pytan\_unit.TestManualSensorDefParseUtils method), 
-		\hyperpage{541}
-  \item test\_pytan\_func (module), \hyperpage{542}
-  \item test\_pytan\_unit (module), \hyperpage{537}
-  \item test\_req\_kwargs() (test\_pytan\_unit.TestGenericUtils method), \hyperpage{539}
+		\hyperpage{269}
+  \item test\_pytan\_func (module), \hyperpage{270}
+  \item test\_pytan\_unit (module), \hyperpage{265}
+  \item test\_req\_kwargs() (test\_pytan\_unit.TestGenericUtils method), \hyperpage{267}
   \item test\_single\_filter\_list() (test\_pytan\_unit.TestDehumanizeQuestionFilterUtils method), 
-		\hyperpage{538}
+		\hyperpage{266}
   \item test\_single\_filter\_str() (test\_pytan\_unit.TestDehumanizeQuestionFilterUtils method), 
-		\hyperpage{538}
-  \item test\_single\_str() (test\_pytan\_unit.TestDehumanizeSensorUtils method), \hyperpage{539}
+		\hyperpage{266}
+  \item test\_single\_str() (test\_pytan\_unit.TestDehumanizeSensorUtils method), \hyperpage{267}
   \item test\_single\_str\_complex1() (test\_pytan\_unit.TestDehumanizeSensorUtils method), 
-		\hyperpage{539}
+		\hyperpage{267}
   \item test\_single\_str\_complex2() (test\_pytan\_unit.TestDehumanizeSensorUtils method), 
-		\hyperpage{539}
+		\hyperpage{267}
   \item test\_single\_str\_with\_filter() (test\_pytan\_unit.TestDehumanizeSensorUtils method), 
-		\hyperpage{539}
+		\hyperpage{267}
   \item test\_valid1() (test\_pytan\_unit.TestManualPackageDefValidateUtils method), 
-		\hyperpage{540}
+		\hyperpage{268}
   \item test\_valid1() (test\_pytan\_unit.TestManualQuestionFilterDefValidateUtils method), 
-		\hyperpage{541}
-  \item test\_valid1() (test\_pytan\_unit.TestManualSensorDefValidateUtils method), \hyperpage{542}
+		\hyperpage{269}
+  \item test\_valid1() (test\_pytan\_unit.TestManualSensorDefValidateUtils method), \hyperpage{270}
   \item test\_valid2() (test\_pytan\_unit.TestManualPackageDefValidateUtils method), 
-		\hyperpage{540}
+		\hyperpage{268}
   \item test\_valid2() (test\_pytan\_unit.TestManualQuestionFilterDefValidateUtils method), 
-		\hyperpage{541}
-  \item test\_valid2() (test\_pytan\_unit.TestManualSensorDefValidateUtils method), \hyperpage{542}
-  \item test\_valid3() (test\_pytan\_unit.TestManualSensorDefValidateUtils method), \hyperpage{542}
-  \item test\_valid4() (test\_pytan\_unit.TestManualSensorDefValidateUtils method), \hyperpage{542}
+		\hyperpage{269}
+  \item test\_valid2() (test\_pytan\_unit.TestManualSensorDefValidateUtils method), \hyperpage{270}
+  \item test\_valid3() (test\_pytan\_unit.TestManualSensorDefValidateUtils method), \hyperpage{270}
+  \item test\_valid4() (test\_pytan\_unit.TestManualSensorDefValidateUtils method), \hyperpage{270}
   \item test\_valid\_create\_object\_1\_create\_user() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{543}
+		\hyperpage{271}
   \item test\_valid\_create\_object\_2\_create\_package() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{543}
+		\hyperpage{271}
   \item test\_valid\_create\_object\_3\_create\_group() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{543}
+		\hyperpage{271}
   \item test\_valid\_create\_object\_4\_create\_whitelisted\_url() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{543}
+		\hyperpage{271}
   \item test\_valid\_create\_object\_from\_json\_1\_create\_package\_from\_json() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{543}
+		\hyperpage{271}
   \item test\_valid\_create\_object\_from\_json\_2\_create\_user\_from\_json() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{543}
+		\hyperpage{271}
   \item test\_valid\_create\_object\_from\_json\_3\_create\_saved\_question\_from\_json() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{543}
+		\hyperpage{271}
   \item test\_valid\_create\_object\_from\_json\_4\_create\_action\_from\_json() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{543}
+		\hyperpage{271}
   \item test\_valid\_create\_object\_from\_json\_5\_create\_sensor\_from\_json() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{543}
+		\hyperpage{271}
   \item test\_valid\_create\_object\_from\_json\_6\_create\_question\_from\_json() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{543}
+		\hyperpage{271}
   \item test\_valid\_create\_object\_from\_json\_7\_create\_whitelisted\_url\_from\_json() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{543}
+		\hyperpage{271}
   \item test\_valid\_create\_object\_from\_json\_8\_create\_group\_from\_json() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{543}
+		\hyperpage{271}
   \item test\_valid\_deploy\_action\_1\_deploy\_action\_simple\_against\_windows\_computers() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{543}
+		\hyperpage{271}
   \item test\_valid\_deploy\_action\_2\_deploy\_action\_simple\_without\_results() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{544}
+		\hyperpage{272}
   \item test\_valid\_deploy\_action\_3\_deploy\_action\_with\_params\_against\_windows\_computers() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{544}
+		\hyperpage{272}
   \item test\_valid\_deploy\_action\_4\_deploy\_action\_simple() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{544}
+		\hyperpage{272}
   \item test\_valid\_export\_basetype\_10\_export\_basetype\_xml\_default\_options() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{544}
+		\hyperpage{272}
   \item test\_valid\_export\_basetype\_11\_export\_basetype\_csv\_with\_explode\_true() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{544}
+		\hyperpage{272}
   \item test\_valid\_export\_basetype\_12\_export\_basetype\_json\_explode\_false() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{544}
+		\hyperpage{272}
   \item test\_valid\_export\_basetype\_13\_export\_basetype\_json\_type\_false() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{544}
+		\hyperpage{272}
   \item test\_valid\_export\_basetype\_14\_export\_basetype\_json\_default\_options() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{544}
+		\hyperpage{272}
   \item test\_valid\_export\_basetype\_1\_export\_basetype\_csv\_with\_sort\_list() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{544}
+		\hyperpage{272}
   \item test\_valid\_export\_basetype\_2\_export\_basetype\_csv\_with\_explode\_false() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{544}
+		\hyperpage{272}
   \item test\_valid\_export\_basetype\_3\_export\_basetype\_json\_type\_true() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{544}
+		\hyperpage{272}
   \item test\_valid\_export\_basetype\_4\_export\_basetype\_xml\_minimal\_false() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{544}
+		\hyperpage{272}
   \item test\_valid\_export\_basetype\_5\_export\_basetype\_xml\_minimal\_true() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{544}
+		\hyperpage{272}
   \item test\_valid\_export\_basetype\_6\_export\_basetype\_csv\_with\_sort\_empty\_list() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{544}
+		\hyperpage{272}
   \item test\_valid\_export\_basetype\_7\_export\_basetype\_csv\_default\_options() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{544}
+		\hyperpage{272}
   \item test\_valid\_export\_basetype\_8\_export\_basetype\_json\_explode\_true() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{544}
+		\hyperpage{272}
   \item test\_valid\_export\_basetype\_9\_export\_basetype\_csv\_with\_sort\_true() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{544}
+		\hyperpage{272}
   \item test\_valid\_export\_resultset\_10\_export\_resultset\_csv\_default\_options() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{544}
+		\hyperpage{272}
   \item test\_valid\_export\_resultset\_11\_export\_resultset\_csv\_type\_true() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{544}
+		\hyperpage{272}
   \item test\_valid\_export\_resultset\_12\_export\_resultset\_csv\_all\_options() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{544}
+		\hyperpage{272}
   \item test\_valid\_export\_resultset\_13\_export\_resultset\_csv\_sort\_false() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{544}
+		\hyperpage{272}
   \item test\_valid\_export\_resultset\_1\_export\_resultset\_json() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{544}
+		\hyperpage{272}
   \item test\_valid\_export\_resultset\_2\_export\_resultset\_csv\_sensor\_true() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{544}
+		\hyperpage{272}
   \item test\_valid\_export\_resultset\_3\_export\_resultset\_csv\_type\_false() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{544}
+		\hyperpage{272}
   \item test\_valid\_export\_resultset\_4\_export\_resultset\_csv\_expand\_false() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{544}
+		\hyperpage{272}
   \item test\_valid\_export\_resultset\_5\_export\_resultset\_csv\_sort\_empty() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{544}
+		\hyperpage{272}
   \item test\_valid\_export\_resultset\_6\_export\_resultset\_csv\_sort\_true() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{544}
+		\hyperpage{272}
   \item test\_valid\_export\_resultset\_7\_export\_resultset\_csv\_sort\_list() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{544}
+		\hyperpage{272}
   \item test\_valid\_export\_resultset\_8\_export\_resultset\_csv\_sensor\_false() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{544}
+		\hyperpage{272}
   \item test\_valid\_export\_resultset\_9\_export\_resultset\_csv\_expand\_true() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{544}
+		\hyperpage{272}
   \item test\_valid\_get\_object\_10\_get\_all\_saved\_questions() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{544}
+		\hyperpage{272}
   \item test\_valid\_get\_object\_11\_get\_user\_by\_name() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{544}
+		\hyperpage{272}
   \item test\_valid\_get\_object\_12\_get\_all\_userroless() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{544}
+		\hyperpage{272}
   \item test\_valid\_get\_object\_13\_get\_all\_questions() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{544}
+		\hyperpage{272}
   \item test\_valid\_get\_object\_14\_get\_sensor\_by\_id() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{544}
+		\hyperpage{272}
   \item test\_valid\_get\_object\_15\_get\_all\_groups() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{544}
+		\hyperpage{272}
   \item test\_valid\_get\_object\_16\_get\_all\_sensors() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{545}
+		\hyperpage{273}
   \item test\_valid\_get\_object\_17\_get\_sensor\_by\_mixed() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{545}
+		\hyperpage{273}
   \item test\_valid\_get\_object\_18\_get\_whitelisted\_url\_by\_id() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{545}
+		\hyperpage{273}
   \item test\_valid\_get\_object\_19\_get\_group\_by\_name() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{545}
+		\hyperpage{273}
   \item test\_valid\_get\_object\_1\_get\_all\_users() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{545}
+		\hyperpage{273}
   \item test\_valid\_get\_object\_20\_get\_all\_whitelisted\_urls() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{545}
+		\hyperpage{273}
   \item test\_valid\_get\_object\_21\_get\_sensor\_by\_hash() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{545}
+		\hyperpage{273}
   \item test\_valid\_get\_object\_22\_get\_package\_by\_name() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{545}
+		\hyperpage{273}
   \item test\_valid\_get\_object\_23\_get\_all\_clients() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{545}
+		\hyperpage{273}
   \item test\_valid\_get\_object\_24\_get\_sensor\_by\_names() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{545}
+		\hyperpage{273}
   \item test\_valid\_get\_object\_25\_get\_all\_packages() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{545}
+		\hyperpage{273}
   \item test\_valid\_get\_object\_26\_get\_saved\_question\_by\_name() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{545}
+		\hyperpage{273}
   \item test\_valid\_get\_object\_27\_get\_all\_actions() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{545}
+		\hyperpage{273}
   \item test\_valid\_get\_object\_28\_get\_user\_by\_id() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{545}
+		\hyperpage{273}
   \item test\_valid\_get\_object\_29\_get\_sensor\_by\_name() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{545}
+		\hyperpage{273}
   \item test\_valid\_get\_object\_2\_get\_action\_by\_id() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{545}
+		\hyperpage{273}
   \item test\_valid\_get\_object\_30\_get\_saved\_action\_by\_name() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{545}
+		\hyperpage{273}
   \item test\_valid\_get\_object\_3\_get\_question\_by\_id() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{545}
+		\hyperpage{273}
   \item test\_valid\_get\_object\_4\_get\_saved\_question\_by\_names() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{545}
+		\hyperpage{273}
   \item test\_valid\_get\_object\_5\_get\_userrole\_by\_id() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{545}
+		\hyperpage{273}
   \item test\_valid\_get\_object\_6\_get\_all\_saved\_actions() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{545}
+		\hyperpage{273}
   \item test\_valid\_get\_object\_7\_get\_leader\_clients() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{545}
+		\hyperpage{273}
   \item test\_valid\_get\_object\_8\_get\_all\_settings() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{545}
+		\hyperpage{273}
   \item test\_valid\_get\_object\_9\_get\_setting\_by\_name() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{545}
+		\hyperpage{273}
   \item test\_valid\_question\_10\_ask\_manual\_human\_question\_sensor\_with\_parameters\_and\_filter\_and\_options() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{545}
+		\hyperpage{273}
   \item test\_valid\_question\_11\_ask\_manual\_human\_question\_sensor\_with\_filter\_and\_2\_options() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{545}
+		\hyperpage{273}
   \item test\_valid\_question\_12\_ask\_manual\_human\_question\_sensor\_with\_filter() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{545}
+		\hyperpage{273}
   \item test\_valid\_question\_13\_ask\_manual\_human\_question\_simple\_multiple\_sensors() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{545}
+		\hyperpage{273}
   \item test\_valid\_question\_14\_ask\_manual\_human\_question\_multiple\_sensors\_identified\_by\_name() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{545}
+		\hyperpage{273}
   \item test\_valid\_question\_15\_ask\_manual\_human\_question\_sensor\_with\_parameters\_and\_filter() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{545}
+		\hyperpage{273}
   \item test\_valid\_question\_16\_ask\_saved\_question\_by\_name() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{545}
+		\hyperpage{273}
   \item test\_valid\_question\_17\_ask\_manual\_human\_question\_sensor\_with\_parameters\_and\_no\_supplied\_parameters() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{545}
+		\hyperpage{273}
   \item test\_valid\_question\_1\_ask\_manual\_human\_question\_sensor\_with\_parameters\_and\_some\_supplied\_parameters() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{545}
+		\hyperpage{273}
   \item test\_valid\_question\_2\_ask\_manual\_human\_question\_simple\_single\_sensor() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{545}
+		\hyperpage{273}
   \item test\_valid\_question\_3\_ask\_manual\_human\_question\_sensor\_with\_filter\_and\_3\_options() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{545}
+		\hyperpage{273}
   \item test\_valid\_question\_4\_ask\_manual\_human\_question\_sensor\_without\_parameters\_and\_supplied\_parameters() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{545}
+		\hyperpage{273}
   \item test\_valid\_question\_5\_ask\_manual\_human\_question\_complex\_query2() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{546}
+		\hyperpage{274}
   \item test\_valid\_question\_6\_ask\_manual\_human\_question\_complex\_query1() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{546}
+		\hyperpage{274}
   \item test\_valid\_question\_7\_ask\_saved\_question\_by\_name\_in\_list() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{546}
+		\hyperpage{274}
   \item test\_valid\_question\_8\_ask\_manual\_human\_question\_multiple\_sensors\_with\_parameters\_and\_some\_supplied\_parameters() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{546}
+		\hyperpage{274}
   \item test\_valid\_question\_9\_ask\_manual\_question\_sensor\_complex() (test\_pytan\_func.ValidServerTests method), 
-		\hyperpage{546}
+		\hyperpage{274}
   \item test\_valid\_simple\_list() (test\_pytan\_unit.TestDehumanizeSensorUtils method), 
-		\hyperpage{539}
+		\hyperpage{267}
   \item test\_valid\_simple\_str\_hash\_selector() (test\_pytan\_unit.TestDehumanizeSensorUtils method), 
-		\hyperpage{539}
+		\hyperpage{267}
   \item test\_valid\_simple\_str\_id\_selector() (test\_pytan\_unit.TestDehumanizeSensorUtils method), 
-		\hyperpage{539}
+		\hyperpage{267}
   \item test\_valid\_simple\_str\_name\_selector() (test\_pytan\_unit.TestDehumanizeSensorUtils method), 
-		\hyperpage{539}
-  \item test\_version\_higher() (test\_pytan\_unit.TestGenericUtils method), \hyperpage{539}
-  \item test\_version\_lower() (test\_pytan\_unit.TestGenericUtils method), \hyperpage{539}
-  \item TestDehumanizeExtractionUtils (class in test\_pytan\_unit), \hyperpage{537}
-  \item TestDehumanizeQuestionFilterUtils (class in test\_pytan\_unit), \hyperpage{538}
-  \item TestDehumanizeQuestionOptionUtils (class in test\_pytan\_unit), \hyperpage{538}
-  \item TestDehumanizeSensorUtils (class in test\_pytan\_unit), \hyperpage{539}
-  \item TestGenericUtils (class in test\_pytan\_unit), \hyperpage{539}
-  \item TestManualBuildObjectUtils (class in test\_pytan\_unit), \hyperpage{539}
-  \item TestManualPackageDefValidateUtils (class in test\_pytan\_unit), \hyperpage{540}
-  \item TestManualQuestionFilterDefParseUtils (class in test\_pytan\_unit), \hyperpage{540}
-  \item TestManualQuestionFilterDefValidateUtils (class in test\_pytan\_unit), \hyperpage{540}
-  \item TestManualQuestionOptionDefParseUtils (class in test\_pytan\_unit), \hyperpage{541}
-  \item TestManualSensorDefParseUtils (class in test\_pytan\_unit), \hyperpage{541}
-  \item TestManualSensorDefValidateUtils (class in test\_pytan\_unit), \hyperpage{541}
-  \item threaded\_http (module), \hyperpage{562}
-  \item threaded\_http() (in module threaded\_http), \hyperpage{562}
-  \item ThreadedHTTPServer (class in threaded\_http), \hyperpage{562}
-  \item to\_flat\_dict() (taniumpy.object\_types.base.BaseType method), \hyperpage{549}
+		\hyperpage{267}
+  \item test\_version\_higher() (test\_pytan\_unit.TestGenericUtils method), \hyperpage{267}
+  \item test\_version\_lower() (test\_pytan\_unit.TestGenericUtils method), \hyperpage{267}
+  \item TestDehumanizeExtractionUtils (class in test\_pytan\_unit), \hyperpage{265}
+  \item TestDehumanizeQuestionFilterUtils (class in test\_pytan\_unit), \hyperpage{266}
+  \item TestDehumanizeQuestionOptionUtils (class in test\_pytan\_unit), \hyperpage{266}
+  \item TestDehumanizeSensorUtils (class in test\_pytan\_unit), \hyperpage{267}
+  \item TestGenericUtils (class in test\_pytan\_unit), \hyperpage{267}
+  \item TestManualBuildObjectUtils (class in test\_pytan\_unit), \hyperpage{267}
+  \item TestManualPackageDefValidateUtils (class in test\_pytan\_unit), \hyperpage{268}
+  \item TestManualQuestionFilterDefParseUtils (class in test\_pytan\_unit), \hyperpage{268}
+  \item TestManualQuestionFilterDefValidateUtils (class in test\_pytan\_unit), \hyperpage{268}
+  \item TestManualQuestionOptionDefParseUtils (class in test\_pytan\_unit), \hyperpage{269}
+  \item TestManualSensorDefParseUtils (class in test\_pytan\_unit), \hyperpage{269}
+  \item TestManualSensorDefValidateUtils (class in test\_pytan\_unit), \hyperpage{269}
+  \item threaded\_http (module), \hyperpage{290}
+  \item threaded\_http() (in module threaded\_http), \hyperpage{290}
+  \item ThreadedHTTPServer (class in threaded\_http), \hyperpage{290}
+  \item to\_flat\_dict() (taniumpy.object\_types.base.BaseType method), \hyperpage{277}
   \item to\_flat\_dict\_explode\_json() (taniumpy.object\_types.base.BaseType method), 
-		\hyperpage{549}
-  \item to\_json() (taniumpy.object\_types.base.BaseType static method), \hyperpage{549}
-  \item to\_json() (taniumpy.object\_types.result\_set.ResultSet static method), \hyperpage{555}
-  \item to\_jsonable() (taniumpy.object\_types.base.BaseType method), \hyperpage{549}
-  \item to\_jsonable() (taniumpy.object\_types.result\_set.ResultSet method), \hyperpage{555}
-  \item toSOAPBody() (taniumpy.object\_types.base.BaseType method), \hyperpage{549}
-  \item toSOAPElement() (taniumpy.object\_types.base.BaseType method), \hyperpage{549}
+		\hyperpage{277}
+  \item to\_json() (taniumpy.object\_types.base.BaseType static method), \hyperpage{277}
+  \item to\_json() (taniumpy.object\_types.result\_set.ResultSet static method), \hyperpage{283}
+  \item to\_jsonable() (taniumpy.object\_types.base.BaseType method), \hyperpage{277}
+  \item to\_jsonable() (taniumpy.object\_types.result\_set.ResultSet method), \hyperpage{283}
+  \item toSOAPBody() (taniumpy.object\_types.base.BaseType method), \hyperpage{277}
+  \item toSOAPElement() (taniumpy.object\_types.base.BaseType method), \hyperpage{277}
 
   \indexspace
   \bigletter U
-  \item unpack() (in module ddt), \hyperpage{562}
-  \item unparse() (in module xmltodict), \hyperpage{561}
-  \item UPDATE\_OBJECT (taniumpy.session.Session attribute), \hyperpage{546}
-  \item UploadFile (class in taniumpy.object\_types.upload\_file), \hyperpage{558}
-  \item UploadFileList (class in taniumpy.object\_types.upload\_file\_list), \hyperpage{558}
-  \item UploadFileStatus (class in taniumpy.object\_types.upload\_file\_status), \hyperpage{558}
-  \item User (class in taniumpy.object\_types.user), \hyperpage{558}
-  \item UserList (class in taniumpy.object\_types.user\_list), \hyperpage{559}
-  \item UserPermissions (class in taniumpy.object\_types.user\_permissions), \hyperpage{559}
-  \item UserRole (class in taniumpy.object\_types.user\_role), \hyperpage{559}
-  \item UserRoleList (class in taniumpy.object\_types.user\_role\_list), \hyperpage{559}
+  \item unpack() (in module ddt), \hyperpage{290}
+  \item unparse() (in module xmltodict), \hyperpage{289}
+  \item UPDATE\_OBJECT (taniumpy.session.Session attribute), \hyperpage{274}
+  \item UploadFile (class in taniumpy.object\_types.upload\_file), \hyperpage{286}
+  \item UploadFileList (class in taniumpy.object\_types.upload\_file\_list), \hyperpage{286}
+  \item UploadFileStatus (class in taniumpy.object\_types.upload\_file\_status), \hyperpage{286}
+  \item User (class in taniumpy.object\_types.user), \hyperpage{286}
+  \item UserList (class in taniumpy.object\_types.user\_list), \hyperpage{287}
+  \item UserPermissions (class in taniumpy.object\_types.user\_permissions), \hyperpage{287}
+  \item UserRole (class in taniumpy.object\_types.user\_role), \hyperpage{287}
+  \item UserRoleList (class in taniumpy.object\_types.user\_role\_list), \hyperpage{287}
 
   \indexspace
   \bigletter V
-  \item val\_package\_def() (in module pytan.utils), \hyperpage{537}
-  \item val\_q\_filter\_defs() (in module pytan.utils), \hyperpage{537}
-  \item val\_sensor\_defs() (in module pytan.utils), \hyperpage{537}
-  \item ValidServerTests (class in test\_pytan\_func), \hyperpage{542}
-  \item version\_check() (in module pytan.utils), \hyperpage{527}
-  \item VersionAggregate (class in taniumpy.object\_types.version\_aggregate), \hyperpage{559}
+  \item val\_package\_def() (in module pytan.utils), \hyperpage{265}
+  \item val\_q\_filter\_defs() (in module pytan.utils), \hyperpage{265}
+  \item val\_sensor\_defs() (in module pytan.utils), \hyperpage{265}
+  \item ValidServerTests (class in test\_pytan\_func), \hyperpage{270}
+  \item version\_check() (in module pytan.utils), \hyperpage{255}
+  \item VersionAggregate (class in taniumpy.object\_types.version\_aggregate), \hyperpage{287}
   \item VersionAggregateList (class in taniumpy.object\_types.version\_aggregate\_list), 
-		\hyperpage{559}
+		\hyperpage{287}
 
   \indexspace
   \bigletter W
-  \item WhiteListedUrl (class in taniumpy.object\_types.white\_listed\_url), \hyperpage{559}
+  \item WhiteListedUrl (class in taniumpy.object\_types.white\_listed\_url), \hyperpage{287}
   \item WhiteListedUrlList (class in taniumpy.object\_types.white\_listed\_url\_list), 
-		\hyperpage{559}
-  \item write\_csv() (taniumpy.object\_types.base.BaseType static method), \hyperpage{549}
-  \item write\_csv() (taniumpy.object\_types.result\_set.ResultSet static method), \hyperpage{556}
+		\hyperpage{287}
+  \item write\_csv() (taniumpy.object\_types.base.BaseType static method), \hyperpage{277}
+  \item write\_csv() (taniumpy.object\_types.result\_set.ResultSet static method), \hyperpage{284}
 
   \indexspace
   \bigletter X
-  \item xml\_pretty() (in module pytan.utils), \hyperpage{527}
-  \item xml\_pretty\_resultobj() (in module pytan.utils), \hyperpage{527}
-  \item xml\_pretty\_resultxml() (in module pytan.utils), \hyperpage{527}
-  \item XmlError (class in taniumpy.object\_types.xml\_error), \hyperpage{559}
-  \item xmltodict (module), \hyperpage{560}
+  \item xml\_pretty() (in module pytan.utils), \hyperpage{255}
+  \item xml\_pretty\_resultobj() (in module pytan.utils), \hyperpage{255}
+  \item xml\_pretty\_resultxml() (in module pytan.utils), \hyperpage{255}
+  \item XmlError (class in taniumpy.object\_types.xml\_error), \hyperpage{287}
+  \item xmltodict (module), \hyperpage{288}
 
 \end{theindex}

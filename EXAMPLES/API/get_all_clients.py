@@ -50,7 +50,14 @@ print len(response)
 
 print ""
 print "print the first object returned in JSON format:"
-print response.to_json(response[0])
+out = response.to_json(response[0])
+if len(out.splitlines()) > 15:
+    out = out.splitlines()[0:15]
+    out.append('..trimmed for brevity..')
+    out = '\n'.join(out)
+
+print out
+
 
 
 '''Output from running this:
@@ -73,7 +80,7 @@ print the first object returned in JSON format:
   "host_name": "Casus-Belli.local", 
   "ipaddress_client": "172.16.31.1", 
   "ipaddress_server": "172.16.31.1", 
-  "last_registration": "2014-12-08T20:14:15", 
+  "last_registration": "2014-12-08T21:26:16", 
   "port_number": 17472, 
   "protocol_version": 314, 
   "send_state": "Forward Only", 

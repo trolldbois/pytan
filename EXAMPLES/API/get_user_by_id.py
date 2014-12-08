@@ -51,7 +51,14 @@ print len(response)
 
 print ""
 print "print the first object returned in JSON format:"
-print response.to_json(response[0])
+out = response.to_json(response[0])
+if len(out.splitlines()) > 15:
+    out = out.splitlines()[0:15]
+    out.append('..trimmed for brevity..')
+    out = '\n'.join(out)
+
+print out
+
 
 
 '''Output from running this:
@@ -81,17 +88,6 @@ print the first object returned in JSON format:
     "_type": "roles", 
     "role": [
       {
-        "_type": "role", 
-        "description": "Administrators can perform all functions in the system, including creating other users, viewing the System Status, changing Global Settings, and creating Computer Groups.", 
-        "id": 1, 
-        "name": "Administrator", 
-        "permissions": {
-          "_type": "permissions", 
-          "permission": "admin"
-        }
-      }
-    ]
-  }
-}
+..trimmed for brevity..
 
 '''

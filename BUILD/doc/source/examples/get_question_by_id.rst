@@ -1,6 +1,6 @@
 
 Get question by id
-====================================================================================================
+==========================================================================================
 Get a question by id
 
 Example Python Code
@@ -59,7 +59,14 @@ Example Python Code
     
     print ""
     print "print the first object returned in JSON format:"
-    print response.to_json(response[0])
+    out = response.to_json(response[0])
+    if len(out.splitlines()) > 15:
+        out = out.splitlines()[0:15]
+        out.append('..trimmed for brevity..')
+        out = '\n'.join(out)
+    
+    print out
+    
     
 
 
@@ -96,68 +103,4 @@ Output from Python Code
       "management_rights_group": {
         "_type": "group", 
         "id": 0
-      }, 
-      "query_text": "Get Action Statuses matches \"Nil\" from all machines", 
-      "saved_question": {
-        "_type": "saved_question", 
-        "id": 0
-      }, 
-      "selects": {
-        "_type": "selects", 
-        "select": [
-          {
-            "_type": "select", 
-            "filter": {
-              "_type": "filter", 
-              "all_times_flag": 0, 
-              "all_values_flag": 1, 
-              "delimiter_index": 0, 
-              "end_time": "2001-01-01T00:00:00", 
-              "ignore_case_flag": 1, 
-              "max_age_seconds": 0, 
-              "not_flag": 0, 
-              "operator": "RegexMatch", 
-              "start_time": "2001-01-01T00:00:00", 
-              "substring_flag": 0, 
-              "substring_length": 0, 
-              "substring_start": 0, 
-              "utf8_flag": 0, 
-              "value": "Nil", 
-              "value_type": "String"
-            }, 
-            "sensor": {
-              "_type": "sensor", 
-              "category": "Reserved", 
-              "description": "The recorded state of each action a client has taken recently in the form of id:status.\nExample: 1:Completed", 
-              "exclude_from_parse_flag": 1, 
-              "hash": 1792443391, 
-              "hidden_flag": 0, 
-              "id": 1, 
-              "ignore_case_flag": 1, 
-              "max_age_seconds": 3600, 
-              "name": "Action Statuses", 
-              "queries": {
-                "_type": "queries", 
-                "query": [
-                  {
-                    "_type": "query", 
-                    "platform": "Windows", 
-                    "script": "Reserved", 
-                    "script_type": "WMIQuery"
-                  }
-                ]
-              }, 
-              "source_id": 0, 
-              "string_count": 3524, 
-              "value_type": "String"
-            }
-          }
-        ]
-      }, 
-      "skip_lock_flag": 0, 
-      "user": {
-        "_type": "user", 
-        "id": 1, 
-        "name": "Jim Olsen"
-      }
-    }
+    ..trimmed for brevity..

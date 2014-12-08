@@ -62,21 +62,25 @@ response['question_results'].write_csv(out, response['question_results'])
 
 print ""
 print "CSV Results of response: "
-print out.getvalue()
-
+out = out.getvalue()
+if len(out.splitlines()) > 15:
+    out = out.splitlines()[0:15]
+    out.append('..trimmed for brevity..')
+    out = '\n'.join(out)
+print out
 
 
 '''Output from running this:
 Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-2014-12-08 15:13:19,831 INFO     question_progress: Results 0% (Get Operating System contains "Windows" from all machines)
-2014-12-08 15:13:24,846 INFO     question_progress: Results 17% (Get Operating System contains "Windows" from all machines)
-2014-12-08 15:13:29,861 INFO     question_progress: Results 100% (Get Operating System contains "Windows" from all machines)
+2014-12-08 16:25:25,602 INFO     question_progress: Results 0% (Get Operating System contains "Windows" from all machines)
+2014-12-08 16:25:30,621 INFO     question_progress: Results 50% (Get Operating System contains "Windows" from all machines)
+2014-12-08 16:25:35,641 INFO     question_progress: Results 100% (Get Operating System contains "Windows" from all machines)
 
 Type of response:  <type 'dict'>
 
 Pretty print of response:
-{'question_object': <taniumpy.object_types.question.Question object at 0x10e016250>,
- 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x10e582410>}
+{'question_object': <taniumpy.object_types.question.Question object at 0x102123ed0>,
+ 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x10218fc50>}
 
 Equivalent Question if it were to be asked in the Tanium Console: 
 Get Operating System contains "Windows" from all machines

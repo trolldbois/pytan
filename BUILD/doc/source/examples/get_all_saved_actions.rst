@@ -1,6 +1,6 @@
 
 Get all saved actions
-====================================================================================================
+==========================================================================================
 Get all saved actions
 
 Example Python Code
@@ -58,7 +58,14 @@ Example Python Code
     
     print ""
     print "print the first object returned in JSON format:"
-    print response.to_json(response[0])
+    out = response.to_json(response[0])
+    if len(out.splitlines()) > 15:
+        out = out.splitlines()[0:15]
+        out.append('..trimmed for brevity..')
+        out = '\n'.join(out)
+    
+    print out
+    
     
 
 
@@ -74,10 +81,10 @@ Output from Python Code
     Type of response:  <class 'taniumpy.object_types.saved_action_list.SavedActionList'>
     
     print of response:
-    SavedActionList, len: 26
+    SavedActionList, len: 38
     
     length of response (number of objects returned): 
-    26
+    38
     
     print the first object returned in JSON format:
     {
@@ -90,30 +97,9 @@ Output from Python Code
       "end_time": "Never", 
       "expire_seconds": 1800, 
       "id": 1, 
-      "issue_count": 0, 
+      "issue_count": 3, 
       "issue_seconds": 3600, 
       "last_action": {
         "_type": "action", 
-        "id": 4294967295, 
-        "start_time": "Never"
-      }, 
-      "name": "Unmanaged Asset Tracking - Run Scan", 
-      "package_spec": {
-        "_type": "package_spec", 
-        "id": 4294967295
-      }, 
-      "policy": {
-        "_type": "policy", 
-        "max_age": 3600, 
-        "min_count": 0, 
-        "row_filter_group_id": 66, 
-        "saved_question_group_id": 0, 
-        "saved_question_id": 1
-      }, 
-      "policy_flag": 1, 
-      "status": 0, 
-      "user": {
-        "_type": "user", 
-        "id": 1
-      }
-    }
+        "id": 45, 
+    ..trimmed for brevity..

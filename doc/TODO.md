@@ -1,6 +1,4 @@
 # TODO NOW
-  * [ ] DOCS/EXAMPLES
-    * [ ] update readme
 
 # TODO LATER
   * [ ] explain get == select col data, from == select row data
@@ -101,4 +99,5 @@
     * [X] incorporate mdocbuild for bin scripts
     * [X] build markdown docs for bin scripts
     * [X] add usage to docs
+    * [X] update readme
 

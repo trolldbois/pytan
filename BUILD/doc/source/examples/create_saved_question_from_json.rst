@@ -1,6 +1,6 @@
 
 Create saved question from json
-====================================================================================================
+==========================================================================================
 Export a saved question object to a JSON file, adding ' API TEST' to the name of the saved question before exporting the JSON file and deleting any pre-existing saved question with the same (new) name, then create a new saved question object from the exported JSON file
 
 Example Python Code
@@ -104,9 +104,9 @@ Output from Python Code
 
 
     Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-    2014-12-08 15:17:04,875 INFO     handler: Deleted 'SavedQuestion, id: 175'
-    2014-12-08 15:17:04,876 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/SavedQuestionList_2014_12_08-15_17_04-EST.json' written with 4597 bytes
-    2014-12-08 15:17:04,903 INFO     handler: New SavedQuestion, name: 'Run Unmanaged Asset Scan on All Machines API TEST' (ID: 178) created successfully!
+    2014-12-08 16:28:44,876 INFO     handler: Deleted 'SavedQuestion, id: 178'
+    2014-12-08 16:28:44,877 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/SavedQuestionList_2014_12_08-16_28_44-EST.json' written with 4597 bytes
+    2014-12-08 16:28:44,909 INFO     handler: New SavedQuestion, name: 'Run Unmanaged Asset Scan on All Machines API TEST' (ID: 180) created successfully!
     
     Type of response:  <class 'taniumpy.object_types.saved_question_list.SavedQuestionList'>
     
@@ -126,12 +126,12 @@ Output from Python Code
           }, 
           "expire_seconds": 600, 
           "hidden_flag": 0, 
-          "id": 178, 
+          "id": 180, 
           "issue_seconds": 120, 
           "issue_seconds_never_flag": 0, 
           "keep_seconds": 0, 
           "mod_time": "2000-01-01T00:00:00", 
-          "most_recent_question_id": 175, 
+          "most_recent_question_id": 315, 
           "name": "Run Unmanaged Asset Scan on All Machines API TEST", 
           "packages": {
             "_type": "package_specs", 
@@ -142,11 +142,11 @@ Output from Python Code
           "question": {
             "_type": "question", 
             "action_tracking_flag": 0, 
-            "expiration": "2014-12-08T19:32:38", 
+            "expiration": "2014-12-08T20:32:42", 
             "expire_seconds": 0, 
             "force_computer_id_flag": 0, 
             "hidden_flag": 0, 
-            "id": 175, 
+            "id": 315, 
             "management_rights_group": {
               "_type": "group", 
               "id": 0

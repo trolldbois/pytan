@@ -50,7 +50,14 @@ print len(response)
 
 print ""
 print "print the first object returned in JSON format:"
-print response.to_json(response[0])
+out = response.to_json(response[0])
+if len(out.splitlines()) > 15:
+    out = out.splitlines()[0:15]
+    out.append('..trimmed for brevity..')
+    out = '\n'.join(out)
+
+print out
+
 
 
 '''Output from running this:
@@ -59,10 +66,10 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
 Type of response:  <class 'taniumpy.object_types.question_list.QuestionList'>
 
 print of response:
-QuestionList, len: 123
+QuestionList, len: 255
 
 length of response (number of objects returned): 
-123
+255
 
 print the first object returned in JSON format:
 {
@@ -80,19 +87,6 @@ print the first object returned in JSON format:
   "management_rights_group": {
     "_type": "group", 
     "id": 0
-  }, 
-  "query_text": "Get Action Statuses matches \"Nil\" from all machines", 
-  "saved_question": {
-    "_type": "saved_question", 
-    "id": 4294967295
-  }, 
-  "skip_lock_flag": 0, 
-  "user": {
-    "_type": "user", 
-    "group_id": 0, 
-    "id": 1, 
-    "name": "Jim Olsen"
-  }
-}
+..trimmed for brevity..
 
 '''

@@ -1,6 +1,6 @@
 
 Invalid ask manual human question parameter split
-====================================================================================================
+==========================================================================================
 Ask a question with parameters that are missing a splitter (=) to designate the key from value.
 
 Example Python Code

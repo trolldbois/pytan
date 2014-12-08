@@ -1,6 +1,6 @@
 
 Ask manual human question complex query2
-====================================================================================================
+==========================================================================================
 This is another complex query that gets the Computer Name and Last Logged in User and Installed Applications that contains Google Search or Google Chrome and limits the rows that are displayed to computers that contain the Installed Applications of Google Search AND Google Chrome
 
 Example Python Code
@@ -72,8 +72,12 @@ Example Python Code
     
     print ""
     print "CSV Results of response: "
-    print out.getvalue()
-    
+    out = out.getvalue()
+    if len(out.splitlines()) > 15:
+        out = out.splitlines()[0:15]
+        out.append('..trimmed for brevity..')
+        out = '\n'.join(out)
+    print out
     
 
 
@@ -85,15 +89,15 @@ Output from Python Code
 
 
     Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-    2014-12-08 15:13:55,277 INFO     question_progress: Results 0% (Get Computer Name and Last Logged In User and Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome" from all machines where Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome")
-    2014-12-08 15:14:00,314 INFO     question_progress: Results 0% (Get Computer Name and Last Logged In User and Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome" from all machines where Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome")
-    2014-12-08 15:14:05,347 INFO     question_progress: Results 100% (Get Computer Name and Last Logged In User and Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome" from all machines where Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome")
+    2014-12-08 16:26:01,111 INFO     question_progress: Results 0% (Get Computer Name and Last Logged In User and Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome" from all machines where Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome")
+    2014-12-08 16:26:06,148 INFO     question_progress: Results 67% (Get Computer Name and Last Logged In User and Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome" from all machines where Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome")
+    2014-12-08 16:26:11,188 INFO     question_progress: Results 100% (Get Computer Name and Last Logged In User and Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome" from all machines where Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome")
     
     Type of response:  <type 'dict'>
     
     Pretty print of response:
-    {'question_object': <taniumpy.object_types.question.Question object at 0x10e021850>,
-     'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x10e63fa90>}
+    {'question_object': <taniumpy.object_types.question.Question object at 0x102b0c790>,
+     'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x1029cf510>}
     
     Equivalent Question if it were to be asked in the Tanium Console: 
     Get Computer Name and Last Logged In User and Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome" from all machines where Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome"

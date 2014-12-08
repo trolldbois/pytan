@@ -51,7 +51,14 @@ print len(response)
 
 print ""
 print "print the first object returned in JSON format:"
-print response.to_json(response[0])
+out = response.to_json(response[0])
+if len(out.splitlines()) > 15:
+    out = out.splitlines()[0:15]
+    out.append('..trimmed for brevity..')
+    out = '\n'.join(out)
+
+print out
+
 
 
 '''Output from running this:
@@ -81,26 +88,6 @@ print the first object returned in JSON format:
     "_type": "action", 
     "id": 4294967295, 
     "start_time": "Never"
-  }, 
-  "name": "Distribute Hardware Tools", 
-  "package_spec": {
-    "_type": "package_spec", 
-    "id": 4294967295
-  }, 
-  "policy": {
-    "_type": "policy", 
-    "max_age": 86400, 
-    "min_count": 0, 
-    "row_filter_group_id": 208, 
-    "saved_question_group_id": 0, 
-    "saved_question_id": 13
-  }, 
-  "policy_flag": 1, 
-  "status": 0, 
-  "user": {
-    "_type": "user", 
-    "id": 1
-  }
-}
+..trimmed for brevity..
 
 '''

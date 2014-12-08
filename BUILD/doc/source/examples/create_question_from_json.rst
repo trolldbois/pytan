@@ -1,6 +1,6 @@
 
 Create question from json
-====================================================================================================
+==========================================================================================
 Export a question object to a JSON file, then create a new question object from the exported JSON file. Questions can not be deleted, so do not delete it. This will, in effect, 're-ask' a question.
 
 Example Python Code
@@ -104,8 +104,8 @@ Output from Python Code
 
 
     Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-    2014-12-08 15:17:05,093 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/QuestionList_2014_12_08-15_17_05-EST.json' written with 2468 bytes
-    2014-12-08 15:17:05,122 INFO     handler: New Question, id: 305 (ID: 305) created successfully!
+    2014-12-08 16:28:45,123 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/QuestionList_2014_12_08-16_28_45-EST.json' written with 2468 bytes
+    2014-12-08 16:28:45,159 INFO     handler: New Question, id: 437 (ID: 437) created successfully!
     
     Type of response:  <class 'taniumpy.object_types.question_list.QuestionList'>
     
@@ -123,11 +123,11 @@ Output from Python Code
             "_type": "group", 
             "id": 0
           }, 
-          "expiration": "2014-12-08T20:27:05", 
+          "expiration": "2014-12-08T21:38:45", 
           "expire_seconds": 0, 
           "force_computer_id_flag": 1, 
           "hidden_flag": 0, 
-          "id": 305, 
+          "id": 437, 
           "management_rights_group": {
             "_type": "group", 
             "id": 0
@@ -183,7 +183,7 @@ Output from Python Code
                     ]
                   }, 
                   "source_id": 0, 
-                  "string_count": 3526, 
+                  "string_count": 3540, 
                   "value_type": "String"
                 }
               }

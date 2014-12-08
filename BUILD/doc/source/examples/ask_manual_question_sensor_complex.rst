@@ -1,6 +1,6 @@
 
 Ask manual question sensor complex
-====================================================================================================
+==========================================================================================
 This provides an example for asking a manual question without using human strings.
 
 It uses the Computer Name and Folder Name Search with RegEx Match sensors.
@@ -87,8 +87,12 @@ Example Python Code
     
     print ""
     print "CSV Results of response: "
-    print out.getvalue()
-    
+    out = out.getvalue()
+    if len(out.splitlines()) > 15:
+        out = out.splitlines()[0:15]
+        out.append('..trimmed for brevity..')
+        out = '\n'.join(out)
+    print out
     
 
 
@@ -100,20 +104,18 @@ Output from Python Code
 
 
     Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-    2014-12-08 15:14:05,486 INFO     question_progress: Results 0% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" matching case from all machines where Operating System contains "Windows" matching case)
-    2014-12-08 15:14:10,509 INFO     question_progress: Results 0% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" matching case from all machines where Operating System contains "Windows" matching case)
-    2014-12-08 15:14:15,536 INFO     question_progress: Results 33% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" matching case from all machines where Operating System contains "Windows" matching case)
-    2014-12-08 15:14:20,558 INFO     question_progress: Results 67% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" matching case from all machines where Operating System contains "Windows" matching case)
-    2014-12-08 15:14:25,582 INFO     question_progress: Results 83% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" matching case from all machines where Operating System contains "Windows" matching case)
-    2014-12-08 15:14:30,600 INFO     question_progress: Results 83% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" matching case from all machines where Operating System contains "Windows" matching case)
-    2014-12-08 15:14:35,619 INFO     question_progress: Results 83% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" matching case from all machines where Operating System contains "Windows" matching case)
-    2014-12-08 15:14:40,640 INFO     question_progress: Results 100% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" matching case from all machines where Operating System contains "Windows" matching case)
+    2014-12-08 16:26:11,367 INFO     question_progress: Results 0% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" matching case from all machines where Operating System contains "Windows" matching case)
+    2014-12-08 16:26:16,396 INFO     question_progress: Results 33% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" matching case from all machines where Operating System contains "Windows" matching case)
+    2014-12-08 16:26:21,433 INFO     question_progress: Results 67% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" matching case from all machines where Operating System contains "Windows" matching case)
+    2014-12-08 16:26:26,459 INFO     question_progress: Results 67% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" matching case from all machines where Operating System contains "Windows" matching case)
+    2014-12-08 16:26:31,481 INFO     question_progress: Results 83% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" matching case from all machines where Operating System contains "Windows" matching case)
+    2014-12-08 16:26:36,503 INFO     question_progress: Results 100% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" matching case from all machines where Operating System contains "Windows" matching case)
     
     Type of response:  <type 'dict'>
     
     Pretty print of response:
-    {'question_object': <taniumpy.object_types.question.Question object at 0x10e1bd690>,
-     'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x10e03b1d0>}
+    {'question_object': <taniumpy.object_types.question.Question object at 0x1029571d0>,
+     'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x102116710>}
     
     Equivalent Question if it were to be asked in the Tanium Console: 
     Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" matching case from all machines where Operating System contains "Windows" matching case
@@ -134,120 +136,4 @@ Output from Python Code
     C:\Program Files\Common Files\Microsoft Shared\ink\fi-FI
     C:\Program Files\Common Files\Microsoft Shared
     C:\Program Files\Common Files\Microsoft Shared\ink\da-DK
-    C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\oskmenu
-    C:\Program Files\Common Files\Microsoft Shared\ink\ko-KR
-    C:\Program Files\Common Files\Microsoft Shared\ink\it-IT
-    C:\Program Files\Common Files\Microsoft Shared\Triedit
-    C:\Program Files\Microsoft SQL Server\110\Shared
-    C:\Program Files\Common Files\Microsoft Shared\ink\he-IL
-    C:\Program Files\Common Files\Microsoft Shared\ink\ro-RO
-    C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\oskpred
-    C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\numbers
-    C:\Program Files\Common Files\Microsoft Shared\ink\nb-NO
-    C:\Program Files\Common Files\Microsoft Shared\ink\lv-LV
-    C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\auxpad
-    C:\Program Files\Common Files\Microsoft Shared\TextConv
-    C:\Program Files\Common Files\Microsoft Shared\MSInfo\en-US
-    C:\Program Files\Common Files\Microsoft Shared\ink\nl-NL
-    C:\Program Files\Microsoft SQL Server\90\Shared\Resources\1033
-    C:\Program Files\Common Files\Microsoft Shared\ink\fr-FR
-    C:\Program Files\Common Files\Microsoft Shared\ink\tr-TR
-    C:\Program Files\Common Files\Microsoft Shared\VC
-    C:\Program Files\Common Files\Microsoft Shared\WF
-    C:\Program Files\Microsoft SQL Server\110\Shared\en
-    C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\symbols
-    C:\Program Files\Common Files\Microsoft Shared\ink\lt-LT
-    C:\Program Files\Common Files\Microsoft Shared\ink\et-EE
-    C:\Program Files\Common Files\Microsoft Shared\ink\cs-CZ
-    C:\Program Files\Microsoft SQL Server\110\Shared\VS2008
-    C:\Program Files\Common Files\Microsoft Shared\ink\en-US
-    C:\Program Files\Common Files\Microsoft Shared\ink\bg-BG
-    C:\Program Files\Microsoft SQL Server\100\Shared
-    C:\Program Files\Common Files\Microsoft Shared\ink\es-ES
-    C:\Program Files\Common Files\Microsoft Shared\MSInfo
-    C:\Program Files\Microsoft SQL Server\110\Shared\RsFxInstall
-    C:\Program Files\Common Files\Microsoft Shared\WF\amd64
-    C:\Program Files\Common Files\Microsoft Shared\ink\de-DE
-    C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\main
-    C:\Program Files\Microsoft SQL Server\90\Shared\Resources
-    C:\Program Files\Common Files\Microsoft Shared\ink\sr-Latn-CS
-    C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\osknumpad
-    C:\Program Files\Microsoft SQL Server\110\Shared\Resources\1033
-    C:\Program Files\Common Files\Microsoft Shared\MSEnv
-    C:\Program Files\Microsoft SQL Server\110\Shared\VS2008\1033
-    C:\Program Files\Common Files\Microsoft Shared\ink\pt-BR
-    C:\Program Files\Common Files\Microsoft Shared\ink\pt-PT
-    C:\Program Files\Common Files\Microsoft Shared\ink\el-GR
-    C:\Program Files\Microsoft SQL Server\110\Shared\Resources
-    C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\web
-    C:\Program Files\Common Files\Microsoft Shared\ink\ja-JP
-    C:\Program Files\Common Files\Microsoft Shared\ink\sk-SK
-    C:\Program Files\Common Files\Microsoft Shared\ink\hr-HR
-    C:\Program Files\Common Files\Microsoft Shared\VGX
-    C:\Program Files\Common Files\Microsoft Shared\Triedit\en-US
-    C:\Program Files\Common Files\Microsoft Shared\TextConv\en-US
-    C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions
-    C:\Program Files\Common Files\Microsoft Shared\ink\th-TH
-    C:\Program Files\Common Files\Microsoft Shared\SQL Debugging
-    C:\Program Files\Microsoft SQL Server\90\Shared
-    C:\Program Files\Common Files\Microsoft Shared\ink\pl-PL
-    C:\Program Files\Common Files\Microsoft Shared\Stationery
-    C:\Program Files\Common Files\Microsoft Shared\VS7Debug\1033
-    C:\Program Files\Microsoft SQL Server\110\Shared\ErrorDumps"
-    WIN-A12SC6N6T7Q,"C:\Program Files\Common Files\Microsoft Shared\ink\ar-SA
-    C:\Program Files\Common Files\Microsoft Shared\ink\ru-RU
-    C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\keypad
-    C:\Program Files\Common Files\Microsoft Shared\ink
-    C:\Program Files\Common Files\Microsoft Shared\ink\sv-SE
-    C:\Program Files\Common Files\Microsoft Shared\ink\uk-UA
-    C:\Program Files\Common Files\Microsoft Shared\ink\sl-SI
-    C:\Program Files\Common Files\Microsoft Shared\ink\hu-HU
-    C:\Program Files\Common Files\Microsoft Shared\ink\zh-TW
-    C:\Program Files\Common Files\Microsoft Shared\ink\zh-CN
-    C:\Program Files\Common Files\Microsoft Shared\ink\fi-FI
-    C:\Program Files\Common Files\Microsoft Shared
-    C:\Program Files\Common Files\Microsoft Shared\ink\da-DK
-    C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\oskmenu
-    C:\Program Files\Common Files\Microsoft Shared\ink\ko-KR
-    C:\Program Files\Common Files\Microsoft Shared\ink\it-IT
-    C:\Program Files\Common Files\Microsoft Shared\Triedit
-    C:\Program Files\Common Files\Microsoft Shared\ink\he-IL
-    C:\Program Files\Common Files\Microsoft Shared\ink\ro-RO
-    C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\oskpred
-    C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\numbers
-    C:\Program Files\Common Files\Microsoft Shared\ink\nb-NO
-    C:\Program Files\Common Files\Microsoft Shared\ink\lv-LV
-    C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\auxpad
-    C:\Program Files\Common Files\Microsoft Shared\TextConv
-    C:\Program Files\Common Files\Microsoft Shared\MSInfo\en-US
-    C:\Program Files\Common Files\Microsoft Shared\ink\nl-NL
-    C:\Program Files\Common Files\Microsoft Shared\ink\fr-FR
-    C:\Program Files\Common Files\Microsoft Shared\ink\tr-TR
-    C:\Program Files\Common Files\Microsoft Shared\VC
-    C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\symbols
-    C:\Program Files\Common Files\Microsoft Shared\ink\lt-LT
-    C:\Program Files\Common Files\Microsoft Shared\ink\et-EE
-    C:\Program Files\Common Files\Microsoft Shared\ink\cs-CZ
-    C:\Program Files\Common Files\Microsoft Shared\ink\en-US
-    C:\Program Files\Common Files\Microsoft Shared\ink\bg-BG
-    C:\Program Files\Common Files\Microsoft Shared\ink\es-ES
-    C:\Program Files\Common Files\Microsoft Shared\MSInfo
-    C:\Program Files\Common Files\Microsoft Shared\ink\de-DE
-    C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\main
-    C:\Program Files\Common Files\Microsoft Shared\ink\sr-Latn-CS
-    C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\osknumpad
-    C:\Program Files\Common Files\Microsoft Shared\ink\pt-BR
-    C:\Program Files\Common Files\Microsoft Shared\ink\pt-PT
-    C:\Program Files\Common Files\Microsoft Shared\ink\el-GR
-    C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\web
-    C:\Program Files\Common Files\Microsoft Shared\ink\ja-JP
-    C:\Program Files\Common Files\Microsoft Shared\ink\sk-SK
-    C:\Program Files\Common Files\Microsoft Shared\ink\hr-HR
-    C:\Program Files\Common Files\Microsoft Shared\VGX
-    C:\Program Files\Common Files\Microsoft Shared\Triedit\en-US
-    C:\Program Files\Common Files\Microsoft Shared\TextConv\en-US
-    C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions
-    C:\Program Files\Common Files\Microsoft Shared\ink\th-TH
-    C:\Program Files\Common Files\Microsoft Shared\ink\pl-PL
-    C:\Program Files\Common Files\Microsoft Shared\Stationery"
-    
+    ..trimmed for brevity..

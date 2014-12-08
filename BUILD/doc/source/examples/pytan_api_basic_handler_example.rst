@@ -1,6 +1,6 @@
 
 Pytan api basic handler example
-====================================================================================================
+==========================================================================================
 Here is an example for how to instantiate a :class:`pytan.Handler` object.
 
 The username, password, host, and maybe port as well need to be provided on a per Tanium server basis.

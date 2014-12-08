@@ -1,6 +1,6 @@
 
 Get all users
-====================================================================================================
+==========================================================================================
 Get all users
 
 Example Python Code
@@ -58,7 +58,14 @@ Example Python Code
     
     print ""
     print "print the first object returned in JSON format:"
-    print response.to_json(response[0])
+    out = response.to_json(response[0])
+    if len(out.splitlines()) > 15:
+        out = out.splitlines()[0:15]
+        out.append('..trimmed for brevity..')
+        out = '\n'.join(out)
+    
+    print out
+    
     
 
 
@@ -74,10 +81,10 @@ Output from Python Code
     Type of response:  <class 'taniumpy.object_types.user_list.UserList'>
     
     print of response:
-    UserList, len: 5
+    UserList, len: 6
     
     length of response (number of objects returned): 
-    5
+    6
     
     print the first object returned in JSON format:
     {
@@ -95,15 +102,4 @@ Output from Python Code
         "_type": "roles", 
         "role": [
           {
-            "_type": "role", 
-            "description": "Administrators can perform all functions in the system, including creating other users, viewing the System Status, changing Global Settings, and creating Computer Groups.", 
-            "id": 1, 
-            "name": "Administrator", 
-            "permissions": {
-              "_type": "permissions", 
-              "permission": "admin"
-            }
-          }
-        ]
-      }
-    }
+    ..trimmed for brevity..

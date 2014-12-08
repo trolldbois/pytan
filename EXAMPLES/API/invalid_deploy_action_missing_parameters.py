@@ -49,9 +49,10 @@ except Exception as e:
 
 '''Output from running this:
 Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-2014-12-08 15:16:54,403 INFO     question_progress: Results 0% (Get Online = "True" from all machines)
-2014-12-08 15:16:59,420 INFO     question_progress: Results 67% (Get Online = "True" from all machines)
-2014-12-08 15:17:04,435 INFO     question_progress: Results 100% (Get Online = "True" from all machines)
+2014-12-08 16:28:29,332 INFO     question_progress: Results 0% (Get Online = "True" from all machines)
+2014-12-08 16:28:34,353 INFO     question_progress: Results 50% (Get Online = "True" from all machines)
+2014-12-08 16:28:39,370 INFO     question_progress: Results 83% (Get Online = "True" from all machines)
+2014-12-08 16:28:44,391 INFO     question_progress: Results 100% (Get Online = "True" from all machines)
 Traceback (most recent call last):
   File "<string>", line 40, in <module>
   File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1172, in deploy_action_human

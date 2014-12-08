@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014/MacPorts 2014_2) (preloaded format=pdflatex 2014.12.4)  8 DEC 2014 15:03
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014/MacPorts 2014_2) (preloaded format=pdflatex 2014.12.4)  8 DEC 2014 16:45
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -947,3425 +947,1258 @@ File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
 
 ]
 LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <10> not available
-(Font)              Font shape `T1/pcr/b/n' tried instead on input line 245.
-LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 276.
-LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <9> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 286.
+(Font)              Font shape `T1/pcr/b/n' tried instead on input line 271.
  [2]
+LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 302.
+LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <9> not available
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 312.
 LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <9> not available
-(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 289.
-LaTeX Font Info:    Try loading font information for TS1+pcr on input line 290.
+(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 315.
+LaTeX Font Info:    Try loading font information for TS1+pcr on input line 316.
 
 
 (/opt/local/share/texmf-texlive/tex/latex/psnfss/ts1pcr.fd
 File: ts1pcr.fd 2001/06/04 font definitions for TS1/pcr.
 )
 LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <9> not available
-(Font)              Font shape `T1/pcr/b/n' tried instead on input line 302.
- [3]
-Overfull \vbox (1.4709pt too high) detected at line 767
+(Font)              Font shape `T1/pcr/b/n' tried instead on input line 328.
+ [3] [4] [5]
+Overfull \vbox (3.26848pt too high) detected at line 533
  []
 
-[4]
-Underfull \vbox (badness 10000) detected at line 767
- []
-
-
-Underfull \vbox (badness 10000) detected at line 767
- []
-
-[5]
-Underfull \vbox (badness 10000) detected at line 767
+[6] [7]
+Underfull \vbox (badness 10000) detected at line 643
  []
 
 
-Underfull \vbox (badness 10000) detected at line 767
+Underfull \vbox (badness 10000) detected at line 643
  []
 
-[6]
-Underfull \vbox (badness 10000) detected at line 767
+[8] [9]
+Overfull \vbox (1.4709pt too high) detected at line 783
  []
 
-
-Underfull \vbox (badness 10000) detected at line 767
+[10]
+Overfull \vbox (1.7694pt too high) detected at line 858
  []
 
-[7]
-Underfull \vbox (badness 10000) detected at line 767
+[11]
+Overfull \vbox (1.4709pt too high) detected at line 895
  []
 
-
-Underfull \vbox (badness 10000) detected at line 767
- []
-
-[8]
-Underfull \vbox (badness 10000) detected at line 767
- []
-
-
-Underfull \vbox (badness 10000) detected at line 767
- []
-
-[9]
-Underfull \vbox (badness 10000) detected at line 767
- []
-
-
-Underfull \vbox (badness 10000) detected at line 767
- []
-
-[10] [11]
-Overfull \vbox (1.4709pt too high) detected at line 1208
- []
-
-[12]
-Underfull \vbox (badness 10000) detected at line 1208
- []
-
-
-Underfull \vbox (badness 10000) detected at line 1208
- []
-
-[13]
-Underfull \vbox (badness 10000) detected at line 1208
- []
-
-
-Underfull \vbox (badness 10000) detected at line 1208
+[12] [13]
+Overfull \vbox (1.4709pt too high) detected at line 1011
  []
 
 [14]
-Underfull \vbox (badness 10000) detected at line 1208
+Overfull \vbox (1.7694pt too high) detected at line 1086
  []
 
-
-Underfull \vbox (badness 10000) detected at line 1208
- []
-
-[15]
-Underfull \vbox (badness 10000) detected at line 1208
- []
-
-
-Underfull \vbox (badness 10000) detected at line 1208
- []
-
-[16]
-Underfull \vbox (badness 10000) detected at line 1208
- []
-
-
-Underfull \vbox (badness 10000) detected at line 1208
+[15] [16]
+Overfull \vbox (2.26848pt too high) detected at line 1189
  []
 
 [17]
-Overfull \vbox (0.7694pt too high) detected at line 1278
+Overfull \vbox (1.4709pt too high) detected at line 1238
  []
 
-[18] [19] [20]
-Overfull \vbox (1.4709pt too high) detected at line 2799
+[18] [19]
+Overfull \vbox (1.4709pt too high) detected at line 1361
  []
 
-[21]
-Underfull \vbox (badness 10000) detected at line 2799
+[20] [21]
+Overfull \vbox (1.4709pt too high) detected at line 1490
  []
 
-
-Underfull \vbox (badness 10000) detected at line 2799
+[22] [23]
+Overfull \vbox (1.4709pt too high) detected at line 1593
  []
 
-[22]
-Underfull \vbox (badness 10000) detected at line 2799
+[24] [25]
+Overfull \vbox (1.4709pt too high) detected at line 1710
  []
 
-
-Underfull \vbox (badness 10000) detected at line 2799
- []
-
-[23]
-Underfull \vbox (badness 10000) detected at line 2799
- []
-
-
-Underfull \vbox (badness 10000) detected at line 2799
- []
-
-[24]
-Underfull \vbox (badness 10000) detected at line 2799
- []
-
-
-Underfull \vbox (badness 10000) detected at line 2799
- []
-
-[25]
-Underfull \vbox (badness 10000) detected at line 2799
- []
-
-
-Underfull \vbox (badness 10000) detected at line 2799
- []
-
-[26]
-Underfull \vbox (badness 10000) detected at line 2799
- []
-
-
-Underfull \vbox (badness 10000) detected at line 2799
- []
-
-[27]
-Underfull \vbox (badness 10000) detected at line 2799
- []
-
-
-Underfull \vbox (badness 10000) detected at line 2799
- []
-
-[28]
-Underfull \vbox (badness 10000) detected at line 2799
- []
-
-
-Underfull \vbox (badness 10000) detected at line 2799
- []
-
-[29]
-Underfull \vbox (badness 10000) detected at line 2799
- []
-
-
-Underfull \vbox (badness 10000) detected at line 2799
- []
-
-[30]
-Underfull \vbox (badness 10000) detected at line 2799
- []
-
-
-Underfull \vbox (badness 10000) detected at line 2799
- []
-
-[31]
-Underfull \vbox (badness 10000) detected at line 2799
- []
-
-
-Underfull \vbox (badness 10000) detected at line 2799
- []
-
-[32]
-Underfull \vbox (badness 10000) detected at line 2799
- []
-
-
-Underfull \vbox (badness 10000) detected at line 2799
- []
-
-[33]
-Underfull \vbox (badness 10000) detected at line 2799
- []
-
-
-Underfull \vbox (badness 10000) detected at line 2799
- []
-
-[34]
-Underfull \vbox (badness 10000) detected at line 2799
- []
-
-
-Underfull \vbox (badness 10000) detected at line 2799
- []
-
-[35]
-Underfull \vbox (badness 10000) detected at line 2799
- []
-
-
-Underfull \vbox (badness 10000) detected at line 2799
+[26] [27] [28] [29] [30] [31] [32] [33] [34] [35]
+Overfull \vbox (0.92615pt too high) detected at line 2330
  []
 
 [36]
-Underfull \vbox (badness 10000) detected at line 2799
- []
-
-
-Underfull \vbox (badness 10000) detected at line 2799
+Overfull \vbox (1.4709pt too high) detected at line 2632
  []
 
 [37]
-Underfull \vbox (badness 10000) detected at line 2799
+Underfull \vbox (badness 10000) detected at line 2632
  []
 
 
-Underfull \vbox (badness 10000) detected at line 2799
+Underfull \vbox (badness 10000) detected at line 2632
  []
 
 [38]
-Underfull \vbox (badness 10000) detected at line 2799
+Underfull \vbox (badness 10000) detected at line 2632
  []
 
 
-Underfull \vbox (badness 10000) detected at line 2799
+Underfull \vbox (badness 10000) detected at line 2632
  []
 
 [39]
-Underfull \vbox (badness 10000) detected at line 2799
+Underfull \vbox (badness 10000) detected at line 2632
  []
 
 
-Underfull \vbox (badness 10000) detected at line 2799
+Underfull \vbox (badness 10000) detected at line 2632
  []
 
 [40]
-Underfull \vbox (badness 10000) detected at line 2799
+Underfull \vbox (badness 10000) detected at line 2632
  []
 
 
-Underfull \vbox (badness 10000) detected at line 2799
+Underfull \vbox (badness 10000) detected at line 2632
  []
 
-[41]
-Underfull \vbox (badness 10000) detected at line 2799
- []
-
-
-Underfull \vbox (badness 10000) detected at line 2799
- []
-
-[42]
-Underfull \vbox (badness 10000) detected at line 2799
- []
-
-
-Underfull \vbox (badness 10000) detected at line 2799
+[41] [42]
+Overfull \vbox (1.4709pt too high) detected at line 2771
  []
 
 [43]
-Underfull \vbox (badness 10000) detected at line 2799
+Underfull \vbox (badness 10000) detected at line 2771
  []
 
 
-Underfull \vbox (badness 10000) detected at line 2799
+Underfull \vbox (badness 10000) detected at line 2771
  []
 
-[44]
-Underfull \vbox (badness 10000) detected at line 2799
+[44] [45]
+Underfull \vbox (badness 10000) detected at line 2983
  []
 
 
-Underfull \vbox (badness 10000) detected at line 2799
- []
-
-[45]
-Overfull \vbox (1.7694pt too high) detected at line 2869
+Underfull \vbox (badness 10000) detected at line 2983
  []
 
 [46]
-Overfull \vbox (1.4709pt too high) detected at line 4296
- []
-
-[47]
-Underfull \vbox (badness 10000) detected at line 4296
+Underfull \vbox (badness 10000) detected at line 2983
  []
 
 
-Underfull \vbox (badness 10000) detected at line 4296
+Underfull \vbox (badness 10000) detected at line 2983
  []
 
-[48]
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-[49]
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-[50]
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-[51]
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-[52]
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-[53]
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-
-Underfull \vbox (badness 10000) detected at line 4296
+[47] [48] [49] [50] [51] [52] [53]
+Overfull \vbox (0.62704pt too high) detected at line 3409
  []
 
 [54]
-Underfull \vbox (badness 10000) detected at line 4296
+Overfull \vbox (1.4709pt too high) detected at line 3442
  []
 
-
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-[55]
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-[56]
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-[57]
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-[58]
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-[59]
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-[60]
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-[61]
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-[62]
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-[63]
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-[64]
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-[65]
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-[66]
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-[67]
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-[68]
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-[69]
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-
-Underfull \vbox (badness 10000) detected at line 4296
- []
-
-[70] [71]
-Underfull \vbox (badness 10000) detected at line 4366
- []
-
-[72]
-Overfull \vbox (1.4709pt too high) detected at line 4894
- []
-
-[73]
-Underfull \vbox (badness 10000) detected at line 4894
- []
-
-
-Underfull \vbox (badness 10000) detected at line 4894
- []
-
-[74]
-Underfull \vbox (badness 10000) detected at line 4894
- []
-
-
-Underfull \vbox (badness 10000) detected at line 4894
- []
-
-[75]
-Underfull \vbox (badness 10000) detected at line 4894
- []
-
-
-Underfull \vbox (badness 10000) detected at line 4894
- []
-
-[76]
-Underfull \vbox (badness 10000) detected at line 4894
+[55] [56] [57] [58] [59]
+Overfull \vbox (1.4709pt too high) detected at line 3736
  []
 
-
-Underfull \vbox (badness 10000) detected at line 4894
- []
-
-[77]
-Underfull \vbox (badness 10000) detected at line 4894
- []
-
-
-Underfull \vbox (badness 10000) detected at line 4894
- []
-
-[78]
-Underfull \vbox (badness 10000) detected at line 4894
- []
-
-
-Underfull \vbox (badness 10000) detected at line 4894
- []
-
-[79]
-Underfull \vbox (badness 10000) detected at line 4894
- []
-
-
-Underfull \vbox (badness 10000) detected at line 4894
- []
-
-[80]
-Underfull \vbox (badness 10000) detected at line 4894
- []
-
-
-Underfull \vbox (badness 10000) detected at line 4894
- []
-
-[81]
-Overfull \vbox (1.7694pt too high) detected at line 4964
- []
-
-[82] [83] [84]
-Underfull \vbox (badness 10000) detected at line 5596
- []
-
-
-Overfull \vbox (1.76999pt too high) detected at line 5596
- []
-
-[85]
-Underfull \vbox (badness 10000) detected at line 5596
- []
-
-
-Underfull \vbox (badness 10000) detected at line 5596
- []
-
-[86]
-Underfull \vbox (badness 10000) detected at line 5596
- []
-
-
-Underfull \vbox (badness 10000) detected at line 5596
- []
-
-[87]
-Underfull \vbox (badness 10000) detected at line 5596
- []
-
-
-Underfull \vbox (badness 10000) detected at line 5596
- []
-
-[88]
-Underfull \vbox (badness 10000) detected at line 5596
- []
-
-
-Underfull \vbox (badness 10000) detected at line 5596
- []
-
-[89]
-Underfull \vbox (badness 10000) detected at line 5596
- []
-
-
-Underfull \vbox (badness 10000) detected at line 5596
- []
-
-[90]
-Underfull \vbox (badness 10000) detected at line 5596
- []
-
-
-Underfull \vbox (badness 10000) detected at line 5596
- []
-
-[91]
-Underfull \vbox (badness 10000) detected at line 5596
- []
-
-
-Underfull \vbox (badness 10000) detected at line 5596
- []
-
-[92]
-Underfull \vbox (badness 10000) detected at line 5596
- []
-
-
-Underfull \vbox (badness 10000) detected at line 5596
- []
-
-[93] [94]
-Overfull \vbox (1.4709pt too high) detected at line 6707
- []
-
-[95]
-Underfull \vbox (badness 10000) detected at line 6707
- []
-
-
-Underfull \vbox (badness 10000) detected at line 6707
- []
-
-[96]
-Underfull \vbox (badness 10000) detected at line 6707
- []
-
-
-Underfull \vbox (badness 10000) detected at line 6707
- []
-
-[97]
-Underfull \vbox (badness 10000) detected at line 6707
- []
-
-
-Underfull \vbox (badness 10000) detected at line 6707
+[60] [61] [62]
+Overfull \vbox (1.4709pt too high) detected at line 3930
  []
 
-[98]
-Underfull \vbox (badness 10000) detected at line 6707
+[63] [64] [65]
+Overfull \vbox (3.26848pt too high) detected at line 4097
  []
 
-
-Underfull \vbox (badness 10000) detected at line 6707
- []
-
-[99]
-Underfull \vbox (badness 10000) detected at line 6707
- []
-
-
-Underfull \vbox (badness 10000) detected at line 6707
+[66] [67]
+Overfull \vbox (1.4709pt too high) detected at line 4232
  []
 
-[100]
-Underfull \vbox (badness 10000) detected at line 6707
+[68] [69] [70] [71] [72]
+Overfull \vbox (1.4709pt too high) detected at line 4522
  []
 
-
-Underfull \vbox (badness 10000) detected at line 6707
- []
-
-[101]
-Underfull \vbox (badness 10000) detected at line 6707
+[73] [74] [75] [76] [77]
+Overfull \vbox (1.4709pt too high) detected at line 4822
  []
 
-
-Underfull \vbox (badness 10000) detected at line 6707
+[78] [79] [80] [81] [82]
+Overfull \vbox (1.4709pt too high) detected at line 5122
  []
 
-[102]
-Underfull \vbox (badness 10000) detected at line 6707
+[83] [84] [85] [86] [87]
+Overfull \vbox (1.4709pt too high) detected at line 5415
  []
-
 
-Underfull \vbox (badness 10000) detected at line 6707
+[88] [89] [90]
+Overfull \vbox (1.4709pt too high) detected at line 5607
  []
 
-[103]
-Underfull \vbox (badness 10000) detected at line 6707
+[91] [92] [93]
+Overfull \vbox (3.26848pt too high) detected at line 5772
  []
 
-
-Underfull \vbox (badness 10000) detected at line 6707
+[94] [95]
+Overfull \vbox (1.4709pt too high) detected at line 5904
  []
 
-[104]
-Underfull \vbox (badness 10000) detected at line 6707
+[96] [97] [98]
+Overfull \vbox (1.4709pt too high) detected at line 6090
  []
-
 
-Underfull \vbox (badness 10000) detected at line 6707
+[99] [100] [101] [102]
+Overfull \vbox (0.62704pt too high) detected at line 6343
  []
 
-[105]
-Underfull \vbox (badness 10000) detected at line 6707
+[103] [104] [105]
+Underfull \vbox (badness 10000) detected at line 6492
  []
 
 
-Underfull \vbox (badness 10000) detected at line 6707
+Overfull \vbox (1.76999pt too high) detected at line 6492
  []
 
 [106]
-Underfull \vbox (badness 10000) detected at line 6707
+Overfull \vbox (1.4709pt too high) detected at line 6564
+ []
+
+[107] [108] [109]
+Underfull \vbox (badness 10000) detected at line 6728
  []
 
 
-Underfull \vbox (badness 10000) detected at line 6707
- []
-
-[107]
-Underfull \vbox (badness 10000) detected at line 6707
- []
-
-
-Underfull \vbox (badness 10000) detected at line 6707
- []
-
-[108]
-Underfull \vbox (badness 10000) detected at line 6707
- []
-
-
-Underfull \vbox (badness 10000) detected at line 6707
- []
-
-[109]
-Underfull \vbox (badness 10000) detected at line 6707
- []
-
-
-Underfull \vbox (badness 10000) detected at line 6707
+Underfull \vbox (badness 10000) detected at line 6728
  []
 
 [110]
-Underfull \vbox (badness 10000) detected at line 6707
- []
-
-
-Underfull \vbox (badness 10000) detected at line 6707
+Overfull \vbox (1.4709pt too high) detected at line 6792
  []
 
 [111]
-Underfull \vbox (badness 10000) detected at line 6707
+Overfull \vbox (1.7694pt too high) detected at line 6865
+ []
+
+[112]
+Overfull \vbox (1.4709pt too high) detected at line 6918
+ []
+
+[113] [114] [115]
+Overfull \vbox (1.4709pt too high) detected at line 7114
+ []
+
+[116] [117] [118]
+Overfull \vbox (1.4709pt too high) detected at line 7378
+ []
+
+[119]
+Underfull \vbox (badness 10000) detected at line 7378
  []
 
 
-Underfull \vbox (badness 10000) detected at line 6707
+Underfull \vbox (badness 10000) detected at line 7378
  []
 
-[112] [113] [114] [115] [116]
-Overfull \vbox (1.4709pt too high) detected at line 7001
+[120] [121] [122] [123]
+Underfull \vbox (badness 10000) detected at line 8069
  []
 
-[117] [118] [119] [120] [121] [122] [123] [124] [125]
-Overfull \vbox (1.4709pt too high) detected at line 7587
+
+Overfull \vbox (1.76999pt too high) detected at line 8069
+ []
+
+[124]
+Underfull \vbox (badness 10000) detected at line 8069
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 8069
+ []
+
+[125]
+Underfull \vbox (badness 10000) detected at line 8069
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 8069
  []
 
 [126]
-Underfull \vbox (badness 10000) detected at line 7587
+Underfull \vbox (badness 10000) detected at line 8069
  []
 
 
-Underfull \vbox (badness 10000) detected at line 7587
+Underfull \vbox (badness 10000) detected at line 8069
  []
 
-[127] [128] [129] [130] [131] [132] [133]
-Overfull \vbox (0.92615pt too high) detected at line 8010
- []
-
-[134]
-Overfull \vbox (1.4709pt too high) detected at line 8070
- []
-
-[135] [136]
-Overfull \vbox (1.4709pt too high) detected at line 8228
- []
-
-[137] [138] [139]
-Underfull \vbox (badness 10000) detected at line 8498
+[127]
+Underfull \vbox (badness 10000) detected at line 8069
  []
 
 
-Overfull \vbox (2.76999pt too high) detected at line 8498
+Underfull \vbox (badness 10000) detected at line 8069
+ []
+
+[128]
+Underfull \vbox (badness 10000) detected at line 8069
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 8069
+ []
+
+[129]
+Underfull \vbox (badness 10000) detected at line 8069
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 8069
+ []
+
+[130]
+Underfull \vbox (badness 10000) detected at line 8069
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 8069
+ []
+
+[131]
+Underfull \vbox (badness 10000) detected at line 8069
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 8069
+ []
+
+[132] [133]
+Overfull \vbox (1.4709pt too high) detected at line 8163
+ []
+
+[134] [135]
+Overfull \vbox (1.4709pt too high) detected at line 8298
+ []
+
+[136] [137]
+Underfull \vbox (badness 10000) detected at line 8382
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 8382
+ []
+
+[138] [139]
+Underfull \vbox (badness 10000) detected at line 8512
+ []
+
+
+Overfull \vbox (2.76999pt too high) detected at line 8512
  []
 
 [140]
-Underfull \vbox (badness 10000) detected at line 8498
+Overfull \vbox (1.4709pt too high) detected at line 8568
+ []
+
+[141] [142] [143] [144] [145]
+Overfull \vbox (1.4709pt too high) detected at line 8921
+ []
+
+[146]
+Underfull \vbox (badness 10000) detected at line 8921
  []
 
 
-Underfull \vbox (badness 10000) detected at line 8498
+Underfull \vbox (badness 10000) detected at line 8921
  []
 
-[141]
-Underfull \vbox (badness 10000) detected at line 8498
+[147] [148]
+Overfull \vbox (1.4709pt too high) detected at line 9064
  []
 
-
-Underfull \vbox (badness 10000) detected at line 8498
- []
-
-[142] [143] [144] [145] [146] [147] [148] [149]
-Overfull \vbox (1.4709pt too high) detected at line 8977
- []
-
-[150] [151]
-Overfull \vbox (1.4709pt too high) detected at line 9083
- []
-
-[152] [153] [154]
-Overfull \vbox (1.4709pt too high) detected at line 9262
- []
-
-[155] [156] [157] [158]
-Underfull \vbox (badness 10000) detected at line 9679
+[149] [150]
+Underfull \vbox (badness 10000) detected at line 9158
  []
 
 
-Overfull \vbox (2.76999pt too high) detected at line 9679
+Underfull \vbox (badness 10000) detected at line 9158
  []
 
-[159]
-Underfull \vbox (badness 10000) detected at line 9679
+[151]
+Overfull \vbox (1.4709pt too high) detected at line 9312
  []
 
-
-Underfull \vbox (badness 10000) detected at line 9679
- []
-
-[160]
-Underfull \vbox (badness 10000) detected at line 9679
+[152]
+Underfull \vbox (badness 10000) detected at line 9312
  []
 
 
-Underfull \vbox (badness 10000) detected at line 9679
+Underfull \vbox (badness 10000) detected at line 9312
  []
 
-[161]
-Underfull \vbox (badness 10000) detected at line 9679
+[153] [154]
+Underfull \vbox (badness 10000) detected at line 9406
  []
 
 
-Underfull \vbox (badness 10000) detected at line 9679
+Underfull \vbox (badness 10000) detected at line 9406
  []
 
-[162] [163] [164] [165]
-Overfull \vbox (1.4709pt too high) detected at line 10053
+[155]
+Overfull \vbox (1.4709pt too high) detected at line 9472
+ []
+
+[156] [157]
+Underfull \vbox (badness 10000) detected at line 9566
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 9566
+ []
+
+[158]
+Overfull \vbox (1.4709pt too high) detected at line 9642
+ []
+
+[159] [160] [161]
+Underfull \vbox (badness 10000) detected at line 9837
+ []
+
+
+Overfull \vbox (2.76999pt too high) detected at line 9837
+ []
+
+[162] [163]
+Underfull \vbox (badness 10000) detected at line 9931
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 9931
+ []
+
+[164] [165]
+Underfull \vbox (badness 10000) detected at line 10053
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 10053
  []
 
 [166]
-Underfull \vbox (badness 10000) detected at line 10053
+Overfull \vbox (1.4709pt too high) detected at line 10092
  []
 
-
-Underfull \vbox (badness 10000) detected at line 10053
- []
-
-[167]
-Underfull \vbox (badness 10000) detected at line 10053
- []
-
-
-Underfull \vbox (badness 10000) detected at line 10053
- []
-
-[168] [169]
-Overfull \vbox (1.4709pt too high) detected at line 10158
- []
-
-[170] [171]
-Overfull \vbox (1.4709pt too high) detected at line 10262
- []
-
-[172] [173]
-Overfull \vbox (1.4709pt too high) detected at line 10376
- []
-
-[174] [175] [176]
-Overfull \vbox (1.4709pt too high) detected at line 10594
- []
-
-[177] [178]
-Overfull \vbox (1.4709pt too high) detected at line 10683
- []
-
-[179] [180]
-Overfull \vbox (1.4709pt too high) detected at line 10801
- []
-
-[181] [182] [183]
-Overfull \vbox (1.4709pt too high) detected at line 10994
- []
-
-[184] [185] [186] [187] [188]
-Overfull \vbox (1.4709pt too high) detected at line 11275
- []
-
-[189] [190] [191]
-Overfull \vbox (1.4709pt too high) detected at line 11499
- []
-
-[192] [193] [194] [195] [196] [197]
-Overfull \vbox (0.92615pt too high) detected at line 11826
- []
-
-[198]
-Overfull \vbox (1.4709pt too high) detected at line 11885
- []
-
-[199] [200] [201]
-Underfull \vbox (badness 10000) detected at line 12049
- []
-
-
-Overfull \vbox (2.76999pt too high) detected at line 12049
- []
-
-[202]
-Overfull \vbox (1.4709pt too high) detected at line 12108
- []
-
-[203]
-Overfull \vbox (1.7694pt too high) detected at line 12181
- []
-
-[204]
-Overfull \vbox (1.4709pt too high) detected at line 12317
- []
-
-[205]
-Underfull \vbox (badness 10000) detected at line 12317
- []
-
-
-Underfull \vbox (badness 10000) detected at line 12317
- []
-
-[206] [207]
-Overfull \vbox (1.4709pt too high) detected at line 12413
- []
-
-[208] [209] [210] [211]
-Overfull \vbox (0.62704pt too high) detected at line 12709
- []
-
-[212]
-Underfull \vbox (badness 10000) detected at line 12709
- []
-
-
-Underfull \vbox (badness 10000) detected at line 12709
- []
-
-[213]
-Overfull \vbox (1.4709pt too high) detected at line 12764
- []
-
-[214] [215]
-Overfull \vbox (1.4709pt too high) detected at line 12901
- []
-
-[216] [217]
-Overfull \vbox (1.4709pt too high) detected at line 13034
- []
-
-[218] [219]
-Overfull \vbox (1.4709pt too high) detected at line 13146
- []
-
-[220] [221] [222]
-Underfull \vbox (badness 10000) detected at line 13309
- []
-
-
-Underfull \vbox (badness 10000) detected at line 13309
- []
-
-[223]
-Overfull \vbox (1.4709pt too high) detected at line 13367
- []
-
-[224] [225]
-Overfull \vbox (1.4709pt too high) detected at line 13510
- []
-
-[226] [227]
-Underfull \vbox (badness 10000) detected at line 13604
- []
-
-
-Underfull \vbox (badness 10000) detected at line 13604
- []
-
-[228]
-Overfull \vbox (1.4709pt too high) detected at line 13758
- []
-
-[229]
-Underfull \vbox (badness 10000) detected at line 13758
- []
-
-
-Underfull \vbox (badness 10000) detected at line 13758
- []
-
-[230] [231]
-Underfull \vbox (badness 10000) detected at line 13852
- []
-
-
-Overfull \vbox (2.76999pt too high) detected at line 13852
- []
-
-[232]
-Overfull \vbox (1.4709pt too high) detected at line 13918
- []
-
-[233] [234]
-Underfull \vbox (badness 10000) detected at line 14012
- []
-
-
-Underfull \vbox (badness 10000) detected at line 14012
- []
-
-[235]
-Overfull \vbox (1.4709pt too high) detected at line 14088
- []
-
-[236] [237]
-Underfull \vbox (badness 10000) detected at line 14182
- []
-
-
-Underfull \vbox (badness 10000) detected at line 14182
- []
-
-[238]
-Overfull \vbox (1.4709pt too high) detected at line 14283
- []
-
-[239] [240]
-Underfull \vbox (badness 10000) detected at line 14377
- []
-
-
-Overfull \vbox (1.76999pt too high) detected at line 14377
- []
-
-[241] [242] [243]
-Overfull \vbox (1.4709pt too high) detected at line 14538
- []
-
-[244] [245] [246] [247] [248] [249]
-Overfull \vbox (0.62704pt too high) detected at line 14914
- []
-
-[250]
-Overfull \vbox (1.4709pt too high) detected at line 15510
- []
-
-[251]
-Underfull \vbox (badness 10000) detected at line 15510
- []
-
-
-Underfull \vbox (badness 10000) detected at line 15510
- []
-
-[252]
-Underfull \vbox (badness 10000) detected at line 15510
- []
-
-
-Underfull \vbox (badness 10000) detected at line 15510
- []
-
-[253]
-Underfull \vbox (badness 10000) detected at line 15510
- []
-
-
-Underfull \vbox (badness 10000) detected at line 15510
- []
-
-[254]
-Underfull \vbox (badness 10000) detected at line 15510
- []
-
-
-Underfull \vbox (badness 10000) detected at line 15510
- []
-
-[255]
-Underfull \vbox (badness 10000) detected at line 15510
- []
-
-
-Underfull \vbox (badness 10000) detected at line 15510
- []
-
-[256]
-Underfull \vbox (badness 10000) detected at line 15510
- []
-
-
-Underfull \vbox (badness 10000) detected at line 15510
- []
-
-[257]
-Underfull \vbox (badness 10000) detected at line 15510
- []
-
-
-Underfull \vbox (badness 10000) detected at line 15510
- []
-
-[258]
-Underfull \vbox (badness 10000) detected at line 15510
- []
-
-
-Underfull \vbox (badness 10000) detected at line 15510
- []
-
-[259]
-Underfull \vbox (badness 10000) detected at line 15510
- []
-
-
-Underfull \vbox (badness 10000) detected at line 15510
- []
-
-[260] [261]
-Overfull \vbox (1.4709pt too high) detected at line 16157
- []
-
-[262]
-Underfull \vbox (badness 10000) detected at line 16157
- []
-
-
-Underfull \vbox (badness 10000) detected at line 16157
- []
-
-[263]
-Underfull \vbox (badness 10000) detected at line 16157
- []
-
-
-Underfull \vbox (badness 10000) detected at line 16157
- []
-
-[264]
-Underfull \vbox (badness 10000) detected at line 16157
- []
-
-
-Underfull \vbox (badness 10000) detected at line 16157
- []
-
-[265]
-Underfull \vbox (badness 10000) detected at line 16157
- []
-
-
-Underfull \vbox (badness 10000) detected at line 16157
- []
-
-[266]
-Underfull \vbox (badness 10000) detected at line 16157
- []
-
-
-Underfull \vbox (badness 10000) detected at line 16157
- []
-
-[267]
-Underfull \vbox (badness 10000) detected at line 16157
- []
-
-
-Underfull \vbox (badness 10000) detected at line 16157
- []
-
-[268]
-Underfull \vbox (badness 10000) detected at line 16157
- []
-
-
-Underfull \vbox (badness 10000) detected at line 16157
- []
-
-[269]
-Underfull \vbox (badness 10000) detected at line 16157
- []
-
-
-Underfull \vbox (badness 10000) detected at line 16157
- []
-
-[270]
-Underfull \vbox (badness 10000) detected at line 16157
- []
-
-
-Underfull \vbox (badness 10000) detected at line 16157
- []
-
-[271] [272]
-Overfull \vbox (1.4709pt too high) detected at line 16770
- []
-
-[273]
-Underfull \vbox (badness 10000) detected at line 16770
- []
-
-
-Underfull \vbox (badness 10000) detected at line 16770
- []
-
-[274]
-Underfull \vbox (badness 10000) detected at line 16770
- []
-
-
-Underfull \vbox (badness 10000) detected at line 16770
- []
-
-[275]
-Underfull \vbox (badness 10000) detected at line 16770
- []
-
-
-Underfull \vbox (badness 10000) detected at line 16770
- []
-
-[276]
-Underfull \vbox (badness 10000) detected at line 16770
- []
-
-
-Underfull \vbox (badness 10000) detected at line 16770
- []
-
-[277]
-Underfull \vbox (badness 10000) detected at line 16770
- []
-
-
-Underfull \vbox (badness 10000) detected at line 16770
- []
-
-[278]
-Underfull \vbox (badness 10000) detected at line 16770
- []
-
-
-Underfull \vbox (badness 10000) detected at line 16770
- []
-
-[279]
-Underfull \vbox (badness 10000) detected at line 16770
- []
-
-
-Underfull \vbox (badness 10000) detected at line 16770
- []
-
-[280]
-Underfull \vbox (badness 10000) detected at line 16770
- []
-
-
-Underfull \vbox (badness 10000) detected at line 16770
- []
-
-[281]
-Underfull \vbox (badness 10000) detected at line 16770
- []
-
-
-Underfull \vbox (badness 10000) detected at line 16770
- []
-
-[282] [283]
-Overfull \vbox (1.4709pt too high) detected at line 17375
- []
-
-[284]
-Underfull \vbox (badness 10000) detected at line 17375
- []
-
-
-Underfull \vbox (badness 10000) detected at line 17375
- []
-
-[285]
-Underfull \vbox (badness 10000) detected at line 17375
- []
-
-
-Underfull \vbox (badness 10000) detected at line 17375
- []
-
-[286]
-Underfull \vbox (badness 10000) detected at line 17375
- []
-
-
-Underfull \vbox (badness 10000) detected at line 17375
- []
-
-[287]
-Underfull \vbox (badness 10000) detected at line 17375
- []
-
-
-Underfull \vbox (badness 10000) detected at line 17375
- []
-
-[288]
-Underfull \vbox (badness 10000) detected at line 17375
- []
-
-
-Underfull \vbox (badness 10000) detected at line 17375
- []
-
-[289]
-Underfull \vbox (badness 10000) detected at line 17375
- []
-
-
-Underfull \vbox (badness 10000) detected at line 17375
- []
-
-[290]
-Underfull \vbox (badness 10000) detected at line 17375
- []
-
-
-Underfull \vbox (badness 10000) detected at line 17375
- []
-
-[291]
-Underfull \vbox (badness 10000) detected at line 17375
- []
-
-
-Underfull \vbox (badness 10000) detected at line 17375
- []
-
-[292] [293]
-Overfull \vbox (1.4709pt too high) detected at line 18201
- []
-
-[294]
-Underfull \vbox (badness 10000) detected at line 18201
- []
-
-
-Underfull \vbox (badness 10000) detected at line 18201
- []
-
-[295]
-Underfull \vbox (badness 10000) detected at line 18201
- []
-
-
-Underfull \vbox (badness 10000) detected at line 18201
- []
-
-[296]
-Underfull \vbox (badness 10000) detected at line 18201
- []
-
-
-Underfull \vbox (badness 10000) detected at line 18201
- []
-
-[297]
-Underfull \vbox (badness 10000) detected at line 18201
- []
-
-
-Underfull \vbox (badness 10000) detected at line 18201
- []
-
-[298]
-Underfull \vbox (badness 10000) detected at line 18201
- []
-
-
-Underfull \vbox (badness 10000) detected at line 18201
- []
-
-[299]
-Underfull \vbox (badness 10000) detected at line 18201
- []
-
-
-Underfull \vbox (badness 10000) detected at line 18201
- []
-
-[300]
-Underfull \vbox (badness 10000) detected at line 18201
- []
-
-
-Underfull \vbox (badness 10000) detected at line 18201
- []
-
-[301]
-Underfull \vbox (badness 10000) detected at line 18201
- []
-
-
-Underfull \vbox (badness 10000) detected at line 18201
- []
-
-[302]
-Underfull \vbox (badness 10000) detected at line 18201
- []
-
-
-Underfull \vbox (badness 10000) detected at line 18201
- []
-
-[303]
-Underfull \vbox (badness 10000) detected at line 18201
- []
-
-
-Underfull \vbox (badness 10000) detected at line 18201
- []
-
-[304]
-Underfull \vbox (badness 10000) detected at line 18201
- []
-
-
-Underfull \vbox (badness 10000) detected at line 18201
- []
-
-[305]
-Underfull \vbox (badness 10000) detected at line 18201
- []
-
-
-Underfull \vbox (badness 10000) detected at line 18201
- []
-
-[306] [307]
-Underfull \vbox (badness 4621) detected at line 18864
- []
-
-[308]
-Underfull \vbox (badness 10000) detected at line 18864
- []
-
-
-Overfull \vbox (1.76999pt too high) detected at line 18864
- []
-
-[309]
-Underfull \vbox (badness 10000) detected at line 18864
- []
-
-
-Underfull \vbox (badness 10000) detected at line 18864
- []
-
-[310]
-Underfull \vbox (badness 10000) detected at line 18864
- []
-
-
-Underfull \vbox (badness 10000) detected at line 18864
- []
-
-[311]
-Underfull \vbox (badness 10000) detected at line 18864
- []
-
-
-Underfull \vbox (badness 10000) detected at line 18864
- []
-
-[312]
-Underfull \vbox (badness 10000) detected at line 18864
- []
-
-
-Underfull \vbox (badness 10000) detected at line 18864
- []
-
-[313]
-Underfull \vbox (badness 10000) detected at line 18864
- []
-
-
-Underfull \vbox (badness 10000) detected at line 18864
- []
-
-[314]
-Underfull \vbox (badness 10000) detected at line 18864
- []
-
-
-Underfull \vbox (badness 10000) detected at line 18864
- []
-
-[315]
-Underfull \vbox (badness 10000) detected at line 18864
- []
-
-
-Underfull \vbox (badness 10000) detected at line 18864
- []
-
-[316]
-Underfull \vbox (badness 10000) detected at line 18864
- []
-
-
-Underfull \vbox (badness 10000) detected at line 18864
- []
-
-[317]
-Underfull \vbox (badness 10000) detected at line 18864
- []
-
-
-Underfull \vbox (badness 10000) detected at line 18864
- []
-
-[318] [319]
-Overfull \vbox (1.4709pt too high) detected at line 19525
- []
-
-[320]
-Underfull \vbox (badness 10000) detected at line 19525
- []
-
-
-Underfull \vbox (badness 10000) detected at line 19525
- []
-
-[321]
-Underfull \vbox (badness 10000) detected at line 19525
- []
-
-
-Underfull \vbox (badness 10000) detected at line 19525
- []
-
-[322]
-Underfull \vbox (badness 10000) detected at line 19525
- []
-
-
-Underfull \vbox (badness 10000) detected at line 19525
- []
-
-[323]
-Underfull \vbox (badness 10000) detected at line 19525
- []
-
-
-Underfull \vbox (badness 10000) detected at line 19525
- []
-
-[324]
-Underfull \vbox (badness 10000) detected at line 19525
- []
-
-
-Underfull \vbox (badness 10000) detected at line 19525
- []
-
-[325]
-Underfull \vbox (badness 10000) detected at line 19525
- []
-
-
-Underfull \vbox (badness 10000) detected at line 19525
- []
-
-[326]
-Underfull \vbox (badness 10000) detected at line 19525
- []
-
-
-Underfull \vbox (badness 10000) detected at line 19525
- []
-
-[327]
-Underfull \vbox (badness 10000) detected at line 19525
- []
-
-
-Underfull \vbox (badness 10000) detected at line 19525
- []
-
-[328]
-Underfull \vbox (badness 10000) detected at line 19525
- []
-
-
-Underfull \vbox (badness 10000) detected at line 19525
- []
-
-[329] [330]
-Overfull \vbox (1.4709pt too high) detected at line 20174
- []
-
-[331]
-Underfull \vbox (badness 10000) detected at line 20174
- []
-
-
-Underfull \vbox (badness 10000) detected at line 20174
- []
-
-[332]
-Underfull \vbox (badness 10000) detected at line 20174
- []
-
-
-Underfull \vbox (badness 10000) detected at line 20174
- []
-
-[333]
-Underfull \vbox (badness 10000) detected at line 20174
- []
-
-
-Underfull \vbox (badness 10000) detected at line 20174
- []
-
-[334]
-Underfull \vbox (badness 10000) detected at line 20174
- []
-
-
-Underfull \vbox (badness 10000) detected at line 20174
- []
-
-[335]
-Underfull \vbox (badness 10000) detected at line 20174
- []
-
-
-Underfull \vbox (badness 10000) detected at line 20174
- []
-
-[336]
-Underfull \vbox (badness 10000) detected at line 20174
- []
-
-
-Underfull \vbox (badness 10000) detected at line 20174
- []
-
-[337]
-Underfull \vbox (badness 10000) detected at line 20174
- []
-
-
-Underfull \vbox (badness 10000) detected at line 20174
- []
-
-[338]
-Underfull \vbox (badness 10000) detected at line 20174
- []
-
-
-Underfull \vbox (badness 10000) detected at line 20174
- []
-
-[339]
-Underfull \vbox (badness 10000) detected at line 20174
- []
-
-
-Underfull \vbox (badness 10000) detected at line 20174
- []
-
-[340] [341]
-Overfull \vbox (1.4709pt too high) detected at line 20842
- []
-
-[342]
-Underfull \vbox (badness 10000) detected at line 20842
- []
-
-
-Underfull \vbox (badness 10000) detected at line 20842
- []
-
-[343]
-Underfull \vbox (badness 10000) detected at line 20842
- []
-
-
-Underfull \vbox (badness 10000) detected at line 20842
- []
-
-[344]
-Underfull \vbox (badness 10000) detected at line 20842
- []
-
-
-Underfull \vbox (badness 10000) detected at line 20842
- []
-
-[345]
-Underfull \vbox (badness 10000) detected at line 20842
- []
-
-
-Underfull \vbox (badness 10000) detected at line 20842
- []
-
-[346]
-Underfull \vbox (badness 10000) detected at line 20842
- []
-
-
-Underfull \vbox (badness 10000) detected at line 20842
- []
-
-[347]
-Underfull \vbox (badness 10000) detected at line 20842
- []
-
-
-Underfull \vbox (badness 10000) detected at line 20842
- []
-
-[348]
-Underfull \vbox (badness 10000) detected at line 20842
- []
-
-
-Underfull \vbox (badness 10000) detected at line 20842
- []
-
-[349]
-Underfull \vbox (badness 10000) detected at line 20842
- []
-
-
-Underfull \vbox (badness 10000) detected at line 20842
- []
-
-[350]
-Underfull \vbox (badness 10000) detected at line 20842
- []
-
-
-Underfull \vbox (badness 10000) detected at line 20842
- []
-
-[351]
-Underfull \vbox (badness 10000) detected at line 20842
- []
-
-
-Underfull \vbox (badness 10000) detected at line 20842
- []
-
-[352] [353]
-Overfull \vbox (1.4709pt too high) detected at line 21490
- []
-
-[354]
-Underfull \vbox (badness 10000) detected at line 21490
- []
-
-
-Underfull \vbox (badness 10000) detected at line 21490
- []
-
-[355]
-Underfull \vbox (badness 10000) detected at line 21490
- []
-
-
-Underfull \vbox (badness 10000) detected at line 21490
- []
-
-[356]
-Underfull \vbox (badness 10000) detected at line 21490
- []
-
-
-Underfull \vbox (badness 10000) detected at line 21490
- []
-
-[357]
-Underfull \vbox (badness 10000) detected at line 21490
- []
-
-
-Underfull \vbox (badness 10000) detected at line 21490
- []
-
-[358]
-Underfull \vbox (badness 10000) detected at line 21490
- []
-
-
-Underfull \vbox (badness 10000) detected at line 21490
- []
-
-[359]
-Underfull \vbox (badness 10000) detected at line 21490
- []
-
-
-Underfull \vbox (badness 10000) detected at line 21490
- []
-
-[360]
-Underfull \vbox (badness 10000) detected at line 21490
- []
-
-
-Underfull \vbox (badness 10000) detected at line 21490
- []
-
-[361]
-Underfull \vbox (badness 10000) detected at line 21490
- []
-
-
-Underfull \vbox (badness 10000) detected at line 21490
- []
-
-[362]
-Underfull \vbox (badness 10000) detected at line 21490
- []
-
-
-Underfull \vbox (badness 10000) detected at line 21490
- []
-
-[363] [364]
-Overfull \vbox (1.4709pt too high) detected at line 22143
- []
-
-[365]
-Underfull \vbox (badness 10000) detected at line 22143
- []
-
-
-Underfull \vbox (badness 10000) detected at line 22143
- []
-
-[366]
-Underfull \vbox (badness 10000) detected at line 22143
- []
-
-
-Underfull \vbox (badness 10000) detected at line 22143
- []
-
-[367]
-Underfull \vbox (badness 10000) detected at line 22143
- []
-
-
-Underfull \vbox (badness 10000) detected at line 22143
- []
-
-[368]
-Underfull \vbox (badness 10000) detected at line 22143
- []
-
-
-Underfull \vbox (badness 10000) detected at line 22143
- []
-
-[369]
-Underfull \vbox (badness 10000) detected at line 22143
- []
-
-
-Underfull \vbox (badness 10000) detected at line 22143
- []
-
-[370]
-Underfull \vbox (badness 10000) detected at line 22143
- []
-
-
-Underfull \vbox (badness 10000) detected at line 22143
- []
-
-[371]
-Underfull \vbox (badness 10000) detected at line 22143
- []
-
-
-Underfull \vbox (badness 10000) detected at line 22143
- []
-
-[372]
-Underfull \vbox (badness 10000) detected at line 22143
- []
-
-
-Underfull \vbox (badness 10000) detected at line 22143
- []
-
-[373]
-Underfull \vbox (badness 10000) detected at line 22143
- []
-
-
-Underfull \vbox (badness 10000) detected at line 22143
- []
-
-[374] [375]
-Overfull \vbox (1.4709pt too high) detected at line 22793
- []
-
-[376]
-Underfull \vbox (badness 10000) detected at line 22793
- []
-
-
-Underfull \vbox (badness 10000) detected at line 22793
- []
-
-[377]
-Underfull \vbox (badness 10000) detected at line 22793
- []
-
-
-Underfull \vbox (badness 10000) detected at line 22793
- []
-
-[378]
-Underfull \vbox (badness 10000) detected at line 22793
- []
-
-
-Underfull \vbox (badness 10000) detected at line 22793
- []
-
-[379]
-Underfull \vbox (badness 10000) detected at line 22793
- []
-
-
-Underfull \vbox (badness 10000) detected at line 22793
- []
-
-[380]
-Underfull \vbox (badness 10000) detected at line 22793
- []
-
-
-Underfull \vbox (badness 10000) detected at line 22793
- []
-
-[381]
-Underfull \vbox (badness 10000) detected at line 22793
- []
-
-
-Underfull \vbox (badness 10000) detected at line 22793
- []
-
-[382]
-Underfull \vbox (badness 10000) detected at line 22793
- []
-
-
-Underfull \vbox (badness 10000) detected at line 22793
- []
-
-[383]
-Underfull \vbox (badness 10000) detected at line 22793
- []
-
-
-Underfull \vbox (badness 10000) detected at line 22793
- []
-
-[384]
-Underfull \vbox (badness 10000) detected at line 22793
- []
-
-
-Underfull \vbox (badness 10000) detected at line 22793
- []
-
-[385] [386]
-Overfull \vbox (1.4709pt too high) detected at line 23442
- []
-
-[387]
-Underfull \vbox (badness 10000) detected at line 23442
- []
-
-
-Underfull \vbox (badness 10000) detected at line 23442
- []
-
-[388]
-Underfull \vbox (badness 10000) detected at line 23442
- []
-
-
-Underfull \vbox (badness 10000) detected at line 23442
- []
-
-[389]
-Underfull \vbox (badness 10000) detected at line 23442
- []
-
-
-Underfull \vbox (badness 10000) detected at line 23442
- []
-
-[390]
-Underfull \vbox (badness 10000) detected at line 23442
- []
-
-
-Underfull \vbox (badness 10000) detected at line 23442
- []
-
-[391]
-Underfull \vbox (badness 10000) detected at line 23442
- []
-
-
-Underfull \vbox (badness 10000) detected at line 23442
- []
-
-[392]
-Underfull \vbox (badness 10000) detected at line 23442
- []
-
-
-Underfull \vbox (badness 10000) detected at line 23442
- []
-
-[393]
-Underfull \vbox (badness 10000) detected at line 23442
- []
-
-
-Underfull \vbox (badness 10000) detected at line 23442
- []
-
-[394]
-Underfull \vbox (badness 10000) detected at line 23442
- []
-
-
-Underfull \vbox (badness 10000) detected at line 23442
- []
-
-[395]
-Underfull \vbox (badness 10000) detected at line 23442
- []
-
-
-Underfull \vbox (badness 10000) detected at line 23442
- []
-
-[396] [397] [398] [399] [400] [401]
-Overfull \vbox (1.4709pt too high) detected at line 23762
- []
-
-[402] [403]
-Overfull \vbox (0.62704pt too high) detected at line 23904
- []
-
-[404]
-Overfull \vbox (1.4709pt too high) detected at line 24263
- []
-
-[405]
-Underfull \vbox (badness 10000) detected at line 24263
- []
-
-
-Underfull \vbox (badness 10000) detected at line 24263
- []
-
-[406]
-Underfull \vbox (badness 10000) detected at line 24263
- []
-
-
-Underfull \vbox (badness 10000) detected at line 24263
- []
-
-[407]
-Underfull \vbox (badness 10000) detected at line 24263
- []
-
-
-Underfull \vbox (badness 10000) detected at line 24263
- []
-
-[408]
-Underfull \vbox (badness 10000) detected at line 24263
- []
-
-
-Underfull \vbox (badness 10000) detected at line 24263
- []
-
-[409]
-Underfull \vbox (badness 10000) detected at line 24263
- []
-
-
-Underfull \vbox (badness 10000) detected at line 24263
- []
-
-[410] [411]
-Overfull \vbox (1.4709pt too high) detected at line 24547
- []
-
-[412]
-Underfull \vbox (badness 10000) detected at line 24547
- []
-
-
-Underfull \vbox (badness 10000) detected at line 24547
- []
-
-[413]
-Underfull \vbox (badness 10000) detected at line 24547
- []
-
-
-Underfull \vbox (badness 10000) detected at line 24547
- []
-
-[414]
-Underfull \vbox (badness 10000) detected at line 24547
- []
-
-
-Underfull \vbox (badness 10000) detected at line 24547
- []
-
-[415] [416]
-Overfull \vbox (1.4709pt too high) detected at line 24863
- []
-
-[417]
-Underfull \vbox (badness 10000) detected at line 24863
- []
-
-
-Underfull \vbox (badness 10000) detected at line 24863
- []
-
-[418]
-Underfull \vbox (badness 10000) detected at line 24863
- []
-
-
-Underfull \vbox (badness 10000) detected at line 24863
- []
-
-[419]
-Underfull \vbox (badness 10000) detected at line 24863
- []
-
-
-Underfull \vbox (badness 10000) detected at line 24863
- []
-
-[420] [421]
-Underfull \vbox (badness 4621) detected at line 25256
- []
-
-[422]
-Underfull \vbox (badness 10000) detected at line 25256
- []
-
-
-Overfull \vbox (1.76999pt too high) detected at line 25256
- []
-
-[423]
-Underfull \vbox (badness 10000) detected at line 25256
- []
-
-
-Underfull \vbox (badness 10000) detected at line 25256
- []
-
-[424]
-Underfull \vbox (badness 10000) detected at line 25256
- []
-
-
-Underfull \vbox (badness 10000) detected at line 25256
- []
-
-[425]
-Underfull \vbox (badness 10000) detected at line 25256
- []
-
-
-Underfull \vbox (badness 10000) detected at line 25256
- []
-
-[426]
-Underfull \vbox (badness 10000) detected at line 25256
- []
-
-
-Underfull \vbox (badness 10000) detected at line 25256
- []
-
-[427] [428]
-Overfull \vbox (1.4709pt too high) detected at line 25673
- []
-
-[429]
-Underfull \vbox (badness 10000) detected at line 25673
- []
-
-
-Underfull \vbox (badness 10000) detected at line 25673
- []
-
-[430]
-Underfull \vbox (badness 10000) detected at line 25673
- []
-
-
-Underfull \vbox (badness 10000) detected at line 25673
- []
-
-[431]
-Underfull \vbox (badness 10000) detected at line 25673
- []
-
-
-Underfull \vbox (badness 10000) detected at line 25673
- []
-
-[432]
-Underfull \vbox (badness 10000) detected at line 25673
- []
-
-
-Underfull \vbox (badness 10000) detected at line 25673
- []
-
-[433]
-Underfull \vbox (badness 10000) detected at line 25673
- []
-
-
-Underfull \vbox (badness 10000) detected at line 25673
- []
-
-[434] [435]
-Overfull \vbox (1.4709pt too high) detected at line 26091
- []
-
-[436]
-Underfull \vbox (badness 10000) detected at line 26091
- []
-
-
-Underfull \vbox (badness 10000) detected at line 26091
- []
-
-[437]
-Underfull \vbox (badness 10000) detected at line 26091
- []
-
-
-Underfull \vbox (badness 10000) detected at line 26091
- []
-
-[438]
-Underfull \vbox (badness 10000) detected at line 26091
- []
-
-
-Underfull \vbox (badness 10000) detected at line 26091
- []
-
-[439]
-Underfull \vbox (badness 10000) detected at line 26091
- []
-
-
-Underfull \vbox (badness 10000) detected at line 26091
- []
-
-[440]
-Underfull \vbox (badness 10000) detected at line 26091
- []
-
-
-Underfull \vbox (badness 10000) detected at line 26091
- []
-
-[441] [442] [443]
-Underfull \vbox (badness 10000) detected at line 26509
- []
-
-
-Overfull \vbox (1.76999pt too high) detected at line 26509
- []
-
-[444]
-Underfull \vbox (badness 10000) detected at line 26509
- []
-
-
-Underfull \vbox (badness 10000) detected at line 26509
- []
-
-[445]
-Underfull \vbox (badness 10000) detected at line 26509
- []
-
-
-Underfull \vbox (badness 10000) detected at line 26509
- []
-
-[446]
-Underfull \vbox (badness 10000) detected at line 26509
- []
-
-
-Underfull \vbox (badness 10000) detected at line 26509
- []
-
-[447]
-Underfull \vbox (badness 10000) detected at line 26509
- []
-
-
-Underfull \vbox (badness 10000) detected at line 26509
- []
-
-[448]
-Underfull \vbox (badness 10000) detected at line 26509
- []
-
-
-Underfull \vbox (badness 10000) detected at line 26509
- []
-
-[449] [450]
-Overfull \vbox (1.4709pt too high) detected at line 26931
- []
-
-[451]
-Underfull \vbox (badness 10000) detected at line 26931
- []
-
-
-Underfull \vbox (badness 10000) detected at line 26931
- []
-
-[452]
-Underfull \vbox (badness 10000) detected at line 26931
- []
-
-
-Underfull \vbox (badness 10000) detected at line 26931
- []
-
-[453]
-Underfull \vbox (badness 10000) detected at line 26931
- []
-
-
-Underfull \vbox (badness 10000) detected at line 26931
- []
-
-[454]
-Underfull \vbox (badness 10000) detected at line 26931
- []
-
-
-Underfull \vbox (badness 10000) detected at line 26931
- []
-
-[455]
-Underfull \vbox (badness 10000) detected at line 26931
- []
-
-
-Underfull \vbox (badness 10000) detected at line 26931
- []
-
-[456] [457]
-Overfull \vbox (1.4709pt too high) detected at line 27353
- []
-
-[458]
-Underfull \vbox (badness 10000) detected at line 27353
- []
-
-
-Underfull \vbox (badness 10000) detected at line 27353
- []
-
-[459]
-Underfull \vbox (badness 10000) detected at line 27353
- []
-
-
-Underfull \vbox (badness 10000) detected at line 27353
- []
-
-[460]
-Underfull \vbox (badness 10000) detected at line 27353
- []
-
-
-Underfull \vbox (badness 10000) detected at line 27353
- []
-
-[461]
-Underfull \vbox (badness 10000) detected at line 27353
- []
-
-
-Underfull \vbox (badness 10000) detected at line 27353
- []
-
-[462]
-Underfull \vbox (badness 10000) detected at line 27353
- []
-
-
-Underfull \vbox (badness 10000) detected at line 27353
- []
-
-[463] [464]
-Overfull \vbox (1.4709pt too high) detected at line 27775
- []
-
-[465]
-Underfull \vbox (badness 10000) detected at line 27775
- []
-
-
-Underfull \vbox (badness 10000) detected at line 27775
- []
-
-[466]
-Underfull \vbox (badness 10000) detected at line 27775
- []
-
-
-Underfull \vbox (badness 10000) detected at line 27775
- []
-
-[467]
-Underfull \vbox (badness 10000) detected at line 27775
- []
-
-
-Underfull \vbox (badness 10000) detected at line 27775
- []
-
-[468]
-Underfull \vbox (badness 10000) detected at line 27775
- []
-
-
-Underfull \vbox (badness 10000) detected at line 27775
- []
-
-[469]
-Underfull \vbox (badness 10000) detected at line 27775
- []
-
-
-Underfull \vbox (badness 10000) detected at line 27775
- []
-
-[470] [471]
-Overfull \vbox (1.4709pt too high) detected at line 28197
- []
-
-[472]
-Underfull \vbox (badness 10000) detected at line 28197
- []
-
-
-Underfull \vbox (badness 10000) detected at line 28197
- []
-
-[473]
-Underfull \vbox (badness 10000) detected at line 28197
- []
-
-
-Underfull \vbox (badness 10000) detected at line 28197
- []
-
-[474]
-Underfull \vbox (badness 10000) detected at line 28197
- []
-
-
-Underfull \vbox (badness 10000) detected at line 28197
- []
-
-[475]
-Underfull \vbox (badness 10000) detected at line 28197
- []
-
-
-Underfull \vbox (badness 10000) detected at line 28197
- []
-
-[476]
-Underfull \vbox (badness 10000) detected at line 28197
- []
-
-
-Underfull \vbox (badness 10000) detected at line 28197
- []
-
-[477] [478] [479]
-Overfull \vbox (1.4709pt too high) detected at line 28619
- []
-
-[480]
-Underfull \vbox (badness 10000) detected at line 28619
- []
-
-
-Underfull \vbox (badness 10000) detected at line 28619
- []
-
-[481]
-Underfull \vbox (badness 10000) detected at line 28619
- []
-
-
-Underfull \vbox (badness 10000) detected at line 28619
- []
-
-[482]
-Underfull \vbox (badness 10000) detected at line 28619
+[167] [168] [169] [170] [171] [172]
+Overfull \vbox (0.92615pt too high) detected at line 10473
  []
-
 
-Underfull \vbox (badness 10000) detected at line 28619
+[173] [174]
+Overfull \vbox (1.4709pt too high) detected at line 10605
  []
 
-[483]
-Underfull \vbox (badness 10000) detected at line 28619
+[175] [176]
+Overfull \vbox (1.4709pt too high) detected at line 10704
  []
 
-
-Underfull \vbox (badness 10000) detected at line 28619
+[177] [178] [179]
+Overfull \vbox (3.26848pt too high) detected at line 10876
  []
 
-[484]
-Underfull \vbox (badness 10000) detected at line 28619
+[180] [181] [182] [183]
+Overfull \vbox (1.4709pt too high) detected at line 11147
  []
-
 
-Underfull \vbox (badness 10000) detected at line 28619
+[184] [185]
+Overfull \vbox (1.4709pt too high) detected at line 11260
  []
 
-[485] [486]
-Overfull \vbox (1.4709pt too high) detected at line 28934
+[186] [187]
+Overfull \vbox (1.4709pt too high) detected at line 11374
  []
 
-[487]
-Underfull \vbox (badness 10000) detected at line 28934
+[188] [189]
+Overfull \vbox (1.4709pt too high) detected at line 11492
  []
 
-
-Underfull \vbox (badness 10000) detected at line 28934
+[190] [191]
+Overfull \vbox (1.4709pt too high) detected at line 11593
  []
 
-[488]
-Underfull \vbox (badness 10000) detected at line 28934
+[192] [193] [194] [195]
+Overfull \vbox (1.92615pt too high) detected at line 11861
  []
-
 
-Underfull \vbox (badness 10000) detected at line 28934
+[196] [197]
+Overfull \vbox (1.4709pt too high) detected at line 11957
  []
 
-[489]
-Underfull \vbox (badness 10000) detected at line 28934
+[198] [199] [200] [201]
+Overfull \vbox (1.4709pt too high) detected at line 12193
  []
 
-
-Underfull \vbox (badness 10000) detected at line 28934
+[202] [203] [204]
+Overfull \vbox (1.4709pt too high) detected at line 12385
  []
 
-[490] [491]
-Overfull \vbox (1.4709pt too high) detected at line 29250
+[205] [206] [207] [208] [209] [210]
+Overfull \vbox (3.26848pt too high) detected at line 12739
  []
 
-[492]
-Underfull \vbox (badness 10000) detected at line 29250
+[211] [212]
+Overfull \vbox (1.4709pt too high) detected at line 12859
  []
 
-
-Underfull \vbox (badness 10000) detected at line 29250
+[213] [214] [215]
+Overfull \vbox (1.4709pt too high) detected at line 13049
  []
 
-[493]
-Underfull \vbox (badness 10000) detected at line 29250
+[216] [217] [218]
+Underfull \vbox (badness 10000) detected at line 13214
  []
 
 
-Underfull \vbox (badness 10000) detected at line 29250
+Overfull \vbox (2.76999pt too high) detected at line 13214
  []
 
-[494]
-Underfull \vbox (badness 10000) detected at line 29250
+[219] [220]
+Overfull \vbox (1.4709pt too high) detected at line 13334
  []
-
 
-Underfull \vbox (badness 10000) detected at line 29250
+[221] [222] [223]
+Overfull \vbox (1.4709pt too high) detected at line 13523
  []
 
-[495] [496] [497] [498] [499] [500]
-Underfull \vbox (badness 4621) detected at line 29561
+[224] [225] [226] [227]
+Overfull \vbox (1.4709pt too high) detected at line 13757
  []
 
-[501] [502] [503] [504] [505] [506]
-Underfull \hbox (badness 10000) in paragraph at lines 29915--29916
+[228] [229] [230] [231] [232] [233] [234]
+Underfull \hbox (badness 10000) in paragraph at lines 14188--14189
 []\T1/ptm/m/it/10 question_object \T1/ptm/m/n/10 : one of the fol-low-ing de-pe
 nd-ing on
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 29915--29916
+Underfull \hbox (badness 10000) in paragraph at lines 14188--14189
 \T1/ptm/m/it/10 qtype\T1/ptm/m/n/10 : [][]\T1/pcr/m/n/10 taniumpy.object_types.
 question.Question[][] \T1/ptm/m/n/10 or
  []
 
 
-Overfull \hbox (5.93408pt too wide) in paragraph at lines 29963--29964
+Overfull \hbox (5.93408pt too wide) in paragraph at lines 14236--14237
 []\T1/ptm/m/it/10 question_object \T1/ptm/m/n/10 : [][]\T1/pcr/m/n/10 taniumpy.
 object_types.saved_question.SavedQuestion[][] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 29976--29978
+Underfull \hbox (badness 10000) in paragraph at lines 14249--14251
 []\T1/ptm/m/n/10 list of kwargs that can be passed to
  []
 
-[507]
-Underfull \hbox (badness 10000) in paragraph at lines 30052--30054
+[235]
+Underfull \hbox (badness 10000) in paragraph at lines 14325--14327
 []\T1/ptm/m/n/10 list of kwargs that can be passed to
  []
 
-[508]
-Underfull \hbox (badness 10000) in paragraph at lines 30181--30183
+[236]
+Underfull \hbox (badness 10000) in paragraph at lines 14454--14456
 []\T1/ptm/m/n/10 list of kwargs that can be passed to
  []
 
+[237]
 LaTeX Font Info:    Font shape `TS1/pcr/m/it' in size <9> not available
-(Font)              Font shape `TS1/pcr/m/sl' tried instead on input line 30190
+(Font)              Font shape `TS1/pcr/m/sl' tried instead on input line 14463
 .
-[509] [510]
-Overfull \hbox (7.57344pt too wide) in paragraph at lines 30302--30303
+ [238]
+Overfull \hbox (7.57344pt too wide) in paragraph at lines 14575--14576
 []\T1/ptm/m/it/10 pre_action_question_results \T1/ptm/m/n/10 : [][]\T1/pcr/m/n/
 10 taniumpy.object_types.result_set.ResultSet[][] 
  []
 
-[511]
-Overfull \hbox (7.57344pt too wide) in paragraph at lines 30454--30455
+[239]
+Overfull \hbox (7.57344pt too wide) in paragraph at lines 14727--14728
 []\T1/ptm/m/it/10 pre_action_question_results \T1/ptm/m/n/10 : [][]\T1/pcr/m/n/
 10 taniumpy.object_types.result_set.ResultSet[][] 
  []
 
-[512] [513]
-Underfull \hbox (badness 10000) in paragraph at lines 30662--30664
+[240] [241]
+Underfull \hbox (badness 10000) in paragraph at lines 14935--14937
 []\T1/ptm/b/n/10 obj \T1/ptm/m/n/10 : [][]\T1/pcr/m/n/10 taniumpy.object_types.
 base.BaseType[][] \T1/ptm/m/n/10 or
  []
 
 
-Overfull \hbox (24.97382pt too wide) in paragraph at lines 30694--30695
+Overfull \hbox (24.97382pt too wide) in paragraph at lines 14967--14968
 []\T1/ptm/m/n/10 for \T1/ptm/m/it/10 ex-port_format \T1/ptm/m/n/10 csv and \T1/
 ptm/m/it/10 obj \T1/ptm/m/n/10 type [][]\T1/pcr/m/n/10 taniumpy.object_types.re
 sult_set.ResultSet[][] 
  []
 
 
-Overfull \hbox (24.97382pt too wide) in paragraph at lines 30707--30708
+Overfull \hbox (24.97382pt too wide) in paragraph at lines 14980--14981
 []\T1/ptm/m/n/10 for \T1/ptm/m/it/10 ex-port_format \T1/ptm/m/n/10 csv and \T1/
 ptm/m/it/10 obj \T1/ptm/m/n/10 type [][]\T1/pcr/m/n/10 taniumpy.object_types.re
 sult_set.ResultSet[][] 
  []
 
 
-Overfull \hbox (24.97382pt too wide) in paragraph at lines 30720--30721
+Overfull \hbox (24.97382pt too wide) in paragraph at lines 14993--14994
 []\T1/ptm/m/n/10 for \T1/ptm/m/it/10 ex-port_format \T1/ptm/m/n/10 csv and \T1/
 ptm/m/it/10 obj \T1/ptm/m/n/10 type [][]\T1/pcr/m/n/10 taniumpy.object_types.re
 sult_set.ResultSet[][] 
  []
 
-[514]
-Overfull \hbox (11.7736pt too wide) in paragraph at lines 30733--30734
+[242]
+Overfull \hbox (11.7736pt too wide) in paragraph at lines 15006--15007
 []\T1/ptm/m/n/10 for \T1/ptm/m/it/10 ex-port_format \T1/ptm/m/n/10 json or csv 
 and \T1/ptm/m/it/10 obj \T1/ptm/m/n/10 type [][]\T1/pcr/m/n/10 taniumpy.object_
 types.base.BaseType[][] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 30787--30789
+Underfull \hbox (badness 10000) in paragraph at lines 15060--15062
 []\T1/ptm/b/n/10 obj \T1/ptm/m/n/10 : [][]\T1/pcr/m/n/10 taniumpy.object_types.
 base.BaseType[][] \T1/ptm/m/n/10 or
  []
 
 
-Overfull \hbox (24.97382pt too wide) in paragraph at lines 30819--30820
+Overfull \hbox (24.97382pt too wide) in paragraph at lines 15092--15093
 []\T1/ptm/m/n/10 for \T1/ptm/m/it/10 ex-port_format \T1/ptm/m/n/10 csv and \T1/
 ptm/m/it/10 obj \T1/ptm/m/n/10 type [][]\T1/pcr/m/n/10 taniumpy.object_types.re
 sult_set.ResultSet[][] 
  []
 
 
-Overfull \hbox (24.97382pt too wide) in paragraph at lines 30832--30833
+Overfull \hbox (24.97382pt too wide) in paragraph at lines 15105--15106
 []\T1/ptm/m/n/10 for \T1/ptm/m/it/10 ex-port_format \T1/ptm/m/n/10 csv and \T1/
 ptm/m/it/10 obj \T1/ptm/m/n/10 type [][]\T1/pcr/m/n/10 taniumpy.object_types.re
 sult_set.ResultSet[][] 
  []
 
-[515]
-Overfull \hbox (24.97382pt too wide) in paragraph at lines 30845--30846
+[243]
+Overfull \hbox (24.97382pt too wide) in paragraph at lines 15118--15119
 []\T1/ptm/m/n/10 for \T1/ptm/m/it/10 ex-port_format \T1/ptm/m/n/10 csv and \T1/
 ptm/m/it/10 obj \T1/ptm/m/n/10 type [][]\T1/pcr/m/n/10 taniumpy.object_types.re
 sult_set.ResultSet[][] 
  []
 
 
-Overfull \hbox (11.7736pt too wide) in paragraph at lines 30858--30859
+Overfull \hbox (11.7736pt too wide) in paragraph at lines 15131--15132
 []\T1/ptm/m/n/10 for \T1/ptm/m/it/10 ex-port_format \T1/ptm/m/n/10 json or csv 
 and \T1/ptm/m/it/10 obj \T1/ptm/m/n/10 type [][]\T1/pcr/m/n/10 taniumpy.object_
 types.base.BaseType[][] 
  []
 
-[516]
-Underfull \hbox (badness 10000) in paragraph at lines 31008--31008
+[244]
+Underfull \hbox (badness 10000) in paragraph at lines 15281--15281
 []\T1/ptm/m/it/10 name\T1/ptm/m/n/10 , \T1/ptm/m/it/10 com-mand\T1/ptm/m/n/10 ,
  \T1/ptm/m/it/10 dis-play_name='`\T1/ptm/m/n/10 , \T1/ptm/m/it/10 file_urls=[]\
 T1/ptm/m/n/10 , \T1/ptm/m/it/10 com-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 31008--31008
+Underfull \hbox (badness 10000) in paragraph at lines 15281--15281
 \T1/ptm/m/it/10 mand_timeout_seconds=600\T1/ptm/m/n/10 , \T1/ptm/m/it/10 ex-pir
 e_seconds=600\T1/ptm/m/n/10 , \T1/ptm/m/it/10 pa-ram-e-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 31008--31008
+Underfull \hbox (badness 10000) in paragraph at lines 15281--15281
 \T1/ptm/m/it/10 ters_json_file='`\T1/ptm/m/n/10 , \T1/ptm/m/it/10 ver-ify_filte
 rs=[]\T1/ptm/m/n/10 , \T1/ptm/m/it/10 ver-ify_filter_options=[]\T1/ptm/m/n/10 ,
  \T1/ptm/m/it/10 ver-
  []
 
-[517]
-Underfull \hbox (badness 10000) in paragraph at lines 31144--31148
+[245]
+Underfull \hbox (badness 10000) in paragraph at lines 15417--15421
 
  []
 
-[518] [519] [520]
-Underfull \hbox (badness 10000) in paragraph at lines 31564--31565
+[246] [247] [248]
+Underfull \hbox (badness 10000) in paragraph at lines 15837--15838
 \T1/ptm/m/n/10 A list of ar-gu-ments that will be passed on to the ques-tion as
 ker/poller
  []
 
 
-Overfull \hbox (324.73805pt too wide) in paragraph at lines 31580--31580
+Overfull \hbox (324.73805pt too wide) in paragraph at lines 15853--15853
 []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 31580--31580
+Underfull \hbox (badness 10000) in paragraph at lines 15853--15853
 
  []
 
-[521]
-Overfull \hbox (306.71716pt too wide) in paragraph at lines 31600--31600
+[249]
+Overfull \hbox (306.71716pt too wide) in paragraph at lines 15873--15873
 []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 31600--31600
+Underfull \hbox (badness 10000) in paragraph at lines 15873--15873
 
  []
 
 
-Overfull \hbox (400.66608pt too wide) in paragraph at lines 31674--31674
+Overfull \hbox (400.66608pt too wide) in paragraph at lines 15947--15947
 []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 31674--31674
+Underfull \hbox (badness 10000) in paragraph at lines 15947--15947
 
  []
 
 
-Overfull \hbox (293.08752pt too wide) in paragraph at lines 31691--31691
+Overfull \hbox (293.08752pt too wide) in paragraph at lines 15964--15964
 []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 31691--31691
+Underfull \hbox (badness 10000) in paragraph at lines 15964--15964
 
  []
 
-[522]
-Underfull \hbox (badness 10000) in paragraph at lines 31771--31772
+[250]
+Underfull \hbox (badness 10000) in paragraph at lines 16044--16045
 \T1/ptm/m/n/10 A list of ar-gu-ments that will be pulled from any re-spec-tive 
 kwargs for most calls to
  []
 
-[523]
-Underfull \hbox (badness 10000) in paragraph at lines 31866--31866
+[251]
+Underfull \hbox (badness 10000) in paragraph at lines 16139--16139
 []\T1/ptm/m/it/10 prog\T1/ptm/m/n/10 , \T1/ptm/m/it/10 in-dent_increment=2\T1/p
 tm/m/n/10 , \T1/ptm/m/it/10 max_help_position=24\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (32.67451pt too wide) in paragraph at lines 31867--31868
+Overfull \hbox (32.67451pt too wide) in paragraph at lines 16140--16141
 \T1/ptm/m/n/10 Bases: [][]\T1/pcr/m/n/10 argparse.ArgumentDefaultsHelpFormatter
 [][]\T1/ptm/m/n/10 , [][]\T1/pcr/m/n/10 argparse.RawDescriptionHelpFormatter[][
 ] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 31915--31916
+Underfull \hbox (badness 10000) in paragraph at lines 16188--16189
 \T1/ptm/m/n/10 Changes the log-ging for-mat for con-sole han-dler to [][]\T1/pc
 r/m/n/10 pytan.constants.DEBUG_FORMAT[][] \T1/ptm/m/n/10 or
  []
 
-[524] [525] [526] [527] [528] [529] [530] [531] [532] [533]
-Overfull \hbox (5.67387pt too wide) in paragraph at lines 33219--33221
+[252] [253] [254] [255] [256] [257] [258] [259] [260] [261]
+Overfull \hbox (5.67387pt too wide) in paragraph at lines 17492--17494
 []\T1/ptm/b/n/10 metadatalist_obj \T1/ptm/m/n/10 : [][]\T1/pcr/m/n/10 taniumpy.
 object_types.metadata_list.MetadataList[][] 
  []
 
 
-Overfull \hbox (64.99313pt too wide) in paragraph at lines 33223--33224
+Overfull \hbox (64.99313pt too wide) in paragraph at lines 17496--17497
 []\T1/ptm/m/n/10 MetadataList ob-ject with list of [][]\T1/pcr/m/n/10 taniumpy.
 object_types.metadata_item.MetadataItem[][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 33269--33269
+Underfull \hbox (badness 10000) in paragraph at lines 17542--17542
 []\T1/ptm/m/it/10 obj\T1/ptm/m/n/10 , \T1/ptm/m/it/10 user_params\T1/ptm/m/n/10
  , \T1/ptm/m/it/10 de-lim='`\T1/ptm/m/n/10 , \T1/ptm/m/it/10 de-rive_def=False\
 T1/ptm/m/n/10 ,
  []
 
-[534]
-Overfull \hbox (6.01396pt too wide) in paragraph at lines 33311--33313
+[262]
+Overfull \hbox (6.01396pt too wide) in paragraph at lines 17584--17586
 []\T1/ptm/b/n/10 param_objlist \T1/ptm/m/n/10 : [][]\T1/pcr/m/n/10 taniumpy.obj
 ect_types.parameter_list.ParameterList[][] 
  []
 
 
-Overfull \hbox (26.17319pt too wide) in paragraph at lines 33315--33316
+Overfull \hbox (26.17319pt too wide) in paragraph at lines 17588--17589
 []\T1/ptm/m/n/10 ParameterList ob-ject with list of [][]\T1/pcr/m/n/10 taniumpy
 .object_types.parameter.Parameter[][]
  []
 
-[535] [536] [537] [538] [539]
-Overfull \hbox (3.31381pt too wide) in paragraph at lines 34218--34218
+[263] [264] [265] [266] [267]
+Overfull \hbox (3.31381pt too wide) in paragraph at lines 18491--18491
 []\T1/ptm/m/it/10 methodName='runTest'\T1/pcr/m/n/10 ) 
  []
 
 
-Overfull \hbox (21.31381pt too wide) in paragraph at lines 34280--34280
+Overfull \hbox (21.31381pt too wide) in paragraph at lines 18553--18553
 []\T1/ptm/m/it/10 methodName='runTest'\T1/pcr/m/n/10 ) 
  []
 
-[540]
-Overfull \hbox (3.31381pt too wide) in paragraph at lines 34312--34312
+[268]
+Overfull \hbox (3.31381pt too wide) in paragraph at lines 18585--18585
 []\T1/ptm/m/it/10 methodName='runTest'\T1/pcr/m/n/10 ) 
  []
 
-[541]
-Overfull \hbox (45.24503pt too wide) in paragraph at lines 34613--34613
+[269]
+Overfull \hbox (45.24503pt too wide) in paragraph at lines 18886--18886
 []\T1/pcr/m/n/10 ) 
  []
 
 
-Overfull \hbox (9.24503pt too wide) in paragraph at lines 34619--34619
+Overfull \hbox (9.24503pt too wide) in paragraph at lines 18892--18892
 []\T1/pcr/m/n/10 ) 
  []
 
 
-Overfull \hbox (21.24503pt too wide) in paragraph at lines 34625--34625
+Overfull \hbox (21.24503pt too wide) in paragraph at lines 18898--18898
 []\T1/pcr/m/n/10 ) 
  []
 
 
-Overfull \hbox (15.24503pt too wide) in paragraph at lines 34631--34631
+Overfull \hbox (15.24503pt too wide) in paragraph at lines 18904--18904
 []\T1/pcr/m/n/10 ) 
  []
 
-[542]
-Overfull \hbox (3.24503pt too wide) in paragraph at lines 34673--34673
-[]\T1/pcr/m/n/10 ) 
- []
-
-
-Overfull \hbox (39.24503pt too wide) in paragraph at lines 34679--34679
+[270]
+Overfull \hbox (3.24503pt too wide) in paragraph at lines 18946--18946
 []\T1/pcr/m/n/10 ) 
  []
 
 
-Overfull \hbox (45.24503pt too wide) in paragraph at lines 34685--34685
+Overfull \hbox (39.24503pt too wide) in paragraph at lines 18952--18952
 []\T1/pcr/m/n/10 ) 
  []
 
 
-Overfull \hbox (21.24503pt too wide) in paragraph at lines 34691--34691
+Overfull \hbox (45.24503pt too wide) in paragraph at lines 18958--18958
 []\T1/pcr/m/n/10 ) 
  []
 
 
-Overfull \hbox (39.24503pt too wide) in paragraph at lines 34697--34697
+Overfull \hbox (21.24503pt too wide) in paragraph at lines 18964--18964
 []\T1/pcr/m/n/10 ) 
  []
 
 
-Overfull \hbox (45.24503pt too wide) in paragraph at lines 34703--34703
+Overfull \hbox (39.24503pt too wide) in paragraph at lines 18970--18970
 []\T1/pcr/m/n/10 ) 
  []
 
 
-Overfull \hbox (45.24503pt too wide) in paragraph at lines 34709--34709
+Overfull \hbox (45.24503pt too wide) in paragraph at lines 18976--18976
 []\T1/pcr/m/n/10 ) 
  []
 
 
-Overfull \hbox (57.24503pt too wide) in paragraph at lines 34721--34721
+Overfull \hbox (45.24503pt too wide) in paragraph at lines 18982--18982
 []\T1/pcr/m/n/10 ) 
  []
 
 
-Overfull \hbox (33.24503pt too wide) in paragraph at lines 34727--34727
+Overfull \hbox (57.24503pt too wide) in paragraph at lines 18994--18994
 []\T1/pcr/m/n/10 ) 
  []
 
 
-Overfull \hbox (45.24503pt too wide) in paragraph at lines 34733--34733
+Overfull \hbox (33.24503pt too wide) in paragraph at lines 19000--19000
 []\T1/pcr/m/n/10 ) 
  []
 
 
-Overfull \hbox (75.24503pt too wide) in paragraph at lines 34739--34739
+Overfull \hbox (45.24503pt too wide) in paragraph at lines 19006--19006
 []\T1/pcr/m/n/10 ) 
  []
 
 
-Overfull \hbox (45.24503pt too wide) in paragraph at lines 34763--34763
+Overfull \hbox (75.24503pt too wide) in paragraph at lines 19012--19012
 []\T1/pcr/m/n/10 ) 
  []
 
 
-Overfull \hbox (3.24503pt too wide) in paragraph at lines 34769--34769
+Overfull \hbox (45.24503pt too wide) in paragraph at lines 19036--19036
 []\T1/pcr/m/n/10 ) 
  []
 
 
-Overfull \hbox (27.24503pt too wide) in paragraph at lines 34787--34787
+Overfull \hbox (3.24503pt too wide) in paragraph at lines 19042--19042
 []\T1/pcr/m/n/10 ) 
  []
 
 
-Overfull \hbox (3.24503pt too wide) in paragraph at lines 34793--34793
+Overfull \hbox (27.24503pt too wide) in paragraph at lines 19060--19060
 []\T1/pcr/m/n/10 ) 
  []
 
 
-Overfull \hbox (3.24503pt too wide) in paragraph at lines 34805--34805
+Overfull \hbox (3.24503pt too wide) in paragraph at lines 19066--19066
 []\T1/pcr/m/n/10 ) 
  []
 
 
-Overfull \hbox (3.24503pt too wide) in paragraph at lines 34871--34871
+Overfull \hbox (3.24503pt too wide) in paragraph at lines 19078--19078
 []\T1/pcr/m/n/10 ) 
  []
 
 
-Overfull \hbox (27.24503pt too wide) in paragraph at lines 34883--34883
-[]\T1/pcr/m/n/10 ) 
- []
-
-[543]
-Overfull \hbox (57.24503pt too wide) in paragraph at lines 34895--34895
+Overfull \hbox (3.24503pt too wide) in paragraph at lines 19144--19144
 []\T1/pcr/m/n/10 ) 
  []
 
 
-Overfull \hbox (3.24503pt too wide) in paragraph at lines 34967--34967
+Overfull \hbox (27.24503pt too wide) in paragraph at lines 19156--19156
 []\T1/pcr/m/n/10 ) 
  []
 
-[544]
-Overfull \hbox (153.24503pt too wide) in paragraph at lines 35249--35249
-[]\T1/pcr/m/n/10 ) 
- []
-
-
-Overfull \hbox (75.24503pt too wide) in paragraph at lines 35255--35255
+[271]
+Overfull \hbox (57.24503pt too wide) in paragraph at lines 19168--19168
 []\T1/pcr/m/n/10 ) 
  []
 
 
-Overfull \hbox (21.24503pt too wide) in paragraph at lines 35267--35267
+Overfull \hbox (3.24503pt too wide) in paragraph at lines 19240--19240
+[]\T1/pcr/m/n/10 ) 
+ []
+
+[272]
+Overfull \hbox (153.24503pt too wide) in paragraph at lines 19522--19522
 []\T1/pcr/m/n/10 ) 
  []
 
 
-Overfull \hbox (93.24503pt too wide) in paragraph at lines 35273--35273
+Overfull \hbox (75.24503pt too wide) in paragraph at lines 19528--19528
 []\T1/pcr/m/n/10 ) 
  []
 
 
-Overfull \hbox (81.24503pt too wide) in paragraph at lines 35279--35279
+Overfull \hbox (21.24503pt too wide) in paragraph at lines 19540--19540
 []\T1/pcr/m/n/10 ) 
  []
 
 
-Overfull \hbox (177.24503pt too wide) in paragraph at lines 35291--35291
+Overfull \hbox (93.24503pt too wide) in paragraph at lines 19546--19546
 []\T1/pcr/m/n/10 ) 
  []
 
 
-Overfull \hbox (183.24503pt too wide) in paragraph at lines 35297--35297
+Overfull \hbox (81.24503pt too wide) in paragraph at lines 19552--19552
 []\T1/pcr/m/n/10 ) 
  []
 
 
-Overfull \hbox (69.24503pt too wide) in paragraph at lines 35309--35309
+Overfull \hbox (177.24503pt too wide) in paragraph at lines 19564--19564
 []\T1/pcr/m/n/10 ) 
  []
 
 
-Overfull \hbox (171.24503pt too wide) in paragraph at lines 35315--35315
+Overfull \hbox (183.24503pt too wide) in paragraph at lines 19570--19570
 []\T1/pcr/m/n/10 ) 
  []
 
-[545]
-Overfull \hbox (243.24503pt too wide) in paragraph at lines 35339--35339
+
+Overfull \hbox (69.24503pt too wide) in paragraph at lines 19582--19582
 []\T1/pcr/m/n/10 ) 
  []
 
-[546]
-Underfull \hbox (badness 10000) in paragraph at lines 35567--35567
+
+Overfull \hbox (171.24503pt too wide) in paragraph at lines 19588--19588
+[]\T1/pcr/m/n/10 ) 
+ []
+
+[273]
+Overfull \hbox (243.24503pt too wide) in paragraph at lines 19612--19612
+[]\T1/pcr/m/n/10 ) 
+ []
+
+[274]
+Underfull \hbox (badness 10000) in paragraph at lines 19840--19840
 []\T1/ptm/m/it/10 session\T1/ptm/m/n/10 , \T1/ptm/m/it/10 ques-tion\T1/ptm/m/n/
 10 , \T1/ptm/m/it/10 polling_interval=None\T1/ptm/m/n/10 ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 35598--35600
+Underfull \hbox (badness 10000) in paragraph at lines 19871--19873
 []\T1/ptm/m/n/10 Any call-back can choose to get data from the ses-sion by call
 -ing
  []
 
-[547]
-Underfull \hbox (badness 10000) in paragraph at lines 35734--35734
+[275]
+Underfull \hbox (badness 10000) in paragraph at lines 20007--20007
 []\T1/ptm/m/it/10 simple_properties\T1/ptm/m/n/10 , \T1/ptm/m/it/10 com-plex_pr
 operties\T1/ptm/m/n/10 ,
  []
 
-[548] [549] [550] [551] [552] [553] [554] [555] [556] [557] [558] [559]
-Underfull \hbox (badness 10000) in paragraph at lines 36902--36902
+[276] [277] [278] [279] [280] [281] [282] [283] [284] [285] [286] [287]
+Underfull \hbox (badness 10000) in paragraph at lines 21175--21175
 []\T1/ptm/m/it/10 xml_input\T1/ptm/m/n/10 , \T1/ptm/m/it/10 en-cod-ing=None\T1/
 ptm/m/n/10 , \T1/ptm/m/it/10 ex-pat=<module `xml.parsers.expat' from
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 36902--36902
+Underfull \hbox (badness 10000) in paragraph at lines 21175--21175
 \T1/ptm/m/it/10 `/Library/Python/2.7/site-packages/_xmlplus/parsers/expat.pyc'>
 \T1/ptm/m/n/10 , \T1/ptm/m/it/10 pro-
  []
 
-[560] [561]
-Underfull \hbox (badness 10000) in paragraph at lines 37129--37129
+[288] [289]
+Underfull \hbox (badness 10000) in paragraph at lines 21402--21402
 []\T1/ptm/m/it/10 server_address\T1/ptm/m/n/10 , \T1/ptm/m/it/10 Re-questHandle
 r-Class\T1/ptm/m/n/10 ,
  []
 
-[562]
+[290]
 Chapter 2.
-[563
+[291
 
-] [564
+] [292
 
 ]
-Overfull \hbox (0.6225pt too wide) in paragraph at lines 37183--37184
+Overfull \hbox (0.6225pt too wide) in paragraph at lines 21456--21457
 []\T1/pcr/m/n/10 taniumpy.object_types.action_list_info\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (0.6225pt too wide) in paragraph at lines 37185--37186
+Overfull \hbox (0.6225pt too wide) in paragraph at lines 21458--21459
 []\T1/pcr/m/n/10 taniumpy.object_types.action_stop_list\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (6.6225pt too wide) in paragraph at lines 37187--37188
+Overfull \hbox (6.6225pt too wide) in paragraph at lines 21460--21461
 []\T1/pcr/m/n/10 taniumpy.object_types.archived_question\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (36.6225pt too wide) in paragraph at lines 37188--37189
+Overfull \hbox (36.6225pt too wide) in paragraph at lines 21461--21462
 []\T1/pcr/m/n/10 taniumpy.object_types.archived_question_list\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (6.6225pt too wide) in paragraph at lines 37192--37193
+Overfull \hbox (6.6225pt too wide) in paragraph at lines 21465--21466
 []\T1/pcr/m/n/10 taniumpy.object_types.cache_filter_list\T1/ptm/m/n/10 ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 37198--37199
+Underfull \hbox (badness 10000) in paragraph at lines 21471--21472
 []\T1/pcr/m/n/10 taniumpy.object_types.computer_group\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (18.6225pt too wide) in paragraph at lines 37199--37200
+Overfull \hbox (18.6225pt too wide) in paragraph at lines 21472--21473
 []\T1/pcr/m/n/10 taniumpy.object_types.computer_group_list\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (18.6225pt too wide) in paragraph at lines 37200--37201
+Overfull \hbox (18.6225pt too wide) in paragraph at lines 21473--21474
 []\T1/pcr/m/n/10 taniumpy.object_types.computer_group_spec\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (12.6225pt too wide) in paragraph at lines 37201--37202
+Overfull \hbox (12.6225pt too wide) in paragraph at lines 21474--21475
 []\T1/pcr/m/n/10 taniumpy.object_types.computer_spec_list\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (6.6225pt too wide) in paragraph at lines 37210--37211
+Overfull \hbox (6.6225pt too wide) in paragraph at lines 21483--21484
 []\T1/pcr/m/n/10 taniumpy.object_types.object_list_types\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (6.6225pt too wide) in paragraph at lines 37213--37214
+Overfull \hbox (6.6225pt too wide) in paragraph at lines 21486--21487
 []\T1/pcr/m/n/10 taniumpy.object_types.package_file_list\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (18.6225pt too wide) in paragraph at lines 37214--37215
+Overfull \hbox (18.6225pt too wide) in paragraph at lines 21487--21488
 []\T1/pcr/m/n/10 taniumpy.object_types.package_file_status\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (48.6225pt too wide) in paragraph at lines 37215--37216
+Overfull \hbox (48.6225pt too wide) in paragraph at lines 21488--21489
 []\T1/pcr/m/n/10 taniumpy.object_types.package_file_status_list\T1/ptm/m/n/10 ,
 
  []
 
 
-Overfull \hbox (30.6225pt too wide) in paragraph at lines 37216--37217
+Overfull \hbox (30.6225pt too wide) in paragraph at lines 21489--21490
 []\T1/pcr/m/n/10 taniumpy.object_types.package_file_template\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (60.6225pt too wide) in paragraph at lines 37217--37218
+Overfull \hbox (60.6225pt too wide) in paragraph at lines 21490--21491
 []\T1/pcr/m/n/10 taniumpy.object_types.package_file_template_list\T1/ptm/m/n/10
  ,
  []
 
 
-Overfull \hbox (6.6225pt too wide) in paragraph at lines 37219--37220
+Overfull \hbox (6.6225pt too wide) in paragraph at lines 21492--21493
 []\T1/pcr/m/n/10 taniumpy.object_types.package_spec_list\T1/ptm/m/n/10 ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 37221--37222
+Underfull \hbox (badness 10000) in paragraph at lines 21494--21495
 []\T1/pcr/m/n/10 taniumpy.object_types.parameter_list\T1/ptm/m/n/10 ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 37223--37224
+Underfull \hbox (badness 10000) in paragraph at lines 21496--21497
 []\T1/pcr/m/n/10 taniumpy.object_types.parse_job_list\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (12.6225pt too wide) in paragraph at lines 37225--37226
+Overfull \hbox (12.6225pt too wide) in paragraph at lines 21498--21499
 []\T1/pcr/m/n/10 taniumpy.object_types.parse_result_group\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (42.6225pt too wide) in paragraph at lines 37226--37227
+Overfull \hbox (42.6225pt too wide) in paragraph at lines 21499--21500
 []\T1/pcr/m/n/10 taniumpy.object_types.parse_result_group_list\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (6.6225pt too wide) in paragraph at lines 37227--37228
+Overfull \hbox (6.6225pt too wide) in paragraph at lines 21500--21501
 []\T1/pcr/m/n/10 taniumpy.object_types.parse_result_list\T1/ptm/m/n/10 ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 37229--37230
+Underfull \hbox (badness 10000) in paragraph at lines 21502--21503
 []\T1/pcr/m/n/10 taniumpy.object_types.plugin_argument\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (24.6225pt too wide) in paragraph at lines 37230--37231
+Overfull \hbox (24.6225pt too wide) in paragraph at lines 21503--21504
 []\T1/pcr/m/n/10 taniumpy.object_types.plugin_argument_list\T1/ptm/m/n/10 ,
  []
 
-[565
+[293
 
 ]
-Overfull \hbox (18.6225pt too wide) in paragraph at lines 37231--37232
+Overfull \hbox (18.6225pt too wide) in paragraph at lines 21504--21505
 []\T1/pcr/m/n/10 taniumpy.object_types.plugin_command_list\T1/ptm/m/n/10 ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 37233--37234
+Underfull \hbox (badness 10000) in paragraph at lines 21506--21507
 []\T1/pcr/m/n/10 taniumpy.object_types.plugin_schedule\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (24.6225pt too wide) in paragraph at lines 37234--37235
+Overfull \hbox (24.6225pt too wide) in paragraph at lines 21507--21508
 []\T1/pcr/m/n/10 taniumpy.object_types.plugin_schedule_list\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (6.6225pt too wide) in paragraph at lines 37236--37237
+Overfull \hbox (6.6225pt too wide) in paragraph at lines 21509--21510
 []\T1/pcr/m/n/10 taniumpy.object_types.plugin_sql_column\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (6.6225pt too wide) in paragraph at lines 37237--37238
+Overfull \hbox (6.6225pt too wide) in paragraph at lines 21510--21511
 []\T1/pcr/m/n/10 taniumpy.object_types.plugin_sql_result\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (12.6225pt too wide) in paragraph at lines 37240--37241
+Overfull \hbox (12.6225pt too wide) in paragraph at lines 21513--21514
 []\T1/pcr/m/n/10 taniumpy.object_types.question_list_info\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (30.6225pt too wide) in paragraph at lines 37245--37246
+Overfull \hbox (30.6225pt too wide) in paragraph at lines 21518--21519
 []\T1/pcr/m/n/10 taniumpy.object_types.saved_action_approval\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (6.6225pt too wide) in paragraph at lines 37246--37247
+Overfull \hbox (6.6225pt too wide) in paragraph at lines 21519--21520
 []\T1/pcr/m/n/10 taniumpy.object_types.saved_action_list\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (18.6225pt too wide) in paragraph at lines 37247--37248
+Overfull \hbox (18.6225pt too wide) in paragraph at lines 21520--21521
 []\T1/pcr/m/n/10 taniumpy.object_types.saved_action_policy\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (48.6225pt too wide) in paragraph at lines 37248--37249
+Overfull \hbox (48.6225pt too wide) in paragraph at lines 21521--21522
 []\T1/pcr/m/n/10 taniumpy.object_types.saved_action_row_id_list\T1/ptm/m/n/10 ,
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 37249--37250
+Underfull \hbox (badness 10000) in paragraph at lines 21522--21523
 []\T1/pcr/m/n/10 taniumpy.object_types.saved_question\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (18.6225pt too wide) in paragraph at lines 37250--37251
+Overfull \hbox (18.6225pt too wide) in paragraph at lines 21523--21524
 []\T1/pcr/m/n/10 taniumpy.object_types.saved_question_list\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (6.6225pt too wide) in paragraph at lines 37256--37257
+Overfull \hbox (6.6225pt too wide) in paragraph at lines 21529--21530
 []\T1/pcr/m/n/10 taniumpy.object_types.sensor_query_list\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (18.6225pt too wide) in paragraph at lines 37257--37258
+Overfull \hbox (18.6225pt too wide) in paragraph at lines 21530--21531
 []\T1/pcr/m/n/10 taniumpy.object_types.sensor_string_hints\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (0.6225pt too wide) in paragraph at lines 37258--37259
+Overfull \hbox (0.6225pt too wide) in paragraph at lines 21531--21532
 []\T1/pcr/m/n/10 taniumpy.object_types.sensor_subcolumn\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (30.6225pt too wide) in paragraph at lines 37259--37260
+Overfull \hbox (30.6225pt too wide) in paragraph at lines 21532--21533
 []\T1/pcr/m/n/10 taniumpy.object_types.sensor_subcolumn_list\T1/ptm/m/n/10 ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 37262--37263
+Underfull \hbox (badness 10000) in paragraph at lines 21535--21536
 []\T1/pcr/m/n/10 taniumpy.object_types.system_setting\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (24.6225pt too wide) in paragraph at lines 37263--37264
+Overfull \hbox (24.6225pt too wide) in paragraph at lines 21536--21537
 []\T1/pcr/m/n/10 taniumpy.object_types.system_settings_list\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (42.6225pt too wide) in paragraph at lines 37264--37265
+Overfull \hbox (42.6225pt too wide) in paragraph at lines 21537--21538
 []\T1/pcr/m/n/10 taniumpy.object_types.system_status_aggregate\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (12.6225pt too wide) in paragraph at lines 37265--37266
+Overfull \hbox (12.6225pt too wide) in paragraph at lines 21538--21539
 []\T1/pcr/m/n/10 taniumpy.object_types.system_status_list\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (0.6225pt too wide) in paragraph at lines 37267--37268
+Overfull \hbox (0.6225pt too wide) in paragraph at lines 21540--21541
 []\T1/pcr/m/n/10 taniumpy.object_types.upload_file_list\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (12.6225pt too wide) in paragraph at lines 37268--37269
+Overfull \hbox (12.6225pt too wide) in paragraph at lines 21541--21542
 []\T1/pcr/m/n/10 taniumpy.object_types.upload_file_status\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (0.6225pt too wide) in paragraph at lines 37271--37272
+Overfull \hbox (0.6225pt too wide) in paragraph at lines 21544--21545
 []\T1/pcr/m/n/10 taniumpy.object_types.user_permissions\T1/ptm/m/n/10 ,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 37273--37274
+Underfull \hbox (badness 10000) in paragraph at lines 21546--21547
 []\T1/pcr/m/n/10 taniumpy.object_types.user_role_list\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (6.6225pt too wide) in paragraph at lines 37274--37275
+Overfull \hbox (6.6225pt too wide) in paragraph at lines 21547--21548
 []\T1/pcr/m/n/10 taniumpy.object_types.version_aggregate\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (36.6225pt too wide) in paragraph at lines 37275--37276
+Overfull \hbox (36.6225pt too wide) in paragraph at lines 21548--21549
 []\T1/pcr/m/n/10 taniumpy.object_types.version_aggregate_list\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (0.6225pt too wide) in paragraph at lines 37276--37277
+Overfull \hbox (0.6225pt too wide) in paragraph at lines 21549--21550
 []\T1/pcr/m/n/10 taniumpy.object_types.white_listed_url\T1/ptm/m/n/10 ,
  []
 
 
-Overfull \hbox (30.6225pt too wide) in paragraph at lines 37277--37278
+Overfull \hbox (30.6225pt too wide) in paragraph at lines 21550--21551
 []\T1/pcr/m/n/10 taniumpy.object_types.white_listed_url_list\T1/ptm/m/n/10 ,
  []
 
-[566] (./PyTan.ind
+[294] (./PyTan.ind
 Underfull \hbox (badness 10000) in paragraph at lines 8--9
 []\T1/ptm/m/n/10 __module__ (test_pytan_func.InvalidServerTests at-
  []
@@ -4483,7 +2316,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 60--62
 \T1/ptm/m/n/10 umpy.object_types.archived_question_list),
  []
 
-[567
+[295
 
 
 
@@ -4557,7 +2390,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 155--156
 \T1/ptm/m/n/10 umpy.object_types.base.BaseType class
  []
 
-[568]
+[296]
 Underfull \hbox (badness 10000) in paragraph at lines 156--157
 []\T1/ptm/m/n/10 fromSOAPElement() (tani-
  []
@@ -4667,7 +2500,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 248--249
 \T1/ptm/m/n/10 umpy.object_types.package_file_status),
  []
 
-[569]
+[297]
 Underfull \hbox (badness 10000) in paragraph at lines 249--251
 []\T1/ptm/m/n/10 PackageFileStatusList (class in tani-
  []
@@ -4842,7 +2675,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 322--323
 []\T1/ptm/m/n/10 SavedActionList (class in tani-
  []
 
-[570]
+[298]
 Underfull \hbox (badness 10000) in paragraph at lines 323--324
 []\T1/ptm/m/n/10 SavedActionPolicy (class in tani-
  []
@@ -4967,7 +2800,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 397--398
 []\T1/ptm/m/n/10 taniumpy.object_types.computer_group_list (mod-ule),
  []
 
-[571]
+[299]
 Underfull \hbox (badness 10000) in paragraph at lines 398--399
 []\T1/ptm/m/n/10 taniumpy.object_types.computer_group_spec (mod-ule),
  []
@@ -5044,7 +2877,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 485--487
 \T1/ptm/m/n/10 (test_pytan_unit.TestManualBuildObjectUtils
  []
 
-[572]
+[300]
 Underfull \hbox (badness 10000) in paragraph at lines 487--489
 []\T1/ptm/m/n/10 test_build_selectlist_obj_missing_value()
  []
@@ -5385,7 +3218,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 567--569
 \T1/ptm/m/n/10 (test_pytan_func.InvalidServerTests method),
  []
 
-[573]
+[301]
 Underfull \hbox (badness 10000) in paragraph at lines 569--571
 []\T1/ptm/m/n/10 test_invalid_create_object_1_invalid_create_sensor()
  []
@@ -5768,7 +3601,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 642--644
 \T1/ptm/m/n/10 (test_pytan_func.ValidServerTests method),
  []
 
-[574]
+[302]
 Overfull \hbox (26.02985pt too wide) in paragraph at lines 644--646
 []\T1/ptm/m/n/10 test_invalid_question_7_invalid_ask_manual_question_sensor()
  []
@@ -6051,7 +3884,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 731--733
 \T1/ptm/m/n/10 (test_pytan_unit.TestDehumanizeSensorUtils
  []
 
-[575]
+[303]
 Underfull \hbox (badness 10000) in paragraph at lines 733--735
 []\T1/ptm/m/n/10 test_single_str_with_filter()
  []
@@ -6431,7 +4264,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 805--807
 \T1/ptm/m/n/10 (test_pytan_func.ValidServerTests method),
  []
 
-[576]
+[304]
 Overfull \hbox (53.32927pt too wide) in paragraph at lines 807--809
 []\T1/ptm/m/n/10 test_valid_export_resultset_10_export_resultset_csv_default_op
 tions()
@@ -6803,7 +4636,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 877--879
 \T1/ptm/m/n/10 (test_pytan_func.ValidServerTests method),
  []
 
-[577]
+[305]
 Underfull \hbox (badness 10000) in paragraph at lines 879--881
 []\T1/ptm/m/n/10 test_valid_get_object_3_get_question_by_id()
  []
@@ -7138,7 +4971,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 946--947
 []\T1/ptm/m/n/10 TestManualQuestionOptionDefParseUtils (class in
  []
 
-[578]
+[306]
 Underfull \hbox (badness 10000) in paragraph at lines 947--948
 []\T1/ptm/m/n/10 TestManualSensorDefParseUtils (class in
  []
@@ -7248,26 +5081,26 @@ Underfull \hbox (badness 10000) in paragraph at lines 993--994
 []\T1/ptm/m/n/10 write_csv() (tani-umpy.object_types.result_set.ResultSet
  []
 
-[579])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 37291.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 37291.
+[307])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 21564.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 21564.
  (./PyTan.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 37291.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 21564.
 
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 37291
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 21564
 .
 Package rerunfilecheck Info: File `PyTan.out' has not changed.
-(rerunfilecheck)             Checksum: A65B2AD996B31DDD881E5282DC9BCDD8;809.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 37291.
+(rerunfilecheck)             Checksum: 0B756A8BD46A4B34C22E8A5C7645C52B;873.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 21564.
  ) 
 Here is how much of TeX's memory you used:
- 12292 strings out of 494213
- 240100 string characters out of 6157463
- 1249958 words of memory out of 5000000
- 13610 multiletter control sequences out of 15000+600000
+ 12065 strings out of 494213
+ 240005 string characters out of 6157463
+ 418933 words of memory out of 5000000
+ 13636 multiletter control sequences out of 15000+600000
  69374 words of font info for 77 fonts, out of 8000000 for 9000
  431 hyphenation exceptions out of 8191
- 49i,12n,77p,24215b,576s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 36i,12n,45p,20235b,576s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/opt/local/share/texmf-texlive/fonts/enc/dvips/base/8r.enc}</opt/local/share
 /texmf-texlive/fonts/type1/urw/courier/ucrb8a.pfb></opt/local/share/texmf-texli
 ve/fonts/type1/urw/courier/ucrr8a.pfb></opt/local/share/texmf-texlive/fonts/typ
@@ -7277,10 +5110,10 @@ a.pfb></opt/local/share/texmf-texlive/fonts/type1/urw/helvetic/uhvr8a.pfb></opt
 /local/share/texmf-texlive/fonts/type1/urw/times/utmb8a.pfb></opt/local/share/t
 exmf-texlive/fonts/type1/urw/times/utmr8a.pfb></opt/local/share/texmf-texlive/f
 onts/type1/urw/times/utmri8a.pfb>
-Output written on PyTan.pdf (583 pages, 1778722 bytes).
+Output written on PyTan.pdf (311 pages, 1008061 bytes).
 PDF statistics:
- 5176 PDF objects out of 6186 (max. 8388607)
- 4531 compressed objects within 46 object streams
- 1703 named destinations out of 1728 (max. 500000)
- 133 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 4003 PDF objects out of 4296 (max. 8388607)
+ 3639 compressed objects within 37 object streams
+ 1450 named destinations out of 1728 (max. 500000)
+ 141 words of extra memory for PDF output out of 10000 (max. 10000000)
 

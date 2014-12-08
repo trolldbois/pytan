@@ -1,6 +1,6 @@
 
 Invalid export basetype xml bad minimal type
-====================================================================================================
+==========================================================================================
 Export a BaseType from getting objects using a bad minimal
 
 Example Python Code

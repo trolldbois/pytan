@@ -1,6 +1,6 @@
 
 Get action by id
-====================================================================================================
+==========================================================================================
 Get an action by id
 
 Example Python Code
@@ -59,7 +59,14 @@ Example Python Code
     
     print ""
     print "print the first object returned in JSON format:"
-    print response.to_json(response[0])
+    out = response.to_json(response[0])
+    if len(out.splitlines()) > 15:
+        out = out.splitlines()[0:15]
+        out.append('..trimmed for brevity..')
+        out = '\n'.join(out)
+    
+    print out
+    
     
 
 
@@ -96,31 +103,4 @@ Output from Python Code
         "_type": "saved_question", 
         "id": 173
       }, 
-      "id": 1, 
-      "name": "Unmanaged Asset Tracking - Run Scan", 
-      "package_spec": {
-        "_type": "package_spec", 
-        "command": "cmd /c start /B cscript //T:3600 ..\\..\\Tools\\run-ua-scan.vbs /RANDOM_WAIT_TIME_IN_SECONDS:240", 
-        "id": 6, 
-        "name": "Run Unmanaged Asset Scanner"
-      }, 
-      "saved_action": {
-        "_type": "saved_action", 
-        "id": 1
-      }, 
-      "skip_lock_flag": 0, 
-      "status": "Pending", 
-      "stopped_flag": 0, 
-      "target_group": {
-        "_type": "group", 
-        "id": 65, 
-        "name": "Default"
-      }, 
-      "user": {
-        "_type": "user", 
-        "group_id": 0, 
-        "id": 1, 
-        "last_login": "2014-12-08T19:28:09", 
-        "name": "Jim Olsen"
-      }
-    }
+    ..trimmed for brevity..

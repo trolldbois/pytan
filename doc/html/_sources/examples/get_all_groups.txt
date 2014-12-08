@@ -1,6 +1,6 @@
 
 Get all groups
-====================================================================================================
+==========================================================================================
 Get all groups
 
 Example Python Code
@@ -58,7 +58,14 @@ Example Python Code
     
     print ""
     print "print the first object returned in JSON format:"
-    print response.to_json(response[0])
+    out = response.to_json(response[0])
+    if len(out.splitlines()) > 15:
+        out = out.splitlines()[0:15]
+        out.append('..trimmed for brevity..')
+        out = '\n'.join(out)
+    
+    print out
+    
     
 
 
@@ -74,10 +81,10 @@ Output from Python Code
     Type of response:  <class 'taniumpy.object_types.group_list.GroupList'>
     
     print of response:
-    GroupList, len: 2
+    GroupList, len: 5
     
     length of response (number of objects returned): 
-    2
+    5
     
     print the first object returned in JSON format:
     {
@@ -95,5 +102,4 @@ Output from Python Code
         "_type": "groups", 
         "group": []
       }, 
-      "type": 0
-    }
+    ..trimmed for brevity..

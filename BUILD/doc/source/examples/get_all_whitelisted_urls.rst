@@ -1,6 +1,6 @@
 
 Get all whitelisted urls
-====================================================================================================
+==========================================================================================
 Get all whitelisted urls
 
 Example Python Code
@@ -58,7 +58,14 @@ Example Python Code
     
     print ""
     print "print the first object returned in JSON format:"
-    print response.to_json(response[0])
+    out = response.to_json(response[0])
+    if len(out.splitlines()) > 15:
+        out = out.splitlines()[0:15]
+        out.append('..trimmed for brevity..')
+        out = '\n'.join(out)
+    
+    print out
+    
     
 
 
@@ -74,10 +81,10 @@ Output from Python Code
     Type of response:  <class 'taniumpy.object_types.white_listed_url_list.WhiteListedUrlList'>
     
     print of response:
-    WhiteListedUrlList, len: 22
+    WhiteListedUrlList, len: 46
     
     length of response (number of objects returned): 
-    22
+    46
     
     print the first object returned in JSON format:
     {

@@ -60,7 +60,7 @@ except Exception as e:
 
 '''Output from running this:
 Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-2014-12-08 15:17:05,259 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/SystemStatusList_2014_12_08-15_17_05-EST.json' written with 546 bytes
+2014-12-08 16:28:45,334 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/SystemStatusList_2014_12_08-16_28_45-EST.json' written with 546 bytes
 Traceback (most recent call last):
   File "<string>", line 51, in <module>
   File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 484, in create_from_json

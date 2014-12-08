@@ -1,6 +1,6 @@
 
 Create whitelisted url
-====================================================================================================
+==========================================================================================
 Create a whitelisted url
 
 Example Python Code
@@ -90,18 +90,18 @@ Output from Python Code
 
     Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
     No results found searching for whitelisted_url with {'url_regex': 'regex:http://test.com/.*API_Test.*URL'}!!
-    2014-12-08 15:17:04,687 INFO     handler: New Whitelisted URL 'regex:http://test.com/.*API_Test.*URL' created with ID 26
+    2014-12-08 16:28:44,663 INFO     handler: New Whitelisted URL 'regex:http://test.com/.*API_Test.*URL' created with ID 52
     
     Type of response:  <class 'taniumpy.object_types.white_listed_url.WhiteListedUrl'>
     
     print of response:
-    WhiteListedUrl, id: 26
+    WhiteListedUrl, id: 52
     
     print the object returned in JSON format:
     {
       "_type": "white_listed_url", 
       "download_seconds": 3600, 
-      "id": 26, 
+      "id": 52, 
       "metadata": {
         "_type": "metadata", 
         "item": [
@@ -115,4 +115,4 @@ Output from Python Code
       }, 
       "url_regex": "regex:http://test.com/.*API_Test.*URL"
     }
-    2014-12-08 15:17:04,703 INFO     handler: Deleted 'WhiteListedUrl, id: 26'
+    2014-12-08 16:28:44,685 INFO     handler: Deleted 'WhiteListedUrl, id: 52'

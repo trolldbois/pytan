@@ -50,7 +50,14 @@ print len(response)
 
 print ""
 print "print the first object returned in JSON format:"
-print response.to_json(response[0])
+out = response.to_json(response[0])
+if len(out.splitlines()) > 15:
+    out = out.splitlines()[0:15]
+    out.append('..trimmed for brevity..')
+    out = '\n'.join(out)
+
+print out
+
 
 
 '''Output from running this:
@@ -59,10 +66,10 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
 Type of response:  <class 'taniumpy.object_types.white_listed_url_list.WhiteListedUrlList'>
 
 print of response:
-WhiteListedUrlList, len: 22
+WhiteListedUrlList, len: 46
 
 length of response (number of objects returned): 
-22
+46
 
 print the first object returned in JSON format:
 {

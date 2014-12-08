@@ -1,6 +1,6 @@
 
 Invalid get action single by name
-====================================================================================================
+==========================================================================================
 Get an action by name (name is not a supported selector for action)
 
 Example Python Code

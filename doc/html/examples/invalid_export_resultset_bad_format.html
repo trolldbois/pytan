@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>5. Invalid export resultset bad format &mdash; PyTan 1.0.0 documentation</title>
+  <title>5. Invalid export resultset bad format &mdash; PyTan 1.0.1 documentation</title>
   
 
   
@@ -28,9 +28,9 @@
   
 
   
-    <link rel="top" title="PyTan 1.0.0 documentation" href="../index.html"/>
+    <link rel="top" title="PyTan 1.0.1 documentation" href="../index.html"/>
         <link rel="up" title="pytan API Invalid Export ResultSet Examples" href="invalid_export_resultset.html"/>
-        <link rel="next" title="6.1.11. pytan API Valid Export BaseType Examples" href="valid_export_basetype.html"/>
+        <link rel="next" title="7.1.11. pytan API Valid Export BaseType Examples" href="valid_export_basetype.html"/>
         <link rel="prev" title="4. Invalid export resultset csv bad sensors sub type" href="invalid_export_resultset_csv_bad_sensors_sub_type.html"/> 
 
   
@@ -68,13 +68,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../description.html#requirements">3. Requirements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../description.html#installation">4. Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../description.html#usage">5. Usage</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../pytan.html">6. pytan package</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="pytan_examples.html">6.1. pytan API examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.handler.html">6.2. pytan.handler module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.constants.html">6.3. pytan.constants module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.utils.html">6.4. pytan.utils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.unittest.html">6.5. pytan Unit Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.functest.html">6.6. pytan Functional Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../description.html#directory-layout">6. Directory Layout</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../pytan.html">7. pytan package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pytan_examples.html">7.1. pytan API examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.handler.html">7.2. pytan.handler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.constants.html">7.3. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.utils.html">7.4. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.unittest.html">7.5. pytan Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.functest.html">7.6. pytan Functional Tests</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../taniumpy.html">taniumpy package</a><ul>
@@ -83,13 +84,13 @@
 <li class="toctree-l2"><a class="reference internal" href="../taniumpy.object_types.html">3. taniumpy.object_types package</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../xmltodict.html">7. xmltodict module</a><ul class="simple">
+<li class="toctree-l1"><a class="reference internal" href="../xmltodict.html">8. xmltodict module</a><ul class="simple">
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../ddt.html">8. ddt module</a><ul class="simple">
+<li class="toctree-l1"><a class="reference internal" href="../ddt.html">9. ddt module</a><ul class="simple">
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../threaded_http.html">9. threaded_http module</a><ul class="simple">
+<li class="toctree-l1"><a class="reference internal" href="../threaded_http.html">10. threaded_http module</a><ul class="simple">
 </ul>
 </li>
 </ul>
@@ -116,9 +117,9 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../index.html">Docs</a> &raquo;</li>
       
-          <li><a href="../pytan.html">6. pytan package</a> &raquo;</li>
+          <li><a href="../pytan.html">7. pytan package</a> &raquo;</li>
       
-          <li><a href="pytan_examples.html">6.1. pytan API examples</a> &raquo;</li>
+          <li><a href="pytan_examples.html">7.1. pytan API examples</a> &raquo;</li>
       
           <li><a href="invalid_export_resultset.html">pytan API Invalid Export ResultSet Examples</a> &raquo;</li>
       
@@ -242,23 +243,21 @@
 </div>
 <div class="section" id="output-from-python-code">
 <h2>5.2. Output from Python Code<a class="headerlink" href="#output-from-python-code" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-none"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10</pre></div></td><td class="code"><div class="highlight"><pre>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-2014-12-07 01:24:58,742 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-2014-12-07 01:25:03,753 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-2014-12-07 01:25:08,770 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-2014-12-07 01:25:13,785 INFO     question_progress: Results 100% (Get Computer Name from all machines)
+<div class="highlight-none"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></div></td><td class="code"><div class="highlight"><pre>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+2014-12-08 16:44:18,688 INFO     question_progress: Results 0% (Get Computer Name from all machines)
+2014-12-08 16:44:23,702 INFO     question_progress: Results 83% (Get Computer Name from all machines)
+2014-12-08 16:44:28,719 INFO     question_progress: Results 100% (Get Computer Name from all machines)
 Traceback (most recent call last):
   File &quot;&lt;string&gt;&quot;, line 48, in &lt;module&gt;
-  File &quot;/Users/jolsen/gh/pytan/lib/pytan/handler.py&quot;, line 1333, in export_obj
+  File &quot;/Users/jolsen/gh/pytan/lib/pytan/handler.py&quot;, line 1396, in export_obj
     raise HandlerError(err)
 HandlerError: u&#39;bad&#39; not a supported export format for ResultSet, must be one of: json, csv
 </pre></div>
@@ -272,7 +271,7 @@ HandlerError: u&#39;bad&#39; not a supported export format for ResultSet, must b
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="valid_export_basetype.html" class="btn btn-neutral float-right" title="6.1.11. pytan API Valid Export BaseType Examples">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="valid_export_basetype.html" class="btn btn-neutral float-right" title="7.1.11. pytan API Valid Export BaseType Examples">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="invalid_export_resultset_csv_bad_sensors_sub_type.html" class="btn btn-neutral" title="4. Invalid export resultset csv bad sensors sub type"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -306,7 +305,7 @@ HandlerError: u&#39;bad&#39; not a supported export format for ResultSet, must b
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.0.0',
+            VERSION:'1.0.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

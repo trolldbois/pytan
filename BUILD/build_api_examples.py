@@ -72,7 +72,7 @@ def write_file(f, c):
     print "Wrote file: {}".format(f)
 
 
-rst_name_template = "\n{{}}\n{}\n".format("=" * 100).format
+rst_name_template = "\n{{}}\n{}\n".format("=" * 90).format
 rst_desc_template = "{}\n".format
 
 example_py_out = '''
@@ -233,8 +233,12 @@ response['question_results'].write_csv(out, response['question_results'])
 
 print ""
 print "CSV Results of response: "
-print out.getvalue()
-
+out = out.getvalue()
+if len(out.splitlines()) > 15:
+    out = out.splitlines()[0:15]
+    out.append('..trimmed for brevity..')
+    out = '\\n'.join(out)
+print out
 """
     q_code = '{}{}{}{}\n'.format(base_example, q_kwargs, q_method, q_response)
     example_rst_file = qname + '.rst'
@@ -341,7 +345,14 @@ print len(response)
 
 print ""
 print "print the first object returned in JSON format:"
-print response.to_json(response[0])
+out = response.to_json(response[0])
+if len(out.splitlines()) > 15:
+    out = out.splitlines()[0:15]
+    out.append('..trimmed for brevity..')
+    out = '\\n'.join(out)
+
+print out
+
 """
     q_code = '{}{}{}{}\n'.format(base_example, q_kwargs, q_method, q_response)
     example_rst_file = qname + '.rst'
@@ -854,7 +865,12 @@ export_str = handler.export_obj(**export_kwargs)
     q_response = """
 print ""
 print "print the export_str returned from export_obj():"
-print export_str
+if len(out.splitlines()) > 15:
+    out = out.splitlines()[0:15]
+    out.append('..trimmed for brevity..')
+    out = '\\n'.join(out)
+
+print out
 """
     q_code = '{}{}{}{}\n'.format(base_example, q_kwargs, q_method, q_response)
     example_rst_file = qname + '.rst'
@@ -972,7 +988,14 @@ export_str = handler.export_obj(**export_kwargs)
     q_response = """
 print ""
 print "print the export_str returned from export_obj():"
-print export_str
+
+out = export_str
+if len(out.splitlines()) > 15:
+    out = out.splitlines()[0:15]
+    out.append('..trimmed for brevity..')
+    out = '\\n'.join(out)
+
+print out
 """
     q_code = '{}{}{}{}\n'.format(base_example, q_kwargs, q_method, q_response)
     example_rst_file = qname + '.rst'

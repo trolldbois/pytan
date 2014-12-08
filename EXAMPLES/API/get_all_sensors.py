@@ -50,7 +50,14 @@ print len(response)
 
 print ""
 print "print the first object returned in JSON format:"
-print response.to_json(response[0])
+out = response.to_json(response[0])
+if len(out.splitlines()) > 15:
+    out = out.splitlines()[0:15]
+    out.append('..trimmed for brevity..')
+    out = '\n'.join(out)
+
+print out
+
 
 
 '''Output from running this:
@@ -59,10 +66,10 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
 Type of response:  <class 'taniumpy.object_types.sensor_list.SensorList'>
 
 print of response:
-SensorList, len: 477
+SensorList, len: 536
 
 length of response (number of objects returned): 
-477
+536
 
 print the first object returned in JSON format:
 {
@@ -80,17 +87,6 @@ print the first object returned in JSON format:
   "queries": {
     "_type": "queries", 
     "query": [
-      {
-        "_type": "query", 
-        "platform": "Windows", 
-        "script": "Reserved", 
-        "script_type": "WMIQuery"
-      }
-    ]
-  }, 
-  "source_id": 0, 
-  "string_count": 3524, 
-  "value_type": "String"
-}
+..trimmed for brevity..
 
 '''

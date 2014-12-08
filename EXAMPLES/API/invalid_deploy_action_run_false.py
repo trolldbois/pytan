@@ -48,10 +48,10 @@ except Exception as e:
 
 '''Output from running this:
 Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-2014-12-08 15:16:44,205 INFO     question_progress: Results 0% (Get Computer Name and Online = "True" from all machines)
-2014-12-08 15:16:49,223 INFO     question_progress: Results 17% (Get Computer Name and Online = "True" from all machines)
-2014-12-08 15:16:54,241 INFO     question_progress: Results 100% (Get Computer Name and Online = "True" from all machines)
-2014-12-08 15:16:54,263 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/VERIFY_BEFORE_DEPLOY_ACTION_ResultSet_2014_12_08-15_16_54-EST.csv' written with 159 bytes
+2014-12-08 16:28:19,131 INFO     question_progress: Results 0% (Get Computer Name and Online = "True" from all machines)
+2014-12-08 16:28:24,148 INFO     question_progress: Results 67% (Get Computer Name and Online = "True" from all machines)
+2014-12-08 16:28:29,164 INFO     question_progress: Results 100% (Get Computer Name and Online = "True" from all machines)
+2014-12-08 16:28:29,185 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/VERIFY_BEFORE_DEPLOY_ACTION_ResultSet_2014_12_08-16_28_29-EST.csv' written with 159 bytes
 Traceback (most recent call last):
   File "<string>", line 39, in <module>
   File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1172, in deploy_action_human
@@ -59,7 +59,7 @@ Traceback (most recent call last):
   File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1003, in deploy_action
     raise RunFalse(m(report_path, len(result)))
 RunFalse: 'Run' is not True!!
-View and verify the contents of /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/VERIFY_BEFORE_DEPLOY_ACTION_ResultSet_2014_12_08-15_16_54-EST.csv (length: 159 bytes)
+View and verify the contents of /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/VERIFY_BEFORE_DEPLOY_ACTION_ResultSet_2014_12_08-16_28_29-EST.csv (length: 159 bytes)
 Re-run this deploy action with run=True after verifying
 
 '''

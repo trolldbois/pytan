@@ -5,535 +5,554 @@
 \contentsline {section}{\numberline {1.3}Requirements}{1}{section.1.3}
 \contentsline {section}{\numberline {1.4}Installation}{2}{section.1.4}
 \contentsline {section}{\numberline {1.5}Usage}{2}{section.1.5}
-\contentsline {section}{\numberline {1.6}pytan package}{2}{section.1.6}
-\contentsline {subsection}{\numberline {1.6.1}pytan API examples}{2}{subsection.1.6.1}
-\contentsline {subsubsection}{Pytan api basic handler example}{2}{subsubsection*.7}
+\contentsline {section}{\numberline {1.6}Directory Layout}{2}{section.1.6}
+\contentsline {section}{\numberline {1.7}pytan package}{3}{section.1.7}
+\contentsline {subsection}{\numberline {1.7.1}pytan API examples}{3}{subsection.1.7.1}
+\contentsline {subsubsection}{Pytan api basic handler example}{3}{subsubsection*.7}
 \contentsline {paragraph}{Example Python Code}{3}{paragraph*.8}
-\contentsline {paragraph}{Output from Python Code}{3}{paragraph*.9}
-\contentsline {subsubsection}{pytan API Valid Question Examples}{3}{subsubsection*.10}
-\contentsline {paragraph}{Ask saved question by name in list}{3}{paragraph*.11}
-\contentsline {subparagraph}{Example Python Code}{3}{subparagraph*.12}
-\contentsline {subparagraph}{Output from Python Code}{4}{subparagraph*.13}
-\contentsline {paragraph}{Ask saved question by name}{11}{paragraph*.14}
-\contentsline {subparagraph}{Example Python Code}{11}{subparagraph*.15}
-\contentsline {subparagraph}{Output from Python Code}{12}{subparagraph*.16}
-\contentsline {paragraph}{Ask manual human question simple single sensor}{18}{paragraph*.17}
-\contentsline {subparagraph}{Example Python Code}{18}{subparagraph*.18}
-\contentsline {subparagraph}{Output from Python Code}{19}{subparagraph*.19}
-\contentsline {paragraph}{Ask manual human question simple multiple sensors}{20}{paragraph*.20}
-\contentsline {subparagraph}{Example Python Code}{20}{subparagraph*.21}
-\contentsline {subparagraph}{Output from Python Code}{21}{subparagraph*.22}
-\contentsline {paragraph}{Ask manual human question multiple sensors identified by name}{46}{paragraph*.23}
-\contentsline {subparagraph}{Example Python Code}{46}{subparagraph*.24}
-\contentsline {subparagraph}{Output from Python Code}{47}{subparagraph*.25}
-\contentsline {paragraph}{Ask manual human question sensor with parameters and some supplied parameters}{71}{paragraph*.26}
-\contentsline {subparagraph}{Example Python Code}{72}{subparagraph*.27}
-\contentsline {subparagraph}{Output from Python Code}{73}{subparagraph*.28}
-\contentsline {paragraph}{Ask manual human question sensor without parameters and supplied parameters}{82}{paragraph*.29}
-\contentsline {subparagraph}{Example Python Code}{82}{subparagraph*.30}
-\contentsline {subparagraph}{Output from Python Code}{83}{subparagraph*.31}
-\contentsline {paragraph}{Ask manual human question multiple sensors with parameters and some supplied parameters}{83}{paragraph*.32}
-\contentsline {subparagraph}{Example Python Code}{83}{subparagraph*.33}
-\contentsline {subparagraph}{Output from Python Code}{84}{subparagraph*.34}
-\contentsline {paragraph}{Ask manual human question sensor with parameters and no supplied parameters}{94}{paragraph*.35}
-\contentsline {subparagraph}{Example Python Code}{94}{subparagraph*.36}
-\contentsline {subparagraph}{Output from Python Code}{95}{subparagraph*.37}
-\contentsline {paragraph}{Ask manual human question sensor with parameters and filter}{113}{paragraph*.38}
-\contentsline {subparagraph}{Example Python Code}{113}{subparagraph*.39}
-\contentsline {subparagraph}{Output from Python Code}{114}{subparagraph*.40}
-\contentsline {paragraph}{Ask manual human question sensor with filter and 3 options}{115}{paragraph*.41}
-\contentsline {subparagraph}{Example Python Code}{115}{subparagraph*.42}
-\contentsline {subparagraph}{Output from Python Code}{116}{subparagraph*.43}
-\contentsline {paragraph}{Ask manual human question sensor with parameters and filter and options}{116}{paragraph*.44}
-\contentsline {subparagraph}{Example Python Code}{116}{subparagraph*.45}
-\contentsline {subparagraph}{Output from Python Code}{117}{subparagraph*.46}
-\contentsline {paragraph}{Ask manual human question sensor with filter and 2 options}{118}{paragraph*.47}
-\contentsline {subparagraph}{Example Python Code}{118}{subparagraph*.48}
-\contentsline {subparagraph}{Output from Python Code}{119}{subparagraph*.49}
-\contentsline {paragraph}{Ask manual human question sensor with filter}{120}{paragraph*.50}
-\contentsline {subparagraph}{Example Python Code}{120}{subparagraph*.51}
-\contentsline {subparagraph}{Output from Python Code}{121}{subparagraph*.52}
-\contentsline {paragraph}{Ask manual human question complex query1}{121}{paragraph*.53}
-\contentsline {subparagraph}{Example Python Code}{121}{subparagraph*.54}
-\contentsline {subparagraph}{Output from Python Code}{122}{subparagraph*.55}
-\contentsline {paragraph}{Ask manual human question complex query2}{123}{paragraph*.56}
-\contentsline {subparagraph}{Example Python Code}{123}{subparagraph*.57}
-\contentsline {subparagraph}{Output from Python Code}{124}{subparagraph*.58}
-\contentsline {paragraph}{Ask manual question sensor complex}{125}{paragraph*.59}
-\contentsline {subparagraph}{Example Python Code}{125}{subparagraph*.60}
-\contentsline {subparagraph}{Output from Python Code}{126}{subparagraph*.61}
-\contentsline {subsubsection}{pytan API Invalid Question Examples}{128}{subsubsection*.62}
-\contentsline {paragraph}{Invalid ask manual human question sensor}{128}{paragraph*.63}
-\contentsline {subparagraph}{Example Python Code}{128}{subparagraph*.64}
-\contentsline {subparagraph}{Output from Python Code}{129}{subparagraph*.65}
-\contentsline {paragraph}{Invalid ask manual human question filter}{129}{paragraph*.66}
-\contentsline {subparagraph}{Example Python Code}{129}{subparagraph*.67}
-\contentsline {subparagraph}{Output from Python Code}{130}{subparagraph*.68}
-\contentsline {paragraph}{Invalid ask manual human question paramater too many}{130}{paragraph*.69}
-\contentsline {subparagraph}{Example Python Code}{130}{subparagraph*.70}
-\contentsline {subparagraph}{Output from Python Code}{131}{subparagraph*.71}
-\contentsline {paragraph}{Invalid ask manual human question option}{131}{paragraph*.72}
-\contentsline {subparagraph}{Example Python Code}{131}{subparagraph*.73}
-\contentsline {subparagraph}{Output from Python Code}{132}{subparagraph*.74}
-\contentsline {paragraph}{Invalid ask manual human question parameter split}{133}{paragraph*.75}
-\contentsline {subparagraph}{Example Python Code}{133}{subparagraph*.76}
-\contentsline {subparagraph}{Output from Python Code}{133}{subparagraph*.77}
-\contentsline {subsubsection}{pytan API Valid Get Object Examples}{134}{subsubsection*.78}
-\contentsline {paragraph}{Get action by id}{134}{paragraph*.79}
-\contentsline {subparagraph}{Example Python Code}{134}{subparagraph*.80}
-\contentsline {subparagraph}{Output from Python Code}{135}{subparagraph*.81}
-\contentsline {paragraph}{Get question by id}{136}{paragraph*.82}
-\contentsline {subparagraph}{Example Python Code}{136}{subparagraph*.83}
-\contentsline {subparagraph}{Output from Python Code}{137}{subparagraph*.84}
-\contentsline {paragraph}{Get saved question by names}{139}{paragraph*.85}
-\contentsline {subparagraph}{Example Python Code}{139}{subparagraph*.86}
-\contentsline {subparagraph}{Output from Python Code}{139}{subparagraph*.87}
-\contentsline {paragraph}{Get userrole by id}{143}{paragraph*.88}
-\contentsline {subparagraph}{Example Python Code}{143}{subparagraph*.89}
-\contentsline {subparagraph}{Output from Python Code}{144}{subparagraph*.90}
-\contentsline {paragraph}{Get leader clients}{145}{paragraph*.91}
-\contentsline {subparagraph}{Example Python Code}{145}{subparagraph*.92}
-\contentsline {subparagraph}{Output from Python Code}{145}{subparagraph*.93}
-\contentsline {paragraph}{Get setting by name}{146}{paragraph*.94}
-\contentsline {subparagraph}{Example Python Code}{146}{subparagraph*.95}
-\contentsline {subparagraph}{Output from Python Code}{147}{subparagraph*.96}
-\contentsline {paragraph}{Get user by name}{148}{paragraph*.97}
-\contentsline {subparagraph}{Example Python Code}{148}{subparagraph*.98}
-\contentsline {subparagraph}{Output from Python Code}{148}{subparagraph*.99}
-\contentsline {paragraph}{Get sensor by id}{149}{paragraph*.100}
-\contentsline {subparagraph}{Example Python Code}{149}{subparagraph*.101}
-\contentsline {subparagraph}{Output from Python Code}{150}{subparagraph*.102}
-\contentsline {paragraph}{Get sensor by mixed}{151}{paragraph*.103}
-\contentsline {subparagraph}{Example Python Code}{151}{subparagraph*.104}
-\contentsline {subparagraph}{Output from Python Code}{152}{subparagraph*.105}
-\contentsline {paragraph}{Get whitelisted url by id}{153}{paragraph*.106}
-\contentsline {subparagraph}{Example Python Code}{153}{subparagraph*.107}
-\contentsline {subparagraph}{Output from Python Code}{154}{subparagraph*.108}
-\contentsline {paragraph}{Get group by name}{154}{paragraph*.109}
-\contentsline {subparagraph}{Example Python Code}{154}{subparagraph*.110}
-\contentsline {subparagraph}{Output from Python Code}{155}{subparagraph*.111}
-\contentsline {paragraph}{Get sensor by hash}{156}{paragraph*.112}
-\contentsline {subparagraph}{Example Python Code}{156}{subparagraph*.113}
-\contentsline {subparagraph}{Output from Python Code}{157}{subparagraph*.114}
-\contentsline {paragraph}{Get package by name}{158}{paragraph*.115}
-\contentsline {subparagraph}{Example Python Code}{158}{subparagraph*.116}
-\contentsline {subparagraph}{Output from Python Code}{158}{subparagraph*.117}
-\contentsline {paragraph}{Get sensor by names}{163}{paragraph*.118}
-\contentsline {subparagraph}{Example Python Code}{163}{subparagraph*.119}
-\contentsline {subparagraph}{Output from Python Code}{164}{subparagraph*.120}
-\contentsline {paragraph}{Get saved question by name}{165}{paragraph*.121}
-\contentsline {subparagraph}{Example Python Code}{165}{subparagraph*.122}
-\contentsline {subparagraph}{Output from Python Code}{166}{subparagraph*.123}
-\contentsline {paragraph}{Get user by id}{169}{paragraph*.124}
-\contentsline {subparagraph}{Example Python Code}{169}{subparagraph*.125}
-\contentsline {subparagraph}{Output from Python Code}{170}{subparagraph*.126}
-\contentsline {paragraph}{Get sensor by name}{171}{paragraph*.127}
-\contentsline {subparagraph}{Example Python Code}{171}{subparagraph*.128}
-\contentsline {subparagraph}{Output from Python Code}{172}{subparagraph*.129}
-\contentsline {paragraph}{Get saved action by name}{173}{paragraph*.130}
-\contentsline {subparagraph}{Example Python Code}{173}{subparagraph*.131}
-\contentsline {subparagraph}{Output from Python Code}{174}{subparagraph*.132}
-\contentsline {paragraph}{Get all users}{175}{paragraph*.133}
-\contentsline {subparagraph}{Example Python Code}{175}{subparagraph*.134}
-\contentsline {subparagraph}{Output from Python Code}{176}{subparagraph*.135}
-\contentsline {paragraph}{Get all saved actions}{176}{paragraph*.136}
-\contentsline {subparagraph}{Example Python Code}{176}{subparagraph*.137}
-\contentsline {subparagraph}{Output from Python Code}{177}{subparagraph*.138}
-\contentsline {paragraph}{Get all settings}{178}{paragraph*.139}
-\contentsline {subparagraph}{Example Python Code}{178}{subparagraph*.140}
-\contentsline {subparagraph}{Output from Python Code}{179}{subparagraph*.141}
-\contentsline {paragraph}{Get all saved questions}{180}{paragraph*.142}
-\contentsline {subparagraph}{Example Python Code}{180}{subparagraph*.143}
-\contentsline {subparagraph}{Output from Python Code}{181}{subparagraph*.144}
-\contentsline {paragraph}{Get all userroless}{182}{paragraph*.145}
-\contentsline {subparagraph}{Example Python Code}{182}{subparagraph*.146}
-\contentsline {subparagraph}{Output from Python Code}{183}{subparagraph*.147}
-\contentsline {paragraph}{Get all questions}{183}{paragraph*.148}
-\contentsline {subparagraph}{Example Python Code}{183}{subparagraph*.149}
-\contentsline {subparagraph}{Output from Python Code}{184}{subparagraph*.150}
-\contentsline {paragraph}{Get all groups}{185}{paragraph*.151}
-\contentsline {subparagraph}{Example Python Code}{185}{subparagraph*.152}
-\contentsline {subparagraph}{Output from Python Code}{186}{subparagraph*.153}
-\contentsline {paragraph}{Get all sensors}{187}{paragraph*.154}
-\contentsline {subparagraph}{Example Python Code}{187}{subparagraph*.155}
-\contentsline {subparagraph}{Output from Python Code}{187}{subparagraph*.156}
-\contentsline {paragraph}{Get all whitelisted urls}{188}{paragraph*.157}
-\contentsline {subparagraph}{Example Python Code}{188}{subparagraph*.158}
-\contentsline {subparagraph}{Output from Python Code}{189}{subparagraph*.159}
-\contentsline {paragraph}{Get all clients}{190}{paragraph*.160}
-\contentsline {subparagraph}{Example Python Code}{190}{subparagraph*.161}
-\contentsline {subparagraph}{Output from Python Code}{191}{subparagraph*.162}
-\contentsline {paragraph}{Get all packages}{191}{paragraph*.163}
-\contentsline {subparagraph}{Example Python Code}{191}{subparagraph*.164}
-\contentsline {subparagraph}{Output from Python Code}{192}{subparagraph*.165}
-\contentsline {paragraph}{Get all actions}{193}{paragraph*.166}
-\contentsline {subparagraph}{Example Python Code}{193}{subparagraph*.167}
-\contentsline {subparagraph}{Output from Python Code}{194}{subparagraph*.168}
-\contentsline {subsubsection}{pytan API Invalid Get Object Examples}{196}{subsubsection*.169}
-\contentsline {paragraph}{Invalid get action single by name}{196}{paragraph*.170}
-\contentsline {subparagraph}{Example Python Code}{196}{subparagraph*.171}
-\contentsline {subparagraph}{Output from Python Code}{196}{subparagraph*.172}
-\contentsline {paragraph}{Invalid get question by name}{197}{paragraph*.173}
-\contentsline {subparagraph}{Example Python Code}{197}{subparagraph*.174}
-\contentsline {subparagraph}{Output from Python Code}{197}{subparagraph*.175}
-\contentsline {subsubsection}{pytan API Valid Deploy Action Examples}{198}{subsubsection*.176}
-\contentsline {paragraph}{Deploy action simple}{198}{paragraph*.177}
-\contentsline {subparagraph}{Example Python Code}{198}{subparagraph*.178}
-\contentsline {subparagraph}{Output from Python Code}{199}{subparagraph*.179}
-\contentsline {paragraph}{Deploy action simple without results}{200}{paragraph*.180}
-\contentsline {subparagraph}{Example Python Code}{200}{subparagraph*.181}
-\contentsline {subparagraph}{Output from Python Code}{201}{subparagraph*.182}
-\contentsline {paragraph}{Deploy action simple against windows computers}{201}{paragraph*.183}
-\contentsline {subparagraph}{Example Python Code}{202}{subparagraph*.184}
-\contentsline {subparagraph}{Output from Python Code}{203}{subparagraph*.185}
-\contentsline {paragraph}{Deploy action with params against windows computers}{204}{paragraph*.186}
-\contentsline {subparagraph}{Example Python Code}{204}{subparagraph*.187}
-\contentsline {subparagraph}{Output from Python Code}{205}{subparagraph*.188}
-\contentsline {subsubsection}{pytan API Invalid Deploy Action Examples}{207}{subsubsection*.189}
-\contentsline {paragraph}{Invalid deploy action missing parameters}{207}{paragraph*.190}
-\contentsline {subparagraph}{Example Python Code}{207}{subparagraph*.191}
-\contentsline {subparagraph}{Output from Python Code}{208}{subparagraph*.192}
-\contentsline {paragraph}{Invalid deploy action package}{209}{paragraph*.193}
-\contentsline {subparagraph}{Example Python Code}{209}{subparagraph*.194}
-\contentsline {subparagraph}{Output from Python Code}{210}{subparagraph*.195}
-\contentsline {paragraph}{Invalid deploy action empty package}{210}{paragraph*.196}
-\contentsline {subparagraph}{Example Python Code}{210}{subparagraph*.197}
-\contentsline {subparagraph}{Output from Python Code}{211}{subparagraph*.198}
-\contentsline {paragraph}{Invalid deploy action run false}{211}{paragraph*.199}
-\contentsline {subparagraph}{Example Python Code}{211}{subparagraph*.200}
-\contentsline {subparagraph}{Output from Python Code}{212}{subparagraph*.201}
-\contentsline {subsubsection}{pytan API Valid Create Object Examples}{212}{subsubsection*.202}
-\contentsline {paragraph}{Create user}{212}{paragraph*.203}
-\contentsline {subparagraph}{Example Python Code}{212}{subparagraph*.204}
-\contentsline {subparagraph}{Output from Python Code}{214}{subparagraph*.205}
-\contentsline {paragraph}{Create package}{215}{paragraph*.206}
-\contentsline {subparagraph}{Example Python Code}{215}{subparagraph*.207}
-\contentsline {subparagraph}{Output from Python Code}{216}{subparagraph*.208}
-\contentsline {paragraph}{Create group}{217}{paragraph*.209}
-\contentsline {subparagraph}{Example Python Code}{217}{subparagraph*.210}
-\contentsline {subparagraph}{Output from Python Code}{218}{subparagraph*.211}
-\contentsline {paragraph}{Create whitelisted url}{219}{paragraph*.212}
-\contentsline {subparagraph}{Example Python Code}{219}{subparagraph*.213}
-\contentsline {subparagraph}{Output from Python Code}{220}{subparagraph*.214}
-\contentsline {subsubsection}{pytan API Invalid Create Object Examples}{221}{subsubsection*.215}
-\contentsline {paragraph}{Invalid create sensor}{221}{paragraph*.216}
-\contentsline {subparagraph}{Example Python Code}{221}{subparagraph*.217}
-\contentsline {subparagraph}{Output from Python Code}{222}{subparagraph*.218}
-\contentsline {subsubsection}{pytan API Valid Create Object From JSON Examples}{222}{subsubsection*.219}
-\contentsline {paragraph}{Create package from json}{222}{paragraph*.220}
-\contentsline {subparagraph}{Example Python Code}{222}{subparagraph*.221}
-\contentsline {subparagraph}{Output from Python Code}{224}{subparagraph*.222}
-\contentsline {paragraph}{Create user from json}{225}{paragraph*.223}
-\contentsline {subparagraph}{Example Python Code}{225}{subparagraph*.224}
-\contentsline {subparagraph}{Output from Python Code}{226}{subparagraph*.225}
-\contentsline {paragraph}{Create saved question from json}{227}{paragraph*.226}
-\contentsline {subparagraph}{Example Python Code}{227}{subparagraph*.227}
-\contentsline {subparagraph}{Output from Python Code}{229}{subparagraph*.228}
-\contentsline {paragraph}{Create action from json}{231}{paragraph*.229}
-\contentsline {subparagraph}{Example Python Code}{231}{subparagraph*.230}
-\contentsline {subparagraph}{Output from Python Code}{233}{subparagraph*.231}
-\contentsline {paragraph}{Create sensor from json}{234}{paragraph*.232}
-\contentsline {subparagraph}{Example Python Code}{234}{subparagraph*.233}
-\contentsline {subparagraph}{Output from Python Code}{236}{subparagraph*.234}
-\contentsline {paragraph}{Create question from json}{237}{paragraph*.235}
-\contentsline {subparagraph}{Example Python Code}{237}{subparagraph*.236}
-\contentsline {subparagraph}{Output from Python Code}{239}{subparagraph*.237}
-\contentsline {paragraph}{Create whitelisted url from json}{240}{paragraph*.238}
-\contentsline {subparagraph}{Example Python Code}{240}{subparagraph*.239}
-\contentsline {subparagraph}{Output from Python Code}{242}{subparagraph*.240}
-\contentsline {paragraph}{Create group from json}{242}{paragraph*.241}
-\contentsline {subparagraph}{Example Python Code}{243}{subparagraph*.242}
-\contentsline {subparagraph}{Output from Python Code}{244}{subparagraph*.243}
-\contentsline {subsubsection}{pytan API Invalid Create Object From JSON Examples}{245}{subsubsection*.244}
-\contentsline {paragraph}{Invalid create saved action from json}{245}{paragraph*.245}
-\contentsline {subparagraph}{Example Python Code}{245}{subparagraph*.246}
-\contentsline {subparagraph}{Output from Python Code}{246}{subparagraph*.247}
-\contentsline {paragraph}{Invalid create client from json}{246}{paragraph*.248}
-\contentsline {subparagraph}{Example Python Code}{246}{subparagraph*.249}
-\contentsline {subparagraph}{Output from Python Code}{247}{subparagraph*.250}
-\contentsline {paragraph}{Invalid create userrole from json}{247}{paragraph*.251}
-\contentsline {subparagraph}{Example Python Code}{247}{subparagraph*.252}
-\contentsline {subparagraph}{Output from Python Code}{248}{subparagraph*.253}
-\contentsline {paragraph}{Invalid create setting from json}{249}{paragraph*.254}
-\contentsline {subparagraph}{Example Python Code}{249}{subparagraph*.255}
-\contentsline {subparagraph}{Output from Python Code}{250}{subparagraph*.256}
-\contentsline {subsubsection}{pytan API Valid Export ResultSet Examples}{250}{subsubsection*.257}
-\contentsline {paragraph}{Export resultset csv default options}{250}{paragraph*.258}
-\contentsline {subparagraph}{Example Python Code}{250}{subparagraph*.259}
-\contentsline {subparagraph}{Output from Python Code}{251}{subparagraph*.260}
-\contentsline {paragraph}{Export resultset csv expand false}{261}{paragraph*.261}
-\contentsline {subparagraph}{Example Python Code}{261}{subparagraph*.262}
-\contentsline {subparagraph}{Output from Python Code}{262}{subparagraph*.263}
-\contentsline {paragraph}{Export resultset csv expand true}{272}{paragraph*.264}
-\contentsline {subparagraph}{Example Python Code}{272}{subparagraph*.265}
-\contentsline {subparagraph}{Output from Python Code}{273}{subparagraph*.266}
-\contentsline {paragraph}{Export resultset csv all options}{283}{paragraph*.267}
-\contentsline {subparagraph}{Example Python Code}{283}{subparagraph*.268}
-\contentsline {subparagraph}{Output from Python Code}{284}{subparagraph*.269}
-\contentsline {paragraph}{Export resultset json}{293}{paragraph*.270}
-\contentsline {subparagraph}{Example Python Code}{293}{subparagraph*.271}
-\contentsline {subparagraph}{Output from Python Code}{294}{subparagraph*.272}
-\contentsline {paragraph}{Export resultset csv sort empty}{307}{paragraph*.273}
-\contentsline {subparagraph}{Example Python Code}{307}{subparagraph*.274}
-\contentsline {subparagraph}{Output from Python Code}{308}{subparagraph*.275}
-\contentsline {paragraph}{Export resultset csv sort true}{319}{paragraph*.276}
-\contentsline {subparagraph}{Example Python Code}{319}{subparagraph*.277}
-\contentsline {subparagraph}{Output from Python Code}{320}{subparagraph*.278}
-\contentsline {paragraph}{Export resultset csv sort false}{330}{paragraph*.279}
-\contentsline {subparagraph}{Example Python Code}{330}{subparagraph*.280}
-\contentsline {subparagraph}{Output from Python Code}{331}{subparagraph*.281}
-\contentsline {paragraph}{Export resultset csv sort list}{341}{paragraph*.282}
-\contentsline {subparagraph}{Example Python Code}{341}{subparagraph*.283}
-\contentsline {subparagraph}{Output from Python Code}{342}{subparagraph*.284}
-\contentsline {paragraph}{Export resultset csv type false}{353}{paragraph*.285}
-\contentsline {subparagraph}{Example Python Code}{353}{subparagraph*.286}
-\contentsline {subparagraph}{Output from Python Code}{354}{subparagraph*.287}
-\contentsline {paragraph}{Export resultset csv type true}{364}{paragraph*.288}
-\contentsline {subparagraph}{Example Python Code}{364}{subparagraph*.289}
-\contentsline {subparagraph}{Output from Python Code}{365}{subparagraph*.290}
-\contentsline {paragraph}{Export resultset csv sensor false}{375}{paragraph*.291}
-\contentsline {subparagraph}{Example Python Code}{375}{subparagraph*.292}
-\contentsline {subparagraph}{Output from Python Code}{376}{subparagraph*.293}
-\contentsline {paragraph}{Export resultset csv sensor true}{386}{paragraph*.294}
-\contentsline {subparagraph}{Example Python Code}{386}{subparagraph*.295}
-\contentsline {subparagraph}{Output from Python Code}{387}{subparagraph*.296}
-\contentsline {subsubsection}{pytan API Invalid Export ResultSet Examples}{397}{subsubsection*.297}
-\contentsline {paragraph}{Invalid export resultset csv bad sort sub type}{397}{paragraph*.298}
-\contentsline {subparagraph}{Example Python Code}{397}{subparagraph*.299}
-\contentsline {subparagraph}{Output from Python Code}{398}{subparagraph*.300}
-\contentsline {paragraph}{Invalid export resultset csv bad sort type}{399}{paragraph*.301}
-\contentsline {subparagraph}{Example Python Code}{399}{subparagraph*.302}
-\contentsline {subparagraph}{Output from Python Code}{400}{subparagraph*.303}
-\contentsline {paragraph}{Invalid export resultset csv bad expand type}{400}{paragraph*.304}
-\contentsline {subparagraph}{Example Python Code}{400}{subparagraph*.305}
-\contentsline {subparagraph}{Output from Python Code}{401}{subparagraph*.306}
-\contentsline {paragraph}{Invalid export resultset csv bad sensors sub type}{401}{paragraph*.307}
-\contentsline {subparagraph}{Example Python Code}{401}{subparagraph*.308}
-\contentsline {subparagraph}{Output from Python Code}{402}{subparagraph*.309}
-\contentsline {paragraph}{Invalid export resultset bad format}{403}{paragraph*.310}
-\contentsline {subparagraph}{Example Python Code}{403}{subparagraph*.311}
-\contentsline {subparagraph}{Output from Python Code}{404}{subparagraph*.312}
-\contentsline {subsubsection}{pytan API Valid Export BaseType Examples}{404}{subsubsection*.313}
-\contentsline {paragraph}{Export basetype csv default options}{404}{paragraph*.314}
-\contentsline {subparagraph}{Example Python Code}{404}{subparagraph*.315}
-\contentsline {subparagraph}{Output from Python Code}{405}{subparagraph*.316}
-\contentsline {paragraph}{Export basetype json type false}{411}{paragraph*.317}
-\contentsline {subparagraph}{Example Python Code}{411}{subparagraph*.318}
-\contentsline {subparagraph}{Output from Python Code}{412}{subparagraph*.319}
-\contentsline {paragraph}{Export basetype json explode false}{416}{paragraph*.320}
-\contentsline {subparagraph}{Example Python Code}{416}{subparagraph*.321}
-\contentsline {subparagraph}{Output from Python Code}{417}{subparagraph*.322}
-\contentsline {paragraph}{Export basetype json explode true}{421}{paragraph*.323}
-\contentsline {subparagraph}{Example Python Code}{421}{subparagraph*.324}
-\contentsline {subparagraph}{Output from Python Code}{422}{subparagraph*.325}
-\contentsline {paragraph}{Export basetype xml default options}{428}{paragraph*.326}
-\contentsline {subparagraph}{Example Python Code}{428}{subparagraph*.327}
-\contentsline {subparagraph}{Output from Python Code}{429}{subparagraph*.328}
-\contentsline {paragraph}{Export basetype xml minimal false}{435}{paragraph*.329}
-\contentsline {subparagraph}{Example Python Code}{435}{subparagraph*.330}
-\contentsline {subparagraph}{Output from Python Code}{436}{subparagraph*.331}
-\contentsline {paragraph}{Export basetype xml minimal true}{442}{paragraph*.332}
-\contentsline {subparagraph}{Example Python Code}{442}{subparagraph*.333}
-\contentsline {subparagraph}{Output from Python Code}{443}{subparagraph*.334}
-\contentsline {paragraph}{Export basetype csv with explode false}{450}{paragraph*.335}
-\contentsline {subparagraph}{Example Python Code}{450}{subparagraph*.336}
-\contentsline {subparagraph}{Output from Python Code}{451}{subparagraph*.337}
-\contentsline {paragraph}{Export basetype csv with explode true}{457}{paragraph*.338}
-\contentsline {subparagraph}{Example Python Code}{457}{subparagraph*.339}
-\contentsline {subparagraph}{Output from Python Code}{458}{subparagraph*.340}
-\contentsline {paragraph}{Export basetype csv with sort empty list}{464}{paragraph*.341}
-\contentsline {subparagraph}{Example Python Code}{464}{subparagraph*.342}
-\contentsline {subparagraph}{Output from Python Code}{465}{subparagraph*.343}
-\contentsline {paragraph}{Export basetype csv with sort true}{471}{paragraph*.344}
-\contentsline {subparagraph}{Example Python Code}{471}{subparagraph*.345}
-\contentsline {subparagraph}{Output from Python Code}{472}{subparagraph*.346}
-\contentsline {paragraph}{Export basetype csv with sort list}{479}{paragraph*.347}
-\contentsline {subparagraph}{Example Python Code}{479}{subparagraph*.348}
-\contentsline {subparagraph}{Output from Python Code}{480}{subparagraph*.349}
-\contentsline {paragraph}{Export basetype json default options}{486}{paragraph*.350}
-\contentsline {subparagraph}{Example Python Code}{486}{subparagraph*.351}
-\contentsline {subparagraph}{Output from Python Code}{487}{subparagraph*.352}
-\contentsline {paragraph}{Export basetype json type true}{491}{paragraph*.353}
-\contentsline {subparagraph}{Example Python Code}{491}{subparagraph*.354}
-\contentsline {subparagraph}{Output from Python Code}{492}{subparagraph*.355}
-\contentsline {subsubsection}{pytan API Invalid Export BaseType Examples}{497}{subsubsection*.356}
-\contentsline {paragraph}{Invalid export basetype csv bad explode type}{497}{paragraph*.357}
-\contentsline {subparagraph}{Example Python Code}{497}{subparagraph*.358}
-\contentsline {subparagraph}{Output from Python Code}{498}{subparagraph*.359}
-\contentsline {paragraph}{Invalid export basetype csv bad sort sub type}{498}{paragraph*.360}
-\contentsline {subparagraph}{Example Python Code}{498}{subparagraph*.361}
-\contentsline {subparagraph}{Output from Python Code}{499}{subparagraph*.362}
-\contentsline {paragraph}{Invalid export basetype csv bad sort type}{499}{paragraph*.363}
-\contentsline {subparagraph}{Example Python Code}{499}{subparagraph*.364}
-\contentsline {subparagraph}{Output from Python Code}{500}{subparagraph*.365}
-\contentsline {paragraph}{Invalid export basetype xml bad minimal type}{500}{paragraph*.366}
-\contentsline {subparagraph}{Example Python Code}{500}{subparagraph*.367}
-\contentsline {subparagraph}{Output from Python Code}{501}{subparagraph*.368}
-\contentsline {paragraph}{Invalid export basetype json bad include type}{502}{paragraph*.369}
-\contentsline {subparagraph}{Example Python Code}{502}{subparagraph*.370}
-\contentsline {subparagraph}{Output from Python Code}{503}{subparagraph*.371}
-\contentsline {paragraph}{Invalid export basetype json bad explode type}{503}{paragraph*.372}
-\contentsline {subparagraph}{Example Python Code}{503}{subparagraph*.373}
-\contentsline {subparagraph}{Output from Python Code}{504}{subparagraph*.374}
-\contentsline {paragraph}{Invalid export basetype bad format}{504}{paragraph*.375}
-\contentsline {subparagraph}{Example Python Code}{504}{subparagraph*.376}
-\contentsline {subparagraph}{Output from Python Code}{505}{subparagraph*.377}
-\contentsline {subsection}{\numberline {1.6.2}pytan.handler module}{506}{subsection.1.6.2}
-\contentsline {subsubsection}{Handler Class}{506}{subsubsection*.378}
-\contentsline {paragraph}{Notes}{506}{paragraph*.380}
-\contentsline {paragraph}{Example: Create a Handler object}{506}{paragraph*.381}
-\contentsline {paragraph}{Handler Methods: Questions and Actions}{507}{paragraph*.382}
-\contentsline {subparagraph}{Ask a Question}{507}{subparagraph*.383}
-\contentsline {subparagraph}{Ask a Saved Question}{507}{subparagraph*.385}
-\contentsline {paragraph}{Notes}{507}{paragraph*.387}
-\contentsline {subparagraph}{Asking a Manual Question}{508}{subparagraph*.388}
-\contentsline {paragraph}{Examples}{508}{paragraph*.390}
-\contentsline {paragraph}{Examples}{509}{paragraph*.392}
-\contentsline {subparagraph}{Deploy an Action}{510}{subparagraph*.393}
-\contentsline {paragraph}{Examples}{511}{paragraph*.395}
-\contentsline {paragraph}{Examples}{512}{paragraph*.397}
-\contentsline {subparagraph}{Stopping an Action}{513}{subparagraph*.399}
-\contentsline {paragraph}{Handler Methods: Exporting/Importing Objects}{513}{paragraph*.401}
-\contentsline {subparagraph}{Import an API Object from JSON}{513}{subparagraph*.402}
-\contentsline {subparagraph}{Load a Python Object from JSON}{514}{subparagraph*.404}
-\contentsline {subparagraph}{Export Object}{514}{subparagraph*.406}
-\contentsline {subparagraph}{Export Object to Report File}{515}{subparagraph*.408}
-\contentsline {paragraph}{Handler Methods: Creating Objects}{516}{paragraph*.410}
-\contentsline {subparagraph}{Create a Group}{516}{subparagraph*.411}
-\contentsline {subparagraph}{Create a Package}{517}{subparagraph*.413}
-\contentsline {subparagraph}{Create a Sensor}{518}{subparagraph*.415}
-\contentsline {subparagraph}{Create a User}{518}{subparagraph*.417}
-\contentsline {subparagraph}{Create a Whitelisted URL}{519}{subparagraph*.419}
-\contentsline {paragraph}{Handler Methods: Deleting Objects}{519}{paragraph*.421}
-\contentsline {subparagraph}{Delete an Object}{519}{subparagraph*.422}
-\contentsline {paragraph}{Handler Methods: Getting Objects}{520}{paragraph*.424}
-\contentsline {subparagraph}{Get Single or Multiple Objects of a type}{520}{subparagraph*.425}
-\contentsline {subparagraph}{Get All Objects of a type}{520}{subparagraph*.427}
-\contentsline {paragraph}{Handler Methods: Getting Result Data / Result Info}{520}{paragraph*.429}
-\contentsline {paragraph}{Handler Methods: Private Methods}{521}{paragraph*.432}
-\contentsline {subsection}{\numberline {1.6.3}pytan.constants module}{521}{subsection.1.6.3}
-\contentsline {subsection}{\numberline {1.6.4}pytan.utils module}{523}{subsection.1.6.4}
-\contentsline {subsubsection}{Utility Classes: Exceptions}{523}{subsubsection*.463}
-\contentsline {subsubsection}{Utility Classes: Logging handlers}{524}{subsubsection*.468}
-\contentsline {subsubsection}{Utility Classes: Argument Parsers for Command Line Scripts}{524}{subsubsection*.471}
-\contentsline {subsubsection}{Utility Functions: Logging}{524}{subsubsection*.476}
-\contentsline {subsubsection}{Utility Functions: Type Checking}{525}{subsubsection*.482}
-\contentsline {subsubsection}{Utility Functions: Misc}{525}{subsubsection*.487}
-\contentsline {subsubsection}{Utility Functions: Argument Parsers for Command Line Scripts}{528}{subsubsection*.500}
-\contentsline {subsubsection}{Utility Functions: Dehumanize human strings}{530}{subsubsection*.517}
-\contentsline {subsubsection}{Utility Functions: kwargs getters}{532}{subsubsection*.529}
-\contentsline {subsubsection}{Utility Functions: Object mappers}{533}{subsubsection*.533}
-\contentsline {subsubsection}{Utility Functions: TaniumPy objects}{533}{subsubsection*.536}
-\contentsline {subsubsection}{Utility Functions: Definition objects}{536}{subsubsection*.549}
-\contentsline {subsection}{\numberline {1.6.5}pytan Unit Tests}{537}{subsection.1.6.5}
-\contentsline {subsection}{\numberline {1.6.6}pytan Functional Tests}{542}{subsection.1.6.6}
-\contentsline {section}{\numberline {1.7}taniumpy package}{546}{section.1.7}
-\contentsline {subsection}{\numberline {1.7.1}taniumpy.session module}{546}{subsection.1.7.1}
-\contentsline {subsection}{\numberline {1.7.2}taniumpy.question\_asker module}{547}{subsection.1.7.2}
-\contentsline {subsection}{\numberline {1.7.3}taniumpy.object\_types package}{548}{subsection.1.7.3}
-\contentsline {subsubsection}{taniumpy.object\_types module}{548}{subsubsection*.865}
-\contentsline {subsubsection}{taniumpy.object\_types.action module}{548}{subsubsection*.866}
-\contentsline {subsubsection}{taniumpy.object\_types.action\_list module}{548}{subsubsection*.868}
-\contentsline {subsubsection}{taniumpy.object\_types.action\_list\_info module}{548}{subsubsection*.870}
-\contentsline {subsubsection}{taniumpy.object\_types.action\_stop module}{548}{subsubsection*.872}
-\contentsline {subsubsection}{taniumpy.object\_types.action\_stop\_list module}{548}{subsubsection*.874}
-\contentsline {subsubsection}{taniumpy.object\_types.all\_objects module}{548}{subsubsection*.876}
-\contentsline {subsubsection}{taniumpy.object\_types.archived\_question module}{548}{subsubsection*.877}
-\contentsline {subsubsection}{taniumpy.object\_types.archived\_question\_list module}{548}{subsubsection*.879}
-\contentsline {subsubsection}{taniumpy.object\_types.audit\_data module}{548}{subsubsection*.881}
-\contentsline {subsubsection}{taniumpy.object\_types.base module}{549}{subsubsection*.883}
-\contentsline {paragraph}{Examples}{549}{paragraph*.891}
-\contentsline {subsubsection}{taniumpy.object\_types.cache\_filter module}{550}{subsubsection*.900}
-\contentsline {subsubsection}{taniumpy.object\_types.cache\_filter\_list module}{550}{subsubsection*.902}
-\contentsline {subsubsection}{taniumpy.object\_types.cache\_info module}{550}{subsubsection*.904}
-\contentsline {subsubsection}{taniumpy.object\_types.client\_count module}{550}{subsubsection*.906}
-\contentsline {subsubsection}{taniumpy.object\_types.client\_status module}{550}{subsubsection*.908}
-\contentsline {subsubsection}{taniumpy.object\_types.column module}{550}{subsubsection*.910}
-\contentsline {subsubsection}{taniumpy.object\_types.column\_set module}{550}{subsubsection*.913}
-\contentsline {subsubsection}{taniumpy.object\_types.computer\_group module}{550}{subsubsection*.916}
-\contentsline {subsubsection}{taniumpy.object\_types.computer\_group\_list module}{551}{subsubsection*.918}
-\contentsline {subsubsection}{taniumpy.object\_types.computer\_group\_spec module}{551}{subsubsection*.920}
-\contentsline {subsubsection}{taniumpy.object\_types.computer\_spec\_list module}{551}{subsubsection*.922}
-\contentsline {subsubsection}{taniumpy.object\_types.error\_list module}{551}{subsubsection*.924}
-\contentsline {subsubsection}{taniumpy.object\_types.filter module}{551}{subsubsection*.926}
-\contentsline {subsubsection}{taniumpy.object\_types.filter\_list module}{551}{subsubsection*.928}
-\contentsline {subsubsection}{taniumpy.object\_types.group module}{551}{subsubsection*.930}
-\contentsline {subsubsection}{taniumpy.object\_types.group\_list module}{551}{subsubsection*.932}
-\contentsline {subsubsection}{taniumpy.object\_types.metadata\_item module}{551}{subsubsection*.934}
-\contentsline {subsubsection}{taniumpy.object\_types.metadata\_list module}{552}{subsubsection*.936}
-\contentsline {subsubsection}{taniumpy.object\_types.object\_list module}{552}{subsubsection*.938}
-\contentsline {subsubsection}{taniumpy.object\_types.object\_list\_types module}{552}{subsubsection*.940}
-\contentsline {subsubsection}{taniumpy.object\_types.options module}{552}{subsubsection*.941}
-\contentsline {subsubsection}{taniumpy.object\_types.package\_file module}{552}{subsubsection*.943}
-\contentsline {subsubsection}{taniumpy.object\_types.package\_file\_list module}{552}{subsubsection*.945}
-\contentsline {subsubsection}{taniumpy.object\_types.package\_file\_status module}{552}{subsubsection*.947}
-\contentsline {subsubsection}{taniumpy.object\_types.package\_file\_status\_list module}{552}{subsubsection*.949}
-\contentsline {subsubsection}{taniumpy.object\_types.package\_file\_template module}{552}{subsubsection*.951}
-\contentsline {subsubsection}{taniumpy.object\_types.package\_file\_template\_list module}{552}{subsubsection*.953}
-\contentsline {subsubsection}{taniumpy.object\_types.package\_spec module}{553}{subsubsection*.955}
-\contentsline {subsubsection}{taniumpy.object\_types.package\_spec\_list module}{553}{subsubsection*.957}
-\contentsline {subsubsection}{taniumpy.object\_types.parameter module}{553}{subsubsection*.959}
-\contentsline {subsubsection}{taniumpy.object\_types.parameter\_list module}{553}{subsubsection*.961}
-\contentsline {subsubsection}{taniumpy.object\_types.parse\_job module}{553}{subsubsection*.963}
-\contentsline {subsubsection}{taniumpy.object\_types.parse\_job\_list module}{553}{subsubsection*.965}
-\contentsline {subsubsection}{taniumpy.object\_types.parse\_result module}{553}{subsubsection*.967}
-\contentsline {subsubsection}{taniumpy.object\_types.parse\_result\_group module}{553}{subsubsection*.969}
-\contentsline {subsubsection}{taniumpy.object\_types.parse\_result\_group\_list module}{553}{subsubsection*.971}
-\contentsline {subsubsection}{taniumpy.object\_types.parse\_result\_list module}{554}{subsubsection*.973}
-\contentsline {subsubsection}{taniumpy.object\_types.plugin module}{554}{subsubsection*.975}
-\contentsline {subsubsection}{taniumpy.object\_types.plugin\_argument module}{554}{subsubsection*.977}
-\contentsline {subsubsection}{taniumpy.object\_types.plugin\_argument\_list module}{554}{subsubsection*.979}
-\contentsline {subsubsection}{taniumpy.object\_types.plugin\_command\_list module}{554}{subsubsection*.981}
-\contentsline {subsubsection}{taniumpy.object\_types.plugin\_list module}{554}{subsubsection*.983}
-\contentsline {subsubsection}{taniumpy.object\_types.plugin\_schedule module}{554}{subsubsection*.985}
-\contentsline {subsubsection}{taniumpy.object\_types.plugin\_schedule\_list module}{554}{subsubsection*.987}
-\contentsline {subsubsection}{taniumpy.object\_types.plugin\_sql module}{554}{subsubsection*.989}
-\contentsline {subsubsection}{taniumpy.object\_types.plugin\_sql\_column module}{555}{subsubsection*.991}
-\contentsline {subsubsection}{taniumpy.object\_types.plugin\_sql\_result module}{555}{subsubsection*.993}
-\contentsline {subsubsection}{taniumpy.object\_types.question module}{555}{subsubsection*.995}
-\contentsline {subsubsection}{taniumpy.object\_types.question\_list module}{555}{subsubsection*.997}
-\contentsline {subsubsection}{taniumpy.object\_types.question\_list\_info module}{555}{subsubsection*.999}
-\contentsline {subsubsection}{taniumpy.object\_types.result\_info module}{555}{subsubsection*.1001}
-\contentsline {subsubsection}{taniumpy.object\_types.result\_set module}{555}{subsubsection*.1004}
-\contentsline {subsubsection}{taniumpy.object\_types.row module}{556}{subsubsection*.1010}
-\contentsline {subsubsection}{taniumpy.object\_types.saved\_action module}{556}{subsubsection*.1013}
-\contentsline {subsubsection}{taniumpy.object\_types.saved\_action\_approval module}{556}{subsubsection*.1015}
-\contentsline {subsubsection}{taniumpy.object\_types.saved\_action\_list module}{556}{subsubsection*.1017}
-\contentsline {subsubsection}{taniumpy.object\_types.saved\_action\_policy module}{556}{subsubsection*.1019}
-\contentsline {subsubsection}{taniumpy.object\_types.saved\_action\_row\_id\_list module}{556}{subsubsection*.1021}
-\contentsline {subsubsection}{taniumpy.object\_types.saved\_question module}{556}{subsubsection*.1023}
-\contentsline {subsubsection}{taniumpy.object\_types.saved\_question\_list module}{556}{subsubsection*.1025}
-\contentsline {subsubsection}{taniumpy.object\_types.select module}{557}{subsubsection*.1027}
-\contentsline {subsubsection}{taniumpy.object\_types.select\_list module}{557}{subsubsection*.1029}
-\contentsline {subsubsection}{taniumpy.object\_types.sensor module}{557}{subsubsection*.1031}
-\contentsline {subsubsection}{taniumpy.object\_types.sensor\_list module}{557}{subsubsection*.1033}
-\contentsline {subsubsection}{taniumpy.object\_types.sensor\_query module}{557}{subsubsection*.1035}
-\contentsline {subsubsection}{taniumpy.object\_types.sensor\_query\_list module}{557}{subsubsection*.1037}
-\contentsline {subsubsection}{taniumpy.object\_types.sensor\_string\_hints module}{557}{subsubsection*.1039}
-\contentsline {subsubsection}{taniumpy.object\_types.sensor\_subcolumn module}{557}{subsubsection*.1041}
-\contentsline {subsubsection}{taniumpy.object\_types.sensor\_subcolumn\_list module}{557}{subsubsection*.1043}
-\contentsline {subsubsection}{taniumpy.object\_types.sensor\_types module}{558}{subsubsection*.1045}
-\contentsline {subsubsection}{taniumpy.object\_types.soap\_error module}{558}{subsubsection*.1046}
-\contentsline {subsubsection}{taniumpy.object\_types.system\_setting module}{558}{subsubsection*.1048}
-\contentsline {subsubsection}{taniumpy.object\_types.system\_settings\_list module}{558}{subsubsection*.1050}
-\contentsline {subsubsection}{taniumpy.object\_types.system\_status\_aggregate module}{558}{subsubsection*.1052}
-\contentsline {subsubsection}{taniumpy.object\_types.system\_status\_list module}{558}{subsubsection*.1054}
-\contentsline {subsubsection}{taniumpy.object\_types.upload\_file module}{558}{subsubsection*.1056}
-\contentsline {subsubsection}{taniumpy.object\_types.upload\_file\_list module}{558}{subsubsection*.1058}
-\contentsline {subsubsection}{taniumpy.object\_types.upload\_file\_status module}{558}{subsubsection*.1060}
-\contentsline {subsubsection}{taniumpy.object\_types.user module}{558}{subsubsection*.1062}
-\contentsline {subsubsection}{taniumpy.object\_types.user\_list module}{559}{subsubsection*.1064}
-\contentsline {subsubsection}{taniumpy.object\_types.user\_permissions module}{559}{subsubsection*.1066}
-\contentsline {subsubsection}{taniumpy.object\_types.user\_role module}{559}{subsubsection*.1068}
-\contentsline {subsubsection}{taniumpy.object\_types.user\_role\_list module}{559}{subsubsection*.1070}
-\contentsline {subsubsection}{taniumpy.object\_types.version\_aggregate module}{559}{subsubsection*.1072}
-\contentsline {subsubsection}{taniumpy.object\_types.version\_aggregate\_list module}{559}{subsubsection*.1074}
-\contentsline {subsubsection}{taniumpy.object\_types.white\_listed\_url module}{559}{subsubsection*.1076}
-\contentsline {subsubsection}{taniumpy.object\_types.white\_listed\_url\_list module}{559}{subsubsection*.1078}
-\contentsline {subsubsection}{taniumpy.object\_types.xml\_error module}{559}{subsubsection*.1080}
-\contentsline {section}{\numberline {1.8}xmltodict module}{560}{section.1.8}
-\contentsline {section}{\numberline {1.9}ddt module}{561}{section.1.9}
-\contentsline {section}{\numberline {1.10}threaded\_http module}{562}{section.1.10}
-\contentsline {chapter}{\numberline {2}Indices and tables}{563}{chapter.2}
-\contentsline {chapter}{Python Module Index}{565}{section*.1097}
-\contentsline {chapter}{Index}{567}{section*.1098}
+\contentsline {paragraph}{Output from Python Code}{4}{paragraph*.9}
+\contentsline {subsubsection}{pytan API Valid Question Examples}{4}{subsubsection*.10}
+\contentsline {paragraph}{Ask saved question by name in list}{4}{paragraph*.11}
+\contentsline {subparagraph}{Example Python Code}{4}{subparagraph*.12}
+\contentsline {subparagraph}{Output from Python Code}{5}{subparagraph*.13}
+\contentsline {paragraph}{Ask saved question by name}{6}{paragraph*.14}
+\contentsline {subparagraph}{Example Python Code}{6}{subparagraph*.15}
+\contentsline {subparagraph}{Output from Python Code}{7}{subparagraph*.16}
+\contentsline {paragraph}{Ask manual human question simple single sensor}{7}{paragraph*.17}
+\contentsline {subparagraph}{Example Python Code}{7}{subparagraph*.18}
+\contentsline {subparagraph}{Output from Python Code}{9}{subparagraph*.19}
+\contentsline {paragraph}{Ask manual human question simple multiple sensors}{9}{paragraph*.20}
+\contentsline {subparagraph}{Example Python Code}{9}{subparagraph*.21}
+\contentsline {subparagraph}{Output from Python Code}{10}{subparagraph*.22}
+\contentsline {paragraph}{Ask manual human question multiple sensors identified by name}{11}{paragraph*.23}
+\contentsline {subparagraph}{Example Python Code}{11}{subparagraph*.24}
+\contentsline {subparagraph}{Output from Python Code}{12}{subparagraph*.25}
+\contentsline {paragraph}{Ask manual human question sensor with parameters and some supplied parameters}{13}{paragraph*.26}
+\contentsline {subparagraph}{Example Python Code}{13}{subparagraph*.27}
+\contentsline {subparagraph}{Output from Python Code}{14}{subparagraph*.28}
+\contentsline {paragraph}{Ask manual human question sensor without parameters and supplied parameters}{15}{paragraph*.29}
+\contentsline {subparagraph}{Example Python Code}{15}{subparagraph*.30}
+\contentsline {subparagraph}{Output from Python Code}{16}{subparagraph*.31}
+\contentsline {paragraph}{Ask manual human question multiple sensors with parameters and some supplied parameters}{17}{paragraph*.32}
+\contentsline {subparagraph}{Example Python Code}{17}{subparagraph*.33}
+\contentsline {subparagraph}{Output from Python Code}{18}{subparagraph*.34}
+\contentsline {paragraph}{Ask manual human question sensor with parameters and no supplied parameters}{19}{paragraph*.35}
+\contentsline {subparagraph}{Example Python Code}{19}{subparagraph*.36}
+\contentsline {subparagraph}{Output from Python Code}{20}{subparagraph*.37}
+\contentsline {paragraph}{Ask manual human question sensor with parameters and filter}{21}{paragraph*.38}
+\contentsline {subparagraph}{Example Python Code}{21}{subparagraph*.39}
+\contentsline {subparagraph}{Output from Python Code}{22}{subparagraph*.40}
+\contentsline {paragraph}{Ask manual human question sensor with filter and 3 options}{23}{paragraph*.41}
+\contentsline {subparagraph}{Example Python Code}{23}{subparagraph*.42}
+\contentsline {subparagraph}{Output from Python Code}{24}{subparagraph*.43}
+\contentsline {paragraph}{Ask manual human question sensor with parameters and filter and options}{25}{paragraph*.44}
+\contentsline {subparagraph}{Example Python Code}{25}{subparagraph*.45}
+\contentsline {subparagraph}{Output from Python Code}{26}{subparagraph*.46}
+\contentsline {paragraph}{Ask manual human question sensor with filter and 2 options}{27}{paragraph*.47}
+\contentsline {subparagraph}{Example Python Code}{27}{subparagraph*.48}
+\contentsline {subparagraph}{Output from Python Code}{28}{subparagraph*.49}
+\contentsline {paragraph}{Ask manual human question sensor with filter}{28}{paragraph*.50}
+\contentsline {subparagraph}{Example Python Code}{29}{subparagraph*.51}
+\contentsline {subparagraph}{Output from Python Code}{30}{subparagraph*.52}
+\contentsline {paragraph}{Ask manual human question complex query1}{30}{paragraph*.53}
+\contentsline {subparagraph}{Example Python Code}{30}{subparagraph*.54}
+\contentsline {subparagraph}{Output from Python Code}{32}{subparagraph*.55}
+\contentsline {paragraph}{Ask manual human question complex query2}{32}{paragraph*.56}
+\contentsline {subparagraph}{Example Python Code}{32}{subparagraph*.57}
+\contentsline {subparagraph}{Output from Python Code}{34}{subparagraph*.58}
+\contentsline {paragraph}{Ask manual question sensor complex}{34}{paragraph*.59}
+\contentsline {subparagraph}{Example Python Code}{34}{subparagraph*.60}
+\contentsline {subparagraph}{Output from Python Code}{35}{subparagraph*.61}
+\contentsline {subsubsection}{pytan API Invalid Question Examples}{36}{subsubsection*.62}
+\contentsline {paragraph}{Invalid ask manual human question filter help}{36}{paragraph*.63}
+\contentsline {subparagraph}{Example Python Code}{36}{subparagraph*.64}
+\contentsline {subparagraph}{Output from Python Code}{37}{subparagraph*.65}
+\contentsline {paragraph}{Invalid ask manual human question option help}{42}{paragraph*.66}
+\contentsline {subparagraph}{Example Python Code}{42}{subparagraph*.67}
+\contentsline {subparagraph}{Output from Python Code}{43}{subparagraph*.68}
+\contentsline {paragraph}{Invalid ask manual human question sensor help}{45}{paragraph*.69}
+\contentsline {subparagraph}{Example Python Code}{45}{subparagraph*.70}
+\contentsline {subparagraph}{Output from Python Code}{45}{subparagraph*.71}
+\contentsline {paragraph}{Invalid ask manual human question filter}{48}{paragraph*.72}
+\contentsline {subparagraph}{Example Python Code}{48}{subparagraph*.73}
+\contentsline {subparagraph}{Output from Python Code}{49}{subparagraph*.74}
+\contentsline {paragraph}{Invalid ask manual question sensor}{49}{paragraph*.75}
+\contentsline {subparagraph}{Example Python Code}{49}{subparagraph*.76}
+\contentsline {subparagraph}{Output from Python Code}{50}{subparagraph*.77}
+\contentsline {paragraph}{Invalid ask manual human question paramater too many}{51}{paragraph*.78}
+\contentsline {subparagraph}{Example Python Code}{51}{subparagraph*.79}
+\contentsline {subparagraph}{Output from Python Code}{51}{subparagraph*.80}
+\contentsline {paragraph}{Invalid ask manual human question option}{52}{paragraph*.81}
+\contentsline {subparagraph}{Example Python Code}{52}{subparagraph*.82}
+\contentsline {subparagraph}{Output from Python Code}{53}{subparagraph*.83}
+\contentsline {paragraph}{Invalid ask manual human question parameter split}{53}{paragraph*.84}
+\contentsline {subparagraph}{Example Python Code}{53}{subparagraph*.85}
+\contentsline {subparagraph}{Output from Python Code}{54}{subparagraph*.86}
+\contentsline {subsubsection}{pytan API Valid Get Object Examples}{54}{subsubsection*.87}
+\contentsline {paragraph}{Get action by id}{54}{paragraph*.88}
+\contentsline {subparagraph}{Example Python Code}{54}{subparagraph*.89}
+\contentsline {subparagraph}{Output from Python Code}{55}{subparagraph*.90}
+\contentsline {paragraph}{Get question by id}{56}{paragraph*.91}
+\contentsline {subparagraph}{Example Python Code}{56}{subparagraph*.92}
+\contentsline {subparagraph}{Output from Python Code}{57}{subparagraph*.93}
+\contentsline {paragraph}{Get saved question by names}{57}{paragraph*.94}
+\contentsline {subparagraph}{Example Python Code}{58}{subparagraph*.95}
+\contentsline {subparagraph}{Output from Python Code}{59}{subparagraph*.96}
+\contentsline {paragraph}{Get userrole by id}{59}{paragraph*.97}
+\contentsline {subparagraph}{Example Python Code}{59}{subparagraph*.98}
+\contentsline {subparagraph}{Output from Python Code}{60}{subparagraph*.99}
+\contentsline {paragraph}{Get leader clients}{61}{paragraph*.100}
+\contentsline {subparagraph}{Example Python Code}{61}{subparagraph*.101}
+\contentsline {subparagraph}{Output from Python Code}{62}{subparagraph*.102}
+\contentsline {paragraph}{Get setting by name}{62}{paragraph*.103}
+\contentsline {subparagraph}{Example Python Code}{62}{subparagraph*.104}
+\contentsline {subparagraph}{Output from Python Code}{63}{subparagraph*.105}
+\contentsline {paragraph}{Get user by name}{64}{paragraph*.106}
+\contentsline {subparagraph}{Example Python Code}{64}{subparagraph*.107}
+\contentsline {subparagraph}{Output from Python Code}{65}{subparagraph*.108}
+\contentsline {paragraph}{Get sensor by id}{66}{paragraph*.109}
+\contentsline {subparagraph}{Example Python Code}{66}{subparagraph*.110}
+\contentsline {subparagraph}{Output from Python Code}{67}{subparagraph*.111}
+\contentsline {paragraph}{Get sensor by mixed}{67}{paragraph*.112}
+\contentsline {subparagraph}{Example Python Code}{67}{subparagraph*.113}
+\contentsline {subparagraph}{Output from Python Code}{68}{subparagraph*.114}
+\contentsline {paragraph}{Get whitelisted url by id}{69}{paragraph*.115}
+\contentsline {subparagraph}{Example Python Code}{69}{subparagraph*.116}
+\contentsline {subparagraph}{Output from Python Code}{70}{subparagraph*.117}
+\contentsline {paragraph}{Get group by name}{70}{paragraph*.118}
+\contentsline {subparagraph}{Example Python Code}{70}{subparagraph*.119}
+\contentsline {subparagraph}{Output from Python Code}{71}{subparagraph*.120}
+\contentsline {paragraph}{Get sensor by hash}{72}{paragraph*.121}
+\contentsline {subparagraph}{Example Python Code}{72}{subparagraph*.122}
+\contentsline {subparagraph}{Output from Python Code}{73}{subparagraph*.123}
+\contentsline {paragraph}{Get package by name}{74}{paragraph*.124}
+\contentsline {subparagraph}{Example Python Code}{74}{subparagraph*.125}
+\contentsline {subparagraph}{Output from Python Code}{75}{subparagraph*.126}
+\contentsline {paragraph}{Get sensor by names}{75}{paragraph*.127}
+\contentsline {subparagraph}{Example Python Code}{75}{subparagraph*.128}
+\contentsline {subparagraph}{Output from Python Code}{76}{subparagraph*.129}
+\contentsline {paragraph}{Get saved question by name}{77}{paragraph*.130}
+\contentsline {subparagraph}{Example Python Code}{77}{subparagraph*.131}
+\contentsline {subparagraph}{Output from Python Code}{78}{subparagraph*.132}
+\contentsline {paragraph}{Get user by id}{79}{paragraph*.133}
+\contentsline {subparagraph}{Example Python Code}{79}{subparagraph*.134}
+\contentsline {subparagraph}{Output from Python Code}{80}{subparagraph*.135}
+\contentsline {paragraph}{Get sensor by name}{80}{paragraph*.136}
+\contentsline {subparagraph}{Example Python Code}{80}{subparagraph*.137}
+\contentsline {subparagraph}{Output from Python Code}{81}{subparagraph*.138}
+\contentsline {paragraph}{Get saved action by name}{82}{paragraph*.139}
+\contentsline {subparagraph}{Example Python Code}{82}{subparagraph*.140}
+\contentsline {subparagraph}{Output from Python Code}{83}{subparagraph*.141}
+\contentsline {paragraph}{Get all users}{84}{paragraph*.142}
+\contentsline {subparagraph}{Example Python Code}{84}{subparagraph*.143}
+\contentsline {subparagraph}{Output from Python Code}{85}{subparagraph*.144}
+\contentsline {paragraph}{Get all saved actions}{85}{paragraph*.145}
+\contentsline {subparagraph}{Example Python Code}{85}{subparagraph*.146}
+\contentsline {subparagraph}{Output from Python Code}{86}{subparagraph*.147}
+\contentsline {paragraph}{Get all settings}{87}{paragraph*.148}
+\contentsline {subparagraph}{Example Python Code}{87}{subparagraph*.149}
+\contentsline {subparagraph}{Output from Python Code}{88}{subparagraph*.150}
+\contentsline {paragraph}{Get all saved questions}{89}{paragraph*.151}
+\contentsline {subparagraph}{Example Python Code}{89}{subparagraph*.152}
+\contentsline {subparagraph}{Output from Python Code}{90}{subparagraph*.153}
+\contentsline {paragraph}{Get all userroless}{90}{paragraph*.154}
+\contentsline {subparagraph}{Example Python Code}{90}{subparagraph*.155}
+\contentsline {subparagraph}{Output from Python Code}{91}{subparagraph*.156}
+\contentsline {paragraph}{Get all questions}{92}{paragraph*.157}
+\contentsline {subparagraph}{Example Python Code}{92}{subparagraph*.158}
+\contentsline {subparagraph}{Output from Python Code}{93}{subparagraph*.159}
+\contentsline {paragraph}{Get all groups}{94}{paragraph*.160}
+\contentsline {subparagraph}{Example Python Code}{94}{subparagraph*.161}
+\contentsline {subparagraph}{Output from Python Code}{95}{subparagraph*.162}
+\contentsline {paragraph}{Get all sensors}{95}{paragraph*.163}
+\contentsline {subparagraph}{Example Python Code}{95}{subparagraph*.164}
+\contentsline {subparagraph}{Output from Python Code}{96}{subparagraph*.165}
+\contentsline {paragraph}{Get all whitelisted urls}{97}{paragraph*.166}
+\contentsline {subparagraph}{Example Python Code}{97}{subparagraph*.167}
+\contentsline {subparagraph}{Output from Python Code}{98}{subparagraph*.168}
+\contentsline {paragraph}{Get all clients}{98}{paragraph*.169}
+\contentsline {subparagraph}{Example Python Code}{98}{subparagraph*.170}
+\contentsline {subparagraph}{Output from Python Code}{99}{subparagraph*.171}
+\contentsline {paragraph}{Get all packages}{100}{paragraph*.172}
+\contentsline {subparagraph}{Example Python Code}{100}{subparagraph*.173}
+\contentsline {subparagraph}{Output from Python Code}{101}{subparagraph*.174}
+\contentsline {paragraph}{Get all actions}{102}{paragraph*.175}
+\contentsline {subparagraph}{Example Python Code}{102}{subparagraph*.176}
+\contentsline {subparagraph}{Output from Python Code}{103}{subparagraph*.177}
+\contentsline {subsubsection}{pytan API Invalid Get Object Examples}{103}{subsubsection*.178}
+\contentsline {paragraph}{Invalid get action single by name}{103}{paragraph*.179}
+\contentsline {subparagraph}{Example Python Code}{103}{subparagraph*.180}
+\contentsline {subparagraph}{Output from Python Code}{104}{subparagraph*.181}
+\contentsline {paragraph}{Invalid get question by name}{104}{paragraph*.182}
+\contentsline {subparagraph}{Example Python Code}{104}{subparagraph*.183}
+\contentsline {subparagraph}{Output from Python Code}{105}{subparagraph*.184}
+\contentsline {subsubsection}{pytan API Valid Deploy Action Examples}{105}{subsubsection*.185}
+\contentsline {paragraph}{Deploy action simple}{105}{paragraph*.186}
+\contentsline {subparagraph}{Example Python Code}{105}{subparagraph*.187}
+\contentsline {subparagraph}{Output from Python Code}{107}{subparagraph*.188}
+\contentsline {paragraph}{Deploy action simple without results}{108}{paragraph*.189}
+\contentsline {subparagraph}{Example Python Code}{108}{subparagraph*.190}
+\contentsline {subparagraph}{Output from Python Code}{109}{subparagraph*.191}
+\contentsline {paragraph}{Deploy action simple against windows computers}{109}{paragraph*.192}
+\contentsline {subparagraph}{Example Python Code}{109}{subparagraph*.193}
+\contentsline {subparagraph}{Output from Python Code}{111}{subparagraph*.194}
+\contentsline {paragraph}{Deploy action with params against windows computers}{112}{paragraph*.195}
+\contentsline {subparagraph}{Example Python Code}{112}{subparagraph*.196}
+\contentsline {subparagraph}{Output from Python Code}{113}{subparagraph*.197}
+\contentsline {subsubsection}{pytan API Invalid Deploy Action Examples}{114}{subsubsection*.198}
+\contentsline {paragraph}{Invalid deploy action run false}{114}{paragraph*.199}
+\contentsline {subparagraph}{Example Python Code}{114}{subparagraph*.200}
+\contentsline {subparagraph}{Output from Python Code}{115}{subparagraph*.201}
+\contentsline {paragraph}{Invalid deploy action package help}{115}{paragraph*.202}
+\contentsline {subparagraph}{Example Python Code}{115}{subparagraph*.203}
+\contentsline {subparagraph}{Output from Python Code}{116}{subparagraph*.204}
+\contentsline {paragraph}{Invalid deploy action package}{117}{paragraph*.205}
+\contentsline {subparagraph}{Example Python Code}{117}{subparagraph*.206}
+\contentsline {subparagraph}{Output from Python Code}{118}{subparagraph*.207}
+\contentsline {paragraph}{Invalid deploy action options help}{118}{paragraph*.208}
+\contentsline {subparagraph}{Example Python Code}{118}{subparagraph*.209}
+\contentsline {subparagraph}{Output from Python Code}{119}{subparagraph*.210}
+\contentsline {paragraph}{Invalid deploy action empty package}{122}{paragraph*.211}
+\contentsline {subparagraph}{Example Python Code}{122}{subparagraph*.212}
+\contentsline {subparagraph}{Output from Python Code}{122}{subparagraph*.213}
+\contentsline {paragraph}{Invalid deploy action filters help}{123}{paragraph*.214}
+\contentsline {subparagraph}{Example Python Code}{123}{subparagraph*.215}
+\contentsline {subparagraph}{Output from Python Code}{123}{subparagraph*.216}
+\contentsline {paragraph}{Invalid deploy action missing parameters}{133}{paragraph*.217}
+\contentsline {subparagraph}{Example Python Code}{133}{subparagraph*.218}
+\contentsline {subparagraph}{Output from Python Code}{134}{subparagraph*.219}
+\contentsline {subsubsection}{pytan API Valid Create Object Examples}{135}{subsubsection*.220}
+\contentsline {paragraph}{Create user}{135}{paragraph*.221}
+\contentsline {subparagraph}{Example Python Code}{135}{subparagraph*.222}
+\contentsline {subparagraph}{Output from Python Code}{136}{subparagraph*.223}
+\contentsline {paragraph}{Create package}{137}{paragraph*.224}
+\contentsline {subparagraph}{Example Python Code}{137}{subparagraph*.225}
+\contentsline {subparagraph}{Output from Python Code}{139}{subparagraph*.226}
+\contentsline {paragraph}{Create group}{139}{paragraph*.227}
+\contentsline {subparagraph}{Example Python Code}{140}{subparagraph*.228}
+\contentsline {subparagraph}{Output from Python Code}{141}{subparagraph*.229}
+\contentsline {paragraph}{Create whitelisted url}{142}{paragraph*.230}
+\contentsline {subparagraph}{Example Python Code}{142}{subparagraph*.231}
+\contentsline {subparagraph}{Output from Python Code}{143}{subparagraph*.232}
+\contentsline {subsubsection}{pytan API Invalid Create Object Examples}{144}{subsubsection*.233}
+\contentsline {paragraph}{Invalid create sensor}{144}{paragraph*.234}
+\contentsline {subparagraph}{Example Python Code}{144}{subparagraph*.235}
+\contentsline {subparagraph}{Output from Python Code}{144}{subparagraph*.236}
+\contentsline {subsubsection}{pytan API Valid Create Object From JSON Examples}{145}{subsubsection*.237}
+\contentsline {paragraph}{Create package from json}{145}{paragraph*.238}
+\contentsline {subparagraph}{Example Python Code}{145}{subparagraph*.239}
+\contentsline {subparagraph}{Output from Python Code}{146}{subparagraph*.240}
+\contentsline {paragraph}{Create user from json}{148}{paragraph*.241}
+\contentsline {subparagraph}{Example Python Code}{148}{subparagraph*.242}
+\contentsline {subparagraph}{Output from Python Code}{149}{subparagraph*.243}
+\contentsline {paragraph}{Create saved question from json}{150}{paragraph*.244}
+\contentsline {subparagraph}{Example Python Code}{150}{subparagraph*.245}
+\contentsline {subparagraph}{Output from Python Code}{152}{subparagraph*.246}
+\contentsline {paragraph}{Create action from json}{154}{paragraph*.247}
+\contentsline {subparagraph}{Example Python Code}{154}{subparagraph*.248}
+\contentsline {subparagraph}{Output from Python Code}{156}{subparagraph*.249}
+\contentsline {paragraph}{Create sensor from json}{157}{paragraph*.250}
+\contentsline {subparagraph}{Example Python Code}{157}{subparagraph*.251}
+\contentsline {subparagraph}{Output from Python Code}{159}{subparagraph*.252}
+\contentsline {paragraph}{Create question from json}{160}{paragraph*.253}
+\contentsline {subparagraph}{Example Python Code}{160}{subparagraph*.254}
+\contentsline {subparagraph}{Output from Python Code}{161}{subparagraph*.255}
+\contentsline {paragraph}{Create whitelisted url from json}{163}{paragraph*.256}
+\contentsline {subparagraph}{Example Python Code}{163}{subparagraph*.257}
+\contentsline {subparagraph}{Output from Python Code}{165}{subparagraph*.258}
+\contentsline {paragraph}{Create group from json}{165}{paragraph*.259}
+\contentsline {subparagraph}{Example Python Code}{165}{subparagraph*.260}
+\contentsline {subparagraph}{Output from Python Code}{167}{subparagraph*.261}
+\contentsline {subsubsection}{pytan API Invalid Create Object From JSON Examples}{168}{subsubsection*.262}
+\contentsline {paragraph}{Invalid create saved action from json}{168}{paragraph*.263}
+\contentsline {subparagraph}{Example Python Code}{168}{subparagraph*.264}
+\contentsline {subparagraph}{Output from Python Code}{169}{subparagraph*.265}
+\contentsline {paragraph}{Invalid create client from json}{169}{paragraph*.266}
+\contentsline {subparagraph}{Example Python Code}{169}{subparagraph*.267}
+\contentsline {subparagraph}{Output from Python Code}{170}{subparagraph*.268}
+\contentsline {paragraph}{Invalid create userrole from json}{170}{paragraph*.269}
+\contentsline {subparagraph}{Example Python Code}{170}{subparagraph*.270}
+\contentsline {subparagraph}{Output from Python Code}{171}{subparagraph*.271}
+\contentsline {paragraph}{Invalid create setting from json}{171}{paragraph*.272}
+\contentsline {subparagraph}{Example Python Code}{172}{subparagraph*.273}
+\contentsline {subparagraph}{Output from Python Code}{172}{subparagraph*.274}
+\contentsline {subsubsection}{pytan API Valid Export ResultSet Examples}{173}{subsubsection*.275}
+\contentsline {paragraph}{Export resultset csv default options}{173}{paragraph*.276}
+\contentsline {subparagraph}{Example Python Code}{173}{subparagraph*.277}
+\contentsline {subparagraph}{Output from Python Code}{174}{subparagraph*.278}
+\contentsline {paragraph}{Export resultset csv expand false}{174}{paragraph*.279}
+\contentsline {subparagraph}{Example Python Code}{174}{subparagraph*.280}
+\contentsline {subparagraph}{Output from Python Code}{175}{subparagraph*.281}
+\contentsline {paragraph}{Export resultset csv expand true}{176}{paragraph*.282}
+\contentsline {subparagraph}{Example Python Code}{176}{subparagraph*.283}
+\contentsline {subparagraph}{Output from Python Code}{177}{subparagraph*.284}
+\contentsline {paragraph}{Export resultset csv all options}{178}{paragraph*.285}
+\contentsline {subparagraph}{Example Python Code}{178}{subparagraph*.286}
+\contentsline {subparagraph}{Output from Python Code}{179}{subparagraph*.287}
+\contentsline {paragraph}{Export resultset json}{180}{paragraph*.288}
+\contentsline {subparagraph}{Example Python Code}{180}{subparagraph*.289}
+\contentsline {subparagraph}{Output from Python Code}{181}{subparagraph*.290}
+\contentsline {paragraph}{Export resultset csv sort empty}{181}{paragraph*.291}
+\contentsline {subparagraph}{Example Python Code}{181}{subparagraph*.292}
+\contentsline {subparagraph}{Output from Python Code}{182}{subparagraph*.293}
+\contentsline {paragraph}{Export resultset csv sort true}{183}{paragraph*.294}
+\contentsline {subparagraph}{Example Python Code}{183}{subparagraph*.295}
+\contentsline {subparagraph}{Output from Python Code}{184}{subparagraph*.296}
+\contentsline {paragraph}{Export resultset csv sort false}{185}{paragraph*.297}
+\contentsline {subparagraph}{Example Python Code}{185}{subparagraph*.298}
+\contentsline {subparagraph}{Output from Python Code}{186}{subparagraph*.299}
+\contentsline {paragraph}{Export resultset csv sort list}{187}{paragraph*.300}
+\contentsline {subparagraph}{Example Python Code}{187}{subparagraph*.301}
+\contentsline {subparagraph}{Output from Python Code}{188}{subparagraph*.302}
+\contentsline {paragraph}{Export resultset csv type false}{189}{paragraph*.303}
+\contentsline {subparagraph}{Example Python Code}{189}{subparagraph*.304}
+\contentsline {subparagraph}{Output from Python Code}{190}{subparagraph*.305}
+\contentsline {paragraph}{Export resultset csv type true}{191}{paragraph*.306}
+\contentsline {subparagraph}{Example Python Code}{191}{subparagraph*.307}
+\contentsline {subparagraph}{Output from Python Code}{192}{subparagraph*.308}
+\contentsline {paragraph}{Export resultset csv sensor false}{193}{paragraph*.309}
+\contentsline {subparagraph}{Example Python Code}{193}{subparagraph*.310}
+\contentsline {subparagraph}{Output from Python Code}{194}{subparagraph*.311}
+\contentsline {paragraph}{Export resultset csv sensor true}{194}{paragraph*.312}
+\contentsline {subparagraph}{Example Python Code}{194}{subparagraph*.313}
+\contentsline {subparagraph}{Output from Python Code}{196}{subparagraph*.314}
+\contentsline {subsubsection}{pytan API Invalid Export ResultSet Examples}{196}{subsubsection*.315}
+\contentsline {paragraph}{Invalid export resultset csv bad sort sub type}{196}{paragraph*.316}
+\contentsline {subparagraph}{Example Python Code}{196}{subparagraph*.317}
+\contentsline {subparagraph}{Output from Python Code}{197}{subparagraph*.318}
+\contentsline {paragraph}{Invalid export resultset csv bad sort type}{197}{paragraph*.319}
+\contentsline {subparagraph}{Example Python Code}{197}{subparagraph*.320}
+\contentsline {subparagraph}{Output from Python Code}{198}{subparagraph*.321}
+\contentsline {paragraph}{Invalid export resultset csv bad expand type}{199}{paragraph*.322}
+\contentsline {subparagraph}{Example Python Code}{199}{subparagraph*.323}
+\contentsline {subparagraph}{Output from Python Code}{200}{subparagraph*.324}
+\contentsline {paragraph}{Invalid export resultset csv bad sensors sub type}{200}{paragraph*.325}
+\contentsline {subparagraph}{Example Python Code}{200}{subparagraph*.326}
+\contentsline {subparagraph}{Output from Python Code}{201}{subparagraph*.327}
+\contentsline {paragraph}{Invalid export resultset bad format}{201}{paragraph*.328}
+\contentsline {subparagraph}{Example Python Code}{201}{subparagraph*.329}
+\contentsline {subparagraph}{Output from Python Code}{202}{subparagraph*.330}
+\contentsline {subsubsection}{pytan API Valid Export BaseType Examples}{203}{subsubsection*.331}
+\contentsline {paragraph}{Export basetype csv default options}{203}{paragraph*.332}
+\contentsline {subparagraph}{Example Python Code}{203}{subparagraph*.333}
+\contentsline {subparagraph}{Output from Python Code}{204}{subparagraph*.334}
+\contentsline {paragraph}{Export basetype json type false}{204}{paragraph*.335}
+\contentsline {subparagraph}{Example Python Code}{204}{subparagraph*.336}
+\contentsline {subparagraph}{Output from Python Code}{205}{subparagraph*.337}
+\contentsline {paragraph}{Export basetype json explode false}{206}{paragraph*.338}
+\contentsline {subparagraph}{Example Python Code}{206}{subparagraph*.339}
+\contentsline {subparagraph}{Output from Python Code}{207}{subparagraph*.340}
+\contentsline {paragraph}{Export basetype json explode true}{207}{paragraph*.341}
+\contentsline {subparagraph}{Example Python Code}{207}{subparagraph*.342}
+\contentsline {subparagraph}{Output from Python Code}{209}{subparagraph*.343}
+\contentsline {paragraph}{Export basetype xml default options}{209}{paragraph*.344}
+\contentsline {subparagraph}{Example Python Code}{209}{subparagraph*.345}
+\contentsline {subparagraph}{Output from Python Code}{210}{subparagraph*.346}
+\contentsline {paragraph}{Export basetype xml minimal false}{211}{paragraph*.347}
+\contentsline {subparagraph}{Example Python Code}{211}{subparagraph*.348}
+\contentsline {subparagraph}{Output from Python Code}{212}{subparagraph*.349}
+\contentsline {paragraph}{Export basetype xml minimal true}{212}{paragraph*.350}
+\contentsline {subparagraph}{Example Python Code}{212}{subparagraph*.351}
+\contentsline {subparagraph}{Output from Python Code}{213}{subparagraph*.352}
+\contentsline {paragraph}{Export basetype csv with explode false}{214}{paragraph*.353}
+\contentsline {subparagraph}{Example Python Code}{214}{subparagraph*.354}
+\contentsline {subparagraph}{Output from Python Code}{215}{subparagraph*.355}
+\contentsline {paragraph}{Export basetype csv with explode true}{215}{paragraph*.356}
+\contentsline {subparagraph}{Example Python Code}{215}{subparagraph*.357}
+\contentsline {subparagraph}{Output from Python Code}{216}{subparagraph*.358}
+\contentsline {paragraph}{Export basetype csv with sort empty list}{217}{paragraph*.359}
+\contentsline {subparagraph}{Example Python Code}{217}{subparagraph*.360}
+\contentsline {subparagraph}{Output from Python Code}{218}{subparagraph*.361}
+\contentsline {paragraph}{Export basetype csv with sort true}{218}{paragraph*.362}
+\contentsline {subparagraph}{Example Python Code}{218}{subparagraph*.363}
+\contentsline {subparagraph}{Output from Python Code}{220}{subparagraph*.364}
+\contentsline {paragraph}{Export basetype csv with sort list}{220}{paragraph*.365}
+\contentsline {subparagraph}{Example Python Code}{220}{subparagraph*.366}
+\contentsline {subparagraph}{Output from Python Code}{221}{subparagraph*.367}
+\contentsline {paragraph}{Export basetype json default options}{222}{paragraph*.368}
+\contentsline {subparagraph}{Example Python Code}{222}{subparagraph*.369}
+\contentsline {subparagraph}{Output from Python Code}{223}{subparagraph*.370}
+\contentsline {paragraph}{Export basetype json type true}{223}{paragraph*.371}
+\contentsline {subparagraph}{Example Python Code}{223}{subparagraph*.372}
+\contentsline {subparagraph}{Output from Python Code}{224}{subparagraph*.373}
+\contentsline {subsubsection}{pytan API Invalid Export BaseType Examples}{225}{subsubsection*.374}
+\contentsline {paragraph}{Invalid export basetype csv bad explode type}{225}{paragraph*.375}
+\contentsline {subparagraph}{Example Python Code}{225}{subparagraph*.376}
+\contentsline {subparagraph}{Output from Python Code}{226}{subparagraph*.377}
+\contentsline {paragraph}{Invalid export basetype csv bad sort sub type}{226}{paragraph*.378}
+\contentsline {subparagraph}{Example Python Code}{226}{subparagraph*.379}
+\contentsline {subparagraph}{Output from Python Code}{227}{subparagraph*.380}
+\contentsline {paragraph}{Invalid export basetype csv bad sort type}{227}{paragraph*.381}
+\contentsline {subparagraph}{Example Python Code}{227}{subparagraph*.382}
+\contentsline {subparagraph}{Output from Python Code}{228}{subparagraph*.383}
+\contentsline {paragraph}{Invalid export basetype xml bad minimal type}{229}{paragraph*.384}
+\contentsline {subparagraph}{Example Python Code}{229}{subparagraph*.385}
+\contentsline {subparagraph}{Output from Python Code}{230}{subparagraph*.386}
+\contentsline {paragraph}{Invalid export basetype json bad include type}{230}{paragraph*.387}
+\contentsline {subparagraph}{Example Python Code}{230}{subparagraph*.388}
+\contentsline {subparagraph}{Output from Python Code}{231}{subparagraph*.389}
+\contentsline {paragraph}{Invalid export basetype json bad explode type}{231}{paragraph*.390}
+\contentsline {subparagraph}{Example Python Code}{231}{subparagraph*.391}
+\contentsline {subparagraph}{Output from Python Code}{232}{subparagraph*.392}
+\contentsline {paragraph}{Invalid export basetype bad format}{232}{paragraph*.393}
+\contentsline {subparagraph}{Example Python Code}{232}{subparagraph*.394}
+\contentsline {subparagraph}{Output from Python Code}{233}{subparagraph*.395}
+\contentsline {subsection}{\numberline {1.7.2}pytan.handler module}{234}{subsection.1.7.2}
+\contentsline {subsubsection}{Handler Class}{234}{subsubsection*.396}
+\contentsline {paragraph}{Notes}{234}{paragraph*.398}
+\contentsline {paragraph}{Example: Create a Handler object}{235}{paragraph*.399}
+\contentsline {paragraph}{Handler Methods: Questions and Actions}{235}{paragraph*.400}
+\contentsline {subparagraph}{Ask a Question}{235}{subparagraph*.401}
+\contentsline {subparagraph}{Ask a Saved Question}{235}{subparagraph*.403}
+\contentsline {paragraph}{Notes}{236}{paragraph*.405}
+\contentsline {subparagraph}{Asking a Manual Question}{236}{subparagraph*.406}
+\contentsline {paragraph}{Examples}{236}{paragraph*.408}
+\contentsline {paragraph}{Examples}{238}{paragraph*.410}
+\contentsline {subparagraph}{Deploy an Action}{238}{subparagraph*.411}
+\contentsline {paragraph}{Examples}{239}{paragraph*.413}
+\contentsline {paragraph}{Examples}{240}{paragraph*.415}
+\contentsline {subparagraph}{Stopping an Action}{241}{subparagraph*.417}
+\contentsline {paragraph}{Handler Methods: Exporting/Importing Objects}{241}{paragraph*.419}
+\contentsline {subparagraph}{Import an API Object from JSON}{241}{subparagraph*.420}
+\contentsline {subparagraph}{Load a Python Object from JSON}{242}{subparagraph*.422}
+\contentsline {subparagraph}{Export Object}{242}{subparagraph*.424}
+\contentsline {subparagraph}{Export Object to Report File}{243}{subparagraph*.426}
+\contentsline {paragraph}{Handler Methods: Creating Objects}{244}{paragraph*.428}
+\contentsline {subparagraph}{Create a Group}{244}{subparagraph*.429}
+\contentsline {subparagraph}{Create a Package}{245}{subparagraph*.431}
+\contentsline {subparagraph}{Create a Sensor}{246}{subparagraph*.433}
+\contentsline {subparagraph}{Create a User}{246}{subparagraph*.435}
+\contentsline {subparagraph}{Create a Whitelisted URL}{247}{subparagraph*.437}
+\contentsline {paragraph}{Handler Methods: Deleting Objects}{247}{paragraph*.439}
+\contentsline {subparagraph}{Delete an Object}{247}{subparagraph*.440}
+\contentsline {paragraph}{Handler Methods: Getting Objects}{248}{paragraph*.442}
+\contentsline {subparagraph}{Get Single or Multiple Objects of a type}{248}{subparagraph*.443}
+\contentsline {subparagraph}{Get All Objects of a type}{248}{subparagraph*.445}
+\contentsline {paragraph}{Handler Methods: Getting Result Data / Result Info}{248}{paragraph*.447}
+\contentsline {paragraph}{Handler Methods: Private Methods}{249}{paragraph*.450}
+\contentsline {subsection}{\numberline {1.7.3}pytan.constants module}{249}{subsection.1.7.3}
+\contentsline {subsection}{\numberline {1.7.4}pytan.utils module}{251}{subsection.1.7.4}
+\contentsline {subsubsection}{Utility Classes: Exceptions}{251}{subsubsection*.481}
+\contentsline {subsubsection}{Utility Classes: Logging handlers}{252}{subsubsection*.486}
+\contentsline {subsubsection}{Utility Classes: Argument Parsers for Command Line Scripts}{252}{subsubsection*.489}
+\contentsline {subsubsection}{Utility Functions: Logging}{252}{subsubsection*.494}
+\contentsline {subsubsection}{Utility Functions: Type Checking}{253}{subsubsection*.500}
+\contentsline {subsubsection}{Utility Functions: Misc}{253}{subsubsection*.505}
+\contentsline {subsubsection}{Utility Functions: Argument Parsers for Command Line Scripts}{256}{subsubsection*.518}
+\contentsline {subsubsection}{Utility Functions: Dehumanize human strings}{258}{subsubsection*.535}
+\contentsline {subsubsection}{Utility Functions: kwargs getters}{260}{subsubsection*.547}
+\contentsline {subsubsection}{Utility Functions: Object mappers}{261}{subsubsection*.551}
+\contentsline {subsubsection}{Utility Functions: TaniumPy objects}{261}{subsubsection*.554}
+\contentsline {subsubsection}{Utility Functions: Definition objects}{264}{subsubsection*.567}
+\contentsline {subsection}{\numberline {1.7.5}pytan Unit Tests}{265}{subsection.1.7.5}
+\contentsline {subsection}{\numberline {1.7.6}pytan Functional Tests}{270}{subsection.1.7.6}
+\contentsline {section}{\numberline {1.8}taniumpy package}{274}{section.1.8}
+\contentsline {subsection}{\numberline {1.8.1}taniumpy.session module}{274}{subsection.1.8.1}
+\contentsline {subsection}{\numberline {1.8.2}taniumpy.question\_asker module}{275}{subsection.1.8.2}
+\contentsline {subsection}{\numberline {1.8.3}taniumpy.object\_types package}{276}{subsection.1.8.3}
+\contentsline {subsubsection}{taniumpy.object\_types module}{276}{subsubsection*.883}
+\contentsline {subsubsection}{taniumpy.object\_types.action module}{276}{subsubsection*.884}
+\contentsline {subsubsection}{taniumpy.object\_types.action\_list module}{276}{subsubsection*.886}
+\contentsline {subsubsection}{taniumpy.object\_types.action\_list\_info module}{276}{subsubsection*.888}
+\contentsline {subsubsection}{taniumpy.object\_types.action\_stop module}{276}{subsubsection*.890}
+\contentsline {subsubsection}{taniumpy.object\_types.action\_stop\_list module}{276}{subsubsection*.892}
+\contentsline {subsubsection}{taniumpy.object\_types.all\_objects module}{276}{subsubsection*.894}
+\contentsline {subsubsection}{taniumpy.object\_types.archived\_question module}{276}{subsubsection*.895}
+\contentsline {subsubsection}{taniumpy.object\_types.archived\_question\_list module}{276}{subsubsection*.897}
+\contentsline {subsubsection}{taniumpy.object\_types.audit\_data module}{276}{subsubsection*.899}
+\contentsline {subsubsection}{taniumpy.object\_types.base module}{277}{subsubsection*.901}
+\contentsline {paragraph}{Examples}{277}{paragraph*.909}
+\contentsline {subsubsection}{taniumpy.object\_types.cache\_filter module}{278}{subsubsection*.918}
+\contentsline {subsubsection}{taniumpy.object\_types.cache\_filter\_list module}{278}{subsubsection*.920}
+\contentsline {subsubsection}{taniumpy.object\_types.cache\_info module}{278}{subsubsection*.922}
+\contentsline {subsubsection}{taniumpy.object\_types.client\_count module}{278}{subsubsection*.924}
+\contentsline {subsubsection}{taniumpy.object\_types.client\_status module}{278}{subsubsection*.926}
+\contentsline {subsubsection}{taniumpy.object\_types.column module}{278}{subsubsection*.928}
+\contentsline {subsubsection}{taniumpy.object\_types.column\_set module}{278}{subsubsection*.931}
+\contentsline {subsubsection}{taniumpy.object\_types.computer\_group module}{278}{subsubsection*.934}
+\contentsline {subsubsection}{taniumpy.object\_types.computer\_group\_list module}{279}{subsubsection*.936}
+\contentsline {subsubsection}{taniumpy.object\_types.computer\_group\_spec module}{279}{subsubsection*.938}
+\contentsline {subsubsection}{taniumpy.object\_types.computer\_spec\_list module}{279}{subsubsection*.940}
+\contentsline {subsubsection}{taniumpy.object\_types.error\_list module}{279}{subsubsection*.942}
+\contentsline {subsubsection}{taniumpy.object\_types.filter module}{279}{subsubsection*.944}
+\contentsline {subsubsection}{taniumpy.object\_types.filter\_list module}{279}{subsubsection*.946}
+\contentsline {subsubsection}{taniumpy.object\_types.group module}{279}{subsubsection*.948}
+\contentsline {subsubsection}{taniumpy.object\_types.group\_list module}{279}{subsubsection*.950}
+\contentsline {subsubsection}{taniumpy.object\_types.metadata\_item module}{279}{subsubsection*.952}
+\contentsline {subsubsection}{taniumpy.object\_types.metadata\_list module}{280}{subsubsection*.954}
+\contentsline {subsubsection}{taniumpy.object\_types.object\_list module}{280}{subsubsection*.956}
+\contentsline {subsubsection}{taniumpy.object\_types.object\_list\_types module}{280}{subsubsection*.958}
+\contentsline {subsubsection}{taniumpy.object\_types.options module}{280}{subsubsection*.959}
+\contentsline {subsubsection}{taniumpy.object\_types.package\_file module}{280}{subsubsection*.961}
+\contentsline {subsubsection}{taniumpy.object\_types.package\_file\_list module}{280}{subsubsection*.963}
+\contentsline {subsubsection}{taniumpy.object\_types.package\_file\_status module}{280}{subsubsection*.965}
+\contentsline {subsubsection}{taniumpy.object\_types.package\_file\_status\_list module}{280}{subsubsection*.967}
+\contentsline {subsubsection}{taniumpy.object\_types.package\_file\_template module}{280}{subsubsection*.969}
+\contentsline {subsubsection}{taniumpy.object\_types.package\_file\_template\_list module}{280}{subsubsection*.971}
+\contentsline {subsubsection}{taniumpy.object\_types.package\_spec module}{281}{subsubsection*.973}
+\contentsline {subsubsection}{taniumpy.object\_types.package\_spec\_list module}{281}{subsubsection*.975}
+\contentsline {subsubsection}{taniumpy.object\_types.parameter module}{281}{subsubsection*.977}
+\contentsline {subsubsection}{taniumpy.object\_types.parameter\_list module}{281}{subsubsection*.979}
+\contentsline {subsubsection}{taniumpy.object\_types.parse\_job module}{281}{subsubsection*.981}
+\contentsline {subsubsection}{taniumpy.object\_types.parse\_job\_list module}{281}{subsubsection*.983}
+\contentsline {subsubsection}{taniumpy.object\_types.parse\_result module}{281}{subsubsection*.985}
+\contentsline {subsubsection}{taniumpy.object\_types.parse\_result\_group module}{281}{subsubsection*.987}
+\contentsline {subsubsection}{taniumpy.object\_types.parse\_result\_group\_list module}{281}{subsubsection*.989}
+\contentsline {subsubsection}{taniumpy.object\_types.parse\_result\_list module}{282}{subsubsection*.991}
+\contentsline {subsubsection}{taniumpy.object\_types.plugin module}{282}{subsubsection*.993}
+\contentsline {subsubsection}{taniumpy.object\_types.plugin\_argument module}{282}{subsubsection*.995}
+\contentsline {subsubsection}{taniumpy.object\_types.plugin\_argument\_list module}{282}{subsubsection*.997}
+\contentsline {subsubsection}{taniumpy.object\_types.plugin\_command\_list module}{282}{subsubsection*.999}
+\contentsline {subsubsection}{taniumpy.object\_types.plugin\_list module}{282}{subsubsection*.1001}
+\contentsline {subsubsection}{taniumpy.object\_types.plugin\_schedule module}{282}{subsubsection*.1003}
+\contentsline {subsubsection}{taniumpy.object\_types.plugin\_schedule\_list module}{282}{subsubsection*.1005}
+\contentsline {subsubsection}{taniumpy.object\_types.plugin\_sql module}{282}{subsubsection*.1007}
+\contentsline {subsubsection}{taniumpy.object\_types.plugin\_sql\_column module}{283}{subsubsection*.1009}
+\contentsline {subsubsection}{taniumpy.object\_types.plugin\_sql\_result module}{283}{subsubsection*.1011}
+\contentsline {subsubsection}{taniumpy.object\_types.question module}{283}{subsubsection*.1013}
+\contentsline {subsubsection}{taniumpy.object\_types.question\_list module}{283}{subsubsection*.1015}
+\contentsline {subsubsection}{taniumpy.object\_types.question\_list\_info module}{283}{subsubsection*.1017}
+\contentsline {subsubsection}{taniumpy.object\_types.result\_info module}{283}{subsubsection*.1019}
+\contentsline {subsubsection}{taniumpy.object\_types.result\_set module}{283}{subsubsection*.1022}
+\contentsline {subsubsection}{taniumpy.object\_types.row module}{284}{subsubsection*.1028}
+\contentsline {subsubsection}{taniumpy.object\_types.saved\_action module}{284}{subsubsection*.1031}
+\contentsline {subsubsection}{taniumpy.object\_types.saved\_action\_approval module}{284}{subsubsection*.1033}
+\contentsline {subsubsection}{taniumpy.object\_types.saved\_action\_list module}{284}{subsubsection*.1035}
+\contentsline {subsubsection}{taniumpy.object\_types.saved\_action\_policy module}{284}{subsubsection*.1037}
+\contentsline {subsubsection}{taniumpy.object\_types.saved\_action\_row\_id\_list module}{284}{subsubsection*.1039}
+\contentsline {subsubsection}{taniumpy.object\_types.saved\_question module}{284}{subsubsection*.1041}
+\contentsline {subsubsection}{taniumpy.object\_types.saved\_question\_list module}{284}{subsubsection*.1043}
+\contentsline {subsubsection}{taniumpy.object\_types.select module}{285}{subsubsection*.1045}
+\contentsline {subsubsection}{taniumpy.object\_types.select\_list module}{285}{subsubsection*.1047}
+\contentsline {subsubsection}{taniumpy.object\_types.sensor module}{285}{subsubsection*.1049}
+\contentsline {subsubsection}{taniumpy.object\_types.sensor\_list module}{285}{subsubsection*.1051}
+\contentsline {subsubsection}{taniumpy.object\_types.sensor\_query module}{285}{subsubsection*.1053}
+\contentsline {subsubsection}{taniumpy.object\_types.sensor\_query\_list module}{285}{subsubsection*.1055}
+\contentsline {subsubsection}{taniumpy.object\_types.sensor\_string\_hints module}{285}{subsubsection*.1057}
+\contentsline {subsubsection}{taniumpy.object\_types.sensor\_subcolumn module}{285}{subsubsection*.1059}
+\contentsline {subsubsection}{taniumpy.object\_types.sensor\_subcolumn\_list module}{285}{subsubsection*.1061}
+\contentsline {subsubsection}{taniumpy.object\_types.sensor\_types module}{286}{subsubsection*.1063}
+\contentsline {subsubsection}{taniumpy.object\_types.soap\_error module}{286}{subsubsection*.1064}
+\contentsline {subsubsection}{taniumpy.object\_types.system\_setting module}{286}{subsubsection*.1066}
+\contentsline {subsubsection}{taniumpy.object\_types.system\_settings\_list module}{286}{subsubsection*.1068}
+\contentsline {subsubsection}{taniumpy.object\_types.system\_status\_aggregate module}{286}{subsubsection*.1070}
+\contentsline {subsubsection}{taniumpy.object\_types.system\_status\_list module}{286}{subsubsection*.1072}
+\contentsline {subsubsection}{taniumpy.object\_types.upload\_file module}{286}{subsubsection*.1074}
+\contentsline {subsubsection}{taniumpy.object\_types.upload\_file\_list module}{286}{subsubsection*.1076}
+\contentsline {subsubsection}{taniumpy.object\_types.upload\_file\_status module}{286}{subsubsection*.1078}
+\contentsline {subsubsection}{taniumpy.object\_types.user module}{286}{subsubsection*.1080}
+\contentsline {subsubsection}{taniumpy.object\_types.user\_list module}{287}{subsubsection*.1082}
+\contentsline {subsubsection}{taniumpy.object\_types.user\_permissions module}{287}{subsubsection*.1084}
+\contentsline {subsubsection}{taniumpy.object\_types.user\_role module}{287}{subsubsection*.1086}
+\contentsline {subsubsection}{taniumpy.object\_types.user\_role\_list module}{287}{subsubsection*.1088}
+\contentsline {subsubsection}{taniumpy.object\_types.version\_aggregate module}{287}{subsubsection*.1090}
+\contentsline {subsubsection}{taniumpy.object\_types.version\_aggregate\_list module}{287}{subsubsection*.1092}
+\contentsline {subsubsection}{taniumpy.object\_types.white\_listed\_url module}{287}{subsubsection*.1094}
+\contentsline {subsubsection}{taniumpy.object\_types.white\_listed\_url\_list module}{287}{subsubsection*.1096}
+\contentsline {subsubsection}{taniumpy.object\_types.xml\_error module}{287}{subsubsection*.1098}
+\contentsline {section}{\numberline {1.9}xmltodict module}{288}{section.1.9}
+\contentsline {section}{\numberline {1.10}ddt module}{289}{section.1.10}
+\contentsline {section}{\numberline {1.11}threaded\_http module}{290}{section.1.11}
+\contentsline {chapter}{\numberline {2}Indices and tables}{291}{chapter.2}
+\contentsline {chapter}{Python Module Index}{293}{section*.1115}
+\contentsline {chapter}{Index}{295}{section*.1116}

@@ -1,6 +1,6 @@
 
 Get leader clients
-====================================================================================================
+==========================================================================================
 Get all clients that are Leader status
 
 Example Python Code
@@ -59,7 +59,14 @@ Example Python Code
     
     print ""
     print "print the first object returned in JSON format:"
-    print response.to_json(response[0])
+    out = response.to_json(response[0])
+    if len(out.splitlines()) > 15:
+        out = out.splitlines()[0:15]
+        out.append('..trimmed for brevity..')
+        out = '\n'.join(out)
+    
+    print out
+    
     
 
 
@@ -89,7 +96,7 @@ Output from Python Code
       "host_name": "WIN-A12SC6N6T7Q", 
       "ipaddress_client": "172.16.31.145", 
       "ipaddress_server": "172.16.31.145", 
-      "last_registration": "2014-12-08T20:14:31", 
+      "last_registration": "2014-12-08T21:26:21", 
       "port_number": 17472, 
       "protocol_version": 314, 
       "receive_state": "Previous Only", 

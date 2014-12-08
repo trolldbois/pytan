@@ -1,6 +1,6 @@
 
 Create whitelisted url from json
-====================================================================================================
+==========================================================================================
 Export a whitelisted url object to a JSON file, adding ' test1' to the url_regex of the whitelisted url before exporting the JSON file and deleting any pre-existing whitelisted url with the same (new) name, then create a new whitelisted url object from the exported JSON file
 
 Example Python Code
@@ -104,9 +104,9 @@ Output from Python Code
 
 
     Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-    2014-12-08 15:17:05,158 INFO     handler: Deleted 'WhiteListedUrl, id: 7'
-    2014-12-08 15:17:05,159 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/WhiteListedUrlList_2014_12_08-15_17_05-EST.json' written with 198 bytes
-    2014-12-08 15:17:05,170 INFO     handler: New WhiteListedUrl, id: 27 (ID: 27) created successfully!
+    2014-12-08 16:28:45,212 INFO     handler: Deleted 'WhiteListedUrl, id: 27'
+    2014-12-08 16:28:45,213 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/WhiteListedUrlList_2014_12_08-16_28_45-EST.json' written with 198 bytes
+    2014-12-08 16:28:45,226 INFO     handler: New WhiteListedUrl, id: 53 (ID: 53) created successfully!
     
     Type of response:  <class 'taniumpy.object_types.white_listed_url_list.WhiteListedUrlList'>
     
@@ -120,7 +120,7 @@ Output from Python Code
         {
           "_type": "white_listed_url", 
           "download_seconds": 86400, 
-          "id": 27, 
+          "id": 53, 
           "url_regex": "test1 API TEST"
         }
       ]
