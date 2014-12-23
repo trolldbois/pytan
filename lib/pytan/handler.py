@@ -1001,7 +1001,7 @@ class Handler(object):
         mylog.debug(m(passed_count))
 
         if passed_count == 0:
-            m = "Number of systems match the action filters provided is zero!"
+            m = "Number of systems that match the action filters provided is zero!"
             raise HandlerError(m)
 
         if not run:
