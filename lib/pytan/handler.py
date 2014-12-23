@@ -65,7 +65,7 @@ class Handler(object):
     """
 
     def __init__(self, username, password, host, port="444", loglevel=0,
-                 debugformat=False, **kwargs):
+                 debugformat=False, get_version=True, **kwargs):
         super(Handler, self).__init__()
 
         # setup the console logging handler
@@ -92,7 +92,7 @@ class Handler(object):
 
         utils.test_app_port(host, port)
         self.session = taniumpy.Session(host, port)
-        self.session.authenticate(username, password)
+        self.session.authenticate(username, password, get_version=get_version)
 
     def __str__(self):
         str_tpl = "Handler for {}".format
