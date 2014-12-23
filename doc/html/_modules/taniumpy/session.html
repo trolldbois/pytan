@@ -145,7 +145,7 @@
 <span class="kn">from</span> <span class="nn">.object_types.result_info</span> <span class="kn">import</span> <span class="n">ResultInfo</span>
 <span class="kn">from</span> <span class="nn">.object_types.result_set</span> <span class="kn">import</span> <span class="n">ResultSet</span>
 
-<span class="n">my_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
+<span class="n">my_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">sys.argv[0]</span><span class="p">)</span>
 <span class="n">my_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">my_file</span><span class="p">)</span>
 <span class="n">mylog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;api.session&quot;</span><span class="p">)</span>
 <span class="n">authlog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;api.session.auth&quot;</span><span class="p">)</span>

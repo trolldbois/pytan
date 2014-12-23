@@ -1059,10 +1059,10 @@ def version_check(reqver):
         "{}: {} version {}, required {}").format
     if not __version__ >= reqver:
         s = "Script and API Version mismatch!"
-        raise Exception(log_tpl(s, __file__, __version__, reqver))
+        raise Exception(log_tpl(s, sys.argv[0], __version__, reqver))
 
     s = "Script and API Version match"
-    logging.debug(log_tpl(s, __file__, __version__, reqver))
+    logging.debug(log_tpl(s, sys.argv[0], __version__, reqver))
     return True
 
 

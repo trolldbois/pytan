@@ -35,7 +35,7 @@ reload(sys)
 sys.setdefaultencoding("utf-8")
 sys.dont_write_bytecode = True
 
-my_file = os.path.abspath(__file__)
+my_file = os.path.abspath(sys.argv[0])
 my_dir = os.path.dirname(my_file)
 
 pname = os.path.splitext(os.path.basename(sys.argv[0]))[0]

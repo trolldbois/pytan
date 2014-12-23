@@ -18,7 +18,7 @@ import unittest
 import copy
 import json  # noqa
 
-my_file = os.path.abspath(__file__)
+my_file = os.path.abspath(sys.argv[0])
 my_dir = os.path.dirname(my_file)
 root_dir = os.path.join(my_dir, os.pardir)
 root_dir = os.path.abspath(root_dir)

@@ -9,6 +9,7 @@ import string
 import xml.etree.ElementTree as ET
 import logging
 import json
+import ssl
 from datetime import datetime
 
 from base64 import b64encode
@@ -23,6 +24,7 @@ authlog = logging.getLogger("api.session.auth")
 httplog = logging.getLogger("api.session.http")
 bodyhttplog = logging.getLogger("api.session.http.body")
 
+my_dir = my_dir.replace('\\library.zip\\taniumpy', '')
 request_body_template_file = os.path.join(my_dir, 'request_body_template.xml')
 
 
@@ -45,7 +47,13 @@ def load_file(filename):
 
 
 def http_post(host, port, url, body=None, headers=None, timeout=5):
-    http = httplib.HTTPSConnection(host, port, timeout=timeout)
+    # revert SSL verification for python 2.7.9
+    try:
+        http = httplib.HTTPSConnection(
+            host, port, timeout=timeout, context=ssl._create_unverified_context()
+        )
+    except:
+        http = httplib.HTTPSConnection(host, port, timeout=timeout)
 
     req_args = {}
     req_args['method'] = 'POST'
