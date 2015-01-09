@@ -108,7 +108,7 @@ class QuestionAsker(object):
             if callbacks.get('AnswersChanged') and answers_changed:
                 callbacks['AnswersChanged'](self, new_pct)
 
-            if pct > self.pct_complete_threshold:
+            if pct >= self.pct_complete_threshold:
                 if callbacks.get('AnswersComplete'):
                     callbacks['AnswersComplete'](self, new_pct)
                 return
