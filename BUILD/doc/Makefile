@@ -57,6 +57,9 @@ clean:
 	rm -rf $(BUILDDIR)/*
 	rm -rf $(REALBUILDDIR)/*
 
+cleanbuild:
+	rm -rf $(BUILDDIR)/*
+
 html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(REALBUILDDIR)/html
 	@echo
@@ -196,4 +199,4 @@ staticdoc:
 	cp $(STATIC_DOCDIR)/* $(REALBUILDDIR)/
 	@echo "Static docs copied to $(REALBUILDDIR)"
 
-all: clean html staticdoc coverage latexpdf
+all: clean html staticdoc coverage latexpdf cleanbuild
