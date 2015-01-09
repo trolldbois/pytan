@@ -1,4 +1,11 @@
 # TODO NOW
+  * filter hidden sensors from print_sensors.py
+  * add better param json decoding error handling in print_sensors.py
+  * [ ] Add support for static building via py2exe
+  * [ ] build "ask all questions" workflow
+  * [ ] Add method to get question progress
+  * [ ] in question_asker.py
+  *             if pct >= self.pct_complete_threshold: 
 
 # TODO LATER
   * [ ] explain get == select col data, from == select row data
@@ -12,7 +19,6 @@
   * [ ] test verify checks work against package with verification (unable to do)
   * [ ] look into update object methods
   * [ ] add method to calculate total time btwn request and response
-  * [ ] build "ask all questions" workflow
   * [ ] test against RT
   * [ ] test against all the different levels of user privs
   * [ ] logfile support
