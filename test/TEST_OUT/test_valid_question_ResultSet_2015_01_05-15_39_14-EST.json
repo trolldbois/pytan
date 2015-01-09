@@ -1,0 +1,1502 @@
+[
+  {
+    "row0": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "[no results]"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row1": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\VS7Debug"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row2": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\ar-SA"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row3": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\ru-RU"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row4": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\fsdefinitions\\keypad"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row5": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row6": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\sv-SE"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row7": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\uk-UA"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row8": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\sl-SI"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row9": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\hu-HU"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row10": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\zh-TW"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row11": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\zh-CN"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row12": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\fi-FI"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row13": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row14": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\da-DK"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row15": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\fsdefinitions\\oskmenu"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row16": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\ko-KR"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row17": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\it-IT"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row18": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\Triedit"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row19": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Microsoft SQL Server\\110\\Shared"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row20": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\he-IL"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row21": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\ro-RO"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row22": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\fsdefinitions\\oskpred"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row23": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\fsdefinitions\\numbers"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row24": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\nb-NO"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row25": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\lv-LV"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row26": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\fsdefinitions\\auxpad"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row27": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\TextConv"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row28": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\MSInfo\\en-US"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row29": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\nl-NL"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row30": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Microsoft SQL Server\\90\\Shared\\Resources\\1033"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row31": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\fr-FR"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row32": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\tr-TR"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row33": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\VC"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row34": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\WF"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row35": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Microsoft SQL Server\\110\\Shared\\en"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row36": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\fsdefinitions\\symbols"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row37": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\lt-LT"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row38": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\et-EE"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row39": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\cs-CZ"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row40": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Microsoft SQL Server\\110\\Shared\\VS2008"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row41": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\en-US"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row42": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\bg-BG"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row43": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Microsoft SQL Server\\100\\Shared"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row44": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\es-ES"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row45": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\MSInfo"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row46": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Microsoft SQL Server\\110\\Shared\\RsFxInstall"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row47": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\WF\\amd64"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row48": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\de-DE"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row49": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\fsdefinitions\\main"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row50": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Microsoft SQL Server\\90\\Shared\\Resources"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row51": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\sr-Latn-CS"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row52": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\fsdefinitions\\osknumpad"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row53": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Microsoft SQL Server\\110\\Shared\\Resources\\1033"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row54": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\MSEnv"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row55": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Microsoft SQL Server\\110\\Shared\\VS2008\\1033"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row56": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\pt-BR"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row57": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\pt-PT"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row58": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\el-GR"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row59": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Microsoft SQL Server\\110\\Shared\\Resources"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row60": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\fsdefinitions\\web"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row61": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\ja-JP"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row62": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\sk-SK"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row63": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\hr-HR"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row64": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\VGX"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row65": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\Triedit\\en-US"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row66": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\TextConv\\en-US"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row67": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\fsdefinitions"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row68": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\th-TH"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row69": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\SQL Debugging"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row70": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Microsoft SQL Server\\90\\Shared"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row71": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\ink\\pl-PL"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row72": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\Stationery"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row73": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Common Files\\Microsoft Shared\\VS7Debug\\1033"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }, 
+  {
+    "row74": [
+      {
+        "column.display_name": "Folder Name Search with RegEx Match[No, Program Files, No, ]", 
+        "column.result_type": "String", 
+        "column.values": [
+          "C:\\Program Files\\Microsoft SQL Server\\110\\Shared\\ErrorDumps"
+        ], 
+        "column.what_hash": 1487794853
+      }, 
+      {
+        "column.display_name": "Count", 
+        "column.result_type": "NumericDecimal", 
+        "column.values": [
+          "1"
+        ], 
+        "column.what_hash": 0
+      }
+    ]
+  }
+]

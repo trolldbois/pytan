@@ -1,0 +1,3 @@
+category,description,exclude_from_parse_flag,hash,hidden_flag,id,ignore_case_flag,max_age_seconds,name,queries_query_0_platform,queries_query_0_script,queries_query_0_script_type,source_id,string_count,value_type
+Reserved,"The recorded state of each action a client has taken recently in the form of id:status.
+Example: 1:Completed",1,1792443391,0,1,1,3600,Action Statuses,Windows,Reserved,WMIQuery,0,3726,String

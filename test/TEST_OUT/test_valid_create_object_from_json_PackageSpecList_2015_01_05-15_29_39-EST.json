@@ -1,0 +1,61 @@
+{
+  "_type": "package_specs", 
+  "package_spec": [
+    {
+      "_type": "package_spec", 
+      "available_time": "2015-01-05T20:25:40", 
+      "command": "cmd /c cscript //T:60 add-tags.vbs \"$1\"", 
+      "command_timeout": 60, 
+      "creation_time": "2015-01-05T20:22:35", 
+      "deleted_flag": 0, 
+      "display_name": "Custom Tagging - Add Tags", 
+      "expire_seconds": 660, 
+      "files": {
+        "_type": "package_files", 
+        "file": [
+          {
+            "_type": "file", 
+            "bytes_downloaded": 1972, 
+            "bytes_total": 1972, 
+            "cache_status": "CACHED", 
+            "download_seconds": 0, 
+            "download_start_time": "2015-01-05T20:25:19", 
+            "hash": "55aa6c54d82282ad2d41390e49f7b9939c582e14fa5cfca1b7b7fb9264261182", 
+            "id": 71, 
+            "last_download_progress_time": "2015-01-05T20:25:30", 
+            "name": "add-tags.vbs", 
+            "size": 1972, 
+            "source": "https://content.tanium.com/files/initialcontent/bundles/2014-11-05_12-56-07-8513/custom_tagging_-_add_tags/add-tags.vbs", 
+            "status": 200
+          }
+        ]
+      }, 
+      "hidden_flag": 0, 
+      "id": 31, 
+      "last_modified_by": "Jim Olsen", 
+      "last_update": "2015-01-05T20:22:35", 
+      "metadata": {
+        "_type": "metadata", 
+        "item": [
+          {
+            "_type": "item", 
+            "admin_flag": 0, 
+            "name": "defined", 
+            "value": "Tanium"
+          }, 
+          {
+            "_type": "item", 
+            "admin_flag": 0, 
+            "name": "category", 
+            "value": "Tanium"
+          }
+        ]
+      }, 
+      "modification_time": "2015-01-05T20:22:35", 
+      "name": "Custom Tagging - Add Tags API TEST", 
+      "parameter_definition": "{\"parameters\":[{\"restrict\":null,\"validationExpressions\":[{\"flags\":\"\",\"expression\":\"\\\\S\",\"helpString\":\"You must enter a value\",\"model\":\"com.tanium.models::ValidationExpression\",\"parameterType\":\"com.tanium.models::ValidationExpression\"}],\"helpString\":\"Enter tags space-delimited.\",\"value\":\"\",\"promptText\":\"e.g. PCI DMZ Decomm\",\"defaultValue\":\"\",\"label\":\"Add tags (space-delimited)\",\"maxChars\":0,\"key\":\"$1\",\"model\":\"com.tanium.components.parameters::TextInputParameter\",\"parameterType\":\"com.tanium.components.parameters::TextInputParameter\"}],\"model\":\"com.tanium.components.parameters::ParametersArray\",\"parameterType\":\"com.tanium.components.parameters::ParametersArray\"}", 
+      "source_id": 0, 
+      "verify_group_id": 0
+    }
+  ]
+}

@@ -1,7 +1,0 @@
-cache_row_id,computer_id,full_version,host_name,ipaddress_client,ipaddress_server,last_registration,port_number,protocol_version,receive_state,send_state,status
-0,660621737,5.1.314.7724,Casus-Belli.local,172.16.31.1,172.16.31.1,2014-12-08T19:37:43,17472,314,,Forward Only,"Leader, Slow Link Behind"
-1,2851130166,5.1.314.7724,Jims-Mac.local,172.16.31.131,172.16.31.131,2014-12-08T19:37:08,17472,314,,,
-2,3508795802,6.0.314.1190,WIN-A12SC6N6T7Q,172.16.31.145,172.16.31.145,2014-12-08T19:37:36,17472,314,Previous Only,Backward Only,Leader
-3,828035598,6.0.314.1190,jtanium1.localdomain,172.16.31.128,172.16.31.128,2014-12-08T19:37:45,17473,314,,,
-4,4133551098,5.1.314.7778,localhost.(none),172.16.31.143,172.16.31.143,2014-12-08T19:37:47,17472,314,,,"Leader, Slow Link Ahead, Slow Link Behind"
-5,4160699188,5.1.314.7778,ubuntu.(none),172.16.31.144,172.16.31.144,2014-12-08T19:37:37,17472,314,,,

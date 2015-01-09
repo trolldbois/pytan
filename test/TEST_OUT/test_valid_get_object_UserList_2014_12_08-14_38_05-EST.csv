@@ -1,2 +1,0 @@
-deleted_flag,group_id,id,last_login,name,permissions_permission,roles_role_0_description,roles_role_0_id,roles_role_0_name,roles_role_0_permissions_permission
-0,0,2,2014-12-08T19:38:05,Tanium User,admin,"Administrators can perform all functions in the system, including creating other users, viewing the System Status, changing Global Settings, and creating Computer Groups.",1,Administrator,admin

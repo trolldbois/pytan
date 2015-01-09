@@ -1,0 +1,48 @@
+{
+  "_type": "actions", 
+  "action": [
+    {
+      "_type": "action", 
+      "action_group": {
+        "_type": "group", 
+        "id": 0, 
+        "name": "Default"
+      }, 
+      "comment": "Scans for unmanaged assets on the network.", 
+      "creation_time": "2015-01-05T20:23:39", 
+      "distribute_seconds": 600, 
+      "expire_seconds": 1800, 
+      "history_saved_question": {
+        "_type": "saved_question", 
+        "id": 173
+      }, 
+      "id": 1, 
+      "name": "Unmanaged Asset Tracking - Run Scan", 
+      "package_spec": {
+        "_type": "package_spec", 
+        "command": "cmd /c start /B cscript //T:3600 ..\\..\\Tools\\run-ua-scan.vbs /RANDOM_WAIT_TIME_IN_SECONDS:240", 
+        "id": 6, 
+        "name": "Run Unmanaged Asset Scanner"
+      }, 
+      "saved_action": {
+        "_type": "saved_action", 
+        "id": 1
+      }, 
+      "skip_lock_flag": 0, 
+      "status": "Pending", 
+      "stopped_flag": 0, 
+      "target_group": {
+        "_type": "group", 
+        "id": 65, 
+        "name": "Default"
+      }, 
+      "user": {
+        "_type": "user", 
+        "group_id": 0, 
+        "id": 1, 
+        "last_login": "2015-01-05T20:28:55", 
+        "name": "Jim Olsen"
+      }
+    }
+  ]
+}
