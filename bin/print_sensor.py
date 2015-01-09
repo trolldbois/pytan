@@ -101,6 +101,9 @@ if __name__ == "__main__":
         parser, handler, 'sensor', all_args
     )
 
+    # filter out all sensors that have a source_id (i.e. are created as temp sensors for params)
+    response = [x for x in response if not x.source_id]
+
     if args.json:
         for x in response:
             result = handler.export_obj(x, 'json')
@@ -129,7 +132,11 @@ if __name__ == "__main__":
 
         param_def = x.parameter_definition or {}
         if param_def:
-            param_def = json.loads(param_def)
+            try:
+                param_def = json.loads(param_def)
+            except:
+                print "Error loading JSON parameter definition {}".format(param_def)
+                param_def = {}
 
         params = param_def.get('parameters', [])
         if args.params_only and not params:
