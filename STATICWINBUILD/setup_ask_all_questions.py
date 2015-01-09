@@ -1,5 +1,6 @@
 import os
 import sys
+import shutil
 
 my_file = os.path.abspath(sys.argv[0])
 my_dir = os.path.dirname(my_file)
@@ -13,11 +14,23 @@ for aa in path_adds:
 
 
 from distutils.core import setup
-import py2exe
+import py2exe # noqa
+
+VERSION = "1.0.2"
+DIST_DIR = "ask_all_questions_dist_{}".format(VERSION)
+BUILD_DIR = "build"
+
+try:
+    shutil.rmtree(os.path.join(my_dir, DIST_DIR))
+    shutil.rmtree(os.path.join(my_dir, BUILD_DIR))
+except:
+    pass
+
 setup(
-    console=['../bin/ask_manual_question.py'],
+    console=['../bin/ask_all_questions.py'],
     options={
         'py2exe': {
+            'dist_dir': DIST_DIR,
             'packages': [
                 'pytan',
                 'taniumpy',
@@ -28,3 +41,5 @@ setup(
         '../lib/taniumpy/request_body_template.xml',
     ],
 )
+
+shutil.rmtree(os.path.join(my_dir, BUILD_DIR))
