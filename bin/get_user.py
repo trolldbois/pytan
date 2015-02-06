@@ -4,11 +4,12 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 '''Get user and save as report format'''
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
-__version__ = '1.0.1'
+__version__ = '1.0.2'
 
 
 import os
 import sys
+import getpass
 sys.dont_write_bytecode = True
 my_file = os.path.abspath(sys.argv[0])
 my_dir = os.path.dirname(my_file)
@@ -71,6 +72,18 @@ if __name__ == "__main__":
     parser = utils.add_get_object_report_argparser(parser)
     args = parser.parse_args()
     all_args = args.__dict__
+
+    if not args.username:
+        username = raw_input('Tanium Username: ')
+        all_args['username'] = username.strip()
+
+    if not args.password:
+        password = getpass.getpass('Tanium Password: ')
+        all_args['password'] = password.strip()
+
+    if not args.host:
+        host = raw_input('Tanium Host: ')
+        all_args['host'] = host.strip()
 
     handler = process_handler_args(parser, all_args)
 

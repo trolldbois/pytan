@@ -4,7 +4,7 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 '''Asks a question for every sensor and saves the results as a report format'''
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
-__version__ = '1.0.1'
+__version__ = '1.0.2'
 
 import os
 import sys
