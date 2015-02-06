@@ -17,7 +17,7 @@ from distutils.core import setup
 import py2exe # noqa
 
 VERSION = "1.0.2"
-DIST_DIR = "ask_all_questions_dist_{}".format(VERSION)
+DIST_DIR = "Tanium_Sensor_Analysis_Tool_dist_{}".format(VERSION)
 BUILD_DIR = "build"
 
 try:
@@ -27,7 +27,7 @@ except:
     pass
 
 setup(
-    console=['../bin/ask_all_questions.py'],
+    console=['../bin/Tanium_Sensor_Analysis_Tool.py'],
     options={
         'py2exe': {
             'dist_dir': DIST_DIR,
@@ -43,3 +43,5 @@ setup(
 )
 
 shutil.rmtree(os.path.join(my_dir, BUILD_DIR))
+
+# create batch file for running here and for configuration

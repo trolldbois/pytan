@@ -1,4 +1,4 @@
-#!/usr/bin/env python -i
+#!/usr/bin/env python
 # -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
@@ -35,7 +35,7 @@ from pytan import constants
 
 examples = []
 
-OUTPUT_DIR = os.path.join(os.getcwd(), 'ASK_ALL_QUESTIONS_OUTPUT', utils.get_now())
+OUTPUT_DIR = os.path.join(os.getcwd(), 'TSAT_OUTPUT', utils.get_now())
 mylog = logging.getLogger(os.path.basename(my_file))
 mylog.setLevel(logging.INFO)
 
@@ -204,7 +204,7 @@ if __name__ == "__main__":
         help='Log with debug level to console and files',
     )
 
-    arggroup = parser.add_argument_group('Ask All Questions Options')
+    arggroup = parser.add_argument_group('TSAT Options')
     arggroup.add_argument(
         '--platform',
         required=False,
