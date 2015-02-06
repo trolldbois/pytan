@@ -1,13 +1,15 @@
 # TODO NOW
-  * filter hidden sensors from print_sensors.py
-  * add better param json decoding error handling in print_sensors.py
-  * [ ] Add support for static building via py2exe
-  * [ ] build "ask all questions" workflow
-  * [ ] Add method to get question progress
-  * [ ] in question_asker.py
-  *             if pct >= self.pct_complete_threshold: 
+  * [X] filter hidden sensors from print_sensors.py
+  * [X] add better param json decoding error handling in print_sensors.py
+  * [X] Add support for static building via py2exe
+  * [X] build "ask all questions" workflow
+  * [X] rename ask all questions to Tanium Sensor Analysis Tool
+  * [X] add username/password/host prompt to all py scripts
+  * [ ] in question_asker.py: if pct >= self.pct_complete_threshold: 
+  * [ ] in request_body_template.xml:       {cache_filters}
 
 # TODO LATER
+  * [ ] Add method to get question progress
   * [ ] explain get == select col data, from == select row data
   * [ ] add pointers to KB articles
   * [ ] add readme.md to examples
