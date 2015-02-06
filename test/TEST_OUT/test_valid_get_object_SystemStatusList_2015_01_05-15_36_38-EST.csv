@@ -1,3 +1,0 @@
-cache_row_id,computer_id,full_version,host_name,ipaddress_client,ipaddress_server,last_registration,port_number,protocol_version,receive_state,send_state,status
-2,3508795802,6.0.314.1190,WIN-A12SC6N6T7Q,172.16.31.145,172.16.31.145,2014-12-08T22:10:33,17472,314,Previous Only,Backward Only,Leader
-3,1922743977,6.0.314.1190,jtanium1.localdomain,172.16.31.128,172.16.31.128,2015-01-05T20:36:24,17473,314,Previous Only,Backward Only,Leader
