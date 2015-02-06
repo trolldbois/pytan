@@ -1,10 +1,4 @@
 # TODO NOW
-  * [X] filter hidden sensors from print_sensors.py
-  * [X] add better param json decoding error handling in print_sensors.py
-  * [X] Add support for static building via py2exe
-  * [X] build "ask all questions" workflow
-  * [X] rename ask all questions to Tanium Sensor Analysis Tool
-  * [X] add username/password/host prompt to all py scripts
   * [ ] in question_asker.py: if pct >= self.pct_complete_threshold: 
   * [ ] in request_body_template.xml:       {cache_filters}
 
@@ -108,4 +102,12 @@
     * [X] build markdown docs for bin scripts
     * [X] add usage to docs
     * [X] update readme
-
+  * 1.0.2
+    * [X] filter hidden sensors from print_sensors.py
+    * [X] add better param json decoding error handling in print_sensors.py
+    * [X] Add support for static building via py2exe
+    * [X] build "ask all questions" workflow
+    * [X] rename ask all questions to Tanium Sensor Analysis Tool
+    * [X] add username/password/host prompt to all py scripts
+    * [X] add config.bat, run.bat, readme.md for TSAT
+    * [X] add auto zipper for TSAT build
