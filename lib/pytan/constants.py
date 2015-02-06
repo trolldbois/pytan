@@ -259,6 +259,7 @@ REQ_KWARGS = [
     'use_error_objects',
     'use_json',
     'json_pretty_print',
+    'cache_filters',
 ]
 """
 A list of arguments that will be pulled from any respective kwargs for most calls to :class:`taniumpy.session.Session`
