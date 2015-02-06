@@ -247,7 +247,7 @@ class Session(object):
             ).format(self.INFO_RES))
         except Exception as e:
             mylog.warn((
-                "Failed to retriev server info from {}, {}"
+                "Failed to retrieve server info from {}, {}"
             ).format(self.INFO_RES, e))
             body = {'server_info_error': e}
         return body
