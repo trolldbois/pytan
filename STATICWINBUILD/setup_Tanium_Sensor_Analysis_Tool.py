@@ -1,7 +1,11 @@
+# change me accordingly, rest is automatic
+TOOL_NAME = "Tanium_sensor_Analysis_Tool"
+
 import os
 import sys
 import shutil
 import zipfile
+import imp
 
 my_file = os.path.abspath(sys.argv[0])
 my_dir = os.path.dirname(my_file)
@@ -18,31 +22,53 @@ from distutils.core import setup
 import py2exe # noqa
 
 
+def spew(m):
+    print("### [STATICWINBUILD] {}".format(m))
+
+
 def write_file(filename, content):
     fh = open(filename, 'w+')
     fh.write(content)
     fh.close()
-    print "Wrote %s" % (filename)
+    spew("Wrote {!r}".format(filename))
 
 
 def zipdir(path, zip):
     for root, dirs, files in os.walk(path):
         for file in files:
             zip.write(os.path.join(root, file),)
+    spew("Created zip file {!r} from {!r}".format(zip.filename, path))
 
 
-VERSION = "1.0.2"
-DIST_DIR = "Tanium_Sensor_Analysis_Tool_dist_{}".format(VERSION)
+def deltree(d):
+    spew("Removing directory {!r}".format(d))
+    shutil.rmtree(d)
+
+
+def clean_old_file(f):
+    if os.path.isfile(f):
+        os.unlink(f)
+        spew("Removed old file {!r}".format(f))
+
+
+os.chdir(my_dir)
+
+pyscript = '{}.py'.format(TOOL_NAME)
+pyscript_path = '../bin/{}'.format(pyscript)
+a = imp.load_source('a', pyscript_path)
+VERSION = a.__version__
+DIST_DIR = "{}_dist_{}".format(TOOL_NAME, VERSION)
 BUILD_DIR = "build"
+ZIP_DIR = "ZIP_DIST"
 
 try:
-    shutil.rmtree(os.path.join(my_dir, DIST_DIR))
-    shutil.rmtree(os.path.join(my_dir, BUILD_DIR))
+    deltree(DIST_DIR)
+    deltree(BUILD_DIR)
 except:
     pass
 
 setup(
-    console=['../bin/Tanium_Sensor_Analysis_Tool.py'],
+    console=[pyscript_path],
     options={
         'py2exe': {
             'dist_dir': DIST_DIR,
@@ -57,7 +83,9 @@ setup(
     ],
 )
 
-shutil.rmtree(os.path.join(my_dir, BUILD_DIR))
+spew("Finished building {!r} via py2exe".format(TOOL_NAME))
+
+deltree(BUILD_DIR)
 
 # create batch file for running here and for configuration
 
@@ -144,6 +172,13 @@ write_file(os.path.join(DIST_DIR, 'RUN.bat'), RUN_BATCH)
 write_file(os.path.join(DIST_DIR, 'CONFIG.bat'), CONFIG_BATCH)
 write_file(os.path.join(DIST_DIR, 'README.md'), README)
 
-zf_name = DIST_DIR + '.zip'
+try:
+    os.makedirs(ZIP_DIR)
+except:
+    pass
+
+zf_name = "{}/{}.zip".format(ZIP_DIR, DIST_DIR)
+clean_old_file(zf_name)
 zf = zipfile.ZipFile(zf_name, 'w', zipfile.ZIP_DEFLATED)
 zipdir(DIST_DIR, zf)
+deltree(os.path.join(my_dir, DIST_DIR))
