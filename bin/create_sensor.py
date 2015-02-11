@@ -50,4 +50,4 @@ if __name__ == "__main__":
         "Use create_sensor_from_json() instead!"
     )
     print m
-    sys.exit(100)
+    sys.exit(0)
