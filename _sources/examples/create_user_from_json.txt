@@ -104,9 +104,9 @@ Output from Python Code
 
 
     Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-    2014-12-08 16:28:44,799 INFO     handler: Deleted "User, name: 'Jim Olsen API TEST'"
-    2014-12-08 16:28:44,800 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/UserList_2014_12_08-16_28_44-EST.json' written with 831 bytes
-    2014-12-08 16:28:44,816 INFO     handler: New User, name: 'Jim Olsen API TEST' (ID: 17) created successfully!
+    2015-02-11 12:06:40,543 INFO     handler: Deleted "User, name: 'Jim Olsen API TEST'"
+    2015-02-11 12:06:40,544 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/UserList_2015_02_11-12_06_40-EST.json' written with 831 bytes
+    2015-02-11 12:06:40,561 INFO     handler: New User, name: 'Jim Olsen API TEST' (ID: 16) created successfully!
     
     Type of response:  <class 'taniumpy.object_types.user_list.UserList'>
     
@@ -121,7 +121,7 @@ Output from Python Code
           "_type": "user", 
           "deleted_flag": 0, 
           "group_id": 0, 
-          "id": 17, 
+          "id": 16, 
           "last_login": "2001-01-01T00:00:00", 
           "name": "Jim Olsen API TEST", 
           "permissions": {

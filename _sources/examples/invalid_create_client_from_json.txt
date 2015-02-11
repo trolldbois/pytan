@@ -75,7 +75,7 @@ Output from Python Code
 
 
     Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-    2014-12-08 16:28:45,334 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/SystemStatusList_2014_12_08-16_28_45-EST.json' written with 546 bytes
+    2015-02-11 12:06:41,002 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/SystemStatusList_2015_02_11-12_06_41-EST.json' written with 1042 bytes
     Traceback (most recent call last):
       File "<string>", line 51, in <module>
       File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 484, in create_from_json

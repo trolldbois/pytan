@@ -81,10 +81,10 @@ Output from Python Code
     Type of response:  <class 'taniumpy.object_types.group_list.GroupList'>
     
     print of response:
-    GroupList, len: 5
+    GroupList, len: 2
     
     length of response (number of objects returned): 
-    5
+    2
     
     print the first object returned in JSON format:
     {

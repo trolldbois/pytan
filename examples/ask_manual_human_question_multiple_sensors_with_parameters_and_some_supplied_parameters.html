@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>7.1.2.8. Ask manual human question multiple sensors with parameters and some supplied parameters &mdash; PyTan 1.0.1 documentation</title>
+  <title>7.1.2.8. Ask manual human question multiple sensors with parameters and some supplied parameters &mdash; PyTan 1.0.3 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="PyTan 1.0.1 documentation" href="../index.html"/>
+    <link rel="top" title="PyTan 1.0.3 documentation" href="../index.html"/>
         <link rel="up" title="7.1.2. pytan API Valid Question Examples" href="valid_questions.html"/>
         <link rel="next" title="7.1.2.9. Ask manual human question sensor with parameters and no supplied parameters" href="ask_manual_human_question_sensor_with_parameters_and_no_supplied_parameters.html"/>
         <link rel="prev" title="7.1.2.7. Ask manual human question sensor without parameters and supplied parameters" href="ask_manual_human_question_sensor_without_parameters_and_supplied_parameters.html"/> 
@@ -303,37 +303,19 @@
 31
 32
 33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43</pre></div></td><td class="code"><div class="highlight"><pre>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-2014-12-08 16:20:58,703 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-2014-12-08 16:21:03,720 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-2014-12-08 16:21:08,737 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-2014-12-08 16:21:13,757 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-2014-12-08 16:21:18,777 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-2014-12-08 16:21:23,793 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-2014-12-08 16:21:28,811 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-2014-12-08 16:21:33,827 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-2014-12-08 16:21:38,843 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-2014-12-08 16:21:43,863 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-2014-12-08 16:21:48,878 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-2014-12-08 16:21:53,901 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-2014-12-08 16:21:58,915 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-2014-12-08 16:22:03,935 INFO     question_progress: Results 33% (Get Computer Name from all machines)
-2014-12-08 16:22:08,954 INFO     question_progress: Results 100% (Get Computer Name from all machines)
+34</pre></div></td><td class="code"><div class="highlight"><pre>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+2015-02-11 12:00:07,498 INFO     question_progress: Results 0% (Get Computer Name from all machines)
+2015-02-11 12:00:12,512 INFO     question_progress: Results 0% (Get Computer Name from all machines)
+2015-02-11 12:00:17,526 INFO     question_progress: Results 0% (Get Computer Name from all machines)
+2015-02-11 12:00:22,542 INFO     question_progress: Results 50% (Get Computer Name from all machines)
+2015-02-11 12:00:27,561 INFO     question_progress: Results 50% (Get Computer Name from all machines)
+2015-02-11 12:00:32,580 INFO     question_progress: Results 100% (Get Computer Name from all machines)
 
 Type of response:  &lt;type &#39;dict&#39;&gt;
 
 Pretty print of response:
-{&#39;question_object&#39;: &lt;taniumpy.object_types.question.Question object at 0x102129990&gt;,
- &#39;question_results&#39;: &lt;taniumpy.object_types.result_set.ResultSet object at 0x102967e10&gt;}
+{&#39;question_object&#39;: &lt;taniumpy.object_types.question.Question object at 0x1059cae90&gt;,
+ &#39;question_results&#39;: &lt;taniumpy.object_types.result_set.ResultSet object at 0x105a4d4d0&gt;}
 
 Equivalent Question if it were to be asked in the Tanium Console:
 Get Computer Name from all machines
@@ -341,9 +323,6 @@ Get Computer Name from all machines
 CSV Results of response:
 Computer Name,&quot;Folder Name Search with RegEx Match[No, Program Files, No, ]&quot;
 Casus-Belli.local,Windows Only
-ubuntu.(none),Windows Only
-localhost.(none),Windows Only
-Jims-Mac.local,Windows Only
 jtanium1.localdomain,&quot;C:\Program Files\Tanium\Tanium Server\ApacheBackup2014-09-16-20-44-23\cgi-bin
 C:\Program Files\VMware\VMware Tools\plugins\vmsvc
 C:\Program Files\Microsoft SQL Server\110\Setup Bootstrap\SQLServer2012\1040_ITA_LP\x64\1040\help
@@ -354,6 +333,9 @@ C:\Program Files\Common Files\VMware\Drivers\vmci\sockets\include
 C:\Program Files\Common Files\Microsoft Shared\ink\ar-SA
 C:\Program Files\Tanium\Tanium Server\plugins\console\Dashboards
 C:\Program Files\Tanium\Tanium Server\CertificateBackup2014-11-17-11-17-33
+C:\Program Files\Common Files\SpeechEngines\Microsoft
+C:\Program Files\Tanium\Tanium Server\ApacheBackup2014-09-16-20-44-23\modules
+C:\Program Files\Common Files\Microsoft Shared\ink\ru-RU
 ..trimmed for brevity..
 </pre></div>
 </td></tr></table></div>
@@ -379,7 +361,7 @@ C:\Program Files\Tanium\Tanium Server\CertificateBackup2014-11-17-11-17-33
   <div role="contentinfo">
     <p>
         &copy; Copyright 2014, Tanium.
-      Last updated on Dec 08, 2014.
+      Last updated on Feb 11, 2015.
     </p>
   </div>
 
@@ -400,7 +382,7 @@ C:\Program Files\Tanium\Tanium Server\CertificateBackup2014-11-17-11-17-33
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.0.1',
+            VERSION:'1.0.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -86,27 +86,18 @@ Output from Python Code
 
 
     Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-    2014-12-08 16:20:58,703 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-    2014-12-08 16:21:03,720 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-    2014-12-08 16:21:08,737 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-    2014-12-08 16:21:13,757 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-    2014-12-08 16:21:18,777 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-    2014-12-08 16:21:23,793 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-    2014-12-08 16:21:28,811 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-    2014-12-08 16:21:33,827 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-    2014-12-08 16:21:38,843 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-    2014-12-08 16:21:43,863 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-    2014-12-08 16:21:48,878 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-    2014-12-08 16:21:53,901 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-    2014-12-08 16:21:58,915 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-    2014-12-08 16:22:03,935 INFO     question_progress: Results 33% (Get Computer Name from all machines)
-    2014-12-08 16:22:08,954 INFO     question_progress: Results 100% (Get Computer Name from all machines)
+    2015-02-11 12:00:07,498 INFO     question_progress: Results 0% (Get Computer Name from all machines)
+    2015-02-11 12:00:12,512 INFO     question_progress: Results 0% (Get Computer Name from all machines)
+    2015-02-11 12:00:17,526 INFO     question_progress: Results 0% (Get Computer Name from all machines)
+    2015-02-11 12:00:22,542 INFO     question_progress: Results 50% (Get Computer Name from all machines)
+    2015-02-11 12:00:27,561 INFO     question_progress: Results 50% (Get Computer Name from all machines)
+    2015-02-11 12:00:32,580 INFO     question_progress: Results 100% (Get Computer Name from all machines)
     
     Type of response:  <type 'dict'>
     
     Pretty print of response:
-    {'question_object': <taniumpy.object_types.question.Question object at 0x102129990>,
-     'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x102967e10>}
+    {'question_object': <taniumpy.object_types.question.Question object at 0x1059cae90>,
+     'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x105a4d4d0>}
     
     Equivalent Question if it were to be asked in the Tanium Console: 
     Get Computer Name from all machines
@@ -114,9 +105,6 @@ Output from Python Code
     CSV Results of response: 
     Computer Name,"Folder Name Search with RegEx Match[No, Program Files, No, ]"
     Casus-Belli.local,Windows Only
-    ubuntu.(none),Windows Only
-    localhost.(none),Windows Only
-    Jims-Mac.local,Windows Only
     jtanium1.localdomain,"C:\Program Files\Tanium\Tanium Server\ApacheBackup2014-09-16-20-44-23\cgi-bin
     C:\Program Files\VMware\VMware Tools\plugins\vmsvc
     C:\Program Files\Microsoft SQL Server\110\Setup Bootstrap\SQLServer2012\1040_ITA_LP\x64\1040\help
@@ -127,4 +115,7 @@ Output from Python Code
     C:\Program Files\Common Files\Microsoft Shared\ink\ar-SA
     C:\Program Files\Tanium\Tanium Server\plugins\console\Dashboards
     C:\Program Files\Tanium\Tanium Server\CertificateBackup2014-11-17-11-17-33
+    C:\Program Files\Common Files\SpeechEngines\Microsoft
+    C:\Program Files\Tanium\Tanium Server\ApacheBackup2014-09-16-20-44-23\modules
+    C:\Program Files\Common Files\Microsoft Shared\ink\ru-RU
     ..trimmed for brevity..

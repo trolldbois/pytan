@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>4. Invalid export resultset csv bad sensors sub type &mdash; PyTan 1.0.1 documentation</title>
+  <title>4. Invalid export resultset csv bad sensors sub type &mdash; PyTan 1.0.3 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="PyTan 1.0.1 documentation" href="../index.html"/>
+    <link rel="top" title="PyTan 1.0.3 documentation" href="../index.html"/>
         <link rel="up" title="pytan API Invalid Export ResultSet Examples" href="invalid_export_resultset.html"/>
         <link rel="next" title="5. Invalid export resultset bad format" href="invalid_export_resultset_bad_format.html"/>
         <link rel="prev" title="3. Invalid export resultset csv bad expand type" href="invalid_export_resultset_csv_bad_expand_type.html"/> 
@@ -257,17 +257,15 @@
  8
  9
 10
-11
-12</pre></div></td><td class="code"><div class="highlight"><pre>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-2014-12-08 16:44:03,549 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-2014-12-08 16:44:08,565 INFO     question_progress: Results 50% (Get Computer Name from all machines)
-2014-12-08 16:44:13,582 INFO     question_progress: Results 83% (Get Computer Name from all machines)
-2014-12-08 16:44:18,605 INFO     question_progress: Results 100% (Get Computer Name from all machines)
+11</pre></div></td><td class="code"><div class="highlight"><pre>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+2015-02-11 12:19:07,602 INFO     question_progress: Results 0% (Get Computer Name from all machines)
+2015-02-11 12:19:12,614 INFO     question_progress: Results 0% (Get Computer Name from all machines)
+2015-02-11 12:19:17,627 INFO     question_progress: Results 100% (Get Computer Name from all machines)
 Traceback (most recent call last):
   File &quot;&lt;string&gt;&quot;, line 50, in &lt;module&gt;
-  File &quot;/Users/jolsen/gh/pytan/lib/pytan/handler.py&quot;, line 1402, in export_obj
+  File &quot;/Users/jolsen/gh/pytan/lib/pytan/handler.py&quot;, line 1419, in export_obj
     utils.check_dictkey(**check_args)
-  File &quot;/Users/jolsen/gh/pytan/lib/pytan/utils.py&quot;, line 2516, in check_dictkey
+  File &quot;/Users/jolsen/gh/pytan/lib/pytan/utils.py&quot;, line 2512, in check_dictkey
     raise HandlerError(err(key, valid_list_types, list_types))
 HandlerError: &#39;sensors&#39; must be a list of [&lt;class &#39;taniumpy.object_types.sensor.Sensor&#39;&gt;], you supplied [&lt;type &#39;list&#39;&gt;]!
 </pre></div>
@@ -294,7 +292,7 @@ HandlerError: &#39;sensors&#39; must be a list of [&lt;class &#39;taniumpy.objec
   <div role="contentinfo">
     <p>
         &copy; Copyright 2014, Tanium.
-      Last updated on Dec 08, 2014.
+      Last updated on Feb 11, 2015.
     </p>
   </div>
 
@@ -315,7 +313,7 @@ HandlerError: &#39;sensors&#39; must be a list of [&lt;class &#39;taniumpy.objec
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.0.1',
+            VERSION:'1.0.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

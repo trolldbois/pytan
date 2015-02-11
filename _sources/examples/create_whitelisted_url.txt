@@ -90,18 +90,18 @@ Output from Python Code
 
     Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
     No results found searching for whitelisted_url with {'url_regex': 'regex:http://test.com/.*API_Test.*URL'}!!
-    2014-12-08 16:28:44,663 INFO     handler: New Whitelisted URL 'regex:http://test.com/.*API_Test.*URL' created with ID 52
+    2015-02-11 12:06:40,429 INFO     handler: New Whitelisted URL 'regex:http://test.com/.*API_Test.*URL' created with ID 16
     
     Type of response:  <class 'taniumpy.object_types.white_listed_url.WhiteListedUrl'>
     
     print of response:
-    WhiteListedUrl, id: 52
+    WhiteListedUrl, id: 16
     
     print the object returned in JSON format:
     {
       "_type": "white_listed_url", 
       "download_seconds": 3600, 
-      "id": 52, 
+      "id": 16, 
       "metadata": {
         "_type": "metadata", 
         "item": [
@@ -115,4 +115,4 @@ Output from Python Code
       }, 
       "url_regex": "regex:http://test.com/.*API_Test.*URL"
     }
-    2014-12-08 16:28:44,685 INFO     handler: Deleted 'WhiteListedUrl, id: 52'
+    2015-02-11 12:06:40,441 INFO     handler: Deleted 'WhiteListedUrl, id: 16'

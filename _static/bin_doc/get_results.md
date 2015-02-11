@@ -5,9 +5,9 @@ Get Results Readme
 <a name='toc'>Table of contents:</a>
 
   * [Get Results Help](#user-content-get-results-help)
-  * [Get the results for a saved question](#user-content-get-the-results-for-a-saved-question)
+  * [Ask a question](#user-content-ask-a-question)
+  * [Wait 30 seconds](#user-content-wait-30-seconds)
   * [Get the results for a question](#user-content-get-the-results-for-a-question)
-  * [Get the results for a action](#user-content-get-the-results-for-a-action)
 
 ---------------------------
 
@@ -20,9 +20,10 @@ get_results.py -h
 ```
 
 ```
-usage: get_results.py [-h] -u USERNAME -p PASSWORD --host HOST [--port PORT]
-                      [-l LOGLEVEL] -o {saved_question,question,action} -i
-                      OBJECT_ID [--file REPORT_FILE] [--dir REPORT_DIR]
+usage: get_results.py [-h] [-u USERNAME] [-p PASSWORD] [--host HOST]
+                      [--port PORT] [-l LOGLEVEL] -o
+                      {saved_question,question,action} -i OBJECT_ID
+                      [--file REPORT_FILE] [--dir REPORT_DIR]
                       {csv,json} ...
 
 Get results from a deploy action, saved question, or question
@@ -102,20 +103,30 @@ optional arguments:
 [TOC](#user-content-toc)
 
 
-# Get the results for a saved question
+# Ask a question
 
-  * Get the results for Saved Question ID 107
-  * Save the results to a CSV file
+  * Ask a question without getting the results, save stdout to ask.out
 
 ```bash
-get_results.py -u 'Tanium User' -p 'T@n!um' --host '172.16.31.128' --loglevel 1 -o "saved_question" --id 107 --file "/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv" csv
+ask_manual_question.py -u 'Tanium User' -p 'T@n!um' --host '172.16.31.128' --loglevel 1 --no-results --sensor "Computer Name" csv | tee /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/ask.out
 ```
 
 ```
 Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-++ Found object: SavedQuestion, name: 'Custom Tags'
-++ Found results for object: ResultSet for 271, ColumnSet: Custom Tags, Count
-++ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 1479 bytes
+++ Asking manual question:
+{
+  "filters_help": false, 
+  "get_results": false, 
+  "options_help": false, 
+  "question_filters": [], 
+  "question_options": [], 
+  "sensors": [
+    "Computer Name"
+  ], 
+  "sensors_help": false
+}
+++ Asked Question 'Get Computer Name from all machines' ID: 11477
+++ No action results returned, run get_results.py to get the results
 ```
 
   * Validation Test: exitcode
@@ -124,19 +135,19 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
 
   * Validation Test: file_exist_contents
     * Valid: **True**
-    * Messages: File /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv exists, content:
+    * Messages: File /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/ask.out exists, content:
 
 ```
-Count,Custom Tags
-1,tag_should_be_added_971
-1,tag_should_be_added_905
-1,tag_should_be_added_924
-1,$data
-1,tag_should_be_added_882
-1,tag_should_be_added_860
-1,tag_should_be_added_842
-1,tag_should_be_added_809
-1,tag_should_be_added_502
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+++ Asking manual question:
+{
+  "filters_help": false, 
+  "get_results": false, 
+  "options_help": false, 
+  "question_filters": [], 
+  "question_options": [], 
+  "sensors": [
+    "Computer Name"
 ...trimmed for brevity...
 ```
 
@@ -145,48 +156,37 @@ Count,Custom Tags
 [TOC](#user-content-toc)
 
 
-# Get the results for a question
+# Wait 30 seconds
 
-  * Get the results for Question ID 249
-  * Save the results to a CSV file
+  * Wait 30 seconds for data for the previously asked question to be available
 
 ```bash
-get_results.py -u 'Tanium User' -p 'T@n!um' --host '172.16.31.128' --loglevel 1 -o "question" --id 249 --file "/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv" csv
-```
-
-```
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-++ Found object: Question, id: 249
-++ No rows returned for results: ResultSet for 249, None
+sleep 15
 ```
 
   * Validation Test: exitcode
     * Valid: **True**
     * Messages: Exit Code is 0
 
-  * Validation Test: file_exist_contents
-    * Valid: **False**
-    * Messages: File /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv does not exist
-
 
 
 [TOC](#user-content-toc)
 
 
-# Get the results for a action
+# Get the results for a question
 
-  * Get the results for action ID 24
+  * Get the results for the question ID asked previously
   * Save the results to a CSV file
 
 ```bash
-get_results.py -u 'Tanium User' -p 'T@n!um' --host '172.16.31.128' --loglevel 1 -o "action" --id 24 --file "/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv" csv
+get_results.py -u 'Tanium User' -p 'T@n!um' --host '172.16.31.128' --loglevel 1 -o "question" --id `cat /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/ask.out | grep ID| cut -d: -f2 | tr -d " "` --file "/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv" csv
 ```
 
 ```
 Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-++ Found object: Action, name: 'Distribute Application Management Tools'
-++ Found results for object: ResultSet for 328, ColumnSet: Computer Name, Action Statuses, Count
-++ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 62 bytes
+++ Found object: Question, id: 11477
+++ Found results for object: ResultSet for 11477, ColumnSet: Computer Name, Count
+++ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 56 bytes
 ```
 
   * Validation Test: exitcode
@@ -198,8 +198,9 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
     * Messages: File /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv exists, content:
 
 ```
-Action Statuses,Computer Name
-24:Completed.,WIN-A12SC6N6T7Q
+Computer Name
+Casus-Belli.local
+jtanium1.localdomain
 ```
 
 
@@ -207,4 +208,4 @@ Action Statuses,Computer Name
 [TOC](#user-content-toc)
 
 
-###### generated by: `build_bin_doc v1.4.5`, date: Mon Dec  8 15:35:45 2014 EST, Contact info: **Jim Olsen <jim.olsen@tanium.com>**
+###### generated by: `build_bin_doc v1.4.5`, date: Wed Feb 11 17:17:52 2015 EST, Contact info: **Jim Olsen <jim.olsen@tanium.com>**

@@ -777,9 +777,9 @@ body .task-list{
 
 <div class="highlight highlight-bash"><pre>print_sensor.py -h</pre></div>
 
-<pre><code>usage: print_sensor.py [-h] -u USERNAME -p PASSWORD --host HOST [--port PORT]
-                       [-l LOGLEVEL] [--all] [--id ID] [--name NAME]
-                       [--hash HASH] [--category CATEGORIES]
+<pre><code>usage: print_sensor.py [-h] [-u USERNAME] [-p PASSWORD] [--host HOST]
+                       [--port PORT] [-l LOGLEVEL] [--all] [--id ID]
+                       [--name NAME] [--hash HASH] [--category CATEGORIES]
                        [--platform PLATFORMS] [--hide_params] [--params_only]
                        [--json]
 
@@ -841,12 +841,12 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
 Diagnostics: 
   Action History Cache: 
     Action Stop Count: 0
-    Actions: 39
+    Actions: 348
   Active Question Cache: 
-    Active Client Estimate: 6
-    Active Question Estimate: 45
+    Active Client Estimate: 2
+    Active Question Estimate: 91
   Authenticator: 
-    TotalSessions: 746
+    TotalSessions: 1893
     ActiveSessions: 1
     OldSessions: 0
   Data Interface: 
@@ -856,26 +856,26 @@ Diagnostics:
     Sensor Connection Count: 0
     License Seat Cap: 60
     Sensor Bytes Sent Since Last Time: 0
-    Estimated Node Count: 6
+    Estimated Node Count: 2
     Reg Connection Limit: 1000
   File Request Handler: 
     Download Connection Limit: 1000
     Download Connection Count: 0
   Group Cache: 
-    GroupsTempSensors: 13
-    QuestionSubGroups: 169
-    QuestionFilterSpecs: 3
-    SavedQuestionTextCount: 179
-    GroupCount: 344
+    GroupsTempSensors: 28
+    QuestionSubGroups: 2929
+    QuestionFilterSpecs: 128
+    SavedQuestionTextCount: 193
+    GroupCount: 1456
     QuestionTextCount: 0
-    FilterSpecCount: 164
-    QuestionSelectSpecs: 353
-    SelectSpecCount: 621
+    FilterSpecCount: 297
+    QuestionSelectSpecs: 6262
+    SelectSpecCount: 4077
   Network: 
-    Allocated SendOp Count: 1699
+    Allocated SendOp Count: 1609
     Concurrency Threads: 34
-    SendOpReady HeadCount: 1699
-    Min Available Threads: 30
+    SendOpReady HeadCount: 1609
+    Min Available Threads: 0
     Allocated SendOp Limit: 0
     SendOpReady FreeCount: 0
     Idle Threads: 34
@@ -886,20 +886,20 @@ Diagnostics:
     Queue Completion Timeout: 1000
     Threads Reset Interval: 0
   Package Cache: 
-    Package Count: 104
-    Package File Count: 234
+    Package Count: 132
+    Package File Count: 508
   Plugin Cache: 
     Plugin Definition Count: 9
   Question History: 
     History Limit Days: 7
-    Last Question ID: 354
-    Last Saved Question ID: 179
-    Question Count: 181
+    Last Question ID: 11478
+    Last Saved Question ID: 196
+    Question Count: 6128
   SOAP Network: 
-    Allocated SendOp Count: 3
+    Allocated SendOp Count: 2
     Concurrency Threads: 10
-    SendOpReady HeadCount: 3
-    Min Available Threads: 7
+    SendOpReady HeadCount: 2
+    Min Available Threads: 0
     Allocated SendOp Limit: 0
     SendOpReady FreeCount: 0
     Idle Threads: 9
@@ -911,7 +911,7 @@ Diagnostics:
     Threads Reset Interval: 0
   SOAP Server: 
     Connections: 1
-    SOAP Handlers: 2
+    SOAP Handlers: 3
     Use Compression: 1
     Using IPv6: 1
   SOAP Snapshots: 
@@ -919,13 +919,13 @@ Diagnostics:
   Sensor Cache: 
     Preview Sensor Count: 0
     Active Preview Sensor Count: 0
-    Sensor Count: 508
+    Sensor Count: 855
   String Cache: 
-    NameData: 824
-    Total String Count: 239021
+    NameData: 831
+    Total String Count: 1725405
   Settings: 
     UseTBBScalingAlignment: [unset]
-    Client Count: 6
+    Client Count: 4
     ServerName: 0.0.0.0
     ServerSOAPPort: 444
     AllowOldSessionID: [unset]
@@ -937,29 +937,29 @@ Diagnostics:
     UseTBBAllocatorStats: [unset]
   Memory Info: 
     NonTBBFreeCount: 0
-    QuotaPagedPoolUsage: 427984
-    QuotaPeakPagedPoolUsage: 428176
-    PageFaultCount: 570113
-    PeakWorkingSetSize: 401.77 MB
-    QuotaPeakNonPagedPoolUsage: 7148584
-    PeakPagefileUsage: 750006272
-    PagefileUsage: 741257216
+    QuotaPagedPoolUsage: 811800
+    QuotaPeakPagedPoolUsage: 811992
+    PageFaultCount: 9454210
+    PeakWorkingSetSize: 505.44 MB
+    QuotaPeakNonPagedPoolUsage: 5986396
+    PeakPagefileUsage: 1383944192
+    PagefileUsage: 1366851584
     DoubleFreeCount: 0
-    WorkingSetSize: 222.46 MB
+    WorkingSetSize: 451.05 MB
   System Performance Info: 
     PhysicalTotal: 1048429
     PageSize: 4096
-    HandleCount: 21831
-    KernelPaged: 48434
-    CommitTotal: 624629
-    ProcessThreadCount: 682
-    SystemCache: 472583
-    CommitPeak: 1066170
-    PhysicalAvailable: 529425
-    ProcessCount: 47
-    KernelTotal: 70096
-    KernelNonpaged: 21662
-    CommitLimit: 2096392
+    HandleCount: 25688
+    KernelPaged: 49807
+    CommitTotal: 784989
+    ProcessThreadCount: 689
+    SystemCache: 356655
+    CommitPeak: 1012866
+    PhysicalAvailable: 471032
+    ProcessCount: 48
+    KernelTotal: 77129
+    KernelNonpaged: 27322
+    CommitLimit: 2096393
 </code></pre>
 
 <ul>
@@ -976,7 +976,7 @@ Diagnostics:
 <p><a href="#user-content-toc">TOC</a></p>
 
 <h6>
-<a id="user-content-generated-by-build_bin_doc-v145-date-mon-dec--8-153555-2014-est-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v145-date-mon-dec--8-153555-2014-est-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v1.4.5</code>, date: Mon Dec  8 15:35:55 2014 EST, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
+<a id="user-content-generated-by-build_bin_doc-v145-date-wed-feb-11-171808-2015-est-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v145-date-wed-feb-11-171808-2015-est-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v1.4.5</code>, date: Wed Feb 11 17:18:08 2015 EST, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
 </h6>
 
 </body></html>

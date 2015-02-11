@@ -763,9 +763,9 @@ body .task-list{
 
 <ul>
 <li><a href="#user-content-get-results-help">Get Results Help</a></li>
-<li><a href="#user-content-get-the-results-for-a-saved-question">Get the results for a saved question</a></li>
+<li><a href="#user-content-ask-a-question">Ask a question</a></li>
+<li><a href="#user-content-wait-30-seconds">Wait 30 seconds</a></li>
 <li><a href="#user-content-get-the-results-for-a-question">Get the results for a question</a></li>
-<li><a href="#user-content-get-the-results-for-a-action">Get the results for a action</a></li>
 </ul>
 
 <hr>
@@ -779,9 +779,10 @@ body .task-list{
 
 <div class="highlight highlight-bash"><pre>get_results.py -h</pre></div>
 
-<pre><code>usage: get_results.py [-h] -u USERNAME -p PASSWORD --host HOST [--port PORT]
-                      [-l LOGLEVEL] -o {saved_question,question,action} -i
-                      OBJECT_ID [--file REPORT_FILE] [--dir REPORT_DIR]
+<pre><code>usage: get_results.py [-h] [-u USERNAME] [-p PASSWORD] [--host HOST]
+                      [--port PORT] [-l LOGLEVEL] -o
+                      {saved_question,question,action} -i OBJECT_ID
+                      [--file REPORT_FILE] [--dir REPORT_DIR]
                       {csv,json} ...
 
 Get results from a deploy action, saved question, or question
@@ -866,19 +867,29 @@ optional arguments:
 <p><a href="#user-content-toc">TOC</a></p>
 
 <h1>
-<a id="user-content-get-the-results-for-a-saved-question" class="anchor" href="#get-the-results-for-a-saved-question" aria-hidden="true"><span class="octicon octicon-link"></span></a>Get the results for a saved question</h1>
+<a id="user-content-ask-a-question" class="anchor" href="#ask-a-question" aria-hidden="true"><span class="octicon octicon-link"></span></a>Ask a question</h1>
 
 <ul>
-<li>Get the results for Saved Question ID 107</li>
-<li>Save the results to a CSV file</li>
+<li>Ask a question without getting the results, save stdout to ask.out</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>get_results.py -u <span class="pl-s1"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s1"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s1"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 -o <span class="pl-s1"><span class="pl-pds">"</span>saved_question<span class="pl-pds">"</span></span> --id 107 --file <span class="pl-s1"><span class="pl-pds">"</span>/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv<span class="pl-pds">"</span></span> csv</pre></div>
+<div class="highlight highlight-bash"><pre>ask_manual_question.py -u <span class="pl-s1"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s1"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s1"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 --no-results --sensor <span class="pl-s1"><span class="pl-pds">"</span>Computer Name<span class="pl-pds">"</span></span> csv <span class="pl-k">|</span> tee /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/ask.out</pre></div>
 
 <pre><code>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-++ Found object: SavedQuestion, name: 'Custom Tags'
-++ Found results for object: ResultSet for 271, ColumnSet: Custom Tags, Count
-++ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 1479 bytes
+++ Asking manual question:
+{
+  "filters_help": false, 
+  "get_results": false, 
+  "options_help": false, 
+  "question_filters": [], 
+  "question_options": [], 
+  "sensors": [
+    "Computer Name"
+  ], 
+  "sensors_help": false
+}
+++ Asked Question 'Get Computer Name from all machines' ID: 11477
+++ No action results returned, run get_results.py to get the results
 </code></pre>
 
 <ul>
@@ -897,23 +908,45 @@ optional arguments:
 <ul>
 <li>Valid: <strong>True</strong>
 </li>
-<li>Messages: File /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv exists, content:</li>
+<li>Messages: File /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/ask.out exists, content:</li>
 </ul>
 </li>
 </ul>
 
-<pre><code>Count,Custom Tags
-1,tag_should_be_added_971
-1,tag_should_be_added_905
-1,tag_should_be_added_924
-1,$data
-1,tag_should_be_added_882
-1,tag_should_be_added_860
-1,tag_should_be_added_842
-1,tag_should_be_added_809
-1,tag_should_be_added_502
+<pre><code>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+++ Asking manual question:
+{
+  "filters_help": false, 
+  "get_results": false, 
+  "options_help": false, 
+  "question_filters": [], 
+  "question_options": [], 
+  "sensors": [
+    "Computer Name"
 ...trimmed for brevity...
 </code></pre>
+
+<p><a href="#user-content-toc">TOC</a></p>
+
+<h1>
+<a id="user-content-wait-30-seconds" class="anchor" href="#wait-30-seconds" aria-hidden="true"><span class="octicon octicon-link"></span></a>Wait 30 seconds</h1>
+
+<ul>
+<li>Wait 30 seconds for data for the previously asked question to be available</li>
+</ul>
+
+<div class="highlight highlight-bash"><pre>sleep 15</pre></div>
+
+<ul>
+<li>Validation Test: exitcode
+
+<ul>
+<li>Valid: <strong>True</strong>
+</li>
+<li>Messages: Exit Code is 0</li>
+</ul>
+</li>
+</ul>
 
 <p><a href="#user-content-toc">TOC</a></p>
 
@@ -921,54 +954,16 @@ optional arguments:
 <a id="user-content-get-the-results-for-a-question" class="anchor" href="#get-the-results-for-a-question" aria-hidden="true"><span class="octicon octicon-link"></span></a>Get the results for a question</h1>
 
 <ul>
-<li>Get the results for Question ID 249</li>
+<li>Get the results for the question ID asked previously</li>
 <li>Save the results to a CSV file</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>get_results.py -u <span class="pl-s1"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s1"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s1"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 -o <span class="pl-s1"><span class="pl-pds">"</span>question<span class="pl-pds">"</span></span> --id 249 --file <span class="pl-s1"><span class="pl-pds">"</span>/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv<span class="pl-pds">"</span></span> csv</pre></div>
+<div class="highlight highlight-bash"><pre>get_results.py -u <span class="pl-s1"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s1"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s1"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 -o <span class="pl-s1"><span class="pl-pds">"</span>question<span class="pl-pds">"</span></span> --id <span class="pl-s1"><span class="pl-pds">`</span>cat /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/ask.out <span class="pl-k">|</span> grep ID<span class="pl-k">|</span> cut -d: -f2 <span class="pl-k">|</span> tr -d <span class="pl-s1"><span class="pl-pds">"</span> <span class="pl-pds">"</span></span><span class="pl-pds">`</span></span> --file <span class="pl-s1"><span class="pl-pds">"</span>/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv<span class="pl-pds">"</span></span> csv</pre></div>
 
 <pre><code>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-++ Found object: Question, id: 249
-++ No rows returned for results: ResultSet for 249, None
-</code></pre>
-
-<ul>
-<li>
-<p>Validation Test: exitcode</p>
-
-<ul>
-<li>Valid: <strong>True</strong>
-</li>
-<li>Messages: Exit Code is 0</li>
-</ul>
-</li>
-<li>
-<p>Validation Test: file_exist_contents</p>
-
-<ul>
-<li>Valid: <strong>False</strong>
-</li>
-<li>Messages: File /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv does not exist</li>
-</ul>
-</li>
-</ul>
-
-<p><a href="#user-content-toc">TOC</a></p>
-
-<h1>
-<a id="user-content-get-the-results-for-a-action" class="anchor" href="#get-the-results-for-a-action" aria-hidden="true"><span class="octicon octicon-link"></span></a>Get the results for a action</h1>
-
-<ul>
-<li>Get the results for action ID 24</li>
-<li>Save the results to a CSV file</li>
-</ul>
-
-<div class="highlight highlight-bash"><pre>get_results.py -u <span class="pl-s1"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s1"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s1"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 -o <span class="pl-s1"><span class="pl-pds">"</span>action<span class="pl-pds">"</span></span> --id 24 --file <span class="pl-s1"><span class="pl-pds">"</span>/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv<span class="pl-pds">"</span></span> csv</pre></div>
-
-<pre><code>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-++ Found object: Action, name: 'Distribute Application Management Tools'
-++ Found results for object: ResultSet for 328, ColumnSet: Computer Name, Action Statuses, Count
-++ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 62 bytes
+++ Found object: Question, id: 11477
+++ Found results for object: ResultSet for 11477, ColumnSet: Computer Name, Count
+++ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 56 bytes
 </code></pre>
 
 <ul>
@@ -992,14 +987,15 @@ optional arguments:
 </li>
 </ul>
 
-<pre><code>Action Statuses,Computer Name
-24:Completed.,WIN-A12SC6N6T7Q
+<pre><code>Computer Name
+Casus-Belli.local
+jtanium1.localdomain
 </code></pre>
 
 <p><a href="#user-content-toc">TOC</a></p>
 
 <h6>
-<a id="user-content-generated-by-build_bin_doc-v145-date-mon-dec--8-153545-2014-est-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v145-date-mon-dec--8-153545-2014-est-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v1.4.5</code>, date: Mon Dec  8 15:35:45 2014 EST, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
+<a id="user-content-generated-by-build_bin_doc-v145-date-wed-feb-11-171752-2015-est-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v145-date-wed-feb-11-171752-2015-est-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v1.4.5</code>, date: Wed Feb 11 17:17:52 2015 EST, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
 </h6>
 
 </body></html>

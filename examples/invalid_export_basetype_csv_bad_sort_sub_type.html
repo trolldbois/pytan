@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>7.1.12.2. Invalid export basetype csv bad sort sub type &mdash; PyTan 1.0.1 documentation</title>
+  <title>7.1.12.2. Invalid export basetype csv bad sort sub type &mdash; PyTan 1.0.3 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="PyTan 1.0.1 documentation" href="../index.html"/>
+    <link rel="top" title="PyTan 1.0.3 documentation" href="../index.html"/>
         <link rel="up" title="7.1.12. pytan API Invalid Export BaseType Examples" href="invalid_export_basetype.html"/>
         <link rel="next" title="7.1.12.3. Invalid export basetype csv bad sort type" href="invalid_export_basetype_csv_bad_sort_type.html"/>
         <link rel="prev" title="7.1.12.1. Invalid export basetype csv bad explode type" href="invalid_export_basetype_csv_bad_explode_type.html"/> 
@@ -257,9 +257,9 @@
 8</pre></div></td><td class="code"><div class="highlight"><pre>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
 Traceback (most recent call last):
   File &quot;&lt;string&gt;&quot;, line 50, in &lt;module&gt;
-  File &quot;/Users/jolsen/gh/pytan/lib/pytan/handler.py&quot;, line 1402, in export_obj
+  File &quot;/Users/jolsen/gh/pytan/lib/pytan/handler.py&quot;, line 1419, in export_obj
     utils.check_dictkey(**check_args)
-  File &quot;/Users/jolsen/gh/pytan/lib/pytan/utils.py&quot;, line 2516, in check_dictkey
+  File &quot;/Users/jolsen/gh/pytan/lib/pytan/utils.py&quot;, line 2512, in check_dictkey
     raise HandlerError(err(key, valid_list_types, list_types))
 HandlerError: &#39;header_sort&#39; must be a list of [&lt;type &#39;str&#39;&gt;, &lt;type &#39;unicode&#39;&gt;], you supplied [&lt;type &#39;list&#39;&gt;]!
 </pre></div>
@@ -286,7 +286,7 @@ HandlerError: &#39;header_sort&#39; must be a list of [&lt;type &#39;str&#39;&gt
   <div role="contentinfo">
     <p>
         &copy; Copyright 2014, Tanium.
-      Last updated on Dec 08, 2014.
+      Last updated on Feb 11, 2015.
     </p>
   </div>
 
@@ -307,7 +307,7 @@ HandlerError: &#39;header_sort&#39; must be a list of [&lt;type &#39;str&#39;&gt
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.0.1',
+            VERSION:'1.0.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
