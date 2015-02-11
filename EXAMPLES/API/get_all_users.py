@@ -66,10 +66,10 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
 Type of response:  <class 'taniumpy.object_types.user_list.UserList'>
 
 print of response:
-UserList, len: 6
+UserList, len: 3
 
 length of response (number of objects returned): 
-6
+3
 
 print the first object returned in JSON format:
 {
@@ -77,7 +77,7 @@ print the first object returned in JSON format:
   "deleted_flag": 0, 
   "group_id": 0, 
   "id": 1, 
-  "last_login": "2014-12-08T19:28:09", 
+  "last_login": "2015-02-08T10:01:26", 
   "name": "Jim Olsen", 
   "permissions": {
     "_type": "permissions", 

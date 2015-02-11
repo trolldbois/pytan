@@ -66,7 +66,7 @@ Output from Python Code
     Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
     Traceback (most recent call last):
       File "<string>", line 40, in <module>
-      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1166, in deploy_action_human
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1170, in deploy_action_human
         package_def = utils.dehumanize_package(package)
       File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 1334, in dehumanize_package
         raise HumanParserError(err(package))

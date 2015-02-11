@@ -69,12 +69,12 @@ Output from Python Code
         result = getattr(self, q_obj_map['handler'])(**kwargs)
       File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 271, in ask_manual
         sensor_defs = self._get_sensor_defs(sensor_defs)
-      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1784, in _get_sensor_defs
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1801, in _get_sensor_defs
         d['sensor_obj'] = self.get('sensor', **def_search)[0]
-      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1567, in get
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1584, in get
         return self._get_multi(obj_map, **kwargs)
-      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1729, in _get_multi
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1746, in _get_multi
         found = self._find(api_obj_multi, **kwargs)
-      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1694, in _find
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1711, in _find
         raise HandlerError(err(search_str))
     HandlerError: No results found searching for Sensor, name: u'Dweedle Dee and Dum'!!

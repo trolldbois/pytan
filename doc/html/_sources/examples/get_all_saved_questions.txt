@@ -81,10 +81,10 @@ Output from Python Code
     Type of response:  <class 'taniumpy.object_types.saved_question_list.SavedQuestionList'>
     
     print of response:
-    SavedQuestionList, len: 176
+    SavedQuestionList, len: 173
     
     length of response (number of objects returned): 
-    176
+    173
     
     print the first object returned in JSON format:
     {

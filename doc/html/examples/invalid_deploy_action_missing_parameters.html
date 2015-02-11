@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>7.1.5.7. Invalid deploy action missing parameters &mdash; PyTan 1.0.1 documentation</title>
+  <title>7.1.5.7. Invalid deploy action missing parameters &mdash; PyTan 1.0.3 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="PyTan 1.0.1 documentation" href="../index.html"/>
+    <link rel="top" title="PyTan 1.0.3 documentation" href="../index.html"/>
         <link rel="up" title="7.1.5. pytan API Invalid Deploy Action Examples" href="invalid_deploy_actions.html"/>
         <link rel="next" title="7.1.6. pytan API Valid Create Object Examples" href="valid_create_objects.html"/>
         <link rel="prev" title="7.1.5.6. Invalid deploy action filters help" href="invalid_deploy_action_filters_help.html"/> 
@@ -262,15 +262,15 @@
 33
 34
 35</pre></div></td><td class="code"><div class="highlight"><pre>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-2014-12-08 16:28:29,332 INFO     question_progress: Results 0% (Get Online = &quot;True&quot; from all machines)
-2014-12-08 16:28:34,353 INFO     question_progress: Results 50% (Get Online = &quot;True&quot; from all machines)
-2014-12-08 16:28:39,370 INFO     question_progress: Results 83% (Get Online = &quot;True&quot; from all machines)
-2014-12-08 16:28:44,391 INFO     question_progress: Results 100% (Get Online = &quot;True&quot; from all machines)
+2015-02-11 12:06:25,143 INFO     question_progress: Results 0% (Get Online = &quot;True&quot; from all machines)
+2015-02-11 12:06:30,161 INFO     question_progress: Results 0% (Get Online = &quot;True&quot; from all machines)
+2015-02-11 12:06:35,180 INFO     question_progress: Results 50% (Get Online = &quot;True&quot; from all machines)
+2015-02-11 12:06:40,198 INFO     question_progress: Results 100% (Get Online = &quot;True&quot; from all machines)
 Traceback (most recent call last):
   File &quot;&lt;string&gt;&quot;, line 40, in &lt;module&gt;
-  File &quot;/Users/jolsen/gh/pytan/lib/pytan/handler.py&quot;, line 1172, in deploy_action_human
+  File &quot;/Users/jolsen/gh/pytan/lib/pytan/handler.py&quot;, line 1176, in deploy_action_human
     **kwargs
-  File &quot;/Users/jolsen/gh/pytan/lib/pytan/handler.py&quot;, line 1026, in deploy_action
+  File &quot;/Users/jolsen/gh/pytan/lib/pytan/handler.py&quot;, line 1030, in deploy_action
     empty_ok=False,
   File &quot;/Users/jolsen/gh/pytan/lib/pytan/utils.py&quot;, line 2147, in build_param_objlist
     raise HandlerError(err(obj_name, p_key, jsonify(obj_param)))
@@ -320,7 +320,7 @@ HandlerError: PackageSpec, name: &#39;Custom Tagging - Add Tags&#39; parameter k
   <div role="contentinfo">
     <p>
         &copy; Copyright 2014, Tanium.
-      Last updated on Dec 08, 2014.
+      Last updated on Feb 11, 2015.
     </p>
   </div>
 
@@ -341,7 +341,7 @@ HandlerError: PackageSpec, name: &#39;Custom Tagging - Add Tags&#39; parameter k
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.0.1',
+            VERSION:'1.0.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

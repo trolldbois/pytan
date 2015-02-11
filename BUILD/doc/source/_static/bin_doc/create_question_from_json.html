@@ -779,8 +779,9 @@ body .task-list{
 
 <div class="highlight highlight-bash"><pre>create_question_from_json.py -h</pre></div>
 
-<pre><code>usage: create_question_from_json.py [-h] -u USERNAME -p PASSWORD --host HOST
-                                    [--port PORT] [-l LOGLEVEL] -j JSON_FILE
+<pre><code>usage: create_question_from_json.py [-h] [-u USERNAME] [-p PASSWORD]
+                                    [--host HOST] [--port PORT] [-l LOGLEVEL]
+                                    -j JSON_FILE
 
 Create a question object from a json file
 
@@ -831,7 +832,7 @@ Create Question from JSON Options:
 
 <pre><code>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
 Found items:  QuestionList, len: 1
-Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written with 2468 bytes
+Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written with 775 bytes
 </code></pre>
 
 <ul>
@@ -877,7 +878,7 @@ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written 
 <li>Add CMDLINE TEST to name or url_regex in the JSON file</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>perl -p -i -e <span class="pl-s1"><span class="pl-pds">'</span>s/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 3054"/gm<span class="pl-pds">'</span></span> /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json <span class="pl-k">&amp;&amp;</span> cat /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json</pre></div>
+<div class="highlight highlight-bash"><pre>perl -p -i -e <span class="pl-s1"><span class="pl-pds">'</span>s/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 8236"/gm<span class="pl-pds">'</span></span> /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json <span class="pl-k">&amp;&amp;</span> cat /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json</pre></div>
 
 <pre><code>{
   "_type": "questions", 
@@ -889,71 +890,23 @@ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written 
         "_type": "group", 
         "id": 0
       }, 
-      "expiration": "2014-12-08T19:30:12", 
+      "expiration": "2015-01-05T20:29:02", 
       "expire_seconds": 0, 
-      "force_computer_id_flag": 1, 
+      "force_computer_id_flag": 0, 
       "hidden_flag": 0, 
       "id": 1, 
       "management_rights_group": {
         "_type": "group", 
         "id": 0
       }, 
-      "query_text": "Get Action Statuses matches \"Nil\" from all machines", 
+      "query_text": "Get number of machines", 
       "saved_question": {
         "_type": "saved_question", 
         "id": 0
       }, 
       "selects": {
         "_type": "selects", 
-        "select": [
-          {
-            "_type": "select", 
-            "filter": {
-              "_type": "filter", 
-              "all_times_flag": 0, 
-              "all_values_flag": 1, 
-              "delimiter_index": 0, 
-              "end_time": "2001-01-01T00:00:00", 
-              "ignore_case_flag": 1, 
-              "max_age_seconds": 0, 
-              "not_flag": 0, 
-              "operator": "RegexMatch", 
-              "start_time": "2001-01-01T00:00:00", 
-              "substring_flag": 0, 
-              "substring_length": 0, 
-              "substring_start": 0, 
-              "utf8_flag": 0, 
-              "value": "Nil", 
-              "value_type": "String"
-            }, 
-            "sensor": {
-              "_type": "sensor", 
-              "category": "Reserved", 
-              "description": "The recorded state of each action a client has taken recently in the form of id:status.\nExample: 1:Completed", 
-              "exclude_from_parse_flag": 1, 
-              "hash": 1792443391, 
-              "hidden_flag": 0, 
-              "id": 1, 
-              "ignore_case_flag": 1, 
-              "max_age_seconds": 3600, 
-              "name": "Action Statuses", 
-              "queries": {
-                "_type": "queries", 
-                "query": [
-                  {
-                    "_type": "query", 
-                    "platform": "Windows", 
-                    "script": "Reserved", 
-                    "script_type": "WMIQuery"
-                  }
-                ]
-              }, 
-              "source_id": 0, 
-              "string_count": 3528, 
-              "value_type": "String"
-            }
-          }
-        ]
+        "select": []
       }, 
       "skip_lock_flag": 0, 
       "user": {
@@ -995,7 +948,7 @@ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written 
 <div class="highlight highlight-bash"><pre>create_question_from_json.py -u <span class="pl-s1"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s1"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s1"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 -j <span class="pl-s1"><span class="pl-pds">"</span>/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json<span class="pl-pds">"</span></span></pre></div>
 
 <pre><code>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-Created item: Question, id: 350, ID: 350
+Created item: Question, id: 11468, ID: 11468
 </code></pre>
 
 <ul>
@@ -1012,7 +965,7 @@ Created item: Question, id: 350, ID: 350
 <p><a href="#user-content-toc">TOC</a></p>
 
 <h6>
-<a id="user-content-generated-by-build_bin_doc-v145-date-mon-dec--8-153405-2014-est-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v145-date-mon-dec--8-153405-2014-est-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v1.4.5</code>, date: Mon Dec  8 15:34:05 2014 EST, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
+<a id="user-content-generated-by-build_bin_doc-v145-date-wed-feb-11-171238-2015-est-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v145-date-wed-feb-11-171238-2015-est-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v1.4.5</code>, date: Wed Feb 11 17:12:38 2015 EST, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
 </h6>
 
 </body></html>

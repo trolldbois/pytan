@@ -57,12 +57,12 @@ except Exception as e:
 
 '''Output from running this:
 Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-2014-12-08 16:44:18,688 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-2014-12-08 16:44:23,702 INFO     question_progress: Results 83% (Get Computer Name from all machines)
-2014-12-08 16:44:28,719 INFO     question_progress: Results 100% (Get Computer Name from all machines)
+2015-02-11 12:19:17,704 INFO     question_progress: Results 0% (Get Computer Name from all machines)
+2015-02-11 12:19:22,717 INFO     question_progress: Results 0% (Get Computer Name from all machines)
+2015-02-11 12:19:27,731 INFO     question_progress: Results 100% (Get Computer Name from all machines)
 Traceback (most recent call last):
   File "<string>", line 48, in <module>
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1396, in export_obj
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1413, in export_obj
     raise HandlerError(err)
 HandlerError: u'bad' not a supported export format for ResultSet, must be one of: json, csv
 

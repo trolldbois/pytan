@@ -66,10 +66,10 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
 Type of response:  <class 'taniumpy.object_types.saved_question_list.SavedQuestionList'>
 
 print of response:
-SavedQuestionList, len: 176
+SavedQuestionList, len: 173
 
 length of response (number of objects returned): 
-176
+173
 
 print the first object returned in JSON format:
 {

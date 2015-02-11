@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>7.1.5.3. Invalid deploy action package &mdash; PyTan 1.0.1 documentation</title>
+  <title>7.1.5.3. Invalid deploy action package &mdash; PyTan 1.0.3 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="PyTan 1.0.1 documentation" href="../index.html"/>
+    <link rel="top" title="PyTan 1.0.3 documentation" href="../index.html"/>
         <link rel="up" title="7.1.5. pytan API Invalid Deploy Action Examples" href="invalid_deploy_actions.html"/>
         <link rel="next" title="7.1.5.4. Invalid deploy action options help" href="invalid_deploy_action_options_help.html"/>
         <link rel="prev" title="7.1.5.2. Invalid deploy action package help" href="invalid_deploy_action_package_help.html"/> 
@@ -247,19 +247,19 @@
 18</pre></div></td><td class="code"><div class="highlight"><pre>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
 Traceback (most recent call last):
   File &quot;&lt;string&gt;&quot;, line 40, in &lt;module&gt;
-  File &quot;/Users/jolsen/gh/pytan/lib/pytan/handler.py&quot;, line 1172, in deploy_action_human
+  File &quot;/Users/jolsen/gh/pytan/lib/pytan/handler.py&quot;, line 1176, in deploy_action_human
     **kwargs
   File &quot;/Users/jolsen/gh/pytan/lib/pytan/handler.py&quot;, line 963, in deploy_action
     package_def = self._get_package_def(package_def)
-  File &quot;/Users/jolsen/gh/pytan/lib/pytan/handler.py&quot;, line 1796, in _get_package_def
+  File &quot;/Users/jolsen/gh/pytan/lib/pytan/handler.py&quot;, line 1813, in _get_package_def
     d[&#39;package_obj&#39;] = self.get(&#39;package&#39;, **def_search)[0]
-  File &quot;/Users/jolsen/gh/pytan/lib/pytan/handler.py&quot;, line 1572, in get
+  File &quot;/Users/jolsen/gh/pytan/lib/pytan/handler.py&quot;, line 1589, in get
     return self._get_single(obj_map, **kwargs)
-  File &quot;/Users/jolsen/gh/pytan/lib/pytan/handler.py&quot;, line 1756, in _get_single
+  File &quot;/Users/jolsen/gh/pytan/lib/pytan/handler.py&quot;, line 1773, in _get_single
     for x in self._single_find(obj_map, k, v, **kwargs):
-  File &quot;/Users/jolsen/gh/pytan/lib/pytan/handler.py&quot;, line 1766, in _single_find
+  File &quot;/Users/jolsen/gh/pytan/lib/pytan/handler.py&quot;, line 1783, in _single_find
     obj_ret = self._find(api_obj_single, **kwargs)
-  File &quot;/Users/jolsen/gh/pytan/lib/pytan/handler.py&quot;, line 1694, in _find
+  File &quot;/Users/jolsen/gh/pytan/lib/pytan/handler.py&quot;, line 1711, in _find
     raise HandlerError(err(search_str))
 HandlerError: No results found searching for PackageSpec, name: u&#39;Invalid Package&#39;!!
 </pre></div>
@@ -286,7 +286,7 @@ HandlerError: No results found searching for PackageSpec, name: u&#39;Invalid Pa
   <div role="contentinfo">
     <p>
         &copy; Copyright 2014, Tanium.
-      Last updated on Dec 08, 2014.
+      Last updated on Feb 11, 2015.
     </p>
   </div>
 
@@ -307,7 +307,7 @@ HandlerError: No results found searching for PackageSpec, name: u&#39;Invalid Pa
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.0.1',
+            VERSION:'1.0.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

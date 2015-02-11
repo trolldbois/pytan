@@ -87,36 +87,37 @@ Output from Python Code
 
 
     Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-    2014-12-08 16:24:50,266 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines)
-    2014-12-08 16:24:55,284 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines)
-    2014-12-08 16:25:00,307 INFO     question_progress: Results 17% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines)
-    2014-12-08 16:25:05,326 INFO     question_progress: Results 67% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines)
-    2014-12-08 16:25:10,344 INFO     question_progress: Results 83% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines)
-    2014-12-08 16:25:15,369 INFO     question_progress: Results 100% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines)
+    2015-02-11 12:02:23,563 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines)
+    2015-02-11 12:02:28,582 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines)
+    2015-02-11 12:02:33,600 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines)
+    2015-02-11 12:02:38,616 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines)
+    2015-02-11 12:02:43,634 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines)
+    2015-02-11 12:02:48,651 INFO     question_progress: Results 50% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines)
+    2015-02-11 12:02:53,669 INFO     question_progress: Results 100% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines)
     
     Type of response:  <type 'dict'>
     
     Pretty print of response:
-    {'question_object': <taniumpy.object_types.question.Question object at 0x102967b90>,
-     'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x102b2fd50>}
+    {'question_object': <taniumpy.object_types.question.Question object at 0x1059f4510>,
+     'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x1059de110>}
     
     Equivalent Question if it were to be asked in the Tanium Console: 
     Get Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines
     
     CSV Results of response: 
-    Count,"Folder Name Search with RegEx Match[No, Program Files, No, ]"
-    4,[no results]
-    1,C:\Program Files\Common Files\Microsoft Shared\VS7Debug
-    2,C:\Program Files\Common Files\Microsoft Shared\ink\ar-SA
-    2,C:\Program Files\Common Files\Microsoft Shared\ink\ru-RU
-    2,C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\keypad
-    2,C:\Program Files\Common Files\Microsoft Shared\ink
-    2,C:\Program Files\Common Files\Microsoft Shared\ink\sv-SE
-    2,C:\Program Files\Common Files\Microsoft Shared\ink\uk-UA
-    2,C:\Program Files\Common Files\Microsoft Shared\ink\sl-SI
-    2,C:\Program Files\Common Files\Microsoft Shared\ink\hu-HU
-    2,C:\Program Files\Common Files\Microsoft Shared\ink\zh-TW
-    2,C:\Program Files\Common Files\Microsoft Shared\ink\zh-CN
-    2,C:\Program Files\Common Files\Microsoft Shared\ink\fi-FI
-    2,C:\Program Files\Common Files\Microsoft Shared
+    "Folder Name Search with RegEx Match[No, Program Files, No, ]"
+    [no results]
+    C:\Program Files\Common Files\Microsoft Shared\VS7Debug
+    C:\Program Files\Common Files\Microsoft Shared\ink\ar-SA
+    C:\Program Files\Common Files\Microsoft Shared\ink\ru-RU
+    C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\keypad
+    C:\Program Files\Common Files\Microsoft Shared\ink
+    C:\Program Files\Common Files\Microsoft Shared\ink\sv-SE
+    C:\Program Files\Common Files\Microsoft Shared\ink\uk-UA
+    C:\Program Files\Common Files\Microsoft Shared\ink\sl-SI
+    C:\Program Files\Common Files\Microsoft Shared\ink\hu-HU
+    C:\Program Files\Common Files\Microsoft Shared\ink\zh-TW
+    C:\Program Files\Common Files\Microsoft Shared\ink\zh-CN
+    C:\Program Files\Common Files\Microsoft Shared\ink\fi-FI
+    C:\Program Files\Common Files\Microsoft Shared
     ..trimmed for brevity..

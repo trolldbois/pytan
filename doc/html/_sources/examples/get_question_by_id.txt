@@ -95,9 +95,9 @@ Output from Python Code
         "_type": "group", 
         "id": 0
       }, 
-      "expiration": "2014-12-08T19:30:12", 
+      "expiration": "2015-01-05T20:29:02", 
       "expire_seconds": 0, 
-      "force_computer_id_flag": 1, 
+      "force_computer_id_flag": 0, 
       "hidden_flag": 0, 
       "id": 1, 
       "management_rights_group": {

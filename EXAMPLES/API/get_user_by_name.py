@@ -78,16 +78,16 @@ print the first object returned in JSON format:
   "deleted_flag": 0, 
   "group_id": 0, 
   "id": 2, 
-  "last_login": "2014-12-08T21:26:37", 
-  "name": "Tanium User", 
-  "permissions": {
-    "_type": "permissions", 
-    "permission": "admin"
-  }, 
-  "roles": {
-    "_type": "roles", 
-    "role": [
+  "last_login": "2015-02-09T04:29:53", 
+  "metadata": {
+    "_type": "metadata", 
+    "item": [
       {
+        "_type": "item", 
+        "admin_flag": 0, 
+        "name": "TConsole.User.Preference.FilterClientsPeriod", 
+        "value": "39600"
+      }
 ..trimmed for brevity..
 
 '''

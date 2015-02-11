@@ -66,21 +66,21 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
 Type of response:  <class 'taniumpy.object_types.system_status_list.SystemStatusList'>
 
 print of response:
-SystemStatusList, len: 6
+SystemStatusList, len: 4
 
 length of response (number of objects returned): 
-6
+4
 
 print the first object returned in JSON format:
 {
   "_type": "client_status", 
   "cache_row_id": 0, 
-  "computer_id": "660621737", 
+  "computer_id": "1939030790", 
   "full_version": "5.1.314.7724", 
   "host_name": "Casus-Belli.local", 
   "ipaddress_client": "172.16.31.1", 
   "ipaddress_server": "172.16.31.1", 
-  "last_registration": "2014-12-08T21:26:16", 
+  "last_registration": "2015-02-09T04:29:33", 
   "port_number": 17472, 
   "protocol_version": 314, 
   "send_state": "Forward Only", 

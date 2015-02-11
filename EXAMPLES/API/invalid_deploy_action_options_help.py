@@ -50,7 +50,7 @@ except Exception as e:
 Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
 Traceback (most recent call last):
   File "<string>", line 39, in <module>
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1142, in deploy_action_human
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1146, in deploy_action_human
     raise PytanHelp(utils.help_options())
 PytanHelp: 
 Options Help

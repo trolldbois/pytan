@@ -2,6 +2,8 @@
   * [ ] in question_asker.py: if pct >= self.pct_complete_threshold: 
   * [ ] in request_body_template.xml:       {cache_filters}
   * [ ] in session.py: utf-8 fix
+  * [ ] submit bug re: utf8?
+  * [ ] submit bug re: add mac to client status 
 
 # TODO LATER
   * [ ] Add method to get question progress
@@ -115,4 +117,4 @@
   * 1.0.3
     * [X] fix utf-8 issue in taniumpy
     * [X] improvements in build process for STATICWINBUILD
-
+    * [X] rebuild doc dirs

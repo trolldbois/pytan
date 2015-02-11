@@ -81,10 +81,10 @@ Output from Python Code
     Type of response:  <class 'taniumpy.object_types.sensor_list.SensorList'>
     
     print of response:
-    SensorList, len: 536
+    SensorList, len: 771
     
     length of response (number of objects returned): 
-    536
+    771
     
     print the first object returned in JSON format:
     {

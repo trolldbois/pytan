@@ -81,19 +81,19 @@ Output from Python Code
     Type of response:  <class 'taniumpy.object_types.package_spec_list.PackageSpecList'>
     
     print of response:
-    PackageSpecList, len: 92
+    PackageSpecList, len: 89
     
     length of response (number of objects returned): 
-    92
+    89
     
     print the first object returned in JSON format:
     {
       "_type": "package_spec", 
-      "available_time": "2014-12-08T19:21:15", 
+      "available_time": "2015-01-05T20:22:30", 
       "cache_row_id": 0, 
       "command": "cmd /c cscript //T:900 java-installer.vbs /KillAppsUsingJava:Yes /RebootIfNeeded:Yes /MaxWaitTimeInSeconds:300", 
       "command_timeout": 900, 
-      "creation_time": "2014-12-08T19:20:46", 
+      "creation_time": "2015-01-05T20:22:08", 
       "deleted_flag": 0, 
       "display_name": "Update Java 64-bit - Kill / Reboot", 
       "expire_seconds": 1500, 

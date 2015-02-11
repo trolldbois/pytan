@@ -68,33 +68,33 @@ print out
 
 '''Output from running this:
 Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-2014-12-08 16:19:51,778 INFO     question_progress: Results 60000% (Get Installed Applications from all machines)
+2015-02-11 11:59:06,525 INFO     question_progress: Results 20000% (Get Installed Applications from all machines)
 
 Type of response:  <type 'dict'>
 
 Pretty print of response:
-{'question_object': <taniumpy.object_types.saved_question.SavedQuestion object at 0x102b24790>,
- 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x1029e7fd0>}
+{'question_object': <taniumpy.object_types.saved_question.SavedQuestion object at 0x105a35550>,
+ 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x105c41d10>}
 
 Equivalent Question if it were to be asked in the Tanium Console: 
 Get Installed Applications from all machines
 
 CSV Results of response: 
-Count,Name,Silent Uninstall String,Uninstallable,Version
-714,[too many results],None,None,None
-1,update-manager-core,nothing,Not Uninstallable,1:0.196.12
-1,libminiupnpc8,nothing,Not Uninstallable,1.6-3ubuntu2.14.04.1
-1,iso-codes,nothing,Not Uninstallable,3.52-1
-1,docbook-dtds,nothing,Not Uninstallable,1.0
-1,libexttextcat-2.0-0,nothing,Not Uninstallable,3.4.3-1ubuntu1
-1,Google Search,nothing,Not Uninstallable,37.0.2062.120
-1,gnome-user-share,nothing,Not Uninstallable,2.28.2
-1,libblkid1:amd64,nothing,Not Uninstallable,2.20.1-5.1ubuntu20.1
-1,fipscheck-lib,nothing,Not Uninstallable,1.2.0
-1,gsm,nothing,Not Uninstallable,1.0.13
-1,VoiceOver Quickstart,nothing,Not Uninstallable,6.0
-1,VoiceOver Utility,nothing,Not Uninstallable,6.0
-1,growisofs,nothing,Not Uninstallable,7.1-10build1
+Name,Silent Uninstall String,Uninstallable,Version
+Google Search,nothing,Not Uninstallable,37.0.2062.120
+Microsoft Chart Converter,nothing,Not Uninstallable,14.4.7
+Spotify,nothing,Not Uninstallable,0.9.15.27.g87efe634
+Wish,nothing,Not Uninstallable,8.5.9
+BluetoothUIServer,nothing,Not Uninstallable,4.3.2
+Time Machine,nothing,Not Uninstallable,1.3
+AppleGraphicsWarning,nothing,Not Uninstallable,2.3.0
+Python 2.7 py2exe-0.6.9,"""C:\Python27\Removepy2exe.exe"" -u ""C:\Python27\py2exe-wininst.log""",Not Uninstallable,-0.6.9
+soagent,nothing,Not Uninstallable,7.0
+AinuIM,nothing,Not Uninstallable,1.0
+ARDAgent,nothing,Not Uninstallable,3.8.2
+Microsoft Clip Gallery,nothing,Not Uninstallable,14.4.7
+Pass Viewer,nothing,Not Uninstallable,1.0
+PressAndHold,nothing,Not Uninstallable,1.2
 ..trimmed for brevity..
 
 '''

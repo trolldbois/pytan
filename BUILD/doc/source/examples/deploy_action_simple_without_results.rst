@@ -82,18 +82,18 @@ Output from Python Code
 
 
     Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-    2014-12-08 16:27:16,199 INFO     question_progress: Results 0% (Get Online = "True" from all machines)
-    2014-12-08 16:27:21,218 INFO     question_progress: Results 100% (Get Online = "True" from all machines)
+    2015-02-11 12:05:14,142 INFO     question_progress: Results 0% (Get Online = "True" from all machines)
+    2015-02-11 12:05:19,161 INFO     question_progress: Results 100% (Get Online = "True" from all machines)
     
     Type of response:  <type 'dict'>
     
     Pretty print of response:
-    {'action_object': <taniumpy.object_types.action.Action object at 0x10211d590>,
+    {'action_object': <taniumpy.object_types.action.Action object at 0x105d04ad0>,
      'action_progress_human': None,
      'action_progress_map': None,
      'action_results': None,
-     'pre_action_question_results': {'question_object': <taniumpy.object_types.question.Question object at 0x1026038d0>,
-                                     'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x1022a9890>}}
+     'pre_action_question_results': {'question_object': <taniumpy.object_types.question.Question object at 0x107af57d0>,
+                                     'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x107ae4bd0>}}
     
     Print of action object: 
     Action, name: 'API Deploy Distribute Tanium Standard Utilities'

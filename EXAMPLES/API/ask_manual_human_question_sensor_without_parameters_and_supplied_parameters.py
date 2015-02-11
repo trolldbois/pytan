@@ -70,14 +70,15 @@ print out
 
 '''Output from running this:
 Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-2014-12-08 16:20:53,557 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-2014-12-08 16:20:58,574 INFO     question_progress: Results 100% (Get Computer Name from all machines)
+2015-02-11 11:59:57,363 INFO     question_progress: Results 0% (Get Computer Name from all machines)
+2015-02-11 12:00:02,379 INFO     question_progress: Results 0% (Get Computer Name from all machines)
+2015-02-11 12:00:07,391 INFO     question_progress: Results 100% (Get Computer Name from all machines)
 
 Type of response:  <type 'dict'>
 
 Pretty print of response:
-{'question_object': <taniumpy.object_types.question.Question object at 0x102b82450>,
- 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x1029f70d0>}
+{'question_object': <taniumpy.object_types.question.Question object at 0x105a59a50>,
+ 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x105c557d0>}
 
 Equivalent Question if it were to be asked in the Tanium Console: 
 Get Computer Name from all machines
@@ -86,10 +87,6 @@ CSV Results of response:
 Computer Name
 Casus-Belli.local
 jtanium1.localdomain
-ubuntu.(none)
-localhost.(none)
-Jims-Mac.local
-WIN-A12SC6N6T7Q
 
 
 '''

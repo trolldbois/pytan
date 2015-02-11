@@ -82,61 +82,62 @@ Output from Python Code
 
 
     Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-    2014-12-08 16:27:21,364 INFO     question_progress: Results 0% (Get Online = "True" from all machines where Operating System contains "Windows")
-    2014-12-08 16:27:26,389 INFO     question_progress: Results 0% (Get Online = "True" from all machines where Operating System contains "Windows")
-    2014-12-08 16:27:31,409 INFO     question_progress: Results 100% (Get Online = "True" from all machines where Operating System contains "Windows")
-    2014-12-08 16:27:31,496 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-    2014-12-08 16:27:32,528 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-    2014-12-08 16:27:33,561 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-    2014-12-08 16:27:34,607 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-    2014-12-08 16:27:35,649 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-    2014-12-08 16:27:36,707 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-    2014-12-08 16:27:37,764 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-    2014-12-08 16:27:38,800 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-    2014-12-08 16:27:39,830 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-    2014-12-08 16:27:40,867 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-    2014-12-08 16:27:41,904 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-    2014-12-08 16:27:42,942 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-    2014-12-08 16:27:43,986 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-    2014-12-08 16:27:45,091 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-    2014-12-08 16:27:46,143 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-    2014-12-08 16:27:47,186 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-    2014-12-08 16:27:48,222 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-    2014-12-08 16:27:49,267 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-    2014-12-08 16:27:50,316 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-    2014-12-08 16:27:51,363 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-    2014-12-08 16:27:52,475 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-    2014-12-08 16:27:53,522 INFO     action_progress: Action Results Passed: 100% (API Deploy Distribute Tanium Standard Utilities)
-    2014-12-08 16:27:53,563 INFO     action_progress: Action Results Completed: 50% (API Deploy Distribute Tanium Standard Utilities)
-    2014-12-08 16:27:54,610 INFO     action_progress: Action Results Completed: 50% (API Deploy Distribute Tanium Standard Utilities)
-    2014-12-08 16:27:55,648 INFO     action_progress: Action Results Completed: 50% (API Deploy Distribute Tanium Standard Utilities)
-    2014-12-08 16:27:56,697 INFO     action_progress: Action Results Completed: 50% (API Deploy Distribute Tanium Standard Utilities)
-    2014-12-08 16:27:58,074 INFO     action_progress: Action Results Completed: 100% (API Deploy Distribute Tanium Standard Utilities)
-    2014-12-08 16:27:58,074 INFO     action_progress: API Deploy Distribute Tanium Standard Utilities Result Counts:
+    2015-02-11 12:05:19,277 INFO     question_progress: Results 0% (Get Online = "True" from all machines where Operating System contains "Windows")
+    2015-02-11 12:05:24,302 INFO     question_progress: Results 0% (Get Online = "True" from all machines where Operating System contains "Windows")
+    2015-02-11 12:05:29,319 INFO     question_progress: Results 100% (Get Online = "True" from all machines where Operating System contains "Windows")
+    2015-02-11 12:05:29,385 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
+    2015-02-11 12:05:30,414 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
+    2015-02-11 12:05:31,488 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
+    2015-02-11 12:05:32,515 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
+    2015-02-11 12:05:33,546 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
+    2015-02-11 12:05:34,576 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
+    2015-02-11 12:05:35,602 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
+    2015-02-11 12:05:36,627 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
+    2015-02-11 12:05:37,657 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
+    2015-02-11 12:05:38,687 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
+    2015-02-11 12:05:39,715 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
+    2015-02-11 12:05:40,742 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
+    2015-02-11 12:05:41,771 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
+    2015-02-11 12:05:42,797 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
+    2015-02-11 12:05:43,829 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
+    2015-02-11 12:05:44,856 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
+    2015-02-11 12:05:45,885 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
+    2015-02-11 12:05:46,912 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
+    2015-02-11 12:05:47,938 INFO     action_progress: Action Results Passed: 100% (API Deploy Distribute Tanium Standard Utilities)
+    2015-02-11 12:05:47,962 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
+    2015-02-11 12:05:48,990 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
+    2015-02-11 12:05:50,019 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
+    2015-02-11 12:05:51,046 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
+    2015-02-11 12:05:52,074 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
+    2015-02-11 12:05:53,101 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
+    2015-02-11 12:05:54,128 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
+    2015-02-11 12:05:55,158 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
+    2015-02-11 12:05:56,186 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
+    2015-02-11 12:05:57,213 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
+    2015-02-11 12:05:58,249 INFO     action_progress: Action Results Completed: 100% (API Deploy Distribute Tanium Standard Utilities)
+    2015-02-11 12:05:58,249 INFO     action_progress: API Deploy Distribute Tanium Standard Utilities Result Counts:
     	Running Count: 0
-    	Success Count: 2
+    	Success Count: 1
     	Failed Count: 0
     	Unknown Count: 0
-    	Finished Count: 2
-    	Total Count: 2
-    	Finished Count must equal: 2
+    	Finished Count: 1
+    	Total Count: 1
+    	Finished Count must equal: 1
     
     Type of response:  <type 'dict'>
     
     Pretty print of response:
-    {'action_object': <taniumpy.object_types.action.Action object at 0x102120410>,
-     'action_progress_human': 'API Deploy Distribute Tanium Standard Utilities Result Counts:\n\tRunning Count: 0\n\tSuccess Count: 2\n\tFailed Count: 0\n\tUnknown Count: 0\n\tFinished Count: 2\n\tTotal Count: 2\n\tFinished Count must equal: 2',
-     'action_progress_map': {'Completed.': ['jtanium1.localdomain',
-                                            'WIN-A12SC6N6T7Q']},
-     'action_results': <taniumpy.object_types.result_set.ResultSet object at 0x102a047d0>,
-     'pre_action_question_results': {'question_object': <taniumpy.object_types.question.Question object at 0x1029c97d0>,
-                                     'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x102186610>}}
+    {'action_object': <taniumpy.object_types.action.Action object at 0x107b4ba50>,
+     'action_progress_human': 'API Deploy Distribute Tanium Standard Utilities Result Counts:\n\tRunning Count: 0\n\tSuccess Count: 1\n\tFailed Count: 0\n\tUnknown Count: 0\n\tFinished Count: 1\n\tTotal Count: 1\n\tFinished Count must equal: 1',
+     'action_progress_map': {'Completed.': ['jtanium1.localdomain']},
+     'action_results': <taniumpy.object_types.result_set.ResultSet object at 0x107ae7890>,
+     'pre_action_question_results': {'question_object': <taniumpy.object_types.question.Question object at 0x1059f8710>,
+                                     'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x1059fb110>}}
     
     Print of action object: 
     Action, name: 'API Deploy Distribute Tanium Standard Utilities'
     
     CSV Results of response: 
     Action Statuses,Computer Name
-    48:Completed.,jtanium1.localdomain
-    48:Completed.,WIN-A12SC6N6T7Q
+    1371:Completed.,jtanium1.localdomain
     

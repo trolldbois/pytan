@@ -75,10 +75,10 @@ length of response (number of objects returned):
 print the first object returned in JSON format:
 {
   "_type": "package_spec", 
-  "available_time": "2014-12-08T19:25:53", 
+  "available_time": "2015-01-05T20:26:33", 
   "command": "cmd /c cscript //T:1800 copy-to-tanium-dir.vbs \"Tools\"", 
   "command_timeout": 1800, 
-  "creation_time": "2014-12-08T19:21:06", 
+  "creation_time": "2015-01-05T20:22:32", 
   "deleted_flag": 0, 
   "display_name": "Distribute Patch Tools", 
   "expire_seconds": 2400, 

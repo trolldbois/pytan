@@ -104,9 +104,9 @@ Output from Python Code
 
 
     Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-    2014-12-08 16:28:45,212 INFO     handler: Deleted 'WhiteListedUrl, id: 27'
-    2014-12-08 16:28:45,213 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/WhiteListedUrlList_2014_12_08-16_28_45-EST.json' written with 198 bytes
-    2014-12-08 16:28:45,226 INFO     handler: New WhiteListedUrl, id: 53 (ID: 53) created successfully!
+    2015-02-11 12:06:40,898 INFO     handler: Deleted 'WhiteListedUrl, id: 15'
+    2015-02-11 12:06:40,899 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/WhiteListedUrlList_2015_02_11-12_06_40-EST.json' written with 198 bytes
+    2015-02-11 12:06:40,911 INFO     handler: New WhiteListedUrl, id: 17 (ID: 17) created successfully!
     
     Type of response:  <class 'taniumpy.object_types.white_listed_url_list.WhiteListedUrlList'>
     
@@ -120,7 +120,7 @@ Output from Python Code
         {
           "_type": "white_listed_url", 
           "download_seconds": 86400, 
-          "id": 53, 
+          "id": 17, 
           "url_regex": "test1 API TEST"
         }
       ]

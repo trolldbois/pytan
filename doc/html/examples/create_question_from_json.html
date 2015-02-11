@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>7.1.8.6. Create question from json &mdash; PyTan 1.0.1 documentation</title>
+  <title>7.1.8.6. Create question from json &mdash; PyTan 1.0.3 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="PyTan 1.0.1 documentation" href="../index.html"/>
+    <link rel="top" title="PyTan 1.0.3 documentation" href="../index.html"/>
         <link rel="up" title="7.1.8. pytan API Valid Create Object From JSON Examples" href="valid_create_objects_from_json.html"/>
         <link rel="next" title="7.1.8.7. Create whitelisted url from json" href="create_whitelisted_url_from_json.html"/>
         <link rel="prev" title="7.1.8.5. Create sensor from json" href="create_sensor_from_json.html"/> 
@@ -355,57 +355,9 @@
 44
 45
 46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68
-69
-70
-71
-72
-73
-74
-75
-76
-77
-78
-79
-80
-81
-82
-83
-84
-85
-86
-87
-88
-89
-90
-91
-92
-93
-94
-95</pre></div></td><td class="code"><div class="highlight"><pre>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-2014-12-08 16:28:45,123 INFO     handler: Report file &#39;/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/QuestionList_2014_12_08-16_28_45-EST.json&#39; written with 2468 bytes
-2014-12-08 16:28:45,159 INFO     handler: New Question, id: 437 (ID: 437) created successfully!
+47</pre></div></td><td class="code"><div class="highlight"><pre>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+2015-02-11 12:06:40,855 INFO     handler: Report file &#39;/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/QuestionList_2015_02_11-12_06_40-EST.json&#39; written with 775 bytes
+2015-02-11 12:06:40,870 INFO     handler: New Question, id: 11084 (ID: 11084) created successfully!
 
 Type of response:  &lt;class &#39;taniumpy.object_types.question_list.QuestionList&#39;&gt;
 
@@ -423,71 +375,23 @@ print the object returned in JSON format:
         &quot;_type&quot;: &quot;group&quot;,
         &quot;id&quot;: 0
       },
-      &quot;expiration&quot;: &quot;2014-12-08T21:38:45&quot;,
+      &quot;expiration&quot;: &quot;2015-02-11T17:16:41&quot;,
       &quot;expire_seconds&quot;: 0,
-      &quot;force_computer_id_flag&quot;: 1,
+      &quot;force_computer_id_flag&quot;: 0,
       &quot;hidden_flag&quot;: 0,
-      &quot;id&quot;: 437,
+      &quot;id&quot;: 11084,
       &quot;management_rights_group&quot;: {
         &quot;_type&quot;: &quot;group&quot;,
         &quot;id&quot;: 0
       },
-      &quot;query_text&quot;: &quot;Get Action Statuses matches \&quot;Nil\&quot; from all machines&quot;,
+      &quot;query_text&quot;: &quot;Get number of machines&quot;,
       &quot;saved_question&quot;: {
         &quot;_type&quot;: &quot;saved_question&quot;,
         &quot;id&quot;: 0
       },
       &quot;selects&quot;: {
         &quot;_type&quot;: &quot;selects&quot;,
-        &quot;select&quot;: [
-          {
-            &quot;_type&quot;: &quot;select&quot;,
-            &quot;filter&quot;: {
-              &quot;_type&quot;: &quot;filter&quot;,
-              &quot;all_times_flag&quot;: 0,
-              &quot;all_values_flag&quot;: 1,
-              &quot;delimiter_index&quot;: 0,
-              &quot;end_time&quot;: &quot;2001-01-01T00:00:00&quot;,
-              &quot;ignore_case_flag&quot;: 1,
-              &quot;max_age_seconds&quot;: 0,
-              &quot;not_flag&quot;: 0,
-              &quot;operator&quot;: &quot;RegexMatch&quot;,
-              &quot;start_time&quot;: &quot;2001-01-01T00:00:00&quot;,
-              &quot;substring_flag&quot;: 0,
-              &quot;substring_length&quot;: 0,
-              &quot;substring_start&quot;: 0,
-              &quot;utf8_flag&quot;: 0,
-              &quot;value&quot;: &quot;Nil&quot;,
-              &quot;value_type&quot;: &quot;String&quot;
-            },
-            &quot;sensor&quot;: {
-              &quot;_type&quot;: &quot;sensor&quot;,
-              &quot;category&quot;: &quot;Reserved&quot;,
-              &quot;description&quot;: &quot;The recorded state of each action a client has taken recently in the form of id:status.\nExample: 1:Completed&quot;,
-              &quot;exclude_from_parse_flag&quot;: 1,
-              &quot;hash&quot;: 1792443391,
-              &quot;hidden_flag&quot;: 0,
-              &quot;id&quot;: 1,
-              &quot;ignore_case_flag&quot;: 1,
-              &quot;max_age_seconds&quot;: 3600,
-              &quot;name&quot;: &quot;Action Statuses&quot;,
-              &quot;queries&quot;: {
-                &quot;_type&quot;: &quot;queries&quot;,
-                &quot;query&quot;: [
-                  {
-                    &quot;_type&quot;: &quot;query&quot;,
-                    &quot;platform&quot;: &quot;Windows&quot;,
-                    &quot;script&quot;: &quot;Reserved&quot;,
-                    &quot;script_type&quot;: &quot;WMIQuery&quot;
-                  }
-                ]
-              },
-              &quot;source_id&quot;: 0,
-              &quot;string_count&quot;: 3540,
-              &quot;value_type&quot;: &quot;String&quot;
-            }
-          }
-        ]
+        &quot;select&quot;: []
       },
       &quot;skip_lock_flag&quot;: 0,
       &quot;user&quot;: {
@@ -522,7 +426,7 @@ print the object returned in JSON format:
   <div role="contentinfo">
     <p>
         &copy; Copyright 2014, Tanium.
-      Last updated on Dec 08, 2014.
+      Last updated on Feb 11, 2015.
     </p>
   </div>
 
@@ -543,7 +447,7 @@ print the object returned in JSON format:
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.0.1',
+            VERSION:'1.0.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
