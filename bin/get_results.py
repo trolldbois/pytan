@@ -27,36 +27,33 @@ from pytan import utils
 
 examples = [
     {
-        'name': 'Get the results for a saved question',
+        'name': 'Ask a question',
         'cmd': (
-            'get_results.py $API_INFO -o "saved_question" --id 107 --file "$TMP/out.csv" csv'
+            'ask_manual_question.py $API_INFO --no-results --sensor "Computer Name" csv | tee $TMP/ask.out'
         ),
-        'notes': ['Get the results for Saved Question ID 107', 'Save the results to a CSV file'],
-        'precleanup': 'rm -f $TMP/out.csv',
-        'file_exist': '$TMP/out.csv',
+        'notes': ['Ask a question without getting the results, save stdout to ask.out'],
+        'precleanup': 'rm -f $TMP/ask.out',
+        'file_exist': '$TMP/ask.out',
         'tests': 'exitcode, file_exist_contents',
+    },
+    {
+        'name': 'Wait 30 seconds',
+        'cmd': (
+            'sleep 15'
+        ),
+        'notes': ['Wait 30 seconds for data for the previously asked question to be available'],
+        'tests': 'exitcode',
     },
     {
         'name': 'Get the results for a question',
         'cmd': (
-            'get_results.py $API_INFO -o "question" --id 249 --file "$TMP/out.csv" csv'
+            'get_results.py $API_INFO -o "question" --id `cat $TMP/ask.out | grep ID| cut -d: -f2 | tr -d " "` --file "$TMP/out.csv" csv'
         ),
-        'notes': ['Get the results for Question ID 249', 'Save the results to a CSV file'],
+        'notes': ['Get the results for the question ID asked previously ', 'Save the results to a CSV file'],
         'precleanup': 'rm -f $TMP/out.csv',
         'file_exist': '$TMP/out.csv',
         'tests': 'exitcode, file_exist_contents',
     },
-    {
-        'name': 'Get the results for a action',
-        'cmd': (
-            'get_results.py $API_INFO -o "action" --id 24 --file "$TMP/out.csv" csv'
-        ),
-        'notes': ['Get the results for action ID 24', 'Save the results to a CSV file'],
-        'precleanup': 'rm -f $TMP/out.csv',
-        'file_exist': '$TMP/out.csv',
-        'tests': 'exitcode, file_exist_contents',
-    },
-
 ]
 
 
