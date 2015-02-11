@@ -1,6 +1,7 @@
 # TODO NOW
   * [ ] in question_asker.py: if pct >= self.pct_complete_threshold: 
   * [ ] in request_body_template.xml:       {cache_filters}
+  * [ ] in session.py: utf-8 fix
 
 # TODO LATER
   * [ ] Add method to get question progress
@@ -111,3 +112,7 @@
     * [X] add username/password/host prompt to all py scripts
     * [X] add config.bat, run.bat, readme.md for TSAT
     * [X] add auto zipper for TSAT build
+  * 1.0.3
+    * [X] fix utf-8 issue in taniumpy
+    * [X] improvements in build process for STATICWINBUILD
+
