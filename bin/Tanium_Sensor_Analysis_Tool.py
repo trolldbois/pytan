@@ -4,7 +4,7 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 '''Asks a question for every sensor and saves the results as a report format'''
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
-__version__ = '1.0.2'
+__version__ = '1.0.3'
 
 import os
 import sys
@@ -13,7 +13,7 @@ import logging
 import time
 import datetime
 import csv
-import StringIO
+import io
 import string
 
 sys.dont_write_bytecode = True
@@ -130,7 +130,7 @@ def get_all_headers(rows_list):
 
 def csvdictwriter(rows_list, **kwargs):
     """returns the rows_list (list of dicts) as a CSV string"""
-    csv_io = StringIO.StringIO()
+    csv_io = io.BytesIO()
     headers = kwargs.get('headers', []) or get_all_headers(rows_list)
     writer = csv.DictWriter(
         csv_io, fieldnames=headers, quoting=csv.QUOTE_NONNUMERIC,
@@ -419,7 +419,7 @@ if __name__ == "__main__":
     csv_file = filter_filename(csv_file)
     csv_file_path = os.path.join(args.report_dir, csv_file)
 
-    csv_fh = open(csv_file_path, 'w')
+    csv_fh = open(csv_file_path, 'wb')
     csv_fh.write(csv_str)
     csv_fh.close()
 
