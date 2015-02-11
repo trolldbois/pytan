@@ -26,7 +26,7 @@ from pytan import utils
 examples = [
     {
         'name': 'Print the server info in JSON format',
-        'cmd': 'print_sensor.py $API_INFO --json',
+        'cmd': 'print_server_info.py $API_INFO --json',
         'tests': 'exitcode',
     },
 ]
