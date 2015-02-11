@@ -89,7 +89,7 @@ Output from Python Code
 
     Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
     No results found searching for Group, name: 'All Windows Computers API Test'!!
-    2014-12-08 16:28:44,605 INFO     handler: New group 'All Windows Computers API Test' created with ID 397, filter text: ' Operating System contains "Windows"'
+    2015-02-11 12:06:40,384 INFO     handler: New group 'All Windows Computers API Test' created with ID 2277, filter text: ' Operating System contains "Windows"'
     
     Type of response:  <class 'taniumpy.object_types.group.Group'>
     
@@ -126,7 +126,7 @@ Output from Python Code
           }
         ]
       }, 
-      "id": 397, 
+      "id": 2277, 
       "name": "All Windows Computers API Test", 
       "not_flag": 0, 
       "sub_groups": {
@@ -136,4 +136,4 @@ Output from Python Code
       "text": " Operating System contains \"Windows\"", 
       "type": 0
     }
-    2014-12-08 16:28:44,619 INFO     handler: Deleted 'Group, id: 397'
+    2015-02-11 12:06:40,398 INFO     handler: Deleted 'Group, id: 2277'

@@ -70,15 +70,15 @@ print out
 
 '''Output from running this:
 Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-2014-12-08 16:20:12,928 INFO     question_progress: Results 0% (Get Computer Name and Installed Applications from all machines)
-2014-12-08 16:20:17,953 INFO     question_progress: Results 83% (Get Computer Name and Installed Applications from all machines)
-2014-12-08 16:20:22,978 INFO     question_progress: Results 100% (Get Computer Name and Installed Applications from all machines)
+2015-02-11 11:59:26,990 INFO     question_progress: Results 0% (Get Computer Name and Installed Applications from all machines)
+2015-02-11 11:59:32,013 INFO     question_progress: Results 0% (Get Computer Name and Installed Applications from all machines)
+2015-02-11 11:59:37,032 INFO     question_progress: Results 100% (Get Computer Name and Installed Applications from all machines)
 
 Type of response:  <type 'dict'>
 
 Pretty print of response:
-{'question_object': <taniumpy.object_types.question.Question object at 0x1028e2950>,
- 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x102b6f550>}
+{'question_object': <taniumpy.object_types.question.Question object at 0x1059bf310>,
+ 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x105c340d0>}
 
 Equivalent Question if it were to be asked in the Tanium Console: 
 Get Computer Name and Installed Applications from all machines
@@ -86,19 +86,19 @@ Get Computer Name and Installed Applications from all machines
 CSV Results of response: 
 Computer Name,Name,Silent Uninstall String,Uninstallable,Version
 Casus-Belli.local,"Google Search
-MakePDF
+Microsoft Chart Converter
+Spotify
 Wish
+BluetoothUIServer
 Time Machine
 AppleGraphicsWarning
 soagent
-SpeechService
 AinuIM
+ARDAgent
+Microsoft Clip Gallery
 Pass Viewer
 PressAndHold
 PluginIM
-UserNotificationCenter
-FaceTime
-ScreenSaverEngine
 ..trimmed for brevity..
 
 '''

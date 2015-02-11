@@ -65,7 +65,7 @@ class Handler(object):
     """
 
     def __init__(self, username, password, host, port="444", loglevel=0,
-                 debugformat=False, **kwargs):
+                 debugformat=False, get_version=True, **kwargs):
         super(Handler, self).__init__()
 
         # setup the console logging handler
@@ -92,7 +92,7 @@ class Handler(object):
 
         utils.test_app_port(host, port)
         self.session = taniumpy.Session(host, port)
-        self.session.authenticate(username, password)
+        self.session.authenticate(username, password, get_version=get_version)
 
     def __str__(self):
         str_tpl = "Handler for {}".format
@@ -990,6 +990,20 @@ class Handler(object):
         )
         pre_action_result = pre_action_result_ret['question_results']
 
+        """ note from jwk:
+        passed_count == the number of machines that pass the filter and
+        therefore the number that should take the action
+        """
+        passed_count = pre_action_result.passed
+        m = (
+            "Number of systems that match action filter (passed_count): {}"
+        ).format
+        mylog.debug(m(passed_count))
+
+        if passed_count == 0:
+            m = "Number of systems that match the action filters provided is zero!"
+            raise HandlerError(m)
+
         if not run:
             report_path, result = self.export_to_report_file(
                 pre_action_result, 'csv',
@@ -1001,16 +1015,6 @@ class Handler(object):
                 "Re-run this deploy action with run=True after verifying"
             ).format
             raise RunFalse(m(report_path, len(result)))
-
-        """ note from jwk:
-        passed_count == the number of machines that pass the filter and
-        therefore the number that should take the action
-        """
-        passed_count = pre_action_result.passed
-        m = (
-            "Number of systems that match action filter (passed_count): {}"
-        ).format
-        mylog.debug(m(passed_count))
 
         targetgroup_obj = utils.build_group_obj(
             action_filter_defs, action_option_defs
@@ -1195,6 +1199,19 @@ class Handler(object):
         --------
         :data:`pytan.constants.ACTION_RESULT_STATUS` : maps the values in *Action Statuses* columns to success/completed/failed/etc
         """
+        if not utils.is_num(action_id):
+            m = "action_id must be an integer!"
+            raise HandlerError(m)
+
+        if not utils.is_num(passed_count):
+            m = "passed_count must be an integer!"
+            raise HandlerError(m)
+
+        if passed_count == 0:
+            passed_base = (100.0 / float(1))
+        else:
+            passed_base = (100.0 / float(passed_count))
+
         action_obj = self.get('action', id=action_id)[0]
         ps = action_obj.package_spec
         """
@@ -1233,7 +1250,7 @@ class Handler(object):
                 rd = self.get_result_data(action_obj, True)
 
                 current_passed = sum([int(x['Count'][0]) for x in rd.rows])
-                passed_pct = current_passed * (100.0 / float(passed_count))
+                passed_pct = current_passed * passed_base
 
                 m = (
                     "Deploy Action {} Current Passed: {}, Expected Passed: {}"
@@ -1279,7 +1296,7 @@ class Handler(object):
             failed_count = utils.get_dict_list_len(as_map, failed_keys)
             unknown_count = utils.get_dict_list_len(as_map, ARS, True)
 
-            finished_pct = finished_count * (100.0 / float(passed_count))
+            finished_pct = finished_count * passed_base
 
             m = "Action Results Completed: {1:.0f}% ({0})".format
             actionlog.info(m(action_obj.name, finished_pct))
@@ -1509,7 +1526,7 @@ class Handler(object):
         # get the results of exporting the object
         result = self.export_obj(obj, export_format, **kwargs)
 
-        with open(report_path, 'w') as fd:
+        with open(report_path, 'wb') as fd:
             fd.write(result)
 
         m = "Report file {!r} written with {} bytes".format

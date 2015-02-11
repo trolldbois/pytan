@@ -4,14 +4,15 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 '''Prints sensor information to stdout'''
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
-__version__ = '1.0.1'
+__version__ = '1.0.3'
 
 import os
 import sys
 import json
+import getpass
 
 sys.dont_write_bytecode = True
-my_file = os.path.abspath(__file__)
+my_file = os.path.abspath(sys.argv[0])
 my_dir = os.path.dirname(my_file)
 parent_dir = os.path.dirname(my_dir)
 lib_dir = os.path.join(parent_dir, 'lib')
@@ -94,12 +95,26 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
     all_args = args.__dict__
+    if not args.username:
+        username = raw_input('Tanium Username: ')
+        all_args['username'] = username.strip()
+
+    if not args.password:
+        password = getpass.getpass('Tanium Password: ')
+        all_args['password'] = password.strip()
+
+    if not args.host:
+        host = raw_input('Tanium Host: ')
+        all_args['host'] = host.strip()
 
     handler = process_handler_args(parser, all_args)
 
     response = utils.process_get_object_args(
         parser, handler, 'sensor', all_args
     )
+
+    # filter out all sensors that have a source_id (i.e. are created as temp sensors for params)
+    response = [x for x in response if not x.source_id]
 
     if args.json:
         for x in response:
@@ -129,7 +144,11 @@ if __name__ == "__main__":
 
         param_def = x.parameter_definition or {}
         if param_def:
-            param_def = json.loads(param_def)
+            try:
+                param_def = json.loads(param_def)
+            except:
+                print "Error loading JSON parameter definition {}".format(param_def)
+                param_def = {}
 
         params = param_def.get('parameters', [])
         if args.params_only and not params:

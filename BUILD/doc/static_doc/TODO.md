@@ -1,6 +1,12 @@
 # TODO NOW
+  * [ ] in question_asker.py: if pct >= self.pct_complete_threshold: 
+  * [ ] in request_body_template.xml:       {cache_filters}
+  * [ ] in session.py: utf-8 fix
+  * [ ] submit bug re: utf8?
+  * [ ] submit bug re: add mac to client status 
 
 # TODO LATER
+  * [ ] Add method to get question progress
   * [ ] explain get == select col data, from == select row data
   * [ ] add pointers to KB articles
   * [ ] add readme.md to examples
@@ -12,7 +18,6 @@
   * [ ] test verify checks work against package with verification (unable to do)
   * [ ] look into update object methods
   * [ ] add method to calculate total time btwn request and response
-  * [ ] build "ask all questions" workflow
   * [ ] test against RT
   * [ ] test against all the different levels of user privs
   * [ ] logfile support
@@ -100,4 +105,16 @@
     * [X] build markdown docs for bin scripts
     * [X] add usage to docs
     * [X] update readme
-
+  * 1.0.2
+    * [X] filter hidden sensors from print_sensors.py
+    * [X] add better param json decoding error handling in print_sensors.py
+    * [X] Add support for static building via py2exe
+    * [X] build "ask all questions" workflow
+    * [X] rename ask all questions to Tanium Sensor Analysis Tool
+    * [X] add username/password/host prompt to all py scripts
+    * [X] add config.bat, run.bat, readme.md for TSAT
+    * [X] add auto zipper for TSAT build
+  * 1.0.3
+    * [X] fix utf-8 issue in taniumpy
+    * [X] improvements in build process for STATICWINBUILD
+    * [X] rebuild doc dirs

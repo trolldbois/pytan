@@ -4,14 +4,15 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 '''Get results from a deploy action, saved question, or question'''
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
-__version__ = '1.0.1'
+__version__ = '1.0.3'
 
 examples = []
 
 import os
 import sys
+import getpass
 sys.dont_write_bytecode = True
-my_file = os.path.abspath(__file__)
+my_file = os.path.abspath(sys.argv[0])
 my_dir = os.path.dirname(my_file)
 parent_dir = os.path.dirname(my_dir)
 lib_dir = os.path.join(parent_dir, 'lib')
@@ -26,36 +27,33 @@ from pytan import utils
 
 examples = [
     {
-        'name': 'Get the results for a saved question',
+        'name': 'Ask a question',
         'cmd': (
-            'get_results.py $API_INFO -o "saved_question" --id 107 --file "$TMP/out.csv" csv'
+            'ask_manual_question.py $API_INFO --no-results --sensor "Computer Name" csv | tee $TMP/ask.out'
         ),
-        'notes': ['Get the results for Saved Question ID 107', 'Save the results to a CSV file'],
-        'precleanup': 'rm -f $TMP/out.csv',
-        'file_exist': '$TMP/out.csv',
+        'notes': ['Ask a question without getting the results, save stdout to ask.out'],
+        'precleanup': 'rm -f $TMP/ask.out',
+        'file_exist': '$TMP/ask.out',
         'tests': 'exitcode, file_exist_contents',
+    },
+    {
+        'name': 'Wait 30 seconds',
+        'cmd': (
+            'sleep 15'
+        ),
+        'notes': ['Wait 30 seconds for data for the previously asked question to be available'],
+        'tests': 'exitcode',
     },
     {
         'name': 'Get the results for a question',
         'cmd': (
-            'get_results.py $API_INFO -o "question" --id 249 --file "$TMP/out.csv" csv'
+            'get_results.py $API_INFO -o "question" --id `cat $TMP/ask.out | grep ID| cut -d: -f2 | tr -d " "` --file "$TMP/out.csv" csv'
         ),
-        'notes': ['Get the results for Question ID 249', 'Save the results to a CSV file'],
+        'notes': ['Get the results for the question ID asked previously ', 'Save the results to a CSV file'],
         'precleanup': 'rm -f $TMP/out.csv',
         'file_exist': '$TMP/out.csv',
         'tests': 'exitcode, file_exist_contents',
     },
-    {
-        'name': 'Get the results for a action',
-        'cmd': (
-            'get_results.py $API_INFO -o "action" --id 24 --file "$TMP/out.csv" csv'
-        ),
-        'notes': ['Get the results for action ID 24', 'Save the results to a CSV file'],
-        'precleanup': 'rm -f $TMP/out.csv',
-        'file_exist': '$TMP/out.csv',
-        'tests': 'exitcode, file_exist_contents',
-    },
-
 ]
 
 
@@ -81,6 +79,17 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     all_args = args.__dict__
+    if not args.username:
+        username = raw_input('Tanium Username: ')
+        all_args['username'] = username.strip()
+
+    if not args.password:
+        password = getpass.getpass('Tanium Password: ')
+        all_args['password'] = password.strip()
+
+    if not args.host:
+        host = raw_input('Tanium Host: ')
+        all_args['host'] = host.strip()
 
     handler = process_handler_args(parser, all_args)
 

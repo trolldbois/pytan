@@ -89,9 +89,9 @@ print response.to_json(response)
 
 '''Output from running this:
 Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-2014-12-08 16:28:44,729 INFO     handler: Deleted 'PackageSpec, id: 101'
-2014-12-08 16:28:44,730 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/PackageSpecList_2014_12_08-16_28_44-EST.json' written with 2599 bytes
-2014-12-08 16:28:44,761 INFO     handler: New PackageSpec, name: 'Custom Tagging - Add Tags API TEST' (ID: 108) created successfully!
+2015-02-11 12:06:40,488 INFO     handler: Deleted 'PackageSpec, id: 104'
+2015-02-11 12:06:40,489 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/PackageSpecList_2015_02_11-12_06_40-EST.json' written with 1833 bytes
+2015-02-11 12:06:40,512 INFO     handler: New PackageSpec, name: 'Custom Tagging - Add Tags API TEST' (ID: 108) created successfully!
 
 Type of response:  <class 'taniumpy.object_types.package_spec_list.PackageSpecList'>
 
@@ -107,34 +107,14 @@ print the object returned in JSON format:
       "available_time": "1900-01-01T00:00:00", 
       "command": "cmd /c cscript //T:60 add-tags.vbs \"$1\"", 
       "command_timeout": 60, 
-      "creation_time": "2014-12-08T21:28:44", 
+      "creation_time": "2015-02-11T17:06:40", 
       "deleted_flag": 0, 
       "display_name": "Custom Tagging - Add Tags", 
       "expire_seconds": 660, 
-      "files": {
-        "_type": "package_files", 
-        "file": [
-          {
-            "_type": "file", 
-            "bytes_downloaded": 1972, 
-            "bytes_total": 1972, 
-            "cache_status": "CACHED", 
-            "download_seconds": 0, 
-            "download_start_time": "2014-12-08T19:23:55", 
-            "hash": "55aa6c54d82282ad2d41390e49f7b9939c582e14fa5cfca1b7b7fb9264261182", 
-            "id": 71, 
-            "last_download_progress_time": "2014-12-08T19:24:06", 
-            "name": "add-tags.vbs", 
-            "size": 1972, 
-            "source": "https://content.tanium.com/files/initialcontent/bundles/2014-11-05_12-56-07-8513/custom_tagging_-_add_tags/add-tags.vbs", 
-            "status": 200
-          }
-        ]
-      }, 
       "hidden_flag": 0, 
       "id": 108, 
       "last_modified_by": "Tanium User", 
-      "last_update": "2014-12-08T21:28:44", 
+      "last_update": "2015-02-11T17:06:40", 
       "metadata": {
         "_type": "metadata", 
         "item": [
@@ -152,9 +132,9 @@ print the object returned in JSON format:
           }
         ]
       }, 
-      "modification_time": "2014-12-08T21:28:44", 
+      "modification_time": "2015-02-11T17:06:40", 
       "name": "Custom Tagging - Add Tags API TEST", 
-      "parameter_definition": "{\"parameters\":[{\"restrict\":null,\"validationExpressions\":[{\"helpString\":\"You must enter a value\",\"flags\":\"\",\"expression\":\"\\\\S\",\"parameterType\":\"com.tanium.models::ValidationExpression\",\"model\":\"com.tanium.models::ValidationExpression\"}],\"helpString\":\"Enter tags space-delimited.\",\"promptText\":\"e.g. PCI DMZ Decomm\",\"defaultValue\":\"\",\"value\":\"\",\"label\":\"Add tags (space-delimited)\",\"maxChars\":0,\"key\":\"$1\",\"parameterType\":\"com.tanium.components.parameters::TextInputParameter\",\"model\":\"com.tanium.components.parameters::TextInputParameter\"}],\"parameterType\":\"com.tanium.components.parameters::ParametersArray\",\"model\":\"com.tanium.components.parameters::ParametersArray\"}", 
+      "parameter_definition": "{\"parameters\":[{\"restrict\":null,\"validationExpressions\":[{\"flags\":\"\",\"expression\":\"\\\\S\",\"helpString\":\"You must enter a value\",\"model\":\"com.tanium.models::ValidationExpression\",\"parameterType\":\"com.tanium.models::ValidationExpression\"}],\"helpString\":\"Enter tags space-delimited.\",\"value\":\"\",\"promptText\":\"e.g. PCI DMZ Decomm\",\"defaultValue\":\"\",\"label\":\"Add tags (space-delimited)\",\"maxChars\":0,\"key\":\"$1\",\"model\":\"com.tanium.components.parameters::TextInputParameter\",\"parameterType\":\"com.tanium.components.parameters::TextInputParameter\"}],\"model\":\"com.tanium.components.parameters::ParametersArray\",\"parameterType\":\"com.tanium.components.parameters::ParametersArray\"}", 
       "source_id": 0, 
       "verify_group_id": 0
     }

@@ -23,9 +23,10 @@ deploy_action.py -h
 ```
 
 ```
-usage: deploy_action.py [-h] -u USERNAME -p PASSWORD --host HOST [--port PORT]
-                        [-l LOGLEVEL] [--run] [--no-results | --results]
-                        [-k PACKAGE] [-f ACTION_FILTERS] [-o ACTION_OPTIONS]
+usage: deploy_action.py [-h] [-u USERNAME] [-p PASSWORD] [--host HOST]
+                        [--port PORT] [-l LOGLEVEL] [--run]
+                        [--no-results | --results] [-k PACKAGE]
+                        [-f ACTION_FILTERS] [-o ACTION_OPTIONS]
                         [--start_seconds_from_now START_SECONDS_FROM_NOW]
                         [--expire_seconds EXPIRE_SECONDS] [--package-help]
                         [--filters-help] [--options-help] [--file REPORT_FILE]
@@ -644,11 +645,11 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
   "run": false, 
   "start_seconds_from_now": 1
 }
-2014-12-08 15:34:11,791 INFO     question_progress: Results 0% (Get Computer Name and Online = "True" from all machines)
-2014-12-08 15:34:16,805 INFO     question_progress: Results 0% (Get Computer Name and Online = "True" from all machines)
-2014-12-08 15:34:21,825 INFO     question_progress: Results 100% (Get Computer Name and Online = "True" from all machines)
+2015-02-11 17:13:48,282 INFO     question_progress: Results 0% (Get Computer Name and Online = "True" from all machines)
+2015-02-11 17:13:53,297 INFO     question_progress: Results 0% (Get Computer Name and Online = "True" from all machines)
+2015-02-11 17:13:58,318 INFO     question_progress: Results 100% (Get Computer Name and Online = "True" from all machines)
 'Run' is not True!!
-View and verify the contents of /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/VERIFY_BEFORE_DEPLOY_ACTION_out.csv (length: 159 bytes)
+View and verify the contents of /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/VERIFY_BEFORE_DEPLOY_ACTION_out.csv (length: 73 bytes)
 Re-run this deploy action with run=True after verifying
 ```
 
@@ -660,10 +661,6 @@ Re-run this deploy action with run=True after verifying
 Computer Name,Online
 Casus-Belli.local,True
 jtanium1.localdomain,True
-ubuntu.(none),True
-localhost.(none),True
-Jims-Mac.local,True
-WIN-A12SC6N6T7Q,True
 ```
 
   * Validation Test: notexitcode
@@ -700,58 +697,51 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
   "run": true, 
   "start_seconds_from_now": 1
 }
-2014-12-08 15:34:22,030 INFO     question_progress: Results 0% (Get Online = "True" from all machines)
-2014-12-08 15:34:27,046 INFO     question_progress: Results 50% (Get Online = "True" from all machines)
-2014-12-08 15:34:32,063 INFO     question_progress: Results 100% (Get Online = "True" from all machines)
-2014-12-08 15:34:32,126 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2014-12-08 15:34:33,153 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2014-12-08 15:34:34,199 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2014-12-08 15:34:35,229 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2014-12-08 15:34:36,259 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2014-12-08 15:34:37,285 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2014-12-08 15:34:38,314 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2014-12-08 15:34:39,343 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2014-12-08 15:34:40,375 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2014-12-08 15:34:41,402 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2014-12-08 15:34:42,433 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2014-12-08 15:34:43,464 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2014-12-08 15:34:44,491 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2014-12-08 15:34:45,523 INFO     action_progress: Action Results Passed: 17% (API Deploy Distribute Tanium Standard Utilities)
-2014-12-08 15:34:46,553 INFO     action_progress: Action Results Passed: 33% (API Deploy Distribute Tanium Standard Utilities)
-2014-12-08 15:34:47,584 INFO     action_progress: Action Results Passed: 33% (API Deploy Distribute Tanium Standard Utilities)
-2014-12-08 15:34:48,614 INFO     action_progress: Action Results Passed: 33% (API Deploy Distribute Tanium Standard Utilities)
-2014-12-08 15:34:49,647 INFO     action_progress: Action Results Passed: 33% (API Deploy Distribute Tanium Standard Utilities)
-2014-12-08 15:34:50,680 INFO     action_progress: Action Results Passed: 33% (API Deploy Distribute Tanium Standard Utilities)
-2014-12-08 15:34:51,711 INFO     action_progress: Action Results Passed: 50% (API Deploy Distribute Tanium Standard Utilities)
-2014-12-08 15:34:52,746 INFO     action_progress: Action Results Passed: 50% (API Deploy Distribute Tanium Standard Utilities)
-2014-12-08 15:34:53,774 INFO     action_progress: Action Results Passed: 67% (API Deploy Distribute Tanium Standard Utilities)
-2014-12-08 15:34:54,810 INFO     action_progress: Action Results Passed: 67% (API Deploy Distribute Tanium Standard Utilities)
-2014-12-08 15:34:55,841 INFO     action_progress: Action Results Passed: 67% (API Deploy Distribute Tanium Standard Utilities)
-2014-12-08 15:34:56,873 INFO     action_progress: Action Results Passed: 67% (API Deploy Distribute Tanium Standard Utilities)
-2014-12-08 15:34:57,905 INFO     action_progress: Action Results Passed: 67% (API Deploy Distribute Tanium Standard Utilities)
-2014-12-08 15:34:58,980 INFO     action_progress: Action Results Passed: 83% (API Deploy Distribute Tanium Standard Utilities)
-2014-12-08 15:35:00,012 INFO     action_progress: Action Results Passed: 100% (API Deploy Distribute Tanium Standard Utilities)
-2014-12-08 15:35:00,037 INFO     action_progress: Action Results Completed: 100% (API Deploy Distribute Tanium Standard Utilities)
-2014-12-08 15:35:00,037 INFO     action_progress: API Deploy Distribute Tanium Standard Utilities Result Counts:
+2015-02-11 17:13:58,523 INFO     question_progress: Results 0% (Get Online = "True" from all machines)
+2015-02-11 17:14:03,537 INFO     question_progress: Results 0% (Get Online = "True" from all machines)
+2015-02-11 17:14:08,555 INFO     question_progress: Results 100% (Get Online = "True" from all machines)
+2015-02-11 17:14:08,614 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
+2015-02-11 17:14:09,644 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
+2015-02-11 17:14:10,670 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
+2015-02-11 17:14:11,700 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
+2015-02-11 17:14:12,728 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
+2015-02-11 17:14:13,759 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
+2015-02-11 17:14:14,786 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
+2015-02-11 17:14:15,815 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
+2015-02-11 17:14:16,843 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
+2015-02-11 17:14:17,867 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
+2015-02-11 17:14:18,895 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
+2015-02-11 17:14:19,943 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
+2015-02-11 17:14:20,968 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
+2015-02-11 17:14:21,995 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
+2015-02-11 17:14:23,021 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
+2015-02-11 17:14:24,047 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
+2015-02-11 17:14:25,074 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
+2015-02-11 17:14:26,106 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
+2015-02-11 17:14:27,132 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
+2015-02-11 17:14:28,159 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
+2015-02-11 17:14:29,192 INFO     action_progress: Action Results Passed: 100% (API Deploy Distribute Tanium Standard Utilities)
+2015-02-11 17:14:29,217 INFO     action_progress: Action Results Completed: 100% (API Deploy Distribute Tanium Standard Utilities)
+2015-02-11 17:14:29,217 INFO     action_progress: API Deploy Distribute Tanium Standard Utilities Result Counts:
 	Running Count: 0
-	Success Count: 6
+	Success Count: 2
 	Failed Count: 0
 	Unknown Count: 0
-	Finished Count: 6
-	Total Count: 6
-	Finished Count must equal: 6
-++ Deployed Action 'API Deploy Distribute Tanium Standard Utilities' ID: 38
+	Finished Count: 2
+	Total Count: 2
+	Finished Count must equal: 2
+++ Deployed Action 'API Deploy Distribute Tanium Standard Utilities' ID: 1415
 ++ Command used in Action: 'cmd /c cscript install-standard-utils.vbs "Tools\\StdUtils"'
 ++ Deploy action progress check results:
 API Deploy Distribute Tanium Standard Utilities Result Counts:
 	Running Count: 0
-	Success Count: 6
+	Success Count: 2
 	Failed Count: 0
 	Unknown Count: 0
-	Finished Count: 6
-	Total Count: 6
-	Finished Count must equal: 6
-++ Deploy results written to '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' with 222 bytes
+	Finished Count: 2
+	Total Count: 2
+	Finished Count must equal: 2
+++ Deploy results written to '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' with 104 bytes
 ```
 
   * Validation Test: exitcode
@@ -764,12 +754,8 @@ API Deploy Distribute Tanium Standard Utilities Result Counts:
 
 ```
 Action Statuses,Computer Name
-38:Completed.,Casus-Belli.local
-38:Completed.,jtanium1.localdomain
-38:Completed.,ubuntu.(none)
-38:Completed.,localhost.(none)
-38:Completed.,Jims-Mac.local
-38:Completed.,WIN-A12SC6N6T7Q
+1415:Completed.,Casus-Belli.local
+1415:Completed.,jtanium1.localdomain
 ```
 
 
@@ -805,63 +791,176 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
   "run": true, 
   "start_seconds_from_now": 1
 }
-2014-12-08 15:35:00,239 INFO     question_progress: Results 0% (Get Online = "True" from all machines where Operating System contains "Windows")
-2014-12-08 15:35:05,254 INFO     question_progress: Results 100% (Get Online = "True" from all machines where Operating System contains "Windows")
-2014-12-08 15:35:05,332 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2014-12-08 15:35:06,360 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2014-12-08 15:35:07,386 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2014-12-08 15:35:08,411 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2014-12-08 15:35:09,439 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2014-12-08 15:35:10,473 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2014-12-08 15:35:11,502 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2014-12-08 15:35:12,533 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2014-12-08 15:35:13,604 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2014-12-08 15:35:14,634 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2014-12-08 15:35:15,662 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2014-12-08 15:35:16,697 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2014-12-08 15:35:17,723 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2014-12-08 15:35:18,750 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2014-12-08 15:35:19,781 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2014-12-08 15:35:20,825 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2014-12-08 15:35:21,854 INFO     action_progress: Action Results Passed: 50% (API Deploy Custom Tagging - Add Tags)
-2014-12-08 15:35:22,882 INFO     action_progress: Action Results Passed: 50% (API Deploy Custom Tagging - Add Tags)
-2014-12-08 15:35:23,910 INFO     action_progress: Action Results Passed: 100% (API Deploy Custom Tagging - Add Tags)
-2014-12-08 15:35:23,935 INFO     action_progress: Action Results Completed: 0% (API Deploy Custom Tagging - Add Tags)
-2014-12-08 15:35:24,965 INFO     action_progress: Action Results Completed: 0% (API Deploy Custom Tagging - Add Tags)
-2014-12-08 15:35:25,995 INFO     action_progress: Action Results Completed: 0% (API Deploy Custom Tagging - Add Tags)
-2014-12-08 15:35:27,021 INFO     action_progress: Action Results Completed: 0% (API Deploy Custom Tagging - Add Tags)
-2014-12-08 15:35:28,052 INFO     action_progress: Action Results Completed: 0% (API Deploy Custom Tagging - Add Tags)
-2014-12-08 15:35:29,080 INFO     action_progress: Action Results Completed: 0% (API Deploy Custom Tagging - Add Tags)
-2014-12-08 15:35:30,109 INFO     action_progress: Action Results Completed: 0% (API Deploy Custom Tagging - Add Tags)
-2014-12-08 15:35:31,140 INFO     action_progress: Action Results Completed: 0% (API Deploy Custom Tagging - Add Tags)
-2014-12-08 15:35:32,166 INFO     action_progress: Action Results Completed: 50% (API Deploy Custom Tagging - Add Tags)
-2014-12-08 15:35:33,196 INFO     action_progress: Action Results Completed: 50% (API Deploy Custom Tagging - Add Tags)
-2014-12-08 15:35:34,226 INFO     action_progress: Action Results Completed: 50% (API Deploy Custom Tagging - Add Tags)
-2014-12-08 15:35:35,253 INFO     action_progress: Action Results Completed: 50% (API Deploy Custom Tagging - Add Tags)
-2014-12-08 15:35:36,281 INFO     action_progress: Action Results Completed: 50% (API Deploy Custom Tagging - Add Tags)
-2014-12-08 15:35:37,311 INFO     action_progress: Action Results Completed: 50% (API Deploy Custom Tagging - Add Tags)
-2014-12-08 15:35:38,339 INFO     action_progress: Action Results Completed: 50% (API Deploy Custom Tagging - Add Tags)
-2014-12-08 15:35:39,369 INFO     action_progress: Action Results Completed: 100% (API Deploy Custom Tagging - Add Tags)
-2014-12-08 15:35:39,369 INFO     action_progress: API Deploy Custom Tagging - Add Tags Result Counts:
+2015-02-11 17:14:29,410 INFO     question_progress: Results 0% (Get Online = "True" from all machines where Operating System contains "Windows")
+2015-02-11 17:14:34,425 INFO     question_progress: Results 100% (Get Online = "True" from all machines where Operating System contains "Windows")
+2015-02-11 17:14:34,498 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:14:35,523 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:14:36,552 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:14:37,582 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:14:38,612 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:14:39,638 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:14:40,666 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:14:41,696 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:14:42,721 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:14:43,747 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:14:44,832 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:14:45,859 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:14:46,886 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:14:47,912 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:14:48,939 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:14:49,968 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:14:50,997 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:14:52,023 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:14:53,051 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:14:54,078 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:14:55,158 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:14:56,183 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:14:57,212 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:14:58,240 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:14:59,265 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:00,360 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:01,386 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:02,416 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:03,447 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:04,475 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:05,504 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:06,530 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:07,559 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:08,584 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:09,610 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:10,705 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:11,733 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:12,760 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:13,789 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:14,815 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:15,851 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:16,881 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:17,910 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:18,934 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:19,964 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:20,992 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:22,023 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:23,052 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:24,079 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:25,108 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:26,136 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:27,164 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:28,193 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:29,220 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:30,249 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:31,274 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:32,303 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:33,329 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:34,355 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:35,383 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:36,410 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:37,435 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:38,461 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:39,487 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:40,512 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:41,617 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:42,644 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:43,669 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:44,698 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:45,726 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:46,815 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:47,844 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:48,870 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:49,898 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:50,926 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:51,961 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:52,989 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:54,014 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:55,072 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:56,097 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:57,124 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:58,151 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:15:59,177 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:00,203 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:01,228 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:02,254 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:03,279 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:04,303 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:05,327 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:06,379 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:07,578 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:08,603 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:09,909 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:11,649 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:12,802 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:14,156 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:15,301 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:16,326 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:17,351 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:18,380 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:19,419 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:20,466 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:21,491 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:22,515 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:23,686 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:24,821 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:26,015 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:27,147 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:28,173 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:29,198 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:30,228 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:31,254 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:32,280 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:33,306 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:34,330 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:35,356 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:36,385 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:37,411 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:38,439 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:39,465 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:40,494 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:41,520 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:42,545 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:43,571 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:44,595 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:45,625 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:46,651 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:47,675 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:48,707 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:49,732 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:50,758 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:51,785 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:52,811 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:53,839 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:54,865 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:55,892 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:56,919 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:57,947 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:58,973 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:16:59,999 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:17:01,029 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:17:02,055 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:17:03,082 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:17:04,109 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:17:05,134 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:17:06,162 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:17:07,189 INFO     action_progress: Action Results Passed: 100% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:17:07,212 INFO     action_progress: Action Results Completed: 100% (API Deploy Custom Tagging - Add Tags)
+2015-02-11 17:17:07,212 INFO     action_progress: API Deploy Custom Tagging - Add Tags Result Counts:
 	Running Count: 0
-	Success Count: 2
+	Success Count: 1
 	Failed Count: 0
 	Unknown Count: 0
-	Finished Count: 2
-	Total Count: 2
-	Finished Count must equal: 2
-++ Deployed Action 'API Deploy Custom Tagging - Add Tags' ID: 39
+	Finished Count: 1
+	Total Count: 1
+	Finished Count must equal: 1
+++ Deployed Action 'API Deploy Custom Tagging - Add Tags' ID: 1416
 ++ Command used in Action: 'cmd /c cscript //T:60 add-tags.vbs "new%5ftag"'
 ++ Deploy action progress check results:
 API Deploy Custom Tagging - Add Tags Result Counts:
 	Running Count: 0
-	Success Count: 2
+	Success Count: 1
 	Failed Count: 0
 	Unknown Count: 0
-	Finished Count: 2
-	Total Count: 2
-	Finished Count must equal: 2
-++ Deploy results written to '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' with 98 bytes
+	Finished Count: 1
+	Total Count: 1
+	Finished Count must equal: 1
+++ Deploy results written to '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' with 69 bytes
 ```
 
   * Validation Test: exitcode
@@ -874,8 +973,7 @@ API Deploy Custom Tagging - Add Tags Result Counts:
 
 ```
 Action Statuses,Computer Name
-39:Completed.,jtanium1.localdomain
-39:Completed.,WIN-A12SC6N6T7Q
+1416:Completed.,jtanium1.localdomain
 ```
 
 
@@ -883,4 +981,4 @@ Action Statuses,Computer Name
 [TOC](#user-content-toc)
 
 
-###### generated by: `build_bin_doc v1.4.5`, date: Mon Dec  8 15:35:39 2014 EST, Contact info: **Jim Olsen <jim.olsen@tanium.com>**
+###### generated by: `build_bin_doc v1.4.5`, date: Wed Feb 11 17:17:07 2015 EST, Contact info: **Jim Olsen <jim.olsen@tanium.com>**

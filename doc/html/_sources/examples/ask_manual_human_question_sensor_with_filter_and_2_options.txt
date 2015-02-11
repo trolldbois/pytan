@@ -89,21 +89,21 @@ Output from Python Code
 
 
     Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-    2014-12-08 16:25:15,477 INFO     question_progress: Results 0% (Get Operating System contains "Windows" from all machines)
-    2014-12-08 16:25:20,494 INFO     question_progress: Results 67% (Get Operating System contains "Windows" from all machines)
-    2014-12-08 16:25:25,510 INFO     question_progress: Results 100% (Get Operating System contains "Windows" from all machines)
+    2015-02-11 12:02:53,768 INFO     question_progress: Results 0% (Get Operating System contains "Windows" from all machines)
+    2015-02-11 12:02:58,784 INFO     question_progress: Results 0% (Get Operating System contains "Windows" from all machines)
+    2015-02-11 12:03:03,802 INFO     question_progress: Results 100% (Get Operating System contains "Windows" from all machines)
     
     Type of response:  <type 'dict'>
     
     Pretty print of response:
-    {'question_object': <taniumpy.object_types.question.Question object at 0x102b1fbd0>,
-     'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x1022e0bd0>}
+    {'question_object': <taniumpy.object_types.question.Question object at 0x1059d2650>,
+     'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x1059f44d0>}
     
     Equivalent Question if it were to be asked in the Tanium Console: 
     Get Operating System contains "Windows" from all machines
     
     CSV Results of response: 
-    Count,Operating System
-    4,[no results]
-    2,Windows Server 2008 R2 Standard
+    Operating System
+    [no results]
+    Windows Server 2008 R2 Standard
     

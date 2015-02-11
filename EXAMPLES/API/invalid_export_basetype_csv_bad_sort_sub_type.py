@@ -61,9 +61,9 @@ except Exception as e:
 Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
 Traceback (most recent call last):
   File "<string>", line 50, in <module>
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1402, in export_obj
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1419, in export_obj
     utils.check_dictkey(**check_args)
-  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2516, in check_dictkey
+  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2512, in check_dictkey
     raise HandlerError(err(key, valid_list_types, list_types))
 HandlerError: 'header_sort' must be a list of [<type 'str'>, <type 'unicode'>], you supplied [<type 'list'>]!
 

@@ -16,8 +16,8 @@ import json
 import argparse
 import datetime
 import re
-from argparse import ArgumentDefaultsHelpFormatter as A1
-from argparse import RawDescriptionHelpFormatter as A2
+from argparse import ArgumentDefaultsHelpFormatter as A1 # noqa
+from argparse import RawDescriptionHelpFormatter as A2 # noqa
 from collections import OrderedDict
 
 my_file = os.path.abspath(__file__)
@@ -118,7 +118,7 @@ class CustomArgParse(argparse.ArgumentParser):
     def __init__(self, *args, **kwargs):
         if 'formatter_class' not in kwargs:
             kwargs['formatter_class'] = CustomArgFormat
-        #print kwargs
+        # print kwargs
         argparse.ArgumentParser.__init__(self, *args, **kwargs)
 
     def error(self, message):
@@ -163,7 +163,7 @@ def setup_parser(desc, help=False):
     auth_group.add_argument(
         '-u',
         '--username',
-        required=True,
+        required=False,
         action='store',
         dest='username',
         default=None,
@@ -172,7 +172,7 @@ def setup_parser(desc, help=False):
     auth_group.add_argument(
         '-p',
         '--password',
-        required=True,
+        required=False,
         action='store',
         default=None,
         dest='password',
@@ -180,7 +180,7 @@ def setup_parser(desc, help=False):
     )
     auth_group.add_argument(
         '--host',
-        required=True,
+        required=False,
         action='store',
         default=None,
         dest='host',
@@ -1059,10 +1059,10 @@ def version_check(reqver):
         "{}: {} version {}, required {}").format
     if not __version__ >= reqver:
         s = "Script and API Version mismatch!"
-        raise Exception(log_tpl(s, __file__, __version__, reqver))
+        raise Exception(log_tpl(s, sys.argv[0], __version__, reqver))
 
     s = "Script and API Version match"
-    logging.debug(log_tpl(s, __file__, __version__, reqver))
+    logging.debug(log_tpl(s, sys.argv[0], __version__, reqver))
     return True
 
 
@@ -1139,7 +1139,7 @@ def seconds_from_now(secs=0, tz='utc'):
     else:
         now = datetime.datetime.now()
     from_now = now + datetime.timedelta(seconds=secs)
-    #now.strftime('%Y-%m-%dT%H:%M:%S')
+    # now.strftime('%Y-%m-%dT%H:%M:%S')
     return from_now.strftime('%Y-%m-%dT%H:%M:%S')
 
 
@@ -1465,7 +1465,7 @@ def extract_params(s):
     # ', that is .*, opt:max_data_age:3600, opt:ignore_case'
 
     params = re.findall(constants.PARAM_RE, s)
-    ## params=['dirname=Program Files,regex=\\,*']
+    # params=['dirname=Program Files,regex=\\,*']
 
     if len(params) > 1:
         err = "More than one parameter ({{}}) passed in {!r}".format
@@ -1474,13 +1474,13 @@ def extract_params(s):
         param = params[0]
     else:
         param = ''
-    ## param='dirname=Program Files,regex=\\,*'
+    # param='dirname=Program Files,regex=\\,*'
 
     if param:
         split_param = re.split(constants.PARAM_SPLIT_RE, param)
     else:
         split_param = []
-    ## split_param=['dirname=Program Files', 'regex=\\,*']
+    # split_param=['dirname=Program Files', 'regex=\\,*']
 
     parsed_params = {}
     for sp in split_param:
@@ -1489,14 +1489,14 @@ def extract_params(s):
             err = "Parameter {} missing key/value seperator ({})".format
             raise HumanParserError(err(sp, constants.PARAM_KEY_SPLIT))
         sp_key, sp_value = sp.split(constants.PARAM_KEY_SPLIT, 1)
-        ## sp_key = dirname
-        ## sp_value = Program Files
+        # sp_key = dirname
+        # sp_value = Program Files
         parsed_params[sp_key] = sp_value
 
     # remove params from the s string
     s = re.sub(constants.PARAM_RE, '', s)
-    ## s='Folder Name Search with RegEx Match, that is .*, ' \
-    ## 'opt:max_data_age:3600, opt:ignore_case'
+    # s='Folder Name Search with RegEx Match, that is .*, ' \
+    # 'opt:max_data_age:3600, opt:ignore_case'
 
     dbg = 'parsed new string to {!r} and parameters to:\n{}'.format
     humanlog.debug(dbg(s, jsonify(parsed_params)))
@@ -1522,8 +1522,8 @@ def extract_options(s):
     # parse options out of s
 
     split_option = re.split(constants.OPTION_RE, s, 0, re.IGNORECASE)
-    ## split_option = ['Folder Name Search with RegEx Match, that is .*', \
-    ## 'max_data_age:3600', 'ignore_case']
+    # split_option = ['Folder Name Search with RegEx Match, that is .*', \
+    # 'max_data_age:3600', 'ignore_case']
 
     parsed_options = {}
 
@@ -1532,11 +1532,11 @@ def extract_options(s):
 
         # get new s from index 0
         s = split_option[0].strip()
-        ## s='Folder Name Search with RegEx Match, that is .*'
+        # s='Folder Name Search with RegEx Match, that is .*'
 
         # get the option strings from index 1 and on
         parsed_options = [x.strip() for x in split_option[1:]]
-        ## parsed_options=['max_data_age:3600', 'ignore_case']
+        # parsed_options=['max_data_age:3600', 'ignore_case']
 
         parsed_options = map_options(parsed_options, ['filter'])
 
@@ -1645,7 +1645,7 @@ def extract_filter(s):
         filter attributes mapped from filter from `s` if any found
     """
     split_filter = re.split(constants.FILTER_RE, s, re.IGNORECASE)
-    ## split_filter = ['Folder Name Search with RegEx Match', ' is:.*']
+    # split_filter = ['Folder Name Search with RegEx Match', ' is:.*']
 
     parsed_filter = {}
 
@@ -1654,11 +1654,11 @@ def extract_filter(s):
 
         # get new s from index 0
         s = split_filter[0].strip()
-        ## s='Folder Name Search with RegEx Match'
+        # s='Folder Name Search with RegEx Match'
 
         # get the filter string from index 1
         parsed_filter = split_filter[1].strip()
-        ## parsed_filter='is:.*'
+        # parsed_filter='is:.*'
 
         parsed_filter = map_filter(parsed_filter)
         if not parsed_filter:
@@ -2400,10 +2400,9 @@ def get_ask_kwargs(**kwargs):
         args from kwargs that are found in :data:`pytan.constants.ASK_KWARGS`
     """
 
-    ASK_KWARGS = constants.ASK_KWARGS
     ask_kwargs = {}
     for i in kwargs:
-        if i in ASK_KWARGS:
+        if i in constants.ASK_KWARGS:
             ask_kwargs[i] = kwargs[i]
     return ask_kwargs
 
@@ -2421,10 +2420,9 @@ def get_req_kwargs(**kwargs):
     req_kwargs : dict
         args from kwargs that are found in :data:`pytan.constants.REQ_KWARGS`
     """
-    REQ_KWARGS = constants.REQ_KWARGS
     req_kwargs = {}
     for i in kwargs:
-        if i in REQ_KWARGS:
+        if i in constants.REQ_KWARGS:
             req_kwargs[i] = kwargs[i]
     return req_kwargs
 
@@ -2442,12 +2440,11 @@ def get_q_obj_map(qtype):
     obj_map : dict
         matching object map for `qtype` from :data:`pytan.constants.Q_OBJ_MAP`
     """
-    Q_OBJ_MAP = constants.Q_OBJ_MAP
     try:
-        obj_map = Q_OBJ_MAP[qtype.lower()]
+        obj_map = constants.Q_OBJ_MAP[qtype.lower()]
     except KeyError:
         err = "{} not a valid question type, must be one of {!r}".format
-        raise HandlerError(err(qtype, Q_OBJ_MAP.keys()))
+        raise HandlerError(err(qtype, constants.Q_OBJ_MAP.keys()))
     return obj_map
 
 
@@ -2464,12 +2461,11 @@ def get_obj_map(objtype):
     obj_map : dict
         matching object map for `objtype` from :data:`pytan.constants.GET_OBJ_MAP`
     """
-    GET_OBJ_MAP = constants.GET_OBJ_MAP
     try:
-        obj_map = GET_OBJ_MAP[objtype.lower()]
+        obj_map = constants.GET_OBJ_MAP[objtype.lower()]
     except KeyError:
         err = "{} not a valid object to get, must be one of {!r}".format
-        raise HandlerError(err(objtype, GET_OBJ_MAP.keys()))
+        raise HandlerError(err(objtype, constants.GET_OBJ_MAP.keys()))
     return obj_map
 
 

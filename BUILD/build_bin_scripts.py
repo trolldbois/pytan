@@ -4,14 +4,14 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 '''Build the bin/ scripts'''
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
-__version__ = '1.0.0'
+__version__ = '1.0.3'
 
 import os
 import sys
 import glob
 
 sys.dont_write_bytecode = True
-my_file = os.path.abspath(__file__)
+my_file = os.path.abspath(sys.argv[0])
 my_dir = os.path.dirname(my_file)
 parent_dir = os.path.dirname(my_dir)
 lib_dir = os.path.join(parent_dir, 'lib')

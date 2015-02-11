@@ -40,7 +40,7 @@
       <use_error_objects>{use_error_objects}</use_error_objects>
       <use_json>{use_json}</use_json>
       <json_pretty_print>{json_pretty_print}</json_pretty_print>
-      <cache_filters/>
+      {cache_filters}
     </options>
   </typens:tanium_soap_request>
 </SOAP-ENV:Body>

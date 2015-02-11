@@ -9,12 +9,19 @@ import string
 import xml.etree.ElementTree as ET
 import logging
 import json
+# needed for python 2.7.9 to revert SSL verification
+import ssl
 from datetime import datetime
 
 from base64 import b64encode
 from .object_types.base import BaseType
 from .object_types.result_info import ResultInfo
 from .object_types.result_set import ResultSet
+
+# fix for UTF encoding
+import sys
+reload(sys)
+sys.setdefaultencoding('latin-1')
 
 my_file = os.path.abspath(__file__)
 my_dir = os.path.dirname(my_file)
@@ -23,7 +30,32 @@ authlog = logging.getLogger("api.session.auth")
 httplog = logging.getLogger("api.session.http")
 bodyhttplog = logging.getLogger("api.session.http.body")
 
+# to support py2exe compiled scripts
+my_dir = my_dir.replace('\\library.zip\\taniumpy', '')
 request_body_template_file = os.path.join(my_dir, 'request_body_template.xml')
+
+
+class NoLogging(object):
+
+    count = 0
+
+    """Disable logging while executing code block"""
+    def __enter__(self):
+        NoLogging.count += 1
+        logging.disable(logging.CRITICAL)
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        NoLogging.count -= 1
+        if NoLogging.count == 0:
+            logging.disable(logging.NOTSET)
+
+
+def nologging(func):
+    """decorator to disable logging on a function"""
+    def func_wrapper(*args, **kwargs):
+        with NoLogging():
+            return func(*args, **kwargs)
+    return func_wrapper
 
 
 class HttpError(Exception):
@@ -45,7 +77,13 @@ def load_file(filename):
 
 
 def http_post(host, port, url, body=None, headers=None, timeout=5):
-    http = httplib.HTTPSConnection(host, port, timeout=timeout)
+    # revert SSL verification for python 2.7.9
+    try:
+        http = httplib.HTTPSConnection(
+            host, port, timeout=timeout, context=ssl._create_unverified_context()
+        )
+    except:
+        http = httplib.HTTPSConnection(host, port, timeout=timeout)
 
     req_args = {}
     req_args['method'] = 'POST'
@@ -68,6 +106,9 @@ def http_post(host, port, url, body=None, headers=None, timeout=5):
     finally:
         http.close()
 
+    # fix for UTF encoding
+    response_body = response_body.encode('utf-8', 'xmlcharrefreplace')
+    httplog.debug(type(response_body))
     httplog.debug((
         "HTTP response from {0!r} len:{1}, status:{2.status} {2.reason}"
     ).format(full_url, len(response_body), response))
@@ -123,28 +164,32 @@ class Session(object):
         )
         return ret
 
-    def authenticate(self, username=None, password=None):
+    def authenticate(self, username=None, password=None, get_version=True):
         if not hasattr(self, '_auth_headers'):
             if username is None:
                 raise AuthorizationError("Must supply username")
             if password is None:
-                raise AuthorizationError("Must supply username")
+                raise AuthorizationError("Must supply password")
 
             self._auth_headers = {
                 'username': b64encode(username),
                 'password': b64encode(password),
             }
 
-        try:
-            body = self._http_post(
-                url=self.AUTH_RES, headers=self._auth_headers,
-            )
-        except Exception as e:
-            raise AuthorizationError(e)
+        with NoLogging():
+            try:
+                body = self._http_post(
+                    url=self.AUTH_RES, headers=self._auth_headers,
+                )
+            except Exception as e:
+                raise AuthorizationError(e)
 
         self.session_id = body
         authlog.debug("Successfully authenticated")
-        self.server_info = self.get_server_info()
+        if get_version:
+            self.server_info = self.get_server_info()
+        else:
+            self.server_info = {}
 
     def find(self, object_type, **kwargs):
         self.request_body = self._createGetObjectBody(object_type, **kwargs)
@@ -176,7 +221,9 @@ class Session(object):
         # parse the single result_info into an Element and create a ResultInfo
         el = ET.fromstring(self.response_body)
         cdata = el.find('.//ResultXML')
-        result_info = ET.fromstring(cdata.text)
+        # fix for utf-8 issues
+        cdata_text = cdata.text.encode('utf-8', 'xmlcharrefreplace')
+        result_info = ET.fromstring(cdata_text)
         # TODO: maybe this should be ResultInfoList
         obj = ResultInfo.fromSOAPElement(result_info)
         return obj
@@ -187,7 +234,9 @@ class Session(object):
         # parse the single result_info into an Element and create a ResultData
         el = ET.fromstring(self.response_body)
         cdata = el.find('.//ResultXML')
-        result_info = ET.fromstring(cdata.text)
+        # fix for utf-8 issues
+        cdata_text = cdata.text.encode('utf-8', 'xmlcharrefreplace')
+        result_info = ET.fromstring(cdata_text)
         # TODO: maybe this should be ResultSetList
         obj = ResultSet.fromSOAPElement(result_info)
         return obj
@@ -197,19 +246,20 @@ class Session(object):
         # we can't use _http_post, because INFO_RES is only available on
         # SOAP_PORT
         try:
-            body = http_post(
-                host=self.server,
-                port=self.SOAP_PORT,
-                url=self.INFO_RES,
-                headers=self._auth_headers,
-            )
+            with NoLogging():
+                body = http_post(
+                    host=self.server,
+                    port=self.SOAP_PORT,
+                    url=self.INFO_RES,
+                    headers=self._auth_headers,
+                )
             body = json.loads(body)
             mylog.debug((
                 "Successfully retrieved server info from {}"
             ).format(self.INFO_RES))
         except Exception as e:
             mylog.warn((
-                "Failed to retriev server info from {}, {}"
+                "Failed to retrieve server info from {}, {}"
             ).format(self.INFO_RES, e))
             body = {'server_info_error': e}
         return body
@@ -378,7 +428,9 @@ class Session(object):
         '''to fix elementtree from thowing:
         UnicodeEncodeError: 'ascii' codec can't encode character
         u'\xa0' in position 5705: ordinal not in range(128)
-        '''
+
+        ## we no longer need to do this, the utf-8 fix in http_post should handle this
         response_body = response_body.decode('utf-8')
         response_body = response_body.replace(u"\xa0", u" ")
+        '''
         return response_body

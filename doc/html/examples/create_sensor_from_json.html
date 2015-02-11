@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>7.1.8.5. Create sensor from json &mdash; PyTan 1.0.1 documentation</title>
+  <title>7.1.8.5. Create sensor from json &mdash; PyTan 1.0.3 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="PyTan 1.0.1 documentation" href="../index.html"/>
+    <link rel="top" title="PyTan 1.0.3 documentation" href="../index.html"/>
         <link rel="up" title="7.1.8. pytan API Valid Create Object From JSON Examples" href="valid_create_objects_from_json.html"/>
         <link rel="next" title="7.1.8.6. Create question from json" href="create_question_from_json.html"/>
         <link rel="prev" title="7.1.8.4. Create action from json" href="create_action_from_json.html"/> 
@@ -379,9 +379,9 @@
 68
 69
 70</pre></div></td><td class="code"><div class="highlight"><pre>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-2014-12-08 16:28:45,059 INFO     handler: Deleted &#39;Sensor, id: 827&#39;
-2014-12-08 16:28:45,060 INFO     handler: Report file &#39;/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/SensorList_2014_12_08-16_28_45-EST.json&#39; written with 15857 bytes
-2014-12-08 16:28:45,102 INFO     handler: New Sensor, name: &#39;Folder Name Search with RegEx Match API TEST&#39; (ID: 830) created successfully!
+2015-02-11 12:06:40,777 INFO     handler: Deleted &#39;Sensor, id: 831&#39;
+2015-02-11 12:06:40,778 INFO     handler: Report file &#39;/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/SensorList_2015_02_11-12_06_40-EST.json&#39; written with 15857 bytes
+2015-02-11 12:06:40,815 INFO     handler: New Sensor, name: &#39;Folder Name Search with RegEx Match API TEST&#39; (ID: 833) created successfully!
 
 Type of response:  &lt;class &#39;taniumpy.object_types.sensor_list.SensorList&#39;&gt;
 
@@ -395,13 +395,13 @@ print the object returned in JSON format:
     {
       &quot;_type&quot;: &quot;sensor&quot;,
       &quot;category&quot;: &quot;File System&quot;,
-      &quot;creation_time&quot;: &quot;2014-12-08T21:28:45&quot;,
+      &quot;creation_time&quot;: &quot;2015-02-11T17:06:40&quot;,
       &quot;delimiter&quot;: &quot;,&quot;,
       &quot;description&quot;: &quot;Finds the specified folder and provides the full path if the folder exists on the client machine. Takes regular expression to match.\nExample: C:\\WINDOWS\\System32&quot;,
       &quot;exclude_from_parse_flag&quot;: 1,
       &quot;hash&quot;: 839342978,
       &quot;hidden_flag&quot;: 0,
-      &quot;id&quot;: 830,
+      &quot;id&quot;: 833,
       &quot;ignore_case_flag&quot;: 1,
       &quot;last_modified_by&quot;: &quot;Tanium User&quot;,
       &quot;max_age_seconds&quot;: 600,
@@ -416,9 +416,9 @@ print the object returned in JSON format:
           }
         ]
       },
-      &quot;modification_time&quot;: &quot;2014-12-08T21:28:45&quot;,
+      &quot;modification_time&quot;: &quot;2015-02-11T17:06:40&quot;,
       &quot;name&quot;: &quot;Folder Name Search with RegEx Match API TEST&quot;,
-      &quot;parameter_definition&quot;: &quot;{\&quot;parameters\&quot;:[{\&quot;restrict\&quot;:null,\&quot;validationExpressions\&quot;:[{\&quot;helpString\&quot;:\&quot;Value must be at least 3 characters\&quot;,\&quot;flags\&quot;:\&quot;\&quot;,\&quot;expression\&quot;:\&quot;\\\\S{3}\&quot;,\&quot;parameterType\&quot;:\&quot;com.tanium.models::ValidationExpression\&quot;,\&quot;model\&quot;:\&quot;com.tanium.models::ValidationExpression\&quot;}],\&quot;helpString\&quot;:\&quot;Enter the folder name to search for\&quot;,\&quot;promptText\&quot;:\&quot;e.g Program Files\&quot;,\&quot;defaultValue\&quot;:\&quot;\&quot;,\&quot;value\&quot;:\&quot;\&quot;,\&quot;label\&quot;:\&quot;Search for Folder Name\&quot;,\&quot;maxChars\&quot;:0,\&quot;key\&quot;:\&quot;dirname\&quot;,\&quot;parameterType\&quot;:\&quot;com.tanium.components.parameters::TextInputParameter\&quot;,\&quot;model\&quot;:\&quot;com.tanium.components.parameters::TextInputParameter\&quot;},{\&quot;restrict\&quot;:null,\&quot;validationExpressions\&quot;:[{\&quot;helpString\&quot;:\&quot;Value must be at least 3 characters\&quot;,\&quot;flags\&quot;:\&quot;\&quot;,\&quot;expression\&quot;:\&quot;\\\\S{3}\&quot;,\&quot;parameterType\&quot;:\&quot;com.tanium.models::ValidationExpression\&quot;,\&quot;model\&quot;:\&quot;com.tanium.models::ValidationExpression\&quot;}],\&quot;helpString\&quot;:\&quot;Enter the regular expression to search for.\&quot;,\&quot;promptText\&quot;:\&quot;e.g. test*.exe\&quot;,\&quot;defaultValue\&quot;:\&quot;\&quot;,\&quot;value\&quot;:\&quot;\&quot;,\&quot;label\&quot;:\&quot;Regular Expression\&quot;,\&quot;maxChars\&quot;:0,\&quot;key\&quot;:\&quot;regexp\&quot;,\&quot;parameterType\&quot;:\&quot;com.tanium.components.parameters::TextInputParameter\&quot;,\&quot;model\&quot;:\&quot;com.tanium.components.parameters::TextInputParameter\&quot;},{\&quot;values\&quot;:[\&quot;No\&quot;,\&quot;Yes\&quot;],\&quot;helpString\&quot;:\&quot;Enter Yes/No for case sensitivity of search.\&quot;,\&quot;requireSelection\&quot;:true,\&quot;promptText\&quot;:\&quot;\&quot;,\&quot;defaultValue\&quot;:\&quot;\&quot;,\&quot;value\&quot;:\&quot;\&quot;,\&quot;label\&quot;:\&quot;Case sensitive?\&quot;,\&quot;key\&quot;:\&quot;casesensitive\&quot;,\&quot;parameterType\&quot;:\&quot;com.tanium.components.parameters::DropDownParameter\&quot;,\&quot;model\&quot;:\&quot;com.tanium.components.parameters::DropDownParameter\&quot;},{\&quot;values\&quot;:[\&quot;No\&quot;,\&quot;Yes\&quot;],\&quot;helpString\&quot;:\&quot;Enter Yes/No whether the search is global.\&quot;,\&quot;requireSelection\&quot;:true,\&quot;promptText\&quot;:\&quot;\&quot;,\&quot;defaultValue\&quot;:\&quot;\&quot;,\&quot;value\&quot;:\&quot;\&quot;,\&quot;label\&quot;:\&quot;Global\&quot;,\&quot;key\&quot;:\&quot;global\&quot;,\&quot;parameterType\&quot;:\&quot;com.tanium.components.parameters::DropDownParameter\&quot;,\&quot;model\&quot;:\&quot;com.tanium.components.parameters::DropDownParameter\&quot;}],\&quot;parameterType\&quot;:\&quot;com.tanium.components.parameters::ParametersArray\&quot;,\&quot;model\&quot;:\&quot;com.tanium.components.parameters::ParametersArray\&quot;}&quot;,
+      &quot;parameter_definition&quot;: &quot;{\&quot;parameters\&quot;:[{\&quot;restrict\&quot;:null,\&quot;validationExpressions\&quot;:[{\&quot;flags\&quot;:\&quot;\&quot;,\&quot;expression\&quot;:\&quot;\\\\S{3}\&quot;,\&quot;helpString\&quot;:\&quot;Value must be at least 3 characters\&quot;,\&quot;model\&quot;:\&quot;com.tanium.models::ValidationExpression\&quot;,\&quot;parameterType\&quot;:\&quot;com.tanium.models::ValidationExpression\&quot;}],\&quot;helpString\&quot;:\&quot;Enter the folder name to search for\&quot;,\&quot;value\&quot;:\&quot;\&quot;,\&quot;promptText\&quot;:\&quot;e.g Program Files\&quot;,\&quot;defaultValue\&quot;:\&quot;\&quot;,\&quot;label\&quot;:\&quot;Search for Folder Name\&quot;,\&quot;maxChars\&quot;:0,\&quot;key\&quot;:\&quot;dirname\&quot;,\&quot;model\&quot;:\&quot;com.tanium.components.parameters::TextInputParameter\&quot;,\&quot;parameterType\&quot;:\&quot;com.tanium.components.parameters::TextInputParameter\&quot;},{\&quot;restrict\&quot;:null,\&quot;validationExpressions\&quot;:[{\&quot;flags\&quot;:\&quot;\&quot;,\&quot;expression\&quot;:\&quot;\\\\S{3}\&quot;,\&quot;helpString\&quot;:\&quot;Value must be at least 3 characters\&quot;,\&quot;model\&quot;:\&quot;com.tanium.models::ValidationExpression\&quot;,\&quot;parameterType\&quot;:\&quot;com.tanium.models::ValidationExpression\&quot;}],\&quot;helpString\&quot;:\&quot;Enter the regular expression to search for.\&quot;,\&quot;value\&quot;:\&quot;\&quot;,\&quot;promptText\&quot;:\&quot;e.g. test*.exe\&quot;,\&quot;defaultValue\&quot;:\&quot;\&quot;,\&quot;label\&quot;:\&quot;Regular Expression\&quot;,\&quot;maxChars\&quot;:0,\&quot;key\&quot;:\&quot;regexp\&quot;,\&quot;model\&quot;:\&quot;com.tanium.components.parameters::TextInputParameter\&quot;,\&quot;parameterType\&quot;:\&quot;com.tanium.components.parameters::TextInputParameter\&quot;},{\&quot;helpString\&quot;:\&quot;Enter Yes/No for case sensitivity of search.\&quot;,\&quot;value\&quot;:\&quot;\&quot;,\&quot;promptText\&quot;:\&quot;\&quot;,\&quot;defaultValue\&quot;:\&quot;\&quot;,\&quot;requireSelection\&quot;:true,\&quot;label\&quot;:\&quot;Case sensitive?\&quot;,\&quot;key\&quot;:\&quot;casesensitive\&quot;,\&quot;values\&quot;:[\&quot;No\&quot;,\&quot;Yes\&quot;],\&quot;model\&quot;:\&quot;com.tanium.components.parameters::DropDownParameter\&quot;,\&quot;parameterType\&quot;:\&quot;com.tanium.components.parameters::DropDownParameter\&quot;},{\&quot;helpString\&quot;:\&quot;Enter Yes/No whether the search is global.\&quot;,\&quot;value\&quot;:\&quot;\&quot;,\&quot;promptText\&quot;:\&quot;\&quot;,\&quot;defaultValue\&quot;:\&quot;\&quot;,\&quot;requireSelection\&quot;:true,\&quot;label\&quot;:\&quot;Global\&quot;,\&quot;key\&quot;:\&quot;global\&quot;,\&quot;values\&quot;:[\&quot;No\&quot;,\&quot;Yes\&quot;],\&quot;model\&quot;:\&quot;com.tanium.components.parameters::DropDownParameter\&quot;,\&quot;parameterType\&quot;:\&quot;com.tanium.components.parameters::DropDownParameter\&quot;}],\&quot;model\&quot;:\&quot;com.tanium.components.parameters::ParametersArray\&quot;,\&quot;parameterType\&quot;:\&quot;com.tanium.components.parameters::ParametersArray\&quot;}&quot;,
       &quot;queries&quot;: {
         &quot;_type&quot;: &quot;queries&quot;,
         &quot;query&quot;: [
@@ -472,7 +472,7 @@ print the object returned in JSON format:
   <div role="contentinfo">
     <p>
         &copy; Copyright 2014, Tanium.
-      Last updated on Dec 08, 2014.
+      Last updated on Feb 11, 2015.
     </p>
   </div>
 
@@ -493,7 +493,7 @@ print the object returned in JSON format:
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.0.1',
+            VERSION:'1.0.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

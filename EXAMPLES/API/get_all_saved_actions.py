@@ -66,10 +66,10 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
 Type of response:  <class 'taniumpy.object_types.saved_action_list.SavedActionList'>
 
 print of response:
-SavedActionList, len: 38
+SavedActionList, len: 42
 
 length of response (number of objects returned): 
-38
+42
 
 print the first object returned in JSON format:
 {
@@ -77,16 +77,16 @@ print the first object returned in JSON format:
   "action_group_id": 0, 
   "cache_row_id": 0, 
   "comment": "Scans for unmanaged assets on the network.", 
-  "creation_time": "2014-12-08T19:22:33", 
+  "creation_time": "2015-01-05T20:23:38", 
   "distribute_seconds": 600, 
   "end_time": "Never", 
   "expire_seconds": 1800, 
   "id": 1, 
-  "issue_count": 3, 
+  "issue_count": 192, 
   "issue_seconds": 3600, 
   "last_action": {
     "_type": "action", 
-    "id": 45, 
+    "id": 1366, 
 ..trimmed for brevity..
 
 '''

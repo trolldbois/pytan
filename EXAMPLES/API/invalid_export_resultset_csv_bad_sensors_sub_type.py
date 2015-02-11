@@ -59,15 +59,14 @@ except Exception as e:
 
 '''Output from running this:
 Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-2014-12-08 16:44:03,549 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-2014-12-08 16:44:08,565 INFO     question_progress: Results 50% (Get Computer Name from all machines)
-2014-12-08 16:44:13,582 INFO     question_progress: Results 83% (Get Computer Name from all machines)
-2014-12-08 16:44:18,605 INFO     question_progress: Results 100% (Get Computer Name from all machines)
+2015-02-11 12:19:07,602 INFO     question_progress: Results 0% (Get Computer Name from all machines)
+2015-02-11 12:19:12,614 INFO     question_progress: Results 0% (Get Computer Name from all machines)
+2015-02-11 12:19:17,627 INFO     question_progress: Results 100% (Get Computer Name from all machines)
 Traceback (most recent call last):
   File "<string>", line 50, in <module>
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1402, in export_obj
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1419, in export_obj
     utils.check_dictkey(**check_args)
-  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2516, in check_dictkey
+  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2512, in check_dictkey
     raise HandlerError(err(key, valid_list_types, list_types))
 HandlerError: 'sensors' must be a list of [<class 'taniumpy.object_types.sensor.Sensor'>], you supplied [<type 'list'>]!
 

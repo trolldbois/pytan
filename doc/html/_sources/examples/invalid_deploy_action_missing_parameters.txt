@@ -64,15 +64,15 @@ Output from Python Code
 
 
     Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-    2014-12-08 16:28:29,332 INFO     question_progress: Results 0% (Get Online = "True" from all machines)
-    2014-12-08 16:28:34,353 INFO     question_progress: Results 50% (Get Online = "True" from all machines)
-    2014-12-08 16:28:39,370 INFO     question_progress: Results 83% (Get Online = "True" from all machines)
-    2014-12-08 16:28:44,391 INFO     question_progress: Results 100% (Get Online = "True" from all machines)
+    2015-02-11 12:06:25,143 INFO     question_progress: Results 0% (Get Online = "True" from all machines)
+    2015-02-11 12:06:30,161 INFO     question_progress: Results 0% (Get Online = "True" from all machines)
+    2015-02-11 12:06:35,180 INFO     question_progress: Results 50% (Get Online = "True" from all machines)
+    2015-02-11 12:06:40,198 INFO     question_progress: Results 100% (Get Online = "True" from all machines)
     Traceback (most recent call last):
       File "<string>", line 40, in <module>
-      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1172, in deploy_action_human
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1176, in deploy_action_human
         **kwargs
-      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1026, in deploy_action
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1030, in deploy_action
         empty_ok=False,
       File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2147, in build_param_objlist
         raise HandlerError(err(obj_name, p_key, jsonify(obj_param)))

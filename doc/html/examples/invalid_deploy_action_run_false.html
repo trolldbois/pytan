@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>7.1.5.1. Invalid deploy action run false &mdash; PyTan 1.0.1 documentation</title>
+  <title>7.1.5.1. Invalid deploy action run false &mdash; PyTan 1.0.3 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="PyTan 1.0.1 documentation" href="../index.html"/>
+    <link rel="top" title="PyTan 1.0.3 documentation" href="../index.html"/>
         <link rel="up" title="7.1.5. pytan API Invalid Deploy Action Examples" href="invalid_deploy_actions.html"/>
         <link rel="next" title="7.1.5.2. Invalid deploy action package help" href="invalid_deploy_action_package_help.html"/>
         <link rel="prev" title="7.1.5. pytan API Invalid Deploy Action Examples" href="invalid_deploy_actions.html"/> 
@@ -237,20 +237,18 @@
 10
 11
 12
-13
-14</pre></div></td><td class="code"><div class="highlight"><pre>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-2014-12-08 16:28:19,131 INFO     question_progress: Results 0% (Get Computer Name and Online = &quot;True&quot; from all machines)
-2014-12-08 16:28:24,148 INFO     question_progress: Results 67% (Get Computer Name and Online = &quot;True&quot; from all machines)
-2014-12-08 16:28:29,164 INFO     question_progress: Results 100% (Get Computer Name and Online = &quot;True&quot; from all machines)
-2014-12-08 16:28:29,185 INFO     handler: Report file &#39;/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/VERIFY_BEFORE_DEPLOY_ACTION_ResultSet_2014_12_08-16_28_29-EST.csv&#39; written with 159 bytes
+13</pre></div></td><td class="code"><div class="highlight"><pre>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+2015-02-11 12:06:19,976 INFO     question_progress: Results 0% (Get Computer Name and Online = &quot;True&quot; from all machines)
+2015-02-11 12:06:24,991 INFO     question_progress: Results 100% (Get Computer Name and Online = &quot;True&quot; from all machines)
+2015-02-11 12:06:25,005 INFO     handler: Report file &#39;/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/VERIFY_BEFORE_DEPLOY_ACTION_ResultSet_2015_02_11-12_06_25-EST.csv&#39; written with 73 bytes
 Traceback (most recent call last):
   File &quot;&lt;string&gt;&quot;, line 39, in &lt;module&gt;
-  File &quot;/Users/jolsen/gh/pytan/lib/pytan/handler.py&quot;, line 1172, in deploy_action_human
+  File &quot;/Users/jolsen/gh/pytan/lib/pytan/handler.py&quot;, line 1176, in deploy_action_human
     **kwargs
-  File &quot;/Users/jolsen/gh/pytan/lib/pytan/handler.py&quot;, line 1003, in deploy_action
+  File &quot;/Users/jolsen/gh/pytan/lib/pytan/handler.py&quot;, line 1017, in deploy_action
     raise RunFalse(m(report_path, len(result)))
 RunFalse: &#39;Run&#39; is not True!!
-View and verify the contents of /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/VERIFY_BEFORE_DEPLOY_ACTION_ResultSet_2014_12_08-16_28_29-EST.csv (length: 159 bytes)
+View and verify the contents of /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/VERIFY_BEFORE_DEPLOY_ACTION_ResultSet_2015_02_11-12_06_25-EST.csv (length: 73 bytes)
 Re-run this deploy action with run=True after verifying
 </pre></div>
 </td></tr></table></div>
@@ -276,7 +274,7 @@ Re-run this deploy action with run=True after verifying
   <div role="contentinfo">
     <p>
         &copy; Copyright 2014, Tanium.
-      Last updated on Dec 08, 2014.
+      Last updated on Feb 11, 2015.
     </p>
   </div>
 
@@ -297,7 +295,7 @@ Re-run this deploy action with run=True after verifying
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.0.1',
+            VERSION:'1.0.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

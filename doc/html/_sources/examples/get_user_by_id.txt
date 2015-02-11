@@ -93,7 +93,7 @@ Output from Python Code
       "deleted_flag": 0, 
       "group_id": 0, 
       "id": 1, 
-      "last_login": "2014-12-08T19:28:09", 
+      "last_login": "2015-02-08T10:01:26", 
       "name": "Jim Olsen", 
       "permissions": {
         "_type": "permissions", 

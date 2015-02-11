@@ -18,7 +18,7 @@ import unittest
 import copy
 import json  # noqa
 
-my_file = os.path.abspath(__file__)
+my_file = os.path.abspath(sys.argv[0])
 my_dir = os.path.dirname(my_file)
 root_dir = os.path.join(my_dir, os.pardir)
 root_dir = os.path.abspath(root_dir)
@@ -48,9 +48,6 @@ CATCHBREAK = True
 
 # where the output files from the tests will be stored
 TEST_OUT = os.path.join(my_dir, 'TEST_OUT')
-
-if not os.path.isdir(TEST_OUT):
-    os.mkdir(TEST_OUT)
 
 
 def spew(m):
@@ -478,6 +475,10 @@ class ValidServerTests(unittest.TestCase):
 
 
 if __name__ == "__main__":
+
+    if not os.path.isdir(TEST_OUT):
+        os.mkdir(TEST_OUT)
+
     test_files = glob.glob(TEST_OUT + '/*.*')
     if test_files:
         spew("Cleaning up %s old test files" % len(test_files))

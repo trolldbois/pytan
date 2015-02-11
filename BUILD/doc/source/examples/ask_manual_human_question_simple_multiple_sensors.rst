@@ -85,15 +85,16 @@ Output from Python Code
 
 
     Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-    2014-12-08 16:20:02,573 INFO     question_progress: Results 0% (Get Computer Name and Installed Applications from all machines)
-    2014-12-08 16:20:07,596 INFO     question_progress: Results 67% (Get Computer Name and Installed Applications from all machines)
-    2014-12-08 16:20:12,620 INFO     question_progress: Results 100% (Get Computer Name and Installed Applications from all machines)
+    2015-02-11 11:59:11,806 INFO     question_progress: Results 0% (Get Computer Name and Installed Applications from all machines)
+    2015-02-11 11:59:16,825 INFO     question_progress: Results 0% (Get Computer Name and Installed Applications from all machines)
+    2015-02-11 11:59:21,844 INFO     question_progress: Results 0% (Get Computer Name and Installed Applications from all machines)
+    2015-02-11 11:59:26,863 INFO     question_progress: Results 100% (Get Computer Name and Installed Applications from all machines)
     
     Type of response:  <type 'dict'>
     
     Pretty print of response:
-    {'question_object': <taniumpy.object_types.question.Question object at 0x1029f7390>,
-     'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x1028dfa10>}
+    {'question_object': <taniumpy.object_types.question.Question object at 0x1059d78d0>,
+     'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x105a1f250>}
     
     Equivalent Question if it were to be asked in the Tanium Console: 
     Get Computer Name and Installed Applications from all machines
@@ -101,17 +102,17 @@ Output from Python Code
     CSV Results of response: 
     Computer Name,Name,Silent Uninstall String,Uninstallable,Version
     Casus-Belli.local,"Google Search
-    MakePDF
+    Microsoft Chart Converter
+    Spotify
     Wish
+    BluetoothUIServer
     Time Machine
     AppleGraphicsWarning
     soagent
-    SpeechService
     AinuIM
+    ARDAgent
+    Microsoft Clip Gallery
     Pass Viewer
     PressAndHold
     PluginIM
-    UserNotificationCenter
-    FaceTime
-    ScreenSaverEngine
     ..trimmed for brevity..

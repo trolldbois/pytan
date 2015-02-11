@@ -39,5 +39,6 @@ PyTan Command Line Scripts
   * **[create_user_from_json](create_user_from_json.html)**: Create a user object from a json file
   * **[get_userrole](get_userrole.html)**: Get userrole and save as report format
   * **[ask_saved_question](ask_saved_question.html)**: Ask a saved question and save the results as a report format
+  * **[Tanium_Sensor_Analysis_Tool](Tanium_Sensor_Analysis_Tool.html)**: Asks a question for every sensor and saves the results as a report format
   * **[get_group](get_group.html)**: Get group and save as report format
 

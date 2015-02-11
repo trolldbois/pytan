@@ -80,18 +80,20 @@ print out
 
 '''Output from running this:
 Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-2014-12-08 16:25:35,790 INFO     question_progress: Results 0% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines where Operating System contains "Windows" or any Operating System does not contain "Windows")
-2014-12-08 16:25:40,818 INFO     question_progress: Results 0% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines where Operating System contains "Windows" or any Operating System does not contain "Windows")
-2014-12-08 16:25:45,841 INFO     question_progress: Results 17% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines where Operating System contains "Windows" or any Operating System does not contain "Windows")
-2014-12-08 16:25:50,868 INFO     question_progress: Results 50% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines where Operating System contains "Windows" or any Operating System does not contain "Windows")
-2014-12-08 16:25:55,894 INFO     question_progress: Results 67% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines where Operating System contains "Windows" or any Operating System does not contain "Windows")
-2014-12-08 16:26:00,919 INFO     question_progress: Results 100% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines where Operating System contains "Windows" or any Operating System does not contain "Windows")
+2015-02-11 12:03:14,053 INFO     question_progress: Results 0% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines where Operating System contains "Windows" or any Operating System does not contain "Windows")
+2015-02-11 12:03:19,071 INFO     question_progress: Results 0% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines where Operating System contains "Windows" or any Operating System does not contain "Windows")
+2015-02-11 12:03:24,092 INFO     question_progress: Results 0% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines where Operating System contains "Windows" or any Operating System does not contain "Windows")
+2015-02-11 12:03:29,114 INFO     question_progress: Results 0% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines where Operating System contains "Windows" or any Operating System does not contain "Windows")
+2015-02-11 12:03:34,140 INFO     question_progress: Results 0% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines where Operating System contains "Windows" or any Operating System does not contain "Windows")
+2015-02-11 12:03:39,161 INFO     question_progress: Results 0% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines where Operating System contains "Windows" or any Operating System does not contain "Windows")
+2015-02-11 12:03:44,183 INFO     question_progress: Results 50% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines where Operating System contains "Windows" or any Operating System does not contain "Windows")
+2015-02-11 12:03:49,209 INFO     question_progress: Results 100% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines where Operating System contains "Windows" or any Operating System does not contain "Windows")
 
 Type of response:  <type 'dict'>
 
 Pretty print of response:
-{'question_object': <taniumpy.object_types.question.Question object at 0x102967a10>,
- 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x1022e0490>}
+{'question_object': <taniumpy.object_types.question.Question object at 0x105c41650>,
+ 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x1059fb1d0>}
 
 Equivalent Question if it were to be asked in the Tanium Console: 
 Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines where Operating System contains "Windows" or any Operating System does not contain "Windows"
@@ -99,9 +101,6 @@ Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No,
 CSV Results of response: 
 Computer Name,"Folder Name Search with RegEx Match[No, Program Files, No, ]"
 Casus-Belli.local,[no results]
-ubuntu.(none),[no results]
-localhost.(none),[no results]
-Jims-Mac.local,[no results]
 jtanium1.localdomain,"C:\Program Files\Common Files\Microsoft Shared\VS7Debug
 C:\Program Files\Common Files\Microsoft Shared\ink\ar-SA
 C:\Program Files\Common Files\Microsoft Shared\ink\ru-RU
@@ -112,6 +111,9 @@ C:\Program Files\Common Files\Microsoft Shared\ink\uk-UA
 C:\Program Files\Common Files\Microsoft Shared\ink\sl-SI
 C:\Program Files\Common Files\Microsoft Shared\ink\hu-HU
 C:\Program Files\Common Files\Microsoft Shared\ink\zh-TW
+C:\Program Files\Common Files\Microsoft Shared\ink\zh-CN
+C:\Program Files\Common Files\Microsoft Shared\ink\fi-FI
+C:\Program Files\Common Files\Microsoft Shared
 ..trimmed for brevity..
 
 '''
