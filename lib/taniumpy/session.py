@@ -18,6 +18,11 @@ from .object_types.base import BaseType
 from .object_types.result_info import ResultInfo
 from .object_types.result_set import ResultSet
 
+# fix for UTF encoding
+import sys
+reload(sys)
+sys.setdefaultencoding('latin-1')
+
 my_file = os.path.abspath(__file__)
 my_dir = os.path.dirname(my_file)
 mylog = logging.getLogger("api.session")
@@ -101,6 +106,9 @@ def http_post(host, port, url, body=None, headers=None, timeout=5):
     finally:
         http.close()
 
+    # fix for UTF encoding
+    response_body = response_body.encode('utf-8', 'xmlcharrefreplace')
+    httplog.debug(type(response_body))
     httplog.debug((
         "HTTP response from {0!r} len:{1}, status:{2.status} {2.reason}"
     ).format(full_url, len(response_body), response))
@@ -213,7 +221,9 @@ class Session(object):
         # parse the single result_info into an Element and create a ResultInfo
         el = ET.fromstring(self.response_body)
         cdata = el.find('.//ResultXML')
-        result_info = ET.fromstring(cdata.text)
+        # fix for utf-8 issues
+        cdata_text = cdata.text.encode('utf-8', 'xmlcharrefreplace')
+        result_info = ET.fromstring(cdata_text)
         # TODO: maybe this should be ResultInfoList
         obj = ResultInfo.fromSOAPElement(result_info)
         return obj
@@ -224,7 +234,9 @@ class Session(object):
         # parse the single result_info into an Element and create a ResultData
         el = ET.fromstring(self.response_body)
         cdata = el.find('.//ResultXML')
-        result_info = ET.fromstring(cdata.text)
+        # fix for utf-8 issues
+        cdata_text = cdata.text.encode('utf-8', 'xmlcharrefreplace')
+        result_info = ET.fromstring(cdata_text)
         # TODO: maybe this should be ResultSetList
         obj = ResultSet.fromSOAPElement(result_info)
         return obj
@@ -416,7 +428,9 @@ class Session(object):
         '''to fix elementtree from thowing:
         UnicodeEncodeError: 'ascii' codec can't encode character
         u'\xa0' in position 5705: ordinal not in range(128)
-        '''
+
+        ## we no longer need to do this, the utf-8 fix in http_post should handle this
         response_body = response_body.decode('utf-8')
         response_body = response_body.replace(u"\xa0", u" ")
+        '''
         return response_body
