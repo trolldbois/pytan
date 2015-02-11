@@ -49,9 +49,6 @@ CATCHBREAK = True
 # where the output files from the tests will be stored
 TEST_OUT = os.path.join(my_dir, 'TEST_OUT')
 
-if not os.path.isdir(TEST_OUT):
-    os.mkdir(TEST_OUT)
-
 
 def spew(m):
     if TESTVERBOSITY == 2:
@@ -478,6 +475,10 @@ class ValidServerTests(unittest.TestCase):
 
 
 if __name__ == "__main__":
+
+    if not os.path.isdir(TEST_OUT):
+        os.mkdir(TEST_OUT)
+
     test_files = glob.glob(TEST_OUT + '/*.*')
     if test_files:
         spew("Cleaning up %s old test files" % len(test_files))
