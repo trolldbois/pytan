@@ -1526,7 +1526,7 @@ class Handler(object):
         # get the results of exporting the object
         result = self.export_obj(obj, export_format, **kwargs)
 
-        with open(report_path, 'w') as fd:
+        with open(report_path, 'wb') as fd:
             fd.write(result)
 
         m = "Report file {!r} written with {} bytes".format
