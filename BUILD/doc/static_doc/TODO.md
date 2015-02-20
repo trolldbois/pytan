@@ -4,6 +4,9 @@
   * [ ] in session.py: utf-8 fix
   * [ ] submit bug re: utf8?
   * [ ] submit bug re: add mac to client status 
+  * [ ] broken CR in folder name search regex match
+  * [ ] add supported python versions
+  * [ ] add supported Tanium versions
 
 # TODO LATER
   * [ ] Add method to get question progress
