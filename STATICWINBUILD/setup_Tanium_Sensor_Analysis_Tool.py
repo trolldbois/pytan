@@ -1,5 +1,5 @@
 # change me accordingly, rest is automatic
-TOOL_NAME = "Tanium_sensor_Analysis_Tool"
+TOOL_NAME = "Tanium_Sensor_Analysis_Tool"
 
 import os
 import sys
