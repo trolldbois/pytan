@@ -2,7 +2,7 @@
 # -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
-'''Asks a question for every sensor and saves the results as a report format'''
+'''Asks a question for every sensor and saves the results as CSV reports'''
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
 __version__ = '1.0.3'
 
