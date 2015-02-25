@@ -976,33 +976,42 @@ class Handler(object):
         The action filter for the deploy action is used as the question
         filter in both cases
         """
+
+        if not run and not get_results:
+            m = "Run = False and get_results = False, re-run with True for one of these!"
+            raise HandlerError(m)
+
         if not run:
             pre_action_sensors = ['Computer Name', 'Online, that =:True']
         else:
             pre_action_sensors = ['Online, that =:True']
 
-        pre_action_sensor_defs = utils.dehumanize_sensors(pre_action_sensors)
-        pre_action_result_ret = self.ask_manual(
-            sensor_defs=pre_action_sensor_defs,
-            question_filter_defs=action_filter_defs,
-            question_option_defs=action_option_defs,
-            hide_no_results_flag=1,
-        )
-        pre_action_result = pre_action_result_ret['question_results']
+        # No longer do a pre_action question if get_results == False
+        if get_results:
+            pre_action_sensor_defs = utils.dehumanize_sensors(pre_action_sensors)
+            pre_action_result_ret = self.ask_manual(
+                sensor_defs=pre_action_sensor_defs,
+                question_filter_defs=action_filter_defs,
+                question_option_defs=action_option_defs,
+                hide_no_results_flag=1,
+            )
+            pre_action_result = pre_action_result_ret['question_results']
 
-        """ note from jwk:
-        passed_count == the number of machines that pass the filter and
-        therefore the number that should take the action
-        """
-        passed_count = pre_action_result.passed
-        m = (
-            "Number of systems that match action filter (passed_count): {}"
-        ).format
-        mylog.debug(m(passed_count))
+            """ note from jwk:
+            passed_count == the number of machines that pass the filter and
+            therefore the number that should take the action
+            """
+            passed_count = pre_action_result.passed
+            m = (
+                "Number of systems that match action filter (passed_count): {}"
+            ).format
+            mylog.debug(m(passed_count))
 
-        if passed_count == 0:
-            m = "Number of systems that match the action filters provided is zero!"
-            raise HandlerError(m)
+            if passed_count == 0:
+                m = "Number of systems that match the action filters provided is zero!"
+                raise HandlerError(m)
+        else:
+            pre_action_result_ret = None
 
         if not run:
             report_path, result = self.export_to_report_file(
