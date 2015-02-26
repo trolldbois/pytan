@@ -9,6 +9,7 @@
   * [ ] add supported Tanium versions
 
 # TODO LATER
+  * [ ] add support for sensor driven data for deploying action/package
   * [ ] Add method to get question progress
   * [ ] explain get == select col data, from == select row data
   * [ ] add pointers to KB articles
