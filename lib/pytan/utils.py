@@ -1489,6 +1489,12 @@ def extract_params(s):
             err = "Parameter {} missing key/value seperator ({})".format
             raise HumanParserError(err(sp, constants.PARAM_KEY_SPLIT))
         sp_key, sp_value = sp.split(constants.PARAM_KEY_SPLIT, 1)
+        # remove any escapes for {}'s
+        if '\\}' in sp_value:
+            sp_value = sp_value.replace('\\}', '}')
+        if '\\{' in sp_value:
+            sp_value = sp_value.replace('\\{', '{')
+
         # sp_key = dirname
         # sp_value = Program Files
         parsed_params[sp_key] = sp_value
