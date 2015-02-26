@@ -11,7 +11,7 @@
 5) Perform a repair of a given application
 
 No Results return for Computer ID (perhaps getresultdata too soon)
-
+Add expire_seconds to package deploy
 '''
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
 __version__ = '1.0.3'

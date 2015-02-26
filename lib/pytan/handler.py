@@ -1054,7 +1054,7 @@ class Handler(object):
             start_seconds_from_now
         )
 
-        if expire_seconds is not None:
+        if not expire_seconds:
             add_action_obj.expire_seconds = expire_seconds
 
         action_obj = self.session.add(add_action_obj)
