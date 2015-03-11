@@ -385,8 +385,6 @@ def write_csv(list_of_dicts, report_dir, my_name, story):
 
 
 if __name__ == "__main__":
-    # print "THIS IS A WORK IN PROGRESS, NOT READY FOR USE"
-    # sys.exit(1)
 
     utils.version_check(__version__)
     parser = utils.CustomArgParse(

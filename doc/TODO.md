@@ -9,6 +9,7 @@
   * [ ] add supported Tanium versions
 
 # TODO LATER
+  * [ ] add session input to auth
   * [ ] Add method to get question progress
   * [ ] explain get == select col data, from == select row data
   * [ ] add pointers to KB articles
