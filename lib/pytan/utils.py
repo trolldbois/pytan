@@ -2638,7 +2638,7 @@ def get_dict_list_len(d, keys=[], negate=False):
     return list_len
 
 
-def build_metadatalist_obj(properties, nameprefix):
+def build_metadatalist_obj(properties, nameprefix=""):
     """Creates a MetadataList object from properties
 
     Parameters
@@ -2655,9 +2655,15 @@ def build_metadatalist_obj(properties, nameprefix):
     """
     metadatalist_obj = taniumpy.MetadataList()
     for prop in properties:
+        name = prop[0]
+        value = prop[1]
+
+        if nameprefix:
+            name = "{}.{}".format(nameprefix, name)
+
         metadata_obj = taniumpy.MetadataItem()
-        metadata_obj.name = "{}.{}".format(nameprefix, prop[0])
-        metadata_obj.value = prop[1]
+        metadata_obj.name = name
+        metadata_obj.value = value
         metadatalist_obj.append(metadata_obj)
     return metadatalist_obj
 

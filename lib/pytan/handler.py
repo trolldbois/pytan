@@ -583,6 +583,10 @@ class Handler(object):
         options_help : bool, optional
             * False: do not print the help string for options
             * True: print the help string for options and exit
+        properties: list of list of strs, optional
+            * each list must be a 2 item list:
+            * list item 1 property name
+            * list item 2 property value
 
         Returns
         -------
@@ -601,6 +605,9 @@ class Handler(object):
         if kwargs.get('options_help', False):
             raise PytanHelp(utils.help_options())
 
+        properties = kwargs.get('properties', [])
+        metadatalist_obj = utils.build_metadatalist_obj(properties)
+
         # bare minimum arguments for new package: name, command
         add_package_obj = taniumpy.PackageSpec()
         add_package_obj.name = name
@@ -609,6 +616,7 @@ class Handler(object):
         add_package_obj.command = command
         add_package_obj.command_timeout = command_timeout_seconds
         add_package_obj.expire_seconds = expire_seconds
+        add_package_obj.metadata = metadatalist_obj
 
         # VERIFY FILTERS
         if verify_filters:
