@@ -1,9 +1,10 @@
-#!/usr/bin/env python
+#!/usr/bin/env python -i
 # -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
 '''Tanium Software Management Tool
 
+This is a proof of concept showing how to use the following workflow using Tanium via PyTan
 1) Shows available applications from Tanium that the user can install on their machine
 2) Show the installed applications from a users client
 3) Execute an installation of a package
