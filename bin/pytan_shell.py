@@ -114,6 +114,53 @@ def process_handler_args(parser, all_args):
     return h
 
 
+def dictify_resultset(rs):
+    return [dictify_resultset_row(x) for x in rs.rows]
+
+
+def dictify_resultset_row(rs_row):
+    d = dict(zip(
+        [x.display_name for x in rs_row.columns],
+        [join_list(x, ', ') for x in rs_row.vals]
+    ))
+    return d
+
+
+def join_list(l, j='\n'):
+    if None in l:
+        l = ""
+    if type(l) == list:
+        l = j.join(l)
+    return l
+
+
+def remove_count(rd):
+    for r in rd:
+        try:
+            r.pop('Count')
+        except:
+            pass
+    return rd
+
+
+def get_question_data(i):
+    return dictify_resultset(handler.get_result_data(handler.get('question', id=i)[0]))
+
+
+def get_action_data(i):
+    return dictify_resultset(handler.get_result_data(handler.get('action', id=i)[0]))
+
+
+def create_get_pkg(handler, pkg_name, pkg_opts):
+    try:
+        p = handler.get('package', name=pkg_name)[0]
+        m = 'Found package {}, skipped creation'.format
+    except:
+        p = handler.create_package(name=pkg_name, **pkg_opts)
+        m = 'Created package {}'.format
+    print m(pkg_name)
+    return p
+
 if __name__ == "__main__":
 
     console = HistoryConsole()
@@ -142,5 +189,3 @@ if __name__ == "__main__":
 
     if handler.loglevel >= 10:
         utils.set_all_loglevels()
-
-    print ("%s -- now available as 'handler'!" % handler)
