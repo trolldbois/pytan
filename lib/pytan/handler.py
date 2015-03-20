@@ -435,7 +435,7 @@ class Handler(object):
 
         try:
             json_dict = json.load(fh)
-        except:
+        except Exception as e:
             m = "Unable to parse json_file {!r}, {}\n{}".format
             raise HandlerError(m(json_file, e, howto_m))
 
