@@ -3,4 +3,4 @@
 taniumpy.*/
 *.sublime-workspace
 pytan.sublime-workspace
-TEST_OUT/*
+test/TEST_OUT/*
