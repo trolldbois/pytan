@@ -7,6 +7,9 @@
   * [ ] broken CR in folder name search regex match
   * [ ] add supported python versions
   * [ ] add supported Tanium versions
+  * [ ] change get logic to use cache_filters instead of objectlist for object selection
+  * [ ] add secondary loop for if any data == current result unavail/etc
+  * [ ] add xml_fix to BaseType and ResultSet
 
 # TODO LATER
   * [ ] add support for sensor driven data for deploying action/package
