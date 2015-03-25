@@ -151,6 +151,13 @@ def get_action_data(i):
     return dictify_resultset(handler.get_result_data(handler.get('action', id=i)[0]))
 
 
+def chew_question_data(i, renew=False):
+    if renew:
+        return get_question_data(i['question_object'].id)
+    else:
+        return dictify_resultset(i['question_results'])
+
+
 def create_get_pkg(handler, pkg_name, pkg_opts):
     try:
         p = handler.get('package', name=pkg_name)[0]
