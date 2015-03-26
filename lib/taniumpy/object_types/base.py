@@ -5,7 +5,10 @@ import csv
 import io
 import json
 import re
-import xml.etree.ElementTree as ET
+try:
+    import xml.etree.cElementTree as ET
+except:
+    import xml.etree.ElementTree as ET
 
 # 1.0.4: added for xml_fix(), declare a regex that identifies invalid characters in unicode
 invalid_xml = re.compile(u'[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F]')

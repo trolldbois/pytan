@@ -6,7 +6,12 @@
 import os
 import httplib
 import string
-import xml.etree.ElementTree as ET
+
+try:
+    import xml.etree.cElementTree as ET
+except:
+    import xml.etree.ElementTree as ET
+
 import logging
 import json
 # needed for python 2.7.9 to revert SSL verification
