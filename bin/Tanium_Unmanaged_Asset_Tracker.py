@@ -43,7 +43,7 @@ cscript run-ua-scan.vbs /SCAN_ENTIRE_SUBNET:True /IS_DEBUG:True
 
 '''
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
-__version__ = '1.0.3'
+__version__ = '1.0.4'
 
 import os
 import sys
