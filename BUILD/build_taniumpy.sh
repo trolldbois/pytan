@@ -1,5 +1,7 @@
 #!/bin/bash
-# this generates the /api/ dir under ../pytan/
+# this generates the taniumpy/ dir under ../pytan/
+# this uses the taniumpy github repo, and should not be done unless you are absolutely sure
+# you know you want to!!!!!
 script="${0}"
 myscript=`basename "${script}"`
 mydir=`dirname "${script}"`
