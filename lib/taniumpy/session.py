@@ -104,7 +104,7 @@ def xml_fix(s):
     return utf_str
 
 
-def http_post(host, port, url, body=None, headers=None, timeout=5):
+def http_post(host, port, url, body=None, headers=None, timeout=15):
     # revert SSL verification for python 2.7.9
     try:
         http = httplib.HTTPSConnection(
