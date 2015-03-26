@@ -1,0 +1,1 @@
+This directory contains ZIP files that contain Windows standalone executables that can be used on any windows system, without the need to install PyTan or Python. Only certain tools are compiled this way.

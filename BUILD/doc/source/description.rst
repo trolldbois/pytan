@@ -59,3 +59,4 @@ Directory Layout
     * **lib/ directory**: contains the python libraries (:mod:`pytan`) and (:mod:`taniumpy`), as well as other python libraries
     * **test/ directory**: contains the unit and functional tests for (:mod:`pytan`)
     * **winbin/ directory**: contains the Windows batch scripts which wrap around the python command line scripts in bin/
+    * **ZIP_DIST/ directory**: contains standalone windows executables for certain tools, created by batch files in BUILD/STATICWINBUILD/
