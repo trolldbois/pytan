@@ -1,6 +1,7 @@
 
 Ask manual human question sensor with filter
 ==========================================================================================
+
 Ask a manual question using human strings by referencing the name of a single sensor.
 
 Also supply a sensor filter that limits the column data that is shown to values that contain Windows (which is short hand for regex match against .*Windows.*).
@@ -8,14 +9,31 @@ Also supply a sensor filter that limits the column data that is shown to values 
 No sensor parameters, sensor filter options, question filters or question options supplied.
 
 Example Python Code
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+----------------------------------------------------------------------------------------
 
 .. code-block:: python
     :linenos:
 
 
-    # Path to lib directory which contains pytan package
-    PYTAN_LIB_PATH = '../lib'
+    
+    import os
+    import sys
+    sys.dont_write_bytecode = True
+    
+    # Determine our script name, script dir
+    my_file = os.path.abspath(sys.argv[0])
+    my_dir = os.path.dirname(my_file)
+    
+    # determine the pytan lib dir and add it to the path
+    parent_dir = os.path.dirname(my_dir)
+    pytan_root_dir = os.path.dirname(parent_dir)
+    lib_dir = os.path.join(pytan_root_dir, 'lib')
+    path_adds = [lib_dir]
+    
+    for aa in path_adds:
+        if aa not in sys.path:
+            sys.path.append(aa)
+    
     
     # connection info for Tanium Server
     USERNAME = "Tanium User"
@@ -27,8 +45,7 @@ Example Python Code
     LOGLEVEL = 2
     DEBUGFORMAT = False
     
-    import sys, tempfile
-    sys.path.append(PYTAN_LIB_PATH)
+    import tempfile
     
     import pytan
     handler = pytan.Handler(
@@ -80,22 +97,22 @@ Example Python Code
 
 
 Output from Python Code
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+----------------------------------------------------------------------------------------
 
 .. code-block:: none
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-    2015-02-11 12:03:03,881 INFO     question_progress: Results 0% (Get Operating System contains "Windows" from all machines)
-    2015-02-11 12:03:08,897 INFO     question_progress: Results 0% (Get Operating System contains "Windows" from all machines)
-    2015-02-11 12:03:13,914 INFO     question_progress: Results 100% (Get Operating System contains "Windows" from all machines)
+    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+    2015-03-26 11:44:27,978 INFO     question_progress: Results 0% (Get Operating System contains "Windows" from all machines)
+    2015-03-26 11:44:32,998 INFO     question_progress: Results 0% (Get Operating System contains "Windows" from all machines)
+    2015-03-26 11:44:38,016 INFO     question_progress: Results 100% (Get Operating System contains "Windows" from all machines)
     
     Type of response:  <type 'dict'>
     
     Pretty print of response:
-    {'question_object': <taniumpy.object_types.question.Question object at 0x105a28150>,
-     'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x105c3ba90>}
+    {'question_object': <taniumpy.object_types.question.Question object at 0x10761df10>,
+     'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x10759ac90>}
     
     Equivalent Question if it were to be asked in the Tanium Console: 
     Get Operating System contains "Windows" from all machines

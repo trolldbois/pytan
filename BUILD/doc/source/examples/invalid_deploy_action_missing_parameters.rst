@@ -1,17 +1,35 @@
 
 Invalid deploy action missing parameters
 ==========================================================================================
+
 Deploy an action using a package that requires parameters but do not supply any parameters.
 
 Example Python Code
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+----------------------------------------------------------------------------------------
 
 .. code-block:: python
     :linenos:
 
 
-    # Path to lib directory which contains pytan package
-    PYTAN_LIB_PATH = '../lib'
+    
+    import os
+    import sys
+    sys.dont_write_bytecode = True
+    
+    # Determine our script name, script dir
+    my_file = os.path.abspath(sys.argv[0])
+    my_dir = os.path.dirname(my_file)
+    
+    # determine the pytan lib dir and add it to the path
+    parent_dir = os.path.dirname(my_dir)
+    pytan_root_dir = os.path.dirname(parent_dir)
+    lib_dir = os.path.join(pytan_root_dir, 'lib')
+    path_adds = [lib_dir]
+    
+    for aa in path_adds:
+        if aa not in sys.path:
+            sys.path.append(aa)
+    
     
     # connection info for Tanium Server
     USERNAME = "Tanium User"
@@ -23,8 +41,7 @@ Example Python Code
     LOGLEVEL = 2
     DEBUGFORMAT = False
     
-    import sys, tempfile
-    sys.path.append(PYTAN_LIB_PATH)
+    import tempfile
     
     import pytan
     handler = pytan.Handler(
@@ -57,24 +74,23 @@ Example Python Code
 
 
 Output from Python Code
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+----------------------------------------------------------------------------------------
 
 .. code-block:: none
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-    2015-02-11 12:06:25,143 INFO     question_progress: Results 0% (Get Online = "True" from all machines)
-    2015-02-11 12:06:30,161 INFO     question_progress: Results 0% (Get Online = "True" from all machines)
-    2015-02-11 12:06:35,180 INFO     question_progress: Results 50% (Get Online = "True" from all machines)
-    2015-02-11 12:06:40,198 INFO     question_progress: Results 100% (Get Online = "True" from all machines)
+    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+    2015-03-26 11:49:08,639 INFO     question_progress: Results 0% (Get Online = "True" from all machines)
+    2015-03-26 11:49:13,664 INFO     question_progress: Results 0% (Get Online = "True" from all machines)
+    2015-03-26 11:49:18,683 INFO     question_progress: Results 100% (Get Online = "True" from all machines)
     Traceback (most recent call last):
-      File "<string>", line 40, in <module>
-      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1176, in deploy_action_human
+      File "<string>", line 56, in <module>
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1193, in deploy_action_human
         **kwargs
-      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1030, in deploy_action
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1047, in deploy_action
         empty_ok=False,
-      File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2147, in build_param_objlist
+      File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2154, in build_param_objlist
         raise HandlerError(err(obj_name, p_key, jsonify(obj_param)))
     HandlerError: PackageSpec, name: 'Custom Tagging - Add Tags' parameter key '$1' requires a value, parameter definition:
     {

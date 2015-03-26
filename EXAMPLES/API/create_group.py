@@ -2,8 +2,25 @@
 """
 Create a group called All Windows Computers API Test
 """
-# Path to lib directory which contains pytan package
-PYTAN_LIB_PATH = '../lib'
+
+import os
+import sys
+sys.dont_write_bytecode = True
+
+# Determine our script name, script dir
+my_file = os.path.abspath(sys.argv[0])
+my_dir = os.path.dirname(my_file)
+
+# determine the pytan lib dir and add it to the path
+parent_dir = os.path.dirname(my_dir)
+pytan_root_dir = os.path.dirname(parent_dir)
+lib_dir = os.path.join(pytan_root_dir, 'lib')
+path_adds = [lib_dir]
+
+for aa in path_adds:
+    if aa not in sys.path:
+        sys.path.append(aa)
+
 
 # connection info for Tanium Server
 USERNAME = "Tanium User"
@@ -15,8 +32,7 @@ PORT = "444"
 LOGLEVEL = 2
 DEBUGFORMAT = False
 
-import sys, tempfile
-sys.path.append(PYTAN_LIB_PATH)
+import tempfile
 
 import pytan
 handler = pytan.Handler(
@@ -72,9 +88,9 @@ except Exception as e:
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
 No results found searching for Group, name: 'All Windows Computers API Test'!!
-2015-02-11 12:06:40,384 INFO     handler: New group 'All Windows Computers API Test' created with ID 2277, filter text: ' Operating System contains "Windows"'
+2015-03-26 11:49:19,021 INFO     handler: New group 'All Windows Computers API Test' created with ID 19223, filter text: ' Operating System contains "Windows"'
 
 Type of response:  <class 'taniumpy.object_types.group.Group'>
 
@@ -85,7 +101,7 @@ print the object returned in JSON format:
 {
   "_type": "group", 
   "and_flag": 1, 
-  "deleted_flag": 1, 
+  "deleted_flag": 0, 
   "filters": {
     "_type": "filters", 
     "filter": [
@@ -111,7 +127,7 @@ print the object returned in JSON format:
       }
     ]
   }, 
-  "id": 2277, 
+  "id": 19223, 
   "name": "All Windows Computers API Test", 
   "not_flag": 0, 
   "sub_groups": {
@@ -121,6 +137,6 @@ print the object returned in JSON format:
   "text": " Operating System contains \"Windows\"", 
   "type": 0
 }
-2015-02-11 12:06:40,398 INFO     handler: Deleted 'Group, id: 2277'
+2015-03-26 11:49:19,044 INFO     handler: Deleted 'Group, id: 19223'
 
 '''

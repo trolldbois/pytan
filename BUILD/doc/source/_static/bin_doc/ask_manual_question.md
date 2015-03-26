@@ -133,7 +133,7 @@ ask_manual_question.py -u 'Tanium User' -p 'T@n!um' --host '172.16.31.128' --log
 ```
 
 ```
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
 ++ Asking manual question:
 {
   "filters_help": false, 
@@ -309,7 +309,7 @@ ask_manual_question.py -u 'Tanium User' -p 'T@n!um' --host '172.16.31.128' --log
 ```
 
 ```
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
 ++ Asking manual question:
 {
   "filters_help": true, 
@@ -627,7 +627,7 @@ ask_manual_question.py -u 'Tanium User' -p 'T@n!um' --host '172.16.31.128' --log
 ```
 
 ```
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
 ++ Asking manual question:
 {
   "filters_help": false, 
@@ -733,7 +733,7 @@ ask_manual_question.py -u 'Tanium User' -p 'T@n!um' --host '172.16.31.128' --log
 ```
 
 ```
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
 ++ Asking manual question:
 {
   "filters_help": false, 
@@ -746,9 +746,10 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
   ], 
   "sensors_help": false
 }
-2015-02-11 17:08:01,590 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-2015-02-11 17:08:06,603 INFO     question_progress: Results 100% (Get Computer Name from all machines)
-++ Asked Question 'Get Computer Name from all machines' ID: 11458
+2015-03-26 09:24:22,767 INFO     question_progress: Results 0% (Get Computer Name from all machines)
+2015-03-26 09:24:27,781 INFO     question_progress: Results 0% (Get Computer Name from all machines)
+2015-03-26 09:24:32,796 INFO     question_progress: Results 100% (Get Computer Name from all machines)
+++ Asked Question 'Get Computer Name from all machines' ID: 32478
 ++ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 56 bytes
 ```
 
@@ -781,7 +782,7 @@ ask_manual_question.py -u 'Tanium User' -p 'T@n!um' --host '172.16.31.128' --log
 ```
 
 ```
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
 ++ Asking manual question:
 {
   "filters_help": false, 
@@ -794,12 +795,10 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
   ], 
   "sensors_help": false
 }
-2015-02-11 17:08:06,784 INFO     question_progress: Results 0% (Get Action Statuses from all machines)
-2015-02-11 17:08:11,798 INFO     question_progress: Results 0% (Get Action Statuses from all machines)
-2015-02-11 17:08:16,810 INFO     question_progress: Results 0% (Get Action Statuses from all machines)
-2015-02-11 17:08:21,825 INFO     question_progress: Results 100% (Get Action Statuses from all machines)
-++ Asked Question 'Get Action Statuses from all machines' ID: 11459
-++ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 3937 bytes
+2015-03-26 09:24:32,981 INFO     question_progress: Results 0% (Get Action Statuses from all machines)
+2015-03-26 09:24:37,999 INFO     question_progress: Results 100% (Get Action Statuses from all machines)
+++ Asked Question 'Get Action Statuses from all machines' ID: 32479
+++ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 1541 bytes
 ```
 
   * Validation Test: exitcode
@@ -812,15 +811,15 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
 
 ```
 Action Statuses,Count
-1363:Completed.,1
-1108:Completed.,1
-1196:Completed.,1
-1319:Completed.,1
-1121:Completed.,1
-1146:Completed.,1
-1294:Completed.,1
-1336:Completed.,1
-1167:Completed.,1
+19023:Completed.,1
+19009:Completed.,1
+21063:Completed.,2
+19005:Completed.,1
+19010:Completed.,1
+20047:Completed.,2
+20034:Completed.,1
+20039:Completed.,1
+19021:Completed.,1
 ...trimmed for brevity...
 ```
 
@@ -839,7 +838,7 @@ ask_manual_question.py -u 'Tanium User' -p 'T@n!um' --host '172.16.31.128' --log
 ```
 
 ```
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
 ++ Asking manual question:
 {
   "filters_help": false, 
@@ -853,11 +852,12 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
   ], 
   "sensors_help": false
 }
-2015-02-11 17:08:22,051 INFO     question_progress: Results 0% (Get Computer Name and Installed Applications from all machines)
-2015-02-11 17:08:27,071 INFO     question_progress: Results 0% (Get Computer Name and Installed Applications from all machines)
-2015-02-11 17:08:32,091 INFO     question_progress: Results 100% (Get Computer Name and Installed Applications from all machines)
-++ Asked Question 'Get Computer Name and Installed Applications from all machines' ID: 11460
-++ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 22539 bytes
+2015-03-26 09:24:38,216 INFO     question_progress: Results 0% (Get Computer Name and Installed Applications from all machines)
+2015-03-26 09:24:43,239 INFO     question_progress: Results 0% (Get Computer Name and Installed Applications from all machines)
+2015-03-26 09:24:48,261 INFO     question_progress: Results 50% (Get Computer Name and Installed Applications from all machines)
+2015-03-26 09:24:53,281 INFO     question_progress: Results 100% (Get Computer Name and Installed Applications from all machines)
+++ Asked Question 'Get Computer Name and Installed Applications from all machines' ID: 32480
+++ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 23103 bytes
 ```
 
   * Validation Test: exitcode
@@ -872,13 +872,13 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
 Computer Name,Name,Silent Uninstall String,Uninstallable,Version
 Casus-Belli.local,"Google Search
 Microsoft Chart Converter
-Spotify
 Wish
 BluetoothUIServer
 Time Machine
 AppleGraphicsWarning
 soagent
 AinuIM
+ARDAgent
 ...trimmed for brevity...
 ```
 
@@ -897,7 +897,7 @@ ask_manual_question.py -u 'Tanium User' -p 'T@n!um' --host '172.16.31.128' --log
 ```
 
 ```
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
 ++ Asking manual question:
 {
   "filters_help": false, 
@@ -910,49 +910,15 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
   ], 
   "sensors_help": false
 }
-2015-02-11 17:08:32,351 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:08:37,369 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:08:42,383 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:08:47,398 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:08:52,414 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:08:57,431 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:09:02,448 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:09:07,461 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:09:12,474 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:09:17,487 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:09:22,502 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:09:27,517 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:09:32,533 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:09:37,548 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:09:42,561 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:09:47,575 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:09:52,598 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:09:57,612 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:10:02,628 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:10:07,648 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:10:12,666 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:10:17,680 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:10:22,697 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:10:27,713 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:10:32,727 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:10:37,748 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:10:42,763 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:10:47,777 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:10:52,795 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:10:57,809 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:11:02,824 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:11:07,842 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:11:12,860 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:11:17,882 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:11:22,901 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:11:27,916 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:11:32,933 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:11:37,951 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:11:42,965 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:11:47,980 INFO     question_progress: Results 50% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 17:11:52,996 INFO     question_progress: Results 100% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-++ Asked Question 'Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines' ID: 11461
-++ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 33951 bytes
+2015-03-26 09:24:53,525 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, , Microsoft.*] from all machines)
+2015-03-26 09:24:58,544 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, , Microsoft.*] from all machines)
+2015-03-26 09:25:03,562 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, , Microsoft.*] from all machines)
+2015-03-26 09:25:08,576 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, , Microsoft.*] from all machines)
+2015-03-26 09:25:13,595 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, , Microsoft.*] from all machines)
+2015-03-26 09:25:18,614 INFO     question_progress: Results 50% (Get Folder Name Search with RegEx Match[No, Program Files, No, , Microsoft.*] from all machines)
+2015-03-26 09:25:23,631 INFO     question_progress: Results 100% (Get Folder Name Search with RegEx Match[No, Program Files, No, , Microsoft.*] from all machines)
+++ Asked Question 'Get Folder Name Search with RegEx Match[No, Program Files, No, , Microsoft.*] from all machines' ID: 32482
+++ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 80053 bytes
 ```
 
   * Validation Test: exitcode
@@ -964,16 +930,16 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
     * Messages: File /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv exists, content:
 
 ```
-"Folder Name Search with RegEx Match[No, Program Files, No, ]"
-C:\Program Files\Tanium\Tanium Server\ApacheBackup2014-09-16-20-44-23\cgi-bin
+"Folder Name Search with RegEx Match[No, Program Files, No, , Microsoft.*]"
+C:\Program Files\Microsoft SQL Server\110\Setup Bootstrap\Update Cache\KB2674319\ServicePack\1033_enu_lp\x64\setup\sqlsupport_msi\windows\winsxs\5z1v718o.6n8
+C:\Program Files\Microsoft SQL Server\110\Setup Bootstrap\Update Cache\KB2958429\ServicePack\1033_enu_lp\x64\setup\sqlsupport_msi\windows\winsxs\92rg91xw.1p4
+C:\Program Files\Microsoft SQL Server\110\Setup Bootstrap\Update Cache\KB2958429\ServicePack\1033_enu_lp\x64\setup\sqlsupport_msi\windows\winsxs\policies\u1sw1o0k.9hi
 C:\Program Files\VMware\VMware Tools\plugins\vmsvc
-C:\Program Files\Microsoft SQL Server\110\Setup Bootstrap\SQLServer2012\1040_ITA_LP\x64\1040\help
 C:\Program Files\Common Files\Microsoft Shared\VS7Debug
 C:\Program Files\Tanium\Tanium Server\Apache24\manual\style
+C:\Program Files\Microsoft SQL Server\110\Setup Bootstrap\Update Cache\KB2674319\ServicePack\1033_enu_lp\x64\setup\sqlsupport_msi\windows\winsxs\vlv6b2rp.6fi
+C:\Program Files\Microsoft SQL Server\110\Setup Bootstrap\Log\20150306_224415\resources
 C:\Program Files\Tanium\Tanium Server\Apache24\htdocs\console\history
-C:\Program Files\Common Files\VMware\Drivers\vmci\sockets\include
-C:\Program Files\Common Files\Microsoft Shared\ink\ar-SA
-C:\Program Files\Tanium\Tanium Server\plugins\console\Dashboards
 ...trimmed for brevity...
 ```
 
@@ -995,7 +961,7 @@ ask_manual_question.py -u 'Tanium User' -p 'T@n!um' --host '172.16.31.128' --log
 ```
 
 ```
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
 ++ Asking manual question:
 {
   "filters_help": false, 
@@ -1008,10 +974,11 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
   ], 
   "sensors_help": false
 }
-2015-02-11 17:11:53,268 INFO     question_progress: Results 0% (Get Operating System contains "Windows" from all machines)
-2015-02-11 17:11:58,283 INFO     question_progress: Results 50% (Get Operating System contains "Windows" from all machines)
-2015-02-11 17:12:03,300 INFO     question_progress: Results 100% (Get Operating System contains "Windows" from all machines)
-++ Asked Question 'Get Operating System contains "Windows" from all machines' ID: 11463
+2015-03-26 09:25:23,921 INFO     question_progress: Results 0% (Get Operating System contains "Windows" from all machines)
+2015-03-26 09:25:28,940 INFO     question_progress: Results 50% (Get Operating System contains "Windows" from all machines)
+2015-03-26 09:25:33,958 INFO     question_progress: Results 50% (Get Operating System contains "Windows" from all machines)
+2015-03-26 09:25:38,972 INFO     question_progress: Results 100% (Get Operating System contains "Windows" from all machines)
+++ Asked Question 'Get Operating System contains "Windows" from all machines' ID: 32484
 ++ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 65 bytes
 ```
 
@@ -1050,7 +1017,7 @@ ask_manual_question.py -u 'Tanium User' -p 'T@n!um' --host '172.16.31.128' --log
 ```
 
 ```
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
 ++ Asking manual question:
 {
   "filters_help": false, 
@@ -1070,13 +1037,14 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
   ], 
   "sensors_help": false
 }
-2015-02-11 17:12:03,569 INFO     question_progress: Results 0% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines where Operating System contains "Windows" or IP Address = "10.10.10.10")
-2015-02-11 17:12:08,594 INFO     question_progress: Results 0% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines where Operating System contains "Windows" or IP Address = "10.10.10.10")
-2015-02-11 17:12:13,618 INFO     question_progress: Results 50% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines where Operating System contains "Windows" or IP Address = "10.10.10.10")
-2015-02-11 17:12:18,637 INFO     question_progress: Results 50% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines where Operating System contains "Windows" or IP Address = "10.10.10.10")
-2015-02-11 17:12:23,659 INFO     question_progress: Results 100% (Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines where Operating System contains "Windows" or IP Address = "10.10.10.10")
-++ Asked Question 'Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines where Operating System contains "Windows" or IP Address = "10.10.10.10"' ID: 11464
-++ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 4512 bytes
+2015-03-26 09:25:39,225 INFO     question_progress: Results 0% (Get Computer Name and Folder Name Search with RegEx Match[test, No, Program Files, No, , Microsoft.*] contains "Shared" from all machines where Operating System contains "Windows" or IP Address = "10.10.10.10")
+2015-03-26 09:25:44,247 INFO     question_progress: Results 0% (Get Computer Name and Folder Name Search with RegEx Match[test, No, Program Files, No, , Microsoft.*] contains "Shared" from all machines where Operating System contains "Windows" or IP Address = "10.10.10.10")
+2015-03-26 09:25:49,269 INFO     question_progress: Results 0% (Get Computer Name and Folder Name Search with RegEx Match[test, No, Program Files, No, , Microsoft.*] contains "Shared" from all machines where Operating System contains "Windows" or IP Address = "10.10.10.10")
+2015-03-26 09:25:54,289 INFO     question_progress: Results 0% (Get Computer Name and Folder Name Search with RegEx Match[test, No, Program Files, No, , Microsoft.*] contains "Shared" from all machines where Operating System contains "Windows" or IP Address = "10.10.10.10")
+2015-03-26 09:25:59,309 INFO     question_progress: Results 0% (Get Computer Name and Folder Name Search with RegEx Match[test, No, Program Files, No, , Microsoft.*] contains "Shared" from all machines where Operating System contains "Windows" or IP Address = "10.10.10.10")
+2015-03-26 09:26:04,330 INFO     question_progress: Results 100% (Get Computer Name and Folder Name Search with RegEx Match[test, No, Program Files, No, , Microsoft.*] contains "Shared" from all machines where Operating System contains "Windows" or IP Address = "10.10.10.10")
+++ Asked Question 'Get Computer Name and Folder Name Search with RegEx Match[test, No, Program Files, No, , Microsoft.*] contains "Shared" from all machines where Operating System contains "Windows" or IP Address = "10.10.10.10"' ID: 32485
+++ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 6025 bytes
 ```
 
   * Validation Test: exitcode
@@ -1088,16 +1056,16 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
     * Messages: File /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv exists, content:
 
 ```
-Computer Name,"Folder Name Search with RegEx Match[No, Program Files, No, ]"
+Computer Name,"Folder Name Search with RegEx Match[test, No, Program Files, No, , Microsoft.*]"
 jtanium1.localdomain,"C:\Program Files\Common Files\Microsoft Shared\VS7Debug
 C:\Program Files\Common Files\Microsoft Shared\ink\ar-SA
 C:\Program Files\Common Files\Microsoft Shared\ink\ru-RU
 C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\keypad
 C:\Program Files\Common Files\Microsoft Shared\ink
 C:\Program Files\Common Files\Microsoft Shared\ink\sv-SE
+C:\Program Files\Microsoft SQL Server\110\Setup Bootstrap\Update Cache\KB2977326\GDR\1033_enu_lp\x64\setup\sqlsupport_msi\pfiles32\sqlservr\110\shared
 C:\Program Files\Common Files\Microsoft Shared\ink\uk-UA
 C:\Program Files\Common Files\Microsoft Shared\ink\sl-SI
-C:\Program Files\Common Files\Microsoft Shared\ink\hu-HU
 ...trimmed for brevity...
 ```
 
@@ -1119,7 +1087,7 @@ ask_manual_question.py -u 'Tanium User' -p 'T@n!um' --host '172.16.31.128' --log
 ```
 
 ```
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
 ++ Asking manual question:
 {
   "filters_help": false, 
@@ -1141,10 +1109,10 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
   ], 
   "sensors_help": false
 }
-2015-02-11 17:12:23,937 INFO     question_progress: Results 0% (Get Computer Name and Last Logged In User and Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome" from all machines where Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome")
-2015-02-11 17:12:28,967 INFO     question_progress: Results 0% (Get Computer Name and Last Logged In User and Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome" from all machines where Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome")
-2015-02-11 17:12:33,997 INFO     question_progress: Results 100% (Get Computer Name and Last Logged In User and Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome" from all machines where Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome")
-++ Asked Question 'Get Computer Name and Last Logged In User and Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome" from all machines where Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome"' ID: 11466
+2015-03-26 09:26:04,611 INFO     question_progress: Results 0% (Get Computer Name and Last Logged In User and Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome" from all machines where Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome")
+2015-03-26 09:26:09,641 INFO     question_progress: Results 50% (Get Computer Name and Last Logged In User and Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome" from all machines where Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome")
+2015-03-26 09:26:14,670 INFO     question_progress: Results 100% (Get Computer Name and Last Logged In User and Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome" from all machines where Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome")
+++ Asked Question 'Get Computer Name and Last Logged In User and Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome" from all machines where Installed Applications contains "Google Search" and Installed Applications contains "Google Chrome"' ID: 32486
 ++ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 275 bytes
 ```
 
@@ -1166,4 +1134,4 @@ Casus-Belli.local,N/A on Mac,Google Search,Google Search,nothing,nothing,Not Uni
 [TOC](#user-content-toc)
 
 
-###### generated by: `build_bin_doc v1.4.5`, date: Wed Feb 11 17:12:34 2015 EST, Contact info: **Jim Olsen <jim.olsen@tanium.com>**
+###### generated by: `build_bin_doc v1.4.5`, date: Thu Mar 26 09:26:14 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**

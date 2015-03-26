@@ -1,17 +1,35 @@
 
 Export basetype xml minimal true
 ==========================================================================================
+
 Export a BaseType from getting objects as XML with true for minimal
 
 Example Python Code
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+----------------------------------------------------------------------------------------
 
 .. code-block:: python
     :linenos:
 
 
-    # Path to lib directory which contains pytan package
-    PYTAN_LIB_PATH = '../lib'
+    
+    import os
+    import sys
+    sys.dont_write_bytecode = True
+    
+    # Determine our script name, script dir
+    my_file = os.path.abspath(sys.argv[0])
+    my_dir = os.path.dirname(my_file)
+    
+    # determine the pytan lib dir and add it to the path
+    parent_dir = os.path.dirname(my_dir)
+    pytan_root_dir = os.path.dirname(parent_dir)
+    lib_dir = os.path.join(pytan_root_dir, 'lib')
+    path_adds = [lib_dir]
+    
+    for aa in path_adds:
+        if aa not in sys.path:
+            sys.path.append(aa)
+    
     
     # connection info for Tanium Server
     USERNAME = "Tanium User"
@@ -23,8 +41,7 @@ Example Python Code
     LOGLEVEL = 2
     DEBUGFORMAT = False
     
-    import sys, tempfile
-    sys.path.append(PYTAN_LIB_PATH)
+    import tempfile
     
     import pytan
     handler = pytan.Handler(
@@ -73,17 +90,17 @@ Example Python Code
 
 
 Output from Python Code
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+----------------------------------------------------------------------------------------
 
 .. code-block:: none
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
     
     print the export_str returned from export_obj():
-    <sensors><sensor><category>Reserved</category><hash>3409330187</hash><name>Computer Name</name><hidden_flag>0</hidden_flag><exclude_from_parse_flag>0</exclude_from_parse_flag><string_count>7</string_count><ignore_case_flag>1</ignore_case_flag><max_age_seconds>86400</max_age_seconds><value_type>String</value_type><source_id>0</source_id><id>3</id><description>The assigned name of the client machine.
-    Example: workstation-1.company.com</description><queries><query><platform>Windows</platform><script_type>WMIQuery</script_type><script>select CSName from win32_operatingsystem</script></query></queries></sensor><sensor><category>Network</category><hash>435227963</hash><name>IP Route Details</name><hidden_flag>0</hidden_flag><delimiter>|</delimiter><creation_time>2015-01-05T20:22:05</creation_time><exclude_from_parse_flag>1</exclude_from_parse_flag><last_modified_by>Jim Olsen</last_modified_by><string_count>54</string_count><modification_time>2015-01-05T20:22:05</modification_time><ignore_case_flag>1</ignore_case_flag><max_age_seconds>60</max_age_seconds><value_type>String</value_type><source_id>0</source_id><id>737</id><description>Returns IPv4 network routes, filtered to exclude noise. With Flags, Metric, Interface columns.
+    <sensors><sensor><category>Reserved</category><hash>3409330187</hash><name>Computer Name</name><hidden_flag>0</hidden_flag><exclude_from_parse_flag>0</exclude_from_parse_flag><string_count>9</string_count><ignore_case_flag>1</ignore_case_flag><max_age_seconds>86400</max_age_seconds><value_type>String</value_type><source_id>0</source_id><id>3</id><description>The assigned name of the client machine.
+    Example: workstation-1.company.com</description><queries><query><platform>Windows</platform><script_type>WMIQuery</script_type><script>select CSName from win32_operatingsystem</script></query></queries></sensor><sensor><category>Network</category><hash>435227963</hash><name>IP Route Details</name><hidden_flag>0</hidden_flag><delimiter>|</delimiter><creation_time>2015-03-03T19:03:36</creation_time><exclude_from_parse_flag>1</exclude_from_parse_flag><last_modified_by>Jim Olsen</last_modified_by><string_count>59</string_count><modification_time>2015-03-03T19:03:36</modification_time><ignore_case_flag>1</ignore_case_flag><max_age_seconds>60</max_age_seconds><value_type>String</value_type><source_id>0</source_id><id>737</id><description>Returns IPv4 network routes, filtered to exclude noise. With Flags, Metric, Interface columns.
     Example:  172.16.0.0|192.168.1.1|255.255.0.0|UG|100|eth0</description><subcolumns><subcolumn><index>0</index><name>Destination</name><ignore_case_flag>1</ignore_case_flag><hidden_flag>0</hidden_flag><value_type>IPAddress</value_type></subcolumn><subcolumn><index>1</index><name>Gateway</name><ignore_case_flag>1</ignore_case_flag><hidden_flag>0</hidden_flag><value_type>IPAddress</value_type></subcolumn><subcolumn><index>2</index><name>Mask</name><ignore_case_flag>1</ignore_case_flag><hidden_flag>0</hidden_flag><value_type>String</value_type></subcolumn><subcolumn><index>3</index><name>Flags</name><ignore_case_flag>1</ignore_case_flag><hidden_flag>0</hidden_flag><value_type>String</value_type></subcolumn><subcolumn><index>4</index><name>Metric</name><ignore_case_flag>1</ignore_case_flag><hidden_flag>0</hidden_flag><value_type>NumericInteger</value_type></subcolumn><subcolumn><index>5</index><name>Interface</name><ignore_case_flag>1</ignore_case_flag><hidden_flag>0</hidden_flag><value_type>String</value_type></subcolumn></subcolumns><metadata><item><admin_flag>0</admin_flag><name>defined</name><value>Tanium</value></item></metadata><queries><query><platform>Windows</platform><script_type>VBScript</script_type><script>strComputer = &amp;quot;.&amp;quot;
     Set objWMIService = GetObject(&amp;quot;winmgmts:&amp;quot; _
         &amp;amp; &amp;quot;{impersonationLevel=impersonate}!\\&amp;quot; &amp;amp; strComputer &amp;amp; &amp;quot;\root\cimv2&amp;quot;)

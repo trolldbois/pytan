@@ -2,8 +2,25 @@
 """
 Get all clients that are Leader status
 """
-# Path to lib directory which contains pytan package
-PYTAN_LIB_PATH = '../lib'
+
+import os
+import sys
+sys.dont_write_bytecode = True
+
+# Determine our script name, script dir
+my_file = os.path.abspath(sys.argv[0])
+my_dir = os.path.dirname(my_file)
+
+# determine the pytan lib dir and add it to the path
+parent_dir = os.path.dirname(my_dir)
+pytan_root_dir = os.path.dirname(parent_dir)
+lib_dir = os.path.join(pytan_root_dir, 'lib')
+path_adds = [lib_dir]
+
+for aa in path_adds:
+    if aa not in sys.path:
+        sys.path.append(aa)
+
 
 # connection info for Tanium Server
 USERNAME = "Tanium User"
@@ -15,8 +32,7 @@ PORT = "444"
 LOGLEVEL = 2
 DEBUGFORMAT = False
 
-import sys, tempfile
-sys.path.append(PYTAN_LIB_PATH)
+import tempfile
 
 import pytan
 handler = pytan.Handler(
@@ -62,26 +78,26 @@ print out
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
 
 Type of response:  <class 'taniumpy.object_types.system_status_list.SystemStatusList'>
 
 print of response:
-SystemStatusList, len: 2
+SystemStatusList, len: 4
 
 length of response (number of objects returned): 
-2
+4
 
 print the first object returned in JSON format:
 {
   "_type": "client_status", 
   "cache_row_id": 1, 
-  "computer_id": "1755775978", 
-  "full_version": "6.0.314.1190", 
+  "computer_id": "103801052", 
+  "full_version": "6.0.314.1195", 
   "host_name": "WIN-A12SC6N6T7Q", 
-  "ipaddress_client": "172.16.31.145", 
-  "ipaddress_server": "172.16.31.145", 
-  "last_registration": "2015-02-03T05:04:59", 
+  "ipaddress_client": "172.16.31.157", 
+  "ipaddress_server": "172.16.31.157", 
+  "last_registration": "2015-03-11T09:30:02", 
   "port_number": 17472, 
   "protocol_version": 314, 
   "receive_state": "Previous Only", 

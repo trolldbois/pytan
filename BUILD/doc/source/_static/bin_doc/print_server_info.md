@@ -59,26 +59,26 @@ print_server_info.py -u 'Tanium User' -p 'T@n!um' --host '172.16.31.128' --logle
 ```
 
 ```
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
 {
   "Diagnostics": [
     {
       "Action History Cache": {
         "Action Stop Count": "0", 
-        "Actions": "348"
+        "Actions": "2017"
       }
     }, 
     {
       "Active Question Cache": {
         "Active Client Estimate": "2", 
-        "Active Question Estimate": "91"
+        "Active Question Estimate": "38"
       }
     }, 
     {
       "Authenticator": {
         "ActiveSessions": "1", 
         "OldSessions": "0", 
-        "TotalSessions": "1895"
+        "TotalSessions": "379"
       }
     }, 
     {
@@ -87,10 +87,10 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
         "License Seat Cap": "60", 
         "Reg Connection Count": "0", 
         "Reg Connection Limit": "1000", 
-        "Sensor Bytes Per Second Limit": "0", 
+        "Sensor Bytes Per Second Limit": "5242880", 
         "Sensor Bytes Sent Since Last Time": "0", 
         "Sensor Connection Count": "0", 
-        "Sensor Connection Limit": "0"
+        "Sensor Connection Limit": "8"
       }
     }, 
     {
@@ -101,20 +101,20 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
     }, 
     {
       "Group Cache": {
-        "FilterSpecCount": "297", 
-        "GroupCount": "1456", 
-        "GroupsTempSensors": "28", 
-        "QuestionFilterSpecs": "128", 
-        "QuestionSelectSpecs": "6262", 
-        "QuestionSubGroups": "2929", 
+        "FilterSpecCount": "4496", 
+        "GroupCount": "3635", 
+        "GroupsTempSensors": "7", 
+        "QuestionFilterSpecs": "93", 
+        "QuestionSelectSpecs": "2076", 
+        "QuestionSubGroups": "3746", 
         "QuestionTextCount": "0", 
-        "SavedQuestionTextCount": "193", 
-        "SelectSpecCount": "4077"
+        "SavedQuestionTextCount": "184", 
+        "SelectSpecCount": "7343"
       }
     }, 
     {
       "Network": {
-        "Allocated SendOp Count": "1609", 
+        "Allocated SendOp Count": "767", 
         "Allocated SendOp Limit": "0", 
         "Concurrency": "32", 
         "Concurrency Threads": "34", 
@@ -124,15 +124,15 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
         "Queue Completion Timeout": "1000", 
         "Running Threads": "34", 
         "SendOpReady FreeCount": "0", 
-        "SendOpReady HeadCount": "1609", 
+        "SendOpReady HeadCount": "767", 
         "Threads Reset Interval": "0", 
         "Unpaused Threads": "34"
       }
     }, 
     {
       "Package Cache": {
-        "Package Count": "132", 
-        "Package File Count": "508"
+        "Package Count": "465", 
+        "Package File Count": "571"
       }
     }, 
     {
@@ -143,24 +143,24 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
     {
       "Question History": {
         "History Limit Days": "7", 
-        "Last Question ID": "11478", 
-        "Last Saved Question ID": "196", 
-        "Question Count": "6128"
+        "Last Question ID": "32494", 
+        "Last Saved Question ID": "11656", 
+        "Question Count": "1887"
       }
     }, 
     {
       "SOAP Network": {
-        "Allocated SendOp Count": "2", 
+        "Allocated SendOp Count": "1", 
         "Allocated SendOp Limit": "0", 
         "Concurrency": "8", 
         "Concurrency Threads": "10", 
         "Idle Threads": "9", 
-        "Min Available Threads": "0", 
+        "Min Available Threads": "6", 
         "Pending SendOp Count": "0", 
         "Queue Completion Timeout": "1000", 
         "Running Threads": "10", 
         "SendOpReady FreeCount": "0", 
-        "SendOpReady HeadCount": "2", 
+        "SendOpReady HeadCount": "1", 
         "Threads Reset Interval": "0", 
         "Unpaused Threads": "10"
       }
@@ -168,33 +168,33 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
     {
       "SOAP Server": {
         "Connections": "1", 
-        "SOAP Handlers": "3", 
+        "SOAP Handlers": "2", 
         "Use Compression": "1", 
         "Using IPv6": "1"
       }
     }, 
     {
       "SOAP Snapshots": {
-        "Snapshot Count": "27"
+        "Snapshot Count": "26"
       }
     }, 
     {
       "Sensor Cache": {
         "Active Preview Sensor Count": "0", 
         "Preview Sensor Count": "0", 
-        "Sensor Count": "855"
+        "Sensor Count": "667"
       }
     }, 
     {
       "String Cache": {
-        "NameData": "831", 
-        "Total String Count": "1725405"
+        "NameData": "824", 
+        "Total String Count": "346376"
       }
     }, 
     {
       "Settings": {
         "AllowOldSessionID": "[unset]", 
-        "Client Count": "4", 
+        "Client Count": "5", 
         "PreFetchRows": "1000", 
         "ServerName": "0.0.0.0", 
         "ServerPort": "17472", 
@@ -203,38 +203,38 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
         "UseTBBAllocator": "[unset]", 
         "UseTBBAllocatorStats": "[unset]", 
         "UseTBBScalingAlignment": "[unset]", 
-        "Version": "6.2.314.3258"
+        "Version": "6.2.314.3279"
       }
     }, 
     {
       "Memory Info": {
         "DoubleFreeCount": "0", 
         "NonTBBFreeCount": "0", 
-        "PageFaultCount": "9454212", 
-        "PagefileUsage": "1366851584", 
-        "PeakPagefileUsage": "1383944192", 
-        "PeakWorkingSetSize": "505.44 MB", 
-        "QuotaPagedPoolUsage": "811800", 
-        "QuotaPeakNonPagedPoolUsage": "5986396", 
-        "QuotaPeakPagedPoolUsage": "811992", 
-        "WorkingSetSize": "451.05 MB"
+        "PageFaultCount": "1546897", 
+        "PagefileUsage": "765468672", 
+        "PeakPagefileUsage": "773259264", 
+        "PeakWorkingSetSize": "374.20 MB", 
+        "QuotaPagedPoolUsage": "556680", 
+        "QuotaPeakNonPagedPoolUsage": "3915784", 
+        "QuotaPeakPagedPoolUsage": "556872", 
+        "WorkingSetSize": "274.84 MB"
       }
     }, 
     {
       "System Performance Info": {
-        "CommitLimit": "2096393", 
-        "CommitPeak": "1012866", 
-        "CommitTotal": "784988", 
-        "HandleCount": "25689", 
-        "KernelNonpaged": "27322", 
-        "KernelPaged": "49807", 
-        "KernelTotal": "77129", 
+        "CommitLimit": "2096394", 
+        "CommitPeak": "541503", 
+        "CommitTotal": "533103", 
+        "HandleCount": "22158", 
+        "KernelNonpaged": "17504", 
+        "KernelPaged": "51899", 
+        "KernelTotal": "69403", 
         "PageSize": "4096", 
-        "PhysicalAvailable": "471026", 
+        "PhysicalAvailable": "642591", 
         "PhysicalTotal": "1048429", 
-        "ProcessCount": "48", 
-        "ProcessThreadCount": "689", 
-        "SystemCache": "356655"
+        "ProcessCount": "46", 
+        "ProcessThreadCount": "680", 
+        "SystemCache": "328086"
       }
     }
   ]
@@ -250,4 +250,4 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
 [TOC](#user-content-toc)
 
 
-###### generated by: `build_bin_doc v1.4.5`, date: Wed Feb 11 17:18:09 2015 EST, Contact info: **Jim Olsen <jim.olsen@tanium.com>**
+###### generated by: `build_bin_doc v1.4.5`, date: Thu Mar 26 09:28:44 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**

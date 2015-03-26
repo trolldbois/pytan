@@ -1,19 +1,37 @@
 
 Ask manual human question sensor with parameters and no supplied parameters
 ==========================================================================================
+
 Ask a manual question using human strings by referencing the name of a single sensor that takes parameters, but not supplying any parameters (and letting pytan automatically determine the appropriate default value for those parameters which require a value).
 
 No sensor filters, sensor parameters, sensor filter options, question filters, or question options supplied.
 
 Example Python Code
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+----------------------------------------------------------------------------------------
 
 .. code-block:: python
     :linenos:
 
 
-    # Path to lib directory which contains pytan package
-    PYTAN_LIB_PATH = '../lib'
+    
+    import os
+    import sys
+    sys.dont_write_bytecode = True
+    
+    # Determine our script name, script dir
+    my_file = os.path.abspath(sys.argv[0])
+    my_dir = os.path.dirname(my_file)
+    
+    # determine the pytan lib dir and add it to the path
+    parent_dir = os.path.dirname(my_dir)
+    pytan_root_dir = os.path.dirname(parent_dir)
+    lib_dir = os.path.join(pytan_root_dir, 'lib')
+    path_adds = [lib_dir]
+    
+    for aa in path_adds:
+        if aa not in sys.path:
+            sys.path.append(aa)
+    
     
     # connection info for Tanium Server
     USERNAME = "Tanium User"
@@ -25,8 +43,7 @@ Example Python Code
     LOGLEVEL = 2
     DEBUGFORMAT = False
     
-    import sys, tempfile
-    sys.path.append(PYTAN_LIB_PATH)
+    import tempfile
     
     import pytan
     handler = pytan.Handler(
@@ -78,54 +95,53 @@ Example Python Code
 
 
 Output from Python Code
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+----------------------------------------------------------------------------------------
 
 .. code-block:: none
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-    2015-02-11 12:00:32,694 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, , No, ] from all machines)
-    2015-02-11 12:00:37,712 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, , No, ] from all machines)
-    2015-02-11 12:00:42,726 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, , No, ] from all machines)
-    2015-02-11 12:00:47,744 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, , No, ] from all machines)
-    2015-02-11 12:00:52,762 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, , No, ] from all machines)
-    2015-02-11 12:00:57,780 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, , No, ] from all machines)
-    2015-02-11 12:01:02,797 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, , No, ] from all machines)
-    2015-02-11 12:01:07,813 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, , No, ] from all machines)
-    2015-02-11 12:01:12,831 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, , No, ] from all machines)
-    2015-02-11 12:01:17,849 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, , No, ] from all machines)
-    2015-02-11 12:01:22,868 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, , No, ] from all machines)
-    2015-02-11 12:01:27,884 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, , No, ] from all machines)
-    2015-02-11 12:01:32,899 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, , No, ] from all machines)
-    2015-02-11 12:01:37,914 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, , No, ] from all machines)
-    2015-02-11 12:01:42,932 INFO     question_progress: Results 50% (Get Folder Name Search with RegEx Match[No, , No, ] from all machines)
-    2015-02-11 12:01:47,951 INFO     question_progress: Results 50% (Get Folder Name Search with RegEx Match[No, , No, ] from all machines)
-    2015-02-11 12:01:52,968 INFO     question_progress: Results 100% (Get Folder Name Search with RegEx Match[No, , No, ] from all machines)
+    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+    2015-03-26 11:41:21,293 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, , No, ] from all machines)
+    2015-03-26 11:41:26,311 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, , No, ] from all machines)
+    2015-03-26 11:41:31,325 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, , No, ] from all machines)
+    2015-03-26 11:41:36,344 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, , No, ] from all machines)
+    2015-03-26 11:41:41,362 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, , No, ] from all machines)
+    2015-03-26 11:41:46,376 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, , No, ] from all machines)
+    2015-03-26 11:41:51,393 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, , No, ] from all machines)
+    2015-03-26 11:41:56,410 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, , No, ] from all machines)
+    2015-03-26 11:42:01,427 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, , No, ] from all machines)
+    2015-03-26 11:42:06,442 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, , No, ] from all machines)
+    2015-03-26 11:42:11,461 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, , No, ] from all machines)
+    2015-03-26 11:42:16,479 INFO     question_progress: Results 50% (Get Folder Name Search with RegEx Match[No, , No, ] from all machines)
+    2015-03-26 11:42:21,503 INFO     question_progress: Results 50% (Get Folder Name Search with RegEx Match[No, , No, ] from all machines)
+    2015-03-26 11:42:26,523 INFO     question_progress: Results 50% (Get Folder Name Search with RegEx Match[No, , No, ] from all machines)
+    2015-03-26 11:42:31,545 INFO     question_progress: Results 50% (Get Folder Name Search with RegEx Match[No, , No, ] from all machines)
+    2015-03-26 11:42:36,564 INFO     question_progress: Results 100% (Get Folder Name Search with RegEx Match[No, , No, ] from all machines)
     
     Type of response:  <type 'dict'>
     
     Pretty print of response:
-    {'question_object': <taniumpy.object_types.question.Question object at 0x105c2aa90>,
-     'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x105b37c90>}
+    {'question_object': <taniumpy.object_types.question.Question object at 0x1075b8210>,
+     'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x107817210>}
     
     Equivalent Question if it were to be asked in the Tanium Console: 
     Get Folder Name Search with RegEx Match[No, , No, ] from all machines
     
     CSV Results of response: 
     Count,"Folder Name Search with RegEx Match[No, , No, ]"
-    23133,[too many results]
+    24707,[too many results]
     1,C:\Windows\winsxs\amd64_microsoft-windows-s..structure.resources_31bf3856ad364e35_6.1.7600.16385_en-us_faf46e6f502e00e8
     1,C:\Windows\winsxs\x86_microsoft-windows-e..-host-authenticator_31bf3856ad364e35_6.1.7601.17514_none_a7c68343f07f776f
     1,C:\Windows\winsxs\amd64_microsoft-windows-ocspsvc_31bf3856ad364e35_6.1.7601.22807_none_3bfeae7293092e4b
     1,C:\Windows\winsxs\amd64_microsoft-windows-c..ityclient.resources_31bf3856ad364e35_6.1.7601.22865_en-us_c339d6d6cfb99c39
+    1,C:\Program Files\Microsoft SQL Server\110\Setup Bootstrap\Update Cache\KB2674319\ServicePack\1033_enu_lp\x64\setup\sqlsupport_msi\windows\winsxs\5z1v718o.6n8
     1,C:\Windows\assembly\NativeImages_v2.0.50727_64\System.Xml
     1,C:\Windows\winsxs\amd64_microsoft-windows-scripting.resources_31bf3856ad364e35_6.1.7600.16385_en-us_e72192b67124ad43
     1,C:\Windows\winsxs\x86_microsoft-windows-mlang.resources_31bf3856ad364e35_6.1.7600.16385_ru-ru_cf3a10abc52740f6
-    1,C:\Windows\winsxs\x86_microsoft-windows-directshow-dvdsupport_31bf3856ad364e35_6.1.7601.21987_none_566a88a44b6e5342
     1,C:\Windows\winsxs\amd64_microsoft-windows-ie-internetexplorer_31bf3856ad364e35_11.2.9600.17041_none_11e6f4b92ee9bf19
+    1,C:\Windows\Installer\$PatchCache$\Managed\1F1FFB6230C555C4C9C7DF5688A9AF07
+    1,C:\Program Files (x86)\Windows Defender
     1,C:\Users\Jim Olsen\AppData\Local\Google
     1,C:\Windows\winsxs\x86_microsoft-windows-e..nt-client.resources_31bf3856ad364e35_6.1.7600.16385_en-us_e5c3d3ec6ff64de3
-    1,C:\Windows\winsxs\amd64_microsoft-windows-d..e-eashared-kjshared_31bf3856ad364e35_6.1.7600.16385_none_99b74194b7347cab
-    1,C:\Windows\assembly\NativeImages_v4.0.30319_32\RadLangSvc
     ..trimmed for brevity..

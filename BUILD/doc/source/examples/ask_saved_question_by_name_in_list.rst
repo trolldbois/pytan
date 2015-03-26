@@ -1,17 +1,35 @@
 
 Ask saved question by name in list
 ==========================================================================================
+
 Ask a saved question by referencing the name of a saved question in a list of strings.
 
 Example Python Code
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+----------------------------------------------------------------------------------------
 
 .. code-block:: python
     :linenos:
 
 
-    # Path to lib directory which contains pytan package
-    PYTAN_LIB_PATH = '../lib'
+    
+    import os
+    import sys
+    sys.dont_write_bytecode = True
+    
+    # Determine our script name, script dir
+    my_file = os.path.abspath(sys.argv[0])
+    my_dir = os.path.dirname(my_file)
+    
+    # determine the pytan lib dir and add it to the path
+    parent_dir = os.path.dirname(my_dir)
+    pytan_root_dir = os.path.dirname(parent_dir)
+    lib_dir = os.path.join(pytan_root_dir, 'lib')
+    path_adds = [lib_dir]
+    
+    for aa in path_adds:
+        if aa not in sys.path:
+            sys.path.append(aa)
+    
     
     # connection info for Tanium Server
     USERNAME = "Tanium User"
@@ -23,8 +41,7 @@ Example Python Code
     LOGLEVEL = 2
     DEBUGFORMAT = False
     
-    import sys, tempfile
-    sys.path.append(PYTAN_LIB_PATH)
+    import tempfile
     
     import pytan
     handler = pytan.Handler(
@@ -76,20 +93,20 @@ Example Python Code
 
 
 Output from Python Code
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+----------------------------------------------------------------------------------------
 
 .. code-block:: none
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-    2015-02-11 11:59:06,384 INFO     question_progress: Results 100% (Get Installed Applications from all machines)
+    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+    2015-03-26 11:37:59,316 INFO     question_progress: Results 100% (Get Installed Applications from all machines)
     
     Type of response:  <type 'dict'>
     
     Pretty print of response:
-    {'question_object': <taniumpy.object_types.saved_question.SavedQuestion object at 0x1059d35d0>,
-     'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x105aab490>}
+    {'question_object': <taniumpy.object_types.saved_question.SavedQuestion object at 0x107608b90>,
+     'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x107646690>}
     
     Equivalent Question if it were to be asked in the Tanium Console: 
     Get Installed Applications from all machines
@@ -98,7 +115,6 @@ Output from Python Code
     Name,Silent Uninstall String,Uninstallable,Version
     Google Search,nothing,Not Uninstallable,37.0.2062.120
     Microsoft Chart Converter,nothing,Not Uninstallable,14.4.7
-    Spotify,nothing,Not Uninstallable,0.9.15.27.g87efe634
     Wish,nothing,Not Uninstallable,8.5.9
     BluetoothUIServer,nothing,Not Uninstallable,4.3.2
     Time Machine,nothing,Not Uninstallable,1.3
@@ -110,4 +126,5 @@ Output from Python Code
     Microsoft Clip Gallery,nothing,Not Uninstallable,14.4.7
     Pass Viewer,nothing,Not Uninstallable,1.0
     PressAndHold,nothing,Not Uninstallable,1.2
+    PluginIM,nothing,Not Uninstallable,15
     ..trimmed for brevity..

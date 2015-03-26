@@ -2,8 +2,25 @@
 """
 Export a group object to a JSON file, adding ' API TEST' to the name of the group before exporting the JSON file and deleting any pre-existing group with the same (new) name, then create a new group object from the exported JSON file
 """
-# Path to lib directory which contains pytan package
-PYTAN_LIB_PATH = '../lib'
+
+import os
+import sys
+sys.dont_write_bytecode = True
+
+# Determine our script name, script dir
+my_file = os.path.abspath(sys.argv[0])
+my_dir = os.path.dirname(my_file)
+
+# determine the pytan lib dir and add it to the path
+parent_dir = os.path.dirname(my_dir)
+pytan_root_dir = os.path.dirname(parent_dir)
+lib_dir = os.path.join(pytan_root_dir, 'lib')
+path_adds = [lib_dir]
+
+for aa in path_adds:
+    if aa not in sys.path:
+        sys.path.append(aa)
+
 
 # connection info for Tanium Server
 USERNAME = "Tanium User"
@@ -15,8 +32,7 @@ PORT = "444"
 LOGLEVEL = 2
 DEBUGFORMAT = False
 
-import sys, tempfile
-sys.path.append(PYTAN_LIB_PATH)
+import tempfile
 
 import pytan
 handler = pytan.Handler(
@@ -88,10 +104,10 @@ print response.to_json(response)
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-2015-02-11 12:06:40,940 INFO     handler: Deleted 'Group, id: 2227'
-2015-02-11 12:06:40,940 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/GroupList_2015_02_11-12_06_40-EST.json' written with 381 bytes
-2015-02-11 12:06:40,960 INFO     handler: New Group, name: 'All Computers API TEST' (ID: 2278) created successfully!
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+2015-03-26 11:49:20,053 INFO     handler: Deleted 'Group, id: 19172'
+2015-03-26 11:49:20,054 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/GroupList_2015_03_26-11_49_20-EDT.json' written with 383 bytes
+2015-03-26 11:49:20,103 INFO     handler: New Group, name: 'All Computers API TEST' (ID: 19224) created successfully!
 
 Type of response:  <class 'taniumpy.object_types.group_list.GroupList'>
 
@@ -105,12 +121,12 @@ print the object returned in JSON format:
     {
       "_type": "group", 
       "and_flag": 0, 
-      "deleted_flag": 1, 
+      "deleted_flag": 0, 
       "filters": {
         "_type": "filters", 
         "filter": []
       }, 
-      "id": 2278, 
+      "id": 19224, 
       "name": "All Computers API TEST", 
       "not_flag": 0, 
       "sub_groups": {

@@ -8,8 +8,25 @@ Also supply filter options that re-fetches any cached data that is older than 36
 
 No question filters or question options supplied.
 """
-# Path to lib directory which contains pytan package
-PYTAN_LIB_PATH = '../lib'
+
+import os
+import sys
+sys.dont_write_bytecode = True
+
+# Determine our script name, script dir
+my_file = os.path.abspath(sys.argv[0])
+my_dir = os.path.dirname(my_file)
+
+# determine the pytan lib dir and add it to the path
+parent_dir = os.path.dirname(my_dir)
+pytan_root_dir = os.path.dirname(parent_dir)
+lib_dir = os.path.join(pytan_root_dir, 'lib')
+path_adds = [lib_dir]
+
+for aa in path_adds:
+    if aa not in sys.path:
+        sys.path.append(aa)
+
 
 # connection info for Tanium Server
 USERNAME = "Tanium User"
@@ -21,8 +38,7 @@ PORT = "444"
 LOGLEVEL = 2
 DEBUGFORMAT = False
 
-import sys, tempfile
-sys.path.append(PYTAN_LIB_PATH)
+import tempfile
 
 import pytan
 handler = pytan.Handler(
@@ -73,16 +89,16 @@ print out
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-2015-02-11 12:02:53,768 INFO     question_progress: Results 0% (Get Operating System contains "Windows" from all machines)
-2015-02-11 12:02:58,784 INFO     question_progress: Results 0% (Get Operating System contains "Windows" from all machines)
-2015-02-11 12:03:03,802 INFO     question_progress: Results 100% (Get Operating System contains "Windows" from all machines)
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+2015-03-26 11:44:17,799 INFO     question_progress: Results 0% (Get Operating System contains "Windows" from all machines)
+2015-03-26 11:44:22,824 INFO     question_progress: Results 0% (Get Operating System contains "Windows" from all machines)
+2015-03-26 11:44:27,844 INFO     question_progress: Results 100% (Get Operating System contains "Windows" from all machines)
 
 Type of response:  <type 'dict'>
 
 Pretty print of response:
-{'question_object': <taniumpy.object_types.question.Question object at 0x1059d2650>,
- 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x1059f44d0>}
+{'question_object': <taniumpy.object_types.question.Question object at 0x10760f9d0>,
+ 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x107856050>}
 
 Equivalent Question if it were to be asked in the Tanium Console: 
 Get Operating System contains "Windows" from all machines

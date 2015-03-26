@@ -1,17 +1,35 @@
 
 Create whitelisted url from json
 ==========================================================================================
+
 Export a whitelisted url object to a JSON file, adding ' test1' to the url_regex of the whitelisted url before exporting the JSON file and deleting any pre-existing whitelisted url with the same (new) name, then create a new whitelisted url object from the exported JSON file
 
 Example Python Code
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+----------------------------------------------------------------------------------------
 
 .. code-block:: python
     :linenos:
 
 
-    # Path to lib directory which contains pytan package
-    PYTAN_LIB_PATH = '../lib'
+    
+    import os
+    import sys
+    sys.dont_write_bytecode = True
+    
+    # Determine our script name, script dir
+    my_file = os.path.abspath(sys.argv[0])
+    my_dir = os.path.dirname(my_file)
+    
+    # determine the pytan lib dir and add it to the path
+    parent_dir = os.path.dirname(my_dir)
+    pytan_root_dir = os.path.dirname(parent_dir)
+    lib_dir = os.path.join(pytan_root_dir, 'lib')
+    path_adds = [lib_dir]
+    
+    for aa in path_adds:
+        if aa not in sys.path:
+            sys.path.append(aa)
+    
     
     # connection info for Tanium Server
     USERNAME = "Tanium User"
@@ -23,8 +41,7 @@ Example Python Code
     LOGLEVEL = 2
     DEBUGFORMAT = False
     
-    import sys, tempfile
-    sys.path.append(PYTAN_LIB_PATH)
+    import tempfile
     
     import pytan
     handler = pytan.Handler(
@@ -97,16 +114,16 @@ Example Python Code
 
 
 Output from Python Code
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+----------------------------------------------------------------------------------------
 
 .. code-block:: none
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-    2015-02-11 12:06:40,898 INFO     handler: Deleted 'WhiteListedUrl, id: 15'
-    2015-02-11 12:06:40,899 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/WhiteListedUrlList_2015_02_11-12_06_40-EST.json' written with 198 bytes
-    2015-02-11 12:06:40,911 INFO     handler: New WhiteListedUrl, id: 17 (ID: 17) created successfully!
+    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+    2015-03-26 11:49:19,986 INFO     handler: Deleted 'WhiteListedUrl, id: 1026'
+    2015-03-26 11:49:19,986 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/WhiteListedUrlList_2015_03_26-11_49_19-EDT.json' written with 198 bytes
+    2015-03-26 11:49:20,006 INFO     handler: New WhiteListedUrl, id: 1028 (ID: 1028) created successfully!
     
     Type of response:  <class 'taniumpy.object_types.white_listed_url_list.WhiteListedUrlList'>
     
@@ -120,7 +137,7 @@ Output from Python Code
         {
           "_type": "white_listed_url", 
           "download_seconds": 86400, 
-          "id": 17, 
+          "id": 1028, 
           "url_regex": "test1 API TEST"
         }
       ]

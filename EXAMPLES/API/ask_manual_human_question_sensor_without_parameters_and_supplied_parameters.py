@@ -4,8 +4,25 @@ Ask a manual question using human strings by referencing the name of a single se
 
 No sensor filters, sensor filter options, question filters, or question options supplied.
 """
-# Path to lib directory which contains pytan package
-PYTAN_LIB_PATH = '../lib'
+
+import os
+import sys
+sys.dont_write_bytecode = True
+
+# Determine our script name, script dir
+my_file = os.path.abspath(sys.argv[0])
+my_dir = os.path.dirname(my_file)
+
+# determine the pytan lib dir and add it to the path
+parent_dir = os.path.dirname(my_dir)
+pytan_root_dir = os.path.dirname(parent_dir)
+lib_dir = os.path.join(pytan_root_dir, 'lib')
+path_adds = [lib_dir]
+
+for aa in path_adds:
+    if aa not in sys.path:
+        sys.path.append(aa)
+
 
 # connection info for Tanium Server
 USERNAME = "Tanium User"
@@ -17,8 +34,7 @@ PORT = "444"
 LOGLEVEL = 2
 DEBUGFORMAT = False
 
-import sys, tempfile
-sys.path.append(PYTAN_LIB_PATH)
+import tempfile
 
 import pytan
 handler = pytan.Handler(
@@ -69,24 +85,38 @@ print out
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-2015-02-11 11:59:57,363 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-2015-02-11 12:00:02,379 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-2015-02-11 12:00:07,391 INFO     question_progress: Results 100% (Get Computer Name from all machines)
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+2015-03-26 11:39:40,593 INFO     question_progress: Results 0% (Get Computer Name[Dweedle] from all machines)
+2015-03-26 11:39:45,610 INFO     question_progress: Results 0% (Get Computer Name[Dweedle] from all machines)
+2015-03-26 11:39:50,628 INFO     question_progress: Results 0% (Get Computer Name[Dweedle] from all machines)
+2015-03-26 11:39:55,642 INFO     question_progress: Results 0% (Get Computer Name[Dweedle] from all machines)
+2015-03-26 11:40:00,657 INFO     question_progress: Results 0% (Get Computer Name[Dweedle] from all machines)
+2015-03-26 11:40:05,675 INFO     question_progress: Results 0% (Get Computer Name[Dweedle] from all machines)
+2015-03-26 11:40:10,689 INFO     question_progress: Results 0% (Get Computer Name[Dweedle] from all machines)
+2015-03-26 11:40:15,705 INFO     question_progress: Results 0% (Get Computer Name[Dweedle] from all machines)
+2015-03-26 11:40:20,718 INFO     question_progress: Results 0% (Get Computer Name[Dweedle] from all machines)
+2015-03-26 11:40:25,732 INFO     question_progress: Results 0% (Get Computer Name[Dweedle] from all machines)
+2015-03-26 11:40:30,747 INFO     question_progress: Results 0% (Get Computer Name[Dweedle] from all machines)
+2015-03-26 11:40:35,763 INFO     question_progress: Results 0% (Get Computer Name[Dweedle] from all machines)
+2015-03-26 11:40:40,778 INFO     question_progress: Results 0% (Get Computer Name[Dweedle] from all machines)
+2015-03-26 11:40:45,791 INFO     question_progress: Results 0% (Get Computer Name[Dweedle] from all machines)
+2015-03-26 11:40:50,806 INFO     question_progress: Results 0% (Get Computer Name[Dweedle] from all machines)
+2015-03-26 11:40:55,823 INFO     question_progress: Results 50% (Get Computer Name[Dweedle] from all machines)
+2015-03-26 11:41:00,839 INFO     question_progress: Results 100% (Get Computer Name[Dweedle] from all machines)
 
 Type of response:  <type 'dict'>
 
 Pretty print of response:
-{'question_object': <taniumpy.object_types.question.Question object at 0x105a59a50>,
- 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x105c557d0>}
+{'question_object': <taniumpy.object_types.question.Question object at 0x10762aa10>,
+ 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x10760f290>}
 
 Equivalent Question if it were to be asked in the Tanium Console: 
-Get Computer Name from all machines
+Get Computer Name[Dweedle] from all machines
 
 CSV Results of response: 
-Computer Name
-Casus-Belli.local
-jtanium1.localdomain
+Computer Name[Dweedle]
+[no results]
+JTANIUM1
 
 
 '''

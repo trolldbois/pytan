@@ -1,17 +1,35 @@
 
 Invalid deploy action run false
 ==========================================================================================
+
 Deploy an action without run=True, which will only run the pre-deploy action question that matches action_filters, export the results to a file, and raise a RunFalse exception
 
 Example Python Code
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+----------------------------------------------------------------------------------------
 
 .. code-block:: python
     :linenos:
 
 
-    # Path to lib directory which contains pytan package
-    PYTAN_LIB_PATH = '../lib'
+    
+    import os
+    import sys
+    sys.dont_write_bytecode = True
+    
+    # Determine our script name, script dir
+    my_file = os.path.abspath(sys.argv[0])
+    my_dir = os.path.dirname(my_file)
+    
+    # determine the pytan lib dir and add it to the path
+    parent_dir = os.path.dirname(my_dir)
+    pytan_root_dir = os.path.dirname(parent_dir)
+    lib_dir = os.path.join(pytan_root_dir, 'lib')
+    path_adds = [lib_dir]
+    
+    for aa in path_adds:
+        if aa not in sys.path:
+            sys.path.append(aa)
+    
     
     # connection info for Tanium Server
     USERNAME = "Tanium User"
@@ -23,8 +41,7 @@ Example Python Code
     LOGLEVEL = 2
     DEBUGFORMAT = False
     
-    import sys, tempfile
-    sys.path.append(PYTAN_LIB_PATH)
+    import tempfile
     
     import pytan
     handler = pytan.Handler(
@@ -56,22 +73,23 @@ Example Python Code
 
 
 Output from Python Code
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+----------------------------------------------------------------------------------------
 
 .. code-block:: none
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-    2015-02-11 12:06:19,976 INFO     question_progress: Results 0% (Get Computer Name and Online = "True" from all machines)
-    2015-02-11 12:06:24,991 INFO     question_progress: Results 100% (Get Computer Name and Online = "True" from all machines)
-    2015-02-11 12:06:25,005 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/VERIFY_BEFORE_DEPLOY_ACTION_ResultSet_2015_02_11-12_06_25-EST.csv' written with 73 bytes
+    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+    2015-03-26 11:48:58,305 INFO     question_progress: Results 0% (Get Computer Name and Online = "True" from all machines)
+    2015-03-26 11:49:03,333 INFO     question_progress: Results 50% (Get Computer Name and Online = "True" from all machines)
+    2015-03-26 11:49:08,354 INFO     question_progress: Results 100% (Get Computer Name and Online = "True" from all machines)
+    2015-03-26 11:49:08,376 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/VERIFY_BEFORE_DEPLOY_ACTION_ResultSet_2015_03_26-11_49_08-EDT.csv' written with 73 bytes
     Traceback (most recent call last):
-      File "<string>", line 39, in <module>
-      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1176, in deploy_action_human
+      File "<string>", line 55, in <module>
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1193, in deploy_action_human
         **kwargs
-      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1017, in deploy_action
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1034, in deploy_action
         raise RunFalse(m(report_path, len(result)))
     RunFalse: 'Run' is not True!!
-    View and verify the contents of /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/VERIFY_BEFORE_DEPLOY_ACTION_ResultSet_2015_02_11-12_06_25-EST.csv (length: 73 bytes)
+    View and verify the contents of /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/VERIFY_BEFORE_DEPLOY_ACTION_ResultSet_2015_03_26-11_49_08-EDT.csv (length: 73 bytes)
     Re-run this deploy action with run=True after verifying

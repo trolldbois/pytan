@@ -828,11 +828,11 @@ Create Group from JSON Options:
 <li>Save the results to a JSON file</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>get_group.py -u <span class="pl-s1"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s1"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s1"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 --id 1 --file <span class="pl-s1"><span class="pl-pds">"</span>/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json<span class="pl-pds">"</span></span> json</pre></div>
+<div class="highlight highlight-bash"><pre>get_group.py -u <span class="pl-s"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 --id 1 --file <span class="pl-s"><span class="pl-pds">"</span>/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json<span class="pl-pds">"</span></span> json</pre></div>
 
-<pre><code>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+<pre><code>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
 Found items:  GroupList, len: 1
-Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written with 372 bytes
+Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written with 1024 bytes
 </code></pre>
 
 <ul>
@@ -861,11 +861,11 @@ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written 
   "group": [
     {
       "_type": "group", 
-      "and_flag": 0, 
+      "and_flag": 1, 
       "deleted_flag": 0, 
       "filters": {
         "_type": "filters", 
-        "filter": []
+        "filter": [
 ...trimmed for brevity...
 </code></pre>
 
@@ -878,26 +878,47 @@ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written 
 <li>Add CMDLINE TEST to name or url_regex in the JSON file</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>perl -p -i -e <span class="pl-s1"><span class="pl-pds">'</span>s/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 3562"/gm<span class="pl-pds">'</span></span> /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json <span class="pl-k">&amp;&amp;</span> cat /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json</pre></div>
+<div class="highlight highlight-bash"><pre>perl -p -i -e <span class="pl-s"><span class="pl-pds">'</span>s/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 1591"/gm<span class="pl-pds">'</span></span> /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json <span class="pl-k">&amp;&amp;</span> cat /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json</pre></div>
 
 <pre><code>{
   "_type": "groups", 
   "group": [
     {
       "_type": "group", 
-      "and_flag": 0, 
+      "and_flag": 1, 
       "deleted_flag": 0, 
       "filters": {
         "_type": "filters", 
-        "filter": []
+        "filter": [
+          {
+            "_type": "filter", 
+            "all_times_flag": 0, 
+            "all_values_flag": 0, 
+            "delimiter_index": 0, 
+            "ignore_case_flag": 1, 
+            "max_age_seconds": 0, 
+            "not_flag": 0, 
+            "operator": "RegexMatch", 
+            "sensor": {
+              "_type": "sensor", 
+              "hash": 1569955801
+            }, 
+            "substring_flag": 0, 
+            "substring_length": 0, 
+            "substring_start": 0, 
+            "utf8_flag": 0, 
+            "value": ".*open.*", 
+            "value_type": "String"
+          }
+        ]
       }, 
       "id": 1, 
-      "name": "All Computers CMDLINE TEST 3562", 
       "not_flag": 0, 
       "sub_groups": {
         "_type": "groups", 
         "group": []
       }, 
+      "text": " Unencrypted Wireless Networks contains \"open\"", 
       "type": 0
     }
   ]
@@ -930,10 +951,10 @@ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written 
 <h1>
 <a id="user-content-create-a-new-group-from-the-modified-json-file" class="anchor" href="#create-a-new-group-from-the-modified-json-file" aria-hidden="true"><span class="octicon octicon-link"></span></a>Create a new group from the modified JSON file</h1>
 
-<div class="highlight highlight-bash"><pre>create_group_from_json.py -u <span class="pl-s1"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s1"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s1"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 -j <span class="pl-s1"><span class="pl-pds">"</span>/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json<span class="pl-pds">"</span></span></pre></div>
+<div class="highlight highlight-bash"><pre>create_group_from_json.py -u <span class="pl-s"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 -j <span class="pl-s"><span class="pl-pds">"</span>/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-Created item: Group, name: 'All Computers CMDLINE TEST 3562', ID: 2447
+<pre><code>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+Created item: Group, id: 19133, ID: 19133
 </code></pre>
 
 <ul>
@@ -950,7 +971,7 @@ Created item: Group, name: 'All Computers CMDLINE TEST 3562', ID: 2447
 <p><a href="#user-content-toc">TOC</a></p>
 
 <h6>
-<a id="user-content-generated-by-build_bin_doc-v145-date-wed-feb-11-171236-2015-est-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v145-date-wed-feb-11-171236-2015-est-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v1.4.5</code>, date: Wed Feb 11 17:12:36 2015 EST, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
+<a id="user-content-generated-by-build_bin_doc-v145-date-thu-mar-26-092619-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v145-date-thu-mar-26-092619-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v1.4.5</code>, date: Thu Mar 26 09:26:19 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
 </h6>
 
 </body></html>

@@ -828,9 +828,9 @@ Create Sensor from JSON Options:
 <li>Save the results to a JSON file</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>get_sensor.py -u <span class="pl-s1"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s1"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s1"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 --id 1 --file <span class="pl-s1"><span class="pl-pds">"</span>/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json<span class="pl-pds">"</span></span> json</pre></div>
+<div class="highlight highlight-bash"><pre>get_sensor.py -u <span class="pl-s"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 --id 1 --file <span class="pl-s"><span class="pl-pds">"</span>/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json<span class="pl-pds">"</span></span> json</pre></div>
 
-<pre><code>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+<pre><code>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
 Found items:  SensorList, len: 1
 Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written with 781 bytes
 </code></pre>
@@ -878,7 +878,7 @@ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written 
 <li>Add CMDLINE TEST to name or url_regex in the JSON file</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>perl -p -i -e <span class="pl-s1"><span class="pl-pds">'</span>s/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 5430"/gm<span class="pl-pds">'</span></span> /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json <span class="pl-k">&amp;&amp;</span> cat /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json</pre></div>
+<div class="highlight highlight-bash"><pre>perl -p -i -e <span class="pl-s"><span class="pl-pds">'</span>s/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 2083"/gm<span class="pl-pds">'</span></span> /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json <span class="pl-k">&amp;&amp;</span> cat /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json</pre></div>
 
 <pre><code>{
   "_type": "sensors", 
@@ -893,7 +893,7 @@ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written 
       "id": 1, 
       "ignore_case_flag": 1, 
       "max_age_seconds": 3600, 
-      "name": "Action Statuses CMDLINE TEST 5430", 
+      "name": "Action Statuses CMDLINE TEST 2083", 
       "queries": {
         "_type": "queries", 
         "query": [
@@ -906,7 +906,7 @@ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written 
         ]
       }, 
       "source_id": 0, 
-      "string_count": 3805, 
+      "string_count": 7100, 
       "value_type": "String"
     }
   ]
@@ -939,10 +939,10 @@ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written 
 <h1>
 <a id="user-content-create-a-new-sensor-from-the-modified-json-file" class="anchor" href="#create-a-new-sensor-from-the-modified-json-file" aria-hidden="true"><span class="octicon octicon-link"></span></a>Create a new sensor from the modified JSON file</h1>
 
-<div class="highlight highlight-bash"><pre>create_sensor_from_json.py -u <span class="pl-s1"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s1"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s1"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 -j <span class="pl-s1"><span class="pl-pds">"</span>/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json<span class="pl-pds">"</span></span></pre></div>
+<div class="highlight highlight-bash"><pre>create_sensor_from_json.py -u <span class="pl-s"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 -j <span class="pl-s"><span class="pl-pds">"</span>/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-Created item: Sensor, name: 'Action Statuses CMDLINE TEST 5430', ID: 843
+<pre><code>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+Created item: Sensor, name: 'Action Statuses CMDLINE TEST 2083', ID: 1826
 </code></pre>
 
 <ul>
@@ -959,7 +959,7 @@ Created item: Sensor, name: 'Action Statuses CMDLINE TEST 5430', ID: 843
 <p><a href="#user-content-toc">TOC</a></p>
 
 <h6>
-<a id="user-content-generated-by-build_bin_doc-v145-date-wed-feb-11-171240-2015-est-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v145-date-wed-feb-11-171240-2015-est-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v1.4.5</code>, date: Wed Feb 11 17:12:40 2015 EST, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
+<a id="user-content-generated-by-build_bin_doc-v145-date-thu-mar-26-092623-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v145-date-thu-mar-26-092623-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v1.4.5</code>, date: Thu Mar 26 09:26:23 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
 </h6>
 
 </body></html>
