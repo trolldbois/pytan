@@ -13,6 +13,8 @@ This is a proof of concept showing how to use the following workflow using Taniu
 
 No Results return for Computer ID (perhaps getresultdata too soon)
 Add expire_seconds to package deploy
+
+This is a POC of a workflow and is not meant for general use, but as an example.
 '''
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
 __version__ = '1.0.3'
