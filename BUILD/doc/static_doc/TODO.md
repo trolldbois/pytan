@@ -1,6 +1,7 @@
 # TODO NOW
   * [ ] broken CR in folder name search regex match (SMALL)
   * [ ] add secondary loop for if any data == current result unavail/etc (MEDIUM)
+  * [ ] add timeout passthru from handler -> session (MEDIUM)
   * [ ] change get logic to use cache_filters instead of objectlist for object selection (HUGE)
 
 # TANIUMPY BACKPORTS:
@@ -8,6 +9,8 @@
   * [ ] in request_body_template.xml:       {cache_filters}
   * [ ] in session.py: utf-8 fix
   * [ ] add xml_fix to BaseType.py
+  * [ ] increase timeout to 15
+  * [ ] try/except for celementtree
 
 # TODO LATER
   * [?] Add method to get question progress (MEDIUM)
