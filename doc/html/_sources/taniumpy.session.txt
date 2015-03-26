@@ -6,3 +6,5 @@ taniumpy.session module
     :members:
     :undoc-members:
     :show-inheritance:
+
+.. toctree::

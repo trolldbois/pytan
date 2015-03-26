@@ -1,5 +1,5 @@
 taniumpy package
-================
+----------------------------------------
 
 .. automodule:: taniumpy
     :show-inheritance:
@@ -9,8 +9,6 @@ taniumpy package
     :special-members:
 
 .. toctree::
-   :maxdepth: 3
-   :numbered:
 
    taniumpy.session
    taniumpy.question_asker

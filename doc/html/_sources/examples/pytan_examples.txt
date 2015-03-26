@@ -1,12 +1,10 @@
 
 pytan API examples
-----------------------------------------------------------------------------------------
+========================================================================================
 
 .. toctree::
-   :maxdepth: 3
-   :numbered:
 
-   pytan_api_basic_handler_example.rst
+   pytan_api_basic_handler_example
    valid_questions
    invalid_questions
    valid_get_objects

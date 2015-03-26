@@ -2,8 +2,25 @@
 """
 Create a user called API Test User
 """
-# Path to lib directory which contains pytan package
-PYTAN_LIB_PATH = '../lib'
+
+import os
+import sys
+sys.dont_write_bytecode = True
+
+# Determine our script name, script dir
+my_file = os.path.abspath(sys.argv[0])
+my_dir = os.path.dirname(my_file)
+
+# determine the pytan lib dir and add it to the path
+parent_dir = os.path.dirname(my_dir)
+pytan_root_dir = os.path.dirname(parent_dir)
+lib_dir = os.path.join(pytan_root_dir, 'lib')
+path_adds = [lib_dir]
+
+for aa in path_adds:
+    if aa not in sys.path:
+        sys.path.append(aa)
+
 
 # connection info for Tanium Server
 USERNAME = "Tanium User"
@@ -15,8 +32,7 @@ PORT = "444"
 LOGLEVEL = 2
 DEBUGFORMAT = False
 
-import sys, tempfile
-sys.path.append(PYTAN_LIB_PATH)
+import tempfile
 
 import pytan
 handler = pytan.Handler(
@@ -72,9 +88,9 @@ except Exception as e:
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
 No results found searching for user with {'name': 'API Test User'}!!
-2015-02-11 12:06:40,249 INFO     handler: New user 'API Test User' created with ID 15, roles: ['Administrator']
+2015-03-26 11:49:18,767 INFO     handler: New user 'API Test User' created with ID 1015, roles: ['Administrator']
 
 Type of response:  <class 'taniumpy.object_types.user.User'>
 
@@ -86,7 +102,7 @@ print the object returned in JSON format:
   "_type": "user", 
   "deleted_flag": 0, 
   "group_id": 0, 
-  "id": 15, 
+  "id": 1015, 
   "last_login": "2001-01-01T00:00:00", 
   "metadata": {
     "_type": "metadata", 
@@ -120,6 +136,6 @@ print the object returned in JSON format:
     ]
   }
 }
-2015-02-11 12:06:40,267 INFO     handler: Deleted "User, name: 'API Test User'"
+2015-03-26 11:49:18,797 INFO     handler: Deleted "User, name: 'API Test User'"
 
 '''

@@ -1,17 +1,35 @@
 
 Create saved question from json
 ==========================================================================================
+
 Export a saved question object to a JSON file, adding ' API TEST' to the name of the saved question before exporting the JSON file and deleting any pre-existing saved question with the same (new) name, then create a new saved question object from the exported JSON file
 
 Example Python Code
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+----------------------------------------------------------------------------------------
 
 .. code-block:: python
     :linenos:
 
 
-    # Path to lib directory which contains pytan package
-    PYTAN_LIB_PATH = '../lib'
+    
+    import os
+    import sys
+    sys.dont_write_bytecode = True
+    
+    # Determine our script name, script dir
+    my_file = os.path.abspath(sys.argv[0])
+    my_dir = os.path.dirname(my_file)
+    
+    # determine the pytan lib dir and add it to the path
+    parent_dir = os.path.dirname(my_dir)
+    pytan_root_dir = os.path.dirname(parent_dir)
+    lib_dir = os.path.join(pytan_root_dir, 'lib')
+    path_adds = [lib_dir]
+    
+    for aa in path_adds:
+        if aa not in sys.path:
+            sys.path.append(aa)
+    
     
     # connection info for Tanium Server
     USERNAME = "Tanium User"
@@ -23,8 +41,7 @@ Example Python Code
     LOGLEVEL = 2
     DEBUGFORMAT = False
     
-    import sys, tempfile
-    sys.path.append(PYTAN_LIB_PATH)
+    import tempfile
     
     import pytan
     handler = pytan.Handler(
@@ -97,16 +114,16 @@ Example Python Code
 
 
 Output from Python Code
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+----------------------------------------------------------------------------------------
 
 .. code-block:: none
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-    2015-02-11 12:06:40,614 INFO     handler: Deleted 'SavedQuestion, id: 183'
-    2015-02-11 12:06:40,615 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/SavedQuestionList_2015_02_11-12_06_40-EST.json' written with 4601 bytes
-    2015-02-11 12:06:40,642 INFO     handler: New SavedQuestion, name: 'Run Unmanaged Asset Scan on All Machines API TEST' (ID: 184) created successfully!
+    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+    2015-03-26 11:49:19,419 INFO     handler: Deleted 'SavedQuestion, id: 11657'
+    2015-03-26 11:49:19,421 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/SavedQuestionList_2015_03_26-11_49_19-EDT.json' written with 4601 bytes
+    2015-03-26 11:49:19,457 INFO     handler: New SavedQuestion, name: 'Run Unmanaged Asset Scan on All Machines API TEST' (ID: 11658) created successfully!
     
     Type of response:  <class 'taniumpy.object_types.saved_question_list.SavedQuestionList'>
     
@@ -126,12 +143,12 @@ Output from Python Code
           }, 
           "expire_seconds": 600, 
           "hidden_flag": 0, 
-          "id": 184, 
+          "id": 11658, 
           "issue_seconds": 120, 
           "issue_seconds_never_flag": 0, 
           "keep_seconds": 0, 
           "mod_time": "2000-01-01T00:00:00", 
-          "most_recent_question_id": 10953, 
+          "most_recent_question_id": 32605, 
           "name": "Run Unmanaged Asset Scan on All Machines API TEST", 
           "packages": {
             "_type": "package_specs", 
@@ -142,11 +159,11 @@ Output from Python Code
           "question": {
             "_type": "question", 
             "action_tracking_flag": 0, 
-            "expiration": "2015-02-11T15:33:46", 
+            "expiration": "2015-03-26T15:16:00", 
             "expire_seconds": 0, 
             "force_computer_id_flag": 0, 
             "hidden_flag": 0, 
-            "id": 10953, 
+            "id": 32605, 
             "management_rights_group": {
               "_type": "group", 
               "id": 0
@@ -154,7 +171,7 @@ Output from Python Code
             "query_text": "Get Is Windows from all machines", 
             "saved_question": {
               "_type": "saved_question", 
-              "id": 1
+              "id": 11658
             }, 
             "selects": {
               "_type": "selects", 
@@ -181,7 +198,7 @@ Output from Python Code
                   "sensor": {
                     "_type": "sensor", 
                     "category": "Operating System", 
-                    "creation_time": "2015-01-05T20:22:01", 
+                    "creation_time": "2015-03-03T19:03:34", 
                     "delimiter": ",", 
                     "description": "Returns whether the machine runs Windows.  True if so, False if not.\nExample: True", 
                     "exclude_from_parse_flag": 0, 
@@ -202,7 +219,7 @@ Output from Python Code
                         }
                       ]
                     }, 
-                    "modification_time": "2015-01-05T20:22:01", 
+                    "modification_time": "2015-03-03T19:03:34", 
                     "name": "Is Windows", 
                     "queries": {
                       "_type": "queries", 

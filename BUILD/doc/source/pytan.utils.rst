@@ -166,3 +166,5 @@ Utility Functions: Definition objects
 .. autofunction:: pytan.utils.val_package_def
 .. autofunction:: pytan.utils.val_q_filter_defs
 .. autofunction:: pytan.utils.val_sensor_defs
+
+.. toctree::

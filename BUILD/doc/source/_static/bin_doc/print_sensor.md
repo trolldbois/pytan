@@ -75,23 +75,23 @@ print_server_info.py -u 'Tanium User' -p 'T@n!um' --host '172.16.31.128' --logle
 ```
 
 ```
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
 Diagnostics: 
   Action History Cache: 
     Action Stop Count: 0
-    Actions: 348
+    Actions: 2017
   Active Question Cache: 
     Active Client Estimate: 2
-    Active Question Estimate: 91
+    Active Question Estimate: 38
   Authenticator: 
-    TotalSessions: 1893
+    TotalSessions: 377
     ActiveSessions: 1
     OldSessions: 0
   Data Interface: 
-    Sensor Bytes Per Second Limit: 0
+    Sensor Bytes Per Second Limit: 5242880
     Reg Connection Count: 0
-    Sensor Connection Limit: 0
+    Sensor Connection Limit: 8
     Sensor Connection Count: 0
     License Seat Cap: 60
     Sensor Bytes Sent Since Last Time: 0
@@ -101,19 +101,19 @@ Diagnostics:
     Download Connection Limit: 1000
     Download Connection Count: 0
   Group Cache: 
-    GroupsTempSensors: 28
-    QuestionSubGroups: 2929
-    QuestionFilterSpecs: 128
-    SavedQuestionTextCount: 193
-    GroupCount: 1456
+    GroupsTempSensors: 7
+    QuestionSubGroups: 3746
+    QuestionFilterSpecs: 93
+    SavedQuestionTextCount: 184
+    GroupCount: 3635
     QuestionTextCount: 0
-    FilterSpecCount: 297
-    QuestionSelectSpecs: 6262
-    SelectSpecCount: 4077
+    FilterSpecCount: 4496
+    QuestionSelectSpecs: 2076
+    SelectSpecCount: 7343
   Network: 
-    Allocated SendOp Count: 1609
+    Allocated SendOp Count: 767
     Concurrency Threads: 34
-    SendOpReady HeadCount: 1609
+    SendOpReady HeadCount: 767
     Min Available Threads: 0
     Allocated SendOp Limit: 0
     SendOpReady FreeCount: 0
@@ -125,20 +125,20 @@ Diagnostics:
     Queue Completion Timeout: 1000
     Threads Reset Interval: 0
   Package Cache: 
-    Package Count: 132
-    Package File Count: 508
+    Package Count: 465
+    Package File Count: 571
   Plugin Cache: 
     Plugin Definition Count: 9
   Question History: 
     History Limit Days: 7
-    Last Question ID: 11478
-    Last Saved Question ID: 196
-    Question Count: 6128
+    Last Question ID: 32494
+    Last Saved Question ID: 11656
+    Question Count: 1887
   SOAP Network: 
-    Allocated SendOp Count: 2
+    Allocated SendOp Count: 1
     Concurrency Threads: 10
-    SendOpReady HeadCount: 2
-    Min Available Threads: 0
+    SendOpReady HeadCount: 1
+    Min Available Threads: 6
     Allocated SendOp Limit: 0
     SendOpReady FreeCount: 0
     Idle Threads: 9
@@ -150,55 +150,55 @@ Diagnostics:
     Threads Reset Interval: 0
   SOAP Server: 
     Connections: 1
-    SOAP Handlers: 3
+    SOAP Handlers: 2
     Use Compression: 1
     Using IPv6: 1
   SOAP Snapshots: 
-    Snapshot Count: 27
+    Snapshot Count: 26
   Sensor Cache: 
     Preview Sensor Count: 0
     Active Preview Sensor Count: 0
-    Sensor Count: 855
+    Sensor Count: 667
   String Cache: 
-    NameData: 831
-    Total String Count: 1725405
+    NameData: 824
+    Total String Count: 346376
   Settings: 
     UseTBBScalingAlignment: [unset]
-    Client Count: 4
+    Client Count: 5
     ServerName: 0.0.0.0
     ServerSOAPPort: 444
     AllowOldSessionID: [unset]
     UseSOAPIOCP: [unset]
-    Version: 6.2.314.3258
+    Version: 6.2.314.3279
     ServerPort: 17472
     UseTBBAllocator: [unset]
     PreFetchRows: 1000
     UseTBBAllocatorStats: [unset]
   Memory Info: 
     NonTBBFreeCount: 0
-    QuotaPagedPoolUsage: 811800
-    QuotaPeakPagedPoolUsage: 811992
-    PageFaultCount: 9454210
-    PeakWorkingSetSize: 505.44 MB
-    QuotaPeakNonPagedPoolUsage: 5986396
-    PeakPagefileUsage: 1383944192
-    PagefileUsage: 1366851584
+    QuotaPagedPoolUsage: 556680
+    QuotaPeakPagedPoolUsage: 556872
+    PageFaultCount: 1546894
+    PeakWorkingSetSize: 374.20 MB
+    QuotaPeakNonPagedPoolUsage: 3915784
+    PeakPagefileUsage: 773259264
+    PagefileUsage: 765468672
     DoubleFreeCount: 0
-    WorkingSetSize: 451.05 MB
+    WorkingSetSize: 274.84 MB
   System Performance Info: 
     PhysicalTotal: 1048429
     PageSize: 4096
-    HandleCount: 25688
-    KernelPaged: 49807
-    CommitTotal: 784989
-    ProcessThreadCount: 689
-    SystemCache: 356655
-    CommitPeak: 1012866
-    PhysicalAvailable: 471032
-    ProcessCount: 48
-    KernelTotal: 77129
-    KernelNonpaged: 27322
-    CommitLimit: 2096393
+    HandleCount: 22161
+    KernelPaged: 51899
+    CommitTotal: 533104
+    ProcessThreadCount: 680
+    SystemCache: 328056
+    CommitPeak: 541503
+    PhysicalAvailable: 642597
+    ProcessCount: 46
+    KernelTotal: 69403
+    KernelNonpaged: 17504
+    CommitLimit: 2096394
 ```
 
   * Validation Test: exitcode
@@ -210,4 +210,4 @@ Diagnostics:
 [TOC](#user-content-toc)
 
 
-###### generated by: `build_bin_doc v1.4.5`, date: Wed Feb 11 17:18:08 2015 EST, Contact info: **Jim Olsen <jim.olsen@tanium.com>**
+###### generated by: `build_bin_doc v1.4.5`, date: Thu Mar 26 09:28:44 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**

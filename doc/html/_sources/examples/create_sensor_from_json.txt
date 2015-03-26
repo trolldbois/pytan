@@ -1,17 +1,35 @@
 
 Create sensor from json
 ==========================================================================================
+
 Export a sensor object to a JSON file, adding ' API TEST' to the name of the sensor before exporting the JSON file and deleting any pre-existing sensor with the same (new) name, then create a new sensor object from the exported JSON file
 
 Example Python Code
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+----------------------------------------------------------------------------------------
 
 .. code-block:: python
     :linenos:
 
 
-    # Path to lib directory which contains pytan package
-    PYTAN_LIB_PATH = '../lib'
+    
+    import os
+    import sys
+    sys.dont_write_bytecode = True
+    
+    # Determine our script name, script dir
+    my_file = os.path.abspath(sys.argv[0])
+    my_dir = os.path.dirname(my_file)
+    
+    # determine the pytan lib dir and add it to the path
+    parent_dir = os.path.dirname(my_dir)
+    pytan_root_dir = os.path.dirname(parent_dir)
+    lib_dir = os.path.join(pytan_root_dir, 'lib')
+    path_adds = [lib_dir]
+    
+    for aa in path_adds:
+        if aa not in sys.path:
+            sys.path.append(aa)
+    
     
     # connection info for Tanium Server
     USERNAME = "Tanium User"
@@ -23,8 +41,7 @@ Example Python Code
     LOGLEVEL = 2
     DEBUGFORMAT = False
     
-    import sys, tempfile
-    sys.path.append(PYTAN_LIB_PATH)
+    import tempfile
     
     import pytan
     handler = pytan.Handler(
@@ -97,16 +114,16 @@ Example Python Code
 
 
 Output from Python Code
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+----------------------------------------------------------------------------------------
 
 .. code-block:: none
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-    2015-02-11 12:06:40,777 INFO     handler: Deleted 'Sensor, id: 831'
-    2015-02-11 12:06:40,778 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/SensorList_2015_02_11-12_06_40-EST.json' written with 15857 bytes
-    2015-02-11 12:06:40,815 INFO     handler: New Sensor, name: 'Folder Name Search with RegEx Match API TEST' (ID: 833) created successfully!
+    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+    2015-03-26 11:49:19,750 INFO     handler: Deleted 'Sensor, id: 1828'
+    2015-03-26 11:49:19,751 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/SensorList_2015_03_26-11_49_19-EDT.json' written with 15857 bytes
+    2015-03-26 11:49:19,821 INFO     handler: New Sensor, name: 'Folder Name Search with RegEx Match API TEST' (ID: 1830) created successfully!
     
     Type of response:  <class 'taniumpy.object_types.sensor_list.SensorList'>
     
@@ -120,13 +137,13 @@ Output from Python Code
         {
           "_type": "sensor", 
           "category": "File System", 
-          "creation_time": "2015-02-11T17:06:40", 
+          "creation_time": "2015-03-26T15:49:19", 
           "delimiter": ",", 
           "description": "Finds the specified folder and provides the full path if the folder exists on the client machine. Takes regular expression to match.\nExample: C:\\WINDOWS\\System32", 
           "exclude_from_parse_flag": 1, 
           "hash": 839342978, 
           "hidden_flag": 0, 
-          "id": 833, 
+          "id": 1830, 
           "ignore_case_flag": 1, 
           "last_modified_by": "Tanium User", 
           "max_age_seconds": 600, 
@@ -141,9 +158,9 @@ Output from Python Code
               }
             ]
           }, 
-          "modification_time": "2015-02-11T17:06:40", 
+          "modification_time": "2015-03-26T15:49:19", 
           "name": "Folder Name Search with RegEx Match API TEST", 
-          "parameter_definition": "{\"parameters\":[{\"restrict\":null,\"validationExpressions\":[{\"flags\":\"\",\"expression\":\"\\\\S{3}\",\"helpString\":\"Value must be at least 3 characters\",\"model\":\"com.tanium.models::ValidationExpression\",\"parameterType\":\"com.tanium.models::ValidationExpression\"}],\"helpString\":\"Enter the folder name to search for\",\"value\":\"\",\"promptText\":\"e.g Program Files\",\"defaultValue\":\"\",\"label\":\"Search for Folder Name\",\"maxChars\":0,\"key\":\"dirname\",\"model\":\"com.tanium.components.parameters::TextInputParameter\",\"parameterType\":\"com.tanium.components.parameters::TextInputParameter\"},{\"restrict\":null,\"validationExpressions\":[{\"flags\":\"\",\"expression\":\"\\\\S{3}\",\"helpString\":\"Value must be at least 3 characters\",\"model\":\"com.tanium.models::ValidationExpression\",\"parameterType\":\"com.tanium.models::ValidationExpression\"}],\"helpString\":\"Enter the regular expression to search for.\",\"value\":\"\",\"promptText\":\"e.g. test*.exe\",\"defaultValue\":\"\",\"label\":\"Regular Expression\",\"maxChars\":0,\"key\":\"regexp\",\"model\":\"com.tanium.components.parameters::TextInputParameter\",\"parameterType\":\"com.tanium.components.parameters::TextInputParameter\"},{\"helpString\":\"Enter Yes/No for case sensitivity of search.\",\"value\":\"\",\"promptText\":\"\",\"defaultValue\":\"\",\"requireSelection\":true,\"label\":\"Case sensitive?\",\"key\":\"casesensitive\",\"values\":[\"No\",\"Yes\"],\"model\":\"com.tanium.components.parameters::DropDownParameter\",\"parameterType\":\"com.tanium.components.parameters::DropDownParameter\"},{\"helpString\":\"Enter Yes/No whether the search is global.\",\"value\":\"\",\"promptText\":\"\",\"defaultValue\":\"\",\"requireSelection\":true,\"label\":\"Global\",\"key\":\"global\",\"values\":[\"No\",\"Yes\"],\"model\":\"com.tanium.components.parameters::DropDownParameter\",\"parameterType\":\"com.tanium.components.parameters::DropDownParameter\"}],\"model\":\"com.tanium.components.parameters::ParametersArray\",\"parameterType\":\"com.tanium.components.parameters::ParametersArray\"}", 
+          "parameter_definition": "{\"parameters\":[{\"label\":\"Search for Folder Name\",\"maxChars\":0,\"restrict\":null,\"validationExpressions\":[{\"helpString\":\"Value must be at least 3 characters\",\"expression\":\"\\\\S{3}\",\"flags\":\"\",\"model\":\"com.tanium.models::ValidationExpression\",\"parameterType\":\"com.tanium.models::ValidationExpression\"}],\"value\":\"\",\"helpString\":\"Enter the folder name to search for\",\"promptText\":\"e.g Program Files\",\"defaultValue\":\"\",\"key\":\"dirname\",\"model\":\"com.tanium.components.parameters::TextInputParameter\",\"parameterType\":\"com.tanium.components.parameters::TextInputParameter\"},{\"label\":\"Regular Expression\",\"maxChars\":0,\"restrict\":null,\"validationExpressions\":[{\"helpString\":\"Value must be at least 3 characters\",\"expression\":\"\\\\S{3}\",\"flags\":\"\",\"model\":\"com.tanium.models::ValidationExpression\",\"parameterType\":\"com.tanium.models::ValidationExpression\"}],\"value\":\"\",\"helpString\":\"Enter the regular expression to search for.\",\"promptText\":\"e.g. test*.exe\",\"defaultValue\":\"\",\"key\":\"regexp\",\"model\":\"com.tanium.components.parameters::TextInputParameter\",\"parameterType\":\"com.tanium.components.parameters::TextInputParameter\"},{\"label\":\"Case sensitive?\",\"values\":[\"No\",\"Yes\"],\"value\":\"\",\"helpString\":\"Enter Yes/No for case sensitivity of search.\",\"requireSelection\":true,\"promptText\":\"\",\"defaultValue\":\"\",\"key\":\"casesensitive\",\"model\":\"com.tanium.components.parameters::DropDownParameter\",\"parameterType\":\"com.tanium.components.parameters::DropDownParameter\"},{\"label\":\"Global\",\"values\":[\"No\",\"Yes\"],\"value\":\"\",\"helpString\":\"Enter Yes/No whether the search is global.\",\"requireSelection\":true,\"promptText\":\"\",\"defaultValue\":\"\",\"key\":\"global\",\"model\":\"com.tanium.components.parameters::DropDownParameter\",\"parameterType\":\"com.tanium.components.parameters::DropDownParameter\"}],\"model\":\"com.tanium.components.parameters::ParametersArray\",\"parameterType\":\"com.tanium.components.parameters::ParametersArray\"}", 
           "queries": {
             "_type": "queries", 
             "query": [

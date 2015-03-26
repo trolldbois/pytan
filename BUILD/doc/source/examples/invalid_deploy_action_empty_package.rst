@@ -1,17 +1,35 @@
 
 Invalid deploy action empty package
 ==========================================================================================
+
 Deploy an action using an empty package string.
 
 Example Python Code
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+----------------------------------------------------------------------------------------
 
 .. code-block:: python
     :linenos:
 
 
-    # Path to lib directory which contains pytan package
-    PYTAN_LIB_PATH = '../lib'
+    
+    import os
+    import sys
+    sys.dont_write_bytecode = True
+    
+    # Determine our script name, script dir
+    my_file = os.path.abspath(sys.argv[0])
+    my_dir = os.path.dirname(my_file)
+    
+    # determine the pytan lib dir and add it to the path
+    parent_dir = os.path.dirname(my_dir)
+    pytan_root_dir = os.path.dirname(parent_dir)
+    lib_dir = os.path.join(pytan_root_dir, 'lib')
+    path_adds = [lib_dir]
+    
+    for aa in path_adds:
+        if aa not in sys.path:
+            sys.path.append(aa)
+    
     
     # connection info for Tanium Server
     USERNAME = "Tanium User"
@@ -23,8 +41,7 @@ Example Python Code
     LOGLEVEL = 2
     DEBUGFORMAT = False
     
-    import sys, tempfile
-    sys.path.append(PYTAN_LIB_PATH)
+    import tempfile
     
     import pytan
     handler = pytan.Handler(
@@ -57,17 +74,17 @@ Example Python Code
 
 
 Output from Python Code
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+----------------------------------------------------------------------------------------
 
 .. code-block:: none
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
     Traceback (most recent call last):
-      File "<string>", line 40, in <module>
-      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1170, in deploy_action_human
+      File "<string>", line 56, in <module>
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1187, in deploy_action_human
         package_def = utils.dehumanize_package(package)
-      File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 1334, in dehumanize_package
+      File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 1333, in dehumanize_package
         raise HumanParserError(err(package))
     HumanParserError: u'' must be a string supplied as 'package'

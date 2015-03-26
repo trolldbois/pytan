@@ -1,6 +1,7 @@
 
 Ask manual human question sensor with parameters and filter and options
 ==========================================================================================
+
 Ask a manual question using human strings by referencing the name of a single sensor that takes parameters, but supplying only two of the four parameters that are used by the sensor.
 
 Also supply a sensor filter that limits the column data that is shown to values that match the regex '.*Shared.*', and a sensor filter option that re-fetches any cached data that is older than 3600 seconds.
@@ -8,14 +9,31 @@ Also supply a sensor filter that limits the column data that is shown to values 
 No question filters or question options supplied.
 
 Example Python Code
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+----------------------------------------------------------------------------------------
 
 .. code-block:: python
     :linenos:
 
 
-    # Path to lib directory which contains pytan package
-    PYTAN_LIB_PATH = '../lib'
+    
+    import os
+    import sys
+    sys.dont_write_bytecode = True
+    
+    # Determine our script name, script dir
+    my_file = os.path.abspath(sys.argv[0])
+    my_dir = os.path.dirname(my_file)
+    
+    # determine the pytan lib dir and add it to the path
+    parent_dir = os.path.dirname(my_dir)
+    pytan_root_dir = os.path.dirname(parent_dir)
+    lib_dir = os.path.join(pytan_root_dir, 'lib')
+    path_adds = [lib_dir]
+    
+    for aa in path_adds:
+        if aa not in sys.path:
+            sys.path.append(aa)
+    
     
     # connection info for Tanium Server
     USERNAME = "Tanium User"
@@ -27,8 +45,7 @@ Example Python Code
     LOGLEVEL = 2
     DEBUGFORMAT = False
     
-    import sys, tempfile
-    sys.path.append(PYTAN_LIB_PATH)
+    import tempfile
     
     import pytan
     handler = pytan.Handler(
@@ -80,32 +97,32 @@ Example Python Code
 
 
 Output from Python Code
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+----------------------------------------------------------------------------------------
 
 .. code-block:: none
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-    2015-02-11 12:02:23,563 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines)
-    2015-02-11 12:02:28,582 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines)
-    2015-02-11 12:02:33,600 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines)
-    2015-02-11 12:02:38,616 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines)
-    2015-02-11 12:02:43,634 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines)
-    2015-02-11 12:02:48,651 INFO     question_progress: Results 50% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines)
-    2015-02-11 12:02:53,669 INFO     question_progress: Results 100% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines)
+    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+    2015-03-26 11:43:47,532 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, , Microsoft.*] contains "Shared" from all machines)
+    2015-03-26 11:43:52,555 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, , Microsoft.*] contains "Shared" from all machines)
+    2015-03-26 11:43:57,573 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, , Microsoft.*] contains "Shared" from all machines)
+    2015-03-26 11:44:02,596 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, , Microsoft.*] contains "Shared" from all machines)
+    2015-03-26 11:44:07,620 INFO     question_progress: Results 50% (Get Folder Name Search with RegEx Match[No, Program Files, No, , Microsoft.*] contains "Shared" from all machines)
+    2015-03-26 11:44:12,644 INFO     question_progress: Results 50% (Get Folder Name Search with RegEx Match[No, Program Files, No, , Microsoft.*] contains "Shared" from all machines)
+    2015-03-26 11:44:17,662 INFO     question_progress: Results 100% (Get Folder Name Search with RegEx Match[No, Program Files, No, , Microsoft.*] contains "Shared" from all machines)
     
     Type of response:  <type 'dict'>
     
     Pretty print of response:
-    {'question_object': <taniumpy.object_types.question.Question object at 0x1059f4510>,
-     'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x1059de110>}
+    {'question_object': <taniumpy.object_types.question.Question object at 0x1076129d0>,
+     'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x107856950>}
     
     Equivalent Question if it were to be asked in the Tanium Console: 
-    Get Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" from all machines
+    Get Folder Name Search with RegEx Match[No, Program Files, No, , Microsoft.*] contains "Shared" from all machines
     
     CSV Results of response: 
-    "Folder Name Search with RegEx Match[No, Program Files, No, ]"
+    "Folder Name Search with RegEx Match[No, Program Files, No, , Microsoft.*]"
     [no results]
     C:\Program Files\Common Files\Microsoft Shared\VS7Debug
     C:\Program Files\Common Files\Microsoft Shared\ink\ar-SA
@@ -113,11 +130,11 @@ Output from Python Code
     C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\keypad
     C:\Program Files\Common Files\Microsoft Shared\ink
     C:\Program Files\Common Files\Microsoft Shared\ink\sv-SE
+    C:\Program Files\Microsoft SQL Server\110\Setup Bootstrap\Update Cache\KB2977326\GDR\1033_enu_lp\x64\setup\sqlsupport_msi\pfiles32\sqlservr\110\shared
     C:\Program Files\Common Files\Microsoft Shared\ink\uk-UA
     C:\Program Files\Common Files\Microsoft Shared\ink\sl-SI
     C:\Program Files\Common Files\Microsoft Shared\ink\hu-HU
     C:\Program Files\Common Files\Microsoft Shared\ink\zh-TW
     C:\Program Files\Common Files\Microsoft Shared\ink\zh-CN
     C:\Program Files\Common Files\Microsoft Shared\ink\fi-FI
-    C:\Program Files\Common Files\Microsoft Shared
     ..trimmed for brevity..

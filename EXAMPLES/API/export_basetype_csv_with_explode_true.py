@@ -2,8 +2,25 @@
 """
 Export a BaseType from getting objects as CSV with true for explode_json_string_values
 """
-# Path to lib directory which contains pytan package
-PYTAN_LIB_PATH = '../lib'
+
+import os
+import sys
+sys.dont_write_bytecode = True
+
+# Determine our script name, script dir
+my_file = os.path.abspath(sys.argv[0])
+my_dir = os.path.dirname(my_file)
+
+# determine the pytan lib dir and add it to the path
+parent_dir = os.path.dirname(my_dir)
+pytan_root_dir = os.path.dirname(parent_dir)
+lib_dir = os.path.join(pytan_root_dir, 'lib')
+path_adds = [lib_dir]
+
+for aa in path_adds:
+    if aa not in sys.path:
+        sys.path.append(aa)
+
 
 # connection info for Tanium Server
 USERNAME = "Tanium User"
@@ -15,8 +32,7 @@ PORT = "444"
 LOGLEVEL = 2
 DEBUGFORMAT = False
 
-import sys, tempfile
-sys.path.append(PYTAN_LIB_PATH)
+import tempfile
 
 import pytan
 handler = pytan.Handler(
@@ -64,14 +80,14 @@ print out
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
 
 print the export_str returned from export_obj():
 category,creation_time,delimiter,description,exclude_from_parse_flag,hash,hidden_flag,id,ignore_case_flag,last_modified_by,max_age_seconds,metadata_item_0_admin_flag,metadata_item_0_name,metadata_item_0_value,modification_time,name,parameter_definition_model,parameter_definition_parameterType,parameter_definition_parameters_0_defaultValue,parameter_definition_parameters_0_helpString,parameter_definition_parameters_0_key,parameter_definition_parameters_0_label,parameter_definition_parameters_0_maxChars,parameter_definition_parameters_0_model,parameter_definition_parameters_0_parameterType,parameter_definition_parameters_0_promptText,parameter_definition_parameters_0_restrict,parameter_definition_parameters_0_validationExpressions_0_expression,parameter_definition_parameters_0_validationExpressions_0_flags,parameter_definition_parameters_0_validationExpressions_0_helpString,parameter_definition_parameters_0_validationExpressions_0_model,parameter_definition_parameters_0_validationExpressions_0_parameterType,parameter_definition_parameters_0_value,parameter_definition_parameters_1_defaultValue,parameter_definition_parameters_1_helpString,parameter_definition_parameters_1_key,parameter_definition_parameters_1_label,parameter_definition_parameters_1_maxChars,parameter_definition_parameters_1_model,parameter_definition_parameters_1_parameterType,parameter_definition_parameters_1_promptText,parameter_definition_parameters_1_restrict,parameter_definition_parameters_1_validationExpressions_0_expression,parameter_definition_parameters_1_validationExpressions_0_flags,parameter_definition_parameters_1_validationExpressions_0_helpString,parameter_definition_parameters_1_validationExpressions_0_model,parameter_definition_parameters_1_validationExpressions_0_parameterType,parameter_definition_parameters_1_value,parameter_definition_parameters_2_defaultValue,parameter_definition_parameters_2_helpString,parameter_definition_parameters_2_key,parameter_definition_parameters_2_label,parameter_definition_parameters_2_model,parameter_definition_parameters_2_parameterType,parameter_definition_parameters_2_promptText,parameter_definition_parameters_2_requireSelection,parameter_definition_parameters_2_value,parameter_definition_parameters_2_values_0,parameter_definition_parameters_2_values_1,parameter_definition_parameters_3_defaultValue,parameter_definition_parameters_3_helpString,parameter_definition_parameters_3_key,parameter_definition_parameters_3_label,parameter_definition_parameters_3_model,parameter_definition_parameters_3_parameterType,parameter_definition_parameters_3_promptText,parameter_definition_parameters_3_requireSelection,parameter_definition_parameters_3_value,parameter_definition_parameters_3_values_0,parameter_definition_parameters_3_values_1,queries_query_0_platform,queries_query_0_script,queries_query_0_script_type,queries_query_1_platform,queries_query_1_script,queries_query_1_script_type,queries_query_2_platform,queries_query_2_script,queries_query_2_script_type,source_id,string_count,subcolumns_subcolumn_0_hidden_flag,subcolumns_subcolumn_0_ignore_case_flag,subcolumns_subcolumn_0_index,subcolumns_subcolumn_0_name,subcolumns_subcolumn_0_value_type,subcolumns_subcolumn_1_hidden_flag,subcolumns_subcolumn_1_ignore_case_flag,subcolumns_subcolumn_1_index,subcolumns_subcolumn_1_name,subcolumns_subcolumn_1_value_type,subcolumns_subcolumn_2_hidden_flag,subcolumns_subcolumn_2_ignore_case_flag,subcolumns_subcolumn_2_index,subcolumns_subcolumn_2_name,subcolumns_subcolumn_2_value_type,subcolumns_subcolumn_3_hidden_flag,subcolumns_subcolumn_3_ignore_case_flag,subcolumns_subcolumn_3_index,subcolumns_subcolumn_3_name,subcolumns_subcolumn_3_value_type,subcolumns_subcolumn_4_hidden_flag,subcolumns_subcolumn_4_ignore_case_flag,subcolumns_subcolumn_4_index,subcolumns_subcolumn_4_name,subcolumns_subcolumn_4_value_type,subcolumns_subcolumn_5_hidden_flag,subcolumns_subcolumn_5_ignore_case_flag,subcolumns_subcolumn_5_index,subcolumns_subcolumn_5_name,subcolumns_subcolumn_5_value_type,value_type
 Reserved,,,"The assigned name of the client machine.
-Example: workstation-1.company.com",0,3409330187,0,3,1,,86400,,,,,Computer Name,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Windows,select CSName from win32_operatingsystem,WMIQuery,,,,,,,0,7,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,String
-Network,2015-01-05T20:22:05,|,"Returns IPv4 network routes, filtered to exclude noise. With Flags, Metric, Interface columns.
-Example:  172.16.0.0|192.168.1.1|255.255.0.0|UG|100|eth0",1,435227963,0,737,1,Jim Olsen,60,0,defined,Tanium,2015-01-05T20:22:05,IP Route Details,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Windows,"strComputer = &quot;.&quot;
+Example: workstation-1.company.com",0,3409330187,0,3,1,,86400,,,,,Computer Name,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Windows,select CSName from win32_operatingsystem,WMIQuery,,,,,,,0,9,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,String
+Network,2015-03-03T19:03:36,|,"Returns IPv4 network routes, filtered to exclude noise. With Flags, Metric, Interface columns.
+Example:  172.16.0.0|192.168.1.1|255.255.0.0|UG|100|eth0",1,435227963,0,737,1,Jim Olsen,60,0,defined,Tanium,2015-03-03T19:03:36,IP Route Details,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Windows,"strComputer = &quot;.&quot;
 Set objWMIService = GetObject(&quot;winmgmts:&quot; _
     &amp; &quot;{impersonationLevel=impersonate}!\\&quot; &amp; strComputer &amp; &quot;\root\cimv2&quot;)
 

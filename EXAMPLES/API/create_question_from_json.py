@@ -2,8 +2,25 @@
 """
 Export a question object to a JSON file, then create a new question object from the exported JSON file. Questions can not be deleted, so do not delete it. This will, in effect, 're-ask' a question.
 """
-# Path to lib directory which contains pytan package
-PYTAN_LIB_PATH = '../lib'
+
+import os
+import sys
+sys.dont_write_bytecode = True
+
+# Determine our script name, script dir
+my_file = os.path.abspath(sys.argv[0])
+my_dir = os.path.dirname(my_file)
+
+# determine the pytan lib dir and add it to the path
+parent_dir = os.path.dirname(my_dir)
+pytan_root_dir = os.path.dirname(parent_dir)
+lib_dir = os.path.join(pytan_root_dir, 'lib')
+path_adds = [lib_dir]
+
+for aa in path_adds:
+    if aa not in sys.path:
+        sys.path.append(aa)
+
 
 # connection info for Tanium Server
 USERNAME = "Tanium User"
@@ -15,8 +32,7 @@ PORT = "444"
 LOGLEVEL = 2
 DEBUGFORMAT = False
 
-import sys, tempfile
-sys.path.append(PYTAN_LIB_PATH)
+import tempfile
 
 import pytan
 handler = pytan.Handler(
@@ -88,9 +104,9 @@ print response.to_json(response)
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-2015-02-11 12:06:40,855 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/QuestionList_2015_02_11-12_06_40-EST.json' written with 775 bytes
-2015-02-11 12:06:40,870 INFO     handler: New Question, id: 11084 (ID: 11084) created successfully!
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+2015-03-26 11:49:19,898 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/QuestionList_2015_03_26-11_49_19-EDT.json' written with 775 bytes
+2015-03-26 11:49:19,928 INFO     handler: New Question, id: 32660 (ID: 32660) created successfully!
 
 Type of response:  <class 'taniumpy.object_types.question_list.QuestionList'>
 
@@ -108,11 +124,11 @@ print the object returned in JSON format:
         "_type": "group", 
         "id": 0
       }, 
-      "expiration": "2015-02-11T17:16:41", 
+      "expiration": "2015-03-26T15:59:20", 
       "expire_seconds": 0, 
       "force_computer_id_flag": 0, 
       "hidden_flag": 0, 
-      "id": 11084, 
+      "id": 32660, 
       "management_rights_group": {
         "_type": "group", 
         "id": 0

@@ -2,8 +2,25 @@
 """
 Get all saved actions
 """
-# Path to lib directory which contains pytan package
-PYTAN_LIB_PATH = '../lib'
+
+import os
+import sys
+sys.dont_write_bytecode = True
+
+# Determine our script name, script dir
+my_file = os.path.abspath(sys.argv[0])
+my_dir = os.path.dirname(my_file)
+
+# determine the pytan lib dir and add it to the path
+parent_dir = os.path.dirname(my_dir)
+pytan_root_dir = os.path.dirname(parent_dir)
+lib_dir = os.path.join(pytan_root_dir, 'lib')
+path_adds = [lib_dir]
+
+for aa in path_adds:
+    if aa not in sys.path:
+        sys.path.append(aa)
+
 
 # connection info for Tanium Server
 USERNAME = "Tanium User"
@@ -15,8 +32,7 @@ PORT = "444"
 LOGLEVEL = 2
 DEBUGFORMAT = False
 
-import sys, tempfile
-sys.path.append(PYTAN_LIB_PATH)
+import tempfile
 
 import pytan
 handler = pytan.Handler(
@@ -61,15 +77,15 @@ print out
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
 
 Type of response:  <class 'taniumpy.object_types.saved_action_list.SavedActionList'>
 
 print of response:
-SavedActionList, len: 42
+SavedActionList, len: 1688
 
 length of response (number of objects returned): 
-42
+1688
 
 print the first object returned in JSON format:
 {
@@ -77,16 +93,16 @@ print the first object returned in JSON format:
   "action_group_id": 0, 
   "cache_row_id": 0, 
   "comment": "Scans for unmanaged assets on the network.", 
-  "creation_time": "2015-01-05T20:23:38", 
+  "creation_time": "2015-03-03T19:05:56", 
   "distribute_seconds": 600, 
   "end_time": "Never", 
   "expire_seconds": 1800, 
   "id": 1, 
-  "issue_count": 192, 
+  "issue_count": 224, 
   "issue_seconds": 3600, 
   "last_action": {
     "_type": "action", 
-    "id": 1366, 
+    "id": 21075, 
 ..trimmed for brevity..
 
 '''
