@@ -5,3 +5,5 @@ pytan.constants module
     :members:
     :undoc-members:
     :show-inheritance:
+
+.. toctree::

@@ -1,5 +1,5 @@
 ddt module
-================
+----------------------------------------
 
 .. automodule:: ddt
     :show-inheritance:
@@ -9,5 +9,3 @@ ddt module
     :special-members:
 
 .. toctree::
-   :maxdepth: 3
-   :numbered:
