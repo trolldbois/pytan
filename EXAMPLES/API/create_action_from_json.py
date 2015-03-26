@@ -2,8 +2,25 @@
 """
 Export an action object to a JSON file, then create a new action object from the exported JSON file. Actions can not be deleted, so do not delete it. This will, in effect, 're-deploy' an action.
 """
-# Path to lib directory which contains pytan package
-PYTAN_LIB_PATH = '../lib'
+
+import os
+import sys
+sys.dont_write_bytecode = True
+
+# Determine our script name, script dir
+my_file = os.path.abspath(sys.argv[0])
+my_dir = os.path.dirname(my_file)
+
+# determine the pytan lib dir and add it to the path
+parent_dir = os.path.dirname(my_dir)
+pytan_root_dir = os.path.dirname(parent_dir)
+lib_dir = os.path.join(pytan_root_dir, 'lib')
+path_adds = [lib_dir]
+
+for aa in path_adds:
+    if aa not in sys.path:
+        sys.path.append(aa)
+
 
 # connection info for Tanium Server
 USERNAME = "Tanium User"
@@ -15,8 +32,7 @@ PORT = "444"
 LOGLEVEL = 2
 DEBUGFORMAT = False
 
-import sys, tempfile
-sys.path.append(PYTAN_LIB_PATH)
+import tempfile
 
 import pytan
 handler = pytan.Handler(
@@ -88,9 +104,9 @@ print response.to_json(response)
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-2015-02-11 12:06:40,662 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/ActionList_2015_02_11-12_06_40-EST.json' written with 1221 bytes
-2015-02-11 12:06:40,735 INFO     handler: New Action, name: 'Unmanaged Asset Tracking - Run Scan' (ID: 1373) created successfully!
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+2015-03-26 11:49:19,488 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/ActionList_2015_03_26-11_49_19-EDT.json' written with 1314 bytes
+2015-03-26 11:49:19,676 INFO     handler: New Action, name: 'Unmanaged Asset Tracking - Run Scan' (ID: 21080) created successfully!
 
 Type of response:  <class 'taniumpy.object_types.action_list.ActionList'>
 
@@ -109,15 +125,15 @@ print the object returned in JSON format:
         "name": "Default"
       }, 
       "comment": "Scans for unmanaged assets on the network.", 
-      "creation_time": "2015-02-11T17:06:40", 
+      "creation_time": "2015-03-26T15:49:19", 
       "distribute_seconds": 600, 
-      "expiration_time": "2015-02-09T05:22:09", 
+      "expiration_time": "2015-03-03T19:55:56", 
       "expire_seconds": 3000, 
       "history_saved_question": {
         "_type": "saved_question", 
-        "id": 180
+        "id": 11652
       }, 
-      "id": 1373, 
+      "id": 21080, 
       "name": "Unmanaged Asset Tracking - Run Scan", 
       "package_spec": {
         "_type": "package_spec", 
@@ -127,22 +143,22 @@ print the object returned in JSON format:
       }, 
       "saved_action": {
         "_type": "saved_action", 
-        "id": 47
+        "id": 14804
       }, 
       "skip_lock_flag": 0, 
-      "start_time": "2015-02-09T04:32:09", 
-      "status": "Active", 
+      "start_time": "2015-03-03T19:05:56", 
+      "status": "Expired", 
       "stopped_flag": 0, 
       "target_group": {
         "_type": "group", 
-        "id": 65, 
+        "id": 64, 
         "name": "Default"
       }, 
       "user": {
         "_type": "user", 
         "group_id": 0, 
         "id": 2, 
-        "last_login": "2015-02-09T04:32:09", 
+        "last_login": "2015-03-26T08:12:04", 
         "name": "Tanium User"
       }
     }

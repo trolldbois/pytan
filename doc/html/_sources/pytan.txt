@@ -14,12 +14,11 @@ pytan package
 .. autodata:: pytan.__author__
 
 .. toctree::
-   :maxdepth: 3
-   :numbered:
 
-   examples/pytan_examples.rst
+   examples/pytan_examples
    pytan.handler
    pytan.constants
    pytan.utils
    pytan.unittest
    pytan.functest
+

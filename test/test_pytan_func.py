@@ -59,7 +59,7 @@ def spew(m):
 class InvalidServerTests(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    def setUpClass(cls): # noqa
         cls.__http = threaded_http.threaded_http(
             port=4433, verbosity=TESTVERBOSITY
         )
@@ -85,7 +85,7 @@ class InvalidServerTests(unittest.TestCase):
 class ValidServerTests(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    def setUpClass(cls): # noqa
         cls.handler = pytan.Handler(**SERVER_INFO)
 
         # create whitelisted_urls for getobject tests
@@ -144,6 +144,7 @@ class ValidServerTests(unittest.TestCase):
         spew(s('export_obj', kwargs))
 
         export_str = handler.export_obj(**kwargs)
+        print export_str.splitlines()
         self.assertTrue(export_str)
         self.assertIsInstance(export_str, (str, unicode))
         for x in tests:
@@ -190,9 +191,9 @@ class ValidServerTests(unittest.TestCase):
 
         ret = getattr(handler, method)(**args)
         self.assertIsInstance(ret['action_object'], taniumpy.Action)
-        self.assertTrue(ret['pre_action_question_results'])
         get_results = args.get('get_results', True)
         if get_results:
+            self.assertTrue(ret['pre_action_question_results'])
             self.assertIsInstance(ret['action_results'], taniumpy.ResultSet)
             self.assertTrue(ret['action_progress_human'])
             self.assertTrue(ret['action_progress_map'])

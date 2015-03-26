@@ -33,7 +33,7 @@ from pytan.utils import DefinitionParserError
 from pytan.utils import HandlerError
 
 # control the amount of output from unittests
-TESTVERBOSITY = 10
+TESTVERBOSITY = 1
 
 # have unittest exit immediately on unexpected error
 FAILFAST = True
@@ -1019,7 +1019,7 @@ class TestManualQuestionFilterDefValidateUtils(unittest.TestCase):
 class TestManualBuildObjectUtils(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    def setUpClass(cls): # noqa
         def load_sensor(n):
             sensor_obj_json_path = os.path.join(my_dir, n)
             sensor_obj_json = json.load(open(sensor_obj_json_path))
@@ -1078,7 +1078,7 @@ class TestManualBuildObjectUtils(unittest.TestCase):
 
     def test_build_selectlist_obj_noparamssensorobj_withparams(self):
         '''builds a selectlist object using a sensor obj with no params,
-        but passing in params (which should be ignored)'''
+        but passing in params (which should be added as of 1.0.4)'''
 
         sensor_defs = [
             {
@@ -1106,17 +1106,17 @@ class TestManualBuildObjectUtils(unittest.TestCase):
         kwargs = {'sensor_defs': sensor_defs}
 
         r = utils.build_selectlist_obj(**kwargs)
-
+        print r.to_json(r)
         self.assertIsInstance(r, taniumpy.SelectList)
         self.assertIsInstance(r.select[0], taniumpy.Select)
         self.assertEqual(len(r.select), 1)
         self.assertIsInstance(r.select[0].filter, taniumpy.Filter)
         self.assertIsInstance(r.select[0].sensor, taniumpy.Sensor)
         self.assertEqual(
-            r.select[0].sensor.hash, self.sensor_obj_no_params.hash)
+            r.select[0].sensor.source_id, self.sensor_obj_no_params.id)
         self.assertEqual(
-            r.select[0].filter.sensor.hash, self.sensor_obj_no_params.hash)
-        self.assertIsNone(r.select[0].sensor.parameters)
+            r.select[0].filter.sensor.id, self.sensor_obj_no_params.id)
+        self.assertTrue(r.select[0].sensor.parameters)
         self.assertEqual(r.select[0].filter.operator, 'RegexMatch')
         self.assertEqual(r.select[0].filter.not_flag, 0)
         self.assertEqual(r.select[0].filter.value, '.*')
@@ -1442,6 +1442,25 @@ class TestGenericUtils(unittest.TestCase):
         )
         with self.assertRaisesRegexp(HandlerError, e):
             utils.get_obj_map(obj)
+
+
+class TestDeserializeBadXML(unittest.TestCase):
+    def test_bad_chars_basetype(self):
+        a = open(os.path.join(my_dir, 'bad_chars_basetype.xml'), 'rb+').read()
+        b = pytan.taniumpy.session.xml_fix(a)
+        c = pytan.taniumpy.BaseType.fromSOAPBody(b)
+        self.assertTrue(c)
+        self.assertIsInstance(c, taniumpy.SystemStatusList)
+
+    def test_bad_chars_resultset(self):
+        a = open(os.path.join(my_dir, 'bad_chars_resultset.xml'), 'rb+').read()
+        b = pytan.taniumpy.session.xml_fix(a)
+        el = pytan.taniumpy.session.ET.fromstring(b)
+        cdata = el.find('.//ResultXML')
+        rd = pytan.taniumpy.session.ET.fromstring(pytan.taniumpy.session.xml_fix(cdata.text))
+        c = pytan.taniumpy.ResultSet.fromSOAPElement(rd)
+        self.assertTrue(c)
+        self.assertIsInstance(c, taniumpy.ResultSet)
 
 
 if __name__ == "__main__":

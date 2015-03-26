@@ -4,8 +4,25 @@ Ask a manual question using human strings by referencing the name of multiple se
 
 No sensor filters, sensor parameters, sensor filter options, question filters, or question options supplied.
 """
-# Path to lib directory which contains pytan package
-PYTAN_LIB_PATH = '../lib'
+
+import os
+import sys
+sys.dont_write_bytecode = True
+
+# Determine our script name, script dir
+my_file = os.path.abspath(sys.argv[0])
+my_dir = os.path.dirname(my_file)
+
+# determine the pytan lib dir and add it to the path
+parent_dir = os.path.dirname(my_dir)
+pytan_root_dir = os.path.dirname(parent_dir)
+lib_dir = os.path.join(pytan_root_dir, 'lib')
+path_adds = [lib_dir]
+
+for aa in path_adds:
+    if aa not in sys.path:
+        sys.path.append(aa)
+
 
 # connection info for Tanium Server
 USERNAME = "Tanium User"
@@ -17,8 +34,7 @@ PORT = "444"
 LOGLEVEL = 2
 DEBUGFORMAT = False
 
-import sys, tempfile
-sys.path.append(PYTAN_LIB_PATH)
+import tempfile
 
 import pytan
 handler = pytan.Handler(
@@ -69,17 +85,17 @@ print out
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-2015-02-11 11:59:11,806 INFO     question_progress: Results 0% (Get Computer Name and Installed Applications from all machines)
-2015-02-11 11:59:16,825 INFO     question_progress: Results 0% (Get Computer Name and Installed Applications from all machines)
-2015-02-11 11:59:21,844 INFO     question_progress: Results 0% (Get Computer Name and Installed Applications from all machines)
-2015-02-11 11:59:26,863 INFO     question_progress: Results 100% (Get Computer Name and Installed Applications from all machines)
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+2015-03-26 11:38:04,754 INFO     question_progress: Results 0% (Get Computer Name and Installed Applications from all machines)
+2015-03-26 11:38:09,776 INFO     question_progress: Results 0% (Get Computer Name and Installed Applications from all machines)
+2015-03-26 11:38:14,794 INFO     question_progress: Results 0% (Get Computer Name and Installed Applications from all machines)
+2015-03-26 11:38:19,816 INFO     question_progress: Results 100% (Get Computer Name and Installed Applications from all machines)
 
 Type of response:  <type 'dict'>
 
 Pretty print of response:
-{'question_object': <taniumpy.object_types.question.Question object at 0x1059d78d0>,
- 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x105a1f250>}
+{'question_object': <taniumpy.object_types.question.Question object at 0x107618e10>,
+ 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x1077e7310>}
 
 Equivalent Question if it were to be asked in the Tanium Console: 
 Get Computer Name and Installed Applications from all machines
@@ -88,7 +104,6 @@ CSV Results of response:
 Computer Name,Name,Silent Uninstall String,Uninstallable,Version
 Casus-Belli.local,"Google Search
 Microsoft Chart Converter
-Spotify
 Wish
 BluetoothUIServer
 Time Machine
@@ -100,6 +115,7 @@ Microsoft Clip Gallery
 Pass Viewer
 PressAndHold
 PluginIM
+UserNotificationCenter
 ..trimmed for brevity..
 
 '''

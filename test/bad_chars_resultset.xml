@@ -1,0 +1,481 @@
+<?xml version="1.0"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+<soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<t:return><command>GetResultData</command>
+<session>81-4671-d0d244d3a1bf2ed1d98f6892bd35df8b63c110f4f2ab2496eb8d80a5f98867b5e1d0d8ad075e7ebaef4ba23e8c2585baa2acf2869a2cee6adbf068cab5cc7165</session>
+<ID></ID>
+<IDType></IDType>
+<ContextID></ContextID>
+<object_list><saved_question><action_tracking_flag>0</action_tracking_flag>
+<archive_enabled_flag>0</archive_enabled_flag>
+<archive_owner><active_session_count></active_session_count>
+<deleted_flag></deleted_flag>
+<domain></domain>
+<group_id></group_id>
+<id>81</id>
+<last_login></last_login>
+<local_admin_flag></local_admin_flag>
+<metadata></metadata>
+<name>Na\ps220994</name>
+<permissions></permissions>
+<roles></roles>
+</archive_owner>
+<cache_row_id></cache_row_id>
+<expire_seconds>600</expire_seconds>
+<hidden_flag>0</hidden_flag>
+<id>302</id>
+<index></index>
+<issue_seconds>120</issue_seconds>
+<issue_seconds_never_flag>0</issue_seconds_never_flag>
+<keep_seconds>3600</keep_seconds>
+<metadata></metadata>
+<mod_time>2015-02-02T21:38:07</mod_time>
+<mod_user><active_session_count></active_session_count>
+<deleted_flag></deleted_flag>
+<domain></domain>
+<group_id></group_id>
+<id></id>
+<last_login></last_login>
+<local_admin_flag></local_admin_flag>
+<metadata></metadata>
+<name>Na\ps220994</name>
+<permissions></permissions>
+<roles></roles>
+</mod_user>
+<most_recent_question_id>215415</most_recent_question_id>
+<name>All System Run Keys All Machines</name>
+<packages><cache_info></cache_info>
+</packages>
+<public_flag>0</public_flag>
+<query_text>Get Computer Name and Run Keys contains &quot;System&quot; from all machines</query_text>
+<question><action_tracking_flag>0</action_tracking_flag>
+<cache_row_id></cache_row_id>
+<context_group></context_group>
+<expiration>2015-02-06T21:28:17</expiration>
+<expire_seconds>0</expire_seconds>
+<force_computer_id_flag>0</force_computer_id_flag>
+<group></group>
+<hidden_flag>0</hidden_flag>
+<id>215415</id>
+<index></index>
+<management_rights_group><and_flag></and_flag>
+<deleted_flag></deleted_flag>
+<filters></filters>
+<id>0</id>
+<name></name>
+<not_flag></not_flag>
+<parameters></parameters>
+<source_id></source_id>
+<sub_groups></sub_groups>
+<text></text>
+<type></type>
+</management_rights_group>
+<name></name>
+<query_text>Get Computer Name and Run Keys contains &quot;System&quot; from all machines</query_text>
+<saved_question><action_tracking_flag></action_tracking_flag>
+<archive_enabled_flag></archive_enabled_flag>
+<archive_owner></archive_owner>
+<cache_row_id></cache_row_id>
+<expire_seconds></expire_seconds>
+<hidden_flag></hidden_flag>
+<id>302</id>
+<index></index>
+<issue_seconds></issue_seconds>
+<issue_seconds_never_flag></issue_seconds_never_flag>
+<keep_seconds></keep_seconds>
+<metadata></metadata>
+<mod_time></mod_time>
+<mod_user></mod_user>
+<most_recent_question_id></most_recent_question_id>
+<name></name>
+<packages></packages>
+<public_flag></public_flag>
+<query_text></query_text>
+<question></question>
+<row_count_flag></row_count_flag>
+<sort_column></sort_column>
+<user></user>
+</saved_question>
+<selects><select><filter><aggregation></aggregation>
+<all_times_flag>0</all_times_flag>
+<all_values_flag>0</all_values_flag>
+<delimiter></delimiter>
+<delimiter_index>0</delimiter_index>
+<end_time>2001-01-01T00:00:00</end_time>
+<id></id>
+<ignore_case_flag>1</ignore_case_flag>
+<max_age_seconds>0</max_age_seconds>
+<not_flag>0</not_flag>
+<operator>Less</operator>
+<sensor></sensor>
+<start_time>2001-01-01T00:00:00</start_time>
+<substring_flag>0</substring_flag>
+<substring_length>0</substring_length>
+<substring_start>0</substring_start>
+<utf8_flag>0</utf8_flag>
+<value></value>
+<value_type>String</value_type>
+</filter>
+<group></group>
+<sensor><cache_row_id></cache_row_id>
+<category>Reserved</category>
+<creation_time></creation_time>
+<deleted_flag></deleted_flag>
+<delimiter></delimiter>
+<description>The assigned name of the client machine.
+Example: workstation-1.company.com</description>
+<exclude_from_parse_flag>0</exclude_from_parse_flag>
+<hash>3409330187</hash>
+<hidden_flag>0</hidden_flag>
+<id>3</id>
+<ignore_case_flag>1</ignore_case_flag>
+<last_modified_by></last_modified_by>
+<max_age_seconds>86400</max_age_seconds>
+<metadata></metadata>
+<modification_time></modification_time>
+<name>Computer Name</name>
+<parameter_definition></parameter_definition>
+<parameters></parameters>
+<preview_sensor_flag></preview_sensor_flag>
+<queries><query><platform>Windows</platform>
+<script>select CSName from win32_operatingsystem</script>
+<script_type>WMIQuery</script_type>
+<signature></signature>
+</query>
+</queries>
+<source_hash></source_hash>
+<source_id>0</source_id>
+<string_count>70770</string_count>
+<string_hints></string_hints>
+<subcolumns></subcolumns>
+<value_type>String</value_type>
+</sensor>
+</select>
+<select><filter><aggregation></aggregation>
+<all_times_flag>0</all_times_flag>
+<all_values_flag>0</all_values_flag>
+<delimiter></delimiter>
+<delimiter_index>0</delimiter_index>
+<end_time>2001-01-01T00:00:00</end_time>
+<id></id>
+<ignore_case_flag>1</ignore_case_flag>
+<max_age_seconds>0</max_age_seconds>
+<not_flag>0</not_flag>
+<operator>RegexMatch</operator>
+<sensor></sensor>
+<start_time>2001-01-01T00:00:00</start_time>
+<substring_flag>0</substring_flag>
+<substring_length>0</substring_length>
+<substring_start>0</substring_start>
+<utf8_flag>0</utf8_flag>
+<value>.*System.*</value>
+<value_type>String</value_type>
+</filter>
+<group></group>
+<sensor><cache_row_id></cache_row_id>
+<category>Operating System</category>
+<creation_time>2014-06-18T18:32:32</creation_time>
+<deleted_flag></deleted_flag>
+<delimiter>|</delimiter>
+<description>Returns the run keys that define which programs will be started when a user logs in.
+Example:  System|GlobalProtect|&quot;C:\Program Files\Palo Alto Networks\GlobalProtect\PanGPA.exe&quot;</description>
+<exclude_from_parse_flag>1</exclude_from_parse_flag>
+<hash>4058321794</hash>
+<hidden_flag>0</hidden_flag>
+<id>83</id>
+<ignore_case_flag>1</ignore_case_flag>
+<last_modified_by>mbrunsvo</last_modified_by>
+<max_age_seconds>900</max_age_seconds>
+<metadata><item><admin_flag>0</admin_flag>
+<name>defined</name>
+<value>McAfee</value>
+</item>
+</metadata>
+<modification_time>2014-06-18T18:32:32</modification_time>
+<name>Run Keys</name>
+<parameter_definition></parameter_definition>
+<parameters></parameters>
+<preview_sensor_flag></preview_sensor_flag>
+<queries><query><platform>Windows</platform>
+<script>&#039;========================================
+&#039; Run Keys
+&#039;========================================
+
+&#039; returns the system and user keys for a given key
+
+Option Explicit
+
+Const strSep = &quot;|&quot;
+
+Dim dictBlacklist, strKeyPath, strKeyPath32, dictResults, strValue, bShouldList, strItem
+
+Set dictBlacklist = CreateObject(&quot;Scripting.Dictionary&quot;)
+
+&#039; Add one line for each admin user that you do not want listed in the sensor output.
+&#039; dictBlacklist.Add LCase(&quot;VMWare User Process&quot;), True
+
+
+strKeyPath = &quot;Software\Microsoft\Windows\CurrentVersion\Run&quot;
+strKeyPath32 = &quot;Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Run&quot;
+
+Set dictResults = CreateObject(&quot;Scripting.Dictionary&quot;)
+
+AddValuesForKey dictResults, strKeyPath
+AddValuesForKey dictResults, strKeyPath32
+
+For Each strValue In dictResults.Keys
+	bShouldList = True
+    For Each strItem In dictBlacklist.Keys
+        If InStr(LCase(strValue), strItem) &gt; 0 Then
+            bShouldList = False
+        End If
+    Next
+
+    If bShouldList Then
+        WScript.Echo strValue
+    End If
+Next
+
+Sub AddValuesForKey(dictResults, strKey)
+&#039; This function will output the two values
+
+    Const HKLM = &amp;h80000002
+	Const HKEY_USERS = &amp;H80000003
+
+    Dim objRegistry
+    Dim arrUserKeys,strUserKey, strUserKeyPath
+
+    &#039; get System Keys
+    Set objRegistry = Getx64RegistryProvider()
+    If RegKeyExists(HKLM, strKey, objRegistry) Then
+        GetValues objRegistry, HKLM, strKey, dictResults, &quot;System&quot;
+    End If
+
+    &#039; get User Keys
+    objRegistry.EnumKey HKEY_USERS, &quot;&quot;,arrUserKeys
+	For Each strUserKey In arrUserKeys
+		If Not InStr(strUserKey,&quot;_Classes&quot;) &gt; 0 Then &#039; ignore _Classes entries
+			strUserKeyPath = strUserKey &amp; &quot;\&quot; &amp; strKey
+			If RegKeyExists(HKEY_USERS,strUserKeyPath, objRegistry) Then
+		        GetValues objRegistry, HKEY_USERS, strUserKeyPath, dictResults, &quot;User&quot;
+		 	End If
+		 End If
+	Next
+End Sub &#039;AddValuesForKey
+
+Sub GetValues(objRegistry, hiveConst, keyPath, dictValues, strPrefix)
+    Dim arrKeyNames, arrTypes, arrValueNames, strValueName
+    Dim strValueData, i, strEntry
+
+    objRegistry.EnumValues hiveConst, keyPath, arrValueNames, arrTypes
+
+    If Not IsArray(arrValueNames) Then
+        arrValueNames = Array(&quot;&quot;)
+        arrTypes = Array(1)
+    End If
+
+    For i = LBound(arrValueNames) To UBound(arrValueNames)
+        strValueName = arrValueNames(i)
+        strValueData = GetRegValue(objRegistry, hiveConst, keyPath, strValueName, arrTypes(i))
+        If Not ( IsNull(strValueName) Or IsNull(strValueData) ) Then
+        	strEntry = strPrefix &amp; strSep &amp; strValueName &amp; strSep &amp; strValueData
+        	If Not dictValues.Exists(strEntry) Then
+        		dictValues.Add strEntry, True
+        	End If
+        End If
+    Next
+End Sub &#039;GetValues
+
+Function GetRegValue(objRegistry, hiveConst, keyPath, strValueName, constType)
+
+    Const REG_SZ        = 1
+    Const REG_EXPAND_SZ = 2
+    Const REG_BINARY    = 3
+    Const REG_DWORD     = 4
+    Const REG_MULTI_SZ  = 7
+    Const REG_QWORD     = 11
+
+    Dim strValue, arrBytes, uValue, arrValues
+
+    Select Case constType
+        Case REG_SZ
+            objRegistry.GetStringValue hiveConst, keyPath, strValueName, strValue
+            GetRegValue =  strValue
+            Exit Function
+        Case REG_EXPAND_SZ
+            objRegistry.GetExpandedStringValue hiveConst, keyPath, strValueName, strValue
+            GetRegValue =  strValue
+            Exit Function
+        Case REG_BINARY
+            objRegistry.GetBinaryValue hiveConst, keyPath, strValueName, arrBytes
+            strBytes = &quot;&quot;
+            For Each uByte in arrBytes
+                strBytes = strBytes &amp; Hex(uByte) &amp; &quot; &quot;
+            Next
+            GetRegValue =  strBytes
+            Exit Function
+        Case REG_DWORD
+            objRegistry.GetDWORDValue hiveConst, keyPath, strValueName, uValue
+            GetRegValue =  CStr(uValue)
+            Exit Function
+        Case REG_QWORD
+            objRegistry.GetQWORDValue hiveConst, keyPath, strValueName, uValue
+            GetRegValue =  CStr(uValue)
+            Exit Function
+        Case REG_MULTI_SZ
+            objRegistry.GetMultiStringValue hiveConst, keyPath, strValueName, arrValues
+            For Each strValue in arrValues
+                GetRegValue =  strValue
+            Next
+            Exit Function
+    End Select
+End Function &#039;GetRegValue
+
+Function RegKeyExists(sHive, sRegKey, objReg)
+    Dim aValueNames, aValueTypes
+    If objReg.EnumValues(sHive, sRegKey, aValueNames, aValueTypes) = 0 Then
+        RegKeyExists = True
+    Else
+        RegKeyExists = False
+    End If
+End Function &#039; RegKeyExists
+
+
+Function Getx64RegistryProvider
+    &#039; Returns the best available registry provider:  32 bit on 32 bit systems, 64 bit on 64 bit systems
+    Dim objWMIService, colItems, objItem, iArchType, objCtx, objLocator, objServices, objRegProv
+    Set objWMIService = GetObject(&quot;winmgmts:\\.\root\CIMV2&quot;)
+    Set colItems = objWMIService.ExecQuery(&quot;Select SystemType from Win32_ComputerSystem&quot;)
+    For Each objItem In colItems
+        If InStr(LCase(objItem.SystemType), &quot;x64&quot;) &gt; 0 Then
+            iArchType = 64
+        Else
+            iArchType = 32
+        End If
+    Next
+
+    Set objCtx = CreateObject(&quot;WbemScripting.SWbemNamedValueSet&quot;)
+    objCtx.Add &quot;__ProviderArchitecture&quot;, iArchType
+    Set objLocator = CreateObject(&quot;Wbemscripting.SWbemLocator&quot;)
+    Set objServices = objLocator.ConnectServer(&quot;&quot;,&quot;root\default&quot;,&quot;&quot;,&quot;&quot;,,,,objCtx)
+    Set objRegProv = objServices.Get(&quot;StdRegProv&quot;)
+
+    Set Getx64RegistryProvider = objRegProv
+End Function &#039; Getx64RegistryProvider</script>
+<script_type>VBScript</script_type>
+<signature></signature>
+</query>
+</queries>
+<source_hash></source_hash>
+<source_id>0</source_id>
+<string_count>3430</string_count>
+<string_hints></string_hints>
+<subcolumns><subcolumn><exclude_from_parse_flag></exclude_from_parse_flag>
+<hidden_flag>0</hidden_flag>
+<ignore_case_flag>1</ignore_case_flag>
+<index>1</index>
+<name>Name</name>
+<value_type>String</value_type>
+</subcolumn>
+<subcolumn><exclude_from_parse_flag></exclude_from_parse_flag>
+<hidden_flag>0</hidden_flag>
+<ignore_case_flag>1</ignore_case_flag>
+<index>2</index>
+<name>Command Line</name>
+<value_type>String</value_type>
+</subcolumn>
+<subcolumn><exclude_from_parse_flag></exclude_from_parse_flag>
+<hidden_flag>0</hidden_flag>
+<ignore_case_flag>1</ignore_case_flag>
+<index>0</index>
+<name>Type</name>
+<value_type>String</value_type>
+</subcolumn>
+</subcolumns>
+<value_type>String</value_type>
+</sensor>
+</select>
+</selects>
+<skip_lock_flag>0</skip_lock_flag>
+<user><active_session_count></active_session_count>
+<deleted_flag></deleted_flag>
+<domain></domain>
+<group_id></group_id>
+<id>81</id>
+<last_login></last_login>
+<local_admin_flag></local_admin_flag>
+<metadata></metadata>
+<name>Na\ps220994</name>
+<permissions></permissions>
+<roles></roles>
+</user>
+</question>
+<row_count_flag>1</row_count_flag>
+<sort_column>0</sort_column>
+<user><active_session_count></active_session_count>
+<deleted_flag></deleted_flag>
+<domain></domain>
+<group_id></group_id>
+<id>81</id>
+<last_login></last_login>
+<local_admin_flag></local_admin_flag>
+<metadata></metadata>
+<name>Na\ps220994</name>
+<permissions></permissions>
+<roles></roles>
+</user>
+</saved_question>
+</object_list>
+
+<options><aggregate_over_time_flag></aggregate_over_time_flag>
+<cache_expiration></cache_expiration>
+<cache_filters></cache_filters>
+<cache_id></cache_id>
+<cache_sort_fields></cache_sort_fields>
+<context_id></context_id>
+<filter_not_flag></filter_not_flag>
+<filter_string></filter_string>
+<flags></flags>
+<hide_errors_flag></hide_errors_flag>
+<hide_no_results_flag></hide_no_results_flag>
+<include_answer_times_flag></include_answer_times_flag>
+<include_hashes_flag></include_hashes_flag>
+<include_hidden_flag></include_hidden_flag>
+<include_user_details></include_user_details>
+<json_pretty_print></json_pretty_print>
+<most_recent_flag></most_recent_flag>
+<pct_done_limit></pct_done_limit>
+<recent_result_buckets></recent_result_buckets>
+<return_cdata_flag></return_cdata_flag>
+<return_lists_flag></return_lists_flag>
+<row_count></row_count>
+<row_counts_only_flag></row_counts_only_flag>
+<row_start></row_start>
+<sample_count></sample_count>
+<sample_frequency></sample_frequency>
+<sample_start></sample_start>
+<script_data></script_data>
+<sort_order></sort_order>
+<suppress_object_list></suppress_object_list>
+<suppress_scripts></suppress_scripts>
+<use_error_objects></use_error_objects>
+<use_json></use_json>
+<use_user_context_flag></use_user_context_flag>
+</options>
+
+<ResultXML>
+<![CDATA[<result_sets><now>2015/02/06 21:20:30 GMT-0000</now>
+<result_set><age>0</age><archived_question_id>0</archived_question_id><saved_question_id>302</saved_question_id><question_id>215415</question_id><report_count>10070</report_count><seconds_since_issued>1</seconds_since_issued><issue_seconds>120</issue_seconds><expire_seconds>600</expire_seconds><tested>21854</tested><passed>21854</passed><mr_tested>21854</mr_tested><mr_passed>21854</mr_passed><estimated_total>22054</estimated_total><select_count>2</select_count><cs><c><wh>3409330187</wh><dn>Computer Name</dn><rt>1</rt></c><c><wh>4058321794</wh><dn>Type</dn><rt>1</rt></c><c><wh>4058321794</wh><dn>Name</dn><rt>1</rt></c><c><wh>4058321794</wh><dn>Command Line</dn><rt>1</rt></c><c><wh>0</wh><dn>Count</dn><rt>3</rt></c></cs><filtered_row_count>21830</filtered_row_count><filtered_row_count_machines>21831</filtered_row_count_machines><item_count>21830</item_count><rs>
+
+<r><id>35750569</id><cid>3676672688</cid><c><v>test1.com</v></c><c><v>System</v><v>System</v><v>System</v><v>System</v><v>System</v></c><c><v>SoundMAXPnP</v><v>Comunicação com PABX</v><v>HotKeysCmds</v><v>Persistence</v><v>IgfxTray</v></c><c><v>C:\Program Files (x86)\Analog Devices\Core\smax4pnp.exe</v><v>C:\Program Files (x86)\Intelbras\Remoraw5\WRECEBE.EXE</v><v>C:\Windows\system32\hkcmd.exe</v><v>C:\Windows\system32\igfxpers.exe</v><v>C:\Windows\system32\igfxtray.exe</v></c><c><v>1</v></c></r>
+<r><id>1719319949</id><cid>1430569658</cid><c><v>test3.com</v></c><c><v>System</v><v>System</v><v>System</v><v>System</v><v>System</v><v>System</v><v>System</v><v>System</v><v>System</v><v>System</v><v>System</v><v>System</v><v>System</v><v>System</v><v>System</v><v>System</v><v>System</v><v>System</v><v>System</v></c><c><v>FJTWAIN Setup</v><v>Client Access Service</v><v>FiWIA Service Checker</v><v>IAStorIcon</v><v>BCSSync</v><v>PDVD9LanguageShortcut</v><v>FJTWAINIC Setup</v><v>RtHDVCpl</v><v>FtLnSOP_setup</v><v>Adobe ARM</v><v>eSEAL-A Monitor</v><v>RemoteControl9</v><v>GFA_certd3003</v><v>FTPWRENV</v><v>HotKeysCmds</v><v>Persistence</v><v>eKeyDaemon</v><v>IgfxTray</v><v>IcWIA Service Checker</v></c><c><v>C:\Windows\Twain_32\fjscan32\FjtwMkup.exe /Station</v><v>c:\Program Files\IBM\Client Access\cwbsvstr.exe</v><v>C:\Windows\Twain_32\Fjscan32\FiWiaChecker.exe</v><v>C:\Program Files\Intel\Intel(R) Rapid Storage Technology\IAStorIconLaunch.exe &quot;C:\Program Files\Intel\Intel(R) Rapid Storage Technology\IAStorIcon.exe&quot; 60</v><v>&quot;C:\Program Files\Microsoft Office\Office14\BCSSync.exe&quot; /DelayServices</v><v>&quot;C:\Program Files\CyberLink\PowerDVD9\Language\Language.exe&quot;</v><v>C:\WINDOWS\twain_32\Fjicube\FJTWMKIC.exe /Station</v><v>C:\Program Files\Realtek\Audio\HDA\RtDCpl.exe</v><v>C:\Windows\Twain_32\Fjscan32\SOP\FtLnSOP.exe</v><v>&quot;C:\Program Files\Common Files\Adobe\ARM\1.0\AdobeARM.exe&quot;</v><v>C:\Windows\system32\UKEYMonitor.exe</v><v>&quot;C:\Program Files\CyberLink\PowerDVD9\PDVD9Serv.exe&quot;</v><v>C:\Program Files\EnterSafe\ePass3003_GFA\GFA_certd3003.exe</v><v>C:\Windows\Twain_32\Fjscan32\FTPWREVT\FTPWREVT.exe</v><v>C:\Windows\system32\hkcmd.exe</v><v>C:\Windows\system32\igfxpers.exe</v><v>&quot;C:\Program Files\iTowNet\ÐÅ³ÇÍ¨×ÀÃæ°²È«Ì×¼þ V2.7.02\eKeyDaemon.exe&quot;</v><v>C:\Windows\system32\igfxtray.exe</v><v>C:\WINDOWS\twain_32\Fjicube\IcWiaChecker.exe</v></c><c><v>1</v></c></r>
+<r><id>3225780885</id><cid>2855153985</cid><c><v>test4.com</v></c><c><v>System</v><v>System</v><v>System</v><v>System</v><v>System</v><v>System</v><v>System</v><v>System</v></c><c><v>Seagull Drivers</v><v>SoundMAXPnP</v><v>LaptopBackupMonitor</v><v>BCSSync</v><v>Adobe ARM</v><v>HotKeysCmds</v><v>Persistence</v><v>IgfxTray</v></c><c><v>ssdal_nc.exe startup</v><v>C:\Program Files (x86)\Analog Devices\Core\smax4pnp.exe</v><v>C:\Program Files\CommVault\Simpana\Base\Laptop2Taskbaricon.exe --vm=Instance001 -minimize</v><v>&quot;C:\Program Files (x86)\Microsoft Office\Office14\BCSSync.exe&quot; /DelayServices</v><v>&quot;C:\Program Files (x86)\Common Files\Adobe\ARM\1.0\AdobeARM.exe&quot;</v><v>C:\Windows\system32\hkcmd.exe</v><v>C:\Windows\system32\igfxpers.exe</v><v>C:\Windows\system32\igfxtray.exe</v></c><c><v>1</v></c></r>
+<r><id>674827798</id><cid>2133566388</cid><c><v>test5.com</v></c><c><v>System</v><v>User</v><v>System</v><v>System</v><v>System</v><v>System</v></c><c><v>SunJavaUpdateSched</v><v>ctfmon.exe</v><v>HotKeysCmds</v><v>Persistence</v><v>IAStorIcon</v><v>Client Access Service</v></c><c><v>&quot;C:\Program Files (x86)\Common Files\Java\Java Update\jusched.exe&quot;</v><v>“C:\WINDOWS\system32\ctfmon.exe”</v><v>&quot;C:\Windows\system32\hkcmd.exe&quot;</v><v>&quot;C:\Windows\system32\igfxpers.exe&quot;</v><v>&quot;C:\Program Files\Intel\Intel(R) Rapid Storage Technology\IAStorIconLaunch.exe&quot; &quot;C:\Program Files\Intel\Intel(R) Rapid Storage Technology\IAStorIcon.exe&quot; 60</v><v>c:\Program Files (x86)\IBM\Client Access\cwbsvstr.exe</v></c><c><v>1</v></c></r>
+
+</rs></result_set></result_sets>
+]]>
+</ResultXML>
+<result_object></result_object>
+</t:return></soap:Body>
+</soap:Envelope>
+

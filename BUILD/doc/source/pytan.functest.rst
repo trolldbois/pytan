@@ -7,3 +7,5 @@ pytan Functional Tests
     :undoc-members:
     :private-members:
     :special-members:
+
+.. toctree::

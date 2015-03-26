@@ -4,7 +4,7 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 '''generates all of the examples from the test/ddt JSON files'''
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
-__version__ = '1.0.3'
+__version__ = '1.0.4'
 
 import os
 import sys
@@ -87,11 +87,9 @@ example_py_out = '''
 
 example_index_rst_out = """
 {}
-----------------------------------------------------------------------------------------
+========================================================================================
 
 .. toctree::
-   :maxdepth: 3
-   :numbered:
 
    {}
 """.format
@@ -100,7 +98,7 @@ example_index_rst_out = """
 def rst_code_block(c, out):
     base_block = """
 {}
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+----------------------------------------------------------------------------------------
 
 .. code-block:: {}
     :linenos:
@@ -126,8 +124,25 @@ if not os.path.isdir(example_out_dir):
 
 ####################### BASE EXAMPLE
 
-base_example = """# Path to lib directory which contains pytan package
-PYTAN_LIB_PATH = '../lib'
+base_example = """
+import os
+import sys
+sys.dont_write_bytecode = True
+
+# Determine our script name, script dir
+my_file = os.path.abspath(sys.argv[0])
+my_dir = os.path.dirname(my_file)
+
+# determine the pytan lib dir and add it to the path
+parent_dir = os.path.dirname(my_dir)
+pytan_root_dir = os.path.dirname(parent_dir)
+lib_dir = os.path.join(pytan_root_dir, 'lib')
+path_adds = [lib_dir]
+
+for aa in path_adds:
+    if aa not in sys.path:
+        sys.path.append(aa)
+
 
 # connection info for Tanium Server
 USERNAME = "Tanium User"
@@ -139,8 +154,7 @@ PORT = "444"
 LOGLEVEL = 2
 DEBUGFORMAT = False
 
-import sys, tempfile
-sys.path.append(PYTAN_LIB_PATH)
+import tempfile
 
 import pytan
 handler = pytan.Handler(
@@ -175,7 +189,7 @@ base_desc = """Here is an example for how to instantiate a :class:`pytan.Handler
 The username, password, host, and maybe port as well need to be provided on a per Tanium server basis.
 """
 out = get_exec_output(base_example)
-example_rst_out = "{}{}{}".format(
+example_rst_out = "{}\n{}{}".format(
     rst_name_template(get_name_title(base_name)),
     rst_desc_template(base_desc),
     rst_code_block(base_example, out)
@@ -244,7 +258,7 @@ print out
     example_rst_file = qname + '.rst'
     example_py_file = qname + '.py'
     out = get_exec_output(q_code)
-    example_rst_out = "{}{}{}".format(
+    example_rst_out = "{}\n{}{}".format(
         rst_name_template(get_name_title(qname)),
         rst_desc_template(qinfo['desc']),
         rst_code_block(q_code, out)
@@ -294,7 +308,7 @@ except Exception as e:
     example_py_file = qname + '.py'
 
     out = get_exec_output(q_code)
-    example_rst_out = "{}{}{}".format(
+    example_rst_out = "{}\n{}{}".format(
         rst_name_template(get_name_title(qname)),
         rst_desc_template(qinfo['desc']),
         rst_code_block(q_code, out)
@@ -359,7 +373,7 @@ print out
     example_py_file = qname + '.py'
 
     out = get_exec_output(q_code)
-    example_rst_out = "{}{}{}".format(
+    example_rst_out = "{}\n{}{}".format(
         rst_name_template(get_name_title(qname)),
         rst_desc_template(qinfo['desc']),
         rst_code_block(q_code, out)
@@ -409,7 +423,7 @@ except Exception as e:
     example_py_file = qname + '.py'
 
     out = get_exec_output(q_code)
-    example_rst_out = "{}{}{}".format(
+    example_rst_out = "{}\n{}{}".format(
         rst_name_template(get_name_title(qname)),
         rst_desc_template(qinfo['desc']),
         rst_code_block(q_code, out)
@@ -477,7 +491,7 @@ if response['action_results']:
     example_py_file = qname + '.py'
 
     out = get_exec_output(q_code)
-    example_rst_out = "{}{}{}".format(
+    example_rst_out = "{}\n{}{}".format(
         rst_name_template(get_name_title(qname)),
         rst_desc_template(qinfo['desc']),
         rst_code_block(q_code, out)
@@ -528,7 +542,7 @@ except Exception as e:
     example_py_file = qname + '.py'
 
     out = get_exec_output(q_code)
-    example_rst_out = "{}{}{}".format(
+    example_rst_out = "{}\n{}{}".format(
         rst_name_template(get_name_title(qname)),
         rst_desc_template(qinfo['desc']),
         rst_code_block(q_code, out)
@@ -605,7 +619,7 @@ except Exception as e:
     example_py_file = qname + '.py'
 
     out = get_exec_output(q_code)
-    example_rst_out = "{}{}{}".format(
+    example_rst_out = "{}\n{}{}".format(
         rst_name_template(get_name_title(qname)),
         rst_desc_template(qinfo['desc']),
         rst_code_block(q_code, out)
@@ -655,7 +669,7 @@ except Exception as e:
     example_py_file = qname + '.py'
 
     out = get_exec_output(q_code)
-    example_rst_out = "{}{}{}".format(
+    example_rst_out = "{}\n{}{}".format(
         rst_name_template(get_name_title(qname)),
         rst_desc_template(qinfo['desc']),
         rst_code_block(q_code, out)
@@ -752,7 +766,7 @@ print response.to_json(response)
     example_py_file = qname + '.py'
 
     out = get_exec_output(q_code)
-    example_rst_out = "{}{}{}".format(
+    example_rst_out = "{}\n{}{}".format(
         rst_name_template(get_name_title(qname)),
         rst_desc_template(qinfo['desc']),
         rst_code_block(q_code, out)
@@ -813,7 +827,7 @@ except Exception as e:
     example_py_file = qname + '.py'
 
     out = get_exec_output(q_code)
-    example_rst_out = "{}{}{}".format(
+    example_rst_out = "{}\n{}{}".format(
         rst_name_template(get_name_title(qname)),
         rst_desc_template(qinfo['desc']),
         rst_code_block(q_code, out)
@@ -877,7 +891,7 @@ print out
     example_py_file = qname + '.py'
 
     out = get_exec_output(q_code)
-    example_rst_out = "{}{}{}".format(
+    example_rst_out = "{}\n{}{}".format(
         rst_name_template(get_name_title(qname)),
         rst_desc_template(qinfo['desc']),
         rst_code_block(q_code, out)
@@ -936,7 +950,7 @@ except Exception as e:
     example_py_file = qname + '.py'
 
     out = get_exec_output(q_code)
-    example_rst_out = "{}{}{}".format(
+    example_rst_out = "{}\n{}{}".format(
         rst_name_template(get_name_title(qname)),
         rst_desc_template(qinfo['desc']),
         rst_code_block(q_code, out)
@@ -1002,7 +1016,7 @@ print out
     example_py_file = qname + '.py'
 
     out = get_exec_output(q_code)
-    example_rst_out = "{}{}{}".format(
+    example_rst_out = "{}\n{}{}".format(
         rst_name_template(get_name_title(qname)),
         rst_desc_template(qinfo['desc']),
         rst_code_block(q_code, out)
@@ -1062,7 +1076,7 @@ except Exception as e:
     example_py_file = qname + '.py'
 
     out = get_exec_output(q_code)
-    example_rst_out = "{}{}{}".format(
+    example_rst_out = "{}\n{}{}".format(
         rst_name_template(get_name_title(qname)),
         rst_desc_template(qinfo['desc']),
         rst_code_block(q_code, out)

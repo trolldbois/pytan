@@ -265,7 +265,7 @@ REQ_KWARGS = [
 A list of arguments that will be pulled from any respective kwargs for most calls to :class:`taniumpy.session.Session`
 """
 
-PARAM_RE = r'\{(.*?)\}'
+PARAM_RE = r'(?<!\\)\{(.*?)(?<!\\)\}'
 """
 The regex that is used to parse parameters from a human string. Ex: ala {key1=value1}
 """

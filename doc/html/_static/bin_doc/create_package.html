@@ -860,7 +860,7 @@ Create Package Options:
 <h1>
 <a id="user-content-print-the-help-for-filters" class="anchor" href="#print-the-help-for-filters" aria-hidden="true"><span class="octicon octicon-link"></span></a>Print the help for filters</h1>
 
-<div class="highlight highlight-bash"><pre>create_package.py -u <span class="pl-s1"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s1"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s1"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 --filters-help</pre></div>
+<div class="highlight highlight-bash"><pre>create_package.py -u <span class="pl-s"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 --filters-help</pre></div>
 
 <pre><code>usage: create_package.py [-h] [-u USERNAME] [-p PASSWORD] [--host HOST]
                          [--port PORT] [-l LOGLEVEL] -n NAME -c COMMAND
@@ -943,7 +943,7 @@ ERROR:create_package:argument -n/--name is required
 <h1>
 <a id="user-content-print-the-help-for-options" class="anchor" href="#print-the-help-for-options" aria-hidden="true"><span class="octicon octicon-link"></span></a>Print the help for options</h1>
 
-<div class="highlight highlight-bash"><pre>create_package.py -u <span class="pl-s1"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s1"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s1"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 --options-help</pre></div>
+<div class="highlight highlight-bash"><pre>create_package.py -u <span class="pl-s"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 --options-help</pre></div>
 
 <pre><code>usage: create_package.py [-h] [-u USERNAME] [-p PASSWORD] [--host HOST]
                          [--port PORT] [-l LOGLEVEL] -n NAME -c COMMAND
@@ -1044,10 +1044,10 @@ ERROR:create_package:argument -n/--name is required
 <li>Supply a verification filter that will be used when this package is deployed as part of an action</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>create_package.py -u <span class="pl-s1"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s1"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s1"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 --name <span class="pl-s1"><span class="pl-pds">"</span>1234 CMDLINE TEST package<span class="pl-pds">"</span></span> --display-name <span class="pl-s1"><span class="pl-pds">"</span>1234 CMDLINE TEST package display name<span class="pl-pds">"</span></span> --command <span class="pl-s1"><span class="pl-pds">"</span>testing.vbs <span class="pl-cce">\$</span>1 <span class="pl-cce">\$</span>2 <span class="pl-cce">\$</span>3 <span class="pl-cce">\$</span>4 <span class="pl-cce">\$</span>5 <span class="pl-cce">\$</span>6 <span class="pl-cce">\$</span>7 <span class="pl-cce">\$</span>8<span class="pl-pds">"</span></span> --expire-seconds 1500 --file-url <span class="pl-s1"><span class="pl-pds">"</span>3600::testing.vbs||https://testing.com/testing.vbs<span class="pl-pds">"</span></span> --file-url <span class="pl-s1"><span class="pl-pds">"</span>https://testing.com/another_testing.vbs<span class="pl-pds">"</span></span> --parameters-file <span class="pl-s1"><span class="pl-pds">"</span>/Users/jolsen/gh/pytan/doc/example_of_all_package_parameters.json<span class="pl-pds">"</span></span> --verify-expire-seconds 3600 --verify-filter <span class="pl-s1"><span class="pl-pds">"</span>Custom Tags, that contains:tag<span class="pl-pds">"</span></span> --verify-option <span class="pl-s1"><span class="pl-pds">"</span>ignore_case<span class="pl-pds">"</span></span> --command-timeout 600</pre></div>
+<div class="highlight highlight-bash"><pre>create_package.py -u <span class="pl-s"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>1234 CMDLINE TEST package<span class="pl-pds">"</span></span> --display-name <span class="pl-s"><span class="pl-pds">"</span>1234 CMDLINE TEST package display name<span class="pl-pds">"</span></span> --command <span class="pl-s"><span class="pl-pds">"</span>testing.vbs <span class="pl-cce">\$</span>1 <span class="pl-cce">\$</span>2 <span class="pl-cce">\$</span>3 <span class="pl-cce">\$</span>4 <span class="pl-cce">\$</span>5 <span class="pl-cce">\$</span>6 <span class="pl-cce">\$</span>7 <span class="pl-cce">\$</span>8<span class="pl-pds">"</span></span> --expire-seconds 1500 --file-url <span class="pl-s"><span class="pl-pds">"</span>3600::testing.vbs||https://testing.com/testing.vbs<span class="pl-pds">"</span></span> --file-url <span class="pl-s"><span class="pl-pds">"</span>https://testing.com/another_testing.vbs<span class="pl-pds">"</span></span> --parameters-file <span class="pl-s"><span class="pl-pds">"</span>/Users/jolsen/gh/pytan/doc/example_of_all_package_parameters.json<span class="pl-pds">"</span></span> --verify-expire-seconds 3600 --verify-filter <span class="pl-s"><span class="pl-pds">"</span>Custom Tags, that contains:tag<span class="pl-pds">"</span></span> --verify-option <span class="pl-s"><span class="pl-pds">"</span>ignore_case<span class="pl-pds">"</span></span> --command-timeout 600</pre></div>
 
-<pre><code>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-New package '1234 CMDLINE TEST package' created with ID 135, command: 'testing.vbs $1 $2 $3 $4 $5 $6 $7 $8'
+<pre><code>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+New package '1234 CMDLINE TEST package' created with ID 6278, command: 'testing.vbs $1 $2 $3 $4 $5 $6 $7 $8'
 </code></pre>
 
 <ul>
@@ -1070,10 +1070,10 @@ New package '1234 CMDLINE TEST package' created with ID 135, command: 'testing.v
 <li>Delete the package named 1234 CMDLINE TEST package</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>delete_package.py -u <span class="pl-s1"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s1"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s1"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 --name <span class="pl-s1"><span class="pl-pds">"</span>1234 CMDLINE TEST package<span class="pl-pds">"</span></span></pre></div>
+<div class="highlight highlight-bash"><pre>delete_package.py -u <span class="pl-s"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>1234 CMDLINE TEST package<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-Deleted item:  PackageSpec, id: 135
+<pre><code>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+Deleted item:  PackageSpec, id: 6278
 </code></pre>
 
 <ul>
@@ -1090,7 +1090,7 @@ Deleted item:  PackageSpec, id: 135
 <p><a href="#user-content-toc">TOC</a></p>
 
 <h6>
-<a id="user-content-generated-by-build_bin_doc-v145-date-wed-feb-11-171237-2015-est-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v145-date-wed-feb-11-171237-2015-est-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v1.4.5</code>, date: Wed Feb 11 17:12:37 2015 EST, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
+<a id="user-content-generated-by-build_bin_doc-v145-date-thu-mar-26-092620-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v145-date-thu-mar-26-092620-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v1.4.5</code>, date: Thu Mar 26 09:26:20 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
 </h6>
 
 </body></html>

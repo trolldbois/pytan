@@ -8,7 +8,7 @@ Table of Contents
    :maxdepth: 4
    :numbered:
 
-   description
+   introduction
    pytan
    taniumpy
    xmltodict

@@ -1,17 +1,35 @@
 
 Create user from json
 ==========================================================================================
+
 Export a user object to a JSON file, adding ' API TEST' to the name of the user before exporting the JSON file and deleting any pre-existing user with the same (new) name, then create a new user object from the exported JSON file
 
 Example Python Code
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+----------------------------------------------------------------------------------------
 
 .. code-block:: python
     :linenos:
 
 
-    # Path to lib directory which contains pytan package
-    PYTAN_LIB_PATH = '../lib'
+    
+    import os
+    import sys
+    sys.dont_write_bytecode = True
+    
+    # Determine our script name, script dir
+    my_file = os.path.abspath(sys.argv[0])
+    my_dir = os.path.dirname(my_file)
+    
+    # determine the pytan lib dir and add it to the path
+    parent_dir = os.path.dirname(my_dir)
+    pytan_root_dir = os.path.dirname(parent_dir)
+    lib_dir = os.path.join(pytan_root_dir, 'lib')
+    path_adds = [lib_dir]
+    
+    for aa in path_adds:
+        if aa not in sys.path:
+            sys.path.append(aa)
+    
     
     # connection info for Tanium Server
     USERNAME = "Tanium User"
@@ -23,8 +41,7 @@ Example Python Code
     LOGLEVEL = 2
     DEBUGFORMAT = False
     
-    import sys, tempfile
-    sys.path.append(PYTAN_LIB_PATH)
+    import tempfile
     
     import pytan
     handler = pytan.Handler(
@@ -97,16 +114,16 @@ Example Python Code
 
 
 Output from Python Code
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+----------------------------------------------------------------------------------------
 
 .. code-block:: none
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-    2015-02-11 12:06:40,543 INFO     handler: Deleted "User, name: 'Jim Olsen API TEST'"
-    2015-02-11 12:06:40,544 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/UserList_2015_02_11-12_06_40-EST.json' written with 831 bytes
-    2015-02-11 12:06:40,561 INFO     handler: New User, name: 'Jim Olsen API TEST' (ID: 16) created successfully!
+    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+    2015-03-26 11:49:19,323 INFO     handler: Deleted "User, name: 'Jim Olsen API TEST'"
+    2015-03-26 11:49:19,324 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/UserList_2015_03_26-11_49_19-EDT.json' written with 1101 bytes
+    2015-03-26 11:49:19,351 INFO     handler: New User, name: 'Jim Olsen API TEST' (ID: 1016) created successfully!
     
     Type of response:  <class 'taniumpy.object_types.user_list.UserList'>
     
@@ -121,8 +138,19 @@ Output from Python Code
           "_type": "user", 
           "deleted_flag": 0, 
           "group_id": 0, 
-          "id": 16, 
+          "id": 1016, 
           "last_login": "2001-01-01T00:00:00", 
+          "metadata": {
+            "_type": "metadata", 
+            "item": [
+              {
+                "_type": "item", 
+                "admin_flag": 0, 
+                "name": "TConsole.User.Preference.FilterClientsPeriod", 
+                "value": "43200"
+              }
+            ]
+          }, 
           "name": "Jim Olsen API TEST", 
           "permissions": {
             "_type": "permissions", 

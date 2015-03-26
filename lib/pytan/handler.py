@@ -583,6 +583,10 @@ class Handler(object):
         options_help : bool, optional
             * False: do not print the help string for options
             * True: print the help string for options and exit
+        metadata: list of list of strs, optional
+            * each list must be a 2 item list:
+            * list item 1 property name
+            * list item 2 property value
 
         Returns
         -------
@@ -601,6 +605,9 @@ class Handler(object):
         if kwargs.get('options_help', False):
             raise PytanHelp(utils.help_options())
 
+        metadata = kwargs.get('metadata', [])
+        metadatalist_obj = utils.build_metadatalist_obj(metadata)
+
         # bare minimum arguments for new package: name, command
         add_package_obj = taniumpy.PackageSpec()
         add_package_obj.name = name
@@ -609,6 +616,7 @@ class Handler(object):
         add_package_obj.command = command
         add_package_obj.command_timeout = command_timeout_seconds
         add_package_obj.expire_seconds = expire_seconds
+        add_package_obj.metadata = metadatalist_obj
 
         # VERIFY FILTERS
         if verify_filters:
@@ -976,33 +984,42 @@ class Handler(object):
         The action filter for the deploy action is used as the question
         filter in both cases
         """
+
+        if not run and not get_results:
+            m = "Run = False and get_results = False, re-run with True for one of these!"
+            raise HandlerError(m)
+
         if not run:
             pre_action_sensors = ['Computer Name', 'Online, that =:True']
         else:
             pre_action_sensors = ['Online, that =:True']
 
-        pre_action_sensor_defs = utils.dehumanize_sensors(pre_action_sensors)
-        pre_action_result_ret = self.ask_manual(
-            sensor_defs=pre_action_sensor_defs,
-            question_filter_defs=action_filter_defs,
-            question_option_defs=action_option_defs,
-            hide_no_results_flag=1,
-        )
-        pre_action_result = pre_action_result_ret['question_results']
+        # No longer do a pre_action question if get_results == False
+        if get_results:
+            pre_action_sensor_defs = utils.dehumanize_sensors(pre_action_sensors)
+            pre_action_result_ret = self.ask_manual(
+                sensor_defs=pre_action_sensor_defs,
+                question_filter_defs=action_filter_defs,
+                question_option_defs=action_option_defs,
+                hide_no_results_flag=1,
+            )
+            pre_action_result = pre_action_result_ret['question_results']
 
-        """ note from jwk:
-        passed_count == the number of machines that pass the filter and
-        therefore the number that should take the action
-        """
-        passed_count = pre_action_result.passed
-        m = (
-            "Number of systems that match action filter (passed_count): {}"
-        ).format
-        mylog.debug(m(passed_count))
+            """ note from jwk:
+            passed_count == the number of machines that pass the filter and
+            therefore the number that should take the action
+            """
+            passed_count = pre_action_result.passed
+            m = (
+                "Number of systems that match action filter (passed_count): {}"
+            ).format
+            mylog.debug(m(passed_count))
 
-        if passed_count == 0:
-            m = "Number of systems that match the action filters provided is zero!"
-            raise HandlerError(m)
+            if passed_count == 0:
+                m = "Number of systems that match the action filters provided is zero!"
+                raise HandlerError(m)
+        else:
+            pre_action_result_ret = None
 
         if not run:
             report_path, result = self.export_to_report_file(
@@ -1045,7 +1062,7 @@ class Handler(object):
             start_seconds_from_now
         )
 
-        if expire_seconds is not None:
+        if not expire_seconds:
             add_action_obj.expire_seconds = expire_seconds
 
         action_obj = self.session.add(add_action_obj)
@@ -1233,11 +1250,10 @@ class Handler(object):
             failed_keys = ['failed']
 
         mylog.debug(m)
-        ARS = constants.ACTION_RESULT_STATUS
-        finished_keys = utils.get_dict_list_items(ARS, finished_keys)
-        success_keys = utils.get_dict_list_items(ARS, success_keys)
-        running_keys = utils.get_dict_list_items(ARS, running_keys)
-        failed_keys = utils.get_dict_list_items(ARS, failed_keys)
+        finished_keys = utils.get_dict_list_items(constants.ACTION_RESULT_STATUS, finished_keys)
+        success_keys = utils.get_dict_list_items(constants.ACTION_RESULT_STATUS, success_keys)
+        running_keys = utils.get_dict_list_items(constants.ACTION_RESULT_STATUS, running_keys)
+        failed_keys = utils.get_dict_list_items(constants.ACTION_RESULT_STATUS, failed_keys)
 
         passed_count_reached = False
         finished = False
@@ -1285,7 +1301,7 @@ class Handler(object):
                 computer_name = row['Computer Name'][0]
                 action_status = row['Action Statuses'][0]
                 action_status = action_status.split(':')[1]
-                if not action_status in as_map:
+                if action_status not in as_map:
                     as_map[action_status] = []
                 as_map[action_status].append(computer_name)
 
@@ -1294,7 +1310,7 @@ class Handler(object):
             success_count = utils.get_dict_list_len(as_map, success_keys)
             running_count = utils.get_dict_list_len(as_map, running_keys)
             failed_count = utils.get_dict_list_len(as_map, failed_keys)
-            unknown_count = utils.get_dict_list_len(as_map, ARS, True)
+            unknown_count = utils.get_dict_list_len(as_map, constants.ACTION_RESULT_STATUS, True)
 
             finished_pct = finished_count * passed_base
 
@@ -1443,7 +1459,7 @@ class Handler(object):
         obj : :class:`taniumpy.object_types.base.BaseType` or :class:`taniumpy.object_types.result_set.ResultSet`
             TaniumPy object to export
         export_format : str
-            the number of servers that must equate "completed" in order for deploy action to be recognized as completed
+            the format to export `obj` to, can be one of: csv, xml, json
         header_sort : list of str, bool, optional
             * for `export_format` csv and `obj` types :class:`taniumpy.object_types.base.BaseType` or :class:`taniumpy.object_types.result_set.ResultSet`
             * True: sort the headers automatically
@@ -1797,7 +1813,7 @@ class Handler(object):
             def_search = {s: d.get(s, '') for s in search_keys if d.get(s, '')}
 
             # get the sensor object
-            if not 'sensor_obj' in d:
+            if 'sensor_obj' not in d:
                 d['sensor_obj'] = self.get('sensor', **def_search)[0]
         return defs
 
@@ -1809,11 +1825,11 @@ class Handler(object):
         def_search = {s: d.get(s, '') for s in search_keys if d.get(s, '')}
 
         # get the package object
-        if not 'package_obj' in d:
+        if 'package_obj' not in d:
             d['package_obj'] = self.get('package', **def_search)[0]
         return d
 
-    def _export_class_BaseType(self, obj, export_format, **kwargs):
+    def _export_class_BaseType(self, obj, export_format, **kwargs): # noqa
         """Handles exporting :class:`taniumpy.object_types.base.BaseType`"""
         # run the handler that is specific to this export_format, if it exists
         format_method_str = '_export_format_' + export_format
@@ -1825,7 +1841,7 @@ class Handler(object):
             raise HandlerError(err(export_format))
         return result
 
-    def _export_class_ResultSet(self, obj, export_format, **kwargs):
+    def _export_class_ResultSet(self, obj, export_format, **kwargs): # noqa
         """Handles exporting :class:`taniumpy.object_types.result_set.ResultSet`"""
         """
         ensure kwargs[sensors] has all the sensors that correlate

@@ -10,7 +10,7 @@ Handler Class
     :show-inheritance:
 
 Example: Create a Handler object
-'''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 Setup a Handler() object::
 
@@ -165,3 +165,5 @@ Handler Methods: Private Methods
 .. automethod:: pytan.handler.Handler._export_format_csv
 .. automethod:: pytan.handler.Handler._export_format_json
 .. automethod:: pytan.handler.Handler._export_format_xml
+
+.. toctree::

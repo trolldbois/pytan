@@ -221,7 +221,6 @@ def setup_parser(desc, help=False):
 def setup_get_object_argparser(obj, doc):
     """Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to get objects.
     """
-
     parent_parser = setup_parser(doc)
     parser = CustomArgParse(
         description=doc,
@@ -1489,6 +1488,12 @@ def extract_params(s):
             err = "Parameter {} missing key/value seperator ({})".format
             raise HumanParserError(err(sp, constants.PARAM_KEY_SPLIT))
         sp_key, sp_value = sp.split(constants.PARAM_KEY_SPLIT, 1)
+        # remove any escapes for {}'s
+        if '\\}' in sp_value:
+            sp_value = sp_value.replace('\\}', '}')
+        if '\\{' in sp_value:
+            sp_value = sp_value.replace('\\{', '{')
+
         # sp_key = dirname
         # sp_value = Program Files
         parsed_params[sp_key] = sp_value
@@ -2129,11 +2134,13 @@ def build_param_objlist(obj, user_params, delim='', derive_def=False, empty_ok=F
     obj_params = get_obj_params(obj)
     obj_name = str(obj)
     param_objlist = taniumpy.ParameterList()
-    # if user defined params and this sensor doesn't take params,
-    # we will just ignore them
+
+    processed = []
+
     for obj_param in obj_params:
         # get the key for this param
         p_key = obj_param["key"]
+        processed.append(p_key)
         user_val = user_params.get(p_key, '')
 
         if not user_val and derive_def:
@@ -2150,6 +2157,18 @@ def build_param_objlist(obj, user_params, delim='', derive_def=False, empty_ok=F
 
         dbg = "Parameter {} for {} mapped to: {}".format
         manuallog.debug(dbg(p_key, obj_name, param_obj))
+
+    # ADD SUPPORT FOR PARAMS THAT ARE NOT IN OBJECT
+    for k, v in user_params.iteritems():
+        if k in processed:
+            continue
+        processed.append(k)
+        param_obj = build_param_obj(k, v, delim)
+        param_objlist.append(param_obj)
+
+        dbg = "Undefined Parameter {} for {} mapped to: {}".format
+        manuallog.debug(dbg(k, obj_name, param_obj))
+
     return param_objlist
 
 
@@ -2619,7 +2638,7 @@ def get_dict_list_len(d, keys=[], negate=False):
     return list_len
 
 
-def build_metadatalist_obj(properties, nameprefix):
+def build_metadatalist_obj(properties, nameprefix=""):
     """Creates a MetadataList object from properties
 
     Parameters
@@ -2636,9 +2655,15 @@ def build_metadatalist_obj(properties, nameprefix):
     """
     metadatalist_obj = taniumpy.MetadataList()
     for prop in properties:
+        name = prop[0]
+        value = prop[1]
+
+        if nameprefix:
+            name = "{}.{}".format(nameprefix, name)
+
         metadata_obj = taniumpy.MetadataItem()
-        metadata_obj.name = "{}.{}".format(nameprefix, prop[0])
-        metadata_obj.value = prop[1]
+        metadata_obj.name = name
+        metadata_obj.value = value
         metadatalist_obj.append(metadata_obj)
     return metadatalist_obj
 

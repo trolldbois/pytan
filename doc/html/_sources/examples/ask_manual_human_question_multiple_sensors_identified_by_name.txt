@@ -1,19 +1,37 @@
 
 Ask manual human question multiple sensors identified by name
 ==========================================================================================
+
 Ask a manual question using human strings by referencing the name of multiple sensors and providing a selector that tells pytan explicitly that we are providing a name of a sensor.
 
 No sensor filters, sensor parameters, sensor filter options, question filters, or question options supplied.
 
 Example Python Code
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+----------------------------------------------------------------------------------------
 
 .. code-block:: python
     :linenos:
 
 
-    # Path to lib directory which contains pytan package
-    PYTAN_LIB_PATH = '../lib'
+    
+    import os
+    import sys
+    sys.dont_write_bytecode = True
+    
+    # Determine our script name, script dir
+    my_file = os.path.abspath(sys.argv[0])
+    my_dir = os.path.dirname(my_file)
+    
+    # determine the pytan lib dir and add it to the path
+    parent_dir = os.path.dirname(my_dir)
+    pytan_root_dir = os.path.dirname(parent_dir)
+    lib_dir = os.path.join(pytan_root_dir, 'lib')
+    path_adds = [lib_dir]
+    
+    for aa in path_adds:
+        if aa not in sys.path:
+            sys.path.append(aa)
+    
     
     # connection info for Tanium Server
     USERNAME = "Tanium User"
@@ -25,8 +43,7 @@ Example Python Code
     LOGLEVEL = 2
     DEBUGFORMAT = False
     
-    import sys, tempfile
-    sys.path.append(PYTAN_LIB_PATH)
+    import tempfile
     
     import pytan
     handler = pytan.Handler(
@@ -78,22 +95,22 @@ Example Python Code
 
 
 Output from Python Code
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+----------------------------------------------------------------------------------------
 
 .. code-block:: none
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-    2015-02-11 11:59:26,990 INFO     question_progress: Results 0% (Get Computer Name and Installed Applications from all machines)
-    2015-02-11 11:59:32,013 INFO     question_progress: Results 0% (Get Computer Name and Installed Applications from all machines)
-    2015-02-11 11:59:37,032 INFO     question_progress: Results 100% (Get Computer Name and Installed Applications from all machines)
+    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+    2015-03-26 11:38:19,994 INFO     question_progress: Results 0% (Get Computer Name and Installed Applications from all machines)
+    2015-03-26 11:38:25,016 INFO     question_progress: Results 0% (Get Computer Name and Installed Applications from all machines)
+    2015-03-26 11:38:30,037 INFO     question_progress: Results 100% (Get Computer Name and Installed Applications from all machines)
     
     Type of response:  <type 'dict'>
     
     Pretty print of response:
-    {'question_object': <taniumpy.object_types.question.Question object at 0x1059bf310>,
-     'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x105c340d0>}
+    {'question_object': <taniumpy.object_types.question.Question object at 0x10760d7d0>,
+     'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x10780ea10>}
     
     Equivalent Question if it were to be asked in the Tanium Console: 
     Get Computer Name and Installed Applications from all machines
@@ -102,7 +119,6 @@ Output from Python Code
     Computer Name,Name,Silent Uninstall String,Uninstallable,Version
     Casus-Belli.local,"Google Search
     Microsoft Chart Converter
-    Spotify
     Wish
     BluetoothUIServer
     Time Machine
@@ -114,4 +130,5 @@ Output from Python Code
     Pass Viewer
     PressAndHold
     PluginIM
+    UserNotificationCenter
     ..trimmed for brevity..

@@ -11,6 +11,8 @@ import logging
 import json
 # needed for python 2.7.9 to revert SSL verification
 import ssl
+# 1.04: added for xml_fix()
+import re
 from datetime import datetime
 
 from base64 import b64encode
@@ -22,6 +24,9 @@ from .object_types.result_set import ResultSet
 import sys
 reload(sys)
 sys.setdefaultencoding('latin-1')
+
+# 1.0.4: added for xml_fix(), declare a regex that identifies invalid characters in unicode
+invalid_xml = re.compile(u'[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F]')
 
 my_file = os.path.abspath(__file__)
 my_dir = os.path.dirname(my_file)
@@ -76,6 +81,29 @@ def load_file(filename):
     return content
 
 
+def xml_fix(s):
+    """
+    # 1.0.4: added this function
+
+    this supports better handling of invalid XML, removing invalid control characters and
+    re-encoding to utf-8 with xmlcharrefreplace
+    """
+    # string that will be used to replace any invalid characters
+    fixer_str = "???"
+    # encode the string as utf-8
+    utf_str = s.encode('utf-8', 'xmlcharrefreplace')
+    # decode the string from utf-8 into unicode
+    unicode_str = utf_str.decode('utf-8', 'xmlcharrefreplace')
+    # replace any invalid characters that match the invalid_xml regex with the fixer_str
+    clean_str, count = invalid_xml.subn(fixer_str, unicode_str)
+    # if any invalid characters found, print out a debug message saying how many were replaced
+    if count:
+        mylog.debug("Replaced {} invalid characters in the XML with {}".format(count, fixer_str))
+    # re-encode the string as utf-8
+    utf_str = clean_str.encode('utf-8', 'xmlcharrefreplace')
+    return utf_str
+
+
 def http_post(host, port, url, body=None, headers=None, timeout=5):
     # revert SSL verification for python 2.7.9
     try:
@@ -106,8 +134,6 @@ def http_post(host, port, url, body=None, headers=None, timeout=5):
     finally:
         http.close()
 
-    # fix for UTF encoding
-    response_body = response_body.encode('utf-8', 'xmlcharrefreplace')
     httplog.debug(type(response_body))
     httplog.debug((
         "HTTP response from {0!r} len:{1}, status:{2.status} {2.reason}"
@@ -221,9 +247,8 @@ class Session(object):
         # parse the single result_info into an Element and create a ResultInfo
         el = ET.fromstring(self.response_body)
         cdata = el.find('.//ResultXML')
-        # fix for utf-8 issues
-        cdata_text = cdata.text.encode('utf-8', 'xmlcharrefreplace')
-        result_info = ET.fromstring(cdata_text)
+        # 1.0.4: fix for utf-8 issues
+        result_info = ET.fromstring(xml_fix(cdata.text))
         # TODO: maybe this should be ResultInfoList
         obj = ResultInfo.fromSOAPElement(result_info)
         return obj
@@ -234,9 +259,8 @@ class Session(object):
         # parse the single result_info into an Element and create a ResultData
         el = ET.fromstring(self.response_body)
         cdata = el.find('.//ResultXML')
-        # fix for utf-8 issues
-        cdata_text = cdata.text.encode('utf-8', 'xmlcharrefreplace')
-        result_info = ET.fromstring(cdata_text)
+        # 1.0.4: fix for utf-8 issues
+        result_info = ET.fromstring(xml_fix(cdata.text))
         # TODO: maybe this should be ResultSetList
         obj = ResultSet.fromSOAPElement(result_info)
         return obj
@@ -379,9 +403,11 @@ class Session(object):
 
         self.last['sent'] = datetime.now()
         headers = {'Content-Type': 'text/xml'}
-        response_body = self._http_post(
+
+        # 1.0.4: fix for UTF encoding
+        response_body = xml_fix(self._http_post(
             url=self.SOAP_RES, body=request_body, headers=headers,
-        )
+        ))
 
         self.last['received'] = datetime.now()
         elapsed = self.last['received'] - self.last['sent']
@@ -406,9 +432,11 @@ class Session(object):
 
             # resend request_body
             self.last['sent'] = datetime.now()
-            response_body = self._http_post(
+
+            # 1.0.4: fix for UTF encoding
+            response_body = xml_fix(self._http_post(
                 url=self.SOAP_RES, body=request_body, headers=headers,
-            )
+            ))
             self.last['response_body'] = response_body
             self.last['received'] = datetime.now()
             elapsed = self.last['received'] - self.last['sent']
@@ -425,12 +453,4 @@ class Session(object):
         # update session_id, in case new one issued
         self.session_id = response_body_el.find('.//session').text
 
-        '''to fix elementtree from thowing:
-        UnicodeEncodeError: 'ascii' codec can't encode character
-        u'\xa0' in position 5705: ordinal not in range(128)
-
-        ## we no longer need to do this, the utf-8 fix in http_post should handle this
-        response_body = response_body.decode('utf-8')
-        response_body = response_body.replace(u"\xa0", u" ")
-        '''
         return response_body

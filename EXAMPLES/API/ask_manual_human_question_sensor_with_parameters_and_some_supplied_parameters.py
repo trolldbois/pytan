@@ -4,8 +4,25 @@ Ask a manual question using human strings by referencing the name of a single se
 
 No sensor filters, sensor parameters, sensor filter options, question filters, or question options supplied.
 """
-# Path to lib directory which contains pytan package
-PYTAN_LIB_PATH = '../lib'
+
+import os
+import sys
+sys.dont_write_bytecode = True
+
+# Determine our script name, script dir
+my_file = os.path.abspath(sys.argv[0])
+my_dir = os.path.dirname(my_file)
+
+# determine the pytan lib dir and add it to the path
+parent_dir = os.path.dirname(my_dir)
+pytan_root_dir = os.path.dirname(parent_dir)
+lib_dir = os.path.join(pytan_root_dir, 'lib')
+path_adds = [lib_dir]
+
+for aa in path_adds:
+    if aa not in sys.path:
+        sys.path.append(aa)
+
 
 # connection info for Tanium Server
 USERNAME = "Tanium User"
@@ -17,8 +34,7 @@ PORT = "444"
 LOGLEVEL = 2
 DEBUGFORMAT = False
 
-import sys, tempfile
-sys.path.append(PYTAN_LIB_PATH)
+import tempfile
 
 import pytan
 handler = pytan.Handler(
@@ -69,38 +85,48 @@ print out
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-2015-02-11 11:59:37,165 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 11:59:42,179 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 11:59:47,194 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 11:59:52,211 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
-2015-02-11 11:59:57,225 INFO     question_progress: Results 100% (Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines)
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+2015-03-26 11:38:30,171 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, , Microsoft.*] from all machines)
+2015-03-26 11:38:35,186 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, , Microsoft.*] from all machines)
+2015-03-26 11:38:40,203 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, , Microsoft.*] from all machines)
+2015-03-26 11:38:45,220 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, , Microsoft.*] from all machines)
+2015-03-26 11:38:50,236 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, , Microsoft.*] from all machines)
+2015-03-26 11:38:55,250 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, , Microsoft.*] from all machines)
+2015-03-26 11:39:00,268 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, , Microsoft.*] from all machines)
+2015-03-26 11:39:05,287 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, , Microsoft.*] from all machines)
+2015-03-26 11:39:10,307 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, , Microsoft.*] from all machines)
+2015-03-26 11:39:15,323 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, , Microsoft.*] from all machines)
+2015-03-26 11:39:20,339 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, , Microsoft.*] from all machines)
+2015-03-26 11:39:25,357 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, , Microsoft.*] from all machines)
+2015-03-26 11:39:30,378 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, , Microsoft.*] from all machines)
+2015-03-26 11:39:35,396 INFO     question_progress: Results 0% (Get Folder Name Search with RegEx Match[No, Program Files, No, , Microsoft.*] from all machines)
+2015-03-26 11:39:40,413 INFO     question_progress: Results 100% (Get Folder Name Search with RegEx Match[No, Program Files, No, , Microsoft.*] from all machines)
 
 Type of response:  <type 'dict'>
 
 Pretty print of response:
-{'question_object': <taniumpy.object_types.question.Question object at 0x105a1f510>,
- 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x105b4af10>}
+{'question_object': <taniumpy.object_types.question.Question object at 0x10760fb50>,
+ 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x10763a9d0>}
 
 Equivalent Question if it were to be asked in the Tanium Console: 
-Get Folder Name Search with RegEx Match[No, Program Files, No, ] from all machines
+Get Folder Name Search with RegEx Match[No, Program Files, No, , Microsoft.*] from all machines
 
 CSV Results of response: 
-"Folder Name Search with RegEx Match[No, Program Files, No, ]"
-C:\Program Files\Tanium\Tanium Server\ApacheBackup2014-09-16-20-44-23\cgi-bin
+"Folder Name Search with RegEx Match[No, Program Files, No, , Microsoft.*]"
+C:\Program Files\Microsoft SQL Server\110\Setup Bootstrap\Update Cache\KB2674319\ServicePack\1033_enu_lp\x64\setup\sqlsupport_msi\windows\winsxs\5z1v718o.6n8
+C:\Program Files\Microsoft SQL Server\110\Setup Bootstrap\Update Cache\KB2958429\ServicePack\1033_enu_lp\x64\setup\sqlsupport_msi\windows\winsxs\92rg91xw.1p4
+C:\Program Files\Microsoft SQL Server\110\Setup Bootstrap\Update Cache\KB2958429\ServicePack\1033_enu_lp\x64\setup\sqlsupport_msi\windows\winsxs\policies\u1sw1o0k.9hi
 C:\Program Files\VMware\VMware Tools\plugins\vmsvc
-C:\Program Files\Microsoft SQL Server\110\Setup Bootstrap\SQLServer2012\1040_ITA_LP\x64\1040\help
 C:\Program Files\Common Files\Microsoft Shared\VS7Debug
 C:\Program Files\Tanium\Tanium Server\Apache24\manual\style
+C:\Program Files\Microsoft SQL Server\110\Setup Bootstrap\Update Cache\KB2674319\ServicePack\1033_enu_lp\x64\setup\sqlsupport_msi\windows\winsxs\vlv6b2rp.6fi
+C:\Program Files\Microsoft SQL Server\110\Setup Bootstrap\Log\20150306_224415\resources
 C:\Program Files\Tanium\Tanium Server\Apache24\htdocs\console\history
+C:\Program Files\Windows Portable Devices
+C:\Program Files\Microsoft SQL Server\110\Setup Bootstrap\Update Cache\KB2977326\GDR\1033_enu_lp\x64\setup\sqlsupport_msi\pfiles\sqlservr\110\keyfile
+C:\Program Files\Microsoft SQL Server\110\Setup Bootstrap\Update Cache\KB2674319\ServicePack\1033_enu_lp\x64\setup\sql_engine_core_inst_loc_msi
 C:\Program Files\Common Files\VMware\Drivers\vmci\sockets\include
 C:\Program Files\Common Files\Microsoft Shared\ink\ar-SA
-C:\Program Files\Tanium\Tanium Server\plugins\console\Dashboards
-C:\Program Files\Tanium\Tanium Server\CertificateBackup2014-11-17-11-17-33
-C:\Program Files\Common Files\SpeechEngines\Microsoft
-C:\Program Files\Tanium\Tanium Server\ApacheBackup2014-09-16-20-44-23\modules
-C:\Program Files\Common Files\Microsoft Shared\ink\ru-RU
-C:\Program Files\Microsoft SQL Server\110\DTS\ForEachEnumerators\en
 ..trimmed for brevity..
 
 '''

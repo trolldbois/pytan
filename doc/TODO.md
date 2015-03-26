@@ -1,30 +1,32 @@
 # TODO NOW
+  * [ ] broken CR in folder name search regex match (SMALL)
+  * [ ] add secondary loop for if any data == current result unavail/etc (MEDIUM)
+  * [ ] change get logic to use cache_filters instead of objectlist for object selection (HUGE)
+
+# TANIUMPY BACKPORTS:
   * [ ] in question_asker.py: if pct >= self.pct_complete_threshold: 
   * [ ] in request_body_template.xml:       {cache_filters}
   * [ ] in session.py: utf-8 fix
-  * [ ] submit bug re: utf8?
-  * [ ] submit bug re: add mac to client status 
+  * [ ] add xml_fix to BaseType.py
 
 # TODO LATER
-  * [ ] Add method to get question progress
-  * [ ] explain get == select col data, from == select row data
-  * [ ] add pointers to KB articles
-  * [ ] add readme.md to examples
-  * [ ] fix search attrs for cmdline scripts
-  * [ ] add non id/name/hash search support to get_$object.py
-  * [ ] question filters get params too??
-  * [ ] better error messages for deploy action when error in filters
-  * [ ] add print_user bin script
-  * [ ] test verify checks work against package with verification (unable to do)
-  * [ ] look into update object methods
-  * [ ] add method to calculate total time btwn request and response
-  * [ ] test against RT
-  * [ ] test against all the different levels of user privs
-  * [ ] logfile support
-  * [ ] email out
-  * [ ] test against demo tanium
-  * [ ] add caching
-  * [ ] figure out cert based auth/plugin based auth?
+  * [?] Add method to get question progress (MEDIUM)
+  * [ ] explain get == select col data, from == select row data (SMALL/DOC)
+  * [ ] add pointers to KB articles (SMALL/DOC)
+  * [ ] add readme.md to examples (SMALL/DOC)
+  * [ ] fix search attrs for cmdline scripts (HUGE/CORRELATIVE)
+  * [ ] add non id/name/hash search support to get_$object.py (HUGE/CORRELATIVE)
+  * [ ] question filters get params too?? (UNKNOWN)
+  * [ ] add print_user bin script (SMALL)
+  * [ ] test verify checks work against package with verification (unable to do) (UNKNOWN)
+  * [ ] look into update object methods (UNKNOWN)
+  * [ ] add method to calculate total time btwn request and response (UNKNOWN)
+  * [ ] test against all the different levels of user privs (UNKNOWN)
+  * [ ] logfile support (MEDIUM)
+  * [ ] email out (MEDIUM)
+  * [ ] test against demo tanium (MEDIUM)
+  * [ ] add caching (HUGE)
+  * [ ] figure out cert based auth/plugin based auth? (HUGE)
 
 # DONE
   * 0.5.0
@@ -118,3 +120,7 @@
     * [X] fix utf-8 issue in taniumpy
     * [X] improvements in build process for STATICWINBUILD
     * [X] rebuild doc dirs
+  * 1.0.4
+    * [X] add better xml cleaning / invalid character handling to session.py (MEDIUM)
+    * [X] add xml_fix to BaseType.py (SMALL)
+    * [X] add support for sensor driven data for deploying action/package (this was done by adding support for undefined parameters, and "works" in theory, but in execution has lots of issues due to percent encoded parameters) (SMALL)

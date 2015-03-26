@@ -9,5 +9,3 @@ threaded_http module
     :special-members:
 
 .. toctree::
-   :maxdepth: 3
-   :numbered:

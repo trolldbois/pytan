@@ -4,7 +4,7 @@
         "priority": "1",
         "args": {"export_format": "csv"},
         "tests": [
-            "'Computer Name,Destination,Flags,\"Folder Name Search with RegEx Match[No, Program Files, No, ]\",Gateway,IP Address,Interface,Mask,Metric' == export_str.splitlines()[0]"
+            "'Computer Name,Destination,Flags,\"Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*]\",Gateway,IP Address,Interface,Mask,Metric' == export_str.splitlines()[0]"
         ]
     },
     "export_resultset_csv_sort_empty": {
@@ -12,7 +12,7 @@
         "priority": "2",
         "args": {"export_format": "csv", "header_sort": []},
         "tests": [
-            "'Computer Name,Destination,Flags,\"Folder Name Search with RegEx Match[No, Program Files, No, ]\",Gateway,IP Address,Interface,Mask,Metric' == export_str.splitlines()[0]"
+            "'Computer Name,Destination,Flags,\"Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*]\",Gateway,IP Address,Interface,Mask,Metric' == export_str.splitlines()[0]"
         ]
     },
     "export_resultset_csv_sort_true": {
@@ -20,7 +20,7 @@
         "priority": "3",
         "args": {"export_format": "csv", "header_sort": true},
         "tests": [
-            "'Computer Name,Destination,Flags,\"Folder Name Search with RegEx Match[No, Program Files, No, ]\",Gateway,IP Address,Interface,Mask,Metric' == export_str.splitlines()[0]"
+            "'Computer Name,Destination,Flags,\"Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*]\",Gateway,IP Address,Interface,Mask,Metric' == export_str.splitlines()[0]"
         ]
     },
     "export_resultset_csv_sort_false": {
@@ -28,7 +28,7 @@
         "priority": "4",
         "args": {"export_format": "csv", "header_sort": false},
         "tests": [
-            "'Computer Name,Destination,Gateway,Mask,Flags,Metric,Interface,IP Address,\"Folder Name Search with RegEx Match[No, Program Files, No, ]\"' == export_str.splitlines()[0]"
+            "'Computer Name,Destination,Gateway,Mask,Flags,Metric,Interface,IP Address,\"Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*]\"' == export_str.splitlines()[0]"
         ]
     },
     "export_resultset_csv_sort_list": {
@@ -44,7 +44,7 @@
         "priority": "6",
         "args": {"export_format": "csv", "header_add_type": false},
         "tests": [
-            "'Computer Name,Destination,Flags,\"Folder Name Search with RegEx Match[No, Program Files, No, ]\",Gateway,IP Address,Interface,Mask,Metric' == export_str.splitlines()[0]"
+            "'Computer Name,Destination,Flags,\"Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*]\",Gateway,IP Address,Interface,Mask,Metric' == export_str.splitlines()[0]"
         ]
     },
     "export_resultset_csv_type_true": {
@@ -60,7 +60,7 @@
         "priority": "8",
         "args": {"export_format": "csv", "header_add_sensor": false},
         "tests": [
-            "'Computer Name,Destination,Flags,\"Folder Name Search with RegEx Match[No, Program Files, No, ]\",Gateway,IP Address,Interface,Mask,Metric' == export_str.splitlines()[0]"
+            "'Computer Name,Destination,Flags,\"Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*]\",Gateway,IP Address,Interface,Mask,Metric' == export_str.splitlines()[0]"
         ]
     },
     "export_resultset_csv_sensor_true": {
@@ -76,7 +76,7 @@
         "priority": "10",
         "args": {"export_format": "csv", "expand_grouped_columns": false},
         "tests": [
-            "'Computer Name,Destination,Flags,\"Folder Name Search with RegEx Match[No, Program Files, No, ]\",Gateway,IP Address,Interface,Mask,Metric' == export_str.splitlines()[0]"
+            "'Computer Name,Destination,Flags,\"Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*]\",Gateway,IP Address,Interface,Mask,Metric' == export_str.splitlines()[0]"
         ]
     },
     "export_resultset_csv_expand_true": {
@@ -84,7 +84,7 @@
         "priority": "11",
         "args": {"export_format": "csv", "expand_grouped_columns": true},
         "tests": [
-            "'Computer Name,Destination,Flags,\"Folder Name Search with RegEx Match[No, Program Files, No, ]\",Gateway,IP Address,Interface,Mask,Metric' == export_str.splitlines()[0]",
+            "'Computer Name,Destination,Flags,\"Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*]\",Gateway,IP Address,Interface,Mask,Metric' == export_str.splitlines()[0]",
             "'UNRELATED TO IP Address' in export_str"
         ]
     },
@@ -99,7 +99,7 @@
             "expand_grouped_columns": true
         },
         "tests": [
-            "'Computer Name: Computer Name (String),\"Folder Name Search with RegEx Match[No, Program Files, No, ]: Folder Name Search with RegEx Match[No, Program Files, No, ] (String)\",IP Address: IP Address (IPAddress),IP Route Details: Destination (IPAddress),IP Route Details: Flags (String),IP Route Details: Gateway (IPAddress),IP Route Details: Interface (String),IP Route Details: Mask (String),IP Route Details: Metric (NumericInteger)' == export_str.splitlines()[0]",
+            "'Computer Name: Computer Name (String),\"Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*]: Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*] (String)\",IP Address: IP Address (IPAddress),IP Route Details: Destination (IPAddress),IP Route Details: Flags (String),IP Route Details: Gateway (IPAddress),IP Route Details: Interface (String),IP Route Details: Mask (String),IP Route Details: Metric (NumericInteger)' == export_str.splitlines()[0]",
             "'UNRELATED TO IP Address' in export_str"
         ]
     },

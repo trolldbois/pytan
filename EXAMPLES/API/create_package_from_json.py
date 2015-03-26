@@ -2,8 +2,25 @@
 """
 Export a package object to a JSON file, adding ' API TEST' to the name of the package before exporting the JSON file and deleting any pre-existing package with the same (new) name, then create a new package object from the exported JSON file
 """
-# Path to lib directory which contains pytan package
-PYTAN_LIB_PATH = '../lib'
+
+import os
+import sys
+sys.dont_write_bytecode = True
+
+# Determine our script name, script dir
+my_file = os.path.abspath(sys.argv[0])
+my_dir = os.path.dirname(my_file)
+
+# determine the pytan lib dir and add it to the path
+parent_dir = os.path.dirname(my_dir)
+pytan_root_dir = os.path.dirname(parent_dir)
+lib_dir = os.path.join(pytan_root_dir, 'lib')
+path_adds = [lib_dir]
+
+for aa in path_adds:
+    if aa not in sys.path:
+        sys.path.append(aa)
+
 
 # connection info for Tanium Server
 USERNAME = "Tanium User"
@@ -15,8 +32,7 @@ PORT = "444"
 LOGLEVEL = 2
 DEBUGFORMAT = False
 
-import sys, tempfile
-sys.path.append(PYTAN_LIB_PATH)
+import tempfile
 
 import pytan
 handler = pytan.Handler(
@@ -88,10 +104,10 @@ print response.to_json(response)
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-2015-02-11 12:06:40,488 INFO     handler: Deleted 'PackageSpec, id: 104'
-2015-02-11 12:06:40,489 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/PackageSpecList_2015_02_11-12_06_40-EST.json' written with 1833 bytes
-2015-02-11 12:06:40,512 INFO     handler: New PackageSpec, name: 'Custom Tagging - Add Tags API TEST' (ID: 108) created successfully!
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+2015-03-26 11:49:19,177 INFO     handler: Deleted 'PackageSpec, id: 6283'
+2015-03-26 11:49:19,178 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/PackageSpecList_2015_03_26-11_49_19-EDT.json' written with 1833 bytes
+2015-03-26 11:49:19,268 INFO     handler: New PackageSpec, name: 'Custom Tagging - Add Tags API TEST' (ID: 6286) created successfully!
 
 Type of response:  <class 'taniumpy.object_types.package_spec_list.PackageSpecList'>
 
@@ -107,14 +123,14 @@ print the object returned in JSON format:
       "available_time": "1900-01-01T00:00:00", 
       "command": "cmd /c cscript //T:60 add-tags.vbs \"$1\"", 
       "command_timeout": 60, 
-      "creation_time": "2015-02-11T17:06:40", 
+      "creation_time": "2015-03-26T15:49:19", 
       "deleted_flag": 0, 
       "display_name": "Custom Tagging - Add Tags", 
       "expire_seconds": 660, 
       "hidden_flag": 0, 
-      "id": 108, 
+      "id": 6286, 
       "last_modified_by": "Tanium User", 
-      "last_update": "2015-02-11T17:06:40", 
+      "last_update": "2015-03-26T15:49:19", 
       "metadata": {
         "_type": "metadata", 
         "item": [
@@ -132,9 +148,9 @@ print the object returned in JSON format:
           }
         ]
       }, 
-      "modification_time": "2015-02-11T17:06:40", 
+      "modification_time": "2015-03-26T15:49:19", 
       "name": "Custom Tagging - Add Tags API TEST", 
-      "parameter_definition": "{\"parameters\":[{\"restrict\":null,\"validationExpressions\":[{\"flags\":\"\",\"expression\":\"\\\\S\",\"helpString\":\"You must enter a value\",\"model\":\"com.tanium.models::ValidationExpression\",\"parameterType\":\"com.tanium.models::ValidationExpression\"}],\"helpString\":\"Enter tags space-delimited.\",\"value\":\"\",\"promptText\":\"e.g. PCI DMZ Decomm\",\"defaultValue\":\"\",\"label\":\"Add tags (space-delimited)\",\"maxChars\":0,\"key\":\"$1\",\"model\":\"com.tanium.components.parameters::TextInputParameter\",\"parameterType\":\"com.tanium.components.parameters::TextInputParameter\"}],\"model\":\"com.tanium.components.parameters::ParametersArray\",\"parameterType\":\"com.tanium.components.parameters::ParametersArray\"}", 
+      "parameter_definition": "{\"parameters\":[{\"label\":\"Add tags (space-delimited)\",\"maxChars\":0,\"restrict\":null,\"validationExpressions\":[{\"helpString\":\"You must enter a value\",\"expression\":\"\\\\S\",\"flags\":\"\",\"model\":\"com.tanium.models::ValidationExpression\",\"parameterType\":\"com.tanium.models::ValidationExpression\"}],\"value\":\"\",\"helpString\":\"Enter tags space-delimited.\",\"promptText\":\"e.g. PCI DMZ Decomm\",\"defaultValue\":\"\",\"key\":\"$1\",\"model\":\"com.tanium.components.parameters::TextInputParameter\",\"parameterType\":\"com.tanium.components.parameters::TextInputParameter\"}],\"model\":\"com.tanium.components.parameters::ParametersArray\",\"parameterType\":\"com.tanium.components.parameters::ParametersArray\"}", 
       "source_id": 0, 
       "verify_group_id": 0
     }

@@ -4,8 +4,25 @@ Deploy an action with parameters against only windows computers using human stri
 
 This will use the Package 'Custom Tagging - Add Tags' and supply two parameters. The second parameter will be ignored because the package in question only requires one parameter.
 """
-# Path to lib directory which contains pytan package
-PYTAN_LIB_PATH = '../lib'
+
+import os
+import sys
+sys.dont_write_bytecode = True
+
+# Determine our script name, script dir
+my_file = os.path.abspath(sys.argv[0])
+my_dir = os.path.dirname(my_file)
+
+# determine the pytan lib dir and add it to the path
+parent_dir = os.path.dirname(my_dir)
+pytan_root_dir = os.path.dirname(parent_dir)
+lib_dir = os.path.join(pytan_root_dir, 'lib')
+path_adds = [lib_dir]
+
+for aa in path_adds:
+    if aa not in sys.path:
+        sys.path.append(aa)
+
 
 # connection info for Tanium Server
 USERNAME = "Tanium User"
@@ -17,8 +34,7 @@ PORT = "444"
 LOGLEVEL = 2
 DEBUGFORMAT = False
 
-import sys, tempfile
-sys.path.append(PYTAN_LIB_PATH)
+import tempfile
 
 import pytan
 handler = pytan.Handler(
@@ -68,28 +84,24 @@ if response['action_results']:
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3258
-2015-02-11 12:05:58,335 INFO     question_progress: Results 0% (Get Online = "True" from all machines where Operating System contains "Windows")
-2015-02-11 12:06:03,353 INFO     question_progress: Results 100% (Get Online = "True" from all machines where Operating System contains "Windows")
-2015-02-11 12:06:03,424 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-02-11 12:06:04,450 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-02-11 12:06:05,477 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-02-11 12:06:06,506 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-02-11 12:06:07,534 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-02-11 12:06:08,564 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-02-11 12:06:09,589 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-02-11 12:06:10,615 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-02-11 12:06:11,642 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-02-11 12:06:12,668 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-02-11 12:06:13,694 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-02-11 12:06:14,725 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-02-11 12:06:15,750 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-02-11 12:06:16,776 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-02-11 12:06:17,802 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-02-11 12:06:18,828 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-02-11 12:06:19,855 INFO     action_progress: Action Results Passed: 100% (API Deploy Custom Tagging - Add Tags)
-2015-02-11 12:06:19,881 INFO     action_progress: Action Results Completed: 100% (API Deploy Custom Tagging - Add Tags)
-2015-02-11 12:06:19,881 INFO     action_progress: API Deploy Custom Tagging - Add Tags Result Counts:
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+2015-03-26 11:48:36,436 INFO     question_progress: Results 0% (Get Online = "True" from all machines where Operating System contains "Windows")
+2015-03-26 11:48:41,456 INFO     question_progress: Results 50% (Get Online = "True" from all machines where Operating System contains "Windows")
+2015-03-26 11:48:46,478 INFO     question_progress: Results 100% (Get Online = "True" from all machines where Operating System contains "Windows")
+2015-03-26 11:48:46,628 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-03-26 11:48:47,667 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-03-26 11:48:48,712 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-03-26 11:48:49,747 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-03-26 11:48:50,784 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-03-26 11:48:51,830 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-03-26 11:48:52,867 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-03-26 11:48:53,907 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-03-26 11:48:54,946 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-03-26 11:48:55,985 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-03-26 11:48:57,023 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
+2015-03-26 11:48:58,064 INFO     action_progress: Action Results Passed: 100% (API Deploy Custom Tagging - Add Tags)
+2015-03-26 11:48:58,099 INFO     action_progress: Action Results Completed: 100% (API Deploy Custom Tagging - Add Tags)
+2015-03-26 11:48:58,100 INFO     action_progress: API Deploy Custom Tagging - Add Tags Result Counts:
 	Running Count: 0
 	Success Count: 1
 	Failed Count: 0
@@ -101,19 +113,19 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
 Type of response:  <type 'dict'>
 
 Pretty print of response:
-{'action_object': <taniumpy.object_types.action.Action object at 0x1059c3fd0>,
+{'action_object': <taniumpy.object_types.action.Action object at 0x10756c410>,
  'action_progress_human': 'API Deploy Custom Tagging - Add Tags Result Counts:\n\tRunning Count: 0\n\tSuccess Count: 1\n\tFailed Count: 0\n\tUnknown Count: 0\n\tFinished Count: 1\n\tTotal Count: 1\n\tFinished Count must equal: 1',
  'action_progress_map': {'Completed.': ['jtanium1.localdomain']},
- 'action_results': <taniumpy.object_types.result_set.ResultSet object at 0x105c94890>,
- 'pre_action_question_results': {'question_object': <taniumpy.object_types.question.Question object at 0x107b4bd50>,
-                                 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x1059bf590>}}
+ 'action_results': <taniumpy.object_types.result_set.ResultSet object at 0x107563bd0>,
+ 'pre_action_question_results': {'question_object': <taniumpy.object_types.question.Question object at 0x107817710>,
+                                 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x10855d290>}}
 
 Print of action object: 
 Action, name: 'API Deploy Custom Tagging - Add Tags'
 
 CSV Results of response: 
 Action Statuses,Computer Name
-1372:Completed.,jtanium1.localdomain
+21079:Completed.,jtanium1.localdomain
 
 
 '''
