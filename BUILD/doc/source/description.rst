@@ -21,8 +21,8 @@ This was created to solve for the following needs:
 
 Requirements
 ============
-    -  Python 2.7
-    -  A working install of Tanium Server 6.2
+    -  Python 2.7: To date PyTan has only been qualified against 2.7.6 and 2.7.9 on Mac/Linux/Windows.
+    -  A working install of Tanium Server 6.2: To date PyTan has only been qualified against 6.2.X versions of Tanium. It does not yet run against 6.5.X versions.
 
 Installation
 ============
