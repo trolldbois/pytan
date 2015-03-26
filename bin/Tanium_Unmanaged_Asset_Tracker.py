@@ -2,9 +2,10 @@
 # -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
-'''Tanium Unmanaged Asset Tracker
+'''TUAT: Compares Unmanaged Asset data against Tanium Clients in System Status'''
 
-Compares Unmanaged Asset data against Tanium Clients in System Status
+'''
+Tanium Unmanaged Asset Tracker
 
 How the Unmanaged Asset Tracking works in Tanium out of the box by default:
  - a saved action called "Unmanaged Asset Tracking - Deploy Scan Tools and Scan"
