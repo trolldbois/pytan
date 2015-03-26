@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block head %}
+  {{ super() }}
+{% endblock head %}
+
+
+{% block topcontent %}
+<colgroup>
+<col />
+</colgroup>
+<tr>
+<td>
+<p>
+{{ topmsg }}
+</p>
+</td>
+</tr>
+{% endblock topcontent %}
+
+{% block middlecontent %}
+<INPUT TYPE="hidden" NAME="logged_in_user" VALUE="{{ logged_in_user }}">
+<INPUT TYPE="hidden" NAME="server" VALUE="{{ server }}">
+<INPUT TYPE="hidden" NAME="path" VALUE="{{ next_path }}">
+
+<table id="table" class="tablesorter" width="100%">
+<caption>Select an application to install:</caption>
+<colgroup>
+   <col span="1" style="width: 10%;">
+   <col span="1" style="width: 20%;">
+   <col span="1" style="width: 20%;">
+</colgroup>
+<thead>
+ <tr>
+  <th class="{sorter: false}"></th>
+  <th class="aname">Application Name</th>
+  <th class="acmd">Command</th>
+ </tr>
+</thead>
+<tbody>
+{% for pkg in pkgs %}
+ <tr>
+  <td class="fselect"><input REQUIRED type="radio" class="radio" name="application" value="{{ pkg.name }}" /></td>
+  <td class="aname">{{ pkg.display_name }}</td>
+  <td class="acmd">{{ pkg.command }}</td>
+ </tr>
+{% endfor %}
+</tbody>
+</table>
+
+{% endblock middlecontent %}
+
+{% block buttons %}
+{{ super() }}
+ <input name="view" type="submit" id="next" value="Next &gt;" />
+ &nbsp;
+
+{% endblock buttons %}

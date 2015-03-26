@@ -1,0 +1,43 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+{% block head %}
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>{% block appinfo %}{{ app.name }} v{{ app.ver }} {% block title %} - {{ title }}{% endblock title %}{% endblock appinfo %}</title>
+<link rel="stylesheet" type="text/css" href="css/tablesorter/theme.blue.min.css">
+<link rel="stylesheet" type="text/css" href="css/app.css" />
+<script type="text/javascript" src="js/jquery/jquery-1.11.2.js"></script>
+<script type="text/javascript" src="js/validate/jquery.validate.js"></script>
+<script type="text/javascript" src="js/tablesorter/jquery.tablesorter.js"></script>
+<script type="text/javascript" src="js/tablesorter/jquery.tablesorter.widgets.js"></script>
+
+{% endblock head %}
+</head>
+
+<body>
+<form name="theForm" id="theForm" method="post" action="{{ nextaction }}" ENCTYPE="multipart/form-data" novalidate>
+<h1>{{ self.appinfo() }}</h1>
+{% block bigdesc %}
+<div class="bigdesc">
+<table style="border:0" width=100%%>
+{% block topcontent %}{% endblock topcontent %}
+</table>
+</div>
+{% endblock bigdesc %}
+
+<div>
+{% block middlecontent %}{% endblock middlecontent %}
+</div>
+<br>
+<div id="buttons">
+	{% block buttons %}
+	<input name="$back"
+    type="button"
+    id="back"
+    value="&lt; Start Over"
+    onclick="window.location='main.py';return false"/>
+	&nbsp;
+	{% endblock buttons %}
+</div>
+</form>
+</body>
+</html>

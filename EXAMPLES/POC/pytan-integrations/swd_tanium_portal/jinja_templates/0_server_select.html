@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block head %}
+  {{ super() }}
+{% endblock head %}
+
+
+{% block topcontent %}
+<colgroup>
+<col />
+</colgroup>
+<tr>
+<td>
+<p>
+{{ topmsg }}
+</p>
+</td>
+</tr>
+{% endblock topcontent %}
+
+{% block middlecontent %}
+<INPUT TYPE="hidden" NAME="logged_in_user" VALUE="{{ logged_in_user }}">
+
+<table id="serverselect" class="tablesorter" width="100%">
+<caption>Select a server to perform an operation on:</caption>
+<colgroup>
+   <col span="1" style="width: 10%;">
+   <col span="1" style="width: 20%;">
+   <col span="1" style="width: 20%;">
+   <col span="1" style="width: 20%;">
+</colgroup>
+<thead>
+ <tr>
+  <th class="{sorter: false}"></th>
+  <th class="sname">Computer Name</th>
+  <th class="sip">IP Address</th>
+  <th class="sos">Operating System</th>
+ </tr>
+</thead>
+<tbody>
+{% for server in servers %}
+ <tr>
+  <td class="fselect"><input REQUIRED type="radio" class="radio" name="server" value="{{ server|getitem('Computer ID') }}" /></td>
+  <td class="sname">{{ server|getitem('Computer Name') }}</td>
+  <td class="sip">{{ server|getitem('IP Address') }}</td>
+  <td class="sos">{{ server|getitem('Operating System') }}</td>
+ </tr>
+{% endfor %}
+</tbody>
+</table>
+<br>
+
+{% endblock middlecontent %}
+
+{% block buttons %}
+{{ super() }}
+<select REQUIRED name="path">
+  <option disabled selected value=""> -- select an operation -- </option>
+  <option value="show_installed">List</option>
+  <option value="install_select">Install</option>
+  <option value="uninstall_select">Uninstall</option>
+  <option value="repair_select">Repair</option>
+</select>
+ <input name="view" type="submit" id="next" value="Next &gt;" />
+ &nbsp;
+
+{% endblock buttons %}

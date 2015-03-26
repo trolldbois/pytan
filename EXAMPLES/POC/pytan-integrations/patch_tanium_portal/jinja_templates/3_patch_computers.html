@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block head %}
+  {{ super() }}
+<script type="text/javascript" src="js/3_patch_computers.js"></script>
+{% endblock head %}
+
+
+{% block bigdesc %}
+
+{% endblock bigdesc %}
+
+{% block middlecontent %}
+<INPUT TYPE="hidden" NAME="path" VALUE="{{ next_path }}">
+<p>
+{% for server in servers %}
+<div class="patch_div" id="{{server}}">
+<h1>
+Patch process info for <span class="sinfo"></span> computer ID {{server}}:<br>
+</h1>
+<textarea rows="10" cols="170"></textarea>
+</div>
+<br>
+{% endfor %}
+</p>
+{% endblock middlecontent %}
+
+{% block buttons %}
+{{ super() }}
+<input name="stop" type="button" id="stop" value="Stop Everything"/>
+&nbsp;
+<input name="verbose" id="verbose" checked="checked" type="checkbox" /> Enable Verbose output
+{% endblock buttons %}

@@ -1,0 +1,127 @@
+/* BEGIN Reset CSS to a simple baseline */
+html,body
+{
+	color:#000;
+	background-color:#c4d4fa;
+	font-family:Arial, Helvetica, sans-serif;
+}
+
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,dd,dl,dt,ol,fieldset,label,legend,caption
+{
+	border:0;
+	font-weight:inherit;
+	font-style:inherit;
+	font-size:100%;
+	line-height:1;
+	font-family:Arial, Helvetica, sans-serif;
+	text-align:left;
+	margin:0;
+	padding:0;
+}
+
+a img,:link img,:visited img
+{
+	border:0;
+}
+
+
+ol
+{
+	list-style:none;
+}
+
+q:before,q:after,blockquote:before,blockquote:after
+{
+	content:"";
+}
+
+/* END Reset CSS to a simple baseline
+ BEGIN Generic App Styling */
+body
+{
+	font-size:76%;
+}
+
+h1
+{
+	font-size:1.4em;
+	font-weight:700;
+	font-family:Arial, Helvetica, sans-serif;
+	color:#fff;
+	background-color:#3264be;
+	background-image:url('h1-bkgd.gif');
+	background-repeat:repeat-x;
+	padding:6px 5px 5px;
+}
+
+a
+{
+	text-decoration:none;
+	font-size:1em;
+	font-family:Arial, Helvetica, sans-serif;
+}
+
+a:hover
+{
+	text-decoration:underline;
+}
+
+
+.bigdesc
+{
+	background-color:#FFF;
+	border-bottom:1px solid #999;
+	padding:15px 10px;
+}
+
+#buttons
+{
+	text-align:center;
+	background-color:#CCC;
+	padding:3px 5px;
+}
+
+.delta { float: right; }
+.staticdelta { color: black; }
+.risingdelta { color: green; }
+.fallingdelta { color: red; }
+
+form {
+margin-bottom: 0;
+}
+
+caption {
+    padding: .2em .8em;   border: 1px solid #fff;
+    background: #68B2DB;   font-weight: bold;   font-size: 1.1em;   margin-left: -1px; /* Fix FF 1px issue */;
+    text-align: center;
+    	color:#fff;
+
+}
+
+* { font-family:Arial; }
+h2 { padding:0 0 5px 5px; }
+h2 a { color: #224f99; }
+a { color:#999; text-decoration: none; }
+a:hover { color:#802727; }
+p { padding:0 0 5px 0; }
+
+input { padding:5px; border:1px solid #999; border-radius:4px; -moz-border-radius:4px; -web-kit-border-radius:4px; -khtml-border-radius:4px; }
+
+input.error {
+		border: 1px dotted red;
+}
+
+span.server_id {
+  display: none;
+}
+
+label.error {
+  color: red;
+  font-style: italic;
+  display: none;
+}
+
+tr.failed_search td {
+  color: red;
+  font-style: italic;
+}

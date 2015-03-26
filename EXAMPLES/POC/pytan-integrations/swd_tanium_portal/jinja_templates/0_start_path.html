@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block head %}
+  {{ super() }}
+{% endblock head %}
+
+
+{% block topcontent %}
+<colgroup>
+<col />
+</colgroup>
+<tr>
+<td>
+<p>
+{{ topmsg }}
+<INPUT REQUIRED TYPE="text" NAME="logged_in_user" SIZE="80" VALUE="{{ logged_in_user }}">
+<INPUT TYPE="hidden" NAME="path" VALUE="{{ next_path }}">
+</p>
+</td>
+</tr>
+{% endblock topcontent %}
+
+{% block middlecontent %}
+
+{% endblock middlecontent %}
+
+{% block buttons %}
+{{ super() }}
+ <input name="view" type="submit" id="next" value="Next &gt;" />
+ &nbsp;
+
+{% endblock buttons %}

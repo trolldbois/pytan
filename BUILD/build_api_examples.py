@@ -127,7 +127,7 @@ if not os.path.isdir(example_out_dir):
 ####################### BASE EXAMPLE
 
 base_example = """# Path to lib directory which contains pytan package
-PYTAN_LIB_PATH = '../lib'
+PYTAN_LIB_PATH = '../../lib'
 
 # connection info for Tanium Server
 USERNAME = "Tanium User"
