@@ -31,7 +31,7 @@ form = cgi.FieldStorage()
 
 formdict = common.formtodict(form)
 
-question_id = formdict.get('question_id', "2746")
+question_id = formdict.get('question_id', "")
 
 ret = {
     'status': None,
