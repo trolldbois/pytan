@@ -2,6 +2,7 @@
   * [ ] broken CR in folder name search regex match (SMALL)
   * [ ] add secondary loop for if any data == current result unavail/etc (MEDIUM)
   * [ ] change get logic to use cache_filters instead of objectlist for object selection (HUGE)
+  * [ ] clean up open file handles
 
 # TANIUMPY BACKPORTS:
   * [ ] in question_asker.py: if pct >= self.pct_complete_threshold: 
