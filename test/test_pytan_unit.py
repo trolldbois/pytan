@@ -1020,13 +1020,11 @@ class TestManualBuildObjectUtils(unittest.TestCase):
     @classmethod
     def setUpClass(cls): # noqa
         # load in our JSON sensor object for testing
-        cls.sensor_obj_with_params = utils.load_taniumpy_from_json(
-            os.path.join(my_dir, 'sensor_obj_with_params.json')
-        )
+        f = os.path.join(my_dir, 'sensor_obj_with_params.json')
+        cls.sensor_obj_with_params = utils.load_taniumpy_from_json(f)
 
-        cls.sensor_obj_no_params = utils.load_taniumpy_from_json(
-            os.path.join(my_dir, 'sensor_obj_no_params.json')
-        )
+        f = os.path.join(my_dir, 'sensor_obj_no_params.json')
+        cls.sensor_obj_no_params = utils.load_taniumpy_from_json(f)
 
     def test_build_selectlist_obj_noparamssensorobj_noparams(self):
         '''builds a selectlist object using a sensor obj with no params'''
@@ -1421,13 +1419,30 @@ class TestGenericUtils(unittest.TestCase):
         with self.assertRaisesRegexp(HandlerError, e):
             utils.get_q_obj_map(qtype)
 
-    def test_open_param_file_invalid_file(self):
+    def test_load_taniumpy_file_invalid_file(self):
+        f = 'invalid_file.1234'
         with self.assertRaises(HandlerError):
-            utils.load_taniumpy_from_json('invalid_file.1234')
+            utils.load_taniumpy_from_json(f)
 
-    def test_open_param_file_invalid_json(self):
+    def test_load_taniumpy_file_invalid_json(self):
+        f = os.path.join(root_dir, 'doc/example_of_all_package_parameters.json')
         with self.assertRaises(HandlerError):
-            utils.load_taniumpy_from_json(os.path.join(my_dir, 'bad_chars_basetype.xml'))
+            utils.load_taniumpy_from_json(f)
+
+    def test_load_param_file_valid(self):
+        f = os.path.join(root_dir, 'doc/example_of_all_package_parameters.json')
+        z = utils.load_param_json_file(f)
+        self.assertIn('ParametersArray', z)
+
+    def test_load_param_file_invalid_file(self):
+        f = 'invalid_file.1234'
+        with self.assertRaises(HandlerError):
+            utils.load_param_json_file(f)
+
+    def test_load_param_file_invalid_json(self):
+        f = os.path.join(my_dir, 'sensor_obj_no_params.json')
+        with self.assertRaises(HandlerError):
+            utils.load_param_json_file(f)
 
     def test_get_obj_map(self):
         obj = 'sensor'
