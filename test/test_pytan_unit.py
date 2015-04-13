@@ -32,7 +32,7 @@ from pytan.utils import DefinitionParserError
 from pytan.utils import HandlerError
 
 # control the amount of output from unittests
-TESTVERBOSITY = 1
+TESTVERBOSITY = 2
 
 # have unittest exit immediately on unexpected error
 FAILFAST = True
@@ -1105,7 +1105,6 @@ class TestManualBuildObjectUtils(unittest.TestCase):
         kwargs = {'sensor_defs': sensor_defs}
 
         r = utils.build_selectlist_obj(**kwargs)
-        print r.to_json(r)
         self.assertIsInstance(r, taniumpy.SelectList)
         self.assertIsInstance(r.select[0], taniumpy.Select)
         self.assertEqual(len(r.select), 1)
