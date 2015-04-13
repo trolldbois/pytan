@@ -1,5 +1,5 @@
 
-# Copyright (c) 2014 Tanium Inc
+# Copyright (c) 2015 Tanium Inc
 #
 # Generated from console.wsdl version 0.0.1     
 #
@@ -15,13 +15,13 @@ class PluginSqlResult(BaseType):
     def __init__(self):
         BaseType.__init__(
             self,
-            simple_properties={'value': str},
+            simple_properties={},
             complex_properties={},
-            list_properties={},
+            list_properties={'value': str},
         )
-        self.value = None
         
         
+        self.value = []
 
 
 

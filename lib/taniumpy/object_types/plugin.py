@@ -1,5 +1,5 @@
 
-# Copyright (c) 2014 Tanium Inc
+# Copyright (c) 2015 Tanium Inc
 #
 # Generated from console.wsdl version 0.0.1     
 #
@@ -29,7 +29,7 @@ class Plugin(BaseType):
                         'sql_response': PluginSql,
                         'metadata': MetadataList,
                         'commands': PluginCommandList,
-                        'permissions': UserPermissions},
+                        'permissions': PermissionList},
             list_properties={},
         )
         self.name = None
@@ -53,5 +53,5 @@ from plugin_argument_list import PluginArgumentList
 from plugin_sql import PluginSql
 from metadata_list import MetadataList
 from plugin_command_list import PluginCommandList
-from user_permissions import UserPermissions
+from permission_list import PermissionList
 

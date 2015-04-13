@@ -40,7 +40,7 @@ class QuestionAsker(object):
         )
         return ret
 
-    def setPctCompleteThreshold(self, val):
+    def setPctCompleteThreshold(self, val): # noqa
         self.pct_complete_threshold = val
 
     def run(self, callbacks={}, **kwargs):

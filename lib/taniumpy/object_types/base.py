@@ -1,4 +1,4 @@
-# Copyright (c) 2014 Tanium Inc
+# Copyright (c) 2015 Tanium Inc
 #
 
 import csv
@@ -131,7 +131,7 @@ class BaseType(object):
                 'Not simply a list type, append not supported'
             )
 
-    def toSOAPElement(self, minimal=False):
+    def toSOAPElement(self, minimal=False): # noqa
         root = ET.Element(self._soap_tag)
         for p in self._simple_properties:
             el = ET.Element(p)
@@ -163,18 +163,27 @@ class BaseType(object):
             vals = getattr(self, p)
             if not vals:
                 continue
-            for val in vals:
-                root.append(val.toSOAPElement(minimal=minimal))
-
+            # fix for str types in list props
+            if issubclass(t, BaseType):
+                for val in vals:
+                    root.append(val.toSOAPElement(minimal=minimal))
+            else:
+                for val in vals:
+                    el = ET.Element(p)
+                    root.append(el)
+                    if val is not None:
+                        el.text = str(val)
+                    if vals is not None or not minimal:
+                        root.append(el)
         return root
 
-    def toSOAPBody(self, minimal=False):
+    def toSOAPBody(self, minimal=False): # noqa
         out = io.BytesIO()
         ET.ElementTree(self.toSOAPElement(minimal=minimal)).write(out)
         return out.getvalue()
 
     @classmethod
-    def fromSOAPElement(cls, el):
+    def fromSOAPElement(cls, el): # noqa
         result = cls()
         for p, t in result._simple_properties.iteritems():
             pel = el.find("./{}".format(p))
@@ -200,12 +209,15 @@ class BaseType(object):
             setattr(result, p, [])
             elems = el.findall('./{}'.format(p))
             for elem in elems:
-                getattr(result, p).append(t.fromSOAPElement(elem))
+                if issubclass(t, BaseType):
+                    getattr(result, p).append(t.fromSOAPElement(elem))
+                else:
+                    getattr(result, p).append(elem.text)
 
         return result
 
     @classmethod
-    def fromSOAPBody(cls, body):
+    def fromSOAPBody(cls, body): # noqa
         """Parse body (text) and produce Python tanium objects.
 
         This method assumes a single result_object, which

@@ -452,9 +452,9 @@ class Handler(object):
         ]
 
         if obj_map.get('allfix'):
-            ret = getattr(taniumpy, obj_map['allfix'])()
+            ret = utils.get_taniumpy_obj(obj_map['allfix'])()
         else:
-            ret = getattr(taniumpy, obj_map['all'])()
+            ret = utils.get_taniumpy_obj(obj_map['all'])()
 
         for x in obj_list:
             try:
@@ -1534,7 +1534,7 @@ class Handler(object):
         :data:`pytan.constants.GET_OBJ_MAP` : maps objtype to supported 'search' keys
         """
         obj_map = utils.get_obj_map(objtype)
-        api_obj_all = getattr(taniumpy, obj_map['all'])()
+        api_obj_all = utils.get_taniumpy_obj(obj_map['all'])()
         found = self._find(api_obj_all, **kwargs)
         return found
 
@@ -1654,7 +1654,8 @@ class Handler(object):
         api_kw = {k: v for k, v in zip(api_attrs, api_kwattrs)}
 
         # create a list object to append our searches to
-        api_obj_multi = getattr(taniumpy, obj_map['multi'])()
+        api_obj_multi = utils.get_taniumpy_obj(obj_map['multi'])()
+
         for k, v in api_kw.iteritems():
             if v and k not in obj_map['search']:
                 continue  # if we can't search for k, skip
@@ -1664,11 +1665,11 @@ class Handler(object):
 
             if utils.is_list(v):
                 for i in v:
-                    api_obj_single = getattr(taniumpy, obj_map['single'])()
+                    api_obj_single = utils.get_taniumpy_obj(obj_map['single'])()
                     setattr(api_obj_single, k, i)
                     api_obj_multi.append(api_obj_single)
             else:
-                api_obj_single = getattr(taniumpy, obj_map['single'])()
+                api_obj_single = utils.get_taniumpy_obj(obj_map['single'])()
                 setattr(api_obj_single, k, v)
                 api_obj_multi.append(api_obj_single)
 
@@ -1684,9 +1685,9 @@ class Handler(object):
 
         # we create a list object to append our single item searches to
         if obj_map.get('allfix', ''):
-            found = getattr(taniumpy, obj_map['allfix'])()
+            found = utils.get_taniumpy_obj(obj_map['allfix'])()
         else:
-            found = getattr(taniumpy, obj_map['all'])()
+            found = utils.get_taniumpy_obj(obj_map['all'])()
 
         for k, v in api_kw.iteritems():
             if v and k not in obj_map['search']:
@@ -1708,7 +1709,7 @@ class Handler(object):
     def _single_find(self, obj_map, k, v, **kwargs):
         """Wrapper for single item searches interfacing with :func:`taniumpy.session.Session.find`"""
         found = []
-        api_obj_single = getattr(taniumpy, obj_map['single'])()
+        api_obj_single = utils.get_taniumpy_obj(obj_map['single'])()
         setattr(api_obj_single, k, v)
         obj_ret = self._find(api_obj_single, **kwargs)
         if getattr(obj_ret, '_list_properties', ''):

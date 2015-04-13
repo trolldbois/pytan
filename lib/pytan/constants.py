@@ -165,8 +165,8 @@ GET_OBJ_MAP = {
     },
     'setting': {
         'single': 'SystemSetting',
-        'multi': 'SystemSettingsList',
-        'all': 'SystemSettingsList',
+        'multi': 'SystemSettingList',
+        'all': 'SystemSettingList',
         'search': ['id', 'name'],
         'manual': True,
         'delete': False,

@@ -1,5 +1,5 @@
 
-# Copyright (c) 2014 Tanium Inc
+# Copyright (c) 2015 Tanium Inc
 #
 # Generated from console.wsdl version 0.0.1     
 #
@@ -39,7 +39,7 @@ class Sensor(BaseType):
             complex_properties={'queries': SensorQueryList,
                         'parameters': ParameterList,
                         'subcolumns': SensorSubcolumnList,
-                        'string_hints': SensorStringHints,
+                        'string_hints': StringHintList,
                         'metadata': MetadataList},
             list_properties={},
         )
@@ -74,6 +74,6 @@ class Sensor(BaseType):
 from sensor_query_list import SensorQueryList
 from parameter_list import ParameterList
 from sensor_subcolumn_list import SensorSubcolumnList
-from sensor_string_hints import SensorStringHints
+from string_hint_list import StringHintList
 from metadata_list import MetadataList
 

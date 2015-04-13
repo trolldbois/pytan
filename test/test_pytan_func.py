@@ -38,7 +38,7 @@ import threaded_http
 from API_INFO import SERVER_INFO
 
 # control the amount of output from unittests
-TESTVERBOSITY = 2
+TESTVERBOSITY = SERVER_INFO["loglevel"]
 
 # have unittest exit immediately on unexpected error
 FAILFAST = True
@@ -474,6 +474,33 @@ class ValidServerTests(unittest.TestCase):
         with self.assertRaisesRegexp(exc, e):
             handler.export_obj(**kwargs)
 
+'''
+# debug path for checking open file handles, ensuring
+import atexit
+
+
+@atexit.register
+def get_open_fds():
+    import subprocess
+    import os
+
+    pid = os.getpid()
+    procs = subprocess.check_output(["lsof", '-w', "-p", str(pid)])
+    print procs
+
+    procs = subprocess.check_output(["lsof", '-w', '-Ff', "-p", str(pid)])
+
+    proc_defs = filter(
+        lambda s: s and s[0] == 'f' and s[1:].isdigit(),
+        procs.split('\n')
+    )
+
+    nprocs = len(proc_defs)
+    print "{} number of open FDs".format(nprocs)
+    for p in proc_defs:
+        print p
+    return nprocs
+'''
 
 if __name__ == "__main__":
 

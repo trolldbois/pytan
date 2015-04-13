@@ -1,5 +1,5 @@
 
-# Copyright (c) 2014 Tanium Inc
+# Copyright (c) 2015 Tanium Inc
 #
 # Generated from console.wsdl version 0.0.1     
 #
@@ -21,7 +21,7 @@ class ObjectList(BaseType):
                         'saved_actions': SavedActionList,
                         'roles': UserRoleList,
                         'system_status': SystemStatusList,
-                        'system_settings': SystemSettingsList,
+                        'system_settings': SystemSettingList,
                         'client_count': ClientCount,
                         'white_listed_urls': WhiteListedUrlList,
                         'computer_groups': ComputerGroupList},
@@ -138,7 +138,7 @@ from client_status import ClientStatus
 from system_setting import SystemSetting
 from saved_action_approval import SavedActionApproval
 from system_status_list import SystemStatusList
-from system_settings_list import SystemSettingsList
+from system_setting_list import SystemSettingList
 from client_count import ClientCount
 from plugin import Plugin
 from plugin_list import PluginList

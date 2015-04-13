@@ -246,7 +246,7 @@ class Session(object):
         obj = BaseType.fromSOAPBody(self.response_body)
         return obj
 
-    def getResultInfo(self, obj, **kwargs):
+    def getResultInfo(self, obj, **kwargs): # noqa
         self.request_body = self._createGetResultInfoBody(obj, **kwargs)
         self.response_body = self._getResponse(self.request_body)
         # parse the single result_info into an Element and create a ResultInfo
@@ -258,7 +258,7 @@ class Session(object):
         obj = ResultInfo.fromSOAPElement(result_info)
         return obj
 
-    def getResultData(self, obj, **kwargs):
+    def getResultData(self, obj, **kwargs): # noqa
         self.request_body = self._createGetResultDataBody(obj, **kwargs)
         self.response_body = self._getResponse(self.request_body)
         # parse the single result_info into an Element and create a ResultData
@@ -327,7 +327,7 @@ class Session(object):
         body = http_post(self.server, self.port, url, body, headers)
         return body
 
-    def _createAddObjectBody(self, obj, **kwargs):
+    def _createAddObjectBody(self, obj, **kwargs): # noqa
         obj_soap = obj.toSOAPBody(minimal=True)
 
         obj_body = self.FORMATTER(
@@ -339,7 +339,7 @@ class Session(object):
         )
         return obj_body
 
-    def _createDeleteObjectBody(self, obj, **kwargs):
+    def _createDeleteObjectBody(self, obj, **kwargs): # noqa
         obj_body = self.FORMATTER(
             self.REQUEST_BODY,
             self.session_id,
@@ -349,7 +349,7 @@ class Session(object):
         )
         return obj_body
 
-    def _createGetResultInfoBody(self, obj, **kwargs):
+    def _createGetResultInfoBody(self, obj, **kwargs): # noqa
         obj_body = self.FORMATTER(
             self.REQUEST_BODY,
             self.session_id,
@@ -359,7 +359,7 @@ class Session(object):
         )
         return obj_body
 
-    def _createGetResultDataBody(self, obj, **kwargs):
+    def _createGetResultDataBody(self, obj, **kwargs): # noqa
         obj_body = self.FORMATTER(
             self.REQUEST_BODY,
             self.session_id,
@@ -369,7 +369,7 @@ class Session(object):
         )
         return obj_body
 
-    def _createGetObjectBody(self, object_or_type, **kwargs):
+    def _createGetObjectBody(self, object_or_type, **kwargs): # noqa
         if isinstance(object_or_type, BaseType):
             obj = object_or_type.toSOAPBody(minimal=True)
         else:
@@ -383,7 +383,7 @@ class Session(object):
         )
         return obj_body
 
-    def _createUpdateObjectBody(self, obj, **kwargs):
+    def _createUpdateObjectBody(self, obj, **kwargs): # noqa
         obj_body = self.FORMATTER(
             self.REQUEST_BODY,
             self.session_id,
@@ -399,7 +399,7 @@ class Session(object):
             err = "Not yet authenticated, use {}.authenticate()!".format
             raise AuthorizationError(err(class_name))
 
-    def _getResponse(self, request_body):
+    def _getResponse(self, request_body): # noqa
         self._check_auth()
         self.last = {}
         request_body_el = ET.fromstring(request_body)

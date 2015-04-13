@@ -40,6 +40,7 @@ from parse_result import ParseResult
 from parse_result_group import ParseResultGroup
 from parse_result_group_list import ParseResultGroupList
 from parse_result_list import ParseResultList
+from permission_list import PermissionList
 from plugin import Plugin
 from plugin_argument import PluginArgument
 from plugin_argument_list import PluginArgumentList
@@ -66,12 +67,12 @@ from sensor import Sensor
 from sensor_list import SensorList
 from sensor_query import SensorQuery
 from sensor_query_list import SensorQueryList
-from sensor_string_hints import SensorStringHints
 from sensor_subcolumn import SensorSubcolumn
 from sensor_subcolumn_list import SensorSubcolumnList
 from soap_error import SoapError
+from string_hint_list import StringHintList
 from system_setting import SystemSetting
-from system_settings_list import SystemSettingsList
+from system_setting_list import SystemSettingList
 from system_status_aggregate import SystemStatusAggregate
 from system_status_list import SystemStatusList
 from upload_file import UploadFile
@@ -79,7 +80,6 @@ from upload_file_list import UploadFileList
 from upload_file_status import UploadFileStatus
 from user import User
 from user_list import UserList
-from user_permissions import UserPermissions
 from user_role import UserRole
 from user_role_list import UserRoleList
 from version_aggregate import VersionAggregate

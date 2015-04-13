@@ -155,7 +155,7 @@
         "args": {"objtype": "setting", "name": "control_address"},
         "tests": [
             "len(response) == 1",
-            "isinstance(response, taniumpy.SystemSettingsList)",
+            "isinstance(response, taniumpy.SystemSettingList)",
             "all([isinstance(x, taniumpy.SystemSetting) for x in response])"
         ]
     },
@@ -309,7 +309,7 @@
         "args": {"objtype": "setting"},
         "tests": [
             "len(response) >= 1",
-            "isinstance(response, taniumpy.SystemSettingsList)",
+            "isinstance(response, taniumpy.SystemSettingList)",
             "all([isinstance(x, taniumpy.SystemSetting) for x in response])"
         ]
     },

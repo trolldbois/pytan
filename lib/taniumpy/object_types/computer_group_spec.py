@@ -1,5 +1,5 @@
 
-# Copyright (c) 2014 Tanium Inc
+# Copyright (c) 2015 Tanium Inc
 #
 # Generated from console.wsdl version 0.0.1     
 #
@@ -17,15 +17,13 @@ class ComputerGroupSpec(BaseType):
             self,
             simple_properties={'id': int,
                         'computer_name': str,
-                        'ip_address': str,
-                        'enabled_flag': int},
+                        'ip_address': str},
             complex_properties={},
             list_properties={},
         )
         self.id = None
         self.computer_name = None
         self.ip_address = None
-        self.enabled_flag = None
         
         
 

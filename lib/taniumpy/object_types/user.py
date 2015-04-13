@@ -1,5 +1,5 @@
 
-# Copyright (c) 2014 Tanium Inc
+# Copyright (c) 2015 Tanium Inc
 #
 # Generated from console.wsdl version 0.0.1     
 #
@@ -23,7 +23,7 @@ class User(BaseType):
                         'last_login': str,
                         'active_session_count': int,
                         'local_admin_flag': int},
-            complex_properties={'permissions': UserPermissions,
+            complex_properties={'permissions': PermissionList,
                         'roles': UserRoleList,
                         'metadata': MetadataList},
             list_properties={},
@@ -41,7 +41,7 @@ class User(BaseType):
         self.metadata = None
         
 
-from user_permissions import UserPermissions
+from permission_list import PermissionList
 from user_role_list import UserRoleList
 from metadata_list import MetadataList
 

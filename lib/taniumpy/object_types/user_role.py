@@ -1,5 +1,5 @@
 
-# Copyright (c) 2014 Tanium Inc
+# Copyright (c) 2015 Tanium Inc
 #
 # Generated from console.wsdl version 0.0.1     
 #
@@ -18,7 +18,7 @@ class UserRole(BaseType):
             simple_properties={'id': int,
                         'name': str,
                         'description': str},
-            complex_properties={'permissions': UserPermissions},
+            complex_properties={'permissions': PermissionList},
             list_properties={},
         )
         self.id = None
@@ -27,5 +27,5 @@ class UserRole(BaseType):
         self.permissions = None
         
 
-from user_permissions import UserPermissions
+from permission_list import PermissionList
 

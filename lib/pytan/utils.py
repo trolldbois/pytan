@@ -2593,6 +2593,28 @@ def get_obj_map(objtype):
     return obj_map
 
 
+def get_taniumpy_obj(obj_map):
+    """Gets a taniumpy object from `obj_map`
+
+    Parameters
+    ----------
+    obj_map : str
+        str of taniumpy object to fetch
+
+    Returns
+    -------
+    obj : :class:`taniumpy.object_types.base.BaseType`
+        matching taniumpy object for `obj_map`
+    """
+    try:
+        obj = getattr(taniumpy, obj_map)
+    except Exception as e:
+        err = "Could not find taniumpy object {}: {}".format
+        raise HandlerError(err(obj_map, e))
+
+    return obj
+
+
 def question_progress(asker, pct):
     """Call back method for :func:`taniumpy.question_asker.QuestionAsker.run` to report progress while waiting for results from a question
 
