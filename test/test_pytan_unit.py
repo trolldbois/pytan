@@ -1447,9 +1447,9 @@ class TestGenericUtils(unittest.TestCase):
     def test_get_obj_map(self):
         obj = 'sensor'
         exp = {
-            'single': ['Sensor'],
-            'multi': ['SensorList'],
-            'all': ['SensorList'],
+            'single': 'Sensor',
+            'multi': 'SensorList',
+            'all': 'SensorList',
             'search': ['id', 'name', 'hash'],
             'manual': False,
             'delete': True,
