@@ -11,7 +11,6 @@ sys.dont_write_bytecode = True
 
 import os
 import unittest
-import json
 
 my_file = os.path.abspath(sys.argv[0])
 my_dir = os.path.dirname(my_file)
@@ -1020,14 +1019,14 @@ class TestManualBuildObjectUtils(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls): # noqa
-        def load_sensor(n):
-            sensor_obj_json_path = os.path.join(my_dir, n)
-            sensor_obj_json = json.load(open(sensor_obj_json_path))
-            return taniumpy.BaseType.from_jsonable(sensor_obj_json)
-
         # load in our JSON sensor object for testing
-        cls.sensor_obj_with_params = load_sensor('sensor_obj_with_params.json')
-        cls.sensor_obj_no_params = load_sensor('sensor_obj_no_params.json')
+        cls.sensor_obj_with_params = utils.load_taniumpy_from_json(
+            os.path.join(my_dir, 'sensor_obj_with_params.json')
+        )
+
+        cls.sensor_obj_no_params = utils.load_taniumpy_from_json(
+            os.path.join(my_dir, 'sensor_obj_no_params.json')
+        )
 
     def test_build_selectlist_obj_noparamssensorobj_noparams(self):
         '''builds a selectlist object using a sensor obj with no params'''
