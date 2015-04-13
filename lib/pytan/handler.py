@@ -11,7 +11,6 @@ import os
 import logging
 import io
 import time
-import json
 
 my_file = os.path.abspath(__file__)
 my_dir = os.path.dirname(my_file)
@@ -594,64 +593,7 @@ class Handler(object):
         # PARAMETERS
         if parameters_json_file:
             # issue #6
-            try:
-                pf = open(parameters_json_file)
-            except Exception as e:
-                m = (
-                    "Failed to load JSON parameter file {!r}, error {!r}!!\n"
-                    "Refer to doc/example_of_all_package_parameters.json "
-                    "file for examples of each parameter type"
-                ).format
-                raise HandlerError(m(parameters_json_file, e))
-
-            try:
-                pd = json.load(pf)
-            except Exception as e:
-                m = (
-                    "Failed to load JSON parameter file {!r}, error {!r}!!\n"
-                    "Refer to doc/example_of_all_package_parameters.json "
-                    "file for examples of each parameter type"
-                ).format
-                raise HandlerError(m(parameters_json_file, e))
-
-            try:
-                pf.close()
-            except:
-                pass
-
-            try:
-                pd_params = pd['parameters']
-            except:
-                m = (
-                    "JSON parameter file {!r} is missing a 'parameters' "
-                    "list!!\n"
-                    "Refer to doc/example_of_all_package_parameters.json "
-                    "file for examples of each parameter type"
-                ).format
-                raise HandlerError(m(parameters_json_file))
-
-            for pd_param in pd_params:
-                try:
-                    pd_key = pd_param['key']
-                except:
-                    m = (
-                        "JSON parameter file {!r} is missing a 'key' "
-                        "in the parameter {!r}!!\n"
-                        "Refer to doc/example_of_all_package_parameters.json "
-                        "file for examples of each parameter type"
-                    ).format
-                    raise HandlerError(m(parameters_json_file, pd_param))
-                if pd_key not in command:
-                    m = (
-                        "command {!r} is missing the parameter key '{}' "
-                        "referenced in the JSON parameter file {!r}!!\n"
-                        "Ensure all parameters are referenced in the command"
-                    ).format
-                    raise HandlerError(m(
-                        command, pd_key, parameters_json_file
-                    ))
-
-            add_package_obj.parameter_definition = json.dumps(pd)
+            add_package_obj.parameter_definition = utils.load_param_json_file(parameters_json_file)
 
         # FILES
         if file_urls:

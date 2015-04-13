@@ -1263,6 +1263,7 @@ def set_all_loglevels(level='DEBUG'):
         v.setLevel(getattr(logging, level))
 
 
+# issue #6
 def load_taniumpy_from_json(json_file):
     """Opens a json file and parses it into an taniumpy object
 
@@ -1313,6 +1314,58 @@ def load_taniumpy_from_json(json_file):
         ).format
         raise HandlerError(m(json_file, json_dict['_type'], e, howto_m))
     return obj
+
+
+# issue #6
+def load_param_json_file(parameters_json_file):
+    # issue #6
+    try:
+        pf = open(parameters_json_file)
+    except Exception as e:
+        m = (
+            "Failed to load JSON parameter file {!r}, error {!r}!!\n"
+            "Refer to doc/example_of_all_package_parameters.json "
+            "file for examples of each parameter type"
+        ).format
+        raise HandlerError(m(parameters_json_file, e))
+
+    try:
+        pd = json.load(pf)
+    except Exception as e:
+        m = (
+            "Failed to load JSON parameter file {!r}, error {!r}!!\n"
+            "Refer to doc/example_of_all_package_parameters.json "
+            "file for examples of each parameter type"
+        ).format
+        raise HandlerError(m(parameters_json_file, e))
+
+    try:
+        pf.close()
+    except:
+        pass
+
+    try:
+        pd_params = pd['parameters']
+    except:
+        m = (
+            "JSON parameter file {!r} is missing a 'parameters' "
+            "list!!\n"
+            "Refer to doc/example_of_all_package_parameters.json "
+            "file for examples of each parameter type"
+        ).format
+        raise HandlerError(m(parameters_json_file))
+
+    for pd_param in pd_params:
+        if 'key' not in pd_param:
+            m = (
+                "JSON parameter file {!r} is missing a 'key' "
+                "in the parameter {!r}!!\n"
+                "Refer to doc/example_of_all_package_parameters.json "
+                "file for examples of each parameter type"
+            ).format
+            raise HandlerError(m(parameters_json_file, pd_param))
+
+    return json.dumps(pd)
 
 
 def dehumanize_sensors(sensors, key='sensors', empty_ok=False):
