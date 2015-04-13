@@ -435,9 +435,15 @@ class Handler(object):
 
         try:
             json_dict = json.load(fh)
-        except:
+        except Exception as e:
             m = "Unable to parse json_file {!r}, {}\n{}".format
             raise HandlerError(m(json_file, e, howto_m))
+
+        # issue #6
+        try:
+            fh.close()
+        except:
+            pass
 
         if '_type' not in json_dict:
             m = "Missing '_type' key in JSON loaded dictionary!\n{}".format
@@ -638,8 +644,9 @@ class Handler(object):
 
         # PARAMETERS
         if parameters_json_file:
+            # issue #6
             try:
-                pd = json.load(open(parameters_json_file))
+                pf = open(parameters_json_file)
             except Exception as e:
                 m = (
                     "Failed to load JSON parameter file {!r}, error {!r}!!\n"
@@ -647,6 +654,22 @@ class Handler(object):
                     "file for examples of each parameter type"
                 ).format
                 raise HandlerError(m(parameters_json_file, e))
+
+            try:
+                pd = json.load(pf)
+            except Exception as e:
+                m = (
+                    "Failed to load JSON parameter file {!r}, error {!r}!!\n"
+                    "Refer to doc/example_of_all_package_parameters.json "
+                    "file for examples of each parameter type"
+                ).format
+                raise HandlerError(m(parameters_json_file, e))
+
+            try:
+                pf.close()
+            except:
+                pass
+
             try:
                 pd_params = pd['parameters']
             except:
