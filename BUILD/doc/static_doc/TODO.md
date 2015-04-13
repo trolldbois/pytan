@@ -3,6 +3,10 @@
   * [ ] add secondary loop for if any data == current result unavail/etc (MEDIUM)
   * [ ] add timeout passthru from handler -> session (MEDIUM)
   * [ ] change get logic to use cache_filters instead of objectlist for object selection (HUGE)
+  * [ ] clean up open file handles
+  * [ ] 6.5 changes:
+    * [ ] port 443 now, no more 444
+    * [ ] 
 
 # TANIUMPY BACKPORTS:
   * [ ] in question_asker.py: if pct >= self.pct_complete_threshold: 
