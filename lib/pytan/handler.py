@@ -408,57 +408,6 @@ class Handler(object):
         )
         return result
 
-    def load_taniumpy_from_json(self, json_file):
-        """Opens a json file and parses it into an taniumpy object
-
-        Parameters
-        ----------
-        json_file : str
-            path to JSON file that describes an API object
-
-        Returns
-        -------
-        obj : :class:`taniumpy.object_types.base.BaseType`
-            TaniumPy object converted from json file
-        """
-        try:
-            fh = open(json_file)
-        except Exception as e:
-            m = "Unable to open json_file {!r}, {}".format
-            raise HandlerError(m(json_file, e))
-
-        howto_m = (
-            "Use get_${OBJECT_TYPE}.py with --include-type and "
-            "--no-explode-json to export a valid JSON file that can be used "
-            "for importing"
-        )
-
-        try:
-            json_dict = json.load(fh)
-        except Exception as e:
-            m = "Unable to parse json_file {!r}, {}\n{}".format
-            raise HandlerError(m(json_file, e, howto_m))
-
-        # issue #6
-        try:
-            fh.close()
-        except:
-            pass
-
-        if '_type' not in json_dict:
-            m = "Missing '_type' key in JSON loaded dictionary!\n{}".format
-            raise HandlerError(m(howto_m))
-
-        try:
-            obj = taniumpy.BaseType.from_jsonable(json_dict)
-        except Exception as e:
-            m = (
-                "Unable to parse json_file {!r} into an API {} object\n"
-                "Exception from API.from_jsonable(): {}\n{}"
-            ).format
-            raise HandlerError(m(json_file, json_dict['_type'], e, howto_m))
-        return obj
-
     def create_from_json(self, objtype, json_file):
         """Creates a new object using the SOAP api from a json file
 
@@ -489,7 +438,7 @@ class Handler(object):
             ).format
             raise HandlerError(m(objtype, json_createable))
 
-        add_obj = self.load_taniumpy_from_json(json_file)
+        add_obj = utils.load_taniumpy_from_json(json_file)
 
         if getattr(add_obj, '_list_properties', ''):
             obj_list = [x for x in add_obj]
