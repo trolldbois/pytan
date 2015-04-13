@@ -1421,6 +1421,14 @@ class TestGenericUtils(unittest.TestCase):
         with self.assertRaisesRegexp(HandlerError, e):
             utils.get_q_obj_map(qtype)
 
+    def test_open_param_file_invalid_file(self):
+        with self.assertRaises(HandlerError):
+            utils.load_taniumpy_from_json('invalid_file.1234')
+
+    def test_open_param_file_invalid_json(self):
+        with self.assertRaises(HandlerError):
+            utils.load_taniumpy_from_json(os.path.join(my_dir, 'bad_chars_basetype.xml'))
+
     def test_get_obj_map(self):
         obj = 'sensor'
         exp = {
