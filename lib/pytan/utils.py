@@ -1061,7 +1061,7 @@ def version_check(reqver):
         raise Exception(log_tpl(s, sys.argv[0], __version__, reqver))
 
     s = "Script and API Version match"
-    logging.debug(log_tpl(s, sys.argv[0], __version__, reqver))
+    mylog.debug(log_tpl(s, sys.argv[0], __version__, reqver))
     return True
 
 
