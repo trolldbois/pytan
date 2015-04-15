@@ -976,11 +976,11 @@ class Handler(object):
             start_seconds_from_now
         )
 
-        if not expire_seconds:
+        if expire_seconds:
             add_action_obj.expire_seconds = expire_seconds
 
         action_obj = self.session.add(add_action_obj)
-
+        print action_obj.id
         m = "Deploy Action Added, ID: {}".format
         mylog.debug(m(action_obj.id))
 

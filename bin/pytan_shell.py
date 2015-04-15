@@ -23,6 +23,8 @@ for aa in path_adds:
         sys.path.append(aa)
 
 import pytan
+import taniumpy # noqa
+import taniumpy as api # noqa
 from pytan import utils
 from pytan import constants  # noqa
 
@@ -101,9 +103,10 @@ class HistoryConsole(code.InteractiveConsole):
 
 
 def process_handler_args(parser, all_args):
+    my_args = dict(all_args)
     handler_grp_names = ['Handler Authentication', 'Handler Options']
     handler_opts = utils.get_grp_opts(parser, handler_grp_names)
-    handler_args = {k: all_args.pop(k) for k in handler_opts}
+    handler_args = {k: my_args.pop(k) for k in handler_opts}
 
     try:
         h = pytan.Handler(**handler_args)
@@ -193,6 +196,8 @@ if __name__ == "__main__":
         all_args['host'] = host.strip()
 
     handler = process_handler_args(parser, all_args)
+    session = handler.session
+    self = handler
 
     if handler.loglevel >= 10:
         utils.set_all_loglevels()
