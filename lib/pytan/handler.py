@@ -127,6 +127,7 @@ class Handler(object):
         result = getattr(self, q_obj_map['handler'])(**kwargs)
         return result
 
+    @utils.func_timing
     def ask_saved(self, **kwargs):
         """Ask a saved question and get the results back
 
@@ -183,6 +184,7 @@ class Handler(object):
 
         return ret
 
+    @utils.func_timing
     def ask_manual(self, get_results=True, **kwargs):
         """Ask a manual question using definitions and get the results back
 
@@ -261,6 +263,8 @@ class Handler(object):
             **kwargs
         )
 
+        max_age_seconds = int(kwargs.get('max_age_seconds', 600))
+
         # do basic validation of our defs
         utils.val_sensor_defs(sensor_defs)
         utils.val_q_filter_defs(q_filter_defs)
@@ -279,12 +283,17 @@ class Handler(object):
         # build a Question object from selectlist_obj and group_obj
         add_q_obj = utils.build_manual_q(selectlist_obj, group_obj)
 
+        add_q_obj.max_age_seconds = max_age_seconds
+
         # add our Question and get a Question ID back
         q_obj = self.session.add(add_q_obj)
 
         # refetch the full object of the question so that we have access
         # to everything (especially query_text)
         q_obj = self.get('question', id=q_obj.id)[0]
+
+        m = "Question Added, ID: {}, query text: {!r}, expires: {}".format
+        mylog.debug(m(q_obj.id, q_obj.query_text, q_obj.expiration))
 
         ret = {
             'question_object': q_obj,
@@ -788,6 +797,7 @@ class Handler(object):
             mylog.info(m(str(del_obj)))
         return deleted_objects
 
+    @utils.func_timing
     def deploy_action(self, run=False, get_results=True, **kwargs):
         """Deploy an action and get the results back
 
@@ -980,7 +990,8 @@ class Handler(object):
             add_action_obj.expire_seconds = expire_seconds
 
         action_obj = self.session.add(add_action_obj)
-        print action_obj.id
+        utils.log_session_communication(self)
+
         m = "Deploy Action Added, ID: {}".format
         mylog.debug(m(action_obj.id))
 
@@ -1268,6 +1279,7 @@ class Handler(object):
 
         return ret
 
+    @utils.func_timing
     def export_obj(self, obj, export_format, **kwargs):
         """Exports a python API object to a given export format
 
@@ -1463,6 +1475,7 @@ class Handler(object):
         mylog.info(m(report_path, len(result)))
         return report_path, result
 
+    @utils.func_timing
     def get(self, objtype, **kwargs):
         """Get an object type
 
@@ -1521,6 +1534,7 @@ class Handler(object):
         err = "No single or multi search defined for {}".format
         raise HandlerError(err(objtype))
 
+    @utils.func_timing
     def get_all(self, objtype, **kwargs):
         """Get all objects of a type
 
@@ -1538,6 +1552,7 @@ class Handler(object):
         found = self._find(api_obj_all, **kwargs)
         return found
 
+    @utils.func_timing
     def get_result_data(self, obj, aggregate=False, **kwargs):
         """Get the result data for a python API object
 
@@ -1583,6 +1598,7 @@ class Handler(object):
             rd = self.session.getResultData(obj, **kwargs)
         return rd
 
+    @utils.func_timing
     def get_result_info(self, obj, **kwargs):
         """Get the result info for a python API object
 
@@ -1625,6 +1641,7 @@ class Handler(object):
         return action_stop_obj
 
     # BEGIN PRIVATE METHODS
+    @utils.func_timing
     def _find(self, api_object, **kwargs):
         """Wrapper for interfacing with :func:`taniumpy.session.Session.find`"""
         req_kwargs = utils.get_req_kwargs(**kwargs)

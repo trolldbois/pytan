@@ -73,7 +73,9 @@ class QuestionAsker(object):
         start = time.time()
         while not self._stop:
             if time.time() - start > self._timeout:
-                raise QuestionTimeoutException()
+                raise QuestionTimeoutException(
+                    "Question reached timeout of {} seconds".format(self._timeout)
+                )
             result_info = self.session.getResultInfo(self.question, **kwargs)
             tested_pct = result_info.mr_tested * 100
             estimated_total_pct = result_info.estimated_total + .01

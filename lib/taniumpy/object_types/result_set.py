@@ -330,6 +330,9 @@ class ResultSet(object):
         if not isinstance(val, ResultSet):
             raise Exception("{} is not a ResultSet instance!".format(val))
 
+        if val.columns is None:
+            raise Exception("{} has no columns!".format(val))
+
         headers = get_sort_headers(val, **kwargs)
         rows = get_rows(val, headers, **kwargs)
 

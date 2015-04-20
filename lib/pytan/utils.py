@@ -39,6 +39,7 @@ humanlog = logging.getLogger("ask_manual_human")
 manuallog = logging.getLogger("ask_manual")
 progresslog = logging.getLogger("question_progress")
 pname = os.path.splitext(os.path.basename(sys.argv[0]))[0]
+prettylog = logging.getLogger("api.session.http.pretty")
 
 
 class HandlerError(Exception):
@@ -1251,7 +1252,7 @@ def set_log_levels(loglevel=0):
     for logmap in constants.LOG_LEVEL_MAPS:
         if loglevel >= logmap[0]:
             for lname, llevel in logmap[1].iteritems():
-                # print 'setting %s to %s' % (lname, llevel)
+                print 'setting %s to %s' % (lname, llevel)
                 logging.getLogger(lname).setLevel(getattr(logging, llevel))
 
 
@@ -2658,6 +2659,19 @@ def check_dictkey(d, key, valid_types, valid_list_types):
                 raise HandlerError(err(key, valid_list_types, list_types))
 
 
+def func_timing(f):
+    """Decorator to add timing information around a function """
+    def wrap(*args, **kwargs):
+        time1 = datetime.datetime.now()
+        ret = f(*args, **kwargs)
+        time2 = datetime.datetime.now()
+        elapsed = time2 - time1
+        m = '{}() TIMING start: {}, end: {}, elapsed: {}'.format
+        mylog.debug(m(f.func_name, time1, time2, elapsed))
+        return ret
+    return wrap
+
+
 def xml_pretty(x):
     """Uses :mod:`xmltodict` to pretty print an XML str `x`
 
@@ -2675,6 +2689,30 @@ def xml_pretty(x):
     x_parsed = xmltodict.parse(x)
     x_unparsed = xmltodict.unparse(x_parsed, pretty=True, indent='  ')
     return x_unparsed
+
+
+def log_session_communication(h):
+    """Uses :func:`xml_pretty` to pretty print the last request and response bodies from the
+    session object in h to the logging system
+
+    Parameters
+    ----------
+    h : Handler object
+        Handler object with session object containing last request and response body
+    """
+    try:
+        req = xml_pretty(h.session.request_body)
+    except Exception as e:
+        req = "Failed to prettify xml: {}, raw xml:\n{}".format(e, h.session.request_body)
+
+    prettylog.debug("Last HTTP request:\n{}".format(req))
+
+    try:
+        resp = xml_pretty(h.session.response_body)
+    except Exception as e:
+        resp = "Failed to prettify xml: {}, raw xml:\n{}".format(e, h.session.response_body)
+
+    prettylog.debug("Last HTTP response:\n{}".format(xml_pretty(resp)))
 
 
 def xml_pretty_resultxml(x):

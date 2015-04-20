@@ -44,6 +44,7 @@ httplog = logging.getLogger("api.session.http")
 bodyhttplog = logging.getLogger("api.session.http.body")
 
 # to support py2exe compiled scripts
+# TODO
 my_dir = my_dir.replace('\\library.zip\\taniumpy', '')
 request_body_template_file = os.path.join(my_dir, 'request_body_template.xml')
 
@@ -112,7 +113,7 @@ def xml_fix(s):
     return utf_str
 
 
-def http_post(host, port, url, body=None, headers=None, timeout=15):
+def http_post(host, port, url, body=None, headers=None, timeout=15, debug=False):
     # revert SSL verification for python 2.7.9
     try:
         http = httplib.HTTPSConnection(
@@ -120,6 +121,9 @@ def http_post(host, port, url, body=None, headers=None, timeout=15):
         )
     except:
         http = httplib.HTTPSConnection(host, port, timeout=timeout)
+
+    if debug:
+        http.set_debuglevel(99)
 
     req_args = {}
     req_args['method'] = 'POST'
@@ -131,19 +135,20 @@ def http_post(host, port, url, body=None, headers=None, timeout=15):
 
     full_url = "https://{0}:{1}/{2}".format(host, port, url)
 
-    clean_headers = dict(headers)
+    clean_headers = dict(headers or {})
     if 'password' in clean_headers:
         clean_headers['password'] = '**PASSWORD**'
 
     httplog.debug("HTTP request: Post to {}".format(full_url))
     httplog.debug("HTTP request: headers: {}".format(clean_headers))
-    bodyhttplog.debug("HTTP request: body: {}".format(body))
+    bodyhttplog.debug("HTTP request: body:\n{}".format(body))
 
     try:
         http.connect()
         http.request(**req_args)
         response = http.getresponse()
         response_body = response.read()
+    # TODO
     except Exception as e:
         raise HttpError("HTTP response: POST request to {!r} failed: {}".format(full_url, e))
     finally:
@@ -201,6 +206,7 @@ class Session(object):
     DELETE_OBJECT = 'DeleteObject'
     GET_RESULT_INFO = 'GetResultInfo'
     GET_RESULT_DATA = 'GetResultData'
+    # TODO
     REQUEST_BODY = load_file(request_body_template_file)
     FORMATTER = DynamicFormatter().format
     AUTH_RES = '/auth'
@@ -213,6 +219,7 @@ class Session(object):
     }
     COMMAND_RE = re.compile(r'<command>(.*?)</command>', re.IGNORECASE | re.DOTALL)
     SESSION_RE = re.compile(r'<session>(.*?)</session>', re.IGNORECASE | re.DOTALL)
+    HTTP_DEBUG = False
 
     def __init__(self, server, port=443):
         self.server = server
@@ -354,7 +361,6 @@ class Session(object):
         cdata = el.find('.//ResultXML')
         # 1.0.4: fix for utf-8 issues
         result_info = ET.fromstring(xml_fix(cdata.text))
-        # TODO: maybe this should be ResultInfoList
         obj = ResultInfo.fromSOAPElement(result_info)
         return obj
 
@@ -366,7 +372,6 @@ class Session(object):
         cdata = el.find('.//ResultXML')
         # 1.0.4: fix for utf-8 issues
         result_info = ET.fromstring(xml_fix(cdata.text))
-        # TODO: maybe this should be ResultSetList
         obj = ResultSet.fromSOAPElement(result_info)
         return obj
 
@@ -477,6 +482,7 @@ class Session(object):
         post_args['headers'] = kwargs.get('headers', {})
         post_args['body'] = kwargs.get('body', None)
         post_args['timeout'] = kwargs.get('timeout', self.SOAP_RESPONSE_TIMEOUT_SEC)
+        post_args['debug'] = kwargs.get('debug', self.HTTP_DEBUG)
         body = http_post(**post_args)
         body = xml_fix(body)
         return body
@@ -617,7 +623,7 @@ class Session(object):
         elapsed = received - sent
         self.last['elapsed'] = elapsed
 
-        m = "Timing info -- SENT: {}, RECEIVED: {}, ELAPSED: {}".format
+        m = "HTTP Response: Timing info -- SENT: {}, RECEIVED: {}, ELAPSED: {}".format
         mylog.debug(m(sent, received, elapsed))
 
         response_command = self._get_command_text(response_body)

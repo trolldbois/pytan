@@ -41,6 +41,7 @@ LOG_LEVEL_MAPS = [
             'api.session': 'WARN',
             'api.session.auth': 'WARN',
             'api.session.http': 'WARN',
+            'api.session.http.pretty': 'WARN',
             'api.session.http.body': 'WARN',
         }
     ),
@@ -52,7 +53,8 @@ LOG_LEVEL_MAPS = [
     (7, {'api.session': 'DEBUG'}),
     (8, {'api.session.auth': 'DEBUG'}),
     (9, {'api.session.http': 'DEBUG'}),
-    (10, {'api.session.http.body': 'DEBUG'}),
+    (10, {'api.session.http.pretty': 'DEBUG'}),
+    (11, {'api.session.http.body': 'DEBUG'}),
 ]
 """
 Map for loglevel(int) -> logger -> logger level(logging.INFO|WARN|DEBUG|...). Higher loglevels will include all levels up to and including that level. Contains a list of tuples, each tuple consisting of:

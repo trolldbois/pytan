@@ -6,6 +6,12 @@ These functional tests require a connection to a Tanium server in order to run.
 The connection info is pulled from the SERVER_INFO dictionary in test/API_INFO.py.
 
 These tests all use :mod:`ddt`, a package that provides for data driven tests via JSON files.
+UNFAIL:
+ - random question timeout
+ - deploy action against 6.5
+ - add logging for ResultInfo to question asker
+ - add loop count to question asker
+ - add expiry time, start time to poller for QA
 """
 import sys
 
@@ -17,6 +23,8 @@ import glob
 import unittest
 import copy
 import json  # noqa
+import csv
+import StringIO
 
 my_file = os.path.abspath(sys.argv[0])
 my_dir = os.path.dirname(my_file)
@@ -41,13 +49,23 @@ from API_INFO import SERVER_INFO
 TESTVERBOSITY = SERVER_INFO["loglevel"]
 
 # have unittest exit immediately on unexpected error
-FAILFAST = False
+FAILFAST = True
 
 # catch control-C to allow current test suite to finish (press 2x to force)
 CATCHBREAK = True
 
+# only show output from failed tests
+BUFFER = False
+
 # where the output files from the tests will be stored
 TEST_OUT = os.path.join(my_dir, 'TEST_OUT')
+
+
+def chew_csv(c):
+    i = StringIO.StringIO(c)
+    r = csv.reader(i)
+    l = list(r)
+    return l
 
 
 def spew(m):
@@ -144,9 +162,11 @@ class ValidServerTests(unittest.TestCase):
         spew(s('export_obj', kwargs))
 
         export_str = handler.export_obj(**kwargs)
-        print export_str.splitlines()
+
         self.assertTrue(export_str)
         self.assertIsInstance(export_str, (str, unicode))
+        export_str_list = chew_csv(export_str)
+        spew(export_str_list[0])
         for x in tests:
             spew("+++ EVAL TEST: %s" % x)
             self.assertTrue(eval(x))
@@ -515,4 +535,6 @@ if __name__ == "__main__":
     unittest.main(
         verbosity=TESTVERBOSITY,
         failfast=FAILFAST,
-        catchbreak=CATCHBREAK)
+        catchbreak=CATCHBREAK,
+        buffer=BUFFER,
+    )

@@ -34,6 +34,10 @@ import os
 import sys
 import pprint
 import code
+from datetime import datetime
+import logging
+import time
+logging.Formatter.converter = time.gmtime
 
 try:
     import readline
@@ -42,6 +46,17 @@ except:
     pass
 
 sys.dont_write_bytecode = True
+
+
+def timing(c):
+    t_start = datetime.now()
+    r = eval(c)
+    t_end = datetime.now()
+    t_elapsed = t_end - t_start
+
+    m = "Timing info for {} -- START: {}, END: {}, ELAPSED: {}, RESPONSE LEN: {}".format
+    logging.info(m(c, t_start, t_end, t_elapsed, len(r)))
+    return (c, r, t_start, t_end, t_elapsed)
 
 
 def debug_list(debuglist):
@@ -171,6 +186,17 @@ def create_get_pkg(handler, pkg_name, pkg_opts):
     print m(pkg_name)
     return p
 
+
+def get_rdattr(rd, a):
+    try:
+        k = getattr(rd, a)
+    except:
+        k = None
+    if type(k) in [list, tuple]:
+        k = len(k)
+    return k
+
+
 if __name__ == "__main__":
 
     console = HistoryConsole()
@@ -199,5 +225,71 @@ if __name__ == "__main__":
     session = handler.session
     self = handler
 
-    if handler.loglevel >= 10:
+    if handler.loglevel >= 20:
         utils.set_all_loglevels()
+
+    v = "Folder Name Search with RegEx Match{dirname=Program Files,regex=Microsoft.*}"
+    while True:
+        start = datetime.utcnow()
+        q_obj = handler.ask_manual_human(sensors=v, get_results=False)['question_object']
+        # asker = taniumpy.QuestionAsker(self.session, q_obj, timeout=1)
+        # try:
+        # asker.run({'ProgressChanged': utils.question_progress})
+        # logging.info("question ran normally, going to next one..")
+        # except Exception as e:
+        # logging.info("QUESTION RAN BUT HIT EXCEPTION: {}".format(e))
+        q_obj_expiry = datetime.strptime(q_obj.expiration, '%Y-%m-%dT%H:%M:%S')
+        expired = False
+        while not expired:
+            time.sleep(2)
+            rd = session.getResultData(q_obj)
+
+            now = datetime.utcnow()
+            left_till_expiry = q_obj_expiry - now
+            q_expired = now >= q_obj_expiry
+            elapsed = now - start
+
+            try:
+                rd_ex = handler.export_obj(rd, 'csv')
+                rd_ex_len = len(rd_ex)
+            except:
+                rd_ex = None
+                rd_ex_len = 0
+
+            mr_tested = get_rdattr(rd, 'mr_tested')
+            estimated_total = get_rdattr(rd, 'estimated_total')
+
+            logging.info((
+                "ID: {}, rd len: {}, start: {}, now: {}, expires: {}, elapsed: {}, left_till_expiry: {}"
+            ).format(
+                q_obj.id,
+                rd_ex_len,
+                start,
+                now,
+                q_obj_expiry,
+                elapsed,
+                left_till_expiry
+            ))
+
+            rd_attrs = sorted(rd.__dict__)
+            rd_attrs = ", ".join(["{}: {}".format(a, get_rdattr(rd, a)) for a in rd_attrs])
+            logging.info(rd_attrs)
+            si = session.get_server_info()
+
+            if q_expired:
+                expired = True
+                logging.warning("question expired!!!")
+                if not rd_ex_len > 0:
+                    rd = session.getResultData(q_obj)
+                    print si
+                    print session.request_body
+                    print session.response_body
+                    introspect(rd)
+                    raise Exception("no result data exported!!")
+
+            if not estimated_total:
+                raise Exception("estimated total is {}!!".format(estimated_total))
+
+            if mr_tested >= estimated_total:
+                logging.warning("QUESTION PASSED/FINISHED IN {}".format(elapsed))
+                break

@@ -25,7 +25,7 @@
         "desc": "Get a package by name",
         "priority": "1",
         "method": "get",
-        "args": {"objtype": "package", "name": "Distribute Patch Tools"},
+        "args": {"objtype": "package", "name": "Distribute Tanium Standard Utilities"},
         "tests": [
             "len(response) == 1",
             "isinstance(response, taniumpy.PackageSpecList)",
