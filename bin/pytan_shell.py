@@ -275,6 +275,11 @@ if __name__ == "__main__":
             rd_attrs = ", ".join(["{}: {}".format(a, get_rdattr(rd, a)) for a in rd_attrs])
             logging.info(rd_attrs)
             si = session.get_server_info()
+            diags = si['Diagnostics']
+            perf = [x for x in diags if 'System Performance Info' in x.keys()][0]
+            perf = dict([(key, d[key]) for d in perf.values()[0] for key in d])
+            perf_str = ", ".join(["{}: {}".format(a, b) for a, b in perf.items()])
+            logging.info(perf_str)
 
             if q_expired:
                 expired = True
