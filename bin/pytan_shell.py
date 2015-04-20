@@ -229,6 +229,7 @@ if __name__ == "__main__":
         utils.set_all_loglevels()
 
     v = "Folder Name Search with RegEx Match{dirname=Program Files,regex=Microsoft.*}"
+    question_count = 1
     while True:
         start = datetime.utcnow()
         q_obj = handler.ask_manual_human(sensors=v, get_results=False)['question_object']
@@ -240,7 +241,10 @@ if __name__ == "__main__":
         # logging.info("QUESTION RAN BUT HIT EXCEPTION: {}".format(e))
         q_obj_expiry = datetime.strptime(q_obj.expiration, '%Y-%m-%dT%H:%M:%S')
         expired = False
+        rd_count = 1
         while not expired:
+            logging.info("QUESTION LOOP #{}, RESULT DATA LOOP #{}".format(question_count, rd_count))
+            rd_count += 1
             time.sleep(2)
             rd = session.getResultData(q_obj)
 
@@ -297,4 +301,5 @@ if __name__ == "__main__":
 
             if mr_tested >= estimated_total:
                 logging.warning("QUESTION PASSED/FINISHED IN {}".format(elapsed))
+                question_count += 1
                 break
