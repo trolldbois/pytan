@@ -85,7 +85,7 @@ class HttplibSession(object):
     INFO_CONNECT_TIMEOUT_SEC = 5
     INFO_RESPONSE_TIMEOUT_SEC = 15
     SOAP_CONNECT_TIMEOUT_SEC = 15
-    SOAP_RESPONSE_TIMEOUT_SEC = 180
+    SOAP_RESPONSE_TIMEOUT_SEC = 540
     SOAP_REQUEST_HEADERS = {
         'Content-Type': 'text/xml; charset=utf-8',
         'Accept-Encoding': 'gzip',
@@ -342,6 +342,9 @@ class HttplibSession(object):
                 self.mylog.debug(bad_m(self.server, port, self.INFO_RES, e))
                 server_info_fail_msgs.append(bad_m(self.server, port, self.INFO_RES, e))
 
+        body['pydiags'] = {}
+        [body['pydiags'].update(x) for x in body.get('Diagnostics', [])]
+
         body['server_info_pass_msgs'] = server_info_pass_msgs
         body['server_info_fail_msgs'] = server_info_fail_msgs
         return body
@@ -389,7 +392,7 @@ class HttplibSession(object):
         return server_version
 
     def _http_post(self, host, port, url, body=None, headers=None, connect_timeout=15,
-                   response_timeout=180, debug=False):
+                   response_timeout=540, debug=False):
 
         # httplib does not differentiate between connect & response timeout
         # revert SSL verification for python 2.7.9
