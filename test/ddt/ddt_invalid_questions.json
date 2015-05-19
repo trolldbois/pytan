@@ -7,7 +7,7 @@
             "qtype": "manual_human",
             "sensors_help": true
         },
-        "exception": "pytan.utils.PytanHelp",
+        "exception": "pytan.exceptions.PytanHelp",
         "error_str": ".*Help.*"
     },
     "invalid_ask_manual_human_question_filter_help": {
@@ -18,7 +18,7 @@
             "qtype": "manual_human",
             "filters_help": true
         },
-        "exception": "pytan.utils.PytanHelp",
+        "exception": "pytan.exceptions.PytanHelp",
         "error_str": ".*Help.*"
     },
     "invalid_ask_manual_human_question_option_help": {
@@ -29,7 +29,7 @@
             "qtype": "manual_human",
             "options_help": true
         },
-        "exception": "pytan.utils.PytanHelp",
+        "exception": "pytan.exceptions.PytanHelp",
         "error_str": ".*Help.*"
     },
     "invalid_ask_manual_question_sensor": {
@@ -40,7 +40,7 @@
             "qtype": "manual",
             "sensor_defs": "Dweedle Dee and Dum"
         },
-        "exception": "pytan.utils.HandlerError",
+        "exception": "pytan.exceptions.HandlerError",
         "error_str": "No results found searching for Sensor.*"
     },
     "invalid_ask_manual_human_question_filter": {
@@ -51,7 +51,7 @@
             "qtype": "manual_human",
             "sensors": "Computer name, that does not meet:little"
         },
-        "exception": "pytan.utils.HumanParserError",
+        "exception": "pytan.exceptions.HumanParserError",
         "error_str": "Filter.*is not a valid filter!"
     },
     "invalid_ask_manual_human_question_paramater_too_many": {
@@ -62,7 +62,7 @@
             "qtype": "manual_human",
             "sensors": "Folder Name Search with RegEx Match{dirname=Program Files,regex=.*}{}"
         },
-        "exception": "pytan.utils.HumanParserError",
+        "exception": "pytan.exceptions.HumanParserError",
         "error_str": "More than one parameter.*"
     },
 
@@ -74,7 +74,7 @@
             "qtype": "manual_human",
             "sensors": "Operating system, opt:bad"
         },
-        "exception": "pytan.utils.HumanParserError",
+        "exception": "pytan.exceptions.HumanParserError",
         "error_str": "Option.*is not a valid option!"
     },
     "invalid_ask_manual_human_question_parameter_split": {
@@ -85,7 +85,7 @@
             "qtype": "manual_human",
             "sensors": "Computer Name{Dweedle}"
         },
-        "exception": "pytan.utils.HumanParserError",
+        "exception": "pytan.exceptions.HumanParserError",
         "error_str": "Parameter.*missing key/value seperator"
     }
 }

@@ -27,9 +27,9 @@ import pytan
 import taniumpy
 from pytan import utils
 from pytan import constants
-from pytan.utils import HumanParserError
-from pytan.utils import DefinitionParserError
-from pytan.utils import HandlerError
+from pytan.exceptions import HumanParserError
+from pytan.exceptions import DefinitionParserError
+from pytan.exceptions import HandlerError
 
 # control the amount of output from unittests
 TESTVERBOSITY = 2
@@ -1384,16 +1384,6 @@ class TestGenericUtils(unittest.TestCase):
         self.assertTrue(utils.empty_obj(obj))
         self.assertTrue(utils.empty_obj(''))
 
-    def test_ask_kwargs(self):
-        kwargs = {'timeout': 2, 'other': 4, 'row_start': 5}
-        ask_kwargs = utils.get_ask_kwargs(**kwargs)
-        self.assertEqual(ask_kwargs, {'timeout': 2})
-
-    def test_req_kwargs(self):
-        kwargs = {'timeout': 2, 'other': 4, 'row_start': 5}
-        req_kwargs = utils.get_req_kwargs(**kwargs)
-        self.assertEqual(req_kwargs, {'row_start': 5})
-
     def test_get_q_obj_map(self):
         qtype = 'saved'
         self.assertEqual(utils.get_q_obj_map(qtype), {'handler': 'ask_saved'})
@@ -1468,17 +1458,19 @@ class TestGenericUtils(unittest.TestCase):
 class TestDeserializeBadXML(unittest.TestCase):
     def test_bad_chars_basetype(self):
         a = open(os.path.join(my_dir, 'bad_chars_basetype.xml'), 'rb+').read()
-        b = pytan.taniumpy.session.xml_fix(a)
+        s = pytan.taniumpy.Session('NONE')
+        b = s._xml_fix(a)
         c = pytan.taniumpy.BaseType.fromSOAPBody(b)
         self.assertTrue(c)
         self.assertIsInstance(c, taniumpy.SystemStatusList)
 
     def test_bad_chars_resultset(self):
         a = open(os.path.join(my_dir, 'bad_chars_resultset.xml'), 'rb+').read()
-        b = pytan.taniumpy.session.xml_fix(a)
+        s = pytan.taniumpy.Session('NONE')
+        b = s._xml_fix(a)
         el = pytan.taniumpy.session.ET.fromstring(b)
         cdata = el.find('.//ResultXML')
-        rd = pytan.taniumpy.session.ET.fromstring(pytan.taniumpy.session.xml_fix(cdata.text))
+        rd = pytan.taniumpy.session.ET.fromstring(s._xml_fix(cdata.text))
         c = pytan.taniumpy.ResultSet.fromSOAPElement(rd)
         self.assertTrue(c)
         self.assertIsInstance(c, taniumpy.ResultSet)

@@ -1,0 +1,37 @@
+valid questions: (need to write savedquestionpoller)
+
+    "ask_saved_question_by_name": {
+        "desc": "Ask a saved question by referencing the name of a saved question in a string.",
+        "priority": "1",
+        "method": "ask",
+        "args": {
+            "qtype": "saved",
+            "name": "Installed Applications"
+        }
+    },
+    "ask_saved_question_by_name_in_list": {
+        "desc": "Ask a saved question by referencing the name of a saved question in a list of strings.",
+        "priority": "1",
+        "method": "ask",
+        "args": {
+            "qtype": "saved",
+            "name": ["Installed Applications"]
+        }
+    },
+
+also need to finish modding actionpoller
+
+If you are adding tests for that mechanism you could make tests that verify it returns an error if you specify a cache that has expired and make sure that the results that come back don’t change.
+
+Hi Sharon,
+
+There is a dependency on max_result_cache_age, in that if the question is no longer available in memory, then the snapshot is also dissolved, even if the cache_expiration goes beyond what the max_result_cache_age should be.
+
+So if you would like to keep the snapshots available for long periods of time, I would go ahead and also increase the max_result_cache_age.
+
+Just to expound this new feature:  What used to happen is that each time you called getResultData, the server would convert the internal memory representation of the question data into the SOAP response / XML document format, then cut out of that document just the ranges of data that you requested.  But now, with this feature, the generation of the SOAP response / XML document can be done just once -- then on each paging call through the data, it is fixed to a given data set, and it can return just a window to an already allocated doc.
+
+But there a few links between the snapshot and the question data itself, so right now there is still a requirement to remove the snapshot when the question is removed.
+
+Cheers,
+Greg

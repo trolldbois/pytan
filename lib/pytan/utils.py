@@ -31,40 +31,19 @@ for aa in path_adds:
 
 import taniumpy
 import xmltodict
-from pytan import __version__
-from pytan import constants
+import pytan
 
-mylog = logging.getLogger("handler")
-humanlog = logging.getLogger("ask_manual_human")
-manuallog = logging.getLogger("ask_manual")
-progresslog = logging.getLogger("question_progress")
+__version__ = pytan.__version__
+
+mylog = logging.getLogger("pytan.handler")
+humanlog = logging.getLogger("pytan.handler.ask_manual_human")
+manuallog = logging.getLogger("pytan.handler.ask_manual")
+progresslog = logging.getLogger("pytan.handler.question_progress")
+prettylog = logging.getLogger("pytan.handler.prettybody")
+timinglog = logging.getLogger("pytan.handler.timing")
+
 pname = os.path.splitext(os.path.basename(sys.argv[0]))[0]
-prettylog = logging.getLogger("api.session.http.pretty")
-
-
-class HandlerError(Exception):
-    """Exception thrown for most errors in :mod:`pytan.handler`"""
-    pass
-
-
-class HumanParserError(Exception):
-    """Exception thrown for errors while parsing human strings from :mod:`pytan.handler`"""
-    pass
-
-
-class DefinitionParserError(Exception):
-    """Exception thrown for errors while parsing definitions from :mod:`pytan.handler`"""
-    pass
-
-
-class RunFalse(Exception):
-    """Exception thrown when run=False from :func:`pytan.handler.Handler.deploy_action`"""
-    pass
-
-
-class PytanHelp(Exception):
-    """Exception thrown when printing out help"""
-    pass
+DEBUG_OUTPUT = False
 
 
 class SplitStreamHandler(logging.Handler):
@@ -191,7 +170,7 @@ def setup_parser(desc, help=False):
         '--port',
         required=False,
         action='store',
-        default="444",
+        default="443",
         dest='port',
         help='Port to use when connecting to SOAP Server',
     )
@@ -1143,6 +1122,38 @@ def seconds_from_now(secs=0, tz='utc'):
     return from_now.strftime('%Y-%m-%dT%H:%M:%S')
 
 
+def timestr_to_datetime(timestr):
+    """Get a datetime.datetime object for `timestr`
+
+    Parameters
+    ----------
+    timestr : str
+        date & time in taniums format
+
+    Returns
+    -------
+    datetime.datetime
+        the datetime object for the timestr
+    """
+    return datetime.datetime.strptime(timestr, pytan.constants.TIME_FORMAT)
+
+
+def datetime_to_timestr(dt):
+    """Get a timestr for `dt`
+
+    Parameters
+    ----------
+    dt : datetime.datetime
+        datetime object
+
+    Returns
+    -------
+    timestr: str
+        the timestr for `dt` in taniums format
+    """
+    return dt.strftime(pytan.constants.TIME_FORMAT)
+
+
 def port_check(address, port, timeout=5):
     """Check if `address`:`port` can be reached within `timeout`
 
@@ -1178,7 +1189,7 @@ def test_app_port(host, port):
 
     Raises
     ------
-    HandlerError : :exc:`pytan.utils.HandlerError`
+    pytan.exceptions.HandlerError : :exc:`pytan.exceptions.HandlerError`
         if `host`:`port` can not be reached
 
     """
@@ -1186,10 +1197,22 @@ def test_app_port(host, port):
     if port_check(host, port):
         mylog.debug(chk_tpl(host, port, "SUCCESS"))
     else:
-        raise HandlerError(chk_tpl(host, port, "FAILURE"))
+        raise pytan.exceptions.HandlerError(chk_tpl(host, port, "FAILURE"))
 
 
-def remove_logging_handler(name):
+def spew(t):
+    """Prints a string based on DEBUG_OUTPUT bool
+
+    Parameters
+    ----------
+    t : str
+        string to debug print
+    """
+    if DEBUG_OUTPUT:
+        print "DEBUG::{}".format(t)
+
+
+def remove_logging_handler(name='all'):
     """Removes a logging handler
 
     Parameters
@@ -1197,28 +1220,36 @@ def remove_logging_handler(name):
     name : str
         name of logging handler to remove. if name == 'all' then all logging handlers are removed
     """
-    root_logger = logging.getLogger()
-    root_handlers = root_logger.handlers
-    for h in root_handlers:
-        if name == 'all':
-            root_logger.removeHandler(h)
-        elif h.name == name:
-            root_logger.removeHandler(h)
+    for k, v in sorted(get_all_loggers().iteritems()):
+        for handler in v.handlers:
+            if name == 'all':
+                spew("Removing handler: {0}/{0.name} due to 'all'".format(handler))
+                v.removeHandler(handler)
+            elif handler.name == name:
+                spew("Removing handler: {0}/{0.name} due to match".format(handler))
+                v.removeHandler(handler)
 
 
-def setup_console_logging():
+def setup_console_logging(gmt_tz=True):
     """Creates a console logging handler using :class:`SplitStreamHandler`"""
+
     ch_name = 'console'
-    remove_logging_handler('all')
-    # add a console handler to the root logger that goes to STDOUT for INFO
+    remove_logging_handler()
+
+    if gmt_tz:
+        # change the default time zone to GM time
+        logging.Formatter.converter = time.gmtime
+
+    # add a console handler to all loggers that goes to STDOUT for INFO
     # and below, but STDERR for WARNING and above
     ch = SplitStreamHandler()
     ch.set_name(ch_name)
     ch.setLevel(logging.DEBUG)
-    ch.setFormatter(logging.Formatter(constants.INFO_FORMAT))
-    root_logger = logging.getLogger()
-    root_logger.addHandler(ch)
-    root_logger.setLevel(logging.DEBUG)
+    ch.setFormatter(logging.Formatter(pytan.constants.INFO_FORMAT))
+
+    for k, v in sorted(get_all_loggers().iteritems()):
+        v.addHandler(ch)
+        v.setLevel(logging.DEBUG)
 
 
 def change_console_format(debug=False):
@@ -1230,14 +1261,13 @@ def change_console_format(debug=False):
         * False : set logging format for console handler to :data:`pytan.constants.INFO_FORMAT`
         * True :  set logging format for console handler to :data:`pytan.constants.DEBUG_FORMAT`
     """
-    root_logger = logging.getLogger()
-    root_handlers = root_logger.handlers
-    for h in root_handlers:
-        if h.name == 'console':
-            if debug:
-                h.setFormatter(logging.Formatter(constants.DEBUG_FORMAT))
-            else:
-                h.setFormatter(logging.Formatter(constants.INFO_FORMAT))
+    for k, v in sorted(get_all_loggers().iteritems()):
+        for handler in v.handlers:
+            if handler.name == 'console':
+                if debug:
+                    handler.setFormatter(logging.Formatter(pytan.constants.DEBUG_FORMAT))
+                else:
+                    handler.setFormatter(logging.Formatter(pytan.constants.INFO_FORMAT))
 
 
 def set_log_levels(loglevel=0):
@@ -1248,20 +1278,51 @@ def set_log_levels(loglevel=0):
     loglevel : int, optional
         loglevel to match against each item in :data:`pytan.constants.LOG_LEVEL_MAPS` - each item that is greater than or equal to loglevel will have the according loggers set to their respective levels identified there-in.
     """
+    if loglevel >= 20:
+        set_all_loglevels('DEBUG')
+        return
+
     set_all_loglevels('WARN')
-    for logmap in constants.LOG_LEVEL_MAPS:
+
+    if loglevel == 0:
+        return
+
+    for logmap in pytan.constants.LOG_LEVEL_MAPS:
         if loglevel >= logmap[0]:
             for lname, llevel in logmap[1].iteritems():
-                print 'setting %s to %s' % (lname, llevel)
+                spew('set_log_levels(): setting %s to %s' % (lname, llevel))
                 logging.getLogger(lname).setLevel(getattr(logging, llevel))
+
+
+def print_log_levels():
+    """Prints info about each loglevel from :data:`pytan.constants.LOG_LEVEL_MAPS`"""
+    for logmap in pytan.constants.LOG_LEVEL_MAPS:
+        print "Logging level: {} - Description: {}".format(logmap[0], logmap[2])
+        if logmap[0] == 0:
+            for k, v in sorted(get_all_loggers().iteritems()):
+                print "\tLogger {!r} will only show WARNING and above".format(k)
+            continue
+        for lname, llevel in logmap[1].iteritems():
+            print "\tLogger {!r} will show {} and above".format(lname, llevel)
 
 
 def set_all_loglevels(level='DEBUG'):
     """Sets all loggers that the logging system knows about to a given logger level"""
-    for k, v in sorted(logging.Logger.manager.loggerDict.iteritems()):
-        if not isinstance(v, logging.Logger):
-            continue
+    for k, v in sorted(get_all_loggers().iteritems()):
+        spew("set_all_loglevels(): setting {} to {}".format(k, level))
         v.setLevel(getattr(logging, level))
+        v.propagate = False
+
+
+def get_all_loggers():
+    logger_dict = logging.Logger.manager.loggerDict
+    all_loggers = {k: v for k, v in logger_dict.iteritems() if isinstance(v, logging.Logger)}
+    all_loggers['root'] = logging.getLogger()
+    pytan_loggers = list(set([y for x in pytan.constants.LOG_LEVEL_MAPS for y in x[1].keys()]))
+    for x in pytan_loggers:
+        if x not in all_loggers:
+            all_loggers[x] = logging.getLogger(x)
+    return all_loggers
 
 
 # issue #6
@@ -1282,7 +1343,7 @@ def load_taniumpy_from_json(json_file):
         fh = open(json_file)
     except Exception as e:
         m = "Unable to open json_file {!r}, {}".format
-        raise HandlerError(m(json_file, e))
+        raise pytan.exceptions.HandlerError(m(json_file, e))
 
     howto_m = (
         "Use get_${OBJECT_TYPE}.py with --include-type and "
@@ -1294,7 +1355,7 @@ def load_taniumpy_from_json(json_file):
         json_dict = json.load(fh)
     except Exception as e:
         m = "Unable to parse json_file {!r}, {}\n{}".format
-        raise HandlerError(m(json_file, e, howto_m))
+        raise pytan.exceptions.HandlerError(m(json_file, e, howto_m))
 
     # issue #6
     try:
@@ -1304,7 +1365,7 @@ def load_taniumpy_from_json(json_file):
 
     if '_type' not in json_dict:
         m = "Missing '_type' key in JSON loaded dictionary!\n{}".format
-        raise HandlerError(m(howto_m))
+        raise pytan.exceptions.HandlerError(m(howto_m))
 
     try:
         obj = taniumpy.BaseType.from_jsonable(json_dict)
@@ -1313,7 +1374,7 @@ def load_taniumpy_from_json(json_file):
             "Unable to parse json_file {!r} into an API {} object\n"
             "Exception from API.from_jsonable(): {}\n{}"
         ).format
-        raise HandlerError(m(json_file, json_dict['_type'], e, howto_m))
+        raise pytan.exceptions.HandlerError(m(json_file, json_dict['_type'], e, howto_m))
     return obj
 
 
@@ -1328,7 +1389,7 @@ def load_param_json_file(parameters_json_file):
             "Refer to doc/example_of_all_package_parameters.json "
             "file for examples of each parameter type"
         ).format
-        raise HandlerError(m(parameters_json_file, e))
+        raise pytan.exceptions.HandlerError(m(parameters_json_file, e))
 
     try:
         pd = json.load(pf)
@@ -1338,7 +1399,7 @@ def load_param_json_file(parameters_json_file):
             "Refer to doc/example_of_all_package_parameters.json "
             "file for examples of each parameter type"
         ).format
-        raise HandlerError(m(parameters_json_file, e))
+        raise pytan.exceptions.HandlerError(m(parameters_json_file, e))
 
     try:
         pf.close()
@@ -1354,7 +1415,7 @@ def load_param_json_file(parameters_json_file):
             "Refer to doc/example_of_all_package_parameters.json "
             "file for examples of each parameter type"
         ).format
-        raise HandlerError(m(parameters_json_file))
+        raise pytan.exceptions.HandlerError(m(parameters_json_file))
 
     for pd_param in pd_params:
         if 'key' not in pd_param:
@@ -1364,7 +1425,7 @@ def load_param_json_file(parameters_json_file):
                 "Refer to doc/example_of_all_package_parameters.json "
                 "file for examples of each parameter type"
             ).format
-            raise HandlerError(m(parameters_json_file, pd_param))
+            raise pytan.exceptions.HandlerError(m(parameters_json_file, pd_param))
 
     return json.dumps(pd)
 
@@ -1379,7 +1440,7 @@ def dehumanize_sensors(sensors, key='sensors', empty_ok=False):
     key : str, optional
         Name of key that user should have provided `sensors` as
     empty_ok : bool, optional
-        False: `sensors` is not allowed to be empty, throw :exc:`HumanParserError` if it is empty
+        False: `sensors` is not allowed to be empty, throw :exc:`pytan.exceptions.HumanParserError` if it is empty
         True: `sensors` is allowed to be empty
 
     Returns
@@ -1392,7 +1453,7 @@ def dehumanize_sensors(sensors, key='sensors', empty_ok=False):
             err = (
                 "A string or list of strings must be supplied as '{0}'!"
             ).format(key)
-            raise HumanParserError(err)
+            raise pytan.exceptions.HumanParserError(err)
         else:
             return []
 
@@ -1402,7 +1463,7 @@ def dehumanize_sensors(sensors, key='sensors', empty_ok=False):
     sensor_defs = []
     for sensor in sensors:
         if not is_str(sensor):
-            raise HumanParserError("{!r} must be a string".format(sensor))
+            raise pytan.exceptions.HumanParserError("{!r} must be a string".format(sensor))
         s, parsed_selector = extract_selector(sensor)
         s, parsed_params = extract_params(s)
         s, parsed_options = extract_options(s)
@@ -1436,7 +1497,7 @@ def dehumanize_package(package):
     """
     if not is_str(package) or not package:
         err = "{!r} must be a string supplied as 'package'".format
-        raise HumanParserError(err(package))
+        raise pytan.exceptions.HumanParserError(err(package))
     p, parsed_selector = extract_selector(package)
     p, parsed_params = extract_params(p)
     package_def = {}
@@ -1474,7 +1535,7 @@ def dehumanize_question_filters(question_filters):
         s, parsed_filter = extract_filter(s)
         if not parsed_filter:
             err = "Filter {!r} is not a valid filter!".format
-            raise HumanParserError(err(question_filter))
+            raise pytan.exceptions.HumanParserError(err(question_filter))
 
         question_filter_def = {}
         question_filter_def[parsed_selector] = s
@@ -1537,7 +1598,7 @@ def extract_selector(s):
         selector extracted from `s`, or 'name' if none found
     """
     parsed_selector = 'name'
-    for selector in constants.SELECTORS:
+    for selector in pytan.constants.SELECTORS:
         if s.startswith(selector + ':'):
             parsed_selector = selector
             s = s.replace(selector + ':', '').strip()
@@ -1569,12 +1630,12 @@ def extract_params(s):
     # 'Folder Name Search with RegEx Match{dirname=Program Files,regex=\,*}' \
     # ', that is .*, opt:max_data_age:3600, opt:ignore_case'
 
-    params = re.findall(constants.PARAM_RE, s)
+    params = re.findall(pytan.constants.PARAM_RE, s)
     # params=['dirname=Program Files,regex=\\,*']
 
     if len(params) > 1:
         err = "More than one parameter ({{}}) passed in {!r}".format
-        raise HumanParserError(err(s))
+        raise pytan.exceptions.HumanParserError(err(s))
     elif len(params) == 1:
         param = params[0]
     else:
@@ -1582,7 +1643,7 @@ def extract_params(s):
     # param='dirname=Program Files,regex=\\,*'
 
     if param:
-        split_param = re.split(constants.PARAM_SPLIT_RE, param)
+        split_param = re.split(pytan.constants.PARAM_SPLIT_RE, param)
     else:
         split_param = []
     # split_param=['dirname=Program Files', 'regex=\\,*']
@@ -1590,10 +1651,10 @@ def extract_params(s):
     parsed_params = {}
     for sp in split_param:
         # sp = 'dirname=Program Files'
-        if constants.PARAM_KEY_SPLIT not in sp:
+        if pytan.constants.PARAM_KEY_SPLIT not in sp:
             err = "Parameter {} missing key/value seperator ({})".format
-            raise HumanParserError(err(sp, constants.PARAM_KEY_SPLIT))
-        sp_key, sp_value = sp.split(constants.PARAM_KEY_SPLIT, 1)
+            raise pytan.exceptions.HumanParserError(err(sp, pytan.constants.PARAM_KEY_SPLIT))
+        sp_key, sp_value = sp.split(pytan.constants.PARAM_KEY_SPLIT, 1)
         # remove any escapes for {}'s
         if '\\}' in sp_value:
             sp_value = sp_value.replace('\\}', '}')
@@ -1605,7 +1666,7 @@ def extract_params(s):
         parsed_params[sp_key] = sp_value
 
     # remove params from the s string
-    s = re.sub(constants.PARAM_RE, '', s)
+    s = re.sub(pytan.constants.PARAM_RE, '', s)
     # s='Folder Name Search with RegEx Match, that is .*, ' \
     # 'opt:max_data_age:3600, opt:ignore_case'
 
@@ -1632,7 +1693,7 @@ def extract_options(s):
     """
     # parse options out of s
 
-    split_option = re.split(constants.OPTION_RE, s, 0, re.IGNORECASE)
+    split_option = re.split(pytan.constants.OPTION_RE, s, 0, re.IGNORECASE)
     # split_option = ['Folder Name Search with RegEx Match, that is .*', \
     # 'max_data_age:3600', 'ignore_case']
 
@@ -1679,7 +1740,7 @@ def map_options(options, dest):
             mapped_options.update(mapped_option)
         else:
             err = "Option {!r} is not a valid option!".format
-            raise HumanParserError(err(option))
+            raise pytan.exceptions.HumanParserError(err(option))
 
     return mapped_options
 
@@ -1701,7 +1762,7 @@ def map_option(opt, dest):
     """
     opt_attrs = {}
 
-    for om in constants.OPTION_MAPS:
+    for om in pytan.constants.OPTION_MAPS:
         if opt_attrs:
             break
 
@@ -1731,7 +1792,7 @@ def map_option(opt, dest):
 
                 err = "Option {!r} is missing a {} value of {}\n{}".format
                 err = err(opt, valid_type, human_type, format_str)
-                raise HumanParserError(err)
+                raise pytan.exceptions.HumanParserError(err)
 
             opt_name, opt_value = opt_split
 
@@ -1755,7 +1816,7 @@ def extract_filter(s):
     parsed_filter : dict
         filter attributes mapped from filter from `s` if any found
     """
-    split_filter = re.split(constants.FILTER_RE, s, re.IGNORECASE)
+    split_filter = re.split(pytan.constants.FILTER_RE, s, re.IGNORECASE)
     # split_filter = ['Folder Name Search with RegEx Match', ' is:.*']
 
     parsed_filter = {}
@@ -1774,7 +1835,7 @@ def extract_filter(s):
         parsed_filter = map_filter(parsed_filter)
         if not parsed_filter:
             err = "Filter {!r} is not a valid filter!".format
-            raise HumanParserError(err(split_filter[1]))
+            raise pytan.exceptions.HumanParserError(err(split_filter[1]))
 
     dbg = 'parsed new string to {!r} and filters to:\n{}'.format
     humanlog.debug(dbg(s, jsonify(parsed_filter)))
@@ -1800,16 +1861,16 @@ def map_filter(filter_str):
     filter_split = filter_str.split(':')
     if len(filter_split) != 2:
         err = "Invalid filter in {!r}, missing ':' to seperate filter from value?" .format
-        raise HumanParserError(err(filter_str))
+        raise pytan.exceptions.HumanParserError(err(filter_str))
 
     filter_name, filter_value = filter_split
     filter_name = filter_name.strip().lower()
 
     if not filter_value:
         err = "Invalid filter value in {!r}".format
-        raise HumanParserError(err(filter_str))
+        raise pytan.exceptions.HumanParserError(err(filter_str))
 
-    for fm in constants.FILTER_MAPS:
+    for fm in pytan.constants.FILTER_MAPS:
         for fh in fm['human']:
             if filter_name == fh:
                 filter_attrs = fm
@@ -1859,7 +1920,7 @@ def get_kwargs_int(key, default=None, **kwargs):
         val = int(val)
     except ValueError:
         err = "'{}' must be an int, you supplied: {}"
-        raise HandlerError(err(key, val))
+        raise pytan.exceptions.HandlerError(err(key, val))
     return val
 
 
@@ -1892,7 +1953,7 @@ def parse_defs(defname, deftypes, strconv=None, empty_ok=True, defs=None, **kwar
     if not defs:
         if not empty_ok:
             err = "Argument {0!r} is empty!\n{1}".format
-            raise DefinitionParserError(err(defname, type_msg))
+            raise pytan.exceptions.DefinitionParserError(err(defname, type_msg))
         else:
             return defs
 
@@ -1902,7 +1963,7 @@ def parse_defs(defname, deftypes, strconv=None, empty_ok=True, defs=None, **kwar
 
     if deftypes == ['dict()']:
         if not is_dict(defs):
-            raise DefinitionParserError(err)
+            raise pytan.exceptions.DefinitionParserError(err)
         else:
             return defs
 
@@ -1914,12 +1975,12 @@ def parse_defs(defname, deftypes, strconv=None, empty_ok=True, defs=None, **kwar
                 conv = {strconv: defs}
             new_defs.append(conv)
         else:
-            raise DefinitionParserError(err)
+            raise pytan.exceptions.DefinitionParserError(err)
     elif is_dict(defs):
         if 'dict()' in deftypes:
             new_defs.append(defs)
         else:
-            raise DefinitionParserError(err)
+            raise pytan.exceptions.DefinitionParserError(err)
     elif is_list(defs):
         if 'list()' in deftypes:
             for k in defs:
@@ -1927,9 +1988,9 @@ def parse_defs(defname, deftypes, strconv=None, empty_ok=True, defs=None, **kwar
                     defname, deftypes, strconv, empty_ok, k, **kwargs
                 )
         else:
-            raise DefinitionParserError(err)
+            raise pytan.exceptions.DefinitionParserError(err)
     else:
-        raise DefinitionParserError(err)
+        raise pytan.exceptions.DefinitionParserError(err)
 
     return new_defs
 
@@ -1944,7 +2005,7 @@ def val_sensor_defs(sensor_defs):
     sensor_defs : list of dict
         list of sensor definitions
     """
-    s_obj_map = constants.GET_OBJ_MAP['sensor']
+    s_obj_map = pytan.constants.GET_OBJ_MAP['sensor']
     search_keys = s_obj_map['search']
 
     for d in sensor_defs:
@@ -1953,11 +2014,11 @@ def val_sensor_defs(sensor_defs):
 
         if len(def_search) == 0:
             err = "Sensor definition {} missing one of {}!".format
-            raise DefinitionParserError(err(d, ', '.join(search_keys)))
+            raise pytan.exceptions.DefinitionParserError(err(d, ', '.join(search_keys)))
 
         elif len(def_search) > 1:
             err = "Sensor definition {} has more than one of {}!".format
-            raise DefinitionParserError(err(d, ', '.join(search_keys)))
+            raise pytan.exceptions.DefinitionParserError(err(d, ', '.join(search_keys)))
 
         # type checking for optional keys
         chk_def_key(d, 'params', [dict])
@@ -1975,7 +2036,7 @@ def val_package_def(package_def):
     package_def : dict
         package definition
     """
-    s_obj_map = constants.GET_OBJ_MAP['package']
+    s_obj_map = pytan.constants.GET_OBJ_MAP['package']
     search_keys = s_obj_map['search']
 
     # value checking for required keys
@@ -1986,11 +2047,11 @@ def val_package_def(package_def):
 
     if len(def_search) == 0:
         err = "Package definition {} missing one of {}!".format
-        raise DefinitionParserError(err(package_def, ', '.join(search_keys)))
+        raise pytan.exceptions.DefinitionParserError(err(package_def, ', '.join(search_keys)))
 
     elif len(def_search) > 1:
         err = "Package definition {} has more than one of {}!".format
-        raise DefinitionParserError(err(package_def, ', '.join(search_keys)))
+        raise pytan.exceptions.DefinitionParserError(err(package_def, ', '.join(search_keys)))
 
     # type checking for optional keys
     chk_def_key(package_def, 'params', [dict])
@@ -2006,7 +2067,7 @@ def val_q_filter_defs(q_filter_defs):
     q_filter_defs : list of dict
         list of question filter definitions
     """
-    s_obj_map = constants.GET_OBJ_MAP['sensor']
+    s_obj_map = pytan.constants.GET_OBJ_MAP['sensor']
     search_keys = s_obj_map['search']
 
     for d in q_filter_defs:
@@ -2015,11 +2076,11 @@ def val_q_filter_defs(q_filter_defs):
 
         if len(def_search) == 0:
             err = "Question Filter {} missing one of {}!".format
-            raise DefinitionParserError(err(d, ', '.join(search_keys)))
+            raise pytan.exceptions.DefinitionParserError(err(d, ', '.join(search_keys)))
 
         elif len(def_search) > 1:
             err = "Question Filter {} has more than one of {}!".format
-            raise DefinitionParserError(err(d, ', '.join(search_keys)))
+            raise pytan.exceptions.DefinitionParserError(err(d, ', '.join(search_keys)))
 
         # type checking for required filter key
         chk_def_key(d, 'filter', [dict], req=True)
@@ -2225,10 +2286,10 @@ def build_param_objlist(obj, user_params, delim='', derive_def=False, empty_ok=F
     delim : str
         str to surround key with when adding to parameter object
     derive_def : bool, optional
-        * False: Do not derive default values, and throw a :exc:`HandlerError` if user did not supply a value for a given parameter
+        * False: Do not derive default values, and throw a :exc:`pytan.exceptions.HandlerError` if user did not supply a value for a given parameter
         * True: Try to derive a default value for each parameter if user did not supply one
     empty_ok : bool, optional
-        * False: If user did not supply a value for a given parameter, throw a :exc:`HandlerError`
+        * False: If user did not supply a value for a given parameter, throw a :exc:`pytan.exceptions.HandlerError`
         * True: If user did not supply a value for a given parameter, do not add the parameter to the ParameterList object
 
     Returns
@@ -2257,7 +2318,7 @@ def build_param_objlist(obj, user_params, delim='', derive_def=False, empty_ok=F
                 "{} parameter key '{}' requires a value, "
                 "parameter definition:\n{}"
             ).format
-            raise HandlerError(err(obj_name, p_key, jsonify(obj_param)))
+            raise pytan.exceptions.HandlerError(err(obj_name, p_key, jsonify(obj_param)))
         param_obj = build_param_obj(p_key, user_val, delim)
         param_objlist.append(param_obj)
 
@@ -2276,6 +2337,27 @@ def build_param_objlist(obj, user_params, delim='', derive_def=False, empty_ok=F
         manuallog.debug(dbg(k, obj_name, param_obj))
 
     return param_objlist
+
+
+def shrink_obj(obj, attrs=None):
+    """Returns a new class of obj with only id/name/hash defined
+
+    Parameters
+    ----------
+    obj : :class:`taniumpy.object_types.base.BaseType`
+        Object to shrink
+
+    Returns
+    -------
+    new_obj : :class:`taniumpy.object_types.base.BaseType`
+        Shrunken object
+    """
+    if attrs is None:
+        attrs = ['name', 'id', 'hash']
+
+    new_obj = obj.__class__()
+    [setattr(new_obj, a, getattr(obj, a)) for a in attrs if getattr(obj, a, '')]
+    return new_obj
 
 
 def get_filter_obj(sensor_def):
@@ -2309,7 +2391,7 @@ def get_filter_obj(sensor_def):
     def_op = filter_def.get('operator', None)
     if not def_op:
         err = "Filter {!r} requires an 'operator' key!".format
-        raise DefinitionParserError(err(filter_def))
+        raise pytan.exceptions.DefinitionParserError(err(filter_def))
 
     # not_flag optional
     def_not_flag = filter_def.get('not_flag', None)
@@ -2318,10 +2400,10 @@ def get_filter_obj(sensor_def):
     def_value = filter_def.get('value', None)
     if not def_value:
         err = "Filter {!r} requires a 'value' key!".format
-        raise DefinitionParserError(err(filter_def))
+        raise pytan.exceptions.DefinitionParserError(err(filter_def))
 
     found_match = False
-    for fm in constants.FILTER_MAPS:
+    for fm in pytan.constants.FILTER_MAPS:
         # if user supplied operator does not match this operator, next
         if not def_op.lower() == fm['operator'].lower():
             continue
@@ -2340,7 +2422,7 @@ def get_filter_obj(sensor_def):
 
     if not found_match:
         err = "Invalid filter {!r}".format
-        raise DefinitionParserError(err(filter_def))
+        raise pytan.exceptions.DefinitionParserError(err(filter_def))
 
     return filter_obj
 
@@ -2367,7 +2449,7 @@ def apply_options_obj(options, obj, dest):
         return obj
 
     for k, v in options.iteritems():
-        for om in constants.OPTION_MAPS:
+        for om in pytan.constants.OPTION_MAPS:
 
             if om['destination'] != dest:
                 continue
@@ -2399,9 +2481,7 @@ def apply_options_obj(options, obj, dest):
                 err = (
                     "Option {!r} requires a {} value{}"
                 ).format
-                raise DefinitionParserError(err(
-                    k, valid_type, valid_values_str)
-                )
+                raise pytan.exceptions.DefinitionParserError(err(k, valid_type, valid_values_str))
 
             if valid_type == int:
                 try:
@@ -2410,14 +2490,14 @@ def apply_options_obj(options, obj, dest):
                     err = (
                         "Option {!r} value {!r} is not an integer"
                     ).format
-                    raise DefinitionParserError(err(k, v))
+                    raise pytan.exceptions.DefinitionParserError(err(k, v))
 
             if valid_type == str:
                 if not type(v) in [str, unicode]:
                     err = (
                         "Option {!r} value {!r} is not a string"
                     ).format
-                    raise DefinitionParserError(err(k, v))
+                    raise pytan.exceptions.DefinitionParserError(err(k, v))
 
             value_match = None
             if valid_values:
@@ -2430,7 +2510,7 @@ def apply_options_obj(options, obj, dest):
                     err = (
                         "Option {!r} value {!r} does not match one of {}"
                     ).format
-                    raise DefinitionParserError(err(k, v, valid_values))
+                    raise pytan.exceptions.DefinitionParserError(err(k, v, valid_values))
                 else:
                     v = value_match
 
@@ -2459,12 +2539,12 @@ def chk_def_key(def_dict, key, keytypes, keysubtypes=None, req=False):
         if key is a dict or list, validate that all values of dict or list are in keysubtypes
     req : bool
         * False: key does not have to be in def_dict
-        * True: key must be in def_dict, throw :exc:`DefinitionParserError` if not
+        * True: key must be in def_dict, throw :exc:`pytan.exceptions.DefinitionParserError` if not
     """
     if key not in def_dict:
         if req:
             err = "Definition {} missing 'filter' key!".format
-            raise DefinitionParserError(err(def_dict))
+            raise pytan.exceptions.DefinitionParserError(err(def_dict))
         return
 
     val = def_dict.get(key)
@@ -2473,7 +2553,7 @@ def chk_def_key(def_dict, key, keytypes, keysubtypes=None, req=False):
             "'{}' key in definition dictionary must be a {}, you supplied "
             "a {}!"
         ).format
-        raise DefinitionParserError(err(key, keytypes, type(val)))
+        raise pytan.exceptions.DefinitionParserError(err(key, keytypes, type(val)))
 
     if not keysubtypes or not val:
         return
@@ -2488,7 +2568,7 @@ def chk_def_key(def_dict, key, keytypes, keysubtypes=None, req=False):
             "'{}' key in definition dictionary must be a {} of {}s, "
             "you supplied {}!"
         ).format
-        raise DefinitionParserError(err(key, keytypes, keysubtypes, subtypes))
+        raise pytan.exceptions.DefinitionParserError(err(key, keytypes, keysubtypes, subtypes))
 
 
 def empty_obj(taniumpy_object):
@@ -2511,47 +2591,6 @@ def empty_obj(taniumpy_object):
         return False
 
 
-def get_ask_kwargs(**kwargs):
-    """Gets QuestionAsker args from kwargs and returns a dict with just those matching args
-
-    Parameters
-    ----------
-    **kwargs : dict
-        kwargs to get keys from
-
-    Returns
-    -------
-    ask_kwargs : dict
-        args from kwargs that are found in :data:`pytan.constants.ASK_KWARGS`
-    """
-
-    ask_kwargs = {}
-    for i in kwargs:
-        if i in constants.ASK_KWARGS:
-            ask_kwargs[i] = kwargs[i]
-    return ask_kwargs
-
-
-def get_req_kwargs(**kwargs):
-    """Gets SOAP API request args from kwargs and returns a dict with just those matching args
-
-    Parameters
-    ----------
-    **kwargs : dict
-        kwargs to get keys from
-
-    Returns
-    -------
-    req_kwargs : dict
-        args from kwargs that are found in :data:`pytan.constants.REQ_KWARGS`
-    """
-    req_kwargs = {}
-    for i in kwargs:
-        if i in constants.REQ_KWARGS:
-            req_kwargs[i] = kwargs[i]
-    return req_kwargs
-
-
 def get_q_obj_map(qtype):
     """Gets an object map for `qtype`
 
@@ -2566,10 +2605,10 @@ def get_q_obj_map(qtype):
         matching object map for `qtype` from :data:`pytan.constants.Q_OBJ_MAP`
     """
     try:
-        obj_map = constants.Q_OBJ_MAP[qtype.lower()]
+        obj_map = pytan.constants.Q_OBJ_MAP[qtype.lower()]
     except KeyError:
         err = "{} not a valid question type, must be one of {!r}".format
-        raise HandlerError(err(qtype, constants.Q_OBJ_MAP.keys()))
+        raise pytan.exceptions.HandlerError(err(qtype, pytan.constants.Q_OBJ_MAP.keys()))
     return obj_map
 
 
@@ -2587,10 +2626,10 @@ def get_obj_map(objtype):
         matching object map for `objtype` from :data:`pytan.constants.GET_OBJ_MAP`
     """
     try:
-        obj_map = constants.GET_OBJ_MAP[objtype.lower()]
+        obj_map = pytan.constants.GET_OBJ_MAP[objtype.lower()]
     except KeyError:
         err = "{} not a valid object to get, must be one of {!r}".format
-        raise HandlerError(err(objtype, constants.GET_OBJ_MAP.keys()))
+        raise pytan.exceptions.HandlerError(err(objtype, pytan.constants.GET_OBJ_MAP.keys()))
     return obj_map
 
 
@@ -2611,13 +2650,15 @@ def get_taniumpy_obj(obj_map):
         obj = getattr(taniumpy, obj_map)
     except Exception as e:
         err = "Could not find taniumpy object {}: {}".format
-        raise HandlerError(err(obj_map, e))
+        raise pytan.exceptions.HandlerError(err(obj_map, e))
 
     return obj
 
 
 def question_progress(asker, pct):
     """Call back method for :func:`taniumpy.question_asker.QuestionAsker.run` to report progress while waiting for results from a question
+
+    **DEPRECATED**
 
     Parameters
     ----------
@@ -2649,25 +2690,25 @@ def check_dictkey(d, key, valid_types, valid_list_types):
         k_type = type(k_val)
         if k_type not in valid_types:
             err = "{!r} must be one of {}, you supplied {}!".format
-            raise HandlerError(err(key, valid_types, k_type))
+            raise pytan.exceptions.HandlerError(err(key, valid_types, k_type))
         if is_list(k_val) and valid_list_types:
             valid_list_types = [eval(x) for x in valid_list_types]
             list_types = [type(x) for x in k_val]
             list_types_match = [x in valid_list_types for x in list_types]
             if not all(list_types_match):
                 err = "{!r} must be a list of {}, you supplied {}!".format
-                raise HandlerError(err(key, valid_list_types, list_types))
+                raise pytan.exceptions.HandlerError(err(key, valid_list_types, list_types))
 
 
 def func_timing(f):
     """Decorator to add timing information around a function """
     def wrap(*args, **kwargs):
-        time1 = datetime.datetime.now()
+        time1 = datetime.datetime.utcnow()
         ret = f(*args, **kwargs)
-        time2 = datetime.datetime.now()
+        time2 = datetime.datetime.utcnow()
         elapsed = time2 - time1
         m = '{}() TIMING start: {}, end: {}, elapsed: {}'.format
-        mylog.debug(m(f.func_name, time1, time2, elapsed))
+        timinglog.debug(m(f.func_name, time1, time2, elapsed))
         return ret
     return wrap
 
@@ -2831,303 +2872,3 @@ def build_metadatalist_obj(properties, nameprefix=""):
         metadata_obj.value = value
         metadatalist_obj.append(metadata_obj)
     return metadatalist_obj
-
-
-def passmein(func):
-    """Decorator method to pass the function to a function that uses this decorator"""
-    def wrapper(*args, **kwargs):
-        return func(func, *args, **kwargs)
-    return wrapper
-
-
-@passmein
-def help_sensors(me):
-    """
-Sensors Help
-============
-
-Supplying sensors controls what columns will be showed when you ask a
-question.
-
-A sensor string is a human string that describes, at a minimum, a sensor.
-It can also optionally define a selector for the sensor, parameters for
-the sensor, a filter for the sensor, and options for the filter for the
-sensor. Sensors can be provided as a string or a list of strings.
-
-Examples for basic sensors
----------------------------------
-
-Supplying a single sensor:
-
-    'Computer Name'
-
-Supplying two sensors in a list of strings:
-
-    ['Computer Name', 'IP Route Details']
-
-Supplying multiple sensors with selectors (name is the default
-selector if none is supplied):
-
-    [
-        'Computer Name',
-        'name:Computer Name',
-        'id:1',
-        'hash:123456789',
-    ]
-
-Sensor Parameters
------------------
-
-Supplying parameters to a sensor can control the arguments that are
-supplied to a sensor, if that sensor takes any arguments.
-
-Sensor parameters must be surrounded with curly braces '{}',
-and must have a key and value specified that is separated by
-an equals '='. Multiple parameters must be seperated by
-a comma ','. The key should match up to a valid parameter key
-for the sensor in question.
-
-If a parameter is supplied and the sensor doesn't have a
-corresponding key name, it will be ignored. If the sensor has
-parameters and a parameter is NOT supplied then one of two
-paths will be taken:
-
-    * if the parameter does not require a default value, the
-    parameter is left blank and not supplied.
-    * if the parameter does require a value (pulldowns, for
-    example), a default value is derived (for pulldowns,
-    the first value available as a pulldown entry is used).
-
-Examples for sensors with parameters
-------------------------------------
-
-Supplying a single sensor with a single parameter 'dirname':
-
-    'Sensor With Params{dirname=Program Files}'
-
-Supplying a single sensor with two parameters, 'param1' and
-'param2':
-
-    'Sensor With Params{param1=value1,param2=value2}'
-
-Sensor Filters
---------------
-
-Supplying a filter to a sensor controls what data will be shown in
-those columns (sensors) you've provided.
-
-Sensor filters can be supplied by adding ', that FILTER:VALUE',
-where FILTER is a valid filter string, and VALUE is the string
-that you want FILTER to match on.
-
-See filter help for a list of all possible FILTER strings.
-
-See options help for a list of options that can control how
-the filter works.
-
-Examples for sensors with filters
----------------------------------
-
-Supplying a sensor with a filter that limits the results to only
-show column data that matches the regular expression
-'.*Windows.*' (Tanium does a case insensitive match by default):
-
-    'Computer Name, that contains:Windows'
-
-Supplying a sensor with a filter that limits the results to only
-show column data that matches the regular expression
-'Microsoft.*':
-
-    'Computer Name, that starts with:Microsoft'
-
-Supply a sensor with a filter that limits the results to only
-show column data that has a version greater or equal to
-'39.0.0.0'. Since this sensor uses Version as its default result
-type, there is no need to change the value type using filter
-options.
-
-    'Installed Application Version' \\
-    '{Application Name=Google Chrome}, that =>:39.0.0.0'
-
-Sensor Options
---------------
-
-Supplying options to a sensor can change how the filter for
-that sensor works.
-
-Sensor options can be supplied by adding ', opt:OPTION' or
-', opt:OPTION:VALUE' for those options that require values,
-where OPTION is a valid option string, and VALUE is the
-appropriate value required by accordant OPTION.
-
-See options help for a list of options that can control how
-the filter works.
-
-Examples for sensors with options
----------------------------------
-
-Supplying a sensor with an option that forces tanium to
-re-fetch any cached column data that is older than 1 minute:
-
-    'Computer Name, opt:max_data_age:60'
-
-Supplying a sensor with filter and an option that causes
-Tanium to match case for the filter value:
-
-    'Computer Name, that contains:Windows, opt:match_case'
-
-Supplying a sensor with a filter and an option that causes
-Tanium to match all values supplied:
-
-    'Computer Name, that contains:Windows, opt:match_all_values'
-
-Supplying a sensor with a filter and a set of options that
-causes Tanium to recognize the value type as String (which is
-the default type for most sensors), re-fetch data older than
-10 minutes, match any values, and match case:
-
-    'Computer Name', that contains:Windows, ' \\
-    opt:value_type:string, opt:max_data_age:600, ' \\
-    'opt:match_any_value, opt:match_case'
-"""
-    return me.__doc__
-
-
-@passmein
-def help_package(me):
-    """
-Package Help
-============
-
-Supplying package defines what package will be deployed as part of the
-action.
-
-A package string is a human string that describes, at a minimum, a
-package. It can also optionally define a selector for the package,
-and/or parameters for the package. A package must be provided as a string.
-
-Examples for package
----------------------------------
-
-Supplying a package:
-
-    'Distribute Tanium Standard Utilities'
-
-Supplying a package by id:
-
-    'id:1'
-
-Supplying a package by hash:
-
-    'hash:123456789'
-
-Supplying a package by name:
-
-    'name:Distribute Tanium Standard Utilities'
-
-Package Parameters
-------------------
-
-Supplying parameters to a package can control the arguments
-that are supplied to a package, if that package takes any arguments.
-
-Package parameters must be surrounded with curly braces '{}',
-and must have a key and value specified that is separated by
-an equals '='. Multiple parameters must be seperated by
-a comma ','. The key should match up to a valid parameter key
-for the package in question.
-
-If a parameter is supplied and the package doesn't have a
-corresponding key name, it will be ignored. If the package has
-parameters and a parameter is NOT supplied then an exception
-will be raised, printing out the JSON of the missing paramater
-for the package in question.
-
-Examples for package with parameters
-------------------------------------
-
-Supplying a package with a single parameter '$1':
-
-    'Package With Params{$1=value1}'
-
-Supplying a package with two parameters, '$1' and '$2':
-
-    'Package With Params{$1=value1,$2=value2}'
-"""
-    return me.__doc__
-
-
-@passmein
-def help_filters(me):
-    """
-Filters Help
-============
-
-Filters are used generously throughout pytan. When used as part of a
-sensor string, they control what data is shown for the columns that
-the sensor returns. When filters are used for whole question filters,
-they control what rows will be returned. They are used by Groups to
-define group membership, deploy actions to determine which machines
-should have the action deployed to it, and more.
-
-A filter string is a human string that describes, a sensor followed
-by ', that FILTER:VALUE', where FILTER is a valid filter string,
-and VALUE is the string that you want FILTER to match on.
-
-Valid Filters
--------------
-
-"""
-    for x in constants.FILTER_MAPS:
-        for y in x['human']:
-            me.__doc__ += '    {!r:<25}\n'.format(y)
-            me.__doc__ += '        Help: {}\n'.format(x['help'])
-            me.__doc__ += '        Example: "Sensor1, that {}:VALUE"\n\n'.format(y)
-    return me.__doc__
-
-
-@passmein
-def help_options(me):
-    """
-Options Help
-============
-
-Options are used for controlling how filters act. When options are
-used as part of a sensor string, they change how the filters
-supplied as part of that sensor operate. When options are used for
-whole question options, they change how all of the question filters
-operate.
-
-When options are supplied for a sensor string, they must be
-supplied as ', opt:OPTION' or ', opt:OPTION:VALUE' for options
-that require a value.
-
-When options are supplied for question options, they must be
-supplied as 'OPTION' or 'OPTION:VALUE' for options that require
-a value.
-
-Options can be used on 'filter' or 'group', where 'group' pertains
-to group filters or question filters. All 'filter' options are also
-applicable to 'group' for question options.
-
-Valid Options
--------------
-
-"""
-    for x in constants.OPTION_MAPS:
-        me.__doc__ += '    {!r:<25}\n'.format(x['human'])
-        me.__doc__ += '        Help: {}\n'.format(x['help'])
-
-        me.__doc__ += '        Usable on: {}\n'.format(x['destination'])
-        if x.get('human_type', ''):
-            me.__doc__ += '        VALUE description and type: {}, {}\n'.format(
-                x['human_type'], x['valid_type'])
-            me.__doc__ += '        Example for sensor: "Sensor1, opt:{}:{}"\n'.format(
-                x['human'], x['human_type'])
-            me.__doc__ += '        Example for question: "{}:{}"\n'.format(
-                x['human'], x['human_type'])
-        else:
-            me.__doc__ += '        Example for sensor: "Sensor1, opt:{}"\n'.format(x['human'])
-            me.__doc__ += '        Example for question: "{}"\n'.format(x['human'])
-        me.__doc__ += '\n'
-    return me.__doc__

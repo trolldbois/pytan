@@ -39,11 +39,24 @@ for aa in path_adds:
     if aa not in sys.path:
         sys.path.append(aa)
 
-import pytan  # noqa
 import taniumpy  # noqa
-from pytan.handler import Handler  # noqa
+
+import pytan  # noqa
+import pytan.utils  # noqa
+import pytan.handler  # noqa
+import pytan.sessions  # noqa
+import pytan.constants  # noqa
+import pytan.help  # noqa
+import pytan.exceptions  # noqa
+
+from pytan import exceptions  # noqa
 from pytan import utils  # noqa
 from pytan import constants  # noqa
+from pytan import pollers  # noqa
+from pytan import sessions  # noqa
+from pytan import help  # noqa
+from pytan.handler import Handler  # noqa
+
 
 # Set default logging handler to avoid "No handler found" warnings.
 import logging

@@ -1,14 +1,10 @@
 # TODO NOW
-  * [ ] broken CR in folder name search regex match (SMALL)
+  * [X] broken CR in folder name search regex match (SMALL) (limit in excel, 32k chars per cell)
   * [ ] add secondary loop for if any data == current result unavail/etc (MEDIUM)
   * [ ] change get logic to use cache_filters instead of objectlist for object selection (HUGE)
-  * [ ] clean up open file handles
-
-# TANIUMPY BACKPORTS:
-  * [ ] in question_asker.py: if pct >= self.pct_complete_threshold: 
-  * [ ] in request_body_template.xml:       {cache_filters}
-  * [ ] in session.py: utf-8 fix
-  * [ ] add xml_fix to BaseType.py
+  * [X] clean up open file handles
+  * [ ] winbin doc note re double quotes and using batch scripts instead of py scripts directly
+  * [X] add not a windows script to platform filters (Last Login has it)
 
 # TODO LATER
   * [?] Add method to get question progress (MEDIUM)

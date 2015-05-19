@@ -3,49 +3,49 @@
         "desc": "Export a BaseType from getting objects using a bad export_format",
         "priority": "1",
         "args": {"export_format": "bad"},
-        "exception": "pytan.utils.HandlerError",
+        "exception": "pytan.exceptions.HandlerError",
         "error_str": ".*not a supported export format for .*, must be one of.*"
     },
     "invalid_export_basetype_csv_bad_sort_type": {
         "desc": "Export a BaseType from getting objects using a bad header_sort",
         "priority": "1",
         "args": {"export_format": "csv", "header_sort": "bad"},
-        "exception": "pytan.utils.HandlerError",
+        "exception": "pytan.exceptions.HandlerError",
         "error_str": ".*must be one of.*you supplied.*"
     },
     "invalid_export_basetype_csv_bad_explode_type": {
         "desc": "Export a BaseType from getting objects using a bad explode_json_string_values",
         "priority": "1",
         "args": {"export_format": "csv", "explode_json_string_values": "bad"},
-        "exception": "pytan.utils.HandlerError",
+        "exception": "pytan.exceptions.HandlerError",
         "error_str": ".*must be one of.*you supplied.*"
     },
     "invalid_export_basetype_csv_bad_sort_sub_type": {
         "desc": "Export a BaseType from getting objects using a bad header_sort",
         "priority": "1",
         "args": {"export_format": "csv", "header_sort": [[]]},
-        "exception": "pytan.utils.HandlerError",
+        "exception": "pytan.exceptions.HandlerError",
         "error_str": ".*must be a list of.*you supplied.*"
     },
     "invalid_export_basetype_json_bad_explode_type": {
         "desc": "Export a BaseType from getting objects using a bad explode_json_string_values",
         "priority": "1",
         "args": {"export_format": "json", "explode_json_string_values": "bad"},
-        "exception": "pytan.utils.HandlerError",
+        "exception": "pytan.exceptions.HandlerError",
         "error_str": ".*must be one of.*you supplied.*"
     },
     "invalid_export_basetype_json_bad_include_type": {
         "desc": "Export a BaseType from getting objects using a bad include_type",
         "priority": "1",
         "args": {"export_format": "json", "include_type": "bad"},
-        "exception": "pytan.utils.HandlerError",
+        "exception": "pytan.exceptions.HandlerError",
         "error_str": ".*must be one of.*you supplied.*"
     },
     "invalid_export_basetype_xml_bad_minimal_type": {
         "desc": "Export a BaseType from getting objects using a bad minimal",
         "priority": "1",
         "args": {"export_format": "xml", "minimal": "bad"},
-        "exception": "pytan.utils.HandlerError",
+        "exception": "pytan.exceptions.HandlerError",
         "error_str": ".*must be one of.*you supplied.*"
     }
 }

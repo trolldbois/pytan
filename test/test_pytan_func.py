@@ -7,11 +7,15 @@ The connection info is pulled from the SERVER_INFO dictionary in test/API_INFO.p
 
 These tests all use :mod:`ddt`, a package that provides for data driven tests via JSON files.
 UNFAIL:
- - random question timeout
  - deploy action against 6.5
- - add logging for ResultInfo to question asker
- - add loop count to question asker
- - add expiry time, start time to poller for QA
+ - add get_version to handler
+ - test breaking system with session stuff
+ - add unit tests for logout()
+  - add unit tests for auth with session
+  - add unit tests for sessions_lib
+result = handler.ask_manual_human(sensors='Computer Name', question_filters='Custom Tags, that !=:TestTag1', question_options=['and', 'match_all_values'])
+        make logs print out whether using defaultsession or not
+
 """
 import sys
 
@@ -78,9 +82,7 @@ class InvalidServerTests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls): # noqa
-        cls.__http = threaded_http.threaded_http(
-            port=4433, verbosity=TESTVERBOSITY
-        )
+        cls.__http = threaded_http.threaded_http(port=4433, verbosity=TESTVERBOSITY)
 
     @ddt.file_data('ddt/ddt_invalid_connects.json')
     def test_invalid_connect(self, value):
@@ -93,8 +95,7 @@ class InvalidServerTests(unittest.TestCase):
         mykwargs.update(args)
 
         spew("")
-        spew("+++ TESTING EXPECTED FAILURE Handler() with kwargs %s" % (
-            mykwargs))
+        spew("+++ TESTING EXPECTED FAILURE Handler() with kwargs %s" % (mykwargs))
         with self.assertRaisesRegexp(exc, e):
             pytan.Handler(**mykwargs)
 

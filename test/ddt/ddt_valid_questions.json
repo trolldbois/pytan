@@ -1,22 +1,4 @@
 {
-    "ask_saved_question_by_name": {
-        "desc": "Ask a saved question by referencing the name of a saved question in a string.",
-        "priority": "1",
-        "method": "ask",
-        "args": {
-            "qtype": "saved",
-            "name": "Installed Applications"
-        }
-    },
-    "ask_saved_question_by_name_in_list": {
-        "desc": "Ask a saved question by referencing the name of a saved question in a list of strings.",
-        "priority": "1",
-        "method": "ask",
-        "args": {
-            "qtype": "saved",
-            "name": ["Installed Applications"]
-        }
-    },
     "ask_manual_human_question_simple_single_sensor": {
         "desc": "Ask a manual question using human strings by referencing the name of a single sensor in a string.\n\nNo sensor filters, sensor parameters, sensor filter options, question filters, or question options supplied.",
         "priority": "2",

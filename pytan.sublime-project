@@ -101,7 +101,6 @@
 		[
 			"subpixel_antialias"
 		],
-		"font_size": 18,
 		"gpu_window_buffer": "auto",
 		"gutter": true,
 		"highlight_line": true,

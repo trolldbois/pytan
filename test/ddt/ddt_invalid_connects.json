@@ -1,22 +1,22 @@
 {
     "bad_password": {
         "args": {"password": "INVALID_PASSWORD"},
-        "exception": "taniumpy.session.AuthorizationError",
+        "exception": "pytan.exceptions.AuthorizationError",
         "error_str": ".*"
     },
     "bad_username": {
         "args": {"username": "INVALID_USERNAME"},
-        "exception": "taniumpy.session.AuthorizationError",
+        "exception": "pytan.exceptions.AuthorizationError",
         "error_str": ".*"
     },
     "bad_host_and_non_ssl_port": {
         "args": {"host": "localhost", "port": "4433"},
-        "exception": "taniumpy.session.AuthorizationError",
+        "exception": "pytan.exceptions.AuthorizationError",
         "error_str": ".*unknown protocol"
     },
     "bad_host_and_bad_port": {
         "args": {"host": "localhost", "port": "5433"},
-        "exception": "pytan.utils.HandlerError",
+        "exception": "pytan.exceptions.HandlerError",
         "error_str": "Port test to.*FAILURE"
     }
 

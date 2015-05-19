@@ -37,7 +37,8 @@ import code
 from datetime import datetime
 import logging
 import time
-logging.Formatter.converter = time.gmtime
+import json
+import traceback
 
 try:
     import readline
@@ -122,12 +123,12 @@ def process_handler_args(parser, all_args):
     handler_grp_names = ['Handler Authentication', 'Handler Options']
     handler_opts = utils.get_grp_opts(parser, handler_grp_names)
     handler_args = {k: my_args.pop(k) for k in handler_opts}
-
+    # handler_args['session_lib'] = 'httplib'
     try:
         h = pytan.Handler(**handler_args)
         print str(h)
-    except Exception as e:
-        print e
+    except Exception:
+        traceback.print_exc()
         sys.exit(99)
     return h
 
@@ -197,48 +198,12 @@ def get_rdattr(rd, a):
     return k
 
 
-if __name__ == "__main__":
-
-    console = HistoryConsole()
-
-    utils.version_check(__version__)
-    parent_parser = utils.setup_parser(__doc__)
-    parser = utils.CustomArgParse(
-        description=__doc__,
-        parents=[parent_parser],
-    )
-    args = parser.parse_args()
-    all_args = args.__dict__
-    if not args.username:
-        username = raw_input('Tanium Username: ')
-        all_args['username'] = username.strip()
-
-    if not args.password:
-        password = getpass.getpass('Tanium Password: ')
-        all_args['password'] = password.strip()
-
-    if not args.host:
-        host = raw_input('Tanium Host: ')
-        all_args['host'] = host.strip()
-
-    handler = process_handler_args(parser, all_args)
-    session = handler.session
-    self = handler
-
-    if handler.loglevel >= 20:
-        utils.set_all_loglevels()
-
+def do_test():
     v = "Folder Name Search with RegEx Match{dirname=Program Files,regex=Microsoft.*}"
     question_count = 1
     while True:
         start = datetime.utcnow()
         q_obj = handler.ask_manual_human(sensors=v, get_results=False)['question_object']
-        # asker = taniumpy.QuestionAsker(self.session, q_obj, timeout=1)
-        # try:
-        # asker.run({'ProgressChanged': utils.question_progress})
-        # logging.info("question ran normally, going to next one..")
-        # except Exception as e:
-        # logging.info("QUESTION RAN BUT HIT EXCEPTION: {}".format(e))
         q_obj_expiry = datetime.strptime(q_obj.expiration, '%Y-%m-%dT%H:%M:%S')
         expired = False
         rd_count = 1
@@ -279,11 +244,12 @@ if __name__ == "__main__":
             rd_attrs = ", ".join(["{}: {}".format(a, get_rdattr(rd, a)) for a in rd_attrs])
             logging.info(rd_attrs)
             si = session.get_server_info()
-            diags = si['Diagnostics']
-            perf = [x for x in diags if 'System Performance Info' in x.keys()][0]
-            perf = dict([(key, d[key]) for d in perf.values()[0] for key in d])
-            perf_str = ", ".join(["{}: {}".format(a, b) for a, b in perf.items()])
-            logging.info(perf_str)
+            if 'Diagnostics' in si:
+                diags = si['Diagnostics']
+                for section in diags:
+                    print json.dumps(section)
+            else:
+                logging.info("UNABLE TO FETCH DIAGNOSTICS!!: {}".format(si))
 
             if q_expired:
                 expired = True
@@ -303,3 +269,32 @@ if __name__ == "__main__":
                 logging.warning("QUESTION PASSED/FINISHED IN {}".format(elapsed))
                 question_count += 1
                 break
+
+
+if __name__ == "__main__":
+
+    console = HistoryConsole()
+
+    utils.version_check(__version__)
+    parent_parser = utils.setup_parser(__doc__)
+    parser = utils.CustomArgParse(
+        description=__doc__,
+        parents=[parent_parser],
+    )
+    args = parser.parse_args()
+    all_args = args.__dict__
+    if not args.username:
+        username = raw_input('Tanium Username: ')
+        all_args['username'] = username.strip()
+
+    if not args.password:
+        password = getpass.getpass('Tanium Password: ')
+        all_args['password'] = password.strip()
+
+    if not args.host:
+        host = raw_input('Tanium Host: ')
+        all_args['host'] = host.strip()
+
+    handler = process_handler_args(parser, all_args)
+    session = handler.session
+    self = handler

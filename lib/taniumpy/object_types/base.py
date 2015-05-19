@@ -89,10 +89,10 @@ class BaseType(object):
             val = ', len: {}'.format(len(self))
         else:
             if getattr(self, 'name', ''):
-                val = ', name: {!r}'.format(self.name)
-            elif getattr(self, 'id', ''):
-                val = ', id: {!r}'.format(self.id)
-            else:
+                val += ', name: {!r}'.format(self.name)
+            if getattr(self, 'id', ''):
+                val += ', id: {!r}'.format(self.id)
+            if not val:
                 vals = [
                     '{}: {!r}'.format(p, getattr(self, p, ''))
                     for p in sorted(self._simple_properties)
