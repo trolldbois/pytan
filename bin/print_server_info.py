@@ -90,6 +90,7 @@ if __name__ == "__main__":
         host = raw_input('Tanium Host: ')
         all_args['host'] = host.strip()
 
+    # TODO: Make sure port can be over-ridden
     handler = process_handler_args(parser, all_args)
 
     if args.json:

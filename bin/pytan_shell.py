@@ -36,8 +36,8 @@ import pprint
 import code
 from datetime import datetime
 import logging
-import time
-import json
+import time  # noqa
+import json  # noqa
 import traceback
 
 try:
@@ -115,7 +115,10 @@ class HistoryConsole(code.InteractiveConsole):
 
     @staticmethod
     def save_history(histfile):
-        readline.write_history_file(histfile)
+        try:
+            readline.write_history_file(histfile)
+        except:
+            pass
 
 
 def process_handler_args(parser, all_args):
@@ -196,79 +199,6 @@ def get_rdattr(rd, a):
     if type(k) in [list, tuple]:
         k = len(k)
     return k
-
-
-def do_test():
-    v = "Folder Name Search with RegEx Match{dirname=Program Files,regex=Microsoft.*}"
-    question_count = 1
-    while True:
-        start = datetime.utcnow()
-        q_obj = handler.ask_manual_human(sensors=v, get_results=False)['question_object']
-        q_obj_expiry = datetime.strptime(q_obj.expiration, '%Y-%m-%dT%H:%M:%S')
-        expired = False
-        rd_count = 1
-        while not expired:
-            logging.info("QUESTION LOOP #{}, RESULT DATA LOOP #{}".format(question_count, rd_count))
-            rd_count += 1
-            time.sleep(2)
-            rd = session.getResultData(q_obj)
-
-            now = datetime.utcnow()
-            left_till_expiry = q_obj_expiry - now
-            q_expired = now >= q_obj_expiry
-            elapsed = now - start
-
-            try:
-                rd_ex = handler.export_obj(rd, 'csv')
-                rd_ex_len = len(rd_ex)
-            except:
-                rd_ex = None
-                rd_ex_len = 0
-
-            mr_tested = get_rdattr(rd, 'mr_tested')
-            estimated_total = get_rdattr(rd, 'estimated_total')
-
-            logging.info((
-                "ID: {}, rd len: {}, start: {}, now: {}, expires: {}, elapsed: {}, left_till_expiry: {}"
-            ).format(
-                q_obj.id,
-                rd_ex_len,
-                start,
-                now,
-                q_obj_expiry,
-                elapsed,
-                left_till_expiry
-            ))
-
-            rd_attrs = sorted(rd.__dict__)
-            rd_attrs = ", ".join(["{}: {}".format(a, get_rdattr(rd, a)) for a in rd_attrs])
-            logging.info(rd_attrs)
-            si = session.get_server_info()
-            if 'Diagnostics' in si:
-                diags = si['Diagnostics']
-                for section in diags:
-                    print json.dumps(section)
-            else:
-                logging.info("UNABLE TO FETCH DIAGNOSTICS!!: {}".format(si))
-
-            if q_expired:
-                expired = True
-                logging.warning("question expired!!!")
-                if not rd_ex_len > 0:
-                    rd = session.getResultData(q_obj)
-                    print si
-                    print session.request_body
-                    print session.response_body
-                    introspect(rd)
-                    raise Exception("no result data exported!!")
-
-            if not estimated_total:
-                raise Exception("estimated total is {}!!".format(estimated_total))
-
-            if mr_tested >= estimated_total:
-                logging.warning("QUESTION PASSED/FINISHED IN {}".format(elapsed))
-                question_count += 1
-                break
 
 
 if __name__ == "__main__":

@@ -37,15 +37,15 @@ LOG_LEVEL_MAPS = [
     ),
     (
         1,
-        {'pytan.handler.question_poller': 'INFO', 'pytan.handler.action_progress': 'INFO'},
-        'Pytan question progress and action progress loggers show output at INFO or above',
+        {'pytan.handler.poller': 'INFO', 'pytan.handler.poller.progress': 'INFO'},
+        'Pytan poller loggers show output at INFO or above',
     ),
     (
         2,
         {
             'pytan.handler': 'INFO',
-            'pytan.handler.question_poller': 'DEBUG',
-            'pytan.handler.action_progress': 'DEBUG',
+            'pytan.handler.poller': 'DEBUG',
+            'pytan.handler.poller.progress': 'DEBUG',
         },
         'Pytan handler logger show output at INFO or above and poller logs at DEBUG or above',
     ),
@@ -276,8 +276,8 @@ Q_OBJ_MAP = {
     'manual': {
         'handler': 'ask_manual',
     },
-    'manual_human': {
-        'handler': 'ask_manual_human',
+    '_manual': {
+        'handler': '_manual',
     },
 }
 """
@@ -642,24 +642,6 @@ Maps a given TaniumPy object to the list of supported export formats for each ob
     * key: the optional argument name itself
     * valid_types: the valid python types that are allowed to be passed as a value to `key`
     * valid_list_types: the valid python types in str format that are allowed to be passed in a list, if list is one of the `valid_types`
-"""
-
-ACTION_RESULT_STATUS = {
-    "Waiting.": ['running'],
-    "Downloading.": ['running'],
-    "Copying.": ['running'],
-    "Running.": ['running'],
-    "Stopped.": ['failed', 'done'],
-    "Completed.": ['verify_running', 'no_verify_done', 'no_verify_success'],
-    "PendingVerification.": ['running'],
-    "Failed.": ['failed', 'done'],
-    "NotSucceeded.": ['failed', 'done'],
-    "Expired.": ['failed', 'done'],
-    "Verified.": ['no_verify_done', 'verify_done', 'verify_success'],
-    "Succeeded.": ['done'],
-}
-"""
-Maps a deploy action result status to it's respective end states.
 """
 
 TIME_FORMAT = '%Y-%m-%dT%H:%M:%S'

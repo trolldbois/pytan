@@ -15,6 +15,8 @@ import json
 import ssl
 import re
 import gzip
+import threading
+import time
 
 from datetime import datetime
 from cStringIO import StringIO
@@ -39,12 +41,11 @@ from taniumpy.object_types.result_info import ResultInfo
 from taniumpy.object_types.result_set import ResultSet
 from taniumpy.object_types.options import Options
 
+import pytan
 import requests
 requests.packages.urllib3.disable_warnings()
 
-import pytan
-
-# fix for UTF encoding
+# fix for UTF encoding -- STILL NEEDED?? TODO
 import sys
 reload(sys)
 sys.setdefaultencoding('latin-1')
@@ -77,34 +78,52 @@ class HttplibSession(object):
     DELETE_OBJECT_CMD = 'DeleteObject'
     GET_RESULT_INFO_CMD = 'GetResultInfo'
     GET_RESULT_DATA_CMD = 'GetResultData'
+
     AUTH_RES = 'auth'
     SOAP_RES = 'soap'
     INFO_RES = 'info.json'
+
     AUTH_CONNECT_TIMEOUT_SEC = 5
     AUTH_RESPONSE_TIMEOUT_SEC = 15
     INFO_CONNECT_TIMEOUT_SEC = 5
     INFO_RESPONSE_TIMEOUT_SEC = 15
     SOAP_CONNECT_TIMEOUT_SEC = 15
     SOAP_RESPONSE_TIMEOUT_SEC = 540
-    SOAP_REQUEST_HEADERS = {
-        'Content-Type': 'text/xml; charset=utf-8',
-        'Accept-Encoding': 'gzip',
-    }
+
+    SOAP_REQUEST_HEADERS = {'Content-Type': 'text/xml; charset=utf-8', 'Accept-Encoding': 'gzip'}
+
     COMMAND_RE = re.compile(r'<command>(.*?)</command>', re.IGNORECASE | re.DOTALL)
     SESSION_RE = re.compile(r'<session>(.*?)</session>', re.IGNORECASE | re.DOTALL)
+    VERSION_RE = re.compile(r'<server_version>(.*?)</server_version>', re.IGNORECASE | re.DOTALL)
     INVALID_XML_RE = re.compile(u'[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F]')
+
     HTTP_DEBUG = False
+    HTTP_RETRY_COUNT = 5
+    HTTP_AUTH_RETRY = True
+
+    SERVER_STATS = False
+    SERVER_STATS_SLEEP = 5
+    SERVER_STATS_TARGETS = [
+        {'Version': 'Settings/Version'},
+        {'Active Questions': 'Active Question Cache/Active Question Estimate'},
+        {'Clients': 'Active Question Cache/Active Client Estimate'},
+        {'Strings': 'String Cache/Total String Count'},
+        {'Handles': 'System Performance Info/HandleCount'},
+        {'Processes': 'System Performance Info/ProcessCount'},
+        {'Memory Available': 'percentage(System Performance Info/PhysicalAvailable,System Performance Info/PhysicalTotal)'},
+    ]
 
     mylog = logging.getLogger("api.session")
     authlog = logging.getLogger("api.session.auth")
     httplog = logging.getLogger("api.session.http")
     bodyhttplog = logging.getLogger("api.session.http.body")
+    statslog = logging.getLogger("stats")
 
     def __init__(self, server, port=443, http_debug=False):
         self.server = server
         self.port = port
         self.last = {}
-        self.server_version = "Not yet determined"
+        self.server_version = None
         self._session_id = ''
         self._username = ''
         self._password = ''
@@ -114,12 +133,32 @@ class HttplibSession(object):
         self.httplog = logging.getLogger(self.qualname + ".http")
         self.bodyhttplog = logging.getLogger(self.qualname + ".http.body")
         self.HTTP_DEBUG = http_debug
+        self._start_stats_thread()
 
     def __str__(self):
         class_name = self.__class__.__name__
         str_tpl = "{} to {}:{}, Authenticated: {}".format
         ret = str_tpl(class_name, self.server, self.port, self.is_auth)
         return ret
+
+    @property
+    def session_id(self):
+        return self._session_id
+
+    @session_id.setter
+    def session_id(self, value):
+        if self.session_id != value:
+            self._session_id = value
+            self.authlog.debug("Session ID updated to: {}".format(value))
+
+    @property
+    def is_auth(self):
+        auth = False
+        if self._session_id:
+            auth = True
+        elif self._username and self._password:
+            auth = True
+        return auth
 
     def logout(self, all_session_ids=False):
         self._check_auth()
@@ -141,7 +180,7 @@ class HttplibSession(object):
         post_args['headers'] = headers
 
         try:
-            self.http_post(**post_args)
+            self.http_post(retry_count=False, **post_args)
         except Exception as e:
             m = "logout exception: {}".format
             self.authlog.debug(m(e))
@@ -229,6 +268,7 @@ class HttplibSession(object):
         post_args = {}
         post_args['url'] = self.AUTH_RES
         post_args['headers'] = auth_headers
+        post_args['retry_count'] = 0
         post_args['connect_timeout'] = kwargs.get('connect_timeout', self.AUTH_CONNECT_TIMEOUT_SEC)
         post_args['response_timeout'] = kwargs.get(
             'response_timeout', self.AUTH_RESPONSE_TIMEOUT_SEC
@@ -313,6 +353,7 @@ class HttplibSession(object):
         post_args = {}
         post_args['port'] = port
         post_args['url'] = url
+        post_args['retry_count'] = 0
         post_args['connect_timeout'] = kwargs.get('connect_timeout', self.INFO_CONNECT_TIMEOUT_SEC)
         post_args['response_timeout'] = kwargs.get(
             'response_timeout', self.INFO_RESPONSE_TIMEOUT_SEC
@@ -342,14 +383,15 @@ class HttplibSession(object):
                 self.mylog.debug(bad_m(self.server, port, self.INFO_RES, e))
                 server_info_fail_msgs.append(bad_m(self.server, port, self.INFO_RES, e))
 
-        body['pydiags'] = {}
-        [body['pydiags'].update(x) for x in body.get('Diagnostics', [])]
-
+        body['diags_flat'] = self._flatten_server_info(body.get('Diagnostics', []))
         body['server_info_pass_msgs'] = server_info_pass_msgs
         body['server_info_fail_msgs'] = server_info_fail_msgs
         return body
 
     def get_server_version(self):
+        if getattr(self, 'server_version', ''):
+            return self.server_version
+
         server_version = "Unable to determine"
 
         if not getattr(self, 'server_info', {}):
@@ -358,38 +400,106 @@ class HttplibSession(object):
         if not getattr(self, 'server_info', {}):
             return server_version
 
-        try:
-            diagnostics = self.server_info['Diagnostics']
-        except Exception as e:
-            m = "Unable to find Diagnostics section in server info: {}, server_info: {}".format
-            self.mylog.warning(m(e, self.server_info))
-            return server_version
-
-        try:
-            settings = [x for x in diagnostics if 'Settings' in x][0]['Settings']
-        except Exception as e:
-            m = "Unable to find Settings sub-section in Diagnostics: {}, diagnostics: {}".format
-            self.mylog.warning(m(e, diagnostics))
-            return server_version
-
         version = None
-        if 'Version' in settings:
-            # 6.2
-            version = settings['Version']
-        else:
-            # 6.5
-            try:
-                version = [x for x in settings if 'Version' in x][0]['Version']
-            except:
-                pass
+        try:
+            version = self.server_info['diags_flat']['Settings']['Version']
+        except:
+            m = "Unable to find Version key in Settings: {}".format
+            self.mylog.warning(m(self.server_info['diags_flat']))
 
         if version:
             server_version = version
         else:
             m = "Unable to find Version key in Settings: {}".format
-            self.mylog.warning(m(settings))
+            self.mylog.warning(m(self.server_info['diags_flat']))
+
+        if server_version:
+            self.server_version = server_version
 
         return server_version
+
+    def get_server_stats(self):
+        si = self.get_server_info()
+        try:
+            diags = si['diags_flat']
+        except:
+            pass
+
+        stats_resolved = [self._find_stat_target(t, diags) for t in self.SERVER_STATS_TARGETS]
+        stats_text = ", ".join(["{}: {}".format(*i.items()[0]) for i in stats_resolved])
+        return stats_text
+
+    def enable_stats_loop(self, sleep=None):
+        self.SERVER_STATS = True
+        if isinstance(sleep, int):
+            self.SERVER_STATS_SLEEP = sleep
+
+    def disable_stats_loop(self, sleep=None):
+        self.SERVER_STATS = False
+        if isinstance(sleep, int):
+            self.SERVER_STATS_SLEEP = sleep
+
+    def http_post(self, **kwargs):
+        self._check_auth()
+
+        headers = kwargs.get('headers', {})
+
+        for k in dict(headers):
+            if k in ['username', 'password', 'session']:
+                self.authlog.debug("Removing header {!r}".format(k))
+                headers.pop(k)
+
+        if self._session_id:
+            headers['session'] = self._session_id
+            self.authlog.debug("Using session ID for authentication headers")
+
+        elif self._username and self._password:
+            headers['username'] = b64encode(self._username)
+            headers['password'] = b64encode(self._password)
+            self.authlog.debug("Using Username/Password for authentication headers")
+
+        post_args = {}
+        post_args['host'] = kwargs.get('server', self.server)
+        post_args['port'] = kwargs.get('port', self.port)
+        post_args['url'] = kwargs.get('url', self.SOAP_RES)
+        post_args['headers'] = headers
+        post_args['body'] = kwargs.get('body', None)
+        post_args['connect_timeout'] = kwargs.get('connect_timeout', self.SOAP_CONNECT_TIMEOUT_SEC)
+        post_args['response_timeout'] = kwargs.get(
+            'response_timeout', self.SOAP_RESPONSE_TIMEOUT_SEC
+        )
+        post_args['debug'] = kwargs.get('debug', self.HTTP_DEBUG)
+
+        auth_retry = kwargs.get('auth_retry', self.HTTP_AUTH_RETRY)
+        retry_count = kwargs.get('retry_count', self.HTTP_RETRY_COUNT)
+
+        if not retry_count or type(retry_count) != int:
+            retry_count = 0
+
+        current_try = 1
+
+        while True:
+            try:
+                body = self._http_post(**post_args)
+                break
+            except pytan.exceptions.AuthorizationError:
+                if self._session_id and auth_retry:
+                    self._session_id = ''
+                    self.authenticate()
+                    body = self.http_post(auth_retry=False, **kwargs)
+                else:
+                    raise
+            except Exception as e:
+                if retry_count == 0:
+                    raise
+                m = "http_post failed on attempt {} out of {}: {}".format
+                self.mylog.warning(m(current_try, retry_count, e))
+                if current_try == retry_count:
+                    raise
+                current_try += 1
+
+        body = self._xml_fix(body)
+        return body
 
     def _http_post(self, host, port, url, body=None, headers=None, connect_timeout=15,
                    response_timeout=540, debug=False):
@@ -478,6 +588,59 @@ class HttplibSession(object):
 
         return response_body
 
+    def _start_stats_thread(self):
+        self.stats_thread = threading.Thread(target=self._stats_loop)
+        self.stats_thread.daemon = True
+        self.stats_thread.start()
+
+    def _stats_loop(self):
+        while True:
+            if self.SERVER_STATS:
+                self.statslog.warning(self.get_server_stats())
+            time.sleep(self.SERVER_STATS_SLEEP)
+
+    def _flatten_server_info(self, structure):
+        flattened = structure
+        if isinstance(structure, dict):
+            for k, v in flattened.iteritems():
+                flattened[k] = self._flatten_server_info(v)
+        elif isinstance(structure, (tuple, list)):
+            if all([isinstance(x, dict) for x in structure]):
+                flattened = {}
+                [flattened.update(self._flatten_server_info(i)) for i in structure]
+        return flattened
+
+    def _get_percentage(self, part, whole):
+        f = 100 * float(part) / float(whole)
+        return "{0:.2f}%".format(f)
+
+    def _find_stat_target(self, target, diags):
+        try:
+            label, search_path = target.items()[0]
+        except Exception as e:
+            label = "Parse Failure"
+            result = "Unable to parse stat target: {}, exception: {}".format(target, e)
+            return {label: result}
+
+        if search_path.startswith('percentage('):
+            points = search_path.lstrip('percentage(').rstrip(')')
+            points = [self._resolve_stat_target(p, diags) for p in points.split(',')]
+            try:
+                result = self._get_percentage(points[0], points[1])
+            except:
+                result = ', '.join(points)
+        else:
+            result = self._resolve_stat_target(search_path, diags)
+        return {label: result}
+
+    def _resolve_stat_target(self, search_path, diags):
+        try:
+            for i in search_path.split('/'):
+                diags = diags.get(i)
+        except Exception as e:
+            return "Unable to find diagnostic: {}, exception: {}".format(search_path, e)
+        return diags
+
     def _xml_fix(self, s):
         """
         this supports better handling of invalid XML, removing invalid control characters and
@@ -497,68 +660,6 @@ class HttplibSession(object):
         # re-encode the string as utf-8
         utf_str = clean_str.encode('utf-8', 'xmlcharrefreplace')
         return utf_str
-
-    @property
-    def session_id(self):
-        return self._session_id
-
-    @session_id.setter
-    def session_id(self, value):
-        if self.session_id != value:
-            self._session_id = value
-            self.authlog.debug("Session ID updated to: {}".format(value))
-
-    @property
-    def is_auth(self):
-        auth = False
-        if self._session_id:
-            auth = True
-        elif self._username and self._password:
-            auth = True
-        return auth
-
-    def http_post(self, auth_retry=True, **kwargs):
-        self._check_auth()
-
-        headers = kwargs.get('headers', {})
-
-        for k in dict(headers):
-            if k in ['username', 'password', 'session']:
-                self.authlog.debug("Removing header {!r}".format(k))
-                headers.pop(k)
-
-        if self._session_id:
-            headers['session'] = self._session_id
-            self.authlog.debug("Using session ID for authentication headers")
-
-        elif self._username and self._password:
-            headers['username'] = b64encode(self._username)
-            headers['password'] = b64encode(self._password)
-            self.authlog.debug("Using Username/Password for authentication headers")
-
-        post_args = {}
-        post_args['host'] = kwargs.get('server', self.server)
-        post_args['port'] = kwargs.get('port', self.port)
-        post_args['url'] = kwargs.get('url', self.SOAP_RES)
-        post_args['headers'] = headers
-        post_args['body'] = kwargs.get('body', None)
-        post_args['connect_timeout'] = kwargs.get('connect_timeout', self.SOAP_CONNECT_TIMEOUT_SEC)
-        post_args['response_timeout'] = kwargs.get(
-            'response_timeout', self.SOAP_RESPONSE_TIMEOUT_SEC
-        )
-        post_args['debug'] = kwargs.get('debug', self.HTTP_DEBUG)
-
-        try:
-            body = self._http_post(**post_args)
-        except pytan.exceptions.AuthorizationError:
-            if self._session_id and auth_retry:
-                self._session_id = ''
-                self.authenticate()
-                body = self.http_post(auth_retry=False, **kwargs)
-            else:
-                raise
-        body = self._xml_fix(body)
-        return body
 
     def _build_body(self, command, object_list, **kwargs):
         options_obj = Options()
@@ -617,27 +718,16 @@ class HttplibSession(object):
             err = "Not yet authenticated, use {}.authenticate()!".format
             raise pytan.exceptions.AuthorizationError(err(class_name))
 
-    def _get_command_text(self, body):
+    def _parse_response_for_regex(self, body, regex, fail=True):
         # using regex is faster than ET chewing the body in and out
         # this matters on LARGE return bodies
-        command = re.search(self.COMMAND_RE, body)
-        if not command:
-            m = "Unable to find <command>.*</command> in body: {}".format
-            raise Exception(m(body))
-
-        command = str(command.groups()[0].strip())
-        return command
-
-    def _get_session_id_text(self, body):
-        # using regex is faster than ET chewing the body in and out
-        # this matters on LARGE return bodies
-        session_id = re.search(self.SESSION_RE, body)
-        if not session_id:
-            m = "Unable to find <session>.*</session> in body: {}".format
-            raise Exception(m(body))
-
-        session_id = str(session_id.groups()[0].strip())
-        return session_id
+        ret = regex.search(body)
+        if not ret and fail:
+            m = "Unable to find {} in body: {}".format
+            raise Exception(m(regex.pattern, body))
+        elif ret:
+            ret = str(ret.groups()[0].strip())
+        return ret
 
     def _get_response(self, request_body, **kwargs):
         retry_auth = kwargs.get('retry_auth', True)
@@ -646,7 +736,7 @@ class HttplibSession(object):
 
         self.last = {}
 
-        request_command = self._get_command_text(request_body)
+        request_command = self._parse_response_for_regex(request_body, self.COMMAND_RE)
         self.last['request_command'] = request_command
 
         post_args = {}
@@ -656,6 +746,9 @@ class HttplibSession(object):
         post_args['response_timeout'] = kwargs.get(
             'response_timeout', self.SOAP_RESPONSE_TIMEOUT_SEC
         )
+
+        if 'retry_count' in kwargs:
+            post_args['retry_count'] = kwargs['retry_count']
 
         self.last['request_args'] = post_args
 
@@ -673,7 +766,7 @@ class HttplibSession(object):
         m = "HTTP Response: Timing info -- SENT: {}, RECEIVED: {}, ELAPSED: {}".format
         self.mylog.debug(m(sent, received, elapsed))
 
-        response_command = self._get_command_text(response_body)
+        response_command = self._parse_response_for_regex(response_body, self.COMMAND_RE)
         self.last['response_command'] = response_command
 
         if 'forbidden' in response_command.lower():
@@ -696,7 +789,12 @@ class HttplibSession(object):
             raise pytan.exceptions.BadResponseError(m(response_command, request_command))
 
         # update session_id, in case new one issued
-        self.session_id = self._get_session_id_text(response_body)
+        self.session_id = self._parse_response_for_regex(response_body, self.SESSION_RE)
+
+        # check to see if server_version set in response (6.5+ only)
+        server_version = self._parse_response_for_regex(response_body, self.VERSION_RE, False)
+        if server_version:
+            self.server_version = server_version
 
         return response_body
 

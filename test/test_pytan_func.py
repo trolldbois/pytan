@@ -50,7 +50,7 @@ import threaded_http
 from API_INFO import SERVER_INFO
 
 # control the amount of output from unittests
-TESTVERBOSITY = SERVER_INFO["loglevel"]
+TESTVERBOSITY = SERVER_INFO["testlevel"]
 
 # have unittest exit immediately on unexpected error
 FAILFAST = True
@@ -73,7 +73,7 @@ def chew_csv(c):
 
 
 def spew(m):
-    if TESTVERBOSITY == 2:
+    if TESTVERBOSITY >= 3:
         print (m)
 
 
@@ -198,39 +198,39 @@ class ValidServerTests(unittest.TestCase):
             spew("+++ EVAL TEST: %s" % x)
             self.assertTrue(eval(x))
 
-    # @ddt.file_data('ddt/ddt_valid_deploy_action.json')
-    # def test_valid_deploy_action(self, value):
-    #     handler = self.setup_test()
+    @ddt.file_data('ddt/ddt_valid_deploy_action.json')
+    def test_valid_deploy_action(self, value):
+        handler = self.setup_test()
 
-    #     method = value['method']
-    #     args = value['args']
+        method = value['method']
+        args = value['args']
 
-    #     s = (
-    #         "+++ TESTING EXPECTED DEPLOY ACTION SUCCESS Handler.{}() with kwargs {}"
-    #     ).format
-    #     spew(s(method, args))
+        s = (
+            "+++ TESTING EXPECTED DEPLOY ACTION SUCCESS Handler.{}() with kwargs {}"
+        ).format
+        spew(s(method, args))
 
-    #     ret = getattr(handler, method)(**args)
-    #     self.assertIsInstance(ret['action_object'], taniumpy.Action)
-    #     get_results = args.get('get_results', True)
-    #     if get_results:
-    #         self.assertTrue(ret['pre_action_question_results'])
-    #         self.assertIsInstance(ret['action_results'], taniumpy.ResultSet)
-    #         self.assertTrue(ret['action_progress_human'])
-    #         self.assertTrue(ret['action_progress_map'])
-    #         self.assertGreaterEqual(len(ret['action_results'].rows), 1)
-    #         self.assertGreaterEqual(len(ret['action_results'].columns), 1)
-    #         for ft in pytan.constants.EXPORT_MAPS['ResultSet'].keys():
-    #             report_file, result = handler.export_to_report_file(
-    #                 obj=ret['action_results'],
-    #                 export_format=ft,
-    #                 report_dir=TEST_OUT,
-    #                 prefix=sys._getframe().f_code.co_name + '_',
-    #             )
-    #             self.assertTrue(report_file)
-    #             self.assertTrue(result)
-    #             self.assertTrue(os.path.isfile(report_file))
-    #             self.assertGreaterEqual(len(result), 10)
+        ret = getattr(handler, method)(**args)
+        self.assertIsInstance(ret['action_object'], taniumpy.Action)
+        get_results = args.get('get_results', True)
+        if get_results:
+            self.assertTrue(ret['pre_action_question_results'])
+            self.assertIsInstance(ret['action_results'], taniumpy.ResultSet)
+            self.assertTrue(ret['action_progress_human'])
+            self.assertTrue(ret['action_progress_map'])
+            self.assertGreaterEqual(len(ret['action_results'].rows), 1)
+            self.assertGreaterEqual(len(ret['action_results'].columns), 1)
+            for ft in pytan.constants.EXPORT_MAPS['ResultSet'].keys():
+                report_file, result = handler.export_to_report_file(
+                    obj=ret['action_results'],
+                    export_format=ft,
+                    report_dir=TEST_OUT,
+                    prefix=sys._getframe().f_code.co_name + '_',
+                )
+                self.assertTrue(report_file)
+                self.assertTrue(result)
+                self.assertTrue(os.path.isfile(report_file))
+                self.assertGreaterEqual(len(result), 10)
 
     @ddt.file_data('ddt/ddt_valid_create_object.json')
     def test_valid_create_object(self, value):
@@ -460,23 +460,23 @@ class ValidServerTests(unittest.TestCase):
         with self.assertRaisesRegexp(exc, e):
             getattr(handler, method)(**args)
 
-    # @ddt.file_data('ddt/ddt_invalid_deploy_action.json')
-    # def test_invalid_deploy_action(self, value):
-    #     handler = self.setup_test()
+    @ddt.file_data('ddt/ddt_invalid_deploy_action.json')
+    def test_invalid_deploy_action(self, value):
+        handler = self.setup_test()
 
-    #     method = value['method']
-    #     args = value['args']
-    #     args['report_dir'] = TEST_OUT
-    #     exc = eval(value['exception'])
-    #     e = value['error_str']
+        method = value['method']
+        args = value['args']
+        args['report_dir'] = TEST_OUT
+        exc = eval(value['exception'])
+        e = value['error_str']
 
-    #     s = (
-    #         "+++ TESTING EXPECTED DEPLOY ACTION FAILURE Handler.{}() with kwargs {}"
-    #     ).format
-    #     spew(s(method, args))
+        s = (
+            "+++ TESTING EXPECTED DEPLOY ACTION FAILURE Handler.{}() with kwargs {}"
+        ).format
+        spew(s(method, args))
 
-    #     with self.assertRaisesRegexp(exc, e):
-    #         getattr(handler, method)(**args)
+        with self.assertRaisesRegexp(exc, e):
+            getattr(handler, method)(**args)
 
     @ddt.file_data('ddt/ddt_invalid_export_resultset.json')
     def test_invalid_export_resultset(self, value):

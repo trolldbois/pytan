@@ -1,3 +1,4 @@
+'''
 valid questions: (need to write savedquestionpoller)
 
     "ask_saved_question_by_name": {
@@ -20,18 +21,37 @@ valid questions: (need to write savedquestionpoller)
     },
 
 also need to finish modding actionpoller
+'''
 
-If you are adding tests for that mechanism you could make tests that verify it returns an error if you specify a cache that has expired and make sure that the results that come back don’t change.
+actions = handler.get_all('action')
+for a in actions:
+    if a.target_group.id == 0:
+        continue
+    g = handler._find(a.target_group)
+    print g.to_json(g)
+    q = taniumpy.Question()
+    q.group = g
+    nq = handler._add(q)
+    print nq.query_text
 
-Hi Sharon,
 
-There is a dependency on max_result_cache_age, in that if the question is no longer available in memory, then the snapshot is also dissolved, even if the cache_expiration goes beyond what the max_result_cache_age should be.
+def build_q_from_action_target_group(g):
+    ng = copy.deepcopy(g)
 
-So if you would like to keep the snapshots available for long periods of time, I would go ahead and also increase the max_result_cache_age.
 
-Just to expound this new feature:  What used to happen is that each time you called getResultData, the server would convert the internal memory representation of the question data into the SOAP response / XML document format, then cut out of that document just the ranges of data that you requested.  But now, with this feature, the generation of the SOAP response / XML document can be done just once -- then on each paging call through the data, it is fixed to a given data set, and it can return just a window to an already allocated doc.
+ng = copy.deepcopy(g)
 
-But there a few links between the snapshot and the question data itself, so right now there is still a requirement to remove the snapshot when the question is removed.
+ng.id = None
+ng.sub_groups[0].id = None
+ng.sub_groups[0].sub_groups[0].id = None
 
-Cheers,
-Greg
+ng.filters = None
+ng.sub_groups[0].filters = None
+ng.sub_groups[0].sub_groups[0].sub_groups = None
+
+q = taniumpy.Question()
+q.group = ng
+nq = handler._add(q)
+print nq.query_text
+
+#File bug with 6.5 not allowing groups with id's to be used in questions

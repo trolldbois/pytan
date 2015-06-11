@@ -28,7 +28,8 @@ for aa in path_adds:
 import taniumpy
 import pytan
 
-qplog = logging.getLogger("pytan.handler.question_poller")
+qplog = logging.getLogger("pytan.handler.poller")
+qpplog = logging.getLogger("pytan.handler.poller.progress")
 
 
 class QuestionPoller(object):
@@ -81,7 +82,7 @@ class QuestionPoller(object):
 
         if not isinstance(obj, self.OBJECT_TYPE):
             m = "{} is not a valid object type! Must be a: {}".format
-            raise pytan.exceptions.PollingError(m(type(handler), self.OBJECT_TYPE))
+            raise pytan.exceptions.PollingError(m(type(obj), self.OBJECT_TYPE))
 
         self.handler = handler
         self.obj = obj
@@ -109,7 +110,7 @@ class QuestionPoller(object):
         This is used in the case that the obj supplied does not have all the metadata
         available
         """
-        obj = self.handler.session.find(self.obj)
+        obj = self.handler._find(self.obj)
         if pytan.utils.empty_obj(obj):
             m = "Unable to find object: {}".format
             raise pytan.exceptions.PollingError(m(self.obj))
@@ -126,6 +127,7 @@ class QuestionPoller(object):
             string of attribute name to fetch from self.obj
         fallback : string
             value to fallback to if it still can't be accessed after re-fetching the obj
+            if fallback is None, an exception will be raised
 
         Returns
         -------
@@ -133,26 +135,30 @@ class QuestionPoller(object):
             The value of the attr from self.obj
 
         """
-        val = getattr(self.obj, attr, '')
+        val = getattr(self.obj, attr, None)
 
         # if attr isn't available on the object, maybe it's only a partial object
         # let's use the handler to re-fetch it
-        if not val:
+        if val is None:
             m = "{} not available on {}, re-fetching object".format
             qplog.debug(m(attr, self.obj))
             self._refetch_obj()
 
         val = getattr(self.obj, attr, '')
-        if not val:
+        if val is None:
+            if fallback is None:
+                m = "{0!r} is None on {}, even after re-fetching object".format
+                raise pytan.exceptions.PollingError(m(attr, self.obj))
+
             m = (
-                "{} not available on {}, even after re-fetching object - using fallback {} of {}"
+                "{0!r} is None on {1}, even after re-fetching object - using fallback {0!r} of {2}"
             ).format
             qplog.debug(m(attr, self.obj, attr, fallback))
             val = fallback
         return val
 
     def _derive_info(self):
-        """Derive the self.obj_info from self.obj"""
+        """Derive self.obj_info from self.obj"""
         question_text = self._derive_attribute('query_text', 'Unable to fetch question text')
         question_id = self._derive_attribute('id', -1)
         obj_info = "Question ID: {}, Query: {}".format(question_id, question_text)
@@ -202,11 +208,13 @@ class QuestionPoller(object):
             'AnswersChanged'
             'AnswersComplete'
 
-            Each should be a function that accepts a QuestionPoller instance and a percent complete.
+            Each callback should be a function that accepts a poller instance and a percent complete.
 
-            Any callback can choose to get data from the session by calling asker.get_result_data()
+            Any callback can choose to get data from the session by calling poller.get_result_data() or new info by calling poller.get_result_info()
 
-            Polling will be stopped only when one of the callbacks calls the stop() method or the answers are complete. Note that callbacks can call setPercentCompleteThreshold to change what done means on the fly
+            Any callback can choose to stop the poller by calling poller.stop()
+
+            Polling will be stopped only when one of the callbacks calls the stop() method or the answers are complete. Note that callbacks can call setPercentCompleteThreshold to change what "done" means on the fly
         """
         tested = None
         passed = None
@@ -311,7 +319,7 @@ class QuestionPoller(object):
                 raise pytan.exceptions.TimeoutException(m(timeout_str, progress_str))
 
             if expiration_timeout_reached:
-                m = "Reached expiration timeout of {} seconds -- {}".format
+                m = "Reached expiration timeout of {} -- {}".format
                 raise pytan.exceptions.TimeoutException(m(self.expiration, progress_str))
 
             pct = new_pct
@@ -359,6 +367,109 @@ class ActionPoller(QuestionPoller):
     OBJECT_TYPE = taniumpy.object_types.action.Action
     COMPLETE_PCT = 100
 
+    def _post_init(self):
+        """Post init class setup"""
+        self._derive_package_spec()
+        self._derive_target_group()
+        self._derive_pre_question()
+        self._derive_passed_count()
+        self._derive_verify_enabled()
+        self._derive_result_map()
+        self._derive_info()
+
+    def _derive_package_spec(self):
+        self.package_spec = self._derive_attribute('package_spec', None)
+
+        # get the full package object associated with this action
+        self.package_spec = self.handler._find(self.package_spec)
+
+    def _derive_target_group(self):
+        self.target_group = self._derive_attribute('target_group', None)
+
+        if int(self.target_group.id) == 0:
+            # get the full target group associated with this action
+            group_filters = None
+        else:
+            self.target_group = self.handler._find(self.target_group)
+
+    def _derive_pre_question(self):
+        self.pre_question = taniumpy.Question()
+
+    def _find_target_group_filters(self):
+        if int(self.target_group.id) == 0:
+            group_filters = None
+        else:
+
+            self.pre_question.group = self.target_group
+
+    def _derive_passed_count(self):
+        self.pre_question = self.handler._add(self.pre_question)
+        poller = pytan.pollers.QuestionPoller(self.handler, self.pre_question)
+        poller.run()
+        self.passed_count = poller.result_info.passed
+
+    def _derive_verify_enabled(self):
+        self.verify_enabled = False
+        if self.package_spec.verify_group.id or self.package_spec.verify_group_id:
+            self.verify_enabled = True
+
+    def _derive_result_map(self):
+        """
+        A package object has to have a verify_group defined on it in order
+        for deploy action verification to trigger. That can be only done
+        at package creation/update
+        """
+        if self.verify_enabled:
+            finished = [
+                'Verified.', 'Succeeded.', 'Expired.', 'Stopped.', 'NotSucceeded.', 'Failed.',
+            ]
+            success = [
+                'Verified.',
+            ]
+            running = [
+                'Completed.', 'PendingVerification.', 'Copying.', 'Waiting.', 'Downloading.',
+                'Running.',
+            ]
+            failed = [
+                'Expired.', 'Stopped.', 'NotSucceeded.', 'Failed.',
+            ]
+
+        else:
+            finished = [
+                'Verified.', 'Succeeded.', 'Completed.', 'Expired.', 'Stopped.', 'NotSucceeded.',
+                'Failed.',
+            ]
+            success = [
+                'Verified.', 'Completed.',
+            ]
+            running = [
+                'PendingVerification.', 'Copying.', 'Waiting.', 'Downloading.', 'Running.',
+            ]
+
+            failed = [
+                'Expired.', 'Stopped.', 'NotSucceeded.', 'Failed.',
+            ]
+
+        self.result_map = {
+            'finished': {k: 0 for k in finished},
+            'success': {k: 0 for k in success},
+            'running': {k: 0 for k in running},
+            'failed': {k: 0 for k in failed},
+        }
+
+    def _derive_info(self):
+        """Derive self.obj_info from self.obj"""
+        group_text = self.target_group.text
+        action_id = self._derive_attribute('id', -1)
+
+        m = "Action ID: {}, Package: '{}', Target: '{}', Passed Count: {}".format
+        obj_info = m(action_id, self.package_spec.name, group_text, self.passed_count)
+
+        m = "Object Info of {} resolved to {}".format
+        qplog.debug(m(self.obj, obj_info))
+
+        self.obj_info = obj_info
+
     def run(self, callbacks={}, **kwargs):
         """Poll for action data and issue callbacks.
 
@@ -370,20 +481,24 @@ class ActionPoller(QuestionPoller):
             'AnswersChanged'
             'AnswersComplete'
 
-            Each should be a function that accepts a QuestionPoller instance and a percent complete.
+            Each callback should be a function that accepts a poller instance and a percent complete.
 
-            Any callback can choose to get data from the session by calling asker.get_result_data()
+            Any callback can choose to get data from the session by calling poller.get_result_data() or new info by calling poller.get_result_info()
 
-            Polling will be stopped only when one of the callbacks calls the stop() method or the answers are complete. Note that callbacks can call setPercentCompleteThreshold to change what done means on the fly
+            Any callback can choose to stop the poller by calling poller.stop()
+
+            Polling will be stopped only when one of the callbacks calls the stop() method or the answers are complete. Note that callbacks can call setPercentCompleteThreshold to change what "done" means on the fly
+
+        if default group, ask online = true
+        if not default group, ask target group
+        get query_text from group
+        get passed from RI of asking quesiton using group
 
         check expiration of action (is it closed? does that matter?)
-        get group = target_group_id
-        ask question with group
-        use # from RI.passed as check for complete
-
 
         """
 
+'''
     def deploy_action_asker(self, action_id, passed_count=0):
         if passed_count == 0:
             passed_base = (100.0 / float(1))
@@ -398,28 +513,41 @@ class ActionPoller(QuestionPoller):
         for deploy action verification to trigger. That can be only done
         at package_spec create or update time
         """
-        if ps.verify_group or ps.verify_group_id:
-            m = "Setting up 'finished' for verify"
-            finished_keys = ['done', 'verify_done']
-            success_keys = ['verify_done']
-            running_keys = ['running', 'verify_running']
-            failed_keys = ['failed']
-        else:
-            m = "Setting up 'finished' for no_verify"
-            finished_keys = ['done', 'no_verify_done']
-            success_keys = ['no_verify_done']
-            running_keys = ['running']
-            failed_keys = ['failed']
 
-        qplog.debug(m)
-        finished_keys = pytan.utils.get_dict_list_items(
-            pytan.constants.ACTION_RESULT_STATUS, finished_keys)
-        success_keys = pytan.utils.get_dict_list_items(
-            pytan.constants.ACTION_RESULT_STATUS, success_keys)
-        running_keys = pytan.utils.get_dict_list_items(
-            pytan.constants.ACTION_RESULT_STATUS, running_keys)
-        failed_keys = pytan.utils.get_dict_list_items(
-            pytan.constants.ACTION_RESULT_STATUS, failed_keys)
+        if ps.verify_group or ps.verify_group_id:
+            finished = [
+                'Verified.', 'Succeeded.', 'Expired.', 'Stopped.', 'NotSucceeded.', 'Failed.',
+            ]
+            success = [
+                'Verified.',
+            ]
+            running = [
+                'Completed.', 'PendingVerification.', 'Copying.', 'Waiting.', 'Downloading.',
+                'Running.',
+            ]
+            failed = [
+                'Expired.', 'Stopped.', 'NotSucceeded.', 'Failed.',
+            ]
+
+        else:
+            finished = [
+                'Verified.', 'Succeeded.', 'Completed.', 'Expired.', 'Stopped.', 'NotSucceeded.',
+                'Failed.',
+            ]
+            success = [
+                'Verified.', 'Completed.',
+            ]
+            running = [
+                'PendingVerification.', 'Copying.', 'Waiting.', 'Downloading.', 'Running.',
+            ]
+
+            failed = [
+                'Expired.', 'Stopped.', 'NotSucceeded.', 'Failed.',
+            ]
+
+        result_status_map = {
+            'finished': finished, 'success': success, 'running': running, 'failed': failed,
+        }
 
         passed_count_reached = False
         finished = False
@@ -528,3 +656,180 @@ class ActionPoller(QuestionPoller):
         }
 
         return ret
+
+'''
+
+'''
+        """Checks the results of a deploy action job and waits for completion
+
+        Parameters
+        ----------
+        action_id : int
+            id of deploy action to get results for and wait on completion
+        passed_count : int, optional
+            the number of servers that must equate "completed" in order for deploy action to be recognized as completed
+
+        Returns
+        -------
+        ret : dict, containing:
+            * `action_object` : :class:`taniumpy.object_types.action.Action`
+            * `action_results` : :class:`taniumpy.object_types.result_set.ResultSet`
+            * `action_progress_human` : str, progress map in human form
+            * `action_progress_map` : dict, progress map in dictionary form
+
+        See Also
+        --------
+        :data:`pytan.constants.ACTION_RESULT_STATUS` : maps the values in *Action Statuses* columns to success/completed/failed/etc
+        """
+        if not pytan.utils.is_num(action_id):
+            m = "action_id must be an integer!"
+            raise pytan.exceptions.HandlerError(m)
+
+        if not pytan.utils.is_num(passed_count):
+            m = "passed_count must be an integer!"
+            raise pytan.exceptions.HandlerError(m)
+
+        if passed_count == 0:
+            passed_base = (100.0 / float(1))
+        else:
+            passed_base = (100.0 / float(passed_count))
+
+        action_obj = self.get('action', id=action_id)[0]
+
+        ps = action_obj.package_spec
+        """
+        A package_spec has to have a verify_group defined on it in order
+        for deploy action verification to trigger. That can be only done
+        at package_spec create or update time
+        """
+        if ps.verify_group or ps.verify_group_id:
+            m = "Setting up 'finished' for verify"
+            finished_keys = ['done', 'verify_done']
+            success_keys = ['verify_done']
+            running_keys = ['running', 'verify_running']
+            failed_keys = ['failed']
+        else:
+            m = "Setting up 'finished' for no_verify"
+            finished_keys = ['done', 'no_verify_done']
+            success_keys = ['no_verify_done']
+            running_keys = ['running']
+            failed_keys = ['failed']
+
+        self.mylog.debug(m)
+        finished_keys = pytan.utils.get_dict_list_items(
+            pytan.constants.ACTION_RESULT_STATUS, finished_keys)
+        success_keys = pytan.utils.get_dict_list_items(
+            pytan.constants.ACTION_RESULT_STATUS, success_keys)
+        running_keys = pytan.utils.get_dict_list_items(
+            pytan.constants.ACTION_RESULT_STATUS, running_keys)
+        failed_keys = pytan.utils.get_dict_list_items(
+            pytan.constants.ACTION_RESULT_STATUS, failed_keys)
+
+        passed_count_reached = False
+        finished = False
+        while not passed_count_reached or not finished:
+            m = "Deploy Action Asker loop for {!r}: {}".format
+            self.mylog.debug(m(action_obj.name, pytan.utils.seconds_from_now(0, '')))
+
+            if not passed_count_reached:
+                # do a getresultinfo to ensure fresh data is available for
+                # getresultdata
+                self.get_result_info(action_obj)
+
+                # get the aggregate resultdata
+                rd = self.get_result_data(action_obj, True)
+
+                current_passed = sum([int(x['Count'][0]) for x in rd.rows])
+                passed_pct = current_passed * passed_base
+
+                m = (
+                    "Deploy Action {} Current Passed: {}, Expected Passed: {}"
+                ).format
+                self.mylog.debug(m(action_obj.name, current_passed, passed_count))
+
+                m = "Action Results Passed: {1:.0f}% ({0})".format
+                actionlog.info(m(action_obj.name, passed_pct))
+
+                # if current_passed matches passed_count, then set
+                # passed_count_reached = True
+                if current_passed >= passed_count:
+                    passed_count_reached = True
+
+                if not passed_count_reached:
+                    time.sleep(1)
+                    continue
+
+            # if passed_count was reached (the sum of Count from all rows from
+            # the aggregate getresultdata is the same or greater as the number
+            # of servers that matched the pre-action question), determine
+            # if all servers have "finished"
+
+            # do a getresultinfo to ensure fresh data is available for
+            # getresultdata
+            self.get_result_info(action_obj)
+
+            # get the full resultdata
+            rd = self.get_result_data(action_obj, False)
+
+            # create a dictionary to hold action statuses and the
+            # computer names for each action status
+            as_map = {}
+
+            for row in rd.rows:
+                computer_name = row['Computer Name'][0]
+                action_status = row['Action Statuses'][0]
+                action_status = action_status.split(':')[1]
+                if action_status not in as_map:
+                    as_map[action_status] = []
+                as_map[action_status].append(computer_name)
+
+            total_count = pytan.utils.get_dict_list_len(as_map)
+            finished_count = pytan.utils.get_dict_list_len(as_map, finished_keys)
+            success_count = pytan.utils.get_dict_list_len(as_map, success_keys)
+            running_count = pytan.utils.get_dict_list_len(as_map, running_keys)
+            failed_count = pytan.utils.get_dict_list_len(as_map, failed_keys)
+            unknown_count = pytan.utils.get_dict_list_len(
+                as_map, pytan.constants.ACTION_RESULT_STATUS, True)
+
+            finished_pct = finished_count * passed_base
+
+            m = "Action Results Completed: {1:.0f}% ({0})".format
+            actionlog.info(m(action_obj.name, finished_pct))
+
+            progress = (
+                "{} Result Counts:\n"
+                "\tRunning Count: {}\n"
+                "\tSuccess Count: {}\n"
+                "\tFailed Count: {}\n"
+                "\tUnknown Count: {}\n"
+                "\tFinished Count: {}\n"
+                "\tTotal Count: {}\n"
+                "\tFinished Count must equal: {}"
+            ).format(
+                action_obj.name,
+                running_count,
+                success_count,
+                failed_count,
+                unknown_count,
+                finished_count,
+                total_count,
+                passed_count,
+            )
+
+            if finished_count >= passed_count:
+                actionlog.info(progress)
+                finished = True
+                break
+
+            self.mylog.debug(progress)
+            time.sleep(1)
+
+        ret = {
+            'action_object': action_obj,
+            'action_results': rd,
+            'action_progress_human': progress,
+            'action_progress_map': as_map,
+        }
+
+        return ret
+'''

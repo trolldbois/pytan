@@ -10,7 +10,6 @@ sys.dont_write_bytecode = True
 import os
 import logging
 import io
-import time
 import threading
 
 my_file = os.path.abspath(__file__)
@@ -24,9 +23,6 @@ for aa in path_adds:
 
 import taniumpy
 import pytan
-
-mylog = logging.getLogger("pytan.handler")
-actionlog = logging.getLogger("pytan.handler.action_progress")
 
 
 class Handler(object):
@@ -56,7 +52,8 @@ class Handler(object):
     Notes
     -----
       * for 6.2: port 444 is the default SOAP port, port 443 forwards /soap/ URLs to the SOAP port,
-        Use port 444 if you have direct access to it
+        Use port 444 if you have direct access to it. However, port 444 is the only port that
+        exposes the /info page in 6.2
       * for 6.5: port 443 is the default SOAP port, there is no port 444
 
     See Also
@@ -69,6 +66,9 @@ class Handler(object):
     def __init__(self, username, password, host, port="443", loglevel=0,
                  debugformat=False, get_version=True, session_lib=None, gmt_log=True, **kwargs):
         super(Handler, self).__init__()
+
+        self.mylog = logging.getLogger("pytan.handler")
+        self.actionlog = logging.getLogger("pytan.handler.action_progress")
 
         # setup the console logging handler
         pytan.utils.setup_console_logging(gmt_log)
@@ -108,7 +108,7 @@ class Handler(object):
                 ).format(session_lib, session_type_map.keys())
                 raise pytan.exceptions.HandlerError(err)
 
-        mylog.debug('Using {} for Sessions'.format(session_class))
+        self.mylog.debug('Using {} for Sessions'.format(session_class))
         pytan.utils.test_app_port(host, port)
         self.session = session_class(host, port)
         self.session.authenticate(username, password)
@@ -120,21 +120,19 @@ class Handler(object):
         else:
             self.server_version = "get_version is False!"
 
-    def _derive_server_version(self):
-        self.server_version = self.session.get_server_version()
-
     def __str__(self):
         str_tpl = "Handler for {}, Version: {}".format
         ret = str_tpl(self.session, getattr(self, 'server_version', 'Version Unavailable'))
         return ret
 
+    # Questions
     def ask(self, **kwargs):
         """Ask a type of question and get the results back
 
         Parameters
         ----------
-        qtype : str
-            type of question to ask: saved_question, manual, or manual_human
+        qtype : str, optional
+            type of question to ask: saved, manual, or _manual, defaults to manual
 
         Returns
         -------
@@ -146,12 +144,7 @@ class Handler(object):
         --------
         :data:`pytan.constants.Q_OBJ_MAP` : maps qtype to a method in Handler()
         """
-        qtype = kwargs.get('qtype', '')
-        if not qtype:
-            err = (
-                "Must supply question type as 'qtype'! Valid choices: {}"
-            ).format
-            raise pytan.exceptions.HandlerError(err(', '.join(pytan.constants.Q_OBJ_MAP)))
+        qtype = kwargs.get('qtype', 'manual')
         q_obj_map = pytan.utils.get_q_obj_map(qtype)
         kwargs.pop('qtype')
         result = getattr(self, q_obj_map['handler'])(**kwargs)
@@ -218,141 +211,11 @@ class Handler(object):
 
         return ret
 
-    @pytan.utils.func_timing
-    def ask_manual(self, get_results=True, **kwargs):
-        """Ask a manual question using definitions and get the results back
-
-        This method requires in-depth knowledge of how filters and options are created in the API,
-        and as such is not meant for human consumption. Use :func:`ask_manual_human` instead.
-
-        Parameters
-        ----------
-        sensor_defs : str, dict, list of str or dict
-            sensor definitions
-        question_filter_defs : dict, list of dict, optional
-            question filter definitions
-        question_option_defs : dict, list of dict, optional
-            question option definitions
-        get_results : bool, optional
-            * True: wait for result completion after asking question
-            * False: just ask the question and return it in `ret`
-
-        Returns
-        -------
-        ret : dict, containing:
-            * `question_object` : :class:`taniumpy.object_types.question.Question`
-            * `question_results` : :class:`taniumpy.object_types.result_set.ResultSet`
-
-        Examples
-        --------
-        >>> # example of str for sensor_defs
-        >>> sensor_defs = 'Sensor1'
-
-        >>> # example of dict for sensor_defs
-        >>> sensor_defs = {
-        ... 'name': 'Sensor1',
-        ...     'filter': {
-        ...         'operator': 'RegexMatch',
-        ...         'not_flag': 0,
-        ...         'value': '.*'
-        ...     },
-        ...     'params': {'key': 'value'},
-        ...     'options': {'and_flag': 1}
-        ... }
-
-        >>> # example of dict for question_filter_defs
-        >>> question_filter_defs = {
-        ...     'operator': 'RegexMatch',
-        ...     'not_flag': 0,
-        ...     'value': '.*'
-        ... }
-
-        See Also
-        --------
-        :data:`pytan.constants.FILTER_MAPS` : valid filter dictionaries for filters
-        :data:`pytan.constants.OPTION_MAPS` : valid option dictionaries for options
-        """
-
-        # get our defs from kwargs and churn them into what we want
-        sensor_defs = pytan.utils.parse_defs(
-            defname='sensor_defs',
-            deftypes=['list()', 'str()', 'dict()'],
-            strconv='name',
-            empty_ok=False,
-            **kwargs
-        )
-
-        q_filter_defs = pytan.utils.parse_defs(
-            defname='question_filter_defs',
-            deftypes=['list()', 'dict()'],
-            empty_ok=True,
-            **kwargs
-        )
-
-        q_option_defs = pytan.utils.parse_defs(
-            defname='question_option_defs',
-            deftypes=['dict()'],
-            empty_ok=True,
-            **kwargs
-        )
-
-        max_age_seconds = int(kwargs.get('max_age_seconds', 600))
-
-        # do basic validation of our defs
-        pytan.utils.val_sensor_defs(sensor_defs)
-        pytan.utils.val_q_filter_defs(q_filter_defs)
-
-        # get the sensor objects that are in our defs and add them as
-        # d['sensor_obj']
-        sensor_defs = self._get_sensor_defs(sensor_defs)
-        q_filter_defs = self._get_sensor_defs(q_filter_defs)
-
-        # build a SelectList object from our sensor_defs
-        selectlist_obj = pytan.utils.build_selectlist_obj(sensor_defs)
-
-        # build a Group object from our question filters/options
-        group_obj = pytan.utils.build_group_obj(q_filter_defs, q_option_defs)
-
-        # build a Question object from selectlist_obj and group_obj
-        add_q_obj = pytan.utils.build_manual_q(selectlist_obj, group_obj)
-
-        add_q_obj.max_age_seconds = max_age_seconds
-
-        # add our Question and get a Question ID back
-        q_obj = self.session.add(add_q_obj)
-
-        # refetch the full object of the question so that we have access
-        # to everything (especially query_text)
-        q_obj = self.get('question', id=q_obj.id)[0]
-
-        m = "Question Added, ID: {}, query text: {!r}, expires: {}".format
-        mylog.debug(m(q_obj.id, q_obj.query_text, q_obj.expiration))
-
-        ret = {
-            'question_object': q_obj,
-            'question_results': None,
-        }
-
-        if get_results:
-            # poll the Question ID returned above to wait for results
-            poller = pytan.pollers.QuestionPoller(self, q_obj, **kwargs)
-            poller.run(**kwargs)
-
-            # get the results
-            result = self.get_result_data(q_obj, **kwargs)
-
-            # add the sensors from this question to the ResultSet object
-            # for reporting
-            result.sensors = [x['sensor_obj'] for x in sensor_defs]
-            ret['question_results'] = result
-
-        return ret
-
-    def ask_manual_human(self, **kwargs):
+    def ask_manual(self, **kwargs):
         """Ask a manual question using human strings and get the results back
 
         This method takes a string or list of strings and parses them into
-        their corresponding definitions needed by :func:`ask_manual`
+        their corresponding definitions needed by :func:`_ask_manual`
 
         Parameters
         ----------
@@ -438,7 +301,7 @@ class Handler(object):
         q_filter_defs = pytan.utils.dehumanize_question_filters(q_filters)
         q_option_defs = pytan.utils.dehumanize_question_options(q_options)
 
-        result = self.ask_manual(
+        result = self._ask_manual(
             sensor_defs=sensor_defs,
             question_filter_defs=q_filter_defs,
             question_option_defs=q_option_defs,
@@ -446,6 +309,225 @@ class Handler(object):
         )
         return result
 
+    def ask_manual_human(self, **kwargs):
+        """Deprecated, wraps around :func:`ask_manual`"""
+        return self.ask_manual(**kwargs)
+
+    # Actions
+    def deploy_action(self, **kwargs):
+        """Deploy an action and get the results back
+
+        This method takes a string or list of strings and parses them into
+        their corresponding definitions needed by :func:`_deploy_action`
+
+        Parameters
+        ----------
+        package : str
+            each string must describe a package
+        action_filters : str, list of str, optional
+            each string must describe a sensor and a filter which limits which computers the action will deploy `package` to
+        action_options : str, list of str, optional
+            options to apply to `action_filters`
+        start_seconds_from_now : int, optional
+            start action N seconds from now
+        expire_seconds : int, optional
+            expire action N seconds from now, will be derived from package if not supplied
+        run : bool, optional
+            * False: just ask the question that pertains to verify action, export the results to CSV, and raise pytan.exceptions.RunFalse -- does not deploy the action
+            * True: actually deploy the action
+        get_results : bool, optional
+            * True: wait for result completion after deploying action
+            * False: just deploy the action and return the object in `ret`
+        package_help : bool, optional
+            * False: do not print the help string for package
+            * True: print the help string for package and exit
+        filters_help : bool, optional
+            * False: do not print the help string for filters
+            * True: print the help string for filters and exit
+        options_help : bool, optional
+            * False: do not print the help string for options
+            * True: print the help string for options and exit
+
+        Returns
+        -------
+        ret : dict, containing:
+            * `action_object` : :class:`taniumpy.object_types.action.Action`
+            * `action_results` : :class:`taniumpy.object_types.result_set.ResultSet`
+            * `action_progress_human` : str, progress map in human form
+            * `action_progress_map` : dict, progress map in dictionary form
+            * `pre_action_question_results` : :class:`taniumpy.object_types.result_set.ResultSet`
+
+        Examples
+        --------
+        >>> # example of str for `package`
+        >>> package = 'Package1'
+
+        >>> # example of str for `package` with params
+        >>> package = 'Package1{key:value}'
+
+        >>> # example of str for `action_filters` with params and filter for sensors
+        >>> action_filters = 'Sensor1{key:value}, that contains:example text'
+
+        >>> # example of list of str for `action_options`
+        >>> action_options = ['max_data_age:3600', 'and']
+
+        See Also
+        --------
+        :data:`pytan.constants.FILTER_MAPS` : valid filter dictionaries for filters
+        :data:`pytan.constants.OPTION_MAPS` : valid option dictionaries for options
+        """
+
+        if kwargs.get('package_help', False):
+            raise pytan.exceptions.PytanHelp(pytan.help.help_package())
+
+        if kwargs.get('filters_help', False):
+            raise pytan.exceptions.PytanHelp(pytan.help.help_filters())
+
+        if kwargs.get('options_help', False):
+            raise pytan.exceptions.PytanHelp(pytan.help.help_options())
+
+        # the human string describing the sensors/filter that user wants
+        # to deploy the action against
+        action_filters = kwargs.get('action_filters', [])
+
+        # the question options to use on the pre-action question and on the
+        # group for the action filters
+        action_options = kwargs.get('action_options', [])
+
+        # name of package to deploy with params as {key=value1,key2=value2}
+        package = kwargs.get('package', '')
+
+        action_filter_defs = pytan.utils.dehumanize_sensors(action_filters, 'action_filters', True)
+        action_option_defs = pytan.utils.dehumanize_question_options(action_options)
+        package_def = pytan.utils.dehumanize_package(package)
+
+        deploy_result = self._deploy_action(
+            action_filter_defs=action_filter_defs,
+            action_option_defs=action_option_defs,
+            package_def=package_def,
+            **kwargs
+        )
+        return deploy_result
+
+    def deploy_action_human(self, **kwargs):
+        """Deprecated, wraps around :func:`deploy_action`"""
+        return self.deploy_action(**kwargs)
+
+    def deploy_action_asker(self, **kwargs):
+        """Deprecated, use :class:`pytan.pollers.ActionPoller`"""
+        m = "Deprecated, use pytan.pollers.ActionPoller() instead!"
+        raise pytan.exceptions.HandlerError(m())
+
+    def stop_action(self, id, **kwargs):
+        """Stop an action
+
+        Parameters
+        ----------
+        id : int
+            id of action to stop
+
+        Returns
+        -------
+        action_stop_obj : :class:`taniumpy.object_types.action_stop.ActionStop`
+            The object containing the ID of the action stop job
+        """
+        action_obj = self.get('action', id=id)[0]
+        add_action_stop_obj = taniumpy.ActionStop()
+        add_action_stop_obj.action = action_obj
+        action_stop_obj = self._add(add_action_stop_obj)
+        m = (
+            'Action stopped successfully, ID of action stop: {}'
+        ).format
+        self.mylog.debug(m(action_stop_obj.id))
+        return action_stop_obj
+
+    # Result Data / Result Info
+    @pytan.utils.func_timing
+    def get_result_data(self, obj, aggregate=False, shrink=True, **kwargs):
+        """Get the result data for a python API object
+
+        This method issues a GetResultData command to the SOAP api for `obj`. GetResultData returns the columns and rows that are currently available for `obj`.
+
+        Parameters
+        ----------
+        obj : :class:`taniumpy.object_types.base.BaseType`
+            object to get result data for
+        aggregate : bool, optional
+            * False: get all the data
+            * True: get just the aggregate data (row counts of matches)
+        shrink : bool, optional
+            * True: Shrink the object down to just id/name/hash attributes (for smaller request)
+            * False: Use the full object as is
+
+        Returns
+        -------
+        rd : :class:`taniumpy.object_types.result_set.ResultSet`
+            The return of GetResultData for `obj`
+        """
+
+        """ note #1 from jwk:
+        For Action GetResultData:
+
+        You have to make a ResultInfo request at least once every 2 minutes.
+        The server gathers the result data by asking a saved question.
+        It won't re-issue the saved question unless you make a GetResultInfo
+        request. When you make a GetResultInfo request, if there is no
+        question that is less than 2 minutes old, the server will automatically
+        reissue a new question instance to make sure fresh data is available.
+
+        note #2 from jwk:
+         To get the aggregate data (without computer names),
+         set row_counts_only_flag = 1. To get the computer names,
+         use row_counts_only_flag = 0 (default).
+        """
+        if shrink:
+            shrunk_obj = pytan.utils.shrink_obj(obj)
+        else:
+            shrunk_obj = obj
+
+        if 'suppress_object_list' not in kwargs:
+            kwargs['suppress_object_list'] = 1
+
+        # do a getresultdata
+        if aggregate:
+            rd = self.session.getResultData(shrunk_obj, row_counts_only_flag=1, **kwargs)
+        else:
+            rd = self.session.getResultData(shrunk_obj, **kwargs)
+        return rd
+
+    @pytan.utils.func_timing
+    def get_result_info(self, obj, shrink=True, **kwargs):
+        """Get the result info for a python API object
+
+        This method issues a GetResultInfo command to the SOAP api for `obj`. GetResultInfo returns information about how many servers have passed the `obj`, total number of servers, and so on.
+
+        Parameters
+        ----------
+        obj : :class:`taniumpy.object_types.base.BaseType`
+            object to get result data for
+        shrink : bool, optional
+            * True: Shrink the object down to just id/name/hash attributes (for smaller request)
+            * False: Use the full object as is
+
+        Returns
+        -------
+        ri : :class:`taniumpy.object_types.result_info.ResultInfo`
+            The return of GetResultData for `obj`
+        """
+        if shrink:
+            shrunk_obj = pytan.utils.shrink_obj(obj)
+        else:
+            shrunk_obj = obj
+
+        if 'suppress_object_list' not in kwargs:
+            kwargs['suppress_object_list'] = 1
+
+        ri = self.session.getResultInfo(shrunk_obj, **kwargs)
+        # pytan.utils.log_session_communication(self)
+        self.mylog.debug(ri)
+        return ri
+
+    # Objects
     def create_from_json(self, objtype, json_file):
         """Creates a new object using the SOAP api from a json file
 
@@ -497,16 +579,15 @@ class Handler(object):
 
         for x in obj_list:
             try:
-                list_obj = self.session.add(x)
+                list_obj = self._add(x)
             except Exception as e:
                 m = (
                     "Failure while importing {}: {}\nJSON Dump of object: {}"
                 ).format
                 raise pytan.exceptions.HandlerError(m(x, e, x.to_json(x)))
 
-            list_obj = self.session.find(list_obj)
             m = "New {} (ID: {}) created successfully!".format
-            mylog.info(m(list_obj, getattr(list_obj, 'id', 'Unknown')))
+            self.mylog.info(m(list_obj, getattr(list_obj, 'id', 'Unknown')))
 
             ret.append(list_obj)
         return ret
@@ -623,7 +704,7 @@ class Handler(object):
             add_verify_group = pytan.utils.build_group_obj(
                 verify_filter_defs, verify_option_defs
             )
-            verify_group = self.session.add(add_verify_group)
+            verify_group = self._add(add_verify_group)
             # this didn't work:
             # add_package_obj.verify_group = verify_group
             add_package_obj.verify_group_id = verify_group.id
@@ -657,10 +738,9 @@ class Handler(object):
                 filelist_obj.append(file_obj)
             add_package_obj.files = filelist_obj
 
-        package_obj = self.session.add(add_package_obj)
-        package_obj = self._find(package_obj)
+        package_obj = self._add(add_package_obj)
         m = "New package {!r} created with ID {!r}, command: {!r}".format
-        mylog.info(m(package_obj.name, package_obj.id, package_obj.command))
+        self.mylog.info(m(package_obj.name, package_obj.id, package_obj.command))
         return package_obj
 
     def create_group(self, groupname, filters=[], filter_options=[], **kwargs):
@@ -703,10 +783,9 @@ class Handler(object):
         option_defs = pytan.utils.dehumanize_question_options(filter_options)
         add_group_obj = pytan.utils.build_group_obj(filter_defs, option_defs)
         add_group_obj.name = groupname
-        group_obj = self.session.add(add_group_obj)
-        group_obj = self._find(group_obj)
+        group_obj = self._add(add_group_obj)
         m = "New group {!r} created with ID {!r}, filter text: {!r}".format
-        mylog.info(m(group_obj.name, group_obj.id, group_obj.text))
+        self.mylog.info(m(group_obj.name, group_obj.id, group_obj.text))
         return group_obj
 
     def create_user(self, username, rolename=[], roleid=[], properties=[]):
@@ -741,9 +820,9 @@ class Handler(object):
         add_user_obj.name = username
         add_user_obj.roles = rolelist_obj
         add_user_obj.metadata = metadatalist_obj
-        user_obj = self.session.add(add_user_obj)
+        user_obj = self._add(add_user_obj)
         m = "New user {!r} created with ID {!r}, roles: {!r}".format
-        mylog.info(m(
+        self.mylog.info(m(
             user_obj.name, user_obj.id, [x.name for x in rolelist_obj]
         ))
         return user_obj
@@ -785,10 +864,9 @@ class Handler(object):
         add_url_obj.url_regex = url
         add_url_obj.download_seconds = download_seconds
         add_url_obj.metadata = metadatalist_obj
-        url_obj = self.session.add(add_url_obj)
-        url_obj = self._find(url_obj)
+        url_obj = self._add(add_url_obj)
         m = "New Whitelisted URL {!r} created with ID {!r}".format
-        mylog.info(m(url_obj.url_regex, url_obj.id))
+        self.mylog.info(m(url_obj.url_regex, url_obj.id))
         return url_obj
 
     def delete(self, objtype, **kwargs):
@@ -824,515 +902,19 @@ class Handler(object):
             del_obj = self.session.delete(obj_to_del)
             deleted_objects.append(del_obj)
             m = "Deleted {!r}".format
-            mylog.info(m(str(del_obj)))
+            self.mylog.info(m(str(del_obj)))
         return deleted_objects
 
     @pytan.utils.func_timing
-    def deploy_action(self, run=False, get_results=True, **kwargs):
-        """Deploy an action and get the results back
-
-        This method requires in-depth knowledge of how filters and options are created in the API, and as such is not meant for human consumption. Use :func:`deploy_action_human` instead.
-
-        Parameters
-        ----------
-        package_def : dict
-            definition that describes a package
-        action_filter_defs : str, dict, list of str or dict, optional
-            action filter definitions
-        action_option_defs : dict, list of dict, optional
-            action filter option definitions
-        start_seconds_from_now : int, optional
-            start action N seconds from now
-        expire_seconds : int, optional
-            expire action N seconds from now, will be derived from package if not supplied
-        run : bool, optional
-            * False: just ask the question that pertains to verify action, export the results to CSV, and raise pytan.exceptions.RunFalse -- does not deploy the action
-            * True: actually deploy the action
-        get_results : bool, optional
-            * True: wait for result completion after deploying action
-            * False: just deploy the action and return the object in `ret`
-
-        Returns
-        -------
-        ret : dict, containing:
-            * `action_object` : :class:`taniumpy.object_types.action.Action`
-            * `action_results` : :class:`taniumpy.object_types.result_set.ResultSet`
-            * `action_progress_human` : str, progress map in human form
-            * `action_progress_map` : dict, progress map in dictionary form
-            * `pre_action_question_results` : :class:`taniumpy.object_types.result_set.ResultSet`
-
-        Examples
-        --------
-        >>> # example of dict for `package_def`
-        >>> package_def = {'name': 'PackageName1', 'params':{'param1': 'value1'}}
-
-        >>> # example of str for `action_filter_defs`
-        >>> action_filter_defs = 'Sensor1'
-
-        >>> # example of dict for `action_filter_defs`
-        >>> action_filter_defs = {
-        ... 'name': 'Sensor1',
-        ...     'filter': {
-        ...         'operator': 'RegexMatch',
-        ...         'not_flag': 0,
-        ...         'value': '.*'
-        ...     },
-        ...     'options': {'and_flag': 1}
-        ... }
-
-        See Also
-        --------
-        :data:`pytan.constants.FILTER_MAPS` : valid filter dictionaries for filters
-        :data:`pytan.constants.OPTION_MAPS` : valid option dictionaries for options
-        """
-
-        # get our defs from kwargs and churn them into what we want
-        action_filter_defs = pytan.utils.parse_defs(
-            defname='action_filter_defs',
-            deftypes=['list()', 'str()', 'dict()'],
-            strconv='name',
-            empty_ok=True,
-            **kwargs
-        )
-
-        action_option_defs = pytan.utils.parse_defs(
-            defname='action_option_defs',
-            deftypes=['dict()'],
-            empty_ok=True,
-            **kwargs
-        )
-
-        package_def = pytan.utils.parse_defs(
-            defname='package_def',
-            deftypes=['dict()'],
-            empty_ok=False,
-            **kwargs
-        )
-
-        start_seconds_from_now = pytan.utils.get_kwargs_int(
-            'start_seconds_from_now', 1, **kwargs
-        )
-
-        expire_seconds = pytan.utils.get_kwargs_int('expire_seconds', **kwargs)
-
-        # do basic validation of our defs
-        pytan.utils.val_sensor_defs(action_filter_defs)
-        pytan.utils.val_package_def(package_def)
-
-        # get the objects that are in our defs and add them as
-        # d['sensor_obj'] / d['package_obj']
-        action_filter_defs = self._get_sensor_defs(action_filter_defs)
-        package_def = self._get_package_def(package_def)
-
-        """
-        ask the question that pertains to the action filter
-        this will be used to get a count for how many servers should be seen
-        in the deploy action resultdata as 'completed'
-
-        We supply Computer Name and Online = True as the sensors if run is
-        False, then exit out after asking the question to allow the user
-        to verify the contents
-
-        If run is True we just use Online = True for the sensor
-
-        The action filter for the deploy action is used as the question
-        filter in both cases
-        """
-
-        if not run and not get_results:
-            m = "Run = False and get_results = False, re-run with True for one of these!"
-            raise pytan.exceptions.HandlerError(m)
-
-        if not run:
-            pre_action_sensors = ['Computer Name', 'Online, that =:True']
-        else:
-            pre_action_sensors = ['Online, that =:True']
-
-        # No longer do a pre_action question if get_results == False
-        if get_results:
-            pre_action_sensor_defs = pytan.utils.dehumanize_sensors(pre_action_sensors)
-            pre_action_result_ret = self.ask_manual(
-                sensor_defs=pre_action_sensor_defs,
-                question_filter_defs=action_filter_defs,
-                question_option_defs=action_option_defs,
-                hide_no_results_flag=1,
-            )
-            pre_action_result = pre_action_result_ret['question_results']
-
-            """ note from jwk:
-            passed_count == the number of machines that pass the filter and
-            therefore the number that should take the action
-            """
-            passed_count = pre_action_result.passed
-            m = (
-                "Number of systems that match action filter (passed_count): {}"
-            ).format
-            mylog.debug(m(passed_count))
-
-            if passed_count == 0:
-                m = "Number of systems that match the action filters provided is zero!"
-                raise pytan.exceptions.HandlerError(m)
-        else:
-            pre_action_result_ret = None
-
-        if not run:
-            report_path, result = self.export_to_report_file(
-                pre_action_result, 'csv',
-                prefix='VERIFY_BEFORE_DEPLOY_ACTION_', **kwargs
-            )
-            m = (
-                "'Run' is not True!!\n"
-                "View and verify the contents of {} (length: {} bytes)\n"
-                "Re-run this deploy action with run=True after verifying"
-            ).format
-            raise pytan.exceptions.RunFalse(m(report_path, len(result)))
-
-        targetgroup_obj = pytan.utils.build_group_obj(
-            action_filter_defs, action_option_defs
-        )
-
-        package_obj = package_def['package_obj']
-        user_params = package_def['params']
-        param_objlist = pytan.utils.build_param_objlist(
-            obj=package_obj,
-            user_params=user_params,
-            delim='',
-            derive_def=False,
-            empty_ok=False,
-        )
-
-        a_package_obj = taniumpy.PackageSpec()
-        if param_objlist:
-            a_package_obj.source_id = package_obj.id
-            a_package_obj.parameters = param_objlist
-        else:
-            a_package_obj.name = package_obj.name
-
-        add_action_obj = taniumpy.Action()
-        add_action_obj.name = "API Deploy {}".format(package_obj.name)
-        add_action_obj.package_spec = a_package_obj
-        add_action_obj.target_group = targetgroup_obj
-        add_action_obj.start_time = pytan.utils.seconds_from_now(
-            start_seconds_from_now
-        )
-
-        if expire_seconds:
-            add_action_obj.expire_seconds = expire_seconds
-
-        action_obj = self.session.add(add_action_obj)
-        pytan.utils.log_session_communication(self)
-
-        m = "Deploy Action Added, ID: {}".format
-        mylog.debug(m(action_obj.id))
-
-        action_obj = self.get('action', id=action_obj.id)[0]
-
-        ret = {
-            'action_object': action_obj,
-            'action_results': None,
-            'action_progress_human': None,
-            'action_progress_map': None,
-            'pre_action_question_results': pre_action_result_ret,
-        }
-
-        if get_results:
-            deploy_results = self.deploy_action_asker(
-                action_obj.id, passed_count
-            )
-            ret.update(deploy_results)
-            m = "Deploy Action Completed {}".format
-            mylog.debug(m(pytan.utils.seconds_from_now(0, '')))
-
-        return ret
-
-    def deploy_action_human(self, **kwargs):
-        """Deploy an action and get the results back
-
-        This method takes a string or list of strings and parses them into
-        their corresponding definitions needed by :func:`deploy_action`
-
-        Parameters
-        ----------
-        package : str
-            each string must describe a package
-        action_filters : str, list of str, optional
-            each string must describe a sensor and a filter which limits which computers the action will deploy `package` to
-        action_options : str, list of str, optional
-            options to apply to `action_filters`
-        start_seconds_from_now : int, optional
-            start action N seconds from now
-        expire_seconds : int, optional
-            expire action N seconds from now, will be derived from package if not supplied
-        run : bool, optional
-            * False: just ask the question that pertains to verify action, export the results to CSV, and raise pytan.exceptions.RunFalse -- does not deploy the action
-            * True: actually deploy the action
-        get_results : bool, optional
-            * True: wait for result completion after deploying action
-            * False: just deploy the action and return the object in `ret`
-        package_help : bool, optional
-            * False: do not print the help string for package
-            * True: print the help string for package and exit
-        filters_help : bool, optional
-            * False: do not print the help string for filters
-            * True: print the help string for filters and exit
-        options_help : bool, optional
-            * False: do not print the help string for options
-            * True: print the help string for options and exit
-
-        Returns
-        -------
-        ret : dict, containing:
-            * `action_object` : :class:`taniumpy.object_types.action.Action`
-            * `action_results` : :class:`taniumpy.object_types.result_set.ResultSet`
-            * `action_progress_human` : str, progress map in human form
-            * `action_progress_map` : dict, progress map in dictionary form
-            * `pre_action_question_results` : :class:`taniumpy.object_types.result_set.ResultSet`
-
-        Examples
-        --------
-        >>> # example of str for `package`
-        >>> package = 'Package1'
-
-        >>> # example of str for `package` with params
-        >>> package = 'Package1{key:value}'
-
-        >>> # example of str for `action_filters` with params and filter for sensors
-        >>> action_filters = 'Sensor1{key:value}, that contains:example text'
-
-        >>> # example of list of str for `action_options`
-        >>> action_options = ['max_data_age:3600', 'and']
-
-        See Also
-        --------
-        :data:`pytan.constants.FILTER_MAPS` : valid filter dictionaries for filters
-        :data:`pytan.constants.OPTION_MAPS` : valid option dictionaries for options
-        """
-
-        if kwargs.get('package_help', False):
-            raise pytan.exceptions.PytanHelp(pytan.help.help_package())
-
-        if kwargs.get('filters_help', False):
-            raise pytan.exceptions.PytanHelp(pytan.help.help_filters())
-
-        if kwargs.get('options_help', False):
-            raise pytan.exceptions.PytanHelp(pytan.help.help_options())
-
-        # the human string describing the sensors/filter that user wants
-        # to deploy the action against
-        if 'action_filters' in kwargs:
-            action_filters = kwargs.pop('action_filters')
-        else:
-            action_filters = []
-
-        # the question options to use on the pre-action question and on the
-        # group for the action filters
-        if 'action_options' in kwargs:
-            action_options = kwargs.pop('action_options')
-        else:
-            action_options = []
-
-        # name of package to deploy with params as {key=value1,key2=value2}
-        if 'package' in kwargs:
-            package = kwargs.pop('package')
-        else:
-            package = ''
-
-        action_filter_defs = pytan.utils.dehumanize_sensors(action_filters, 'action_filters', True)
-        action_option_defs = pytan.utils.dehumanize_question_options(action_options)
-        package_def = pytan.utils.dehumanize_package(package)
-
-        deploy_result = self.deploy_action(
-            action_filter_defs=action_filter_defs,
-            action_option_defs=action_option_defs,
-            package_def=package_def,
-            **kwargs
-        )
-        return deploy_result
-
-    def deploy_action_asker(self, action_id, passed_count=0):
-        """Checks the results of a deploy action job and waits for completion
-
-        Parameters
-        ----------
-        action_id : int
-            id of deploy action to get results for and wait on completion
-        passed_count : int, optional
-            the number of servers that must equate "completed" in order for deploy action to be recognized as completed
-
-        Returns
-        -------
-        ret : dict, containing:
-            * `action_object` : :class:`taniumpy.object_types.action.Action`
-            * `action_results` : :class:`taniumpy.object_types.result_set.ResultSet`
-            * `action_progress_human` : str, progress map in human form
-            * `action_progress_map` : dict, progress map in dictionary form
-
-        See Also
-        --------
-        :data:`pytan.constants.ACTION_RESULT_STATUS` : maps the values in *Action Statuses* columns to success/completed/failed/etc
-        """
-        if not pytan.utils.is_num(action_id):
-            m = "action_id must be an integer!"
-            raise pytan.exceptions.HandlerError(m)
-
-        if not pytan.utils.is_num(passed_count):
-            m = "passed_count must be an integer!"
-            raise pytan.exceptions.HandlerError(m)
-
-        if passed_count == 0:
-            passed_base = (100.0 / float(1))
-        else:
-            passed_base = (100.0 / float(passed_count))
-
-        action_obj = self.get('action', id=action_id)[0]
-
-        ps = action_obj.package_spec
-        """
-        A package_spec has to have a verify_group defined on it in order
-        for deploy action verification to trigger. That can be only done
-        at package_spec create or update time
-        """
-        if ps.verify_group or ps.verify_group_id:
-            m = "Setting up 'finished' for verify"
-            finished_keys = ['done', 'verify_done']
-            success_keys = ['verify_done']
-            running_keys = ['running', 'verify_running']
-            failed_keys = ['failed']
-        else:
-            m = "Setting up 'finished' for no_verify"
-            finished_keys = ['done', 'no_verify_done']
-            success_keys = ['no_verify_done']
-            running_keys = ['running']
-            failed_keys = ['failed']
-
-        mylog.debug(m)
-        finished_keys = pytan.utils.get_dict_list_items(
-            pytan.constants.ACTION_RESULT_STATUS, finished_keys)
-        success_keys = pytan.utils.get_dict_list_items(
-            pytan.constants.ACTION_RESULT_STATUS, success_keys)
-        running_keys = pytan.utils.get_dict_list_items(
-            pytan.constants.ACTION_RESULT_STATUS, running_keys)
-        failed_keys = pytan.utils.get_dict_list_items(
-            pytan.constants.ACTION_RESULT_STATUS, failed_keys)
-
-        passed_count_reached = False
-        finished = False
-        while not passed_count_reached or not finished:
-            m = "Deploy Action Asker loop for {!r}: {}".format
-            mylog.debug(m(action_obj.name, pytan.utils.seconds_from_now(0, '')))
-
-            if not passed_count_reached:
-                # do a getresultinfo to ensure fresh data is available for
-                # getresultdata
-                self.get_result_info(action_obj)
-
-                # get the aggregate resultdata
-                rd = self.get_result_data(action_obj, True)
-
-                current_passed = sum([int(x['Count'][0]) for x in rd.rows])
-                passed_pct = current_passed * passed_base
-
-                m = (
-                    "Deploy Action {} Current Passed: {}, Expected Passed: {}"
-                ).format
-                mylog.debug(m(action_obj.name, current_passed, passed_count))
-
-                m = "Action Results Passed: {1:.0f}% ({0})".format
-                actionlog.info(m(action_obj.name, passed_pct))
-
-                # if current_passed matches passed_count, then set
-                # passed_count_reached = True
-                if current_passed >= passed_count:
-                    passed_count_reached = True
-
-                if not passed_count_reached:
-                    time.sleep(1)
-                    continue
-
-            # if passed_count was reached (the sum of Count from all rows from
-            # the aggregate getresultdata is the same or greater as the number
-            # of servers that matched the pre-action question), determine
-            # if all servers have "finished"
-
-            # do a getresultinfo to ensure fresh data is available for
-            # getresultdata
-            self.get_result_info(action_obj)
-
-            # get the full resultdata
-            rd = self.get_result_data(action_obj, False)
-
-            # create a dictionary to hold action statuses and the
-            # computer names for each action status
-            as_map = {}
-
-            for row in rd.rows:
-                computer_name = row['Computer Name'][0]
-                action_status = row['Action Statuses'][0]
-                action_status = action_status.split(':')[1]
-                if action_status not in as_map:
-                    as_map[action_status] = []
-                as_map[action_status].append(computer_name)
-
-            total_count = pytan.utils.get_dict_list_len(as_map)
-            finished_count = pytan.utils.get_dict_list_len(as_map, finished_keys)
-            success_count = pytan.utils.get_dict_list_len(as_map, success_keys)
-            running_count = pytan.utils.get_dict_list_len(as_map, running_keys)
-            failed_count = pytan.utils.get_dict_list_len(as_map, failed_keys)
-            unknown_count = pytan.utils.get_dict_list_len(
-                as_map, pytan.constants.ACTION_RESULT_STATUS, True)
-
-            finished_pct = finished_count * passed_base
-
-            m = "Action Results Completed: {1:.0f}% ({0})".format
-            actionlog.info(m(action_obj.name, finished_pct))
-
-            progress = (
-                "{} Result Counts:\n"
-                "\tRunning Count: {}\n"
-                "\tSuccess Count: {}\n"
-                "\tFailed Count: {}\n"
-                "\tUnknown Count: {}\n"
-                "\tFinished Count: {}\n"
-                "\tTotal Count: {}\n"
-                "\tFinished Count must equal: {}"
-            ).format(
-                action_obj.name,
-                running_count,
-                success_count,
-                failed_count,
-                unknown_count,
-                finished_count,
-                total_count,
-                passed_count,
-            )
-
-            if finished_count >= passed_count:
-                actionlog.info(progress)
-                finished = True
-                break
-
-            mylog.debug(progress)
-            time.sleep(1)
-
-        ret = {
-            'action_object': action_obj,
-            'action_results': rd,
-            'action_progress_human': progress,
-            'action_progress_map': as_map,
-        }
-
-        return ret
-
-    @pytan.utils.func_timing
-    def export_obj(self, obj, export_format, **kwargs):
+    def export_obj(self, obj, export_format='csv', **kwargs):
         """Exports a python API object to a given export format
 
         Parameters
         ----------
         obj : :class:`taniumpy.object_types.base.BaseType` or :class:`taniumpy.object_types.result_set.ResultSet`
             TaniumPy object to export
-        export_format : str
-            the number of servers that must equate "completed" in order for deploy action to be recognized as completed
+        export_format : str, optional
+            the format to export `obj` to, can be one of: csv, xml, json
         header_sort : list of str, bool, optional
             * for `export_format` csv and `obj` types :class:`taniumpy.object_types.base.BaseType` or :class:`taniumpy.object_types.result_set.ResultSet`
             * True: sort the headers automatically
@@ -1421,7 +1003,7 @@ class Handler(object):
             raise pytan.exceptions.HandlerError(err(objclassname))
         return result
 
-    def export_to_report_file(self, obj, export_format, **kwargs):
+    def export_to_report_file(self, obj, export_format='csv', **kwargs):
         """Exports a python API object to a file
 
         Parameters
@@ -1478,7 +1060,7 @@ class Handler(object):
                 type(obj).__name__, pytan.utils.get_now(), export_format,
             )
             m = "No report file name supplied, generated name: {!r}".format
-            mylog.debug(m(report_file))
+            self.mylog.debug(m(report_file))
 
         # try to get report_dir from the report_file
         report_dir = os.path.dirname(report_file)
@@ -1516,7 +1098,7 @@ class Handler(object):
             fd.write(result)
 
         m = "Report file {!r} written with {} bytes".format
-        mylog.info(m(report_path, len(result)))
+        self.mylog.info(m(report_path, len(result)))
         return report_path, result
 
     @pytan.utils.func_timing
@@ -1596,107 +1178,38 @@ class Handler(object):
         found = self._find(api_obj_all, **kwargs)
         return found
 
-    @pytan.utils.func_timing
-    def get_result_data(self, obj, aggregate=False, shrink=True, **kwargs):
-        """Get the result data for a python API object
-
-        This method issues a GetResultData command to the SOAP api for `obj`. GetResultData returns the columns and rows that are currently available for `obj`.
-
-        Parameters
-        ----------
-        obj : :class:`taniumpy.object_types.base.BaseType`
-            object to get result data for
-        aggregate : bool, optional
-            * False: get all the data
-            * True: get just the aggregate data (row counts of matches)
-        shrink : bool, optional
-            * True: Shrink the object down to just id/name/hash attributes (for smaller request)
-            * False: Use the full object as is
-
-        Returns
-        -------
-        rd : :class:`taniumpy.object_types.result_set.ResultSet`
-            The return of GetResultData for `obj`
-        """
-
-        """ note #1 from jwk:
-        For Action GetResultData:
-
-        You have to make a ResultInfo request at least once every 2 minutes.
-        The server gathers the result data by asking a saved question.
-        It won't re-issue the saved question unless you make a GetResultInfo
-        request. When you make a GetResultInfo request, if there is no
-        question that is less than 2 minutes old, the server will automatically
-        reissue a new question instance to make sure fresh data is available.
-
-        note #2 from jwk:
-         To get the aggregate data (without computer names),
-         set row_counts_only_flag = 1. To get the computer names,
-         use row_counts_only_flag = 0 (default).
-        """
-        if shrink:
-            shrunk_obj = pytan.utils.shrink_obj(obj)
-        else:
-            shrunk_obj = obj
-
-        # do a getresultdata
-        if aggregate:
-            rd = self.session.getResultData(shrunk_obj, row_counts_only_flag=1, **kwargs)
-        else:
-            rd = self.session.getResultData(shrunk_obj, **kwargs)
-        return rd
-
-    @pytan.utils.func_timing
-    def get_result_info(self, obj, shrink=True, **kwargs):
-        """Get the result info for a python API object
-
-        This method issues a GetResultInfo command to the SOAP api for `obj`. GetResultInfo returns information about how many servers have passed the `obj`, total number of servers, and so on.
-
-        Parameters
-        ----------
-        obj : :class:`taniumpy.object_types.base.BaseType`
-            object to get result data for
-        shrink : bool, optional
-            * True: Shrink the object down to just id/name/hash attributes (for smaller request)
-            * False: Use the full object as is
-
-        Returns
-        -------
-        ri : :class:`taniumpy.object_types.result_info.ResultInfo`
-            The return of GetResultData for `obj`
-        """
-        if shrink:
-            shrunk_obj = pytan.utils.shrink_obj(obj)
-        else:
-            shrunk_obj = obj
-
-        ri = self.session.getResultInfo(shrunk_obj, **kwargs)
-        return ri
-
-    def stop_action(self, id, **kwargs):
-        """Stop an action
-
-        Parameters
-        ----------
-        id : int
-            id of action to stop
-
-        Returns
-        -------
-        action_stop_obj : :class:`taniumpy.object_types.action_stop.ActionStop`
-            The object containing the ID of the action stop job
-        """
-        action_obj = self.get('action', id=id)[0]
-        add_action_stop_obj = taniumpy.ActionStop()
-        add_action_stop_obj.action = action_obj
-        action_stop_obj = self.session.add(add_action_stop_obj)
-        m = (
-            'Action stopped successfully, ID of action stop: {}'
-        ).format
-        mylog.debug(m(action_stop_obj.id))
-        return action_stop_obj
-
     # BEGIN PRIVATE METHODS
+    @pytan.utils.func_timing
+    def _add(self, api_object, **kwargs):
+        """Wrapper for interfacing with :func:`taniumpy.session.Session.add`"""
+        try:
+            search_str = '; '.join([str(x) for x in api_object])
+        except:
+            search_str = api_object
+        self.mylog.debug("Adding object {}".format(search_str))
+
+        if 'suppress_object_list' not in kwargs:
+            kwargs['suppress_object_list'] = 1
+
+        try:
+            added_obj = self.session.add(api_object, **kwargs)
+        except Exception as e:
+            self.mylog.error(e)
+            err = "Error while trying to add object {}!!".format
+            raise pytan.exceptions.HandlerError(err(search_str))
+
+        pytan.utils.log_session_communication(self)
+
+        try:
+            added_obj = self._find(added_obj)
+        except Exception as e:
+            self.mylog.error(e)
+            err = "Error while trying to find recently added object {}!!".format
+            raise pytan.exceptions.HandlerError(err(search_str))
+
+        self.mylog.debug("Added object {}".format(added_obj))
+        return added_obj
+
     @pytan.utils.func_timing
     def _find(self, api_object, **kwargs):
         """Wrapper for interfacing with :func:`taniumpy.session.Session.find`"""
@@ -1704,11 +1217,15 @@ class Handler(object):
             search_str = '; '.join([str(x) for x in api_object])
         except:
             search_str = api_object
-        mylog.debug("Searching for {}".format(search_str))
+        self.mylog.debug("Searching for {}".format(search_str))
+
+        if 'suppress_object_list' not in kwargs:
+            kwargs['suppress_object_list'] = 1
+
         try:
             found = self.session.find(api_object, **kwargs)
         except Exception as e:
-            mylog.error(e)
+            self.mylog.error(e)
             err = "No results found searching for {}!!".format
             raise pytan.exceptions.HandlerError(err(search_str))
 
@@ -1716,7 +1233,7 @@ class Handler(object):
             err = "No results found searching for {}!!".format
             raise pytan.exceptions.HandlerError(err(search_str))
 
-        mylog.debug("Found {}".format(found))
+        self.mylog.debug("Found {}".format(found))
         return found
 
     def _get_multi(self, obj_map, **kwargs):
@@ -1887,3 +1404,422 @@ class Handler(object):
             raise pytan.exceptions.HandlerError(err(obj))
         result = obj.toSOAPBody(**kwargs)
         return result
+
+    def _derive_server_version(self):
+        self.server_version = self.session.get_server_version()
+
+    @pytan.utils.func_timing
+    def _deploy_action(self, run=False, get_results=True, **kwargs):
+        """Deploy an action and get the results back
+
+        This method requires in-depth knowledge of how filters and options are created in the API, and as such is not meant for human consumption. Use :func:`deploy_action` instead.
+
+        Parameters
+        ----------
+        package_def : dict
+            definition that describes a package
+        action_filter_defs : str, dict, list of str or dict, optional
+            action filter definitions
+        action_option_defs : dict, list of dict, optional
+            action filter option definitions
+        start_seconds_from_now : int, optional
+            start action N seconds from now
+        expire_seconds : int, optional
+            expire action N seconds from now, will be derived from package if not supplied
+        run : bool, optional
+            * False: just ask the question that pertains to verify action, export the results to CSV, and raise pytan.exceptions.RunFalse -- does not deploy the action
+            * True: actually deploy the action
+        get_results : bool, optional
+            * True: wait for result completion after deploying action
+            * False: just deploy the action and return the object in `ret`
+
+        Returns
+        -------
+        ret : dict, containing:
+            * `action_object` : :class:`taniumpy.object_types.action.Action`
+            * `action_results` : :class:`taniumpy.object_types.result_set.ResultSet`
+            * `action_progress_human` : str, progress map in human form
+            * `action_progress_map` : dict, progress map in dictionary form
+            * `pre_action_question_results` : :class:`taniumpy.object_types.result_set.ResultSet`
+
+        Examples
+        --------
+        >>> # example of dict for `package_def`
+        >>> package_def = {'name': 'PackageName1', 'params':{'param1': 'value1'}}
+
+        >>> # example of str for `action_filter_defs`
+        >>> action_filter_defs = 'Sensor1'
+
+        >>> # example of dict for `action_filter_defs`
+        >>> action_filter_defs = {
+        ... 'name': 'Sensor1',
+        ...     'filter': {
+        ...         'operator': 'RegexMatch',
+        ...         'not_flag': 0,
+        ...         'value': '.*'
+        ...     },
+        ...     'options': {'and_flag': 1}
+        ... }
+
+        See Also
+        --------
+        :data:`pytan.constants.FILTER_MAPS` : valid filter dictionaries for filters
+        :data:`pytan.constants.OPTION_MAPS` : valid option dictionaries for options
+        """
+
+        # ARGUMENT PROCESSING!
+        action_filter_defs = pytan.utils.parse_defs(
+            defname='action_filter_defs',
+            deftypes=['list()', 'str()', 'dict()'],
+            strconv='name',
+            empty_ok=True,
+            **kwargs
+        )
+
+        action_option_defs = pytan.utils.parse_defs(
+            defname='action_option_defs',
+            deftypes=['dict()'],
+            empty_ok=True,
+            **kwargs
+        )
+
+        package_def = pytan.utils.parse_defs(
+            defname='package_def',
+            deftypes=['dict()'],
+            empty_ok=False,
+            **kwargs
+        )
+
+        start_seconds_from_now = pytan.utils.get_kwargs_int(
+            'start_seconds_from_now', 1, **kwargs
+        )
+
+        expire_seconds = pytan.utils.get_kwargs_int('expire_seconds', **kwargs)
+
+        comment_default = 'Created by PyTan v{}'.format(pytan.__version__)
+        issue_seconds_default = 0
+        distribute_seconds_default = 0
+
+        comment = kwargs.get('comment', comment_default)
+        issue_seconds = kwargs.get('issue_seconds', issue_seconds_default)
+        distribute_seconds = kwargs.get('distribute_seconds', distribute_seconds_default)
+
+        # do basic validation of our defs
+        pytan.utils.val_sensor_defs(action_filter_defs)
+        pytan.utils.val_package_def(package_def)
+
+        # get the objects that are in our defs and add them as
+        # d['sensor_obj'] / d['package_obj']
+        action_filter_defs = self._get_sensor_defs(action_filter_defs)
+        package_def = self._get_package_def(package_def)
+
+        """
+        ask the question that pertains to the action filter, save the result as CSV,
+        and raise a RunFalse exception
+
+        this will be used to get a count for how many servers should be seen
+        in the deploy action resultdata as 'completed'
+
+        We supply Computer Name and Online = True as the sensors if run is
+        False, then exit out after asking the question to allow the user
+        to verify the results by looking at the CSV file
+
+        The action filter for the deploy action is used as the question
+        filter
+
+        note from jwk: passed_count == the number of machines that pass the filter and
+        therefore the number that should take the action
+        """
+        if not run:
+            pre_action_sensors = ['Computer Name', 'Online, that =:True']
+            pre_action_sensor_defs = pytan.utils.dehumanize_sensors(pre_action_sensors)
+            pre_action_question = self._ask_manual(
+                sensor_defs=pre_action_sensor_defs,
+                question_filter_defs=action_filter_defs,
+                question_option_defs=action_option_defs,
+                hide_no_results_flag=1,
+            )
+
+            passed_count = pre_action_question['question_results'].passed
+            m = (
+                "Number of systems that match action filter (passed_count): {}"
+            ).format
+            self.mylog.debug(m(passed_count))
+
+            if passed_count == 0:
+                m = "Number of systems that match the action filters provided is zero!"
+                raise pytan.exceptions.HandlerError(m)
+
+            report_path, result = self.export_to_report_file(
+                pre_action_question['question_results'],
+                'csv',
+                prefix='VERIFY_BEFORE_DEPLOY_ACTION_',
+                **kwargs
+            )
+
+            m = (
+                "'Run' is not True!!\n"
+                "View and verify the contents of {} (length: {} bytes)\n"
+                "Re-run this deploy action with run=True after verifying"
+            ).format
+            raise pytan.exceptions.RunFalse(m(report_path, len(result)))
+
+        # BUILD THE OBJECT TO BE ADDED
+        param_objlist = pytan.utils.build_param_objlist(
+            obj=package_def['package_obj'],
+            user_params=package_def['params'],
+            delim='',
+            derive_def=False,
+            empty_ok=False,
+        )
+
+        '''Branch out logic for 6.2 vs 6.5 here:
+
+         * For 6.2:
+           * we need to add an Action object
+           * do not encapsulate it in a list object
+           * force a start time to be specified, if none is specified the action shows up as expired
+
+         * For 6.5:
+           * we need to add a SavedAction object
+           * the server creates the actual Action object for us
+           * to emulate what the console does, encapsulate the SavedAction in a SavedActionList
+           * start time does not need to be specified
+        '''
+        # if server_version is None / "Not yet determined!" try to fetch the version
+        if not self.server_version or self.server_version == "Not yet determined!":
+            self.server_version = self.session.get_server_version()
+
+        if self.server_version.startswith('6.2'):
+            objtype = taniumpy.Action
+            objlisttype = None
+            force_start_time = True
+        elif self.server_version.startswith('6.5'):
+            objtype = taniumpy.SavedAction
+            objlisttype = taniumpy.SavedActionList
+            force_start_time = False
+        # we will assume 6.2 if server_version is "Unable to determine"
+        elif self.server_version == "Unable to determine":
+            objtype = taniumpy.Action
+            objlisttype = None
+            force_start_time = True
+        # default to 6.5 logic for all unknowns
+        else:
+            objtype = taniumpy.SavedAction
+            objlisttype = taniumpy.SavedActionList
+            force_start_time = False
+
+        m = "DEPLOY_ACTION objtype: {}, objlisttype: {}, force_start_time: {}, version: {}".format
+        self.mylog.debug(m(objtype, objlisttype, force_start_time, self.server_version))
+
+        add_obj = objtype()
+        add_obj.package_spec = taniumpy.PackageSpec()
+        add_obj.id = -1
+        add_obj.name = "API Deploy {}".format(package_def['package_obj'].name)
+        add_obj.issue_seconds = issue_seconds
+        add_obj.distribute_seconds = distribute_seconds
+        add_obj.comment = comment
+        add_obj.status = 0
+        add_obj.start_time = ''
+        add_obj.end_time = ''
+        add_obj.public_flag = 0
+        add_obj.policy_flag = 0
+        add_obj.approved_flag = 0
+        add_obj.issue_count = 0
+
+        if param_objlist:
+            add_obj.package_spec.source_id = package_def['package_obj'].id
+            add_obj.package_spec.parameters = param_objlist
+        else:
+            add_obj.package_spec.id = package_def['package_obj'].id
+            add_obj.package_spec.name = package_def['package_obj'].name
+
+        if action_filter_defs or action_option_defs:
+            targetgroup_obj = pytan.utils.build_group_obj(action_filter_defs, action_option_defs)
+            add_obj.target_group = targetgroup_obj
+        else:
+            targetgroup_obj = None
+
+        if 'start_seconds_from_now' in kwargs:
+            add_obj.start_time = pytan.utils.seconds_from_now(start_seconds_from_now)
+
+        if force_start_time and not add_obj.start_time:
+            add_obj.start_time = pytan.utils.seconds_from_now(start_seconds_from_now)
+
+        if package_def['package_obj'].expire_seconds:
+            add_obj.expire_seconds = package_def['package_obj'].expire_seconds
+
+        if expire_seconds:
+            add_obj.expire_seconds = expire_seconds
+
+        if objlisttype:
+            add_objs = objlisttype()
+            add_objs.append(add_obj)
+            added_objs = self._add(add_objs)
+            added_obj = added_objs[0]
+
+            m = "DEPLOY_ACTION ADDED: {}, ID: {}".format
+            self.mylog.debug(m(added_obj.__class__.__name__, added_obj.id))
+
+            action_obj = self.get('action', id=added_obj.last_action.id)[0]
+        else:
+            added_obj = None
+            action_obj = self._add(add_obj)
+
+        m = "DEPLOY_ACTION ADDED: {}, ID: {}".format
+        self.mylog.debug(m(action_obj.__class__.__name__, action_obj.id))
+
+        action_info = self.get_result_info(action_obj)
+
+        m = "DEPLOY_ACTION ADDED: Question for Action Results, ID: {}".format
+        self.mylog.debug(m(action_info.question_id))
+
+        ret = {
+            'saved_action_object': added_obj,
+            'action_object': action_obj,
+            'package_object': package_def['package_obj'],
+            'group_object': targetgroup_obj,
+            'action_info': action_info,
+            'action_results': None,
+            'action_progress_human': None,
+            'action_progress_map': None,
+        }
+
+        '''
+        TODO
+        if get_results:
+            deploy_results = self.deploy_action_asker(
+                action_obj.id, passed_count
+            )
+            ret.update(deploy_results)
+            m = "Deploy Action Completed {}".format
+            self.mylog.debug(m(pytan.utils.seconds_from_now(0, '')))
+        '''
+
+        return ret
+
+    @pytan.utils.func_timing
+    def _ask_manual(self, get_results=True, **kwargs):
+        """Ask a manual question using definitions and get the results back
+
+        This method requires in-depth knowledge of how filters and options are created in the API,
+        and as such is not meant for human consumption. Use :func:`ask_manual` instead.
+
+        Parameters
+        ----------
+        sensor_defs : str, dict, list of str or dict
+            sensor definitions
+        question_filter_defs : dict, list of dict, optional
+            question filter definitions
+        question_option_defs : dict, list of dict, optional
+            question option definitions
+        get_results : bool, optional
+            * True: wait for result completion after asking question
+            * False: just ask the question and return it in `ret`
+
+        Returns
+        -------
+        ret : dict, containing:
+            * `question_object` : :class:`taniumpy.object_types.question.Question`
+            * `question_results` : :class:`taniumpy.object_types.result_set.ResultSet`
+
+        Examples
+        --------
+        >>> # example of str for sensor_defs
+        >>> sensor_defs = 'Sensor1'
+
+        >>> # example of dict for sensor_defs
+        >>> sensor_defs = {
+        ... 'name': 'Sensor1',
+        ...     'filter': {
+        ...         'operator': 'RegexMatch',
+        ...         'not_flag': 0,
+        ...         'value': '.*'
+        ...     },
+        ...     'params': {'key': 'value'},
+        ...     'options': {'and_flag': 1}
+        ... }
+
+        >>> # example of dict for question_filter_defs
+        >>> question_filter_defs = {
+        ...     'operator': 'RegexMatch',
+        ...     'not_flag': 0,
+        ...     'value': '.*'
+        ... }
+
+        See Also
+        --------
+        :data:`pytan.constants.FILTER_MAPS` : valid filter dictionaries for filters
+        :data:`pytan.constants.OPTION_MAPS` : valid option dictionaries for options
+        """
+
+        # get our defs from kwargs and churn them into what we want
+        sensor_defs = pytan.utils.parse_defs(
+            defname='sensor_defs',
+            deftypes=['list()', 'str()', 'dict()'],
+            strconv='name',
+            empty_ok=True,
+            **kwargs
+        )
+
+        q_filter_defs = pytan.utils.parse_defs(
+            defname='question_filter_defs',
+            deftypes=['list()', 'dict()'],
+            empty_ok=True,
+            **kwargs
+        )
+
+        q_option_defs = pytan.utils.parse_defs(
+            defname='question_option_defs',
+            deftypes=['dict()'],
+            empty_ok=True,
+            **kwargs
+        )
+
+        max_age_seconds = int(kwargs.get('max_age_seconds', 600))
+
+        # do basic validation of our defs
+        pytan.utils.val_sensor_defs(sensor_defs)
+        pytan.utils.val_q_filter_defs(q_filter_defs)
+
+        # get the sensor objects that are in our defs and add them as
+        # d['sensor_obj']
+        sensor_defs = self._get_sensor_defs(sensor_defs)
+        q_filter_defs = self._get_sensor_defs(q_filter_defs)
+
+        # build a SelectList object from our sensor_defs
+        selectlist_obj = pytan.utils.build_selectlist_obj(sensor_defs)
+
+        # build a Group object from our question filters/options
+        group_obj = pytan.utils.build_group_obj(q_filter_defs, q_option_defs)
+
+        # build a Question object from selectlist_obj and group_obj
+        add_obj = pytan.utils.build_manual_q(selectlist_obj, group_obj)
+
+        add_obj.max_age_seconds = max_age_seconds
+
+        # add our Question and get a Question ID back
+        added_obj = self._add(add_obj)
+
+        m = "Question Added, ID: {}, query text: {!r}, expires: {}".format
+        self.mylog.debug(m(added_obj.id, added_obj.query_text, added_obj.expiration))
+
+        ret = {
+            'question_object': added_obj,
+            'question_results': None,
+        }
+
+        if get_results:
+            # poll the Question ID returned above to wait for results
+            poller = pytan.pollers.QuestionPoller(self, added_obj, **kwargs)
+            poller.run(**kwargs)
+
+            # get the results
+            result = self.get_result_data(added_obj, **kwargs)
+
+            # add the sensors from this question to the ResultSet object
+            # for reporting
+            result.sensors = [x['sensor_obj'] for x in sensor_defs]
+            ret['question_results'] = result
+
+        return ret

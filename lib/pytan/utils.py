@@ -1430,7 +1430,7 @@ def load_param_json_file(parameters_json_file):
     return json.dumps(pd)
 
 
-def dehumanize_sensors(sensors, key='sensors', empty_ok=False):
+def dehumanize_sensors(sensors, key='sensors', empty_ok=True):
     """Turns a sensors str or list of str into a sensor definition
 
     Parameters
@@ -2655,6 +2655,7 @@ def get_taniumpy_obj(obj_map):
     return obj
 
 
+# TODO: deprecate
 def question_progress(asker, pct):
     """Call back method for :func:`taniumpy.question_asker.QuestionAsker.run` to report progress while waiting for results from a question
 
@@ -2795,24 +2796,6 @@ def xml_pretty_resultobj(x):
     x_find = x_parsed["result-object"]
     x_unparsed = xmltodict.unparse(x_find, pretty=True, indent='  ')
     return x_unparsed
-
-
-def get_dict_list_items(d, i):
-    """Gets keys from dict `d` if any item in list `i` is in the list value for each key
-
-    Parameters
-    ----------
-    d : dict of str : list
-        dict to get strs from if list contains any item from `i`
-    i : list of str
-        list of strs to check if for existence in any lists in `d`
-
-    Returns
-    -------
-    list : list of str
-        list of strings from `d` that have `i` in their values
-    """
-    return [x for x in d for y in i if y in d[x]]
 
 
 def get_dict_list_len(d, keys=[], negate=False):

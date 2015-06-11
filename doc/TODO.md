@@ -1,10 +1,19 @@
 # TODO NOW
   * [X] broken CR in folder name search regex match (SMALL) (limit in excel, 32k chars per cell)
+  * [X] clean up open file handles
+  * [X] add not a windows script to platform filters (Last Login has it)
+  * [X] add retry efforts to http_post
+  * [X] add stats method to session
+  * [X] make deploy action work for 6.5 AND 6.2
+  * [ ] make ActionPoller
+  * [ ] make SavedQuestionPoller
   * [ ] add secondary loop for if any data == current result unavail/etc (MEDIUM)
   * [ ] change get logic to use cache_filters instead of objectlist for object selection (HUGE)
-  * [X] clean up open file handles
   * [ ] winbin doc note re double quotes and using batch scripts instead of py scripts directly
-  * [X] add not a windows script to platform filters (Last Login has it)
+  * [ ] cache_results test: If you are adding tests for that mechanism you could make tests that verify it returns an error if you specify a cache that has expired and make sure that the results that come back don’t change.
+  * [ ] add antonio's notes
+  * [ ] add doc note re excel limit for cell
+  * [ ] add approve action 
 
 # TODO LATER
   * [?] Add method to get question progress (MEDIUM)
