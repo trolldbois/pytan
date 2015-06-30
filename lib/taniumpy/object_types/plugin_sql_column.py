@@ -1,5 +1,5 @@
 
-# Copyright (c) 2014 Tanium Inc
+# Copyright (c) 2015 Tanium Inc
 #
 # Generated from console.wsdl version 0.0.1     
 #
@@ -15,13 +15,13 @@ class PluginSqlColumn(BaseType):
     def __init__(self):
         BaseType.__init__(
             self,
-            simple_properties={'name': str},
+            simple_properties={},
             complex_properties={},
-            list_properties={},
+            list_properties={'name': str},
         )
-        self.name = None
         
         
+        self.name = []
 
 
 

@@ -1,5 +1,5 @@
 
-# Copyright (c) 2014 Tanium Inc
+# Copyright (c) 2015 Tanium Inc
 #
 # Generated from console.wsdl version 0.0.1     
 #
@@ -8,7 +8,7 @@
 from .base import BaseType
 
 
-class SystemSettingsList(BaseType):
+class SystemSettingList(BaseType):
 
     _soap_tag = 'system_settings'
 

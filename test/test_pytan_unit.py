@@ -11,7 +11,6 @@ sys.dont_write_bytecode = True
 
 import os
 import unittest
-import json
 
 my_file = os.path.abspath(sys.argv[0])
 my_dir = os.path.dirname(my_file)
@@ -28,22 +27,16 @@ import pytan
 import taniumpy
 from pytan import utils
 from pytan import constants
-from pytan.utils import HumanParserError
-from pytan.utils import DefinitionParserError
-from pytan.utils import HandlerError
+from pytan.exceptions import HumanParserError
+from pytan.exceptions import DefinitionParserError
+from pytan.exceptions import HandlerError
 
-# control the amount of output from unittests
-TESTVERBOSITY = 1
+# get our server connection info
+from API_INFO import SERVER_INFO
 
-# have unittest exit immediately on unexpected error
-FAILFAST = True
-
-# catch control-C to allow current test suite to finish (press 2x to force)
-CATCHBREAK = True
-
-# set logging for all logs in pytan to same level as TESTVERBOSITY
+# set logging for all logs in pytan to same level as loglevel
 utils.setup_console_logging()
-utils.set_log_levels(TESTVERBOSITY)
+utils.set_log_levels(SERVER_INFO["loglevel"])
 
 
 class TestDehumanizeSensorUtils(unittest.TestCase):
@@ -200,12 +193,12 @@ class TestDehumanizeSensorUtils(unittest.TestCase):
     def test_empty_args_str(self):
         e = "A string or list of strings must be supplied as 'sensors'!"
         with self.assertRaisesRegexp(HumanParserError, e):
-            utils.dehumanize_sensors('')
+            utils.dehumanize_sensors('', empty_ok=False)
 
     def test_empty_args_list(self):
         e = "A string or list of strings must be supplied as 'sensors'!"
         with self.assertRaisesRegexp(HumanParserError, e):
-            utils.dehumanize_sensors([])
+            utils.dehumanize_sensors([], empty_ok=False)
 
     def test_empty_args_dict(self):
         e = "A string or list of strings must be supplied as 'sensors'!"
@@ -1020,14 +1013,12 @@ class TestManualBuildObjectUtils(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls): # noqa
-        def load_sensor(n):
-            sensor_obj_json_path = os.path.join(my_dir, n)
-            sensor_obj_json = json.load(open(sensor_obj_json_path))
-            return taniumpy.BaseType.from_jsonable(sensor_obj_json)
-
         # load in our JSON sensor object for testing
-        cls.sensor_obj_with_params = load_sensor('sensor_obj_with_params.json')
-        cls.sensor_obj_no_params = load_sensor('sensor_obj_no_params.json')
+        f = os.path.join(my_dir, 'sensor_obj_with_params.json')
+        cls.sensor_obj_with_params = utils.load_taniumpy_from_json(f)
+
+        f = os.path.join(my_dir, 'sensor_obj_no_params.json')
+        cls.sensor_obj_no_params = utils.load_taniumpy_from_json(f)
 
     def test_build_selectlist_obj_noparamssensorobj_noparams(self):
         '''builds a selectlist object using a sensor obj with no params'''
@@ -1106,7 +1097,6 @@ class TestManualBuildObjectUtils(unittest.TestCase):
         kwargs = {'sensor_defs': sensor_defs}
 
         r = utils.build_selectlist_obj(**kwargs)
-        print r.to_json(r)
         self.assertIsInstance(r, taniumpy.SelectList)
         self.assertIsInstance(r.select[0], taniumpy.Select)
         self.assertEqual(len(r.select), 1)
@@ -1388,16 +1378,6 @@ class TestGenericUtils(unittest.TestCase):
         self.assertTrue(utils.empty_obj(obj))
         self.assertTrue(utils.empty_obj(''))
 
-    def test_ask_kwargs(self):
-        kwargs = {'timeout': 2, 'other': 4, 'row_start': 5}
-        ask_kwargs = utils.get_ask_kwargs(**kwargs)
-        self.assertEqual(ask_kwargs, {'timeout': 2})
-
-    def test_req_kwargs(self):
-        kwargs = {'timeout': 2, 'other': 4, 'row_start': 5}
-        req_kwargs = utils.get_req_kwargs(**kwargs)
-        self.assertEqual(req_kwargs, {'row_start': 5})
-
     def test_get_q_obj_map(self):
         qtype = 'saved'
         self.assertEqual(utils.get_q_obj_map(qtype), {'handler': 'ask_saved'})
@@ -1405,9 +1385,9 @@ class TestGenericUtils(unittest.TestCase):
         qtype = 'manual'
         self.assertEqual(utils.get_q_obj_map(qtype), {'handler': 'ask_manual'})
 
-        qtype = 'manual_human'
+        qtype = '_manual'
         self.assertEqual(
-            utils.get_q_obj_map(qtype), {'handler': 'ask_manual_human'})
+            utils.get_q_obj_map(qtype), {'handler': '_ask_manual'})
 
         qtype = ''
         e = (
@@ -1422,6 +1402,31 @@ class TestGenericUtils(unittest.TestCase):
         )
         with self.assertRaisesRegexp(HandlerError, e):
             utils.get_q_obj_map(qtype)
+
+    def test_load_taniumpy_file_invalid_file(self):
+        f = 'invalid_file.1234'
+        with self.assertRaises(HandlerError):
+            utils.load_taniumpy_from_json(f)
+
+    def test_load_taniumpy_file_invalid_json(self):
+        f = os.path.join(root_dir, 'doc/example_of_all_package_parameters.json')
+        with self.assertRaises(HandlerError):
+            utils.load_taniumpy_from_json(f)
+
+    def test_load_param_file_valid(self):
+        f = os.path.join(root_dir, 'doc/example_of_all_package_parameters.json')
+        z = utils.load_param_json_file(f)
+        self.assertIn('ParametersArray', z)
+
+    def test_load_param_file_invalid_file(self):
+        f = 'invalid_file.1234'
+        with self.assertRaises(HandlerError):
+            utils.load_param_json_file(f)
+
+    def test_load_param_file_invalid_json(self):
+        f = os.path.join(my_dir, 'sensor_obj_no_params.json')
+        with self.assertRaises(HandlerError):
+            utils.load_param_json_file(f)
 
     def test_get_obj_map(self):
         obj = 'sensor'
@@ -1447,24 +1452,55 @@ class TestGenericUtils(unittest.TestCase):
 class TestDeserializeBadXML(unittest.TestCase):
     def test_bad_chars_basetype(self):
         a = open(os.path.join(my_dir, 'bad_chars_basetype.xml'), 'rb+').read()
-        b = pytan.taniumpy.session.xml_fix(a)
+        s = pytan.taniumpy.Session('NONE')
+        b = s._xml_fix(a)
         c = pytan.taniumpy.BaseType.fromSOAPBody(b)
         self.assertTrue(c)
         self.assertIsInstance(c, taniumpy.SystemStatusList)
 
     def test_bad_chars_resultset(self):
         a = open(os.path.join(my_dir, 'bad_chars_resultset.xml'), 'rb+').read()
-        b = pytan.taniumpy.session.xml_fix(a)
+        s = pytan.taniumpy.Session('NONE')
+        b = s._xml_fix(a)
         el = pytan.taniumpy.session.ET.fromstring(b)
         cdata = el.find('.//ResultXML')
-        rd = pytan.taniumpy.session.ET.fromstring(pytan.taniumpy.session.xml_fix(cdata.text))
+        rd = pytan.taniumpy.session.ET.fromstring(s._xml_fix(cdata.text))
         c = pytan.taniumpy.ResultSet.fromSOAPElement(rd)
         self.assertTrue(c)
         self.assertIsInstance(c, taniumpy.ResultSet)
 
+'''
+# debug path for checking open file handles, ensuring
+import atexit
+
+
+@atexit.register
+def get_open_fds():
+    import subprocess
+    import os
+
+    pid = os.getpid()
+    procs = subprocess.check_output(["lsof", '-w', "-p", str(pid)])
+    print procs
+
+    procs = subprocess.check_output(["lsof", '-w', '-Ff', "-p", str(pid)])
+
+    proc_defs = filter(
+        lambda s: s and s[0] == 'f' and s[1:].isdigit(),
+        procs.split('\n')
+    )
+
+    nprocs = len(proc_defs)
+    print "{} number of open FDs".format(nprocs)
+    for p in proc_defs:
+        print p
+    return nprocs
+'''
 
 if __name__ == "__main__":
     unittest.main(
-        verbosity=TESTVERBOSITY,
-        failfast=FAILFAST,
-        catchbreak=CATCHBREAK)
+        verbosity=SERVER_INFO["testlevel"],
+        failfast=SERVER_INFO["FAILFAST"],
+        catchbreak=SERVER_INFO["CATCHBREAK"],
+        buffer=SERVER_INFO["BUFFER"],
+    )

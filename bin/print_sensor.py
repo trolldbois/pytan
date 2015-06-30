@@ -132,6 +132,7 @@ if __name__ == "__main__":
             if q.script
             and 'THIS IS A STUB' not in q.script
             and 'echo Windows Only' not in q.script
+            and 'Not a Windows Sensor' not in q.script
         ]
 
         if args.platforms:

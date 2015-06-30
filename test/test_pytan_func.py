@@ -6,6 +6,16 @@ These functional tests require a connection to a Tanium server in order to run.
 The connection info is pulled from the SERVER_INFO dictionary in test/API_INFO.py.
 
 These tests all use :mod:`ddt`, a package that provides for data driven tests via JSON files.
+UNFAIL:
+ - deploy action against 6.5
+ - add get_version to handler
+ - test breaking system with session stuff
+ - add unit tests for logout()
+  - add unit tests for auth with session
+  - add unit tests for sessions_lib
+result = handler.ask_manual(sensors='Computer Name', question_filters='Custom Tags, that !=:TestTag1', question_options=['and', 'match_all_values'])
+        make logs print out whether using defaultsession or not
+
 """
 import sys
 
@@ -17,6 +27,8 @@ import glob
 import unittest
 import copy
 import json  # noqa
+import csv
+import StringIO
 
 my_file = os.path.abspath(sys.argv[0])
 my_dir = os.path.dirname(my_file)
@@ -37,21 +49,19 @@ import threaded_http
 # get our server connection info
 from API_INFO import SERVER_INFO
 
-# control the amount of output from unittests
-TESTVERBOSITY = 2
-
-# have unittest exit immediately on unexpected error
-FAILFAST = True
-
-# catch control-C to allow current test suite to finish (press 2x to force)
-CATCHBREAK = True
-
 # where the output files from the tests will be stored
 TEST_OUT = os.path.join(my_dir, 'TEST_OUT')
 
 
+def chew_csv(c):
+    i = StringIO.StringIO(c)
+    r = csv.reader(i)
+    l = list(r)
+    return l
+
+
 def spew(m):
-    if TESTVERBOSITY == 2:
+    if SERVER_INFO["testlevel"] >= 3:
         print (m)
 
 
@@ -60,9 +70,7 @@ class InvalidServerTests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls): # noqa
-        cls.__http = threaded_http.threaded_http(
-            port=4433, verbosity=TESTVERBOSITY
-        )
+        cls.__http = threaded_http.threaded_http(port=4433, verbosity=SERVER_INFO["testlevel"])
 
     @ddt.file_data('ddt/ddt_invalid_connects.json')
     def test_invalid_connect(self, value):
@@ -75,8 +83,7 @@ class InvalidServerTests(unittest.TestCase):
         mykwargs.update(args)
 
         spew("")
-        spew("+++ TESTING EXPECTED FAILURE Handler() with kwargs %s" % (
-            mykwargs))
+        spew("+++ TESTING EXPECTED FAILURE Handler() with kwargs %s" % (mykwargs))
         with self.assertRaisesRegexp(exc, e):
             pytan.Handler(**mykwargs)
 
@@ -109,7 +116,7 @@ class ValidServerTests(unittest.TestCase):
 
         # ask questions for export tests
         kwargs = {
-            'qtype': 'manual_human',
+            'qtype': 'manual',
             'sensors': [
                 "Computer Name", "IP Route Details", "IP Address",
                 'Folder Name Search with RegEx Match{dirname=Program Files,regex=.*Shared.*}',
@@ -144,9 +151,11 @@ class ValidServerTests(unittest.TestCase):
         spew(s('export_obj', kwargs))
 
         export_str = handler.export_obj(**kwargs)
-        print export_str.splitlines()
+
         self.assertTrue(export_str)
         self.assertIsInstance(export_str, (str, unicode))
+        export_str_list = chew_csv(export_str)
+        spew(export_str_list[0])
         for x in tests:
             spew("+++ EVAL TEST: %s" % x)
             self.assertTrue(eval(x))
@@ -191,14 +200,19 @@ class ValidServerTests(unittest.TestCase):
 
         ret = getattr(handler, method)(**args)
         self.assertIsInstance(ret['action_object'], taniumpy.Action)
+        self.assertIsInstance(ret['saved_action_object'], (taniumpy.SavedAction, type(None)))
+        self.assertIsInstance(ret['package_object'], taniumpy.PackageSpec)
+        self.assertIsInstance(ret['group_object'], (taniumpy.Group, type(None)))
+        self.assertIsInstance(ret['action_info'], taniumpy.object_types.result_info.ResultInfo)
+        self.assertIsInstance(ret['poller_object'], pytan.pollers.ActionPoller)
+
         get_results = args.get('get_results', True)
         if get_results:
-            self.assertTrue(ret['pre_action_question_results'])
-            self.assertIsInstance(ret['action_results'], taniumpy.ResultSet)
-            self.assertTrue(ret['action_progress_human'])
-            self.assertTrue(ret['action_progress_map'])
+            self.assertIsInstance(ret['action_results'], taniumpy.object_types.result_set.ResultSet)
             self.assertGreaterEqual(len(ret['action_results'].rows), 1)
             self.assertGreaterEqual(len(ret['action_results'].columns), 1)
+            self.assertTrue(ret['action_result_map'])
+            self.assertIsNotNone(ret['poller_success'])
             for ft in pytan.constants.EXPORT_MAPS['ResultSet'].keys():
                 report_file, result = handler.export_to_report_file(
                     obj=ret['action_results'],
@@ -294,12 +308,12 @@ class ValidServerTests(unittest.TestCase):
         spew(s(method, args))
 
         ret = getattr(handler, method)(**args)
-        self.assertIsInstance(
-            ret['question_object'],
-            (taniumpy.Question, taniumpy.SavedQuestion)
-        )
+        self.assertIsInstance(ret['question_object'], taniumpy.Question)
+        self.assertIsInstance(ret['poller_object'], pytan.pollers.QuestionPoller)
+
         get_results = args.get('get_results', True)
         if get_results:
+            self.assertIsNotNone(ret['poller_success'])
             self.assertIsInstance(ret['question_results'], taniumpy.ResultSet)
             self.assertGreaterEqual(len(ret['question_results'].rows), 1)
             self.assertGreaterEqual(len(ret['question_results'].columns), 1)
@@ -314,6 +328,38 @@ class ValidServerTests(unittest.TestCase):
                 self.assertTrue(result)
                 self.assertTrue(os.path.isfile(report_file))
                 self.assertGreaterEqual(len(result), 10)
+
+    @ddt.file_data('ddt/ddt_valid_saved_questions.json')
+    def test_valid_saved_question(self, value):
+        handler = self.setup_test()
+
+        method = value['method']
+        args = value['args']
+
+        s = (
+            "+++ TESTING EXPECTED SAVED QUESTION SUCCESS Handler.{}() with kwargs {}"
+        ).format
+        spew(s(method, args))
+
+        ret = getattr(handler, method)(**args)
+        self.assertIsInstance(ret['saved_question_object'], taniumpy.SavedQuestion)
+        self.assertIsInstance(ret['question_object'], taniumpy.Question)
+        self.assertIsInstance(ret['poller_object'], (pytan.pollers.QuestionPoller, type(None)))
+        self.assertIsInstance(ret['poller_success'], (type(None), type(True)))
+        self.assertIsInstance(ret['question_results'], taniumpy.ResultSet)
+        self.assertGreaterEqual(len(ret['question_results'].rows), 1)
+        self.assertGreaterEqual(len(ret['question_results'].columns), 1)
+        for ft in pytan.constants.EXPORT_MAPS['ResultSet'].keys():
+            report_file, result = handler.export_to_report_file(
+                obj=ret['question_results'],
+                export_format=ft,
+                report_dir=TEST_OUT,
+                prefix=sys._getframe().f_code.co_name + '_',
+            )
+            self.assertTrue(report_file)
+            self.assertTrue(result)
+            self.assertTrue(os.path.isfile(report_file))
+            self.assertGreaterEqual(len(result), 10)
 
     @ddt.file_data('ddt/ddt_valid_get_object.json')
     def test_valid_get_object(self, value):
@@ -474,6 +520,33 @@ class ValidServerTests(unittest.TestCase):
         with self.assertRaisesRegexp(exc, e):
             handler.export_obj(**kwargs)
 
+'''
+# debug path for checking open file handles, ensuring
+import atexit
+
+
+@atexit.register
+def get_open_fds():
+    import subprocess
+    import os
+
+    pid = os.getpid()
+    procs = subprocess.check_output(["lsof", '-w', "-p", str(pid)])
+    print procs
+
+    procs = subprocess.check_output(["lsof", '-w', '-Ff', "-p", str(pid)])
+
+    proc_defs = filter(
+        lambda s: s and s[0] == 'f' and s[1:].isdigit(),
+        procs.split('\n')
+    )
+
+    nprocs = len(proc_defs)
+    print "{} number of open FDs".format(nprocs)
+    for p in proc_defs:
+        print p
+    return nprocs
+'''
 
 if __name__ == "__main__":
 
@@ -486,6 +559,8 @@ if __name__ == "__main__":
         [os.unlink(x) for x in test_files]
 
     unittest.main(
-        verbosity=TESTVERBOSITY,
-        failfast=FAILFAST,
-        catchbreak=CATCHBREAK)
+        verbosity=SERVER_INFO["testlevel"],
+        failfast=SERVER_INFO["FAILFAST"],
+        catchbreak=SERVER_INFO["CATCHBREAK"],
+        buffer=SERVER_INFO["BUFFER"],
+    )

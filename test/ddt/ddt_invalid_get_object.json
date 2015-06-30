@@ -7,7 +7,7 @@
             "objtype": "action",
             "name": "Distribute Tanium Standard Utilities"
         },
-        "exception": "pytan.utils.HandlerError",
+        "exception": "pytan.exceptions.HandlerError",
         "error_str": "Getting a action requires at least one filter.*"
     },
     "invalid_get_question_by_name": {
@@ -18,7 +18,7 @@
             "objtype": "question",
             "name": "dweedle"
         },
-        "exception": "pytan.utils.HandlerError",
+        "exception": "pytan.exceptions.HandlerError",
         "error_str": "Getting a question requires at least one filter.*"
     }
 }

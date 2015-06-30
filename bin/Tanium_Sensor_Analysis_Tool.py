@@ -94,6 +94,7 @@ def filter_sensors(sensors, platforms, categories):
             if q.script
             and 'THIS IS A STUB' not in q.script
             and 'echo Windows Only' not in q.script
+            and 'Not a Windows Sensor' not in q.script
         ]
 
         if platforms:
@@ -256,12 +257,56 @@ if __name__ == "__main__":
         dest='timeout',
         help='How many seconds to wait before a question times out',
     )
+    arggroup.add_argument(
+        '-f',
+        '--filter',
+        required=False,
+        action='append',
+        default=[],
+        dest='question_filters',
+        help='Whole question filter; pass --filters-help to get a full description',
+    )
+    arggroup.add_argument(
+        '-o',
+        '--option',
+        required=False,
+        action='append',
+        default=[],
+        dest='question_options',
+        help='Whole question option; pass --options-help to get a full description',
+    )
+
+    arggroup.add_argument(
+        '--sensors-help',
+        required=False,
+        action='store_true',
+        default=False,
+        dest='sensors_help',
+        help='Get the full help for sensor strings',
+    )
+
+    arggroup.add_argument(
+        '--filters-help',
+        required=False,
+        action='store_true',
+        default=False,
+        dest='filters_help',
+        help='Get the full help for filters strings',
+    )
+
+    arggroup.add_argument(
+        '--options-help',
+        required=False,
+        action='store_true',
+        default=False,
+        dest='options_help',
+        help='Get the full help for options strings',
+    )
 
     '''
     later:
         file with params to pass for paramaretrized sensors
         saved questions
-        filters
     '''
 
     args = parser.parse_args()
@@ -285,6 +330,14 @@ if __name__ == "__main__":
         mylog.setLevel(logging.DEBUG)
     else:
         mylog.setLevel(logging.INFO)
+
+    if any([args.sensors_help, args.filters_help, args.options_help]):
+        handler.ask_manual_human(
+            sensors_help=args.sensors_help,
+            filters_help=args.filters_help,
+            options_help=args.options_help,
+        )
+        sys.exit(99)
 
     if not os.path.exists(args.report_dir):
         os.makedirs(args.report_dir)
@@ -343,6 +396,8 @@ if __name__ == "__main__":
                 sensors=sensor.name,
                 timeout=args.timeout,
                 pct_complete_threshold=args.pct_complete_threshold,
+                question_filters=args.question_filters,
+                question_options=args.question_options,
             )
         except taniumpy.question_asker.QuestionTimeoutException:
             m = "!! Question failed to complete due to timeout (timeout is {} seconds)".format(

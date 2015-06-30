@@ -23,6 +23,8 @@ for aa in path_adds:
         sys.path.append(aa)
 
 import pytan
+import taniumpy # noqa
+import taniumpy as api # noqa
 from pytan import utils
 from pytan import constants  # noqa
 
@@ -32,6 +34,11 @@ import os
 import sys
 import pprint
 import code
+from datetime import datetime
+import logging
+import time  # noqa
+import json  # noqa
+import traceback
 
 try:
     import readline
@@ -40,6 +47,17 @@ except:
     pass
 
 sys.dont_write_bytecode = True
+
+
+def timing(c):
+    t_start = datetime.now()
+    r = eval(c)
+    t_end = datetime.now()
+    t_elapsed = t_end - t_start
+
+    m = "Timing info for {} -- START: {}, END: {}, ELAPSED: {}, RESPONSE LEN: {}".format
+    logging.info(m(c, t_start, t_end, t_elapsed, len(r)))
+    return (c, r, t_start, t_end, t_elapsed)
 
 
 def debug_list(debuglist):
@@ -97,19 +115,23 @@ class HistoryConsole(code.InteractiveConsole):
 
     @staticmethod
     def save_history(histfile):
-        readline.write_history_file(histfile)
+        try:
+            readline.write_history_file(histfile)
+        except:
+            pass
 
 
 def process_handler_args(parser, all_args):
+    my_args = dict(all_args)
     handler_grp_names = ['Handler Authentication', 'Handler Options']
     handler_opts = utils.get_grp_opts(parser, handler_grp_names)
-    handler_args = {k: all_args.pop(k) for k in handler_opts}
-
+    handler_args = {k: my_args.pop(k) for k in handler_opts}
+    # handler_args['session_lib'] = 'httplib'
     try:
         h = pytan.Handler(**handler_args)
         print str(h)
-    except Exception as e:
-        print e
+    except Exception:
+        traceback.print_exc()
         sys.exit(99)
     return h
 
@@ -168,6 +190,17 @@ def create_get_pkg(handler, pkg_name, pkg_opts):
     print m(pkg_name)
     return p
 
+
+def get_rdattr(rd, a):
+    try:
+        k = getattr(rd, a)
+    except:
+        k = None
+    if type(k) in [list, tuple]:
+        k = len(k)
+    return k
+
+
 if __name__ == "__main__":
 
     console = HistoryConsole()
@@ -193,6 +226,5 @@ if __name__ == "__main__":
         all_args['host'] = host.strip()
 
     handler = process_handler_args(parser, all_args)
-
-    if handler.loglevel >= 10:
-        utils.set_all_loglevels()
+    session = handler.session
+    self = handler

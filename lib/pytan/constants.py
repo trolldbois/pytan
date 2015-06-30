@@ -32,32 +32,97 @@ Logging format for debugformat=False
 LOG_LEVEL_MAPS = [
     (
         0,
-        {
-            'handler': 'WARN',
-            'question_progress': 'WARN',
-            'action_progress': 'WARN',
-            'ask_manual': 'WARN',
-            'ask_manual_human': 'WARN',
-            'api.session': 'WARN',
-            'api.session.auth': 'WARN',
-            'api.session.http': 'WARN',
-            'api.session.http.body': 'WARN',
-        }
+        {},
+        'Sets all loggers to only output at WARNING or above.',
     ),
-    (1, {'question_progress': 'INFO', 'action_progress': 'INFO'}),
-    (2, {'handler': 'INFO'}),
-    (3, {'handler': 'DEBUG'}),
-    (4, {'ask_manual': 'DEBUG'}),
-    (5, {'ask_manual_human': 'DEBUG'}),
-    (7, {'api.session': 'DEBUG'}),
-    (8, {'api.session.auth': 'DEBUG'}),
-    (9, {'api.session.http': 'DEBUG'}),
-    (10, {'api.session.http.body': 'DEBUG'}),
+    (
+        1,
+        {
+            'pytan.handler.QuestionPoller': 'INFO',
+            'pytan.handler.QuestionPoller.progress': 'INFO',
+            'pytan.handler.ActionPoller': 'INFO',
+            'pytan.handler.ActionPoller.progress': 'INFO',
+        },
+        'Pytan poller loggers show output at INFO or above',
+    ),
+    (
+        2,
+        {
+            'pytan.handler': 'INFO',
+            'pytan.handler.QuestionPoller': 'DEBUG',
+            'pytan.handler.QuestionPoller.progress': 'DEBUG',
+            'pytan.handler.ActionPoller': 'DEBUG',
+            'pytan.handler.ActionPoller.progress': 'DEBUG',
+        },
+        'Pytan handler logger show output at INFO or above and poller logs at DEBUG or above',
+    ),
+    (
+        3,
+        {'pytan.handler': 'DEBUG'},
+        'Pytan handler logger show output at DEBUG or above',
+    ),
+    (
+        4,
+        {'pytan.handler.ask_manual': 'DEBUG'},
+        'Pytan ask manual logger show output at DEBUG or above',
+    ),
+    (
+        5,
+        {'pytan.handler.ask_manual_human': 'DEBUG'},
+        'Pytan ask manual human logger show output at DEBUG or above',
+    ),
+    (
+        6,
+        {'pytan.handler.timing': 'DEBUG'},
+        'Pytan timing logger show output at DEBUG or above',
+    ),
+    (
+        7,
+        {
+            'api.session': 'DEBUG',
+            'pytan.handler.RequestsSession': 'DEBUG',
+            'pytan.handler.HttplibSession': 'DEBUG',
+        },
+        'Taniumpy session loggers show output at DEBUG or above',
+    ),
+    (
+        8,
+        {
+            'api.session.auth': 'DEBUG',
+            'pytan.handler.RequestsSession.auth': 'DEBUG',
+            'pytan.handler.HttplibSession.auth': 'DEBUG',
+        },
+        'Taniumpy session authentication loggers show output at DEBUG or above',
+    ),
+    (
+        9,
+        {
+            'api.session.http': 'DEBUG',
+            'pytan.handler.RequestsSession.http': 'DEBUG',
+            'pytan.handler.HttplibSession.http': 'DEBUG',
+        },
+        'Taniumpy session http loggers show output at DEBUG or above',
+    ),
+    (
+        10,
+        {'pytan.handler.prettybody': 'DEBUG'},
+        'Pytan handler pretty XML body loggers show output at DEBUG or above',
+    ),
+    (
+        11,
+        {
+            'api.session.http.body': 'DEBUG',
+            'pytan.handler.RequestsSession.body': 'DEBUG',
+            'pytan.handler.HttplibSession.http.body': 'DEBUG',
+        },
+        'Taniumpy session http request and response body loggers show output at DEBUG or above',
+    ),
 ]
 """
 Map for loglevel(int) -> logger -> logger level(logging.INFO|WARN|DEBUG|...). Higher loglevels will include all levels up to and including that level. Contains a list of tuples, each tuple consisting of:
     * int, loglevel
     * dict, `{{logger_name: logger_level}}` for this loglevel
+    * str, description of this loglevel
 """
 
 SENSOR_TYPE_MAP = {
@@ -165,8 +230,8 @@ GET_OBJ_MAP = {
     },
     'setting': {
         'single': 'SystemSetting',
-        'multi': 'SystemSettingsList',
-        'all': 'SystemSettingsList',
+        'multi': 'SystemSettingList',
+        'all': 'SystemSettingList',
         'search': ['id', 'name'],
         'manual': True,
         'delete': False,
@@ -218,8 +283,8 @@ Q_OBJ_MAP = {
     'manual': {
         'handler': 'ask_manual',
     },
-    'manual_human': {
-        'handler': 'ask_manual_human',
+    '_manual': {
+        'handler': '_ask_manual',
     },
 }
 """
@@ -360,7 +425,7 @@ FILTER_MAPS = [
             '!=', 'not equal', 'notequal', 'not equals', 'notequals', 'ne',
         ],
         'operator': 'Equal',
-        'not_flag': 0,
+        'not_flag': 1,
         'help': "Filter for not equals to VALUE",
     },
     {
@@ -481,7 +546,7 @@ OPTION_MAPS = [
         'human': 'value_type',
         'attr': 'value_type',
         'human_type': 'value_type',
-        'valid_values': 'constants.SENSOR_TYPE_MAP.values()',
+        'valid_values': 'pytan.constants.SENSOR_TYPE_MAP.values()',
         'destination': 'filter',
         'valid_type': str,
         'help': "Make the filter consider the value type as VALUE_TYPE",
@@ -586,29 +651,7 @@ Maps a given TaniumPy object to the list of supported export formats for each ob
     * valid_list_types: the valid python types in str format that are allowed to be passed in a list, if list is one of the `valid_types`
 """
 
-ACTION_RESULT_STATUS = {
-    "Waiting.": ['running'],
-    "Downloading.": ['running'],
-    "Copying.": ['running'],
-    "Running.": ['running'],
-    "Stopped.": ['failed', 'done'],
-    "Completed.": ['verify_running', 'no_verify_done', 'no_verify_success'],
-    "PendingVerification.": ['running'],
-    "Failed.": ['failed', 'done'],
-    "NotSucceeded.": ['failed', 'done'],
-    "Expired.": ['failed', 'done'],
-    "Verified.": ['no_verify_done', 'verify_done', 'verify_success'],
-    "Succeeded.": ['done'],
-}
+TIME_FORMAT = '%Y-%m-%dT%H:%M:%S'
 """
-Maps a deploy action result status to it's respective end states.
-"""
-
-ASK_KWARGS = [
-    'timeout',
-    'polling_interval',
-    'pct_complete_threshold',
-]
-"""
-A list of arguments that will be passed on to the question asker/poller :class:`taniumpy.question_asker.QuestionAsker`
+Tanium's format for date time strings
 """

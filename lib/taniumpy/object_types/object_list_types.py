@@ -45,7 +45,7 @@ from parse_result import ParseResult
 from parse_result_group import ParseResultGroup
 from parse_result_group_list import ParseResultGroupList
 from parse_result_list import ParseResultList
-from user_permissions import UserPermissions
+from permission_list import PermissionList
 from plugin import Plugin
 from plugin_schedule import PluginSchedule
 from plugin_schedule_list import PluginScheduleList
@@ -71,11 +71,11 @@ from sensor_list import SensorList
 from soap_error import SoapError
 from plugin_sql import PluginSql
 from package_file_status import PackageFileStatus
-from sensor_string_hints import SensorStringHints
+from string_hint_list import StringHintList
 from sensor_subcolumn import SensorSubcolumn
 from sensor_subcolumn_list import SensorSubcolumnList
 from system_setting import SystemSetting
-from system_settings_list import SystemSettingsList
+from system_setting_list import SystemSettingList
 from system_status_list import SystemStatusList
 from upload_file import UploadFile
 from upload_file_status import UploadFileStatus
@@ -135,7 +135,7 @@ OBJECT_LIST_TYPES = {
 	'parse_result_group': ParseResultGroup,
 	'parse_result_groups': ParseResultGroupList,
 	'parse_results': ParseResultList,
-	'permissions': UserPermissions,
+	'permissions': PermissionList,
 	'plugin': Plugin,
 	'plugin_schedule': PluginSchedule,
 	'plugin_schedules': PluginScheduleList,
@@ -161,11 +161,11 @@ OBJECT_LIST_TYPES = {
 	'soap_error': SoapError,
 	'sql_response': PluginSql,
 	'status': PackageFileStatus,
-	'string_hints': SensorStringHints,
+	'string_hints': StringHintList,
 	'subcolumn': SensorSubcolumn,
 	'subcolumns': SensorSubcolumnList,
 	'system_setting': SystemSetting,
-	'system_settings': SystemSettingsList,
+	'system_settings': SystemSettingList,
 	'system_status': SystemStatusList,
 	'upload_file': UploadFile,
 	'upload_file_status': UploadFileStatus,

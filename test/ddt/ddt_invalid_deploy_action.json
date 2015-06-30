@@ -1,75 +1,75 @@
 {
     "invalid_deploy_action_package_help": {
-        "desc": "Have deploy_action_human() return the help for package",
+        "desc": "Have deploy_action() return the help for package",
         "priority": "1",
-        "method": "deploy_action_human",
+        "method": "deploy_action",
         "args": {
             "package_help": true
         },
-        "exception": "pytan.utils.PytanHelp",
+        "exception": "pytan.exceptions.PytanHelp",
         "error_str": ".*Help.*"
     },
     "invalid_deploy_action_filters_help": {
-        "desc": "Have deploy_action_human() return the help for filters",
+        "desc": "Have deploy_action() return the help for filters",
         "priority": "1",
-        "method": "deploy_action_human",
+        "method": "deploy_action",
         "args": {
             "filters_help": true
         },
-        "exception": "pytan.utils.PytanHelp",
+        "exception": "pytan.exceptions.PytanHelp",
         "error_str": ".*Help.*"
     },
     "invalid_deploy_action_options_help": {
-        "desc": "Have deploy_action_human() return the help for options",
+        "desc": "Have deploy_action() return the help for options",
         "priority": "1",
-        "method": "deploy_action_human",
+        "method": "deploy_action",
         "args": {
             "options_help": true
         },
-        "exception": "pytan.utils.PytanHelp",
+        "exception": "pytan.exceptions.PytanHelp",
         "error_str": ".*Help.*"
     },
     "invalid_deploy_action_run_false": {
         "desc": "Deploy an action without run=True, which will only run the pre-deploy action question that matches action_filters, export the results to a file, and raise a RunFalse exception",
         "priority": "1",
-        "method": "deploy_action_human",
+        "method": "deploy_action",
         "args": {
             "package": "Distribute Tanium Standard Utilities"
         },
-        "exception": "pytan.utils.RunFalse",
+        "exception": "pytan.exceptions.RunFalse",
         "error_str": ".*'Run' is not True.*"
     },
     "invalid_deploy_action_missing_parameters": {
         "desc": "Deploy an action using a package that requires parameters but do not supply any parameters.",
         "priority": "1",
-        "method": "deploy_action_human",
+        "method": "deploy_action",
         "args": {
             "package": "Custom Tagging - Add Tags",
             "run": true
         },
-        "exception": "pytan.utils.HandlerError",
+        "exception": "pytan.exceptions.HandlerError",
         "error_str": "parameter key.*requires a value, parameter definition"
     },
     "invalid_deploy_action_empty_package": {
         "desc": "Deploy an action using an empty package string.",
         "priority": "1",
-        "method": "deploy_action_human",
+        "method": "deploy_action",
         "args": {
             "package": "",
             "run": true
         },
-        "exception": "pytan.utils.HumanParserError",
+        "exception": "pytan.exceptions.HumanParserError",
         "error_str": "'' must be a string supplied as 'package'"
     },
     "invalid_deploy_action_package": {
         "desc": "Deploy an action using a non-existing package.",
         "priority": "1",
-        "method": "deploy_action_human",
+        "method": "deploy_action",
         "args": {
             "package": "Invalid Package",
             "run": true
         },
-        "exception": "pytan.utils.HandlerError",
+        "exception": "pytan.exceptions.HandlerError",
         "error_str": "No results found searching for.*"
     }
 }

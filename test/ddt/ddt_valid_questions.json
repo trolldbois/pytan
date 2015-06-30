@@ -1,139 +1,121 @@
 {
-    "ask_saved_question_by_name": {
-        "desc": "Ask a saved question by referencing the name of a saved question in a string.",
-        "priority": "1",
-        "method": "ask",
-        "args": {
-            "qtype": "saved",
-            "name": "Installed Applications"
-        }
-    },
-    "ask_saved_question_by_name_in_list": {
-        "desc": "Ask a saved question by referencing the name of a saved question in a list of strings.",
-        "priority": "1",
-        "method": "ask",
-        "args": {
-            "qtype": "saved",
-            "name": ["Installed Applications"]
-        }
-    },
-    "ask_manual_human_question_simple_single_sensor": {
+    "ask_manual_question_simple_single_sensor": {
         "desc": "Ask a manual question using human strings by referencing the name of a single sensor in a string.\n\nNo sensor filters, sensor parameters, sensor filter options, question filters, or question options supplied.",
         "priority": "2",
         "method": "ask",
         "args": {
-            "qtype": "manual_human",
+            "qtype": "manual",
             "sensors": "Computer Name"
         }
     },
-    "ask_manual_human_question_simple_multiple_sensors": {
+    "ask_manual_question_simple_multiple_sensors": {
         "desc": "Ask a manual question using human strings by referencing the name of multiple sensors in a list.\n\nNo sensor filters, sensor parameters, sensor filter options, question filters, or question options supplied.",
         "priority": "2",
         "method": "ask",
         "args": {
-            "qtype": "manual_human",
+            "qtype": "manual",
             "sensors": ["Computer Name", "Installed Applications"]
         }
     },
-    "ask_manual_human_question_multiple_sensors_identified_by_name": {
+    "ask_manual_question_multiple_sensors_identified_by_name": {
         "desc": "Ask a manual question using human strings by referencing the name of multiple sensors and providing a selector that tells pytan explicitly that we are providing a name of a sensor.\n\nNo sensor filters, sensor parameters, sensor filter options, question filters, or question options supplied.",
         "priority": "2",
         "method": "ask",
         "args": {
-            "qtype": "manual_human",
+            "qtype": "manual",
             "sensors": ["name:Computer Name", "name:Installed Applications"]
         }
     },
-    "ask_manual_human_question_sensor_with_parameters_and_no_supplied_parameters": {
+    "ask_manual_question_sensor_with_parameters_and_no_supplied_parameters": {
         "desc": "Ask a manual question using human strings by referencing the name of a single sensor that takes parameters, but not supplying any parameters (and letting pytan automatically determine the appropriate default value for those parameters which require a value).\n\nNo sensor filters, sensor parameters, sensor filter options, question filters, or question options supplied.",
         "priority": "3",
         "method": "ask",
         "args": {
-            "qtype": "manual_human",
+            "qtype": "manual",
             "sensors": "Folder Name Search with RegEx Match"
         }
     },
-    "ask_manual_human_question_sensor_without_parameters_and_supplied_parameters": {
+    "ask_manual_question_sensor_without_parameters_and_supplied_parameters": {
         "desc": "Ask a manual question using human strings by referencing the name of a single sensor that does NOT take parameters, but supplying parameters anyways (which will be ignored since the sensor does not take parameters).\n\nNo sensor filters, sensor filter options, question filters, or question options supplied.",
         "priority": "3",
         "method": "ask",
         "args": {
-            "qtype": "manual_human",
+            "qtype": "manual",
             "sensors": "Computer Name{fake=Dweedle}"
         }
     },
-    "ask_manual_human_question_sensor_with_parameters_and_some_supplied_parameters": {
+    "ask_manual_question_sensor_with_parameters_and_some_supplied_parameters": {
         "desc": "Ask a manual question using human strings by referencing the name of a single sensor that takes parameters, but supplying only two of the four parameters that are used by the sensor (and letting pytan automatically determine the appropriate default value for those parameters which require a value and none was supplied).\n\nNo sensor filters, sensor parameters, sensor filter options, question filters, or question options supplied.",
         "priority": "3",
         "method": "ask",
         "args": {
-            "qtype": "manual_human",
+            "qtype": "manual",
             "sensors": "Folder Name Search with RegEx Match{dirname=Program Files,regex=Microsoft.*}"
         }
     },
-    "ask_manual_human_question_multiple_sensors_with_parameters_and_some_supplied_parameters": {
+    "ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters": {
         "desc": "Ask a manual question using human strings by referencing the name of multiple sensors, one that takes parameters, but supplying only two of the four parameters that are used by the sensor (and letting pytan automatically determine the appropriate default value for those parameters which require a value and none was supplied), and one that does not take parameters.\n\nNo sensor filters, question filters, or question options supplied.",
         "priority": "3",
         "method": "ask",
         "args": {
-            "qtype": "manual_human",
+            "qtype": "manual",
             "sensors": [
                 "Folder Name Search with RegEx Match{dirname=Program Files,regex=Microsoft.*}",
                 "Computer Name"
             ]
         }
     },
-    "ask_manual_human_question_sensor_with_parameters_and_filter": {
+    "ask_manual_question_sensor_with_parameters_and_filter": {
         "desc": "Ask a manual question using human strings by referencing the name of a single sensor that takes parameters, but supplying only two of the four parameters that are used by the sensor.\n\nAlso supply a sensor filter that limits the column data that is shown to values that match the regex '.*Shared.*'.\n\nNo sensor filter options, question filters, or question options supplied.",
         "priority": "4",
         "method": "ask",
         "args": {
-            "qtype": "manual_human",
+            "qtype": "manual",
             "sensors": "Folder Name Search with RegEx Match{dirname=Program Files,regex=Microsoft.*}, that regex match:.*Shared.*"
         }
     },
-    "ask_manual_human_question_sensor_with_parameters_and_filter_and_options": {
+    "ask_manual_question_sensor_with_parameters_and_filter_and_options": {
         "desc": "Ask a manual question using human strings by referencing the name of a single sensor that takes parameters, but supplying only two of the four parameters that are used by the sensor.\n\nAlso supply a sensor filter that limits the column data that is shown to values that match the regex '.*Shared.*', and a sensor filter option that re-fetches any cached data that is older than 3600 seconds.\n\nNo question filters or question options supplied.",
         "priority": "5",
         "method": "ask",
         "args": {
-            "qtype": "manual_human",
+            "qtype": "manual",
             "sensors": "Folder Name Search with RegEx Match{dirname=Program Files,regex=Microsoft.*}, that regex match:.*Shared.*, opt:max_data_age:3600"
         }
     },
-    "ask_manual_human_question_sensor_with_filter_and_3_options": {
+    "ask_manual_question_sensor_with_filter_and_3_options": {
         "desc": "Ask a manual question using human strings by referencing the name of a single sensor.\n\nAlso supply a sensor filter that limits the column data that is shown to values that contain Windows (which is short hand for regex match against .*Windows.*).\n\nAlso supply filter options that re-fetches any cached data that is older than 3600 seconds, matches all values supplied in the filter, and ignores case for any value match of the filter.\n\nNo sensor paramaters, question filters, or question options supplied.",
         "priority": "5",
         "method": "ask",
         "args": {
-            "qtype": "manual_human",
+            "qtype": "manual",
             "sensors": "Operating System, that contains:Windows, opt:match_all_values, opt:ignore_case, opt:max_data_age:3600"
         }
     },
-    "ask_manual_human_question_sensor_with_filter": {
+    "ask_manual_question_sensor_with_filter": {
         "desc": "Ask a manual question using human strings by referencing the name of a single sensor.\n\nAlso supply a sensor filter that limits the column data that is shown to values that contain Windows (which is short hand for regex match against .*Windows.*).\n\nNo sensor parameters, sensor filter options, question filters or question options supplied.",
         "priority": "5",
         "method": "ask",
         "args": {
-            "qtype": "manual_human",
+            "qtype": "manual",
             "sensors": "Operating System, that contains:Windows"
         }
     },
-    "ask_manual_human_question_sensor_with_filter_and_2_options": {
+    "ask_manual_question_sensor_with_filter_and_2_options": {
         "desc": "Ask a manual question using human strings by referencing the name of a single sensor.\n\nAlso supply a sensor filter that limits the column data that is shown to values that contain Windows (which is short hand for regex match against .*Windows.*).\n\nAlso supply filter options that re-fetches any cached data that is older than 3600 seconds and treats the values as type string.\n\nNo question filters or question options supplied.",
         "priority": "5",
         "method": "ask",
         "args": {
-            "qtype": "manual_human",
+            "qtype": "manual",
             "sensors": "Operating System, that contains:Windows, opt:max_data_age:3600, opt:value_type:string"
         }
     },
-    "ask_manual_human_question_complex_query1": {
+    "ask_manual_question_complex_query1": {
         "desc": "Ask a manual question using human strings by referencing the name of a two sensors sensor.\n\nSupply 3 parameters for the second sensor, one of which is not a valid parameter (and will be ignored).\n\nSupply one option to the second sensor.\n\nSupply two question filters that limit the rows returned in the result to computers that match the sensor Operating System that contains Windows and does not contain Windows.\n\nSupply two question options that 'or' the two question filters and ignore the case of any values while matching the question filters.",
         "priority": "6",
         "method": "ask",
         "args": {
-            "qtype": "manual_human",
+            "qtype": "manual",
             "sensors": [
                 "Computer Name",
                 "Folder Name Search with RegEx Match{dirname=Program Files,regex=Microsoft.*, invalidparam=test}, that regex match:.*Shared.*, opt:max_data_age:3600"
@@ -145,12 +127,12 @@
             "question_options": ["ignore_case", "or"]
         }
     },
-    "ask_manual_human_question_complex_query2": {
-        "desc": "This is another complex query that gets the Computer Name and Last Logged in User and Installed Applications that contains Google Search or Google Chrome and limits the rows that are displayed to computers that contain the Installed Applications of Google Search AND Google Chrome",
+    "ask_manual_question_complex_query2": {
+        "desc": "This is another complex query that gets the Computer Name and Last Logged in User and Installed Applications that contains Google Search or Google Chrome and limits the rows that are displayed to computers that contain the Installed Applications of Google Search or Google Chrome",
         "priority": "7",
         "method": "ask",
         "args": {
-            "qtype": "manual_human",
+            "qtype": "manual",
             "sensors": [
                 "Computer Name",
                 "Last Logged In User",
@@ -161,15 +143,15 @@
                 "Installed Applications, that contains:Google Search",
                 "Installed Applications, that contains:Google Chrome"
             ],
-            "question_options": ["ignore_case", "and"]
+            "question_options": ["ignore_case", "or"]
         }
     },
-    "ask_manual_question_sensor_complex": {
+    "_ask_manual_question_sensor_complex": {
         "desc": "This provides an example for asking a manual question without using human strings.\n\nIt uses the Computer Name and Folder Name Search with RegEx Match sensors.\n\nThe second sensor has a single parameter, dirname, with a value of 'Program Files'.\n\nThe second sensor also has 3 sensor filter options that set the max data age to 3600 seconds, does NOT ignore case, and treats all values as string.\n\nThere is also a question filter supplied that limits the rows that are displayed to computers that match an Operating System that contains Windows, and has 3 question filter options supplied that set the max data age to 3600 seconds, does NOT ignore case, and uses 'and' to join all question filters.",
         "priority": "8",
         "method": "ask",
         "args": {
-            "qtype": "manual",
+            "qtype": "_manual",
             "sensor_defs": [
                 "Computer Name",
                 {

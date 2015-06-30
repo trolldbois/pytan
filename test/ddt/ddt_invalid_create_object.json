@@ -4,7 +4,7 @@
         "priority": "1",
         "method": "create_sensor",
         "args": {},
-        "exception": "pytan.utils.HandlerError",
+        "exception": "pytan.exceptions.HandlerError",
         "error_str": "Sensor creation not supported via PyTan as of yet, too complex.*"
     }
 }

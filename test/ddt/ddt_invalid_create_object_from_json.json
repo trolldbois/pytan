@@ -4,7 +4,7 @@
         "priority": "1",
         "objtype": "client",
         "get": {"objtype": "client", "status": "Leader"},
-        "exception": "pytan.utils.HandlerError",
+        "exception": "pytan.exceptions.HandlerError",
         "error_str": ".*is not a json createable object! Supported objects.*"
 
     },
@@ -13,7 +13,7 @@
         "priority": "1",
         "objtype": "saved_action",
         "get": {"objtype": "saved_action", "name": "Distribute Tanium Standard Utilities"},
-        "exception": "pytan.utils.HandlerError",
+        "exception": "pytan.exceptions.HandlerError",
         "error_str": ".*is not a json createable object! Supported objects.*"
 
     },
@@ -22,7 +22,7 @@
         "priority": "1",
         "objtype": "setting",
         "get": {"objtype": "setting", "id": 1},
-        "exception": "pytan.utils.HandlerError",
+        "exception": "pytan.exceptions.HandlerError",
         "error_str": ".*is not a json createable object! Supported objects.*"
     },
     "invalid_create_userrole_from_json": {
@@ -30,7 +30,7 @@
         "priority": "1",
         "objtype": "userrole",
         "get": {"objtype": "userrole", "name": "Administrator"},
-        "exception": "pytan.utils.HandlerError",
+        "exception": "pytan.exceptions.HandlerError",
         "error_str": ".*is not a json createable object! Supported objects.*"
     }
 }

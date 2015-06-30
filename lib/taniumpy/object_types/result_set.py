@@ -32,21 +32,35 @@ class ResultSet(object):
         self.row_count_flag = None
         self.columns = None
         self.rows = None
+        self.cache_id = None
+        self.expiration = None
+        self.filtered_row_count = None
+        self.filtered_row_count_machines = None
+        self.item_count = None
 
     def __str__(self):
         class_name = self.__class__.__name__
-        ret = '{} for {}, {}'.format(
-            class_name, self.question_id, self.columns,
-        )
+        q_id = getattr(self, 'question_id', -1)
+        r_cols = len(getattr(self, 'columns', []) or [])
+        total_rows = getattr(self, 'row_count', -1)
+        current_rows = len(getattr(self, 'rows', []))
+        est_total = getattr(self, 'estimated_total', -1)
+        passed = getattr(self, 'passed', -1)
+        mr_passed = getattr(self, 'mr_passed', -1)
+        tested = getattr(self, 'tested', -1)
+        mr_tested = getattr(self, 'mr_tested', -1)
+        ret_str = (
+            '{} for ID {!r}, Columns: {}, Total Rows: {}, Current Rows: {}, EstTotal: {}, '
+            'Passed: {}, MrPassed: {}, Tested: {}, MrTested: {}'
+        ).format
+
+        ret = ret_str(class_name, q_id, r_cols, total_rows, current_rows, est_total, passed,
+                      mr_passed, tested, mr_tested)
         return ret
 
     @classmethod
-    def fromSOAPElement(cls, el):
-        """Deserialize a ResultInfo from a result_info SOAPElement
-
-        Assumes all properties are integer values (true today)
-
-        """
+    def fromSOAPElement(cls, el):  # noqa
+        """Deserialize a ResultSet from a result_set SOAPElement"""
         result = ResultSet()
         for property in vars(result):
             if property in ['column_set', 'row_set']:
@@ -137,9 +151,8 @@ class ResultSet(object):
                 if header_add_sensor is True:
                     if not sensors or type(sensors) not in [tuple, list]:
                         err = (
-                            "Must supply list of sensors used to "
-                            "produce this ResultSet in order to add sensor "
-                            "name to columns!"
+                            "Must supply list of sensors used to produce this ResultSet in order "
+                            "to add sensor name to columns!"
                         )
                         raise Exception(err)
 
@@ -156,8 +169,7 @@ class ResultSet(object):
                     if h_name != 'Count':
                         if not match:
                             err = (
-                                "Unable to find sensor matching what_hash {} "
-                                "in 'sensors' list!"
+                                "Unable to find sensor matching what_hash {} in 'sensors' list!"
                             ).format(h_hash)
                             raise Exception(err)
 
@@ -219,23 +231,14 @@ class ResultSet(object):
             return custom_sorted_headers
 
         def get_rows(val, headers, **kwargs):
-            expand_grouped_columns = kwargs.get(
-                'expand_grouped_columns', False,
-            )
+            expand_grouped_columns = kwargs.get('expand_grouped_columns', False)
 
-            rows = [
-                [[str(v) for v in row[h['name']]] for h in headers]
-                for row in val.rows
-            ]
+            rows = [[[str(v) for v in row[h['name']]] for h in headers] for row in val.rows]
 
             if expand_grouped_columns:
                 rows = expand_rows(rows, headers)
 
-            rows = [
-                [fix_newlines('\n'.join(vals)) for vals in row]
-                for row in rows
-            ]
-
+            rows = [[fix_newlines('\n'.join(vals)) for vals in row] for row in rows]
             return rows
 
         def expand_rows(rows, headers):
@@ -284,15 +287,11 @@ class ResultSet(object):
 
                 # get all the related headers to this values header
                 # (headers with same sensor hash)
-                h_friends = [
-                    h for h in headers if h['hash'] == val_h['hash']
-                ]
+                h_friends = [h for h in headers if h['hash'] == val_h['hash']]
 
                 # build out a new row for each related multi value
                 for val_idx, val in enumerate(vals):
-                    new_rows.append(
-                        build_new_row(row, val_idx, h_friends, headers, val_h)
-                    )
+                    new_rows.append(build_new_row(row, val_idx, h_friends, headers, val_h))
             return new_rows
 
         def build_new_row(row, val_idx, h_friends, headers, val_h):
@@ -310,9 +309,7 @@ class ResultSet(object):
                         # if this column is not correlated to the column we are
                         # working on and it is a multi value, set it
                         # to "UNRELATED"
-                        new_row[h_name] = [
-                            "UNRELATED TO {}".format(val_h['mod_name'])
-                        ]
+                        new_row[h_name] = ["UNRELATED TO {}".format(val_h['mod_name'])]
                 else:
                     # if this column is correlated to the column we are
                     # working on, set the value to the indexed value of this
@@ -323,12 +320,15 @@ class ResultSet(object):
 
         def fix_newlines(val):
             if type(val) == str:
-            # turn \n into \r\n
+                # turn \n into \r\n
                 val = re.sub(r"([^\r])\n", r"\1\r\n", val)
             return val
 
         if not isinstance(val, ResultSet):
             raise Exception("{} is not a ResultSet instance!".format(val))
+
+        if val.columns is None:
+            raise Exception("{} has no columns!".format(val))
 
         headers = get_sort_headers(val, **kwargs)
         rows = get_rows(val, headers, **kwargs)

@@ -1,5 +1,5 @@
 
-# Copyright (c) 2014 Tanium Inc
+# Copyright (c) 2015 Tanium Inc
 #
 # Generated from console.wsdl version 0.0.1     
 #
@@ -19,6 +19,7 @@ class UploadFile(BaseType):
                         'key': str,
                         'destination_file': str,
                         'hash': str,
+                        'force_overwrite': int,
                         'file_size': int,
                         'start_pos': int,
                         'bytes': str,
@@ -32,6 +33,7 @@ class UploadFile(BaseType):
         self.key = None
         self.destination_file = None
         self.hash = None
+        self.force_overwrite = None
         self.file_size = None
         self.start_pos = None
         self.bytes = None
