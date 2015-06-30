@@ -31,18 +31,12 @@ from pytan.exceptions import HumanParserError
 from pytan.exceptions import DefinitionParserError
 from pytan.exceptions import HandlerError
 
-# control the amount of output from unittests
-TESTVERBOSITY = 2
+# get our server connection info
+from API_INFO import SERVER_INFO
 
-# have unittest exit immediately on unexpected error
-FAILFAST = True
-
-# catch control-C to allow current test suite to finish (press 2x to force)
-CATCHBREAK = True
-
-# set logging for all logs in pytan to same level as TESTVERBOSITY
+# set logging for all logs in pytan to same level as loglevel
 utils.setup_console_logging()
-utils.set_log_levels(TESTVERBOSITY)
+utils.set_log_levels(SERVER_INFO["loglevel"])
 
 
 class TestDehumanizeSensorUtils(unittest.TestCase):
@@ -199,12 +193,12 @@ class TestDehumanizeSensorUtils(unittest.TestCase):
     def test_empty_args_str(self):
         e = "A string or list of strings must be supplied as 'sensors'!"
         with self.assertRaisesRegexp(HumanParserError, e):
-            utils.dehumanize_sensors('')
+            utils.dehumanize_sensors('', empty_ok=False)
 
     def test_empty_args_list(self):
         e = "A string or list of strings must be supplied as 'sensors'!"
         with self.assertRaisesRegexp(HumanParserError, e):
-            utils.dehumanize_sensors([])
+            utils.dehumanize_sensors([], empty_ok=False)
 
     def test_empty_args_dict(self):
         e = "A string or list of strings must be supplied as 'sensors'!"
@@ -1391,9 +1385,9 @@ class TestGenericUtils(unittest.TestCase):
         qtype = 'manual'
         self.assertEqual(utils.get_q_obj_map(qtype), {'handler': 'ask_manual'})
 
-        qtype = 'manual_human'
+        qtype = '_manual'
         self.assertEqual(
-            utils.get_q_obj_map(qtype), {'handler': 'ask_manual_human'})
+            utils.get_q_obj_map(qtype), {'handler': '_ask_manual'})
 
         qtype = ''
         e = (
@@ -1505,6 +1499,8 @@ def get_open_fds():
 
 if __name__ == "__main__":
     unittest.main(
-        verbosity=TESTVERBOSITY,
-        failfast=FAILFAST,
-        catchbreak=CATCHBREAK)
+        verbosity=SERVER_INFO["testlevel"],
+        failfast=SERVER_INFO["FAILFAST"],
+        catchbreak=SERVER_INFO["CATCHBREAK"],
+        buffer=SERVER_INFO["BUFFER"],
+    )

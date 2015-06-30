@@ -187,25 +187,39 @@ class Handler(object):
 
         sq_obj = sq_objs[0]
 
+        q_obj = self._find(sq_obj.question)
+        poller = None
+        poller_success = None
+
         if refresh_data:
             # if GetResultInfo is issued on a saved question, Tanium will issue a new question
             # to fetch new/updated results
             self.get_result_info(sq_obj, **kwargs)
+
             # re-fetch the saved question object to get the newly asked question info
             sq_obj = self._find(pytan.utils.shrink_obj(sq_obj))
 
-        # poll the question for this saved question to wait for results
-        poller = pytan.pollers.QuestionPoller(self, sq_obj.question, **kwargs)
-        poller.run(**kwargs)
+            q_obj = self._find(sq_obj.question)
 
-        # get the results
-        result = self.get_result_data(sq_obj.question, **kwargs)
+            m = "Question Added, ID: {}, query text: {!r}, expires: {}".format
+            self.mylog.debug(m(q_obj.id, q_obj.query_text, q_obj.expiration))
+
+            # poll the new question for this saved question to wait for results
+            poller = pytan.pollers.QuestionPoller(self, q_obj, **kwargs)
+            poller_success = poller.run(**kwargs)
+
+        # get the results for the questionf or this saved question
+        result = self.get_result_data(q_obj, **kwargs)
 
         # add the sensors from this question to the ResultSet object
         # for reporting
-        result.sensors = [x.sensor for x in sq_obj.question.selects]
+        result.sensors = [x.sensor for x in q_obj.selects]
+
         ret = {
-            'question_object': sq_obj,
+            'saved_question_object': sq_obj,
+            'poller_object': poller,
+            'poller_success': poller_success,
+            'question_object': q_obj,
             'question_results': result,
         }
 
@@ -297,6 +311,9 @@ class Handler(object):
         else:
             q_options = []
 
+        clean_kw = ['sensor_defs', 'question_filter_defs', 'question_option_defs']
+        [kwargs.pop(x) for x in clean_kw if x in kwargs]
+
         sensor_defs = pytan.utils.dehumanize_sensors(sensors)
         q_filter_defs = pytan.utils.dehumanize_question_filters(q_filters)
         q_option_defs = pytan.utils.dehumanize_question_options(q_options)
@@ -308,10 +325,6 @@ class Handler(object):
             **kwargs
         )
         return result
-
-    def ask_manual_human(self, **kwargs):
-        """Deprecated, wraps around :func:`ask_manual`"""
-        return self.ask_manual(**kwargs)
 
     # Actions
     def deploy_action(self, **kwargs):
@@ -397,6 +410,9 @@ class Handler(object):
         # name of package to deploy with params as {key=value1,key2=value2}
         package = kwargs.get('package', '')
 
+        clean_kw = ['package_def', 'action_filter_defs', 'action_option_defs']
+        [kwargs.pop(x) for x in clean_kw if x in kwargs]
+
         action_filter_defs = pytan.utils.dehumanize_sensors(action_filters, 'action_filters', True)
         action_option_defs = pytan.utils.dehumanize_question_options(action_options)
         package_def = pytan.utils.dehumanize_package(package)
@@ -408,15 +424,6 @@ class Handler(object):
             **kwargs
         )
         return deploy_result
-
-    def deploy_action_human(self, **kwargs):
-        """Deprecated, wraps around :func:`deploy_action`"""
-        return self.deploy_action(**kwargs)
-
-    def deploy_action_asker(self, **kwargs):
-        """Deprecated, use :class:`pytan.pollers.ActionPoller`"""
-        m = "Deprecated, use pytan.pollers.ActionPoller() instead!"
-        raise pytan.exceptions.HandlerError(m())
 
     def stop_action(self, id, **kwargs):
         """Stop an action
@@ -490,9 +497,9 @@ class Handler(object):
 
         # do a getresultdata
         if aggregate:
-            rd = self.session.getResultData(shrunk_obj, row_counts_only_flag=1, **kwargs)
+            rd = self.session.get_result_data(shrunk_obj, row_counts_only_flag=1, **kwargs)
         else:
-            rd = self.session.getResultData(shrunk_obj, **kwargs)
+            rd = self.session.get_result_data(shrunk_obj, **kwargs)
         return rd
 
     @pytan.utils.func_timing
@@ -522,7 +529,7 @@ class Handler(object):
         if 'suppress_object_list' not in kwargs:
             kwargs['suppress_object_list'] = 1
 
-        ri = self.session.getResultInfo(shrunk_obj, **kwargs)
+        ri = self.session.get_result_info(shrunk_obj, **kwargs)
         # pytan.utils.log_session_communication(self)
         self.mylog.debug(ri)
         return ri
@@ -1680,21 +1687,16 @@ class Handler(object):
             'package_object': package_def['package_obj'],
             'group_object': targetgroup_obj,
             'action_info': action_info,
+            'poller_object': pytan.pollers.ActionPoller(self, action_obj, **kwargs),
             'action_results': None,
-            'action_progress_human': None,
-            'action_progress_map': None,
+            'action_result_map': None,
+            'poller_success': None,
         }
 
-        '''
-        TODO
         if get_results:
-            deploy_results = self.deploy_action_asker(
-                action_obj.id, passed_count
-            )
-            ret.update(deploy_results)
-            m = "Deploy Action Completed {}".format
-            self.mylog.debug(m(pytan.utils.seconds_from_now(0, '')))
-        '''
+            ret['poller_success'] = ret['poller_object'].run(**kwargs)
+            ret['action_results'] = ret['poller_object'].result_data
+            ret['action_result_map'] = ret['poller_object'].result_map
 
         return ret
 
@@ -1806,20 +1808,19 @@ class Handler(object):
 
         ret = {
             'question_object': added_obj,
+            'poller_object': pytan.pollers.QuestionPoller(self, added_obj, **kwargs),
             'question_results': None,
+            'poller_success': None,
         }
 
         if get_results:
             # poll the Question ID returned above to wait for results
-            poller = pytan.pollers.QuestionPoller(self, added_obj, **kwargs)
-            poller.run(**kwargs)
+            ret['poller_success'] = ret['poller_object'].run(**kwargs)
 
             # get the results
-            result = self.get_result_data(added_obj, **kwargs)
+            ret['question_results'] = self.get_result_data(added_obj, **kwargs)
 
-            # add the sensors from this question to the ResultSet object
-            # for reporting
-            result.sensors = [x['sensor_obj'] for x in sensor_defs]
-            ret['question_results'] = result
+            # add the sensors from this question to the ResultSet object for reporting
+            ret['question_results'].sensors = [x['sensor_obj'] for x in sensor_defs]
 
         return ret

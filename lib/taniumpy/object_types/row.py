@@ -18,7 +18,7 @@ class Row(object):
         val = ', '.join([
             "{}:{}".format(
                 self.columns[i].display_name,
-                len(str(self.vals[i])),
+                len(self.vals[i]),
             )
             for i, _ in enumerate(self.columns)
         ])

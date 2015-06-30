@@ -78,6 +78,7 @@ class HttplibSession(object):
     DELETE_OBJECT_CMD = 'DeleteObject'
     GET_RESULT_INFO_CMD = 'GetResultInfo'
     GET_RESULT_DATA_CMD = 'GetResultData'
+    RUN_PLUGIN_CMD = 'RunPlugin'
 
     AUTH_RES = 'auth'
     SOAP_RES = 'soap'
@@ -318,7 +319,15 @@ class HttplibSession(object):
         obj = BaseType.fromSOAPBody(self.response_body)
         return obj
 
-    def getResultInfo(self, obj, **kwargs):  # noqa
+    def run_plugin(self, obj, **kwargs):
+        self.request_body = self._create_run_plugin_object_body(obj, **kwargs)
+        self.response_body = self._get_response(self.request_body)
+        obj = BaseType.fromSOAPBody(self.response_body)
+        # if 'FAILURE' in obj.input:
+        # raise pytan.exceptions.RunPluginError(obj.input)
+        return obj
+
+    def get_result_info(self, obj, **kwargs):  # noqa
         self.request_body = self._create_get_result_info_body(obj, **kwargs)
         self.response_body = self._get_response(self.request_body)
         # parse the single result_info into an Element and create a ResultInfo
@@ -329,7 +338,7 @@ class HttplibSession(object):
         obj = ResultInfo.fromSOAPElement(result_info)
         return obj
 
-    def getResultData(self, obj, **kwargs):  # noqa
+    def get_result_data(self, obj, **kwargs):  # noqa
         self.request_body = self._create_get_result_data_body(obj, **kwargs)
         self.response_body = self._get_response(self.request_body)
         # parse the single result_info into an Element and create a ResultData
@@ -677,6 +686,11 @@ class HttplibSession(object):
             options=options,
         )
         return body
+
+    def _create_run_plugin_object_body(self, obj, **kwargs):
+        object_list = obj.toSOAPBody(minimal=True)
+        obj_body = self._build_body(self.RUN_PLUGIN_CMD, object_list, **kwargs)
+        return obj_body
 
     def _create_add_object_body(self, obj, **kwargs):
         object_list = obj.toSOAPBody(minimal=True)

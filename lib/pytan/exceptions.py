@@ -44,12 +44,25 @@ class TimeoutException(Exception):
 
 
 class HttpError(Exception):
+    """Exception thrown for HTTP errors in :mod:`pytan.sessions`"""
     pass
 
 
 class AuthorizationError(Exception):
+    """Exception thrown for authorization errors in :mod:`pytan.sessions`"""
     pass
 
 
 class BadResponseError(Exception):
+    """Exception thrown for BadResponse messages from Tanium in :mod:`pytan.sessions`"""
+    pass
+
+
+class VersionMismatchError(Exception):
+    """Exception thrown for version_check in :mod:`pytan.utils`"""
+    pass
+
+
+class RunPluginError(Exception):
+    """Exception thrown for run_plugin in :mod:`pytan.sessions`"""
     pass

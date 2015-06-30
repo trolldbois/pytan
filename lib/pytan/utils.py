@@ -1031,14 +1031,14 @@ def version_check(reqver):
 
     Raises
     ------
-    Exception : :exc:`Exception`
+    VersionMismatchError : :exc:`Exception`
         if :data:`pytan.__version__` is not greater or equal to `reqver`
     """
     log_tpl = (
         "{}: {} version {}, required {}").format
     if not __version__ >= reqver:
         s = "Script and API Version mismatch!"
-        raise Exception(log_tpl(s, sys.argv[0], __version__, reqver))
+        raise pytan.exceptions.VersionMismatchError(log_tpl(s, sys.argv[0], __version__, reqver))
 
     s = "Script and API Version match"
     mylog.debug(log_tpl(s, sys.argv[0], __version__, reqver))
@@ -1448,11 +1448,13 @@ def dehumanize_sensors(sensors, key='sensors', empty_ok=True):
     sensor_defs : list of dict
         list of dict parsed from `sensors`
     """
+    if not any([is_list(sensors), is_str(sensors)]):
+        err = "A string or list of strings must be supplied as '{0}'!".format(key)
+        raise pytan.exceptions.HumanParserError(err)
+
     if not sensors:
         if not empty_ok:
-            err = (
-                "A string or list of strings must be supplied as '{0}'!"
-            ).format(key)
+            err = "A string or list of strings must be supplied as '{0}'!".format(key)
             raise pytan.exceptions.HumanParserError(err)
         else:
             return []
@@ -2493,7 +2495,7 @@ def apply_options_obj(options, obj, dest):
                     raise pytan.exceptions.DefinitionParserError(err(k, v))
 
             if valid_type == str:
-                if not type(v) in [str, unicode]:
+                if not is_str(v):
                     err = (
                         "Option {!r} value {!r} is not a string"
                     ).format
@@ -2558,7 +2560,7 @@ def chk_def_key(def_dict, key, keytypes, keysubtypes=None, req=False):
     if not keysubtypes or not val:
         return
 
-    if type(val) == dict:
+    if is_dict(val):
         subtypes = [type(x) for x in val.values()]
     else:
         subtypes = [type(x) for x in val]
@@ -2855,3 +2857,13 @@ def build_metadatalist_obj(properties, nameprefix=""):
         metadata_obj.value = value
         metadatalist_obj.append(metadata_obj)
     return metadatalist_obj
+
+
+def get_percentage(part, whole):
+    if 0 in [part, whole]:
+        return float(0)
+    return 100 * (float(part) / float(whole))
+
+
+def calc_percent(percent, whole):
+    return int((percent * whole) / 100.0)

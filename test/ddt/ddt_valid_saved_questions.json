@@ -1,0 +1,30 @@
+{
+    "ask_saved_question_by_name": {
+        "desc": "Ask a saved question by referencing the name of a saved question in a string.",
+        "priority": "1",
+        "method": "ask",
+        "args": {
+            "qtype": "saved",
+            "name": "Installed Applications"
+        }
+    },
+    "ask_saved_question_by_name_in_list": {
+        "desc": "Ask a saved question by referencing the name of a saved question in a list of strings.",
+        "priority": "1",
+        "method": "ask",
+        "args": {
+            "qtype": "saved",
+            "name": ["Installed Applications"]
+        }
+    },
+    "ask_saved_question_refresh_data": {
+        "desc": "Ask a saved question and refresh the data for the saved question (asks a new question)",
+        "priority": "1",
+        "method": "ask",
+        "args": {
+            "qtype": "saved",
+            "name": "Installed Applications",
+            "refresh_data": true
+        }
+    }
+}

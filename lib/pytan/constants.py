@@ -37,15 +37,22 @@ LOG_LEVEL_MAPS = [
     ),
     (
         1,
-        {'pytan.handler.poller': 'INFO', 'pytan.handler.poller.progress': 'INFO'},
+        {
+            'pytan.handler.QuestionPoller': 'INFO',
+            'pytan.handler.QuestionPoller.progress': 'INFO',
+            'pytan.handler.ActionPoller': 'INFO',
+            'pytan.handler.ActionPoller.progress': 'INFO',
+        },
         'Pytan poller loggers show output at INFO or above',
     ),
     (
         2,
         {
             'pytan.handler': 'INFO',
-            'pytan.handler.poller': 'DEBUG',
-            'pytan.handler.poller.progress': 'DEBUG',
+            'pytan.handler.QuestionPoller': 'DEBUG',
+            'pytan.handler.QuestionPoller.progress': 'DEBUG',
+            'pytan.handler.ActionPoller': 'DEBUG',
+            'pytan.handler.ActionPoller.progress': 'DEBUG',
         },
         'Pytan handler logger show output at INFO or above and poller logs at DEBUG or above',
     ),
@@ -277,7 +284,7 @@ Q_OBJ_MAP = {
         'handler': 'ask_manual',
     },
     '_manual': {
-        'handler': '_manual',
+        'handler': '_ask_manual',
     },
 }
 """
