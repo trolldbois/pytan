@@ -323,8 +323,6 @@ class HttplibSession(object):
         self.request_body = self._create_run_plugin_object_body(obj, **kwargs)
         self.response_body = self._get_response(self.request_body)
         obj = BaseType.fromSOAPBody(self.response_body)
-        # if 'FAILURE' in obj.input:
-        # raise pytan.exceptions.RunPluginError(obj.input)
         return obj
 
     def get_result_info(self, obj, **kwargs):  # noqa

@@ -8,15 +8,16 @@
   * [X] make ActionPoller
   * [X] fix saved questions
   * [X] add antonio's notes
-  * [ ] add runplugin
-  * [ ] add approve action 
+  * [X] add runplugin
+  * [ ] fix xml issue
   * [ ] add doc note re excel limit for cell
   * [ ] add saved questions json to api/doc gen
   * [ ] winbin doc note re double quotes and using batch scripts instead of py scripts directly
   * [ ] add more doc notes/refs for dehumanize_*
-  * [ ] fix xml issue
 
 # TODO LATER
+  * [ ] add approve action 
+  * [ ] 1.6 add dashboard wrappers
   * [ ] 1.6 add secondary loop for if any data == current result unavail/etc (MEDIUM)
   * [ ] 1.6 change get logic to use cache_filters instead of objectlist for object selection (HUGE)
   * [ ] 1.6 cache_results test: If you are adding tests for that mechanism you could make tests that verify it returns an error if you specify a cache that has expired and make sure that the results that come back don’t change.
