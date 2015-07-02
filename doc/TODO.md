@@ -14,6 +14,7 @@
   * [ ] add saved questions json to api/doc gen
   * [ ] winbin doc note re double quotes and using batch scripts instead of py scripts directly
   * [ ] add more doc notes/refs for dehumanize_*
+  * [ ] add tests for dashboard stuffs
 
 # TODO LATER
   * [ ] add approve action 

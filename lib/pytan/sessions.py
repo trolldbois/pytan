@@ -505,7 +505,6 @@ class HttplibSession(object):
                     raise
                 current_try += 1
 
-        body = self._xml_fix(body)
         return body
 
     def _http_post(self, host, port, url, body=None, headers=None, connect_timeout=15,
@@ -554,6 +553,8 @@ class HttplibSession(object):
 
         headers = dict(response.getheaders())
         content_encoding = headers.get('content-encoding', '').lower()
+
+        response_body = self._xml_fix(response_body)
 
         m = (
             "HTTP response: from {0!r} len:{1}, status:{2.status} {2.reason}, body type: {3}"
@@ -850,6 +851,8 @@ class RequestsSession(HttplibSession):
 
         response_body = response.text
         headers = response.headers
+
+        response_body = self._xml_fix(response_body)
 
         m = (
             "HTTP response: from {0!r} len:{1}, status:{2.status_code} {2.reason}, body type: {3}"

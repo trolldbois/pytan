@@ -599,6 +599,116 @@ class Handler(object):
             ret.append(list_obj)
         return ret
 
+    def run_plugin(self, plugin):
+        # run the plugin
+        plugin_result = self.session.run_plugin(plugin)
+
+        # zip up the sql results into a list of python dictionaries
+        sql_zipped = pytan.utils.plugin_zip(plugin_result)
+
+        # return the plugin result and the python dictionary of results
+        return plugin_result, sql_zipped
+
+    def create_dashboard(self, name, text='', group='', public_flag=True):
+
+        # get the ID for the group if a name was passed in
+        if group:
+            group_id = self.get('group', name=group)[0].id
+        else:
+            group_id = 0
+
+        if public_flag:
+            public_flag = 1
+        else:
+            public_flag = 0
+
+        # create the plugin parent
+        plugin = taniumpy.Plugin()
+        plugin.name = 'CreateDashboard'
+        plugin.bundle = 'Dashboards'
+
+        # create the plugin arguments
+        plugin.arguments = taniumpy.PluginArgumentList()
+
+        arg1 = taniumpy.PluginArgument()
+        arg1.name = 'dash_name'
+        arg1.type = 'String'
+        arg1.value = name
+        plugin.arguments.append(arg1)
+
+        arg2 = taniumpy.PluginArgument()
+        arg2.name = 'dash_text'
+        arg2.type = 'String'
+        arg2.value = text
+        plugin.arguments.append(arg2)
+
+        arg3 = taniumpy.PluginArgument()
+        arg3.name = 'group_id'
+        arg3.type = 'Number'
+        arg3.value = group_id
+        plugin.arguments.append(arg3)
+
+        arg4 = taniumpy.PluginArgument()
+        arg4.name = 'public_flag'
+        arg4.type = 'Number'
+        arg4.value = public_flag
+        plugin.arguments.append(arg4)
+
+        arg5 = taniumpy.PluginArgument()
+        arg5.name = 'sqid_xml'
+        arg5.type = 'String'
+        arg5.value = ''
+        plugin.arguments.append(arg5)
+
+        # run the plugin
+        plugin_result, sql_zipped = self.run_plugin(plugin)
+
+        # return the plugin result and the python dictionary of results
+        return plugin_result, sql_zipped
+
+    def delete_dashboard(self, name):
+        dashboards_to_del = self.get_dashboards(name)[1]
+
+        # create the plugin parent
+        plugin = taniumpy.Plugin()
+        plugin.name = 'DeleteDashboards'
+        plugin.bundle = 'Dashboards'
+
+        # create the plugin arguments
+        plugin.arguments = taniumpy.PluginArgumentList()
+
+        arg1 = taniumpy.PluginArgument()
+        arg1.name = 'dashboard_ids'
+        arg1.type = 'Number_Set'
+        arg1.value = ','.join([x['id'] for x in dashboards_to_del])
+        plugin.arguments.append(arg1)
+
+        # run the plugin
+        plugin_result, sql_zipped = self.run_plugin(plugin)
+
+        # return the plugin result and the python dictionary of results
+        return plugin_result, sql_zipped
+
+    def get_dashboards(self, name=''):
+
+        # create the plugin parent
+        plugin = taniumpy.Plugin()
+        plugin.name = 'GetDashboards'
+        plugin.bundle = 'Dashboards'
+
+        # run the plugin
+        plugin_result, sql_zipped = self.run_plugin(plugin)
+
+        # if name specified, filter the list of dicts for matching name
+        if name:
+            sql_zipped = [x for x in sql_zipped if x['name'] == name]
+            if not sql_zipped:
+                m = "No dashboards found that match name: {!r}".format
+                raise pytan.exceptions.NotFoundError(m(name))
+
+        # return the plugin result and the python dictionary of results
+        return plugin_result, sql_zipped
+
     def create_sensor(self):
         """Create a sensor object
 

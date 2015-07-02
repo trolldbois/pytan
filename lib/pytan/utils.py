@@ -2867,3 +2867,10 @@ def get_percentage(part, whole):
 
 def calc_percent(percent, whole):
     return int((percent * whole) / 100.0)
+
+
+def plugin_zip(p):
+    '''maps columns to values for each row in a plugins sql_response and returns a list of dicts'''
+    return [
+        dict(zip(p.sql_response.columns, x)) for x in p.sql_response.result_row
+    ]

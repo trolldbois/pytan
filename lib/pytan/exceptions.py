@@ -58,6 +58,11 @@ class BadResponseError(Exception):
     pass
 
 
+class NotFoundError(Exception):
+    """Exception thrown for Not Found messages from Tanium in :mod:`pytan.handler`"""
+    pass
+
+
 class VersionMismatchError(Exception):
     """Exception thrown for version_check in :mod:`pytan.utils`"""
     pass
