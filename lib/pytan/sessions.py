@@ -114,13 +114,15 @@ class HttplibSession(object):
         {'Memory Available': 'percentage(System Performance Info/PhysicalAvailable,System Performance Info/PhysicalTotal)'},
     ]
 
+    DUMP_BODIES = False
+
     mylog = logging.getLogger("api.session")
     authlog = logging.getLogger("api.session.auth")
     httplog = logging.getLogger("api.session.http")
     bodyhttplog = logging.getLogger("api.session.http.body")
     statslog = logging.getLogger("stats")
 
-    def __init__(self, server, port=443, http_debug=False):
+    def __init__(self, server, port=443, **kwargs):
         self.server = server
         self.port = port
         self.last = {}
@@ -133,7 +135,8 @@ class HttplibSession(object):
         self.authlog = logging.getLogger(self.qualname + ".auth")
         self.httplog = logging.getLogger(self.qualname + ".http")
         self.bodyhttplog = logging.getLogger(self.qualname + ".http.body")
-        self.HTTP_DEBUG = http_debug
+        self.HTTP_DEBUG = kwargs.get('http_debug', False)
+        self.DUMP_BODIES = kwargs.get('dump_bodies', False)
         self._start_stats_thread()
 
     def __str__(self):
@@ -765,12 +768,12 @@ class HttplibSession(object):
 
         self.last['request_args'] = post_args
 
-        sent = datetime.now()
+        sent = datetime.utcnow()
         self.last['sent'] = sent
 
         response_body = self.http_post(**post_args)
 
-        received = datetime.now()
+        received = datetime.utcnow()
         self.last['received'] = received
 
         elapsed = received - sent
@@ -851,6 +854,17 @@ class RequestsSession(HttplibSession):
 
         response_body = response.text
         headers = response.headers
+
+        # WRITE RESPONSE AND REQUEST BODY TO FILE
+        if self.DUMP_BODIES:
+            ftemp = "{}_PYTAN_{}_BODY_DUMP.log".format
+            now = pytan.utils.get_now()
+
+            with open(ftemp(now, 'REQUEST'), 'wb') as f:
+                f.write(body)
+
+            with open(ftemp(now, 'RESPONSE'), 'wb') as f:
+                f.write(response_body)
 
         response_body = self._xml_fix(response_body)
 

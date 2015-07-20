@@ -204,7 +204,7 @@ if __name__ == "__main__":
 
     print "++ Asking manual question:\n{}".format(utils.jsonify(q_args))
     try:
-        ret = handler.ask(qtype='manual_human', **q_args)
+        ret = handler.ask(qtype='manual', **q_args)
     except Exception as e:
         print e
         sys.exit(99)
