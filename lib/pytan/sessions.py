@@ -299,40 +299,52 @@ class HttplibSession(object):
             self.authlog.debug(m(auth_type))
 
     def find(self, object_type, **kwargs):
-        self.request_body = self._create_get_object_body(object_type, **kwargs)
-        self.response_body = self._get_response(self.request_body)
-        obj = BaseType.fromSOAPBody(self.response_body)
+        request_body = self._create_get_object_body(object_type, **kwargs)
+        self.request_body = request_body
+        response_body = self._get_response(request_body)
+        self.response_body = response_body
+        obj = BaseType.fromSOAPBody(response_body)
         return obj
 
     def save(self, obj, **kwargs):
-        self.request_body = self._create_update_object_body(obj, **kwargs)
-        self.response_body = self._get_response(self.request_body)
-        obj = BaseType.fromSOAPBody(self.response_body)
+        request_body = self._create_update_object_body(obj, **kwargs)
+        self.request_body = request_body
+        response_body = self._get_response(request_body)
+        self.response_body = response_body
+        obj = BaseType.fromSOAPBody(response_body)
         return obj
 
     def add(self, obj, **kwargs):
-        self.request_body = self._create_add_object_body(obj, **kwargs)
-        self.response_body = self._get_response(self.request_body)
-        obj = BaseType.fromSOAPBody(self.response_body)
+        request_body = self._create_add_object_body(obj, **kwargs)
+        self.request_body = request_body
+        response_body = self._get_response(request_body)
+        self.response_body = response_body
+        obj = BaseType.fromSOAPBody(response_body)
         return obj
 
     def delete(self, obj, **kwargs):
-        self.request_body = self._create_delete_object_body(obj, **kwargs)
-        self.response_body = self._get_response(self.request_body)
-        obj = BaseType.fromSOAPBody(self.response_body)
+        request_body = self._create_delete_object_body(obj, **kwargs)
+        self.request_body = request_body
+        response_body = self._get_response(request_body)
+        self.response_body = response_body
+        obj = BaseType.fromSOAPBody(response_body)
         return obj
 
     def run_plugin(self, obj, **kwargs):
-        self.request_body = self._create_run_plugin_object_body(obj, **kwargs)
-        self.response_body = self._get_response(self.request_body)
-        obj = BaseType.fromSOAPBody(self.response_body)
+        request_body = self._create_run_plugin_object_body(obj, **kwargs)
+        self.request_body = request_body
+        response_body = self._get_response(request_body)
+        self.response_body = response_body
+        obj = BaseType.fromSOAPBody(response_body)
         return obj
 
     def get_result_info(self, obj, **kwargs):  # noqa
-        self.request_body = self._create_get_result_info_body(obj, **kwargs)
-        self.response_body = self._get_response(self.request_body)
+        request_body = self._create_get_result_info_body(obj, **kwargs)
+        self.request_body = request_body
+        response_body = self._get_response(request_body)
+        self.response_body = response_body
         # parse the single result_info into an Element and create a ResultInfo
-        el = ET.fromstring(self.response_body)
+        el = ET.fromstring(response_body)
         cdata = el.find('.//ResultXML')
         cdata_text = self._xml_fix(cdata.text)
         result_info = ET.fromstring(cdata_text)
@@ -340,14 +352,16 @@ class HttplibSession(object):
         return obj
 
     def get_result_data(self, obj, **kwargs):  # noqa
-        self.request_body = self._create_get_result_data_body(obj, **kwargs)
-        self.response_body = self._get_response(self.request_body)
+        request_body = self._create_get_result_data_body(obj, **kwargs)
+        self.request_body = request_body
+        response_body = self._get_response(request_body)
+        self.response_body = response_body
         # parse the single result_info into an Element and create a ResultData
-        el = ET.fromstring(self.response_body)
+        el = ET.fromstring(response_body)
         cdata = el.find('.//ResultXML')
         cdata_text = self._xml_fix(cdata.text)
-        result_info = ET.fromstring(cdata_text)
-        obj = ResultSet.fromSOAPElement(result_info)
+        result_data = ET.fromstring(cdata_text)
+        obj = ResultSet.fromSOAPElement(result_data)
         return obj
 
     def get_server_info(self, port=None, fallback_port=444, **kwargs):
@@ -815,7 +829,7 @@ class HttplibSession(object):
         return response_body
 
 
-class RequestsSession(HttplibSession):
+class OrigRequestsSession(HttplibSession):
     '''
     This is a sub-class of :class:`taniumpy.Session` that over rides the _http_post method
     to uses the requests package instead of the built in httplib library. This provides support for
@@ -852,21 +866,8 @@ class RequestsSession(HttplibSession):
             m = "HTTP response: POST request to {!r} failed: {}".format
             raise pytan.exceptions.HttpError(m(full_url, e))
 
-        response_body = response.text
+        response_body = self._xml_fix(response.text)
         headers = response.headers
-
-        # WRITE RESPONSE AND REQUEST BODY TO FILE
-        if self.DUMP_BODIES:
-            ftemp = "{}_PYTAN_{}_BODY_DUMP.log".format
-            now = pytan.utils.get_now()
-
-            with open(ftemp(now, 'REQUEST'), 'wb') as f:
-                f.write(body)
-
-            with open(ftemp(now, 'RESPONSE'), 'wb') as f:
-                f.write(response_body)
-
-        response_body = self._xml_fix(response_body)
 
         m = (
             "HTTP response: from {0!r} len:{1}, status:{2.status_code} {2.reason}, body type: {3}"
@@ -888,6 +889,78 @@ class RequestsSession(HttplibSession):
         if not response.ok:
             m = "HTTP response: POST request to {!r} returned code: {}, body: {}".format
             raise pytan.exceptions.HttpError(m(full_url, response.status_code, response_body))
+
+        self.bodyhttplog.debug("HTTP response: body:\n{}".format(response_body))
+
+        return response_body
+
+
+class RequestsSession(HttplibSession):
+    '''
+    This is a sub-class of :class:`taniumpy.Session` that over rides the _http_post method
+    to uses the requests package instead of the built in httplib library. This provides support for
+    keep alive, gzip, cookies, forwarding, and a host of other features automatically.
+
+    The Requests Session object allows you to persist certain parameters across requests.
+    It also persists cookies across all requests made from the Session instance.
+    Any requests that you make within a session will automatically reuse the appropriate connection
+    '''
+    REQ_SESSION = requests.Session()
+    FAKEOUT = False
+
+    def _http_post(self, host, port, url, body=None, headers=None, connect_timeout=15,
+                   response_timeout=180, debug=False):
+
+        full_url = "https://{0}:{1}/{2}".format(host, port, url)
+
+        clean_headers = dict(headers or {})
+        if 'password' in clean_headers:
+            clean_headers['password'] = '**PASSWORD**'
+
+        req_args = {}
+        req_args['headers'] = headers
+        req_args['data'] = body
+        req_args['timeout'] = (connect_timeout, response_timeout)
+        req_args['verify'] = False
+
+        self.httplog.debug("HTTP request: Post to {}".format(full_url))
+        self.httplog.debug("HTTP request: headers: {}".format(clean_headers))
+        self.bodyhttplog.debug("HTTP request: body:\n{}".format(body))
+
+        if self.FAKEOUT:
+            import pickle
+            response_body = pickle.load(open('foo3.txt'))
+            response_headers = {}
+        else:
+            try:
+                response = self.REQ_SESSION.post(full_url, **req_args)
+            except Exception as e:
+                m = "HTTP response: POST request to {!r} failed: {}".format
+                raise pytan.exceptions.HttpError(m(full_url, e))
+
+            response_body = self._xml_fix(response.text)
+            response_headers = response.headers
+
+            m = (
+                "HTTP response: from {0!r} len:{1}, status:{2.status_code} {2.reason}, body type: {3}"
+            ).format
+
+            self.httplog.debug(m(full_url, len(response_body), response, type(response_body)))
+            self.httplog.debug("HTTP response: headers: {}".format(response_headers))
+
+            auth_fail_codes = [401, 403]
+            if response.status_code in auth_fail_codes:
+                m = "HTTP response: POST request to {!r} returned code: {}, body: {}".format
+                raise pytan.exceptions.AuthorizationError(m(
+                    full_url, response.status_code, response_body))
+
+            if not response_body:
+                m = "HTTP response: POST request to {!r} returned empty body".format
+                raise pytan.exceptions.HttpError(m(full_url))
+
+            if not response.ok:
+                m = "HTTP response: POST request to {!r} returned code: {}, body: {}".format
+                raise pytan.exceptions.HttpError(m(full_url, response.status_code, response_body))
 
         self.bodyhttplog.debug("HTTP response: body:\n{}".format(response_body))
 
