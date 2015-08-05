@@ -59,8 +59,8 @@ class Handler(BaseHTTPRequestHandler):
 
     # turn off logging messages so we don't see the get requests in console
     # during unittests
-    # def log_message(self, format, *args):
-        # pass
+    def log_message(self, format, *args):
+        pass
 
 
 class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
