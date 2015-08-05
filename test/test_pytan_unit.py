@@ -1450,21 +1450,76 @@ class TestGenericUtils(unittest.TestCase):
 
 
 class TestDeserializeBadXML(unittest.TestCase):
-    def test_bad_chars_basetype(self):
-        a = open(os.path.join(my_dir, 'bad_chars_basetype.xml'), 'rb+').read()
-        s = pytan.taniumpy.Session('NONE')
-        b = s._xml_fix(a)
+    def test_bad_chars_basetype_control(self):
+        '''
+        This XML file has a number of control characters that are not valid in XML.
+
+        This test validates that pytan.xml_clean.xml_cleaner() will remove all the invalid
+        and restricted characters, which should allow the body to be parsed properly.
+
+        Logging examples from xml_cleaner():
+        v=open('bad_chars_basetype_control.xml').read()
+        >>> pytan.xml_clean.xml_cleaner(v, show_bad_characters=True)
+        XMLCleaner: Replaced 4 invalid characters that did not match the regex u'[^\t\n\r -\ud7ff\ue000-\ufffd]'
+        XMLCleaner: Invalid characters found: [u'\x17', u'\x04', u'\x04', u'\x01']
+        XMLCleaner: Replaced 10 restricted characters that did not match the regex u'[\x7f-\x84\x86-\x9f\ufdd0-\ufdef]'
+        XMLCleaner: Restricted characters found: [u'\x80', u'\x80', u'\x8d', u'\x95', u'\x81', u'\x89', u'\x89', u'\x81', u'\x95', u'\x8b']
+        '''
+        f = 'bad_chars_basetype_control.xml'
+        a = open(os.path.join(my_dir, f), 'rb+').read()
+        b = pytan.xml_clean.xml_cleaner(a, log_messages=False)
         c = pytan.taniumpy.BaseType.fromSOAPBody(b)
         self.assertTrue(c)
         self.assertIsInstance(c, taniumpy.SystemStatusList)
 
-    def test_bad_chars_resultset(self):
-        a = open(os.path.join(my_dir, 'bad_chars_resultset.xml'), 'rb+').read()
-        s = pytan.taniumpy.Session('NONE')
-        b = s._xml_fix(a)
+    def test_bad_chars_resultset_latin1(self):
+        '''
+        This XML file has some characters that are actually encoded as latin1 (as well as some
+        restricted characters).
+
+        This test validates that pytan.xml_clean.xml_cleaner() will properly fall back to latin1
+        for decoding the docuemnt, as well as remove all the invalid and restricted characters,
+        which should allow the body to be parsed properly.
+
+        Logging examples from xml_cleaner():
+        >>> v=open('bad_chars_resultset_latin1.xml').read()
+        >>> pytan.xml_clean.xml_cleaner(v, show_bad_characters=True)
+        XMLCleaner: Falling back to latin1 for decoding, unable to decode as UTF-8!
+        XMLCleaner: No invalid characters found
+        XMLCleaner: Replaced 2 restricted characters that did not match the regex u'[\x7f-\x84\x86-\x9f\ufdd0-\ufdef]'
+        XMLCleaner: Restricted characters found: [u'\x93', u'\x94']
+        '''
+        f = 'bad_chars_resultset_latin1.xml'
+        a = open(os.path.join(my_dir, f), 'rb+').read()
+        b = pytan.xml_clean.xml_cleaner(a, log_messages=False)
         el = pytan.taniumpy.session.ET.fromstring(b)
         cdata = el.find('.//ResultXML')
-        rd = pytan.taniumpy.session.ET.fromstring(s._xml_fix(cdata.text))
+        rd = pytan.taniumpy.session.ET.fromstring(cdata.text)
+        c = pytan.taniumpy.ResultSet.fromSOAPElement(rd)
+        self.assertTrue(c)
+        self.assertIsInstance(c, taniumpy.ResultSet)
+
+    def test_bad_chars_resultset_surrogate(self):
+        '''
+        This XML file has some characters that are unpaired surrogates in unicode. Surrogates
+        (unpaired or otherwise) are not legal XML characters.
+
+        This test validates that pytan.xml_clean.xml_cleaner() will properly remove all the
+        invalid and restricted characters, which should allow the body to be parsed properly.
+
+        Logging examples from xml_cleaner():
+        >>> v=open('bad_chars_resultset_surrogate.xml').read()
+        >>> pytan.xml_clean.xml_cleaner(v, show_bad_characters=True)
+        XMLCleaner: Replaced 1 invalid characters that did not match the regex u'[^\t\n\r -\ud7ff\ue000-\ufffd]'
+        XMLCleaner: Invalid characters found: [u'\ude64']
+        XMLCleaner: No restricted characters found
+        '''
+        f = 'bad_chars_resultset_surrogate.xml'
+        a = open(os.path.join(my_dir, f), 'rb+').read()
+        b = pytan.xml_clean.xml_cleaner(a, log_messages=False)
+        el = pytan.taniumpy.session.ET.fromstring(b)
+        cdata = el.find('.//ResultXML')
+        rd = pytan.taniumpy.session.ET.fromstring(cdata.text)
         c = pytan.taniumpy.ResultSet.fromSOAPElement(rd)
         self.assertTrue(c)
         self.assertIsInstance(c, taniumpy.ResultSet)
