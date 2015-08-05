@@ -40,8 +40,6 @@ class Handler(object):
         port of Tanium SOAP Server on `host`
     get_version : bool, optional
         get the version of the server from Tanium after authenticating, default to True
-    session_lib : str, optional
-        use a specific Sessions class, can choose from httplib or requests (the default)
     gmt_log : bool, optional
         True use GMT timezone for log output, False use local time for log output
     loglevel : int, optional
@@ -64,7 +62,7 @@ class Handler(object):
     """
 
     def __init__(self, username, password, host, port="443", loglevel=0,
-                 debugformat=False, get_version=True, session_lib=None, gmt_log=True, **kwargs):
+                 debugformat=False, get_version=True, gmt_log=True, **kwargs):
         super(Handler, self).__init__()
 
         self.mylog = logging.getLogger("pytan.handler")
@@ -92,25 +90,8 @@ class Handler(object):
         except ValueError:
             raise pytan.exceptions.HandlerError("port must be an integer!")
 
-        session_type_map = {
-            'httplib': pytan.sessions.HttplibSession,
-            'requests': pytan.sessions.RequestsSession,
-        }
-
-        if session_lib is None:
-            session_class = pytan.sessions.RequestsSession
-        else:
-            if session_lib.lower() in session_type_map:
-                session_class = session_type_map[session_lib.lower()]
-            else:
-                err = (
-                    "Invalid option supplied for 'session_lib': {!r}, must be one of: {}"
-                ).format(session_lib, session_type_map.keys())
-                raise pytan.exceptions.HandlerError(err)
-
-        self.mylog.debug('Using {} for Sessions'.format(session_class))
         pytan.utils.test_app_port(host, port)
-        self.session = session_class(host, port)
+        self.session = pytan.sessions.Session(host, port)
         self.session.authenticate(username, password)
         if get_version:
             self.server_version = "Not yet determined!"
