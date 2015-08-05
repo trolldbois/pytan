@@ -797,7 +797,7 @@ def add_get_object_report_argparser(parser):
     json_subparser = subparsers.add_parser(
         'json',
         help='Produce a JSON report, supply "json -h" to see JSON options',
-        description="CSV Export Options"
+        description="JSON Export Options"
     )
 
     group = json_subparser.add_mutually_exclusive_group()
