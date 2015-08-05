@@ -7,7 +7,7 @@ class QuestionTimeoutException(Exception):
 
 class QuestionAsker(object):
     """A class to aid in asking a Question.
-    TODO:
+
     The primary function of this class is to poll for
     result info for question, and fire off events:
 
@@ -73,9 +73,7 @@ class QuestionAsker(object):
         start = time.time()
         while not self._stop:
             if time.time() - start > self._timeout:
-                raise QuestionTimeoutException(
-                    "Question reached timeout of {} seconds".format(self._timeout)
-                )
+                raise QuestionTimeoutException()
             result_info = self.session.getResultInfo(self.question, **kwargs)
             tested_pct = result_info.mr_tested * 100
             estimated_total_pct = result_info.estimated_total + .01
