@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+<soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<t:return><command>GetResultData</command>
+<session>7-13731-d7592281d03c99bfe5d436a6c5e9b6b05964eb3d9b00d5f4e363723ac9220295f0d52545f0d24a3a5a5116c9adc71534b93c1d615fd73e864689d00bdfc94bca</session>
+<ID></ID>
+<IDType></IDType>
+<ContextID></ContextID>
+<object_list><question><id>72108</id>
+</question>
+</object_list>
+
+<options><suppress_object_list>1</suppress_object_list>
+</options>
+
+<ResultXML>
+<![CDATA[<result_sets><now>2015/07/20 14:31:36 GMT-0000</now>
+<result_set><age>0</age>
+<archived_question_id>0</archived_question_id>
+<saved_question_id>0</saved_question_id>
+<question_id>72108</question_id>
+<report_count>28012</report_count>
+<seconds_since_issued>0</seconds_since_issued>
+<issue_seconds>0</issue_seconds>
+<expire_seconds>0</expire_seconds>
+<tested>47307</tested>
+<passed>29945</passed>
+<mr_tested>47307</mr_tested>
+<mr_passed>47307</mr_passed>
+<estimated_total>47684</estimated_total>
+<select_count>3</select_count>
+<cs><c><wh>1426635892</wh><dn>Computer_Name</dn><rt>1</rt></c><c><wh>2422877483</wh><dn>Client_IP_Address</dn><rt>1</rt></c><c><wh>3433876370</wh><dn>Autoruns</dn><rt>1</rt></c><c><wh>0</wh><dn>Count</dn><rt>3</rt></c></cs><filtered_row_count>29575</filtered_row_count><filtered_row_count_machines>29911</filtered_row_count_machines><row_count>29575</row_count><row_count_machines>29911</row_count_machines><item_count>29575</item_count><rs>
+<r><id>1445684755</id><cid>3232708418</cid><c><v>CJK_SYSTEM</v></c><c><v>16.168.5.48</v></c><c><v>HKLM/SOFTWARE/Wow6432Node/Microsoft/Windows/CurrentVersion/Run|USBKeyTools.exe|1|Logon|�����Ǳ������������û���������__���������Ǳ�����ϵͳ���޹�˾|c:/program files (x86)/ccbcomponents/hdzb/usbkeytools.exe|1.6.0.67|C:/Program Files (x86)/CCBComponents/HDZB/USBKeyTools.exe|0d4c3c680565854b0cfd3be5cfb09977|6198db5434fb10572687422c66c2f03c23babc48|a1ab8140a0a8495466f08a4843cb30a2965da5cf4d3c3f1ecce398e3c2e622e2</v><v>HKLM/SOFTWARE/Microsoft/Windows/CurrentVersion/Run|HPPowerAssistant|1|Logon|DelayedAppStarter__Hewlett-Packard Company, L.P.|c:/program files/hewlett-packard/hp power assistant/delayedappstarter.exe|2.5.0.16|C:/Program Files/Hewlett-Packard/HP Power Assistant/DelayedAppStarter.exe 120 C:/Program Files/Hewlett-Packard/HP Power Assistant/HPPA_Main.exe /hidden|bd4fa01be032f4a5b1b332a80f102f11|18bea1ea731c436c47068d583c746f289015cbc2|a62581d1dadca288996ae154134d2185a02a8e393b412f634f6f9c6f27ecdb9f</v></c><c><v>1</v></c></r>
+</rs></result_set>
+</result_sets>
+]]>
+</ResultXML>
+<result_object></result_object>
+</t:return></soap:Body>
+</soap:Envelope>
