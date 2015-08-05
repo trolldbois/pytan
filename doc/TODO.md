@@ -9,14 +9,14 @@
   * [X] fix saved questions
   * [X] add antonio's notes
   * [X] add runplugin
-  * [ ] fix xml issue
-  * [ ] add doc note re excel limit for cell
+  * [X] fix xml issue
   * [ ] add saved questions json to api/doc gen
+
+# TODO LATER
+  * [ ] add doc note re excel limit for cell
   * [ ] winbin doc note re double quotes and using batch scripts instead of py scripts directly
   * [ ] add more doc notes/refs for dehumanize_*
   * [ ] add tests for dashboard stuffs
-
-# TODO LATER
   * [ ] add approve action 
   * [ ] 1.6 add dashboard wrappers
   * [ ] 1.6 add secondary loop for if any data == current result unavail/etc (MEDIUM)
