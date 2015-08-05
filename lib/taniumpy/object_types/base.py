@@ -10,29 +10,6 @@ try:
 except:
     import xml.etree.ElementTree as ET
 
-# 1.0.4: added for xml_fix(), declare a regex that identifies invalid characters in unicode
-invalid_xml = re.compile(u'[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F]')
-
-
-def xml_fix(s):
-    """
-    # 1.0.4: added this function
-
-    this supports better handling of invalid XML, removing invalid control characters and
-    re-encoding to utf-8 with xmlcharrefreplace
-    """
-    # string that will be used to replace any invalid characters
-    fixer_str = "???"
-    # encode the string as utf-8
-    utf_str = s.encode('utf-8', 'xmlcharrefreplace')
-    # decode the string from utf-8 into unicode
-    unicode_str = utf_str.decode('utf-8', 'xmlcharrefreplace')
-    # replace any invalid characters that match the invalid_xml regex with the fixer_str
-    clean_str, count = invalid_xml.subn(fixer_str, unicode_str)
-    # re-encode the string as utf-8
-    utf_str = clean_str.encode('utf-8', 'xmlcharrefreplace')
-    return utf_str
-
 
 class IncorrectTypeException(Exception):
     """Raised when a property is not of the expected type"""
@@ -224,7 +201,7 @@ class BaseType(object):
         may be a list or a single object.
 
         """
-        tree = ET.fromstring(xml_fix(body))
+        tree = ET.fromstring(body)
         result_object = tree.find(".//result_object/*")
         if result_object is None:
             return None  # no results, not an error
