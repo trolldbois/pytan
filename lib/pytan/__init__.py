@@ -42,6 +42,7 @@ for aa in path_adds:
 import taniumpy  # noqa
 
 import pytan  # noqa
+import pytan.xml_clean  # noqa
 import pytan.utils  # noqa
 import pytan.handler  # noqa
 import pytan.sessions  # noqa
