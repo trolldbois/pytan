@@ -8,18 +8,14 @@ import sys
 sys.dont_write_bytecode = True
 
 import os
-import httplib
 import string
 import logging
 import json
-import ssl
 import re
-import gzip
 import threading
 import time
 
 from datetime import datetime
-from cStringIO import StringIO
 from base64 import b64encode
 
 try:
@@ -42,16 +38,27 @@ from taniumpy.object_types.result_set import ResultSet
 from taniumpy.object_types.options import Options
 
 import pytan
+from pytan.xml_clean import xml_cleaner
 import requests
 requests.packages.urllib3.disable_warnings()
 
-# fix for UTF encoding -- STILL NEEDED?? TODO
 import sys
 reload(sys)
-sys.setdefaultencoding('latin-1')
+sys.setdefaultencoding('utf-8')
 
 
-class HttplibSession(object):
+class Session(object):
+    '''
+    This is session object uses the requests package instead of the built in httplib library.
+    This provides support for keep alive, gzip, cookies, forwarding, and a host of other features
+    automatically.
+
+    The Requests Session object allows you to persist certain parameters across requests.
+    It also persists cookies across all requests made from the Session instance.
+    Any requests that you make within a session will automatically reuse the appropriate connection
+    '''
+    REQ_SESSION = requests.Session()
+    REQ_SESSION.verify = False
 
     XMLNS = {
         'SOAP-ENV': 'xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"',
@@ -96,7 +103,6 @@ class HttplibSession(object):
     COMMAND_RE = re.compile(r'<command>(.*?)</command>', re.IGNORECASE | re.DOTALL)
     SESSION_RE = re.compile(r'<session>(.*?)</session>', re.IGNORECASE | re.DOTALL)
     VERSION_RE = re.compile(r'<server_version>(.*?)</server_version>', re.IGNORECASE | re.DOTALL)
-    INVALID_XML_RE = re.compile(u'[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F]')
 
     HTTP_DEBUG = False
     HTTP_RETRY_COUNT = 5
@@ -113,8 +119,6 @@ class HttplibSession(object):
         {'Processes': 'System Performance Info/ProcessCount'},
         {'Memory Available': 'percentage(System Performance Info/PhysicalAvailable,System Performance Info/PhysicalTotal)'},
     ]
-
-    DUMP_BODIES = False
 
     mylog = logging.getLogger("api.session")
     authlog = logging.getLogger("api.session.auth")
@@ -136,7 +140,6 @@ class HttplibSession(object):
         self.httplog = logging.getLogger(self.qualname + ".http")
         self.bodyhttplog = logging.getLogger(self.qualname + ".http.body")
         self.HTTP_DEBUG = kwargs.get('http_debug', False)
-        self.DUMP_BODIES = kwargs.get('dump_bodies', False)
         self._start_stats_thread()
 
     def __str__(self):
@@ -346,7 +349,7 @@ class HttplibSession(object):
         # parse the single result_info into an Element and create a ResultInfo
         el = ET.fromstring(response_body)
         cdata = el.find('.//ResultXML')
-        cdata_text = self._xml_fix(cdata.text)
+        cdata_text = cdata.text
         result_info = ET.fromstring(cdata_text)
         obj = ResultInfo.fromSOAPElement(result_info)
         return obj
@@ -359,7 +362,7 @@ class HttplibSession(object):
         # parse the single result_info into an Element and create a ResultData
         el = ET.fromstring(response_body)
         cdata = el.find('.//ResultXML')
-        cdata_text = self._xml_fix(cdata.text)
+        cdata_text = cdata.text
         result_data = ET.fromstring(cdata_text)
         obj = ResultSet.fromSOAPElement(result_data)
         return obj
@@ -525,27 +528,7 @@ class HttplibSession(object):
         return body
 
     def _http_post(self, host, port, url, body=None, headers=None, connect_timeout=15,
-                   response_timeout=540, debug=False):
-
-        # httplib does not differentiate between connect & response timeout
-        # revert SSL verification for python 2.7.9
-        try:
-            http = httplib.HTTPSConnection(
-                host, port, timeout=response_timeout, context=ssl._create_unverified_context()
-            )
-        except:
-            http = httplib.HTTPSConnection(host, port, timeout=response_timeout)
-
-        if debug:
-            http.set_debuglevel(99)
-
-        req_args = {}
-        req_args['method'] = 'POST'
-        req_args['url'] = url
-        if body is not None:
-            req_args['body'] = body
-        if headers is not None:
-            req_args['headers'] = headers
+                   response_timeout=180, debug=False):
 
         full_url = "https://{0}:{1}/{2}".format(host, port, url)
 
@@ -553,61 +536,50 @@ class HttplibSession(object):
         if 'password' in clean_headers:
             clean_headers['password'] = '**PASSWORD**'
 
+        req_args = {}
+        req_args['headers'] = headers
+        req_args['data'] = body
+        req_args['timeout'] = (connect_timeout, response_timeout)
+
         self.httplog.debug("HTTP request: Post to {}".format(full_url))
         self.httplog.debug("HTTP request: headers: {}".format(clean_headers))
         self.bodyhttplog.debug("HTTP request: body:\n{}".format(body))
 
         try:
-            http.connect()
-            http.request(**req_args)
-            response = http.getresponse()
-            response_body = response.read()
+            response = self.REQ_SESSION.post(full_url, **req_args)
         except Exception as e:
             m = "HTTP response: POST request to {!r} failed: {}".format
             raise pytan.exceptions.HttpError(m(full_url, e))
-        finally:
-            http.close()
 
-        headers = dict(response.getheaders())
-        content_encoding = headers.get('content-encoding', '').lower()
+        self.REQ_RESPONSE = response
+        response_body = xml_cleaner(response.text)
+        response_headers = response.headers
 
-        response_body = self._xml_fix(response_body)
+        m = "HTTP response: from {!r} len:{}, status:{} {}, body type: {}".format
 
-        m = (
-            "HTTP response: from {0!r} len:{1}, status:{2.status} {2.reason}, body type: {3}"
-        ).format
-        self.httplog.debug(m(full_url, len(response_body), response, type(response_body)))
-        self.httplog.debug("HTTP response: headers: {}".format(headers))
+        self.httplog.debug(m(
+            full_url,
+            len(response_body),
+            response.status_code,
+            response.reason,
+            type(response_body),
+        ))
+
+        self.httplog.debug("HTTP response: headers: {}".format(response_headers))
 
         auth_fail_codes = [401, 403]
-        if response.status in auth_fail_codes:
+        if response.status_code in auth_fail_codes:
             m = "HTTP response: POST request to {!r} returned code: {}, body: {}".format
-            raise pytan.exceptions.AuthorizationError(m(full_url, response.status, response_body))
-
-        ok_codes = [200]
-        if response.status not in ok_codes:
-            m = "HTTP response: POST request to {!r} returned code: {}, body: {}".format
-            raise pytan.exceptions.HttpError(m(full_url, response.status, response_body))
+            raise pytan.exceptions.AuthorizationError(m(
+                full_url, response.status_code, response_body))
 
         if not response_body:
             m = "HTTP response: POST request to {!r} returned empty body".format
             raise pytan.exceptions.HttpError(m(full_url))
 
-        if content_encoding == 'gzip':
-            try:
-                before_len = len(response_body)
-                buf = StringIO(response_body)
-                f = gzip.GzipFile(fileobj=buf)
-                response_body = f.read()
-                after_len = len(response_body)
-                m = "HTTP response: gzip encoding detected, decompressed body from {} to {}".format
-                self.httplog.debug(m(before_len, after_len))
-            except Exception as e:
-                m = (
-                    "HTTP response: POST request to {!r} returned gzipped response that failed "
-                    "to decompress: {}"
-                ).format
-                raise pytan.exceptions.HttpError(m(full_url, e))
+        if not response.ok:
+            m = "HTTP response: POST request to {!r} returned code: {}, body: {}".format
+            raise pytan.exceptions.HttpError(m(full_url, response.status_code, response_body))
 
         self.bodyhttplog.debug("HTTP response: body:\n{}".format(response_body))
 
@@ -665,26 +637,6 @@ class HttplibSession(object):
         except Exception as e:
             return "Unable to find diagnostic: {}, exception: {}".format(search_path, e)
         return diags
-
-    def _xml_fix(self, s):
-        """
-        this supports better handling of invalid XML, removing invalid control characters and
-        re-encoding to utf-8 with xmlcharrefreplace
-        """
-        # string that will be used to replace any invalid characters
-        fixer_str = "???"
-        # encode the string as utf-8
-        utf_str = s.encode('utf-8', 'xmlcharrefreplace')
-        # decode the string from utf-8 into unicode
-        unicode_str = utf_str.decode('utf-8', 'xmlcharrefreplace')
-        # replace any invalid characters that match the invalid_xml regex with the fixer_str
-        clean_str, count = self.INVALID_XML_RE.subn(fixer_str, unicode_str)
-        # if any invalid characters found, print out a debug message saying how many were replaced
-        if count:
-            self.mylog.debug("Replaced {} invalid characters in the XML with {}".format(count, fixer_str))
-        # re-encode the string as utf-8
-        utf_str = clean_str.encode('utf-8', 'xmlcharrefreplace')
-        return utf_str
 
     def _build_body(self, command, object_list, **kwargs):
         options_obj = Options()
@@ -825,143 +777,5 @@ class HttplibSession(object):
         server_version = self._parse_response_for_regex(response_body, self.VERSION_RE, False)
         if server_version:
             self.server_version = server_version
-
-        return response_body
-
-
-class OrigRequestsSession(HttplibSession):
-    '''
-    This is a sub-class of :class:`taniumpy.Session` that over rides the _http_post method
-    to uses the requests package instead of the built in httplib library. This provides support for
-    keep alive, gzip, cookies, forwarding, and a host of other features automatically.
-
-    The Requests Session object allows you to persist certain parameters across requests.
-    It also persists cookies across all requests made from the Session instance.
-    Any requests that you make within a session will automatically reuse the appropriate connection
-    '''
-    REQ_SESSION = requests.Session()
-
-    def _http_post(self, host, port, url, body=None, headers=None, connect_timeout=15,
-                   response_timeout=180, debug=False):
-
-        full_url = "https://{0}:{1}/{2}".format(host, port, url)
-
-        clean_headers = dict(headers or {})
-        if 'password' in clean_headers:
-            clean_headers['password'] = '**PASSWORD**'
-
-        req_args = {}
-        req_args['headers'] = headers
-        req_args['data'] = body
-        req_args['timeout'] = (connect_timeout, response_timeout)
-        req_args['verify'] = False
-
-        self.httplog.debug("HTTP request: Post to {}".format(full_url))
-        self.httplog.debug("HTTP request: headers: {}".format(clean_headers))
-        self.bodyhttplog.debug("HTTP request: body:\n{}".format(body))
-
-        try:
-            response = self.REQ_SESSION.post(full_url, **req_args)
-        except Exception as e:
-            m = "HTTP response: POST request to {!r} failed: {}".format
-            raise pytan.exceptions.HttpError(m(full_url, e))
-
-        response_body = self._xml_fix(response.text)
-        headers = response.headers
-
-        m = (
-            "HTTP response: from {0!r} len:{1}, status:{2.status_code} {2.reason}, body type: {3}"
-        ).format
-
-        self.httplog.debug(m(full_url, len(response_body), response, type(response_body)))
-        self.httplog.debug("HTTP response: headers: {}".format(headers))
-
-        auth_fail_codes = [401, 403]
-        if response.status_code in auth_fail_codes:
-            m = "HTTP response: POST request to {!r} returned code: {}, body: {}".format
-            raise pytan.exceptions.AuthorizationError(m(
-                full_url, response.status_code, response_body))
-
-        if not response_body:
-            m = "HTTP response: POST request to {!r} returned empty body".format
-            raise pytan.exceptions.HttpError(m(full_url))
-
-        if not response.ok:
-            m = "HTTP response: POST request to {!r} returned code: {}, body: {}".format
-            raise pytan.exceptions.HttpError(m(full_url, response.status_code, response_body))
-
-        self.bodyhttplog.debug("HTTP response: body:\n{}".format(response_body))
-
-        return response_body
-
-
-class RequestsSession(HttplibSession):
-    '''
-    This is a sub-class of :class:`taniumpy.Session` that over rides the _http_post method
-    to uses the requests package instead of the built in httplib library. This provides support for
-    keep alive, gzip, cookies, forwarding, and a host of other features automatically.
-
-    The Requests Session object allows you to persist certain parameters across requests.
-    It also persists cookies across all requests made from the Session instance.
-    Any requests that you make within a session will automatically reuse the appropriate connection
-    '''
-    REQ_SESSION = requests.Session()
-    FAKEOUT = False
-
-    def _http_post(self, host, port, url, body=None, headers=None, connect_timeout=15,
-                   response_timeout=180, debug=False):
-
-        full_url = "https://{0}:{1}/{2}".format(host, port, url)
-
-        clean_headers = dict(headers or {})
-        if 'password' in clean_headers:
-            clean_headers['password'] = '**PASSWORD**'
-
-        req_args = {}
-        req_args['headers'] = headers
-        req_args['data'] = body
-        req_args['timeout'] = (connect_timeout, response_timeout)
-        req_args['verify'] = False
-
-        self.httplog.debug("HTTP request: Post to {}".format(full_url))
-        self.httplog.debug("HTTP request: headers: {}".format(clean_headers))
-        self.bodyhttplog.debug("HTTP request: body:\n{}".format(body))
-
-        if self.FAKEOUT:
-            import pickle
-            response_body = pickle.load(open('foo3.txt'))
-            response_headers = {}
-        else:
-            try:
-                response = self.REQ_SESSION.post(full_url, **req_args)
-            except Exception as e:
-                m = "HTTP response: POST request to {!r} failed: {}".format
-                raise pytan.exceptions.HttpError(m(full_url, e))
-
-            response_body = self._xml_fix(response.text)
-            response_headers = response.headers
-
-            m = (
-                "HTTP response: from {0!r} len:{1}, status:{2.status_code} {2.reason}, body type: {3}"
-            ).format
-
-            self.httplog.debug(m(full_url, len(response_body), response, type(response_body)))
-            self.httplog.debug("HTTP response: headers: {}".format(response_headers))
-
-            auth_fail_codes = [401, 403]
-            if response.status_code in auth_fail_codes:
-                m = "HTTP response: POST request to {!r} returned code: {}, body: {}".format
-                raise pytan.exceptions.AuthorizationError(m(
-                    full_url, response.status_code, response_body))
-
-            if not response_body:
-                m = "HTTP response: POST request to {!r} returned empty body".format
-                raise pytan.exceptions.HttpError(m(full_url))
-
-            if not response.ok:
-                m = "HTTP response: POST request to {!r} returned code: {}, body: {}".format
-                raise pytan.exceptions.HttpError(m(full_url, response.status_code, response_body))
-
-        self.bodyhttplog.debug("HTTP response: body:\n{}".format(response_body))
 
         return response_body
