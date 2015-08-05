@@ -58,8 +58,11 @@ LOG_LEVEL_MAPS = [
     ),
     (
         3,
-        {'pytan.handler': 'DEBUG'},
-        'Pytan handler logger show output at DEBUG or above',
+        {
+            'pytan.handler': 'DEBUG',
+            'XMLCleaner': 'DEBUG',
+        },
+        'Pytan handler logger and XMLCleaner show output at DEBUG or above',
     ),
     (
         4,
