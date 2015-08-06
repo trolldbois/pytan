@@ -204,6 +204,75 @@ write_file(
     os.path.join(example_out_dir, example_py_file), example_py_out(base_desc, base_example, out))
 
 
+####################### VALID SAVED QUESTION DDT
+
+ddt = os.path.join(ddt_dir, 'ddt_valid_saved_questions.json')
+ddt_objs = json_read(ddt)
+
+q_examples = []
+for qname, qinfo in sorted(ddt_objs.items(), key=lambda x: x[1]['priority']):
+
+    q_kwargs = ''.join([
+        'kwargs["{}"] = {}\n'.format(k, pprint.pformat(v))
+        for k, v in qinfo['args'].iteritems()
+    ])
+    q_kwargs = """
+# setup the arguments for the handler method
+kwargs = {{}}
+{}""".format(q_kwargs)
+
+    q_method = """
+# call the handler with the {0} method, passing in kwargs for arguments
+response = handler.{0}(**kwargs)
+""".format(qinfo['method'])
+
+    q_response = """import pprint, io
+
+print ""
+print "Type of response: ", type(response)
+
+print ""
+print "Pretty print of response:"
+print pprint.pformat(response)
+
+print ""
+print "Equivalent Question if it were to be asked in the Tanium Console: "
+print response['question_object'].query_text
+
+# create an IO stream to store CSV results to
+out = io.BytesIO()
+
+# call the write_csv() method to convert response to CSV and store it in out
+response['question_results'].write_csv(out, response['question_results'])
+
+print ""
+print "CSV Results of response: "
+out = out.getvalue()
+if len(out.splitlines()) > 15:
+    out = out.splitlines()[0:15]
+    out.append('..trimmed for brevity..')
+    out = '\\n'.join(out)
+print out
+"""
+    q_code = '{}{}{}{}\n'.format(base_example, q_kwargs, q_method, q_response)
+    example_rst_file = qname + '.rst'
+    example_py_file = qname + '.py'
+    out = get_exec_output(q_code)
+    example_rst_out = "{}\n{}{}".format(
+        rst_name_template(get_name_title(qname)),
+        rst_desc_template(qinfo['desc']),
+        rst_code_block(q_code, out)
+    )
+    q_examples.append(example_rst_file)
+    write_file(os.path.join(rst_out_dir, example_rst_file), example_rst_out)
+    write_file(
+        os.path.join(example_out_dir, example_py_file), example_py_out(qinfo['desc'], q_code, out))
+
+q_examples_rst = os.path.join(rst_out_dir, 'valid_saved_questions.rst')
+write_file(q_examples_rst, example_index_rst_out(
+    'PyTan API Valid Saved Question Examples', '\n   '.join(q_examples)))
+examples.append('valid_saved_questions')
+
 ####################### VALID QUESTION DDT
 
 ddt = os.path.join(ddt_dir, 'ddt_valid_questions.json')
@@ -270,7 +339,7 @@ print out
 
 q_examples_rst = os.path.join(rst_out_dir, 'valid_questions.rst')
 write_file(q_examples_rst, example_index_rst_out(
-    'pytan API Valid Question Examples', '\n   '.join(q_examples)))
+    'PyTan API Valid Question Examples', '\n   '.join(q_examples)))
 examples.append('valid_questions')
 
 ####################### INVALID QUESTION DDT
@@ -320,7 +389,7 @@ except Exception as e:
 
 q_examples_rst = os.path.join(rst_out_dir, 'invalid_questions.rst')
 write_file(q_examples_rst, example_index_rst_out(
-    'pytan API Invalid Question Examples', '\n   '.join(q_examples)))
+    'PyTan API Invalid Question Examples', '\n   '.join(q_examples)))
 examples.append('invalid_questions')
 
 ####################### VALID GET OBJECT DDT
@@ -385,7 +454,7 @@ print out
 
 q_examples_rst = os.path.join(rst_out_dir, 'valid_get_objects.rst')
 write_file(q_examples_rst, example_index_rst_out(
-    'pytan API Valid Get Object Examples', '\n   '.join(q_examples)))
+    'PyTan API Valid Get Object Examples', '\n   '.join(q_examples)))
 examples.append('valid_get_objects')
 
 ####################### INVALID GET OBJECT DDT
@@ -435,7 +504,7 @@ except Exception as e:
 
 q_examples_rst = os.path.join(rst_out_dir, 'invalid_get_objects.rst')
 write_file(q_examples_rst, example_index_rst_out(
-    'pytan API Invalid Get Object Examples', '\n   '.join(q_examples)))
+    'PyTan API Invalid Get Object Examples', '\n   '.join(q_examples)))
 examples.append('invalid_get_objects')
 
 ####################### VALID DEPLOY ACTION DDT
@@ -503,7 +572,7 @@ if response['action_results']:
 
 q_examples_rst = os.path.join(rst_out_dir, 'valid_deploy_actions.rst')
 write_file(q_examples_rst, example_index_rst_out(
-    'pytan API Valid Deploy Action Examples', '\n   '.join(q_examples)))
+    'PyTan API Valid Deploy Action Examples', '\n   '.join(q_examples)))
 examples.append('valid_deploy_actions')
 
 ####################### INVALID DEPLOY ACTION DDT
@@ -554,7 +623,7 @@ except Exception as e:
 
 q_examples_rst = os.path.join(rst_out_dir, 'invalid_deploy_actions.rst')
 write_file(q_examples_rst, example_index_rst_out(
-    'pytan API Invalid Deploy Action Examples', '\n   '.join(q_examples)))
+    'PyTan API Invalid Deploy Action Examples', '\n   '.join(q_examples)))
 examples.append('invalid_deploy_actions')
 
 ####################### VALID CREATE OBJECT DDT
@@ -631,7 +700,7 @@ except Exception as e:
 
 q_examples_rst = os.path.join(rst_out_dir, 'valid_create_objects.rst')
 write_file(q_examples_rst, example_index_rst_out(
-    'pytan API Valid Create Object Examples', '\n   '.join(q_examples)))
+    'PyTan API Valid Create Object Examples', '\n   '.join(q_examples)))
 examples.append('valid_create_objects')
 
 ####################### INVALID CREATE OBJECT DDT
@@ -681,7 +750,7 @@ except Exception as e:
 
 q_examples_rst = os.path.join(rst_out_dir, 'invalid_create_objects.rst')
 write_file(q_examples_rst, example_index_rst_out(
-    'pytan API Invalid Create Object Examples', '\n   '.join(q_examples)))
+    'PyTan API Invalid Create Object Examples', '\n   '.join(q_examples)))
 examples.append('invalid_create_objects')
 
 ####################### VALID CREATE OBJECT FROM JSON DDT
@@ -778,7 +847,7 @@ print response.to_json(response)
 
 q_examples_rst = os.path.join(rst_out_dir, 'valid_create_objects_from_json.rst')
 write_file(q_examples_rst, example_index_rst_out(
-    'pytan API Valid Create Object From JSON Examples', '\n   '.join(q_examples)))
+    'PyTan API Valid Create Object From JSON Examples', '\n   '.join(q_examples)))
 examples.append('valid_create_objects_from_json')
 
 ####################### INVALID CREATE OBJECT FROM JSON DDT
@@ -839,7 +908,7 @@ except Exception as e:
 
 q_examples_rst = os.path.join(rst_out_dir, 'invalid_create_objects_from_json.rst')
 write_file(q_examples_rst, example_index_rst_out(
-    'pytan API Invalid Create Object From JSON Examples', '\n   '.join(q_examples)))
+    'PyTan API Invalid Create Object From JSON Examples', '\n   '.join(q_examples)))
 examples.append('invalid_create_objects_from_json')
 
 ####################### VALID EXPORT RESULTSET DDT
@@ -861,7 +930,7 @@ export_kwargs = {{}}
     q_method = """
 # ask the question that will provide the resultset that we want to use
 ask_kwargs = {{
-    'qtype': 'manual_human',
+    'qtype': 'manual',
     'sensors': [
         "Computer Name", "IP Route Details", "IP Address",
         'Folder Name Search with RegEx Match{{dirname=Program Files,regex=.*Shared.*}}',
@@ -903,7 +972,7 @@ print out
 
 q_examples_rst = os.path.join(rst_out_dir, 'valid_export_resultset.rst')
 write_file(q_examples_rst, example_index_rst_out(
-    'pytan API Valid Export ResultSet Examples', '\n   '.join(q_examples)))
+    'PyTan API Valid Export ResultSet Examples', '\n   '.join(q_examples)))
 examples.append('valid_export_resultset')
 
 ####################### INVALID EXPORT RESULTSET DDT
@@ -925,7 +994,7 @@ export_kwargs = {{}}
     q_method = """
 # ask the question that will provide the resultset that we want to use
 ask_kwargs = {{
-    'qtype': 'manual_human',
+    'qtype': 'manual',
     'sensors': [
         "Computer Name"
     ],
@@ -962,7 +1031,7 @@ except Exception as e:
 
 q_examples_rst = os.path.join(rst_out_dir, 'invalid_export_resultset.rst')
 write_file(q_examples_rst, example_index_rst_out(
-    'pytan API Invalid Export ResultSet Examples', '\n   '.join(q_examples)))
+    'PyTan API Invalid Export ResultSet Examples', '\n   '.join(q_examples)))
 examples.append('invalid_export_resultset')
 
 ####################### VALID EXPORT BASETYPE DDT
@@ -1028,7 +1097,7 @@ print out
 
 q_examples_rst = os.path.join(rst_out_dir, 'valid_export_basetype.rst')
 write_file(q_examples_rst, example_index_rst_out(
-    'pytan API Valid Export BaseType Examples', '\n   '.join(q_examples)))
+    'PyTan API Valid Export BaseType Examples', '\n   '.join(q_examples)))
 examples.append('valid_export_basetype')
 
 ####################### INVALID EXPORT BASETYPE DDT
@@ -1088,11 +1157,11 @@ except Exception as e:
 
 q_examples_rst = os.path.join(rst_out_dir, 'invalid_export_basetype.rst')
 write_file(q_examples_rst, example_index_rst_out(
-    'pytan API Invalid Export BaseType Examples', '\n   '.join(q_examples)))
+    'PyTan API Invalid Export BaseType Examples', '\n   '.join(q_examples)))
 examples.append('invalid_export_basetype')
 
 ####################### EXAMPLE INDEX
 
 examples_rst = os.path.join(rst_out_dir, 'pytan_examples.rst')
 
-write_file(examples_rst, example_index_rst_out('pytan API examples', '\n   '.join(examples)))
+write_file(examples_rst, example_index_rst_out('PyTan API examples', '\n   '.join(examples)))
