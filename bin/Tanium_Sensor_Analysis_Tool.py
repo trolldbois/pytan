@@ -332,7 +332,7 @@ if __name__ == "__main__":
         mylog.setLevel(logging.INFO)
 
     if any([args.sensors_help, args.filters_help, args.options_help]):
-        handler.ask_manual_human(
+        handler.ask_manual(
             sensors_help=args.sensors_help,
             filters_help=args.filters_help,
             options_help=args.options_help,
@@ -392,7 +392,7 @@ if __name__ == "__main__":
 
         try:
             start_time = datetime.datetime.now()
-            ret = handler.ask_manual_human(
+            ret = handler.ask_manual(
                 sensors=sensor.name,
                 timeout=args.timeout,
                 pct_complete_threshold=args.pct_complete_threshold,
