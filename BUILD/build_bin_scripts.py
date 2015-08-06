@@ -71,6 +71,11 @@ for i in constants.GET_OBJ_MAP:
     print "Generated {} from {}".format(i_f, cjo_f)
 
 
+print "## Cleaning up winbin/ scripts"
+for i in glob.glob(os.path.join(output_winbin, '*')):
+    os.unlink(i)
+    print "Removed {}".format(i)
+
 print "## Generating winbin/ scripts"
 wb_f = os.path.join(template_dir, 'TEMPLATE.bat')
 wb_s = open(wb_f).read()
@@ -93,3 +98,13 @@ for i in glob.glob(os.path.join(output_bin, '*.py')):
     i_h.close()
     os.chmod(i_f, 0755)
     print "Generated {} from {}".format(i_f, bin_template_f)
+
+config_template = '''@echo off
+set PYTHON=C:\Python27\python.exe
+'''
+i_f = os.path.join(output_winbin, 'CONFIG.bat')
+i_h = open(i_f, 'w')
+i_h.write(config_template)
+i_h.close()
+os.chmod(i_f, 0755)
+print "Generated {}".format(i_f)
