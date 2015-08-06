@@ -137,7 +137,7 @@ if __name__ == "__main__":
 
     print "++ Deploying action:\n{}".format(utils.jsonify(d_args))
     try:
-        ret = handler.deploy_action_human(**d_args)
+        ret = handler.deploy_action(**d_args)
     except Exception as e:
         print e
         sys.exit(99)

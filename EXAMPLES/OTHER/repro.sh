@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# this is a bash script that will use curl to query the server over and over again for the sensor
+# list. It can be used to "load test" a tanium server from a certain perspective, but it has a
+# failing in that the connections are not re-used (so a new connection is opened for every attempt)
+
 server="172.16.31.128"
 port="443"
 username="Tanium User"

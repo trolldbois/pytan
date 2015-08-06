@@ -1,4 +1,5 @@
-
+# this is a very raw and rough example of how to use the Plugin object in the SOAP API
+# to create / get / delete dashboards
 
 def plugin_zip(p):
     '''maps columns to values for each row in a plugins sql_response and returns a list of dicts'''
