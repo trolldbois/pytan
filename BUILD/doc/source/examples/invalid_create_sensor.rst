@@ -60,7 +60,7 @@ Example Python Code
     
     
     # call the handler with the create_sensor method, passing in kwargs for arguments
-    # this should throw an exception: pytan.utils.HandlerError
+    # this should throw an exception: pytan.exceptions.HandlerError
     import traceback
     try:
         handler.create_sensor(**kwargs)
@@ -77,10 +77,10 @@ Output from Python Code
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
     Traceback (most recent call last):
       File "<string>", line 53, in <module>
-      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 537, in create_sensor
-        raise HandlerError(m)
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 709, in create_sensor
+        raise pytan.exceptions.HandlerError(m)
     HandlerError: Sensor creation not supported via PyTan as of yet, too complex
     Use create_sensor_from_json() instead!

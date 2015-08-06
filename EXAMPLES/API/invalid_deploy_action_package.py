@@ -53,34 +53,40 @@ kwargs["run"] = True
 kwargs["package"] = u'Invalid Package'
 
 
-# call the handler with the deploy_action_human method, passing in kwargs for arguments
-# this should throw an exception: pytan.utils.HandlerError
+# call the handler with the deploy_action method, passing in kwargs for arguments
+# this should throw an exception: pytan.exceptions.HandlerError
 import traceback
 try:
-    handler.deploy_action_human(**kwargs)
+    handler.deploy_action(**kwargs)
 except Exception as e:
     traceback.print_exc(file=sys.stdout)
 
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
 Traceback (most recent call last):
   File "<string>", line 56, in <module>
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1193, in deploy_action_human
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 405, in deploy_action
     **kwargs
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 971, in deploy_action
+  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2710, in wrap
+    ret = f(*args, **kwargs)
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1612, in _deploy_action
     package_def = self._get_package_def(package_def)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1829, in _get_package_def
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1431, in _get_package_def
     d['package_obj'] = self.get('package', **def_search)[0]
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1605, in get
+  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2710, in wrap
+    ret = f(*args, **kwargs)
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1256, in get
     return self._get_single(obj_map, **kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1789, in _get_single
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1391, in _get_single
     for x in self._single_find(obj_map, k, v, **kwargs):
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1799, in _single_find
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1401, in _single_find
     obj_ret = self._find(api_obj_single, **kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1727, in _find
-    raise HandlerError(err(search_str))
+  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2710, in wrap
+    ret = f(*args, **kwargs)
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1328, in _find
+    raise pytan.exceptions.HandlerError(err(search_str))
 HandlerError: No results found searching for PackageSpec, name: u'Invalid Package'!!
 
 '''

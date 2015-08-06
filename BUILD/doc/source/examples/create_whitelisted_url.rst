@@ -105,20 +105,20 @@ Output from Python Code
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
     No results found searching for whitelisted_url with {'url_regex': 'regex:http://test.com/.*API_Test.*URL'}!!
-    2015-03-26 11:49:19,095 INFO     handler: New Whitelisted URL 'regex:http://test.com/.*API_Test.*URL' created with ID 1027
+    2015-08-06 14:56:10,045 INFO     pytan.handler: New Whitelisted URL 'regex:http://test.com/.*API_Test.*URL' created with ID 3069
     
     Type of response:  <class 'taniumpy.object_types.white_listed_url.WhiteListedUrl'>
     
     print of response:
-    WhiteListedUrl, id: 1027
+    WhiteListedUrl, id: 3069
     
     print the object returned in JSON format:
     {
       "_type": "white_listed_url", 
       "download_seconds": 3600, 
-      "id": 1027, 
+      "id": 3069, 
       "metadata": {
         "_type": "metadata", 
         "item": [
@@ -132,4 +132,4 @@ Output from Python Code
       }, 
       "url_regex": "regex:http://test.com/.*API_Test.*URL"
     }
-    2015-03-26 11:49:19,119 INFO     handler: Deleted 'WhiteListedUrl, id: 1027'
+    2015-08-06 14:56:10,279 INFO     pytan.handler: Deleted 'WhiteListedUrl, id: 3069'

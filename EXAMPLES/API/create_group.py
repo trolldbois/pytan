@@ -88,14 +88,14 @@ except Exception as e:
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
 No results found searching for Group, name: 'All Windows Computers API Test'!!
-2015-03-26 11:49:19,021 INFO     handler: New group 'All Windows Computers API Test' created with ID 19223, filter text: ' Operating System contains "Windows"'
+2015-08-06 14:56:09,988 INFO     pytan.handler: New group 'All Windows Computers API Test' created with ID 27380, filter text: ' Operating System contains "Windows"'
 
 Type of response:  <class 'taniumpy.object_types.group.Group'>
 
 print of response:
-Group, name: 'All Windows Computers API Test'
+Group, name: 'All Windows Computers API Test', id: 27380
 
 print the object returned in JSON format:
 {
@@ -127,7 +127,7 @@ print the object returned in JSON format:
       }
     ]
   }, 
-  "id": 19223, 
+  "id": 27380, 
   "name": "All Windows Computers API Test", 
   "not_flag": 0, 
   "sub_groups": {
@@ -137,6 +137,6 @@ print the object returned in JSON format:
   "text": " Operating System contains \"Windows\"", 
   "type": 0
 }
-2015-03-26 11:49:19,044 INFO     handler: Deleted 'Group, id: 19223'
+2015-08-06 14:56:09,998 INFO     pytan.handler: Deleted 'Group, id: 27380'
 
 '''

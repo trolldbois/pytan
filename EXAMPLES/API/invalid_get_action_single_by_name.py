@@ -53,7 +53,7 @@ kwargs["name"] = u'Distribute Tanium Standard Utilities'
 
 
 # call the handler with the get method, passing in kwargs for arguments
-# this should throw an exception: pytan.utils.HandlerError
+# this should throw an exception: pytan.exceptions.HandlerError
 import traceback
 try:
     handler.get(**kwargs)
@@ -63,11 +63,13 @@ except Exception as e:
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
 Traceback (most recent call last):
   File "<string>", line 55, in <module>
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1595, in get
-    raise HandlerError(err(objtype, api_attrs))
+  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2710, in wrap
+    ret = f(*args, **kwargs)
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1246, in get
+    raise pytan.exceptions.HandlerError(err(objtype, api_attrs))
 HandlerError: Getting a action requires at least one filter: ['id']
 
 '''

@@ -77,15 +77,15 @@ print out
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
 
 Type of response:  <class 'taniumpy.object_types.user_list.UserList'>
 
 print of response:
-UserList, len: 5
+UserList, len: 8
 
 length of response (number of objects returned): 
-5
+8
 
 print the first object returned in JSON format:
 {
@@ -93,7 +93,7 @@ print the first object returned in JSON format:
   "deleted_flag": 0, 
   "group_id": 0, 
   "id": 1, 
-  "last_login": "2015-03-25T13:19:16", 
+  "last_login": "2015-05-21T01:52:35", 
   "metadata": {
     "_type": "metadata", 
     "item": [

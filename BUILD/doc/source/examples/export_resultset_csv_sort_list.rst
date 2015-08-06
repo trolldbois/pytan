@@ -62,7 +62,7 @@ Example Python Code
     
     # ask the question that will provide the resultset that we want to use
     ask_kwargs = {
-        'qtype': 'manual_human',
+        'qtype': 'manual',
         'sensors': [
             "Computer Name", "IP Route Details", "IP Address",
             'Folder Name Search with RegEx Match{dirname=Program Files,regex=.*Shared.*}',
@@ -94,38 +94,42 @@ Output from Python Code
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
-    2015-03-26 11:55:55,299 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*] from all machines)
-    2015-03-26 11:56:00,328 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*] from all machines)
-    2015-03-26 11:56:05,362 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*] from all machines)
-    2015-03-26 11:56:10,394 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*] from all machines)
-    2015-03-26 11:56:15,425 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*] from all machines)
-    2015-03-26 11:56:20,462 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*] from all machines)
-    2015-03-26 11:56:25,497 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*] from all machines)
-    2015-03-26 11:56:30,527 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*] from all machines)
-    2015-03-26 11:56:35,567 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*] from all machines)
-    2015-03-26 11:56:40,599 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*] from all machines)
-    2015-03-26 11:56:45,629 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*] from all machines)
-    2015-03-26 11:56:50,659 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*] from all machines)
-    2015-03-26 11:56:55,688 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*] from all machines)
-    2015-03-26 11:57:00,716 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*] from all machines)
-    2015-03-26 11:57:05,746 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*] from all machines)
-    2015-03-26 11:57:10,772 INFO     question_progress: Results 100% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*] from all machines)
+    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
+    2015-08-06 15:08:10,929 DEBUG    pytan.handler.QuestionPoller: ID 86286: id resolved to 86286
+    2015-08-06 15:08:10,929 DEBUG    pytan.handler.QuestionPoller: ID 86286: expiration resolved to 2015-08-06T15:18:11
+    2015-08-06 15:08:10,929 DEBUG    pytan.handler.QuestionPoller: ID 86286: query_text resolved to Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*] from all machines
+    2015-08-06 15:08:10,929 DEBUG    pytan.handler.QuestionPoller: ID 86286: id resolved to 86286
+    2015-08-06 15:08:10,929 DEBUG    pytan.handler.QuestionPoller: ID 86286: Object Info resolved to Question ID: 86286, Query: Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*] from all machines
+    2015-08-06 15:08:10,934 DEBUG    pytan.handler.QuestionPoller: ID 86286: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
+    2015-08-06 15:08:10,934 DEBUG    pytan.handler.QuestionPoller: ID 86286: Timing: Started: 2015-08-06 15:08:10.929576, Expiration: 2015-08-06 15:18:11, Override Timeout: None, Elapsed Time: 0:00:00.005193, Left till expiry: 0:10:00.065234, Loop Count: 1
+    2015-08-06 15:08:10,934 INFO     pytan.handler.QuestionPoller: ID 86286: Progress Changed 0% (0 of 2)
+    2015-08-06 15:08:15,949 DEBUG    pytan.handler.QuestionPoller: ID 86286: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
+    2015-08-06 15:08:15,949 DEBUG    pytan.handler.QuestionPoller: ID 86286: Timing: Started: 2015-08-06 15:08:10.929576, Expiration: 2015-08-06 15:18:11, Override Timeout: None, Elapsed Time: 0:00:05.020180, Left till expiry: 0:09:55.050246, Loop Count: 2
+    2015-08-06 15:08:20,961 DEBUG    pytan.handler.QuestionPoller: ID 86286: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
+    2015-08-06 15:08:20,961 DEBUG    pytan.handler.QuestionPoller: ID 86286: Timing: Started: 2015-08-06 15:08:10.929576, Expiration: 2015-08-06 15:18:11, Override Timeout: None, Elapsed Time: 0:00:10.032312, Left till expiry: 0:09:50.038114, Loop Count: 3
+    2015-08-06 15:08:25,969 DEBUG    pytan.handler.QuestionPoller: ID 86286: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
+    2015-08-06 15:08:25,969 DEBUG    pytan.handler.QuestionPoller: ID 86286: Timing: Started: 2015-08-06 15:08:10.929576, Expiration: 2015-08-06 15:18:11, Override Timeout: None, Elapsed Time: 0:00:15.039880, Left till expiry: 0:09:45.030547, Loop Count: 4
+    2015-08-06 15:08:30,980 DEBUG    pytan.handler.QuestionPoller: ID 86286: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
+    2015-08-06 15:08:30,980 DEBUG    pytan.handler.QuestionPoller: ID 86286: Timing: Started: 2015-08-06 15:08:10.929576, Expiration: 2015-08-06 15:18:11, Override Timeout: None, Elapsed Time: 0:00:20.050528, Left till expiry: 0:09:40.019899, Loop Count: 5
+    2015-08-06 15:08:35,995 DEBUG    pytan.handler.QuestionPoller: ID 86286: Progress: Tested: 2, Passed: 2, MR Tested: 2, MR Passed: 2, Est Total: 2, Row Count: 2
+    2015-08-06 15:08:35,995 DEBUG    pytan.handler.QuestionPoller: ID 86286: Timing: Started: 2015-08-06 15:08:10.929576, Expiration: 2015-08-06 15:18:11, Override Timeout: None, Elapsed Time: 0:00:25.065986, Left till expiry: 0:09:35.004441, Loop Count: 6
+    2015-08-06 15:08:35,995 INFO     pytan.handler.QuestionPoller: ID 86286: Progress Changed 100% (2 of 2)
+    2015-08-06 15:08:35,995 INFO     pytan.handler.QuestionPoller: ID 86286: Reached Threshold of 99% (2 of 2)
     
     print the export_str returned from export_obj():
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
-    2015-03-26 11:55:24,887 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*] from all machines)
-    2015-03-26 11:55:29,914 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*] from all machines)
-    2015-03-26 11:55:34,951 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*] from all machines)
-    2015-03-26 11:55:39,977 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*] from all machines)
-    2015-03-26 11:55:45,015 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*] from all machines)
-    2015-03-26 11:55:50,052 INFO     question_progress: Results 50% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*] from all machines)
-    2015-03-26 11:55:55,081 INFO     question_progress: Results 100% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*] from all machines)
-    
-    print the export_str returned from export_obj():
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
-    2015-03-26 11:54:59,504 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*] from all machines)
-    2015-03-26 11:55:04,536 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*] from all machines)
-    2015-03-26 11:55:09,566 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*] from all machines)
-    2015-03-26 11:55:14,596 INFO     question_progress: Results 0% (Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*] from all machines)
+    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
+    2015-08-06 15:06:20,526 DEBUG    pytan.handler.QuestionPoller: ID 86284: id resolved to 86284
+    2015-08-06 15:06:20,526 DEBUG    pytan.handler.QuestionPoller: ID 86284: expiration resolved to 2015-08-06T15:16:20
+    2015-08-06 15:06:20,526 DEBUG    pytan.handler.QuestionPoller: ID 86284: query_text resolved to Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*] from all machines
+    2015-08-06 15:06:20,526 DEBUG    pytan.handler.QuestionPoller: ID 86284: id resolved to 86284
+    2015-08-06 15:06:20,526 DEBUG    pytan.handler.QuestionPoller: ID 86284: Object Info resolved to Question ID: 86284, Query: Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*] from all machines
+    2015-08-06 15:06:20,533 DEBUG    pytan.handler.QuestionPoller: ID 86284: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
+    2015-08-06 15:06:20,533 DEBUG    pytan.handler.QuestionPoller: ID 86284: Timing: Started: 2015-08-06 15:06:20.526821, Expiration: 2015-08-06 15:16:20, Override Timeout: None, Elapsed Time: 0:00:00.006509, Left till expiry: 0:09:59.466672, Loop Count: 1
+    2015-08-06 15:06:20,533 INFO     pytan.handler.QuestionPoller: ID 86284: Progress Changed 0% (0 of 2)
+    2015-08-06 15:06:25,540 DEBUG    pytan.handler.QuestionPoller: ID 86284: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
+    2015-08-06 15:06:25,540 DEBUG    pytan.handler.QuestionPoller: ID 86284: Timing: Started: 2015-08-06 15:06:20.526821, Expiration: 2015-08-06 15:16:20, Override Timeout: None, Elapsed Time: 0:00:05.013477, Left till expiry: 0:09:54.459704, Loop Count: 2
+    2015-08-06 15:06:30,549 DEBUG    pytan.handler.QuestionPoller: ID 86284: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
+    2015-08-06 15:06:30,549 DEBUG    pytan.handler.QuestionPoller: ID 86284: Timing: Started: 2015-08-06 15:06:20.526821, Expiration: 2015-08-06 15:16:20, Override Timeout: None, Elapsed Time: 0:00:10.022854, Left till expiry: 0:09:49.450328, Loop Count: 3
+    2015-08-06 15:06:35,559 DEBUG    pytan.handler.QuestionPoller: ID 86284: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
+    2015-08-06 15:06:35,559 DEBUG    pytan.handler.QuestionPoller: ID 86284: Timing: Started: 2015-08-06 15:06:20.526821, Expiration: 2015-08-06 15:16:20, Override Timeout: None, Elapsed Time: 0:00:15.032749, Left till expiry: 0:09:44.440432, Loop Count: 4
     ..trimmed for brevity..

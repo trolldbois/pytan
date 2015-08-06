@@ -93,15 +93,15 @@ Output from Python Code
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
     
     Type of response:  <class 'taniumpy.object_types.saved_action_list.SavedActionList'>
     
     print of response:
-    SavedActionList, len: 1688
+    SavedActionList, len: 1815
     
     length of response (number of objects returned): 
-    1688
+    1815
     
     print the first object returned in JSON format:
     {
@@ -114,9 +114,9 @@ Output from Python Code
       "end_time": "Never", 
       "expire_seconds": 1800, 
       "id": 1, 
-      "issue_count": 224, 
+      "issue_count": 1269, 
       "issue_seconds": 3600, 
       "last_action": {
         "_type": "action", 
-        "id": 21075, 
+        "id": 36366, 
     ..trimmed for brevity..

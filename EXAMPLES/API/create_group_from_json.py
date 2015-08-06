@@ -104,10 +104,10 @@ print response.to_json(response)
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
-2015-03-26 11:49:20,053 INFO     handler: Deleted 'Group, id: 19172'
-2015-03-26 11:49:20,054 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/GroupList_2015_03_26-11_49_20-EDT.json' written with 383 bytes
-2015-03-26 11:49:20,103 INFO     handler: New Group, name: 'All Computers API TEST' (ID: 19224) created successfully!
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
+2015-08-06 14:56:10,957 INFO     pytan.handler: Deleted 'Group, id: 27324'
+2015-08-06 14:56:10,958 INFO     pytan.handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/GroupList_2015_08_06-10_56_10-EDT.json' written with 383 bytes
+2015-08-06 14:56:10,989 INFO     pytan.handler: New Group, name: 'All Computers API TEST', id: 27381 (ID: 27381) created successfully!
 
 Type of response:  <class 'taniumpy.object_types.group_list.GroupList'>
 
@@ -126,7 +126,7 @@ print the object returned in JSON format:
         "_type": "filters", 
         "filter": []
       }, 
-      "id": 19224, 
+      "id": 27381, 
       "name": "All Computers API TEST", 
       "not_flag": 0, 
       "sub_groups": {

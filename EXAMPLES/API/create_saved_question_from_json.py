@@ -104,10 +104,10 @@ print response.to_json(response)
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
-2015-03-26 11:49:19,419 INFO     handler: Deleted 'SavedQuestion, id: 11657'
-2015-03-26 11:49:19,421 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/SavedQuestionList_2015_03_26-11_49_19-EDT.json' written with 4601 bytes
-2015-03-26 11:49:19,457 INFO     handler: New SavedQuestion, name: 'Run Unmanaged Asset Scan on All Machines API TEST' (ID: 11658) created successfully!
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
+2015-08-06 14:56:10,540 INFO     pytan.handler: Deleted 'SavedQuestion, id: 20704'
+2015-08-06 14:56:10,541 INFO     pytan.handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/SavedQuestionList_2015_08_06-10_56_10-EDT.json' written with 4601 bytes
+2015-08-06 14:56:10,583 INFO     pytan.handler: New SavedQuestion, name: 'Run Unmanaged Asset Scan on All Machines API TEST', id: 20705 (ID: 20705) created successfully!
 
 Type of response:  <class 'taniumpy.object_types.saved_question_list.SavedQuestionList'>
 
@@ -127,12 +127,12 @@ print the object returned in JSON format:
       }, 
       "expire_seconds": 600, 
       "hidden_flag": 0, 
-      "id": 11658, 
+      "id": 20705, 
       "issue_seconds": 120, 
       "issue_seconds_never_flag": 0, 
       "keep_seconds": 0, 
       "mod_time": "2000-01-01T00:00:00", 
-      "most_recent_question_id": 32605, 
+      "most_recent_question_id": 86213, 
       "name": "Run Unmanaged Asset Scan on All Machines API TEST", 
       "packages": {
         "_type": "package_specs", 
@@ -143,11 +143,11 @@ print the object returned in JSON format:
       "question": {
         "_type": "question", 
         "action_tracking_flag": 0, 
-        "expiration": "2015-03-26T15:16:00", 
+        "expiration": "2015-08-06T14:16:02", 
         "expire_seconds": 0, 
         "force_computer_id_flag": 0, 
         "hidden_flag": 0, 
-        "id": 32605, 
+        "id": 86213, 
         "management_rights_group": {
           "_type": "group", 
           "id": 0
@@ -155,7 +155,7 @@ print the object returned in JSON format:
         "query_text": "Get Is Windows from all machines", 
         "saved_question": {
           "_type": "saved_question", 
-          "id": 11658
+          "id": 1
         }, 
         "selects": {
           "_type": "selects", 

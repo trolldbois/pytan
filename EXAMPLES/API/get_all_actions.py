@@ -77,15 +77,15 @@ print out
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
 
 Type of response:  <class 'taniumpy.object_types.action_list.ActionList'>
 
 print of response:
-ActionList, len: 2025
+ActionList, len: 781
 
 length of response (number of objects returned): 
-2025
+781
 
 print the first object returned in JSON format:
 {
@@ -97,9 +97,9 @@ print the first object returned in JSON format:
   }, 
   "cache_row_id": 0, 
   "comment": "Scans for unmanaged assets on the network.", 
-  "creation_time": "2015-03-03T19:05:56", 
+  "creation_time": "2015-06-11T17:24:56", 
   "distribute_seconds": 600, 
-  "expiration_time": "2015-03-03T19:35:56", 
+  "expiration_time": "2015-06-11T17:35:56", 
   "expire_seconds": 1800, 
   "history_saved_question": {
     "_type": "saved_question", 

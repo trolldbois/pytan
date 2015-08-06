@@ -136,12 +136,10 @@
             "sensors": [
                 "Computer Name",
                 "Last Logged In User",
-                "Installed Applications, that contains:Google Search",
-                "Installed Applications, that contains:Google Chrome"
+                "Installed Applications, that regex match:.*Google (Search|Chrome).*"
             ],
             "question_filters": [
-                "Installed Applications, that contains:Google Search",
-                "Installed Applications, that contains:Google Chrome"
+                "Installed Applications, that regex match:.*Google (Search|Chrome).*"
             ],
             "question_options": ["ignore_case", "or"]
         }

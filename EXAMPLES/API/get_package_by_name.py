@@ -49,7 +49,7 @@ print handler
 # setup the arguments for the handler method
 kwargs = {}
 kwargs["objtype"] = u'package'
-kwargs["name"] = u'Distribute Patch Tools'
+kwargs["name"] = u'Distribute Tanium Standard Utilities'
 
 # call the handler with the get method, passing in kwargs for arguments
 response = handler.get(**kwargs)
@@ -78,7 +78,7 @@ print out
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
 
 Type of response:  <class 'taniumpy.object_types.package_spec_list.PackageSpecList'>
 
@@ -91,19 +91,19 @@ length of response (number of objects returned):
 print the first object returned in JSON format:
 {
   "_type": "package_spec", 
-  "available_time": "2015-03-03T19:11:01", 
-  "command": "cmd /c cscript //T:1800 copy-to-tanium-dir.vbs \"Tools\"", 
-  "command_timeout": 1800, 
-  "creation_time": "2015-03-03T19:04:09", 
+  "available_time": "2015-03-03T19:09:57", 
+  "command": "cmd /c cscript install-standard-utils.vbs \"Tools\\StdUtils\"", 
+  "command_timeout": 2700, 
+  "creation_time": "2015-03-03T19:04:05", 
   "deleted_flag": 0, 
-  "display_name": "Distribute Patch Tools", 
-  "expire_seconds": 2400, 
+  "display_name": "Distribute Tanium Standard Utilities", 
+  "expire_seconds": 3300, 
   "files": {
     "_type": "package_files", 
     "file": [
       {
         "_type": "file", 
-        "bytes_downloaded": 3041, 
+        "bytes_downloaded": 587776, 
 ..trimmed for brevity..
 
 '''

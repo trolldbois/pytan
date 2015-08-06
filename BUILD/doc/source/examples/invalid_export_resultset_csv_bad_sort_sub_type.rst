@@ -62,7 +62,7 @@ Example Python Code
     
     # ask the question that will provide the resultset that we want to use
     ask_kwargs = {
-        'qtype': 'manual_human',
+        'qtype': 'manual',
         'sensors': [
             "Computer Name"
         ],
@@ -71,7 +71,7 @@ Example Python Code
     export_kwargs['obj'] = response['question_results']
     
     # export the object to a string
-    # this should throw an exception: pytan.utils.HandlerError
+    # this should throw an exception: pytan.exceptions.HandlerError
     import traceback
     
     try:
@@ -89,13 +89,25 @@ Output from Python Code
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
-    2015-03-26 12:02:39,033 INFO     question_progress: Results 0% (Get Computer Name from all machines)
-    2015-03-26 12:02:44,049 INFO     question_progress: Results 100% (Get Computer Name from all machines)
+    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
+    2015-08-06 15:14:03,780 DEBUG    pytan.handler.QuestionPoller: ID 86295: id resolved to 86295
+    2015-08-06 15:14:03,780 DEBUG    pytan.handler.QuestionPoller: ID 86295: expiration resolved to 2015-08-06T15:24:03
+    2015-08-06 15:14:03,780 DEBUG    pytan.handler.QuestionPoller: ID 86295: query_text resolved to Get Computer Name from all machines
+    2015-08-06 15:14:03,780 DEBUG    pytan.handler.QuestionPoller: ID 86295: id resolved to 86295
+    2015-08-06 15:14:03,780 DEBUG    pytan.handler.QuestionPoller: ID 86295: Object Info resolved to Question ID: 86295, Query: Get Computer Name from all machines
+    2015-08-06 15:14:03,785 DEBUG    pytan.handler.QuestionPoller: ID 86295: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
+    2015-08-06 15:14:03,785 DEBUG    pytan.handler.QuestionPoller: ID 86295: Timing: Started: 2015-08-06 15:14:03.780352, Expiration: 2015-08-06 15:24:03, Override Timeout: None, Elapsed Time: 0:00:00.005355, Left till expiry: 0:09:59.214296, Loop Count: 1
+    2015-08-06 15:14:03,785 INFO     pytan.handler.QuestionPoller: ID 86295: Progress Changed 0% (0 of 2)
+    2015-08-06 15:14:08,799 DEBUG    pytan.handler.QuestionPoller: ID 86295: Progress: Tested: 2, Passed: 2, MR Tested: 2, MR Passed: 2, Est Total: 2, Row Count: 2
+    2015-08-06 15:14:08,799 DEBUG    pytan.handler.QuestionPoller: ID 86295: Timing: Started: 2015-08-06 15:14:03.780352, Expiration: 2015-08-06 15:24:03, Override Timeout: None, Elapsed Time: 0:00:05.018901, Left till expiry: 0:09:54.200749, Loop Count: 2
+    2015-08-06 15:14:08,799 INFO     pytan.handler.QuestionPoller: ID 86295: Progress Changed 100% (2 of 2)
+    2015-08-06 15:14:08,799 INFO     pytan.handler.QuestionPoller: ID 86295: Reached Threshold of 99% (2 of 2)
     Traceback (most recent call last):
       File "<string>", line 65, in <module>
-      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1435, in export_obj
-        utils.check_dictkey(**check_args)
-      File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2531, in check_dictkey
-        raise HandlerError(err(key, valid_list_types, list_types))
+      File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2710, in wrap
+        ret = f(*args, **kwargs)
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1085, in export_obj
+        pytan.utils.check_dictkey(**check_args)
+      File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2703, in check_dictkey
+        raise pytan.exceptions.HandlerError(err(key, valid_list_types, list_types))
     HandlerError: 'header_sort' must be a list of [<type 'str'>, <type 'unicode'>], you supplied [<type 'list'>]!

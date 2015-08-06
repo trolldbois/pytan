@@ -94,7 +94,7 @@ Output from Python Code
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
     
     Type of response:  <class 'taniumpy.object_types.user_role_list.UserRoleList'>
     
@@ -112,6 +112,12 @@ Output from Python Code
       "name": "Administrator", 
       "permissions": {
         "_type": "permissions", 
-        "permission": "admin"
-      }
-    }
+        "permission": [
+          "admin", 
+          "sensor_read", 
+          "sensor_write", 
+          "question_read", 
+          "question_write", 
+          "action_read", 
+          "action_write", 
+    ..trimmed for brevity..

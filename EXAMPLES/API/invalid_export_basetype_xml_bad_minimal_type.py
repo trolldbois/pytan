@@ -63,7 +63,7 @@ response = handler.get(**get_kwargs)
 export_kwargs['obj'] = response
 
 # export the object to a string
-# this should throw an exception: pytan.utils.HandlerError
+# this should throw an exception: pytan.exceptions.HandlerError
 import traceback
 
 try:
@@ -74,13 +74,15 @@ except Exception as e:
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
 Traceback (most recent call last):
   File "<string>", line 66, in <module>
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1435, in export_obj
-    utils.check_dictkey(**check_args)
-  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2524, in check_dictkey
-    raise HandlerError(err(key, valid_types, k_type))
+  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2710, in wrap
+    ret = f(*args, **kwargs)
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1085, in export_obj
+    pytan.utils.check_dictkey(**check_args)
+  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2696, in check_dictkey
+    raise pytan.exceptions.HandlerError(err(key, valid_types, k_type))
 HandlerError: 'minimal' must be one of [<type 'bool'>], you supplied <type 'unicode'>!
 
 '''

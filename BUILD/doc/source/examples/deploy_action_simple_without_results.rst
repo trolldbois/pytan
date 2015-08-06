@@ -61,8 +61,8 @@ Example Python Code
     kwargs["run"] = True
     kwargs["package"] = u'Distribute Tanium Standard Utilities'
     
-    # call the handler with the deploy_action_human method, passing in kwargs for arguments
-    response = handler.deploy_action_human(**kwargs)
+    # call the handler with the deploy_action method, passing in kwargs for arguments
+    response = handler.deploy_action(**kwargs)
     import pprint, io
     
     print ""
@@ -98,16 +98,28 @@ Output from Python Code
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
+    2015-08-06 14:52:20,736 DEBUG    pytan.handler.ActionPoller: ID 36368: id resolved to 36368
+    2015-08-06 14:52:20,736 DEBUG    pytan.handler.ActionPoller: ID 36368: package_spec resolved to PackageSpec, name: 'Distribute Tanium Standard Utilities', id: 20
+    2015-08-06 14:52:20,745 DEBUG    pytan.handler.ActionPoller: ID 36368: target_group resolved to Group, name: 'Default'
+    2015-08-06 14:52:20,745 DEBUG    pytan.handler.ActionPoller: ID 36368: Result Map resolved to {'failed': {'36368:Failed.': [], '36368:NotSucceeded.': [], '36368:Expired.': [], 'total': 0, '36368:Stopped.': []}, 'finished': {'36368:Completed.': [], '36368:Verified.': [], '36368:Stopped.': [], '36368:Failed.': [], '36368:Succeeded.': [], '36368:Expired.': [], '36368:NotSucceeded.': [], 'total': 0}, 'running': {'36368:Waiting.': [], '36368:Copying.': [], '36368:PendingVerification.': [], '36368:Running.': [], '36368:Downloading.': [], 'total': 0}, 'success': {'total': 0, '36368:Completed.': [], '36368:Verified.': []}, 'unknown': {'total': 0}}
+    2015-08-06 14:52:20,745 DEBUG    pytan.handler.ActionPoller: ID 36368: expiration_time resolved to 2015-08-06T16:32:21
+    2015-08-06 14:52:20,745 DEBUG    pytan.handler.ActionPoller: ID 36368: status resolved to Active
+    2015-08-06 14:52:20,745 DEBUG    pytan.handler.ActionPoller: ID 36368: stopped_flag resolved to 0
+    2015-08-06 14:52:20,745 DEBUG    pytan.handler.ActionPoller: ID 36368: Object Info resolved to ID 36368: Package: 'Distribute Tanium Standard Utilities', Target: 'None', Verify: False, Stopped: False, Status: Active
     
     Type of response:  <type 'dict'>
     
     Pretty print of response:
-    {'action_object': <taniumpy.object_types.action.Action object at 0x107808f10>,
-     'action_progress_human': None,
-     'action_progress_map': None,
+    {'action_info': <taniumpy.object_types.result_info.ResultInfo object at 0x1115fbf90>,
+     'action_object': <taniumpy.object_types.action.Action object at 0x1115fb710>,
+     'action_result_map': None,
      'action_results': None,
-     'pre_action_question_results': None}
+     'group_object': None,
+     'package_object': <taniumpy.object_types.package_spec.PackageSpec object at 0x120937550>,
+     'poller_object': <pytan.pollers.ActionPoller object at 0x1115fbb90>,
+     'poller_success': None,
+     'saved_action_object': None}
     
     Print of action object: 
-    Action, name: 'API Deploy Distribute Tanium Standard Utilities'
+    Action, name: 'API Deploy Distribute Tanium Standard Utilities', id: 36368

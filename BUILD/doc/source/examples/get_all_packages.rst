@@ -93,7 +93,7 @@ Output from Python Code
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
     
     Type of response:  <class 'taniumpy.object_types.package_spec_list.PackageSpecList'>
     
@@ -114,9 +114,9 @@ Output from Python Code
       "deleted_flag": 0, 
       "display_name": "Update Java 64-bit - Kill / Reboot", 
       "expire_seconds": 1500, 
-      "files": {
-        "_type": "package_files", 
-        "file": [
-          {
-            "_type": "file", 
+      "hidden_flag": 0, 
+      "id": 1, 
+      "last_modified_by": "Jim Olsen", 
+      "last_update": "2015-03-03T19:03:39", 
+      "metadata": {
     ..trimmed for brevity..

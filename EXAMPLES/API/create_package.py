@@ -95,14 +95,14 @@ except Exception as e:
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
 No results found searching for PackageSpec, name: 'package49'!!
-2015-03-26 11:49:18,923 INFO     handler: New package 'package49' created with ID 6285, command: 'package49 $1 $2 $3 $4 $5 $6 $7 $8'
+2015-08-06 14:56:09,905 INFO     pytan.handler: New package 'package49' created with ID 9343, command: 'package49 $1 $2 $3 $4 $5 $6 $7 $8'
 
 Type of response:  <class 'taniumpy.object_types.package_spec.PackageSpec'>
 
 print of response:
-PackageSpec, name: 'package49'
+PackageSpec, name: 'package49', id: 9343
 
 print the object returned in JSON format:
 {
@@ -110,7 +110,7 @@ print the object returned in JSON format:
   "available_time": "1900-01-01T00:00:00", 
   "command": "package49 $1 $2 $3 $4 $5 $6 $7 $8", 
   "command_timeout": 9999, 
-  "creation_time": "2015-03-26T15:49:19", 
+  "creation_time": "2015-08-06T14:56:10", 
   "deleted_flag": 0, 
   "display_name": "package49 API test", 
   "expire_seconds": 1500, 
@@ -123,7 +123,7 @@ print the object returned in JSON format:
         "bytes_total": 0, 
         "cache_status": "UNCACHED", 
         "download_seconds": 3600, 
-        "id": 6379, 
+        "id": 8400, 
         "name": "testing.vbs", 
         "size": 0, 
         "source": "https://content.tanium.com/files/initialcontent/bundles/2014-10-01_11-32-15-7844/custom_tagging_-_remove_tags_[non-windows]/CustomTagRemove.sh", 
@@ -132,15 +132,15 @@ print the object returned in JSON format:
     ]
   }, 
   "hidden_flag": 0, 
-  "id": 6285, 
+  "id": 9343, 
   "last_modified_by": "Tanium User", 
-  "last_update": "2015-03-26T15:49:19", 
-  "modification_time": "2015-03-26T15:49:19", 
+  "last_update": "2015-08-06T14:56:10", 
+  "modification_time": "2015-08-06T14:56:10", 
   "name": "package49", 
   "parameter_definition": "{\"parameterType\": \"com.tanium.components.parameters::ParametersArray\", \"model\": \"com.tanium.components.parameters::ParametersArray\", \"parameters\": [{\"parameterType\": \"com.tanium.components.parameters::TextInputParameter\", \"validationExpressions\": [{\"helpString\": \"must be word\", \"flags\": \"\", \"model\": \"com.tanium.models::ValidationExpression\", \"expression\": \"\\\\S\", \"parameterType\": \"com.tanium.models::ValidationExpression\"}], \"helpString\": \"helptext\", \"maxChars\": 10, \"defaultValue\": \"defaulttex\", \"value\": \"defaulttex\", \"label\": \"textinput\", \"restrict\": null, \"key\": \"$1\", \"model\": \"com.tanium.components.parameters::TextInputParameter\", \"promptText\": \"prompttext\"}, {\"parameterType\": \"com.tanium.components.parameters::DropDownParameter\", \"helpString\": \"helptext\", \"defaultValue\": \"\", \"value\": \"v1\", \"label\": \"dropdown\", \"requireSelection\": true, \"values\": [\"v1\", \"v2\"], \"key\": \"$2\", \"model\": \"com.tanium.components.parameters::DropDownParameter\", \"promptText\": \"prompttext\"}, {\"parameterType\": \"com.tanium.components.parameters::CheckBoxParameter\", \"helpString\": \"helptext\", \"defaultValue\": \"1\", \"value\": \"1\", \"label\": \"checkbox\", \"key\": \"$3\", \"model\": \"com.tanium.components.parameters::CheckBoxParameter\"}, {\"parameterType\": \"com.tanium.components.parameters::NumericParameter\", \"helpString\": \"helptext\", \"defaultValue\": \"1\", \"maximum\": 8, \"value\": \"1\", \"label\": \"numeric\", \"stepSize\": 4, \"minimum\": 1, \"key\": \"$4\", \"model\": \"com.tanium.components.parameters::NumericParameter\", \"snapInterval\": 2}, {\"parameterType\": \"com.tanium.components.parameters::DateTimeParameter\", \"key\": \"$5\", \"start_date_restriction\": {\"parameterType\": \"com.tanium.models::PointInTime\", \"unix_time_stamp\": 1414814400000, \"interval\": null, \"intervalCount\": null, \"model\": \"com.tanium.models::PointInTime\", \"type\": 3}, \"helpString\": \"helptext\", \"defaultValue\": \"\", \"value\": \"\", \"label\": \"datetime\", \"componentType\": 3, \"start_time_restriction\": {\"parameterType\": \"com.tanium.models::PointInTime\", \"unix_time_stamp\": null, \"interval\": 3600, \"intervalCount\": 5, \"model\": \"com.tanium.models::PointInTime\", \"type\": 1}, \"end_date_restriction\": {\"parameterType\": \"com.tanium.models::PointInTime\", \"unix_time_stamp\": 1420174800000, \"interval\": null, \"intervalCount\": null, \"model\": \"com.tanium.models::PointInTime\", \"type\": 3}, \"end_time_restriction\": {\"parameterType\": \"com.tanium.models::PointInTime\", \"unix_time_stamp\": 69923000, \"interval\": null, \"intervalCount\": null, \"model\": \"com.tanium.models::PointInTime\", \"type\": 3}, \"model\": \"com.tanium.components.parameters::DateTimeParameter\"}, {\"parameterType\": \"com.tanium.components.parameters::DateTimeRangeParameter\", \"helpString\": \"helptext\", \"defaultValue\": \"\", \"default_range_start\": {\"parameterType\": \"com.tanium.models::PointInTime\", \"unix_time_stamp\": null, \"interval\": 86400, \"intervalCount\": 1, \"model\": \"com.tanium.models::PointInTime\", \"type\": 2}, \"value\": \"1417159750000|1417332550000\", \"label\": \"daterange\", \"default_range_end\": {\"parameterType\": \"com.tanium.models::PointInTime\", \"unix_time_stamp\": null, \"interval\": 86400, \"intervalCount\": 1, \"model\": \"com.tanium.models::PointInTime\", \"type\": 1}, \"key\": \"$6\", \"model\": \"com.tanium.components.parameters::DateTimeRangeParameter\"}, {\"parameterType\": \"com.tanium.components.parameters::ListParameter\", \"validationExpressions\": [], \"helpString\": null, \"defaultText\": \"\", \"defaultValue\": \"\", \"value\": \"\", \"label\": \"list\", \"restrict\": null, \"allowEmptyList\": false, \"key\": \"$7\", \"maxChars\": 0, \"values\": [\"\"], \"model\": \"com.tanium.components.parameters::ListParameter\", \"promptText\": \"\"}, {\"parameterType\": \"com.tanium.components.parameters::TextAreaParameter\", \"validationExpressions\": [{\"helpString\": \"word\", \"flags\": \"\", \"model\": \"com.tanium.models::ValidationExpression\", \"expression\": \"\\\\W\", \"parameterType\": \"com.tanium.models::ValidationExpression\"}], \"helpString\": \"helptext\", \"maxChars\": 2000, \"defaultValue\": \"defaulttext\", \"heightInLines\": 5, \"value\": \"defaulttext\", \"label\": \"textarea\", \"restrict\": null, \"key\": \"$8\", \"model\": \"com.tanium.components.parameters::TextAreaParameter\", \"promptText\": \"prompttext\"}]}", 
   "source_id": 0, 
-  "verify_group_id": 19222
+  "verify_group_id": 27379
 }
-2015-03-26 11:49:18,945 INFO     handler: Deleted 'PackageSpec, id: 6285'
+2015-08-06 14:56:09,920 INFO     pytan.handler: Deleted 'PackageSpec, id: 9343'
 
 '''

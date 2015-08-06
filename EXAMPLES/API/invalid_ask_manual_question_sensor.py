@@ -48,12 +48,12 @@ print handler
 
 # setup the arguments for the handler method
 kwargs = {}
-kwargs["sensor_defs"] = u'Dweedle Dee and Dum'
+kwargs["sensors"] = u'Dweedle Dee and Dum'
 kwargs["qtype"] = u'manual'
 
 
 # call the handler with the ask method, passing in kwargs for arguments
-# this should throw an exception: pytan.utils.HandlerError
+# this should throw an exception: pytan.exceptions.HandlerError
 import traceback
 try:
     handler.ask(**kwargs)
@@ -63,21 +63,29 @@ except Exception as e:
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
 Traceback (most recent call last):
   File "<string>", line 55, in <module>
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 128, in ask
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 131, in ask
     result = getattr(self, q_obj_map['handler'])(**kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 271, in ask_manual
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 306, in ask_manual
+    **kwargs
+  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2710, in wrap
+    ret = f(*args, **kwargs)
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1880, in _ask_manual
     sensor_defs = self._get_sensor_defs(sensor_defs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1817, in _get_sensor_defs
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1419, in _get_sensor_defs
     d['sensor_obj'] = self.get('sensor', **def_search)[0]
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1600, in get
+  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2710, in wrap
+    ret = f(*args, **kwargs)
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1251, in get
     return self._get_multi(obj_map, **kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1762, in _get_multi
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1364, in _get_multi
     found = self._find(api_obj_multi, **kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1727, in _find
-    raise HandlerError(err(search_str))
+  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2710, in wrap
+    ret = f(*args, **kwargs)
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1328, in _find
+    raise pytan.exceptions.HandlerError(err(search_str))
 HandlerError: No results found searching for Sensor, name: u'Dweedle Dee and Dum'!!
 
 '''

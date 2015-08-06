@@ -104,21 +104,21 @@ Output from Python Code
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
     No results found searching for user with {'name': 'API Test User'}!!
-    2015-03-26 11:49:18,767 INFO     handler: New user 'API Test User' created with ID 1015, roles: ['Administrator']
+    2015-08-06 14:56:09,557 INFO     pytan.handler: New user 'API Test User' created with ID 3060, roles: ['Administrator']
     
     Type of response:  <class 'taniumpy.object_types.user.User'>
     
     print of response:
-    User, name: 'API Test User'
+    User, name: 'API Test User', id: 3060
     
     print the object returned in JSON format:
     {
       "_type": "user", 
       "deleted_flag": 0, 
       "group_id": 0, 
-      "id": 1015, 
+      "id": 3060, 
       "last_login": "2001-01-01T00:00:00", 
       "metadata": {
         "_type": "metadata", 
@@ -134,7 +134,20 @@ Output from Python Code
       "name": "API Test User", 
       "permissions": {
         "_type": "permissions", 
-        "permission": "admin"
+        "permission": [
+          "admin", 
+          "sensor_read", 
+          "sensor_write", 
+          "question_read", 
+          "question_write", 
+          "action_read", 
+          "action_write", 
+          "action_approval", 
+          "notification_write", 
+          "clients_read", 
+          "question_log_read", 
+          "content_admin"
+        ]
       }, 
       "roles": {
         "_type": "roles", 
@@ -146,10 +159,23 @@ Output from Python Code
             "name": "Administrator", 
             "permissions": {
               "_type": "permissions", 
-              "permission": "admin"
+              "permission": [
+                "admin", 
+                "sensor_read", 
+                "sensor_write", 
+                "question_read", 
+                "question_write", 
+                "action_read", 
+                "action_write", 
+                "action_approval", 
+                "notification_write", 
+                "clients_read", 
+                "question_log_read", 
+                "content_admin"
+              ]
             }
           }
         ]
       }
     }
-    2015-03-26 11:49:18,797 INFO     handler: Deleted "User, name: 'API Test User'"
+    2015-08-06 14:56:09,573 INFO     pytan.handler: Deleted "User, name: 'API Test User', id: 3060"

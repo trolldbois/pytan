@@ -78,12 +78,12 @@ print out
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
 
-Type of response:  <class 'taniumpy.object_types.system_settings_list.SystemSettingsList'>
+Type of response:  <class 'taniumpy.object_types.system_setting_list.SystemSettingList'>
 
 print of response:
-SystemSettingsList, len: 1
+SystemSettingList, len: 1
 
 length of response (number of objects returned): 
 1

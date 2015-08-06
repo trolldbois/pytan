@@ -120,9 +120,9 @@ Output from Python Code
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
-    2015-03-26 11:49:19,488 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/ActionList_2015_03_26-11_49_19-EDT.json' written with 1314 bytes
-    2015-03-26 11:49:19,676 INFO     handler: New Action, name: 'Unmanaged Asset Tracking - Run Scan' (ID: 21080) created successfully!
+    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
+    2015-08-06 14:56:10,609 INFO     pytan.handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/ActionList_2015_08_06-10_56_10-EDT.json' written with 1314 bytes
+    2015-08-06 14:56:10,697 INFO     pytan.handler: New Action, name: 'Unmanaged Asset Tracking - Run Scan', id: 36371 (ID: 36371) created successfully!
     
     Type of response:  <class 'taniumpy.object_types.action_list.ActionList'>
     
@@ -141,15 +141,15 @@ Output from Python Code
             "name": "Default"
           }, 
           "comment": "Scans for unmanaged assets on the network.", 
-          "creation_time": "2015-03-26T15:49:19", 
+          "creation_time": "2015-08-06T14:56:10", 
           "distribute_seconds": 600, 
           "expiration_time": "2015-03-03T19:55:56", 
           "expire_seconds": 3000, 
           "history_saved_question": {
             "_type": "saved_question", 
-            "id": 11652
+            "id": 20701
           }, 
-          "id": 21080, 
+          "id": 36371, 
           "name": "Unmanaged Asset Tracking - Run Scan", 
           "package_spec": {
             "_type": "package_spec", 
@@ -159,7 +159,7 @@ Output from Python Code
           }, 
           "saved_action": {
             "_type": "saved_action", 
-            "id": 14804
+            "id": 19896
           }, 
           "skip_lock_flag": 0, 
           "start_time": "2015-03-03T19:05:56", 
@@ -174,7 +174,7 @@ Output from Python Code
             "_type": "user", 
             "group_id": 0, 
             "id": 2, 
-            "last_login": "2015-03-26T08:12:04", 
+            "last_login": "2015-07-22T13:54:26", 
             "name": "Tanium User"
           }
         }

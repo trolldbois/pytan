@@ -2,7 +2,7 @@
 Invalid deploy action options help
 ==========================================================================================
 
-Have deploy_action_human() return the help for options
+Have deploy_action() return the help for options
 
 Example Python Code
 ----------------------------------------------------------------------------------------
@@ -61,11 +61,11 @@ Example Python Code
     kwargs["options_help"] = True
     
     
-    # call the handler with the deploy_action_human method, passing in kwargs for arguments
-    # this should throw an exception: pytan.utils.PytanHelp
+    # call the handler with the deploy_action method, passing in kwargs for arguments
+    # this should throw an exception: pytan.exceptions.PytanHelp
     import traceback
     try:
-        handler.deploy_action_human(**kwargs)
+        handler.deploy_action(**kwargs)
     except Exception as e:
         traceback.print_exc(file=sys.stdout)
     
@@ -79,11 +79,11 @@ Output from Python Code
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
     Traceback (most recent call last):
       File "<string>", line 55, in <module>
-      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1163, in deploy_action_human
-        raise PytanHelp(utils.help_options())
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 381, in deploy_action
+        raise pytan.exceptions.PytanHelp(pytan.help.help_options())
     PytanHelp: 
     Options Help
     ============

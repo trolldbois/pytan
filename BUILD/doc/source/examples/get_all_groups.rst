@@ -93,15 +93,15 @@ Output from Python Code
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
     
     Type of response:  <class 'taniumpy.object_types.group_list.GroupList'>
     
     print of response:
-    GroupList, len: 2
+    GroupList, len: 3
     
     length of response (number of objects returned): 
-    2
+    3
     
     print the first object returned in JSON format:
     {

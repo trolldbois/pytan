@@ -52,8 +52,8 @@ kwargs["run"] = True
 kwargs["action_filters"] = u'Operating System, that contains:Windows'
 kwargs["package"] = u'Distribute Tanium Standard Utilities'
 
-# call the handler with the deploy_action_human method, passing in kwargs for arguments
-response = handler.deploy_action_human(**kwargs)
+# call the handler with the deploy_action method, passing in kwargs for arguments
+response = handler.deploy_action(**kwargs)
 import pprint, io
 
 print ""
@@ -82,62 +82,87 @@ if response['action_results']:
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
-2015-03-26 11:48:04,109 INFO     question_progress: Results 0% (Get Online = "True" from all machines where Operating System contains "Windows")
-2015-03-26 11:48:09,130 INFO     question_progress: Results 100% (Get Online = "True" from all machines where Operating System contains "Windows")
-2015-03-26 11:48:09,233 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:10,272 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:11,310 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:12,348 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:13,396 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:14,439 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:15,482 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:16,525 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:17,562 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:18,613 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:19,657 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:20,695 INFO     action_progress: Action Results Passed: 100% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:20,733 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:21,772 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:22,807 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:23,849 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:24,887 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:25,927 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:26,965 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:28,004 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:29,042 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:30,077 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:31,105 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:32,140 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:33,178 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:34,216 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:35,252 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:36,290 INFO     action_progress: Action Results Completed: 100% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:36,290 INFO     action_progress: API Deploy Distribute Tanium Standard Utilities Result Counts:
-	Running Count: 0
-	Success Count: 1
-	Failed Count: 0
-	Unknown Count: 0
-	Finished Count: 1
-	Total Count: 1
-	Finished Count must equal: 1
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
+2015-08-06 14:52:20,806 DEBUG    pytan.handler.ActionPoller: ID 36369: id resolved to 36369
+2015-08-06 14:52:20,806 DEBUG    pytan.handler.ActionPoller: ID 36369: package_spec resolved to PackageSpec, name: 'Distribute Tanium Standard Utilities', id: 20
+2015-08-06 14:52:20,813 DEBUG    pytan.handler.ActionPoller: ID 36369: target_group resolved to Group, name: 'Default', id: 27374
+2015-08-06 14:52:20,831 DEBUG    pytan.handler.ActionPoller: ID 36369: Result Map resolved to {'failed': {'36369:NotSucceeded.': [], '36369:Stopped.': [], 'total': 0, '36369:Expired.': [], '36369:Failed.': []}, 'finished': {'36369:Failed.': [], '36369:NotSucceeded.': [], '36369:Expired.': [], '36369:Completed.': [], '36369:Stopped.': [], '36369:Verified.': [], 'total': 0, '36369:Succeeded.': []}, 'running': {'36369:Waiting.': [], '36369:Running.': [], '36369:Downloading.': [], '36369:Copying.': [], 'total': 0, '36369:PendingVerification.': []}, 'success': {'36369:Verified.': [], 'total': 0, '36369:Completed.': []}, 'unknown': {'total': 0}}
+2015-08-06 14:52:20,831 DEBUG    pytan.handler.ActionPoller: ID 36369: expiration_time resolved to 2015-08-06T16:32:21
+2015-08-06 14:52:20,831 DEBUG    pytan.handler.ActionPoller: ID 36369: status resolved to Active
+2015-08-06 14:52:20,831 DEBUG    pytan.handler.ActionPoller: ID 36369: stopped_flag resolved to 0
+2015-08-06 14:52:20,831 DEBUG    pytan.handler.ActionPoller: ID 36369: Object Info resolved to ID 36369: Package: 'Distribute Tanium Standard Utilities', Target: ' Operating System contains "Windows"', Verify: False, Stopped: False, Status: Active
+2015-08-06 14:52:20,831 DEBUG    pytan.handler.ActionPoller: ID 36369: Adding Question to derive passed count
+2015-08-06 14:52:21,077 DEBUG    pytan.handler.QuestionPoller: ID 86267: id resolved to 86267
+2015-08-06 14:52:21,078 DEBUG    pytan.handler.QuestionPoller: ID 86267: expiration resolved to 2015-08-06T15:02:21
+2015-08-06 14:52:21,078 DEBUG    pytan.handler.QuestionPoller: ID 86267: query_text resolved to Get number of machines where Operating System contains "Windows"
+2015-08-06 14:52:21,078 DEBUG    pytan.handler.QuestionPoller: ID 86267: id resolved to 86267
+2015-08-06 14:52:21,078 DEBUG    pytan.handler.QuestionPoller: ID 86267: Object Info resolved to Question ID: 86267, Query: Get number of machines where Operating System contains "Windows"
+2015-08-06 14:52:21,083 DEBUG    pytan.handler.QuestionPoller: ID 86267: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
+2015-08-06 14:52:21,083 DEBUG    pytan.handler.QuestionPoller: ID 86267: Timing: Started: 2015-08-06 14:52:21.078205, Expiration: 2015-08-06 15:02:21, Override Timeout: None, Elapsed Time: 0:00:00.004905, Left till expiry: 0:09:59.916893, Loop Count: 1
+2015-08-06 14:52:21,083 INFO     pytan.handler.QuestionPoller: ID 86267: Progress Changed 0% (0 of 2)
+2015-08-06 14:52:26,090 DEBUG    pytan.handler.QuestionPoller: ID 86267: Progress: Tested: 2, Passed: 1, MR Tested: 2, MR Passed: 2, Est Total: 2, Row Count: 0
+2015-08-06 14:52:26,090 DEBUG    pytan.handler.QuestionPoller: ID 86267: Timing: Started: 2015-08-06 14:52:21.078205, Expiration: 2015-08-06 15:02:21, Override Timeout: None, Elapsed Time: 0:00:05.012353, Left till expiry: 0:09:54.909445, Loop Count: 2
+2015-08-06 14:52:26,090 INFO     pytan.handler.QuestionPoller: ID 86267: Progress Changed 100% (2 of 2)
+2015-08-06 14:52:26,090 INFO     pytan.handler.QuestionPoller: ID 86267: Reached Threshold of 99% (2 of 2)
+2015-08-06 14:52:26,090 DEBUG    pytan.handler.ActionPoller: ID 36369: Passed Count resolved to 1
+2015-08-06 14:52:26,226 DEBUG    pytan.handler.ActionPoller: ID 36369: Progress: Seen Action: 0, Expected Seen: 1, Percent: 0%
+2015-08-06 14:52:26,226 DEBUG    pytan.handler.ActionPoller: ID 36369: Timing: Started: 2015-08-06 14:52:20.831609, Expiration: 2015-08-06 16:32:21, Override Timeout: None, Elapsed Time: 0:00:05.394624, Left till expiry: 1:39:54.773769, Loop Count: 1
+2015-08-06 14:52:26,226 INFO     pytan.handler.ActionPoller: ID 36369: Progress Changed for Seen Count 0% (0 of 1)
+2015-08-06 14:52:31,517 DEBUG    pytan.handler.ActionPoller: ID 36369: Progress: Seen Action: 1, Expected Seen: 1, Percent: 100%
+2015-08-06 14:52:31,517 DEBUG    pytan.handler.ActionPoller: ID 36369: Timing: Started: 2015-08-06 14:52:20.831609, Expiration: 2015-08-06 16:32:21, Override Timeout: None, Elapsed Time: 0:00:10.685562, Left till expiry: 1:39:49.482831, Loop Count: 2
+2015-08-06 14:52:31,517 INFO     pytan.handler.ActionPoller: ID 36369: Progress Changed for Seen Count 100% (1 of 1)
+2015-08-06 14:52:31,517 INFO     pytan.handler.ActionPoller: ID 36369: Reached Threshold for Seen Count of 100% (1 of 1)
+2015-08-06 14:52:31,531 DEBUG    pytan.handler.ActionPoller: ID 36369: failed: 0, finished: 0, running: 1, success: 0, unknown: 0, Done Key: success, Passed Count: 1
+2015-08-06 14:52:31,531 DEBUG    pytan.handler.ActionPoller: ID 36369: Timing: Started: 2015-08-06 14:52:20.831609, Expiration: 2015-08-06 16:32:21, Override Timeout: None, Elapsed Time: 0:00:10.699486, Left till expiry: 1:39:49.468907, Loop Count: 1
+2015-08-06 14:52:31,531 INFO     pytan.handler.ActionPoller: ID 36369: Progress Changed for Finished Count 0% (0 of 1)
+2015-08-06 14:52:36,556 DEBUG    pytan.handler.ActionPoller: ID 36369: failed: 0, finished: 0, running: 1, success: 0, unknown: 0, Done Key: success, Passed Count: 1
+2015-08-06 14:52:36,556 DEBUG    pytan.handler.ActionPoller: ID 36369: Timing: Started: 2015-08-06 14:52:20.831609, Expiration: 2015-08-06 16:32:21, Override Timeout: None, Elapsed Time: 0:00:15.725172, Left till expiry: 1:39:44.443221, Loop Count: 2
+2015-08-06 14:52:41,574 DEBUG    pytan.handler.ActionPoller: ID 36369: failed: 0, finished: 1, running: 1, success: 1, unknown: 0, Done Key: success, Passed Count: 1
+2015-08-06 14:52:41,574 DEBUG    pytan.handler.ActionPoller: ID 36369: Timing: Started: 2015-08-06 14:52:20.831609, Expiration: 2015-08-06 16:32:21, Override Timeout: None, Elapsed Time: 0:00:20.743171, Left till expiry: 1:39:39.425223, Loop Count: 3
+2015-08-06 14:52:41,574 INFO     pytan.handler.ActionPoller: ID 36369: Progress Changed for Finished Count 100% (1 of 1)
+2015-08-06 14:52:41,574 INFO     pytan.handler.ActionPoller: ID 36369: Reached Threshold for Finished Count of 100% (1 of 1)
 
 Type of response:  <type 'dict'>
 
 Pretty print of response:
-{'action_object': <taniumpy.object_types.action.Action object at 0x108567450>,
- 'action_progress_human': 'API Deploy Distribute Tanium Standard Utilities Result Counts:\n\tRunning Count: 0\n\tSuccess Count: 1\n\tFailed Count: 0\n\tUnknown Count: 0\n\tFinished Count: 1\n\tTotal Count: 1\n\tFinished Count must equal: 1',
- 'action_progress_map': {'Completed.': ['jtanium1.localdomain']},
- 'action_results': <taniumpy.object_types.result_set.ResultSet object at 0x1077fa950>,
- 'pre_action_question_results': {'question_object': <taniumpy.object_types.question.Question object at 0x107608d10>,
-                                 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x107808550>}}
+{'action_info': <taniumpy.object_types.result_info.ResultInfo object at 0x122cdd050>,
+ 'action_object': <taniumpy.object_types.action.Action object at 0x1115fbb10>,
+ 'action_result_map': {'failed': {'36369:Expired.': [],
+                                  '36369:Failed.': [],
+                                  '36369:NotSucceeded.': [],
+                                  '36369:Stopped.': [],
+                                  'total': 0},
+                       'finished': {'36369:Completed.': ['jtanium1.localdomain'],
+                                    '36369:Expired.': [],
+                                    '36369:Failed.': [],
+                                    '36369:NotSucceeded.': [],
+                                    '36369:Stopped.': [],
+                                    '36369:Succeeded.': [],
+                                    '36369:Verified.': [],
+                                    'total': 1},
+                       'running': {'36369:Copying.': [],
+                                   '36369:Downloading.': ['jtanium1.localdomain'],
+                                   '36369:PendingVerification.': [],
+                                   '36369:Running.': [],
+                                   '36369:Waiting.': [],
+                                   'total': 1},
+                       'success': {'36369:Completed.': ['jtanium1.localdomain'],
+                                   '36369:Verified.': [],
+                                   'total': 1},
+                       'unknown': {'total': 0}},
+ 'action_results': <taniumpy.object_types.result_set.ResultSet object at 0x122cdd210>,
+ 'group_object': <taniumpy.object_types.group.Group object at 0x122cdd790>,
+ 'package_object': <taniumpy.object_types.package_spec.PackageSpec object at 0x122cddf50>,
+ 'poller_object': <pytan.pollers.ActionPoller object at 0x122cdd510>,
+ 'poller_success': True,
+ 'saved_action_object': None}
 
 Print of action object: 
-Action, name: 'API Deploy Distribute Tanium Standard Utilities'
+Action, name: 'API Deploy Distribute Tanium Standard Utilities', id: 36369
 
 CSV Results of response: 
 Action Statuses,Computer Name
-21078:Completed.,jtanium1.localdomain
+36369:Completed.,jtanium1.localdomain
 
 
 '''

@@ -62,11 +62,11 @@ Example Python Code
     kwargs["package"] = u'Custom Tagging - Add Tags'
     
     
-    # call the handler with the deploy_action_human method, passing in kwargs for arguments
-    # this should throw an exception: pytan.utils.HandlerError
+    # call the handler with the deploy_action method, passing in kwargs for arguments
+    # this should throw an exception: pytan.exceptions.HandlerError
     import traceback
     try:
-        handler.deploy_action_human(**kwargs)
+        handler.deploy_action(**kwargs)
     except Exception as e:
         traceback.print_exc(file=sys.stdout)
     
@@ -80,19 +80,18 @@ Output from Python Code
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
-    2015-03-26 11:49:08,639 INFO     question_progress: Results 0% (Get Online = "True" from all machines)
-    2015-03-26 11:49:13,664 INFO     question_progress: Results 0% (Get Online = "True" from all machines)
-    2015-03-26 11:49:18,683 INFO     question_progress: Results 100% (Get Online = "True" from all machines)
+    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
     Traceback (most recent call last):
       File "<string>", line 56, in <module>
-      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1193, in deploy_action_human
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 405, in deploy_action
         **kwargs
-      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1047, in deploy_action
+      File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2710, in wrap
+        ret = f(*args, **kwargs)
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1671, in _deploy_action
         empty_ok=False,
-      File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2154, in build_param_objlist
-        raise HandlerError(err(obj_name, p_key, jsonify(obj_param)))
-    HandlerError: PackageSpec, name: 'Custom Tagging - Add Tags' parameter key '$1' requires a value, parameter definition:
+      File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2323, in build_param_objlist
+        raise pytan.exceptions.HandlerError(err(obj_name, p_key, jsonify(obj_param)))
+    HandlerError: PackageSpec, name: 'Custom Tagging - Add Tags', id: 31 parameter key '$1' requires a value, parameter definition:
     {
       "defaultValue": "", 
       "helpString": "Enter tags space-delimited.", 

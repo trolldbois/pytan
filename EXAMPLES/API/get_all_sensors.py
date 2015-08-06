@@ -77,15 +77,15 @@ print out
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
 
 Type of response:  <class 'taniumpy.object_types.sensor_list.SensorList'>
 
 print of response:
-SensorList, len: 728
+SensorList, len: 1114
 
 length of response (number of objects returned): 
-728
+1114
 
 print the first object returned in JSON format:
 {

@@ -104,10 +104,10 @@ print response.to_json(response)
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
-2015-03-26 11:49:19,986 INFO     handler: Deleted 'WhiteListedUrl, id: 1026'
-2015-03-26 11:49:19,986 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/WhiteListedUrlList_2015_03_26-11_49_19-EDT.json' written with 198 bytes
-2015-03-26 11:49:20,006 INFO     handler: New WhiteListedUrl, id: 1028 (ID: 1028) created successfully!
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
+2015-08-06 14:56:10,891 INFO     pytan.handler: Deleted 'WhiteListedUrl, id: 3068'
+2015-08-06 14:56:10,892 INFO     pytan.handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/WhiteListedUrlList_2015_08_06-10_56_10-EDT.json' written with 198 bytes
+2015-08-06 14:56:10,906 INFO     pytan.handler: New WhiteListedUrl, id: 3070 (ID: 3070) created successfully!
 
 Type of response:  <class 'taniumpy.object_types.white_listed_url_list.WhiteListedUrlList'>
 
@@ -121,7 +121,7 @@ print the object returned in JSON format:
     {
       "_type": "white_listed_url", 
       "download_seconds": 86400, 
-      "id": 1028, 
+      "id": 3070, 
       "url_regex": "test1 API TEST"
     }
   ]

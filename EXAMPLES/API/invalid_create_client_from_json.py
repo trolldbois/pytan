@@ -62,7 +62,7 @@ json_file, results = handler.export_to_report_file(
 )
 
 # call the handler with the create_from_json method, passing in kwargs for arguments
-# this should throw an exception: pytan.utils.HandlerError
+# this should throw an exception: pytan.exceptions.HandlerError
 import traceback
 
 # create the object from the exported JSON file
@@ -75,12 +75,12 @@ except Exception as e:
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
-2015-03-26 11:49:20,176 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/SystemStatusList_2015_03_26-11_49_20-EDT.json' written with 2011 bytes
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
+2015-08-06 14:56:11,037 INFO     pytan.handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/SystemStatusList_2015_08_06-10_56_11-EDT.json' written with 551 bytes
 Traceback (most recent call last):
   File "<string>", line 67, in <module>
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 484, in create_from_json
-    raise HandlerError(m(objtype, json_createable))
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 547, in create_from_json
+    raise pytan.exceptions.HandlerError(m(objtype, json_createable))
 HandlerError: client is not a json createable object! Supported objects: user, whitelisted_url, saved_question, group, package, question, action, sensor
 
 '''

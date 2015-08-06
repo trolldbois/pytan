@@ -94,7 +94,7 @@ Output from Python Code
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
     
     Type of response:  <class 'taniumpy.object_types.saved_action_list.SavedActionList'>
     
@@ -114,10 +114,10 @@ Output from Python Code
       "end_time": "Never", 
       "expire_seconds": 660, 
       "id": 14, 
-      "issue_count": 4, 
+      "issue_count": 0, 
       "issue_seconds": 86400, 
       "last_action": {
         "_type": "action", 
-        "id": 15985, 
-        "start_time": "2015-03-13T19:06:00"
+        "id": 4294967295, 
+        "start_time": "Never"
     ..trimmed for brevity..

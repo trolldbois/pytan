@@ -83,34 +83,36 @@ print out
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
-2015-03-26 11:37:59,316 INFO     question_progress: Results 100% (Get Installed Applications from all machines)
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
 
 Type of response:  <type 'dict'>
 
 Pretty print of response:
-{'question_object': <taniumpy.object_types.saved_question.SavedQuestion object at 0x107608b90>,
- 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x107646690>}
+{'poller_object': None,
+ 'poller_success': None,
+ 'question_object': <taniumpy.object_types.question.Question object at 0x10f833c50>,
+ 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x10f83d790>,
+ 'saved_question_object': <taniumpy.object_types.saved_question.SavedQuestion object at 0x10fbf8f90>}
 
 Equivalent Question if it were to be asked in the Tanium Console: 
 Get Installed Applications from all machines
 
 CSV Results of response: 
 Name,Silent Uninstall String,Uninstallable,Version
-Google Search,nothing,Not Uninstallable,37.0.2062.120
-Microsoft Chart Converter,nothing,Not Uninstallable,14.4.7
+Image Capture Extension,nothing,Not Uninstallable,10.2
+Dictation,nothing,Not Uninstallable,1.6.1
 Wish,nothing,Not Uninstallable,8.5.9
-BluetoothUIServer,nothing,Not Uninstallable,4.3.2
+Uninstall AnyConnect,nothing,Not Uninstallable,3.1.08009
 Time Machine,nothing,Not Uninstallable,1.3
 AppleGraphicsWarning,nothing,Not Uninstallable,2.3.0
 Python 2.7 py2exe-0.6.9,"""C:\Python27\Removepy2exe.exe"" -u ""C:\Python27\py2exe-wininst.log""",Not Uninstallable,-0.6.9
 soagent,nothing,Not Uninstallable,7.0
+Feedback Assistant,nothing,Not Uninstallable,4.1.3
 AinuIM,nothing,Not Uninstallable,1.0
-ARDAgent,nothing,Not Uninstallable,3.8.2
-Microsoft Clip Gallery,nothing,Not Uninstallable,14.4.7
+vpndownloader,nothing,Not Uninstallable,3.1.08009
 Pass Viewer,nothing,Not Uninstallable,1.0
-PressAndHold,nothing,Not Uninstallable,1.2
-PluginIM,nothing,Not Uninstallable,15
+ARDAgent,nothing,Not Uninstallable,3.8.4
+OBEXAgent,nothing,Not Uninstallable,4.3.5
 ..trimmed for brevity..
 
 '''

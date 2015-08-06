@@ -62,7 +62,7 @@ response = handler.get(**get_kwargs)
 export_kwargs['obj'] = response
 
 # export the object to a string
-# this should throw an exception: pytan.utils.HandlerError
+# this should throw an exception: pytan.exceptions.HandlerError
 import traceback
 
 try:
@@ -73,11 +73,13 @@ except Exception as e:
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
 Traceback (most recent call last):
   File "<string>", line 65, in <module>
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1429, in export_obj
-    raise HandlerError(err)
+  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2710, in wrap
+    ret = f(*args, **kwargs)
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1079, in export_obj
+    raise pytan.exceptions.HandlerError(err)
 HandlerError: u'bad' not a supported export format for SensorList, must be one of: xml, json, csv
 
 '''

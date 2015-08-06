@@ -120,10 +120,10 @@ Output from Python Code
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
-    2015-03-26 11:49:19,177 INFO     handler: Deleted 'PackageSpec, id: 6283'
-    2015-03-26 11:49:19,178 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/PackageSpecList_2015_03_26-11_49_19-EDT.json' written with 1833 bytes
-    2015-03-26 11:49:19,268 INFO     handler: New PackageSpec, name: 'Custom Tagging - Add Tags API TEST' (ID: 6286) created successfully!
+    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
+    2015-08-06 14:56:10,346 INFO     pytan.handler: Deleted 'PackageSpec, id: 9341'
+    2015-08-06 14:56:10,346 INFO     pytan.handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/PackageSpecList_2015_08_06-10_56_10-EDT.json' written with 1833 bytes
+    2015-08-06 14:56:10,422 INFO     pytan.handler: New PackageSpec, name: 'Custom Tagging - Add Tags API TEST', id: 9344 (ID: 9344) created successfully!
     
     Type of response:  <class 'taniumpy.object_types.package_spec_list.PackageSpecList'>
     
@@ -139,14 +139,14 @@ Output from Python Code
           "available_time": "1900-01-01T00:00:00", 
           "command": "cmd /c cscript //T:60 add-tags.vbs \"$1\"", 
           "command_timeout": 60, 
-          "creation_time": "2015-03-26T15:49:19", 
+          "creation_time": "2015-08-06T14:56:10", 
           "deleted_flag": 0, 
           "display_name": "Custom Tagging - Add Tags", 
           "expire_seconds": 660, 
           "hidden_flag": 0, 
-          "id": 6286, 
+          "id": 9344, 
           "last_modified_by": "Tanium User", 
-          "last_update": "2015-03-26T15:49:19", 
+          "last_update": "2015-08-06T14:56:10", 
           "metadata": {
             "_type": "metadata", 
             "item": [
@@ -164,7 +164,7 @@ Output from Python Code
               }
             ]
           }, 
-          "modification_time": "2015-03-26T15:49:19", 
+          "modification_time": "2015-08-06T14:56:10", 
           "name": "Custom Tagging - Add Tags API TEST", 
           "parameter_definition": "{\"parameters\":[{\"label\":\"Add tags (space-delimited)\",\"maxChars\":0,\"restrict\":null,\"validationExpressions\":[{\"helpString\":\"You must enter a value\",\"expression\":\"\\\\S\",\"flags\":\"\",\"model\":\"com.tanium.models::ValidationExpression\",\"parameterType\":\"com.tanium.models::ValidationExpression\"}],\"value\":\"\",\"helpString\":\"Enter tags space-delimited.\",\"promptText\":\"e.g. PCI DMZ Decomm\",\"defaultValue\":\"\",\"key\":\"$1\",\"model\":\"com.tanium.components.parameters::TextInputParameter\",\"parameterType\":\"com.tanium.components.parameters::TextInputParameter\"}],\"model\":\"com.tanium.components.parameters::ParametersArray\",\"parameterType\":\"com.tanium.components.parameters::ParametersArray\"}", 
           "source_id": 0, 

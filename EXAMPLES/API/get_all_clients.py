@@ -77,26 +77,26 @@ print out
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
 
 Type of response:  <class 'taniumpy.object_types.system_status_list.SystemStatusList'>
 
 print of response:
-SystemStatusList, len: 5
+SystemStatusList, len: 2
 
 length of response (number of objects returned): 
-5
+2
 
 print the first object returned in JSON format:
 {
   "_type": "client_status", 
   "cache_row_id": 0, 
-  "computer_id": "1320430098", 
+  "computer_id": "2566526760", 
   "full_version": "5.1.314.7724", 
   "host_name": "Casus-Belli.local", 
   "ipaddress_client": "172.16.31.1", 
   "ipaddress_server": "172.16.31.1", 
-  "last_registration": "2015-03-26T08:08:09", 
+  "last_registration": "2015-07-22T13:48:15", 
   "port_number": 17472, 
   "protocol_version": 314, 
   "send_state": "Forward Only", 
