@@ -4,7 +4,7 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 '''Get group and save as report format'''
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
-__version__ = '1.0.4'
+__version__ = '2.0.0'
 
 
 import os

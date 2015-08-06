@@ -4,7 +4,7 @@
 '''A python package that makes using (:mod:`taniumpy`) more human friendly.'''
 
 __title__ = 'PyTan'
-__version__ = '1.0.4'
+__version__ = '2.0.0'
 """
 Version of PyTan
 """
@@ -19,7 +19,7 @@ __license__ = 'MIT'
 License for PyTan
 """
 
-__copyright__ = 'Copyright 2014 Tanium'
+__copyright__ = 'Copyright 2015 Tanium'
 """
 Copyright for PyTan
 """
