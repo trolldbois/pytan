@@ -7,10 +7,19 @@ myscript=`basename "${script}"`
 mydir=`dirname "${script}"`
 mydir=`cd "${mydir}" ; pwd`
 rootdir=`cd "${mydir}"/../ ; pwd`
-pytandir=`cd "${rootdir}"/pytan ; pwd`
 taniumpydir=`cd "${rootdir}"/../taniumpy ; pwd`
 
-$taniumpydir/BUILD/generate_api.py -i $taniumpydir/BUILD/console.wsdl -o ${rootdir}/lib -v
+echo "Generating taniumpy API at: -o ${TMPDIR}/api"
+${taniumpydir}/BUILD/generate_api.py -i ${taniumpydir}/BUILD/console.wsdl -o ${TMPDIR} -f
+
+echo ""
+echo "Differences between ${TMPDIR}/api and ${rootdir}/lib/taniumpy:"
+diff -urq ${TMPDIR}/api ${rootdir}/lib/taniumpy
+echo ""
+
+echo "Are you sure you want to re-generate ${rootdir}lib/taniumpy?? See above for differences. Press any key to continue, or control-C to cancel!!"
+read -n 1 -s
+
 rm -rf ${rootdir}/lib/taniumpy
-mv ${rootdir}/lib/api ${rootdir}/lib/taniumpy
-echo "Moved ${rootdir}/lib/api to ${rootdir}/lib/taniumpy"
+mv ${TMPDIR}/api ${rootdir}/lib/taniumpy
+echo "Moved ${TMPDIR}/api to ${rootdir}/lib/taniumpy"
