@@ -1,10 +1,10 @@
 
-pytan API Valid Create Object Examples
+PyTan API Valid Create Object Examples
 ========================================================================================
 
 .. toctree::
 
-   create_user
-   create_package
-   create_group
-   create_whitelisted_url
+   create_user.rst
+   create_package.rst
+   create_group.rst
+   create_whitelisted_url.rst

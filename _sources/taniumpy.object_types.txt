@@ -385,6 +385,14 @@ taniumpy.object_types.parse_result_list module
     :undoc-members:
     :show-inheritance:
 
+taniumpy.object_types.permission_list module
+--------------------------------------------------------------------------
+
+.. automodule:: taniumpy.object_types.permission_list
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 taniumpy.object_types.plugin module
 --------------------------------------------------------------------------
 
@@ -617,10 +625,10 @@ taniumpy.object_types.sensor_query_list module
     :undoc-members:
     :show-inheritance:
 
-taniumpy.object_types.sensor_string_hints module
+taniumpy.object_types.string_hint_list module
 --------------------------------------------------------------------------
 
-.. automodule:: taniumpy.object_types.sensor_string_hints
+.. automodule:: taniumpy.object_types.string_hint_list
     :members:
     :undoc-members:
     :show-inheritance:
@@ -665,10 +673,10 @@ taniumpy.object_types.system_setting module
     :undoc-members:
     :show-inheritance:
 
-taniumpy.object_types.system_settings_list module
+taniumpy.object_types.system_setting_list module
 --------------------------------------------------------------------------
 
-.. automodule:: taniumpy.object_types.system_settings_list
+.. automodule:: taniumpy.object_types.system_setting_list
     :members:
     :undoc-members:
     :show-inheritance:
@@ -725,14 +733,6 @@ taniumpy.object_types.user_list module
 --------------------------------------------------------------------------
 
 .. automodule:: taniumpy.object_types.user_list
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-taniumpy.object_types.user_permissions module
---------------------------------------------------------------------------
-
-.. automodule:: taniumpy.object_types.user_permissions
     :members:
     :undoc-members:
     :show-inheritance:

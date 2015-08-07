@@ -44,7 +44,7 @@ Handler Authentication:
                         Password of user (default: None)
   --host HOST           Hostname/ip of SOAP Server (default: None)
   --port PORT           Port to use when connecting to SOAP Server (default:
-                        444)
+                        443)
 
 Handler Options:
   -l LOGLEVEL, --loglevel LOGLEVEL
@@ -71,7 +71,7 @@ Deploy Action Options:
                         Options for deploy action filter; pass --options-help
                         to get a full description (default: [])
   --start_seconds_from_now START_SECONDS_FROM_NOW
-                        Start the action N seconds from now (default: 1)
+                        Start the action N seconds from now (default: None)
   --expire_seconds EXPIRE_SECONDS
                         Expire the action N seconds after it starts, if not
                         supplied the packages own expire_seconds will be used
@@ -103,7 +103,7 @@ deploy_action.py -u 'Tanium User' -p 'T@n!um' --host '172.16.31.128' --loglevel 
 ```
 
 ```
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
 ++ Deploying action:
 {
   "action_filters": [], 
@@ -117,7 +117,7 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
   "report_dir": null, 
   "report_file": null, 
   "run": false, 
-  "start_seconds_from_now": 1
+  "start_seconds_from_now": null
 }
 
 Package Help
@@ -195,7 +195,7 @@ deploy_action.py -u 'Tanium User' -p 'T@n!um' --host '172.16.31.128' --loglevel 
 ```
 
 ```
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
 ++ Deploying action:
 {
   "action_filters": [], 
@@ -209,7 +209,7 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
   "report_dir": null, 
   "report_file": null, 
   "run": false, 
-  "start_seconds_from_now": 1
+  "start_seconds_from_now": null
 }
 
 Filters Help
@@ -518,7 +518,7 @@ deploy_action.py -u 'Tanium User' -p 'T@n!um' --host '172.16.31.128' --loglevel 
 ```
 
 ```
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
 ++ Deploying action:
 {
   "action_filters": [], 
@@ -532,7 +532,7 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
   "report_dir": null, 
   "report_file": null, 
   "run": false, 
-  "start_seconds_from_now": 1
+  "start_seconds_from_now": null
 }
 
 Options Help
@@ -629,7 +629,7 @@ deploy_action.py -u 'Tanium User' -p 'T@n!um' --host '172.16.31.128' --loglevel 
 ```
 
 ```
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
 ++ Deploying action:
 {
   "action_filters": [], 
@@ -643,11 +643,12 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
   "report_dir": null, 
   "report_file": "/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv", 
   "run": false, 
-  "start_seconds_from_now": 1
+  "start_seconds_from_now": null
 }
-2015-03-26 09:26:27,873 INFO     question_progress: Results 0% (Get Computer Name and Online = "True" from all machines)
-2015-03-26 09:26:32,891 INFO     question_progress: Results 0% (Get Computer Name and Online = "True" from all machines)
-2015-03-26 09:26:37,911 INFO     question_progress: Results 100% (Get Computer Name and Online = "True" from all machines)
+2015-08-07 19:27:46,785 INFO     pytan.handler.QuestionPoller: ID 1270: Progress Changed 0% (0 of 2)
+2015-08-07 19:33:12,125 INFO     pytan.handler.QuestionPoller: ID 1270: Progress Changed 50% (1 of 2)
+2015-08-07 19:33:17,130 INFO     pytan.handler.QuestionPoller: ID 1270: Progress Changed 100% (2 of 2)
+2015-08-07 19:33:17,130 INFO     pytan.handler.QuestionPoller: ID 1270: Reached Threshold of 99% (2 of 2)
 'Run' is not True!!
 View and verify the contents of /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/VERIFY_BEFORE_DEPLOY_ACTION_out.csv (length: 73 bytes)
 Re-run this deploy action with run=True after verifying
@@ -660,7 +661,7 @@ Re-run this deploy action with run=True after verifying
 ```
 Computer Name,Online
 Casus-Belli.local,True
-jtanium1.localdomain,True
+JTANIUM1.localdomain,True
 ```
 
   * Validation Test: notexitcode
@@ -681,7 +682,7 @@ deploy_action.py -u 'Tanium User' -p 'T@n!um' --host '172.16.31.128' --loglevel 
 ```
 
 ```
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
 ++ Deploying action:
 {
   "action_filters": [], 
@@ -695,62 +696,25 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
   "report_dir": null, 
   "report_file": "/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv", 
   "run": true, 
-  "start_seconds_from_now": 1
+  "start_seconds_from_now": null
 }
-2015-03-26 09:26:38,116 INFO     question_progress: Results 0% (Get Online = "True" from all machines)
-2015-03-26 09:26:43,131 INFO     question_progress: Results 100% (Get Online = "True" from all machines)
-2015-03-26 09:26:43,191 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 09:26:44,220 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 09:26:45,249 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 09:26:46,278 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 09:26:47,304 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 09:26:48,332 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 09:26:49,361 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 09:26:50,387 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 09:26:51,415 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 09:26:52,443 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 09:26:53,469 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 09:26:54,499 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 09:26:55,527 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 09:26:56,556 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 09:26:57,582 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 09:26:58,612 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 09:26:59,639 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 09:27:00,666 INFO     action_progress: Action Results Passed: 50% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 09:27:01,696 INFO     action_progress: Action Results Passed: 50% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 09:27:02,726 INFO     action_progress: Action Results Passed: 50% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 09:27:03,753 INFO     action_progress: Action Results Passed: 50% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 09:27:04,782 INFO     action_progress: Action Results Passed: 50% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 09:27:05,810 INFO     action_progress: Action Results Passed: 50% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 09:27:06,837 INFO     action_progress: Action Results Passed: 50% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 09:27:07,866 INFO     action_progress: Action Results Passed: 50% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 09:27:08,896 INFO     action_progress: Action Results Passed: 50% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 09:27:09,925 INFO     action_progress: Action Results Passed: 50% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 09:27:10,952 INFO     action_progress: Action Results Passed: 50% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 09:27:11,983 INFO     action_progress: Action Results Passed: 50% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 09:27:13,010 INFO     action_progress: Action Results Passed: 50% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 09:27:14,037 INFO     action_progress: Action Results Passed: 100% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 09:27:14,061 INFO     action_progress: Action Results Completed: 100% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 09:27:14,061 INFO     action_progress: API Deploy Distribute Tanium Standard Utilities Result Counts:
-	Running Count: 0
-	Success Count: 2
-	Failed Count: 0
-	Unknown Count: 0
-	Finished Count: 2
-	Total Count: 2
-	Finished Count must equal: 2
-++ Deployed Action 'API Deploy Distribute Tanium Standard Utilities' ID: 21066
+2015-08-07 19:33:17,506 INFO     pytan.handler.QuestionPoller: ID 1274: Progress Changed 0% (0 of 2)
+2015-08-07 19:33:22,510 INFO     pytan.handler.QuestionPoller: ID 1274: Progress Changed 100% (2 of 2)
+2015-08-07 19:33:22,510 INFO     pytan.handler.QuestionPoller: ID 1274: Reached Threshold of 99% (2 of 2)
+2015-08-07 19:33:22,521 INFO     pytan.handler.ActionPoller: ID 54: Progress Changed for Seen Count 0% (0 of 2)
+2015-08-07 19:33:32,556 INFO     pytan.handler.ActionPoller: ID 54: Progress Changed for Seen Count 100% (2 of 2)
+2015-08-07 19:33:32,561 INFO     pytan.handler.ActionPoller: ID 54: Reached Threshold for Seen Count of 100% (2 of 2)
+2015-08-07 19:33:32,570 INFO     pytan.handler.ActionPoller: ID 54: Progress Changed for Finished Count 100% (2 of 2)
+2015-08-07 19:33:32,575 INFO     pytan.handler.ActionPoller: ID 54: Reached Threshold for Finished Count of 100% (2 of 2)
+++ Deployed Action 'API Deploy Distribute Tanium Standard Utilities' ID: 54
 ++ Command used in Action: 'cmd /c cscript install-standard-utils.vbs "Tools\\StdUtils"'
-++ Deploy action progress check results:
-API Deploy Distribute Tanium Standard Utilities Result Counts:
-	Running Count: 0
-	Success Count: 2
-	Failed Count: 0
-	Unknown Count: 0
-	Finished Count: 2
-	Total Count: 2
-	Finished Count must equal: 2
-++ Deploy results written to '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' with 106 bytes
+++ Deploy action progress results:
+Total failed: 0
+Total finished: 2
+Total running: 0
+Total success: 2
+Total unknown: 0
+++ Deploy results written to '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' with 100 bytes
 ```
 
   * Validation Test: exitcode
@@ -763,8 +727,8 @@ API Deploy Distribute Tanium Standard Utilities Result Counts:
 
 ```
 Action Statuses,Computer Name
-21066:Completed.,Casus-Belli.local
-21066:Completed.,jtanium1.localdomain
+54:Completed.,Casus-Belli.local
+54:Completed.,JTANIUM1.localdomain
 ```
 
 
@@ -782,7 +746,7 @@ deploy_action.py -u 'Tanium User' -p 'T@n!um' --host '172.16.31.128' --loglevel 
 ```
 
 ```
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
 ++ Deploying action:
 {
   "action_filters": [
@@ -798,53 +762,25 @@ Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.
   "report_dir": null, 
   "report_file": "/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv", 
   "run": true, 
-  "start_seconds_from_now": 1
+  "start_seconds_from_now": null
 }
-2015-03-26 09:27:14,258 INFO     question_progress: Results 0% (Get Online = "True" from all machines where Operating System contains "Windows")
-2015-03-26 09:27:19,276 INFO     question_progress: Results 100% (Get Online = "True" from all machines where Operating System contains "Windows")
-2015-03-26 09:27:19,387 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-03-26 09:27:20,413 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-03-26 09:27:21,440 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-03-26 09:27:22,468 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-03-26 09:27:23,497 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-03-26 09:27:24,526 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-03-26 09:27:25,551 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-03-26 09:27:26,578 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-03-26 09:27:27,607 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-03-26 09:27:28,631 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-03-26 09:27:29,656 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-03-26 09:27:30,683 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-03-26 09:27:31,710 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-03-26 09:27:32,736 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-03-26 09:27:33,766 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-03-26 09:27:34,797 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-03-26 09:27:35,826 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-03-26 09:27:36,852 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-03-26 09:27:37,880 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-03-26 09:27:38,912 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-03-26 09:27:39,945 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-03-26 09:27:40,975 INFO     action_progress: Action Results Passed: 100% (API Deploy Custom Tagging - Add Tags)
-2015-03-26 09:27:40,998 INFO     action_progress: Action Results Completed: 100% (API Deploy Custom Tagging - Add Tags)
-2015-03-26 09:27:40,998 INFO     action_progress: API Deploy Custom Tagging - Add Tags Result Counts:
-	Running Count: 0
-	Success Count: 1
-	Failed Count: 0
-	Unknown Count: 0
-	Finished Count: 1
-	Total Count: 1
-	Finished Count must equal: 1
-++ Deployed Action 'API Deploy Custom Tagging - Add Tags' ID: 21067
+2015-08-07 19:33:32,894 INFO     pytan.handler.QuestionPoller: ID 1275: Progress Changed 0% (0 of 2)
+2015-08-07 19:33:37,901 INFO     pytan.handler.QuestionPoller: ID 1275: Progress Changed 100% (2 of 2)
+2015-08-07 19:33:37,901 INFO     pytan.handler.QuestionPoller: ID 1275: Reached Threshold of 99% (2 of 2)
+2015-08-07 19:33:37,911 INFO     pytan.handler.ActionPoller: ID 55: Progress Changed for Seen Count 0% (0 of 1)
+2015-08-07 19:33:57,982 INFO     pytan.handler.ActionPoller: ID 55: Progress Changed for Seen Count 100% (1 of 1)
+2015-08-07 19:33:57,989 INFO     pytan.handler.ActionPoller: ID 55: Reached Threshold for Seen Count of 100% (1 of 1)
+2015-08-07 19:33:57,999 INFO     pytan.handler.ActionPoller: ID 55: Progress Changed for Finished Count 100% (1 of 1)
+2015-08-07 19:33:58,005 INFO     pytan.handler.ActionPoller: ID 55: Reached Threshold for Finished Count of 100% (1 of 1)
+++ Deployed Action 'API Deploy Custom Tagging - Add Tags' ID: 55
 ++ Command used in Action: 'cmd /c cscript //T:60 add-tags.vbs "new%5ftag"'
-++ Deploy action progress check results:
-API Deploy Custom Tagging - Add Tags Result Counts:
-	Running Count: 0
-	Success Count: 1
-	Failed Count: 0
-	Unknown Count: 0
-	Finished Count: 1
-	Total Count: 1
-	Finished Count must equal: 1
-++ Deploy results written to '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' with 70 bytes
+++ Deploy action progress results:
+Total failed: 0
+Total finished: 1
+Total running: 0
+Total success: 1
+Total unknown: 0
+++ Deploy results written to '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' with 67 bytes
 ```
 
   * Validation Test: exitcode
@@ -857,7 +793,7 @@ API Deploy Custom Tagging - Add Tags Result Counts:
 
 ```
 Action Statuses,Computer Name
-21067:Completed.,jtanium1.localdomain
+55:Completed.,JTANIUM1.localdomain
 ```
 
 
@@ -865,4 +801,4 @@ Action Statuses,Computer Name
 [TOC](#user-content-toc)
 
 
-###### generated by: `build_bin_doc v1.4.5`, date: Thu Mar 26 09:27:41 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**
+###### generated by: `build_bin_doc v1.4.5`, date: Fri Aug  7 15:33:58 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**

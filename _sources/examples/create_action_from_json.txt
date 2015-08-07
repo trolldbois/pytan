@@ -35,7 +35,7 @@ Example Python Code
     USERNAME = "Tanium User"
     PASSWORD = "T@n!um"
     HOST = "172.16.31.128"
-    PORT = "444"
+    PORT = "443"
     
     # Logging conrols
     LOGLEVEL = 2
@@ -120,9 +120,9 @@ Output from Python Code
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
-    2015-03-26 11:49:19,488 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/ActionList_2015_03_26-11_49_19-EDT.json' written with 1314 bytes
-    2015-03-26 11:49:19,676 INFO     handler: New Action, name: 'Unmanaged Asset Tracking - Run Scan' (ID: 21080) created successfully!
+    Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
+    2015-08-07 19:46:14,474 INFO     pytan.handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/ActionList_2015_08_07-15_46_14-EDT.json' written with 1294 bytes
+    2015-08-07 19:46:14,496 INFO     pytan.handler: New Action, name: 'Distribute Tanium Standard Utilities', id: 60 (ID: 60) created successfully!
     
     Type of response:  <class 'taniumpy.object_types.action_list.ActionList'>
     
@@ -140,41 +140,46 @@ Output from Python Code
             "id": 0, 
             "name": "Default"
           }, 
-          "comment": "Scans for unmanaged assets on the network.", 
-          "creation_time": "2015-03-26T15:49:19", 
-          "distribute_seconds": 600, 
-          "expiration_time": "2015-03-03T19:55:56", 
-          "expire_seconds": 3000, 
+          "approver": {
+            "_type": "user", 
+            "id": 2, 
+            "name": "Tanium User"
+          }, 
+          "comment": "Distribute Tanium Standard Utilities", 
+          "creation_time": "2015-08-07T19:46:14", 
+          "distribute_seconds": 3200, 
+          "expiration_time": "2015-08-07T20:41:16", 
+          "expire_seconds": 3300, 
           "history_saved_question": {
             "_type": "saved_question", 
-            "id": 11652
+            "id": 102
           }, 
-          "id": 21080, 
-          "name": "Unmanaged Asset Tracking - Run Scan", 
+          "id": 60, 
+          "name": "Distribute Tanium Standard Utilities", 
           "package_spec": {
             "_type": "package_spec", 
-            "command": "cmd /c start /B cscript //T:3600 ..\\..\\Tools\\run-ua-scan.vbs /RANDOM_WAIT_TIME_IN_SECONDS:240", 
-            "id": 6, 
-            "name": "Run Unmanaged Asset Scanner"
+            "command": "cmd /c cscript install-standard-utils.vbs \"Tools\\StdUtils\"", 
+            "id": 20, 
+            "name": "Distribute Tanium Standard Utilities"
           }, 
           "saved_action": {
             "_type": "saved_action", 
-            "id": 14804
+            "id": 46
           }, 
           "skip_lock_flag": 0, 
-          "start_time": "2015-03-03T19:05:56", 
-          "status": "Expired", 
+          "start_time": "2015-08-07T19:46:16", 
+          "status": "Open", 
           "stopped_flag": 0, 
           "target_group": {
             "_type": "group", 
-            "id": 64, 
+            "id": 37, 
             "name": "Default"
           }, 
           "user": {
             "_type": "user", 
             "group_id": 0, 
             "id": 2, 
-            "last_login": "2015-03-26T08:12:04", 
+            "last_login": "2015-08-07T19:46:14", 
             "name": "Tanium User"
           }
         }

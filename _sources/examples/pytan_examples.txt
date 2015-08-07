@@ -1,10 +1,11 @@
 
-pytan API examples
+PyTan API examples
 ========================================================================================
 
 .. toctree::
 
-   pytan_api_basic_handler_example
+   pytan_api_basic_handler_example.rst
+   valid_saved_questions
    valid_questions
    invalid_questions
    valid_get_objects

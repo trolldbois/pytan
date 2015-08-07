@@ -35,7 +35,7 @@ Example Python Code
     USERNAME = "Tanium User"
     PASSWORD = "T@n!um"
     HOST = "172.16.31.128"
-    PORT = "444"
+    PORT = "443"
     
     # Logging conrols
     LOGLEVEL = 2
@@ -94,12 +94,12 @@ Output from Python Code
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+    Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
     
-    Type of response:  <class 'taniumpy.object_types.system_settings_list.SystemSettingsList'>
+    Type of response:  <class 'taniumpy.object_types.system_setting_list.SystemSettingList'>
     
     print of response:
-    SystemSettingsList, len: 1
+    SystemSettingList, len: 1
     
     length of response (number of objects returned): 
     1
@@ -109,7 +109,7 @@ Output from Python Code
       "_type": "system_setting", 
       "default_value": "512:17473:127.0.0.1", 
       "hidden_flag": 0, 
-      "id": 57, 
+      "id": 58, 
       "name": "control_address", 
       "read_only_flag": 0, 
       "setting_type": "Server", 

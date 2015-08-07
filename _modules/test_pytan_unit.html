@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>test_pytan_unit &mdash; PyTan 1.0.4 documentation</title>
+  <title>test_pytan_unit &mdash; PyTan 2.0.0 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="PyTan 1.0.4 documentation" href="../index.html"/>
+    <link rel="top" title="PyTan 2.0.0 documentation" href="../index.html"/>
         <link rel="up" title="Module code" href="index.html"/> 
 
   
@@ -65,24 +65,26 @@
 <li class="toctree-l2"><a class="reference internal" href="../introduction.html#description">1.1. Description</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../introduction.html#why-it-was-created">1.2. Why it was created</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../introduction.html#requirements">1.3. Requirements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../introduction.html#installation">1.4. Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../introduction.html#usage">1.5. Usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../introduction.html#directory-layout">1.6. Directory Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#tanium-versions-validated-against">1.4. Tanium Versions Validated Against</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#installation">1.5. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#usage">1.6. Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#directory-layout">1.7. Directory Layout</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../pytan.html">2. pytan package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../examples/pytan_examples.html">2.1. pytan API examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/pytan_examples.html">2.1. PyTan API examples</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../pytan.handler.html">2.2. pytan.handler module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.constants.html">2.3. pytan.constants module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.utils.html">2.4. pytan.utils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.unittest.html">2.5. pytan Unit Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.functest.html">2.6. pytan Functional Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.exceptions.html">2.3. pytan.exceptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.sessions.html">2.4. pytan.sessions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.pollers.html">2.5. pytan.pollers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.constants.html">2.6. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.utils.html">2.7. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.unittest.html">2.8. pytan Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.functest.html">2.9. pytan Functional Tests</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../taniumpy.html">3. taniumpy package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../taniumpy.session.html">3.1. taniumpy.session module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../taniumpy.question_asker.html">3.2. taniumpy.question_asker module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../taniumpy.object_types.html">3.3. taniumpy.object_types package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taniumpy.object_types.html">3.1. taniumpy.object_types package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../xmltodict.html">4. xmltodict module</a><ul class="simple">
@@ -92,6 +94,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../threaded_http.html">6. threaded_http module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../requests.html">7. requests package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../requests.html#requests-http-library">7.1. requests HTTP library</a></li>
 </ul>
 </li>
 </ul>
@@ -143,7 +149,6 @@
 
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">unittest</span>
-<span class="kn">import</span> <span class="nn">json</span>
 
 <span class="n">my_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="n">my_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">my_file</span><span class="p">)</span>
@@ -160,22 +165,16 @@
 <span class="kn">import</span> <span class="nn">taniumpy</span>
 <span class="kn">from</span> <span class="nn">pytan</span> <span class="kn">import</span> <span class="n">utils</span>
 <span class="kn">from</span> <span class="nn">pytan</span> <span class="kn">import</span> <span class="n">constants</span>
-<span class="kn">from</span> <span class="nn">pytan.utils</span> <span class="kn">import</span> <span class="n">HumanParserError</span>
-<span class="kn">from</span> <span class="nn">pytan.utils</span> <span class="kn">import</span> <span class="n">DefinitionParserError</span>
-<span class="kn">from</span> <span class="nn">pytan.utils</span> <span class="kn">import</span> <span class="n">HandlerError</span>
+<span class="kn">from</span> <span class="nn">pytan.exceptions</span> <span class="kn">import</span> <span class="n">HumanParserError</span>
+<span class="kn">from</span> <span class="nn">pytan.exceptions</span> <span class="kn">import</span> <span class="n">DefinitionParserError</span>
+<span class="kn">from</span> <span class="nn">pytan.exceptions</span> <span class="kn">import</span> <span class="n">HandlerError</span>
 
-<span class="c"># control the amount of output from unittests</span>
-<span class="n">TESTVERBOSITY</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="c"># get our server connection info</span>
+<span class="kn">from</span> <span class="nn">API_INFO</span> <span class="kn">import</span> <span class="n">SERVER_INFO</span>
 
-<span class="c"># have unittest exit immediately on unexpected error</span>
-<span class="n">FAILFAST</span> <span class="o">=</span> <span class="bp">True</span>
-
-<span class="c"># catch control-C to allow current test suite to finish (press 2x to force)</span>
-<span class="n">CATCHBREAK</span> <span class="o">=</span> <span class="bp">True</span>
-
-<span class="c"># set logging for all logs in pytan to same level as TESTVERBOSITY</span>
+<span class="c"># set logging for all logs in pytan to same level as loglevel</span>
 <span class="n">utils</span><span class="o">.</span><span class="n">setup_console_logging</span><span class="p">()</span>
-<span class="n">utils</span><span class="o">.</span><span class="n">set_log_levels</span><span class="p">(</span><span class="n">TESTVERBOSITY</span><span class="p">)</span>
+<span class="n">utils</span><span class="o">.</span><span class="n">set_log_levels</span><span class="p">(</span><span class="n">SERVER_INFO</span><span class="p">[</span><span class="s">&quot;loglevel&quot;</span><span class="p">])</span>
 
 
 <div class="viewcode-block" id="TestDehumanizeSensorUtils"><a class="viewcode-back" href="../pytan.unittest.html#test_pytan_unit.TestDehumanizeSensorUtils">[docs]</a><span class="k">class</span> <span class="nc">TestDehumanizeSensorUtils</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
@@ -332,12 +331,12 @@
 <div class="viewcode-block" id="TestDehumanizeSensorUtils.test_empty_args_str"><a class="viewcode-back" href="../pytan.unittest.html#test_pytan_unit.TestDehumanizeSensorUtils.test_empty_args_str">[docs]</a>    <span class="k">def</span> <span class="nf">test_empty_args_str</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">e</span> <span class="o">=</span> <span class="s">&quot;A string or list of strings must be supplied as &#39;sensors&#39;!&quot;</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">assertRaisesRegexp</span><span class="p">(</span><span class="n">HumanParserError</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
-            <span class="n">utils</span><span class="o">.</span><span class="n">dehumanize_sensors</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">utils</span><span class="o">.</span><span class="n">dehumanize_sensors</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">empty_ok</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="TestDehumanizeSensorUtils.test_empty_args_list"><a class="viewcode-back" href="../pytan.unittest.html#test_pytan_unit.TestDehumanizeSensorUtils.test_empty_args_list">[docs]</a>    <span class="k">def</span> <span class="nf">test_empty_args_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">e</span> <span class="o">=</span> <span class="s">&quot;A string or list of strings must be supplied as &#39;sensors&#39;!&quot;</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">assertRaisesRegexp</span><span class="p">(</span><span class="n">HumanParserError</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
-            <span class="n">utils</span><span class="o">.</span><span class="n">dehumanize_sensors</span><span class="p">([])</span>
+            <span class="n">utils</span><span class="o">.</span><span class="n">dehumanize_sensors</span><span class="p">([],</span> <span class="n">empty_ok</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="TestDehumanizeSensorUtils.test_empty_args_dict"><a class="viewcode-back" href="../pytan.unittest.html#test_pytan_unit.TestDehumanizeSensorUtils.test_empty_args_dict">[docs]</a>    <span class="k">def</span> <span class="nf">test_empty_args_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">e</span> <span class="o">=</span> <span class="s">&quot;A string or list of strings must be supplied as &#39;sensors&#39;!&quot;</span>
@@ -1152,14 +1151,12 @@
 
     <span class="nd">@classmethod</span>
 <div class="viewcode-block" id="TestManualBuildObjectUtils.setUpClass"><a class="viewcode-back" href="../pytan.unittest.html#test_pytan_unit.TestManualBuildObjectUtils.setUpClass">[docs]</a>    <span class="k">def</span> <span class="nf">setUpClass</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span> <span class="c"># noqa</span>
-        <span class="k">def</span> <span class="nf">load_sensor</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-            <span class="n">sensor_obj_json_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">my_dir</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
-            <span class="n">sensor_obj_json</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">sensor_obj_json_path</span><span class="p">))</span>
-            <span class="k">return</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">BaseType</span><span class="o">.</span><span class="n">from_jsonable</span><span class="p">(</span><span class="n">sensor_obj_json</span><span class="p">)</span>
-
         <span class="c"># load in our JSON sensor object for testing</span>
-        <span class="n">cls</span><span class="o">.</span><span class="n">sensor_obj_with_params</span> <span class="o">=</span> <span class="n">load_sensor</span><span class="p">(</span><span class="s">&#39;sensor_obj_with_params.json&#39;</span><span class="p">)</span>
-        <span class="n">cls</span><span class="o">.</span><span class="n">sensor_obj_no_params</span> <span class="o">=</span> <span class="n">load_sensor</span><span class="p">(</span><span class="s">&#39;sensor_obj_no_params.json&#39;</span><span class="p">)</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">my_dir</span><span class="p">,</span> <span class="s">&#39;sensor_obj_with_params.json&#39;</span><span class="p">)</span>
+        <span class="n">cls</span><span class="o">.</span><span class="n">sensor_obj_with_params</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">load_taniumpy_from_json</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+        <span class="n">f</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">my_dir</span><span class="p">,</span> <span class="s">&#39;sensor_obj_no_params.json&#39;</span><span class="p">)</span>
+        <span class="n">cls</span><span class="o">.</span><span class="n">sensor_obj_no_params</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">load_taniumpy_from_json</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="TestManualBuildObjectUtils.test_build_selectlist_obj_noparamssensorobj_noparams"><a class="viewcode-back" href="../pytan.unittest.html#test_pytan_unit.TestManualBuildObjectUtils.test_build_selectlist_obj_noparamssensorobj_noparams">[docs]</a>    <span class="k">def</span> <span class="nf">test_build_selectlist_obj_noparamssensorobj_noparams</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;builds a selectlist object using a sensor obj with no params&#39;&#39;&#39;</span>
@@ -1238,7 +1235,6 @@
         <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;sensor_defs&#39;</span><span class="p">:</span> <span class="n">sensor_defs</span><span class="p">}</span>
 
         <span class="n">r</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">build_selectlist_obj</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">print</span> <span class="n">r</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">SelectList</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">select</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">Select</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">select</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
@@ -1520,16 +1516,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">empty_obj</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">empty_obj</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">))</span>
 </div>
-<div class="viewcode-block" id="TestGenericUtils.test_ask_kwargs"><a class="viewcode-back" href="../pytan.unittest.html#test_pytan_unit.TestGenericUtils.test_ask_kwargs">[docs]</a>    <span class="k">def</span> <span class="nf">test_ask_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;timeout&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&#39;other&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s">&#39;row_start&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">}</span>
-        <span class="n">ask_kwargs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_ask_kwargs</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">ask_kwargs</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;timeout&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>
-</div>
-<div class="viewcode-block" id="TestGenericUtils.test_req_kwargs"><a class="viewcode-back" href="../pytan.unittest.html#test_pytan_unit.TestGenericUtils.test_req_kwargs">[docs]</a>    <span class="k">def</span> <span class="nf">test_req_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;timeout&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&#39;other&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s">&#39;row_start&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">}</span>
-        <span class="n">req_kwargs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_req_kwargs</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">req_kwargs</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;row_start&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">})</span>
-</div>
 <div class="viewcode-block" id="TestGenericUtils.test_get_q_obj_map"><a class="viewcode-back" href="../pytan.unittest.html#test_pytan_unit.TestGenericUtils.test_get_q_obj_map">[docs]</a>    <span class="k">def</span> <span class="nf">test_get_q_obj_map</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">qtype</span> <span class="o">=</span> <span class="s">&#39;saved&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">get_q_obj_map</span><span class="p">(</span><span class="n">qtype</span><span class="p">),</span> <span class="p">{</span><span class="s">&#39;handler&#39;</span><span class="p">:</span> <span class="s">&#39;ask_saved&#39;</span><span class="p">})</span>
@@ -1537,9 +1523,9 @@
         <span class="n">qtype</span> <span class="o">=</span> <span class="s">&#39;manual&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">get_q_obj_map</span><span class="p">(</span><span class="n">qtype</span><span class="p">),</span> <span class="p">{</span><span class="s">&#39;handler&#39;</span><span class="p">:</span> <span class="s">&#39;ask_manual&#39;</span><span class="p">})</span>
 
-        <span class="n">qtype</span> <span class="o">=</span> <span class="s">&#39;manual_human&#39;</span>
+        <span class="n">qtype</span> <span class="o">=</span> <span class="s">&#39;_manual&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
-            <span class="n">utils</span><span class="o">.</span><span class="n">get_q_obj_map</span><span class="p">(</span><span class="n">qtype</span><span class="p">),</span> <span class="p">{</span><span class="s">&#39;handler&#39;</span><span class="p">:</span> <span class="s">&#39;ask_manual_human&#39;</span><span class="p">})</span>
+            <span class="n">utils</span><span class="o">.</span><span class="n">get_q_obj_map</span><span class="p">(</span><span class="n">qtype</span><span class="p">),</span> <span class="p">{</span><span class="s">&#39;handler&#39;</span><span class="p">:</span> <span class="s">&#39;_ask_manual&#39;</span><span class="p">})</span>
 
         <span class="n">qtype</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
         <span class="n">e</span> <span class="o">=</span> <span class="p">(</span>
@@ -1554,6 +1540,31 @@
         <span class="p">)</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">assertRaisesRegexp</span><span class="p">(</span><span class="n">HandlerError</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
             <span class="n">utils</span><span class="o">.</span><span class="n">get_q_obj_map</span><span class="p">(</span><span class="n">qtype</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TestGenericUtils.test_load_taniumpy_file_invalid_file"><a class="viewcode-back" href="../pytan.unittest.html#test_pytan_unit.TestGenericUtils.test_load_taniumpy_file_invalid_file">[docs]</a>    <span class="k">def</span> <span class="nf">test_load_taniumpy_file_invalid_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="s">&#39;invalid_file.1234&#39;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="n">HandlerError</span><span class="p">):</span>
+            <span class="n">utils</span><span class="o">.</span><span class="n">load_taniumpy_from_json</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TestGenericUtils.test_load_taniumpy_file_invalid_json"><a class="viewcode-back" href="../pytan.unittest.html#test_pytan_unit.TestGenericUtils.test_load_taniumpy_file_invalid_json">[docs]</a>    <span class="k">def</span> <span class="nf">test_load_taniumpy_file_invalid_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root_dir</span><span class="p">,</span> <span class="s">&#39;doc/example_of_all_package_parameters.json&#39;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="n">HandlerError</span><span class="p">):</span>
+            <span class="n">utils</span><span class="o">.</span><span class="n">load_taniumpy_from_json</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TestGenericUtils.test_load_param_file_valid"><a class="viewcode-back" href="../pytan.unittest.html#test_pytan_unit.TestGenericUtils.test_load_param_file_valid">[docs]</a>    <span class="k">def</span> <span class="nf">test_load_param_file_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root_dir</span><span class="p">,</span> <span class="s">&#39;doc/example_of_all_package_parameters.json&#39;</span><span class="p">)</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">load_param_json_file</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="s">&#39;ParametersArray&#39;</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TestGenericUtils.test_load_param_file_invalid_file"><a class="viewcode-back" href="../pytan.unittest.html#test_pytan_unit.TestGenericUtils.test_load_param_file_invalid_file">[docs]</a>    <span class="k">def</span> <span class="nf">test_load_param_file_invalid_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="s">&#39;invalid_file.1234&#39;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="n">HandlerError</span><span class="p">):</span>
+            <span class="n">utils</span><span class="o">.</span><span class="n">load_param_json_file</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TestGenericUtils.test_load_param_file_invalid_json"><a class="viewcode-back" href="../pytan.unittest.html#test_pytan_unit.TestGenericUtils.test_load_param_file_invalid_json">[docs]</a>    <span class="k">def</span> <span class="nf">test_load_param_file_invalid_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">my_dir</span><span class="p">,</span> <span class="s">&#39;sensor_obj_no_params.json&#39;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="n">HandlerError</span><span class="p">):</span>
+            <span class="n">utils</span><span class="o">.</span><span class="n">load_param_json_file</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="TestGenericUtils.test_get_obj_map"><a class="viewcode-back" href="../pytan.unittest.html#test_pytan_unit.TestGenericUtils.test_get_obj_map">[docs]</a>    <span class="k">def</span> <span class="nf">test_get_obj_map</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">obj</span> <span class="o">=</span> <span class="s">&#39;sensor&#39;</span>
@@ -1577,29 +1588,118 @@
 
 </div></div>
 <div class="viewcode-block" id="TestDeserializeBadXML"><a class="viewcode-back" href="../pytan.unittest.html#test_pytan_unit.TestDeserializeBadXML">[docs]</a><span class="k">class</span> <span class="nc">TestDeserializeBadXML</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
-<div class="viewcode-block" id="TestDeserializeBadXML.test_bad_chars_basetype"><a class="viewcode-back" href="../pytan.unittest.html#test_pytan_unit.TestDeserializeBadXML.test_bad_chars_basetype">[docs]</a>    <span class="k">def</span> <span class="nf">test_bad_chars_basetype</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">a</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">my_dir</span><span class="p">,</span> <span class="s">&#39;bad_chars_basetype.xml&#39;</span><span class="p">),</span> <span class="s">&#39;rb+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-        <span class="n">b</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">taniumpy</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">xml_fix</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<div class="viewcode-block" id="TestDeserializeBadXML.test_bad_chars_basetype_control"><a class="viewcode-back" href="../pytan.unittest.html#test_pytan_unit.TestDeserializeBadXML.test_bad_chars_basetype_control">[docs]</a>    <span class="k">def</span> <span class="nf">test_bad_chars_basetype_control</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        This XML file has a number of control characters that are not valid in XML.</span>
+
+<span class="sd">        This test validates that pytan.xml_clean.xml_cleaner() will remove all the invalid</span>
+<span class="sd">        and restricted characters, which should allow the body to be parsed properly.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Logging examples from xml_cleaner():</span>
+<span class="sd">        v=open(&#39;bad_chars_basetype_control.xml&#39;).read()</span>
+<span class="sd">        &gt;&gt;&gt; pytan.xml_clean.xml_cleaner(v, show_bad_characters=True)</span>
+<span class="sd">        XMLCleaner: Replaced 4 invalid characters that did not match the regex u&#39;[^\t\n\r -\ud7ff\ue000-\ufffd]&#39;</span>
+<span class="sd">        XMLCleaner: Invalid characters found: [u&#39;\x17&#39;, u&#39;\x04&#39;, u&#39;\x04&#39;, u&#39;\x01&#39;]</span>
+<span class="sd">        XMLCleaner: Replaced 10 restricted characters that did not match the regex u&#39;[\x7f-\x84\x86-\x9f\ufdd0-\ufdef]&#39;</span>
+<span class="sd">        XMLCleaner: Restricted characters found: [u&#39;\x80&#39;, u&#39;\x80&#39;, u&#39;\x8d&#39;, u&#39;\x95&#39;, u&#39;\x81&#39;, u&#39;\x89&#39;, u&#39;\x89&#39;, u&#39;\x81&#39;, u&#39;\x95&#39;, u&#39;\x8b&#39;]</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="s">&#39;bad_chars_basetype_control.xml&#39;</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">my_dir</span><span class="p">,</span> <span class="n">f</span><span class="p">),</span> <span class="s">&#39;rb+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">xml_clean</span><span class="o">.</span><span class="n">xml_cleaner</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">log_messages</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
         <span class="n">c</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">taniumpy</span><span class="o">.</span><span class="n">BaseType</span><span class="o">.</span><span class="n">fromSOAPBody</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">SystemStatusList</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="TestDeserializeBadXML.test_bad_chars_resultset"><a class="viewcode-back" href="../pytan.unittest.html#test_pytan_unit.TestDeserializeBadXML.test_bad_chars_resultset">[docs]</a>    <span class="k">def</span> <span class="nf">test_bad_chars_resultset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">a</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">my_dir</span><span class="p">,</span> <span class="s">&#39;bad_chars_resultset.xml&#39;</span><span class="p">),</span> <span class="s">&#39;rb+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-        <span class="n">b</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">taniumpy</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">xml_fix</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<div class="viewcode-block" id="TestDeserializeBadXML.test_bad_chars_resultset_latin1"><a class="viewcode-back" href="../pytan.unittest.html#test_pytan_unit.TestDeserializeBadXML.test_bad_chars_resultset_latin1">[docs]</a>    <span class="k">def</span> <span class="nf">test_bad_chars_resultset_latin1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        This XML file has some characters that are actually encoded as latin1 (as well as some</span>
+<span class="sd">        restricted characters).</span>
+
+<span class="sd">        This test validates that pytan.xml_clean.xml_cleaner() will properly fall back to latin1</span>
+<span class="sd">        for decoding the docuemnt, as well as remove all the invalid and restricted characters,</span>
+<span class="sd">        which should allow the body to be parsed properly.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Logging examples from xml_cleaner():</span>
+<span class="sd">        &gt;&gt;&gt; v=open(&#39;bad_chars_resultset_latin1.xml&#39;).read()</span>
+<span class="sd">        &gt;&gt;&gt; pytan.xml_clean.xml_cleaner(v, show_bad_characters=True)</span>
+<span class="sd">        XMLCleaner: Falling back to latin1 for decoding, unable to decode as UTF-8!</span>
+<span class="sd">        XMLCleaner: No invalid characters found</span>
+<span class="sd">        XMLCleaner: Replaced 2 restricted characters that did not match the regex u&#39;[\x7f-\x84\x86-\x9f\ufdd0-\ufdef]&#39;</span>
+<span class="sd">        XMLCleaner: Restricted characters found: [u&#39;\x93&#39;, u&#39;\x94&#39;]</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="s">&#39;bad_chars_resultset_latin1.xml&#39;</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">my_dir</span><span class="p">,</span> <span class="n">f</span><span class="p">),</span> <span class="s">&#39;rb+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">xml_clean</span><span class="o">.</span><span class="n">xml_cleaner</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">log_messages</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
         <span class="n">el</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">taniumpy</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">ET</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
         <span class="n">cdata</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;.//ResultXML&#39;</span><span class="p">)</span>
-        <span class="n">rd</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">taniumpy</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">ET</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">pytan</span><span class="o">.</span><span class="n">taniumpy</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">xml_fix</span><span class="p">(</span><span class="n">cdata</span><span class="o">.</span><span class="n">text</span><span class="p">))</span>
+        <span class="n">rd</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">taniumpy</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">ET</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">cdata</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
         <span class="n">c</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">taniumpy</span><span class="o">.</span><span class="n">ResultSet</span><span class="o">.</span><span class="n">fromSOAPElement</span><span class="p">(</span><span class="n">rd</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">ResultSet</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TestDeserializeBadXML.test_bad_chars_resultset_surrogate"><a class="viewcode-back" href="../pytan.unittest.html#test_pytan_unit.TestDeserializeBadXML.test_bad_chars_resultset_surrogate">[docs]</a>    <span class="k">def</span> <span class="nf">test_bad_chars_resultset_surrogate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        This XML file has some characters that are unpaired surrogates in unicode. Surrogates</span>
+<span class="sd">        (unpaired or otherwise) are not legal XML characters.</span>
 
+<span class="sd">        This test validates that pytan.xml_clean.xml_cleaner() will properly remove all the</span>
+<span class="sd">        invalid and restricted characters, which should allow the body to be parsed properly.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Logging examples from xml_cleaner():</span>
+<span class="sd">        &gt;&gt;&gt; v=open(&#39;bad_chars_resultset_surrogate.xml&#39;).read()</span>
+<span class="sd">        &gt;&gt;&gt; pytan.xml_clean.xml_cleaner(v, show_bad_characters=True)</span>
+<span class="sd">        XMLCleaner: Replaced 1 invalid characters that did not match the regex u&#39;[^\t\n\r -\ud7ff\ue000-\ufffd]&#39;</span>
+<span class="sd">        XMLCleaner: Invalid characters found: [u&#39;\ude64&#39;]</span>
+<span class="sd">        XMLCleaner: No restricted characters found</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="s">&#39;bad_chars_resultset_surrogate.xml&#39;</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">my_dir</span><span class="p">,</span> <span class="n">f</span><span class="p">),</span> <span class="s">&#39;rb+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">xml_clean</span><span class="o">.</span><span class="n">xml_cleaner</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">log_messages</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+        <span class="n">el</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">taniumpy</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">ET</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="n">cdata</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;.//ResultXML&#39;</span><span class="p">)</span>
+        <span class="n">rd</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">taniumpy</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">ET</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">cdata</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">taniumpy</span><span class="o">.</span><span class="n">ResultSet</span><span class="o">.</span><span class="n">fromSOAPElement</span><span class="p">(</span><span class="n">rd</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">ResultSet</span><span class="p">)</span>
 </div></div>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd"># debug path for checking open file handles, ensuring</span>
+<span class="sd">import atexit</span>
+
+
+<span class="sd">@atexit.register</span>
+<span class="sd">def get_open_fds():</span>
+<span class="sd">    import subprocess</span>
+<span class="sd">    import os</span>
+
+<span class="sd">    pid = os.getpid()</span>
+<span class="sd">    procs = subprocess.check_output([&quot;lsof&quot;, &#39;-w&#39;, &quot;-p&quot;, str(pid)])</span>
+<span class="sd">    print procs</span>
+
+<span class="sd">    procs = subprocess.check_output([&quot;lsof&quot;, &#39;-w&#39;, &#39;-Ff&#39;, &quot;-p&quot;, str(pid)])</span>
+
+<span class="sd">    proc_defs = filter(</span>
+<span class="sd">        lambda s: s and s[0] == &#39;f&#39; and s[1:].isdigit(),</span>
+<span class="sd">        procs.split(&#39;\n&#39;)</span>
+<span class="sd">    )</span>
+
+<span class="sd">    nprocs = len(proc_defs)</span>
+<span class="sd">    print &quot;{} number of open FDs&quot;.format(nprocs)</span>
+<span class="sd">    for p in proc_defs:</span>
+<span class="sd">        print p</span>
+<span class="sd">    return nprocs</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="n">unittest</span><span class="o">.</span><span class="n">main</span><span class="p">(</span>
-        <span class="n">verbosity</span><span class="o">=</span><span class="n">TESTVERBOSITY</span><span class="p">,</span>
-        <span class="n">failfast</span><span class="o">=</span><span class="n">FAILFAST</span><span class="p">,</span>
-        <span class="n">catchbreak</span><span class="o">=</span><span class="n">CATCHBREAK</span><span class="p">)</span>
+        <span class="n">verbosity</span><span class="o">=</span><span class="n">SERVER_INFO</span><span class="p">[</span><span class="s">&quot;testlevel&quot;</span><span class="p">],</span>
+        <span class="n">failfast</span><span class="o">=</span><span class="n">SERVER_INFO</span><span class="p">[</span><span class="s">&quot;FAILFAST&quot;</span><span class="p">],</span>
+        <span class="n">catchbreak</span><span class="o">=</span><span class="n">SERVER_INFO</span><span class="p">[</span><span class="s">&quot;CATCHBREAK&quot;</span><span class="p">],</span>
+        <span class="nb">buffer</span><span class="o">=</span><span class="n">SERVER_INFO</span><span class="p">[</span><span class="s">&quot;BUFFER&quot;</span><span class="p">],</span>
+    <span class="p">)</span>
 </pre></div>
 
           </div>
@@ -1611,7 +1711,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Mar 26, 2015.
+      Last updated on Aug 07, 2015.
     </p>
   </div>
 
@@ -1632,7 +1732,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.0.4',
+            VERSION:'2.0.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

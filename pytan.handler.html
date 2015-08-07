@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>2.2. pytan.handler module &mdash; PyTan 1.0.4 documentation</title>
+  <title>2.2. pytan.handler module &mdash; PyTan 2.0.0 documentation</title>
   
 
   
@@ -28,10 +28,10 @@
   
 
   
-    <link rel="top" title="PyTan 1.0.4 documentation" href="index.html"/>
+    <link rel="top" title="PyTan 2.0.0 documentation" href="index.html"/>
         <link rel="up" title="2. pytan package" href="pytan.html"/>
-        <link rel="next" title="2.3. pytan.constants module" href="pytan.constants.html"/>
-        <link rel="prev" title="2.1.15.7. Invalid export basetype bad format" href="examples/invalid_export_basetype_bad_format.html"/> 
+        <link rel="next" title="2.3. pytan.exceptions module" href="pytan.exceptions.html"/>
+        <link rel="prev" title="2.1.16.7. Invalid export basetype bad format" href="examples/invalid_export_basetype_bad_format.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -67,24 +67,26 @@
 <li class="toctree-l2"><a class="reference internal" href="introduction.html#description">1.1. Description</a></li>
 <li class="toctree-l2"><a class="reference internal" href="introduction.html#why-it-was-created">1.2. Why it was created</a></li>
 <li class="toctree-l2"><a class="reference internal" href="introduction.html#requirements">1.3. Requirements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="introduction.html#installation">1.4. Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="introduction.html#usage">1.5. Usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="introduction.html#directory-layout">1.6. Directory Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#tanium-versions-validated-against">1.4. Tanium Versions Validated Against</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#installation">1.5. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#usage">1.6. Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#directory-layout">1.7. Directory Layout</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="pytan.html">2. pytan package</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="examples/pytan_examples.html">2.1. pytan API examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/pytan_examples.html">2.1. PyTan API examples</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">2.2. pytan.handler module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.constants.html">2.3. pytan.constants module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html">2.4. pytan.utils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.unittest.html">2.5. pytan Unit Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.functest.html">2.6. pytan Functional Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.exceptions.html">2.3. pytan.exceptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.sessions.html">2.4. pytan.sessions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.pollers.html">2.5. pytan.pollers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.constants.html">2.6. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html">2.7. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.unittest.html">2.8. pytan Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.functest.html">2.9. pytan Functional Tests</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="taniumpy.html">3. taniumpy package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="taniumpy.session.html">3.1. taniumpy.session module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="taniumpy.question_asker.html">3.2. taniumpy.question_asker module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html">3.3. taniumpy.object_types package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html">3.1. taniumpy.object_types package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="xmltodict.html">4. xmltodict module</a><ul class="simple">
@@ -94,6 +96,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="threaded_http.html">6. threaded_http module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="requests.html">7. requests package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="requests.html#requests-http-library">7.1. requests HTTP library</a></li>
 </ul>
 </li>
 </ul>
@@ -140,7 +146,7 @@
 <h2>2.2.1. Handler Class<a class="headerlink" href="#handler-class" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="pytan.handler.Handler">
-<em class="property">class </em><code class="descclassname">pytan.handler.</code><code class="descname">Handler</code><span class="sig-paren">(</span><em>username</em>, <em>password</em>, <em>host</em>, <em>port='444'</em>, <em>loglevel=0</em>, <em>debugformat=False</em>, <em>get_version=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pytan.handler.</code><code class="descname">Handler</code><span class="sig-paren">(</span><em>username</em>, <em>password</em>, <em>host</em>, <em>port='443'</em>, <em>loglevel=0</em>, <em>debugformat=False</em>, <em>get_version=True</em>, <em>gmt_log=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="http://docs.python.org/2.7/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Creates a connection to a Tanium SOAP Server on host:port</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -162,6 +168,14 @@
 <p><strong>port</strong> : int, optional</p>
 <blockquote>
 <div><p>port of Tanium SOAP Server on <cite>host</cite></p>
+</div></blockquote>
+<p><strong>get_version</strong> : bool, optional</p>
+<blockquote>
+<div><p>get the version of the server from Tanium after authenticating, default to True</p>
+</div></blockquote>
+<p><strong>gmt_log</strong> : bool, optional</p>
+<blockquote>
+<div><p>True use GMT timezone for log output, False use local time for log output</p>
 </div></blockquote>
 <p><strong>loglevel</strong> : int, optional</p>
 <blockquote>
@@ -188,9 +202,10 @@
 </div>
 <p class="rubric">Notes</p>
 <ul class="simple">
-<li>port 444 is the default SOAP port</li>
-<li>port 443 forwards /soap/ URLs to the SOAP port</li>
-<li>Use port 444 if you have direct access to it</li>
+<li>for 6.2: port 444 is the default SOAP port, port 443 forwards /soap/ URLs to the SOAP port,
+Use port 444 if you have direct access to it. However, port 444 is the only port that
+exposes the /info page in 6.2</li>
+<li>for 6.5: port 443 is the default SOAP port, there is no port 444</li>
 </ul>
 </dd></dl>
 
@@ -217,9 +232,9 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>qtype</strong> : str</p>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>qtype</strong> : str, optional</p>
 <blockquote>
-<div><p>type of question to ask: saved_question, manual, or manual_human</p>
+<div><p>type of question to ask: saved, manual, or _manual, defaults to manual</p>
 </div></blockquote>
 </td>
 </tr>
@@ -248,134 +263,18 @@
 <h4>2.2.1.2.2. Ask a Saved Question<a class="headerlink" href="#ask-a-saved-question" title="Permalink to this headline">¶</a></h4>
 <dl class="method">
 <dt id="pytan.handler.Handler.ask_saved">
-<code class="descclassname">Handler.</code><code class="descname">ask_saved</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.ask_saved"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.ask_saved" title="Permalink to this definition">¶</a></dt>
-<dd><p>Ask a saved question and get the results back</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>id</strong> : int, list of int, optional</p>
-<blockquote>
-<div><p>id of saved question to ask</p>
-</div></blockquote>
-<p><strong>name</strong> : str, list of str</p>
-<blockquote>
-<div><p>name of saved question</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>ret</strong> : dict, containing</p>
-<blockquote class="last">
-<div><ul class="simple">
-<li><cite>question_object</cite> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.saved_question.SavedQuestion" title="taniumpy.object_types.saved_question.SavedQuestion"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.saved_question.SavedQuestion</span></code></a></li>
-<li><cite>question_results</cite> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.result_set.ResultSet" title="taniumpy.object_types.result_set.ResultSet"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.result_set.ResultSet</span></code></a></li>
-</ul>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<dl class="last docutils">
-<dt><a class="reference internal" href="pytan.constants.html#pytan.constants.ASK_KWARGS" title="pytan.constants.ASK_KWARGS"><code class="xref py py-data docutils literal"><span class="pre">pytan.constants.ASK_KWARGS</span></code></a></dt>
-<dd>list of kwargs that can be passed to <a class="reference internal" href="taniumpy.question_asker.html#taniumpy.question_asker.QuestionAsker" title="taniumpy.question_asker.QuestionAsker"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.question_asker.QuestionAsker</span></code></a></dd>
-</dl>
-</div>
-<p class="rubric">Notes</p>
-<p>id or name must be supplied</p>
-</dd></dl>
+<code class="descclassname">Handler.</code><code class="descname">ask_saved</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pytan.handler.Handler.ask_saved" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 <div class="section" id="asking-a-manual-question">
 <h4>2.2.1.2.3. Asking a Manual Question<a class="headerlink" href="#asking-a-manual-question" title="Permalink to this headline">¶</a></h4>
 <dl class="method">
 <dt id="pytan.handler.Handler.ask_manual">
-<code class="descclassname">Handler.</code><code class="descname">ask_manual</code><span class="sig-paren">(</span><em>get_results=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.ask_manual"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.ask_manual" title="Permalink to this definition">¶</a></dt>
-<dd><p>Ask a manual question using definitions and get the results back</p>
-<p>This method requires in-depth knowledge of how filters and options are created in the API,
-and as such is not meant for human consumption. Use <a class="reference internal" href="#pytan.handler.Handler.ask_manual_human" title="pytan.handler.Handler.ask_manual_human"><code class="xref py py-func docutils literal"><span class="pre">ask_manual_human()</span></code></a> instead.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>sensor_defs</strong> : str, dict, list of str or dict</p>
-<blockquote>
-<div><p>sensor definitions</p>
-</div></blockquote>
-<p><strong>question_filter_defs</strong> : dict, list of dict, optional</p>
-<blockquote>
-<div><p>question filter definitions</p>
-</div></blockquote>
-<p><strong>question_option_defs</strong> : dict, list of dict, optional</p>
-<blockquote>
-<div><p>question option definitions</p>
-</div></blockquote>
-<p><strong>get_results</strong> : bool, optional</p>
-<blockquote>
-<div><ul class="simple">
-<li>True: wait for result completion after asking question</li>
-<li>False: just ask the question and return it in <cite>ret</cite></li>
-</ul>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>ret</strong> : dict, containing:</p>
-<blockquote class="last">
-<div><ul class="simple">
-<li><cite>question_object</cite> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.question.Question" title="taniumpy.object_types.question.Question"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.question.Question</span></code></a></li>
-<li><cite>question_results</cite> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.result_set.ResultSet" title="taniumpy.object_types.result_set.ResultSet"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.result_set.ResultSet</span></code></a></li>
-</ul>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<dl class="last docutils">
-<dt><a class="reference internal" href="pytan.constants.html#pytan.constants.FILTER_MAPS" title="pytan.constants.FILTER_MAPS"><code class="xref py py-data docutils literal"><span class="pre">pytan.constants.FILTER_MAPS</span></code></a></dt>
-<dd>valid filter dictionaries for filters</dd>
-<dt><a class="reference internal" href="pytan.constants.html#pytan.constants.OPTION_MAPS" title="pytan.constants.OPTION_MAPS"><code class="xref py py-data docutils literal"><span class="pre">pytan.constants.OPTION_MAPS</span></code></a></dt>
-<dd>valid option dictionaries for options</dd>
-<dt><a class="reference internal" href="pytan.constants.html#pytan.constants.ASK_KWARGS" title="pytan.constants.ASK_KWARGS"><code class="xref py py-data docutils literal"><span class="pre">pytan.constants.ASK_KWARGS</span></code></a></dt>
-<dd>list of kwargs that can be passed to <a class="reference internal" href="taniumpy.question_asker.html#taniumpy.question_asker.QuestionAsker" title="taniumpy.question_asker.QuestionAsker"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.question_asker.QuestionAsker</span></code></a></dd>
-</dl>
-</div>
-<p class="rubric">Examples</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># example of str for sensor_defs</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sensor_defs</span> <span class="o">=</span> <span class="s">&#39;Sensor1&#39;</span>
-</pre></div>
-</div>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># example of dict for sensor_defs</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sensor_defs</span> <span class="o">=</span> <span class="p">{</span>
-<span class="gp">... </span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;Sensor1&#39;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="s">&#39;filter&#39;</span><span class="p">:</span> <span class="p">{</span>
-<span class="gp">... </span>        <span class="s">&#39;operator&#39;</span><span class="p">:</span> <span class="s">&#39;RegexMatch&#39;</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="s">&#39;not_flag&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="s">&#39;.*&#39;</span>
-<span class="gp">... </span>    <span class="p">},</span>
-<span class="gp">... </span>    <span class="s">&#39;params&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;key&#39;</span><span class="p">:</span> <span class="s">&#39;value&#39;</span><span class="p">},</span>
-<span class="gp">... </span>    <span class="s">&#39;options&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;and_flag&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
-<span class="gp">... </span><span class="p">}</span>
-</pre></div>
-</div>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># example of dict for question_filter_defs</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">question_filter_defs</span> <span class="o">=</span> <span class="p">{</span>
-<span class="gp">... </span>    <span class="s">&#39;operator&#39;</span><span class="p">:</span> <span class="s">&#39;RegexMatch&#39;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="s">&#39;not_flag&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="s">&#39;.*&#39;</span>
-<span class="gp">... </span><span class="p">}</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="pytan.handler.Handler.ask_manual_human">
-<code class="descclassname">Handler.</code><code class="descname">ask_manual_human</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.ask_manual_human"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.ask_manual_human" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">Handler.</code><code class="descname">ask_manual</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.ask_manual"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.ask_manual" title="Permalink to this definition">¶</a></dt>
 <dd><p>Ask a manual question using human strings and get the results back</p>
 <p>This method takes a string or list of strings and parses them into
-their corresponding definitions needed by <a class="reference internal" href="#pytan.handler.Handler.ask_manual" title="pytan.handler.Handler.ask_manual"><code class="xref py py-func docutils literal"><span class="pre">ask_manual()</span></code></a></p>
+their corresponding definitions needed by <a class="reference internal" href="#pytan.handler.Handler._ask_manual" title="pytan.handler.Handler._ask_manual"><code class="xref py py-func docutils literal"><span class="pre">_ask_manual()</span></code></a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -440,8 +339,6 @@ their corresponding definitions needed by <a class="reference internal" href="#p
 <dd>valid filter dictionaries for filters</dd>
 <dt><a class="reference internal" href="pytan.constants.html#pytan.constants.OPTION_MAPS" title="pytan.constants.OPTION_MAPS"><code class="xref py py-data docutils literal"><span class="pre">pytan.constants.OPTION_MAPS</span></code></a></dt>
 <dd>valid option dictionaries for options</dd>
-<dt><a class="reference internal" href="pytan.constants.html#pytan.constants.ASK_KWARGS" title="pytan.constants.ASK_KWARGS"><code class="xref py py-data docutils literal"><span class="pre">pytan.constants.ASK_KWARGS</span></code></a></dt>
-<dd>list of kwargs that can be passed to <a class="reference internal" href="taniumpy.question_asker.html#taniumpy.question_asker.QuestionAsker" title="taniumpy.question_asker.QuestionAsker"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.question_asker.QuestionAsker</span></code></a></dd>
 </dl>
 </div>
 <p class="rubric">Examples</p>
@@ -479,101 +376,10 @@ their corresponding definitions needed by <a class="reference internal" href="#p
 <h4>2.2.1.2.4. Deploy an Action<a class="headerlink" href="#deploy-an-action" title="Permalink to this headline">¶</a></h4>
 <dl class="method">
 <dt id="pytan.handler.Handler.deploy_action">
-<code class="descclassname">Handler.</code><code class="descname">deploy_action</code><span class="sig-paren">(</span><em>run=False</em>, <em>get_results=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.deploy_action"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.deploy_action" title="Permalink to this definition">¶</a></dt>
-<dd><p>Deploy an action and get the results back</p>
-<p>This method requires in-depth knowledge of how filters and options are created in the API, and as such is not meant for human consumption. Use <a class="reference internal" href="#pytan.handler.Handler.deploy_action_human" title="pytan.handler.Handler.deploy_action_human"><code class="xref py py-func docutils literal"><span class="pre">deploy_action_human()</span></code></a> instead.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>package_def</strong> : dict</p>
-<blockquote>
-<div><p>definition that describes a package</p>
-</div></blockquote>
-<p><strong>action_filter_defs</strong> : str, dict, list of str or dict, optional</p>
-<blockquote>
-<div><p>action filter definitions</p>
-</div></blockquote>
-<p><strong>action_option_defs</strong> : dict, list of dict, optional</p>
-<blockquote>
-<div><p>action filter option definitions</p>
-</div></blockquote>
-<p><strong>start_seconds_from_now</strong> : int, optional</p>
-<blockquote>
-<div><p>start action N seconds from now</p>
-</div></blockquote>
-<p><strong>expire_seconds</strong> : int, optional</p>
-<blockquote>
-<div><p>expire action N seconds from now, will be derived from package if not supplied</p>
-</div></blockquote>
-<p><strong>run</strong> : bool, optional</p>
-<blockquote>
-<div><ul class="simple">
-<li>False: just ask the question that pertains to verify action, export the results to CSV, and raise RunFalse &#8211; does not deploy the action</li>
-<li>True: actually deploy the action</li>
-</ul>
-</div></blockquote>
-<p><strong>get_results</strong> : bool, optional</p>
-<blockquote>
-<div><ul class="simple">
-<li>True: wait for result completion after deploying action</li>
-<li>False: just deploy the action and return the object in <cite>ret</cite></li>
-</ul>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>ret</strong> : dict, containing:</p>
-<blockquote class="last">
-<div><ul class="simple">
-<li><cite>action_object</cite> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.action.Action" title="taniumpy.object_types.action.Action"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.action.Action</span></code></a></li>
-<li><cite>action_results</cite> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.result_set.ResultSet" title="taniumpy.object_types.result_set.ResultSet"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.result_set.ResultSet</span></code></a></li>
-<li><cite>action_progress_human</cite> : str, progress map in human form</li>
-<li><cite>action_progress_map</cite> : dict, progress map in dictionary form</li>
-<li><cite>pre_action_question_results</cite> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.result_set.ResultSet" title="taniumpy.object_types.result_set.ResultSet"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.result_set.ResultSet</span></code></a></li>
-</ul>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<dl class="last docutils">
-<dt><a class="reference internal" href="pytan.constants.html#pytan.constants.FILTER_MAPS" title="pytan.constants.FILTER_MAPS"><code class="xref py py-data docutils literal"><span class="pre">pytan.constants.FILTER_MAPS</span></code></a></dt>
-<dd>valid filter dictionaries for filters</dd>
-<dt><a class="reference internal" href="pytan.constants.html#pytan.constants.OPTION_MAPS" title="pytan.constants.OPTION_MAPS"><code class="xref py py-data docutils literal"><span class="pre">pytan.constants.OPTION_MAPS</span></code></a></dt>
-<dd>valid option dictionaries for options</dd>
-</dl>
-</div>
-<p class="rubric">Examples</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># example of dict for `package_def`</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">package_def</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;PackageName1&#39;</span><span class="p">,</span> <span class="s">&#39;params&#39;</span><span class="p">:{</span><span class="s">&#39;param1&#39;</span><span class="p">:</span> <span class="s">&#39;value1&#39;</span><span class="p">}}</span>
-</pre></div>
-</div>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># example of str for `action_filter_defs`</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">action_filter_defs</span> <span class="o">=</span> <span class="s">&#39;Sensor1&#39;</span>
-</pre></div>
-</div>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># example of dict for `action_filter_defs`</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">action_filter_defs</span> <span class="o">=</span> <span class="p">{</span>
-<span class="gp">... </span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;Sensor1&#39;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="s">&#39;filter&#39;</span><span class="p">:</span> <span class="p">{</span>
-<span class="gp">... </span>        <span class="s">&#39;operator&#39;</span><span class="p">:</span> <span class="s">&#39;RegexMatch&#39;</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="s">&#39;not_flag&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="s">&#39;.*&#39;</span>
-<span class="gp">... </span>    <span class="p">},</span>
-<span class="gp">... </span>    <span class="s">&#39;options&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;and_flag&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
-<span class="gp">... </span><span class="p">}</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="pytan.handler.Handler.deploy_action_human">
-<code class="descclassname">Handler.</code><code class="descname">deploy_action_human</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.deploy_action_human"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.deploy_action_human" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">Handler.</code><code class="descname">deploy_action</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.deploy_action"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.deploy_action" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deploy an action and get the results back</p>
 <p>This method takes a string or list of strings and parses them into
-their corresponding definitions needed by <a class="reference internal" href="#pytan.handler.Handler.deploy_action" title="pytan.handler.Handler.deploy_action"><code class="xref py py-func docutils literal"><span class="pre">deploy_action()</span></code></a></p>
+their corresponding definitions needed by <a class="reference internal" href="#pytan.handler.Handler._deploy_action" title="pytan.handler.Handler._deploy_action"><code class="xref py py-func docutils literal"><span class="pre">_deploy_action()</span></code></a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -601,7 +407,7 @@ their corresponding definitions needed by <a class="reference internal" href="#p
 <p><strong>run</strong> : bool, optional</p>
 <blockquote>
 <div><ul class="simple">
-<li>False: just ask the question that pertains to verify action, export the results to CSV, and raise RunFalse &#8211; does not deploy the action</li>
+<li>False: just ask the question that pertains to verify action, export the results to CSV, and raise pytan.exceptions.RunFalse &#8211; does not deploy the action</li>
 <li>True: actually deploy the action</li>
 </ul>
 </div></blockquote>
@@ -677,46 +483,6 @@ their corresponding definitions needed by <a class="reference internal" href="#p
 </div>
 </dd></dl>
 
-<dl class="method">
-<dt id="pytan.handler.Handler.deploy_action_asker">
-<code class="descclassname">Handler.</code><code class="descname">deploy_action_asker</code><span class="sig-paren">(</span><em>action_id</em>, <em>passed_count=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.deploy_action_asker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.deploy_action_asker" title="Permalink to this definition">¶</a></dt>
-<dd><p>Checks the results of a deploy action job and waits for completion</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>action_id</strong> : int</p>
-<blockquote>
-<div><p>id of deploy action to get results for and wait on completion</p>
-</div></blockquote>
-<p><strong>passed_count</strong> : int, optional</p>
-<blockquote>
-<div><p>the number of servers that must equate &#8220;completed&#8221; in order for deploy action to be recognized as completed</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>ret</strong> : dict, containing:</p>
-<blockquote class="last">
-<div><ul class="simple">
-<li><cite>action_object</cite> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.action.Action" title="taniumpy.object_types.action.Action"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.action.Action</span></code></a></li>
-<li><cite>action_results</cite> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.result_set.ResultSet" title="taniumpy.object_types.result_set.ResultSet"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.result_set.ResultSet</span></code></a></li>
-<li><cite>action_progress_human</cite> : str, progress map in human form</li>
-<li><cite>action_progress_map</cite> : dict, progress map in dictionary form</li>
-</ul>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<dl class="last docutils">
-<dt><a class="reference internal" href="pytan.constants.html#pytan.constants.ACTION_RESULT_STATUS" title="pytan.constants.ACTION_RESULT_STATUS"><code class="xref py py-data docutils literal"><span class="pre">pytan.constants.ACTION_RESULT_STATUS</span></code></a></dt>
-<dd>maps the values in <em>Action Statuses</em> columns to success/completed/failed/etc</dd>
-</dl>
-</div>
-</dd></dl>
-
 </div>
 <div class="section" id="stopping-an-action">
 <h4>2.2.1.2.5. Stopping an Action<a class="headerlink" href="#stopping-an-action" title="Permalink to this headline">¶</a></h4>
@@ -787,125 +553,19 @@ their corresponding definitions needed by <a class="reference internal" href="#p
 </dd></dl>
 
 </div>
-<div class="section" id="load-a-python-object-from-json">
-<h4>2.2.1.3.2. Load a Python Object from JSON<a class="headerlink" href="#load-a-python-object-from-json" title="Permalink to this headline">¶</a></h4>
-<dl class="method">
-<dt id="pytan.handler.Handler.load_taniumpy_from_json">
-<code class="descclassname">Handler.</code><code class="descname">load_taniumpy_from_json</code><span class="sig-paren">(</span><em>json_file</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.load_taniumpy_from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.load_taniumpy_from_json" title="Permalink to this definition">¶</a></dt>
-<dd><p>Opens a json file and parses it into an taniumpy object</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>json_file</strong> : str</p>
-<blockquote>
-<div><p>path to JSON file that describes an API object</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a></p>
-<blockquote class="last">
-<div><p>TaniumPy object converted from json file</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</div>
 <div class="section" id="export-object">
-<h4>2.2.1.3.3. Export Object<a class="headerlink" href="#export-object" title="Permalink to this headline">¶</a></h4>
+<h4>2.2.1.3.2. Export Object<a class="headerlink" href="#export-object" title="Permalink to this headline">¶</a></h4>
 <dl class="method">
 <dt id="pytan.handler.Handler.export_obj">
-<code class="descclassname">Handler.</code><code class="descname">export_obj</code><span class="sig-paren">(</span><em>obj</em>, <em>export_format</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.export_obj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.export_obj" title="Permalink to this definition">¶</a></dt>
-<dd><p>Exports a python API object to a given export format</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a> or <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.result_set.ResultSet" title="taniumpy.object_types.result_set.ResultSet"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.result_set.ResultSet</span></code></a></p>
-<blockquote>
-<div><p>TaniumPy object to export</p>
-</div></blockquote>
-<p><strong>export_format</strong> : str</p>
-<blockquote>
-<div><p>the number of servers that must equate &#8220;completed&#8221; in order for deploy action to be recognized as completed</p>
-</div></blockquote>
-<p><strong>header_sort</strong> : list of str, bool, optional</p>
-<blockquote>
-<div><ul class="simple">
-<li>for <cite>export_format</cite> csv and <cite>obj</cite> types <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a> or <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.result_set.ResultSet" title="taniumpy.object_types.result_set.ResultSet"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.result_set.ResultSet</span></code></a></li>
-<li>True: sort the headers automatically</li>
-<li>False: do not sort the headers at all</li>
-<li>list of str: sort the headers returned by priority based on provided list</li>
-</ul>
-</div></blockquote>
-<p><strong>header_add_sensor</strong> : bool, optional</p>
-<blockquote>
-<div><ul class="simple">
-<li>for <cite>export_format</cite> csv and <cite>obj</cite> type <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.result_set.ResultSet" title="taniumpy.object_types.result_set.ResultSet"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.result_set.ResultSet</span></code></a></li>
-<li>False: do not prefix the headers with the associated sensor name for each column</li>
-<li>True: prefix the headers with the associated sensor name for each column</li>
-</ul>
-</div></blockquote>
-<p><strong>header_add_type</strong> : bool, optional</p>
-<blockquote>
-<div><ul class="simple">
-<li>for <cite>export_format</cite> csv and <cite>obj</cite> type <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.result_set.ResultSet" title="taniumpy.object_types.result_set.ResultSet"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.result_set.ResultSet</span></code></a></li>
-<li>False: do not postfix the headers with the result type for each column</li>
-<li>True: postfix the headers with the result type for each column</li>
-</ul>
-</div></blockquote>
-<p><strong>expand_grouped_columns</strong> : bool, optional</p>
-<blockquote>
-<div><ul class="simple">
-<li>for <cite>export_format</cite> csv and <cite>obj</cite> type <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.result_set.ResultSet" title="taniumpy.object_types.result_set.ResultSet"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.result_set.ResultSet</span></code></a></li>
-<li>False: do not expand multiline row entries into their own rows</li>
-<li>True: expand multiline row entries into their own rows</li>
-</ul>
-</div></blockquote>
-<p><strong>explode_json_string_values</strong> : bool, optional</p>
-<blockquote>
-<div><ul class="simple">
-<li>for <cite>export_format</cite> json or csv and <cite>obj</cite> type <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a></li>
-<li>False: do not explode JSON strings in object attributes into their own object attributes</li>
-<li>True: explode JSON strings in object attributes into their own object attributes</li>
-</ul>
-</div></blockquote>
-<p><strong>minimal</strong> : bool, optional</p>
-<blockquote>
-<div><ul class="simple">
-<li>for <cite>export_format</cite> xml and <cite>obj</cite> type <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a></li>
-<li>False: include empty attributes in XML output</li>
-<li>True: do not include empty attributes in XML output</li>
-</ul>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>result</strong> : str</p>
-<blockquote class="last">
-<div><p>the contents of exporting <cite>export_format</cite></p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<dl class="last docutils">
-<dt><a class="reference internal" href="pytan.constants.html#pytan.constants.EXPORT_MAPS" title="pytan.constants.EXPORT_MAPS"><code class="xref py py-data docutils literal"><span class="pre">pytan.constants.EXPORT_MAPS</span></code></a></dt>
-<dd>maps the type <cite>obj</cite> to <cite>export_format</cite> and the optional args supported for each</dd>
-</dl>
-</div>
-</dd></dl>
+<code class="descclassname">Handler.</code><code class="descname">export_obj</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pytan.handler.Handler.export_obj" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 <div class="section" id="export-object-to-report-file">
-<h4>2.2.1.3.4. Export Object to Report File<a class="headerlink" href="#export-object-to-report-file" title="Permalink to this headline">¶</a></h4>
+<h4>2.2.1.3.3. Export Object to Report File<a class="headerlink" href="#export-object-to-report-file" title="Permalink to this headline">¶</a></h4>
 <dl class="method">
 <dt id="pytan.handler.Handler.export_to_report_file">
-<code class="descclassname">Handler.</code><code class="descname">export_to_report_file</code><span class="sig-paren">(</span><em>obj</em>, <em>export_format</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.export_to_report_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.export_to_report_file" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">Handler.</code><code class="descname">export_to_report_file</code><span class="sig-paren">(</span><em>obj</em>, <em>export_format='csv'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.export_to_report_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.export_to_report_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Exports a python API object to a file</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1173,7 +833,7 @@ their corresponding definitions needed by <a class="reference internal" href="#p
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><strong>HandlerError</strong> : <a class="reference internal" href="pytan.utils.html#pytan.utils.HandlerError" title="pytan.utils.HandlerError"><code class="xref py py-exc docutils literal"><span class="pre">pytan.utils.HandlerError</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><strong>pytan.exceptions.HandlerError</strong> : <code class="xref py py-exc docutils literal"><span class="pre">pytan.utils.pytan.exceptions.HandlerError</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -1274,6 +934,14 @@ Use <a class="reference internal" href="#pytan.handler.Handler.create_from_json"
 </dd></dl>
 
 </div>
+<div class="section" id="create-a-dashboard">
+<h4>2.2.1.4.6. Create a Dashboard<a class="headerlink" href="#create-a-dashboard" title="Permalink to this headline">¶</a></h4>
+<dl class="method">
+<dt id="pytan.handler.Handler.create_dashboard">
+<code class="descclassname">Handler.</code><code class="descname">create_dashboard</code><span class="sig-paren">(</span><em>name</em>, <em>text=''</em>, <em>group=''</em>, <em>public_flag=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.create_dashboard"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.create_dashboard" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
 </div>
 <hr class="docutils" />
 <div class="section" id="handler-methods-deleting-objects">
@@ -1316,6 +984,14 @@ Use <a class="reference internal" href="#pytan.handler.Handler.create_from_json"
 </dd></dl>
 
 </div>
+<div class="section" id="delete-a-dashboard">
+<h4>2.2.1.5.2. Delete a Dashboard<a class="headerlink" href="#delete-a-dashboard" title="Permalink to this headline">¶</a></h4>
+<dl class="method">
+<dt id="pytan.handler.Handler.delete_dashboard">
+<code class="descclassname">Handler.</code><code class="descname">delete_dashboard</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.delete_dashboard"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.delete_dashboard" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
 </div>
 <hr class="docutils" />
 <div class="section" id="handler-methods-getting-objects">
@@ -1324,161 +1000,71 @@ Use <a class="reference internal" href="#pytan.handler.Handler.create_from_json"
 <h4>2.2.1.6.1. Get Single or Multiple Objects of a type<a class="headerlink" href="#get-single-or-multiple-objects-of-a-type" title="Permalink to this headline">¶</a></h4>
 <dl class="method">
 <dt id="pytan.handler.Handler.get">
-<code class="descclassname">Handler.</code><code class="descname">get</code><span class="sig-paren">(</span><em>objtype</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.get" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get an object type</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>objtype</strong> : string</p>
-<blockquote>
-<div><p>type of object to get</p>
-</div></blockquote>
-<p><strong>id/name/hash</strong> : int or string, list of int or string</p>
-<blockquote class="last">
-<div><p>search attributes of object to get, must supply at least one valid search attr</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<dl class="last docutils">
-<dt><a class="reference internal" href="pytan.constants.html#pytan.constants.GET_OBJ_MAP" title="pytan.constants.GET_OBJ_MAP"><code class="xref py py-data docutils literal"><span class="pre">pytan.constants.GET_OBJ_MAP</span></code></a></dt>
-<dd>maps objtype to supported &#8216;search&#8217; keys</dd>
-</dl>
-</div>
-</dd></dl>
+<code class="descclassname">Handler.</code><code class="descname">get</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pytan.handler.Handler.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 <div class="section" id="get-all-objects-of-a-type">
 <h4>2.2.1.6.2. Get All Objects of a type<a class="headerlink" href="#get-all-objects-of-a-type" title="Permalink to this headline">¶</a></h4>
 <dl class="method">
 <dt id="pytan.handler.Handler.get_all">
-<code class="descclassname">Handler.</code><code class="descname">get_all</code><span class="sig-paren">(</span><em>objtype</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.get_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.get_all" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get all objects of a type</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>objtype</strong> : string</p>
-<blockquote class="last">
-<div><p>type of object to get</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<dl class="last docutils">
-<dt><a class="reference internal" href="pytan.constants.html#pytan.constants.GET_OBJ_MAP" title="pytan.constants.GET_OBJ_MAP"><code class="xref py py-data docutils literal"><span class="pre">pytan.constants.GET_OBJ_MAP</span></code></a></dt>
-<dd>maps objtype to supported &#8216;search&#8217; keys</dd>
-</dl>
+<code class="descclassname">Handler.</code><code class="descname">get_all</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pytan.handler.Handler.get_all" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
-</dd></dl>
+<div class="section" id="get-dashboards">
+<h4>2.2.1.6.3. Get Dashboards<a class="headerlink" href="#get-dashboards" title="Permalink to this headline">¶</a></h4>
+<dl class="method">
+<dt id="pytan.handler.Handler.get_dashboards">
+<code class="descclassname">Handler.</code><code class="descname">get_dashboards</code><span class="sig-paren">(</span><em>name=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.get_dashboards"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.get_dashboards" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 </div>
+<hr class="docutils" />
 <div class="section" id="handler-methods-getting-result-data-result-info">
 <h3>2.2.1.7. Handler Methods: Getting Result Data / Result Info<a class="headerlink" href="#handler-methods-getting-result-data-result-info" title="Permalink to this headline">¶</a></h3>
 <dl class="method">
 <dt id="pytan.handler.Handler.get_result_data">
-<code class="descclassname">Handler.</code><code class="descname">get_result_data</code><span class="sig-paren">(</span><em>obj</em>, <em>aggregate=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.get_result_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.get_result_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the result data for a python API object</p>
-<p>This method issues a GetResultData command to the SOAP api for <cite>obj</cite>. GetResultData returns the columns and rows that are currently available for <cite>obj</cite>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a></p>
-<blockquote>
-<div><p>object to get result data for</p>
-</div></blockquote>
-<p><strong>aggregate</strong> : bool, optional</p>
-<blockquote>
-<div><ul class="simple">
-<li>False: get all the data</li>
-<li>True: get just the aggregate data (row counts of matches)</li>
-</ul>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>rd</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.result_set.ResultSet" title="taniumpy.object_types.result_set.ResultSet"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.result_set.ResultSet</span></code></a></p>
-<blockquote class="last">
-<div><p>The return of GetResultData for <cite>obj</cite></p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
+<code class="descclassname">Handler.</code><code class="descname">get_result_data</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pytan.handler.Handler.get_result_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
 <dt id="pytan.handler.Handler.get_result_info">
-<code class="descclassname">Handler.</code><code class="descname">get_result_info</code><span class="sig-paren">(</span><em>obj</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.get_result_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.get_result_info" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the result info for a python API object</p>
-<p>This method issues a GetResultInfo command to the SOAP api for <cite>obj</cite>. GetResultInfo returns information about how many servers have passed the <cite>obj</cite>, total number of servers, and so on.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a></p>
-<blockquote>
-<div><p>object to get result data for</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>ri</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.result_info.ResultInfo" title="taniumpy.object_types.result_info.ResultInfo"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.result_info.ResultInfo</span></code></a></p>
-<blockquote class="last">
-<div><p>The return of GetResultData for <cite>obj</cite></p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
+<code class="descclassname">Handler.</code><code class="descname">get_result_info</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pytan.handler.Handler.get_result_info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 <hr class="docutils" />
+<div class="section" id="handler-methods-plugins">
+<h3>2.2.1.8. Handler Methods: Plugins<a class="headerlink" href="#handler-methods-plugins" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="pytan.handler.Handler.run_plugin">
+<code class="descclassname">Handler.</code><code class="descname">run_plugin</code><span class="sig-paren">(</span><em>plugin</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.run_plugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.run_plugin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
 <div class="section" id="handler-methods-private-methods">
-<h3>2.2.1.8. Handler Methods: Private Methods<a class="headerlink" href="#handler-methods-private-methods" title="Permalink to this headline">¶</a></h3>
+<h3>2.2.1.9. Handler Methods: Private Methods<a class="headerlink" href="#handler-methods-private-methods" title="Permalink to this headline">¶</a></h3>
 <dl class="method">
-<dt id="pytan.handler.Handler._find">
-<code class="descclassname">Handler.</code><code class="descname">_find</code><span class="sig-paren">(</span><em>api_object</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler._find"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler._find" title="Permalink to this definition">¶</a></dt>
-<dd><p>Wrapper for interfacing with <a class="reference internal" href="taniumpy.session.html#taniumpy.session.Session.find" title="taniumpy.session.Session.find"><code class="xref py py-func docutils literal"><span class="pre">taniumpy.session.Session.find()</span></code></a></p>
-</dd></dl>
+<dt id="pytan.handler.Handler._add">
+<code class="descclassname">Handler.</code><code class="descname">_add</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pytan.handler.Handler._add" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
-<dt id="pytan.handler.Handler._get_multi">
-<code class="descclassname">Handler.</code><code class="descname">_get_multi</code><span class="sig-paren">(</span><em>obj_map</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler._get_multi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler._get_multi" title="Permalink to this definition">¶</a></dt>
-<dd><p>Find multiple item wrapper using <a class="reference internal" href="#pytan.handler.Handler._find" title="pytan.handler.Handler._find"><code class="xref py py-func docutils literal"><span class="pre">_find()</span></code></a></p>
-</dd></dl>
+<dt id="pytan.handler.Handler._ask_manual">
+<code class="descclassname">Handler.</code><code class="descname">_ask_manual</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pytan.handler.Handler._ask_manual" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
-<dt id="pytan.handler.Handler._get_single">
-<code class="descclassname">Handler.</code><code class="descname">_get_single</code><span class="sig-paren">(</span><em>obj_map</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler._get_single"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler._get_single" title="Permalink to this definition">¶</a></dt>
-<dd><p>Find single item wrapper using <a class="reference internal" href="#pytan.handler.Handler._find" title="pytan.handler.Handler._find"><code class="xref py py-func docutils literal"><span class="pre">_find()</span></code></a></p>
-</dd></dl>
+<dt id="pytan.handler.Handler._deploy_action">
+<code class="descclassname">Handler.</code><code class="descname">_deploy_action</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pytan.handler.Handler._deploy_action" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
-<dt id="pytan.handler.Handler._single_find">
-<code class="descclassname">Handler.</code><code class="descname">_single_find</code><span class="sig-paren">(</span><em>obj_map</em>, <em>k</em>, <em>v</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler._single_find"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler._single_find" title="Permalink to this definition">¶</a></dt>
-<dd><p>Wrapper for single item searches interfacing with <a class="reference internal" href="taniumpy.session.html#taniumpy.session.Session.find" title="taniumpy.session.Session.find"><code class="xref py py-func docutils literal"><span class="pre">taniumpy.session.Session.find()</span></code></a></p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pytan.handler.Handler._get_sensor_defs">
-<code class="descclassname">Handler.</code><code class="descname">_get_sensor_defs</code><span class="sig-paren">(</span><em>defs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler._get_sensor_defs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler._get_sensor_defs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Uses <a class="reference internal" href="#pytan.handler.Handler.get" title="pytan.handler.Handler.get"><code class="xref py py-func docutils literal"><span class="pre">get()</span></code></a> to update a definition with a sensor object</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pytan.handler.Handler._get_package_def">
-<code class="descclassname">Handler.</code><code class="descname">_get_package_def</code><span class="sig-paren">(</span><em>d</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler._get_package_def"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler._get_package_def" title="Permalink to this definition">¶</a></dt>
-<dd><p>Uses <a class="reference internal" href="#pytan.handler.Handler.get" title="pytan.handler.Handler.get"><code class="xref py py-func docutils literal"><span class="pre">get()</span></code></a> to update a definition with a package object</p>
-</dd></dl>
+<dt id="pytan.handler.Handler._derive_server_version">
+<code class="descclassname">Handler.</code><code class="descname">_derive_server_version</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler._derive_server_version"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler._derive_server_version" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
 <dt id="pytan.handler.Handler._export_class_BaseType">
@@ -1510,6 +1096,41 @@ Use <a class="reference internal" href="#pytan.handler.Handler.create_from_json"
 <dd><p>Handles exporting format: XML</p>
 </dd></dl>
 
+<dl class="method">
+<dt id="pytan.handler.Handler._find">
+<code class="descclassname">Handler.</code><code class="descname">_find</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pytan.handler.Handler._find" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pytan.handler.Handler._get_multi">
+<code class="descclassname">Handler.</code><code class="descname">_get_multi</code><span class="sig-paren">(</span><em>obj_map</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler._get_multi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler._get_multi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find multiple item wrapper using <a class="reference internal" href="#pytan.handler.Handler._find" title="pytan.handler.Handler._find"><code class="xref py py-func docutils literal"><span class="pre">_find()</span></code></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.handler.Handler._get_package_def">
+<code class="descclassname">Handler.</code><code class="descname">_get_package_def</code><span class="sig-paren">(</span><em>d</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler._get_package_def"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler._get_package_def" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses <a class="reference internal" href="#pytan.handler.Handler.get" title="pytan.handler.Handler.get"><code class="xref py py-func docutils literal"><span class="pre">get()</span></code></a> to update a definition with a package object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.handler.Handler._get_sensor_defs">
+<code class="descclassname">Handler.</code><code class="descname">_get_sensor_defs</code><span class="sig-paren">(</span><em>defs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler._get_sensor_defs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler._get_sensor_defs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses <a class="reference internal" href="#pytan.handler.Handler.get" title="pytan.handler.Handler.get"><code class="xref py py-func docutils literal"><span class="pre">get()</span></code></a> to update a definition with a sensor object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.handler.Handler._get_single">
+<code class="descclassname">Handler.</code><code class="descname">_get_single</code><span class="sig-paren">(</span><em>obj_map</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler._get_single"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler._get_single" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find single item wrapper using <a class="reference internal" href="#pytan.handler.Handler._find" title="pytan.handler.Handler._find"><code class="xref py py-func docutils literal"><span class="pre">_find()</span></code></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.handler.Handler._single_find">
+<code class="descclassname">Handler.</code><code class="descname">_single_find</code><span class="sig-paren">(</span><em>obj_map</em>, <em>k</em>, <em>v</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler._single_find"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler._single_find" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper for single item searches interfacing with <code class="xref py py-func docutils literal"><span class="pre">taniumpy.session.Session.find()</span></code></p>
+</dd></dl>
+
 <div class="toctree-wrapper compound">
 <ul class="simple">
 </ul>
@@ -1524,10 +1145,10 @@ Use <a class="reference internal" href="#pytan.handler.Handler.create_from_json"
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="pytan.constants.html" class="btn btn-neutral float-right" title="2.3. pytan.constants module">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="pytan.exceptions.html" class="btn btn-neutral float-right" title="2.3. pytan.exceptions module">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="examples/invalid_export_basetype_bad_format.html" class="btn btn-neutral" title="2.1.15.7. Invalid export basetype bad format"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="examples/invalid_export_basetype_bad_format.html" class="btn btn-neutral" title="2.1.16.7. Invalid export basetype bad format"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -1537,7 +1158,7 @@ Use <a class="reference internal" href="#pytan.handler.Handler.create_from_json"
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Mar 26, 2015.
+      Last updated on Aug 07, 2015.
     </p>
   </div>
 
@@ -1558,7 +1179,7 @@ Use <a class="reference internal" href="#pytan.handler.Handler.create_from_json"
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.0.4',
+            VERSION:'2.0.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

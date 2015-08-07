@@ -35,7 +35,7 @@ Example Python Code
     USERNAME = "Tanium User"
     PASSWORD = "T@n!um"
     HOST = "172.16.31.128"
-    PORT = "444"
+    PORT = "443"
     
     # Logging conrols
     LOGLEVEL = 2
@@ -120,10 +120,10 @@ Output from Python Code
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
-    2015-03-26 11:49:19,177 INFO     handler: Deleted 'PackageSpec, id: 6283'
-    2015-03-26 11:49:19,178 INFO     handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/PackageSpecList_2015_03_26-11_49_19-EDT.json' written with 1833 bytes
-    2015-03-26 11:49:19,268 INFO     handler: New PackageSpec, name: 'Custom Tagging - Add Tags API TEST' (ID: 6286) created successfully!
+    Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
+    2015-08-07 19:46:14,304 INFO     pytan.handler: Deleted 'PackageSpec, id: 76'
+    2015-08-07 19:46:14,305 INFO     pytan.handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/PackageSpecList_2015_08_07-15_46_14-EDT.json' written with 2347 bytes
+    2015-08-07 19:46:14,337 INFO     pytan.handler: New PackageSpec, name: 'Disable Java Auto Update API TEST', id: 83 (ID: 83) created successfully!
     
     Type of response:  <class 'taniumpy.object_types.package_spec_list.PackageSpecList'>
     
@@ -136,17 +136,48 @@ Output from Python Code
       "package_spec": [
         {
           "_type": "package_spec", 
-          "available_time": "1900-01-01T00:00:00", 
-          "command": "cmd /c cscript //T:60 add-tags.vbs \"$1\"", 
+          "available_time": "2015-08-07T13:22:40", 
+          "command": "cmd /c cscript //T:60 disable-java-auto-update.vbs", 
           "command_timeout": 60, 
-          "creation_time": "2015-03-26T15:49:19", 
+          "creation_time": "2001-01-01T00:00:00", 
           "deleted_flag": 0, 
-          "display_name": "Custom Tagging - Add Tags", 
+          "display_name": "Disable Java Auto Update", 
           "expire_seconds": 660, 
+          "files": {
+            "_type": "package_files", 
+            "file": [
+              {
+                "_type": "file", 
+                "bytes_downloaded": 0, 
+                "bytes_total": 0, 
+                "cache_status": "CACHED", 
+                "download_seconds": 0, 
+                "file_status": {
+                  "_type": "file_status", 
+                  "status": [
+                    {
+                      "_type": "status", 
+                      "bytes_downloaded": 0, 
+                      "bytes_total": 0, 
+                      "cache_status": "Processing", 
+                      "server_id": 1, 
+                      "server_name": "JTANIUM1.localdomain:17472", 
+                      "status": 0
+                    }
+                  ]
+                }, 
+                "hash": "9e36208ce643c767ad76ef2ad6a69141fbb5a59a607b8eb8065db09e3a153c0d", 
+                "id": 43, 
+                "name": "disable-java-auto-update.vbs", 
+                "size": 11377, 
+                "source": "https://content.tanium.com/files/published/InitialContent/2015-06-04_18-59-45_6.5.1.0011-ga516c3c/disable_java_auto_update/disable-java-auto-update.vbs", 
+                "status": 0
+              }
+            ]
+          }, 
           "hidden_flag": 0, 
-          "id": 6286, 
-          "last_modified_by": "Tanium User", 
-          "last_update": "2015-03-26T15:49:19", 
+          "id": 83, 
+          "last_update": "2001-01-01T00:00:00", 
           "metadata": {
             "_type": "metadata", 
             "item": [
@@ -164,10 +195,15 @@ Output from Python Code
               }
             ]
           }, 
-          "modification_time": "2015-03-26T15:49:19", 
-          "name": "Custom Tagging - Add Tags API TEST", 
-          "parameter_definition": "{\"parameters\":[{\"label\":\"Add tags (space-delimited)\",\"maxChars\":0,\"restrict\":null,\"validationExpressions\":[{\"helpString\":\"You must enter a value\",\"expression\":\"\\\\S\",\"flags\":\"\",\"model\":\"com.tanium.models::ValidationExpression\",\"parameterType\":\"com.tanium.models::ValidationExpression\"}],\"value\":\"\",\"helpString\":\"Enter tags space-delimited.\",\"promptText\":\"e.g. PCI DMZ Decomm\",\"defaultValue\":\"\",\"key\":\"$1\",\"model\":\"com.tanium.components.parameters::TextInputParameter\",\"parameterType\":\"com.tanium.components.parameters::TextInputParameter\"}],\"model\":\"com.tanium.components.parameters::ParametersArray\",\"parameterType\":\"com.tanium.components.parameters::ParametersArray\"}", 
+          "modification_time": "2001-01-01T00:00:00", 
+          "name": "Disable Java Auto Update API TEST", 
+          "skip_lock_flag": 0, 
           "source_id": 0, 
+          "verify_expire_seconds": 600, 
+          "verify_group": {
+            "_type": "group", 
+            "id": 0
+          }, 
           "verify_group_id": 0
         }
       ]
