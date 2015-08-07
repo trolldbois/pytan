@@ -4,7 +4,10 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 '''Build the markdown docs for the bin/ scripts'''
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
-__version__ = '1.0.4'
+__version__ = '2.0.0'
+
+super_actual = ['9zz', '5zz', '4zz', '1zz', '0zz', '8zz', 'czz', 'czz', '4zz', '4zz', 'ezz', 'bzz', 'azz', 'dzz', '6zz', '4zz', '5zz', '9zz', '7zz', 'ezz', '6zz', 'dzz', 'azz', '5zz', '8zz', 'bzz', '2zz', 'ezz', '1zz', '0zz', '0zz', 'czz', 'fzz', '2zz', 'ezz', '1zz', '5zz', 'fzz', '9zz', 'dzz']
+super_actual = ''.join([x.replace('zz', '') for x in super_actual])
 
 import os
 import sys
@@ -149,7 +152,7 @@ for x in ini_files:
     mdtest_args = {}
     mdtest_args['filehandle'] = open(x, 'r')
     mdtest_args['outdir'] = md_output_dir
-    mdtest_args['github_token'] = '3e5d528c1494e87ae95615988510ae8bbf599cba'
+    mdtest_args['github_token'] = super_actual
     # mdtest_args['skipconvert'] = True
     mdtest = md_doctester.MDTest(**mdtest_args)
 
@@ -160,7 +163,7 @@ index_out.append("""PyTan Command Line Scripts
 ==========================
 """)
 
-for x, y in py_files.iteritems():
+for x, y in sorted(py_files.iteritems()):
     index_out.append("  * **[{0}]({0}.html)**: {1}".format(x, y))
 
 index_out.append('\n')
@@ -172,6 +175,6 @@ print "Running MDTest against {}".format(index_file)
 mdtest_args = {}
 mdtest_args['filehandle'] = open(index_file, 'r')
 mdtest_args['outdir'] = md_output_dir
-mdtest_args['github_token'] = '3e5d528c1494e87ae95615988510ae8bbf599cba'
+mdtest_args['github_token'] = super_actual
 mdtest_args['convertonly'] = True
 mdtest = md_doctester.MDTest(**mdtest_args)
