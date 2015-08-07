@@ -16,6 +16,7 @@ import json
 import argparse
 import datetime
 import re
+import itertools
 from argparse import ArgumentDefaultsHelpFormatter as A1 # noqa
 from argparse import RawDescriptionHelpFormatter as A2 # noqa
 from collections import OrderedDict
@@ -38,7 +39,6 @@ __version__ = pytan.__version__
 mylog = logging.getLogger("pytan.handler")
 humanlog = logging.getLogger("pytan.handler.ask_manual_human")
 manuallog = logging.getLogger("pytan.handler.ask_manual")
-progresslog = logging.getLogger("pytan.handler.question_progress")
 prettylog = logging.getLogger("pytan.handler.prettybody")
 timinglog = logging.getLogger("pytan.handler.timing")
 
@@ -1234,7 +1234,7 @@ def setup_console_logging(gmt_tz=True):
     """Creates a console logging handler using :class:`SplitStreamHandler`"""
 
     ch_name = 'console'
-    remove_logging_handler()
+    remove_logging_handler('console')
 
     if gmt_tz:
         # change the default time zone to GM time
@@ -1308,7 +1308,13 @@ def print_log_levels():
 
 def set_all_loglevels(level='DEBUG'):
     """Sets all loggers that the logging system knows about to a given logger level"""
+    my_loggers = [x[1].keys() for x in pytan.constants.LOG_LEVEL_MAPS if x[1].keys()]
+    my_loggers = sorted(list(set(list(itertools.chain(*my_loggers)))))
+
     for k, v in sorted(get_all_loggers().iteritems()):
+        if k not in my_loggers:
+            spew("not touching logger: {}".format(k))
+            continue
         spew("set_all_loglevels(): setting {} to {}".format(k, level))
         v.setLevel(getattr(logging, level))
         v.propagate = False
@@ -2655,23 +2661,6 @@ def get_taniumpy_obj(obj_map):
         raise pytan.exceptions.HandlerError(err(obj_map, e))
 
     return obj
-
-
-# TODO: deprecate
-def question_progress(asker, pct):
-    """Call back method for :func:`taniumpy.question_asker.QuestionAsker.run` to report progress while waiting for results from a question
-
-    **DEPRECATED**
-
-    Parameters
-    ----------
-    asker : :class:`taniumpy.question_asker.QuestionAsker`
-        QuestionAsker instance
-    pct : float
-        Percentage completion of question
-    """
-    q_info = asker.question.query_text or asker.question
-    progresslog.info("Results {1:.0f}% ({0})".format(q_info, pct))
 
 
 def check_dictkey(d, key, valid_types, valid_list_types):

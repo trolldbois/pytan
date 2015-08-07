@@ -38,6 +38,7 @@ LOG_LEVEL_MAPS = [
     (
         1,
         {
+            'pytan': 'INFO',
             'pytan.handler.QuestionPoller': 'INFO',
             'pytan.handler.QuestionPoller.progress': 'INFO',
             'pytan.handler.ActionPoller': 'INFO',
@@ -48,6 +49,7 @@ LOG_LEVEL_MAPS = [
     (
         2,
         {
+            'pytan': 'DEBUG',
             'pytan.handler': 'INFO',
             'pytan.handler.QuestionPoller': 'DEBUG',
             'pytan.handler.QuestionPoller.progress': 'DEBUG',
@@ -66,60 +68,72 @@ LOG_LEVEL_MAPS = [
     ),
     (
         4,
-        {'pytan.handler.ask_manual': 'DEBUG'},
+        {
+            'pytan.handler.ask_manual': 'DEBUG',
+        },
         'Pytan ask manual logger show output at DEBUG or above',
     ),
     (
         5,
-        {'pytan.handler.ask_manual_human': 'DEBUG'},
+        {
+            'pytan.handler.ask_manual_human': 'DEBUG',
+        },
         'Pytan ask manual human logger show output at DEBUG or above',
     ),
     (
         6,
-        {'pytan.handler.timing': 'DEBUG'},
+        {
+            'pytan.handler.timing': 'DEBUG',
+        },
         'Pytan timing logger show output at DEBUG or above',
     ),
     (
         7,
         {
-            'api.session': 'DEBUG',
-            'pytan.handler.RequestsSession': 'DEBUG',
-            'pytan.handler.HttplibSession': 'DEBUG',
+            'pytan.sessions.Session': 'DEBUG',
         },
         'Taniumpy session loggers show output at DEBUG or above',
     ),
     (
         8,
         {
-            'api.session.auth': 'DEBUG',
-            'pytan.handler.RequestsSession.auth': 'DEBUG',
-            'pytan.handler.HttplibSession.auth': 'DEBUG',
+            'pytan.sessions.Session.auth': 'DEBUG',
         },
-        'Taniumpy session authentication loggers show output at DEBUG or above',
+        'PyTan session authentication loggers show output at DEBUG or above',
     ),
     (
         9,
         {
-            'api.session.http': 'DEBUG',
-            'pytan.handler.RequestsSession.http': 'DEBUG',
-            'pytan.handler.HttplibSession.http': 'DEBUG',
+            'pytan.sessions.Session.http': 'DEBUG',
         },
-        'Taniumpy session http loggers show output at DEBUG or above',
+        'PyTan session http loggers show output at DEBUG or above',
     ),
     (
         10,
-        {'pytan.handler.prettybody': 'DEBUG'},
+        {
+            'pytan.handler.prettybody': 'DEBUG',
+        },
         'Pytan handler pretty XML body loggers show output at DEBUG or above',
     ),
     (
         11,
         {
-            'api.session.http.body': 'DEBUG',
-            'pytan.handler.RequestsSession.body': 'DEBUG',
-            'pytan.handler.HttplibSession.http.body': 'DEBUG',
+            'pytan.sessions.Session.http.body': 'DEBUG',
         },
-        'Taniumpy session http request and response body loggers show output at DEBUG or above',
+        'PyTan session raw XML body loggers show output at DEBUG or above',
     ),
+    (
+        12,
+        {
+            'requests': 'DEBUG',
+            'requests.packages.urllib3': 'DEBUG',
+            'requests.packages.urllib3.connectionpool': 'DEBUG',
+            'requests.packages.urllib3.poolmanager': 'DEBUG',
+            'requests.packages.urllib3.util.retry': 'DEBUG',
+        },
+        'Requests package show logging at DEBUG or above',
+    ),
+
 ]
 """
 Map for loglevel(int) -> logger -> logger level(logging.INFO|WARN|DEBUG|...). Higher loglevels will include all levels up to and including that level. Contains a list of tuples, each tuple consisting of:

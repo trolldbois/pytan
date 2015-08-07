@@ -66,7 +66,6 @@ class Handler(object):
         super(Handler, self).__init__()
 
         self.mylog = logging.getLogger("pytan.handler")
-        self.actionlog = logging.getLogger("pytan.handler.action_progress")
 
         # setup the console logging handler
         pytan.utils.setup_console_logging(gmt_log)
