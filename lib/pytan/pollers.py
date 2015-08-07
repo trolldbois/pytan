@@ -154,7 +154,7 @@ class QuestionPoller(object):
                 m = "{}{!r} is None, even after re-fetching object".format
                 raise pytan.exceptions.PollingError(m(self.id_str, attr))
 
-            m = "{0}{!r} is None even after re-fetching object - using fallback of {}".format
+            m = "{}{!r} is None even after re-fetching object - using fallback of {}".format
             self.qplog.debug(m(self.id_str, attr, fallback))
             val = fallback
 
@@ -633,6 +633,11 @@ class ActionPoller(QuestionPoller):
                 if callbacks.get('SeenProgressChanged'):
                     callbacks['SeenProgressChanged'](self, new_pct)
 
+            # re-fetch object and re-derive stopped flag and status
+            self._refetch_obj()
+            self._derive_stopped_flag()
+            self._derive_status()
+
             # check to see if action is stopped, if it is, return False
             if self.stopped_flag:
                 m = "{}Actions stopped flag is True".format
@@ -776,6 +781,11 @@ class ActionPoller(QuestionPoller):
                 self.qplog.info(m(self.id_str, new_pct_str, finished_count, self.passed_count))
                 if callbacks.get('SeenProgressChanged'):
                     callbacks['SeenProgressChanged'](self, new_pct)
+
+            # re-fetch object and re-derive stopped flag and status
+            self._refetch_obj()
+            self._derive_stopped_flag()
+            self._derive_status()
 
             # check to see if action is stopped, if it is, return False
             if self.stopped_flag:
