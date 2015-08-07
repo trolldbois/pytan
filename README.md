@@ -1,4 +1,10 @@
-# Documentation 
+# PyTan Documentation 
+
+Current Stable Version: 2.0.0 (Aug 7 2015)
+
+The current stable version will always be maintained in the master branch.
+
+Unstable and development versions can be accessed via the develop branch.
 
 All of the documentation linked below is also available under the doc/ directory.
 
