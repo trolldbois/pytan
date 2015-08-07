@@ -118,9 +118,14 @@ def xml_cleaner(s, encoding='utf-8', clean_restricted=True, log_messages=True,
             try:
                 # if can't decode as encoding, fallback to latin1
                 s = s.decode('latin1', 'xmlcharrefreplace')
-            except Exception as e:
-                m = "Unable to determine encoding of XML document: {}".format
-                raise EncodingUnknownError(m(e))
+            except:
+                if log_messages:
+                    m = (
+                        "Unable to decode as latin-1 or UTF-8, decoding document as UTF-8 and "
+                        "ignoring errors"
+                    ).format
+                    mylog.warning(m())
+                s = unicode(s, 'utf-8', errors='ignore')
 
     # encode the string as utf-8
     pass1 = s.encode('utf-8', 'xmlcharrefreplace')
