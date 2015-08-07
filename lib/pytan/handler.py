@@ -1739,7 +1739,8 @@ class Handler(object):
             targetgroup_obj = None
 
         if 'start_seconds_from_now' in kwargs:
-            add_obj.start_time = pytan.utils.seconds_from_now(start_seconds_from_now)
+            if kwargs.get('start_seconds_from_now', 0) not in [None, '0']:
+                add_obj.start_time = pytan.utils.seconds_from_now(start_seconds_from_now)
 
         if force_start_time and not add_obj.start_time:
             add_obj.start_time = pytan.utils.seconds_from_now(start_seconds_from_now)
