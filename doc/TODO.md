@@ -1,5 +1,6 @@
 # TODO NOW
-  * [ ] update docs for tested versions, and new port info, and more
+  * [X] update docs for tested versions, and new port info, and more
+  * [ ] rebuild zip_dists, and test on win
 
 # TODO LATER
   * [ ] add unit tests for logout()
