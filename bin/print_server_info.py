@@ -93,8 +93,9 @@ if __name__ == "__main__":
     # TODO: Make sure port can be over-ridden
     handler = process_handler_args(parser, all_args)
 
+    si = handler.session.get_server_info()
     if args.json:
-        print utils.jsonify(handler.session.server_info)
+        print utils.jsonify(si['diags_flat'])
     else:
         print str(handler)
-        print_obj(handler.session.server_info)
+        print_obj(si['diags_flat'])
