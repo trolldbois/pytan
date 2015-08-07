@@ -149,9 +149,10 @@ if __name__ == "__main__":
         ret['action_object'].package_spec.command
     )
 
-    if ret['action_progress_human']:
-        print "++ Deploy action progress check results:"
-        print ret['action_progress_human']
+    if ret['action_result_map']:
+        print "++ Deploy action progress results:"
+        for k, v in sorted(ret['action_result_map'].iteritems()):
+            print "Total {}: {}".format(k, v['total'])
 
     if ret['action_results']:
         try:
