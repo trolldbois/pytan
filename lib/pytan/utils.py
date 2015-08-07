@@ -428,7 +428,7 @@ def setup_deploy_action_argparser(doc):
         required=False,
         action='store',
         type=int,
-        default=1,
+        default=None,
         dest='start_seconds_from_now',
         help='Start the action N seconds from now',
     )
