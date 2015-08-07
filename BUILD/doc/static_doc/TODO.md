@@ -1,4 +1,5 @@
 # TODO NOW
+  * [ ] update docs for tested versions, and new port info, and more
 
 # TODO LATER
   * [ ] work on deploy action & start_seconds_from_now (a new action gets created at actual start time)
