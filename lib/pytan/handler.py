@@ -1588,7 +1588,7 @@ class Handler(object):
         )
 
         start_seconds_from_now = pytan.utils.get_kwargs_int(
-            'start_seconds_from_now', 1, **kwargs
+            'start_seconds_from_now', 0, **kwargs
         )
 
         expire_seconds = pytan.utils.get_kwargs_int('expire_seconds', **kwargs)
@@ -1738,10 +1738,12 @@ class Handler(object):
             targetgroup_obj = None
 
         if 'start_seconds_from_now' in kwargs:
-            if kwargs.get('start_seconds_from_now', 0) not in [None, '0']:
+            if kwargs.get('start_seconds_from_now', 0) not in [None, 0]:
                 add_obj.start_time = pytan.utils.seconds_from_now(start_seconds_from_now)
 
         if force_start_time and not add_obj.start_time:
+            if start_seconds_from_now in [None, 0]:
+                start_seconds_from_now = 1
             add_obj.start_time = pytan.utils.seconds_from_now(start_seconds_from_now)
 
         if package_def['package_obj'].expire_seconds:
