@@ -27,8 +27,23 @@ from pytan import utils
 
 examples = [
     {
-        'name': 'Print the server info',
-        'cmd': 'print_server_info.py $API_INFO',
+        'name': 'Print all sensors',
+        'cmd': 'print_sensor.py $API_INFO --all',
+        'tests': 'exitcode',
+    },
+    {
+        'name': 'Print all Linux sensors',
+        'cmd': 'print_sensor.py $API_INFO --all --platform Linux',
+        'tests': 'exitcode',
+    },
+    {
+        'name': 'Print all Linux sensors that fall under the category "Operating System"',
+        'cmd': 'print_sensor.py $API_INFO --all --platform Linux --category "Operating System"',
+        'tests': 'exitcode',
+    },
+    {
+        'name': 'Print all Mac and Windows sensors that fall under the category "User"',
+        'cmd': 'print_sensor.py $API_INFO --all --platform Mac --platform Windows --category "User"',
         'tests': 'exitcode',
     },
 ]
