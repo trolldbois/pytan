@@ -1456,7 +1456,8 @@ class TestDeserializeBadXML(unittest.TestCase):
 
         This test validates that pytan.xml_clean.xml_cleaner() will remove all the invalid
         and restricted characters, which should allow the body to be parsed properly.
-
+        '''
+        '''
         Logging examples from xml_cleaner():
         v=open('bad_chars_basetype_control.xml').read()
         >>> pytan.xml_clean.xml_cleaner(v, show_bad_characters=True)
@@ -1480,7 +1481,8 @@ class TestDeserializeBadXML(unittest.TestCase):
         This test validates that pytan.xml_clean.xml_cleaner() will properly fall back to latin1
         for decoding the docuemnt, as well as remove all the invalid and restricted characters,
         which should allow the body to be parsed properly.
-
+        '''
+        '''
         Logging examples from xml_cleaner():
         >>> v=open('bad_chars_resultset_latin1.xml').read()
         >>> pytan.xml_clean.xml_cleaner(v, show_bad_characters=True)
@@ -1506,7 +1508,8 @@ class TestDeserializeBadXML(unittest.TestCase):
 
         This test validates that pytan.xml_clean.xml_cleaner() will properly remove all the
         invalid and restricted characters, which should allow the body to be parsed properly.
-
+        '''
+        '''
         Logging examples from xml_cleaner():
         >>> v=open('bad_chars_resultset_surrogate.xml').read()
         >>> pytan.xml_clean.xml_cleaner(v, show_bad_characters=True)
