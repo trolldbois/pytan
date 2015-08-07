@@ -1,19 +1,9 @@
 # TODO NOW
-  * [X] broken CR in folder name search regex match (SMALL) (limit in excel, 32k chars per cell)
-  * [X] clean up open file handles
-  * [X] add not a windows script to platform filters (Last Login has it)
-  * [X] add retry efforts to http_post
-  * [X] add stats method to session
-  * [X] make deploy action work for 6.5 AND 6.2
-  * [X] make ActionPoller
-  * [X] fix saved questions
-  * [X] add antonio's notes
-  * [X] add runplugin
-  * [X] fix xml issue
-  * [ ] add saved questions json to api/doc gen
 
 # TODO LATER
   * [ ] add doc note re excel limit for cell
+  * [ ] re-work build API example scripts to be more better-er
+  * [ ] update EXAMPLES to work with 2.0.0
   * [ ] winbin doc note re double quotes and using batch scripts instead of py scripts directly
   * [ ] add more doc notes/refs for dehumanize_*
   * [ ] add tests for dashboard stuffs
@@ -136,3 +126,16 @@
     * [X] add better xml cleaning / invalid character handling to session.py (MEDIUM)
     * [X] add xml_fix to BaseType.py (SMALL)
     * [X] add support for sensor driven data for deploying action/package (this was done by adding support for undefined parameters, and "works" in theory, but in execution has lots of issues due to percent encoded parameters) (SMALL)
+  * 2.0.0
+    * [X] broken CR in folder name search regex match (SMALL) (limit in excel, 32k chars per cell)
+    * [X] clean up open file handles
+    * [X] add not a windows script to platform filters (Last Login has it)
+    * [X] add retry efforts to http_post
+    * [X] add stats method to session
+    * [X] make deploy action work for 6.5 AND 6.2
+    * [X] make ActionPoller
+    * [X] fix saved questions
+    * [X] add antonio's notes
+    * [X] add runplugin
+    * [X] fix xml issue
+    * [X] add saved questions json to api/doc gen

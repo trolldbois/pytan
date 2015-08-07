@@ -1,22 +1,18 @@
 # TODO NOW
-  * [ ] broken CR in folder name search regex match (SMALL)
-  * [ ] add secondary loop for if any data == current result unavail/etc (MEDIUM)
-  * [ ] add timeout passthru from handler -> session (MEDIUM)
-  * [ ] change get logic to use cache_filters instead of objectlist for object selection (HUGE)
-  * [ ] clean up open file handles
-  * [ ] 6.5 changes:
-    * [ ] port 443 now, no more 444
-    * [ ] 
-
-# TANIUMPY BACKPORTS:
-  * [ ] in question_asker.py: if pct >= self.pct_complete_threshold: 
-  * [ ] in request_body_template.xml:       {cache_filters}
-  * [ ] in session.py: utf-8 fix
-  * [ ] add xml_fix to BaseType.py
-  * [ ] increase timeout to 15
-  * [ ] try/except for celementtree
 
 # TODO LATER
+  * [ ] work on deploy action & start_seconds_from_now (a new action gets created at actual start time)
+  * [ ] add doc note re excel limit for cell
+  * [ ] re-work build API example scripts to be more better-er
+  * [ ] update EXAMPLES to work with 2.0.0
+  * [ ] winbin doc note re double quotes and using batch scripts instead of py scripts directly
+  * [ ] add more doc notes/refs for dehumanize_*
+  * [ ] add tests for dashboard stuffs
+  * [ ] add approve action 
+  * [ ] 1.6 add dashboard wrappers
+  * [ ] 1.6 add secondary loop for if any data == current result unavail/etc (MEDIUM)
+  * [ ] 1.6 change get logic to use cache_filters instead of objectlist for object selection (HUGE)
+  * [ ] 1.6 cache_results test: If you are adding tests for that mechanism you could make tests that verify it returns an error if you specify a cache that has expired and make sure that the results that come back don’t change.
   * [?] Add method to get question progress (MEDIUM)
   * [ ] explain get == select col data, from == select row data (SMALL/DOC)
   * [ ] add pointers to KB articles (SMALL/DOC)
@@ -131,3 +127,16 @@
     * [X] add better xml cleaning / invalid character handling to session.py (MEDIUM)
     * [X] add xml_fix to BaseType.py (SMALL)
     * [X] add support for sensor driven data for deploying action/package (this was done by adding support for undefined parameters, and "works" in theory, but in execution has lots of issues due to percent encoded parameters) (SMALL)
+  * 2.0.0
+    * [X] broken CR in folder name search regex match (SMALL) (limit in excel, 32k chars per cell)
+    * [X] clean up open file handles
+    * [X] add not a windows script to platform filters (Last Login has it)
+    * [X] add retry efforts to http_post
+    * [X] add stats method to session
+    * [X] make deploy action work for 6.5 AND 6.2
+    * [X] make ActionPoller
+    * [X] fix saved questions
+    * [X] add antonio's notes
+    * [X] add runplugin
+    * [X] fix xml issue
+    * [X] add saved questions json to api/doc gen
