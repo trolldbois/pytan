@@ -35,7 +35,7 @@ Example Python Code
     USERNAME = "Tanium User"
     PASSWORD = "T@n!um"
     HOST = "172.16.31.128"
-    PORT = "444"
+    PORT = "443"
     
     # Logging conrols
     LOGLEVEL = 2
@@ -94,7 +94,7 @@ Output from Python Code
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
+    Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
     
     Type of response:  <class 'taniumpy.object_types.package_spec_list.PackageSpecList'>
     
@@ -107,10 +107,10 @@ Output from Python Code
     print the first object returned in JSON format:
     {
       "_type": "package_spec", 
-      "available_time": "2015-03-03T19:09:57", 
+      "available_time": "2015-08-07T13:23:22", 
       "command": "cmd /c cscript install-standard-utils.vbs \"Tools\\StdUtils\"", 
       "command_timeout": 2700, 
-      "creation_time": "2015-03-03T19:04:05", 
+      "creation_time": "2015-08-07T13:22:19", 
       "deleted_flag": 0, 
       "display_name": "Distribute Tanium Standard Utilities", 
       "expire_seconds": 3300, 
@@ -119,5 +119,5 @@ Output from Python Code
         "file": [
           {
             "_type": "file", 
-            "bytes_downloaded": 587776, 
+            "bytes_downloaded": 0, 
     ..trimmed for brevity..

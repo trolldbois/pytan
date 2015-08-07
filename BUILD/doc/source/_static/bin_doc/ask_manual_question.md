@@ -746,10 +746,10 @@ Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet 
   ], 
   "sensors_help": false
 }
-2015-08-07 14:25:27,571 INFO     pytan.handler.QuestionPoller: ID 183: Progress Changed 0% (0 of 2)
-2015-08-07 14:25:32,578 INFO     pytan.handler.QuestionPoller: ID 183: Progress Changed 100% (2 of 2)
-2015-08-07 14:25:32,578 INFO     pytan.handler.QuestionPoller: ID 183: Reached Threshold of 99% (2 of 2)
-++ Asked Question 'Get Computer Name from all machines' ID: 183
+2015-08-07 19:25:44,380 INFO     pytan.handler.QuestionPoller: ID 1260: Progress Changed 0% (0 of 2)
+2015-08-07 19:25:49,385 INFO     pytan.handler.QuestionPoller: ID 1260: Progress Changed 100% (2 of 2)
+2015-08-07 19:25:49,385 INFO     pytan.handler.QuestionPoller: ID 1260: Reached Threshold of 99% (2 of 2)
+++ Asked Question 'Get Computer Name from all machines' ID: 1260
 ++ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 56 bytes
 ```
 
@@ -795,11 +795,11 @@ Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet 
   ], 
   "sensors_help": false
 }
-2015-08-07 14:25:32,848 INFO     pytan.handler.QuestionPoller: ID 184: Progress Changed 0% (0 of 2)
-2015-08-07 14:25:47,873 INFO     pytan.handler.QuestionPoller: ID 184: Progress Changed 100% (2 of 2)
-2015-08-07 14:25:47,873 INFO     pytan.handler.QuestionPoller: ID 184: Reached Threshold of 99% (2 of 2)
-++ Asked Question 'Get Action Statuses from all machines' ID: 184
-++ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 375 bytes
+2015-08-07 19:25:49,650 INFO     pytan.handler.QuestionPoller: ID 1261: Progress Changed 0% (0 of 2)
+2015-08-07 19:25:59,660 INFO     pytan.handler.QuestionPoller: ID 1261: Progress Changed 100% (2 of 2)
+2015-08-07 19:25:59,661 INFO     pytan.handler.QuestionPoller: ID 1261: Reached Threshold of 99% (2 of 2)
+++ Asked Question 'Get Action Statuses from all machines' ID: 1261
+++ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 545 bytes
 ```
 
   * Validation Test: exitcode
@@ -813,14 +813,14 @@ Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet 
 ```
 Action Statuses,Count
 6:Completed.,1
+41:Completed.,1
 5:Completed.,1
 14:Completed.,1
 29:Completed.,1
 16:Completed.,1
-35:Completed.,2
-38:Completed.,2
-36:Completed.,2
-7:Completed.,2
+35:Completed.,1
+38:Completed.,1
+36:Completed.,1
 ...trimmed for brevity...
 ```
 
@@ -853,12 +853,11 @@ Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet 
   ], 
   "sensors_help": false
 }
-2015-08-07 14:25:48,418 INFO     pytan.handler.QuestionPoller: ID 186: Progress Changed 0% (0 of 2)
-2015-08-07 14:26:03,442 INFO     pytan.handler.QuestionPoller: ID 186: Progress Changed 50% (1 of 2)
-2015-08-07 14:26:13,455 INFO     pytan.handler.QuestionPoller: ID 186: Progress Changed 100% (2 of 2)
-2015-08-07 14:26:13,456 INFO     pytan.handler.QuestionPoller: ID 186: Reached Threshold of 99% (2 of 2)
-++ Asked Question 'Get Computer Name and Installed Applications from all machines' ID: 186
-++ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 22886 bytes
+2015-08-07 19:25:59,942 INFO     pytan.handler.QuestionPoller: ID 1262: Progress Changed 0% (0 of 2)
+2015-08-07 19:26:14,962 INFO     pytan.handler.QuestionPoller: ID 1262: Progress Changed 100% (2 of 2)
+2015-08-07 19:26:14,962 INFO     pytan.handler.QuestionPoller: ID 1262: Reached Threshold of 99% (2 of 2)
+++ Asked Question 'Get Computer Name and Installed Applications from all machines' ID: 1262
+++ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 22871 bytes
 ```
 
   * Validation Test: exitcode
@@ -911,10 +910,11 @@ Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet 
   ], 
   "sensors_help": false
 }
-2015-08-07 14:26:13,830 INFO     pytan.handler.QuestionPoller: ID 187: Progress Changed 0% (0 of 2)
-2015-08-07 14:26:28,851 INFO     pytan.handler.QuestionPoller: ID 187: Progress Changed 100% (2 of 2)
-2015-08-07 14:26:28,851 INFO     pytan.handler.QuestionPoller: ID 187: Reached Threshold of 99% (2 of 2)
-++ Asked Question 'Get Folder Name Search with RegEx Match[Program Files, , No, No, Microsoft.*] from all machines' ID: 187
+2015-08-07 19:26:15,266 INFO     pytan.handler.QuestionPoller: ID 1263: Progress Changed 0% (0 of 2)
+2015-08-07 19:26:25,274 INFO     pytan.handler.QuestionPoller: ID 1263: Progress Changed 50% (1 of 2)
+2015-08-07 19:26:45,295 INFO     pytan.handler.QuestionPoller: ID 1263: Progress Changed 100% (2 of 2)
+2015-08-07 19:26:45,295 INFO     pytan.handler.QuestionPoller: ID 1263: Reached Threshold of 99% (2 of 2)
+++ Asked Question 'Get Folder Name Search with RegEx Match[Program Files, , No, No, Microsoft.*] from all machines' ID: 1263
 ++ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 34179 bytes
 ```
 
@@ -971,10 +971,10 @@ Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet 
   ], 
   "sensors_help": false
 }
-2015-08-07 14:26:29,276 INFO     pytan.handler.QuestionPoller: ID 188: Progress Changed 0% (0 of 2)
-2015-08-07 14:26:39,295 INFO     pytan.handler.QuestionPoller: ID 188: Progress Changed 100% (2 of 2)
-2015-08-07 14:26:39,295 INFO     pytan.handler.QuestionPoller: ID 188: Reached Threshold of 99% (2 of 2)
-++ Asked Question 'Get Operating System containing "Windows" from all machines' ID: 188
+2015-08-07 19:26:45,626 INFO     pytan.handler.QuestionPoller: ID 1266: Progress Changed 0% (0 of 2)
+2015-08-07 19:26:55,635 INFO     pytan.handler.QuestionPoller: ID 1266: Progress Changed 100% (2 of 2)
+2015-08-07 19:26:55,635 INFO     pytan.handler.QuestionPoller: ID 1266: Reached Threshold of 99% (2 of 2)
+++ Asked Question 'Get Operating System containing "Windows" from all machines' ID: 1266
 ++ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 65 bytes
 ```
 
@@ -1033,11 +1033,11 @@ Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet 
   ], 
   "sensors_help": false
 }
-2015-08-07 14:26:40,255 INFO     pytan.handler.QuestionPoller: ID 189: Progress Changed 0% (0 of 2)
-2015-08-07 14:27:00,295 INFO     pytan.handler.QuestionPoller: ID 189: Progress Changed 50% (1 of 2)
-2015-08-07 14:27:10,318 INFO     pytan.handler.QuestionPoller: ID 189: Progress Changed 100% (2 of 2)
-2015-08-07 14:27:10,318 INFO     pytan.handler.QuestionPoller: ID 189: Reached Threshold of 99% (2 of 2)
-++ Asked Question 'Get Computer Name and Folder Name Search with RegEx Match[Program Files, , No, No, Microsoft.*, test] containing "Shared" from all machines with ( Operating System containing "Windows" or any IP Address != "10.10.10.10" )' ID: 189
+2015-08-07 19:26:55,941 INFO     pytan.handler.QuestionPoller: ID 1267: Progress Changed 0% (0 of 2)
+2015-08-07 19:27:20,968 INFO     pytan.handler.QuestionPoller: ID 1267: Progress Changed 50% (1 of 2)
+2015-08-07 19:27:25,973 INFO     pytan.handler.QuestionPoller: ID 1267: Progress Changed 100% (2 of 2)
+2015-08-07 19:27:25,973 INFO     pytan.handler.QuestionPoller: ID 1267: Reached Threshold of 99% (2 of 2)
+++ Asked Question 'Get Computer Name and Folder Name Search with RegEx Match[Program Files, , No, No, Microsoft.*, test] containing "Shared" from all machines with ( Operating System containing "Windows" or any IP Address != "10.10.10.10" )' ID: 1267
 ++ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 4563 bytes
 ```
 
@@ -1103,11 +1103,10 @@ Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet 
   ], 
   "sensors_help": false
 }
-2015-08-07 14:27:11,052 INFO     pytan.handler.QuestionPoller: ID 190: Progress Changed 0% (0 of 2)
-2015-08-07 14:27:16,062 INFO     pytan.handler.QuestionPoller: ID 190: Progress Changed 50% (1 of 2)
-2015-08-07 14:27:21,078 INFO     pytan.handler.QuestionPoller: ID 190: Progress Changed 100% (2 of 2)
-2015-08-07 14:27:21,079 INFO     pytan.handler.QuestionPoller: ID 190: Reached Threshold of 99% (2 of 2)
-++ Asked Question 'Get Computer Name and Last Logged In User and Installed Applications containing "Google Search" and Installed Applications containing "Google Chrome" from all machines with ( Installed Applications containing "Google Search" and Installed Applications containing "Google Chrome" )' ID: 190
+2015-08-07 19:27:26,276 INFO     pytan.handler.QuestionPoller: ID 1268: Progress Changed 0% (0 of 2)
+2015-08-07 19:27:31,281 INFO     pytan.handler.QuestionPoller: ID 1268: Progress Changed 100% (2 of 2)
+2015-08-07 19:27:31,281 INFO     pytan.handler.QuestionPoller: ID 1268: Reached Threshold of 99% (2 of 2)
+++ Asked Question 'Get Computer Name and Last Logged In User and Installed Applications containing "Google Search" and Installed Applications containing "Google Chrome" from all machines with ( Installed Applications containing "Google Search" and Installed Applications containing "Google Chrome" )' ID: 1268
 ++ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 401 bytes
 ```
 
@@ -1137,4 +1136,4 @@ Not Uninstallable","42.0.2311.90
 [TOC](#user-content-toc)
 
 
-###### generated by: `build_bin_doc v1.4.5`, date: Fri Aug  7 10:27:21 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**
+###### generated by: `build_bin_doc v1.4.5`, date: Fri Aug  7 15:27:31 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**

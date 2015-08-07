@@ -26,7 +26,7 @@ for aa in path_adds:
 USERNAME = "Tanium User"
 PASSWORD = "T@n!um"
 HOST = "172.16.31.128"
-PORT = "444"
+PORT = "443"
 
 # Logging conrols
 LOGLEVEL = 2
@@ -81,125 +81,99 @@ if response['action_results']:
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
-2015-08-06 14:50:32,113 DEBUG    pytan.handler.ActionPoller: ID 36367: id resolved to 36367
-2015-08-06 14:50:32,113 DEBUG    pytan.handler.ActionPoller: ID 36367: package_spec resolved to PackageSpec, name: 'Distribute Tanium Standard Utilities', id: 20
-2015-08-06 14:50:32,120 DEBUG    pytan.handler.ActionPoller: ID 36367: target_group resolved to Group, name: 'Default'
-2015-08-06 14:50:32,121 DEBUG    pytan.handler.ActionPoller: ID 36367: Result Map resolved to {'failed': {'total': 0, '36367:Stopped.': [], '36367:Failed.': [], '36367:NotSucceeded.': [], '36367:Expired.': []}, 'finished': {'36367:Succeeded.': [], 'total': 0, '36367:NotSucceeded.': [], '36367:Verified.': [], '36367:Expired.': [], '36367:Completed.': [], '36367:Stopped.': [], '36367:Failed.': []}, 'running': {'36367:Waiting.': [], '36367:Downloading.': [], '36367:PendingVerification.': [], '36367:Running.': [], '36367:Copying.': [], 'total': 0}, 'success': {'36367:Verified.': [], '36367:Completed.': [], 'total': 0}, 'unknown': {'total': 0}}
-2015-08-06 14:50:32,121 DEBUG    pytan.handler.ActionPoller: ID 36367: expiration_time resolved to 2015-08-06T16:30:33
-2015-08-06 14:50:32,121 DEBUG    pytan.handler.ActionPoller: ID 36367: status resolved to Active
-2015-08-06 14:50:32,121 DEBUG    pytan.handler.ActionPoller: ID 36367: stopped_flag resolved to 0
-2015-08-06 14:50:32,121 DEBUG    pytan.handler.ActionPoller: ID 36367: Object Info resolved to ID 36367: Package: 'Distribute Tanium Standard Utilities', Target: 'None', Verify: False, Stopped: False, Status: Active
-2015-08-06 14:50:32,121 DEBUG    pytan.handler.ActionPoller: ID 36367: Adding Question to derive passed count
-2015-08-06 14:50:32,141 DEBUG    pytan.handler.QuestionPoller: ID 86265: id resolved to 86265
-2015-08-06 14:50:32,141 DEBUG    pytan.handler.QuestionPoller: ID 86265: expiration resolved to 2015-08-06T15:00:32
-2015-08-06 14:50:32,141 DEBUG    pytan.handler.QuestionPoller: ID 86265: query_text resolved to Get number of machines
-2015-08-06 14:50:32,141 DEBUG    pytan.handler.QuestionPoller: ID 86265: id resolved to 86265
-2015-08-06 14:50:32,141 DEBUG    pytan.handler.QuestionPoller: ID 86265: Object Info resolved to Question ID: 86265, Query: Get number of machines
-2015-08-06 14:50:32,145 DEBUG    pytan.handler.QuestionPoller: ID 86265: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
-2015-08-06 14:50:32,145 DEBUG    pytan.handler.QuestionPoller: ID 86265: Timing: Started: 2015-08-06 14:50:32.141355, Expiration: 2015-08-06 15:00:32, Override Timeout: None, Elapsed Time: 0:00:00.004623, Left till expiry: 0:09:59.854025, Loop Count: 1
-2015-08-06 14:50:32,146 INFO     pytan.handler.QuestionPoller: ID 86265: Progress Changed 0% (0 of 2)
-2015-08-06 14:50:37,150 DEBUG    pytan.handler.QuestionPoller: ID 86265: Progress: Tested: 2, Passed: 2, MR Tested: 2, MR Passed: 2, Est Total: 2, Row Count: 0
-2015-08-06 14:50:37,151 DEBUG    pytan.handler.QuestionPoller: ID 86265: Timing: Started: 2015-08-06 14:50:32.141355, Expiration: 2015-08-06 15:00:32, Override Timeout: None, Elapsed Time: 0:00:05.009666, Left till expiry: 0:09:54.848981, Loop Count: 2
-2015-08-06 14:50:37,151 INFO     pytan.handler.QuestionPoller: ID 86265: Progress Changed 100% (2 of 2)
-2015-08-06 14:50:37,151 INFO     pytan.handler.QuestionPoller: ID 86265: Reached Threshold of 99% (2 of 2)
-2015-08-06 14:50:37,151 DEBUG    pytan.handler.ActionPoller: ID 36367: Passed Count resolved to 2
-2015-08-06 14:50:37,163 DEBUG    pytan.handler.ActionPoller: ID 36367: Progress: Seen Action: 0, Expected Seen: 2, Percent: 0%
-2015-08-06 14:50:37,163 DEBUG    pytan.handler.ActionPoller: ID 36367: Timing: Started: 2015-08-06 14:50:32.121209, Expiration: 2015-08-06 16:30:33, Override Timeout: None, Elapsed Time: 0:00:05.042296, Left till expiry: 1:39:55.836498, Loop Count: 1
-2015-08-06 14:50:37,163 INFO     pytan.handler.ActionPoller: ID 36367: Progress Changed for Seen Count 0% (0 of 2)
-2015-08-06 14:50:42,236 DEBUG    pytan.handler.ActionPoller: ID 36367: Progress: Seen Action: 0, Expected Seen: 2, Percent: 0%
-2015-08-06 14:50:42,236 DEBUG    pytan.handler.ActionPoller: ID 36367: Timing: Started: 2015-08-06 14:50:32.121209, Expiration: 2015-08-06 16:30:33, Override Timeout: None, Elapsed Time: 0:00:10.115558, Left till expiry: 1:39:50.763235, Loop Count: 2
-2015-08-06 14:50:47,832 DEBUG    pytan.handler.ActionPoller: ID 36367: Progress: Seen Action: 0, Expected Seen: 2, Percent: 0%
-2015-08-06 14:50:47,832 DEBUG    pytan.handler.ActionPoller: ID 36367: Timing: Started: 2015-08-06 14:50:32.121209, Expiration: 2015-08-06 16:30:33, Override Timeout: None, Elapsed Time: 0:00:15.711630, Left till expiry: 1:39:45.167163, Loop Count: 3
-2015-08-06 14:50:52,847 DEBUG    pytan.handler.ActionPoller: ID 36367: Progress: Seen Action: 0, Expected Seen: 2, Percent: 0%
-2015-08-06 14:50:52,847 DEBUG    pytan.handler.ActionPoller: ID 36367: Timing: Started: 2015-08-06 14:50:32.121209, Expiration: 2015-08-06 16:30:33, Override Timeout: None, Elapsed Time: 0:00:20.726235, Left till expiry: 1:39:40.152558, Loop Count: 4
-2015-08-06 14:50:57,899 DEBUG    pytan.handler.ActionPoller: ID 36367: Progress: Seen Action: 0, Expected Seen: 2, Percent: 0%
-2015-08-06 14:50:57,899 DEBUG    pytan.handler.ActionPoller: ID 36367: Timing: Started: 2015-08-06 14:50:32.121209, Expiration: 2015-08-06 16:30:33, Override Timeout: None, Elapsed Time: 0:00:25.777914, Left till expiry: 1:39:35.100880, Loop Count: 5
-2015-08-06 14:51:02,912 DEBUG    pytan.handler.ActionPoller: ID 36367: Progress: Seen Action: 0, Expected Seen: 2, Percent: 0%
-2015-08-06 14:51:02,912 DEBUG    pytan.handler.ActionPoller: ID 36367: Timing: Started: 2015-08-06 14:50:32.121209, Expiration: 2015-08-06 16:30:33, Override Timeout: None, Elapsed Time: 0:00:30.791288, Left till expiry: 1:39:30.087506, Loop Count: 6
-2015-08-06 14:51:08,658 DEBUG    pytan.handler.ActionPoller: ID 36367: Progress: Seen Action: 0, Expected Seen: 2, Percent: 0%
-2015-08-06 14:51:08,658 DEBUG    pytan.handler.ActionPoller: ID 36367: Timing: Started: 2015-08-06 14:50:32.121209, Expiration: 2015-08-06 16:30:33, Override Timeout: None, Elapsed Time: 0:00:36.537588, Left till expiry: 1:39:24.341205, Loop Count: 7
-2015-08-06 14:51:13,694 DEBUG    pytan.handler.ActionPoller: ID 36367: Progress: Seen Action: 0, Expected Seen: 2, Percent: 0%
-2015-08-06 14:51:13,694 DEBUG    pytan.handler.ActionPoller: ID 36367: Timing: Started: 2015-08-06 14:50:32.121209, Expiration: 2015-08-06 16:30:33, Override Timeout: None, Elapsed Time: 0:00:41.573690, Left till expiry: 1:39:19.305104, Loop Count: 8
-2015-08-06 14:51:18,726 DEBUG    pytan.handler.ActionPoller: ID 36367: Progress: Seen Action: 0, Expected Seen: 2, Percent: 0%
-2015-08-06 14:51:18,726 DEBUG    pytan.handler.ActionPoller: ID 36367: Timing: Started: 2015-08-06 14:50:32.121209, Expiration: 2015-08-06 16:30:33, Override Timeout: None, Elapsed Time: 0:00:46.605506, Left till expiry: 1:39:14.273287, Loop Count: 9
-2015-08-06 14:51:24,008 DEBUG    pytan.handler.ActionPoller: ID 36367: Progress: Seen Action: 0, Expected Seen: 2, Percent: 0%
-2015-08-06 14:51:24,008 DEBUG    pytan.handler.ActionPoller: ID 36367: Timing: Started: 2015-08-06 14:50:32.121209, Expiration: 2015-08-06 16:30:33, Override Timeout: None, Elapsed Time: 0:00:51.887081, Left till expiry: 1:39:08.991713, Loop Count: 10
-2015-08-06 14:51:29,089 DEBUG    pytan.handler.ActionPoller: ID 36367: Progress: Seen Action: 0, Expected Seen: 2, Percent: 0%
-2015-08-06 14:51:29,089 DEBUG    pytan.handler.ActionPoller: ID 36367: Timing: Started: 2015-08-06 14:50:32.121209, Expiration: 2015-08-06 16:30:33, Override Timeout: None, Elapsed Time: 0:00:56.968196, Left till expiry: 1:39:03.910597, Loop Count: 11
-2015-08-06 14:51:34,229 DEBUG    pytan.handler.ActionPoller: ID 36367: Progress: Seen Action: 0, Expected Seen: 2, Percent: 0%
-2015-08-06 14:51:34,229 DEBUG    pytan.handler.ActionPoller: ID 36367: Timing: Started: 2015-08-06 14:50:32.121209, Expiration: 2015-08-06 16:30:33, Override Timeout: None, Elapsed Time: 0:01:02.107872, Left till expiry: 1:38:58.770922, Loop Count: 12
-2015-08-06 14:51:39,367 DEBUG    pytan.handler.ActionPoller: ID 36367: Progress: Seen Action: 0, Expected Seen: 2, Percent: 0%
-2015-08-06 14:51:39,367 DEBUG    pytan.handler.ActionPoller: ID 36367: Timing: Started: 2015-08-06 14:50:32.121209, Expiration: 2015-08-06 16:30:33, Override Timeout: None, Elapsed Time: 0:01:07.246739, Left till expiry: 1:38:53.632055, Loop Count: 13
-2015-08-06 14:51:44,687 DEBUG    pytan.handler.ActionPoller: ID 36367: Progress: Seen Action: 0, Expected Seen: 2, Percent: 0%
-2015-08-06 14:51:44,687 DEBUG    pytan.handler.ActionPoller: ID 36367: Timing: Started: 2015-08-06 14:50:32.121209, Expiration: 2015-08-06 16:30:33, Override Timeout: None, Elapsed Time: 0:01:12.566105, Left till expiry: 1:38:48.312688, Loop Count: 14
-2015-08-06 14:51:49,858 DEBUG    pytan.handler.ActionPoller: ID 36367: Progress: Seen Action: 0, Expected Seen: 2, Percent: 0%
-2015-08-06 14:51:49,858 DEBUG    pytan.handler.ActionPoller: ID 36367: Timing: Started: 2015-08-06 14:50:32.121209, Expiration: 2015-08-06 16:30:33, Override Timeout: None, Elapsed Time: 0:01:17.737761, Left till expiry: 1:38:43.141033, Loop Count: 15
-2015-08-06 14:51:55,192 DEBUG    pytan.handler.ActionPoller: ID 36367: Progress: Seen Action: 0, Expected Seen: 2, Percent: 0%
-2015-08-06 14:51:55,192 DEBUG    pytan.handler.ActionPoller: ID 36367: Timing: Started: 2015-08-06 14:50:32.121209, Expiration: 2015-08-06 16:30:33, Override Timeout: None, Elapsed Time: 0:01:23.071072, Left till expiry: 1:38:37.807721, Loop Count: 16
-2015-08-06 14:52:00,219 DEBUG    pytan.handler.ActionPoller: ID 36367: Progress: Seen Action: 0, Expected Seen: 2, Percent: 0%
-2015-08-06 14:52:00,219 DEBUG    pytan.handler.ActionPoller: ID 36367: Timing: Started: 2015-08-06 14:50:32.121209, Expiration: 2015-08-06 16:30:33, Override Timeout: None, Elapsed Time: 0:01:28.097952, Left till expiry: 1:38:32.780842, Loop Count: 17
-2015-08-06 14:52:05,236 DEBUG    pytan.handler.ActionPoller: ID 36367: Progress: Seen Action: 0, Expected Seen: 2, Percent: 0%
-2015-08-06 14:52:05,236 DEBUG    pytan.handler.ActionPoller: ID 36367: Timing: Started: 2015-08-06 14:50:32.121209, Expiration: 2015-08-06 16:30:33, Override Timeout: None, Elapsed Time: 0:01:33.115055, Left till expiry: 1:38:27.763738, Loop Count: 18
-2015-08-06 14:52:10,597 DEBUG    pytan.handler.ActionPoller: ID 36367: Progress: Seen Action: 0, Expected Seen: 2, Percent: 0%
-2015-08-06 14:52:10,597 DEBUG    pytan.handler.ActionPoller: ID 36367: Timing: Started: 2015-08-06 14:50:32.121209, Expiration: 2015-08-06 16:30:33, Override Timeout: None, Elapsed Time: 0:01:38.476750, Left till expiry: 1:38:22.402043, Loop Count: 19
-2015-08-06 14:52:15,612 DEBUG    pytan.handler.ActionPoller: ID 36367: Progress: Seen Action: 2, Expected Seen: 2, Percent: 100%
-2015-08-06 14:52:15,612 DEBUG    pytan.handler.ActionPoller: ID 36367: Timing: Started: 2015-08-06 14:50:32.121209, Expiration: 2015-08-06 16:30:33, Override Timeout: None, Elapsed Time: 0:01:43.491537, Left till expiry: 1:38:17.387257, Loop Count: 20
-2015-08-06 14:52:15,612 INFO     pytan.handler.ActionPoller: ID 36367: Progress Changed for Seen Count 100% (2 of 2)
-2015-08-06 14:52:15,612 INFO     pytan.handler.ActionPoller: ID 36367: Reached Threshold for Seen Count of 100% (2 of 2)
-2015-08-06 14:52:15,630 DEBUG    pytan.handler.ActionPoller: ID 36367: failed: 0, finished: 0, running: 2, success: 0, unknown: 0, Done Key: success, Passed Count: 2
-2015-08-06 14:52:15,630 DEBUG    pytan.handler.ActionPoller: ID 36367: Timing: Started: 2015-08-06 14:50:32.121209, Expiration: 2015-08-06 16:30:33, Override Timeout: None, Elapsed Time: 0:01:43.509485, Left till expiry: 1:38:17.369308, Loop Count: 1
-2015-08-06 14:52:15,630 INFO     pytan.handler.ActionPoller: ID 36367: Progress Changed for Finished Count 0% (0 of 2)
-2015-08-06 14:52:20,648 DEBUG    pytan.handler.ActionPoller: ID 36367: failed: 0, finished: 2, running: 2, success: 2, unknown: 0, Done Key: success, Passed Count: 2
-2015-08-06 14:52:20,648 DEBUG    pytan.handler.ActionPoller: ID 36367: Timing: Started: 2015-08-06 14:50:32.121209, Expiration: 2015-08-06 16:30:33, Override Timeout: None, Elapsed Time: 0:01:48.527015, Left till expiry: 1:38:12.351778, Loop Count: 2
-2015-08-06 14:52:20,648 INFO     pytan.handler.ActionPoller: ID 36367: Progress Changed for Finished Count 100% (2 of 2)
-2015-08-06 14:52:20,648 INFO     pytan.handler.ActionPoller: ID 36367: Reached Threshold for Finished Count of 100% (2 of 2)
+Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
+2015-08-07 19:45:08,345 DEBUG    pytan.handler.ActionPoller: ID 56: id resolved to 56
+2015-08-07 19:45:08,345 DEBUG    pytan.handler.ActionPoller: ID 56: package_spec resolved to PackageSpec, name: 'Distribute Tanium Standard Utilities', id: 20
+2015-08-07 19:45:08,353 DEBUG    pytan.handler.ActionPoller: ID 56: target_group resolved to Group, name: 'Default'
+2015-08-07 19:45:08,353 DEBUG    pytan.handler.ActionPoller: ID 56: Result Map resolved to {'failed': {'total': 0, '56:Failed.': [], '56:NotSucceeded.': [], '56:Expired.': [], '56:Stopped.': []}, 'finished': {'56:NotSucceeded.': [], '56:Failed.': [], '56:Succeeded.': [], '56:Expired.': [], '56:Stopped.': [], '56:Verified.': [], 'total': 0, '56:Completed.': []}, 'running': {'56:Running.': [], '56:Downloading.': [], '56:Copying.': [], '56:Waiting.': [], 'total': 0, '56:PendingVerification.': []}, 'success': {'total': 0, '56:Verified.': [], '56:Completed.': []}, 'unknown': {'total': 0}}
+2015-08-07 19:45:08,353 DEBUG    pytan.handler.ActionPoller: ID 56: expiration_time resolved to 2015-08-07T20:40:10
+2015-08-07 19:45:08,353 DEBUG    pytan.handler.ActionPoller: ID 56: status resolved to Open
+2015-08-07 19:45:08,353 DEBUG    pytan.handler.ActionPoller: ID 56: stopped_flag resolved to 0
+2015-08-07 19:45:08,353 DEBUG    pytan.handler.ActionPoller: ID 56: Object Info resolved to ID 56: Package: 'Distribute Tanium Standard Utilities', Target: 'None', Verify: False, Stopped: False, Status: Open
+2015-08-07 19:45:08,353 DEBUG    pytan.handler.ActionPoller: ID 56: Adding Question to derive passed count
+2015-08-07 19:45:08,365 DEBUG    pytan.handler.QuestionPoller: ID 1299: id resolved to 1299
+2015-08-07 19:45:08,365 DEBUG    pytan.handler.QuestionPoller: ID 1299: expiration resolved to 2015-08-07T19:55:08
+2015-08-07 19:45:08,365 DEBUG    pytan.handler.QuestionPoller: ID 1299: query_text resolved to Get number of machines
+2015-08-07 19:45:08,365 DEBUG    pytan.handler.QuestionPoller: ID 1299: id resolved to 1299
+2015-08-07 19:45:08,365 DEBUG    pytan.handler.QuestionPoller: ID 1299: Object Info resolved to Question ID: 1299, Query: Get number of machines
+2015-08-07 19:45:08,368 DEBUG    pytan.handler.QuestionPoller: ID 1299: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
+2015-08-07 19:45:08,368 DEBUG    pytan.handler.QuestionPoller: ID 1299: Timing: Started: 2015-08-07 19:45:08.365942, Expiration: 2015-08-07 19:55:08, Override Timeout: None, Elapsed Time: 0:00:00.002560, Left till expiry: 0:09:59.631500, Loop Count: 1
+2015-08-07 19:45:08,368 INFO     pytan.handler.QuestionPoller: ID 1299: Progress Changed 0% (0 of 2)
+2015-08-07 19:45:13,372 DEBUG    pytan.handler.QuestionPoller: ID 1299: Progress: Tested: 1, Passed: 1, MR Tested: 1, MR Passed: 1, Est Total: 2, Row Count: 0
+2015-08-07 19:45:13,372 DEBUG    pytan.handler.QuestionPoller: ID 1299: Timing: Started: 2015-08-07 19:45:08.365942, Expiration: 2015-08-07 19:55:08, Override Timeout: None, Elapsed Time: 0:00:05.006752, Left till expiry: 0:09:54.627310, Loop Count: 2
+2015-08-07 19:45:13,372 INFO     pytan.handler.QuestionPoller: ID 1299: Progress Changed 50% (1 of 2)
+2015-08-07 19:45:18,379 DEBUG    pytan.handler.QuestionPoller: ID 1299: Progress: Tested: 2, Passed: 2, MR Tested: 2, MR Passed: 2, Est Total: 2, Row Count: 0
+2015-08-07 19:45:18,379 DEBUG    pytan.handler.QuestionPoller: ID 1299: Timing: Started: 2015-08-07 19:45:08.365942, Expiration: 2015-08-07 19:55:08, Override Timeout: None, Elapsed Time: 0:00:10.013996, Left till expiry: 0:09:49.620065, Loop Count: 3
+2015-08-07 19:45:18,380 INFO     pytan.handler.QuestionPoller: ID 1299: Progress Changed 100% (2 of 2)
+2015-08-07 19:45:18,380 INFO     pytan.handler.QuestionPoller: ID 1299: Reached Threshold of 99% (2 of 2)
+2015-08-07 19:45:18,380 DEBUG    pytan.handler.ActionPoller: ID 56: Passed Count resolved to 2
+2015-08-07 19:45:18,390 DEBUG    pytan.handler.ActionPoller: ID 56: Progress: Seen Action: 0, Expected Seen: 2, Percent: 0%
+2015-08-07 19:45:18,390 DEBUG    pytan.handler.ActionPoller: ID 56: Timing: Started: 2015-08-07 19:45:08.353365, Expiration: 2015-08-07 20:40:10, Override Timeout: None, Elapsed Time: 0:00:10.037247, Left till expiry: 0:54:51.609390, Loop Count: 1
+2015-08-07 19:45:18,390 INFO     pytan.handler.ActionPoller: ID 56: Progress Changed for Seen Count 0% (0 of 2)
+2015-08-07 19:45:18,397 DEBUG    pytan.handler.ActionPoller: ID 56: stopped_flag resolved to 0
+2015-08-07 19:45:18,397 DEBUG    pytan.handler.ActionPoller: ID 56: status resolved to Open
+2015-08-07 19:45:23,411 DEBUG    pytan.handler.ActionPoller: ID 56: Progress: Seen Action: 1, Expected Seen: 2, Percent: 50%
+2015-08-07 19:45:23,411 DEBUG    pytan.handler.ActionPoller: ID 56: Timing: Started: 2015-08-07 19:45:08.353365, Expiration: 2015-08-07 20:40:10, Override Timeout: None, Elapsed Time: 0:00:15.058175, Left till expiry: 0:54:46.588462, Loop Count: 2
+2015-08-07 19:45:23,411 INFO     pytan.handler.ActionPoller: ID 56: Progress Changed for Seen Count 50% (1 of 2)
+2015-08-07 19:45:23,417 DEBUG    pytan.handler.ActionPoller: ID 56: stopped_flag resolved to 0
+2015-08-07 19:45:23,417 DEBUG    pytan.handler.ActionPoller: ID 56: status resolved to Open
+2015-08-07 19:45:28,427 DEBUG    pytan.handler.ActionPoller: ID 56: Progress: Seen Action: 2, Expected Seen: 2, Percent: 100%
+2015-08-07 19:45:28,427 DEBUG    pytan.handler.ActionPoller: ID 56: Timing: Started: 2015-08-07 19:45:08.353365, Expiration: 2015-08-07 20:40:10, Override Timeout: None, Elapsed Time: 0:00:20.074266, Left till expiry: 0:54:41.572371, Loop Count: 3
+2015-08-07 19:45:28,427 INFO     pytan.handler.ActionPoller: ID 56: Progress Changed for Seen Count 100% (2 of 2)
+2015-08-07 19:45:28,433 DEBUG    pytan.handler.ActionPoller: ID 56: stopped_flag resolved to 0
+2015-08-07 19:45:28,433 DEBUG    pytan.handler.ActionPoller: ID 56: status resolved to Open
+2015-08-07 19:45:28,433 INFO     pytan.handler.ActionPoller: ID 56: Reached Threshold for Seen Count of 100% (2 of 2)
+2015-08-07 19:45:28,443 DEBUG    pytan.handler.ActionPoller: ID 56: failed: 0, finished: 2, running: 0, success: 2, unknown: 0, Done Key: success, Passed Count: 2
+2015-08-07 19:45:28,443 DEBUG    pytan.handler.ActionPoller: ID 56: Timing: Started: 2015-08-07 19:45:08.353365, Expiration: 2015-08-07 20:40:10, Override Timeout: None, Elapsed Time: 0:00:20.089896, Left till expiry: 0:54:41.556741, Loop Count: 1
+2015-08-07 19:45:28,443 INFO     pytan.handler.ActionPoller: ID 56: Progress Changed for Finished Count 100% (2 of 2)
+2015-08-07 19:45:28,448 DEBUG    pytan.handler.ActionPoller: ID 56: stopped_flag resolved to 0
+2015-08-07 19:45:28,448 DEBUG    pytan.handler.ActionPoller: ID 56: status resolved to Open
+2015-08-07 19:45:28,448 INFO     pytan.handler.ActionPoller: ID 56: Reached Threshold for Finished Count of 100% (2 of 2)
 
 Type of response:  <type 'dict'>
 
 Pretty print of response:
-{'action_info': <taniumpy.object_types.result_info.ResultInfo object at 0x120937c50>,
- 'action_object': <taniumpy.object_types.action.Action object at 0x1115fb350>,
- 'action_result_map': {'failed': {'36367:Expired.': [],
-                                  '36367:Failed.': [],
-                                  '36367:NotSucceeded.': [],
-                                  '36367:Stopped.': [],
+{'action_info': <taniumpy.object_types.result_info.ResultInfo object at 0x10c063810>,
+ 'action_object': <taniumpy.object_types.action.Action object at 0x10c063a50>,
+ 'action_result_map': {'failed': {'56:Expired.': [],
+                                  '56:Failed.': [],
+                                  '56:NotSucceeded.': [],
+                                  '56:Stopped.': [],
                                   'total': 0},
-                       'finished': {'36367:Completed.': ['Casus-Belli.local',
-                                                         'jtanium1.localdomain'],
-                                    '36367:Expired.': [],
-                                    '36367:Failed.': [],
-                                    '36367:NotSucceeded.': [],
-                                    '36367:Stopped.': [],
-                                    '36367:Succeeded.': [],
-                                    '36367:Verified.': [],
+                       'finished': {'56:Completed.': ['Casus-Belli.local',
+                                                      'JTANIUM1.localdomain'],
+                                    '56:Expired.': [],
+                                    '56:Failed.': [],
+                                    '56:NotSucceeded.': [],
+                                    '56:Stopped.': [],
+                                    '56:Succeeded.': [],
+                                    '56:Verified.': [],
                                     'total': 2},
-                       'running': {'36367:Copying.': [],
-                                   '36367:Downloading.': ['Casus-Belli.local',
-                                                          'jtanium1.localdomain'],
-                                   '36367:PendingVerification.': [],
-                                   '36367:Running.': [],
-                                   '36367:Waiting.': [],
-                                   'total': 2},
-                       'success': {'36367:Completed.': ['Casus-Belli.local',
-                                                        'jtanium1.localdomain'],
-                                   '36367:Verified.': [],
+                       'running': {'56:Copying.': [],
+                                   '56:Downloading.': [],
+                                   '56:PendingVerification.': [],
+                                   '56:Running.': [],
+                                   '56:Waiting.': [],
+                                   'total': 0},
+                       'success': {'56:Completed.': ['Casus-Belli.local',
+                                                     'JTANIUM1.localdomain'],
+                                   '56:Verified.': [],
                                    'total': 2},
                        'unknown': {'total': 0}},
- 'action_results': <taniumpy.object_types.result_set.ResultSet object at 0x1115fb690>,
+ 'action_results': <taniumpy.object_types.result_set.ResultSet object at 0x11acb14d0>,
  'group_object': None,
- 'package_object': <taniumpy.object_types.package_spec.PackageSpec object at 0x120937790>,
- 'poller_object': <pytan.pollers.ActionPoller object at 0x120937750>,
+ 'package_object': <taniumpy.object_types.package_spec.PackageSpec object at 0x10c03d0d0>,
+ 'poller_object': <pytan.pollers.ActionPoller object at 0x10c063b10>,
  'poller_success': True,
- 'saved_action_object': None}
+ 'saved_action_object': <taniumpy.object_types.saved_action.SavedAction object at 0x10bf69750>}
 
 Print of action object: 
-Action, name: 'API Deploy Distribute Tanium Standard Utilities', id: 36367
+Action, name: 'API Deploy Distribute Tanium Standard Utilities', id: 56
 
 CSV Results of response: 
 Action Statuses,Computer Name
-36367:Completed.,Casus-Belli.local
-36367:Completed.,jtanium1.localdomain
+56:Completed.,Casus-Belli.local
+56:Completed.,JTANIUM1.localdomain
 
 
 '''

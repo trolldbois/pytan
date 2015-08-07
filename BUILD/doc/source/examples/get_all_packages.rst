@@ -35,7 +35,7 @@ Example Python Code
     USERNAME = "Tanium User"
     PASSWORD = "T@n!um"
     HOST = "172.16.31.128"
-    PORT = "444"
+    PORT = "443"
     
     # Logging conrols
     LOGLEVEL = 2
@@ -93,30 +93,30 @@ Output from Python Code
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
+    Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
     
     Type of response:  <class 'taniumpy.object_types.package_spec_list.PackageSpecList'>
     
     print of response:
-    PackageSpecList, len: 224
+    PackageSpecList, len: 72
     
     length of response (number of objects returned): 
-    224
+    72
     
     print the first object returned in JSON format:
     {
       "_type": "package_spec", 
-      "available_time": "2015-03-03T19:06:35", 
+      "available_time": "2015-08-07T13:22:50", 
       "cache_row_id": 0, 
       "command": "cmd /c cscript //T:900 java-installer.vbs /KillAppsUsingJava:Yes /RebootIfNeeded:Yes /MaxWaitTimeInSeconds:300", 
       "command_timeout": 900, 
-      "creation_time": "2015-03-03T19:03:39", 
+      "creation_time": "2015-08-07T13:22:16", 
       "deleted_flag": 0, 
       "display_name": "Update Java 64-bit - Kill / Reboot", 
       "expire_seconds": 1500, 
-      "hidden_flag": 0, 
-      "id": 1, 
-      "last_modified_by": "Jim Olsen", 
-      "last_update": "2015-03-03T19:03:39", 
-      "metadata": {
+      "files": {
+        "_type": "package_files", 
+        "file": [
+          {
+            "_type": "file", 
     ..trimmed for brevity..

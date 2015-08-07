@@ -26,7 +26,7 @@ for aa in path_adds:
 USERNAME = "Tanium User"
 PASSWORD = "T@n!um"
 HOST = "172.16.31.128"
-PORT = "444"
+PORT = "443"
 
 # Logging conrols
 LOGLEVEL = 2
@@ -88,22 +88,23 @@ except Exception as e:
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
+Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
 No results found searching for user with {'name': 'API Test User'}!!
-2015-08-06 14:56:09,557 INFO     pytan.handler: New user 'API Test User' created with ID 3060, roles: ['Administrator']
+2015-08-07 19:46:14,085 INFO     pytan.handler: New user 'API Test User' created with ID 15, roles: ['Administrator']
 
 Type of response:  <class 'taniumpy.object_types.user.User'>
 
 print of response:
-User, name: 'API Test User', id: 3060
+User, name: 'API Test User', id: 15
 
 print the object returned in JSON format:
 {
   "_type": "user", 
   "deleted_flag": 0, 
   "group_id": 0, 
-  "id": 3060, 
+  "id": 15, 
   "last_login": "2001-01-01T00:00:00", 
+  "local_admin_flag": -1, 
   "metadata": {
     "_type": "metadata", 
     "item": [
@@ -162,6 +163,6 @@ print the object returned in JSON format:
     ]
   }
 }
-2015-08-06 14:56:09,573 INFO     pytan.handler: Deleted "User, name: 'API Test User', id: 3060"
+2015-08-07 19:46:14,099 INFO     pytan.handler: Deleted "User, name: 'API Test User', id: 15"
 
 '''

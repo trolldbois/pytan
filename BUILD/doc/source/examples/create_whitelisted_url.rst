@@ -35,7 +35,7 @@ Example Python Code
     USERNAME = "Tanium User"
     PASSWORD = "T@n!um"
     HOST = "172.16.31.128"
-    PORT = "444"
+    PORT = "443"
     
     # Logging conrols
     LOGLEVEL = 2
@@ -105,20 +105,20 @@ Output from Python Code
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
+    Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
     No results found searching for whitelisted_url with {'url_regex': 'regex:http://test.com/.*API_Test.*URL'}!!
-    2015-08-06 14:56:10,045 INFO     pytan.handler: New Whitelisted URL 'regex:http://test.com/.*API_Test.*URL' created with ID 3069
+    2015-08-07 19:46:14,252 INFO     pytan.handler: New Whitelisted URL 'regex:http://test.com/.*API_Test.*URL' created with ID 52
     
     Type of response:  <class 'taniumpy.object_types.white_listed_url.WhiteListedUrl'>
     
     print of response:
-    WhiteListedUrl, id: 3069
+    WhiteListedUrl, id: 52
     
     print the object returned in JSON format:
     {
       "_type": "white_listed_url", 
       "download_seconds": 3600, 
-      "id": 3069, 
+      "id": 52, 
       "metadata": {
         "_type": "metadata", 
         "item": [
@@ -132,4 +132,4 @@ Output from Python Code
       }, 
       "url_regex": "regex:http://test.com/.*API_Test.*URL"
     }
-    2015-08-06 14:56:10,279 INFO     pytan.handler: Deleted 'WhiteListedUrl, id: 3069'
+    2015-08-07 19:46:14,263 INFO     pytan.handler: Deleted 'WhiteListedUrl, id: 52'

@@ -26,7 +26,7 @@ for aa in path_adds:
 USERNAME = "Tanium User"
 PASSWORD = "T@n!um"
 HOST = "172.16.31.128"
-PORT = "444"
+PORT = "443"
 
 # Logging conrols
 LOGLEVEL = 2
@@ -77,15 +77,15 @@ print out
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
+Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
 
 Type of response:  <class 'taniumpy.object_types.action_list.ActionList'>
 
 print of response:
-ActionList, len: 781
+ActionList, len: 38
 
 length of response (number of objects returned): 
-781
+38
 
 print the first object returned in JSON format:
 {
@@ -95,14 +95,14 @@ print the first object returned in JSON format:
     "id": 0, 
     "name": "Default"
   }, 
+  "approver": {
+    "_type": "user", 
+    "id": 2, 
+    "name": "Tanium User"
+  }, 
   "cache_row_id": 0, 
-  "comment": "Scans for unmanaged assets on the network.", 
-  "creation_time": "2015-06-11T17:24:56", 
-  "distribute_seconds": 600, 
-  "expiration_time": "2015-06-11T17:35:56", 
-  "expire_seconds": 1800, 
-  "history_saved_question": {
-    "_type": "saved_question", 
+  "comment": "Distribute Tanium Standard Utilities", 
+  "creation_time": "2015-08-07T13:26:19", 
 ..trimmed for brevity..
 
 '''

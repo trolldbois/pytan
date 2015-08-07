@@ -26,7 +26,7 @@ for aa in path_adds:
 USERNAME = "Tanium User"
 PASSWORD = "T@n!um"
 HOST = "172.16.31.128"
-PORT = "444"
+PORT = "443"
 
 # Logging conrols
 LOGLEVEL = 2
@@ -61,10 +61,10 @@ except Exception as e:
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
+Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
 Traceback (most recent call last):
   File "<string>", line 53, in <module>
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 709, in create_sensor
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 708, in create_sensor
     raise pytan.exceptions.HandlerError(m)
 HandlerError: Sensor creation not supported via PyTan as of yet, too complex
 Use create_sensor_from_json() instead!

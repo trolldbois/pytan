@@ -35,7 +35,7 @@ Example Python Code
     USERNAME = "Tanium User"
     PASSWORD = "T@n!um"
     HOST = "172.16.31.128"
-    PORT = "444"
+    PORT = "443"
     
     # Logging conrols
     LOGLEVEL = 2
@@ -96,7 +96,7 @@ Output from Python Code
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
+    Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
     
     Type of response:  <class 'taniumpy.object_types.sensor_list.SensorList'>
     

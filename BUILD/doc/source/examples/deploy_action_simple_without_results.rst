@@ -35,7 +35,7 @@ Example Python Code
     USERNAME = "Tanium User"
     PASSWORD = "T@n!um"
     HOST = "172.16.31.128"
-    PORT = "444"
+    PORT = "443"
     
     # Logging conrols
     LOGLEVEL = 2
@@ -98,28 +98,28 @@ Output from Python Code
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
-    2015-08-06 14:52:20,736 DEBUG    pytan.handler.ActionPoller: ID 36368: id resolved to 36368
-    2015-08-06 14:52:20,736 DEBUG    pytan.handler.ActionPoller: ID 36368: package_spec resolved to PackageSpec, name: 'Distribute Tanium Standard Utilities', id: 20
-    2015-08-06 14:52:20,745 DEBUG    pytan.handler.ActionPoller: ID 36368: target_group resolved to Group, name: 'Default'
-    2015-08-06 14:52:20,745 DEBUG    pytan.handler.ActionPoller: ID 36368: Result Map resolved to {'failed': {'36368:Failed.': [], '36368:NotSucceeded.': [], '36368:Expired.': [], 'total': 0, '36368:Stopped.': []}, 'finished': {'36368:Completed.': [], '36368:Verified.': [], '36368:Stopped.': [], '36368:Failed.': [], '36368:Succeeded.': [], '36368:Expired.': [], '36368:NotSucceeded.': [], 'total': 0}, 'running': {'36368:Waiting.': [], '36368:Copying.': [], '36368:PendingVerification.': [], '36368:Running.': [], '36368:Downloading.': [], 'total': 0}, 'success': {'total': 0, '36368:Completed.': [], '36368:Verified.': []}, 'unknown': {'total': 0}}
-    2015-08-06 14:52:20,745 DEBUG    pytan.handler.ActionPoller: ID 36368: expiration_time resolved to 2015-08-06T16:32:21
-    2015-08-06 14:52:20,745 DEBUG    pytan.handler.ActionPoller: ID 36368: status resolved to Active
-    2015-08-06 14:52:20,745 DEBUG    pytan.handler.ActionPoller: ID 36368: stopped_flag resolved to 0
-    2015-08-06 14:52:20,745 DEBUG    pytan.handler.ActionPoller: ID 36368: Object Info resolved to ID 36368: Package: 'Distribute Tanium Standard Utilities', Target: 'None', Verify: False, Stopped: False, Status: Active
+    Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
+    2015-08-07 19:45:28,497 DEBUG    pytan.handler.ActionPoller: ID 57: id resolved to 57
+    2015-08-07 19:45:28,497 DEBUG    pytan.handler.ActionPoller: ID 57: package_spec resolved to PackageSpec, name: 'Distribute Tanium Standard Utilities', id: 20
+    2015-08-07 19:45:28,503 DEBUG    pytan.handler.ActionPoller: ID 57: target_group resolved to Group, name: 'Default'
+    2015-08-07 19:45:28,504 DEBUG    pytan.handler.ActionPoller: ID 57: Result Map resolved to {'failed': {'total': 0, '57:Expired.': [], '57:Failed.': [], '57:NotSucceeded.': [], '57:Stopped.': []}, 'finished': {'57:Verified.': [], '57:NotSucceeded.': [], '57:Stopped.': [], '57:Completed.': [], '57:Expired.': [], '57:Failed.': [], '57:Succeeded.': [], 'total': 0}, 'running': {'57:Downloading.': [], '57:Copying.': [], '57:PendingVerification.': [], '57:Running.': [], '57:Waiting.': [], 'total': 0}, 'success': {'57:Completed.': [], 'total': 0, '57:Verified.': []}, 'unknown': {'total': 0}}
+    2015-08-07 19:45:28,504 DEBUG    pytan.handler.ActionPoller: ID 57: expiration_time resolved to 2015-08-07T20:40:30
+    2015-08-07 19:45:28,504 DEBUG    pytan.handler.ActionPoller: ID 57: status resolved to Open
+    2015-08-07 19:45:28,504 DEBUG    pytan.handler.ActionPoller: ID 57: stopped_flag resolved to 0
+    2015-08-07 19:45:28,504 DEBUG    pytan.handler.ActionPoller: ID 57: Object Info resolved to ID 57: Package: 'Distribute Tanium Standard Utilities', Target: 'None', Verify: False, Stopped: False, Status: Open
     
     Type of response:  <type 'dict'>
     
     Pretty print of response:
-    {'action_info': <taniumpy.object_types.result_info.ResultInfo object at 0x1115fbf90>,
-     'action_object': <taniumpy.object_types.action.Action object at 0x1115fb710>,
+    {'action_info': <taniumpy.object_types.result_info.ResultInfo object at 0x10be950d0>,
+     'action_object': <taniumpy.object_types.action.Action object at 0x10bf70fd0>,
      'action_result_map': None,
      'action_results': None,
      'group_object': None,
-     'package_object': <taniumpy.object_types.package_spec.PackageSpec object at 0x120937550>,
-     'poller_object': <pytan.pollers.ActionPoller object at 0x1115fbb90>,
+     'package_object': <taniumpy.object_types.package_spec.PackageSpec object at 0x11aae6050>,
+     'poller_object': <pytan.pollers.ActionPoller object at 0x11aae6090>,
      'poller_success': None,
-     'saved_action_object': None}
+     'saved_action_object': <taniumpy.object_types.saved_action.SavedAction object at 0x10c063a50>}
     
     Print of action object: 
-    Action, name: 'API Deploy Distribute Tanium Standard Utilities', id: 36368
+    Action, name: 'API Deploy Distribute Tanium Standard Utilities', id: 57

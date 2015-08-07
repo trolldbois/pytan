@@ -26,7 +26,7 @@ for aa in path_adds:
 USERNAME = "Tanium User"
 PASSWORD = "T@n!um"
 HOST = "172.16.31.128"
-PORT = "444"
+PORT = "443"
 
 # Logging conrols
 LOGLEVEL = 2
@@ -104,9 +104,9 @@ print response.to_json(response)
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
-2015-08-06 14:56:10,838 INFO     pytan.handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/QuestionList_2015_08_06-10_56_10-EDT.json' written with 775 bytes
-2015-08-06 14:56:10,859 INFO     pytan.handler: New Question, id: 86272 (ID: 86272) created successfully!
+Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
+2015-08-07 19:46:14,608 INFO     pytan.handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/QuestionList_2015_08_07-15_46_14-EDT.json' written with 2468 bytes
+2015-08-07 19:46:14,640 INFO     pytan.handler: New Question, id: 1305 (ID: 1305) created successfully!
 
 Type of response:  <class 'taniumpy.object_types.question_list.QuestionList'>
 
@@ -124,23 +124,71 @@ print the object returned in JSON format:
         "_type": "group", 
         "id": 0
       }, 
-      "expiration": "2015-08-06T15:06:11", 
+      "expiration": "2015-08-07T19:56:14", 
       "expire_seconds": 0, 
-      "force_computer_id_flag": 0, 
+      "force_computer_id_flag": 1, 
       "hidden_flag": 0, 
-      "id": 86272, 
+      "id": 1305, 
       "management_rights_group": {
         "_type": "group", 
         "id": 0
       }, 
-      "query_text": "Get number of machines", 
+      "query_text": "Get Action Statuses matching \"Nil\" from all machines", 
       "saved_question": {
         "_type": "saved_question", 
         "id": 0
       }, 
       "selects": {
         "_type": "selects", 
-        "select": []
+        "select": [
+          {
+            "_type": "select", 
+            "filter": {
+              "_type": "filter", 
+              "all_times_flag": 0, 
+              "all_values_flag": 1, 
+              "delimiter_index": 0, 
+              "end_time": "2001-01-01T00:00:00", 
+              "ignore_case_flag": 1, 
+              "max_age_seconds": 0, 
+              "not_flag": 0, 
+              "operator": "RegexMatch", 
+              "start_time": "2001-01-01T00:00:00", 
+              "substring_flag": 0, 
+              "substring_length": 0, 
+              "substring_start": 0, 
+              "utf8_flag": 0, 
+              "value": "Nil", 
+              "value_type": "String"
+            }, 
+            "sensor": {
+              "_type": "sensor", 
+              "category": "Reserved", 
+              "description": "The recorded state of each action a client has taken recently in the form of id:status.\nExample: 1:Completed", 
+              "exclude_from_parse_flag": 1, 
+              "hash": 1792443391, 
+              "hidden_flag": 0, 
+              "id": 1, 
+              "ignore_case_flag": 1, 
+              "max_age_seconds": 3600, 
+              "name": "Action Statuses", 
+              "queries": {
+                "_type": "queries", 
+                "query": [
+                  {
+                    "_type": "query", 
+                    "platform": "Windows", 
+                    "script": "Reserved", 
+                    "script_type": "WMIQuery"
+                  }
+                ]
+              }, 
+              "source_id": 0, 
+              "string_count": 238, 
+              "value_type": "String"
+            }
+          }
+        ]
       }, 
       "skip_lock_flag": 0, 
       "user": {

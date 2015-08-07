@@ -32,7 +32,7 @@ for aa in path_adds:
 USERNAME = "Tanium User"
 PASSWORD = "T@n!um"
 HOST = "172.16.31.128"
-PORT = "444"
+PORT = "443"
 
 # Logging conrols
 LOGLEVEL = 2
@@ -89,33 +89,32 @@ print out
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
-2015-08-06 14:49:03,377 DEBUG    pytan.handler.QuestionPoller: ID 86261: id resolved to 86261
-2015-08-06 14:49:03,377 DEBUG    pytan.handler.QuestionPoller: ID 86261: expiration resolved to 2015-08-06T14:59:03
-2015-08-06 14:49:03,377 DEBUG    pytan.handler.QuestionPoller: ID 86261: query_text resolved to Get Operating System contains "Windows" from all machines
-2015-08-06 14:49:03,377 DEBUG    pytan.handler.QuestionPoller: ID 86261: id resolved to 86261
-2015-08-06 14:49:03,377 DEBUG    pytan.handler.QuestionPoller: ID 86261: Object Info resolved to Question ID: 86261, Query: Get Operating System contains "Windows" from all machines
-2015-08-06 14:49:03,382 DEBUG    pytan.handler.QuestionPoller: ID 86261: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
-2015-08-06 14:49:03,382 DEBUG    pytan.handler.QuestionPoller: ID 86261: Timing: Started: 2015-08-06 14:49:03.377378, Expiration: 2015-08-06 14:59:03, Override Timeout: None, Elapsed Time: 0:00:00.005251, Left till expiry: 0:09:59.617374, Loop Count: 1
-2015-08-06 14:49:03,382 INFO     pytan.handler.QuestionPoller: ID 86261: Progress Changed 0% (0 of 2)
-2015-08-06 14:49:08,393 DEBUG    pytan.handler.QuestionPoller: ID 86261: Progress: Tested: 1, Passed: 1, MR Tested: 1, MR Passed: 1, Est Total: 2, Row Count: 1
-2015-08-06 14:49:08,393 DEBUG    pytan.handler.QuestionPoller: ID 86261: Timing: Started: 2015-08-06 14:49:03.377378, Expiration: 2015-08-06 14:59:03, Override Timeout: None, Elapsed Time: 0:00:05.015745, Left till expiry: 0:09:54.606879, Loop Count: 2
-2015-08-06 14:49:08,393 INFO     pytan.handler.QuestionPoller: ID 86261: Progress Changed 50% (1 of 2)
-2015-08-06 14:49:13,403 DEBUG    pytan.handler.QuestionPoller: ID 86261: Progress: Tested: 2, Passed: 2, MR Tested: 2, MR Passed: 2, Est Total: 2, Row Count: 2
-2015-08-06 14:49:13,403 DEBUG    pytan.handler.QuestionPoller: ID 86261: Timing: Started: 2015-08-06 14:49:03.377378, Expiration: 2015-08-06 14:59:03, Override Timeout: None, Elapsed Time: 0:00:10.025879, Left till expiry: 0:09:49.596745, Loop Count: 3
-2015-08-06 14:49:13,403 INFO     pytan.handler.QuestionPoller: ID 86261: Progress Changed 100% (2 of 2)
-2015-08-06 14:49:13,403 INFO     pytan.handler.QuestionPoller: ID 86261: Reached Threshold of 99% (2 of 2)
+Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
+2015-08-07 19:43:51,504 DEBUG    pytan.handler.QuestionPoller: ID 1295: id resolved to 1295
+2015-08-07 19:43:51,504 DEBUG    pytan.handler.QuestionPoller: ID 1295: expiration resolved to 2015-08-07T19:53:51
+2015-08-07 19:43:51,504 DEBUG    pytan.handler.QuestionPoller: ID 1295: query_text resolved to Get Operating System containing "Windows" from all machines
+2015-08-07 19:43:51,504 DEBUG    pytan.handler.QuestionPoller: ID 1295: id resolved to 1295
+2015-08-07 19:43:51,504 DEBUG    pytan.handler.QuestionPoller: ID 1295: Object Info resolved to Question ID: 1295, Query: Get Operating System containing "Windows" from all machines
+2015-08-07 19:43:51,508 DEBUG    pytan.handler.QuestionPoller: ID 1295: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
+2015-08-07 19:43:51,508 DEBUG    pytan.handler.QuestionPoller: ID 1295: Timing: Started: 2015-08-07 19:43:51.504895, Expiration: 2015-08-07 19:53:51, Override Timeout: None, Elapsed Time: 0:00:00.003409, Left till expiry: 0:09:59.491698, Loop Count: 1
+2015-08-07 19:43:51,508 INFO     pytan.handler.QuestionPoller: ID 1295: Progress Changed 0% (0 of 2)
+2015-08-07 19:43:56,512 DEBUG    pytan.handler.QuestionPoller: ID 1295: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
+2015-08-07 19:43:56,512 DEBUG    pytan.handler.QuestionPoller: ID 1295: Timing: Started: 2015-08-07 19:43:51.504895, Expiration: 2015-08-07 19:53:51, Override Timeout: None, Elapsed Time: 0:00:05.007355, Left till expiry: 0:09:54.487753, Loop Count: 2
+2015-08-07 19:44:01,520 DEBUG    pytan.handler.QuestionPoller: ID 1295: Progress: Tested: 2, Passed: 2, MR Tested: 2, MR Passed: 2, Est Total: 2, Row Count: 2
+2015-08-07 19:44:01,520 DEBUG    pytan.handler.QuestionPoller: ID 1295: Timing: Started: 2015-08-07 19:43:51.504895, Expiration: 2015-08-07 19:53:51, Override Timeout: None, Elapsed Time: 0:00:10.015495, Left till expiry: 0:09:49.479614, Loop Count: 3
+2015-08-07 19:44:01,520 INFO     pytan.handler.QuestionPoller: ID 1295: Progress Changed 100% (2 of 2)
+2015-08-07 19:44:01,520 INFO     pytan.handler.QuestionPoller: ID 1295: Reached Threshold of 99% (2 of 2)
 
 Type of response:  <type 'dict'>
 
 Pretty print of response:
-{'poller_object': <pytan.pollers.QuestionPoller object at 0x1113c2910>,
+{'poller_object': <pytan.pollers.QuestionPoller object at 0x10a5b98d0>,
  'poller_success': True,
- 'question_object': <taniumpy.object_types.question.Question object at 0x1113ad090>,
- 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x111383750>}
+ 'question_object': <taniumpy.object_types.question.Question object at 0x10a5b9810>,
+ 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x10a615710>}
 
 Equivalent Question if it were to be asked in the Tanium Console: 
-Get Operating System contains "Windows" from all machines
+Get Operating System containing "Windows" from all machines
 
 CSV Results of response: 
 Operating System

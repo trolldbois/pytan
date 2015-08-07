@@ -26,7 +26,7 @@ for aa in path_adds:
 USERNAME = "Tanium User"
 PASSWORD = "T@n!um"
 HOST = "172.16.31.128"
-PORT = "444"
+PORT = "443"
 
 # Logging conrols
 LOGLEVEL = 2
@@ -73,12 +73,12 @@ except Exception as e:
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
+Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
 Traceback (most recent call last):
   File "<string>", line 65, in <module>
-  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2710, in wrap
+  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2699, in wrap
     ret = f(*args, **kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1079, in export_obj
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1078, in export_obj
     raise pytan.exceptions.HandlerError(err)
 HandlerError: u'bad' not a supported export format for SensorList, must be one of: xml, json, csv
 

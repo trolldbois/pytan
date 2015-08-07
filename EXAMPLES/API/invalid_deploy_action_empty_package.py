@@ -26,7 +26,7 @@ for aa in path_adds:
 USERNAME = "Tanium User"
 PASSWORD = "T@n!um"
 HOST = "172.16.31.128"
-PORT = "444"
+PORT = "443"
 
 # Logging conrols
 LOGLEVEL = 2
@@ -64,12 +64,12 @@ except Exception as e:
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
+Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
 Traceback (most recent call last):
   File "<string>", line 56, in <module>
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 399, in deploy_action
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 398, in deploy_action
     package_def = pytan.utils.dehumanize_package(package)
-  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 1502, in dehumanize_package
+  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 1508, in dehumanize_package
     raise pytan.exceptions.HumanParserError(err(package))
 HumanParserError: u'' must be a string supplied as 'package'
 

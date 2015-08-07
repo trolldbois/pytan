@@ -26,7 +26,7 @@ for aa in path_adds:
 USERNAME = "Tanium User"
 PASSWORD = "T@n!um"
 HOST = "172.16.31.128"
-PORT = "444"
+PORT = "443"
 
 # Logging conrols
 LOGLEVEL = 2
@@ -63,28 +63,28 @@ except Exception as e:
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
+Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
 Traceback (most recent call last):
   File "<string>", line 55, in <module>
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 131, in ask
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 130, in ask
     result = getattr(self, q_obj_map['handler'])(**kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 306, in ask_manual
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 305, in ask_manual
     **kwargs
-  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2710, in wrap
+  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2699, in wrap
     ret = f(*args, **kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1880, in _ask_manual
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1882, in _ask_manual
     sensor_defs = self._get_sensor_defs(sensor_defs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1419, in _get_sensor_defs
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1418, in _get_sensor_defs
     d['sensor_obj'] = self.get('sensor', **def_search)[0]
-  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2710, in wrap
+  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2699, in wrap
     ret = f(*args, **kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1251, in get
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1250, in get
     return self._get_multi(obj_map, **kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1364, in _get_multi
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1363, in _get_multi
     found = self._find(api_obj_multi, **kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2710, in wrap
+  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2699, in wrap
     ret = f(*args, **kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1328, in _find
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1327, in _find
     raise pytan.exceptions.HandlerError(err(search_str))
 HandlerError: No results found searching for Sensor, name: u'Dweedle Dee and Dum'!!
 

@@ -35,7 +35,7 @@ Example Python Code
     USERNAME = "Tanium User"
     PASSWORD = "T@n!um"
     HOST = "172.16.31.128"
-    PORT = "444"
+    PORT = "443"
     
     # Logging conrols
     LOGLEVEL = 2
@@ -79,12 +79,12 @@ Output from Python Code
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
+    Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
     Traceback (most recent call last):
       File "<string>", line 55, in <module>
-      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 131, in ask
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 130, in ask
         result = getattr(self, q_obj_map['handler'])(**kwargs)
-      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 275, in ask_manual
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 274, in ask_manual
         raise pytan.exceptions.PytanHelp(pytan.help.help_filters())
     PytanHelp: 
     Filters Help

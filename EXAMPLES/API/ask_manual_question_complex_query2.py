@@ -26,7 +26,7 @@ for aa in path_adds:
 USERNAME = "Tanium User"
 PASSWORD = "T@n!um"
 HOST = "172.16.31.128"
-PORT = "444"
+PORT = "443"
 
 # Logging conrols
 LOGLEVEL = 2
@@ -87,38 +87,40 @@ print out
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
-2015-08-06 14:49:44,500 DEBUG    pytan.handler.QuestionPoller: ID 86263: id resolved to 86263
-2015-08-06 14:49:44,500 DEBUG    pytan.handler.QuestionPoller: ID 86263: expiration resolved to 2015-08-06T14:59:44
-2015-08-06 14:49:44,500 DEBUG    pytan.handler.QuestionPoller: ID 86263: query_text resolved to Get Computer Name and Last Logged In User and Installed Applications contains "Google (Search|Chrome)" from all machines where Installed Applications contains "Google (Search|Chrome)"
-2015-08-06 14:49:44,500 DEBUG    pytan.handler.QuestionPoller: ID 86263: id resolved to 86263
-2015-08-06 14:49:44,500 DEBUG    pytan.handler.QuestionPoller: ID 86263: Object Info resolved to Question ID: 86263, Query: Get Computer Name and Last Logged In User and Installed Applications contains "Google (Search|Chrome)" from all machines where Installed Applications contains "Google (Search|Chrome)"
-2015-08-06 14:49:44,505 DEBUG    pytan.handler.QuestionPoller: ID 86263: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
-2015-08-06 14:49:44,505 DEBUG    pytan.handler.QuestionPoller: ID 86263: Timing: Started: 2015-08-06 14:49:44.500666, Expiration: 2015-08-06 14:59:44, Override Timeout: None, Elapsed Time: 0:00:00.004599, Left till expiry: 0:09:59.494737, Loop Count: 1
-2015-08-06 14:49:44,505 INFO     pytan.handler.QuestionPoller: ID 86263: Progress Changed 0% (0 of 2)
-2015-08-06 14:49:49,512 DEBUG    pytan.handler.QuestionPoller: ID 86263: Progress: Tested: 1, Passed: 1, MR Tested: 1, MR Passed: 1, Est Total: 2, Row Count: 1
-2015-08-06 14:49:49,512 DEBUG    pytan.handler.QuestionPoller: ID 86263: Timing: Started: 2015-08-06 14:49:44.500666, Expiration: 2015-08-06 14:59:44, Override Timeout: None, Elapsed Time: 0:00:05.011544, Left till expiry: 0:09:54.487793, Loop Count: 2
-2015-08-06 14:49:49,512 INFO     pytan.handler.QuestionPoller: ID 86263: Progress Changed 50% (1 of 2)
-2015-08-06 14:49:54,519 DEBUG    pytan.handler.QuestionPoller: ID 86263: Progress: Tested: 2, Passed: 2, MR Tested: 2, MR Passed: 2, Est Total: 2, Row Count: 2
-2015-08-06 14:49:54,519 DEBUG    pytan.handler.QuestionPoller: ID 86263: Timing: Started: 2015-08-06 14:49:44.500666, Expiration: 2015-08-06 14:59:44, Override Timeout: None, Elapsed Time: 0:00:10.018531, Left till expiry: 0:09:49.480805, Loop Count: 3
-2015-08-06 14:49:54,519 INFO     pytan.handler.QuestionPoller: ID 86263: Progress Changed 100% (2 of 2)
-2015-08-06 14:49:54,519 INFO     pytan.handler.QuestionPoller: ID 86263: Reached Threshold of 99% (2 of 2)
+Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
+2015-08-07 19:44:31,762 DEBUG    pytan.handler.QuestionPoller: ID 1297: id resolved to 1297
+2015-08-07 19:44:31,763 DEBUG    pytan.handler.QuestionPoller: ID 1297: expiration resolved to 2015-08-07T19:54:31
+2015-08-07 19:44:31,763 DEBUG    pytan.handler.QuestionPoller: ID 1297: query_text resolved to Get Computer Name and Last Logged In User and Installed Applications containing "Google (Search|Chrome)" from all machines with Installed Applications containing "Google (Search|Chrome)"
+2015-08-07 19:44:31,763 DEBUG    pytan.handler.QuestionPoller: ID 1297: id resolved to 1297
+2015-08-07 19:44:31,763 DEBUG    pytan.handler.QuestionPoller: ID 1297: Object Info resolved to Question ID: 1297, Query: Get Computer Name and Last Logged In User and Installed Applications containing "Google (Search|Chrome)" from all machines with Installed Applications containing "Google (Search|Chrome)"
+2015-08-07 19:44:31,766 DEBUG    pytan.handler.QuestionPoller: ID 1297: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
+2015-08-07 19:44:31,766 DEBUG    pytan.handler.QuestionPoller: ID 1297: Timing: Started: 2015-08-07 19:44:31.763180, Expiration: 2015-08-07 19:54:31, Override Timeout: None, Elapsed Time: 0:00:00.003000, Left till expiry: 0:09:59.233822, Loop Count: 1
+2015-08-07 19:44:31,766 INFO     pytan.handler.QuestionPoller: ID 1297: Progress Changed 0% (0 of 2)
+2015-08-07 19:44:36,774 DEBUG    pytan.handler.QuestionPoller: ID 1297: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
+2015-08-07 19:44:36,774 DEBUG    pytan.handler.QuestionPoller: ID 1297: Timing: Started: 2015-08-07 19:44:31.763180, Expiration: 2015-08-07 19:54:31, Override Timeout: None, Elapsed Time: 0:00:05.011630, Left till expiry: 0:09:54.225197, Loop Count: 2
+2015-08-07 19:44:41,779 DEBUG    pytan.handler.QuestionPoller: ID 1297: Progress: Tested: 1, Passed: 1, MR Tested: 1, MR Passed: 1, Est Total: 2, Row Count: 1
+2015-08-07 19:44:41,779 DEBUG    pytan.handler.QuestionPoller: ID 1297: Timing: Started: 2015-08-07 19:44:31.763180, Expiration: 2015-08-07 19:54:31, Override Timeout: None, Elapsed Time: 0:00:10.016212, Left till expiry: 0:09:49.220610, Loop Count: 3
+2015-08-07 19:44:41,779 INFO     pytan.handler.QuestionPoller: ID 1297: Progress Changed 50% (1 of 2)
+2015-08-07 19:44:46,783 DEBUG    pytan.handler.QuestionPoller: ID 1297: Progress: Tested: 2, Passed: 2, MR Tested: 2, MR Passed: 2, Est Total: 2, Row Count: 2
+2015-08-07 19:44:46,783 DEBUG    pytan.handler.QuestionPoller: ID 1297: Timing: Started: 2015-08-07 19:44:31.763180, Expiration: 2015-08-07 19:54:31, Override Timeout: None, Elapsed Time: 0:00:15.020382, Left till expiry: 0:09:44.216440, Loop Count: 4
+2015-08-07 19:44:46,783 INFO     pytan.handler.QuestionPoller: ID 1297: Progress Changed 100% (2 of 2)
+2015-08-07 19:44:46,783 INFO     pytan.handler.QuestionPoller: ID 1297: Reached Threshold of 99% (2 of 2)
 
 Type of response:  <type 'dict'>
 
 Pretty print of response:
-{'poller_object': <pytan.pollers.QuestionPoller object at 0x1113c2990>,
+{'poller_object': <pytan.pollers.QuestionPoller object at 0x10a615950>,
  'poller_success': True,
- 'question_object': <taniumpy.object_types.question.Question object at 0x111365b90>,
- 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x10fc0ec10>}
+ 'question_object': <taniumpy.object_types.question.Question object at 0x10a5e1bd0>,
+ 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x10a5e1d90>}
 
 Equivalent Question if it were to be asked in the Tanium Console: 
-Get Computer Name and Last Logged In User and Installed Applications contains "Google (Search|Chrome)" from all machines where Installed Applications contains "Google (Search|Chrome)"
+Get Computer Name and Last Logged In User and Installed Applications containing "Google (Search|Chrome)" from all machines with Installed Applications containing "Google (Search|Chrome)"
 
 CSV Results of response: 
 Computer Name,Last Logged In User,Name,Silent Uninstall String,Uninstallable,Version
-jtanium1.localdomain,JTANIUM1\Jim Olsen,Google Chrome,"""C:\Program Files (x86)\Google\Chrome\Application\44.0.2403.130\Installer\setup.exe"" --uninstall --multi-install --chrome --system-level",Not Uninstallable,44.0.2403.130
-Casus-Belli.local,N/A on Mac,"Google Search
+JTANIUM1.localdomain,Uninitialized - waiting for login,Google Chrome,"""C:\Program Files (x86)\Google\Chrome\Application\44.0.2403.130\Installer\setup.exe"" --uninstall --multi-install --chrome --system-level",Not Uninstallable,44.0.2403.130
+Casus-Belli.local,jolsen,"Google Search
 Google Search
 Google Chrome","nothing
 nothing

@@ -1265,17 +1265,6 @@ Valid Filters
         Example: "Sensor1, that re:VALUE"
 </code></pre>
 
-<pre lang="STDERR"><code>Exception in thread Thread-2 (most likely raised during interpreter shutdown):
-Traceback (most recent call last):
-  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/threading.py", line 810, in __bootstrap_inner
-  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/threading.py", line 763, in run
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1507, in _derive_server_version
-  File "/Users/jolsen/gh/pytan/lib/pytan/sessions.py", line 425, in get_server_version
-  File "/Users/jolsen/gh/pytan/lib/pytan/sessions.py", line 396, in get_server_info
-  File "/Users/jolsen/gh/pytan/lib/pytan/sessions.py", line 512, in http_post
-&lt;type 'exceptions.AttributeError'&gt;: 'NoneType' object has no attribute 'exceptions'
-</code></pre>
-
 <ul>
 <li>Validation Test: notexitcode
 
@@ -1425,10 +1414,10 @@ Valid Options
   "run": false, 
   "start_seconds_from_now": null
 }
-2015-08-07 14:28:14,182 INFO     pytan.handler.QuestionPoller: ID 193: Progress Changed 0% (0 of 2)
-2015-08-07 14:28:24,202 INFO     pytan.handler.QuestionPoller: ID 193: Progress Changed 50% (1 of 2)
-2015-08-07 14:28:29,211 INFO     pytan.handler.QuestionPoller: ID 193: Progress Changed 100% (2 of 2)
-2015-08-07 14:28:29,212 INFO     pytan.handler.QuestionPoller: ID 193: Reached Threshold of 99% (2 of 2)
+2015-08-07 19:27:46,785 INFO     pytan.handler.QuestionPoller: ID 1270: Progress Changed 0% (0 of 2)
+2015-08-07 19:33:12,125 INFO     pytan.handler.QuestionPoller: ID 1270: Progress Changed 50% (1 of 2)
+2015-08-07 19:33:17,130 INFO     pytan.handler.QuestionPoller: ID 1270: Progress Changed 100% (2 of 2)
+2015-08-07 19:33:17,130 INFO     pytan.handler.QuestionPoller: ID 1270: Reached Threshold of 99% (2 of 2)
 'Run' is not True!!
 View and verify the contents of /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/VERIFY_BEFORE_DEPLOY_ACTION_out.csv (length: 73 bytes)
 Re-run this deploy action with run=True after verifying
@@ -1488,17 +1477,15 @@ JTANIUM1.localdomain,True
   "run": true, 
   "start_seconds_from_now": null
 }
-2015-08-07 14:28:30,144 INFO     pytan.handler.QuestionPoller: ID 194: Progress Changed 0% (0 of 2)
-2015-08-07 14:28:35,158 INFO     pytan.handler.QuestionPoller: ID 194: Progress Changed 50% (1 of 2)
-2015-08-07 14:28:40,170 INFO     pytan.handler.QuestionPoller: ID 194: Progress Changed 100% (2 of 2)
-2015-08-07 14:28:40,170 INFO     pytan.handler.QuestionPoller: ID 194: Reached Threshold of 99% (2 of 2)
-2015-08-07 14:28:40,207 INFO     pytan.handler.ActionPoller: ID 41: Progress Changed for Seen Count 0% (0 of 2)
-2015-08-07 14:28:45,250 INFO     pytan.handler.ActionPoller: ID 41: Progress Changed for Seen Count 50% (1 of 2)
-2015-08-07 14:28:55,441 INFO     pytan.handler.ActionPoller: ID 41: Progress Changed for Seen Count 100% (2 of 2)
-2015-08-07 14:28:55,462 INFO     pytan.handler.ActionPoller: ID 41: Reached Threshold for Seen Count of 100% (2 of 2)
-2015-08-07 14:28:55,497 INFO     pytan.handler.ActionPoller: ID 41: Progress Changed for Finished Count 100% (2 of 2)
-2015-08-07 14:28:55,512 INFO     pytan.handler.ActionPoller: ID 41: Reached Threshold for Finished Count of 100% (2 of 2)
-++ Deployed Action 'API Deploy Distribute Tanium Standard Utilities' ID: 41
+2015-08-07 19:33:17,506 INFO     pytan.handler.QuestionPoller: ID 1274: Progress Changed 0% (0 of 2)
+2015-08-07 19:33:22,510 INFO     pytan.handler.QuestionPoller: ID 1274: Progress Changed 100% (2 of 2)
+2015-08-07 19:33:22,510 INFO     pytan.handler.QuestionPoller: ID 1274: Reached Threshold of 99% (2 of 2)
+2015-08-07 19:33:22,521 INFO     pytan.handler.ActionPoller: ID 54: Progress Changed for Seen Count 0% (0 of 2)
+2015-08-07 19:33:32,556 INFO     pytan.handler.ActionPoller: ID 54: Progress Changed for Seen Count 100% (2 of 2)
+2015-08-07 19:33:32,561 INFO     pytan.handler.ActionPoller: ID 54: Reached Threshold for Seen Count of 100% (2 of 2)
+2015-08-07 19:33:32,570 INFO     pytan.handler.ActionPoller: ID 54: Progress Changed for Finished Count 100% (2 of 2)
+2015-08-07 19:33:32,575 INFO     pytan.handler.ActionPoller: ID 54: Reached Threshold for Finished Count of 100% (2 of 2)
+++ Deployed Action 'API Deploy Distribute Tanium Standard Utilities' ID: 54
 ++ Command used in Action: 'cmd /c cscript install-standard-utils.vbs "Tools\\StdUtils"'
 ++ Deploy action progress results:
 Total failed: 0
@@ -1531,8 +1518,8 @@ Total unknown: 0
 </ul>
 
 <pre><code>Action Statuses,Computer Name
-41:Completed.,Casus-Belli.local
-41:Completed.,JTANIUM1.localdomain
+54:Completed.,Casus-Belli.local
+54:Completed.,JTANIUM1.localdomain
 </code></pre>
 
 <p><a href="#user-content-toc">TOC</a></p>
@@ -1565,15 +1552,15 @@ Total unknown: 0
   "run": true, 
   "start_seconds_from_now": null
 }
-2015-08-07 14:28:56,978 INFO     pytan.handler.QuestionPoller: ID 196: Progress Changed 0% (0 of 2)
-2015-08-07 14:29:12,042 INFO     pytan.handler.QuestionPoller: ID 196: Progress Changed 100% (2 of 2)
-2015-08-07 14:29:12,042 INFO     pytan.handler.QuestionPoller: ID 196: Reached Threshold of 99% (2 of 2)
-2015-08-07 14:29:12,082 INFO     pytan.handler.ActionPoller: ID 42: Progress Changed for Seen Count 0% (0 of 1)
-2015-08-07 14:29:22,241 INFO     pytan.handler.ActionPoller: ID 42: Progress Changed for Seen Count 100% (1 of 1)
-2015-08-07 14:29:22,266 INFO     pytan.handler.ActionPoller: ID 42: Reached Threshold for Seen Count of 100% (1 of 1)
-2015-08-07 14:29:22,333 INFO     pytan.handler.ActionPoller: ID 42: Progress Changed for Finished Count 100% (1 of 1)
-2015-08-07 14:29:22,362 INFO     pytan.handler.ActionPoller: ID 42: Reached Threshold for Finished Count of 100% (1 of 1)
-++ Deployed Action 'API Deploy Custom Tagging - Add Tags' ID: 42
+2015-08-07 19:33:32,894 INFO     pytan.handler.QuestionPoller: ID 1275: Progress Changed 0% (0 of 2)
+2015-08-07 19:33:37,901 INFO     pytan.handler.QuestionPoller: ID 1275: Progress Changed 100% (2 of 2)
+2015-08-07 19:33:37,901 INFO     pytan.handler.QuestionPoller: ID 1275: Reached Threshold of 99% (2 of 2)
+2015-08-07 19:33:37,911 INFO     pytan.handler.ActionPoller: ID 55: Progress Changed for Seen Count 0% (0 of 1)
+2015-08-07 19:33:57,982 INFO     pytan.handler.ActionPoller: ID 55: Progress Changed for Seen Count 100% (1 of 1)
+2015-08-07 19:33:57,989 INFO     pytan.handler.ActionPoller: ID 55: Reached Threshold for Seen Count of 100% (1 of 1)
+2015-08-07 19:33:57,999 INFO     pytan.handler.ActionPoller: ID 55: Progress Changed for Finished Count 100% (1 of 1)
+2015-08-07 19:33:58,005 INFO     pytan.handler.ActionPoller: ID 55: Reached Threshold for Finished Count of 100% (1 of 1)
+++ Deployed Action 'API Deploy Custom Tagging - Add Tags' ID: 55
 ++ Command used in Action: 'cmd /c cscript //T:60 add-tags.vbs "new%5ftag"'
 ++ Deploy action progress results:
 Total failed: 0
@@ -1606,13 +1593,13 @@ Total unknown: 0
 </ul>
 
 <pre><code>Action Statuses,Computer Name
-42:Completed.,JTANIUM1.localdomain
+55:Completed.,JTANIUM1.localdomain
 </code></pre>
 
 <p><a href="#user-content-toc">TOC</a></p>
 
 <h6>
-<a id="user-content-generated-by-build_bin_doc-v145-date-fri-aug--7-102922-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v145-date-fri-aug--7-102922-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v1.4.5</code>, date: Fri Aug  7 10:29:22 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
+<a id="user-content-generated-by-build_bin_doc-v145-date-fri-aug--7-153358-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v145-date-fri-aug--7-153358-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v1.4.5</code>, date: Fri Aug  7 15:33:58 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
 </h6>
 
 </body></html>

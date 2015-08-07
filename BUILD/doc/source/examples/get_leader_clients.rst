@@ -35,7 +35,7 @@ Example Python Code
     USERNAME = "Tanium User"
     PASSWORD = "T@n!um"
     HOST = "172.16.31.128"
-    PORT = "444"
+    PORT = "443"
     
     # Logging conrols
     LOGLEVEL = 2
@@ -94,7 +94,7 @@ Output from Python Code
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
+    Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
     
     Type of response:  <class 'taniumpy.object_types.system_status_list.SystemStatusList'>
     
@@ -108,15 +108,16 @@ Output from Python Code
     {
       "_type": "client_status", 
       "cache_row_id": 1, 
-      "computer_id": "1295996549", 
+      "computer_id": "3741604154", 
       "full_version": "6.0.314.1195", 
-      "host_name": "jtanium1.localdomain", 
+      "host_name": "JTANIUM1.localdomain", 
       "ipaddress_client": "172.16.31.128", 
       "ipaddress_server": "172.16.31.128", 
-      "last_registration": "2015-07-22T13:48:19", 
+      "last_registration": "2015-08-07T19:45:00", 
       "port_number": 17473, 
       "protocol_version": 314, 
+      "public_key_valid": 1, 
       "receive_state": "Previous Only", 
       "send_state": "Backward Only", 
       "status": "Leader"
-    }
+    ..trimmed for brevity..

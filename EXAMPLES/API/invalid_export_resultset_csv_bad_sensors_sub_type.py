@@ -26,7 +26,7 @@ for aa in path_adds:
 USERNAME = "Tanium User"
 PASSWORD = "T@n!um"
 HOST = "172.16.31.128"
-PORT = "444"
+PORT = "443"
 
 # Logging conrols
 LOGLEVEL = 2
@@ -74,28 +74,28 @@ except Exception as e:
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
-2015-08-06 15:14:34,186 DEBUG    pytan.handler.QuestionPoller: ID 86299: id resolved to 86299
-2015-08-06 15:14:34,186 DEBUG    pytan.handler.QuestionPoller: ID 86299: expiration resolved to 2015-08-06T15:24:34
-2015-08-06 15:14:34,186 DEBUG    pytan.handler.QuestionPoller: ID 86299: query_text resolved to Get Computer Name from all machines
-2015-08-06 15:14:34,186 DEBUG    pytan.handler.QuestionPoller: ID 86299: id resolved to 86299
-2015-08-06 15:14:34,186 DEBUG    pytan.handler.QuestionPoller: ID 86299: Object Info resolved to Question ID: 86299, Query: Get Computer Name from all machines
-2015-08-06 15:14:34,191 DEBUG    pytan.handler.QuestionPoller: ID 86299: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
-2015-08-06 15:14:34,191 DEBUG    pytan.handler.QuestionPoller: ID 86299: Timing: Started: 2015-08-06 15:14:34.186721, Expiration: 2015-08-06 15:24:34, Override Timeout: None, Elapsed Time: 0:00:00.004539, Left till expiry: 0:09:59.808743, Loop Count: 1
-2015-08-06 15:14:34,191 INFO     pytan.handler.QuestionPoller: ID 86299: Progress Changed 0% (0 of 2)
-2015-08-06 15:14:39,202 DEBUG    pytan.handler.QuestionPoller: ID 86299: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
-2015-08-06 15:14:39,202 DEBUG    pytan.handler.QuestionPoller: ID 86299: Timing: Started: 2015-08-06 15:14:34.186721, Expiration: 2015-08-06 15:24:34, Override Timeout: None, Elapsed Time: 0:00:05.015524, Left till expiry: 0:09:54.797757, Loop Count: 2
-2015-08-06 15:14:44,217 DEBUG    pytan.handler.QuestionPoller: ID 86299: Progress: Tested: 2, Passed: 2, MR Tested: 2, MR Passed: 2, Est Total: 2, Row Count: 2
-2015-08-06 15:14:44,217 DEBUG    pytan.handler.QuestionPoller: ID 86299: Timing: Started: 2015-08-06 15:14:34.186721, Expiration: 2015-08-06 15:24:34, Override Timeout: None, Elapsed Time: 0:00:10.031089, Left till expiry: 0:09:49.782194, Loop Count: 3
-2015-08-06 15:14:44,217 INFO     pytan.handler.QuestionPoller: ID 86299: Progress Changed 100% (2 of 2)
-2015-08-06 15:14:44,217 INFO     pytan.handler.QuestionPoller: ID 86299: Reached Threshold of 99% (2 of 2)
+Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
+2015-08-07 19:57:02,479 DEBUG    pytan.handler.QuestionPoller: ID 1326: id resolved to 1326
+2015-08-07 19:57:02,479 DEBUG    pytan.handler.QuestionPoller: ID 1326: expiration resolved to 2015-08-07T20:07:02
+2015-08-07 19:57:02,479 DEBUG    pytan.handler.QuestionPoller: ID 1326: query_text resolved to Get Computer Name from all machines
+2015-08-07 19:57:02,479 DEBUG    pytan.handler.QuestionPoller: ID 1326: id resolved to 1326
+2015-08-07 19:57:02,479 DEBUG    pytan.handler.QuestionPoller: ID 1326: Object Info resolved to Question ID: 1326, Query: Get Computer Name from all machines
+2015-08-07 19:57:02,482 DEBUG    pytan.handler.QuestionPoller: ID 1326: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
+2015-08-07 19:57:02,483 DEBUG    pytan.handler.QuestionPoller: ID 1326: Timing: Started: 2015-08-07 19:57:02.479683, Expiration: 2015-08-07 20:07:02, Override Timeout: None, Elapsed Time: 0:00:00.003347, Left till expiry: 0:09:59.516972, Loop Count: 1
+2015-08-07 19:57:02,483 INFO     pytan.handler.QuestionPoller: ID 1326: Progress Changed 0% (0 of 2)
+2015-08-07 19:57:07,486 DEBUG    pytan.handler.QuestionPoller: ID 1326: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
+2015-08-07 19:57:07,486 DEBUG    pytan.handler.QuestionPoller: ID 1326: Timing: Started: 2015-08-07 19:57:02.479683, Expiration: 2015-08-07 20:07:02, Override Timeout: None, Elapsed Time: 0:00:05.007137, Left till expiry: 0:09:54.513185, Loop Count: 2
+2015-08-07 19:57:12,490 DEBUG    pytan.handler.QuestionPoller: ID 1326: Progress: Tested: 2, Passed: 2, MR Tested: 2, MR Passed: 2, Est Total: 2, Row Count: 2
+2015-08-07 19:57:12,490 DEBUG    pytan.handler.QuestionPoller: ID 1326: Timing: Started: 2015-08-07 19:57:02.479683, Expiration: 2015-08-07 20:07:02, Override Timeout: None, Elapsed Time: 0:00:10.010671, Left till expiry: 0:09:49.509649, Loop Count: 3
+2015-08-07 19:57:12,490 INFO     pytan.handler.QuestionPoller: ID 1326: Progress Changed 100% (2 of 2)
+2015-08-07 19:57:12,490 INFO     pytan.handler.QuestionPoller: ID 1326: Reached Threshold of 99% (2 of 2)
 Traceback (most recent call last):
   File "<string>", line 66, in <module>
-  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2710, in wrap
+  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2699, in wrap
     ret = f(*args, **kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1085, in export_obj
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1084, in export_obj
     pytan.utils.check_dictkey(**check_args)
-  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2703, in check_dictkey
+  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2692, in check_dictkey
     raise pytan.exceptions.HandlerError(err(key, valid_list_types, list_types))
 HandlerError: 'sensors' must be a list of [<class 'taniumpy.object_types.sensor.Sensor'>], you supplied [<type 'list'>]!
 

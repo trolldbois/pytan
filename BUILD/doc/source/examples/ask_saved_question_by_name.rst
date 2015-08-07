@@ -35,7 +35,7 @@ Example Python Code
     USERNAME = "Tanium User"
     PASSWORD = "T@n!um"
     HOST = "172.16.31.128"
-    PORT = "444"
+    PORT = "443"
     
     # Logging conrols
     LOGLEVEL = 2
@@ -99,16 +99,16 @@ Output from Python Code
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
+    Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
     
     Type of response:  <type 'dict'>
     
     Pretty print of response:
     {'poller_object': None,
      'poller_success': None,
-     'question_object': <taniumpy.object_types.question.Question object at 0x10fc5f0d0>,
-     'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x10f83d650>,
-     'saved_question_object': <taniumpy.object_types.saved_question.SavedQuestion object at 0x10f83d190>}
+     'question_object': <taniumpy.object_types.question.Question object at 0x10a80a150>,
+     'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x10a810c10>,
+     'saved_question_object': <taniumpy.object_types.saved_question.SavedQuestion object at 0x10a810a50>}
     
     Equivalent Question if it were to be asked in the Tanium Console: 
     Get Installed Applications from all machines
@@ -121,7 +121,6 @@ Output from Python Code
     Uninstall AnyConnect,nothing,Not Uninstallable,3.1.08009
     Time Machine,nothing,Not Uninstallable,1.3
     AppleGraphicsWarning,nothing,Not Uninstallable,2.3.0
-    Python 2.7 py2exe-0.6.9,"""C:\Python27\Removepy2exe.exe"" -u ""C:\Python27\py2exe-wininst.log""",Not Uninstallable,-0.6.9
     soagent,nothing,Not Uninstallable,7.0
     Feedback Assistant,nothing,Not Uninstallable,4.1.3
     AinuIM,nothing,Not Uninstallable,1.0
@@ -129,4 +128,5 @@ Output from Python Code
     Pass Viewer,nothing,Not Uninstallable,1.0
     ARDAgent,nothing,Not Uninstallable,3.8.4
     OBEXAgent,nothing,Not Uninstallable,4.3.5
+    PressAndHold,nothing,Not Uninstallable,1.2
     ..trimmed for brevity..

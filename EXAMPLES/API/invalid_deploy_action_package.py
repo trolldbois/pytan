@@ -26,7 +26,7 @@ for aa in path_adds:
 USERNAME = "Tanium User"
 PASSWORD = "T@n!um"
 HOST = "172.16.31.128"
-PORT = "444"
+PORT = "443"
 
 # Logging conrols
 LOGLEVEL = 2
@@ -64,28 +64,28 @@ except Exception as e:
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
+Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
 Traceback (most recent call last):
   File "<string>", line 56, in <module>
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 405, in deploy_action
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 404, in deploy_action
     **kwargs
-  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2710, in wrap
+  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2699, in wrap
     ret = f(*args, **kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1612, in _deploy_action
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1611, in _deploy_action
     package_def = self._get_package_def(package_def)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1431, in _get_package_def
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1430, in _get_package_def
     d['package_obj'] = self.get('package', **def_search)[0]
-  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2710, in wrap
+  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2699, in wrap
     ret = f(*args, **kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1256, in get
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1255, in get
     return self._get_single(obj_map, **kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1391, in _get_single
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1390, in _get_single
     for x in self._single_find(obj_map, k, v, **kwargs):
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1401, in _single_find
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1400, in _single_find
     obj_ret = self._find(api_obj_single, **kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2710, in wrap
+  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2699, in wrap
     ret = f(*args, **kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1328, in _find
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1327, in _find
     raise pytan.exceptions.HandlerError(err(search_str))
 HandlerError: No results found searching for PackageSpec, name: u'Invalid Package'!!
 

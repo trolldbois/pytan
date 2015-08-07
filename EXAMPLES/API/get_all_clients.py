@@ -26,7 +26,7 @@ for aa in path_adds:
 USERNAME = "Tanium User"
 PASSWORD = "T@n!um"
 HOST = "172.16.31.128"
-PORT = "444"
+PORT = "443"
 
 # Logging conrols
 LOGLEVEL = 2
@@ -77,7 +77,7 @@ print out
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
+Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
 
 Type of response:  <class 'taniumpy.object_types.system_status_list.SystemStatusList'>
 
@@ -91,14 +91,15 @@ print the first object returned in JSON format:
 {
   "_type": "client_status", 
   "cache_row_id": 0, 
-  "computer_id": "2566526760", 
+  "computer_id": "3888017885", 
   "full_version": "5.1.314.7724", 
   "host_name": "Casus-Belli.local", 
   "ipaddress_client": "172.16.31.1", 
   "ipaddress_server": "172.16.31.1", 
-  "last_registration": "2015-07-22T13:48:15", 
+  "last_registration": "2015-08-07T19:44:58", 
   "port_number": 17472, 
   "protocol_version": 314, 
+  "public_key_valid": 1, 
   "send_state": "Forward Only", 
   "status": "Leader, Slow Link Behind"
 }

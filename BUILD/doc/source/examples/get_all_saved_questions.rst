@@ -35,7 +35,7 @@ Example Python Code
     USERNAME = "Tanium User"
     PASSWORD = "T@n!um"
     HOST = "172.16.31.128"
-    PORT = "444"
+    PORT = "443"
     
     # Logging conrols
     LOGLEVEL = 2
@@ -93,15 +93,15 @@ Output from Python Code
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
+    Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
     
     Type of response:  <class 'taniumpy.object_types.saved_question_list.SavedQuestionList'>
     
     print of response:
-    SavedQuestionList, len: 175
+    SavedQuestionList, len: 107
     
     length of response (number of objects returned): 
-    175
+    107
     
     print the first object returned in JSON format:
     {
@@ -109,9 +109,7 @@ Output from Python Code
       "action_tracking_flag": 0, 
       "archive_enabled_flag": 0, 
       "archive_owner": {
-        "_type": "user", 
-        "id": 1, 
-        "name": "Jim Olsen"
+        "_type": "user"
       }, 
       "cache_row_id": 0, 
       "expire_seconds": 600, 
@@ -119,4 +117,6 @@ Output from Python Code
       "id": 1, 
       "issue_seconds": 120, 
       "issue_seconds_never_flag": 0, 
+      "keep_seconds": 0, 
+      "mod_time": "2015-08-07T13:22:22", 
     ..trimmed for brevity..

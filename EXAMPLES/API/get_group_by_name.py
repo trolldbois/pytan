@@ -26,7 +26,7 @@ for aa in path_adds:
 USERNAME = "Tanium User"
 PASSWORD = "T@n!um"
 HOST = "172.16.31.128"
-PORT = "444"
+PORT = "443"
 
 # Logging conrols
 LOGLEVEL = 2
@@ -78,7 +78,7 @@ print out
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
+Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
 
 Type of response:  <class 'taniumpy.object_types.group_list.GroupList'>
 
@@ -97,7 +97,7 @@ print the first object returned in JSON format:
     "_type": "filters", 
     "filter": []
   }, 
-  "id": 218, 
+  "id": 64, 
   "name": "All Computers", 
   "not_flag": 0, 
   "sub_groups": {

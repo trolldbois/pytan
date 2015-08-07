@@ -26,7 +26,7 @@ for aa in path_adds:
 USERNAME = "Tanium User"
 PASSWORD = "T@n!um"
 HOST = "172.16.31.128"
-PORT = "444"
+PORT = "443"
 
 # Logging conrols
 LOGLEVEL = 2
@@ -64,18 +64,18 @@ except Exception as e:
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
+Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
 Traceback (most recent call last):
   File "<string>", line 56, in <module>
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 405, in deploy_action
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 404, in deploy_action
     **kwargs
-  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2710, in wrap
+  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2699, in wrap
     ret = f(*args, **kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1671, in _deploy_action
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1670, in _deploy_action
     empty_ok=False,
-  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2323, in build_param_objlist
+  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2329, in build_param_objlist
     raise pytan.exceptions.HandlerError(err(obj_name, p_key, jsonify(obj_param)))
-HandlerError: PackageSpec, name: 'Custom Tagging - Add Tags', id: 31 parameter key '$1' requires a value, parameter definition:
+HandlerError: PackageSpec, name: 'Custom Tagging - Add Tags', id: 27 parameter key '$1' requires a value, parameter definition:
 {
   "defaultValue": "", 
   "helpString": "Enter tags space-delimited.", 

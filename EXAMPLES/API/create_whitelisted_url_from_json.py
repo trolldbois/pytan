@@ -26,7 +26,7 @@ for aa in path_adds:
 USERNAME = "Tanium User"
 PASSWORD = "T@n!um"
 HOST = "172.16.31.128"
-PORT = "444"
+PORT = "443"
 
 # Logging conrols
 LOGLEVEL = 2
@@ -104,10 +104,10 @@ print response.to_json(response)
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
-2015-08-06 14:56:10,891 INFO     pytan.handler: Deleted 'WhiteListedUrl, id: 3068'
-2015-08-06 14:56:10,892 INFO     pytan.handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/WhiteListedUrlList_2015_08_06-10_56_10-EDT.json' written with 198 bytes
-2015-08-06 14:56:10,906 INFO     pytan.handler: New WhiteListedUrl, id: 3070 (ID: 3070) created successfully!
+Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
+2015-08-07 19:46:14,685 INFO     pytan.handler: Deleted 'WhiteListedUrl, id: 27'
+2015-08-07 19:46:14,686 INFO     pytan.handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/WhiteListedUrlList_2015_08_07-15_46_14-EDT.json' written with 198 bytes
+2015-08-07 19:46:14,695 INFO     pytan.handler: New WhiteListedUrl, id: 53 (ID: 53) created successfully!
 
 Type of response:  <class 'taniumpy.object_types.white_listed_url_list.WhiteListedUrlList'>
 
@@ -121,7 +121,7 @@ print the object returned in JSON format:
     {
       "_type": "white_listed_url", 
       "download_seconds": 86400, 
-      "id": 3070, 
+      "id": 53, 
       "url_regex": "test1 API TEST"
     }
   ]

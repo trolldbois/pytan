@@ -68,8 +68,8 @@ get_whitelisted_url.py -u 'Tanium User' -p 'T@n!um' --host '172.16.31.128' --log
 
 ```
 Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
-Found items:  WhiteListedUrlList, len: 11
-Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written with 2457 bytes
+Found items:  WhiteListedUrlList, len: 23
+Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written with 5483 bytes
 ```
 
   * Validation Test: exitcode
@@ -104,7 +104,7 @@ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written 
   * Add CMDLINE TEST to name or url_regex in the JSON file
 
 ```bash
-perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 6552"/gm' /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json && cat /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json
+perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 3862"/gm' /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json && cat /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json
 ```
 
 ```
@@ -115,25 +115,19 @@ perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 6552"/gm' /va
       "_type": "white_listed_url", 
       "download_seconds": 86400, 
       "id": 1, 
-      "url_regex": "test1 CMDLINE TEST 6552"
+      "url_regex": "test1 CMDLINE TEST 3862"
     }, 
     {
       "_type": "white_listed_url", 
       "download_seconds": 86400, 
       "id": 2, 
-      "url_regex": "test2 CMDLINE TEST 6552"
+      "url_regex": "test2 CMDLINE TEST 3862"
     }, 
     {
       "_type": "white_listed_url", 
       "download_seconds": 86400, 
       "id": 3, 
-      "url_regex": "test3 CMDLINE TEST 6552"
-    }, 
-    {
-      "_type": "white_listed_url", 
-      "download_seconds": 86400, 
-      "id": 5, 
-      "url_regex": "test1 API TEST CMDLINE TEST 6552"
+      "url_regex": "test3 CMDLINE TEST 3862"
     }, 
     {
       "_type": "white_listed_url", 
@@ -150,31 +144,31 @@ perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 6552"/gm' /va
           }
         ]
       }, 
-      "url_regex": "regex:https://testing.com/3694 CMDLINE TEST 6552"
+      "url_regex": "regex:https://testing.com/3694 CMDLINE TEST 3862"
     }, 
     {
       "_type": "white_listed_url", 
       "download_seconds": 86400, 
       "id": 7, 
-      "url_regex": "test1 CMDLINE TEST 1873 CMDLINE TEST 6552"
+      "url_regex": "test1 CMDLINE TEST 1873 CMDLINE TEST 3862"
     }, 
     {
       "_type": "white_listed_url", 
       "download_seconds": 86400, 
       "id": 8, 
-      "url_regex": "test2 CMDLINE TEST 1873 CMDLINE TEST 6552"
+      "url_regex": "test2 CMDLINE TEST 1873 CMDLINE TEST 3862"
     }, 
     {
       "_type": "white_listed_url", 
       "download_seconds": 86400, 
       "id": 9, 
-      "url_regex": "test3 CMDLINE TEST 1873 CMDLINE TEST 6552"
+      "url_regex": "test3 CMDLINE TEST 1873 CMDLINE TEST 3862"
     }, 
     {
       "_type": "white_listed_url", 
       "download_seconds": 86400, 
       "id": 10, 
-      "url_regex": "test1 API TEST CMDLINE TEST 1873 CMDLINE TEST 6552"
+      "url_regex": "test1 API TEST CMDLINE TEST 1873 CMDLINE TEST 3862"
     }, 
     {
       "_type": "white_listed_url", 
@@ -191,7 +185,7 @@ perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 6552"/gm' /va
           }
         ]
       }, 
-      "url_regex": "regex:https://testing.com/3694 CMDLINE TEST 1873 CMDLINE TEST 6552"
+      "url_regex": "regex:https://testing.com/3694 CMDLINE TEST 1873 CMDLINE TEST 3862"
     }, 
     {
       "_type": "white_listed_url", 
@@ -208,7 +202,129 @@ perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 6552"/gm' /va
           }
         ]
       }, 
-      "url_regex": "regex:https://testing.com/980 CMDLINE TEST 6552"
+      "url_regex": "regex:https://testing.com/980 CMDLINE TEST 3862"
+    }, 
+    {
+      "_type": "white_listed_url", 
+      "download_seconds": 86400, 
+      "id": 13, 
+      "url_regex": "test1 CMDLINE TEST 6552 CMDLINE TEST 3862"
+    }, 
+    {
+      "_type": "white_listed_url", 
+      "download_seconds": 86400, 
+      "id": 14, 
+      "url_regex": "test2 CMDLINE TEST 6552 CMDLINE TEST 3862"
+    }, 
+    {
+      "_type": "white_listed_url", 
+      "download_seconds": 86400, 
+      "id": 15, 
+      "url_regex": "test3 CMDLINE TEST 6552 CMDLINE TEST 3862"
+    }, 
+    {
+      "_type": "white_listed_url", 
+      "download_seconds": 86400, 
+      "id": 16, 
+      "url_regex": "test1 API TEST CMDLINE TEST 6552 CMDLINE TEST 3862"
+    }, 
+    {
+      "_type": "white_listed_url", 
+      "download_seconds": 3600, 
+      "id": 17, 
+      "metadata": {
+        "_type": "metadata", 
+        "item": [
+          {
+            "_type": "item", 
+            "admin_flag": 0, 
+            "name": "TConsole.WhitelistedURL.property name", 
+            "value": "property value"
+          }
+        ]
+      }, 
+      "url_regex": "regex:https://testing.com/3694 CMDLINE TEST 6552 CMDLINE TEST 3862"
+    }, 
+    {
+      "_type": "white_listed_url", 
+      "download_seconds": 86400, 
+      "id": 18, 
+      "url_regex": "test1 CMDLINE TEST 1873 CMDLINE TEST 6552 CMDLINE TEST 3862"
+    }, 
+    {
+      "_type": "white_listed_url", 
+      "download_seconds": 86400, 
+      "id": 19, 
+      "url_regex": "test2 CMDLINE TEST 1873 CMDLINE TEST 6552 CMDLINE TEST 3862"
+    }, 
+    {
+      "_type": "white_listed_url", 
+      "download_seconds": 86400, 
+      "id": 20, 
+      "url_regex": "test3 CMDLINE TEST 1873 CMDLINE TEST 6552 CMDLINE TEST 3862"
+    }, 
+    {
+      "_type": "white_listed_url", 
+      "download_seconds": 86400, 
+      "id": 21, 
+      "url_regex": "test1 API TEST CMDLINE TEST 1873 CMDLINE TEST 6552 CMDLINE TEST 3862"
+    }, 
+    {
+      "_type": "white_listed_url", 
+      "download_seconds": 3600, 
+      "id": 22, 
+      "metadata": {
+        "_type": "metadata", 
+        "item": [
+          {
+            "_type": "item", 
+            "admin_flag": 0, 
+            "name": "TConsole.WhitelistedURL.property name", 
+            "value": "property value"
+          }
+        ]
+      }, 
+      "url_regex": "regex:https://testing.com/3694 CMDLINE TEST 1873 CMDLINE TEST 6552 CMDLINE TEST 3862"
+    }, 
+    {
+      "_type": "white_listed_url", 
+      "download_seconds": 3600, 
+      "id": 23, 
+      "metadata": {
+        "_type": "metadata", 
+        "item": [
+          {
+            "_type": "item", 
+            "admin_flag": 0, 
+            "name": "TConsole.WhitelistedURL.property name", 
+            "value": "property value"
+          }
+        ]
+      }, 
+      "url_regex": "regex:https://testing.com/980 CMDLINE TEST 6552 CMDLINE TEST 3862"
+    }, 
+    {
+      "_type": "white_listed_url", 
+      "download_seconds": 86400, 
+      "id": 27, 
+      "url_regex": "test1 API TEST CMDLINE TEST 3862"
+    }, 
+    {
+      "_type": "white_listed_url", 
+      "download_seconds": 3600, 
+      "id": 28, 
+      "metadata": {
+        "_type": "metadata", 
+        "item": [
+          {
+            "_type": "item", 
+            "admin_flag": 0, 
+            "name": "TConsole.WhitelistedURL.property name", 
+            "value": "property value"
+          }
+        ]
+      }, 
+      "url_regex": "regex:https://testing.com/1833 CMDLINE TEST 3862"
     }
   ]
 }
@@ -235,17 +351,29 @@ create_whitelisted_url_from_json.py -u 'Tanium User' -p 'T@n!um' --host '172.16.
 
 ```
 Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
-Created item: WhiteListedUrl, id: 13, ID: 13
-Created item: WhiteListedUrl, id: 14, ID: 14
-Created item: WhiteListedUrl, id: 15, ID: 15
-Created item: WhiteListedUrl, id: 16, ID: 16
-Created item: WhiteListedUrl, id: 17, ID: 17
-Created item: WhiteListedUrl, id: 18, ID: 18
-Created item: WhiteListedUrl, id: 19, ID: 19
-Created item: WhiteListedUrl, id: 20, ID: 20
-Created item: WhiteListedUrl, id: 21, ID: 21
-Created item: WhiteListedUrl, id: 22, ID: 22
-Created item: WhiteListedUrl, id: 23, ID: 23
+Created item: WhiteListedUrl, id: 29, ID: 29
+Created item: WhiteListedUrl, id: 30, ID: 30
+Created item: WhiteListedUrl, id: 31, ID: 31
+Created item: WhiteListedUrl, id: 32, ID: 32
+Created item: WhiteListedUrl, id: 33, ID: 33
+Created item: WhiteListedUrl, id: 34, ID: 34
+Created item: WhiteListedUrl, id: 35, ID: 35
+Created item: WhiteListedUrl, id: 36, ID: 36
+Created item: WhiteListedUrl, id: 37, ID: 37
+Created item: WhiteListedUrl, id: 38, ID: 38
+Created item: WhiteListedUrl, id: 39, ID: 39
+Created item: WhiteListedUrl, id: 40, ID: 40
+Created item: WhiteListedUrl, id: 41, ID: 41
+Created item: WhiteListedUrl, id: 42, ID: 42
+Created item: WhiteListedUrl, id: 43, ID: 43
+Created item: WhiteListedUrl, id: 44, ID: 44
+Created item: WhiteListedUrl, id: 45, ID: 45
+Created item: WhiteListedUrl, id: 46, ID: 46
+Created item: WhiteListedUrl, id: 47, ID: 47
+Created item: WhiteListedUrl, id: 48, ID: 48
+Created item: WhiteListedUrl, id: 49, ID: 49
+Created item: WhiteListedUrl, id: 50, ID: 50
+Created item: WhiteListedUrl, id: 51, ID: 51
 ```
 
   * Validation Test: exitcode
@@ -257,4 +385,4 @@ Created item: WhiteListedUrl, id: 23, ID: 23
 [TOC](#user-content-toc)
 
 
-###### generated by: `build_bin_doc v1.4.5`, date: Fri Aug  7 10:28:05 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**
+###### generated by: `build_bin_doc v1.4.5`, date: Fri Aug  7 15:27:43 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**

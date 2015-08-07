@@ -26,7 +26,7 @@ for aa in path_adds:
 USERNAME = "Tanium User"
 PASSWORD = "T@n!um"
 HOST = "172.16.31.128"
-PORT = "444"
+PORT = "443"
 
 # Logging conrols
 LOGLEVEL = 2
@@ -88,14 +88,14 @@ except Exception as e:
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
+Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
 No results found searching for Group, name: 'All Windows Computers API Test'!!
-2015-08-06 14:56:09,988 INFO     pytan.handler: New group 'All Windows Computers API Test' created with ID 27380, filter text: ' Operating System contains "Windows"'
+2015-08-07 19:46:14,211 INFO     pytan.handler: New group 'All Windows Computers API Test' created with ID 212, filter text: ' Operating System containing "Windows"'
 
 Type of response:  <class 'taniumpy.object_types.group.Group'>
 
 print of response:
-Group, name: 'All Windows Computers API Test', id: 27380
+Group, name: 'All Windows Computers API Test', id: 212
 
 print the object returned in JSON format:
 {
@@ -127,16 +127,16 @@ print the object returned in JSON format:
       }
     ]
   }, 
-  "id": 27380, 
+  "id": 212, 
   "name": "All Windows Computers API Test", 
   "not_flag": 0, 
   "sub_groups": {
     "_type": "groups", 
     "group": []
   }, 
-  "text": " Operating System contains \"Windows\"", 
+  "text": " Operating System containing \"Windows\"", 
   "type": 0
 }
-2015-08-06 14:56:09,998 INFO     pytan.handler: Deleted 'Group, id: 27380'
+2015-08-07 19:46:14,219 INFO     pytan.handler: Deleted 'Group, id: 212'
 
 '''

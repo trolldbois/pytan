@@ -28,7 +28,7 @@ for aa in path_adds:
 USERNAME = "Tanium User"
 PASSWORD = "T@n!um"
 HOST = "172.16.31.128"
-PORT = "444"
+PORT = "443"
 
 # Logging conrols
 LOGLEVEL = 2
@@ -85,27 +85,32 @@ print out
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
-2015-08-06 14:43:48,854 DEBUG    pytan.handler.QuestionPoller: ID 86245: id resolved to 86245
-2015-08-06 14:43:48,854 DEBUG    pytan.handler.QuestionPoller: ID 86245: expiration resolved to 2015-08-06T14:53:49
-2015-08-06 14:43:48,854 DEBUG    pytan.handler.QuestionPoller: ID 86245: query_text resolved to Get Computer Name and Installed Applications from all machines
-2015-08-06 14:43:48,854 DEBUG    pytan.handler.QuestionPoller: ID 86245: id resolved to 86245
-2015-08-06 14:43:48,854 DEBUG    pytan.handler.QuestionPoller: ID 86245: Object Info resolved to Question ID: 86245, Query: Get Computer Name and Installed Applications from all machines
-2015-08-06 14:43:48,859 DEBUG    pytan.handler.QuestionPoller: ID 86245: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
-2015-08-06 14:43:48,859 DEBUG    pytan.handler.QuestionPoller: ID 86245: Timing: Started: 2015-08-06 14:43:48.854285, Expiration: 2015-08-06 14:53:49, Override Timeout: None, Elapsed Time: 0:00:00.005457, Left till expiry: 0:10:00.140261, Loop Count: 1
-2015-08-06 14:43:48,859 INFO     pytan.handler.QuestionPoller: ID 86245: Progress Changed 0% (0 of 2)
-2015-08-06 14:43:53,866 DEBUG    pytan.handler.QuestionPoller: ID 86245: Progress: Tested: 2, Passed: 2, MR Tested: 2, MR Passed: 2, Est Total: 2, Row Count: 2
-2015-08-06 14:43:53,866 DEBUG    pytan.handler.QuestionPoller: ID 86245: Timing: Started: 2015-08-06 14:43:48.854285, Expiration: 2015-08-06 14:53:49, Override Timeout: None, Elapsed Time: 0:00:05.012353, Left till expiry: 0:09:55.133364, Loop Count: 2
-2015-08-06 14:43:53,866 INFO     pytan.handler.QuestionPoller: ID 86245: Progress Changed 100% (2 of 2)
-2015-08-06 14:43:53,866 INFO     pytan.handler.QuestionPoller: ID 86245: Reached Threshold of 99% (2 of 2)
+Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
+2015-08-07 19:37:55,255 DEBUG    pytan.handler.QuestionPoller: ID 1280: id resolved to 1280
+2015-08-07 19:37:55,255 DEBUG    pytan.handler.QuestionPoller: ID 1280: expiration resolved to 2015-08-07T19:47:55
+2015-08-07 19:37:55,255 DEBUG    pytan.handler.QuestionPoller: ID 1280: query_text resolved to Get Computer Name and Installed Applications from all machines
+2015-08-07 19:37:55,255 DEBUG    pytan.handler.QuestionPoller: ID 1280: id resolved to 1280
+2015-08-07 19:37:55,255 DEBUG    pytan.handler.QuestionPoller: ID 1280: Object Info resolved to Question ID: 1280, Query: Get Computer Name and Installed Applications from all machines
+2015-08-07 19:37:55,260 DEBUG    pytan.handler.QuestionPoller: ID 1280: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
+2015-08-07 19:37:55,260 DEBUG    pytan.handler.QuestionPoller: ID 1280: Timing: Started: 2015-08-07 19:37:55.255851, Expiration: 2015-08-07 19:47:55, Override Timeout: None, Elapsed Time: 0:00:00.004752, Left till expiry: 0:09:59.739401, Loop Count: 1
+2015-08-07 19:37:55,260 INFO     pytan.handler.QuestionPoller: ID 1280: Progress Changed 0% (0 of 2)
+2015-08-07 19:38:00,263 DEBUG    pytan.handler.QuestionPoller: ID 1280: Progress: Tested: 1, Passed: 1, MR Tested: 1, MR Passed: 1, Est Total: 2, Row Count: 1
+2015-08-07 19:38:00,263 DEBUG    pytan.handler.QuestionPoller: ID 1280: Timing: Started: 2015-08-07 19:37:55.255851, Expiration: 2015-08-07 19:47:55, Override Timeout: None, Elapsed Time: 0:00:05.008121, Left till expiry: 0:09:54.736030, Loop Count: 2
+2015-08-07 19:38:00,264 INFO     pytan.handler.QuestionPoller: ID 1280: Progress Changed 50% (1 of 2)
+2015-08-07 19:38:05,271 DEBUG    pytan.handler.QuestionPoller: ID 1280: Progress: Tested: 1, Passed: 1, MR Tested: 1, MR Passed: 1, Est Total: 2, Row Count: 1
+2015-08-07 19:38:05,271 DEBUG    pytan.handler.QuestionPoller: ID 1280: Timing: Started: 2015-08-07 19:37:55.255851, Expiration: 2015-08-07 19:47:55, Override Timeout: None, Elapsed Time: 0:00:10.015351, Left till expiry: 0:09:49.728800, Loop Count: 3
+2015-08-07 19:38:10,277 DEBUG    pytan.handler.QuestionPoller: ID 1280: Progress: Tested: 2, Passed: 2, MR Tested: 2, MR Passed: 2, Est Total: 2, Row Count: 2
+2015-08-07 19:38:10,277 DEBUG    pytan.handler.QuestionPoller: ID 1280: Timing: Started: 2015-08-07 19:37:55.255851, Expiration: 2015-08-07 19:47:55, Override Timeout: None, Elapsed Time: 0:00:15.021396, Left till expiry: 0:09:44.722755, Loop Count: 4
+2015-08-07 19:38:10,277 INFO     pytan.handler.QuestionPoller: ID 1280: Progress Changed 100% (2 of 2)
+2015-08-07 19:38:10,277 INFO     pytan.handler.QuestionPoller: ID 1280: Reached Threshold of 99% (2 of 2)
 
 Type of response:  <type 'dict'>
 
 Pretty print of response:
-{'poller_object': <pytan.pollers.QuestionPoller object at 0x10fc3eb90>,
+{'poller_object': <pytan.pollers.QuestionPoller object at 0x10a808810>,
  'poller_success': True,
- 'question_object': <taniumpy.object_types.question.Question object at 0x10fc65590>,
- 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x10fc65b50>}
+ 'question_object': <taniumpy.object_types.question.Question object at 0x10a810650>,
+ 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x10a6c0410>}
 
 Equivalent Question if it were to be asked in the Tanium Console: 
 Get Computer Name and Installed Applications from all machines

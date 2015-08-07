@@ -34,7 +34,7 @@ for aa in path_adds:
 USERNAME = "Tanium User"
 PASSWORD = "T@n!um"
 HOST = "172.16.31.128"
-PORT = "444"
+PORT = "443"
 
 # Logging conrols
 LOGLEVEL = 2
@@ -104,43 +104,41 @@ print out
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
-2015-08-06 14:49:55,598 DEBUG    pytan.handler.QuestionPoller: ID 86264: id resolved to 86264
-2015-08-06 14:49:55,598 DEBUG    pytan.handler.QuestionPoller: ID 86264: expiration resolved to 2015-08-06T14:59:55
-2015-08-06 14:49:55,598 DEBUG    pytan.handler.QuestionPoller: ID 86264: query_text resolved to Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" matching case from all machines where Operating System contains "Windows" matching case
-2015-08-06 14:49:55,598 DEBUG    pytan.handler.QuestionPoller: ID 86264: id resolved to 86264
-2015-08-06 14:49:55,598 DEBUG    pytan.handler.QuestionPoller: ID 86264: Object Info resolved to Question ID: 86264, Query: Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" matching case from all machines where Operating System contains "Windows" matching case
-2015-08-06 14:49:55,603 DEBUG    pytan.handler.QuestionPoller: ID 86264: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
-2015-08-06 14:49:55,603 DEBUG    pytan.handler.QuestionPoller: ID 86264: Timing: Started: 2015-08-06 14:49:55.598943, Expiration: 2015-08-06 14:59:55, Override Timeout: None, Elapsed Time: 0:00:00.004205, Left till expiry: 0:09:59.396854, Loop Count: 1
-2015-08-06 14:49:55,603 INFO     pytan.handler.QuestionPoller: ID 86264: Progress Changed 0% (0 of 2)
-2015-08-06 14:50:00,613 DEBUG    pytan.handler.QuestionPoller: ID 86264: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
-2015-08-06 14:50:00,613 DEBUG    pytan.handler.QuestionPoller: ID 86264: Timing: Started: 2015-08-06 14:49:55.598943, Expiration: 2015-08-06 14:59:55, Override Timeout: None, Elapsed Time: 0:00:05.014380, Left till expiry: 0:09:54.386679, Loop Count: 2
-2015-08-06 14:50:05,623 DEBUG    pytan.handler.QuestionPoller: ID 86264: Progress: Tested: 1, Passed: 1, MR Tested: 1, MR Passed: 1, Est Total: 2, Row Count: 1
-2015-08-06 14:50:05,623 DEBUG    pytan.handler.QuestionPoller: ID 86264: Timing: Started: 2015-08-06 14:49:55.598943, Expiration: 2015-08-06 14:59:55, Override Timeout: None, Elapsed Time: 0:00:10.024572, Left till expiry: 0:09:49.376488, Loop Count: 3
-2015-08-06 14:50:05,623 INFO     pytan.handler.QuestionPoller: ID 86264: Progress Changed 50% (1 of 2)
-2015-08-06 14:50:10,633 DEBUG    pytan.handler.QuestionPoller: ID 86264: Progress: Tested: 1, Passed: 1, MR Tested: 1, MR Passed: 1, Est Total: 2, Row Count: 1
-2015-08-06 14:50:10,633 DEBUG    pytan.handler.QuestionPoller: ID 86264: Timing: Started: 2015-08-06 14:49:55.598943, Expiration: 2015-08-06 14:59:55, Override Timeout: None, Elapsed Time: 0:00:15.034673, Left till expiry: 0:09:44.366386, Loop Count: 4
-2015-08-06 14:50:15,638 DEBUG    pytan.handler.QuestionPoller: ID 86264: Progress: Tested: 1, Passed: 1, MR Tested: 1, MR Passed: 1, Est Total: 2, Row Count: 1
-2015-08-06 14:50:15,638 DEBUG    pytan.handler.QuestionPoller: ID 86264: Timing: Started: 2015-08-06 14:49:55.598943, Expiration: 2015-08-06 14:59:55, Override Timeout: None, Elapsed Time: 0:00:20.039982, Left till expiry: 0:09:39.361077, Loop Count: 5
-2015-08-06 14:50:20,648 DEBUG    pytan.handler.QuestionPoller: ID 86264: Progress: Tested: 2, Passed: 1, MR Tested: 2, MR Passed: 2, Est Total: 2, Row Count: 1
-2015-08-06 14:50:20,648 DEBUG    pytan.handler.QuestionPoller: ID 86264: Timing: Started: 2015-08-06 14:49:55.598943, Expiration: 2015-08-06 14:59:55, Override Timeout: None, Elapsed Time: 0:00:25.049158, Left till expiry: 0:09:34.351902, Loop Count: 6
-2015-08-06 14:50:20,648 INFO     pytan.handler.QuestionPoller: ID 86264: Progress Changed 100% (2 of 2)
-2015-08-06 14:50:20,648 INFO     pytan.handler.QuestionPoller: ID 86264: Reached Threshold of 99% (2 of 2)
+Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
+2015-08-07 19:44:46,869 DEBUG    pytan.handler.QuestionPoller: ID 1298: id resolved to 1298
+2015-08-07 19:44:46,869 DEBUG    pytan.handler.QuestionPoller: ID 1298: expiration resolved to 2015-08-07T19:54:47
+2015-08-07 19:44:46,869 DEBUG    pytan.handler.QuestionPoller: ID 1298: query_text resolved to Get Computer Name and Folder Name Search with RegEx Match[Program Files, , No, No] containing "Shared" matching case from all machines with Operating System containing "Windows" matching case
+2015-08-07 19:44:46,869 DEBUG    pytan.handler.QuestionPoller: ID 1298: id resolved to 1298
+2015-08-07 19:44:46,869 DEBUG    pytan.handler.QuestionPoller: ID 1298: Object Info resolved to Question ID: 1298, Query: Get Computer Name and Folder Name Search with RegEx Match[Program Files, , No, No] containing "Shared" matching case from all machines with Operating System containing "Windows" matching case
+2015-08-07 19:44:46,872 DEBUG    pytan.handler.QuestionPoller: ID 1298: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
+2015-08-07 19:44:46,873 DEBUG    pytan.handler.QuestionPoller: ID 1298: Timing: Started: 2015-08-07 19:44:46.869947, Expiration: 2015-08-07 19:54:47, Override Timeout: None, Elapsed Time: 0:00:00.003070, Left till expiry: 0:10:00.126986, Loop Count: 1
+2015-08-07 19:44:46,873 INFO     pytan.handler.QuestionPoller: ID 1298: Progress Changed 0% (0 of 2)
+2015-08-07 19:44:51,877 DEBUG    pytan.handler.QuestionPoller: ID 1298: Progress: Tested: 1, Passed: 0, MR Tested: 1, MR Passed: 1, Est Total: 2, Row Count: 0
+2015-08-07 19:44:51,877 DEBUG    pytan.handler.QuestionPoller: ID 1298: Timing: Started: 2015-08-07 19:44:46.869947, Expiration: 2015-08-07 19:54:47, Override Timeout: None, Elapsed Time: 0:00:05.007156, Left till expiry: 0:09:55.122900, Loop Count: 2
+2015-08-07 19:44:51,877 INFO     pytan.handler.QuestionPoller: ID 1298: Progress Changed 50% (1 of 2)
+2015-08-07 19:44:56,881 DEBUG    pytan.handler.QuestionPoller: ID 1298: Progress: Tested: 1, Passed: 0, MR Tested: 1, MR Passed: 1, Est Total: 2, Row Count: 0
+2015-08-07 19:44:56,881 DEBUG    pytan.handler.QuestionPoller: ID 1298: Timing: Started: 2015-08-07 19:44:46.869947, Expiration: 2015-08-07 19:54:47, Override Timeout: None, Elapsed Time: 0:00:10.011533, Left till expiry: 0:09:50.118523, Loop Count: 3
+2015-08-07 19:45:01,885 DEBUG    pytan.handler.QuestionPoller: ID 1298: Progress: Tested: 1, Passed: 0, MR Tested: 1, MR Passed: 1, Est Total: 2, Row Count: 0
+2015-08-07 19:45:01,885 DEBUG    pytan.handler.QuestionPoller: ID 1298: Timing: Started: 2015-08-07 19:44:46.869947, Expiration: 2015-08-07 19:54:47, Override Timeout: None, Elapsed Time: 0:00:15.016034, Left till expiry: 0:09:45.114022, Loop Count: 4
+2015-08-07 19:45:06,890 DEBUG    pytan.handler.QuestionPoller: ID 1298: Progress: Tested: 2, Passed: 1, MR Tested: 2, MR Passed: 2, Est Total: 2, Row Count: 1
+2015-08-07 19:45:06,890 DEBUG    pytan.handler.QuestionPoller: ID 1298: Timing: Started: 2015-08-07 19:44:46.869947, Expiration: 2015-08-07 19:54:47, Override Timeout: None, Elapsed Time: 0:00:20.020654, Left till expiry: 0:09:40.109402, Loop Count: 5
+2015-08-07 19:45:06,890 INFO     pytan.handler.QuestionPoller: ID 1298: Progress Changed 100% (2 of 2)
+2015-08-07 19:45:06,890 INFO     pytan.handler.QuestionPoller: ID 1298: Reached Threshold of 99% (2 of 2)
 
 Type of response:  <type 'dict'>
 
 Pretty print of response:
-{'poller_object': <pytan.pollers.QuestionPoller object at 0x111365850>,
+{'poller_object': <pytan.pollers.QuestionPoller object at 0x10a5c9c90>,
  'poller_success': True,
- 'question_object': <taniumpy.object_types.question.Question object at 0x111365c10>,
- 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x10fc0e5d0>}
+ 'question_object': <taniumpy.object_types.question.Question object at 0x10a5b98d0>,
+ 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x10a5e1410>}
 
 Equivalent Question if it were to be asked in the Tanium Console: 
-Get Computer Name and Folder Name Search with RegEx Match[No, Program Files, No, ] contains "Shared" matching case from all machines where Operating System contains "Windows" matching case
+Get Computer Name and Folder Name Search with RegEx Match[Program Files, , No, No] containing "Shared" matching case from all machines with Operating System containing "Windows" matching case
 
 CSV Results of response: 
-Computer Name,"Folder Name Search with RegEx Match[No, Program Files, No, ]"
-jtanium1.localdomain,"C:\Program Files\Common Files\Microsoft Shared\VS7Debug
+Computer Name,"Folder Name Search with RegEx Match[Program Files, , No, No]"
+JTANIUM1.localdomain,"C:\Program Files\Common Files\Microsoft Shared\VS7Debug
 C:\Program Files\Common Files\Microsoft Shared\ink\ar-SA
 C:\Program Files\Common Files\Microsoft Shared\ink\ru-RU
 C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\keypad

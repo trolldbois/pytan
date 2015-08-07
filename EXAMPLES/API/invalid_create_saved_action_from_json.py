@@ -26,7 +26,7 @@ for aa in path_adds:
 USERNAME = "Tanium User"
 PASSWORD = "T@n!um"
 HOST = "172.16.31.128"
-PORT = "444"
+PORT = "443"
 
 # Logging conrols
 LOGLEVEL = 2
@@ -75,11 +75,11 @@ except Exception as e:
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
-2015-08-06 14:56:11,015 INFO     pytan.handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/SavedActionList_2015_08_06-10_56_11-EDT.json' written with 1007 bytes
+Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
+2015-08-07 19:46:14,794 INFO     pytan.handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/SavedActionList_2015_08_07-15_46_14-EDT.json' written with 1687 bytes
 Traceback (most recent call last):
   File "<string>", line 67, in <module>
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 547, in create_from_json
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 546, in create_from_json
     raise pytan.exceptions.HandlerError(m(objtype, json_createable))
 HandlerError: saved_action is not a json createable object! Supported objects: user, whitelisted_url, saved_question, group, package, question, action, sensor
 

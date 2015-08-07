@@ -26,7 +26,7 @@ for aa in path_adds:
 USERNAME = "Tanium User"
 PASSWORD = "T@n!um"
 HOST = "172.16.31.128"
-PORT = "444"
+PORT = "443"
 
 # Logging conrols
 LOGLEVEL = 2
@@ -77,24 +77,24 @@ print out
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
+Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
 
 Type of response:  <class 'taniumpy.object_types.system_setting_list.SystemSettingList'>
 
 print of response:
-SystemSettingList, len: 89
+SystemSettingList, len: 91
 
 length of response (number of objects returned): 
-89
+91
 
 print the first object returned in JSON format:
 {
   "_type": "system_setting", 
   "audit_data": {
     "_type": "audit_data", 
-    "creation_time": "2015-03-03T19:06:08", 
+    "creation_time": "2015-08-07T13:22:35", 
     "last_modified_by": "Jim Olsen", 
-    "modification_time": "2015-03-03T19:06:08"
+    "modification_time": "2015-08-07T13:22:35"
   }, 
   "cache_row_id": 0, 
   "default_value": "0", 

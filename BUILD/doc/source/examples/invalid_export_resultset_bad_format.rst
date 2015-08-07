@@ -35,7 +35,7 @@ Example Python Code
     USERNAME = "Tanium User"
     PASSWORD = "T@n!um"
     HOST = "172.16.31.128"
-    PORT = "444"
+    PORT = "443"
     
     # Logging conrols
     LOGLEVEL = 2
@@ -88,25 +88,25 @@ Output from Python Code
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
-    2015-08-06 15:14:44,863 DEBUG    pytan.handler.QuestionPoller: ID 86300: id resolved to 86300
-    2015-08-06 15:14:44,863 DEBUG    pytan.handler.QuestionPoller: ID 86300: expiration resolved to 2015-08-06T15:24:45
-    2015-08-06 15:14:44,863 DEBUG    pytan.handler.QuestionPoller: ID 86300: query_text resolved to Get Computer Name from all machines
-    2015-08-06 15:14:44,863 DEBUG    pytan.handler.QuestionPoller: ID 86300: id resolved to 86300
-    2015-08-06 15:14:44,863 DEBUG    pytan.handler.QuestionPoller: ID 86300: Object Info resolved to Question ID: 86300, Query: Get Computer Name from all machines
-    2015-08-06 15:14:44,868 DEBUG    pytan.handler.QuestionPoller: ID 86300: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
-    2015-08-06 15:14:44,868 DEBUG    pytan.handler.QuestionPoller: ID 86300: Timing: Started: 2015-08-06 15:14:44.863586, Expiration: 2015-08-06 15:24:45, Override Timeout: None, Elapsed Time: 0:00:00.004970, Left till expiry: 0:10:00.131447, Loop Count: 1
-    2015-08-06 15:14:44,868 INFO     pytan.handler.QuestionPoller: ID 86300: Progress Changed 0% (0 of 2)
-    2015-08-06 15:14:49,881 DEBUG    pytan.handler.QuestionPoller: ID 86300: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
-    2015-08-06 15:14:49,881 DEBUG    pytan.handler.QuestionPoller: ID 86300: Timing: Started: 2015-08-06 15:14:44.863586, Expiration: 2015-08-06 15:24:45, Override Timeout: None, Elapsed Time: 0:00:05.017735, Left till expiry: 0:09:55.118683, Loop Count: 2
-    2015-08-06 15:14:54,892 DEBUG    pytan.handler.QuestionPoller: ID 86300: Progress: Tested: 2, Passed: 2, MR Tested: 2, MR Passed: 2, Est Total: 2, Row Count: 2
-    2015-08-06 15:14:54,892 DEBUG    pytan.handler.QuestionPoller: ID 86300: Timing: Started: 2015-08-06 15:14:44.863586, Expiration: 2015-08-06 15:24:45, Override Timeout: None, Elapsed Time: 0:00:10.028580, Left till expiry: 0:09:50.107837, Loop Count: 3
-    2015-08-06 15:14:54,892 INFO     pytan.handler.QuestionPoller: ID 86300: Progress Changed 100% (2 of 2)
-    2015-08-06 15:14:54,892 INFO     pytan.handler.QuestionPoller: ID 86300: Reached Threshold of 99% (2 of 2)
+    Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
+    2015-08-07 19:57:12,541 DEBUG    pytan.handler.QuestionPoller: ID 1327: id resolved to 1327
+    2015-08-07 19:57:12,541 DEBUG    pytan.handler.QuestionPoller: ID 1327: expiration resolved to 2015-08-07T20:07:12
+    2015-08-07 19:57:12,541 DEBUG    pytan.handler.QuestionPoller: ID 1327: query_text resolved to Get Computer Name from all machines
+    2015-08-07 19:57:12,541 DEBUG    pytan.handler.QuestionPoller: ID 1327: id resolved to 1327
+    2015-08-07 19:57:12,541 DEBUG    pytan.handler.QuestionPoller: ID 1327: Object Info resolved to Question ID: 1327, Query: Get Computer Name from all machines
+    2015-08-07 19:57:12,545 DEBUG    pytan.handler.QuestionPoller: ID 1327: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
+    2015-08-07 19:57:12,545 DEBUG    pytan.handler.QuestionPoller: ID 1327: Timing: Started: 2015-08-07 19:57:12.541552, Expiration: 2015-08-07 20:07:12, Override Timeout: None, Elapsed Time: 0:00:00.003775, Left till expiry: 0:09:59.454675, Loop Count: 1
+    2015-08-07 19:57:12,545 INFO     pytan.handler.QuestionPoller: ID 1327: Progress Changed 0% (0 of 2)
+    2015-08-07 19:57:17,551 DEBUG    pytan.handler.QuestionPoller: ID 1327: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
+    2015-08-07 19:57:17,551 DEBUG    pytan.handler.QuestionPoller: ID 1327: Timing: Started: 2015-08-07 19:57:12.541552, Expiration: 2015-08-07 20:07:12, Override Timeout: None, Elapsed Time: 0:00:05.010312, Left till expiry: 0:09:54.448139, Loop Count: 2
+    2015-08-07 19:57:22,556 DEBUG    pytan.handler.QuestionPoller: ID 1327: Progress: Tested: 2, Passed: 2, MR Tested: 2, MR Passed: 2, Est Total: 2, Row Count: 2
+    2015-08-07 19:57:22,556 DEBUG    pytan.handler.QuestionPoller: ID 1327: Timing: Started: 2015-08-07 19:57:12.541552, Expiration: 2015-08-07 20:07:12, Override Timeout: None, Elapsed Time: 0:00:10.015221, Left till expiry: 0:09:49.443230, Loop Count: 3
+    2015-08-07 19:57:22,556 INFO     pytan.handler.QuestionPoller: ID 1327: Progress Changed 100% (2 of 2)
+    2015-08-07 19:57:22,556 INFO     pytan.handler.QuestionPoller: ID 1327: Reached Threshold of 99% (2 of 2)
     Traceback (most recent call last):
       File "<string>", line 64, in <module>
-      File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2710, in wrap
+      File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2699, in wrap
         ret = f(*args, **kwargs)
-      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1079, in export_obj
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1078, in export_obj
         raise pytan.exceptions.HandlerError(err)
     HandlerError: u'bad' not a supported export format for ResultSet, must be one of: json, csv

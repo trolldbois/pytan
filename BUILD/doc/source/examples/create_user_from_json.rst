@@ -35,7 +35,7 @@ Example Python Code
     USERNAME = "Tanium User"
     PASSWORD = "T@n!um"
     HOST = "172.16.31.128"
-    PORT = "444"
+    PORT = "443"
     
     # Logging conrols
     LOGLEVEL = 2
@@ -120,10 +120,10 @@ Output from Python Code
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
-    2015-08-06 14:56:10,459 INFO     pytan.handler: Deleted "User, name: 'Jim Olsen API TEST', id: 3059"
-    2015-08-06 14:56:10,460 INFO     pytan.handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/UserList_2015_08_06-10_56_10-EDT.json' written with 1849 bytes
-    2015-08-06 14:56:10,497 INFO     pytan.handler: New User, name: 'Jim Olsen API TEST', id: 3061 (ID: 3061) created successfully!
+    Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
+    2015-08-07 19:46:14,358 INFO     pytan.handler: Deleted "User, name: 'Jim Olsen API TEST', id: 12"
+    2015-08-07 19:46:14,359 INFO     pytan.handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/UserList_2015_08_07-15_46_14-EDT.json' written with 1610 bytes
+    2015-08-07 19:46:14,380 INFO     pytan.handler: New User, name: 'Jim Olsen API TEST', id: 16 (ID: 16) created successfully!
     
     Type of response:  <class 'taniumpy.object_types.user_list.UserList'>
     
@@ -138,19 +138,9 @@ Output from Python Code
           "_type": "user", 
           "deleted_flag": 0, 
           "group_id": 0, 
-          "id": 3061, 
+          "id": 16, 
           "last_login": "2001-01-01T00:00:00", 
-          "metadata": {
-            "_type": "metadata", 
-            "item": [
-              {
-                "_type": "item", 
-                "admin_flag": 0, 
-                "name": "TConsole.User.Preference.FilterClientsPeriod", 
-                "value": "43200"
-              }
-            ]
-          }, 
+          "local_admin_flag": -1, 
           "name": "Jim Olsen API TEST", 
           "permissions": {
             "_type": "permissions", 

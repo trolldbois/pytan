@@ -35,7 +35,7 @@ Example Python Code
     USERNAME = "Tanium User"
     PASSWORD = "T@n!um"
     HOST = "172.16.31.128"
-    PORT = "444"
+    PORT = "443"
     
     # Logging conrols
     LOGLEVEL = 2
@@ -120,10 +120,10 @@ Output from Python Code
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
-    2015-08-06 14:56:10,540 INFO     pytan.handler: Deleted 'SavedQuestion, id: 20704'
-    2015-08-06 14:56:10,541 INFO     pytan.handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/SavedQuestionList_2015_08_06-10_56_10-EDT.json' written with 4601 bytes
-    2015-08-06 14:56:10,583 INFO     pytan.handler: New SavedQuestion, name: 'Run Unmanaged Asset Scan on All Machines API TEST', id: 20705 (ID: 20705) created successfully!
+    Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
+    2015-08-07 19:46:14,432 INFO     pytan.handler: Deleted 'SavedQuestion, id: 109'
+    2015-08-07 19:46:14,433 INFO     pytan.handler: Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/SavedQuestionList_2015_08_07-15_46_14-EDT.json' written with 11903 bytes
+    2015-08-07 19:46:14,460 INFO     pytan.handler: New SavedQuestion, name: 'Has Tanium Standard Utilities API TEST', id: 111 (ID: 111) created successfully!
     
     Type of response:  <class 'taniumpy.object_types.saved_question_list.SavedQuestionList'>
     
@@ -143,35 +143,45 @@ Output from Python Code
           }, 
           "expire_seconds": 600, 
           "hidden_flag": 0, 
-          "id": 20705, 
+          "id": 111, 
           "issue_seconds": 120, 
           "issue_seconds_never_flag": 0, 
           "keep_seconds": 0, 
-          "mod_time": "2000-01-01T00:00:00", 
-          "most_recent_question_id": 86213, 
-          "name": "Run Unmanaged Asset Scan on All Machines API TEST", 
+          "mod_time": "2015-08-07T19:46:14", 
+          "mod_user": {
+            "_type": "user", 
+            "name": "Tanium User"
+          }, 
+          "most_recent_question_id": 1256, 
+          "name": "Has Tanium Standard Utilities API TEST", 
           "packages": {
             "_type": "package_specs", 
-            "package_spec": []
+            "package_spec": [
+              {
+                "_type": "package_spec", 
+                "id": 20, 
+                "name": "Distribute Tanium Standard Utilities"
+              }
+            ]
           }, 
           "public_flag": 1, 
-          "query_text": "Get Is Windows from all machines", 
+          "query_text": "Get Has Tanium Standard Utilities from all machines", 
           "question": {
             "_type": "question", 
             "action_tracking_flag": 0, 
-            "expiration": "2015-08-06T14:16:02", 
+            "expiration": "2015-08-07T19:32:37", 
             "expire_seconds": 0, 
             "force_computer_id_flag": 0, 
             "hidden_flag": 0, 
-            "id": 86213, 
+            "id": 1256, 
             "management_rights_group": {
               "_type": "group", 
               "id": 0
             }, 
-            "query_text": "Get Is Windows from all machines", 
+            "query_text": "Get Has Tanium Standard Utilities from all machines", 
             "saved_question": {
               "_type": "saved_question", 
-              "id": 1
+              "id": 110
             }, 
             "selects": {
               "_type": "selects", 
@@ -197,55 +207,56 @@ Output from Python Code
                   }, 
                   "sensor": {
                     "_type": "sensor", 
-                    "category": "Operating System", 
-                    "creation_time": "2015-03-03T19:03:34", 
+                    "category": "Tanium", 
+                    "creation_time": "2015-08-07T13:22:09", 
                     "delimiter": ",", 
-                    "description": "Returns whether the machine runs Windows.  True if so, False if not.\nExample: True", 
-                    "exclude_from_parse_flag": 0, 
-                    "hash": 2721439124, 
+                    "description": "Returns whether a machine has the Tanium Standard Utilities\nExample: Yes", 
+                    "exclude_from_parse_flag": 1, 
+                    "hash": 1782389954, 
                     "hidden_flag": 0, 
-                    "id": 35, 
+                    "id": 194, 
                     "ignore_case_flag": 1, 
                     "last_modified_by": "Jim Olsen", 
-                    "max_age_seconds": 86400, 
-                    "metadata": {
-                      "_type": "metadata", 
-                      "item": [
-                        {
-                          "_type": "item", 
-                          "admin_flag": 0, 
-                          "name": "defined", 
-                          "value": "Tanium"
-                        }
-                      ]
-                    }, 
-                    "modification_time": "2015-03-03T19:03:34", 
-                    "name": "Is Windows", 
+                    "max_age_seconds": 900, 
+                    "modification_time": "2015-08-07T13:22:09", 
+                    "name": "Has Tanium Standard Utilities", 
                     "queries": {
                       "_type": "queries", 
                       "query": [
                         {
                           "_type": "query", 
                           "platform": "Windows", 
-                          "script": "&#039;========================================\n&#039; Is Windows\n&#039;========================================\n\nWscript.echo &quot;True&quot;", 
+                          "script": "&#039;========================================\n&#039; Has Tanium Standard Utilities\n&#039;========================================\n\n&#039; this action will look to see if the client has\n&#039; all necessary standard utilities files\n\nOption Explicit\n&#039;--------------------\n&#039; Set These Variables\nDim strDesiredVersion,strDesiredFCIVVersion,strDesiredGrepBinaryVersion\nDim strDesiredGrepDepVersion,strGrepDepFileVersion,strGrepBinaryFileVersion\n\n&#039; a string value which is a version like\n&#039; 4.2.314.7111\n&#039; which is used to determine whether the bundle has the correct version\n&#039; updating the content will cause the bundle number to change and all files will\n&#039; be sent to the endpoint again. This is to handle the case where\n&#039; binary files are not versioned, such as with Yara\n\n&#039; The top line of the version file\n&#039;Tanium File Version: &lt;version string below&gt;\nstrDesiredVersion = &quot;6.5.1.0011&quot;\n\n&#039; -------------------\n&#039; Binaries we can version\nstrDesiredGrepBinaryVersion = &quot;2.5.4.3331&quot;\nstrDesiredGrepDepVersion = &quot;1.12.2872.39125&quot;\n\nDim objFSO\nDim strDirToCheck,objTextFile\nDim bHasAllLatestFiles,arrTextFilesToCheck,strFile,strVersionLine,strFileVersion\nDim strFCIVFile,strFCIVFileVersion,strGrepBinary,strGrepDep,strHandleTool,strListDLLs2\nDim strListDLLs,strStreamsTool,strAutorunsTool\nDim strYara,strYarac\n\nSet objFSO = CreateObject(&quot;Scripting.FileSystemObject&quot;)\n\nstrDirToCheck = GetTaniumDir(&quot;Tools\\StdUtils&quot;)\n\narrTextFilesToCheck = Array(&quot;copy-to-tanium-dir-predist.vbs&quot;,&quot;runas-allusers-wrapper.vbs&quot;,&quot;ver\\bundle.cfg&quot;)\n\n&#039; Grep is required\nstrGrepBinary=strDirToCheck&amp;&quot;grep\\bin\\grep.exe&quot;\nstrGrepDep=strDirToCheck&amp;&quot;grep\\bin\\libiconv2.dll&quot;\n\n&#039;Yara binaries are required\nstrYara=strDirToCheck&amp;&quot;yara\\yara&quot;&amp;GetBitness&amp;&quot;.exe&quot;\nstrYarac=strDirToCheck&amp;&quot;yara\\yarac&quot;&amp;GetBitness&amp;&quot;.exe&quot;\n\nbHasAllLatestFiles = True\nFor Each strFile In arrTextFilesToCheck\n\tIf Not objFSO.FileExists(strDirToCheck&amp;strFile) Then\n\t\tWScript.Echo &quot;Missing &quot; &amp; strFile\n\t\tbHasAllLatestFiles = False\n\tEnd If\n\tIf objFSO.FileExists(strDirToCheck&amp;strFile) Then\n\t\tSet objTextFile = objFSO.OpenTextFile(strDirToCheck&amp;strFile)\n\t\tstrVersionLine = LCase(objTextFile.ReadLine()) &#039; version is at top of line\n\t\tIf Not InStr(strVersionLine,&quot;tanium file version:&quot;) &gt; 0 Then &#039; must have a version number in top line\n\t\t\tWScript.Echo strFile&amp;&quot; is not versioned on line 1&quot;\n\t\t\tbHasAllLatestFiles = False\n\t\tElse &#039; we have a version number, not split to check\n\t\t\tstrFileVersion = Split(strVersionLine,&quot;tanium file version:&quot;)(1)\n\t\t\tIf Trim(strFileVersion) &lt;&gt; Trim(strDesiredVersion) Then\n\t\t\t\tWScript.Echo strFile&amp;&quot; version: &quot;&amp;strFileVersion&amp;&quot;, needs: &quot;&amp;strDesiredVersion\n\t\t\t\tbHasAllLatestFiles = False\n\t\t\tEnd If\n\t\tEnd If\n\t\tobjTextFile.Close\n\tEnd If\nNext\n\n&#039; check a Grep dependency\nIf Not objFSO.FileExists(strGrepDep) Then\n\tWScript.Echo &quot;Missing &quot; &amp; strGrepDep\n\tbHasAllLatestFiles = False\nEnd If\nIf objFSO.FileExists(strGrepDep) Then\n\n\tstrGrepDepFileVersion = objFSO.GetFileVersion(strGrepDep)\n\tIf Not strGrepDepFileVersion = strDesiredGrepDepVersion Then\n\t\tbHasAllLatestFiles = False\n\t\tWScript.Echo strGrepDep &amp;&quot; version: &quot;&amp;strGrepDepFileVersion&amp;&quot;, needs: &quot;&amp;strDesiredGrepDepVersion\n\tEnd If\nEnd If\n\n\n&#039; check Grep binary\nIf Not objFSO.FileExists(strGrepBinary) Then\n\tWScript.Echo &quot;Missing &quot; &amp; strGrepBinary\n\tbHasAllLatestFiles = False\nEnd If\nIf objFSO.FileExists(strGrepBinary) Then\n\tstrGrepBinaryFileVersion = GetFileVersion(strGrepBinary)\n\tIf Not strGrepBinaryFileVersion = strDesiredGrepBinaryVersion Then\n\t\tbHasAllLatestFiles = False\n\t\tWScript.Echo strGrepBinary &amp;&quot; version: &quot;&amp;strGrepBinaryFileVersion&amp;&quot;, needs: &quot;&amp;strDesiredGrepBinaryVersion\n\tEnd If\nEnd If\n\nIf Not objFSO.FileExists(strYara) Then\n\tbHasAllLatestFiles = False\n\tWScript.Echo &quot;Missing &quot; &amp; strYara\nEnd If\n\nIf Not objFSO.FileExists(strYarac) Then\n\tbHasAllLatestFiles = False\n\tWScript.Echo &quot;Missing &quot; &amp; strYarac\nEnd If\n\nIf bHasAllLatestFiles Then\n\tWScript.Echo &quot;Yes&quot;\nElse\n\tWScript.Echo &quot;No&quot;\nEnd If\n\nFunction GetFileVersion(strPath)\n\tDim objFSO\n\tSet objFSO = CreateObject(&quot;Scripting.FileSystemObject&quot;)\n\tIf objFSO.FileExists(strPath) Then\n\t\tGetFileVersion = objFSO.GetFileVersion(strPath)\n\tElse\n\t\tGetFileVerison = -1\n\tEnd If\nEnd Function &#039;GetFileVersion\n\nFunction GetTaniumDir(strSubDir)\n\tDim strComputer, key32path, key64path, keyPath, reg\n\tDim strPath\n\tstrComputer = &quot;.&quot;\n\tConst HKLM = &amp;h80000002\n    \n\tkey32Path = &quot;Software\\Tanium\\Tanium Client&quot;\n\tkey64Path = &quot;Software\\Wow6432Node\\Tanium\\Tanium Client&quot;\n    \n\tSet reg=GetObject(&quot;winmgmts:{impersonationLevel=impersonate}!\\\\&quot; &amp; strComputer &amp; &quot;\\root\\default:StdRegProv&quot;)\n    \n\tIf RegKeyExists(reg, HKLM, key64Path) Then\n\t\tkeyPath = key64Path\n\tElseIf RegKeyExists(reg, HKLM, key32Path) Then\n\t\tkeyPath = key32Path\n\tEnd If\n    \n\treg.GetStringValue HKLM,keyPath,&quot;Path&quot;, strPath\n\n\tIf strSubDir &lt;&gt; &quot;&quot; Then\n\t\tstrSubDir = &quot;\\&quot; &amp; strSubDir\n\tEnd If\t\n\n\tDim fso\n\tSet fso = WScript.CreateObject(&quot;Scripting.FileSystemObject&quot;)\n\tIf fso.FolderExists(strPath) Then\n\t\tIf Not fso.FolderExists(strPath &amp; strSubDir) Then\n\t\t\tfso.CreateFolder(strPath &amp; strSubDir)\n\t\tEnd If\n\t\tGetTaniumDir = strPath &amp; strSubDir &amp; &quot;\\&quot;\n\tEnd If\nEnd Function\n\nFunction RegKeyExists(objRegistry, sHive, sRegKey)\n\tDim aValueNames, aValueTypes\n\tIf objRegistry.EnumValues(sHive, sRegKey, aValueNames, aValueTypes) = 0 Then\n\t\tRegKeyExists = True\n\tElse\n\t\tRegKeyExists = False\n\tEnd If\nEnd Function\n\n\nFunction GetBitness\n\tIf Not Is64 Then\n\t\tGetBitness = &quot;32&quot;\n\tElse\n\t\tGetBitness = &quot;64&quot;\n\tEnd If\nEnd Function &#039;GetBitness\n\nFunction Is64 \n\tDim objWMIService, colItems, objItem\n\tSet objWMIService = GetObject(&quot;winmgmts:\\\\.\\root\\CIMV2&quot;)\n\tSet colItems = objWMIService.ExecQuery(&quot;Select SystemType from Win32_ComputerSystem&quot;)    \n\tFor Each objItem In colItems\n\t\tIf InStr(LCase(objItem.SystemType), &quot;x64&quot;) &gt; 0 Then\n\t\t\tIs64 = True\n\t\tElse\n\t\t\tIs64 = False\n\t\tEnd If\n\tNext\nEnd Function &#039; Is64", 
                           "script_type": "VBScript"
                         }, 
                         {
                           "_type": "query", 
                           "platform": "Linux", 
-                          "script": "#!/bin/bash\necho False\n", 
+                          "script": "#!/bin/sh\n\n# THIS IS A STUB - NOT INTENDED AS FUNCTIONAL - NA\n# \n# \n\necho &quot;N/A on Linux&quot;\n", 
                           "script_type": "UnixShell"
                         }, 
                         {
                           "_type": "query", 
                           "platform": "Mac", 
-                          "script": "#!/bin/bash\necho False\n", 
+                          "script": "#!/bin/sh\n\n# THIS IS A STUB - NOT INTENDED AS FUNCTIONAL - NA\n# \n# \n\necho &quot;N/A on Mac&quot;\n", 
+                          "script_type": "UnixShell"
+                        }, 
+                        {
+                          "_type": "query", 
+                          "platform": "Solaris", 
+                          "script": "#!/bin/sh\n\n# THIS IS A STUB - NOT INTENDED AS FUNCTIONAL - NA\n# \n# \n\necho &quot;N/A on Solaris&quot;\n", 
+                          "script_type": "UnixShell"
+                        }, 
+                        {
+                          "_type": "query", 
+                          "platform": "AIX", 
+                          "script": "#!/bin/sh\n\n# THIS IS A STUB - NOT INTENDED AS FUNCTIONAL - NA\n# \n# \n\necho &quot;N/A on AIX&quot;\n", 
                           "script_type": "UnixShell"
                         }
                       ]
                     }, 
                     "source_id": 0, 
-                    "string_count": 3, 
+                    "string_count": 16, 
                     "value_type": "String"
                   }
                 }

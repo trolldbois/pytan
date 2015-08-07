@@ -26,7 +26,7 @@ for aa in path_adds:
 USERNAME = "Tanium User"
 PASSWORD = "T@n!um"
 HOST = "172.16.31.128"
-PORT = "444"
+PORT = "443"
 
 # Logging conrols
 LOGLEVEL = 2
@@ -78,7 +78,7 @@ print out
 
 
 '''Output from running this:
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
+Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
 
 Type of response:  <class 'taniumpy.object_types.question_list.QuestionList'>
 
@@ -96,9 +96,9 @@ print the first object returned in JSON format:
     "_type": "group", 
     "id": 0
   }, 
-  "expiration": "2015-03-03T19:13:18", 
+  "expiration": "2015-08-07T13:31:47", 
   "expire_seconds": 0, 
-  "force_computer_id_flag": 0, 
+  "force_computer_id_flag": 1, 
   "hidden_flag": 0, 
   "id": 1, 
   "management_rights_group": {

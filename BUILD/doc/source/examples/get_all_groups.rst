@@ -35,7 +35,7 @@ Example Python Code
     USERNAME = "Tanium User"
     PASSWORD = "T@n!um"
     HOST = "172.16.31.128"
-    PORT = "444"
+    PORT = "443"
     
     # Logging conrols
     LOGLEVEL = 2
@@ -93,15 +93,15 @@ Output from Python Code
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
+    Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
     
     Type of response:  <class 'taniumpy.object_types.group_list.GroupList'>
     
     print of response:
-    GroupList, len: 3
+    GroupList, len: 2
     
     length of response (number of objects returned): 
-    3
+    2
     
     print the first object returned in JSON format:
     {
@@ -112,7 +112,7 @@ Output from Python Code
         "_type": "filters", 
         "filter": []
       }, 
-      "id": 218, 
+      "id": 64, 
       "name": "All Computers", 
       "not_flag": 0, 
       "sub_groups": {

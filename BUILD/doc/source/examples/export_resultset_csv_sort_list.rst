@@ -35,7 +35,7 @@ Example Python Code
     USERNAME = "Tanium User"
     PASSWORD = "T@n!um"
     HOST = "172.16.31.128"
-    PORT = "444"
+    PORT = "443"
     
     # Logging conrols
     LOGLEVEL = 2
@@ -94,42 +94,41 @@ Output from Python Code
     :linenos:
 
 
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
-    2015-08-06 15:08:10,929 DEBUG    pytan.handler.QuestionPoller: ID 86286: id resolved to 86286
-    2015-08-06 15:08:10,929 DEBUG    pytan.handler.QuestionPoller: ID 86286: expiration resolved to 2015-08-06T15:18:11
-    2015-08-06 15:08:10,929 DEBUG    pytan.handler.QuestionPoller: ID 86286: query_text resolved to Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*] from all machines
-    2015-08-06 15:08:10,929 DEBUG    pytan.handler.QuestionPoller: ID 86286: id resolved to 86286
-    2015-08-06 15:08:10,929 DEBUG    pytan.handler.QuestionPoller: ID 86286: Object Info resolved to Question ID: 86286, Query: Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*] from all machines
-    2015-08-06 15:08:10,934 DEBUG    pytan.handler.QuestionPoller: ID 86286: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
-    2015-08-06 15:08:10,934 DEBUG    pytan.handler.QuestionPoller: ID 86286: Timing: Started: 2015-08-06 15:08:10.929576, Expiration: 2015-08-06 15:18:11, Override Timeout: None, Elapsed Time: 0:00:00.005193, Left till expiry: 0:10:00.065234, Loop Count: 1
-    2015-08-06 15:08:10,934 INFO     pytan.handler.QuestionPoller: ID 86286: Progress Changed 0% (0 of 2)
-    2015-08-06 15:08:15,949 DEBUG    pytan.handler.QuestionPoller: ID 86286: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
-    2015-08-06 15:08:15,949 DEBUG    pytan.handler.QuestionPoller: ID 86286: Timing: Started: 2015-08-06 15:08:10.929576, Expiration: 2015-08-06 15:18:11, Override Timeout: None, Elapsed Time: 0:00:05.020180, Left till expiry: 0:09:55.050246, Loop Count: 2
-    2015-08-06 15:08:20,961 DEBUG    pytan.handler.QuestionPoller: ID 86286: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
-    2015-08-06 15:08:20,961 DEBUG    pytan.handler.QuestionPoller: ID 86286: Timing: Started: 2015-08-06 15:08:10.929576, Expiration: 2015-08-06 15:18:11, Override Timeout: None, Elapsed Time: 0:00:10.032312, Left till expiry: 0:09:50.038114, Loop Count: 3
-    2015-08-06 15:08:25,969 DEBUG    pytan.handler.QuestionPoller: ID 86286: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
-    2015-08-06 15:08:25,969 DEBUG    pytan.handler.QuestionPoller: ID 86286: Timing: Started: 2015-08-06 15:08:10.929576, Expiration: 2015-08-06 15:18:11, Override Timeout: None, Elapsed Time: 0:00:15.039880, Left till expiry: 0:09:45.030547, Loop Count: 4
-    2015-08-06 15:08:30,980 DEBUG    pytan.handler.QuestionPoller: ID 86286: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
-    2015-08-06 15:08:30,980 DEBUG    pytan.handler.QuestionPoller: ID 86286: Timing: Started: 2015-08-06 15:08:10.929576, Expiration: 2015-08-06 15:18:11, Override Timeout: None, Elapsed Time: 0:00:20.050528, Left till expiry: 0:09:40.019899, Loop Count: 5
-    2015-08-06 15:08:35,995 DEBUG    pytan.handler.QuestionPoller: ID 86286: Progress: Tested: 2, Passed: 2, MR Tested: 2, MR Passed: 2, Est Total: 2, Row Count: 2
-    2015-08-06 15:08:35,995 DEBUG    pytan.handler.QuestionPoller: ID 86286: Timing: Started: 2015-08-06 15:08:10.929576, Expiration: 2015-08-06 15:18:11, Override Timeout: None, Elapsed Time: 0:00:25.065986, Left till expiry: 0:09:35.004441, Loop Count: 6
-    2015-08-06 15:08:35,995 INFO     pytan.handler.QuestionPoller: ID 86286: Progress Changed 100% (2 of 2)
-    2015-08-06 15:08:35,995 INFO     pytan.handler.QuestionPoller: ID 86286: Reached Threshold of 99% (2 of 2)
+    Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
+    2015-08-07 19:52:51,388 DEBUG    pytan.handler.QuestionPoller: ID 1316: id resolved to 1316
+    2015-08-07 19:52:51,388 DEBUG    pytan.handler.QuestionPoller: ID 1316: expiration resolved to 2015-08-07T20:02:51
+    2015-08-07 19:52:51,388 DEBUG    pytan.handler.QuestionPoller: ID 1316: query_text resolved to Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[Program Files, , No, No, .*Shared.*] from all machines
+    2015-08-07 19:52:51,388 DEBUG    pytan.handler.QuestionPoller: ID 1316: id resolved to 1316
+    2015-08-07 19:52:51,388 DEBUG    pytan.handler.QuestionPoller: ID 1316: Object Info resolved to Question ID: 1316, Query: Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[Program Files, , No, No, .*Shared.*] from all machines
+    2015-08-07 19:52:51,392 DEBUG    pytan.handler.QuestionPoller: ID 1316: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
+    2015-08-07 19:52:51,392 DEBUG    pytan.handler.QuestionPoller: ID 1316: Timing: Started: 2015-08-07 19:52:51.388838, Expiration: 2015-08-07 20:02:51, Override Timeout: None, Elapsed Time: 0:00:00.003893, Left till expiry: 0:09:59.607272, Loop Count: 1
+    2015-08-07 19:52:51,392 INFO     pytan.handler.QuestionPoller: ID 1316: Progress Changed 0% (0 of 2)
+    2015-08-07 19:52:56,396 DEBUG    pytan.handler.QuestionPoller: ID 1316: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
+    2015-08-07 19:52:56,396 DEBUG    pytan.handler.QuestionPoller: ID 1316: Timing: Started: 2015-08-07 19:52:51.388838, Expiration: 2015-08-07 20:02:51, Override Timeout: None, Elapsed Time: 0:00:05.007914, Left till expiry: 0:09:54.603251, Loop Count: 2
+    2015-08-07 19:53:01,404 DEBUG    pytan.handler.QuestionPoller: ID 1316: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
+    2015-08-07 19:53:01,404 DEBUG    pytan.handler.QuestionPoller: ID 1316: Timing: Started: 2015-08-07 19:52:51.388838, Expiration: 2015-08-07 20:02:51, Override Timeout: None, Elapsed Time: 0:00:10.015872, Left till expiry: 0:09:49.595292, Loop Count: 3
+    2015-08-07 19:53:06,413 DEBUG    pytan.handler.QuestionPoller: ID 1316: Progress: Tested: 1, Passed: 1, MR Tested: 1, MR Passed: 1, Est Total: 2, Row Count: 1
+    2015-08-07 19:53:06,413 DEBUG    pytan.handler.QuestionPoller: ID 1316: Timing: Started: 2015-08-07 19:52:51.388838, Expiration: 2015-08-07 20:02:51, Override Timeout: None, Elapsed Time: 0:00:15.024914, Left till expiry: 0:09:44.586250, Loop Count: 4
+    2015-08-07 19:53:06,413 INFO     pytan.handler.QuestionPoller: ID 1316: Progress Changed 50% (1 of 2)
+    2015-08-07 19:53:11,418 DEBUG    pytan.handler.QuestionPoller: ID 1316: Progress: Tested: 2, Passed: 2, MR Tested: 2, MR Passed: 2, Est Total: 2, Row Count: 2
+    2015-08-07 19:53:11,419 DEBUG    pytan.handler.QuestionPoller: ID 1316: Timing: Started: 2015-08-07 19:52:51.388838, Expiration: 2015-08-07 20:02:51, Override Timeout: None, Elapsed Time: 0:00:20.030239, Left till expiry: 0:09:39.580926, Loop Count: 5
+    2015-08-07 19:53:11,419 INFO     pytan.handler.QuestionPoller: ID 1316: Progress Changed 100% (2 of 2)
+    2015-08-07 19:53:11,419 INFO     pytan.handler.QuestionPoller: ID 1316: Reached Threshold of 99% (2 of 2)
     
     print the export_str returned from export_obj():
-    Handler for Session to 172.16.31.128:444, Authenticated: True, Version: Not yet determined!
-    2015-08-06 15:06:20,526 DEBUG    pytan.handler.QuestionPoller: ID 86284: id resolved to 86284
-    2015-08-06 15:06:20,526 DEBUG    pytan.handler.QuestionPoller: ID 86284: expiration resolved to 2015-08-06T15:16:20
-    2015-08-06 15:06:20,526 DEBUG    pytan.handler.QuestionPoller: ID 86284: query_text resolved to Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*] from all machines
-    2015-08-06 15:06:20,526 DEBUG    pytan.handler.QuestionPoller: ID 86284: id resolved to 86284
-    2015-08-06 15:06:20,526 DEBUG    pytan.handler.QuestionPoller: ID 86284: Object Info resolved to Question ID: 86284, Query: Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[No, Program Files, No, , .*Shared.*] from all machines
-    2015-08-06 15:06:20,533 DEBUG    pytan.handler.QuestionPoller: ID 86284: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
-    2015-08-06 15:06:20,533 DEBUG    pytan.handler.QuestionPoller: ID 86284: Timing: Started: 2015-08-06 15:06:20.526821, Expiration: 2015-08-06 15:16:20, Override Timeout: None, Elapsed Time: 0:00:00.006509, Left till expiry: 0:09:59.466672, Loop Count: 1
-    2015-08-06 15:06:20,533 INFO     pytan.handler.QuestionPoller: ID 86284: Progress Changed 0% (0 of 2)
-    2015-08-06 15:06:25,540 DEBUG    pytan.handler.QuestionPoller: ID 86284: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
-    2015-08-06 15:06:25,540 DEBUG    pytan.handler.QuestionPoller: ID 86284: Timing: Started: 2015-08-06 15:06:20.526821, Expiration: 2015-08-06 15:16:20, Override Timeout: None, Elapsed Time: 0:00:05.013477, Left till expiry: 0:09:54.459704, Loop Count: 2
-    2015-08-06 15:06:30,549 DEBUG    pytan.handler.QuestionPoller: ID 86284: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
-    2015-08-06 15:06:30,549 DEBUG    pytan.handler.QuestionPoller: ID 86284: Timing: Started: 2015-08-06 15:06:20.526821, Expiration: 2015-08-06 15:16:20, Override Timeout: None, Elapsed Time: 0:00:10.022854, Left till expiry: 0:09:49.450328, Loop Count: 3
-    2015-08-06 15:06:35,559 DEBUG    pytan.handler.QuestionPoller: ID 86284: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
-    2015-08-06 15:06:35,559 DEBUG    pytan.handler.QuestionPoller: ID 86284: Timing: Started: 2015-08-06 15:06:20.526821, Expiration: 2015-08-06 15:16:20, Override Timeout: None, Elapsed Time: 0:00:15.032749, Left till expiry: 0:09:44.440432, Loop Count: 4
+    Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
+    2015-08-07 19:52:21,243 DEBUG    pytan.handler.QuestionPoller: ID 1315: id resolved to 1315
+    2015-08-07 19:52:21,243 DEBUG    pytan.handler.QuestionPoller: ID 1315: expiration resolved to 2015-08-07T20:02:21
+    2015-08-07 19:52:21,243 DEBUG    pytan.handler.QuestionPoller: ID 1315: query_text resolved to Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[Program Files, , No, No, .*Shared.*] from all machines
+    2015-08-07 19:52:21,243 DEBUG    pytan.handler.QuestionPoller: ID 1315: id resolved to 1315
+    2015-08-07 19:52:21,243 DEBUG    pytan.handler.QuestionPoller: ID 1315: Object Info resolved to Question ID: 1315, Query: Get Computer Name and IP Route Details and IP Address and Folder Name Search with RegEx Match[Program Files, , No, No, .*Shared.*] from all machines
+    2015-08-07 19:52:21,246 DEBUG    pytan.handler.QuestionPoller: ID 1315: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
+    2015-08-07 19:52:21,246 DEBUG    pytan.handler.QuestionPoller: ID 1315: Timing: Started: 2015-08-07 19:52:21.243267, Expiration: 2015-08-07 20:02:21, Override Timeout: None, Elapsed Time: 0:00:00.003479, Left till expiry: 0:09:59.753257, Loop Count: 1
+    2015-08-07 19:52:21,246 INFO     pytan.handler.QuestionPoller: ID 1315: Progress Changed 0% (0 of 2)
+    2015-08-07 19:52:26,251 DEBUG    pytan.handler.QuestionPoller: ID 1315: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
+    2015-08-07 19:52:26,251 DEBUG    pytan.handler.QuestionPoller: ID 1315: Timing: Started: 2015-08-07 19:52:21.243267, Expiration: 2015-08-07 20:02:21, Override Timeout: None, Elapsed Time: 0:00:05.007825, Left till expiry: 0:09:54.748911, Loop Count: 2
+    2015-08-07 19:52:31,255 DEBUG    pytan.handler.QuestionPoller: ID 1315: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
+    2015-08-07 19:52:31,255 DEBUG    pytan.handler.QuestionPoller: ID 1315: Timing: Started: 2015-08-07 19:52:21.243267, Expiration: 2015-08-07 20:02:21, Override Timeout: None, Elapsed Time: 0:00:10.012556, Left till expiry: 0:09:49.744181, Loop Count: 3
+    2015-08-07 19:52:36,264 DEBUG    pytan.handler.QuestionPoller: ID 1315: Progress: Tested: 1, Passed: 1, MR Tested: 1, MR Passed: 1, Est Total: 2, Row Count: 1
+    2015-08-07 19:52:36,264 DEBUG    pytan.handler.QuestionPoller: ID 1315: Timing: Started: 2015-08-07 19:52:21.243267, Expiration: 2015-08-07 20:02:21, Override Timeout: None, Elapsed Time: 0:00:15.020856, Left till expiry: 0:09:44.735880, Loop Count: 4
     ..trimmed for brevity..
