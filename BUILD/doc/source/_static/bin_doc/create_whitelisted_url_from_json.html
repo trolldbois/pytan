@@ -795,7 +795,7 @@ Handler Authentication:
                         Password of user (default: None)
   --host HOST           Hostname/ip of SOAP Server (default: None)
   --port PORT           Port to use when connecting to SOAP Server (default:
-                        444)
+                        443)
 
 Handler Options:
   -l LOGLEVEL, --loglevel LOGLEVEL
@@ -830,9 +830,9 @@ Create Whitelisted url from JSON Options:
 
 <div class="highlight highlight-bash"><pre>get_whitelisted_url.py -u <span class="pl-s"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 --id 1 --file <span class="pl-s"><span class="pl-pds">"</span>/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json<span class="pl-pds">"</span></span> json</pre></div>
 
-<pre><code>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+<pre><code>Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
 Found items:  WhiteListedUrlList, len: 11
-Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written with 2479 bytes
+Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written with 2457 bytes
 </code></pre>
 
 <ul>
@@ -878,7 +878,7 @@ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written 
 <li>Add CMDLINE TEST to name or url_regex in the JSON file</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>perl -p -i -e <span class="pl-s"><span class="pl-pds">'</span>s/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 5295"/gm<span class="pl-pds">'</span></span> /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json <span class="pl-k">&amp;&amp;</span> cat /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json</pre></div>
+<div class="highlight highlight-bash"><pre>perl -p -i -e <span class="pl-s"><span class="pl-pds">'</span>s/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 6552"/gm<span class="pl-pds">'</span></span> /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json <span class="pl-k">&amp;&amp;</span> cat /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json</pre></div>
 
 <pre><code>{
   "_type": "white_listed_urls", 
@@ -887,30 +887,30 @@ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written 
       "_type": "white_listed_url", 
       "download_seconds": 86400, 
       "id": 1, 
-      "url_regex": "test1 CMDLINE TEST 5295"
+      "url_regex": "test1 CMDLINE TEST 6552"
     }, 
     {
       "_type": "white_listed_url", 
       "download_seconds": 86400, 
       "id": 2, 
-      "url_regex": "test2 CMDLINE TEST 5295"
+      "url_regex": "test2 CMDLINE TEST 6552"
     }, 
     {
       "_type": "white_listed_url", 
       "download_seconds": 86400, 
       "id": 3, 
-      "url_regex": "test3 CMDLINE TEST 5295"
+      "url_regex": "test3 CMDLINE TEST 6552"
     }, 
     {
       "_type": "white_listed_url", 
       "download_seconds": 86400, 
-      "id": 1006, 
-      "url_regex": "test1 API TEST CMDLINE TEST 5295"
+      "id": 5, 
+      "url_regex": "test1 API TEST CMDLINE TEST 6552"
     }, 
     {
       "_type": "white_listed_url", 
       "download_seconds": 3600, 
-      "id": 1007, 
+      "id": 6, 
       "metadata": {
         "_type": "metadata", 
         "item": [
@@ -922,36 +922,36 @@ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written 
           }
         ]
       }, 
-      "url_regex": "regex:https://testing.com/7613 CMDLINE TEST 5295"
+      "url_regex": "regex:https://testing.com/3694 CMDLINE TEST 6552"
     }, 
     {
       "_type": "white_listed_url", 
       "download_seconds": 86400, 
-      "id": 1008, 
-      "url_regex": "test1 CMDLINE TEST 8476 CMDLINE TEST 5295"
+      "id": 7, 
+      "url_regex": "test1 CMDLINE TEST 1873 CMDLINE TEST 6552"
     }, 
     {
       "_type": "white_listed_url", 
       "download_seconds": 86400, 
-      "id": 1009, 
-      "url_regex": "test2 CMDLINE TEST 8476 CMDLINE TEST 5295"
+      "id": 8, 
+      "url_regex": "test2 CMDLINE TEST 1873 CMDLINE TEST 6552"
     }, 
     {
       "_type": "white_listed_url", 
       "download_seconds": 86400, 
-      "id": 1010, 
-      "url_regex": "test3 CMDLINE TEST 8476 CMDLINE TEST 5295"
+      "id": 9, 
+      "url_regex": "test3 CMDLINE TEST 1873 CMDLINE TEST 6552"
     }, 
     {
       "_type": "white_listed_url", 
       "download_seconds": 86400, 
-      "id": 1011, 
-      "url_regex": "test1 API TEST CMDLINE TEST 8476 CMDLINE TEST 5295"
+      "id": 10, 
+      "url_regex": "test1 API TEST CMDLINE TEST 1873 CMDLINE TEST 6552"
     }, 
     {
       "_type": "white_listed_url", 
       "download_seconds": 3600, 
-      "id": 1012, 
+      "id": 11, 
       "metadata": {
         "_type": "metadata", 
         "item": [
@@ -963,12 +963,12 @@ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written 
           }
         ]
       }, 
-      "url_regex": "regex:https://testing.com/7613 CMDLINE TEST 8476 CMDLINE TEST 5295"
+      "url_regex": "regex:https://testing.com/3694 CMDLINE TEST 1873 CMDLINE TEST 6552"
     }, 
     {
       "_type": "white_listed_url", 
       "download_seconds": 3600, 
-      "id": 1013, 
+      "id": 12, 
       "metadata": {
         "_type": "metadata", 
         "item": [
@@ -980,7 +980,7 @@ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written 
           }
         ]
       }, 
-      "url_regex": "regex:https://testing.com/3984 CMDLINE TEST 5295"
+      "url_regex": "regex:https://testing.com/980 CMDLINE TEST 6552"
     }
   ]
 }
@@ -1014,18 +1014,18 @@ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written 
 
 <div class="highlight highlight-bash"><pre>create_whitelisted_url_from_json.py -u <span class="pl-s"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 -j <span class="pl-s"><span class="pl-pds">"</span>/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
-Created item: WhiteListedUrl, id: 1014, ID: 1014
-Created item: WhiteListedUrl, id: 1015, ID: 1015
-Created item: WhiteListedUrl, id: 1016, ID: 1016
-Created item: WhiteListedUrl, id: 1017, ID: 1017
-Created item: WhiteListedUrl, id: 1018, ID: 1018
-Created item: WhiteListedUrl, id: 1019, ID: 1019
-Created item: WhiteListedUrl, id: 1020, ID: 1020
-Created item: WhiteListedUrl, id: 1021, ID: 1021
-Created item: WhiteListedUrl, id: 1022, ID: 1022
-Created item: WhiteListedUrl, id: 1023, ID: 1023
-Created item: WhiteListedUrl, id: 1024, ID: 1024
+<pre><code>Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
+Created item: WhiteListedUrl, id: 13, ID: 13
+Created item: WhiteListedUrl, id: 14, ID: 14
+Created item: WhiteListedUrl, id: 15, ID: 15
+Created item: WhiteListedUrl, id: 16, ID: 16
+Created item: WhiteListedUrl, id: 17, ID: 17
+Created item: WhiteListedUrl, id: 18, ID: 18
+Created item: WhiteListedUrl, id: 19, ID: 19
+Created item: WhiteListedUrl, id: 20, ID: 20
+Created item: WhiteListedUrl, id: 21, ID: 21
+Created item: WhiteListedUrl, id: 22, ID: 22
+Created item: WhiteListedUrl, id: 23, ID: 23
 </code></pre>
 
 <ul>
@@ -1042,7 +1042,7 @@ Created item: WhiteListedUrl, id: 1024, ID: 1024
 <p><a href="#user-content-toc">TOC</a></p>
 
 <h6>
-<a id="user-content-generated-by-build_bin_doc-v145-date-thu-mar-26-092625-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v145-date-thu-mar-26-092625-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v1.4.5</code>, date: Thu Mar 26 09:26:25 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
+<a id="user-content-generated-by-build_bin_doc-v145-date-fri-aug--7-102805-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v145-date-fri-aug--7-102805-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v1.4.5</code>, date: Fri Aug  7 10:28:05 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
 </h6>
 
 </body></html>

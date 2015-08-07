@@ -36,7 +36,7 @@ Handler Authentication:
                         Password of user (default: None)
   --host HOST           Hostname/ip of SOAP Server (default: None)
   --port PORT           Port to use when connecting to SOAP Server (default:
-                        444)
+                        443)
 
 Handler Options:
   -l LOGLEVEL, --loglevel LOGLEVEL
@@ -67,9 +67,9 @@ get_package.py -u 'Tanium User' -p 'T@n!um' --host '172.16.31.128' --loglevel 1 
 ```
 
 ```
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
 Found items:  PackageSpecList, len: 1
-Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written with 1928 bytes
+Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written with 2368 bytes
 ```
 
   * Validation Test: exitcode
@@ -86,10 +86,10 @@ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written 
   "package_spec": [
     {
       "_type": "package_spec", 
-      "available_time": "2015-03-03T19:06:35", 
+      "available_time": "2015-08-07T13:22:50", 
       "command": "cmd /c cscript //T:900 java-installer.vbs /KillAppsUsingJava:Yes /RebootIfNeeded:Yes /MaxWaitTimeInSeconds:300", 
       "command_timeout": 900, 
-      "creation_time": "2015-03-03T19:03:39", 
+      "creation_time": "2001-01-01T00:00:00", 
       "deleted_flag": 0, 
 ...trimmed for brevity...
 ```
@@ -104,7 +104,7 @@ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written 
   * Add CMDLINE TEST to name or url_regex in the JSON file
 
 ```bash
-perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 2208"/gm' /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json && cat /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json
+perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 5110"/gm' /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json && cat /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json
 ```
 
 ```
@@ -113,10 +113,10 @@ perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 2208"/gm' /va
   "package_spec": [
     {
       "_type": "package_spec", 
-      "available_time": "2015-03-03T19:06:35", 
+      "available_time": "2015-08-07T13:22:50", 
       "command": "cmd /c cscript //T:900 java-installer.vbs /KillAppsUsingJava:Yes /RebootIfNeeded:Yes /MaxWaitTimeInSeconds:300", 
       "command_timeout": 900, 
-      "creation_time": "2015-03-03T19:03:39", 
+      "creation_time": "2001-01-01T00:00:00", 
       "deleted_flag": 0, 
       "display_name": "Update Java 64-bit - Kill / Reboot", 
       "expire_seconds": 1500, 
@@ -125,25 +125,36 @@ perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 2208"/gm' /va
         "file": [
           {
             "_type": "file", 
-            "bytes_downloaded": 17509, 
-            "bytes_total": 17509, 
+            "bytes_downloaded": 0, 
+            "bytes_total": 0, 
             "cache_status": "CACHED", 
             "download_seconds": 0, 
-            "download_start_time": "2015-03-03T19:06:14", 
-            "hash": "30bf532c4c1c5bb9599487712f88ff42190ccd2678192f7e61b160e6592cfbfe", 
+            "file_status": {
+              "_type": "file_status", 
+              "status": [
+                {
+                  "_type": "status", 
+                  "bytes_downloaded": 0, 
+                  "bytes_total": 0, 
+                  "cache_status": "Processing", 
+                  "server_id": 1, 
+                  "server_name": "JTANIUM1.localdomain:17472", 
+                  "status": 0
+                }
+              ]
+            }, 
+            "hash": "19930421efb5b9ed3725aabcf1580eb04d1c3c355ac0e05123f5b162f29928f7", 
             "id": 1, 
-            "last_download_progress_time": "2015-03-03T19:06:25", 
             "name": "java-installer.vbs", 
-            "size": 17509, 
-            "source": "https://content.tanium.com/files/initialcontent/bundles/2014-11-05_12-56-07-8513/update_java_64-bit_-_kill_-_reboot/java-installer.vbs", 
-            "status": 200
+            "size": 22900, 
+            "source": "https://content.tanium.com/files/published/InitialContent/2015-06-04_18-59-45_6.5.1.0011-ga516c3c/update_java_64-bit_-_kill_-_reboot/java-installer.vbs", 
+            "status": 0
           }
         ]
       }, 
       "hidden_flag": 0, 
       "id": 1, 
-      "last_modified_by": "Jim Olsen", 
-      "last_update": "2015-03-03T19:03:39", 
+      "last_update": "2015-08-07T13:22:16", 
       "metadata": {
         "_type": "metadata", 
         "item": [
@@ -161,9 +172,15 @@ perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 2208"/gm' /va
           }
         ]
       }, 
-      "modification_time": "2015-03-03T19:03:39", 
-      "name": "Update Java 64-bit - Kill / Reboot CMDLINE TEST 2208", 
+      "modification_time": "2001-01-01T00:00:00", 
+      "name": "Update Java 64-bit - Kill / Reboot CMDLINE TEST 5110", 
+      "skip_lock_flag": 0, 
       "source_id": 0, 
+      "verify_expire_seconds": 600, 
+      "verify_group": {
+        "_type": "group", 
+        "id": 0
+      }, 
       "verify_group_id": 0
     }
   ]
@@ -190,8 +207,8 @@ create_package_from_json.py -u 'Tanium User' -p 'T@n!um' --host '172.16.31.128' 
 ```
 
 ```
-Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
-Created item: PackageSpec, name: 'Update Java 64-bit - Kill / Reboot CMDLINE TEST 2208', ID: 6279
+Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
+Created item: PackageSpec, name: 'Update Java 64-bit - Kill / Reboot CMDLINE TEST 5110', id: 70, ID: 70
 ```
 
   * Validation Test: exitcode
@@ -203,4 +220,4 @@ Created item: PackageSpec, name: 'Update Java 64-bit - Kill / Reboot CMDLINE TES
 [TOC](#user-content-toc)
 
 
-###### generated by: `build_bin_doc v1.4.5`, date: Thu Mar 26 09:26:21 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**
+###### generated by: `build_bin_doc v1.4.5`, date: Fri Aug  7 10:27:45 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**

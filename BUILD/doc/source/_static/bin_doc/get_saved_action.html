@@ -797,7 +797,7 @@ Handler Authentication:
                         Password of user (default: None)
   --host HOST           Hostname/ip of SOAP Server (default: None)
   --port PORT           Port to use when connecting to SOAP Server (default:
-                        444)
+                        443)
 
 Handler Options:
   -l LOGLEVEL, --loglevel LOGLEVEL
@@ -843,7 +843,7 @@ optional arguments:
 usage: get_saved_action.py json [-h] [--explode-json | --no-explode-json]
                                 [--no-include_type | --include_type]
 
-CSV Export Options
+JSON Export Options
 
 optional arguments:
   -h, --help         show this help message and exit
@@ -887,9 +887,9 @@ optional arguments:
 
 <div class="highlight highlight-bash"><pre>get_saved_action.py -u <span class="pl-s"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 --all --file <span class="pl-s"><span class="pl-pds">"</span>/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json<span class="pl-pds">"</span></span> json</pre></div>
 
-<pre><code>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
-Found items:  SavedActionList, len: 1683
-Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written with 1218728 bytes
+<pre><code>Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
+Found items:  SavedActionList, len: 4
+Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written with 7289 bytes
 </code></pre>
 
 <ul>
@@ -925,9 +925,22 @@ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written 
 
 <div class="highlight highlight-bash"><pre>get_saved_action.py -u <span class="pl-s"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 --all --file <span class="pl-s"><span class="pl-pds">"</span>/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv<span class="pl-pds">"</span></span> csv</pre></div>
 
-<pre><code>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
-Found items:  SavedActionList, len: 1683
-Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 267684 bytes
+<pre><code>Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
+Found items:  SavedActionList, len: 4
+Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 2262 bytes
+</code></pre>
+
+<pre lang="STDERR"><code>Exception in thread Thread-2 (most likely raised during interpreter shutdown):
+Traceback (most recent call last):
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/threading.py", line 810, in __bootstrap_inner
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/threading.py", line 763, in run
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1507, in _derive_server_version
+  File "/Users/jolsen/gh/pytan/lib/pytan/sessions.py", line 425, in get_server_version
+  File "/Users/jolsen/gh/pytan/lib/pytan/sessions.py", line 413, in get_server_info
+  File "/Users/jolsen/gh/pytan/lib/pytan/sessions.py", line 607, in _flatten_server_info
+  File "/Users/jolsen/gh/pytan/lib/pytan/sessions.py", line 603, in _flatten_server_info
+  File "/Users/jolsen/gh/pytan/lib/pytan/sessions.py", line 605, in _flatten_server_info
+&lt;type 'exceptions.TypeError'&gt;: isinstance() arg 2 must be a class, type, or tuple of classes and types
 </code></pre>
 
 <ul>
@@ -963,9 +976,9 @@ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written w
 
 <div class="highlight highlight-bash"><pre>get_saved_action.py -u <span class="pl-s"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 --all --file <span class="pl-s"><span class="pl-pds">"</span>/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.xml<span class="pl-pds">"</span></span> xml</pre></div>
 
-<pre><code>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
-Found items:  SavedActionList, len: 1683
-Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.xml' written with 2713221 bytes
+<pre><code>Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
+Found items:  SavedActionList, len: 4
+Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.xml' written with 10937 bytes
 </code></pre>
 
 <ul>
@@ -992,7 +1005,7 @@ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.xml' written w
 <p><a href="#user-content-toc">TOC</a></p>
 
 <h6>
-<a id="user-content-generated-by-build_bin_doc-v145-date-thu-mar-26-092832-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v145-date-thu-mar-26-092832-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v1.4.5</code>, date: Thu Mar 26 09:28:32 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
+<a id="user-content-generated-by-build_bin_doc-v145-date-fri-aug--7-102955-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v145-date-fri-aug--7-102955-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v1.4.5</code>, date: Fri Aug  7 10:29:55 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
 </h6>
 
 </body></html>
