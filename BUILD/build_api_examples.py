@@ -63,7 +63,7 @@ def indent_block(c):
 
 
 def get_name_title(t):
-    return t.replace('_', ' ').capitalize()
+    return t.replace('_', ' ').strip().capitalize()
 
 
 def write_file(f, c):
@@ -150,7 +150,7 @@ PASSWORD = "T@n!um"
 HOST = "172.16.31.128"
 PORT = "443"
 
-# Logging conrols
+# Logging controls
 LOGLEVEL = 2
 DEBUGFORMAT = False
 
