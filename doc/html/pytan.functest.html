@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>2.6. pytan Functional Tests &mdash; PyTan 1.0.4 documentation</title>
+  <title>2.9. pytan Functional Tests &mdash; PyTan 2.0.0 documentation</title>
   
 
   
@@ -28,10 +28,10 @@
   
 
   
-    <link rel="top" title="PyTan 1.0.4 documentation" href="index.html"/>
+    <link rel="top" title="PyTan 2.0.0 documentation" href="index.html"/>
         <link rel="up" title="2. pytan package" href="pytan.html"/>
         <link rel="next" title="3. taniumpy package" href="taniumpy.html"/>
-        <link rel="prev" title="2.5. pytan Unit Tests" href="pytan.unittest.html"/> 
+        <link rel="prev" title="2.8. pytan Unit Tests" href="pytan.unittest.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -67,24 +67,26 @@
 <li class="toctree-l2"><a class="reference internal" href="introduction.html#description">1.1. Description</a></li>
 <li class="toctree-l2"><a class="reference internal" href="introduction.html#why-it-was-created">1.2. Why it was created</a></li>
 <li class="toctree-l2"><a class="reference internal" href="introduction.html#requirements">1.3. Requirements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="introduction.html#installation">1.4. Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="introduction.html#usage">1.5. Usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="introduction.html#directory-layout">1.6. Directory Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#tanium-versions-validated-against">1.4. Tanium Versions Validated Against</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#installation">1.5. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#usage">1.6. Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#directory-layout">1.7. Directory Layout</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="pytan.html">2. pytan package</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="examples/pytan_examples.html">2.1. pytan API examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/pytan_examples.html">2.1. PyTan API examples</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pytan.handler.html">2.2. pytan.handler module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.constants.html">2.3. pytan.constants module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html">2.4. pytan.utils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.unittest.html">2.5. pytan Unit Tests</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">2.6. pytan Functional Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.exceptions.html">2.3. pytan.exceptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.sessions.html">2.4. pytan.sessions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.pollers.html">2.5. pytan.pollers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.constants.html">2.6. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html">2.7. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.unittest.html">2.8. pytan Unit Tests</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">2.9. pytan Functional Tests</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="taniumpy.html">3. taniumpy package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="taniumpy.session.html">3.1. taniumpy.session module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="taniumpy.question_asker.html">3.2. taniumpy.question_asker module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html">3.3. taniumpy.object_types package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html">3.1. taniumpy.object_types package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="xmltodict.html">4. xmltodict module</a><ul class="simple">
@@ -94,6 +96,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="threaded_http.html">6. threaded_http module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="requests.html">7. requests package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="requests.html#requests-http-library">7.1. requests HTTP library</a></li>
 </ul>
 </li>
 </ul>
@@ -122,7 +128,7 @@
       
           <li><a href="pytan.html">2. pytan package</a> &raquo;</li>
       
-    <li>2.6. pytan Functional Tests</li>
+    <li>2.9. pytan Functional Tests</li>
       <li class="wy-breadcrumbs-aside">
         
           <a href="_sources/pytan.functest.txt" rel="nofollow"> View page source</a>
@@ -134,7 +140,7 @@
           <div role="main" class="document">
             
   <div class="section" id="module-test_pytan_func">
-<span id="pytan-functional-tests"></span><h1>2.6. pytan Functional Tests<a class="headerlink" href="#module-test_pytan_func" title="Permalink to this headline">¶</a></h1>
+<span id="pytan-functional-tests"></span><h1>2.9. pytan Functional Tests<a class="headerlink" href="#module-test_pytan_func" title="Permalink to this headline">¶</a></h1>
 <p>This contains functional tests for pytan.</p>
 <p>These functional tests require a connection to a Tanium server in order to run.
 The connection info is pulled from the SERVER_INFO dictionary in test/API_INFO.py.</p>
@@ -325,43 +331,43 @@ The connection info is pulled from the SERVER_INFO dictionary in test/API_INFO.p
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="test_pytan_func.ValidServerTests.test_invalid_question_1_invalid_ask_manual_human_question_paramater_too_many">
-<code class="descname">test_invalid_question_1_invalid_ask_manual_human_question_paramater_too_many</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_invalid_question_1_invalid_ask_manual_human_question_paramater_too_many" title="Permalink to this definition">¶</a></dt>
+<dt id="test_pytan_func.ValidServerTests.test_invalid_question_1_invalid_ask_manual_question_sensor_help">
+<code class="descname">test_invalid_question_1_invalid_ask_manual_question_sensor_help</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_invalid_question_1_invalid_ask_manual_question_sensor_help" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="test_pytan_func.ValidServerTests.test_invalid_question_2_invalid_ask_manual_human_question_filter_help">
-<code class="descname">test_invalid_question_2_invalid_ask_manual_human_question_filter_help</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_invalid_question_2_invalid_ask_manual_human_question_filter_help" title="Permalink to this definition">¶</a></dt>
+<dt id="test_pytan_func.ValidServerTests.test_invalid_question_2_invalid_ask_manual_question_parameter_split">
+<code class="descname">test_invalid_question_2_invalid_ask_manual_question_parameter_split</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_invalid_question_2_invalid_ask_manual_question_parameter_split" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="test_pytan_func.ValidServerTests.test_invalid_question_3_invalid_ask_manual_human_question_option">
-<code class="descname">test_invalid_question_3_invalid_ask_manual_human_question_option</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_invalid_question_3_invalid_ask_manual_human_question_option" title="Permalink to this definition">¶</a></dt>
+<dt id="test_pytan_func.ValidServerTests.test_invalid_question_3_invalid_ask_manual_question_filter_help">
+<code class="descname">test_invalid_question_3_invalid_ask_manual_question_filter_help</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_invalid_question_3_invalid_ask_manual_question_filter_help" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="test_pytan_func.ValidServerTests.test_invalid_question_4_invalid_ask_manual_human_question_filter">
-<code class="descname">test_invalid_question_4_invalid_ask_manual_human_question_filter</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_invalid_question_4_invalid_ask_manual_human_question_filter" title="Permalink to this definition">¶</a></dt>
+<dt id="test_pytan_func.ValidServerTests.test_invalid_question_4_invalid_ask_manual_question_option">
+<code class="descname">test_invalid_question_4_invalid_ask_manual_question_option</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_invalid_question_4_invalid_ask_manual_question_option" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="test_pytan_func.ValidServerTests.test_invalid_question_5_invalid_ask_manual_human_question_parameter_split">
-<code class="descname">test_invalid_question_5_invalid_ask_manual_human_question_parameter_split</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_invalid_question_5_invalid_ask_manual_human_question_parameter_split" title="Permalink to this definition">¶</a></dt>
+<dt id="test_pytan_func.ValidServerTests.test_invalid_question_5_invalid_ask_manual_question_sensor">
+<code class="descname">test_invalid_question_5_invalid_ask_manual_question_sensor</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_invalid_question_5_invalid_ask_manual_question_sensor" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="test_pytan_func.ValidServerTests.test_invalid_question_6_invalid_ask_manual_human_question_option_help">
-<code class="descname">test_invalid_question_6_invalid_ask_manual_human_question_option_help</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_invalid_question_6_invalid_ask_manual_human_question_option_help" title="Permalink to this definition">¶</a></dt>
+<dt id="test_pytan_func.ValidServerTests.test_invalid_question_6_invalid_ask_manual_question_option_help">
+<code class="descname">test_invalid_question_6_invalid_ask_manual_question_option_help</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_invalid_question_6_invalid_ask_manual_question_option_help" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="test_pytan_func.ValidServerTests.test_invalid_question_7_invalid_ask_manual_question_sensor">
-<code class="descname">test_invalid_question_7_invalid_ask_manual_question_sensor</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_invalid_question_7_invalid_ask_manual_question_sensor" title="Permalink to this definition">¶</a></dt>
+<dt id="test_pytan_func.ValidServerTests.test_invalid_question_7_invalid_ask_manual_question_paramater_too_many">
+<code class="descname">test_invalid_question_7_invalid_ask_manual_question_paramater_too_many</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_invalid_question_7_invalid_ask_manual_question_paramater_too_many" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="test_pytan_func.ValidServerTests.test_invalid_question_8_invalid_ask_manual_human_question_sensor_help">
-<code class="descname">test_invalid_question_8_invalid_ask_manual_human_question_sensor_help</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_invalid_question_8_invalid_ask_manual_human_question_sensor_help" title="Permalink to this definition">¶</a></dt>
+<dt id="test_pytan_func.ValidServerTests.test_invalid_question_8_invalid_ask_manual_question_filter">
+<code class="descname">test_invalid_question_8_invalid_ask_manual_question_filter</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_invalid_question_8_invalid_ask_manual_question_filter" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -730,91 +736,101 @@ The connection info is pulled from the SERVER_INFO dictionary in test/API_INFO.p
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="test_pytan_func.ValidServerTests.test_valid_question_10_ask_manual_human_question_sensor_with_parameters_and_filter_and_options">
-<code class="descname">test_valid_question_10_ask_manual_human_question_sensor_with_parameters_and_filter_and_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_valid_question_10_ask_manual_human_question_sensor_with_parameters_and_filter_and_options" title="Permalink to this definition">¶</a></dt>
+<dt id="test_pytan_func.ValidServerTests.test_valid_question_10_ask_manual_question_sensor_with_filter">
+<code class="descname">test_valid_question_10_ask_manual_question_sensor_with_filter</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_valid_question_10_ask_manual_question_sensor_with_filter" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="test_pytan_func.ValidServerTests.test_valid_question_11_ask_manual_human_question_sensor_with_filter_and_2_options">
-<code class="descname">test_valid_question_11_ask_manual_human_question_sensor_with_filter_and_2_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_valid_question_11_ask_manual_human_question_sensor_with_filter_and_2_options" title="Permalink to this definition">¶</a></dt>
+<dt id="test_pytan_func.ValidServerTests.test_valid_question_11_ask_manual_question_multiple_sensors_identified_by_name">
+<code class="descname">test_valid_question_11_ask_manual_question_multiple_sensors_identified_by_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_valid_question_11_ask_manual_question_multiple_sensors_identified_by_name" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="test_pytan_func.ValidServerTests.test_valid_question_12_ask_manual_human_question_sensor_with_filter">
-<code class="descname">test_valid_question_12_ask_manual_human_question_sensor_with_filter</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_valid_question_12_ask_manual_human_question_sensor_with_filter" title="Permalink to this definition">¶</a></dt>
+<dt id="test_pytan_func.ValidServerTests.test_valid_question_12_ask_manual_question_sensor_with_parameters_and_filter_and_options">
+<code class="descname">test_valid_question_12_ask_manual_question_sensor_with_parameters_and_filter_and_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_valid_question_12_ask_manual_question_sensor_with_parameters_and_filter_and_options" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="test_pytan_func.ValidServerTests.test_valid_question_13_ask_manual_human_question_simple_multiple_sensors">
-<code class="descname">test_valid_question_13_ask_manual_human_question_simple_multiple_sensors</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_valid_question_13_ask_manual_human_question_simple_multiple_sensors" title="Permalink to this definition">¶</a></dt>
+<dt id="test_pytan_func.ValidServerTests.test_valid_question_13_ask_manual_question_sensor_with_filter_and_3_options">
+<code class="descname">test_valid_question_13_ask_manual_question_sensor_with_filter_and_3_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_valid_question_13_ask_manual_question_sensor_with_filter_and_3_options" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="test_pytan_func.ValidServerTests.test_valid_question_14_ask_manual_human_question_multiple_sensors_identified_by_name">
-<code class="descname">test_valid_question_14_ask_manual_human_question_multiple_sensors_identified_by_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_valid_question_14_ask_manual_human_question_multiple_sensors_identified_by_name" title="Permalink to this definition">¶</a></dt>
+<dt id="test_pytan_func.ValidServerTests.test_valid_question_14_ask_manual_question_complex_query2">
+<code class="descname">test_valid_question_14_ask_manual_question_complex_query2</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_valid_question_14_ask_manual_question_complex_query2" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="test_pytan_func.ValidServerTests.test_valid_question_15_ask_manual_human_question_sensor_with_parameters_and_filter">
-<code class="descname">test_valid_question_15_ask_manual_human_question_sensor_with_parameters_and_filter</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_valid_question_15_ask_manual_human_question_sensor_with_parameters_and_filter" title="Permalink to this definition">¶</a></dt>
+<dt id="test_pytan_func.ValidServerTests.test_valid_question_15_ask_manual_question_complex_query1">
+<code class="descname">test_valid_question_15_ask_manual_question_complex_query1</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_valid_question_15_ask_manual_question_complex_query1" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="test_pytan_func.ValidServerTests.test_valid_question_16_ask_saved_question_by_name">
-<code class="descname">test_valid_question_16_ask_saved_question_by_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_valid_question_16_ask_saved_question_by_name" title="Permalink to this definition">¶</a></dt>
+<dt id="test_pytan_func.ValidServerTests.test_valid_question_1_ask_manual_question_sensor_with_parameters_and_some_supplied_parameters">
+<code class="descname">test_valid_question_1_ask_manual_question_sensor_with_parameters_and_some_supplied_parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_valid_question_1_ask_manual_question_sensor_with_parameters_and_some_supplied_parameters" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="test_pytan_func.ValidServerTests.test_valid_question_17_ask_manual_human_question_sensor_with_parameters_and_no_supplied_parameters">
-<code class="descname">test_valid_question_17_ask_manual_human_question_sensor_with_parameters_and_no_supplied_parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_valid_question_17_ask_manual_human_question_sensor_with_parameters_and_no_supplied_parameters" title="Permalink to this definition">¶</a></dt>
+<dt id="test_pytan_func.ValidServerTests.test_valid_question_2_ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters">
+<code class="descname">test_valid_question_2_ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_valid_question_2_ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="test_pytan_func.ValidServerTests.test_valid_question_1_ask_manual_human_question_sensor_with_parameters_and_some_supplied_parameters">
-<code class="descname">test_valid_question_1_ask_manual_human_question_sensor_with_parameters_and_some_supplied_parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_valid_question_1_ask_manual_human_question_sensor_with_parameters_and_some_supplied_parameters" title="Permalink to this definition">¶</a></dt>
+<dt id="test_pytan_func.ValidServerTests.test_valid_question_3_ask_manual_question_simple_multiple_sensors">
+<code class="descname">test_valid_question_3_ask_manual_question_simple_multiple_sensors</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_valid_question_3_ask_manual_question_simple_multiple_sensors" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="test_pytan_func.ValidServerTests.test_valid_question_2_ask_manual_human_question_simple_single_sensor">
-<code class="descname">test_valid_question_2_ask_manual_human_question_simple_single_sensor</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_valid_question_2_ask_manual_human_question_simple_single_sensor" title="Permalink to this definition">¶</a></dt>
+<dt id="test_pytan_func.ValidServerTests.test_valid_question_4_ask_manual_question_sensor_without_parameters_and_supplied_parameters">
+<code class="descname">test_valid_question_4_ask_manual_question_sensor_without_parameters_and_supplied_parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_valid_question_4_ask_manual_question_sensor_without_parameters_and_supplied_parameters" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="test_pytan_func.ValidServerTests.test_valid_question_3_ask_manual_human_question_sensor_with_filter_and_3_options">
-<code class="descname">test_valid_question_3_ask_manual_human_question_sensor_with_filter_and_3_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_valid_question_3_ask_manual_human_question_sensor_with_filter_and_3_options" title="Permalink to this definition">¶</a></dt>
+<dt id="test_pytan_func.ValidServerTests.test_valid_question_5_ask_manual_question_sensor_with_filter_and_2_options">
+<code class="descname">test_valid_question_5_ask_manual_question_sensor_with_filter_and_2_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_valid_question_5_ask_manual_question_sensor_with_filter_and_2_options" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="test_pytan_func.ValidServerTests.test_valid_question_4_ask_manual_human_question_sensor_without_parameters_and_supplied_parameters">
-<code class="descname">test_valid_question_4_ask_manual_human_question_sensor_without_parameters_and_supplied_parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_valid_question_4_ask_manual_human_question_sensor_without_parameters_and_supplied_parameters" title="Permalink to this definition">¶</a></dt>
+<dt id="test_pytan_func.ValidServerTests.test_valid_question_6_ask_manual_question_sensor_with_parameters_and_filter">
+<code class="descname">test_valid_question_6_ask_manual_question_sensor_with_parameters_and_filter</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_valid_question_6_ask_manual_question_sensor_with_parameters_and_filter" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="test_pytan_func.ValidServerTests.test_valid_question_5_ask_manual_human_question_complex_query2">
-<code class="descname">test_valid_question_5_ask_manual_human_question_complex_query2</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_valid_question_5_ask_manual_human_question_complex_query2" title="Permalink to this definition">¶</a></dt>
+<dt id="test_pytan_func.ValidServerTests.test_valid_question_7__ask_manual_question_sensor_complex">
+<code class="descname">test_valid_question_7__ask_manual_question_sensor_complex</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_valid_question_7__ask_manual_question_sensor_complex" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="test_pytan_func.ValidServerTests.test_valid_question_6_ask_manual_human_question_complex_query1">
-<code class="descname">test_valid_question_6_ask_manual_human_question_complex_query1</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_valid_question_6_ask_manual_human_question_complex_query1" title="Permalink to this definition">¶</a></dt>
+<dt id="test_pytan_func.ValidServerTests.test_valid_question_8_ask_manual_question_sensor_with_parameters_and_no_supplied_parameters">
+<code class="descname">test_valid_question_8_ask_manual_question_sensor_with_parameters_and_no_supplied_parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_valid_question_8_ask_manual_question_sensor_with_parameters_and_no_supplied_parameters" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="test_pytan_func.ValidServerTests.test_valid_question_7_ask_saved_question_by_name_in_list">
-<code class="descname">test_valid_question_7_ask_saved_question_by_name_in_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_valid_question_7_ask_saved_question_by_name_in_list" title="Permalink to this definition">¶</a></dt>
+<dt id="test_pytan_func.ValidServerTests.test_valid_question_9_ask_manual_question_simple_single_sensor">
+<code class="descname">test_valid_question_9_ask_manual_question_simple_single_sensor</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_valid_question_9_ask_manual_question_simple_single_sensor" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="test_pytan_func.ValidServerTests.test_valid_question_8_ask_manual_human_question_multiple_sensors_with_parameters_and_some_supplied_parameters">
-<code class="descname">test_valid_question_8_ask_manual_human_question_multiple_sensors_with_parameters_and_some_supplied_parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_valid_question_8_ask_manual_human_question_multiple_sensors_with_parameters_and_some_supplied_parameters" title="Permalink to this definition">¶</a></dt>
+<dt id="test_pytan_func.ValidServerTests.test_valid_saved_question_1_ask_saved_question_refresh_data">
+<code class="descname">test_valid_saved_question_1_ask_saved_question_refresh_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_valid_saved_question_1_ask_saved_question_refresh_data" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="test_pytan_func.ValidServerTests.test_valid_question_9_ask_manual_question_sensor_complex">
-<code class="descname">test_valid_question_9_ask_manual_question_sensor_complex</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_valid_question_9_ask_manual_question_sensor_complex" title="Permalink to this definition">¶</a></dt>
+<dt id="test_pytan_func.ValidServerTests.test_valid_saved_question_2_ask_saved_question_by_name">
+<code class="descname">test_valid_saved_question_2_ask_saved_question_by_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_valid_saved_question_2_ask_saved_question_by_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="test_pytan_func.ValidServerTests.test_valid_saved_question_3_ask_saved_question_by_name_in_list">
+<code class="descname">test_valid_saved_question_3_ask_saved_question_by_name_in_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#test_pytan_func.ValidServerTests.test_valid_saved_question_3_ask_saved_question_by_name_in_list" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
+
+<dl class="function">
+<dt id="test_pytan_func.chew_csv">
+<code class="descclassname">test_pytan_func.</code><code class="descname">chew_csv</code><span class="sig-paren">(</span><em>c</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/test_pytan_func.html#chew_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#test_pytan_func.chew_csv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="function">
 <dt id="test_pytan_func.spew">
@@ -836,7 +852,7 @@ The connection info is pulled from the SERVER_INFO dictionary in test/API_INFO.p
         <a href="taniumpy.html" class="btn btn-neutral float-right" title="3. taniumpy package">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="pytan.unittest.html" class="btn btn-neutral" title="2.5. pytan Unit Tests"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="pytan.unittest.html" class="btn btn-neutral" title="2.8. pytan Unit Tests"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -846,7 +862,7 @@ The connection info is pulled from the SERVER_INFO dictionary in test/API_INFO.p
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Mar 26, 2015.
+      Last updated on Aug 07, 2015.
     </p>
   </div>
 
@@ -867,7 +883,7 @@ The connection info is pulled from the SERVER_INFO dictionary in test/API_INFO.p
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.0.4',
+            VERSION:'2.0.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

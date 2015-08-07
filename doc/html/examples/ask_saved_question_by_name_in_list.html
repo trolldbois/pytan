@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>2.1.2.1. Ask saved question by name in list &mdash; PyTan 1.0.4 documentation</title>
+  <title>2.1.2.3. Ask saved question by name in list &mdash; PyTan 2.0.0 documentation</title>
   
 
   
@@ -28,10 +28,10 @@
   
 
   
-    <link rel="top" title="PyTan 1.0.4 documentation" href="../index.html"/>
-        <link rel="up" title="2.1.2. pytan API Valid Question Examples" href="valid_questions.html"/>
-        <link rel="next" title="2.1.2.2. Ask saved question by name" href="ask_saved_question_by_name.html"/>
-        <link rel="prev" title="2.1.2. pytan API Valid Question Examples" href="valid_questions.html"/> 
+    <link rel="top" title="PyTan 2.0.0 documentation" href="../index.html"/>
+        <link rel="up" title="2.1.2. PyTan API Valid Saved Question Examples" href="valid_saved_questions.html"/>
+        <link rel="next" title="2.1.3. PyTan API Valid Question Examples" href="valid_questions.html"/>
+        <link rel="prev" title="2.1.2.2. Ask saved question by name" href="ask_saved_question_by_name.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -67,24 +67,26 @@
 <li class="toctree-l2"><a class="reference internal" href="../introduction.html#description">1.1. Description</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../introduction.html#why-it-was-created">1.2. Why it was created</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../introduction.html#requirements">1.3. Requirements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../introduction.html#installation">1.4. Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../introduction.html#usage">1.5. Usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../introduction.html#directory-layout">1.6. Directory Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#tanium-versions-validated-against">1.4. Tanium Versions Validated Against</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#installation">1.5. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#usage">1.6. Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#directory-layout">1.7. Directory Layout</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="../pytan.html">2. pytan package</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="pytan_examples.html">2.1. pytan API examples</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="pytan_examples.html">2.1. PyTan API examples</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../pytan.handler.html">2.2. pytan.handler module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.constants.html">2.3. pytan.constants module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.utils.html">2.4. pytan.utils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.unittest.html">2.5. pytan Unit Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.functest.html">2.6. pytan Functional Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.exceptions.html">2.3. pytan.exceptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.sessions.html">2.4. pytan.sessions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.pollers.html">2.5. pytan.pollers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.constants.html">2.6. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.utils.html">2.7. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.unittest.html">2.8. pytan Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.functest.html">2.9. pytan Functional Tests</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../taniumpy.html">3. taniumpy package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../taniumpy.session.html">3.1. taniumpy.session module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../taniumpy.question_asker.html">3.2. taniumpy.question_asker module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../taniumpy.object_types.html">3.3. taniumpy.object_types package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taniumpy.object_types.html">3.1. taniumpy.object_types package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../xmltodict.html">4. xmltodict module</a><ul class="simple">
@@ -94,6 +96,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../threaded_http.html">6. threaded_http module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../requests.html">7. requests package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../requests.html#requests-http-library">7.1. requests HTTP library</a></li>
 </ul>
 </li>
 </ul>
@@ -122,11 +128,11 @@
       
           <li><a href="../pytan.html">2. pytan package</a> &raquo;</li>
       
-          <li><a href="pytan_examples.html">2.1. pytan API examples</a> &raquo;</li>
+          <li><a href="pytan_examples.html">2.1. PyTan API examples</a> &raquo;</li>
       
-          <li><a href="valid_questions.html">2.1.2. pytan API Valid Question Examples</a> &raquo;</li>
+          <li><a href="valid_saved_questions.html">2.1.2. PyTan API Valid Saved Question Examples</a> &raquo;</li>
       
-    <li>2.1.2.1. Ask saved question by name in list</li>
+    <li>2.1.2.3. Ask saved question by name in list</li>
       <li class="wy-breadcrumbs-aside">
         
           <a href="../_sources/examples/ask_saved_question_by_name_in_list.txt" rel="nofollow"> View page source</a>
@@ -138,10 +144,10 @@
           <div role="main" class="document">
             
   <div class="section" id="ask-saved-question-by-name-in-list">
-<h1>2.1.2.1. Ask saved question by name in list<a class="headerlink" href="#ask-saved-question-by-name-in-list" title="Permalink to this headline">¶</a></h1>
+<h1>2.1.2.3. Ask saved question by name in list<a class="headerlink" href="#ask-saved-question-by-name-in-list" title="Permalink to this headline">¶</a></h1>
 <p>Ask a saved question by referencing the name of a saved question in a list of strings.</p>
 <div class="section" id="example-python-code">
-<h2>2.1.2.1.1. Example Python Code<a class="headerlink" href="#example-python-code" title="Permalink to this headline">¶</a></h2>
+<h2>2.1.2.3.1. Example Python Code<a class="headerlink" href="#example-python-code" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -241,7 +247,7 @@
 <span class="n">USERNAME</span> <span class="o">=</span> <span class="s">&quot;Tanium User&quot;</span>
 <span class="n">PASSWORD</span> <span class="o">=</span> <span class="s">&quot;T@n!um&quot;</span>
 <span class="n">HOST</span> <span class="o">=</span> <span class="s">&quot;172.16.31.128&quot;</span>
-<span class="n">PORT</span> <span class="o">=</span> <span class="s">&quot;444&quot;</span>
+<span class="n">PORT</span> <span class="o">=</span> <span class="s">&quot;443&quot;</span>
 
 <span class="c"># Logging conrols</span>
 <span class="n">LOGLEVEL</span> <span class="o">=</span> <span class="mi">2</span>
@@ -299,7 +305,7 @@
 </td></tr></table></div>
 </div>
 <div class="section" id="output-from-python-code">
-<h2>2.1.2.1.2. Output from Python Code<a class="headerlink" href="#output-from-python-code" title="Permalink to this headline">¶</a></h2>
+<h2>2.1.2.3.2. Output from Python Code<a class="headerlink" href="#output-from-python-code" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-none"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -328,34 +334,38 @@
 26
 27
 28
-29</pre></div></td><td class="code"><div class="highlight"><pre>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
-2015-03-26 11:37:59,316 INFO     question_progress: Results 100% (Get Installed Applications from all machines)
+29
+30
+31</pre></div></td><td class="code"><div class="highlight"><pre>Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
 
 Type of response:  &lt;type &#39;dict&#39;&gt;
 
 Pretty print of response:
-{&#39;question_object&#39;: &lt;taniumpy.object_types.saved_question.SavedQuestion object at 0x107608b90&gt;,
- &#39;question_results&#39;: &lt;taniumpy.object_types.result_set.ResultSet object at 0x107646690&gt;}
+{&#39;poller_object&#39;: None,
+ &#39;poller_success&#39;: None,
+ &#39;question_object&#39;: &lt;taniumpy.object_types.question.Question object at 0x10a613d90&gt;,
+ &#39;question_results&#39;: &lt;taniumpy.object_types.result_set.ResultSet object at 0x10a6c0410&gt;,
+ &#39;saved_question_object&#39;: &lt;taniumpy.object_types.saved_question.SavedQuestion object at 0x10a808b10&gt;}
 
 Equivalent Question if it were to be asked in the Tanium Console:
 Get Installed Applications from all machines
 
 CSV Results of response:
 Name,Silent Uninstall String,Uninstallable,Version
-Google Search,nothing,Not Uninstallable,37.0.2062.120
-Microsoft Chart Converter,nothing,Not Uninstallable,14.4.7
+Image Capture Extension,nothing,Not Uninstallable,10.2
+Dictation,nothing,Not Uninstallable,1.6.1
 Wish,nothing,Not Uninstallable,8.5.9
-BluetoothUIServer,nothing,Not Uninstallable,4.3.2
+Uninstall AnyConnect,nothing,Not Uninstallable,3.1.08009
 Time Machine,nothing,Not Uninstallable,1.3
 AppleGraphicsWarning,nothing,Not Uninstallable,2.3.0
-Python 2.7 py2exe-0.6.9,&quot;&quot;&quot;C:\Python27\Removepy2exe.exe&quot;&quot; -u &quot;&quot;C:\Python27\py2exe-wininst.log&quot;&quot;&quot;,Not Uninstallable,-0.6.9
 soagent,nothing,Not Uninstallable,7.0
+Feedback Assistant,nothing,Not Uninstallable,4.1.3
 AinuIM,nothing,Not Uninstallable,1.0
-ARDAgent,nothing,Not Uninstallable,3.8.2
-Microsoft Clip Gallery,nothing,Not Uninstallable,14.4.7
+vpndownloader,nothing,Not Uninstallable,3.1.08009
 Pass Viewer,nothing,Not Uninstallable,1.0
+ARDAgent,nothing,Not Uninstallable,3.8.4
+OBEXAgent,nothing,Not Uninstallable,4.3.5
 PressAndHold,nothing,Not Uninstallable,1.2
-PluginIM,nothing,Not Uninstallable,15
 ..trimmed for brevity..
 </pre></div>
 </td></tr></table></div>
@@ -368,10 +378,10 @@ PluginIM,nothing,Not Uninstallable,15
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="ask_saved_question_by_name.html" class="btn btn-neutral float-right" title="2.1.2.2. Ask saved question by name">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="valid_questions.html" class="btn btn-neutral float-right" title="2.1.3. PyTan API Valid Question Examples">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="valid_questions.html" class="btn btn-neutral" title="2.1.2. pytan API Valid Question Examples"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="ask_saved_question_by_name.html" class="btn btn-neutral" title="2.1.2.2. Ask saved question by name"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -381,7 +391,7 @@ PluginIM,nothing,Not Uninstallable,15
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Mar 26, 2015.
+      Last updated on Aug 07, 2015.
     </p>
   </div>
 
@@ -402,7 +412,7 @@ PluginIM,nothing,Not Uninstallable,15
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.0.4',
+            VERSION:'2.0.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

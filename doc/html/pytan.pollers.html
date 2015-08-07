@@ -1,0 +1,967 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>2.5. pytan.pollers module &mdash; PyTan 2.0.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="PyTan 2.0.0 documentation" href="index.html"/>
+        <link rel="up" title="2. pytan package" href="pytan.html"/>
+        <link rel="next" title="2.6. pytan.constants module" href="pytan.constants.html"/>
+        <link rel="prev" title="2.4. pytan.sessions module" href="pytan.sessions.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="index.html" class="fa fa-home"> PyTan</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">1. PyTan Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#description">1.1. Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#why-it-was-created">1.2. Why it was created</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#requirements">1.3. Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#tanium-versions-validated-against">1.4. Tanium Versions Validated Against</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#installation">1.5. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#usage">1.6. Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#directory-layout">1.7. Directory Layout</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="pytan.html">2. pytan package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="examples/pytan_examples.html">2.1. PyTan API examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.handler.html">2.2. pytan.handler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.exceptions.html">2.3. pytan.exceptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.sessions.html">2.4. pytan.sessions module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">2.5. pytan.pollers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.constants.html">2.6. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html">2.7. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.unittest.html">2.8. pytan Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.functest.html">2.9. pytan Functional Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="taniumpy.html">3. taniumpy package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy.object_types.html">3.1. taniumpy.object_types package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="xmltodict.html">4. xmltodict module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ddt.html">5. ddt module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="threaded_http.html">6. threaded_http module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="requests.html">7. requests package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="requests.html#requests-http-library">7.1. requests HTTP library</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">PyTan</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="pytan.html">2. pytan package</a> &raquo;</li>
+      
+    <li>2.5. pytan.pollers module</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/pytan.pollers.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="module-pytan.pollers">
+<span id="pytan-pollers-module"></span><h1>2.5. pytan.pollers module<a class="headerlink" href="#module-pytan.pollers" title="Permalink to this headline">¶</a></h1>
+<p>Collection of classes and methods for polling of actions/questions in <a class="reference internal" href="pytan.html#module-pytan" title="pytan"><code class="xref py py-mod docutils literal"><span class="pre">pytan</span></code></a></p>
+<dl class="class">
+<dt id="pytan.pollers.ActionPoller">
+<em class="property">class </em><code class="descclassname">pytan.pollers.</code><code class="descname">ActionPoller</code><span class="sig-paren">(</span><em>handler</em>, <em>obj</em>, <em>override_timeout_secs=0</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#ActionPoller"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.ActionPoller" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pytan.pollers.QuestionPoller" title="pytan.pollers.QuestionPoller"><code class="xref py py-class docutils literal"><span class="pre">pytan.pollers.QuestionPoller</span></code></a></p>
+<p>A class to poll the progress of an Action.</p>
+<p>The primary function of this class is to poll for result info for actions, and fire off events:</p>
+<p>ProgressChanged
+AnswersChanged
+AnswersComplete</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>handler</strong> : <a class="reference internal" href="pytan.handler.html#pytan.handler.Handler" title="pytan.handler.Handler"><code class="xref py py-class docutils literal"><span class="pre">pytan.handler.Handler</span></code></a></p>
+<blockquote>
+<div><p>PyTan handler to use for GetResultInfo calls</p>
+</div></blockquote>
+<p><strong>obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.action.Action" title="taniumpy.object_types.action.Action"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.action.Action</span></code></a></p>
+<blockquote>
+<div><p>object to poll for progress</p>
+</div></blockquote>
+<p><strong>polling_secs</strong> : int, optional</p>
+<blockquote>
+<div><p>Number of seconds to wait in between GetResultInfo loops</p>
+</div></blockquote>
+<p><strong>complete_pct</strong> : int/float, optional</p>
+<blockquote>
+<div><p>Percentage of mr_tested out of estimated_total to consider the action &#8220;done&#8221;</p>
+</div></blockquote>
+<p><strong>override_timeout_secs</strong> : int, optional</p>
+<blockquote class="last">
+<div><p>If supplied and not 0, timeout in seconds instead of when object expires</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="pytan.pollers.ActionPoller.ACTION_DONE_KEY">
+<code class="descname">ACTION_DONE_KEY</code><em class="property"> = 'success'</em><a class="headerlink" href="#pytan.pollers.ActionPoller.ACTION_DONE_KEY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.pollers.ActionPoller.COMPLETE_PCT">
+<code class="descname">COMPLETE_PCT</code><em class="property"> = 100</em><a class="headerlink" href="#pytan.pollers.ActionPoller.COMPLETE_PCT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.pollers.ActionPoller.OBJECT_TYPE">
+<code class="descname">OBJECT_TYPE</code><a class="headerlink" href="#pytan.pollers.ActionPoller.OBJECT_TYPE" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">Action</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.pollers.ActionPoller.RUNNING_STATUSES">
+<code class="descname">RUNNING_STATUSES</code><em class="property"> = ['active', 'open']</em><a class="headerlink" href="#pytan.pollers.ActionPoller.RUNNING_STATUSES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.pollers.ActionPoller.__module__">
+<code class="descname">__module__</code><em class="property"> = 'pytan.pollers'</em><a class="headerlink" href="#pytan.pollers.ActionPoller.__module__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pytan.pollers.ActionPoller._derive_expiration">
+<code class="descname">_derive_expiration</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#ActionPoller._derive_expiration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.ActionPoller._derive_expiration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Derive the expiration datetime string from a object</p>
+<p>Will generate a datetime string from self.EXPIRY_FALLBACK_SECS if unable to get the expiration from the object (self.obj) itself.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.pollers.ActionPoller._derive_info">
+<code class="descname">_derive_info</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#ActionPoller._derive_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.ActionPoller._derive_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Derive self.obj_info from self.obj</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.pollers.ActionPoller._derive_package_spec">
+<code class="descname">_derive_package_spec</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#ActionPoller._derive_package_spec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.ActionPoller._derive_package_spec" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pytan.pollers.ActionPoller._derive_result_map">
+<code class="descname">_derive_result_map</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#ActionPoller._derive_result_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.ActionPoller._derive_result_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>A package object has to have a verify_group defined on it in order
+for deploy action verification to trigger. That can be only done
+at package creation/update</p>
+<p>If verify_enable is True, then the various result states for an action change</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.pollers.ActionPoller._derive_status">
+<code class="descname">_derive_status</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#ActionPoller._derive_status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.ActionPoller._derive_status" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pytan.pollers.ActionPoller._derive_stopped_flag">
+<code class="descname">_derive_stopped_flag</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#ActionPoller._derive_stopped_flag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.ActionPoller._derive_stopped_flag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pytan.pollers.ActionPoller._derive_target_group">
+<code class="descname">_derive_target_group</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#ActionPoller._derive_target_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.ActionPoller._derive_target_group" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pytan.pollers.ActionPoller._derive_verify_enabled">
+<code class="descname">_derive_verify_enabled</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#ActionPoller._derive_verify_enabled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.ActionPoller._derive_verify_enabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pytan.pollers.ActionPoller._fix_group">
+<code class="descname">_fix_group</code><span class="sig-paren">(</span><em>g</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#ActionPoller._fix_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.ActionPoller._fix_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets ID to null on a group object and all of it&#8217;s sub_groups, needed for 6.5</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.pollers.ActionPoller._post_init">
+<code class="descname">_post_init</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#ActionPoller._post_init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.ActionPoller._post_init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Post init class setup</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.pollers.ActionPoller.finished_eq_passed_loop">
+<code class="descname">finished_eq_passed_loop</code><span class="sig-paren">(</span><em>callbacks={}</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#ActionPoller.finished_eq_passed_loop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.ActionPoller.finished_eq_passed_loop" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.pollers.ActionPoller.qplog">
+<code class="descname">qplog</code><em class="property"> = &lt;logging.Logger object at 0x110a4ab90&gt;</em><a class="headerlink" href="#pytan.pollers.ActionPoller.qplog" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.pollers.ActionPoller.qpplog">
+<code class="descname">qpplog</code><em class="property"> = &lt;logging.Logger object at 0x110a4ac50&gt;</em><a class="headerlink" href="#pytan.pollers.ActionPoller.qpplog" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pytan.pollers.ActionPoller.run">
+<code class="descname">run</code><span class="sig-paren">(</span><em>callbacks={}</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#ActionPoller.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.ActionPoller.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Poll for action data and issue callbacks.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>callbacks</strong> : dict</p>
+<blockquote class="last">
+<div><p>Callbacks should be a dict with any of these members:
+&#8216;ProgressChanged&#8217;
+&#8216;AnswersChanged&#8217;
+&#8216;AnswersComplete&#8217;</p>
+<p>Each callback should be a function that accepts a poller instance and a percent complete.</p>
+<p>Any callback can choose to get data from the session by calling poller.get_result_data() or new info by calling poller.get_result_info()</p>
+<p>Any callback can choose to stop the poller by calling poller.stop()</p>
+<p>Polling will be stopped only when one of the callbacks calls the stop() method or the answers are complete. Note that callbacks can call setPercentCompleteThreshold to change what &#8220;done&#8221; means on the fly</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.pollers.ActionPoller.seen_eq_passed_loop">
+<code class="descname">seen_eq_passed_loop</code><span class="sig-paren">(</span><em>callbacks={}</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#ActionPoller.seen_eq_passed_loop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.ActionPoller.seen_eq_passed_loop" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pytan.pollers.QuestionPoller">
+<em class="property">class </em><code class="descclassname">pytan.pollers.</code><code class="descname">QuestionPoller</code><span class="sig-paren">(</span><em>handler</em>, <em>obj</em>, <em>override_timeout_secs=0</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#QuestionPoller"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.QuestionPoller" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/2.7/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>A class to poll the progress of a Question.</p>
+<p>The primary function of this class is to poll for result info for questions, and fire off events:</p>
+<p>ProgressChanged
+AnswersChanged
+AnswersComplete</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>handler</strong> : <a class="reference internal" href="pytan.handler.html#pytan.handler.Handler" title="pytan.handler.Handler"><code class="xref py py-class docutils literal"><span class="pre">pytan.handler.Handler</span></code></a></p>
+<blockquote>
+<div><p>PyTan handler to use for GetResultInfo calls</p>
+</div></blockquote>
+<p><strong>obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.question.Question" title="taniumpy.object_types.question.Question"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.question.Question</span></code></a></p>
+<blockquote>
+<div><p>object to poll for progress</p>
+</div></blockquote>
+<p><strong>polling_secs</strong> : int, optional</p>
+<blockquote>
+<div><p>Number of seconds to wait in between GetResultInfo loops</p>
+</div></blockquote>
+<p><strong>complete_pct</strong> : int/float, optional</p>
+<blockquote>
+<div><p>Percentage of mr_tested out of estimated_total to consider the question &#8220;done&#8221;</p>
+</div></blockquote>
+<p><strong>override_timeout_secs</strong> : int, optional</p>
+<blockquote class="last">
+<div><p>If supplied and not 0, timeout in seconds instead of when object expires</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="pytan.pollers.QuestionPoller.COMPLETE_PCT">
+<code class="descname">COMPLETE_PCT</code><em class="property"> = 99</em><a class="headerlink" href="#pytan.pollers.QuestionPoller.COMPLETE_PCT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.pollers.QuestionPoller.EXPIRY_FALLBACK_SECS">
+<code class="descname">EXPIRY_FALLBACK_SECS</code><em class="property"> = 600</em><a class="headerlink" href="#pytan.pollers.QuestionPoller.EXPIRY_FALLBACK_SECS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.pollers.QuestionPoller.OBJECT_TYPE">
+<code class="descname">OBJECT_TYPE</code><a class="headerlink" href="#pytan.pollers.QuestionPoller.OBJECT_TYPE" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">Question</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.pollers.QuestionPoller.POLLING_SECS">
+<code class="descname">POLLING_SECS</code><em class="property"> = 5</em><a class="headerlink" href="#pytan.pollers.QuestionPoller.POLLING_SECS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.pollers.QuestionPoller.STR_ATTRS">
+<code class="descname">STR_ATTRS</code><em class="property"> = ['obj_info', 'polling_secs', 'override_timeout_secs', 'complete_pct', 'expiration']</em><a class="headerlink" href="#pytan.pollers.QuestionPoller.STR_ATTRS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.pollers.QuestionPoller.__dict__">
+<code class="descname">__dict__</code><em class="property"> = dict_proxy({'passed_eq_est_total_loop': &lt;function passed_eq_est_total_loop at 0x110a52410&gt;, '__module__': 'pytan.pollers', 'run': &lt;function run at 0x110a52398&gt;, 'EXPIRY_FALLBACK_SECS': 600, 'stop': &lt;function stop at 0x110a52488&gt;, '__str__': &lt;function __str__ at 0x110a44ed8&gt;, 'OBJECT_TYPE': &lt;class 'taniumpy.object_types.question.Question'&gt;, '_derive_expiration': &lt;function _derive_expiration at 0x110a521b8&gt;, 'qplog': &lt;logging.Logger object at 0x110a4a9d0&gt;, '_derive_attribute': &lt;function _derive_attribute at 0x110a520c8&gt;, 'POLLING_SECS': 5, 'COMPLETE_PCT': 99, '__dict__': &lt;attribute '__dict__' of 'QuestionPoller' objects&gt;, 'STR_ATTRS': ['obj_info', 'polling_secs', 'override_timeout_secs', 'complete_pct', 'expiration'], '_post_init': &lt;function _post_init at 0x110a44f50&gt;, '__init__': &lt;function __init__ at 0x110a44e60&gt;, 'get_result_data': &lt;function get_result_data at 0x110a52320&gt;, '__weakref__': &lt;attribute '__weakref__' of 'QuestionPoller' objects&gt;, 'set_complect_pct': &lt;function set_complect_pct at 0x110a52230&gt;, 'qpplog': &lt;logging.Logger object at 0x110a4aa90&gt;, '_derive_info': &lt;function _derive_info at 0x110a52140&gt;, 'get_result_info': &lt;function get_result_info at 0x110a522a8&gt;, '_refetch_obj': &lt;function _refetch_obj at 0x110a52050&gt;, '__doc__': 'A class to poll the progress of a Question.\n\n    The primary function of this class is to poll for result info for questions, and fire off events:\n\n    ProgressChanged\n    AnswersChanged\n    AnswersComplete\n\n    Parameters\n    ----------\n    handler : :class:`pytan.handler.Handler`\n        PyTan handler to use for GetResultInfo calls\n    obj : :class:`taniumpy.object_types.question.Question`\n        object to poll for progress\n    polling_secs : int, optional\n        Number of seconds to wait in between GetResultInfo loops\n    complete_pct : int/float, optional\n        Percentage of mr_tested out of estimated_total to consider the question &quot;done&quot;\n    override_timeout_secs : int, optional\n        If supplied and not 0, timeout in seconds instead of when object expires\n    '})</em><a class="headerlink" href="#pytan.pollers.QuestionPoller.__dict__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pytan.pollers.QuestionPoller.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>handler</em>, <em>obj</em>, <em>override_timeout_secs=0</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#QuestionPoller.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.QuestionPoller.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.pollers.QuestionPoller.__module__">
+<code class="descname">__module__</code><em class="property"> = 'pytan.pollers'</em><a class="headerlink" href="#pytan.pollers.QuestionPoller.__module__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pytan.pollers.QuestionPoller.__str__">
+<code class="descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#QuestionPoller.__str__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.QuestionPoller.__str__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.pollers.QuestionPoller.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#pytan.pollers.QuestionPoller.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.pollers.QuestionPoller._derive_attribute">
+<code class="descname">_derive_attribute</code><span class="sig-paren">(</span><em>attr</em>, <em>fallback=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#QuestionPoller._derive_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.QuestionPoller._derive_attribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Derive an attributes value from self.obj</p>
+<p>Will re-fetch self.obj if the attribute is not set</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>attr</strong> : string</p>
+<blockquote>
+<div><p>string of attribute name to fetch from self.obj</p>
+</div></blockquote>
+<p><strong>fallback</strong> : string</p>
+<blockquote>
+<div><p>value to fallback to if it still can&#8217;t be accessed after re-fetching the obj
+if fallback is None, an exception will be raised</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>val</strong> : perspective</p>
+<blockquote class="last">
+<div><p>The value of the attr from self.obj</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.pollers.QuestionPoller._derive_expiration">
+<code class="descname">_derive_expiration</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#QuestionPoller._derive_expiration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.QuestionPoller._derive_expiration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Derive the expiration datetime string from a object</p>
+<p>Will generate a datetime string from self.EXPIRY_FALLBACK_SECS if unable to get the expiration from the object (self.obj) itself.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.pollers.QuestionPoller._derive_info">
+<code class="descname">_derive_info</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#QuestionPoller._derive_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.QuestionPoller._derive_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Derive self.obj_info from self.obj</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.pollers.QuestionPoller._post_init">
+<code class="descname">_post_init</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#QuestionPoller._post_init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.QuestionPoller._post_init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Post init class setup</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.pollers.QuestionPoller._refetch_obj">
+<code class="descname">_refetch_obj</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#QuestionPoller._refetch_obj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.QuestionPoller._refetch_obj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility method to re-fetch a object</p>
+<p>This is used in the case that the obj supplied does not have all the metadata
+available</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.pollers.QuestionPoller.get_result_data">
+<code class="descname">get_result_data</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#QuestionPoller.get_result_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.QuestionPoller.get_result_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simple utility wrapper around handler.get_result_data()</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.pollers.QuestionPoller.get_result_info">
+<code class="descname">get_result_info</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#QuestionPoller.get_result_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.QuestionPoller.get_result_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simple utility wrapper around handler.get_result_info()</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.pollers.QuestionPoller.passed_eq_est_total_loop">
+<code class="descname">passed_eq_est_total_loop</code><span class="sig-paren">(</span><em>callbacks={}</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#QuestionPoller.passed_eq_est_total_loop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.QuestionPoller.passed_eq_est_total_loop" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.pollers.QuestionPoller.qplog">
+<code class="descname">qplog</code><em class="property"> = &lt;logging.Logger object at 0x110a4a9d0&gt;</em><a class="headerlink" href="#pytan.pollers.QuestionPoller.qplog" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.pollers.QuestionPoller.qpplog">
+<code class="descname">qpplog</code><em class="property"> = &lt;logging.Logger object at 0x110a4aa90&gt;</em><a class="headerlink" href="#pytan.pollers.QuestionPoller.qpplog" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pytan.pollers.QuestionPoller.run">
+<code class="descname">run</code><span class="sig-paren">(</span><em>callbacks={}</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#QuestionPoller.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.QuestionPoller.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Poll for question data and issue callbacks.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>callbacks</strong> : dict</p>
+<blockquote class="last">
+<div><p>Callbacks should be a dict with any of these members:
+&#8216;ProgressChanged&#8217;
+&#8216;AnswersChanged&#8217;
+&#8216;AnswersComplete&#8217;</p>
+<p>Each callback should be a function that accepts a poller instance and a percent complete.</p>
+<p>Any callback can choose to get data from the session by calling poller.get_result_data() or new info by calling poller.get_result_info()</p>
+<p>Any callback can choose to stop the poller by calling poller.stop()</p>
+<p>Polling will be stopped only when one of the callbacks calls the stop() method or the answers are complete. Note that callbacks can call setPercentCompleteThreshold to change what &#8220;done&#8221; means on the fly</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.pollers.QuestionPoller.set_complect_pct">
+<code class="descname">set_complect_pct</code><span class="sig-paren">(</span><em>val</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#QuestionPoller.set_complect_pct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.QuestionPoller.set_complect_pct" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the complete_pct to a new value</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>val</strong> : int/float</p>
+<blockquote class="last">
+<div><p>float value representing the new percentage to consider self.obj complete</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.pollers.QuestionPoller.stop">
+<code class="descname">stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#QuestionPoller.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.QuestionPoller.stop" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">pytan.pollers.</code><code class="descname">QuestionPoller</code><span class="sig-paren">(</span><em>handler</em>, <em>obj</em>, <em>override_timeout_secs=0</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#QuestionPoller"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/2.7/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>A class to poll the progress of a Question.</p>
+<p>The primary function of this class is to poll for result info for questions, and fire off events:</p>
+<p>ProgressChanged
+AnswersChanged
+AnswersComplete</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>handler</strong> : <a class="reference internal" href="pytan.handler.html#pytan.handler.Handler" title="pytan.handler.Handler"><code class="xref py py-class docutils literal"><span class="pre">pytan.handler.Handler</span></code></a></p>
+<blockquote>
+<div><p>PyTan handler to use for GetResultInfo calls</p>
+</div></blockquote>
+<p><strong>obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.question.Question" title="taniumpy.object_types.question.Question"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.question.Question</span></code></a></p>
+<blockquote>
+<div><p>object to poll for progress</p>
+</div></blockquote>
+<p><strong>polling_secs</strong> : int, optional</p>
+<blockquote>
+<div><p>Number of seconds to wait in between GetResultInfo loops</p>
+</div></blockquote>
+<p><strong>complete_pct</strong> : int/float, optional</p>
+<blockquote>
+<div><p>Percentage of mr_tested out of estimated_total to consider the question &#8220;done&#8221;</p>
+</div></blockquote>
+<p><strong>override_timeout_secs</strong> : int, optional</p>
+<blockquote class="last">
+<div><p>If supplied and not 0, timeout in seconds instead of when object expires</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt>
+<code class="descname">COMPLETE_PCT</code><em class="property"> = 99</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">EXPIRY_FALLBACK_SECS</code><em class="property"> = 600</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">OBJECT_TYPE</code></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">Question</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">POLLING_SECS</code><em class="property"> = 5</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">STR_ATTRS</code><em class="property"> = ['obj_info', 'polling_secs', 'override_timeout_secs', 'complete_pct', 'expiration']</em></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">_derive_attribute</code><span class="sig-paren">(</span><em>attr</em>, <em>fallback=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#QuestionPoller._derive_attribute"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Derive an attributes value from self.obj</p>
+<p>Will re-fetch self.obj if the attribute is not set</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>attr</strong> : string</p>
+<blockquote>
+<div><p>string of attribute name to fetch from self.obj</p>
+</div></blockquote>
+<p><strong>fallback</strong> : string</p>
+<blockquote>
+<div><p>value to fallback to if it still can&#8217;t be accessed after re-fetching the obj
+if fallback is None, an exception will be raised</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>val</strong> : perspective</p>
+<blockquote class="last">
+<div><p>The value of the attr from self.obj</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">_derive_expiration</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#QuestionPoller._derive_expiration"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Derive the expiration datetime string from a object</p>
+<p>Will generate a datetime string from self.EXPIRY_FALLBACK_SECS if unable to get the expiration from the object (self.obj) itself.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">_derive_info</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#QuestionPoller._derive_info"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Derive self.obj_info from self.obj</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">_post_init</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#QuestionPoller._post_init"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Post init class setup</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">_refetch_obj</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#QuestionPoller._refetch_obj"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Utility method to re-fetch a object</p>
+<p>This is used in the case that the obj supplied does not have all the metadata
+available</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">get_result_data</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#QuestionPoller.get_result_data"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Simple utility wrapper around handler.get_result_data()</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">get_result_info</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#QuestionPoller.get_result_info"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Simple utility wrapper around handler.get_result_info()</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">passed_eq_est_total_loop</code><span class="sig-paren">(</span><em>callbacks={}</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#QuestionPoller.passed_eq_est_total_loop"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">qplog</code><em class="property"> = &lt;logging.Logger object at 0x110a4a9d0&gt;</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">qpplog</code><em class="property"> = &lt;logging.Logger object at 0x110a4aa90&gt;</em></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">run</code><span class="sig-paren">(</span><em>callbacks={}</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#QuestionPoller.run"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Poll for question data and issue callbacks.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>callbacks</strong> : dict</p>
+<blockquote class="last">
+<div><p>Callbacks should be a dict with any of these members:
+&#8216;ProgressChanged&#8217;
+&#8216;AnswersChanged&#8217;
+&#8216;AnswersComplete&#8217;</p>
+<p>Each callback should be a function that accepts a poller instance and a percent complete.</p>
+<p>Any callback can choose to get data from the session by calling poller.get_result_data() or new info by calling poller.get_result_info()</p>
+<p>Any callback can choose to stop the poller by calling poller.stop()</p>
+<p>Polling will be stopped only when one of the callbacks calls the stop() method or the answers are complete. Note that callbacks can call setPercentCompleteThreshold to change what &#8220;done&#8221; means on the fly</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">set_complect_pct</code><span class="sig-paren">(</span><em>val</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#QuestionPoller.set_complect_pct"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Set the complete_pct to a new value</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>val</strong> : int/float</p>
+<blockquote class="last">
+<div><p>float value representing the new percentage to consider self.obj complete</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#QuestionPoller.stop"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">pytan.pollers.</code><code class="descname">ActionPoller</code><span class="sig-paren">(</span><em>handler</em>, <em>obj</em>, <em>override_timeout_secs=0</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#ActionPoller"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pytan.pollers.QuestionPoller" title="pytan.pollers.QuestionPoller"><code class="xref py py-class docutils literal"><span class="pre">pytan.pollers.QuestionPoller</span></code></a></p>
+<p>A class to poll the progress of an Action.</p>
+<p>The primary function of this class is to poll for result info for actions, and fire off events:</p>
+<p>ProgressChanged
+AnswersChanged
+AnswersComplete</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>handler</strong> : <a class="reference internal" href="pytan.handler.html#pytan.handler.Handler" title="pytan.handler.Handler"><code class="xref py py-class docutils literal"><span class="pre">pytan.handler.Handler</span></code></a></p>
+<blockquote>
+<div><p>PyTan handler to use for GetResultInfo calls</p>
+</div></blockquote>
+<p><strong>obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.action.Action" title="taniumpy.object_types.action.Action"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.action.Action</span></code></a></p>
+<blockquote>
+<div><p>object to poll for progress</p>
+</div></blockquote>
+<p><strong>polling_secs</strong> : int, optional</p>
+<blockquote>
+<div><p>Number of seconds to wait in between GetResultInfo loops</p>
+</div></blockquote>
+<p><strong>complete_pct</strong> : int/float, optional</p>
+<blockquote>
+<div><p>Percentage of mr_tested out of estimated_total to consider the action &#8220;done&#8221;</p>
+</div></blockquote>
+<p><strong>override_timeout_secs</strong> : int, optional</p>
+<blockquote class="last">
+<div><p>If supplied and not 0, timeout in seconds instead of when object expires</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt>
+<code class="descname">ACTION_DONE_KEY</code><em class="property"> = 'success'</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">COMPLETE_PCT</code><em class="property"> = 100</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">OBJECT_TYPE</code></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">Action</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">RUNNING_STATUSES</code><em class="property"> = ['active', 'open']</em></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">_derive_expiration</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#ActionPoller._derive_expiration"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Derive the expiration datetime string from a object</p>
+<p>Will generate a datetime string from self.EXPIRY_FALLBACK_SECS if unable to get the expiration from the object (self.obj) itself.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">_derive_info</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#ActionPoller._derive_info"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Derive self.obj_info from self.obj</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">_derive_package_spec</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#ActionPoller._derive_package_spec"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">_derive_result_map</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#ActionPoller._derive_result_map"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>A package object has to have a verify_group defined on it in order
+for deploy action verification to trigger. That can be only done
+at package creation/update</p>
+<p>If verify_enable is True, then the various result states for an action change</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">_derive_status</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#ActionPoller._derive_status"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">_derive_stopped_flag</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#ActionPoller._derive_stopped_flag"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">_derive_target_group</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#ActionPoller._derive_target_group"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">_derive_verify_enabled</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#ActionPoller._derive_verify_enabled"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">_fix_group</code><span class="sig-paren">(</span><em>g</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#ActionPoller._fix_group"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Sets ID to null on a group object and all of it&#8217;s sub_groups, needed for 6.5</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">_post_init</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#ActionPoller._post_init"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Post init class setup</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">finished_eq_passed_loop</code><span class="sig-paren">(</span><em>callbacks={}</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#ActionPoller.finished_eq_passed_loop"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">qplog</code><em class="property"> = &lt;logging.Logger object at 0x110a4ab90&gt;</em></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">qpplog</code><em class="property"> = &lt;logging.Logger object at 0x110a4ac50&gt;</em></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">run</code><span class="sig-paren">(</span><em>callbacks={}</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#ActionPoller.run"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Poll for action data and issue callbacks.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>callbacks</strong> : dict</p>
+<blockquote class="last">
+<div><p>Callbacks should be a dict with any of these members:
+&#8216;ProgressChanged&#8217;
+&#8216;AnswersChanged&#8217;
+&#8216;AnswersComplete&#8217;</p>
+<p>Each callback should be a function that accepts a poller instance and a percent complete.</p>
+<p>Any callback can choose to get data from the session by calling poller.get_result_data() or new info by calling poller.get_result_info()</p>
+<p>Any callback can choose to stop the poller by calling poller.stop()</p>
+<p>Polling will be stopped only when one of the callbacks calls the stop() method or the answers are complete. Note that callbacks can call setPercentCompleteThreshold to change what &#8220;done&#8221; means on the fly</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">seen_eq_passed_loop</code><span class="sig-paren">(</span><em>callbacks={}</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#ActionPoller.seen_eq_passed_loop"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pytan.constants.html" class="btn btn-neutral float-right" title="2.6. pytan.constants module">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pytan.sessions.html" class="btn btn-neutral" title="2.4. pytan.sessions module"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Tanium.
+      Last updated on Aug 07, 2015.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

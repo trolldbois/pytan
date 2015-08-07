@@ -41,14 +41,11 @@ Asking a Manual Question
 ***************************************************************
 
 .. automethod:: pytan.handler.Handler.ask_manual
-.. automethod:: pytan.handler.Handler.ask_manual_human
 
 Deploy an Action
 ***************************************************************
 
 .. automethod:: pytan.handler.Handler.deploy_action
-.. automethod:: pytan.handler.Handler.deploy_action_human
-.. automethod:: pytan.handler.Handler.deploy_action_asker
 
 Stopping an Action
 ***************************************************************
@@ -65,11 +62,6 @@ Import an API Object from JSON
 ***************************************************************
 
 .. automethod:: pytan.handler.Handler.create_from_json
-
-Load a Python Object from JSON
-***************************************************************
-
-.. automethod:: pytan.handler.Handler.load_taniumpy_from_json
 
 Export Object
 ***************************************************************
@@ -112,6 +104,12 @@ Create a Whitelisted URL
 
 .. automethod:: pytan.handler.Handler.create_whitelisted_url
 
+Create a Dashboard
+***************************************************************
+
+.. automethod:: pytan.handler.Handler.create_dashboard
+
+
 ------------
 
 
@@ -122,6 +120,11 @@ Delete an Object
 ***************************************************************
 
 .. automethod:: pytan.handler.Handler.delete
+
+Delete a Dashboard
+***************************************************************
+
+.. automethod:: pytan.handler.Handler.delete_dashboard
 
 
 ------------
@@ -140,6 +143,14 @@ Get All Objects of a type
 
 .. automethod:: pytan.handler.Handler.get_all
 
+Get Dashboards
+***************************************************************
+
+.. automethod:: pytan.handler.Handler.get_dashboards
+
+
+------------
+
 
 Handler Methods: Getting Result Data / Result Info
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -151,19 +162,29 @@ Handler Methods: Getting Result Data / Result Info
 ------------
 
 
+Handler Methods: Plugins
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. automethod:: pytan.handler.Handler.run_plugin
+
+
 Handler Methods: Private Methods
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-.. automethod:: pytan.handler.Handler._find
-.. automethod:: pytan.handler.Handler._get_multi
-.. automethod:: pytan.handler.Handler._get_single
-.. automethod:: pytan.handler.Handler._single_find
-.. automethod:: pytan.handler.Handler._get_sensor_defs
-.. automethod:: pytan.handler.Handler._get_package_def
+.. automethod:: pytan.handler.Handler._add
+.. automethod:: pytan.handler.Handler._ask_manual
+.. automethod:: pytan.handler.Handler._deploy_action
+.. automethod:: pytan.handler.Handler._derive_server_version
 .. automethod:: pytan.handler.Handler._export_class_BaseType
 .. automethod:: pytan.handler.Handler._export_class_ResultSet
 .. automethod:: pytan.handler.Handler._export_format_csv
 .. automethod:: pytan.handler.Handler._export_format_json
 .. automethod:: pytan.handler.Handler._export_format_xml
+.. automethod:: pytan.handler.Handler._find
+.. automethod:: pytan.handler.Handler._get_multi
+.. automethod:: pytan.handler.Handler._get_package_def
+.. automethod:: pytan.handler.Handler._get_sensor_defs
+.. automethod:: pytan.handler.Handler._get_single
+.. automethod:: pytan.handler.Handler._single_find
 
 .. toctree::

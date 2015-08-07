@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>2.1.10.3. Create saved question from json &mdash; PyTan 1.0.4 documentation</title>
+  <title>2.1.11.3. Create saved question from json &mdash; PyTan 2.0.0 documentation</title>
   
 
   
@@ -28,10 +28,10 @@
   
 
   
-    <link rel="top" title="PyTan 1.0.4 documentation" href="../index.html"/>
-        <link rel="up" title="2.1.10. pytan API Valid Create Object From JSON Examples" href="valid_create_objects_from_json.html"/>
-        <link rel="next" title="2.1.10.4. Create action from json" href="create_action_from_json.html"/>
-        <link rel="prev" title="2.1.10.2. Create user from json" href="create_user_from_json.html"/> 
+    <link rel="top" title="PyTan 2.0.0 documentation" href="../index.html"/>
+        <link rel="up" title="2.1.11. PyTan API Valid Create Object From JSON Examples" href="valid_create_objects_from_json.html"/>
+        <link rel="next" title="2.1.11.4. Create action from json" href="create_action_from_json.html"/>
+        <link rel="prev" title="2.1.11.2. Create user from json" href="create_user_from_json.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -67,24 +67,26 @@
 <li class="toctree-l2"><a class="reference internal" href="../introduction.html#description">1.1. Description</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../introduction.html#why-it-was-created">1.2. Why it was created</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../introduction.html#requirements">1.3. Requirements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../introduction.html#installation">1.4. Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../introduction.html#usage">1.5. Usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../introduction.html#directory-layout">1.6. Directory Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#tanium-versions-validated-against">1.4. Tanium Versions Validated Against</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#installation">1.5. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#usage">1.6. Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#directory-layout">1.7. Directory Layout</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="../pytan.html">2. pytan package</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="pytan_examples.html">2.1. pytan API examples</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="pytan_examples.html">2.1. PyTan API examples</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../pytan.handler.html">2.2. pytan.handler module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.constants.html">2.3. pytan.constants module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.utils.html">2.4. pytan.utils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.unittest.html">2.5. pytan Unit Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.functest.html">2.6. pytan Functional Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.exceptions.html">2.3. pytan.exceptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.sessions.html">2.4. pytan.sessions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.pollers.html">2.5. pytan.pollers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.constants.html">2.6. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.utils.html">2.7. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.unittest.html">2.8. pytan Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.functest.html">2.9. pytan Functional Tests</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../taniumpy.html">3. taniumpy package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../taniumpy.session.html">3.1. taniumpy.session module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../taniumpy.question_asker.html">3.2. taniumpy.question_asker module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../taniumpy.object_types.html">3.3. taniumpy.object_types package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taniumpy.object_types.html">3.1. taniumpy.object_types package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../xmltodict.html">4. xmltodict module</a><ul class="simple">
@@ -94,6 +96,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../threaded_http.html">6. threaded_http module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../requests.html">7. requests package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../requests.html#requests-http-library">7.1. requests HTTP library</a></li>
 </ul>
 </li>
 </ul>
@@ -122,11 +128,11 @@
       
           <li><a href="../pytan.html">2. pytan package</a> &raquo;</li>
       
-          <li><a href="pytan_examples.html">2.1. pytan API examples</a> &raquo;</li>
+          <li><a href="pytan_examples.html">2.1. PyTan API examples</a> &raquo;</li>
       
-          <li><a href="valid_create_objects_from_json.html">2.1.10. pytan API Valid Create Object From JSON Examples</a> &raquo;</li>
+          <li><a href="valid_create_objects_from_json.html">2.1.11. PyTan API Valid Create Object From JSON Examples</a> &raquo;</li>
       
-    <li>2.1.10.3. Create saved question from json</li>
+    <li>2.1.11.3. Create saved question from json</li>
       <li class="wy-breadcrumbs-aside">
         
           <a href="../_sources/examples/create_saved_question_from_json.txt" rel="nofollow"> View page source</a>
@@ -138,10 +144,10 @@
           <div role="main" class="document">
             
   <div class="section" id="create-saved-question-from-json">
-<h1>2.1.10.3. Create saved question from json<a class="headerlink" href="#create-saved-question-from-json" title="Permalink to this headline">¶</a></h1>
+<h1>2.1.11.3. Create saved question from json<a class="headerlink" href="#create-saved-question-from-json" title="Permalink to this headline">¶</a></h1>
 <p>Export a saved question object to a JSON file, adding &#8216; API TEST&#8217; to the name of the saved question before exporting the JSON file and deleting any pre-existing saved question with the same (new) name, then create a new saved question object from the exported JSON file</p>
 <div class="section" id="example-python-code">
-<h2>2.1.10.3.1. Example Python Code<a class="headerlink" href="#example-python-code" title="Permalink to this headline">¶</a></h2>
+<h2>2.1.11.3.1. Example Python Code<a class="headerlink" href="#example-python-code" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -262,7 +268,7 @@
 <span class="n">USERNAME</span> <span class="o">=</span> <span class="s">&quot;Tanium User&quot;</span>
 <span class="n">PASSWORD</span> <span class="o">=</span> <span class="s">&quot;T@n!um&quot;</span>
 <span class="n">HOST</span> <span class="o">=</span> <span class="s">&quot;172.16.31.128&quot;</span>
-<span class="n">PORT</span> <span class="o">=</span> <span class="s">&quot;444&quot;</span>
+<span class="n">PORT</span> <span class="o">=</span> <span class="s">&quot;443&quot;</span>
 
 <span class="c"># Logging conrols</span>
 <span class="n">LOGLEVEL</span> <span class="o">=</span> <span class="mi">2</span>
@@ -341,7 +347,7 @@
 </td></tr></table></div>
 </div>
 <div class="section" id="output-from-python-code">
-<h2>2.1.10.3.2. Output from Python Code<a class="headerlink" href="#output-from-python-code" title="Permalink to this headline">¶</a></h2>
+<h2>2.1.11.3.2. Output from Python Code<a class="headerlink" href="#output-from-python-code" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-none"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>  1
   2
   3
@@ -489,10 +495,21 @@
 145
 146
 147
-148</pre></div></td><td class="code"><div class="highlight"><pre>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
-2015-03-26 11:49:19,419 INFO     handler: Deleted &#39;SavedQuestion, id: 11657&#39;
-2015-03-26 11:49:19,421 INFO     handler: Report file &#39;/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/SavedQuestionList_2015_03_26-11_49_19-EDT.json&#39; written with 4601 bytes
-2015-03-26 11:49:19,457 INFO     handler: New SavedQuestion, name: &#39;Run Unmanaged Asset Scan on All Machines API TEST&#39; (ID: 11658) created successfully!
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159</pre></div></td><td class="code"><div class="highlight"><pre>Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
+2015-08-07 19:46:14,432 INFO     pytan.handler: Deleted &#39;SavedQuestion, id: 109&#39;
+2015-08-07 19:46:14,433 INFO     pytan.handler: Report file &#39;/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/SavedQuestionList_2015_08_07-15_46_14-EDT.json&#39; written with 11903 bytes
+2015-08-07 19:46:14,460 INFO     pytan.handler: New SavedQuestion, name: &#39;Has Tanium Standard Utilities API TEST&#39;, id: 111 (ID: 111) created successfully!
 
 Type of response:  &lt;class &#39;taniumpy.object_types.saved_question_list.SavedQuestionList&#39;&gt;
 
@@ -512,35 +529,45 @@ print the object returned in JSON format:
       },
       &quot;expire_seconds&quot;: 600,
       &quot;hidden_flag&quot;: 0,
-      &quot;id&quot;: 11658,
+      &quot;id&quot;: 111,
       &quot;issue_seconds&quot;: 120,
       &quot;issue_seconds_never_flag&quot;: 0,
       &quot;keep_seconds&quot;: 0,
-      &quot;mod_time&quot;: &quot;2000-01-01T00:00:00&quot;,
-      &quot;most_recent_question_id&quot;: 32605,
-      &quot;name&quot;: &quot;Run Unmanaged Asset Scan on All Machines API TEST&quot;,
+      &quot;mod_time&quot;: &quot;2015-08-07T19:46:14&quot;,
+      &quot;mod_user&quot;: {
+        &quot;_type&quot;: &quot;user&quot;,
+        &quot;name&quot;: &quot;Tanium User&quot;
+      },
+      &quot;most_recent_question_id&quot;: 1256,
+      &quot;name&quot;: &quot;Has Tanium Standard Utilities API TEST&quot;,
       &quot;packages&quot;: {
         &quot;_type&quot;: &quot;package_specs&quot;,
-        &quot;package_spec&quot;: []
+        &quot;package_spec&quot;: [
+          {
+            &quot;_type&quot;: &quot;package_spec&quot;,
+            &quot;id&quot;: 20,
+            &quot;name&quot;: &quot;Distribute Tanium Standard Utilities&quot;
+          }
+        ]
       },
       &quot;public_flag&quot;: 1,
-      &quot;query_text&quot;: &quot;Get Is Windows from all machines&quot;,
+      &quot;query_text&quot;: &quot;Get Has Tanium Standard Utilities from all machines&quot;,
       &quot;question&quot;: {
         &quot;_type&quot;: &quot;question&quot;,
         &quot;action_tracking_flag&quot;: 0,
-        &quot;expiration&quot;: &quot;2015-03-26T15:16:00&quot;,
+        &quot;expiration&quot;: &quot;2015-08-07T19:32:37&quot;,
         &quot;expire_seconds&quot;: 0,
         &quot;force_computer_id_flag&quot;: 0,
         &quot;hidden_flag&quot;: 0,
-        &quot;id&quot;: 32605,
+        &quot;id&quot;: 1256,
         &quot;management_rights_group&quot;: {
           &quot;_type&quot;: &quot;group&quot;,
           &quot;id&quot;: 0
         },
-        &quot;query_text&quot;: &quot;Get Is Windows from all machines&quot;,
+        &quot;query_text&quot;: &quot;Get Has Tanium Standard Utilities from all machines&quot;,
         &quot;saved_question&quot;: {
           &quot;_type&quot;: &quot;saved_question&quot;,
-          &quot;id&quot;: 11658
+          &quot;id&quot;: 110
         },
         &quot;selects&quot;: {
           &quot;_type&quot;: &quot;selects&quot;,
@@ -566,55 +593,56 @@ print the object returned in JSON format:
               },
               &quot;sensor&quot;: {
                 &quot;_type&quot;: &quot;sensor&quot;,
-                &quot;category&quot;: &quot;Operating System&quot;,
-                &quot;creation_time&quot;: &quot;2015-03-03T19:03:34&quot;,
+                &quot;category&quot;: &quot;Tanium&quot;,
+                &quot;creation_time&quot;: &quot;2015-08-07T13:22:09&quot;,
                 &quot;delimiter&quot;: &quot;,&quot;,
-                &quot;description&quot;: &quot;Returns whether the machine runs Windows.  True if so, False if not.\nExample: True&quot;,
-                &quot;exclude_from_parse_flag&quot;: 0,
-                &quot;hash&quot;: 2721439124,
+                &quot;description&quot;: &quot;Returns whether a machine has the Tanium Standard Utilities\nExample: Yes&quot;,
+                &quot;exclude_from_parse_flag&quot;: 1,
+                &quot;hash&quot;: 1782389954,
                 &quot;hidden_flag&quot;: 0,
-                &quot;id&quot;: 35,
+                &quot;id&quot;: 194,
                 &quot;ignore_case_flag&quot;: 1,
                 &quot;last_modified_by&quot;: &quot;Jim Olsen&quot;,
-                &quot;max_age_seconds&quot;: 86400,
-                &quot;metadata&quot;: {
-                  &quot;_type&quot;: &quot;metadata&quot;,
-                  &quot;item&quot;: [
-                    {
-                      &quot;_type&quot;: &quot;item&quot;,
-                      &quot;admin_flag&quot;: 0,
-                      &quot;name&quot;: &quot;defined&quot;,
-                      &quot;value&quot;: &quot;Tanium&quot;
-                    }
-                  ]
-                },
-                &quot;modification_time&quot;: &quot;2015-03-03T19:03:34&quot;,
-                &quot;name&quot;: &quot;Is Windows&quot;,
+                &quot;max_age_seconds&quot;: 900,
+                &quot;modification_time&quot;: &quot;2015-08-07T13:22:09&quot;,
+                &quot;name&quot;: &quot;Has Tanium Standard Utilities&quot;,
                 &quot;queries&quot;: {
                   &quot;_type&quot;: &quot;queries&quot;,
                   &quot;query&quot;: [
                     {
                       &quot;_type&quot;: &quot;query&quot;,
                       &quot;platform&quot;: &quot;Windows&quot;,
-                      &quot;script&quot;: &quot;&amp;#039;========================================\n&amp;#039; Is Windows\n&amp;#039;========================================\n\nWscript.echo &amp;quot;True&amp;quot;&quot;,
+                      &quot;script&quot;: &quot;&amp;#039;========================================\n&amp;#039; Has Tanium Standard Utilities\n&amp;#039;========================================\n\n&amp;#039; this action will look to see if the client has\n&amp;#039; all necessary standard utilities files\n\nOption Explicit\n&amp;#039;--------------------\n&amp;#039; Set These Variables\nDim strDesiredVersion,strDesiredFCIVVersion,strDesiredGrepBinaryVersion\nDim strDesiredGrepDepVersion,strGrepDepFileVersion,strGrepBinaryFileVersion\n\n&amp;#039; a string value which is a version like\n&amp;#039; 4.2.314.7111\n&amp;#039; which is used to determine whether the bundle has the correct version\n&amp;#039; updating the content will cause the bundle number to change and all files will\n&amp;#039; be sent to the endpoint again. This is to handle the case where\n&amp;#039; binary files are not versioned, such as with Yara\n\n&amp;#039; The top line of the version file\n&amp;#039;Tanium File Version: &amp;lt;version string below&amp;gt;\nstrDesiredVersion = &amp;quot;6.5.1.0011&amp;quot;\n\n&amp;#039; -------------------\n&amp;#039; Binaries we can version\nstrDesiredGrepBinaryVersion = &amp;quot;2.5.4.3331&amp;quot;\nstrDesiredGrepDepVersion = &amp;quot;1.12.2872.39125&amp;quot;\n\nDim objFSO\nDim strDirToCheck,objTextFile\nDim bHasAllLatestFiles,arrTextFilesToCheck,strFile,strVersionLine,strFileVersion\nDim strFCIVFile,strFCIVFileVersion,strGrepBinary,strGrepDep,strHandleTool,strListDLLs2\nDim strListDLLs,strStreamsTool,strAutorunsTool\nDim strYara,strYarac\n\nSet objFSO = CreateObject(&amp;quot;Scripting.FileSystemObject&amp;quot;)\n\nstrDirToCheck = GetTaniumDir(&amp;quot;Tools\\StdUtils&amp;quot;)\n\narrTextFilesToCheck = Array(&amp;quot;copy-to-tanium-dir-predist.vbs&amp;quot;,&amp;quot;runas-allusers-wrapper.vbs&amp;quot;,&amp;quot;ver\\bundle.cfg&amp;quot;)\n\n&amp;#039; Grep is required\nstrGrepBinary=strDirToCheck&amp;amp;&amp;quot;grep\\bin\\grep.exe&amp;quot;\nstrGrepDep=strDirToCheck&amp;amp;&amp;quot;grep\\bin\\libiconv2.dll&amp;quot;\n\n&amp;#039;Yara binaries are required\nstrYara=strDirToCheck&amp;amp;&amp;quot;yara\\yara&amp;quot;&amp;amp;GetBitness&amp;amp;&amp;quot;.exe&amp;quot;\nstrYarac=strDirToCheck&amp;amp;&amp;quot;yara\\yarac&amp;quot;&amp;amp;GetBitness&amp;amp;&amp;quot;.exe&amp;quot;\n\nbHasAllLatestFiles = True\nFor Each strFile In arrTextFilesToCheck\n\tIf Not objFSO.FileExists(strDirToCheck&amp;amp;strFile) Then\n\t\tWScript.Echo &amp;quot;Missing &amp;quot; &amp;amp; strFile\n\t\tbHasAllLatestFiles = False\n\tEnd If\n\tIf objFSO.FileExists(strDirToCheck&amp;amp;strFile) Then\n\t\tSet objTextFile = objFSO.OpenTextFile(strDirToCheck&amp;amp;strFile)\n\t\tstrVersionLine = LCase(objTextFile.ReadLine()) &amp;#039; version is at top of line\n\t\tIf Not InStr(strVersionLine,&amp;quot;tanium file version:&amp;quot;) &amp;gt; 0 Then &amp;#039; must have a version number in top line\n\t\t\tWScript.Echo strFile&amp;amp;&amp;quot; is not versioned on line 1&amp;quot;\n\t\t\tbHasAllLatestFiles = False\n\t\tElse &amp;#039; we have a version number, not split to check\n\t\t\tstrFileVersion = Split(strVersionLine,&amp;quot;tanium file version:&amp;quot;)(1)\n\t\t\tIf Trim(strFileVersion) &amp;lt;&amp;gt; Trim(strDesiredVersion) Then\n\t\t\t\tWScript.Echo strFile&amp;amp;&amp;quot; version: &amp;quot;&amp;amp;strFileVersion&amp;amp;&amp;quot;, needs: &amp;quot;&amp;amp;strDesiredVersion\n\t\t\t\tbHasAllLatestFiles = False\n\t\t\tEnd If\n\t\tEnd If\n\t\tobjTextFile.Close\n\tEnd If\nNext\n\n&amp;#039; check a Grep dependency\nIf Not objFSO.FileExists(strGrepDep) Then\n\tWScript.Echo &amp;quot;Missing &amp;quot; &amp;amp; strGrepDep\n\tbHasAllLatestFiles = False\nEnd If\nIf objFSO.FileExists(strGrepDep) Then\n\n\tstrGrepDepFileVersion = objFSO.GetFileVersion(strGrepDep)\n\tIf Not strGrepDepFileVersion = strDesiredGrepDepVersion Then\n\t\tbHasAllLatestFiles = False\n\t\tWScript.Echo strGrepDep &amp;amp;&amp;quot; version: &amp;quot;&amp;amp;strGrepDepFileVersion&amp;amp;&amp;quot;, needs: &amp;quot;&amp;amp;strDesiredGrepDepVersion\n\tEnd If\nEnd If\n\n\n&amp;#039; check Grep binary\nIf Not objFSO.FileExists(strGrepBinary) Then\n\tWScript.Echo &amp;quot;Missing &amp;quot; &amp;amp; strGrepBinary\n\tbHasAllLatestFiles = False\nEnd If\nIf objFSO.FileExists(strGrepBinary) Then\n\tstrGrepBinaryFileVersion = GetFileVersion(strGrepBinary)\n\tIf Not strGrepBinaryFileVersion = strDesiredGrepBinaryVersion Then\n\t\tbHasAllLatestFiles = False\n\t\tWScript.Echo strGrepBinary &amp;amp;&amp;quot; version: &amp;quot;&amp;amp;strGrepBinaryFileVersion&amp;amp;&amp;quot;, needs: &amp;quot;&amp;amp;strDesiredGrepBinaryVersion\n\tEnd If\nEnd If\n\nIf Not objFSO.FileExists(strYara) Then\n\tbHasAllLatestFiles = False\n\tWScript.Echo &amp;quot;Missing &amp;quot; &amp;amp; strYara\nEnd If\n\nIf Not objFSO.FileExists(strYarac) Then\n\tbHasAllLatestFiles = False\n\tWScript.Echo &amp;quot;Missing &amp;quot; &amp;amp; strYarac\nEnd If\n\nIf bHasAllLatestFiles Then\n\tWScript.Echo &amp;quot;Yes&amp;quot;\nElse\n\tWScript.Echo &amp;quot;No&amp;quot;\nEnd If\n\nFunction GetFileVersion(strPath)\n\tDim objFSO\n\tSet objFSO = CreateObject(&amp;quot;Scripting.FileSystemObject&amp;quot;)\n\tIf objFSO.FileExists(strPath) Then\n\t\tGetFileVersion = objFSO.GetFileVersion(strPath)\n\tElse\n\t\tGetFileVerison = -1\n\tEnd If\nEnd Function &amp;#039;GetFileVersion\n\nFunction GetTaniumDir(strSubDir)\n\tDim strComputer, key32path, key64path, keyPath, reg\n\tDim strPath\n\tstrComputer = &amp;quot;.&amp;quot;\n\tConst HKLM = &amp;amp;h80000002\n    \n\tkey32Path = &amp;quot;Software\\Tanium\\Tanium Client&amp;quot;\n\tkey64Path = &amp;quot;Software\\Wow6432Node\\Tanium\\Tanium Client&amp;quot;\n    \n\tSet reg=GetObject(&amp;quot;winmgmts:{impersonationLevel=impersonate}!\\\\&amp;quot; &amp;amp; strComputer &amp;amp; &amp;quot;\\root\\default:StdRegProv&amp;quot;)\n    \n\tIf RegKeyExists(reg, HKLM, key64Path) Then\n\t\tkeyPath = key64Path\n\tElseIf RegKeyExists(reg, HKLM, key32Path) Then\n\t\tkeyPath = key32Path\n\tEnd If\n    \n\treg.GetStringValue HKLM,keyPath,&amp;quot;Path&amp;quot;, strPath\n\n\tIf strSubDir &amp;lt;&amp;gt; &amp;quot;&amp;quot; Then\n\t\tstrSubDir = &amp;quot;\\&amp;quot; &amp;amp; strSubDir\n\tEnd If\t\n\n\tDim fso\n\tSet fso = WScript.CreateObject(&amp;quot;Scripting.FileSystemObject&amp;quot;)\n\tIf fso.FolderExists(strPath) Then\n\t\tIf Not fso.FolderExists(strPath &amp;amp; strSubDir) Then\n\t\t\tfso.CreateFolder(strPath &amp;amp; strSubDir)\n\t\tEnd If\n\t\tGetTaniumDir = strPath &amp;amp; strSubDir &amp;amp; &amp;quot;\\&amp;quot;\n\tEnd If\nEnd Function\n\nFunction RegKeyExists(objRegistry, sHive, sRegKey)\n\tDim aValueNames, aValueTypes\n\tIf objRegistry.EnumValues(sHive, sRegKey, aValueNames, aValueTypes) = 0 Then\n\t\tRegKeyExists = True\n\tElse\n\t\tRegKeyExists = False\n\tEnd If\nEnd Function\n\n\nFunction GetBitness\n\tIf Not Is64 Then\n\t\tGetBitness = &amp;quot;32&amp;quot;\n\tElse\n\t\tGetBitness = &amp;quot;64&amp;quot;\n\tEnd If\nEnd Function &amp;#039;GetBitness\n\nFunction Is64 \n\tDim objWMIService, colItems, objItem\n\tSet objWMIService = GetObject(&amp;quot;winmgmts:\\\\.\\root\\CIMV2&amp;quot;)\n\tSet colItems = objWMIService.ExecQuery(&amp;quot;Select SystemType from Win32_ComputerSystem&amp;quot;)    \n\tFor Each objItem In colItems\n\t\tIf InStr(LCase(objItem.SystemType), &amp;quot;x64&amp;quot;) &amp;gt; 0 Then\n\t\t\tIs64 = True\n\t\tElse\n\t\t\tIs64 = False\n\t\tEnd If\n\tNext\nEnd Function &amp;#039; Is64&quot;,
                       &quot;script_type&quot;: &quot;VBScript&quot;
                     },
                     {
                       &quot;_type&quot;: &quot;query&quot;,
                       &quot;platform&quot;: &quot;Linux&quot;,
-                      &quot;script&quot;: &quot;#!/bin/bash\necho False\n&quot;,
+                      &quot;script&quot;: &quot;#!/bin/sh\n\n# THIS IS A STUB - NOT INTENDED AS FUNCTIONAL - NA\n# \n# \n\necho &amp;quot;N/A on Linux&amp;quot;\n&quot;,
                       &quot;script_type&quot;: &quot;UnixShell&quot;
                     },
                     {
                       &quot;_type&quot;: &quot;query&quot;,
                       &quot;platform&quot;: &quot;Mac&quot;,
-                      &quot;script&quot;: &quot;#!/bin/bash\necho False\n&quot;,
+                      &quot;script&quot;: &quot;#!/bin/sh\n\n# THIS IS A STUB - NOT INTENDED AS FUNCTIONAL - NA\n# \n# \n\necho &amp;quot;N/A on Mac&amp;quot;\n&quot;,
+                      &quot;script_type&quot;: &quot;UnixShell&quot;
+                    },
+                    {
+                      &quot;_type&quot;: &quot;query&quot;,
+                      &quot;platform&quot;: &quot;Solaris&quot;,
+                      &quot;script&quot;: &quot;#!/bin/sh\n\n# THIS IS A STUB - NOT INTENDED AS FUNCTIONAL - NA\n# \n# \n\necho &amp;quot;N/A on Solaris&amp;quot;\n&quot;,
+                      &quot;script_type&quot;: &quot;UnixShell&quot;
+                    },
+                    {
+                      &quot;_type&quot;: &quot;query&quot;,
+                      &quot;platform&quot;: &quot;AIX&quot;,
+                      &quot;script&quot;: &quot;#!/bin/sh\n\n# THIS IS A STUB - NOT INTENDED AS FUNCTIONAL - NA\n# \n# \n\necho &amp;quot;N/A on AIX&amp;quot;\n&quot;,
                       &quot;script_type&quot;: &quot;UnixShell&quot;
                     }
                   ]
                 },
                 &quot;source_id&quot;: 0,
-                &quot;string_count&quot;: 3,
+                &quot;string_count&quot;: 16,
                 &quot;value_type&quot;: &quot;String&quot;
               }
             }
@@ -648,10 +676,10 @@ print the object returned in JSON format:
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="create_action_from_json.html" class="btn btn-neutral float-right" title="2.1.10.4. Create action from json">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="create_action_from_json.html" class="btn btn-neutral float-right" title="2.1.11.4. Create action from json">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="create_user_from_json.html" class="btn btn-neutral" title="2.1.10.2. Create user from json"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="create_user_from_json.html" class="btn btn-neutral" title="2.1.11.2. Create user from json"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -661,7 +689,7 @@ print the object returned in JSON format:
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Mar 26, 2015.
+      Last updated on Aug 07, 2015.
     </p>
   </div>
 
@@ -682,7 +710,7 @@ print the object returned in JSON format:
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.0.4',
+            VERSION:'2.0.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

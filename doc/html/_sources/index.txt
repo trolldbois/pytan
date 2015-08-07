@@ -14,6 +14,7 @@ Table of Contents
    xmltodict
    ddt
    threaded_http
+   requests
 
 Indices and tables
 ==================

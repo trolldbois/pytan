@@ -5,35 +5,6 @@ pytan.utils module
     :show-inheritance:
 
 
-Utility Classes: Exceptions
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-Exceptions used throughout :mod:`pytan`:
-
-.. autoexception:: pytan.utils.HandlerError
-    :members:
-    :show-inheritance:
-    :undoc-members:
-    :private-members:
-
-.. autoexception:: pytan.utils.HumanParserError
-    :members:
-    :show-inheritance:
-    :undoc-members:
-    :private-members:
-
-.. autoexception:: pytan.utils.DefinitionParserError
-    :members:
-    :show-inheritance:
-    :undoc-members:
-    :private-members:
-
-.. autoexception:: pytan.utils.RunFalse
-    :members:
-    :show-inheritance:
-    :undoc-members:
-    :private-members:
-
 Utility Classes: Logging handlers
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
@@ -67,6 +38,10 @@ Utility Functions: Logging
 .. autofunction:: pytan.utils.set_all_loglevels
 .. autofunction:: pytan.utils.set_log_levels
 .. autofunction:: pytan.utils.setup_console_logging
+.. autofunction:: pytan.utils.spew
+.. autofunction:: pytan.utils.print_log_levels
+.. autofunction:: pytan.utils.get_all_loggers
+.. autofunction:: pytan.utils.log_session_communication
 
 Utility Functions: Type Checking
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -79,18 +54,26 @@ Utility Functions: Type Checking
 Utility Functions: Misc
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-.. autofunction:: pytan.utils.get_dict_list_items
 .. autofunction:: pytan.utils.get_dict_list_len
-.. autofunction:: pytan.utils.get_now
-.. autofunction:: pytan.utils.human_time
 .. autofunction:: pytan.utils.jsonify
 .. autofunction:: pytan.utils.port_check
-.. autofunction:: pytan.utils.seconds_from_now
 .. autofunction:: pytan.utils.test_app_port
 .. autofunction:: pytan.utils.version_check
 .. autofunction:: pytan.utils.xml_pretty
 .. autofunction:: pytan.utils.xml_pretty_resultobj
 .. autofunction:: pytan.utils.xml_pretty_resultxml
+.. autofunction:: pytan.utils.get_percentage
+.. autofunction:: pytan.utils.calc_percent
+
+Utility Functions: Time and Date handling
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. autofunction:: pytan.utils.get_now
+.. autofunction:: pytan.utils.human_time
+.. autofunction:: pytan.utils.seconds_from_now
+.. autofunction:: pytan.utils.timestr_to_datetime
+.. autofunction:: pytan.utils.datetime_to_timestr
+.. autofunction:: pytan.utils.func_timing
 
 Utility Functions: Argument Parsers for Command Line Scripts
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -131,9 +114,7 @@ Utility Functions: Dehumanize human strings
 Utility Functions: kwargs getters
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-.. autofunction:: pytan.utils.get_ask_kwargs
 .. autofunction:: pytan.utils.get_kwargs_int
-.. autofunction:: pytan.utils.get_req_kwargs
 
 Utility Functions: Object mappers
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -144,6 +125,11 @@ Utility Functions: Object mappers
 Utility Functions: TaniumPy objects
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
+.. autofunction:: pytan.utils.load_taniumpy_from_json
+.. autofunction:: pytan.utils.load_param_json_file
+.. autofunction:: pytan.utils.shrink_obj
+.. autofunction:: pytan.utils.get_taniumpy_obj
+.. autofunction:: pytan.utils.plugin_zip
 .. autofunction:: pytan.utils.apply_options_obj
 .. autofunction:: pytan.utils.build_group_obj
 .. autofunction:: pytan.utils.build_manual_q
@@ -155,7 +141,6 @@ Utility Functions: TaniumPy objects
 .. autofunction:: pytan.utils.empty_obj
 .. autofunction:: pytan.utils.get_filter_obj
 .. autofunction:: pytan.utils.get_obj_params
-.. autofunction:: pytan.utils.question_progress
 
 Utility Functions: Definition objects
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''

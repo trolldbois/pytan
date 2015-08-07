@@ -10,6 +10,4 @@ taniumpy package
 
 .. toctree::
 
-   taniumpy.session
-   taniumpy.question_asker
    taniumpy.object_types

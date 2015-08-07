@@ -1,6 +1,11 @@
 # TODO NOW
+  * [ ] update docs for tested versions, and new port info, and more
 
 # TODO LATER
+  * [ ] add unit tests for logout()
+  * [ ] add unit tests for auth with session
+  * [ ] add unit tests for sessions_lib
+  * [ ] work on deploy action & start_seconds_from_now (a new action gets created at actual start time)
   * [ ] add doc note re excel limit for cell
   * [ ] re-work build API example scripts to be more better-er
   * [ ] update EXAMPLES to work with 2.0.0

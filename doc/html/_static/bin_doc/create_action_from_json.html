@@ -795,7 +795,7 @@ Handler Authentication:
                         Password of user (default: None)
   --host HOST           Hostname/ip of SOAP Server (default: None)
   --port PORT           Port to use when connecting to SOAP Server (default:
-                        444)
+                        443)
 
 Handler Options:
   -l LOGLEVEL, --loglevel LOGLEVEL
@@ -830,9 +830,9 @@ Create Action from JSON Options:
 
 <div class="highlight highlight-bash"><pre>get_action.py -u <span class="pl-s"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 --id 1 --file <span class="pl-s"><span class="pl-pds">"</span>/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json<span class="pl-pds">"</span></span> json</pre></div>
 
-<pre><code>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+<pre><code>Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
 Found items:  ActionList, len: 1
-Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written with 1314 bytes
+Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written with 1294 bytes
 </code></pre>
 
 <ul>
@@ -878,7 +878,7 @@ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written 
 <li>Add CMDLINE TEST to name or url_regex in the JSON file</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>perl -p -i -e <span class="pl-s"><span class="pl-pds">'</span>s/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 3627"/gm<span class="pl-pds">'</span></span> /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json <span class="pl-k">&amp;&amp;</span> cat /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json</pre></div>
+<div class="highlight highlight-bash"><pre>perl -p -i -e <span class="pl-s"><span class="pl-pds">'</span>s/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 6556"/gm<span class="pl-pds">'</span></span> /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json <span class="pl-k">&amp;&amp;</span> cat /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json</pre></div>
 
 <pre><code>{
   "_type": "actions", 
@@ -890,41 +890,44 @@ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written 
         "id": 0, 
         "name": "Default"
       }, 
-      "comment": "Scans for unmanaged assets on the network.", 
-      "creation_time": "2015-03-03T19:05:56", 
-      "distribute_seconds": 600, 
-      "expiration_time": "2015-03-03T19:35:56", 
-      "expire_seconds": 1800, 
+      "approver": {
+        "_type": "user", 
+        "id": 1, 
+        "name": "Jim Olsen"
+      }, 
+      "comment": "Distribute Tanium Standard Utilities", 
+      "creation_time": "2015-08-07T13:22:26", 
+      "distribute_seconds": 3200, 
+      "expire_seconds": 3300, 
       "history_saved_question": {
         "_type": "saved_question", 
-        "id": 173
+        "id": 102
       }, 
       "id": 1, 
-      "name": "Unmanaged Asset Tracking - Run Scan CMDLINE TEST 3627", 
+      "name": "Distribute Tanium Standard Utilities CMDLINE TEST 6556", 
       "package_spec": {
         "_type": "package_spec", 
-        "command": "cmd /c start /B cscript //T:3600 ..\\..\\Tools\\run-ua-scan.vbs /RANDOM_WAIT_TIME_IN_SECONDS:240", 
-        "id": 6, 
-        "name": "Run Unmanaged Asset Scanner"
+        "command": "cmd /c cscript install-standard-utils.vbs \"Tools\\StdUtils\"", 
+        "id": 20, 
+        "name": "Distribute Tanium Standard Utilities"
       }, 
       "saved_action": {
         "_type": "saved_action", 
         "id": 1
       }, 
       "skip_lock_flag": 0, 
-      "start_time": "2015-03-03T19:05:56", 
-      "status": "Expired", 
+      "status": "Pending", 
       "stopped_flag": 0, 
       "target_group": {
         "_type": "group", 
-        "id": 64, 
+        "id": 37, 
         "name": "Default"
       }, 
       "user": {
         "_type": "user", 
         "group_id": 0, 
         "id": 1, 
-        "last_login": "2015-03-25T13:19:16", 
+        "last_login": "2015-08-07T13:21:59", 
         "name": "Jim Olsen"
       }
     }
@@ -960,8 +963,8 @@ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written 
 
 <div class="highlight highlight-bash"><pre>create_action_from_json.py -u <span class="pl-s"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 -j <span class="pl-s"><span class="pl-pds">"</span>/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
-Created item: Action, name: 'Unmanaged Asset Tracking - Run Scan CMDLINE TEST 3627', ID: 21065
+<pre><code>Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
+Created item: Action, name: 'Distribute Tanium Standard Utilities CMDLINE TEST 6556', id: 53, ID: 53
 </code></pre>
 
 <ul>
@@ -978,7 +981,7 @@ Created item: Action, name: 'Unmanaged Asset Tracking - Run Scan CMDLINE TEST 36
 <p><a href="#user-content-toc">TOC</a></p>
 
 <h6>
-<a id="user-content-generated-by-build_bin_doc-v145-date-thu-mar-26-092618-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v145-date-thu-mar-26-092618-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v1.4.5</code>, date: Thu Mar 26 09:26:18 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
+<a id="user-content-generated-by-build_bin_doc-v145-date-fri-aug--7-152733-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v145-date-fri-aug--7-152733-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v1.4.5</code>, date: Fri Aug  7 15:27:33 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
 </h6>
 
 </body></html>

@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>2.1.10.5. Create sensor from json &mdash; PyTan 1.0.4 documentation</title>
+  <title>2.1.11.5. Create sensor from json &mdash; PyTan 2.0.0 documentation</title>
   
 
   
@@ -28,10 +28,10 @@
   
 
   
-    <link rel="top" title="PyTan 1.0.4 documentation" href="../index.html"/>
-        <link rel="up" title="2.1.10. pytan API Valid Create Object From JSON Examples" href="valid_create_objects_from_json.html"/>
-        <link rel="next" title="2.1.10.6. Create question from json" href="create_question_from_json.html"/>
-        <link rel="prev" title="2.1.10.4. Create action from json" href="create_action_from_json.html"/> 
+    <link rel="top" title="PyTan 2.0.0 documentation" href="../index.html"/>
+        <link rel="up" title="2.1.11. PyTan API Valid Create Object From JSON Examples" href="valid_create_objects_from_json.html"/>
+        <link rel="next" title="2.1.11.6. Create question from json" href="create_question_from_json.html"/>
+        <link rel="prev" title="2.1.11.4. Create action from json" href="create_action_from_json.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -67,24 +67,26 @@
 <li class="toctree-l2"><a class="reference internal" href="../introduction.html#description">1.1. Description</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../introduction.html#why-it-was-created">1.2. Why it was created</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../introduction.html#requirements">1.3. Requirements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../introduction.html#installation">1.4. Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../introduction.html#usage">1.5. Usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../introduction.html#directory-layout">1.6. Directory Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#tanium-versions-validated-against">1.4. Tanium Versions Validated Against</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#installation">1.5. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#usage">1.6. Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#directory-layout">1.7. Directory Layout</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="../pytan.html">2. pytan package</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="pytan_examples.html">2.1. pytan API examples</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="pytan_examples.html">2.1. PyTan API examples</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../pytan.handler.html">2.2. pytan.handler module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.constants.html">2.3. pytan.constants module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.utils.html">2.4. pytan.utils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.unittest.html">2.5. pytan Unit Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.functest.html">2.6. pytan Functional Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.exceptions.html">2.3. pytan.exceptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.sessions.html">2.4. pytan.sessions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.pollers.html">2.5. pytan.pollers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.constants.html">2.6. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.utils.html">2.7. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.unittest.html">2.8. pytan Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.functest.html">2.9. pytan Functional Tests</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../taniumpy.html">3. taniumpy package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../taniumpy.session.html">3.1. taniumpy.session module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../taniumpy.question_asker.html">3.2. taniumpy.question_asker module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../taniumpy.object_types.html">3.3. taniumpy.object_types package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taniumpy.object_types.html">3.1. taniumpy.object_types package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../xmltodict.html">4. xmltodict module</a><ul class="simple">
@@ -94,6 +96,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../threaded_http.html">6. threaded_http module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../requests.html">7. requests package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../requests.html#requests-http-library">7.1. requests HTTP library</a></li>
 </ul>
 </li>
 </ul>
@@ -122,11 +128,11 @@
       
           <li><a href="../pytan.html">2. pytan package</a> &raquo;</li>
       
-          <li><a href="pytan_examples.html">2.1. pytan API examples</a> &raquo;</li>
+          <li><a href="pytan_examples.html">2.1. PyTan API examples</a> &raquo;</li>
       
-          <li><a href="valid_create_objects_from_json.html">2.1.10. pytan API Valid Create Object From JSON Examples</a> &raquo;</li>
+          <li><a href="valid_create_objects_from_json.html">2.1.11. PyTan API Valid Create Object From JSON Examples</a> &raquo;</li>
       
-    <li>2.1.10.5. Create sensor from json</li>
+    <li>2.1.11.5. Create sensor from json</li>
       <li class="wy-breadcrumbs-aside">
         
           <a href="../_sources/examples/create_sensor_from_json.txt" rel="nofollow"> View page source</a>
@@ -138,10 +144,10 @@
           <div role="main" class="document">
             
   <div class="section" id="create-sensor-from-json">
-<h1>2.1.10.5. Create sensor from json<a class="headerlink" href="#create-sensor-from-json" title="Permalink to this headline">¶</a></h1>
+<h1>2.1.11.5. Create sensor from json<a class="headerlink" href="#create-sensor-from-json" title="Permalink to this headline">¶</a></h1>
 <p>Export a sensor object to a JSON file, adding &#8216; API TEST&#8217; to the name of the sensor before exporting the JSON file and deleting any pre-existing sensor with the same (new) name, then create a new sensor object from the exported JSON file</p>
 <div class="section" id="example-python-code">
-<h2>2.1.10.5.1. Example Python Code<a class="headerlink" href="#example-python-code" title="Permalink to this headline">¶</a></h2>
+<h2>2.1.11.5.1. Example Python Code<a class="headerlink" href="#example-python-code" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -262,7 +268,7 @@
 <span class="n">USERNAME</span> <span class="o">=</span> <span class="s">&quot;Tanium User&quot;</span>
 <span class="n">PASSWORD</span> <span class="o">=</span> <span class="s">&quot;T@n!um&quot;</span>
 <span class="n">HOST</span> <span class="o">=</span> <span class="s">&quot;172.16.31.128&quot;</span>
-<span class="n">PORT</span> <span class="o">=</span> <span class="s">&quot;444&quot;</span>
+<span class="n">PORT</span> <span class="o">=</span> <span class="s">&quot;443&quot;</span>
 
 <span class="c"># Logging conrols</span>
 <span class="n">LOGLEVEL</span> <span class="o">=</span> <span class="mi">2</span>
@@ -341,7 +347,7 @@
 </td></tr></table></div>
 </div>
 <div class="section" id="output-from-python-code">
-<h2>2.1.10.5.2. Output from Python Code<a class="headerlink" href="#output-from-python-code" title="Permalink to this headline">¶</a></h2>
+<h2>2.1.11.5.2. Output from Python Code<a class="headerlink" href="#output-from-python-code" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-none"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -411,10 +417,10 @@
 67
 68
 69
-70</pre></div></td><td class="code"><div class="highlight"><pre>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
-2015-03-26 11:49:19,750 INFO     handler: Deleted &#39;Sensor, id: 1828&#39;
-2015-03-26 11:49:19,751 INFO     handler: Report file &#39;/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/SensorList_2015_03_26-11_49_19-EDT.json&#39; written with 15857 bytes
-2015-03-26 11:49:19,821 INFO     handler: New Sensor, name: &#39;Folder Name Search with RegEx Match API TEST&#39; (ID: 1830) created successfully!
+70</pre></div></td><td class="code"><div class="highlight"><pre>Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
+2015-08-07 19:46:14,551 INFO     pytan.handler: Deleted &#39;Sensor, id: 639&#39;
+2015-08-07 19:46:14,551 INFO     pytan.handler: Report file &#39;/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/SensorList_2015_08_07-15_46_14-EDT.json&#39; written with 1944 bytes
+2015-08-07 19:46:14,577 INFO     pytan.handler: New Sensor, name: &#39;Is Mac API TEST&#39;, id: 642 (ID: 642) created successfully!
 
 Type of response:  &lt;class &#39;taniumpy.object_types.sensor_list.SensorList&#39;&gt;
 
@@ -427,50 +433,50 @@ print the object returned in JSON format:
   &quot;sensor&quot;: [
     {
       &quot;_type&quot;: &quot;sensor&quot;,
-      &quot;category&quot;: &quot;File System&quot;,
-      &quot;creation_time&quot;: &quot;2015-03-26T15:49:19&quot;,
+      &quot;category&quot;: &quot;Operating System&quot;,
+      &quot;creation_time&quot;: &quot;2015-08-07T19:46:14&quot;,
       &quot;delimiter&quot;: &quot;,&quot;,
-      &quot;description&quot;: &quot;Finds the specified folder and provides the full path if the folder exists on the client machine. Takes regular expression to match.\nExample: C:\\WINDOWS\\System32&quot;,
-      &quot;exclude_from_parse_flag&quot;: 1,
-      &quot;hash&quot;: 839342978,
+      &quot;description&quot;: &quot;Returns whether the machine is a Mac.  True if so, False if not.\nExample: True&quot;,
+      &quot;exclude_from_parse_flag&quot;: 0,
+      &quot;hash&quot;: 2387245230,
       &quot;hidden_flag&quot;: 0,
-      &quot;id&quot;: 1830,
+      &quot;id&quot;: 642,
       &quot;ignore_case_flag&quot;: 1,
       &quot;last_modified_by&quot;: &quot;Tanium User&quot;,
-      &quot;max_age_seconds&quot;: 600,
-      &quot;metadata&quot;: {
-        &quot;_type&quot;: &quot;metadata&quot;,
-        &quot;item&quot;: [
-          {
-            &quot;_type&quot;: &quot;item&quot;,
-            &quot;admin_flag&quot;: 0,
-            &quot;name&quot;: &quot;defined&quot;,
-            &quot;value&quot;: &quot;McAfee&quot;
-          }
-        ]
-      },
-      &quot;modification_time&quot;: &quot;2015-03-26T15:49:19&quot;,
-      &quot;name&quot;: &quot;Folder Name Search with RegEx Match API TEST&quot;,
-      &quot;parameter_definition&quot;: &quot;{\&quot;parameters\&quot;:[{\&quot;label\&quot;:\&quot;Search for Folder Name\&quot;,\&quot;maxChars\&quot;:0,\&quot;restrict\&quot;:null,\&quot;validationExpressions\&quot;:[{\&quot;helpString\&quot;:\&quot;Value must be at least 3 characters\&quot;,\&quot;expression\&quot;:\&quot;\\\\S{3}\&quot;,\&quot;flags\&quot;:\&quot;\&quot;,\&quot;model\&quot;:\&quot;com.tanium.models::ValidationExpression\&quot;,\&quot;parameterType\&quot;:\&quot;com.tanium.models::ValidationExpression\&quot;}],\&quot;value\&quot;:\&quot;\&quot;,\&quot;helpString\&quot;:\&quot;Enter the folder name to search for\&quot;,\&quot;promptText\&quot;:\&quot;e.g Program Files\&quot;,\&quot;defaultValue\&quot;:\&quot;\&quot;,\&quot;key\&quot;:\&quot;dirname\&quot;,\&quot;model\&quot;:\&quot;com.tanium.components.parameters::TextInputParameter\&quot;,\&quot;parameterType\&quot;:\&quot;com.tanium.components.parameters::TextInputParameter\&quot;},{\&quot;label\&quot;:\&quot;Regular Expression\&quot;,\&quot;maxChars\&quot;:0,\&quot;restrict\&quot;:null,\&quot;validationExpressions\&quot;:[{\&quot;helpString\&quot;:\&quot;Value must be at least 3 characters\&quot;,\&quot;expression\&quot;:\&quot;\\\\S{3}\&quot;,\&quot;flags\&quot;:\&quot;\&quot;,\&quot;model\&quot;:\&quot;com.tanium.models::ValidationExpression\&quot;,\&quot;parameterType\&quot;:\&quot;com.tanium.models::ValidationExpression\&quot;}],\&quot;value\&quot;:\&quot;\&quot;,\&quot;helpString\&quot;:\&quot;Enter the regular expression to search for.\&quot;,\&quot;promptText\&quot;:\&quot;e.g. test*.exe\&quot;,\&quot;defaultValue\&quot;:\&quot;\&quot;,\&quot;key\&quot;:\&quot;regexp\&quot;,\&quot;model\&quot;:\&quot;com.tanium.components.parameters::TextInputParameter\&quot;,\&quot;parameterType\&quot;:\&quot;com.tanium.components.parameters::TextInputParameter\&quot;},{\&quot;label\&quot;:\&quot;Case sensitive?\&quot;,\&quot;values\&quot;:[\&quot;No\&quot;,\&quot;Yes\&quot;],\&quot;value\&quot;:\&quot;\&quot;,\&quot;helpString\&quot;:\&quot;Enter Yes/No for case sensitivity of search.\&quot;,\&quot;requireSelection\&quot;:true,\&quot;promptText\&quot;:\&quot;\&quot;,\&quot;defaultValue\&quot;:\&quot;\&quot;,\&quot;key\&quot;:\&quot;casesensitive\&quot;,\&quot;model\&quot;:\&quot;com.tanium.components.parameters::DropDownParameter\&quot;,\&quot;parameterType\&quot;:\&quot;com.tanium.components.parameters::DropDownParameter\&quot;},{\&quot;label\&quot;:\&quot;Global\&quot;,\&quot;values\&quot;:[\&quot;No\&quot;,\&quot;Yes\&quot;],\&quot;value\&quot;:\&quot;\&quot;,\&quot;helpString\&quot;:\&quot;Enter Yes/No whether the search is global.\&quot;,\&quot;requireSelection\&quot;:true,\&quot;promptText\&quot;:\&quot;\&quot;,\&quot;defaultValue\&quot;:\&quot;\&quot;,\&quot;key\&quot;:\&quot;global\&quot;,\&quot;model\&quot;:\&quot;com.tanium.components.parameters::DropDownParameter\&quot;,\&quot;parameterType\&quot;:\&quot;com.tanium.components.parameters::DropDownParameter\&quot;}],\&quot;model\&quot;:\&quot;com.tanium.components.parameters::ParametersArray\&quot;,\&quot;parameterType\&quot;:\&quot;com.tanium.components.parameters::ParametersArray\&quot;}&quot;,
+      &quot;max_age_seconds&quot;: 86400,
+      &quot;modification_time&quot;: &quot;2015-08-07T19:46:14&quot;,
+      &quot;name&quot;: &quot;Is Mac API TEST&quot;,
       &quot;queries&quot;: {
         &quot;_type&quot;: &quot;queries&quot;,
         &quot;query&quot;: [
           {
             &quot;_type&quot;: &quot;query&quot;,
             &quot;platform&quot;: &quot;Windows&quot;,
-            &quot;script&quot;: &quot;&amp;amp;#039;========================================\n&amp;amp;#039; Folder Name Search with RegEx Match\n&amp;amp;#039;========================================\n&amp;amp;#039;@INCLUDE=utils/SensorRandomization/SensorRandomizationFunctions.vbs\nOption Explicit\n\nSensorRandomize()\n\nDim Pattern,strRegExp,strGlobalArg,strCaseSensitiveArg\nDim bGlobal,bCaseSensitive\n\nPattern = unescape(&amp;amp;quot;||dirname||&amp;amp;quot;)\nstrRegExp = Trim(Unescape(&amp;amp;quot;||regexp||&amp;amp;quot;))\nstrGlobalArg = Trim(Unescape(&amp;amp;quot;||global||&amp;amp;quot;))\nstrCaseSensitiveArg = Trim(Unescape(&amp;amp;quot;||casesensitive||&amp;amp;quot;))\n\nbGlobal = GetTrueFalseArg(&amp;amp;quot;global&amp;amp;quot;,strGlobalArg)\nbCaseSensitive = GetTrueFalseArg(&amp;amp;quot;casesensitive&amp;amp;quot;,strCaseSensitiveArg)\n\nConst SYSTEM_FOLDER = 1, TEMP_FOLDER = 2, FOR_READING = 1\n\nDim FSO, WshShell, Drives, Drive, TextStream, OutputFilename, strLine\n\nSet FSO = CreateObject(&amp;amp;quot;Scripting.FileSystemObject&amp;amp;quot;)\nSet WshShell = CreateObject(&amp;amp;quot;WScript.Shell&amp;amp;quot;)\n\nOutputFilename = TempName() &amp;amp;#039; a temporary file in system&amp;amp;#039;s temp dir\n\n&amp;amp;#039; Go through file system, refresh output file for filename\nIf Not FSO.FileExists(OutputFilename) Then\n\t\n\tIf FSO.FileExists(OutputFilename) Then FSO.DeleteFile OutputFilename\n\n\t&amp;amp;#039; Get the collection of local drives.\n\tSet Drives = FSO.Drives\n\tFor Each Drive in Drives\n\t\tIf Drive.DriveType = 2 Then &amp;amp;#039; 2 = Fixed drive\n\t\t\t&amp;amp;#039; Run the Dir command that looks for the filename pattern.\n\t\t\tRunCommand &amp;amp;quot;dir &amp;amp;quot; &amp;amp;amp;Chr(34)&amp;amp;amp; Drive.DriveLetter &amp;amp;amp; &amp;amp;quot;:\\&amp;amp;quot; &amp;amp;amp; Pattern &amp;amp;amp; Chr(34)&amp;amp;amp;&amp;amp;quot; /a:D /B /S&amp;amp;quot;, OutputFilename, true\n\t\tEnd If\n\tNext\nEnd If\n\n&amp;amp;#039; Open the output file, echo each line, and then close and delete it.\nSet TextStream = FSO.OpenTextFile(OutputFileName, FOR_READING)\nDo While Not TextStream.AtEndOfStream\n\tstrLine = TextStream.ReadLine()\n\tIf RegExpMatch(strRegExp,strLine,bGlobal,bCaseSensitive) Then\n\t\tWScript.Echo strLine\n\tEnd If\nLoop\n\n\nTextStream.Close()\n \nIf FSO.FileExists(OutputFileName) Then\n\tOn Error Resume Next\n\tFSO.DeleteFile OutputFileName, True\n\tOn Error Goto 0\nEnd If\n\nFunction RegExpMatch(strPattern,strToMatch,bGlobal,bIsCaseSensitive)\n\n\tDim re\n\tSet re = New RegExp\n\tWith re\n\t  .Pattern = strPattern\n\t  .Global = bGlobal\n\t  .IgnoreCase = Not bIsCaseSensitive\n\tEnd With\n\t\n\tRegExpMatch = re.Test(strToMatch)\n\nEnd Function &amp;amp;#039;RegExpMatch\n\n\nFunction GetTrueFalseArg(strArgName,strArgValue)\n\t&amp;amp;#039; Checks for valid values, will fail with error message\n\t\n\tDim bArgVal\n\tbArgVal = False\n\tSelect Case LCase(strArgValue)\n\t\tCase &amp;amp;quot;true&amp;amp;quot;\n\t\t\tbArgVal = True\n\t\tCase &amp;amp;quot;yes&amp;amp;quot;\n\t\t\tbArgVal = True\n\t\tCase &amp;amp;quot;false&amp;amp;quot;\n\t\t\tbArgVal = False\n\t\tCase &amp;amp;quot;no&amp;amp;quot;\n\t\t\tbArgVal = False\n\t\tCase Else\n\t\t\tWScript.Echo &amp;amp;quot;Error: Argument &amp;amp;#039;&amp;amp;quot;&amp;amp;amp;strArgName&amp;amp;amp;&amp;amp;quot;&amp;amp;#039; must be True or False, quitting&amp;amp;quot;\n\t\t\tPrintUsage\n\tEnd Select\n\tGetTrueFalseArg = bArgVal\n\nEnd Function &amp;amp;#039;GetTrueFalseArg\n\n\n&amp;amp;#039; Returns the name of a temporary file in the Temp directory.\nFunction TempName()\n\tDim Result\n\tDo\n \t\tResult = FSO.BuildPath(FSO.GetSpecialFolder(TEMP_FOLDER), FSO.GetTempName())\n\t\tWScript.Sleep 200 &amp;amp;#039;avoid potential busy loop\n\tLoop While FSO.FileExists(Result)\n\t\n\tTempName = Result\nEnd Function &amp;amp;#039;TempName\n\n&amp;amp;#039; Runs a command with Cmd.exe and redirects its output to a temporary\n&amp;amp;#039; file. The function returns the name of the temporary file that holds\n&amp;amp;#039; the command&amp;amp;#039;s output.\nFunction RunCommand(Command, OutputFilename, b64BitNecessary)\n\t&amp;amp;#039; 64BitNecessary true when you need to examine the 64-bit areas like system32\n\tDim CommandLine,WshShell,strPRogramFilesx86,strDOSCall,objFSO\n\tSet objFSO = CreateObject(&amp;amp;quot;Scripting.FileSystemObject&amp;amp;quot;)\n\tSet WshShell = CreateObject(&amp;amp;quot;WScript.Shell&amp;amp;quot;)\n\t\n\tstrDOSCall = &amp;amp;quot;%ComSpec% /C &amp;amp;quot;\n\t\n\t&amp;amp;#039; if 64-bit OS *and* we must examine in 64-bit mode to avoid FS Redirection\n\tstrProgramFilesx86=WshShell.ExpandEnvironmentStrings(&amp;amp;quot;%ProgramFiles%&amp;amp;quot;)\n\tIf objFSO.FolderExists(strProgramFilesx86) And b64BitNecessary Then &amp;amp;#039; quick check for x64\n\t\tstrDOSCall = FixFileSystemRedirectionForPath(WshShell.ExpandEnvironmentStrings(strDOSCall))\n\tEnd If\n\t\t\n\tCommandLine = WshShell.ExpandEnvironmentStrings(strDOSCall &amp;amp;amp; Command &amp;amp;amp; &amp;amp;quot; &amp;amp;gt;&amp;amp;gt; &amp;amp;quot;&amp;amp;quot;&amp;amp;quot; &amp;amp;amp; OutputFileName &amp;amp;amp; &amp;amp;quot;&amp;amp;quot;&amp;amp;quot;&amp;amp;quot;)\n\tWshShell.Run CommandLine, 0, True\nEnd Function &amp;amp;#039;RunCommand\n\nFunction FixFileSystemRedirectionForPath(strFilePath)\n&amp;amp;#039; This function will fix a folder location so that\n&amp;amp;#039; a 32-bit program can be passed the windows\\system32 directory\n&amp;amp;#039; as a parameter.\n&amp;amp;#039; Even if the sensor or action runs in 64-bit mode, a 32-bit\n&amp;amp;#039; program called in a 64-bit environment cannot access\n&amp;amp;#039; the system32 directory - it would be redirected to syswow64.\n&amp;amp;#039; you would not want to do this for 64-bit programs.\n\t\n\tDim objFSO, strSystem32Location,objShell\n\tDim strProgramFilesx86,strNewSystem32Location,strRestOfPath\n\tSet objFSO = CreateObject(&amp;amp;quot;Scripting.FileSystemObject&amp;amp;quot;)\n\tSet objShell = CreateObject(&amp;amp;quot;Wscript.Shell&amp;amp;quot;)\n\n\tstrProgramFilesx86=objShell.ExpandEnvironmentStrings(&amp;amp;quot;%ProgramFiles%&amp;amp;quot;)\n\n\tstrFilePath = LCase(strFilePath)\n\tstrSystem32Location = LCase(objFSO.GetSpecialFolder(1))\n\tstrProgramFilesx86=objShell.ExpandEnvironmentStrings(&amp;amp;quot;%ProgramFiles(x86)%&amp;amp;quot;)\n\t\n\tIf objFSO.FolderExists(strProgramFilesx86) Then &amp;amp;#039; quick check for x64\n\t\tIf InStr(strFilePath,strSystem32Location) = 1 Then\n\t\t\tstrRestOfPath = Replace(strFilePath,strSystem32Location,&amp;amp;quot;&amp;amp;quot;)\n\t\t\tstrNewSystem32Location = Replace(strSystem32Location,&amp;amp;quot;system32&amp;amp;quot;,&amp;amp;quot;sysnative&amp;amp;quot;)\n\t\t\tstrFilePath = strNewSystem32Location&amp;amp;amp;strRestOfPath\n\t\tEnd If\n\tEnd If\n\tFixFileSystemRedirectionForPath = strFilePath\n\t\n\t&amp;amp;#039;Cleanup\n\tSet objFSO = Nothing\nEnd Function &amp;amp;#039;FixFileSystemRedirectionForPath\n&amp;amp;#039;------------ INCLUDES after this line. Do not edit past this point -----\n&amp;amp;#039;- Begin file: utils/SensorRandomization/SensorRandomizationFunctions.vbs\n&amp;amp;#039;&amp;amp;#039; -- Begin Random Sleep Functions -- &amp;amp;#039;&amp;amp;#039;\n\nDim bSensorRandomizeDebugOutput : bSensorRandomizeDebugOutput = False\n\nFunction SensorRandomizeLow()\n    Dim intSensorRandomizeWaitLow : intSensorRandomizeWaitLow = 10\n    SensorRandomizeRandomSleep(intSensorRandomizeWaitLow)\nEnd Function &amp;amp;#039; SensorRandomizeLow\n\nFunction SensorRandomize()\n    Dim intSensorRandomizeWaitMed : intSensorRandomizeWaitMed = 20\n    SensorRandomizeRandomSleep(intSensorRandomizeWaitMed)\nEnd Function &amp;amp;#039; SensorRandomize\n\nFunction SensorRandomizeHigh()\n    Dim intSensorRandomizeWaitHigh : intSensorRandomizeWaitHigh = 30\n    SensorRandomizeRandomSleep(intSensorRandomizeWaitHigh)\nEnd Function &amp;amp;#039; SensorRandomize\n\nFunction SensorRandomizeRandomSleep(intSleepTime)\n&amp;amp;#039; sleeps for a random period of time, intSleepTime is in seconds\n&amp;amp;#039; if the sensor randomize flag is on\n&amp;amp;#039; RandomizeScalingFactor is a multiplier on the values hardcoded in the sensor\n&amp;amp;#039; not typically set but can adjust timings per endpoint, optionally\n\tDim intSensorRandomizeWaitTime\n\tDim objShell,intRandomizeFlag,strRandomizeRegPath,intRandomizeScalingPercentage\n\tstrRandomizeRegPath = SensorRandomizeGetTaniumRegistryPath&amp;amp;amp;&amp;amp;quot;\\Sensor Data\\Random Sleep&amp;amp;quot;\n\t\n\tSet objShell = CreateObject(&amp;amp;quot;WScript.Shell&amp;amp;quot;)\n\tOn Error Resume Next\n\tintRandomizeFlag = objShell.RegRead(&amp;amp;quot;HKLM\\&amp;amp;quot;&amp;amp;amp;strRandomizeRegPath&amp;amp;amp;&amp;amp;quot;\\SensorRandomizeFlag&amp;amp;quot;)\n\tintRandomizeScalingPercentage = objShell.RegRead(&amp;amp;quot;HKLM\\&amp;amp;quot;&amp;amp;amp;strRandomizeRegPath&amp;amp;amp;&amp;amp;quot;\\SensorRandomizeScalingPercentage&amp;amp;quot;)\n\tOn Error Goto 0\n\tIf intRandomizeFlag &amp;amp;gt; 0 Then\n\t\tIf intRandomizeScalingPercentage &amp;amp;gt; 0 Then\n\t\t\tintSleepTime = intRandomizeScalingPercentage * .01 * intSleepTime\n\t\t\tSensorRandomizeEcho &amp;amp;quot;Randomize scaling percentage of &amp;amp;quot; _ \n\t\t\t\t&amp;amp;amp; intRandomizeScalingPercentage &amp;amp;amp; &amp;amp;quot; applied, new sleep time is &amp;amp;quot; &amp;amp;amp; intSleepTime\n\t\tEnd If\n\t\tintSensorRandomizeWaitTime = CLng(intSleepTime) * 1000 &amp;amp;#039; convert to milliseconds\n\t\t&amp;amp;#039; wait random interval between 0 and the max\n\t\tRandomize(SensorRandomizeTaniumRandomSeed)\n\t\t&amp;amp;#039; assign random value to wait time max value\n\t\tintSensorRandomizeWaitTime = Int( ( intSensorRandomizeWaitTime + 1 ) * Rnd )\n\t\tSensorRandomizeEcho &amp;amp;quot;Sleeping for &amp;amp;quot; &amp;amp;amp; intSensorRandomizeWaitTime &amp;amp;amp; &amp;amp;quot; milliseconds&amp;amp;quot;\n\t\tWScript.Sleep(intSensorRandomizeWaitTime)\n\t\tSensorRandomizeEcho &amp;amp;quot;Done sleeping, continuing ...&amp;amp;quot;\n\tElse \n\t\tSensorRandomizeEcho &amp;amp;quot;SensorRandomize Not Enabled - No Op&amp;amp;quot;\n\tEnd If\nEnd Function &amp;amp;#039;SensorRandomizeRandomSleep\n\nFunction SensorRandomizeTaniumRandomSeed\n&amp;amp;#039; for randomizing sensor code, the default seed is not random enough\n\tDim timerNum\n\ttimerNum = Timer()\n\tIf timerNum &amp;amp;lt; 1 Then\n\t\tSensorRandomizeTaniumRandomSeed = (SensorRandomizeGetTaniumComputerID / Timer() * 10 )\n\tElse\n\t\tSensorRandomizeTaniumRandomSeed = SensorRandomizeGetTaniumComputerID / Timer\n\tEnd If\nEnd Function &amp;amp;#039;SensorRandomizeTaniumRandomSeed\n\nFunction SensorRandomizeGetTaniumRegistryPath\n&amp;amp;#039;SensorRandomizeGetTaniumRegistryPath works in x64 or x32\n&amp;amp;#039;looks for a valid Path value\n\n\tDim objShell\n\tDim keyNativePath, keyWoWPath, strPath, strFoundTaniumRegistryPath\n\t  \n    Set objShell = CreateObject(&amp;amp;quot;WScript.Shell&amp;amp;quot;)\n    \n\tkeyNativePath = &amp;amp;quot;Software\\Tanium\\Tanium Client&amp;amp;quot;\n\tkeyWoWPath = &amp;amp;quot;Software\\Wow6432Node\\Tanium\\Tanium Client&amp;amp;quot;\n    \n    &amp;amp;#039; first check the Software key (valid for 32-bit machines, or 64-bit machines in 32-bit mode)\n    On Error Resume Next\n    strPath = objShell.RegRead(&amp;amp;quot;HKLM\\&amp;amp;quot;&amp;amp;amp;keyNativePath&amp;amp;amp;&amp;amp;quot;\\Path&amp;amp;quot;)\n    On Error Goto 0\n\tstrFoundTaniumRegistryPath = keyNativePath\n \n  \tIf strPath = &amp;amp;quot;&amp;amp;quot; Then\n  \t\t&amp;amp;#039; Could not find 32-bit mode path, checking Wow6432Node\n  \t\tOn Error Resume Next\n  \t\tstrPath = objShell.RegRead(&amp;amp;quot;HKLM\\&amp;amp;quot;&amp;amp;amp;keyWoWPath&amp;amp;amp;&amp;amp;quot;\\Path&amp;amp;quot;)\n  \t\tOn Error Goto 0\n\t\tstrFoundTaniumRegistryPath = keyWoWPath\n  \tEnd If\n  \t\n  \tIf Not strPath = &amp;amp;quot;&amp;amp;quot; Then\n  \t\tSensorRandomizeGetTaniumRegistryPath = strFoundTaniumRegistryPath\n  \tElse\n  \t\tSensorRandomizeGetTaniumRegistryPath = False\n  \t\tWScript.Echo &amp;amp;quot;Error: Cannot locate Tanium Registry Path&amp;amp;quot;\n  \tEnd If\nEnd Function &amp;amp;#039;SensorRandomizeGetTaniumRegistryPath\n\nFunction SensorRandomizeGetTaniumComputerID\n&amp;amp;#039;&amp;amp;#039; This function gets the Tanium Computer ID\n\tDim objShell\n\tDim intClientID,strID,strKeyPath,strValueName\n\t\n    strKeyPath = SensorRandomizeGetTaniumRegistryPath\n    strValueName = &amp;amp;quot;ComputerID&amp;amp;quot;\n    Set objShell = CreateObject(&amp;amp;quot;WScript.Shell&amp;amp;quot;)\n    On Error Resume Next\n    intClientID = objShell.RegRead(&amp;amp;quot;HKLM\\&amp;amp;quot;&amp;amp;amp;strKeyPath&amp;amp;amp;&amp;amp;quot;\\&amp;amp;quot;&amp;amp;amp;strValueName)\n    If Err.Number &amp;amp;lt;&amp;amp;gt; 0 Then\n    \tSensorRandomizeGetTaniumComputerID = 0\n    Else\n\t\tSensorRandomizeGetTaniumComputerID = SensorRandomizeReinterpretSignedAsUnsigned(intClientID)\n\tEnd If\n\tOn Error Goto 0\nEnd Function &amp;amp;#039;SensorRandomizeGetTaniumComputerID\n\nFunction SensorRandomizeReinterpretSignedAsUnsigned(ByVal x)\n\t  If x &amp;amp;lt; 0 Then x = x + 2^32\n\t  SensorRandomizeReinterpretSignedAsUnsigned = x\nEnd Function &amp;amp;#039;SensorRandomizeReinterpretSignedAsUnsigned\n\nSub SensorRandomizeEcho(str)\n\tIf bSensorRandomizeDebugOutput = true Then WScript.Echo str\nEnd Sub &amp;amp;#039;SensorRandomizeEcho\n&amp;amp;#039; -- End Random Sleep Functions --&amp;amp;#039;\n&amp;amp;#039;- End file: utils/SensorRandomization/SensorRandomizationFunctions.vbs&quot;,
+            &quot;script&quot;: &quot;&amp;#039;========================================\n&amp;#039; Is Mac\n&amp;#039;========================================\n\nWscript.echo &amp;quot;False&amp;quot;&quot;,
             &quot;script_type&quot;: &quot;VBScript&quot;
           },
           {
             &quot;_type&quot;: &quot;query&quot;,
             &quot;platform&quot;: &quot;Linux&quot;,
-            &quot;script&quot;: &quot;#!/bin/bash\n#||dirname||||regexp||||casesensitive||||global||\necho Windows Only\n&quot;,
+            &quot;script&quot;: &quot;#!/bin/bash\necho False\n&quot;,
             &quot;script_type&quot;: &quot;UnixShell&quot;
           },
           {
             &quot;_type&quot;: &quot;query&quot;,
             &quot;platform&quot;: &quot;Mac&quot;,
-            &quot;script&quot;: &quot;#!/bin/bash\n#||dirname||||regexp||||casesensitive||||global||\necho Windows Only\n&quot;,
+            &quot;script&quot;: &quot;#!/bin/bash\necho True\n&quot;,
+            &quot;script_type&quot;: &quot;UnixShell&quot;
+          },
+          {
+            &quot;_type&quot;: &quot;query&quot;,
+            &quot;platform&quot;: &quot;Solaris&quot;,
+            &quot;script&quot;: &quot;#!/bin/sh\n\n# THIS IS A STUB - NOT INTENDED AS FUNCTIONAL - NA\n# \n# \n\necho &amp;quot;N/A on Solaris&amp;quot;\n&quot;,
+            &quot;script_type&quot;: &quot;UnixShell&quot;
+          },
+          {
+            &quot;_type&quot;: &quot;query&quot;,
+            &quot;platform&quot;: &quot;AIX&quot;,
+            &quot;script&quot;: &quot;#!/bin/sh\n\n# THIS IS A STUB - NOT INTENDED AS FUNCTIONAL - NA\n# \n# \n\necho &amp;quot;N/A on AIX&amp;quot;\n&quot;,
             &quot;script_type&quot;: &quot;UnixShell&quot;
           }
         ]
@@ -492,10 +498,10 @@ print the object returned in JSON format:
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="create_question_from_json.html" class="btn btn-neutral float-right" title="2.1.10.6. Create question from json">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="create_question_from_json.html" class="btn btn-neutral float-right" title="2.1.11.6. Create question from json">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="create_action_from_json.html" class="btn btn-neutral" title="2.1.10.4. Create action from json"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="create_action_from_json.html" class="btn btn-neutral" title="2.1.11.4. Create action from json"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -505,7 +511,7 @@ print the object returned in JSON format:
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Mar 26, 2015.
+      Last updated on Aug 07, 2015.
     </p>
   </div>
 
@@ -526,7 +532,7 @@ print the object returned in JSON format:
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.0.4',
+            VERSION:'2.0.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

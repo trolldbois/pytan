@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>test_pytan_func &mdash; PyTan 1.0.4 documentation</title>
+  <title>test_pytan_func &mdash; PyTan 2.0.0 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="PyTan 1.0.4 documentation" href="../index.html"/>
+    <link rel="top" title="PyTan 2.0.0 documentation" href="../index.html"/>
         <link rel="up" title="Module code" href="index.html"/> 
 
   
@@ -65,24 +65,26 @@
 <li class="toctree-l2"><a class="reference internal" href="../introduction.html#description">1.1. Description</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../introduction.html#why-it-was-created">1.2. Why it was created</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../introduction.html#requirements">1.3. Requirements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../introduction.html#installation">1.4. Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../introduction.html#usage">1.5. Usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../introduction.html#directory-layout">1.6. Directory Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#tanium-versions-validated-against">1.4. Tanium Versions Validated Against</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#installation">1.5. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#usage">1.6. Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#directory-layout">1.7. Directory Layout</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../pytan.html">2. pytan package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../examples/pytan_examples.html">2.1. pytan API examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/pytan_examples.html">2.1. PyTan API examples</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../pytan.handler.html">2.2. pytan.handler module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.constants.html">2.3. pytan.constants module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.utils.html">2.4. pytan.utils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.unittest.html">2.5. pytan Unit Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.functest.html">2.6. pytan Functional Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.exceptions.html">2.3. pytan.exceptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.sessions.html">2.4. pytan.sessions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.pollers.html">2.5. pytan.pollers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.constants.html">2.6. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.utils.html">2.7. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.unittest.html">2.8. pytan Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.functest.html">2.9. pytan Functional Tests</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../taniumpy.html">3. taniumpy package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../taniumpy.session.html">3.1. taniumpy.session module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../taniumpy.question_asker.html">3.2. taniumpy.question_asker module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../taniumpy.object_types.html">3.3. taniumpy.object_types package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taniumpy.object_types.html">3.1. taniumpy.object_types package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../xmltodict.html">4. xmltodict module</a><ul class="simple">
@@ -92,6 +94,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../threaded_http.html">6. threaded_http module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../requests.html">7. requests package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../requests.html#requests-http-library">7.1. requests HTTP library</a></li>
 </ul>
 </li>
 </ul>
@@ -149,6 +155,8 @@
 <span class="kn">import</span> <span class="nn">unittest</span>
 <span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">import</span> <span class="nn">json</span>  <span class="c"># noqa</span>
+<span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">StringIO</span>
 
 <span class="n">my_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="n">my_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">my_file</span><span class="p">)</span>
@@ -169,21 +177,19 @@
 <span class="c"># get our server connection info</span>
 <span class="kn">from</span> <span class="nn">API_INFO</span> <span class="kn">import</span> <span class="n">SERVER_INFO</span>
 
-<span class="c"># control the amount of output from unittests</span>
-<span class="n">TESTVERBOSITY</span> <span class="o">=</span> <span class="mi">2</span>
-
-<span class="c"># have unittest exit immediately on unexpected error</span>
-<span class="n">FAILFAST</span> <span class="o">=</span> <span class="bp">True</span>
-
-<span class="c"># catch control-C to allow current test suite to finish (press 2x to force)</span>
-<span class="n">CATCHBREAK</span> <span class="o">=</span> <span class="bp">True</span>
-
 <span class="c"># where the output files from the tests will be stored</span>
 <span class="n">TEST_OUT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">my_dir</span><span class="p">,</span> <span class="s">&#39;TEST_OUT&#39;</span><span class="p">)</span>
 
 
+<div class="viewcode-block" id="chew_csv"><a class="viewcode-back" href="../pytan.functest.html#test_pytan_func.chew_csv">[docs]</a><span class="k">def</span> <span class="nf">chew_csv</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">StringIO</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">l</span>
+
+</div>
 <div class="viewcode-block" id="spew"><a class="viewcode-back" href="../pytan.functest.html#test_pytan_func.spew">[docs]</a><span class="k">def</span> <span class="nf">spew</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">TESTVERBOSITY</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">SERVER_INFO</span><span class="p">[</span><span class="s">&quot;testlevel&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
         <span class="k">print</span> <span class="p">(</span><span class="n">m</span><span class="p">)</span>
 
 </div>
@@ -192,9 +198,7 @@
 
     <span class="nd">@classmethod</span>
 <div class="viewcode-block" id="InvalidServerTests.setUpClass"><a class="viewcode-back" href="../pytan.functest.html#test_pytan_func.InvalidServerTests.setUpClass">[docs]</a>    <span class="k">def</span> <span class="nf">setUpClass</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span> <span class="c"># noqa</span>
-        <span class="n">cls</span><span class="o">.</span><span class="n">__http</span> <span class="o">=</span> <span class="n">threaded_http</span><span class="o">.</span><span class="n">threaded_http</span><span class="p">(</span>
-            <span class="n">port</span><span class="o">=</span><span class="mi">4433</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="n">TESTVERBOSITY</span>
-        <span class="p">)</span>
+        <span class="n">cls</span><span class="o">.</span><span class="n">__http</span> <span class="o">=</span> <span class="n">threaded_http</span><span class="o">.</span><span class="n">threaded_http</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="mi">4433</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="n">SERVER_INFO</span><span class="p">[</span><span class="s">&quot;testlevel&quot;</span><span class="p">])</span>
 </div>
     <span class="nd">@ddt.file_data</span><span class="p">(</span><span class="s">&#39;ddt/ddt_invalid_connects.json&#39;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">test_invalid_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
@@ -207,8 +211,7 @@
         <span class="n">mykwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 
         <span class="n">spew</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
-        <span class="n">spew</span><span class="p">(</span><span class="s">&quot;+++ TESTING EXPECTED FAILURE Handler() with kwargs </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span>
-            <span class="n">mykwargs</span><span class="p">))</span>
+        <span class="n">spew</span><span class="p">(</span><span class="s">&quot;+++ TESTING EXPECTED FAILURE Handler() with kwargs </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">mykwargs</span><span class="p">))</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">assertRaisesRegexp</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
             <span class="n">pytan</span><span class="o">.</span><span class="n">Handler</span><span class="p">(</span><span class="o">**</span><span class="n">mykwargs</span><span class="p">)</span>
 
@@ -241,7 +244,7 @@
 
         <span class="c"># ask questions for export tests</span>
         <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s">&#39;qtype&#39;</span><span class="p">:</span> <span class="s">&#39;manual_human&#39;</span><span class="p">,</span>
+            <span class="s">&#39;qtype&#39;</span><span class="p">:</span> <span class="s">&#39;manual&#39;</span><span class="p">,</span>
             <span class="s">&#39;sensors&#39;</span><span class="p">:</span> <span class="p">[</span>
                 <span class="s">&quot;Computer Name&quot;</span><span class="p">,</span> <span class="s">&quot;IP Route Details&quot;</span><span class="p">,</span> <span class="s">&quot;IP Address&quot;</span><span class="p">,</span>
                 <span class="s">&#39;Folder Name Search with RegEx Match{dirname=Program Files,regex=.*Shared.*}&#39;</span><span class="p">,</span>
@@ -276,9 +279,11 @@
         <span class="n">spew</span><span class="p">(</span><span class="n">s</span><span class="p">(</span><span class="s">&#39;export_obj&#39;</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span>
 
         <span class="n">export_str</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">export_obj</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">print</span> <span class="n">export_str</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">export_str</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">export_str</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">))</span>
+        <span class="n">export_str_list</span> <span class="o">=</span> <span class="n">chew_csv</span><span class="p">(</span><span class="n">export_str</span><span class="p">)</span>
+        <span class="n">spew</span><span class="p">(</span><span class="n">export_str_list</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">tests</span><span class="p">:</span>
             <span class="n">spew</span><span class="p">(</span><span class="s">&quot;+++ EVAL TEST: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">x</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="nb">eval</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
@@ -323,14 +328,19 @@
 
         <span class="n">ret</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">handler</span><span class="p">,</span> <span class="n">method</span><span class="p">)(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;action_object&#39;</span><span class="p">],</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">Action</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;saved_action_object&#39;</span><span class="p">],</span> <span class="p">(</span><span class="n">taniumpy</span><span class="o">.</span><span class="n">SavedAction</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="bp">None</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;package_object&#39;</span><span class="p">],</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">PackageSpec</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;group_object&#39;</span><span class="p">],</span> <span class="p">(</span><span class="n">taniumpy</span><span class="o">.</span><span class="n">Group</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="bp">None</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;action_info&#39;</span><span class="p">],</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">object_types</span><span class="o">.</span><span class="n">result_info</span><span class="o">.</span><span class="n">ResultInfo</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;poller_object&#39;</span><span class="p">],</span> <span class="n">pytan</span><span class="o">.</span><span class="n">pollers</span><span class="o">.</span><span class="n">ActionPoller</span><span class="p">)</span>
+
         <span class="n">get_results</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;get_results&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">get_results</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;pre_action_question_results&#39;</span><span class="p">])</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;action_results&#39;</span><span class="p">],</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">ResultSet</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;action_progress_human&#39;</span><span class="p">])</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;action_progress_map&#39;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;action_results&#39;</span><span class="p">],</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">object_types</span><span class="o">.</span><span class="n">result_set</span><span class="o">.</span><span class="n">ResultSet</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">assertGreaterEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;action_results&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">rows</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">assertGreaterEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;action_results&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;action_result_map&#39;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;poller_success&#39;</span><span class="p">])</span>
             <span class="k">for</span> <span class="n">ft</span> <span class="ow">in</span> <span class="n">pytan</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">EXPORT_MAPS</span><span class="p">[</span><span class="s">&#39;ResultSet&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
                 <span class="n">report_file</span><span class="p">,</span> <span class="n">result</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">export_to_report_file</span><span class="p">(</span>
                     <span class="n">obj</span><span class="o">=</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;action_results&#39;</span><span class="p">],</span>
@@ -426,12 +436,12 @@
         <span class="n">spew</span><span class="p">(</span><span class="n">s</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">args</span><span class="p">))</span>
 
         <span class="n">ret</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">handler</span><span class="p">,</span> <span class="n">method</span><span class="p">)(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span>
-            <span class="n">ret</span><span class="p">[</span><span class="s">&#39;question_object&#39;</span><span class="p">],</span>
-            <span class="p">(</span><span class="n">taniumpy</span><span class="o">.</span><span class="n">Question</span><span class="p">,</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">SavedQuestion</span><span class="p">)</span>
-        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;question_object&#39;</span><span class="p">],</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">Question</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;poller_object&#39;</span><span class="p">],</span> <span class="n">pytan</span><span class="o">.</span><span class="n">pollers</span><span class="o">.</span><span class="n">QuestionPoller</span><span class="p">)</span>
+
         <span class="n">get_results</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;get_results&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">get_results</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;poller_success&#39;</span><span class="p">])</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;question_results&#39;</span><span class="p">],</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">ResultSet</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">assertGreaterEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;question_results&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">rows</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">assertGreaterEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;question_results&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
@@ -446,6 +456,38 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">report_file</span><span class="p">))</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">assertGreaterEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="mi">10</span><span class="p">)</span>
+
+    <span class="nd">@ddt.file_data</span><span class="p">(</span><span class="s">&#39;ddt/ddt_valid_saved_questions.json&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_valid_saved_question</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_test</span><span class="p">()</span>
+
+        <span class="n">method</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;method&#39;</span><span class="p">]</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;args&#39;</span><span class="p">]</span>
+
+        <span class="n">s</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s">&quot;+++ TESTING EXPECTED SAVED QUESTION SUCCESS Handler.{}() with kwargs {}&quot;</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">format</span>
+        <span class="n">spew</span><span class="p">(</span><span class="n">s</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">args</span><span class="p">))</span>
+
+        <span class="n">ret</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">handler</span><span class="p">,</span> <span class="n">method</span><span class="p">)(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;saved_question_object&#39;</span><span class="p">],</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">SavedQuestion</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;question_object&#39;</span><span class="p">],</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">Question</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;poller_object&#39;</span><span class="p">],</span> <span class="p">(</span><span class="n">pytan</span><span class="o">.</span><span class="n">pollers</span><span class="o">.</span><span class="n">QuestionPoller</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="bp">None</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;poller_success&#39;</span><span class="p">],</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">None</span><span class="p">),</span> <span class="nb">type</span><span class="p">(</span><span class="bp">True</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;question_results&#39;</span><span class="p">],</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">ResultSet</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertGreaterEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;question_results&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">rows</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertGreaterEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;question_results&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">ft</span> <span class="ow">in</span> <span class="n">pytan</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">EXPORT_MAPS</span><span class="p">[</span><span class="s">&#39;ResultSet&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">report_file</span><span class="p">,</span> <span class="n">result</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">export_to_report_file</span><span class="p">(</span>
+                <span class="n">obj</span><span class="o">=</span><span class="n">ret</span><span class="p">[</span><span class="s">&#39;question_results&#39;</span><span class="p">],</span>
+                <span class="n">export_format</span><span class="o">=</span><span class="n">ft</span><span class="p">,</span>
+                <span class="n">report_dir</span><span class="o">=</span><span class="n">TEST_OUT</span><span class="p">,</span>
+                <span class="n">prefix</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_name</span> <span class="o">+</span> <span class="s">&#39;_&#39;</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">report_file</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">report_file</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertGreaterEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="mi">10</span><span class="p">)</span>
 
     <span class="nd">@ddt.file_data</span><span class="p">(</span><span class="s">&#39;ddt/ddt_valid_get_object.json&#39;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">test_valid_get_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
@@ -605,8 +647,35 @@
 
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">assertRaisesRegexp</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
             <span class="n">handler</span><span class="o">.</span><span class="n">export_obj</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
 </div>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd"># debug path for checking open file handles, ensuring</span>
+<span class="sd">import atexit</span>
+
+
+<span class="sd">@atexit.register</span>
+<span class="sd">def get_open_fds():</span>
+<span class="sd">    import subprocess</span>
+<span class="sd">    import os</span>
+
+<span class="sd">    pid = os.getpid()</span>
+<span class="sd">    procs = subprocess.check_output([&quot;lsof&quot;, &#39;-w&#39;, &quot;-p&quot;, str(pid)])</span>
+<span class="sd">    print procs</span>
+
+<span class="sd">    procs = subprocess.check_output([&quot;lsof&quot;, &#39;-w&#39;, &#39;-Ff&#39;, &quot;-p&quot;, str(pid)])</span>
+
+<span class="sd">    proc_defs = filter(</span>
+<span class="sd">        lambda s: s and s[0] == &#39;f&#39; and s[1:].isdigit(),</span>
+<span class="sd">        procs.split(&#39;\n&#39;)</span>
+<span class="sd">    )</span>
+
+<span class="sd">    nprocs = len(proc_defs)</span>
+<span class="sd">    print &quot;{} number of open FDs&quot;.format(nprocs)</span>
+<span class="sd">    for p in proc_defs:</span>
+<span class="sd">        print p</span>
+<span class="sd">    return nprocs</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">TEST_OUT</span><span class="p">):</span>
@@ -618,9 +687,11 @@
         <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">test_files</span><span class="p">]</span>
 
     <span class="n">unittest</span><span class="o">.</span><span class="n">main</span><span class="p">(</span>
-        <span class="n">verbosity</span><span class="o">=</span><span class="n">TESTVERBOSITY</span><span class="p">,</span>
-        <span class="n">failfast</span><span class="o">=</span><span class="n">FAILFAST</span><span class="p">,</span>
-        <span class="n">catchbreak</span><span class="o">=</span><span class="n">CATCHBREAK</span><span class="p">)</span>
+        <span class="n">verbosity</span><span class="o">=</span><span class="n">SERVER_INFO</span><span class="p">[</span><span class="s">&quot;testlevel&quot;</span><span class="p">],</span>
+        <span class="n">failfast</span><span class="o">=</span><span class="n">SERVER_INFO</span><span class="p">[</span><span class="s">&quot;FAILFAST&quot;</span><span class="p">],</span>
+        <span class="n">catchbreak</span><span class="o">=</span><span class="n">SERVER_INFO</span><span class="p">[</span><span class="s">&quot;CATCHBREAK&quot;</span><span class="p">],</span>
+        <span class="nb">buffer</span><span class="o">=</span><span class="n">SERVER_INFO</span><span class="p">[</span><span class="s">&quot;BUFFER&quot;</span><span class="p">],</span>
+    <span class="p">)</span>
 </pre></div>
 
           </div>
@@ -632,7 +703,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Mar 26, 2015.
+      Last updated on Aug 07, 2015.
     </p>
   </div>
 
@@ -653,7 +724,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.0.4',
+            VERSION:'2.0.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

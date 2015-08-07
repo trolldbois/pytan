@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>2.1.6.3. Deploy action simple against windows computers &mdash; PyTan 1.0.4 documentation</title>
+  <title>2.1.7.3. Deploy action simple against windows computers &mdash; PyTan 2.0.0 documentation</title>
   
 
   
@@ -28,10 +28,10 @@
   
 
   
-    <link rel="top" title="PyTan 1.0.4 documentation" href="../index.html"/>
-        <link rel="up" title="2.1.6. pytan API Valid Deploy Action Examples" href="valid_deploy_actions.html"/>
-        <link rel="next" title="2.1.6.4. Deploy action with params against windows computers" href="deploy_action_with_params_against_windows_computers.html"/>
-        <link rel="prev" title="2.1.6.2. Deploy action simple without results" href="deploy_action_simple_without_results.html"/> 
+    <link rel="top" title="PyTan 2.0.0 documentation" href="../index.html"/>
+        <link rel="up" title="2.1.7. PyTan API Valid Deploy Action Examples" href="valid_deploy_actions.html"/>
+        <link rel="next" title="2.1.7.4. Deploy action with params against windows computers" href="deploy_action_with_params_against_windows_computers.html"/>
+        <link rel="prev" title="2.1.7.2. Deploy action simple without results" href="deploy_action_simple_without_results.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -67,24 +67,26 @@
 <li class="toctree-l2"><a class="reference internal" href="../introduction.html#description">1.1. Description</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../introduction.html#why-it-was-created">1.2. Why it was created</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../introduction.html#requirements">1.3. Requirements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../introduction.html#installation">1.4. Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../introduction.html#usage">1.5. Usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../introduction.html#directory-layout">1.6. Directory Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#tanium-versions-validated-against">1.4. Tanium Versions Validated Against</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#installation">1.5. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#usage">1.6. Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#directory-layout">1.7. Directory Layout</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="../pytan.html">2. pytan package</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="pytan_examples.html">2.1. pytan API examples</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="pytan_examples.html">2.1. PyTan API examples</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../pytan.handler.html">2.2. pytan.handler module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.constants.html">2.3. pytan.constants module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.utils.html">2.4. pytan.utils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.unittest.html">2.5. pytan Unit Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.functest.html">2.6. pytan Functional Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.exceptions.html">2.3. pytan.exceptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.sessions.html">2.4. pytan.sessions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.pollers.html">2.5. pytan.pollers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.constants.html">2.6. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.utils.html">2.7. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.unittest.html">2.8. pytan Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.functest.html">2.9. pytan Functional Tests</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../taniumpy.html">3. taniumpy package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../taniumpy.session.html">3.1. taniumpy.session module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../taniumpy.question_asker.html">3.2. taniumpy.question_asker module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../taniumpy.object_types.html">3.3. taniumpy.object_types package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taniumpy.object_types.html">3.1. taniumpy.object_types package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../xmltodict.html">4. xmltodict module</a><ul class="simple">
@@ -94,6 +96,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../threaded_http.html">6. threaded_http module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../requests.html">7. requests package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../requests.html#requests-http-library">7.1. requests HTTP library</a></li>
 </ul>
 </li>
 </ul>
@@ -122,11 +128,11 @@
       
           <li><a href="../pytan.html">2. pytan package</a> &raquo;</li>
       
-          <li><a href="pytan_examples.html">2.1. pytan API examples</a> &raquo;</li>
+          <li><a href="pytan_examples.html">2.1. PyTan API examples</a> &raquo;</li>
       
-          <li><a href="valid_deploy_actions.html">2.1.6. pytan API Valid Deploy Action Examples</a> &raquo;</li>
+          <li><a href="valid_deploy_actions.html">2.1.7. PyTan API Valid Deploy Action Examples</a> &raquo;</li>
       
-    <li>2.1.6.3. Deploy action simple against windows computers</li>
+    <li>2.1.7.3. Deploy action simple against windows computers</li>
       <li class="wy-breadcrumbs-aside">
         
           <a href="../_sources/examples/deploy_action_simple_against_windows_computers.txt" rel="nofollow"> View page source</a>
@@ -138,10 +144,10 @@
           <div role="main" class="document">
             
   <div class="section" id="deploy-action-simple-against-windows-computers">
-<h1>2.1.6.3. Deploy action simple against windows computers<a class="headerlink" href="#deploy-action-simple-against-windows-computers" title="Permalink to this headline">¶</a></h1>
+<h1>2.1.7.3. Deploy action simple against windows computers<a class="headerlink" href="#deploy-action-simple-against-windows-computers" title="Permalink to this headline">¶</a></h1>
 <p>Deploy an action against only windows computers using human strings. This requires passing in an action filter</p>
 <div class="section" id="example-python-code">
-<h2>2.1.6.3.1. Example Python Code<a class="headerlink" href="#example-python-code" title="Permalink to this headline">¶</a></h2>
+<h2>2.1.7.3.1. Example Python Code<a class="headerlink" href="#example-python-code" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -239,7 +245,7 @@
 <span class="n">USERNAME</span> <span class="o">=</span> <span class="s">&quot;Tanium User&quot;</span>
 <span class="n">PASSWORD</span> <span class="o">=</span> <span class="s">&quot;T@n!um&quot;</span>
 <span class="n">HOST</span> <span class="o">=</span> <span class="s">&quot;172.16.31.128&quot;</span>
-<span class="n">PORT</span> <span class="o">=</span> <span class="s">&quot;444&quot;</span>
+<span class="n">PORT</span> <span class="o">=</span> <span class="s">&quot;443&quot;</span>
 
 <span class="c"># Logging conrols</span>
 <span class="n">LOGLEVEL</span> <span class="o">=</span> <span class="mi">2</span>
@@ -265,8 +271,8 @@
 <span class="n">kwargs</span><span class="p">[</span><span class="s">&quot;action_filters&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;Operating System, that contains:Windows&#39;</span>
 <span class="n">kwargs</span><span class="p">[</span><span class="s">&quot;package&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;Distribute Tanium Standard Utilities&#39;</span>
 
-<span class="c"># call the handler with the deploy_action_human method, passing in kwargs for arguments</span>
-<span class="n">response</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">deploy_action_human</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="c"># call the handler with the deploy_action method, passing in kwargs for arguments</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">deploy_action</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">pprint</span><span class="o">,</span> <span class="nn">io</span>
 
 <span class="k">print</span> <span class="s">&quot;&quot;</span>
@@ -295,7 +301,7 @@
 </td></tr></table></div>
 </div>
 <div class="section" id="output-from-python-code">
-<h2>2.1.6.3.2. Output from Python Code<a class="headerlink" href="#output-from-python-code" title="Permalink to this headline">¶</a></h2>
+<h2>2.1.7.3.2. Output from Python Code<a class="headerlink" href="#output-from-python-code" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-none"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -351,62 +357,128 @@
 53
 54
 55
-56</pre></div></td><td class="code"><div class="highlight"><pre>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
-2015-03-26 11:48:04,109 INFO     question_progress: Results 0% (Get Online = &quot;True&quot; from all machines where Operating System contains &quot;Windows&quot;)
-2015-03-26 11:48:09,130 INFO     question_progress: Results 100% (Get Online = &quot;True&quot; from all machines where Operating System contains &quot;Windows&quot;)
-2015-03-26 11:48:09,233 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:10,272 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:11,310 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:12,348 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:13,396 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:14,439 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:15,482 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:16,525 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:17,562 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:18,613 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:19,657 INFO     action_progress: Action Results Passed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:20,695 INFO     action_progress: Action Results Passed: 100% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:20,733 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:21,772 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:22,807 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:23,849 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:24,887 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:25,927 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:26,965 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:28,004 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:29,042 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:30,077 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:31,105 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:32,140 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:33,178 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:34,216 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:35,252 INFO     action_progress: Action Results Completed: 0% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:36,290 INFO     action_progress: Action Results Completed: 100% (API Deploy Distribute Tanium Standard Utilities)
-2015-03-26 11:48:36,290 INFO     action_progress: API Deploy Distribute Tanium Standard Utilities Result Counts:
-    Running Count: 0
-    Success Count: 1
-    Failed Count: 0
-    Unknown Count: 0
-    Finished Count: 1
-    Total Count: 1
-    Finished Count must equal: 1
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89</pre></div></td><td class="code"><div class="highlight"><pre>Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
+2015-08-07 19:45:28,560 DEBUG    pytan.handler.ActionPoller: ID 58: id resolved to 58
+2015-08-07 19:45:28,561 DEBUG    pytan.handler.ActionPoller: ID 58: package_spec resolved to PackageSpec, name: &#39;Distribute Tanium Standard Utilities&#39;, id: 20
+2015-08-07 19:45:28,567 DEBUG    pytan.handler.ActionPoller: ID 58: target_group resolved to Group, name: &#39;Default&#39;, id: 206
+2015-08-07 19:45:28,583 DEBUG    pytan.handler.ActionPoller: ID 58: Result Map resolved to {&#39;failed&#39;: {&#39;58:Failed.&#39;: [], &#39;58:NotSucceeded.&#39;: [], &#39;58:Stopped.&#39;: [], &#39;total&#39;: 0, &#39;58:Expired.&#39;: []}, &#39;finished&#39;: {&#39;58:Stopped.&#39;: [], &#39;58:Failed.&#39;: [], &#39;58:Succeeded.&#39;: [], &#39;58:Expired.&#39;: [], &#39;58:NotSucceeded.&#39;: [], &#39;58:Completed.&#39;: [], &#39;total&#39;: 0, &#39;58:Verified.&#39;: []}, &#39;running&#39;: {&#39;58:Waiting.&#39;: [], &#39;58:Copying.&#39;: [], &#39;58:Downloading.&#39;: [], &#39;58:Running.&#39;: [], &#39;58:PendingVerification.&#39;: [], &#39;total&#39;: 0}, &#39;success&#39;: {&#39;58:Completed.&#39;: [], &#39;total&#39;: 0, &#39;58:Verified.&#39;: []}, &#39;unknown&#39;: {&#39;total&#39;: 0}}
+2015-08-07 19:45:28,583 DEBUG    pytan.handler.ActionPoller: ID 58: expiration_time resolved to 2015-08-07T20:40:30
+2015-08-07 19:45:28,583 DEBUG    pytan.handler.ActionPoller: ID 58: status resolved to Open
+2015-08-07 19:45:28,584 DEBUG    pytan.handler.ActionPoller: ID 58: stopped_flag resolved to 0
+2015-08-07 19:45:28,584 DEBUG    pytan.handler.ActionPoller: ID 58: Object Info resolved to ID 58: Package: &#39;Distribute Tanium Standard Utilities&#39;, Target: &#39; Operating System containing &quot;Windows&quot;&#39;, Verify: False, Stopped: False, Status: Open
+2015-08-07 19:45:28,584 DEBUG    pytan.handler.ActionPoller: ID 58: Adding Question to derive passed count
+2015-08-07 19:45:28,615 DEBUG    pytan.handler.QuestionPoller: ID 1302: id resolved to 1302
+2015-08-07 19:45:28,615 DEBUG    pytan.handler.QuestionPoller: ID 1302: expiration resolved to 2015-08-07T19:55:28
+2015-08-07 19:45:28,615 DEBUG    pytan.handler.QuestionPoller: ID 1302: query_text resolved to Get number of machines with Operating System containing &quot;Windows&quot;
+2015-08-07 19:45:28,615 DEBUG    pytan.handler.QuestionPoller: ID 1302: id resolved to 1302
+2015-08-07 19:45:28,615 DEBUG    pytan.handler.QuestionPoller: ID 1302: Object Info resolved to Question ID: 1302, Query: Get number of machines with Operating System containing &quot;Windows&quot;
+2015-08-07 19:45:28,618 DEBUG    pytan.handler.QuestionPoller: ID 1302: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
+2015-08-07 19:45:28,618 DEBUG    pytan.handler.QuestionPoller: ID 1302: Timing: Started: 2015-08-07 19:45:28.615340, Expiration: 2015-08-07 19:55:28, Override Timeout: None, Elapsed Time: 0:00:00.003187, Left till expiry: 0:09:59.381475, Loop Count: 1
+2015-08-07 19:45:28,618 INFO     pytan.handler.QuestionPoller: ID 1302: Progress Changed 0% (0 of 2)
+2015-08-07 19:45:33,623 DEBUG    pytan.handler.QuestionPoller: ID 1302: Progress: Tested: 1, Passed: 1, MR Tested: 1, MR Passed: 1, Est Total: 2, Row Count: 0
+2015-08-07 19:45:33,623 DEBUG    pytan.handler.QuestionPoller: ID 1302: Timing: Started: 2015-08-07 19:45:28.615340, Expiration: 2015-08-07 19:55:28, Override Timeout: None, Elapsed Time: 0:00:05.007761, Left till expiry: 0:09:54.376902, Loop Count: 2
+2015-08-07 19:45:33,623 INFO     pytan.handler.QuestionPoller: ID 1302: Progress Changed 50% (1 of 2)
+2015-08-07 19:45:38,626 DEBUG    pytan.handler.QuestionPoller: ID 1302: Progress: Tested: 2, Passed: 1, MR Tested: 2, MR Passed: 2, Est Total: 2, Row Count: 0
+2015-08-07 19:45:38,626 DEBUG    pytan.handler.QuestionPoller: ID 1302: Timing: Started: 2015-08-07 19:45:28.615340, Expiration: 2015-08-07 19:55:28, Override Timeout: None, Elapsed Time: 0:00:10.011393, Left till expiry: 0:09:49.373270, Loop Count: 3
+2015-08-07 19:45:38,626 INFO     pytan.handler.QuestionPoller: ID 1302: Progress Changed 100% (2 of 2)
+2015-08-07 19:45:38,626 INFO     pytan.handler.QuestionPoller: ID 1302: Reached Threshold of 99% (2 of 2)
+2015-08-07 19:45:38,626 DEBUG    pytan.handler.ActionPoller: ID 58: Passed Count resolved to 1
+2015-08-07 19:45:38,638 DEBUG    pytan.handler.ActionPoller: ID 58: Progress: Seen Action: 0, Expected Seen: 1, Percent: 0%
+2015-08-07 19:45:38,638 DEBUG    pytan.handler.ActionPoller: ID 58: Timing: Started: 2015-08-07 19:45:28.584064, Expiration: 2015-08-07 20:40:30, Override Timeout: None, Elapsed Time: 0:00:10.054787, Left till expiry: 0:54:51.361151, Loop Count: 1
+2015-08-07 19:45:38,638 INFO     pytan.handler.ActionPoller: ID 58: Progress Changed for Seen Count 0% (0 of 1)
+2015-08-07 19:45:38,645 DEBUG    pytan.handler.ActionPoller: ID 58: stopped_flag resolved to 0
+2015-08-07 19:45:38,645 DEBUG    pytan.handler.ActionPoller: ID 58: status resolved to Open
+2015-08-07 19:45:43,660 DEBUG    pytan.handler.ActionPoller: ID 58: Progress: Seen Action: 0, Expected Seen: 1, Percent: 0%
+2015-08-07 19:45:43,660 DEBUG    pytan.handler.ActionPoller: ID 58: Timing: Started: 2015-08-07 19:45:28.584064, Expiration: 2015-08-07 20:40:30, Override Timeout: None, Elapsed Time: 0:00:15.076845, Left till expiry: 0:54:46.339093, Loop Count: 2
+2015-08-07 19:45:43,667 DEBUG    pytan.handler.ActionPoller: ID 58: stopped_flag resolved to 0
+2015-08-07 19:45:43,667 DEBUG    pytan.handler.ActionPoller: ID 58: status resolved to Open
+2015-08-07 19:45:48,677 DEBUG    pytan.handler.ActionPoller: ID 58: Progress: Seen Action: 1, Expected Seen: 1, Percent: 100%
+2015-08-07 19:45:48,677 DEBUG    pytan.handler.ActionPoller: ID 58: Timing: Started: 2015-08-07 19:45:28.584064, Expiration: 2015-08-07 20:40:30, Override Timeout: None, Elapsed Time: 0:00:20.093828, Left till expiry: 0:54:41.322110, Loop Count: 3
+2015-08-07 19:45:48,677 INFO     pytan.handler.ActionPoller: ID 58: Progress Changed for Seen Count 100% (1 of 1)
+2015-08-07 19:45:48,684 DEBUG    pytan.handler.ActionPoller: ID 58: stopped_flag resolved to 0
+2015-08-07 19:45:48,684 DEBUG    pytan.handler.ActionPoller: ID 58: status resolved to Open
+2015-08-07 19:45:48,684 INFO     pytan.handler.ActionPoller: ID 58: Reached Threshold for Seen Count of 100% (1 of 1)
+2015-08-07 19:45:48,692 DEBUG    pytan.handler.ActionPoller: ID 58: failed: 0, finished: 1, running: 0, success: 1, unknown: 0, Done Key: success, Passed Count: 1
+2015-08-07 19:45:48,692 DEBUG    pytan.handler.ActionPoller: ID 58: Timing: Started: 2015-08-07 19:45:28.584064, Expiration: 2015-08-07 20:40:30, Override Timeout: None, Elapsed Time: 0:00:20.108869, Left till expiry: 0:54:41.307069, Loop Count: 1
+2015-08-07 19:45:48,692 INFO     pytan.handler.ActionPoller: ID 58: Progress Changed for Finished Count 100% (1 of 1)
+2015-08-07 19:45:48,698 DEBUG    pytan.handler.ActionPoller: ID 58: stopped_flag resolved to 0
+2015-08-07 19:45:48,698 DEBUG    pytan.handler.ActionPoller: ID 58: status resolved to Open
+2015-08-07 19:45:48,698 INFO     pytan.handler.ActionPoller: ID 58: Reached Threshold for Finished Count of 100% (1 of 1)
 
 Type of response:  &lt;type &#39;dict&#39;&gt;
 
 Pretty print of response:
-{&#39;action_object&#39;: &lt;taniumpy.object_types.action.Action object at 0x108567450&gt;,
- &#39;action_progress_human&#39;: &#39;API Deploy Distribute Tanium Standard Utilities Result Counts:\n\tRunning Count: 0\n\tSuccess Count: 1\n\tFailed Count: 0\n\tUnknown Count: 0\n\tFinished Count: 1\n\tTotal Count: 1\n\tFinished Count must equal: 1&#39;,
- &#39;action_progress_map&#39;: {&#39;Completed.&#39;: [&#39;jtanium1.localdomain&#39;]},
- &#39;action_results&#39;: &lt;taniumpy.object_types.result_set.ResultSet object at 0x1077fa950&gt;,
- &#39;pre_action_question_results&#39;: {&#39;question_object&#39;: &lt;taniumpy.object_types.question.Question object at 0x107608d10&gt;,
-                                 &#39;question_results&#39;: &lt;taniumpy.object_types.result_set.ResultSet object at 0x107808550&gt;}}
+{&#39;action_info&#39;: &lt;taniumpy.object_types.result_info.ResultInfo object at 0x11aadbcd0&gt;,
+ &#39;action_object&#39;: &lt;taniumpy.object_types.action.Action object at 0x11aae6090&gt;,
+ &#39;action_result_map&#39;: {&#39;failed&#39;: {&#39;58:Expired.&#39;: [],
+                                  &#39;58:Failed.&#39;: [],
+                                  &#39;58:NotSucceeded.&#39;: [],
+                                  &#39;58:Stopped.&#39;: [],
+                                  &#39;total&#39;: 0},
+                       &#39;finished&#39;: {&#39;58:Completed.&#39;: [&#39;JTANIUM1.localdomain&#39;],
+                                    &#39;58:Expired.&#39;: [],
+                                    &#39;58:Failed.&#39;: [],
+                                    &#39;58:NotSucceeded.&#39;: [],
+                                    &#39;58:Stopped.&#39;: [],
+                                    &#39;58:Succeeded.&#39;: [],
+                                    &#39;58:Verified.&#39;: [],
+                                    &#39;total&#39;: 1},
+                       &#39;running&#39;: {&#39;58:Copying.&#39;: [],
+                                   &#39;58:Downloading.&#39;: [],
+                                   &#39;58:PendingVerification.&#39;: [],
+                                   &#39;58:Running.&#39;: [],
+                                   &#39;58:Waiting.&#39;: [],
+                                   &#39;total&#39;: 0},
+                       &#39;success&#39;: {&#39;58:Completed.&#39;: [&#39;JTANIUM1.localdomain&#39;],
+                                   &#39;58:Verified.&#39;: [],
+                                   &#39;total&#39;: 1},
+                       &#39;unknown&#39;: {&#39;total&#39;: 0}},
+ &#39;action_results&#39;: &lt;taniumpy.object_types.result_set.ResultSet object at 0x11ac77c90&gt;,
+ &#39;group_object&#39;: &lt;taniumpy.object_types.group.Group object at 0x10c03db90&gt;,
+ &#39;package_object&#39;: &lt;taniumpy.object_types.package_spec.PackageSpec object at 0x11aae6050&gt;,
+ &#39;poller_object&#39;: &lt;pytan.pollers.ActionPoller object at 0x10bea6950&gt;,
+ &#39;poller_success&#39;: True,
+ &#39;saved_action_object&#39;: &lt;taniumpy.object_types.saved_action.SavedAction object at 0x11acb14d0&gt;}
 
 Print of action object:
-Action, name: &#39;API Deploy Distribute Tanium Standard Utilities&#39;
+Action, name: &#39;API Deploy Distribute Tanium Standard Utilities&#39;, id: 58
 
 CSV Results of response:
 Action Statuses,Computer Name
-21078:Completed.,jtanium1.localdomain
+58:Completed.,JTANIUM1.localdomain
 </pre></div>
 </td></tr></table></div>
 </div>
@@ -418,10 +490,10 @@ Action Statuses,Computer Name
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="deploy_action_with_params_against_windows_computers.html" class="btn btn-neutral float-right" title="2.1.6.4. Deploy action with params against windows computers">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="deploy_action_with_params_against_windows_computers.html" class="btn btn-neutral float-right" title="2.1.7.4. Deploy action with params against windows computers">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="deploy_action_simple_without_results.html" class="btn btn-neutral" title="2.1.6.2. Deploy action simple without results"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="deploy_action_simple_without_results.html" class="btn btn-neutral" title="2.1.7.2. Deploy action simple without results"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -431,7 +503,7 @@ Action Statuses,Computer Name
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Mar 26, 2015.
+      Last updated on Aug 07, 2015.
     </p>
   </div>
 
@@ -452,7 +524,7 @@ Action Statuses,Computer Name
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.0.4',
+            VERSION:'2.0.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

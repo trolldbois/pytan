@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>2.1.4.28. Get all clients &mdash; PyTan 1.0.4 documentation</title>
+  <title>2.1.5.28. Get all clients &mdash; PyTan 2.0.0 documentation</title>
   
 
   
@@ -28,10 +28,10 @@
   
 
   
-    <link rel="top" title="PyTan 1.0.4 documentation" href="../index.html"/>
-        <link rel="up" title="2.1.4. pytan API Valid Get Object Examples" href="valid_get_objects.html"/>
-        <link rel="next" title="2.1.4.29. Get all packages" href="get_all_packages.html"/>
-        <link rel="prev" title="2.1.4.27. Get all whitelisted urls" href="get_all_whitelisted_urls.html"/> 
+    <link rel="top" title="PyTan 2.0.0 documentation" href="../index.html"/>
+        <link rel="up" title="2.1.5. PyTan API Valid Get Object Examples" href="valid_get_objects.html"/>
+        <link rel="next" title="2.1.5.29. Get all packages" href="get_all_packages.html"/>
+        <link rel="prev" title="2.1.5.27. Get all whitelisted urls" href="get_all_whitelisted_urls.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -67,24 +67,26 @@
 <li class="toctree-l2"><a class="reference internal" href="../introduction.html#description">1.1. Description</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../introduction.html#why-it-was-created">1.2. Why it was created</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../introduction.html#requirements">1.3. Requirements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../introduction.html#installation">1.4. Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../introduction.html#usage">1.5. Usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../introduction.html#directory-layout">1.6. Directory Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#tanium-versions-validated-against">1.4. Tanium Versions Validated Against</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#installation">1.5. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#usage">1.6. Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#directory-layout">1.7. Directory Layout</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="../pytan.html">2. pytan package</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="pytan_examples.html">2.1. pytan API examples</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="pytan_examples.html">2.1. PyTan API examples</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../pytan.handler.html">2.2. pytan.handler module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.constants.html">2.3. pytan.constants module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.utils.html">2.4. pytan.utils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.unittest.html">2.5. pytan Unit Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.functest.html">2.6. pytan Functional Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.exceptions.html">2.3. pytan.exceptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.sessions.html">2.4. pytan.sessions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.pollers.html">2.5. pytan.pollers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.constants.html">2.6. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.utils.html">2.7. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.unittest.html">2.8. pytan Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.functest.html">2.9. pytan Functional Tests</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../taniumpy.html">3. taniumpy package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../taniumpy.session.html">3.1. taniumpy.session module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../taniumpy.question_asker.html">3.2. taniumpy.question_asker module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../taniumpy.object_types.html">3.3. taniumpy.object_types package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taniumpy.object_types.html">3.1. taniumpy.object_types package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../xmltodict.html">4. xmltodict module</a><ul class="simple">
@@ -94,6 +96,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../threaded_http.html">6. threaded_http module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../requests.html">7. requests package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../requests.html#requests-http-library">7.1. requests HTTP library</a></li>
 </ul>
 </li>
 </ul>
@@ -122,11 +128,11 @@
       
           <li><a href="../pytan.html">2. pytan package</a> &raquo;</li>
       
-          <li><a href="pytan_examples.html">2.1. pytan API examples</a> &raquo;</li>
+          <li><a href="pytan_examples.html">2.1. PyTan API examples</a> &raquo;</li>
       
-          <li><a href="valid_get_objects.html">2.1.4. pytan API Valid Get Object Examples</a> &raquo;</li>
+          <li><a href="valid_get_objects.html">2.1.5. PyTan API Valid Get Object Examples</a> &raquo;</li>
       
-    <li>2.1.4.28. Get all clients</li>
+    <li>2.1.5.28. Get all clients</li>
       <li class="wy-breadcrumbs-aside">
         
           <a href="../_sources/examples/get_all_clients.txt" rel="nofollow"> View page source</a>
@@ -138,10 +144,10 @@
           <div role="main" class="document">
             
   <div class="section" id="get-all-clients">
-<h1>2.1.4.28. Get all clients<a class="headerlink" href="#get-all-clients" title="Permalink to this headline">¶</a></h1>
+<h1>2.1.5.28. Get all clients<a class="headerlink" href="#get-all-clients" title="Permalink to this headline">¶</a></h1>
 <p>Get all clients</p>
 <div class="section" id="example-python-code">
-<h2>2.1.4.28.1. Example Python Code<a class="headerlink" href="#example-python-code" title="Permalink to this headline">¶</a></h2>
+<h2>2.1.5.28.1. Example Python Code<a class="headerlink" href="#example-python-code" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -234,7 +240,7 @@
 <span class="n">USERNAME</span> <span class="o">=</span> <span class="s">&quot;Tanium User&quot;</span>
 <span class="n">PASSWORD</span> <span class="o">=</span> <span class="s">&quot;T@n!um&quot;</span>
 <span class="n">HOST</span> <span class="o">=</span> <span class="s">&quot;172.16.31.128&quot;</span>
-<span class="n">PORT</span> <span class="o">=</span> <span class="s">&quot;444&quot;</span>
+<span class="n">PORT</span> <span class="o">=</span> <span class="s">&quot;443&quot;</span>
 
 <span class="c"># Logging conrols</span>
 <span class="n">LOGLEVEL</span> <span class="o">=</span> <span class="mi">2</span>
@@ -285,7 +291,7 @@
 </td></tr></table></div>
 </div>
 <div class="section" id="output-from-python-code">
-<h2>2.1.4.28.2. Output from Python Code<a class="headerlink" href="#output-from-python-code" title="Permalink to this headline">¶</a></h2>
+<h2>2.1.5.28.2. Output from Python Code<a class="headerlink" href="#output-from-python-code" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-none"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -310,28 +316,30 @@
 22
 23
 24
-25</pre></div></td><td class="code"><div class="highlight"><pre>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
+25
+26</pre></div></td><td class="code"><div class="highlight"><pre>Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
 
 Type of response:  &lt;class &#39;taniumpy.object_types.system_status_list.SystemStatusList&#39;&gt;
 
 print of response:
-SystemStatusList, len: 5
+SystemStatusList, len: 2
 
 length of response (number of objects returned):
-5
+2
 
 print the first object returned in JSON format:
 {
   &quot;_type&quot;: &quot;client_status&quot;,
   &quot;cache_row_id&quot;: 0,
-  &quot;computer_id&quot;: &quot;1320430098&quot;,
+  &quot;computer_id&quot;: &quot;3888017885&quot;,
   &quot;full_version&quot;: &quot;5.1.314.7724&quot;,
   &quot;host_name&quot;: &quot;Casus-Belli.local&quot;,
   &quot;ipaddress_client&quot;: &quot;172.16.31.1&quot;,
   &quot;ipaddress_server&quot;: &quot;172.16.31.1&quot;,
-  &quot;last_registration&quot;: &quot;2015-03-26T08:08:09&quot;,
+  &quot;last_registration&quot;: &quot;2015-08-07T19:44:58&quot;,
   &quot;port_number&quot;: 17472,
   &quot;protocol_version&quot;: 314,
+  &quot;public_key_valid&quot;: 1,
   &quot;send_state&quot;: &quot;Forward Only&quot;,
   &quot;status&quot;: &quot;Leader, Slow Link Behind&quot;
 }
@@ -346,10 +354,10 @@ print the first object returned in JSON format:
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="get_all_packages.html" class="btn btn-neutral float-right" title="2.1.4.29. Get all packages">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="get_all_packages.html" class="btn btn-neutral float-right" title="2.1.5.29. Get all packages">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="get_all_whitelisted_urls.html" class="btn btn-neutral" title="2.1.4.27. Get all whitelisted urls"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="get_all_whitelisted_urls.html" class="btn btn-neutral" title="2.1.5.27. Get all whitelisted urls"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -359,7 +367,7 @@ print the first object returned in JSON format:
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Mar 26, 2015.
+      Last updated on Aug 07, 2015.
     </p>
   </div>
 
@@ -380,7 +388,7 @@ print the first object returned in JSON format:
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.0.4',
+            VERSION:'2.0.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

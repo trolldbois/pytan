@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>2.1.6.4. Deploy action with params against windows computers &mdash; PyTan 1.0.4 documentation</title>
+  <title>2.1.7.4. Deploy action with params against windows computers &mdash; PyTan 2.0.0 documentation</title>
   
 
   
@@ -28,10 +28,10 @@
   
 
   
-    <link rel="top" title="PyTan 1.0.4 documentation" href="../index.html"/>
-        <link rel="up" title="2.1.6. pytan API Valid Deploy Action Examples" href="valid_deploy_actions.html"/>
-        <link rel="next" title="2.1.7. pytan API Invalid Deploy Action Examples" href="invalid_deploy_actions.html"/>
-        <link rel="prev" title="2.1.6.3. Deploy action simple against windows computers" href="deploy_action_simple_against_windows_computers.html"/> 
+    <link rel="top" title="PyTan 2.0.0 documentation" href="../index.html"/>
+        <link rel="up" title="2.1.7. PyTan API Valid Deploy Action Examples" href="valid_deploy_actions.html"/>
+        <link rel="next" title="2.1.8. PyTan API Invalid Deploy Action Examples" href="invalid_deploy_actions.html"/>
+        <link rel="prev" title="2.1.7.3. Deploy action simple against windows computers" href="deploy_action_simple_against_windows_computers.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -67,24 +67,26 @@
 <li class="toctree-l2"><a class="reference internal" href="../introduction.html#description">1.1. Description</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../introduction.html#why-it-was-created">1.2. Why it was created</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../introduction.html#requirements">1.3. Requirements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../introduction.html#installation">1.4. Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../introduction.html#usage">1.5. Usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../introduction.html#directory-layout">1.6. Directory Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#tanium-versions-validated-against">1.4. Tanium Versions Validated Against</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#installation">1.5. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#usage">1.6. Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#directory-layout">1.7. Directory Layout</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="../pytan.html">2. pytan package</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="pytan_examples.html">2.1. pytan API examples</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="pytan_examples.html">2.1. PyTan API examples</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../pytan.handler.html">2.2. pytan.handler module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.constants.html">2.3. pytan.constants module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.utils.html">2.4. pytan.utils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.unittest.html">2.5. pytan Unit Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.functest.html">2.6. pytan Functional Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.exceptions.html">2.3. pytan.exceptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.sessions.html">2.4. pytan.sessions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.pollers.html">2.5. pytan.pollers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.constants.html">2.6. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.utils.html">2.7. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.unittest.html">2.8. pytan Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.functest.html">2.9. pytan Functional Tests</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../taniumpy.html">3. taniumpy package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../taniumpy.session.html">3.1. taniumpy.session module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../taniumpy.question_asker.html">3.2. taniumpy.question_asker module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../taniumpy.object_types.html">3.3. taniumpy.object_types package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../taniumpy.object_types.html">3.1. taniumpy.object_types package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../xmltodict.html">4. xmltodict module</a><ul class="simple">
@@ -94,6 +96,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../threaded_http.html">6. threaded_http module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../requests.html">7. requests package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../requests.html#requests-http-library">7.1. requests HTTP library</a></li>
 </ul>
 </li>
 </ul>
@@ -122,11 +128,11 @@
       
           <li><a href="../pytan.html">2. pytan package</a> &raquo;</li>
       
-          <li><a href="pytan_examples.html">2.1. pytan API examples</a> &raquo;</li>
+          <li><a href="pytan_examples.html">2.1. PyTan API examples</a> &raquo;</li>
       
-          <li><a href="valid_deploy_actions.html">2.1.6. pytan API Valid Deploy Action Examples</a> &raquo;</li>
+          <li><a href="valid_deploy_actions.html">2.1.7. PyTan API Valid Deploy Action Examples</a> &raquo;</li>
       
-    <li>2.1.6.4. Deploy action with params against windows computers</li>
+    <li>2.1.7.4. Deploy action with params against windows computers</li>
       <li class="wy-breadcrumbs-aside">
         
           <a href="../_sources/examples/deploy_action_with_params_against_windows_computers.txt" rel="nofollow"> View page source</a>
@@ -138,11 +144,11 @@
           <div role="main" class="document">
             
   <div class="section" id="deploy-action-with-params-against-windows-computers">
-<h1>2.1.6.4. Deploy action with params against windows computers<a class="headerlink" href="#deploy-action-with-params-against-windows-computers" title="Permalink to this headline">¶</a></h1>
+<h1>2.1.7.4. Deploy action with params against windows computers<a class="headerlink" href="#deploy-action-with-params-against-windows-computers" title="Permalink to this headline">¶</a></h1>
 <p>Deploy an action with parameters against only windows computers using human strings.</p>
 <p>This will use the Package &#8216;Custom Tagging - Add Tags&#8217; and supply two parameters. The second parameter will be ignored because the package in question only requires one parameter.</p>
 <div class="section" id="example-python-code">
-<h2>2.1.6.4.1. Example Python Code<a class="headerlink" href="#example-python-code" title="Permalink to this headline">¶</a></h2>
+<h2>2.1.7.4.1. Example Python Code<a class="headerlink" href="#example-python-code" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -240,7 +246,7 @@
 <span class="n">USERNAME</span> <span class="o">=</span> <span class="s">&quot;Tanium User&quot;</span>
 <span class="n">PASSWORD</span> <span class="o">=</span> <span class="s">&quot;T@n!um&quot;</span>
 <span class="n">HOST</span> <span class="o">=</span> <span class="s">&quot;172.16.31.128&quot;</span>
-<span class="n">PORT</span> <span class="o">=</span> <span class="s">&quot;444&quot;</span>
+<span class="n">PORT</span> <span class="o">=</span> <span class="s">&quot;443&quot;</span>
 
 <span class="c"># Logging conrols</span>
 <span class="n">LOGLEVEL</span> <span class="o">=</span> <span class="mi">2</span>
@@ -266,8 +272,8 @@
 <span class="n">kwargs</span><span class="p">[</span><span class="s">&quot;action_filters&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;Operating System, that contains:Windows&#39;</span>
 <span class="n">kwargs</span><span class="p">[</span><span class="s">&quot;package&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;Custom Tagging - Add Tags{$1=tag_should_be_added,$2=tag_should_be_ignore}&#39;</span>
 
-<span class="c"># call the handler with the deploy_action_human method, passing in kwargs for arguments</span>
-<span class="n">response</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">deploy_action_human</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="c"># call the handler with the deploy_action method, passing in kwargs for arguments</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">deploy_action</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">pprint</span><span class="o">,</span> <span class="nn">io</span>
 
 <span class="k">print</span> <span class="s">&quot;&quot;</span>
@@ -296,7 +302,7 @@
 </td></tr></table></div>
 </div>
 <div class="section" id="output-from-python-code">
-<h2>2.1.6.4.2. Output from Python Code<a class="headerlink" href="#output-from-python-code" title="Permalink to this headline">¶</a></h2>
+<h2>2.1.7.4.2. Output from Python Code<a class="headerlink" href="#output-from-python-code" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-none"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -338,48 +344,146 @@
 39
 40
 41
-42</pre></div></td><td class="code"><div class="highlight"><pre>Handler for Session to 172.16.31.128:444, Authenticated: True, Version: 6.2.314.3279
-2015-03-26 11:48:36,436 INFO     question_progress: Results 0% (Get Online = &quot;True&quot; from all machines where Operating System contains &quot;Windows&quot;)
-2015-03-26 11:48:41,456 INFO     question_progress: Results 50% (Get Online = &quot;True&quot; from all machines where Operating System contains &quot;Windows&quot;)
-2015-03-26 11:48:46,478 INFO     question_progress: Results 100% (Get Online = &quot;True&quot; from all machines where Operating System contains &quot;Windows&quot;)
-2015-03-26 11:48:46,628 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-03-26 11:48:47,667 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-03-26 11:48:48,712 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-03-26 11:48:49,747 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-03-26 11:48:50,784 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-03-26 11:48:51,830 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-03-26 11:48:52,867 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-03-26 11:48:53,907 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-03-26 11:48:54,946 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-03-26 11:48:55,985 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-03-26 11:48:57,023 INFO     action_progress: Action Results Passed: 0% (API Deploy Custom Tagging - Add Tags)
-2015-03-26 11:48:58,064 INFO     action_progress: Action Results Passed: 100% (API Deploy Custom Tagging - Add Tags)
-2015-03-26 11:48:58,099 INFO     action_progress: Action Results Completed: 100% (API Deploy Custom Tagging - Add Tags)
-2015-03-26 11:48:58,100 INFO     action_progress: API Deploy Custom Tagging - Add Tags Result Counts:
-    Running Count: 0
-    Success Count: 1
-    Failed Count: 0
-    Unknown Count: 0
-    Finished Count: 1
-    Total Count: 1
-    Finished Count must equal: 1
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91</pre></div></td><td class="code"><div class="highlight"><pre>Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
+2015-08-07 19:45:48,755 DEBUG    pytan.handler.ActionPoller: ID 59: id resolved to 59
+2015-08-07 19:45:48,755 DEBUG    pytan.handler.ActionPoller: ID 59: package_spec resolved to PackageSpec, name: &#39;Custom Tagging - Add Tags&#39;, id: 81
+2015-08-07 19:45:48,759 DEBUG    pytan.handler.ActionPoller: ID 59: target_group resolved to Group, name: &#39;Default&#39;, id: 208
+2015-08-07 19:45:48,773 DEBUG    pytan.handler.ActionPoller: ID 59: Result Map resolved to {&#39;failed&#39;: {&#39;59:NotSucceeded.&#39;: [], &#39;59:Stopped.&#39;: [], &#39;total&#39;: 0, &#39;59:Expired.&#39;: [], &#39;59:Failed.&#39;: []}, &#39;finished&#39;: {&#39;59:NotSucceeded.&#39;: [], &#39;59:Completed.&#39;: [], &#39;59:Stopped.&#39;: [], &#39;59:Succeeded.&#39;: [], &#39;59:Failed.&#39;: [], &#39;total&#39;: 0, &#39;59:Expired.&#39;: [], &#39;59:Verified.&#39;: []}, &#39;running&#39;: {&#39;59:Downloading.&#39;: [], &#39;59:Running.&#39;: [], &#39;59:PendingVerification.&#39;: [], &#39;59:Waiting.&#39;: [], &#39;total&#39;: 0, &#39;59:Copying.&#39;: []}, &#39;success&#39;: {&#39;59:Completed.&#39;: [], &#39;total&#39;: 0, &#39;59:Verified.&#39;: []}, &#39;unknown&#39;: {&#39;total&#39;: 0}}
+2015-08-07 19:45:48,773 DEBUG    pytan.handler.ActionPoller: ID 59: expiration_time resolved to 2015-08-07T19:56:50
+2015-08-07 19:45:48,773 DEBUG    pytan.handler.ActionPoller: ID 59: status resolved to Open
+2015-08-07 19:45:48,773 DEBUG    pytan.handler.ActionPoller: ID 59: stopped_flag resolved to 0
+2015-08-07 19:45:48,773 DEBUG    pytan.handler.ActionPoller: ID 59: Object Info resolved to ID 59: Package: &#39;Custom Tagging - Add Tags&#39;, Target: &#39; Operating System containing &quot;Windows&quot;&#39;, Verify: False, Stopped: False, Status: Open
+2015-08-07 19:45:48,773 DEBUG    pytan.handler.ActionPoller: ID 59: Adding Question to derive passed count
+2015-08-07 19:45:48,802 DEBUG    pytan.handler.QuestionPoller: ID 1303: id resolved to 1303
+2015-08-07 19:45:48,802 DEBUG    pytan.handler.QuestionPoller: ID 1303: expiration resolved to 2015-08-07T19:55:48
+2015-08-07 19:45:48,802 DEBUG    pytan.handler.QuestionPoller: ID 1303: query_text resolved to Get number of machines with Operating System containing &quot;Windows&quot;
+2015-08-07 19:45:48,802 DEBUG    pytan.handler.QuestionPoller: ID 1303: id resolved to 1303
+2015-08-07 19:45:48,802 DEBUG    pytan.handler.QuestionPoller: ID 1303: Object Info resolved to Question ID: 1303, Query: Get number of machines with Operating System containing &quot;Windows&quot;
+2015-08-07 19:45:48,805 DEBUG    pytan.handler.QuestionPoller: ID 1303: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
+2015-08-07 19:45:48,805 DEBUG    pytan.handler.QuestionPoller: ID 1303: Timing: Started: 2015-08-07 19:45:48.802305, Expiration: 2015-08-07 19:55:48, Override Timeout: None, Elapsed Time: 0:00:00.003500, Left till expiry: 0:09:59.194197, Loop Count: 1
+2015-08-07 19:45:48,805 INFO     pytan.handler.QuestionPoller: ID 1303: Progress Changed 0% (0 of 2)
+2015-08-07 19:45:53,809 DEBUG    pytan.handler.QuestionPoller: ID 1303: Progress: Tested: 2, Passed: 1, MR Tested: 2, MR Passed: 2, Est Total: 2, Row Count: 0
+2015-08-07 19:45:53,809 DEBUG    pytan.handler.QuestionPoller: ID 1303: Timing: Started: 2015-08-07 19:45:48.802305, Expiration: 2015-08-07 19:55:48, Override Timeout: None, Elapsed Time: 0:00:05.007368, Left till expiry: 0:09:54.190329, Loop Count: 2
+2015-08-07 19:45:53,809 INFO     pytan.handler.QuestionPoller: ID 1303: Progress Changed 100% (2 of 2)
+2015-08-07 19:45:53,809 INFO     pytan.handler.QuestionPoller: ID 1303: Reached Threshold of 99% (2 of 2)
+2015-08-07 19:45:53,809 DEBUG    pytan.handler.ActionPoller: ID 59: Passed Count resolved to 1
+2015-08-07 19:45:53,819 DEBUG    pytan.handler.ActionPoller: ID 59: Progress: Seen Action: 0, Expected Seen: 1, Percent: 0%
+2015-08-07 19:45:53,819 DEBUG    pytan.handler.ActionPoller: ID 59: Timing: Started: 2015-08-07 19:45:48.773547, Expiration: 2015-08-07 19:56:50, Override Timeout: None, Elapsed Time: 0:00:05.045590, Left till expiry: 0:10:56.180866, Loop Count: 1
+2015-08-07 19:45:53,819 INFO     pytan.handler.ActionPoller: ID 59: Progress Changed for Seen Count 0% (0 of 1)
+2015-08-07 19:45:53,824 DEBUG    pytan.handler.ActionPoller: ID 59: stopped_flag resolved to 0
+2015-08-07 19:45:53,824 DEBUG    pytan.handler.ActionPoller: ID 59: status resolved to Open
+2015-08-07 19:45:58,837 DEBUG    pytan.handler.ActionPoller: ID 59: Progress: Seen Action: 1, Expected Seen: 1, Percent: 100%
+2015-08-07 19:45:58,837 DEBUG    pytan.handler.ActionPoller: ID 59: Timing: Started: 2015-08-07 19:45:48.773547, Expiration: 2015-08-07 19:56:50, Override Timeout: None, Elapsed Time: 0:00:10.064178, Left till expiry: 0:10:51.162277, Loop Count: 2
+2015-08-07 19:45:58,837 INFO     pytan.handler.ActionPoller: ID 59: Progress Changed for Seen Count 100% (1 of 1)
+2015-08-07 19:45:58,843 DEBUG    pytan.handler.ActionPoller: ID 59: stopped_flag resolved to 0
+2015-08-07 19:45:58,844 DEBUG    pytan.handler.ActionPoller: ID 59: status resolved to Open
+2015-08-07 19:45:58,844 INFO     pytan.handler.ActionPoller: ID 59: Reached Threshold for Seen Count of 100% (1 of 1)
+2015-08-07 19:45:58,852 DEBUG    pytan.handler.ActionPoller: ID 59: failed: 0, finished: 0, running: 1, success: 0, unknown: 0, Done Key: success, Passed Count: 1
+2015-08-07 19:45:58,852 DEBUG    pytan.handler.ActionPoller: ID 59: Timing: Started: 2015-08-07 19:45:48.773547, Expiration: 2015-08-07 19:56:50, Override Timeout: None, Elapsed Time: 0:00:10.079198, Left till expiry: 0:10:51.147258, Loop Count: 1
+2015-08-07 19:45:58,852 INFO     pytan.handler.ActionPoller: ID 59: Progress Changed for Finished Count 0% (0 of 1)
+2015-08-07 19:45:58,858 DEBUG    pytan.handler.ActionPoller: ID 59: stopped_flag resolved to 0
+2015-08-07 19:45:58,858 DEBUG    pytan.handler.ActionPoller: ID 59: status resolved to Open
+2015-08-07 19:46:03,873 DEBUG    pytan.handler.ActionPoller: ID 59: failed: 0, finished: 0, running: 1, success: 0, unknown: 0, Done Key: success, Passed Count: 1
+2015-08-07 19:46:03,873 DEBUG    pytan.handler.ActionPoller: ID 59: Timing: Started: 2015-08-07 19:45:48.773547, Expiration: 2015-08-07 19:56:50, Override Timeout: None, Elapsed Time: 0:00:15.100064, Left till expiry: 0:10:46.126391, Loop Count: 2
+2015-08-07 19:46:03,879 DEBUG    pytan.handler.ActionPoller: ID 59: stopped_flag resolved to 0
+2015-08-07 19:46:03,879 DEBUG    pytan.handler.ActionPoller: ID 59: status resolved to Open
+2015-08-07 19:46:08,892 DEBUG    pytan.handler.ActionPoller: ID 59: failed: 0, finished: 1, running: 1, success: 1, unknown: 0, Done Key: success, Passed Count: 1
+2015-08-07 19:46:08,892 DEBUG    pytan.handler.ActionPoller: ID 59: Timing: Started: 2015-08-07 19:45:48.773547, Expiration: 2015-08-07 19:56:50, Override Timeout: None, Elapsed Time: 0:00:20.118648, Left till expiry: 0:10:41.107808, Loop Count: 3
+2015-08-07 19:46:08,892 INFO     pytan.handler.ActionPoller: ID 59: Progress Changed for Finished Count 100% (1 of 1)
+2015-08-07 19:46:08,898 DEBUG    pytan.handler.ActionPoller: ID 59: stopped_flag resolved to 0
+2015-08-07 19:46:08,898 DEBUG    pytan.handler.ActionPoller: ID 59: status resolved to Open
+2015-08-07 19:46:08,898 INFO     pytan.handler.ActionPoller: ID 59: Reached Threshold for Finished Count of 100% (1 of 1)
 
 Type of response:  &lt;type &#39;dict&#39;&gt;
 
 Pretty print of response:
-{&#39;action_object&#39;: &lt;taniumpy.object_types.action.Action object at 0x10756c410&gt;,
- &#39;action_progress_human&#39;: &#39;API Deploy Custom Tagging - Add Tags Result Counts:\n\tRunning Count: 0\n\tSuccess Count: 1\n\tFailed Count: 0\n\tUnknown Count: 0\n\tFinished Count: 1\n\tTotal Count: 1\n\tFinished Count must equal: 1&#39;,
- &#39;action_progress_map&#39;: {&#39;Completed.&#39;: [&#39;jtanium1.localdomain&#39;]},
- &#39;action_results&#39;: &lt;taniumpy.object_types.result_set.ResultSet object at 0x107563bd0&gt;,
- &#39;pre_action_question_results&#39;: {&#39;question_object&#39;: &lt;taniumpy.object_types.question.Question object at 0x107817710&gt;,
-                                 &#39;question_results&#39;: &lt;taniumpy.object_types.result_set.ResultSet object at 0x10855d290&gt;}}
+{&#39;action_info&#39;: &lt;taniumpy.object_types.result_info.ResultInfo object at 0x10c063090&gt;,
+ &#39;action_object&#39;: &lt;taniumpy.object_types.action.Action object at 0x10c17ecd0&gt;,
+ &#39;action_result_map&#39;: {&#39;failed&#39;: {&#39;59:Expired.&#39;: [],
+                                  &#39;59:Failed.&#39;: [],
+                                  &#39;59:NotSucceeded.&#39;: [],
+                                  &#39;59:Stopped.&#39;: [],
+                                  &#39;total&#39;: 0},
+                       &#39;finished&#39;: {&#39;59:Completed.&#39;: [&#39;JTANIUM1.localdomain&#39;],
+                                    &#39;59:Expired.&#39;: [],
+                                    &#39;59:Failed.&#39;: [],
+                                    &#39;59:NotSucceeded.&#39;: [],
+                                    &#39;59:Stopped.&#39;: [],
+                                    &#39;59:Succeeded.&#39;: [],
+                                    &#39;59:Verified.&#39;: [],
+                                    &#39;total&#39;: 1},
+                       &#39;running&#39;: {&#39;59:Copying.&#39;: [],
+                                   &#39;59:Downloading.&#39;: [&#39;JTANIUM1.localdomain&#39;],
+                                   &#39;59:PendingVerification.&#39;: [],
+                                   &#39;59:Running.&#39;: [],
+                                   &#39;59:Waiting.&#39;: [],
+                                   &#39;total&#39;: 1},
+                       &#39;success&#39;: {&#39;59:Completed.&#39;: [&#39;JTANIUM1.localdomain&#39;],
+                                   &#39;59:Verified.&#39;: [],
+                                   &#39;total&#39;: 1},
+                       &#39;unknown&#39;: {&#39;total&#39;: 0}},
+ &#39;action_results&#39;: &lt;taniumpy.object_types.result_set.ResultSet object at 0x10c17ec10&gt;,
+ &#39;group_object&#39;: &lt;taniumpy.object_types.group.Group object at 0x10c03d210&gt;,
+ &#39;package_object&#39;: &lt;taniumpy.object_types.package_spec.PackageSpec object at 0x10bf69dd0&gt;,
+ &#39;poller_object&#39;: &lt;pytan.pollers.ActionPoller object at 0x10c063250&gt;,
+ &#39;poller_success&#39;: True,
+ &#39;saved_action_object&#39;: &lt;taniumpy.object_types.saved_action.SavedAction object at 0x10c03ddd0&gt;}
 
 Print of action object:
-Action, name: &#39;API Deploy Custom Tagging - Add Tags&#39;
+Action, name: &#39;API Deploy Custom Tagging - Add Tags&#39;, id: 59
 
 CSV Results of response:
 Action Statuses,Computer Name
-21079:Completed.,jtanium1.localdomain
+59:Completed.,JTANIUM1.localdomain
 </pre></div>
 </td></tr></table></div>
 </div>
@@ -391,10 +495,10 @@ Action Statuses,Computer Name
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="invalid_deploy_actions.html" class="btn btn-neutral float-right" title="2.1.7. pytan API Invalid Deploy Action Examples">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="invalid_deploy_actions.html" class="btn btn-neutral float-right" title="2.1.8. PyTan API Invalid Deploy Action Examples">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="deploy_action_simple_against_windows_computers.html" class="btn btn-neutral" title="2.1.6.3. Deploy action simple against windows computers"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="deploy_action_simple_against_windows_computers.html" class="btn btn-neutral" title="2.1.7.3. Deploy action simple against windows computers"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -404,7 +508,7 @@ Action Statuses,Computer Name
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Mar 26, 2015.
+      Last updated on Aug 07, 2015.
     </p>
   </div>
 
@@ -425,7 +529,7 @@ Action Statuses,Computer Name
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.0.4',
+            VERSION:'2.0.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
