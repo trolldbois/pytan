@@ -6,16 +6,6 @@ These functional tests require a connection to a Tanium server in order to run.
 The connection info is pulled from the SERVER_INFO dictionary in test/API_INFO.py.
 
 These tests all use :mod:`ddt`, a package that provides for data driven tests via JSON files.
-UNFAIL:
- - deploy action against 6.5
- - add get_version to handler
- - test breaking system with session stuff
- - add unit tests for logout()
-  - add unit tests for auth with session
-  - add unit tests for sessions_lib
-result = handler.ask_manual(sensors='Computer Name', question_filters='Custom Tags, that !=:TestTag1', question_options=['and', 'match_all_values'])
-        make logs print out whether using defaultsession or not
-
 """
 import sys
 
