@@ -1,6 +1,6 @@
 # PyTan Documentation 
 
-Current Stable Version: 2.0.0 (Aug 7 2015)
+Current Stable Version: 2.0.1 (Aug 11 2015)
 
 The current stable version will always be maintained in the master branch.
 
