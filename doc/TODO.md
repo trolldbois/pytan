@@ -3,6 +3,7 @@
   * [ ] rebuild zip_dists, and test on win
 
 # TODO LATER
+  * [X] add approve action to pytan
   * [ ] add unit tests for logout()
   * [ ] add unit tests for auth with session
   * [ ] add unit tests for sessions_lib

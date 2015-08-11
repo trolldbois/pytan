@@ -405,6 +405,29 @@ class Handler(object):
         )
         return deploy_result
 
+    def approve_saved_action(self, id, **kwargs):
+        """Approve a saved action
+
+        Parameters
+        ----------
+        id : int
+            id of saved action to approve
+
+        Returns
+        -------
+        saved_action_approve_obj : :class:`taniumpy.object_types.saved_action_approval.SavedActionApproval`
+            The object containing the return from SavedActionApproval
+        """
+        saved_action_obj = self.get('saved_action', id=id)[0]
+        add_sap_obj = taniumpy.SavedActionApproval()
+        add_sap_obj.id = saved_action_obj.id
+        add_sap_obj.approved_flag = 1
+        # we dont want to re-fetch the object, so use sessions add instead of handlers add
+        sap_obj = self.session.add(add_sap_obj)
+        m = 'Action approved successfully, ID of saved action : {}'.format
+        self.mylog.debug(m(sap_obj.id))
+        return sap_obj
+
     def stop_action(self, id, **kwargs):
         """Stop an action
 
@@ -422,9 +445,7 @@ class Handler(object):
         add_action_stop_obj = taniumpy.ActionStop()
         add_action_stop_obj.action = action_obj
         action_stop_obj = self._add(add_action_stop_obj)
-        m = (
-            'Action stopped successfully, ID of action stop: {}'
-        ).format
+        m = 'Action stopped successfully, ID of action stop: {}'.format
         self.mylog.debug(m(action_stop_obj.id))
         return action_stop_obj
 
