@@ -1,3 +1,7 @@
+2.0.2 (Aug 18 2015)
+  * Logging improvements
+  * Test verbosity cleanups
+
 2.0.1 (Aug 11 2015)
   * Added saved action support
 
