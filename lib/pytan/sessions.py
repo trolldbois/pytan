@@ -767,6 +767,15 @@ class Session(object):
                 raise pytan.exceptions.AuthorizationError(m(response_command))
 
         elif response_command != request_command:
+            response_prunes = [
+                '\n',
+                'XML Parse Error: ',
+                'SOAPProcessing Exception: class ',
+                'ERROR: 400 Bad Request'
+            ]
+            for p in response_prunes:
+                response_command = response_command.replace(p, '').strip()
+
             m = "Response command {} does not match request command {}".format
             raise pytan.exceptions.BadResponseError(m(response_command, request_command))
 

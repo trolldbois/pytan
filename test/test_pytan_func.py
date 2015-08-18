@@ -7,6 +7,8 @@ The connection info is pulled from the SERVER_INFO dictionary in test/API_INFO.p
 
 These tests all use :mod:`ddt`, a package that provides for data driven tests via JSON files.
 """
+from __future__ import print_function
+
 import sys
 
 # disable python from creating .pyc files everywhere
@@ -50,9 +52,9 @@ def chew_csv(c):
     return l
 
 
-def spew(m):
-    if SERVER_INFO["testlevel"] >= 3:
-        print (m)
+def spew(m, l=3):
+    if SERVER_INFO["testlevel"] >= l:
+        print(m, file=sys.stderr)
 
 
 @ddt.ddt
@@ -61,6 +63,12 @@ class InvalidServerTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls): # noqa
         cls.__http = threaded_http.threaded_http(port=4433, verbosity=SERVER_INFO["testlevel"])
+        m = "{}: PyTan v'{}' against Tanium v'{}' -- Invalid Tests Starting".format
+        spew(m(
+            pytan.utils.seconds_from_now(),
+            pytan.__version__,
+            'N/A',
+        ), 2)
 
     @ddt.file_data('ddt/ddt_invalid_connects.json')
     def test_invalid_connect(self, value):
@@ -84,14 +92,20 @@ class ValidServerTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls): # noqa
         cls.handler = pytan.Handler(**SERVER_INFO)
+        m = "{}: PyTan v'{}' against Tanium v'{}' -- Valid Tests Starting".format
+        spew(m(
+            pytan.utils.seconds_from_now(),
+            pytan.__version__,
+            cls.handler.session.get_server_version(),
+        ), 2)
 
+        wlus = ['test1', 'test2', 'test3']
         # create whitelisted_urls for getobject tests
-        try:
-            cls.handler.create_whitelisted_url(url='test1')
-            cls.handler.create_whitelisted_url(url='test2')
-            cls.handler.create_whitelisted_url(url='test3')
-        except:
-            pass
+        for wlu in wlus:
+            try:
+                cls.handler.create_whitelisted_url(url=wlu)
+            except:
+                pass
 
         # fetch objects for export tests
         kwargs = {
@@ -233,8 +247,7 @@ class ValidServerTests(unittest.TestCase):
         try:
             handler.delete(**delete_args)
         except Exception as e:
-            print e
-            pass
+            spew(e)
 
         ret = getattr(handler, method)(**args)
         self.assertIsInstance(ret, t_obj)
@@ -261,8 +274,7 @@ class ValidServerTests(unittest.TestCase):
                     try:
                         handler.delete(**del_kwargs)
                     except Exception as e:
-                        print e
-                        pass
+                        spew(e)
 
         json_file, results = handler.export_to_report_file(
             obj=orig_objs,
@@ -554,3 +566,9 @@ if __name__ == "__main__":
         catchbreak=SERVER_INFO["CATCHBREAK"],
         buffer=SERVER_INFO["BUFFER"],
     )
+    m = "{}: PyTan v'{}' against Tanium v'{}' -- All Tests Finished".format
+    spew(m(
+        pytan.utils.seconds_from_now(),
+        pytan.__version__,
+        'N/A',
+    ), 2)

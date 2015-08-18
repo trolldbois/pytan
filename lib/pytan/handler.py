@@ -1312,7 +1312,7 @@ class Handler(object):
         try:
             added_obj = self.session.add(api_object, **kwargs)
         except Exception as e:
-            self.mylog.error(e)
+            self.mylog.debug(e)
             err = "Error while trying to add object {}!!".format
             raise pytan.exceptions.HandlerError(err(search_str))
 
@@ -1343,9 +1343,9 @@ class Handler(object):
         try:
             found = self.session.find(api_object, **kwargs)
         except Exception as e:
-            self.mylog.error(e)
-            err = "No results found searching for {}!!".format
-            raise pytan.exceptions.HandlerError(err(search_str))
+            self.mylog.debug(e)
+            err = "No results found searching for {} (error: {})!!".format
+            raise pytan.exceptions.HandlerError(err(search_str, e))
 
         if pytan.utils.empty_obj(found):
             err = "No results found searching for {}!!".format
