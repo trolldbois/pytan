@@ -174,7 +174,7 @@
         "desc": "Get a user by name",
         "priority": "1",
         "method": "get",
-        "args": {"objtype": "user", "name": "Tanium User"},
+        "args": {"objtype": "user", "name": "Administrator"},
         "tests": [
             "len(response) == 1",
             "isinstance(response, taniumpy.UserList)",
