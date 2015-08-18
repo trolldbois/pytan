@@ -1,9 +1,38 @@
 # TODO NOW
   * [X] update docs for tested versions, and new port info, and more
   * [ ] rebuild zip_dists, and test on win
+  * [ ] add console.wsdl to documentation via build script
+  * [ ] add os env overrides!
+  ```
+    def __env_overrides(self):
+        """looks for OS environment variables and overrides the corresponding
+        attribute if they exist
+        """
+        or_tpl = "Overriding {!r} with OS environment variable {!r}".format
+
+        for os_env_var, class_var in constants.OS_ENV_MAP.iteritems():
+            if not os_env_var in os.environ.keys():
+                continue
+
+            if not os.environ[os_env_var]:
+                continue
+
+            self.DLOG(or_tpl(os.environ[os_env_var], os_env_var))
+            setattr(self, class_var, os.environ[os_env_var])
+
+# Used by SoapWrap.SoapWrap for environment variable override mappings
+OS_ENV_MAP = {
+    'SOAP_USERNAME': 'self.__username',
+    'SOAP_PASSWORD': 'self.__password',
+    'SOAP_HOSTNAME': 'self.__host',
+    'SOAP_PORT': 'self.__port',
+    'SOAP_PROTOCOL': 'self.__protocol',
+    'SOAP_PATH': 'self.__soap_path',
+}
+  ```
 
 # TODO LATER
-  * [X] add approve action to pytan
+  * [X] add approve action to pytan (need doc update and test update)
   * [ ] add unit tests for logout()
   * [ ] add unit tests for auth with session
   * [ ] add unit tests for sessions_lib
