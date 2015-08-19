@@ -1,6 +1,6 @@
 # PyTan 
 
-This is a set of packages and scripts that provide a simple way for interfacing with Tanium’s SOAP API using python or the command line.
+This is a set of packages and scripts that provide a simple way for interfacing with the [Tanium](https://www.tanium.com/) SOAP API using python or the command line.
 
 The current stable version will always be maintained in the master branch.
 
