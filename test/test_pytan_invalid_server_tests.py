@@ -1,6 +1,6 @@
 #!/usr/bin/env python -ttB
 """
-This contains valid functional tests for pytan.
+This contains invalid functional tests for pytan.
 
 These functional tests require a connection to a Tanium server in order to run.
 The connection info is pulled from the SERVER_INFO dictionary in test/API_INFO.py.
