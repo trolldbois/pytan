@@ -15,7 +15,8 @@ class Options(BaseType):
     def __init__(self):
         BaseType.__init__(
             self,
-            simple_properties={'flags': int,
+            simple_properties={'export_flag': int,
+                        'flags': int,
                         'hide_errors_flag': int,
                         'include_answer_times_flag': int,
                         'row_counts_only_flag': int,
@@ -51,6 +52,7 @@ class Options(BaseType):
             complex_properties={'cache_filters': CacheFilterList},
             list_properties={},
         )
+        self.export_flag = None
         self.flags = None
         self.hide_errors_flag = None
         self.include_answer_times_flag = None
