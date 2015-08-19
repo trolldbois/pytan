@@ -10,14 +10,14 @@ rootdir=`cd "${mydir}"/../ ; pwd`
 taniumpydir=`cd "${rootdir}"/../taniumpy ; pwd`
 
 echo "Generating taniumpy API at: -o ${TMPDIR}/api"
-${taniumpydir}/BUILD/generate_api.py -i ${taniumpydir}/BUILD/console.wsdl -o ${TMPDIR} -f
+${taniumpydir}/BUILD/generate_api.py -i ${rootdir}/doc/console.wsdl -o ${TMPDIR} -f
 
 echo ""
 echo "Differences between ${TMPDIR}/api and ${rootdir}/lib/taniumpy:"
 diff -urq ${TMPDIR}/api ${rootdir}/lib/taniumpy
 echo ""
 
-echo "Are you sure you want to re-generate ${rootdir}lib/taniumpy?? See above for differences. Press any key to continue, or control-C to cancel!!"
+echo "Are you sure you want to re-generate ${rootdir}/lib/taniumpy?? See above for differences. Press any key to continue, or control-C to cancel!!"
 read -n 1 -s
 
 rm -rf ${rootdir}/lib/taniumpy
