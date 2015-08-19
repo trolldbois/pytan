@@ -12,6 +12,10 @@
   * Re-org of CHANGELOG.md, added links to releases, old changes, etc
   * Updated pytan_test_steps.md to reference new functional test script name
   * Copied pytan_test_steps.md to static doc dir
+  * Incorporated console.wsdl in doc dir
+  * Added version of tanium server to console.wsdl
+  * Modified taniumpy build process, using doc/console.wsdl now
+  * Re-generated taniumpy from 6.5.314.4291 console.wsdl
 
 # 2.0.2
 

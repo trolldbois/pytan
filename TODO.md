@@ -1,4 +1,3 @@
-  * update docs for tested versions, and new port info, and more
   * rebuild zip_dists, and test on win
   * add console.wsdl to documentation via build script
   * add approve action to pytan (need doc update and test update)
