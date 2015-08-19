@@ -1,4 +1,7 @@
-2.0.3 (n/a)
+# 2.0.3
+
+[Development branch](https://github.com/tanium/pytan/tree/develop) on N/A
+
   * Added changelog and todo links to pytan readme
   * Change functional tests to split invalid / valid server tests into individual files
   * Made logging of threaded_http use stderr
@@ -10,14 +13,23 @@
   * Updated pytan_test_steps.md to reference new functional test script name
   * Copied pytan_test_steps.md to static doc dir
 
-2.0.2 (Aug 18 2015) https://github.com/tanium/pytan/releases/tag/2.0.2
+# 2.0.2
+
+[Released](https://github.com/tanium/pytan/releases/tag/2.0.2) on Aug 18 2015 
+
   * Logging improvements
   * Test verbosity cleanups
 
-2.0.1 (Aug 11 2015) https://github.com/tanium/pytan/tree/release/2.0.1
+# 2.0.1
+
+[Released](https://github.com/tanium/pytan/tree/release/2.0.1) on Aug 11 2015
+
   * Added saved action support
 
-2.0.0 (Aug 7 2015) https://github.com/tanium/pytan/tree/release/2.0.0
+# 2.0.0
+
+[Released](https://github.com/tanium/pytan/tree/release/2.0.0) on Aug 7 2015
+
   * 6.2 and 6.5 support
   * Completely overhauled session support (we now use keep alive, gzip, and other fun things)
   * Completely overhauled Question polling
@@ -25,7 +37,10 @@
   * New XML cleaning to remove illegal characters that sometimes slip into sensor data from non-US systems
   * And a whole lot of improvements, bug fixes, and performance fixes for large result sets beyond that
 
-1.6.0 (Apr 15 2015) https://github.com/tanium/pytan/tree/release/1.0.4
+# 1.6.0
+
+[Released](https://github.com/tanium/pytan/tree/release/1.0.4) on Apr 15 2015
+
   * Cleaned up open file handles
   * Added not a windows script to platform filters (Last Login has it)
   * Added retry support to http_post
@@ -38,16 +53,25 @@
   * Fixed invalid character xml issue
   * Added saved questions json to api/doc gen
 
-1.0.4 (Mar 26 2015) https://github.com/tanium/pytan/tree/release/1.0.4
+# 1.0.4
+
+[Released](https://github.com/tanium/pytan/tree/release/1.0.4) on Mar 26 2015 
+
   * Added better xml cleaning / invalid character handling to session.py
   * Added xml_fix to BaseType.py 
   * Added support for sensor driven data for deploying action/package (this was done by adding support for undefined parameters, and "works" in theory, but in execution has lots of issues due to percent encoded parameters)
 
-1.0.3 (Feb 11 2015) https://github.com/tanium/pytan/tree/release/1.0.3
+# 1.0.3
+
+[Released](https://github.com/tanium/pytan/tree/release/1.0.3) on Feb 11 2015 
+
   * Fixed utf-8 issue in taniumpy
   * Improvements in build process for STATICWINBUILD
 
-1.0.2 (Feb 6 2015) https://github.com/tanium/pytan/releases/tag/1.0.2
+# 1.0.2
+
+[Released](https://github.com/tanium/pytan/releases/tag/1.0.2) on Feb 6 2015 
+
   * Filter hidden sensors from print_sensors.py
   * Added better param json decoding error handling in print_sensors.py
   * Added support for static building via py2exe
@@ -57,7 +81,10 @@
   * Added config.bat, run.bat, readme.md for TSAT
   * Added auto zipper for TSAT build
 
-1.0.1 (Dec 8 2014) https://github.com/tanium/pytan/tree/1.0.1
+# 1.0.1
+
+[Released](https://github.com/tanium/pytan/tree/1.0.1) on Dec 8 2014 
+
   * Added question_asker args to get_ask_kwargs
   * API documentation added via sphinx
   * API examples added to sphinx
@@ -79,7 +106,10 @@
   * Added usage to docs
   * Updated readme
 
-1.0.0 (Dec 1 2014) https://github.com/tanium/pytan/tree/1.0.0
+# 1.0.0
+
+[Released](https://github.com/tanium/pytan/tree/1.0.0) on Dec 1 2014 
+
   * Support sensors filters/options/params for manual questions
   * Support whole question filters/options for manual questions
   * Integrated auto wsdl generator
@@ -102,7 +132,10 @@
   * Added bin scripts for create_from_json
   * Added bin scripts for create
 
-0.6.0 (Nov 8 2014) https://github.com/tanium/pytan/tree/0.6.0
+# 0.6.0
+
+[Released](https://github.com/tanium/pytan/tree/0.6.0) on Nov 8 2014
+
   * Re-worked unit tests to be more better-er (data driven)
   * Re-worked COUNT column hiding 
   * Marked parsed question as no params support (add check for [] and throw  error if found)
@@ -113,7 +146,10 @@
   * Added support for parameters in manual questions, handle escaped commas
   * Added script / method to return all sensor names for discovery of manual question builder
 
-0.5.0 (Nov 5 2014) https://github.com/tanium/pytan/tree/0.5.0
+# 0.5.0 
+
+[Released](https://github.com/tanium/pytan/tree/0.5.0) on Nov 5 2014
+
   * Added better app_test
   * Moved formatting/data transforms out
   * Added json out
@@ -130,5 +166,8 @@
   * Tested against 444 vs 443
   * Generalized username/password in test cases
 
-0.0.0 (Oct 10 2014) https://github.com/tanium/pytan/releases/tag/0.0.0
+# 0.0.0
+
+[Released](https://github.com/tanium/pytan/releases/tag/0.0.0) on Oct 10 2014
+
   * Initial startup for PyTan
