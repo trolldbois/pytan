@@ -1,3 +1,7 @@
+2.0.3 (n/a)
+  * Add changelog link to pytan readme
+  * Change functional tests to split invalid / valid server tests into individual files
+
 2.0.2 (Aug 18 2015)
   * Logging improvements
   * Test verbosity cleanups
