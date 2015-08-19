@@ -1,6 +1,6 @@
 #!/usr/bin/env python -ttB
 """
-This contains functional tests for pytan.
+This contains valid functional tests for pytan.
 
 These functional tests require a connection to a Tanium server in order to run.
 The connection info is pulled from the SERVER_INFO dictionary in test/API_INFO.py.
@@ -17,7 +17,6 @@ sys.dont_write_bytecode = True
 import os
 import glob
 import unittest
-import copy
 import json  # noqa
 import csv
 import StringIO
@@ -36,7 +35,6 @@ for aa in path_adds:
 import pytan
 import taniumpy
 import ddt
-import threaded_http
 
 # get our server connection info
 from API_INFO import SERVER_INFO
@@ -55,35 +53,6 @@ def chew_csv(c):
 def spew(m, l=3):
     if SERVER_INFO["testlevel"] >= l:
         print(m, file=sys.stderr)
-
-
-@ddt.ddt
-class InvalidServerTests(unittest.TestCase):
-
-    @classmethod
-    def setUpClass(cls): # noqa
-        cls.__http = threaded_http.threaded_http(port=4433, verbosity=SERVER_INFO["testlevel"])
-        m = "{}: PyTan v'{}' against Tanium v'{}' -- Invalid Tests Starting".format
-        spew(m(
-            pytan.utils.seconds_from_now(),
-            pytan.__version__,
-            'N/A',
-        ), 2)
-
-    @ddt.file_data('ddt/ddt_invalid_connects.json')
-    def test_invalid_connect(self, value):
-
-        args = value['args']
-        exc = eval(value['exception'])
-        e = value['error_str']
-
-        mykwargs = copy.copy(SERVER_INFO)
-        mykwargs.update(args)
-
-        spew("")
-        spew("+++ TESTING EXPECTED FAILURE Handler() with kwargs %s" % (mykwargs))
-        with self.assertRaisesRegexp(exc, e):
-            pytan.Handler(**mykwargs)
 
 
 @ddt.ddt
@@ -129,6 +98,15 @@ class ValidServerTests(unittest.TestCase):
         cls.result_set_objs = cls.handler.ask(**kwargs)
 
         spew('\n' + str(cls.handler))
+
+    @classmethod
+    def tearDownClass(cls): # noqa
+        m = "{}: PyTan v'{}' against Tanium v'{}' -- Valid Tests Finished".format
+        spew(m(
+            pytan.utils.seconds_from_now(),
+            pytan.__version__,
+            cls.handler.session.get_server_version(),
+        ), 2)
 
     def setup_test(self):
         spew("")
@@ -197,9 +175,7 @@ class ValidServerTests(unittest.TestCase):
         method = value['method']
         args = value['args']
 
-        s = (
-            "+++ TESTING EXPECTED DEPLOY ACTION SUCCESS Handler.{}() with kwargs {}"
-        ).format
+        s = "+++ TESTING EXPECTED DEPLOY ACTION SUCCESS Handler.{}() with kwargs {}".format
         spew(s(method, args))
 
         ret = getattr(handler, method)(**args)
@@ -522,33 +498,6 @@ class ValidServerTests(unittest.TestCase):
         with self.assertRaisesRegexp(exc, e):
             handler.export_obj(**kwargs)
 
-'''
-# debug path for checking open file handles, ensuring
-import atexit
-
-
-@atexit.register
-def get_open_fds():
-    import subprocess
-    import os
-
-    pid = os.getpid()
-    procs = subprocess.check_output(["lsof", '-w', "-p", str(pid)])
-    print procs
-
-    procs = subprocess.check_output(["lsof", '-w', '-Ff', "-p", str(pid)])
-
-    proc_defs = filter(
-        lambda s: s and s[0] == 'f' and s[1:].isdigit(),
-        procs.split('\n')
-    )
-
-    nprocs = len(proc_defs)
-    print "{} number of open FDs".format(nprocs)
-    for p in proc_defs:
-        print p
-    return nprocs
-'''
 
 if __name__ == "__main__":
 
@@ -566,9 +515,3 @@ if __name__ == "__main__":
         catchbreak=SERVER_INFO["CATCHBREAK"],
         buffer=SERVER_INFO["BUFFER"],
     )
-    m = "{}: PyTan v'{}' against Tanium v'{}' -- All Tests Finished".format
-    spew(m(
-        pytan.utils.seconds_from_now(),
-        pytan.__version__,
-        'N/A',
-    ), 2)
