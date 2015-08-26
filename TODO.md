@@ -1,3 +1,13 @@
+  * add tests for SSE
+  * fix doc strings for exceptions
+  * add custom name to deploy_action
+  * add more docstrings to sessions.py
+  * open bug for console.wsdl to contain platform version
+  * http_get() not correctly fixing on auth on expired session
+  * remove xml_cleaner for http_get, perform only if export_format=1
+  * change deploy_action to return package_object that was created for said action, not package_object that was used as template
+  * add to cmd line help: export type & export options must be at end of cmd line
+  * GRD with export_flag=1, write FLE on Handler
   * rebuild zip_dists, and test on win
   * add console.wsdl to documentation via build script
   * add approve action to pytan (need doc update and test update)
