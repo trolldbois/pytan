@@ -15,7 +15,7 @@ class ObjectList(BaseType):
     def __init__(self):
         BaseType.__init__(
             self,
-            simple_properties={},
+            simple_properties={'export_id': str},
             complex_properties={'questions': QuestionList,
                         'actions': ActionList,
                         'saved_actions': SavedActionList,
@@ -61,7 +61,7 @@ class ObjectList(BaseType):
                         'soap_error': SoapError,
                         'computer_group': ComputerGroup},
         )
-        
+        self.export_id = None
         self.questions = None
         self.actions = None
         self.saved_actions = None

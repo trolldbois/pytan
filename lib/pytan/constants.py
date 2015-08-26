@@ -40,9 +40,8 @@ LOG_LEVEL_MAPS = [
         {
             'pytan': 'INFO',
             'pytan.handler.QuestionPoller': 'INFO',
-            'pytan.handler.QuestionPoller.progress': 'INFO',
             'pytan.handler.ActionPoller': 'INFO',
-            'pytan.handler.ActionPoller.progress': 'INFO',
+            'pytan.handler.SSEPoller': 'INFO',
         },
         'Pytan poller loggers show output at INFO or above',
     ),
@@ -51,10 +50,12 @@ LOG_LEVEL_MAPS = [
         {
             'pytan': 'DEBUG',
             'pytan.handler': 'INFO',
+            'pytan.handler.QuestionPoller.progress': 'INFO',
+            'pytan.handler.ActionPoller.progress': 'INFO',
+            'pytan.handler.SSEPoller.progress': 'INFO',
             'pytan.handler.QuestionPoller': 'DEBUG',
-            'pytan.handler.QuestionPoller.progress': 'DEBUG',
             'pytan.handler.ActionPoller': 'DEBUG',
-            'pytan.handler.ActionPoller.progress': 'DEBUG',
+            'pytan.handler.SSEPoller': 'DEBUG',
         },
         'Pytan handler logger show output at INFO or above and poller logs at DEBUG or above',
     ),
@@ -62,9 +63,11 @@ LOG_LEVEL_MAPS = [
         3,
         {
             'pytan.handler': 'DEBUG',
-            'XMLCleaner': 'DEBUG',
+            'pytan.handler.QuestionPoller.progress': 'DEBUG',
+            'pytan.handler.ActionPoller.progress': 'DEBUG',
+            'pytan.handler.SSEPoller.progress': 'DEBUG',
         },
-        'Pytan handler logger and XMLCleaner show output at DEBUG or above',
+        'Pytan handler logger show output at DEBUG or above',
     ),
     (
         4,
@@ -84,8 +87,9 @@ LOG_LEVEL_MAPS = [
         6,
         {
             'pytan.handler.timing': 'DEBUG',
+            'XMLCleaner': 'DEBUG',
         },
-        'Pytan timing logger show output at DEBUG or above',
+        'Pytan timing and XMLCleaner loggers show output at DEBUG or above',
     ),
     (
         7,
@@ -671,4 +675,33 @@ Maps a given TaniumPy object to the list of supported export formats for each ob
 TIME_FORMAT = '%Y-%m-%dT%H:%M:%S'
 """
 Tanium's format for date time strings
+"""
+
+SSE_FORMAT_MAP = [
+    ('csv', '0', 0),
+    ('xml', '1', 1),
+    ('xml_obj', '1', 1),
+    ('cef', '2', 2),
+]
+"""
+Mapping of human friendly strings to API integers for server side export
+"""
+
+SSE_RESTRICT_MAP = {
+    1: [
+        {'major': 6, 'minor': 5, 'revision': 314, 'build': 4300},
+    ],
+    2: [
+        {'major': 6, 'minor': 5, 'revision': 314, 'build': 4300},
+    ],
+}
+"""
+Mapping of API integers for server side export format to version support
+"""
+
+SSE_CRASH_MAP = [
+    {'major': 6, 'minor': 5, 'revision': 314, 'build': 4300},
+]
+"""
+Mapping of versions to watch out for crashes/handle bugs
 """

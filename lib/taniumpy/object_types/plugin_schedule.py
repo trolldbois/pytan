@@ -15,9 +15,11 @@ class PluginSchedule(BaseType):
     def __init__(self):
         BaseType.__init__(
             self,
-            simple_properties={'name': str,
+            simple_properties={'id': int,
+                        'name': str,
                         'plugin_name': str,
                         'plugin_bundle': str,
+                        'plugin_server': str,
                         'start_hour': int,
                         'end_hour': int,
                         'start_date': int,
@@ -35,9 +37,11 @@ class PluginSchedule(BaseType):
                         'last_run_sql': PluginSql},
             list_properties={},
         )
+        self.id = None
         self.name = None
         self.plugin_name = None
         self.plugin_bundle = None
+        self.plugin_server = None
         self.start_hour = None
         self.end_hour = None
         self.start_date = None

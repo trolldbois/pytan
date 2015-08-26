@@ -32,14 +32,10 @@ for aa in path_adds:
     if aa not in sys.path:
         sys.path.append(aa)
 
-from taniumpy.object_types.base import BaseType
-from taniumpy.object_types.result_info import ResultInfo
-from taniumpy.object_types.result_set import ResultSet
-from taniumpy.object_types.options import Options
-
 import pytan
 from pytan.xml_clean import xml_cleaner
 import requests
+import taniumpy
 requests.packages.urllib3.disable_warnings()
 
 import sys
@@ -182,12 +178,12 @@ class Session(object):
         headers['session'] = self.session_id
         headers['logout'] = logout
 
-        post_args = {}
-        post_args['url'] = self.AUTH_RES
-        post_args['headers'] = headers
+        req_args = {}
+        req_args['url'] = self.AUTH_RES
+        req_args['headers'] = headers
 
         try:
-            self.http_post(retry_count=False, **post_args)
+            self.http_post(retry_count=False, **req_args)
         except Exception as e:
             m = "logout exception: {}".format
             self.authlog.debug(m(e))
@@ -272,17 +268,17 @@ class Session(object):
         if persistent:
             auth_headers['persistent'] = 1
 
-        post_args = {}
-        post_args['url'] = self.AUTH_RES
-        post_args['headers'] = auth_headers
-        post_args['retry_count'] = 0
-        post_args['connect_timeout'] = kwargs.get('connect_timeout', self.AUTH_CONNECT_TIMEOUT_SEC)
-        post_args['response_timeout'] = kwargs.get(
+        req_args = {}
+        req_args['url'] = self.AUTH_RES
+        req_args['headers'] = auth_headers
+        req_args['retry_count'] = 0
+        req_args['connect_timeout'] = kwargs.get('connect_timeout', self.AUTH_CONNECT_TIMEOUT_SEC)
+        req_args['response_timeout'] = kwargs.get(
             'response_timeout', self.AUTH_RESPONSE_TIMEOUT_SEC
         )
 
         try:
-            body = self.http_post(**post_args)
+            body = self.http_post(**req_args)
         except Exception as e:
             m = "Error while trying to authenticate: {}".format
             raise pytan.exceptions.AuthorizationError(m(e))
@@ -306,7 +302,7 @@ class Session(object):
         self.request_body = request_body
         response_body = self._get_response(request_body)
         self.response_body = response_body
-        obj = BaseType.fromSOAPBody(response_body)
+        obj = taniumpy.BaseType.fromSOAPBody(response_body)
         return obj
 
     def save(self, obj, **kwargs):
@@ -314,7 +310,7 @@ class Session(object):
         self.request_body = request_body
         response_body = self._get_response(request_body)
         self.response_body = response_body
-        obj = BaseType.fromSOAPBody(response_body)
+        obj = taniumpy.BaseType.fromSOAPBody(response_body)
         return obj
 
     def add(self, obj, **kwargs):
@@ -322,7 +318,7 @@ class Session(object):
         self.request_body = request_body
         response_body = self._get_response(request_body)
         self.response_body = response_body
-        obj = BaseType.fromSOAPBody(response_body)
+        obj = taniumpy.BaseType.fromSOAPBody(response_body)
         return obj
 
     def delete(self, obj, **kwargs):
@@ -330,7 +326,7 @@ class Session(object):
         self.request_body = request_body
         response_body = self._get_response(request_body)
         self.response_body = response_body
-        obj = BaseType.fromSOAPBody(response_body)
+        obj = taniumpy.BaseType.fromSOAPBody(response_body)
         return obj
 
     def run_plugin(self, obj, **kwargs):
@@ -338,33 +334,29 @@ class Session(object):
         self.request_body = request_body
         response_body = self._get_response(request_body)
         self.response_body = response_body
-        obj = BaseType.fromSOAPBody(response_body)
+        obj = taniumpy.BaseType.fromSOAPBody(response_body)
         return obj
 
-    def get_result_info(self, obj, **kwargs):  # noqa
+    def get_result_info(self, obj, **kwargs):
         request_body = self._create_get_result_info_body(obj, **kwargs)
         self.request_body = request_body
         response_body = self._get_response(request_body)
         self.response_body = response_body
-        # parse the single result_info into an Element and create a ResultInfo
-        el = ET.fromstring(response_body)
-        cdata = el.find('.//ResultXML')
-        cdata_text = cdata.text
-        result_info = ET.fromstring(cdata_text)
-        obj = ResultInfo.fromSOAPElement(result_info)
+        cdata_el = self._extract_cdata_el(response_body)
+        if pytan.utils.is_str(cdata_el):
+            return cdata_el
+        obj = taniumpy.ResultInfo.fromSOAPElement(cdata_el)
         return obj
 
-    def get_result_data(self, obj, **kwargs):  # noqa
+    def get_result_data(self, obj, **kwargs):
         request_body = self._create_get_result_data_body(obj, **kwargs)
         self.request_body = request_body
         response_body = self._get_response(request_body)
         self.response_body = response_body
-        # parse the single result_info into an Element and create a ResultData
-        el = ET.fromstring(response_body)
-        cdata = el.find('.//ResultXML')
-        cdata_text = cdata.text
-        result_data = ET.fromstring(cdata_text)
-        obj = ResultSet.fromSOAPElement(result_data)
+        cdata_el = self._extract_cdata_el(response_body)
+        if pytan.utils.is_str(cdata_el):
+            return cdata_el
+        obj = taniumpy.ResultSet.fromSOAPElement(cdata_el)
         return obj
 
     def get_server_info(self, port=None, fallback_port=444, **kwargs):
@@ -377,12 +369,12 @@ class Session(object):
         if port is None:
             port = self.port
 
-        post_args = {}
-        post_args['port'] = port
-        post_args['url'] = url
-        post_args['retry_count'] = 0
-        post_args['connect_timeout'] = kwargs.get('connect_timeout', self.INFO_CONNECT_TIMEOUT_SEC)
-        post_args['response_timeout'] = kwargs.get(
+        req_args = {}
+        req_args['port'] = port
+        req_args['url'] = url
+        req_args['retry_count'] = 0
+        req_args['connect_timeout'] = kwargs.get('connect_timeout', self.INFO_CONNECT_TIMEOUT_SEC)
+        req_args['response_timeout'] = kwargs.get(
             'response_timeout', self.INFO_RESPONSE_TIMEOUT_SEC
         )
 
@@ -393,7 +385,7 @@ class Session(object):
         bad_m = "Failed to retrieve server info from {}:{}/{}, {}".format
 
         try:
-            body = self.http_post(**post_args)
+            body = self.http_post(**req_args)
             body = json.loads(body)
             server_info_pass_msgs.append(ok_m(self.server, port, self.INFO_RES))
         except Exception as e:
@@ -401,9 +393,9 @@ class Session(object):
             server_info_fail_msgs.append(bad_m(self.server, port, self.INFO_RES, e))
 
         if not body:
-            post_args['port'] = fallback_port
+            req_args['port'] = fallback_port
             try:
-                body = self.http_post(**post_args)
+                body = self.http_post(**req_args)
                 body = json.loads(body)
                 server_info_pass_msgs.append(ok_m(self.server, port, self.INFO_RES))
             except Exception as e:
@@ -466,36 +458,27 @@ class Session(object):
         if isinstance(sleep, int):
             self.SERVER_STATS_SLEEP = sleep
 
-    def http_post(self, **kwargs):
+    def http_get(self, url, **kwargs):
+        '''
+        This is an authenticated HTTP get method, added for getting server side exports
+        It will always forcibly use the authentication credentials that are stored in the
+        current object.
+        '''
         self._check_auth()
 
         headers = kwargs.get('headers', {})
+        headers = self._replace_auth(headers)
 
-        for k in dict(headers):
-            if k in ['username', 'password', 'session']:
-                self.authlog.debug("Removing header {!r}".format(k))
-                headers.pop(k)
-
-        if self._session_id:
-            headers['session'] = self._session_id
-            self.authlog.debug("Using session ID for authentication headers")
-
-        elif self._username and self._password:
-            headers['username'] = b64encode(self._username)
-            headers['password'] = b64encode(self._password)
-            self.authlog.debug("Using Username/Password for authentication headers")
-
-        post_args = {}
-        post_args['host'] = kwargs.get('server', self.server)
-        post_args['port'] = kwargs.get('port', self.port)
-        post_args['url'] = kwargs.get('url', self.SOAP_RES)
-        post_args['headers'] = headers
-        post_args['body'] = kwargs.get('body', None)
-        post_args['connect_timeout'] = kwargs.get('connect_timeout', self.SOAP_CONNECT_TIMEOUT_SEC)
-        post_args['response_timeout'] = kwargs.get(
+        req_args = {}
+        req_args['host'] = kwargs.get('server', self.server)
+        req_args['port'] = kwargs.get('port', self.port)
+        req_args['url'] = url
+        req_args['headers'] = headers
+        req_args['connect_timeout'] = kwargs.get('connect_timeout', self.SOAP_CONNECT_TIMEOUT_SEC)
+        req_args['response_timeout'] = kwargs.get(
             'response_timeout', self.SOAP_RESPONSE_TIMEOUT_SEC
         )
-        post_args['debug'] = kwargs.get('debug', self.HTTP_DEBUG)
+        req_args['debug'] = kwargs.get('debug', self.HTTP_DEBUG)
 
         auth_retry = kwargs.get('auth_retry', self.HTTP_AUTH_RETRY)
         retry_count = kwargs.get('retry_count', self.HTTP_RETRY_COUNT)
@@ -507,7 +490,61 @@ class Session(object):
 
         while True:
             try:
-                body = self._http_post(**post_args)
+                body = self._http_get(**req_args)
+                break
+            except pytan.exceptions.AuthorizationError:
+                if self._session_id and auth_retry:
+                    self._session_id = ''
+                    self.authenticate()
+                    body = self.http_get(auth_retry=False, **kwargs)
+                else:
+                    raise
+            except Exception as e:
+                if retry_count == 0:
+                    raise
+                m = "http_get failed on attempt {} out of {}: {}".format
+                self.mylog.warning(m(current_try, retry_count, e))
+                if current_try == retry_count:
+                    raise
+                current_try += 1
+
+        return body
+
+    def http_post(self, **kwargs):
+        '''
+        This is an authenticated HTTP post method. It will always forcibly use the authentication
+        credentials that are stored in the current object.
+
+        TODO: add params
+        '''
+        self._check_auth()
+
+        headers = kwargs.get('headers', {})
+        headers = self._replace_auth(headers)
+
+        req_args = {}
+        req_args['host'] = kwargs.get('server', self.server)
+        req_args['port'] = kwargs.get('port', self.port)
+        req_args['url'] = kwargs.get('url', self.SOAP_RES)
+        req_args['headers'] = headers
+        req_args['body'] = kwargs.get('body', None)
+        req_args['connect_timeout'] = kwargs.get('connect_timeout', self.SOAP_CONNECT_TIMEOUT_SEC)
+        req_args['response_timeout'] = kwargs.get(
+            'response_timeout', self.SOAP_RESPONSE_TIMEOUT_SEC
+        )
+        req_args['debug'] = kwargs.get('debug', self.HTTP_DEBUG)
+
+        auth_retry = kwargs.get('auth_retry', self.HTTP_AUTH_RETRY)
+        retry_count = kwargs.get('retry_count', self.HTTP_RETRY_COUNT)
+
+        if not retry_count or type(retry_count) != int:
+            retry_count = 0
+
+        current_try = 1
+
+        while True:
+            try:
+                body = self._http_post(**req_args)
                 break
             except pytan.exceptions.AuthorizationError:
                 if self._session_id and auth_retry:
@@ -527,10 +564,84 @@ class Session(object):
 
         return body
 
+    def _replace_auth(self, headers):
+        for k in dict(headers):
+            if k in ['username', 'password', 'session']:
+                self.authlog.debug("Removing header {!r}".format(k))
+                headers.pop(k)
+
+        if self._session_id:
+            headers['session'] = self._session_id
+            self.authlog.debug("Using session ID for authentication headers")
+
+        elif self._username and self._password:
+            headers['username'] = b64encode(self._username)
+            headers['password'] = b64encode(self._password)
+            self.authlog.debug("Using Username/Password for authentication headers")
+        return headers
+
+    def _full_url(self, url, **kwargs):
+        host = kwargs.get('host', self.server)
+        port = kwargs.get('port', self.port)
+        full_url = "https://{0}:{1}/{2}".format(host, port, url)
+        return full_url
+
+    def _http_get(self, host, port, url, headers=None, connect_timeout=15,
+                  response_timeout=180, debug=False):
+
+        full_url = self._full_url(host=host, port=port, url=url)
+
+        clean_headers = dict(headers or {})
+        if 'password' in clean_headers:
+            clean_headers['password'] = '**PASSWORD**'
+
+        req_args = {}
+        req_args['headers'] = headers
+        req_args['timeout'] = (connect_timeout, response_timeout)
+
+        self.httplog.debug("HTTP request: GET to {}".format(full_url))
+        self.httplog.debug("HTTP request: headers: {}".format(clean_headers))
+
+        try:
+            response = self.REQ_SESSION.get(full_url, **req_args)
+        except Exception as e:
+            m = "HTTP response: GET request to {!r} failed: {}".format
+            raise pytan.exceptions.HttpError(m(full_url, e))
+
+        self.REQ_RESPONSE = response
+        response_body = response.text
+        response_headers = response.headers
+
+        m = "HTTP response: from {!r} len:{}, status:{} {}, body type: {}".format
+
+        self.httplog.debug(m(
+            full_url,
+            len(response_body),
+            response.status_code,
+            response.reason,
+            type(response_body),
+        ))
+
+        self.httplog.debug("HTTP response: headers: {}".format(response_headers))
+
+        auth_fail_codes = [401, 403]
+        if response.status_code in auth_fail_codes:
+            m = "HTTP response: GET request to {!r} returned code: {}, body: {}".format
+            raise pytan.exceptions.AuthorizationError(m(
+                full_url, response.status_code, response_body))
+
+        if not response.ok:
+            m = "HTTP response: GET request to {!r} returned code: {}, body: {}".format
+            raise pytan.exceptions.HttpError(m(full_url, response.status_code, response_body))
+
+        self.bodyhttplog.debug("HTTP response: body:\n{}".format(response_body))
+
+        return response_body
+
     def _http_post(self, host, port, url, body=None, headers=None, connect_timeout=15,
                    response_timeout=180, debug=False):
 
-        full_url = "https://{0}:{1}/{2}".format(host, port, url)
+        full_url = self._full_url(host=host, port=port, url=url)
 
         clean_headers = dict(headers or {})
         if 'password' in clean_headers:
@@ -541,7 +652,7 @@ class Session(object):
         req_args['data'] = body
         req_args['timeout'] = (connect_timeout, response_timeout)
 
-        self.httplog.debug("HTTP request: Post to {}".format(full_url))
+        self.httplog.debug("HTTP request: POST to {}".format(full_url))
         self.httplog.debug("HTTP request: headers: {}".format(clean_headers))
         self.bodyhttplog.debug("HTTP request: body:\n{}".format(body))
 
@@ -639,7 +750,7 @@ class Session(object):
         return diags
 
     def _build_body(self, command, object_list, **kwargs):
-        options_obj = Options()
+        options_obj = taniumpy.Options()
         for k, v in kwargs.iteritems():
             if hasattr(options_obj, k):
                 setattr(options_obj, k, v)
@@ -681,7 +792,7 @@ class Session(object):
         return obj_body
 
     def _create_get_object_body(self, object_or_type, **kwargs):
-        if isinstance(object_or_type, BaseType):
+        if isinstance(object_or_type, taniumpy.BaseType):
             object_list = object_or_type.toSOAPBody(minimal=True)
         else:
             object_list = '<{}/>'.format(object_or_type._soap_tag)
@@ -711,6 +822,44 @@ class Session(object):
             ret = str(ret.groups()[0].strip())
         return ret
 
+    def _extract_export_id(self, el):
+        ret = None
+        # if there is an export_id in the response_body, return just results of that
+        export_id_el = el.find('.//export_id')
+        if export_id_el is not None and export_id_el.text:
+            ret = export_id_el.text
+        return ret
+
+    def _extract_cdata_el(self, response_body):
+        el = ET.fromstring(response_body)
+
+        # find the ResultXML node
+        resultxml_el = el.find('.//ResultXML')
+
+        if resultxml_el is None:
+            # if there is an export_id node, return the contents of that
+            export_id = self._extract_export_id(el)
+            if export_id:
+                return export_id
+
+            m = "Unable to find ResultXML element in XML response: {}".format
+            raise pytan.exceptions.AuthorizationError(m(response_body))
+
+        resultxml_text = resultxml_el.text
+
+        if not resultxml_text:
+            # if there is an export_id node, return the contents of that
+            export_id = self._extract_export_id(el)
+            if export_id:
+                return export_id
+
+            m = "Empty ResultXML element in XML response: {}".format
+            raise pytan.exceptions.AuthorizationError(m(response_body))
+
+        # parse the ResultXML node into it's own element
+        cdata_el = ET.fromstring(resultxml_text)
+        return cdata_el
+
     def _get_response(self, request_body, **kwargs):
         retry_auth = kwargs.get('retry_auth', True)
 
@@ -721,23 +870,23 @@ class Session(object):
         request_command = self._parse_response_for_regex(request_body, self.COMMAND_RE)
         self.last['request_command'] = request_command
 
-        post_args = {}
-        post_args['body'] = request_body
-        post_args['headers'] = dict(self.SOAP_REQUEST_HEADERS)
-        post_args['connect_timeout'] = kwargs.get('connect_timeout', self.SOAP_CONNECT_TIMEOUT_SEC)
-        post_args['response_timeout'] = kwargs.get(
+        req_args = {}
+        req_args['body'] = request_body
+        req_args['headers'] = dict(self.SOAP_REQUEST_HEADERS)
+        req_args['connect_timeout'] = kwargs.get('connect_timeout', self.SOAP_CONNECT_TIMEOUT_SEC)
+        req_args['response_timeout'] = kwargs.get(
             'response_timeout', self.SOAP_RESPONSE_TIMEOUT_SEC
         )
 
         if 'retry_count' in kwargs:
-            post_args['retry_count'] = kwargs['retry_count']
+            req_args['retry_count'] = kwargs['retry_count']
 
-        self.last['request_args'] = post_args
+        self.last['request_args'] = req_args
 
         sent = datetime.utcnow()
         self.last['sent'] = sent
 
-        response_body = self.http_post(**post_args)
+        response_body = self.http_post(**req_args)
 
         received = datetime.utcnow()
         self.last['received'] = received

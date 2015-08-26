@@ -11,6 +11,7 @@ import os
 import logging
 import io
 import threading
+import datetime
 
 my_file = os.path.abspath(__file__)
 my_dir = os.path.dirname(my_file)
@@ -502,6 +503,87 @@ class Handler(object):
         else:
             rd = self.session.get_result_data(shrunk_obj, **kwargs)
         return rd
+
+    @pytan.utils.func_timing
+    def get_result_data_sse(self, obj, export_format='csv', leading='', trailing='', **kwargs):
+        """Get the result data for a python API object using a server side export (sse)
+
+        This method issues a GetResultData command to the SOAP api for `obj` with the option
+        `export_flag` set to 1.
+
+        Version support:
+            * 6.5.314.4231: initial sse support (csv only)
+            * 6.5.314.4300: export_format support (adds xml and cef)
+            * 6.5.314.4300: fix core dump if multiple sse done on empty resultset
+            * 6.5.314.4300: fix no status file if sse done on empty resultset
+            * 6.5.314.4300: fix response if more than two sse done in same second
+
+        Parameters
+        ----------
+        obj : :class:`taniumpy.object_types.base.BaseType`
+            object to get result data for
+        export_format : str, optional
+            one of: csv, xml, xml_obj, or cef (or 0, 1, 2)
+        leading : str, optional
+            used for export_format 'cef' only, the string to prepend to each row
+        trailing : str, optional
+            used for export_format 'cef' only, the string to append to each row
+
+
+        Returns
+        -------
+
+        export_data : either `str` or :class:`taniumpy.object_types.result_set.ResultSet`
+            If export_format is one of csv, xml, or cef, export_data will be a `str` containing the contents of the ResultSet in said format
+            If export_format is xml_obj, export_data will be a :class:`taniumpy.object_types.result_set.ResultSet`
+        """
+
+        self._check_sse_version()
+        self._check_sse_crash_prevention(obj)
+
+        export_format_int = self._resolve_sse_format(export_format)
+
+        # add the export_flag = 1 to the kwargs for inclusion in options node
+        kwargs['export_flag'] = 1
+
+        # add the export_format to the kwargs for inclusion in options node
+        kwargs['export_format'] = export_format_int
+
+        # add the export_leading_text to the kwargs for inclusion in options node
+        if leading:
+            kwargs['export_leading_text'] = leading
+
+        # add the export_trailing_text to the kwargs for inclusion in options node
+        if trailing:
+            kwargs['export_trailing_text'] = trailing
+
+        export_id = self.get_result_data(obj, **kwargs)
+
+        m = "Server Side Export Started, id: '{}'".format
+        self.mylog.debug(m(export_id))
+
+        poller = pytan.pollers.SSEPoller(self, export_id, **kwargs)
+        poller_success = poller.run(**kwargs)
+
+        if not poller_success:
+            m = (
+                "Server Side Export Poller failed while waiting for completion, last status: {}"
+            ).format
+            sse_status = getattr(poller, 'sse_status', 'Unknown')
+            raise pytan.exceptions.ServerSideExportError(m(sse_status))
+
+        export_data = poller.get_sse_data()
+
+        if export_format == 'xml_obj':
+            m = "Converting XML from Server Side Export into PyTan object".format
+            self.mylog.debug(m())
+
+            export_rs_xml = '<result_sets><result_set>{}</result_set></result_sets>'.format
+            export_rs_xml = export_rs_xml(export_data)
+            export_rs_tree = pytan.sessions.ET.fromstring(export_rs_xml)
+            export_data = taniumpy.ResultSet.fromSOAPElement(export_rs_tree)
+
+        return export_data
 
     @pytan.utils.func_timing
     def get_result_info(self, obj, shrink=True, **kwargs):
@@ -1698,37 +1780,27 @@ class Handler(object):
            * do not encapsulate it in a list object
            * force a start time to be specified, if none is specified the action shows up as expired
 
-         * For 6.5:
+         * For 6.5 / 6.6:
            * we need to add a SavedAction object
            * the server creates the actual Action object for us
            * to emulate what the console does, encapsulate the SavedAction in a SavedActionList
            * start time does not need to be specified
         '''
-        # if server_version is None / "Not yet determined!" try to fetch the version
-        if not self.server_version or self.server_version == "Not yet determined!":
-            self.server_version = self.session.get_server_version()
+        v_dict = self._parse_versioning()
 
-        if self.server_version.startswith('6.2'):
-            objtype = taniumpy.Action
-            objlisttype = None
-            force_start_time = True
-        elif self.server_version.startswith('6.5'):
-            objtype = taniumpy.SavedAction
-            objlisttype = taniumpy.SavedActionList
-            force_start_time = False
         # we will assume 6.2 if server_version is "Unable to determine"
-        elif self.server_version == "Unable to determine":
+        if v_dict['minor'] in [2] or v_dict.values() == [0, 0, 0, 0]:
             objtype = taniumpy.Action
             objlisttype = None
             force_start_time = True
-        # default to 6.5 logic for all unknowns
+        # default to 6.5 logic for everything else
         else:
             objtype = taniumpy.SavedAction
             objlisttype = taniumpy.SavedActionList
             force_start_time = False
 
         m = "DEPLOY_ACTION objtype: {}, objlisttype: {}, force_start_time: {}, version: {}".format
-        self.mylog.debug(m(objtype, objlisttype, force_start_time, self.server_version))
+        self.mylog.debug(m(objtype, objlisttype, force_start_time, v_dict))
 
         add_obj = objtype()
         add_obj.package_spec = taniumpy.PackageSpec()
@@ -1938,3 +2010,120 @@ class Handler(object):
             ret['question_results'].sensors = [x['sensor_obj'] for x in sensor_defs]
 
         return ret
+
+    def _parse_versioning(self):
+        """Parses self.server_version into a dictionary
+
+        Returns
+        -------
+        dict, containing major, minor, revision, and build of tanium server version
+        """
+        if not self.server_version or self.server_version == "Not yet determined!":
+            self.server_version = self.session.get_server_version()
+
+        v_keys = ['major', 'minor', 'revision', 'build']
+
+        if not self.server_version or self.server_version == "Not yet determined!":
+            v_ints = [0, 0, 0, 0]
+            v_dict = dict(zip(v_keys, v_ints))
+        else:
+            try:
+                v_parts = self.server_version.split('.')
+                v_ints = [int(x) for x in v_parts]
+                v_dict = dict(zip(v_keys, v_ints))
+            except:
+                m = (
+                    "Unable to parse major, minor, revision, and build from server "
+                    "version string: {}"
+                ).format
+                raise pytan.exceptions.VersionParseError(m(self.server_version))
+        return v_dict
+
+    def _version_support_check(self, v_maps):
+        """Checks that each of the version maps in v_maps is greater than or equal to
+        the current servers version"""
+
+        v_dict = self._parse_versioning()
+
+        for v_map in v_maps:
+            for k, v in v_map.iteritems():
+                if not v_dict[k] >= v:
+                    return False
+        return True
+
+    def _check_export_format_support(self, export_format, export_format_int):
+        """Determines if the export format integer is supported in the server version"""
+        if export_format_int not in pytan.constants.SSE_RESTRICT_MAP:
+            return
+
+        restrict_maps = pytan.constants.SSE_RESTRICT_MAP[export_format_int]
+
+        if not self._version_support_check(restrict_maps):
+            restrict_maps_txt = '\n'.join([str(x) for x in restrict_maps])
+
+            m = (
+                "Server version {} does not support export format {!r}, "
+                "server version must be equal to or greater than one of:\n{}"
+            ).format
+
+            m = m(self.server_version, export_format, restrict_maps_txt)
+
+            raise pytan.exceptions.UnsupportedVersionError(m)
+
+        return
+
+    def _resolve_sse_format(self, export_format):
+        """Resolves the export format the user supplied to an integer for the API"""
+        export_format_int = [x[-1] for x in pytan.constants.SSE_FORMAT_MAP if export_format in x]
+
+        if not export_format_int:
+            m = "Unsupport export format {!r}, must be one of:\n{}".format
+            ef_map_txt = '\n'.join(
+                [', '.join(['{!r}'.format(x) for x in y]) for y in pytan.constants.SSE_FORMAT_MAP]
+            )
+            raise pytan.exceptions.HandlerError(m(export_format, ef_map_txt))
+
+        export_format_int = export_format_int[0]
+
+        m = "'export_format resolved from '{}' to '{}'".format
+        self.mylog.debug(m(export_format, export_format_int))
+
+        self._check_export_format_support(export_format, export_format_int)
+
+        return export_format_int
+
+    def _check_sse_version(self):
+        """Validates that the server version supports server side export"""
+        v_dict = self._parse_versioning()
+
+        # we will assume 6.2 if server_version is "Unable to determine"
+        if v_dict['minor'] in [2] or v_dict.values() == [0, 0, 0, 0]:
+            m = "Server side export not supported in version: {} / {}".format
+            raise pytan.utils.UnsupportedVersionError(m(self.server_version, v_dict))
+
+    def _check_sse_crash_prevention(self, obj):
+        self._check_sse_timing()
+        self._check_sse_empty_rs(obj)
+
+    def _check_sse_timing(self):
+        last_get_rd_sse = getattr(self, 'last_get_rd_sse', None)
+
+        if last_get_rd_sse is None or self._version_support_check(pytan.constants.SSE_CRASH_MAP):
+            self.last_get_rd_sse = datetime.datetime.utcnow()
+            return
+
+        last_elapsed = datetime.datetime.utcnow() - last_get_rd_sse
+        if last_elapsed.seconds == 0:
+                m = "You must wait at least one second between server side export requests!".format
+                raise pytan.exceptions.ServerSideExportError(m())
+
+        self.last_get_rd_sse = datetime.datetime.utcnow()
+
+    def _check_sse_empty_rs(self, obj):
+        if self._version_support_check(pytan.constants.SSE_CRASH_MAP):
+            return
+
+        ri = self.get_result_into(obj)
+        if ri.row_count == 0:
+            m = "No rows available to perform a server side export with, result info: {}".format
+            raise pytan.exceptions.ServerSideExportError(m(ri))

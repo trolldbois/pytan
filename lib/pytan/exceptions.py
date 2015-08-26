@@ -58,12 +58,32 @@ class BadResponseError(Exception):
     pass
 
 
+class GetResultDataError(Exception):
+    """Exception thrown for GetResulDataError messages from Tanium in :mod:`pytan.sessions`"""
+    pass
+
+
 class NotFoundError(Exception):
     """Exception thrown for Not Found messages from Tanium in :mod:`pytan.handler`"""
     pass
 
 
 class VersionMismatchError(Exception):
+    """Exception thrown for version_check in :mod:`pytan.utils`"""
+    pass
+
+
+class UnsupportedVersionError(Exception):
+    """Exception thrown for version_check in :mod:`pytan.utils`"""
+    pass
+
+
+class ServerSideExportError(Exception):
+    """Exception thrown for version_check in :mod:`pytan.utils`"""
+    pass
+
+
+class VersionParseError(Exception):
     """Exception thrown for version_check in :mod:`pytan.utils`"""
     pass
 

@@ -1,6 +1,8 @@
 *.pyc
 .idea/
 taniumpy.*/
+*.sublime-project
 *.sublime-workspace
 pytan.sublime-workspace
+pytan.sublime-project
 test/TEST_OUT/*
