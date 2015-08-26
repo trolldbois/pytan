@@ -3,8 +3,8 @@
    WSDL description of the Tanium SOAP APIs.
    All interfaces are subject to change as we refine and extend our APIs.
    Please see the terms of use for more information.
-   6.5.314.4291
 -->
+<!-- Platform Version: 6.5.314.4300 -->
 <!-- Version: 0.0.1 -->
 <definitions
   xmlns:typens="urn:TaniumSOAP"
@@ -1321,7 +1321,10 @@
               64: hide "no results"
               128: use user context (applies to GetSavedQuestions, and restricts results to only those visible by the user associated with the session )
           -->
-          <xsd:element name="export_flag" type="xsd:int"  minOccurs="0"/> <!-- used to tell server to export all data to a file in "Tanium Server\http\export" folder with name "<timestamp>.cvs". Related "<timestamp>.status" and "<timestamp>.qid" will be created in the same directory for progress tracking and debugging  -->
+          <xsd:element name="export_flag"           type="xsd:int"     minOccurs="0"/> <!-- used to tell server to export all data to a file in "Tanium Server\http\export" folder with name "<timestamp>.cvs". Related "<timestamp>.status" and "<timestamp>.qid" will be created in the same directory for progress tracking and debugging  -->
+          <xsd:element name="export_format"         type="xsd:int"     minOccurs="0"/> <!-- 0 == csv format (backward compatible with console export), 1 == result xml format, similar to normal api use, 2 == CEF format, flattened -->
+          <xsd:element name="export_leading_text"   type="xsd:string"  minOccurs="0"/> <!-- when exporting, insert this text at the beginning of each line -->
+          <xsd:element name="export_trailing_text"  type="xsd:string"  minOccurs="0"/> <!-- when exporting, append this text at the end of each line -->
           <xsd:element name="flags"                 type="xsd:int"     minOccurs="0"/>
           <xsd:element name="hide_errors_flag"      type="xsd:int"     minOccurs="0"/>
           <xsd:element name="include_answer_times_flag" type="xsd:int" minOccurs="0"/>
