@@ -1,7 +1,20 @@
-# 2.0.3
+# 2.0.4
 
 [Development branch](https://github.com/tanium/pytan/tree/develop) on N/A
 
+# 2.0.3
+
+[Released](https://github.com/tanium/pytan/releases/tag/2.0.3) on Aug 26 2015 
+
+  * Added support for server side exports via pytan.handler.get_result_data_sse()
+  * Added server side export poller to pytan.pollers.SSEPoller
+  * Added server side export constants to pytan.constants
+  * Added server side export exceptions to pytan.exceptions
+  * Added server side export POC to EXAMPLES/poc/test_server_side_export.py
+  * Refactoring of pytan.sessions, pytan.handler, and pytan.pollers
+  * Refactored server version checking in pytan.handler
+  * Updated doc/console.wsdl to platform version 6.5.314.3400
+  * Re-generated pytan/lib/taniumpy from new doc/console.wsdl
   * Added changelog and todo links to pytan readme
   * Change functional tests to split invalid / valid server tests into individual files
   * Made logging of threaded_http use stderr
