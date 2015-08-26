@@ -61,7 +61,7 @@ class QuestionPoller(object):
 
     # class attributes to include in __str__ output
     STR_ATTRS = [
-        'obj_info',
+        'object_info',
         'polling_secs',
         'override_timeout_secs',
         'complete_pct',
@@ -71,8 +71,8 @@ class QuestionPoller(object):
     COMPLETE_PCT = 99
     POLLING_SECS = 5
 
-    qplog = logging.getLogger("pytan.handler.QuestionPoller")
-    qpplog = logging.getLogger("pytan.handler.QuestionPoller.progress")
+    pollerlog = logging.getLogger("pytan.handler.QuestionPoller")
+    progresslog = logging.getLogger("pytan.handler.QuestionPoller.progress")
 
     def __init__(self, handler, obj, override_timeout_secs=0, **kwargs):
 
@@ -106,7 +106,7 @@ class QuestionPoller(object):
     def _post_init(self):
         """Post init class setup"""
         self._derive_expiration()
-        self._derive_info()
+        self._derive_object_info()
 
     def _refetch_obj(self):
         """Utility method to re-fetch a object
@@ -145,7 +145,7 @@ class QuestionPoller(object):
         # let's use the handler to re-fetch it
         if val is None:
             m = "{}{!r} not available, re-fetching object".format
-            self.qplog.debug(m(self.id_str, attr))
+            self.pollerlog.debug(m(self.id_str, attr))
             self._refetch_obj()
 
         val = getattr(self.obj, attr, '')
@@ -155,22 +155,22 @@ class QuestionPoller(object):
                 raise pytan.exceptions.PollingError(m(self.id_str, attr))
 
             m = "{}{!r} is None even after re-fetching object - using fallback of {}".format
-            self.qplog.debug(m(self.id_str, attr, fallback))
+            self.pollerlog.debug(m(self.id_str, attr, fallback))
             val = fallback
 
-        m = "{}{} resolved to {}".format
-        self.qplog.debug(m(self.id_str, attr, val))
+        m = "{}'{}' resolved to '{}'".format
+        self.pollerlog.debug(m(self.id_str, attr, val))
         return val
 
-    def _derive_info(self):
-        """Derive self.obj_info from self.obj"""
+    def _derive_object_info(self):
+        """Derive self.object_info from self.obj"""
         question_text = self._derive_attribute('query_text', 'Unable to fetch question text')
         question_id = self._derive_attribute('id', -1)
-        obj_info = "Question ID: {}, Query: {}".format(question_id, question_text)
+        object_info = "Question ID: {}, Query: {}".format(question_id, question_text)
 
-        m = "{}Object Info resolved to {}".format
-        self.qplog.debug(m(self.id_str, obj_info))
-        self.obj_info = obj_info
+        m = "{}'object_info' resolved to '{}'".format
+        self.pollerlog.debug(m(self.id_str, object_info))
+        self.object_info = object_info
 
     def _derive_expiration(self):
         """Derive the expiration datetime string from a object
@@ -262,7 +262,7 @@ class QuestionPoller(object):
                 "MR Tested: {0.mr_tested}, MR Passed: {0.mr_passed}, "
                 "Est Total: {0.estimated_total}, Row Count: {0.row_count}"
             ).format(self.result_info)
-            self.qplog.debug("{}{}".format(self.id_str, self.progress_str))
+            self.progresslog.debug("{}{}".format(self.id_str, self.progress_str))
 
             # print a timing debug string
             if self.override_timeout:
@@ -281,7 +281,7 @@ class QuestionPoller(object):
                 time_till_expiry,
                 self.loop_count,
             )
-            self.qplog.debug("{}{}".format(self.id_str, self.timing_str))
+            self.pollerlog.debug("{}{}".format(self.id_str, self.timing_str))
 
             # check to see if progress has changed, if so run the callback
             progress_changed = any([
@@ -295,7 +295,7 @@ class QuestionPoller(object):
 
             if progress_changed:
                 m = "{}Progress Changed {} ({} of {})".format
-                self.qplog.info(m(
+                self.progresslog.info(m(
                     self.id_str,
                     new_pct_str,
                     self.result_info.mr_tested,
@@ -317,7 +317,7 @@ class QuestionPoller(object):
             # check to see if new_pct has reached complete_pct threshold, if so return True
             if new_pct >= self.complete_pct:
                 m = "{}Reached Threshold of {} ({} of {})".format
-                self.qplog.info(m(
+                self.pollerlog.info(m(
                     self.id_str,
                     complete_pct_str,
                     self.result_info.mr_tested,
@@ -332,19 +332,19 @@ class QuestionPoller(object):
             # False
             if self.override_timeout and datetime.utcnow() >= self.override_timeout:
                 m = "{}Reached override timeout of {}".format
-                self.qplog.warning(m(self.id_str, self.override_timeout))
+                self.pollerlog.warning(m(self.id_str, self.override_timeout))
                 return False
 
             # check to see if we have passed the actions expiration timeout, if so return False
             if datetime.utcnow() >= self.expiration_timeout:
                 m = "{}Reached expiration timeout of {}".format
-                self.qplog.warning(m(self.id_str, self.expiration_timeout))
+                self.pollerlog.warning(m(self.id_str, self.expiration_timeout))
                 return False
 
             # if stop is called, return True
             if self._stop:
                 m = "{}Stop called at {}".format
-                self.qplog.info(m(self.id_str, new_pct_str))
+                self.pollerlog.info(m(self.id_str, new_pct_str))
                 return False
 
             # update our class variables to the new values determined by this loop
@@ -387,8 +387,8 @@ class ActionPoller(QuestionPoller):
     ACTION_DONE_KEY = 'success'
     RUNNING_STATUSES = ["active", "open"]
 
-    qplog = logging.getLogger("pytan.handler.ActionPoller")
-    qpplog = logging.getLogger("pytan.handler.ActionPoller.progress")
+    pollerlog = logging.getLogger("pytan.handler.ActionPoller")
+    progresslog = logging.getLogger("pytan.handler.ActionPoller.progress")
 
     def _post_init(self):
         """Post init class setup"""
@@ -399,7 +399,7 @@ class ActionPoller(QuestionPoller):
         self._derive_expiration()
         self._derive_status()
         self._derive_stopped_flag()
-        self._derive_info()
+        self._derive_object_info()
 
     def _derive_status(self):
         self.status = self._derive_attribute('status', None)
@@ -434,7 +434,7 @@ class ActionPoller(QuestionPoller):
             except:
                 self.passed_count_reliable = False
                 m = "{}Passed Count unreliable! Unable to find Actions Target Group: {}".format
-                self.qplog.exception(m(self.id_str, self.target_group))
+                self.pollerlog.exception(m(self.id_str, self.target_group))
 
     def _fix_group(self, g):
         '''Sets ID to null on a group object and all of it's sub_groups, needed for 6.5'''
@@ -498,21 +498,21 @@ class ActionPoller(QuestionPoller):
             v['total'] = 0
 
         m = "{}Result Map resolved to {}".format
-        self.qplog.debug(m(self.id_str, self.result_map))
+        self.pollerlog.debug(m(self.id_str, self.result_map))
 
-    def _derive_info(self):
-        """Derive self.obj_info from self.obj"""
+    def _derive_object_info(self):
+        """Derive self.object_info from self.obj"""
         m = "{}Package: '{}', Target: '{}', Verify: {}, Stopped: {}, Status: {}".format
 
-        obj_info = m(
+        object_info = m(
             self.id_str, self.package_spec.name, self.target_group.text, self.verify_enabled,
             self.stopped_flag, self.status,
         )
 
         m = "{}Object Info resolved to {}".format
-        self.qplog.debug(m(self.id_str, obj_info))
+        self.pollerlog.debug(m(self.id_str, object_info))
 
-        self.obj_info = obj_info
+        self.object_info = object_info
 
     def run(self, callbacks={}, **kwargs):
         """Poll for action data and issue callbacks.
@@ -542,7 +542,7 @@ class ActionPoller(QuestionPoller):
             self.override_timeout = None
 
         m = "{}Adding Question to derive passed count".format
-        self.qplog.debug(m(self.id_str, self.obj))
+        self.pollerlog.debug(m(self.id_str, self.obj))
 
         self.pre_question = taniumpy.Question()
         self.pre_question.group = self.target_group
@@ -553,7 +553,7 @@ class ActionPoller(QuestionPoller):
 
         self.passed_count = poller.result_info.passed
         m = "{}Passed Count resolved to {}".format
-        self.qplog.debug(m(self.id_str, self.passed_count))
+        self.pollerlog.debug(m(self.id_str, self.passed_count))
 
         self.seen_eq_passed = self.seen_eq_passed_loop(callbacks, **kwargs)
         self.finished_eq_passed = self.finished_eq_passed_loop(callbacks, **kwargs)
@@ -575,7 +575,7 @@ class ActionPoller(QuestionPoller):
 
         if self.passed_count == 0:
             m = "Passed Count of Clients for filter {} is 0 -- no clients match filter".format
-            self.qplog.warning(m(self.target_group.text))
+            self.pollerlog.warning(m(self.target_group.text))
             return False
 
         while not self._stop:
@@ -601,7 +601,7 @@ class ActionPoller(QuestionPoller):
             self.progress_str = (
                 "Progress: Seen Action: {}, Expected Seen: {}, Percent: {}"
             ).format(seen_count, self.passed_count, new_pct_str)
-            self.qplog.debug("{}{}".format(self.id_str, self.progress_str))
+            self.progresslog.debug("{}{}".format(self.id_str, self.progress_str))
 
             # print a timing debug string
             if self.override_timeout:
@@ -620,7 +620,7 @@ class ActionPoller(QuestionPoller):
                 time_till_expiry,
                 self.seen_loop_count,
             )
-            self.qplog.debug("{}{}".format(self.id_str, self.timing_str))
+            self.pollerlog.debug("{}{}".format(self.id_str, self.timing_str))
 
             # check to see if progress has changed, if so run the callback
             seen_changed = seen_count != self.seen_count
@@ -629,7 +629,7 @@ class ActionPoller(QuestionPoller):
 
             if progress_changed:
                 m = "{}Progress Changed for Seen Count {} ({} of {})".format
-                self.qplog.info(m(self.id_str, new_pct_str, seen_count, self.passed_count))
+                self.progresslog.info(m(self.id_str, new_pct_str, seen_count, self.passed_count))
                 if callbacks.get('SeenProgressChanged'):
                     callbacks['SeenProgressChanged'](self, new_pct)
 
@@ -641,19 +641,19 @@ class ActionPoller(QuestionPoller):
             # check to see if action is stopped, if it is, return False
             if self.stopped_flag:
                 m = "{}Actions stopped flag is True".format
-                self.qplog.warning(m(self.id_str))
+                self.pollerlog.warning(m(self.id_str))
                 return False
 
             # check to see if action is not active, if it is not, False
             if self.status.lower() not in self.RUNNING_STATUSES:
                 m = "{}Action status is {}, which is not one of: {}".format
-                self.qplog.warning(m(self.id_str, self.status, ', '.join(self.RUNNING_STATUSES)))
+                self.pollerlog.warning(m(self.id_str, self.status, ', '.join(self.RUNNING_STATUSES)))
                 return False
 
             # check to see if new_pct has reached complete_pct threshold, if so return True
             if new_pct >= self.complete_pct:
                 m = "{}Reached Threshold for Seen Count of {} ({} of {})".format
-                self.qplog.info(m(self.id_str, complete_pct_str, seen_count, self.passed_count))
+                self.pollerlog.info(m(self.id_str, complete_pct_str, seen_count, self.passed_count))
 
                 if callbacks.get('SeenAnswersComplete'):
                     callbacks['SeenAnswersComplete'](self, new_pct)
@@ -663,19 +663,19 @@ class ActionPoller(QuestionPoller):
             # False
             if self.override_timeout and datetime.utcnow() >= self.override_timeout:
                 m = "{}Reached override timeout of {}".format
-                self.qplog.warning(m(self.id_str, self.override_timeout))
+                self.pollerlog.warning(m(self.id_str, self.override_timeout))
                 return False
 
             # check to see if we have passed the actions expiration timeout, if so return False
             if datetime.utcnow() >= self.expiration_timeout:
                 m = "{}Reached expiration timeout of {}".format
-                self.qplog.warning(m(self.id_str, self.expiration))
+                self.pollerlog.warning(m(self.id_str, self.expiration))
                 return False
 
             # if stop is called, return True
             if self._stop:
                 m = "{}Stop called at {}".format
-                self.qplog.info(m(self.id_str, new_pct_str))
+                self.pollerlog.info(m(self.id_str, new_pct_str))
                 return True
 
             # update our class variables to the new values determined by this loop
@@ -750,7 +750,7 @@ class ActionPoller(QuestionPoller):
             progress_list.append("Done Key: {}".format(self.ACTION_DONE_KEY))
             progress_list.append("Passed Count: {}".format(self.passed_count))
             self.progress_str = ', '.join(progress_list)
-            self.qplog.debug("{}{}".format(self.id_str, self.progress_str))
+            self.progresslog.debug("{}{}".format(self.id_str, self.progress_str))
 
             # print a timing debug string
             if self.override_timeout:
@@ -769,7 +769,7 @@ class ActionPoller(QuestionPoller):
                 time_till_expiry,
                 self.loop_count,
             )
-            self.qplog.debug("{}{}".format(self.id_str, self.timing_str))
+            self.pollerlog.debug("{}{}".format(self.id_str, self.timing_str))
 
             # check to see if progress has changed, if so run the callback
             finished_changed = finished_count != self.finished_count
@@ -778,7 +778,7 @@ class ActionPoller(QuestionPoller):
 
             if progress_changed:
                 m = "{}Progress Changed for Finished Count {} ({} of {})".format
-                self.qplog.info(m(self.id_str, new_pct_str, finished_count, self.passed_count))
+                self.progresslog.info(m(self.id_str, new_pct_str, finished_count, self.passed_count))
                 if callbacks.get('SeenProgressChanged'):
                     callbacks['SeenProgressChanged'](self, new_pct)
 
@@ -790,19 +790,19 @@ class ActionPoller(QuestionPoller):
             # check to see if action is stopped, if it is, return False
             if self.stopped_flag:
                 m = "{}Actions stopped flag is True".format
-                self.qplog.warning(m(self.id_str))
+                self.pollerlog.warning(m(self.id_str))
                 return False
 
             # check to see if action is not active, if it is not, False
             if self.status.lower() not in self.RUNNING_STATUSES:
                 m = "{}Action status is {}, which is not one of: {}".format
-                self.qplog.warning(m(self.id_str, self.status, ', '.join(self.RUNNING_STATUSES)))
+                self.pollerlog.warning(m(self.id_str, self.status, ', '.join(self.RUNNING_STATUSES)))
                 return False
 
             # check to see if new_pct has reached complete_pct threshold, if so return True
             if new_pct >= self.complete_pct:
                 m = "{}Reached Threshold for Finished Count of {} ({} of {})".format
-                self.qplog.info(
+                self.pollerlog.info(
                     m(self.id_str, complete_pct_str, finished_count, self.passed_count)
                 )
 
@@ -814,19 +814,19 @@ class ActionPoller(QuestionPoller):
             # False
             if self.override_timeout and datetime.utcnow() >= self.override_timeout:
                 m = "{}Reached override timeout of {}".format
-                self.qplog.warning(m(self.id_str, self.override_timeout))
+                self.pollerlog.warning(m(self.id_str, self.override_timeout))
                 return False
 
             # check to see if we have passed the actions expiration timeout, if so return False
             if datetime.utcnow() >= self.expiration_timeout:
                 m = "{}Reached expiration timeout of {}".format
-                self.qplog.warning(m(self.id_str, self.expiration))
+                self.pollerlog.warning(m(self.id_str, self.expiration))
                 return False
 
             # if stop is called, return True
             if self._stop:
                 m = "{}Stop called at {}".format
-                self.qplog.info(m(self.id_str, new_pct_str))
+                self.pollerlog.info(m(self.id_str, new_pct_str))
                 return True
 
             # update our class variables to the new values determined by this loop
@@ -834,6 +834,157 @@ class ActionPoller(QuestionPoller):
             self.finished_count = finished_count
             self.previous_result_info = self.result_info
             self.previous_result_data = self.result_data
+
+            time.sleep(self.polling_secs)
+            self.loop_count += 1
+
+
+class SSEPoller(QuestionPoller):
+    """A class to poll the progress of a Server Side Export.
+
+    The primary function of this class is to poll for status of server side exports.
+
+    Parameters
+    ----------
+    handler : :class:`pytan.handler.Handler`
+        PyTan handler to use for GetResultInfo calls
+    export_id : str
+        ID of server side export
+    polling_secs : int, optional
+        Number of seconds to wait in between status check loops (default: 2)
+    timeout_secs : int, optional
+        timeout in seconds for waiting for status completion, 0 does not time out (default: 600)
+    """
+    # class attributes to include in __str__ output
+    STR_ATTRS = [
+        'export_id',
+        'polling_secs',
+        'timeout_secs',
+        'sse_status',
+    ]
+
+    POLLING_SECS = 2
+
+    pollerlog = logging.getLogger("pytan.handler.SSEPoller")
+    progresslog = logging.getLogger("pytan.handler.SSEPoller.progress")
+
+    def __init__(self, handler, export_id, timeout_secs=600, **kwargs):
+
+        if not isinstance(handler, pytan.handler.Handler):
+            m = "{} is not a valid handler instance! Must be a: {!r}".format
+            raise pytan.exceptions.PollingError(m(type(handler), pytan.handler.Handler))
+
+        self.handler = handler
+        self.export_id = export_id
+        self.polling_secs = kwargs.get('polling_secs', self.POLLING_SECS)
+        self.timeout_secs = timeout_secs
+        self._stop = False
+        self.id_str = "ID '{}': ".format(export_id)
+        self.poller_result = None
+        self.sse_status = "Not yet run"
+        self._post_init()
+
+    def _post_init(self):
+        """Post init class setup"""
+        pass
+
+    def get_sse_status(self):
+        short_url = 'export/{}.status'.format(self.export_id)
+        full_url = self.handler.session._full_url(short_url)
+        ret = self.handler.session.http_get(url=short_url).strip()
+
+        # print a progress debug string
+        progress_str = "Server Side Export Progress: '{}' from URL: {}".format
+        progress_str = progress_str(ret, full_url)
+        self.progresslog.debug("{}{}".format(self.id_str, progress_str))
+
+        return ret
+
+    def get_sse_data(self):
+        short_url = 'export/{}.gz'.format(self.export_id)
+        full_url = self.handler.session._full_url(short_url)
+        ret = self.handler.session.http_get(url=short_url)
+
+        # print a progress debug string
+        progress_str = "Server Side Export Data Length: {} from URL: {}".format
+        progress_str = progress_str(len(ret), full_url)
+        self.progresslog.debug("{}{}".format(self.id_str, progress_str))
+        return ret
+
+    def run(self, **kwargs):
+        """Poll for server side export status"""
+
+        self.start = datetime.utcnow()
+        if self.timeout_secs:
+            self.timeout = self.start + timedelta(seconds=self.timeout_secs)
+        else:
+            self.timeout = None
+
+        self.sse_status_completed = self.sse_status_completed(**kwargs)
+        self.poller_result = all([self.sse_status_completed])
+        return self.poller_result
+
+    def sse_status_completed(self, **kwargs):
+        # loop counter
+        self.loop_count = 1
+        # establish a previous result_info that's empty
+        self.previous_sse_status = ''
+
+        while not self._stop:
+            # get the SSE status
+            self.sse_status = self.get_sse_status()
+
+            # print a timing debug string
+            if self.timeout:
+                time_till_expiry = self.timeout - datetime.utcnow()
+            else:
+                time_till_expiry = 'Never'
+
+            self.timing_str = (
+                "Timing: Started: {}, Timeout: {}, Elapsed Time: {}, Left till expiry: {}, "
+                "Loop Count: {}"
+            ).format(
+                self.start,
+                self.timeout,
+                datetime.utcnow() - self.start,
+                time_till_expiry,
+                self.loop_count,
+            )
+            self.pollerlog.debug("{}{}".format(self.id_str, self.timing_str))
+
+            # check to see if progress has changed, if so print progress log info
+            progress_changed = any([
+                self.previous_sse_status != self.sse_status,
+            ])
+
+            if progress_changed:
+                m = "{}Progress Changed: '{}'".format
+                self.progresslog.info(m(self.id_str, self.sse_status))
+
+            if 'failed' in self.sse_status.lower():
+                m = "{}Server Side Export Failed: '{}'".format
+                raise pytan.exceptions.ServerSideExportError(m(self.id_str, self.sse_status))
+
+            if 'completed' in self.sse_status.lower():
+                m = "{}Server Side Export Completed: '{}'".format
+                self.pollerlog.info(m(self.id_str, self.sse_status))
+                return True
+
+            # check to see if timeout is specified, if so and we have passed it, return
+            # False
+            if self.timeout and datetime.utcnow() >= self.timeout:
+                m = "{}Reached timeout of {}".format
+                self.pollerlog.warning(m(self.id_str, self.timeout))
+                return False
+
+            # if stop is called, return True
+            if self._stop:
+                m = "{}Stop called at {}".format
+                self.pollerlog.info(m(self.id_str, self.sse_status))
+                return False
+
+            # update our class variables to the new values determined by this loop
+            self.previous_sse_status = self.sse_status
 
             time.sleep(self.polling_secs)
             self.loop_count += 1
