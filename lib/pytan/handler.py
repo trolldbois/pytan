@@ -106,6 +106,11 @@ class Handler(object):
         ret = str_tpl(self.session, getattr(self, 'server_version', 'Version Unavailable'))
         return ret
 
+    def get_server_version(self):
+        self.server_version = self.session.get_server_version()
+        self.server_version_dict = self._parse_versioning()
+        return self.server_version
+
     # Questions
     def ask(self, **kwargs):
         """Ask a type of question and get the results back
@@ -1606,7 +1611,7 @@ class Handler(object):
         return result
 
     def _derive_server_version(self):
-        self.server_version = self.session.get_server_version()
+        self.get_server_version()
 
     @pytan.utils.func_timing
     def _deploy_action(self, run=False, get_results=True, **kwargs):
@@ -1786,10 +1791,9 @@ class Handler(object):
            * to emulate what the console does, encapsulate the SavedAction in a SavedActionList
            * start time does not need to be specified
         '''
-        v_dict = self._parse_versioning()
 
         # we will assume 6.2 if server_version is "Unable to determine"
-        if v_dict['minor'] in [2] or v_dict.values() == [0, 0, 0, 0]:
+        if self._platform_is_6_2():
             objtype = taniumpy.Action
             objlisttype = None
             force_start_time = True
@@ -1800,7 +1804,7 @@ class Handler(object):
             force_start_time = False
 
         m = "DEPLOY_ACTION objtype: {}, objlisttype: {}, force_start_time: {}, version: {}".format
-        self.mylog.debug(m(objtype, objlisttype, force_start_time, v_dict))
+        self.mylog.debug(m(objtype, objlisttype, force_start_time, self.server_version))
 
         add_obj = objtype()
         add_obj.package_spec = taniumpy.PackageSpec()
@@ -2039,15 +2043,21 @@ class Handler(object):
                 raise pytan.exceptions.VersionParseError(m(self.server_version))
         return v_dict
 
+    def _platform_is_6_2(self):
+        is6_2 = (
+            # see if version is 6.2.xxx.xxx
+            (self.server_version_dict['major'] == 6 and self.server_version_dict['minor'] == 2)
+            # we will assume 6.2 if server_version is "Unable to determine"
+            or self.server_version_dict.values() == [0, 0, 0, 0]
+        )
+        return is6_2
+
     def _version_support_check(self, v_maps):
         """Checks that each of the version maps in v_maps is greater than or equal to
         the current servers version"""
-
-        v_dict = self._parse_versioning()
-
         for v_map in v_maps:
             for k, v in v_map.iteritems():
-                if not v_dict[k] >= v:
+                if not self.server_version_dict[k] >= v:
                     return False
         return True
 
@@ -2094,12 +2104,10 @@ class Handler(object):
 
     def _check_sse_version(self):
         """Validates that the server version supports server side export"""
-        v_dict = self._parse_versioning()
-
-        # we will assume 6.2 if server_version is "Unable to determine"
-        if v_dict['minor'] in [2] or v_dict.values() == [0, 0, 0, 0]:
+        if self._platform_is_6_2():
             m = "Server side export not supported in version: {} / {}".format
-            raise pytan.utils.UnsupportedVersionError(m(self.server_version, v_dict))
+            m = m(self.server_version, self.server_version_dict)
+            raise pytan.exceptions.UnsupportedVersionError(m)
 
     def _check_sse_crash_prevention(self, obj):
         self._check_sse_timing()
