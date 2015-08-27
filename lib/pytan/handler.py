@@ -91,15 +91,14 @@ class Handler(object):
             raise pytan.exceptions.HandlerError("port must be an integer!")
 
         pytan.utils.test_app_port(host, port)
-        self.session = pytan.sessions.Session(host, port)
-        self.session.authenticate(username, password)
-        if get_version:
-            self.server_version = "Not yet determined!"
-            thread = threading.Thread(target=self._derive_server_version, args=())
-            thread.daemon = True
-            thread.start()
-        else:
-            self.server_version = "get_version is False!"
+        self.session = pytan.sessions.Session(host, port, **kwargs)
+        self.session.authenticate(
+            username=username, password=password, session_id=session_id, **kwargs
+        )
+        self.server_version = "Not yet determined!"
+        thread = threading.Thread(target=self._derive_server_version, args=())
+        thread.daemon = True
+        thread.start()
 
     def __str__(self):
         str_tpl = "Handler for {}, Version: {}".format
