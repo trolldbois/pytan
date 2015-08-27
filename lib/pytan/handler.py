@@ -32,21 +32,61 @@ class Handler(object):
     Parameters
     ----------
     username : str
-        `username` to connect to `host` with
+        default: None - `username` to connect to `host` with
     password : str
-        `password` to connect to `host` with
+        default: None - `password` to connect to `host` with
     host : str
-        hostname or ip of Tanium SOAP Server
+        default: None - hostname or ip of Tanium SOAP Server
     port : int, optional
-        port of Tanium SOAP Server on `host`
-    get_version : bool, optional
-        get the version of the server from Tanium after authenticating, default to True
-    gmt_log : bool, optional
-        True use GMT timezone for log output, False use local time for log output
+        default: 443 - port of Tanium SOAP Server on `host`
     loglevel : int, optional
-        0 should not print anything, 1 and higher will print more
+        default: 0 - 0 do not print anything except warnings/errors, 1 and higher will print more
     debugformat : bool, optional
-        False use one line logformat, True use two lines
+        default: False - False use one line logformat, True use two lines
+    gmt_log : bool, optional
+        default: True - True use GMT timezone for log output, False use local time for log output
+
+    Session Passthru Parameters
+    ---------------------------
+    http_debug : bool, optional
+        default: False - False do not print requests package debug, True do print requests package debug
+    http_auth_retry: bool, optional
+        default: True - True retry HTTP GET/POST's, False do not
+    http_retry_count: int, optional
+        default: 5 - number of times to retry HTTP GET/POST's if http_auth_retry is True
+    soap_request_headers : dict, optional
+        default: {'Content-Type': 'text/xml; charset=utf-8', 'Accept-Encoding': 'gzip'}
+        dictionary of headers to add to every HTTP GET/POST
+    auth_connect_timeout_sec : int, optional
+        default: 5 - number of seconds before timing out for a connection while authenticating
+    auth_response_timeout_sec : int, optional
+        default: 15 - number of seconds before timing out for a response while authenticating
+    info_connect_timeout_sec : int, optional
+        default: 5 - number of seconds before timing out for a connection while getting /info.json
+    info_response_timeout_sec : int, optional
+        default: 15 - number of seconds before timing out for a response while getting /info.json
+    soap_connect_timeout_sec : int, optional
+        default: 15 - number of seconds before timing out for a connection for a SOAP request
+    soap_response_timeout_sec : int, optional
+        default: 540 - number of seconds before timing out for a response for a SOAP request
+    stats_loop_enabled : bool, optional
+        default: False - False do not enable the statistics loop thread, True do enable it
+    stats_loop_sleep_sec : int, optional
+        default: 5 - number of seconds to sleep in between printing the statistics when stats_loop_enabled is True
+    stats_loop_targets : list of dict, optional
+        default: [{'Version': 'Settings/Version'},
+        {'Active Questions': 'Active Question Cache/Active Question Estimate'},
+        {'Clients': 'Active Question Cache/Active Client Estimate'},
+        {'Strings': 'String Cache/Total String Count'},
+        {'Handles': 'System Performance Info/HandleCount'},
+        {'Processes': 'System Performance Info/ProcessCount'},
+        {'Memory Available': 'percentage(System Performance Info/PhysicalAvailable,System Performance Info/PhysicalTotal)'}]
+        list of dictionaries with the key being the section of info.json to print info from, and the value being the item with in that section to print the value
+
+    Session Authentication Passthru Parameters
+    ------------------------------------------
+    persistent: bool, optional
+        default: False - False do not request a persistent session, True do request one
 
     Notes
     -----
@@ -117,7 +157,7 @@ class Handler(object):
         Parameters
         ----------
         qtype : str, optional
-            type of question to ask: saved, manual, or _manual, defaults to manual
+            default 'manual' - type of question to ask: saved, manual, or _manual
 
         Returns
         -------
@@ -146,8 +186,7 @@ class Handler(object):
         name : str, list of str
             name of saved question
         refresh_data: bool, optional
-            False: do not perform a getResultInfo before issuing a getResultData
-            True: perform a getResultInfo before issuing a getResultData
+            default False - False: do not perform a getResultInfo before issuing a getResultData, True: perform a getResultInfo before issuing a getResultData
 
         Returns
         -------
@@ -513,9 +552,14 @@ class Handler(object):
         """Get the result data for a python API object using a server side export (sse)
 
         This method issues a GetResultData command to the SOAP api for `obj` with the option
-        `export_flag` set to 1.
+        `export_flag` set to 1. This will cause the server to process all of the data for a given
+        result set and save it as `export_format`. Then the user can use an authenticated GET
+        request to get the status of the file via "/export/${export_id}.status". Once the status
+        returns "Completed.", the actual report file can be retrieved by an authenticated GET
+        request to "/export/${export_id}.gz". This workflow saves a lot of processing time and removes the need to paginate large result sets necessary in normal GetResultData calls.
 
-        Version support:
+        Version support
+        ---------------
             * 6.5.314.4231: initial sse support (csv only)
             * 6.5.314.4300: export_format support (adds xml and cef)
             * 6.5.314.4300: fix core dump if multiple sse done on empty resultset
@@ -527,16 +571,20 @@ class Handler(object):
         obj : :class:`taniumpy.object_types.base.BaseType`
             object to get result data for
         export_format : str, optional
-            one of: csv, xml, xml_obj, or cef (or 0, 1, 2)
+            default: 'csv' - one of: csv, xml, xml_obj, or cef (or 0, 1, 2)
         leading : str, optional
-            used for export_format 'cef' only, the string to prepend to each row
+            default: '' - used for export_format 'cef' only, the string to prepend to each row
         trailing : str, optional
-            used for export_format 'cef' only, the string to append to each row
+            default: '' - used for export_format 'cef' only, the string to append to each row
 
+        See Also
+        --------
+        :data:`pytan.constants.SSE_FORMAT_MAP` : maps `export_format` to an integer for use by the SOAP API
+        :data:`pytan.constants.SSE_RESTRICT_MAP` : maps export_format integers to supported platform versions
+        :data:`pytan.constants.SSE_CRASH_MAP` : maps platform versions that can cause issues in various scenarios
 
         Returns
         -------
-
         export_data : either `str` or :class:`taniumpy.object_types.result_set.ResultSet`
             If export_format is one of csv, xml, or cef, export_data will be a `str` containing the contents of the ResultSet in said format
             If export_format is xml_obj, export_data will be a :class:`taniumpy.object_types.result_set.ResultSet`
@@ -600,8 +648,7 @@ class Handler(object):
         obj : :class:`taniumpy.object_types.base.BaseType`
             object to get result data for
         shrink : bool, optional
-            * True: Shrink the object down to just id/name/hash attributes (for smaller request)
-            * False: Use the full object as is
+            default True - True: Shrink the object down to just id/name/hash attributes (for smaller request), False: Use the full object as is
 
         Returns
         -------
