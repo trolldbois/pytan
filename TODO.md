@@ -1,3 +1,7 @@
+  * add notes re: validation/doc build process to README
+  * add validation results of testing against various platform versions for each release
+  * add a function for 6.2 version testing (since we use it more than once)
+  * update sphynx source files to have new SSE function(s)
   * add tests for SSE
   * fix doc strings for exceptions
   * add custom name to deploy_action
