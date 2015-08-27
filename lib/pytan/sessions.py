@@ -613,21 +613,27 @@ class Session(object):
         full_url = "https://{0}:{1}/{2}".format(host, port, url)
         return full_url
 
+    def _clean_headers(self, headers=None):
+        clean_headers = dict(headers or {})
+        if 'password' in clean_headers:
+            clean_headers['password'] = '**PASSWORD**'
+
+        return_headers = {}
+        return_headers.update(self.REQ_SESSION.headers)
+        return_headers.update(clean_headers)
+        return return_headers
+
     def _http_get(self, host, port, url, headers=None, connect_timeout=15,
                   response_timeout=180, debug=False):
 
         full_url = self._full_url(host=host, port=port, url=url)
 
-        clean_headers = dict(headers or {})
-        if 'password' in clean_headers:
-            clean_headers['password'] = '**PASSWORD**'
+        self.httplog.debug("HTTP request: GET to {}".format(full_url))
+        self.httplog.debug("HTTP request: headers: {}".format(self._clean_headers(headers)))
 
         req_args = {}
         req_args['headers'] = headers
         req_args['timeout'] = (connect_timeout, response_timeout)
-
-        self.httplog.debug("HTTP request: GET to {}".format(full_url))
-        self.httplog.debug("HTTP request: headers: {}".format(clean_headers))
 
         try:
             response = self.REQ_SESSION.get(full_url, **req_args)
@@ -670,18 +676,19 @@ class Session(object):
 
         full_url = self._full_url(host=host, port=port, url=url)
 
-        clean_headers = dict(headers or {})
-        if 'password' in clean_headers:
-            clean_headers['password'] = '**PASSWORD**'
+        self.httplog.debug("HTTP request: POST to {}".format(full_url))
+        self.httplog.debug("HTTP request: headers: {}".format(self._clean_headers(headers)))
+
+        if not body:
+            print_body = ''
+        else:
+            print_body = '\n{}'.format(body)
+        self.bodyhttplog.debug("HTTP request: body:{}".format(print_body))
 
         req_args = {}
         req_args['headers'] = headers
         req_args['data'] = body
         req_args['timeout'] = (connect_timeout, response_timeout)
-
-        self.httplog.debug("HTTP request: POST to {}".format(full_url))
-        self.httplog.debug("HTTP request: headers: {}".format(clean_headers))
-        self.bodyhttplog.debug("HTTP request: body:\n{}".format(body))
 
         try:
             response = self.REQ_SESSION.post(full_url, **req_args)
