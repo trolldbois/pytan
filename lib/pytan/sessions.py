@@ -104,9 +104,9 @@ class Session(object):
     HTTP_RETRY_COUNT = 5
     HTTP_AUTH_RETRY = True
 
-    SERVER_STATS = False
-    SERVER_STATS_SLEEP = 5
-    SERVER_STATS_TARGETS = [
+    STATS_LOOP_ENABLED = False
+    STATS_LOOP_SLEEP_SEC = 5
+    STATS_LOOP_TARGETS = [
         {'Version': 'Settings/Version'},
         {'Active Questions': 'Active Question Cache/Active Question Estimate'},
         {'Clients': 'Active Question Cache/Active Client Estimate'},
@@ -135,7 +135,29 @@ class Session(object):
         self.authlog = logging.getLogger(self.qualname + ".auth")
         self.httplog = logging.getLogger(self.qualname + ".http")
         self.bodyhttplog = logging.getLogger(self.qualname + ".http.body")
+
+        # kwargs overrides
+        self.SOAP_REQUEST_HEADERS = kwargs.get(
+            'soap_request_headers', self.SOAP_REQUEST_HEADERS)
         self.HTTP_DEBUG = kwargs.get('http_debug', False)
+        self.HTTP_AUTH_RETRY = kwargs.get('http_auth_retry', self.HTTP_AUTH_RETRY)
+        self.HTTP_RETRY_COUNT = kwargs.get('http_retry_count', self.HTTP_RETRY_COUNT)
+        self.AUTH_CONNECT_TIMEOUT_SEC = kwargs.get(
+            'auth_connect_timeout_sec', self.AUTH_CONNECT_TIMEOUT_SEC)
+        self.AUTH_RESPONSE_TIMEOUT_SEC = kwargs.get(
+            'auth_response_timeout_sec', self.AUTH_RESPONSE_TIMEOUT_SEC)
+        self.INFO_CONNECT_TIMEOUT_SEC = kwargs.get(
+            'info_connect_timeout_sec', self.INFO_CONNECT_TIMEOUT_SEC)
+        self.INFO_RESPONSE_TIMEOUT_SEC = kwargs.get(
+            'info_response_timeout_sec', self.INFO_RESPONSE_TIMEOUT_SEC)
+        self.SOAP_CONNECT_TIMEOUT_SEC = kwargs.get(
+            'soap_connect_timeout_sec', self.SOAP_CONNECT_TIMEOUT_SEC)
+        self.SOAP_RESPONSE_TIMEOUT_SEC = kwargs.get(
+            'soap_response_timeout_sec', self.SOAP_RESPONSE_TIMEOUT_SEC)
+        self.STATS_LOOP_ENABLED = kwargs.get('stats_loop_enabled', self.STATS_LOOP_ENABLED)
+        self.STATS_LOOP_SLEEP_SEC = kwargs.get('stats_loop_sleep_sec', self.STATS_LOOP_SLEEP_SEC)
+        self.STATS_LOOP_TARGETS = kwargs.get('stats_loop_targets', self.STATS_LOOP_TARGETS)
+
         self._start_stats_thread()
 
     def __str__(self):
@@ -278,7 +300,7 @@ class Session(object):
         )
 
         try:
-            body = self.http_post(**req_args)
+            body = self.http_get(**req_args)
         except Exception as e:
             m = "Error while trying to authenticate: {}".format
             raise pytan.exceptions.AuthorizationError(m(e))
@@ -444,19 +466,19 @@ class Session(object):
         except:
             pass
 
-        stats_resolved = [self._find_stat_target(t, diags) for t in self.SERVER_STATS_TARGETS]
+        stats_resolved = [self._find_stat_target(t, diags) for t in self.STATS_LOOP_TARGETS]
         stats_text = ", ".join(["{}: {}".format(*i.items()[0]) for i in stats_resolved])
         return stats_text
 
     def enable_stats_loop(self, sleep=None):
-        self.SERVER_STATS = True
+        self.STATS_LOOP_ENABLED = True
         if isinstance(sleep, int):
-            self.SERVER_STATS_SLEEP = sleep
+            self.STATS_LOOP_SLEEP_SEC = sleep
 
     def disable_stats_loop(self, sleep=None):
-        self.SERVER_STATS = False
+        self.STATS_LOOP_ENABLED = False
         if isinstance(sleep, int):
-            self.SERVER_STATS_SLEEP = sleep
+            self.STATS_LOOP_SLEEP_SEC = sleep
 
     def http_get(self, url, **kwargs):
         '''
@@ -703,9 +725,10 @@ class Session(object):
 
     def _stats_loop(self):
         while True:
-            if self.SERVER_STATS:
-                self.statslog.warning(self.get_server_stats())
-            time.sleep(self.SERVER_STATS_SLEEP)
+            if self.STATS_LOOP_ENABLED:
+                server_stats = self.get_server_stats()
+                self.statslog.warning(server_stats)
+            time.sleep(self.STATS_LOOP_SLEEP_SEC)
 
     def _flatten_server_info(self, structure):
         flattened = structure
