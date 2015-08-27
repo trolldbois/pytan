@@ -205,7 +205,7 @@ class Session(object):
         req_args['headers'] = headers
 
         try:
-            self.http_post(retry_count=False, **req_args)
+            self.http_get(retry_count=False, **req_args)
         except Exception as e:
             m = "logout exception: {}".format
             self.authlog.debug(m(e))
@@ -232,7 +232,7 @@ class Session(object):
 
         the way sessions get issued:
 
-         - a POST request to /auth is issued
+         - a GET request to /auth is issued
          - username/password supplied in headers as base64 encoded, or session is supplied in
            headers as string
          - session is returned upon successful auth
