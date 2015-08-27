@@ -638,7 +638,7 @@ class Session(object):
         try:
             info_dict = json.loads(info_body)
         except Exception as e:
-            info_dict = {'info_body_failed_body': info_body}
+            info_dict = {'info_body_failed_json': info_body}
             server_info_fail_msgs.append(json_fail_m(e))
 
         try:
