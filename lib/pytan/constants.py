@@ -32,8 +32,10 @@ Logging format for debugformat=False
 LOG_LEVEL_MAPS = [
     (
         0,
-        {},
-        'Sets all loggers to only output at WARNING or above.',
+        {
+            'stats': 'DEBUG',
+        },
+        'Sets all loggers to only output at WARNING or above except for stats',
     ),
     (
         1,
