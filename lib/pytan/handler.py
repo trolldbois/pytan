@@ -62,8 +62,8 @@ class Handler(object):
     :data:`pytan.constants.DEBUG_FORMAT` : debugformat=True
     """
 
-    def __init__(self, username, password, host, port="443", loglevel=0,
-                 debugformat=False, get_version=True, gmt_log=True, **kwargs):
+    def __init__(self, username=None, password=None, host=None, port=443,
+                 loglevel=0, debugformat=False, gmt_log=True, session_id=None, **kwargs):
         super(Handler, self).__init__()
 
         self.mylog = logging.getLogger("pytan.handler")
@@ -77,9 +77,9 @@ class Handler(object):
 
         self.loglevel = loglevel
 
-        if not username:
+        if not username and not session_id:
             raise pytan.exceptions.HandlerError("Must supply username!")
-        if not password:
+        if not password and not session_id:
             raise pytan.exceptions.HandlerError("Must supply password!")
         if not host:
             raise pytan.exceptions.HandlerError("Must supply host!")
