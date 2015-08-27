@@ -4,7 +4,7 @@
 '''A python package that makes using (:mod:`taniumpy`) more human friendly.'''
 
 __title__ = 'PyTan'
-__version__ = '2.0.3'
+__version__ = '2.0.4'
 """
 Version of PyTan
 """
