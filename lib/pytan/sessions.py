@@ -44,16 +44,19 @@ sys.setdefaultencoding('utf-8')
 
 
 class Session(object):
-    '''
-    This is session object uses the requests package instead of the built in httplib library.
+    """
+    This session object uses the :mod:`requests` package instead of the built in httplib library.
+
     This provides support for keep alive, gzip, cookies, forwarding, and a host of other features
     automatically.
+    """
 
-    The Requests Session object allows you to persist certain parameters across requests.
-    It also persists cookies across all requests made from the Session instance.
-    Any requests that you make within a session will automatically reuse the appropriate connection
-    '''
     REQ_SESSION = requests.Session()
+    """
+    The Requests session allows you to persist certain parameters across requests. It also persists cookies across all requests made from the Session instance. Any requests that you make within a session will automatically reuse the appropriate connection
+    """
+
+    # disable SSL cert verification for all requests made in this session
     REQ_SESSION.verify = False
 
     XMLNS = {
@@ -62,6 +65,7 @@ class Session(object):
         'xsi': 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"',
         'typens': 'xmlns:typens="urn:TaniumSOAP"',
     }
+    """The namespace mappings for use in XML Request bodies"""
 
     REQUEST_BODY_BASE = ("""<SOAP-ENV:Envelope {SOAP-ENV} {xsd} {xsi}>
 <SOAP-ENV:Body>
@@ -72,40 +76,95 @@ class Session(object):
   </typens:tanium_soap_request>
 </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>""").format(**XMLNS)
+    """The XML template used for all SOAP Requests in string form"""
 
     REQUEST_BODY_TEMPLATE = string.Template(REQUEST_BODY_BASE)
+    """The XML template used for all SOAP Requests in string.template form"""
 
     GET_OBJECT_CMD = 'GetObject'
+    """The text used in the command element for XML requests to get objects"""
+
     UPDATE_OBJECT_CMD = 'UpdateObject'
+    """The text used in the command element for XML requests to update objects"""
+
     ADD_OBJECT_CMD = 'AddObject'
+    """The text used in the command element for XML requests to add objects"""
+
     DELETE_OBJECT_CMD = 'DeleteObject'
+    """The text used in the command element for XML requests to delete objects"""
+
     GET_RESULT_INFO_CMD = 'GetResultInfo'
+    """The text used in the command element for XML requests to get result info for an object"""
+
     GET_RESULT_DATA_CMD = 'GetResultData'
+    """The text used in the command element for XML requests to get result data for an object"""
+
     RUN_PLUGIN_CMD = 'RunPlugin'
+    """The text used in the command element for XML requests to run a plugin for an object"""
 
     AUTH_RES = 'auth'
+    """The URL to use for authentication requests"""
+
     SOAP_RES = 'soap'
+    """The URL to use for SOAP requests"""
+
     INFO_RES = 'info.json'
+    """The URL to use for server info requests"""
 
     AUTH_CONNECT_TIMEOUT_SEC = 5
+    """number of seconds before timing out for a connection while authenticating"""
+
     AUTH_RESPONSE_TIMEOUT_SEC = 15
+    """number of seconds before timing out for a response while authenticating"""
+
     INFO_CONNECT_TIMEOUT_SEC = 5
+    """number of seconds before timing out for a connection while getting server info"""
+
     INFO_RESPONSE_TIMEOUT_SEC = 15
+    """number of seconds before timing out for a response while getting server info"""
+
     SOAP_CONNECT_TIMEOUT_SEC = 15
+    """number of seconds before timing out for a connection while sending a SOAP Request"""
+
     SOAP_RESPONSE_TIMEOUT_SEC = 540
+    """number of seconds before timing out for a response while sending a SOAP request"""
 
     SOAP_REQUEST_HEADERS = {'Content-Type': 'text/xml; charset=utf-8', 'Accept-Encoding': 'gzip'}
+    """dictionary of headers to add to every HTTP GET/POST"""
 
-    COMMAND_RE = re.compile(r'<command>(.*?)</command>', re.IGNORECASE | re.DOTALL)
-    SESSION_RE = re.compile(r'<session>(.*?)</session>', re.IGNORECASE | re.DOTALL)
-    VERSION_RE = re.compile(r'<server_version>(.*?)</server_version>', re.IGNORECASE | re.DOTALL)
+    COMMAND_RE_TXT = r'<command>(.*?)</command>'
+    """text string to search for command element in XML bodies"""
+
+    COMMAND_RE = re.compile(COMMAND_RE_TXT, re.IGNORECASE | re.DOTALL)
+    """regex object to search for command element in XML bodies"""
+
+    SESSION_RE_TXT = r'<session>(.*?)</session>'
+    """text string to search for session element in XML bodies"""
+
+    SESSION_RE = re.compile(SESSION_RE_TXT, re.IGNORECASE | re.DOTALL)
+    """regex object to search for session element in XML bodies"""
+
+    VERSION_RE_TXT = r'<server_version>(.*?)</server_version>'
+    """text string to search for server_version element in XML bodies"""
+
+    VERSION_RE = re.compile(VERSION_RE_TXT, re.IGNORECASE | re.DOTALL)
+    """regex object to search for server_version element in XML bodies"""
 
     HTTP_DEBUG = False
+    """print requests package debug or not"""
+
     HTTP_RETRY_COUNT = 5
+    """number of times to retry HTTP GET/POST's if the connection times out/fails"""
+
     HTTP_AUTH_RETRY = True
+    """retry HTTP GET/POST's with username/password if session_id fails or not"""
 
     STATS_LOOP_ENABLED = False
+    """enable the statistics loop thread or not"""
+
     STATS_LOOP_SLEEP_SEC = 5
+    """number of seconds to sleep in between printing the statistics when stats_loop_enabled is True"""
+
     STATS_LOOP_TARGETS = [
         {'Version': 'Settings/Version'},
         {'Active Questions': 'Active Question Cache/Active Question Estimate'},
@@ -115,6 +174,7 @@ class Session(object):
         {'Processes': 'System Performance Info/ProcessCount'},
         {'Memory Available': 'percentage(System Performance Info/PhysicalAvailable,System Performance Info/PhysicalTotal)'},
     ]
+    """list of dictionaries with the key being the section of info.json to print info from, and the value being the item with in that section to print the value"""
 
     mylog = logging.getLogger("api.session")
     authlog = logging.getLogger("api.session.auth")
@@ -136,7 +196,7 @@ class Session(object):
         self.httplog = logging.getLogger(self.qualname + ".http")
         self.bodyhttplog = logging.getLogger(self.qualname + ".http.body")
 
-        # kwargs overrides
+        # kwargs overrides for object properties
         self.SOAP_REQUEST_HEADERS = kwargs.get(
             'soap_request_headers', self.SOAP_REQUEST_HEADERS)
         self.HTTP_DEBUG = kwargs.get('http_debug', False)
@@ -168,16 +228,31 @@ class Session(object):
 
     @property
     def session_id(self):
+        """Property to fetch the session_id for this object
+
+        Returns
+        -------
+        self._session_id : str
+        """
         return self._session_id
 
     @session_id.setter
     def session_id(self, value):
+        """Setter to update the session_id for this object"""
         if self.session_id != value:
             self._session_id = value
             self.authlog.debug("Session ID updated to: {}".format(value))
 
     @property
     def is_auth(self):
+        """Property to determine if there is a valid session_id or username and password stored in this object
+
+        Returns
+        -------
+        bool
+            * True: if self._session_id or self._username and _self.password are set
+            * False: if not
+        """
         auth = False
         if self._session_id:
             auth = True
@@ -186,6 +261,15 @@ class Session(object):
         return auth
 
     def logout(self, all_session_ids=False):
+        """Logout a given session_id from Tanium. If not session_id currently set, it will authenticate to get one.
+
+        Parameters
+        ----------
+        all_session_ids : bool, optional
+            * default: False
+            * False: only log out the current session id for the current user
+            * True: log out ALL session id's associated for the current user
+        """
         self._check_auth()
 
         if not self.session_id:
@@ -218,9 +302,26 @@ class Session(object):
         self.session_id = ''
 
     def authenticate(self, username=None, password=None, session_id=None, **kwargs):
-        '''
-        Authenticate against a Tanium Server using a username/password or a session ID
+        """Authenticate against a Tanium Server using a username/password or a session ID
 
+        Parameters
+        ----------
+        username : str, optional
+            * default: None
+            * username to authenticate as
+        password : str, optional
+            * default: None
+            * password for `username`
+        session_id : str, optional
+            * default: None
+            * session_id to authenticate with, this will be used in favor of username/password if all 3 are supplied.
+        persistent: bool, optional
+            * default: False
+            * False: do not request a persistent session (returns a session_id that expires 5 minutes after last use)
+            * True: do request a persistent (returns a session_id that expires 1 week after last use)
+
+        Notes
+        -----
         Can request a persistent session that will last up to 1 week when authenticating
         with username and password.
 
@@ -259,7 +360,7 @@ class Session(object):
 
         NTLM is enabled by default in 6.3 or greater and requires a persistent connection until a
         session is generated.
-        '''
+        """
         persistent = kwargs.get('persistent', False)
         auth_type = 'unknown'
 
@@ -320,6 +421,18 @@ class Session(object):
             self.authlog.debug(m(auth_type))
 
     def find(self, object_type, **kwargs):
+        """Creates and sends a GetObject XML Request body from `object_type` and parses the response into an appropriate :mod:`taniumpy` object
+
+        Parameters
+        ----------
+        obj : :class:`taniumpy.object_types.base.BaseType`
+            * object to find
+
+        Returns
+        -------
+        obj : :class:`taniumpy.object_types.base.BaseType`
+            * found objects
+        """
         request_body = self._create_get_object_body(object_type, **kwargs)
         self.request_body = request_body
         response_body = self._get_response(request_body)
@@ -328,6 +441,18 @@ class Session(object):
         return obj
 
     def save(self, obj, **kwargs):
+        """Creates and sends a UpdateObject XML Request body from `obj` and parses the response into an appropriate :mod:`taniumpy` object
+
+        Parameters
+        ----------
+        obj : :class:`taniumpy.object_types.base.BaseType`
+            * object to save
+
+        Returns
+        -------
+        obj : :class:`taniumpy.object_types.base.BaseType`
+            * saved object
+        """
         request_body = self._create_update_object_body(obj, **kwargs)
         self.request_body = request_body
         response_body = self._get_response(request_body)
@@ -336,6 +461,18 @@ class Session(object):
         return obj
 
     def add(self, obj, **kwargs):
+        """Creates and sends a AddObject XML Request body from `obj` and parses the response into an appropriate :mod:`taniumpy` object
+
+        Parameters
+        ----------
+        obj : :class:`taniumpy.object_types.base.BaseType`
+            * object to add
+
+        Returns
+        -------
+        obj : :class:`taniumpy.object_types.base.BaseType`
+            * added object
+        """
         request_body = self._create_add_object_body(obj, **kwargs)
         self.request_body = request_body
         response_body = self._get_response(request_body)
@@ -344,6 +481,18 @@ class Session(object):
         return obj
 
     def delete(self, obj, **kwargs):
+        """Creates and sends a DeleteObject XML Request body from `obj` and parses the response into an appropriate :mod:`taniumpy` object
+
+        Parameters
+        ----------
+        obj : :class:`taniumpy.object_types.base.BaseType`
+            * object to delete
+
+        Returns
+        -------
+        obj : :class:`taniumpy.object_types.base.BaseType`
+            * deleted object
+        """
         request_body = self._create_delete_object_body(obj, **kwargs)
         self.request_body = request_body
         response_body = self._get_response(request_body)
@@ -352,6 +501,18 @@ class Session(object):
         return obj
 
     def run_plugin(self, obj, **kwargs):
+        """Creates and sends a RunPlugin XML Request body from `obj` and parses the response into an appropriate :mod:`taniumpy` object
+
+        Parameters
+        ----------
+        obj : :class:`taniumpy.object_types.base.BaseType`
+            * object to run
+
+        Returns
+        -------
+        obj : :class:`taniumpy.object_types.base.BaseType`
+            * results from running object
+        """
         request_body = self._create_run_plugin_object_body(obj, **kwargs)
         self.request_body = request_body
         response_body = self._get_response(request_body)
@@ -360,6 +521,18 @@ class Session(object):
         return obj
 
     def get_result_info(self, obj, **kwargs):
+        """Creates and sends a GetResultInfo XML Request body from `obj` and parses the response into an appropriate :mod:`taniumpy` object
+
+        Parameters
+        ----------
+        obj : :class:`taniumpy.object_types.base.BaseType`
+            * object to get result info for
+
+        Returns
+        -------
+        obj : :class:`taniumpy.object_types.result_info.ResultInfo`
+            * ResultInfo for `obj`
+        """
         request_body = self._create_get_result_info_body(obj, **kwargs)
         self.request_body = request_body
         response_body = self._get_response(request_body)
@@ -371,6 +544,19 @@ class Session(object):
         return obj
 
     def get_result_data(self, obj, **kwargs):
+        """Creates and sends a GetResultData XML Request body from `obj` and parses the response into an appropriate :mod:`taniumpy` object
+
+        Parameters
+        ----------
+        obj : :class:`taniumpy.object_types.base.BaseType`
+            * object to get result set for
+
+        Returns
+        -------
+        obj : :class:`taniumpy.object_types.result_set.ResultSet` or str
+            * if export_id element found in `obj`, element text value is extracted and returned as str
+            * otherwise, `obj` will be the ResultSet for `obj`
+        """
         request_body = self._create_get_result_data_body(obj, **kwargs)
         self.request_body = request_body
         response_body = self._get_response(request_body)
@@ -382,10 +568,35 @@ class Session(object):
         return obj
 
     def get_server_info(self, port=None, fallback_port=444, **kwargs):
-        self._check_auth()
+        """Gets the /info.json
 
-        # 6.2 /info.json is only available on soap port (default port: 444)
-        # 6.5 /info.json is only available on server port (default port: 443)
+        Parameters
+        ----------
+        port : int, optional
+            * default: None
+            * port to attempt getting /info.json from, if not specified will use self.port
+        fallback_port : int, optional
+            * default: 444
+            * fallback port to attempt getting /info.json from if `port` fails
+
+        Returns
+        -------
+        body : dict
+            * raw json response converted into python dict
+            * 'diags_flat': info.json flattened out into an easier to use structure for python handling
+            * 'server_info_pass_msgs': messages about successfully retrieving info.json
+            * 'server_info_fail_msgs': messages about failing to retrieve info.json
+
+        See Also
+        --------
+        :func:`pytan.sessions.Session._flatten_server_info` : method to flatten the dictionary received from info.json into a python friendly format
+
+        Notes
+        -----
+            * 6.2 /info.json is only available on soap port (default port: 444)
+            * 6.5 /info.json is only available on server port (default port: 443)
+        """
+        self._check_auth()
 
         url = self.INFO_RES
         if port is None:
@@ -430,6 +641,14 @@ class Session(object):
         return body
 
     def get_server_version(self):
+        """Tries to parse the server version from /info.json
+
+        Returns
+        -------
+        str
+            * str containing server version from /info.json
+        """
+
         if getattr(self, 'server_version', ''):
             return self.server_version
 
@@ -460,6 +679,17 @@ class Session(object):
         return server_version
 
     def get_server_stats(self):
+        """Creates a str containing a number of stats gathered from /info.json
+
+        Returns
+        -------
+        str
+            * str containing stats from /info.json
+
+        See Also
+        --------
+        :data:`pytan.sessions.Session.STATS_LOOP_TARGETS` : list of dict containing stat keys to pull from /info.json
+        """
         try:
             self._check_auth()
         except:
@@ -476,21 +706,80 @@ class Session(object):
         return stats_text
 
     def enable_stats_loop(self, sleep=None):
+        """Enables the stats loop thread, which will print out the results of :func:`pytan.sessions.Session.get_server_stats` every :data:`pytan.sessions.Session.STATS_LOOP_SLEEP_SEC`
+
+        Parameters
+        ----------
+        sleep : int, optional
+            * when enabling the stats loop, update :data:`pytan.sessions.Session.STATS_LOOP_SLEEP_SEC` with `sleep`
+
+        See Also
+        --------
+        :func:`pytan.sessions.Session._stats_loop` : method started as a thread which checks self.STATS_LOOP_ENABLED before running :func:`pytan.sessions.Session.get_server_stats`
+        """
         self.STATS_LOOP_ENABLED = True
         if isinstance(sleep, int):
             self.STATS_LOOP_SLEEP_SEC = sleep
 
     def disable_stats_loop(self, sleep=None):
+        """Disables the stats loop thread, which will print out the results of :func:`pytan.sessions.Session.get_server_stats` every :data:`pytan.sessions.Session.STATS_LOOP_SLEEP_SEC`
+
+        Parameters
+        ----------
+        sleep : int, optional
+            * when disabling the stats loop, update :data:`pytan.sessions.Session.STATS_LOOP_SLEEP_SEC` with `sleep`
+
+        See Also
+        --------
+        :func:`pytan.sessions.Session._stats_loop` : method started as a thread which checks self.STATS_LOOP_ENABLED before running :func:`pytan.sessions.Session.get_server_stats`
+        """
         self.STATS_LOOP_ENABLED = False
         if isinstance(sleep, int):
             self.STATS_LOOP_SLEEP_SEC = sleep
 
     def http_get(self, url, **kwargs):
-        '''
-        This is an authenticated HTTP get method, added for getting server side exports
-        It will always forcibly use the authentication credentials that are stored in the
-        current object.
-        '''
+        """This is an authenticated HTTP GET method. It will always forcibly use the authentication credentials that are stored in the current object when performing an HTTP GET.
+
+        Parameters
+        ----------
+        url : str
+            * url to fetch on the server
+        host: str, optional
+            * default: self.server
+            * host to connect to
+        port: int, optional
+            * default: self.port
+            * port to connect to
+        headers: dict, optional
+            * default: {}
+            * headers to supply as part of GET request
+        connect_timeout: int, optional
+            * default: self.SOAP_CONNECT_TIMEOUT_SEC
+            * timeout in seconds for connection to host
+        response_timeout: int, optional
+            * default: self.SOAP_RESPONSE_TIMEOUT_SEC
+            * timeout in seconds for response from host
+        debug: bool, optional
+            * default: self.HTTP_DEBUG
+            * False: do not print requests debug messages
+            * True: print requests debug messages
+        auth_retry: bool, optional
+            * default: self.HTTP_AUTH_RETRY
+            * True: retry authentication with username/password if session_id fails
+            * False: throw exception if session_id fails
+        retry_count: int, optional
+            * default: self.HTTP_RETRY_COUNT
+            * number of times to retry the GET request if the server fails to respond properly or in time
+
+        Returns
+        -------
+        body : str
+            * str containing body of response from server
+
+        See Also
+        --------
+        :func:`pytan.sessions.Session._http_get` : private method used to perform the actual HTTP GET
+        """
         self._check_auth()
 
         headers = kwargs.get('headers', {})
@@ -538,12 +827,52 @@ class Session(object):
         return body
 
     def http_post(self, **kwargs):
-        '''
-        This is an authenticated HTTP post method. It will always forcibly use the authentication
-        credentials that are stored in the current object.
+        """This is an authenticated HTTP POST method. It will always forcibly use the authentication credentials that are stored in the current object when performing an HTTP POST.
 
-        TODO: add params
-        '''
+        Parameters
+        ----------
+        url : str, optional
+            * default: self.SOAP_RES
+            * url to fetch on the server
+        host: str, optional
+            * default: self.server
+            * host to connect to
+        port: int, optional
+            * default: self.port
+            * port to connect to
+        headers: dict, optional
+            * default: {}
+            * headers to supply as part of POST request
+        body: str, optional
+            * default: ''
+            * body to send as part of the POST request
+        connect_timeout: int, optional
+            * default: self.SOAP_CONNECT_TIMEOUT_SEC
+            * timeout in seconds for connection to host
+        response_timeout: int, optional
+            * default: self.SOAP_RESPONSE_TIMEOUT_SEC
+            * timeout in seconds for response from host
+        debug: bool, optional
+            * default: self.HTTP_DEBUG
+            * False: do not print requests debug messages
+            * True: print requests debug messages
+        auth_retry: bool, optional
+            * default: self.HTTP_AUTH_RETRY
+            * True: retry authentication with username/password if session_id fails
+            * False: throw exception if session_id fails
+        retry_count: int, optional
+            * default: self.HTTP_RETRY_COUNT
+            * number of times to retry the POST request if the server fails to respond properly or in time
+
+        Returns
+        -------
+        body : str
+            * str containing body of response from server
+
+        See Also
+        --------
+        :func:`pytan.sessions.Session._http_post` : private method used to perform the actual HTTP POST
+        """
         self._check_auth()
 
         headers = kwargs.get('headers', {})
@@ -591,41 +920,37 @@ class Session(object):
 
         return body
 
-    def _replace_auth(self, headers):
-        for k in dict(headers):
-            if k in ['username', 'password', 'session']:
-                self.authlog.debug("Removing header {!r}".format(k))
-                headers.pop(k)
-
-        if self._session_id:
-            headers['session'] = self._session_id
-            self.authlog.debug("Using session ID for authentication headers")
-
-        elif self._username and self._password:
-            headers['username'] = b64encode(self._username)
-            headers['password'] = b64encode(self._password)
-            self.authlog.debug("Using Username/Password for authentication headers")
-        return headers
-
-    def _full_url(self, url, **kwargs):
-        host = kwargs.get('host', self.server)
-        port = kwargs.get('port', self.port)
-        full_url = "https://{0}:{1}/{2}".format(host, port, url)
-        return full_url
-
-    def _clean_headers(self, headers=None):
-        clean_headers = dict(headers or {})
-        if 'password' in clean_headers:
-            clean_headers['password'] = '**PASSWORD**'
-
-        return_headers = {}
-        return_headers.update(self.REQ_SESSION.headers)
-        return_headers.update(clean_headers)
-        return return_headers
-
     def _http_get(self, host, port, url, headers=None, connect_timeout=15,
                   response_timeout=180, debug=False):
+        """This is an HTTP GET method that utilizes the :mod:`requests` package.
 
+        Parameters
+        ----------
+        host: str
+            * host to connect to
+        port: int
+            * port to connect to
+        url : str
+            * url to fetch on the server
+        headers: dict, optional
+            * default: None
+            * headers to supply as part of POST request
+        connect_timeout: int, optional
+            * default: 15
+            * timeout in seconds for connection to host
+        response_timeout: int, optional
+            * default: 180
+            * timeout in seconds for response from host
+        debug: bool, optional
+            * default: False
+            * False: do not print requests debug messages
+            * True: print requests debug messages
+
+        Returns
+        -------
+        body : str
+            * str containing body of response from server
+        """
         full_url = self._full_url(host=host, port=port, url=url)
 
         self.httplog.debug("HTTP request: GET to {}".format(full_url))
@@ -673,7 +998,42 @@ class Session(object):
 
     def _http_post(self, host, port, url, body=None, headers=None, connect_timeout=15,
                    response_timeout=180, debug=False):
+        """This is an HTTP POST method that utilizes the :mod:`requests` package.
 
+        Parameters
+        ----------
+        host: str
+            * host to connect to
+        port: int
+            * port to connect to
+        url : str
+            * url to fetch on the server
+        body: str, optional
+            * default: None
+            * body to send as part of the POST request
+        headers: dict, optional
+            * default: None
+            * headers to supply as part of POST request
+        connect_timeout: int, optional
+            * default: 15
+            * timeout in seconds for connection to host
+        response_timeout: int, optional
+            * default: 180
+            * timeout in seconds for response from host
+        debug: bool, optional
+            * default: False
+            * False: do not print requests debug messages
+            * True: print requests debug messages
+
+        Returns
+        -------
+        body : str
+            * str containing body of response from server
+
+        See Also
+        --------
+        :func:`pytan.xml_clean.xml_cleaner` : function to remove invalid/bad characters from XML responses
+        """
         full_url = self._full_url(host=host, port=port, url=url)
 
         self.httplog.debug("HTTP request: POST to {}".format(full_url))
@@ -730,12 +1090,88 @@ class Session(object):
 
         return response_body
 
+    def _replace_auth(self, headers):
+        """Utility method for removing username, password, and/or session from supplied headers and replacing them with the current objects session or username and password
+
+        Parameters
+        ----------
+        headers : dict
+            * dict of key/value pairs for a set of headers for a given request
+
+        Returns
+        -------
+        headers : dict
+            * dict of key/value pairs for a set of headers for a given request
+        """
+        for k in dict(headers):
+            if k in ['username', 'password', 'session']:
+                self.authlog.debug("Removing header {!r}".format(k))
+                headers.pop(k)
+
+        if self._session_id:
+            headers['session'] = self._session_id
+            self.authlog.debug("Using session ID for authentication headers")
+
+        elif self._username and self._password:
+            headers['username'] = b64encode(self._username)
+            headers['password'] = b64encode(self._password)
+            self.authlog.debug("Using Username/Password for authentication headers")
+        return headers
+
+    def _full_url(self, url, **kwargs):
+        """Utility method for constructing a full url
+
+        Parameters
+        ----------
+        url : str
+            * url to use in string
+        host : str, optional
+            * default: self.server
+            * hostname/IP address to use in string
+        port : str, optional
+            * default: self.port
+            * port to use in string
+
+        Returns
+        -------
+        full_url : str
+            * full url in the form of https://$host:$port/$url
+        """
+        host = kwargs.get('host', self.server)
+        port = kwargs.get('port', self.port)
+        full_url = "https://{0}:{1}/{2}".format(host, port, url)
+        return full_url
+
+    def _clean_headers(self, headers=None):
+        """Utility method for getting the headers for the current request, combining them with the session headers used for every request, and obfuscating the value of any 'password' header.
+
+        Parameters
+        ----------
+        headers : dict
+            * dict of key/value pairs for a set of headers for a given request
+
+        Returns
+        -------
+        headers : dict
+            * dict of key/value pairs for a set of cleaned headers for a given request
+        """
+        clean_headers = dict(headers or {})
+        return_headers = {}
+        return_headers.update(self.REQ_SESSION.headers)
+        return_headers.update(clean_headers)
+        if 'password' in return_headers:
+            return_headers['password'] = '**PASSWORD**'
+
+        return return_headers
+
     def _start_stats_thread(self):
+        """Utility method starting the :func:`pytan.sessions.Session._stats_loop` method in a threaded daemon"""
         self.stats_thread = threading.Thread(target=self._stats_loop)
         self.stats_thread.daemon = True
         self.stats_thread.start()
 
     def _stats_loop(self):
+        """Utility method for logging server stats via :func:`pytan.sessions.Session.get_server_stats` every self.STATS_LOOP_SLEEP_SEC"""
         while True:
             if self.STATS_LOOP_ENABLED:
                 server_stats = self.get_server_stats()
@@ -743,6 +1179,18 @@ class Session(object):
             time.sleep(self.STATS_LOOP_SLEEP_SEC)
 
     def _flatten_server_info(self, structure):
+        """Utility method for flattening the JSON structure for info.json into a more python usable format
+
+        Parameters
+        ----------
+        structure
+            * dict/tuple/list to flatten
+
+        Returns
+        -------
+        flattened
+            * the dict/tuple/list flattened out
+        """
         flattened = structure
         if isinstance(structure, dict):
             for k, v in flattened.iteritems():
@@ -754,10 +1202,37 @@ class Session(object):
         return flattened
 
     def _get_percentage(self, part, whole):
+        """Utility method for getting percentage of part out of whole
+
+        Parameters
+        ----------
+        part: int, float
+        whole: int, float
+
+        Returns
+        -------
+        str : the percentage of part out of whole in 2 decimal places
+        """
         f = 100 * float(part) / float(whole)
         return "{0:.2f}%".format(f)
 
     def _find_stat_target(self, target, diags):
+        """Utility method for finding a target in info.json and returning the value, optionally performing a percentage calculation on two values if the target[0] starts with percentage(
+
+        Parameters
+        ----------
+        target : list
+            * index0 : label : human friendly name to refer to search_path
+            * index1 : search_path : / seperated search path to find a given value from info.json
+        diags : dict
+            * flattened dictionary of info.json diagnostics
+
+        Returns
+        -------
+        dict
+            * label : same as provided in `target` index0 (label)
+            * result : value resolved from :func:`pytan.sessions.Session._resolve_stat_target` for `target` index1 (search_path)
+        """
         try:
             label, search_path = target.items()[0]
         except Exception as e:
@@ -777,6 +1252,20 @@ class Session(object):
         return {label: result}
 
     def _resolve_stat_target(self, search_path, diags):
+        """Utility method for resolving the value of search_path in info.json and returning the value
+
+        Parameters
+        ----------
+        search_path : str
+            * / seperated search path to find a given value from info.json
+        diags : dict
+            * flattened dictionary of info.json diagnostics
+
+        Returns
+        -------
+        str
+            * value resolved from `diags` for `search_path`
+        """
         try:
             for i in search_path.split('/'):
                 diags = diags.get(i)
@@ -785,6 +1274,22 @@ class Session(object):
         return diags
 
     def _build_body(self, command, object_list, **kwargs):
+        """Utility method for building an XML Request Body
+
+        Parameters
+        ----------
+        command : str
+            * text to use in command node when building template
+        object_list : str
+            * XML string to use in object list node when building template
+        kwargs : dict, optional
+            * any number of attributes that can be set via :class:`taniumpy.object_types.options.Options` that control the servers response.
+
+        Returns
+        -------
+        body : str
+            * The XML request body created from the string.template self.REQUEST_BODY_TEMPLATE
+        """
         options_obj = taniumpy.Options()
         for k, v in kwargs.iteritems():
             if hasattr(options_obj, k):
@@ -802,31 +1307,115 @@ class Session(object):
         return body
 
     def _create_run_plugin_object_body(self, obj, **kwargs):
+        """Utility method for building an XML Request Body to run a plugin
+
+        Parameters
+        ----------
+        obj : :class:`taniumpy.object_types.base.BaseType`
+            * object to convert into XML
+        kwargs : dict, optional
+            * any number of attributes that can be set via :class:`taniumpy.object_types.options.Options` that control the servers response.
+
+        Returns
+        -------
+        obj_body : str
+            * The XML request body created from :func:`pytan.sessions.Session._build_body`
+        """
         object_list = obj.toSOAPBody(minimal=True)
         obj_body = self._build_body(self.RUN_PLUGIN_CMD, object_list, **kwargs)
         return obj_body
 
     def _create_add_object_body(self, obj, **kwargs):
+        """Utility method for building an XML Request Body to add an object
+
+        Parameters
+        ----------
+        obj : :class:`taniumpy.object_types.base.BaseType`
+            * object to convert into XML
+        kwargs : dict, optional
+            * any number of attributes that can be set via :class:`taniumpy.object_types.options.Options` that control the servers response.
+
+        Returns
+        -------
+        obj_body : str
+            * The XML request body created from :func:`pytan.sessions.Session._build_body`
+        """
         object_list = obj.toSOAPBody(minimal=True)
         obj_body = self._build_body(self.ADD_OBJECT_CMD, object_list, **kwargs)
         return obj_body
 
     def _create_delete_object_body(self, obj, **kwargs):
+        """Utility method for building an XML Request Body to delete an object
+
+        Parameters
+        ----------
+        obj : :class:`taniumpy.object_types.base.BaseType`
+            * object to convert into XML
+        kwargs : dict, optional
+            * any number of attributes that can be set via :class:`taniumpy.object_types.options.Options` that control the servers response.
+
+        Returns
+        -------
+        obj_body : str
+            * The XML request body created from :func:`pytan.sessions.Session._build_body`
+        """
         object_list = obj.toSOAPBody(minimal=True)
         obj_body = self._build_body(self.DELETE_OBJECT_CMD, object_list, **kwargs)
         return obj_body
 
     def _create_get_result_info_body(self, obj, **kwargs):
+        """Utility method for building an XML Request Body to get result info for an object
+
+        Parameters
+        ----------
+        obj : :class:`taniumpy.object_types.base.BaseType`
+            * object to convert into XML
+        kwargs : dict, optional
+            * any number of attributes that can be set via :class:`taniumpy.object_types.options.Options` that control the servers response.
+
+        Returns
+        -------
+        obj_body : str
+            * The XML request body created from :func:`pytan.sessions.Session._build_body`
+        """
         object_list = obj.toSOAPBody(minimal=True)
         obj_body = self._build_body(self.GET_RESULT_INFO_CMD, object_list, **kwargs)
         return obj_body
 
     def _create_get_result_data_body(self, obj, **kwargs):
+        """Utility method for building an XML Request Body to get result data for an object
+
+        Parameters
+        ----------
+        obj : :class:`taniumpy.object_types.base.BaseType`
+            * object to convert into XML
+        kwargs : dict, optional
+            * any number of attributes that can be set via :class:`taniumpy.object_types.options.Options` that control the servers response.
+
+        Returns
+        -------
+        obj_body : str
+            * The XML request body created from :func:`pytan.sessions.Session._build_body`
+        """
         object_list = obj.toSOAPBody(minimal=True)
         obj_body = self._build_body(self.GET_RESULT_DATA_CMD, object_list, **kwargs)
         return obj_body
 
     def _create_get_object_body(self, object_or_type, **kwargs):
+        """Utility method for building an XML Request Body to get an object
+
+        Parameters
+        ----------
+        obj : :class:`taniumpy.object_types.base.BaseType`
+            * object to convert into XML
+        kwargs : dict, optional
+            * any number of attributes that can be set via :class:`taniumpy.object_types.options.Options` that control the servers response.
+
+        Returns
+        -------
+        obj_body : str
+            * The XML request body created from :func:`pytan.sessions.Session._build_body`
+        """
         if isinstance(object_or_type, taniumpy.BaseType):
             object_list = object_or_type.toSOAPBody(minimal=True)
         else:
@@ -836,19 +1425,54 @@ class Session(object):
         return obj_body
 
     def _create_update_object_body(self, obj, **kwargs):
+        """Utility method for building an XML Request Body to update an object
+
+        Parameters
+        ----------
+        obj : :class:`taniumpy.object_types.base.BaseType`
+            * object to convert into XML
+        kwargs : dict, optional
+            * any number of attributes that can be set via :class:`taniumpy.object_types.options.Options` that control the servers response.
+
+        Returns
+        -------
+        obj_body : str
+            * The XML request body created from :func:`pytan.sessions.Session._build_body`
+        """
         object_list = obj.toSOAPBody(minimal=True)
         obj_body = self._build_body(self.UPDATE_OBJECT_CMD, object_list, **kwargs)
         return obj_body
 
     def _check_auth(self):
+        """Utility method to check if authentication has been done yet, and throw an exception if not """
         if not self.is_auth:
             class_name = self.__class__.__name__
             err = "Not yet authenticated, use {}.authenticate()!".format
             raise pytan.exceptions.AuthorizationError(err(class_name))
 
     def _parse_response_for_regex(self, body, regex, fail=True):
-        # using regex is faster than ET chewing the body in and out
-        # this matters on LARGE return bodies
+        """Utility method to use a regex to get an element from an XML body
+
+        Parameters
+        ----------
+        body : str
+            * XML to search
+        regex : re object
+            * regex object to search for in body
+        fail : bool, optional
+            * default: True
+            * True: throw exception if unable to find any matches for `regex` in `body`
+            * False do not throw exception if unable to find any matches for `regex` in `body`
+
+        Returns
+        -------
+        ret : str
+            * The first value that matches `regex`
+
+        Notes
+        -----
+            * Using regex is WAY faster than ElementTree chewing the body in and out, this matters a LOT on LARGE return bodies
+        """
         ret = regex.search(body)
         if not ret and fail:
             m = "Unable to find {} in body: {}".format
@@ -858,6 +1482,18 @@ class Session(object):
         return ret
 
     def _extract_export_id(self, el):
+        """Utility method to get the 'export_id' element from an ElementTree object
+
+        Parameters
+        ----------
+        el : ElementTree object
+            * ElementTree object to search for 'export_id' in
+
+        Returns
+        -------
+        ret : str
+            * The text value contained in the 'export_id' element, if found
+        """
         ret = None
         # if there is an export_id in the response_body, return just results of that
         export_id_el = el.find('.//export_id')
@@ -866,6 +1502,19 @@ class Session(object):
         return ret
 
     def _extract_cdata_el(self, response_body):
+        """Utility method to get the 'ResultXML' element from an XML body
+
+        Parameters
+        ----------
+        response_body : str
+            * XML body to search for the 'ResultXML' element in
+
+        Returns
+        -------
+        ret : str or ElementTree object
+            * str if 'export_id' element found in XML
+            * ElementTree object of ResultXML element otherwise
+        """
         el = ET.fromstring(response_body)
 
         # find the ResultXML node
@@ -896,6 +1545,36 @@ class Session(object):
         return cdata_el
 
     def _get_response(self, request_body, **kwargs):
+        """This is a wrapper around :func:`pytan.sessions.Session.http_post` for SOAP XML requests and responses.
+
+        This method will update self.session_id if the response contains a different session_id than what is currently in this object.
+
+        Parameters
+        ----------
+        request_body : str
+            * the XML request body to send to the server
+        connect_timeout: int, optional
+            * default: self.SOAP_CONNECT_TIMEOUT_SEC
+            * timeout in seconds for connection to host
+        response_timeout: int, optional
+            * default: self.SOAP_RESPONSE_TIMEOUT_SEC
+            * timeout in seconds for response from host
+        retry_auth: bool, optional
+            * default: True
+            * True: retry authentication with username/password if session_id fails
+            * False: throw exception if session_id fails
+        retry_count: int, optional
+            * number of times to retry the request if the server fails to respond properly or in time
+
+        Returns
+        -------
+        body : str
+            * str containing body of response from server
+
+        See Also
+        --------
+        :func:`pytan.sessions.Session.http_post` : wrapper method used to perform the HTTP POST
+        """
         retry_auth = kwargs.get('retry_auth', True)
 
         self._check_auth()
@@ -929,8 +1608,8 @@ class Session(object):
         elapsed = received - sent
         self.last['elapsed'] = elapsed
 
-        m = "HTTP Response: Timing info -- SENT: {}, RECEIVED: {}, ELAPSED: {}".format
-        self.mylog.debug(m(sent, received, elapsed))
+        # m = "HTTP Response: Timing info -- SENT: {}, RECEIVED: {}, ELAPSED: {}".format
+        # self.mylog.debug(m(sent, received, elapsed))
 
         response_command = self._parse_response_for_regex(response_body, self.COMMAND_RE)
         self.last['response_command'] = response_command
@@ -967,8 +1646,9 @@ class Session(object):
         self.session_id = self._parse_response_for_regex(response_body, self.SESSION_RE)
 
         # check to see if server_version set in response (6.5+ only)
-        server_version = self._parse_response_for_regex(response_body, self.VERSION_RE, False)
-        if server_version:
-            self.server_version = server_version
+        if not self.server_version:
+            server_version = self._parse_response_for_regex(response_body, self.VERSION_RE, False)
+            if server_version and self.server_version != server_version:
+                self.server_version = server_version
 
         return response_body

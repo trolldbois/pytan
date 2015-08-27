@@ -12,15 +12,14 @@ sys.dont_write_bytecode = True
 
 mylog = logging.getLogger("XMLCleaner")
 
-
-class EncodingUnknownError(Exception):
-    pass
-
-
-'''
-Source: http://www.w3.org/TR/REC-xml/#NT-Char
-
-Valid Unicode characters for XML documents:
+XML_1_0_VALID_HEX = [
+    [0x0009],  # TAB
+    [0x000A],  # LINEFEED
+    [0x000D],  # CARRIAGE RETURN
+    [0x0020, 0xD7FF],  # VALID CHARACTER RANGE 1
+    [0xE000, 0xFFFD],  # VALID CHARACTER RANGE 2
+]
+"""Valid Unicode characters for XML documents:
     (any Unicode character, excluding the surrogate blocks, FFFE, and FFFF)
     #x9,
     #xA,
@@ -29,7 +28,15 @@ Valid Unicode characters for XML documents:
     [#xE000-#xFFFD],
     [#x10000-#x10FFFF]
 
-Restricted/discouraged Unicode characters for XML documents:
+Source: http://www.w3.org/TR/REC-xml/#NT-Char
+"""
+
+XML_1_0_RESTRICTED_HEX = [
+    [0x007F, 0x0084],  # one C0 control character and all but one C1 control
+    [0x0086, 0x009F],  # one C0 control character and all but one C1 control
+    [0xFDD0, 0xFDEF],  # control characters/permanently assigned to non-characters
+]
+"""Restricted/discouraged Unicode characters for XML documents:
     [#x7F-#x84],
     [#x86-#x9F],
     [#xFDD0-#xFDEF],
@@ -49,21 +56,9 @@ Restricted/discouraged Unicode characters for XML documents:
     [#xEFFFE-#xEFFFF],
     [#xFFFFE-#xFFFFF],
     [#x10FFFE-#x10FFFF]
-'''
 
-XML_1_0_VALID_HEX = [
-    [0x0009],  # TAB
-    [0x000A],  # LINEFEED
-    [0x000D],  # CARRIAGE RETURN
-    [0x0020, 0xD7FF],  # VALID CHARACTER RANGE 1
-    [0xE000, 0xFFFD],  # VALID CHARACTER RANGE 2
-]
-
-XML_1_0_RESTRICTED_HEX = [
-    [0x007F, 0x0084],  # one C0 control character and all but one C1 control
-    [0x0086, 0x009F],  # one C0 control character and all but one C1 control
-    [0xFDD0, 0xFDEF],  # control characters/permanently assigned to non-characters
-]
+Source: http://www.w3.org/TR/REC-xml/#NT-Char
+"""
 
 # If this python build supports unicode ranges above 10000, add to the valid range
 if sys.maxunicode > 0x10000:
@@ -81,15 +76,41 @@ for i in [hex(i) for i in range(1, 17)]:
 
 XML_1_0_VALID_UNI = ['-'.join([unichr(y) for y in x]) for x in XML_1_0_VALID_HEX]
 INVALID_UNICODE_RAW_RE = ur'[^{}]'.format(''.join(XML_1_0_VALID_UNI))
+"""The raw regex string to use when replacing invalid characters"""
+
 INVALID_UNICODE_RE = re.compile(INVALID_UNICODE_RAW_RE, re.U)
+"""The regex object to use when replacing invalid characters"""
 
 XML_1_0_RESTRICTED_UNI = ['-'.join([unichr(y) for y in x]) for x in XML_1_0_RESTRICTED_HEX]
 RESTRICTED_UNICODE_RAW_RE = ur'[{}]'.format(''.join(XML_1_0_RESTRICTED_UNI))
+"""The raw regex string to use when replacing restricted characters"""
+
 RESTRICTED_UNICODE_RE = re.compile(RESTRICTED_UNICODE_RAW_RE, re.U)
+"""The regex object to use when replacing restricted characters"""
+
 DEFAULT_REPLACEMENT = u'\uFFFD'
+"""The default character to use when replacing characters"""
 
 
 def replace_invalid_unicode(text, replacement=None):
+    """Replaces invalid unicode characters with `replacement`
+
+    Parameters
+    ----------
+    text : str
+        * str to clean
+    replacement : str, optional
+        * default: None
+        * if invalid characters found, they will be replaced with this
+        * if not supplied, will default to DEFAULT_REPLACEMENT
+
+    Returns
+    -------
+    str, cnt, RE : tuple
+        * str : the cleaned version of `text`
+        * cnt : the number of replacements that took place
+        * RE : the regex object that was used to do the replacements
+    """
     if replacement is None:
         replacement = DEFAULT_REPLACEMENT
     s, cnt = INVALID_UNICODE_RE.subn(replacement, text)
@@ -97,6 +118,24 @@ def replace_invalid_unicode(text, replacement=None):
 
 
 def replace_restricted_unicode(text, replacement=None):
+    """Replaces restricted unicode characters with `replacement`
+
+    Parameters
+    ----------
+    text : str
+        * str to clean
+    replacement : str, optional
+        * default: None
+        * if restricted characters found, they will be replaced with this
+        * if not supplied, will default to DEFAULT_REPLACEMENT
+
+    Returns
+    -------
+    str, cnt, RE : tuple
+        * str : the cleaned version of `text`
+        * cnt : the number of replacements that took place
+        * RE : the regex object that was used to do the replacements
+    """
     if replacement is None:
         replacement = DEFAULT_REPLACEMENT
     s, cnt = RESTRICTED_UNICODE_RE.subn(replacement, text)
@@ -105,8 +144,30 @@ def replace_restricted_unicode(text, replacement=None):
 
 def xml_cleaner(s, encoding='utf-8', clean_restricted=True, log_messages=True,
                 show_bad_characters=False, **kwargs):
-    """removes invalid /restricted characters per XML 1.0 spec"""
+    """Removes invalid /restricted characters per XML 1.0 spec
 
+    Parameters
+    ----------
+    s : str
+        * str to clean
+    encoding : str, optional
+        * default: 'utf-8'
+        * encoding of `s`
+    clean_restricted : bool, optional
+        * default: True
+        * remove restricted characters from `s` or not
+    log_messages : bool, optional
+        * default: True
+        * log messages using python logging or not
+    show_bad_characters : bool, optional
+        * default: False
+        * log bad character matches or not
+
+    Returns
+    -------
+    str
+        * the cleaned version of `s`
+    """
     if type(s) == str:
         try:
             # if orig_str is not unicode, decode the string into unicode with encoding

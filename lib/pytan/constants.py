@@ -705,5 +705,5 @@ SSE_CRASH_MAP = [
     {'major': 6, 'minor': 5, 'revision': 314, 'build': 4300},
 ]
 """
-Mapping of versions to watch out for crashes/handle bugs
+Mapping of versions to watch out for crashes/handle bugs for server side export
 """
