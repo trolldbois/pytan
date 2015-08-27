@@ -460,6 +460,11 @@ class Session(object):
         return server_version
 
     def get_server_stats(self):
+        try:
+            self._check_auth()
+        except:
+            return "Not yet authenticated!"
+
         si = self.get_server_info()
         try:
             diags = si['diags_flat']
