@@ -126,7 +126,7 @@ def process_handler_args(parser, all_args):
     handler_grp_names = ['Handler Authentication', 'Handler Options']
     handler_opts = utils.get_grp_opts(parser, handler_grp_names)
     handler_args = {k: my_args.pop(k) for k in handler_opts}
-    # handler_args['session_lib'] = 'httplib'
+
     try:
         h = pytan.Handler(**handler_args)
         print str(h)
