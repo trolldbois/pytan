@@ -581,7 +581,7 @@ class Session(object):
 
         Returns
         -------
-        body : dict
+        info_dict : dict
             * raw json response converted into python dict
             * 'diags_flat': info.json flattened out into an easier to use structure for python handling
             * 'server_info_pass_msgs': messages about successfully retrieving info.json
@@ -611,34 +611,46 @@ class Session(object):
             'response_timeout', self.INFO_RESPONSE_TIMEOUT_SEC
         )
 
-        body = {}
+        info_body = ''
         server_info_pass_msgs = []
         server_info_fail_msgs = []
         ok_m = "Successfully retrieved server info from {}:{}/{}".format
         bad_m = "Failed to retrieve server info from {}:{}/{}, {}".format
+        json_fail_m = "Failed to parse server info from json, error: {}".format
+        diags_flat_fail_m = "Failed to flatten server info from json, error: {}".format
 
         try:
-            body = self.http_post(**req_args)
-            body = json.loads(body)
+            info_body = self.http_get(**req_args)
             server_info_pass_msgs.append(ok_m(self.server, port, self.INFO_RES))
         except Exception as e:
             self.mylog.debug(bad_m(self.server, port, self.INFO_RES, e))
             server_info_fail_msgs.append(bad_m(self.server, port, self.INFO_RES, e))
 
-        if not body:
+        if not info_body:
             req_args['port'] = fallback_port
             try:
-                body = self.http_post(**req_args)
-                body = json.loads(body)
+                info_body = self.http_post(**req_args)
                 server_info_pass_msgs.append(ok_m(self.server, port, self.INFO_RES))
             except Exception as e:
                 self.mylog.debug(bad_m(self.server, port, self.INFO_RES, e))
                 server_info_fail_msgs.append(bad_m(self.server, port, self.INFO_RES, e))
 
-        body['diags_flat'] = self._flatten_server_info(body.get('Diagnostics', []))
-        body['server_info_pass_msgs'] = server_info_pass_msgs
-        body['server_info_fail_msgs'] = server_info_fail_msgs
-        return body
+        try:
+            info_dict = json.loads(info_body)
+        except Exception as e:
+            info_dict = {'info_body_failed_body': info_body}
+            server_info_fail_msgs.append(json_fail_m(e))
+
+        try:
+            diagnostics = info_dict.get('Diagnostics', [])
+            info_dict['diags_flat'] = self._flatten_server_info(diagnostics)
+        except Exception as e:
+            info_dict['diags_flat'] = {}
+            server_info_fail_msgs.append(diags_flat_fail_m(e))
+
+        info_dict['server_info_pass_msgs'] = server_info_pass_msgs
+        info_dict['server_info_fail_msgs'] = server_info_fail_msgs
+        return info_dict
 
     def get_server_version(self):
         """Tries to parse the server version from /info.json
