@@ -2838,17 +2838,21 @@ def log_session_communication(h):
     h : Handler object
         * Handler object with session object containing last request and response body
     """
+    response_obj = h.session.LAST_REQUESTS_RESPONSE
+    request_body = response_obj.request.body
+    response_body = response_obj.text
+
     try:
-        req = xml_pretty(h.session.request_body)
+        req = xml_pretty(request_body)
     except Exception as e:
-        req = "Failed to prettify xml: {}, raw xml:\n{}".format(e, h.session.request_body)
+        req = "Failed to prettify xml: {}, raw xml:\n{}".format(e, request_body)
 
     prettylog.debug("Last HTTP request:\n{}".format(req))
 
     try:
-        resp = xml_pretty(h.session.response_body)
+        resp = xml_pretty(response_body)
     except Exception as e:
-        resp = "Failed to prettify xml: {}, raw xml:\n{}".format(e, h.session.response_body)
+        resp = "Failed to prettify xml: {}, raw xml:\n{}".format(e, response_body)
 
     prettylog.debug("Last HTTP response:\n{}".format(xml_pretty(resp)))
 

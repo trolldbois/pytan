@@ -6,6 +6,7 @@
   * bug fix: in pytan.handler.Handler.deploy_action(): fix packages created by Tanium SOAP API when adding an action so that they are hidden from the console. also ensure more of the attributes for the source package are copied into the new package for continuity.
   * bug fix: in pytan.handler.Handler._get_package_def(): fix for pytan.handler.Handler.deploy_action() when searching for packages by name -- if using a package that has in the past existed, had actions deployed against it that created hidden packages, then the actual visible package was deleted and re-created with the same name, _get_package_def() would actually target one of the hidden packages. added include_hidden_flag=0 to GetObject call in _get_package_def() to fix this. also added to pytan.handler.Handler.sensor_def() to stem possible similar issues for pytan.handler.Handler.ask_manual()
   * bug fix: in pytan.handler.Handler._parse_versioning(): Added notes re: server_version states and added server_version_bad_states. both checks for server_version will check against server_version_bad_states.
+  * bug fix: in pytan.utils.log_session_communication(): Update to use LAST_REQUESTS_RESPONSE object instead of XML body variables
   * enhancement: in pytan.session.Session.get_server_info(): added better error handling
   * enhancement: in pytan.handler.Handler.deploy_action(): added action_name and action_comment options
   * enhancement: in pytan.sessions.Session():
