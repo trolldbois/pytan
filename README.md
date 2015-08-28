@@ -14,7 +14,7 @@ This is a set of packages and scripts that provide a simple way for interfacing 
 All of the documentation linked below is also available under the doc/ directory.
 
   * [Full HTML documentation for PyTan](http://tanium.github.io/pytan)
-  * [Full PDF documentation for PyTan](doc/PyTan-2.1.0.pdf)
+  * [Full PDF documentation for PyTan](doc/pdf/PyTan-2.1.0.pdf)
   * [API Examples for PyTan](http://tanium.github.io/pytan/examples/pytan_examples.html)
   * [Command line Documentation for PyTan](http://tanium.github.io/pytan/_static/bin_doc/index.html)
 
