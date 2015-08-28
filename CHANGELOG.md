@@ -8,6 +8,23 @@
   * bug fix: in pytan.handler.Handler._parse_versioning(): Added notes re: server_version states and added server_version_bad_states. both checks for server_version will check against server_version_bad_states.
   * enhancement: in pytan.session.Session.get_server_info(): added better error handling
   * enhancement: in pytan.handler.Handler.deploy_action(): added action_name and action_comment options
+  * enhancement: in pytan.sessions.Session():
+    * move response_prunes in _get_response() to
+    self.BAD_RESPONSE_CMD_PRUNES
+    * renamed self.last to self.LAST_RESPONSE_INFO, add initial null
+    variable to Object level and doc
+    * renamed self.REQ_RESPONSE to self.LAST_REQUESTS_RESPONSE, add initial
+    null variable to Object level and doc
+    * add self.RECORD_ALL_REQUESTS to Object level and doc, controls
+    whether every Requests response object gets appended to
+    self.ALL_REQUESTS_RESPONSES, also add kwargs pass thru to init
+    * add self.ALL_REQUESTS_RESPONSES to Object level and doc
+    * rename self.request_body to self.LAST_XML_REQUEST_BODY, add initial
+    null variable to Object level and doc
+    * rename self.response_body to self.LAST_XML_RESPONSE_BODY, add initial
+    null variable to Object level and doc
+    * add initial null variables to Object level and doc for: server, port,
+    server_version
   * doc update: doc string updates all over the place
   * doc update: pointers to KB/Tanium
   * doc update: double quotes for windows
