@@ -2307,13 +2307,24 @@ class Handler(object):
         Returns
         -------
         dict, containing major, minor, revision, and build of tanium server version
+
+        Notes
+        -----
+        If pytan has not yet fetched info.json, then server_version will == "Not yet determined!"
+        force a call to self.session.get_server_version() to attempt to get info.json and parse
+        the version from that and update self.server_version with that value
+
+        If pytan is unable to fetch info.json properly for some reason,
+        then server_version will == "Unable to determine"
         """
-        if not self.server_version or self.server_version == "Not yet determined!":
+        server_version_bad_states = ["Not yet determined!", "Unable to determine"]
+
+        if not self.server_version or self.server_version in server_version_bad_states:
             self.server_version = self.session.get_server_version()
 
         v_keys = ['major', 'minor', 'revision', 'build']
 
-        if not self.server_version or self.server_version == "Not yet determined!":
+        if not self.server_version or self.server_version in server_version_bad_states:
             v_ints = [0, 0, 0, 0]
             v_dict = dict(zip(v_keys, v_ints))
         else:
