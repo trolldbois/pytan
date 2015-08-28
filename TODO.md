@@ -1,9 +1,9 @@
+  * DOC:
+
   * BUG:
-    * change deploy_action to return package_object that was created for said action, not package_object that was used as template
     * work on deploy action & start_seconds_from_now (a new action gets created at actual start time)
 
   * GEN:
-    * add custom name to deploy_action
     * add secondary loop for if any data == current result unavail/etc (MEDIUM)
     * Add method to get question progress (MEDIUM)
     * add print_user bin script (SMALL)
@@ -11,16 +11,7 @@
     * fix search attrs for cmdline scripts (HUGE/CORRELATIVE)
     * add non id/name/hash search support to get_$object.py (HUGE/CORRELATIVE)
     * question filters get params too?? (UNKNOWN)
-
-  * DOC:
-    * add to cmd line help: export type & export options must be at end of cmd line
-    * add console.wsdl to documentation via build script
-    * winbin doc note re double quotes and using batch scripts instead of py scripts directly
-    * add more doc notes/refs for dehumanize_*
-    * explain get == select col data, from == select row data (SMALL/DOC)
-    * add pointers to KB articles (SMALL/DOC)
-    * add readme.md to examples (SMALL/DOC)
-    * broken CR in folder name search regex match (SMALL) (limit in excel, 32k chars per cell)
+    * add json source for parameters in TSAT
 
   * TEST:
     * add validation results of testing against various platform versions for each release
