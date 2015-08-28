@@ -141,6 +141,8 @@ Utility Functions: TaniumPy objects
 .. autofunction:: pytan.utils.empty_obj
 .. autofunction:: pytan.utils.get_filter_obj
 .. autofunction:: pytan.utils.get_obj_params
+.. autofunction:: pytan.utils.copy_obj
+.. autofunction:: pytan.utils.copy_package_obj_for_action
 
 Utility Functions: Definition objects
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
