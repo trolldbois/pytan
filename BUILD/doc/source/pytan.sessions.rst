@@ -36,13 +36,6 @@ Session Attributes
 .. autoattribute:: pytan.sessions.Session.XMLNS
 .. autoattribute:: pytan.sessions.Session.REQUEST_BODY_BASE
 .. autoattribute:: pytan.sessions.Session.REQUEST_BODY_TEMPLATE
-.. autoattribute:: pytan.sessions.Session.GET_OBJECT_CMD
-.. autoattribute:: pytan.sessions.Session.UPDATE_OBJECT_CMD
-.. autoattribute:: pytan.sessions.Session.ADD_OBJECT_CMD
-.. autoattribute:: pytan.sessions.Session.DELETE_OBJECT_CMD
-.. autoattribute:: pytan.sessions.Session.GET_RESULT_INFO_CMD
-.. autoattribute:: pytan.sessions.Session.GET_RESULT_DATA_CMD
-.. autoattribute:: pytan.sessions.Session.RUN_PLUGIN_CMD
 .. autoattribute:: pytan.sessions.Session.AUTH_RES
 .. autoattribute:: pytan.sessions.Session.SOAP_RES
 .. autoattribute:: pytan.sessions.Session.INFO_RES
@@ -53,15 +46,21 @@ Session Attributes
 .. autoattribute:: pytan.sessions.Session.SOAP_CONNECT_TIMEOUT_SEC
 .. autoattribute:: pytan.sessions.Session.SOAP_RESPONSE_TIMEOUT_SEC
 .. autoattribute:: pytan.sessions.Session.SOAP_REQUEST_HEADERS
-.. autoattribute:: pytan.sessions.Session.COMMAND_RE
-.. autoattribute:: pytan.sessions.Session.SESSION_RE
-.. autoattribute:: pytan.sessions.Session.VERSION_RE
+.. autoattribute:: pytan.sessions.Session.ELEMENT_RE_TXT
 .. autoattribute:: pytan.sessions.Session.HTTP_DEBUG
 .. autoattribute:: pytan.sessions.Session.HTTP_RETRY_COUNT
 .. autoattribute:: pytan.sessions.Session.HTTP_AUTH_RETRY
 .. autoattribute:: pytan.sessions.Session.STATS_LOOP_ENABLED
 .. autoattribute:: pytan.sessions.Session.STATS_LOOP_SLEEP_SEC
 .. autoattribute:: pytan.sessions.Session.STATS_LOOP_TARGETS
+.. autoattribute:: pytan.sessions.Session.RECORD_ALL_REQUESTS
+.. autoattribute:: pytan.sessions.Session.ALL_REQUESTS_RESPONSES
+.. autoattribute:: pytan.sessions.Session.LAST_REQUESTS_RESPONSE
+.. autoattribute:: pytan.sessions.Session.LAST_RESPONSE_INFO
+.. autoattribute:: pytan.sessions.Session.BAD_RESPONSE_CMD_PRUNES
+.. autoattribute:: pytan.sessions.Session.server
+.. autoattribute:: pytan.sessions.Session.port
+.. autoattribute:: pytan.sessions.Session.server_version
 
 Session Methods
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -84,6 +83,7 @@ SOAP API Wrappers
 .. automethod:: pytan.sessions.Session.run_plugin
 .. automethod:: pytan.sessions.Session.get_result_info
 .. automethod:: pytan.sessions.Session.get_result_data
+.. automethod:: pytan.sessions.Session.get_result_data_sse
 
 Server Info / Version / Stats
 ***************************************************************
@@ -123,7 +123,6 @@ Utility Methods
 .. automethod:: pytan.sessions.Session._create_get_object_body
 .. automethod:: pytan.sessions.Session._create_update_object_body
 .. automethod:: pytan.sessions.Session._check_auth
-.. automethod:: pytan.sessions.Session._parse_response_for_regex
-.. automethod:: pytan.sessions.Session._extract_export_id
+.. automethod:: pytan.sessions.Session._regex_body_for_element
 .. automethod:: pytan.sessions.Session._extract_cdata_el
 .. automethod:: pytan.sessions.Session._get_response
