@@ -176,6 +176,41 @@ class Session(object):
     ]
     """list of dictionaries with the key being the section of info.json to print info from, and the value being the item with in that section to print the value"""
 
+    RECORD_ALL_REQUESTS = False
+    """Controls whether each requests response object is appended to the self.ALL_REQUESTS_RESPONSES list"""
+
+    ALL_REQUESTS_RESPONSES = []
+    """This list will be updated with each requests response object that was received"""
+
+    LAST_REQUESTS_RESPONSE = None
+    """This variable will be updated with the last requests response object that was received"""
+
+    LAST_RESPONSE_INFO = {}
+    """This variable will be updated with the information from the most recent call to _get_response()"""
+
+    LAST_XML_REQUEST_BODY = None
+    """This variable will be updated with the last XML request body"""
+
+    LAST_XML_RESPONSE_BODY = None
+    """This variable will be updated with the last XML response body"""
+
+    BAD_RESPONSE_CMD_PRUNES = [
+        '\n',
+        'XML Parse Error: ',
+        'SOAPProcessing Exception: class ',
+        'ERROR: 400 Bad Request'
+    ]
+    """List of strings to remove from commands in responses that do not match the response in the request"""
+
+    server = None
+    """server to connect to"""
+
+    port = None
+    """port to connect to"""
+
+    server_version = None
+    """version string of server, will be updated if get_server_version() is called"""
+
     mylog = logging.getLogger("api.session")
     authlog = logging.getLogger("api.session.auth")
     httplog = logging.getLogger("api.session.http")
@@ -185,11 +220,10 @@ class Session(object):
     def __init__(self, server, port=443, **kwargs):
         self.server = server
         self.port = port
-        self.last = {}
-        self.server_version = None
         self._session_id = ''
         self._username = ''
         self._password = ''
+
         self.qualname = "{}.{}".format(self.__class__.__module__, self.__class__.__name__)
         self.mylog = logging.getLogger(self.qualname)
         self.authlog = logging.getLogger(self.qualname + ".auth")
@@ -217,6 +251,7 @@ class Session(object):
         self.STATS_LOOP_ENABLED = kwargs.get('stats_loop_enabled', self.STATS_LOOP_ENABLED)
         self.STATS_LOOP_SLEEP_SEC = kwargs.get('stats_loop_sleep_sec', self.STATS_LOOP_SLEEP_SEC)
         self.STATS_LOOP_TARGETS = kwargs.get('stats_loop_targets', self.STATS_LOOP_TARGETS)
+        self.RECORD_ALL_REQUESTS = kwargs.get('record_all_requests', self.RECORD_ALL_REQUESTS)
 
         self._start_stats_thread()
 
@@ -434,9 +469,9 @@ class Session(object):
             * found objects
         """
         request_body = self._create_get_object_body(object_type, **kwargs)
-        self.request_body = request_body
+        self.LAST_XML_REQUEST_BODY = request_body
         response_body = self._get_response(request_body)
-        self.response_body = response_body
+        self.LAST_XML_RESPONSE_BODY = response_body
         obj = taniumpy.BaseType.fromSOAPBody(response_body)
         return obj
 
@@ -454,9 +489,9 @@ class Session(object):
             * saved object
         """
         request_body = self._create_update_object_body(obj, **kwargs)
-        self.request_body = request_body
+        self.LAST_XML_REQUEST_BODY = request_body
         response_body = self._get_response(request_body)
-        self.response_body = response_body
+        self.LAST_XML_RESPONSE_BODY = response_body
         obj = taniumpy.BaseType.fromSOAPBody(response_body)
         return obj
 
@@ -474,9 +509,9 @@ class Session(object):
             * added object
         """
         request_body = self._create_add_object_body(obj, **kwargs)
-        self.request_body = request_body
+        self.LAST_XML_REQUEST_BODY = request_body
         response_body = self._get_response(request_body)
-        self.response_body = response_body
+        self.LAST_XML_RESPONSE_BODY = response_body
         obj = taniumpy.BaseType.fromSOAPBody(response_body)
         return obj
 
@@ -494,9 +529,9 @@ class Session(object):
             * deleted object
         """
         request_body = self._create_delete_object_body(obj, **kwargs)
-        self.request_body = request_body
+        self.LAST_XML_REQUEST_BODY = request_body
         response_body = self._get_response(request_body)
-        self.response_body = response_body
+        self.LAST_XML_RESPONSE_BODY = response_body
         obj = taniumpy.BaseType.fromSOAPBody(response_body)
         return obj
 
@@ -514,9 +549,9 @@ class Session(object):
             * results from running object
         """
         request_body = self._create_run_plugin_object_body(obj, **kwargs)
-        self.request_body = request_body
+        self.LAST_XML_REQUEST_BODY = request_body
         response_body = self._get_response(request_body)
-        self.response_body = response_body
+        self.LAST_XML_RESPONSE_BODY = response_body
         obj = taniumpy.BaseType.fromSOAPBody(response_body)
         return obj
 
@@ -534,9 +569,9 @@ class Session(object):
             * ResultInfo for `obj`
         """
         request_body = self._create_get_result_info_body(obj, **kwargs)
-        self.request_body = request_body
+        self.LAST_XML_REQUEST_BODY = request_body
         response_body = self._get_response(request_body)
-        self.response_body = response_body
+        self.LAST_XML_RESPONSE_BODY = response_body
         cdata_el = self._extract_cdata_el(response_body)
         if pytan.utils.is_str(cdata_el):
             return cdata_el
@@ -558,9 +593,9 @@ class Session(object):
             * otherwise, `obj` will be the ResultSet for `obj`
         """
         request_body = self._create_get_result_data_body(obj, **kwargs)
-        self.request_body = request_body
+        self.LAST_XML_REQUEST_BODY = request_body
         response_body = self._get_response(request_body)
-        self.response_body = response_body
+        self.LAST_XML_RESPONSE_BODY = response_body
         cdata_el = self._extract_cdata_el(response_body)
         if pytan.utils.is_str(cdata_el):
             return cdata_el
@@ -978,7 +1013,10 @@ class Session(object):
             m = "HTTP response: GET request to {!r} failed: {}".format
             raise pytan.exceptions.HttpError(m(full_url, e))
 
-        self.REQ_RESPONSE = response
+        self.LAST_REQUESTS_RESPONSE = response
+        if self.RECORD_ALL_REQUESTS:
+            self.ALL_REQUESTS_RESPONSES.append(response)
+
         response_body = response.text
         response_headers = response.headers
 
@@ -1068,7 +1106,10 @@ class Session(object):
             m = "HTTP response: POST request to {!r} failed: {}".format
             raise pytan.exceptions.HttpError(m(full_url, e))
 
-        self.REQ_RESPONSE = response
+        self.LAST_REQUESTS_RESPONSE = response
+        if self.RECORD_ALL_REQUESTS:
+            self.ALL_REQUESTS_RESPONSES.append(response)
+
         response_body = xml_cleaner(response.text)
         response_headers = response.headers
 
@@ -1591,10 +1632,10 @@ class Session(object):
 
         self._check_auth()
 
-        self.last = {}
+        self.LAST_RESPONSE_INFO = {}
 
         request_command = self._parse_response_for_regex(request_body, self.COMMAND_RE)
-        self.last['request_command'] = request_command
+        self.LAST_RESPONSE_INFO['request_command'] = request_command
 
         req_args = {}
         req_args['body'] = request_body
@@ -1607,24 +1648,24 @@ class Session(object):
         if 'retry_count' in kwargs:
             req_args['retry_count'] = kwargs['retry_count']
 
-        self.last['request_args'] = req_args
+        self.LAST_RESPONSE_INFO['request_args'] = req_args
 
         sent = datetime.utcnow()
-        self.last['sent'] = sent
+        self.LAST_RESPONSE_INFO['sent'] = sent
 
         response_body = self.http_post(**req_args)
 
         received = datetime.utcnow()
-        self.last['received'] = received
+        self.LAST_RESPONSE_INFO['received'] = received
 
         elapsed = received - sent
-        self.last['elapsed'] = elapsed
+        self.LAST_RESPONSE_INFO['elapsed'] = elapsed
 
         # m = "HTTP Response: Timing info -- SENT: {}, RECEIVED: {}, ELAPSED: {}".format
         # self.mylog.debug(m(sent, received, elapsed))
 
         response_command = self._parse_response_for_regex(response_body, self.COMMAND_RE)
-        self.last['response_command'] = response_command
+        self.LAST_RESPONSE_INFO['response_command'] = response_command
 
         if 'forbidden' in response_command.lower():
             if retry_auth:
@@ -1642,15 +1683,8 @@ class Session(object):
                 raise pytan.exceptions.AuthorizationError(m(response_command))
 
         elif response_command != request_command:
-            response_prunes = [
-                '\n',
-                'XML Parse Error: ',
-                'SOAPProcessing Exception: class ',
-                'ERROR: 400 Bad Request'
-            ]
-            for p in response_prunes:
+            for p in self.BAD_RESPONSE_CMD_PRUNES:
                 response_command = response_command.replace(p, '').strip()
-
             m = "Response command {} does not match request command {}".format
             raise pytan.exceptions.BadResponseError(m(response_command, request_command))
 
