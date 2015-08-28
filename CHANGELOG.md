@@ -1,16 +1,18 @@
 # 2.1.0
 
 [Development branch](https://github.com/tanium/pytan/tree/develop) on N/A
-  * Massive doc string updates all over the place
-  * Added doc note: pointers to KB/Tanium
-  * Added doc note: double quotes for windows
-  * Added doc note: console.wsdl ref link
-  * Added doc note: command line help has note about export format needing to be at end of command line now
-  * bug fix: changed pytan.handler.Handler.deploy_action() to return package object that was created for said action, not the package object that was sourced from
-  * bug fix: force pytan.handler.Handler.get_server_version() in _platform_is_6_2() if self.server_version_dict is not set yet
-  * enhancement: added better error handling to pytan.session.Session.get_server_info()
-  * enhancement: added action_name and action_comment options to pytan.handler.Handler.deploy_action()
+  * bug fix: in pytan.handler.Handler.deploy_action(): changed to return package object that was created for said action, not the package object that was sourced from
+  * bug fix: in _platform_is_6_2(): force a call to pytan.handler.Handler.get_server_version() if self.server_version_dict is not set yet
   * bug fix: in pytan.handler.Handler.deploy_action(): fix packages created by Tanium SOAP API when adding an action so that they are hidden from the console. also ensure more of the attributes for the source package are copied into the new package for continuity.
+  * bug fix: in pytan.handler.Handler._get_package_def(): fix for pytan.handler.Handler.deploy_action() when searching for packages by name -- if using a package that has in the past existed, had actions deployed against it that created hidden packages, then the actual visible package was deleted and re-created with the same name, _get_package_def() would actually target one of the hidden packages. added include_hidden_flag=0 to GetObject call in _get_package_def() to fix this. also added to pytan.handler.Handler.sensor_def() to stem possible similar issues for pytan.handler.Handler.ask_manual()
+  * enhancement: in pytan.session.Session.get_server_info(): added better error handling
+  * enhancement: in pytan.handler.Handler.deploy_action(): added action_name and action_comment options
+  * doc update: doc string updates all over the place
+  * doc update: pointers to KB/Tanium
+  * doc update: double quotes for windows
+  * doc update: console.wsdl ref link
+  * doc update: command line help has note about export format needing to be at end of command line now
+
 
 # 2.0.3
 
