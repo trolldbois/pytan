@@ -4,7 +4,7 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 '''Create a saved_question object from a json file'''
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
-__version__ = '2.0.0'
+__version__ = '2.1.0'
 
 
 import os
@@ -51,7 +51,6 @@ examples = [
         'precleanup': 'rm -f $TMP/create.out',
         'tests': 'exitcode',
     },
-
 ]
 
 
