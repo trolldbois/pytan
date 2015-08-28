@@ -737,6 +737,11 @@ def add_ask_report_argparser(parser):
         description="JSON Export Options"
     )
 
+    subparsers.add_parser(
+        'xml',
+        help='Produce an XML report, supply "xml -h" to see XML options',
+        description="XML Export Options"
+    )
     return parser
 
 
