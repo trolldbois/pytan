@@ -1,6 +1,6 @@
   * DOC:
     * add validation results of testing against various platform versions for each release
-    
+
   * BUG:
     * work on deploy action & start_seconds_from_now (a new action gets created at actual start time)
 
@@ -13,6 +13,7 @@
     * add non id/name/hash search support to get_$object.py (HUGE/CORRELATIVE)
     * question filters get params too?? (UNKNOWN)
     * add json source for parameters in TSAT
+    * add export_obj option for csv to split columns longer than 32k
 
   * TEST:
     * add tests for SSE

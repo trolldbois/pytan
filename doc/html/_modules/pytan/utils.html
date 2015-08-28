@@ -2502,6 +2502,9 @@
 <span class="sd">    ----------</span>
 <span class="sd">    obj : :class:`taniumpy.object_types.base.BaseType`</span>
 <span class="sd">        * Object to shrink</span>
+<span class="sd">    attrs : list of str</span>
+<span class="sd">        * default: None</span>
+<span class="sd">        * list of attribute str&#39;s to copy over to new object, will default to [&#39;name&#39;, &#39;id&#39;, &#39;hash&#39;] if None</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -2513,6 +2516,67 @@
 
     <span class="n">new_obj</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">__class__</span><span class="p">()</span>
     <span class="p">[</span><span class="nb">setattr</span><span class="p">(</span><span class="n">new_obj</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">a</span><span class="p">))</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">attrs</span> <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">new_obj</span>
+
+</div>
+<div class="viewcode-block" id="copy_obj"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.copy_obj">[docs]</a><span class="k">def</span> <span class="nf">copy_obj</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">skip_attrs</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns a new class of obj with with out any attributes in skip_attrs specified</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    obj : :class:`taniumpy.object_types.base.BaseType`</span>
+<span class="sd">        * Object to copy</span>
+<span class="sd">    skip_attrs : list of str</span>
+<span class="sd">        * default: None</span>
+<span class="sd">        * list of attribute str&#39;s to skip copying over to new object, will default to [] if None</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    new_obj : :class:`taniumpy.object_types.base.BaseType`</span>
+<span class="sd">        * Copied object with attributes in skip_attrs skipped</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">skip_attrs</span><span class="p">:</span>
+        <span class="n">skip_attrs</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">new_obj</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">__class__</span><span class="p">()</span>
+    <span class="p">[</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">new_obj</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">a</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
+        <span class="ow">and</span> <span class="n">a</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">skip_attrs</span>
+    <span class="p">]</span>
+    <span class="k">return</span> <span class="n">new_obj</span>
+
+</div>
+<div class="viewcode-block" id="copy_package_obj_for_action"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.copy_package_obj_for_action">[docs]</a><span class="k">def</span> <span class="nf">copy_package_obj_for_action</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">skip_attrs</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns a new class of package obj with with out any attributes in skip_attrs specified</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    obj : :class:`taniumpy.object_types.base.BaseType`</span>
+<span class="sd">        * Object to copy</span>
+<span class="sd">    skip_attrs : list of str</span>
+<span class="sd">        * default: None</span>
+<span class="sd">        * list of attribute str&#39;s to skip copying over to new object, default if None: [&#39;id&#39;, &#39;deleted_flag&#39;, &#39;available_time&#39;, &#39;creation_time&#39;, &#39;modification_time&#39;, &#39;source_id&#39;]</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    new_obj : :class:`taniumpy.object_types.base.BaseType`</span>
+<span class="sd">        * Copied object with attributes in skip_attrs skipped</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">skip_attrs</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="c"># names of attributes to skip copying over from source package</span>
+        <span class="n">skip_attrs</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s">&#39;id&#39;</span><span class="p">,</span>
+            <span class="s">&#39;deleted_flag&#39;</span><span class="p">,</span>
+            <span class="s">&#39;available_time&#39;</span><span class="p">,</span>
+            <span class="s">&#39;creation_time&#39;</span><span class="p">,</span>
+            <span class="s">&#39;modification_time&#39;</span><span class="p">,</span>
+            <span class="s">&#39;source_id&#39;</span><span class="p">,</span>
+            <span class="s">&#39;files&#39;</span><span class="p">,</span>
+        <span class="p">]</span>
+
+    <span class="n">new_obj</span> <span class="o">=</span> <span class="n">copy_obj</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">skip_attrs</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">new_obj</span>
 
 </div>
@@ -3055,7 +3119,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Aug 27, 2015.
+      Last updated on Aug 28, 2015.
     </p>
   </div>
 

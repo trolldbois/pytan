@@ -273,12 +273,12 @@ at package creation/update</p>
 
 <dl class="attribute">
 <dt id="pytan.pollers.ActionPoller.pollerlog">
-<code class="descname">pollerlog</code><em class="property"> = &lt;logging.Logger object at 0x106cdedd0&gt;</em><a class="headerlink" href="#pytan.pollers.ActionPoller.pollerlog" title="Permalink to this definition">¶</a></dt>
+<code class="descname">pollerlog</code><em class="property"> = &lt;logging.Logger object at 0x103066050&gt;</em><a class="headerlink" href="#pytan.pollers.ActionPoller.pollerlog" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="pytan.pollers.ActionPoller.progresslog">
-<code class="descname">progresslog</code><em class="property"> = &lt;logging.Logger object at 0x106cdee90&gt;</em><a class="headerlink" href="#pytan.pollers.ActionPoller.progresslog" title="Permalink to this definition">¶</a></dt>
+<code class="descname">progresslog</code><em class="property"> = &lt;logging.Logger object at 0x103066110&gt;</em><a class="headerlink" href="#pytan.pollers.ActionPoller.progresslog" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -378,7 +378,7 @@ AnswersComplete</p>
 
 <dl class="attribute">
 <dt id="pytan.pollers.QuestionPoller.__dict__">
-<code class="descname">__dict__</code><em class="property"> = dict_proxy({'passed_eq_est_total_loop': &lt;function passed_eq_est_total_loop at 0x106ce4230&gt;, '__module__': 'pytan.pollers', 'run': &lt;function run at 0x106ce41b8&gt;, 'EXPIRY_FALLBACK_SECS': 600, '_derive_expiration': &lt;function _derive_expiration at 0x106cc8f50&gt;, '__str__': &lt;function __str__ at 0x106cc8cf8&gt;, 'OBJECT_TYPE': &lt;class 'taniumpy.object_types.question.Question'&gt;, 'stop': &lt;function stop at 0x106ce42a8&gt;, '_derive_attribute': &lt;function _derive_attribute at 0x106cc8e60&gt;, 'POLLING_SECS': 5, 'STR_ATTRS': ['object_info', 'polling_secs', 'override_timeout_secs', 'complete_pct', 'expiration'], '__dict__': &lt;attribute '__dict__' of 'QuestionPoller' objects&gt;, 'COMPLETE_PCT': 99, 'progresslog': &lt;logging.Logger object at 0x106cdecd0&gt;, '_post_init': &lt;function _post_init at 0x106cc8d70&gt;, '__init__': &lt;function __init__ at 0x106cc8c80&gt;, 'get_result_data': &lt;function get_result_data at 0x106ce4140&gt;, '__weakref__': &lt;attribute '__weakref__' of 'QuestionPoller' objects&gt;, 'set_complect_pct': &lt;function set_complect_pct at 0x106ce4050&gt;, '_derive_object_info': &lt;function _derive_object_info at 0x106cc8ed8&gt;, 'pollerlog': &lt;logging.Logger object at 0x106cdec10&gt;, 'get_result_info': &lt;function get_result_info at 0x106ce40c8&gt;, '_refetch_obj': &lt;function _refetch_obj at 0x106cc8de8&gt;, '__doc__': 'A class to poll the progress of a Question.\n\n    The primary function of this class is to poll for result info for questions, and fire off events:\n\n    ProgressChanged\n    AnswersChanged\n    AnswersComplete\n\n    Parameters\n    ----------\n    handler : :class:`pytan.handler.Handler`\n        PyTan handler to use for GetResultInfo calls\n    obj : :class:`taniumpy.object_types.question.Question`\n        object to poll for progress\n    polling_secs : int, optional\n        Number of seconds to wait in between GetResultInfo loops\n    complete_pct : int/float, optional\n        Percentage of mr_tested out of estimated_total to consider the question &quot;done&quot;\n    override_timeout_secs : int, optional\n        If supplied and not 0, timeout in seconds instead of when object expires\n    '})</em><a class="headerlink" href="#pytan.pollers.QuestionPoller.__dict__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__dict__</code><em class="property"> = dict_proxy({'passed_eq_est_total_loop': &lt;function passed_eq_est_total_loop at 0x103064320&gt;, '__module__': 'pytan.pollers', 'run': &lt;function run at 0x1030642a8&gt;, 'EXPIRY_FALLBACK_SECS': 600, '_derive_expiration': &lt;function _derive_expiration at 0x1030640c8&gt;, '__str__': &lt;function __str__ at 0x103041de8&gt;, 'OBJECT_TYPE': &lt;class 'taniumpy.object_types.question.Question'&gt;, 'stop': &lt;function stop at 0x103064398&gt;, '_derive_attribute': &lt;function _derive_attribute at 0x103041f50&gt;, 'POLLING_SECS': 5, 'STR_ATTRS': ['object_info', 'polling_secs', 'override_timeout_secs', 'complete_pct', 'expiration'], '__dict__': &lt;attribute '__dict__' of 'QuestionPoller' objects&gt;, 'COMPLETE_PCT': 99, 'progresslog': &lt;logging.Logger object at 0x103058f10&gt;, '_post_init': &lt;function _post_init at 0x103041e60&gt;, '__init__': &lt;function __init__ at 0x103041d70&gt;, 'get_result_data': &lt;function get_result_data at 0x103064230&gt;, '__weakref__': &lt;attribute '__weakref__' of 'QuestionPoller' objects&gt;, 'set_complect_pct': &lt;function set_complect_pct at 0x103064140&gt;, '_derive_object_info': &lt;function _derive_object_info at 0x103064050&gt;, 'pollerlog': &lt;logging.Logger object at 0x103058e50&gt;, 'get_result_info': &lt;function get_result_info at 0x1030641b8&gt;, '_refetch_obj': &lt;function _refetch_obj at 0x103041ed8&gt;, '__doc__': 'A class to poll the progress of a Question.\n\n    The primary function of this class is to poll for result info for questions, and fire off events:\n\n    ProgressChanged\n    AnswersChanged\n    AnswersComplete\n\n    Parameters\n    ----------\n    handler : :class:`pytan.handler.Handler`\n        PyTan handler to use for GetResultInfo calls\n    obj : :class:`taniumpy.object_types.question.Question`\n        object to poll for progress\n    polling_secs : int, optional\n        Number of seconds to wait in between GetResultInfo loops\n    complete_pct : int/float, optional\n        Percentage of mr_tested out of estimated_total to consider the question &quot;done&quot;\n    override_timeout_secs : int, optional\n        If supplied and not 0, timeout in seconds instead of when object expires\n    '})</em><a class="headerlink" href="#pytan.pollers.QuestionPoller.__dict__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -478,12 +478,12 @@ available</p>
 
 <dl class="attribute">
 <dt id="pytan.pollers.QuestionPoller.pollerlog">
-<code class="descname">pollerlog</code><em class="property"> = &lt;logging.Logger object at 0x106cdec10&gt;</em><a class="headerlink" href="#pytan.pollers.QuestionPoller.pollerlog" title="Permalink to this definition">¶</a></dt>
+<code class="descname">pollerlog</code><em class="property"> = &lt;logging.Logger object at 0x103058e50&gt;</em><a class="headerlink" href="#pytan.pollers.QuestionPoller.pollerlog" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="pytan.pollers.QuestionPoller.progresslog">
-<code class="descname">progresslog</code><em class="property"> = &lt;logging.Logger object at 0x106cdecd0&gt;</em><a class="headerlink" href="#pytan.pollers.QuestionPoller.progresslog" title="Permalink to this definition">¶</a></dt>
+<code class="descname">progresslog</code><em class="property"> = &lt;logging.Logger object at 0x103058f10&gt;</em><a class="headerlink" href="#pytan.pollers.QuestionPoller.progresslog" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -604,12 +604,12 @@ available</p>
 
 <dl class="attribute">
 <dt id="pytan.pollers.SSEPoller.pollerlog">
-<code class="descname">pollerlog</code><em class="property"> = &lt;logging.Logger object at 0x106cdef50&gt;</em><a class="headerlink" href="#pytan.pollers.SSEPoller.pollerlog" title="Permalink to this definition">¶</a></dt>
+<code class="descname">pollerlog</code><em class="property"> = &lt;logging.Logger object at 0x1030661d0&gt;</em><a class="headerlink" href="#pytan.pollers.SSEPoller.pollerlog" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="pytan.pollers.SSEPoller.progresslog">
-<code class="descname">progresslog</code><em class="property"> = &lt;logging.Logger object at 0x106ced050&gt;</em><a class="headerlink" href="#pytan.pollers.SSEPoller.progresslog" title="Permalink to this definition">¶</a></dt>
+<code class="descname">progresslog</code><em class="property"> = &lt;logging.Logger object at 0x103066290&gt;</em><a class="headerlink" href="#pytan.pollers.SSEPoller.progresslog" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -764,12 +764,12 @@ available</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">pollerlog</code><em class="property"> = &lt;logging.Logger object at 0x106cdec10&gt;</em></dt>
+<code class="descname">pollerlog</code><em class="property"> = &lt;logging.Logger object at 0x103058e50&gt;</em></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">progresslog</code><em class="property"> = &lt;logging.Logger object at 0x106cdecd0&gt;</em></dt>
+<code class="descname">progresslog</code><em class="property"> = &lt;logging.Logger object at 0x103058f10&gt;</em></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -946,12 +946,12 @@ at package creation/update</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">pollerlog</code><em class="property"> = &lt;logging.Logger object at 0x106cdedd0&gt;</em></dt>
+<code class="descname">pollerlog</code><em class="property"> = &lt;logging.Logger object at 0x103066050&gt;</em></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">progresslog</code><em class="property"> = &lt;logging.Logger object at 0x106cdee90&gt;</em></dt>
+<code class="descname">progresslog</code><em class="property"> = &lt;logging.Logger object at 0x103066110&gt;</em></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -1007,7 +1007,7 @@ at package creation/update</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Aug 27, 2015.
+      Last updated on Aug 28, 2015.
     </p>
   </div>
 

@@ -316,6 +316,41 @@
     <span class="p">]</span>
     <span class="sd">&quot;&quot;&quot;list of dictionaries with the key being the section of info.json to print info from, and the value being the item with in that section to print the value&quot;&quot;&quot;</span>
 
+    <span class="n">RECORD_ALL_REQUESTS</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="sd">&quot;&quot;&quot;Controls whether each requests response object is appended to the self.ALL_REQUESTS_RESPONSES list&quot;&quot;&quot;</span>
+
+    <span class="n">ALL_REQUESTS_RESPONSES</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="sd">&quot;&quot;&quot;This list will be updated with each requests response object that was received&quot;&quot;&quot;</span>
+
+    <span class="n">LAST_REQUESTS_RESPONSE</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;This variable will be updated with the last requests response object that was received&quot;&quot;&quot;</span>
+
+    <span class="n">LAST_RESPONSE_INFO</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="sd">&quot;&quot;&quot;This variable will be updated with the information from the most recent call to _get_response()&quot;&quot;&quot;</span>
+
+    <span class="n">LAST_XML_REQUEST_BODY</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;This variable will be updated with the last XML request body&quot;&quot;&quot;</span>
+
+    <span class="n">LAST_XML_RESPONSE_BODY</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;This variable will be updated with the last XML response body&quot;&quot;&quot;</span>
+
+    <span class="n">BAD_RESPONSE_CMD_PRUNES</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">,</span>
+        <span class="s">&#39;XML Parse Error: &#39;</span><span class="p">,</span>
+        <span class="s">&#39;SOAPProcessing Exception: class &#39;</span><span class="p">,</span>
+        <span class="s">&#39;ERROR: 400 Bad Request&#39;</span>
+    <span class="p">]</span>
+    <span class="sd">&quot;&quot;&quot;List of strings to remove from commands in responses that do not match the response in the request&quot;&quot;&quot;</span>
+
+    <span class="n">server</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;server to connect to&quot;&quot;&quot;</span>
+
+    <span class="n">port</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;port to connect to&quot;&quot;&quot;</span>
+
+    <span class="n">server_version</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;version string of server, will be updated if get_server_version() is called&quot;&quot;&quot;</span>
+
     <span class="n">mylog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;api.session&quot;</span><span class="p">)</span>
     <span class="n">authlog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;api.session.auth&quot;</span><span class="p">)</span>
     <span class="n">httplog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;api.session.http&quot;</span><span class="p">)</span>
@@ -325,11 +360,10 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">server</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">443</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="n">server</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="n">port</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">last</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_session_id</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_username</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_password</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">qualname</span> <span class="o">=</span> <span class="s">&quot;{}.{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__module__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qualname</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">authlog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qualname</span> <span class="o">+</span> <span class="s">&quot;.auth&quot;</span><span class="p">)</span>
@@ -357,6 +391,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">STATS_LOOP_ENABLED</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;stats_loop_enabled&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">STATS_LOOP_ENABLED</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">STATS_LOOP_SLEEP_SEC</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;stats_loop_sleep_sec&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">STATS_LOOP_SLEEP_SEC</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">STATS_LOOP_TARGETS</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;stats_loop_targets&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">STATS_LOOP_TARGETS</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">RECORD_ALL_REQUESTS</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;record_all_requests&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">RECORD_ALL_REQUESTS</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_start_stats_thread</span><span class="p">()</span>
 
@@ -574,9 +609,9 @@
 <span class="sd">            * found objects</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_get_object_body</span><span class="p">(</span><span class="n">object_type</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">request_body</span> <span class="o">=</span> <span class="n">request_body</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LAST_XML_REQUEST_BODY</span> <span class="o">=</span> <span class="n">request_body</span>
         <span class="n">response_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_response</span><span class="p">(</span><span class="n">request_body</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">response_body</span> <span class="o">=</span> <span class="n">response_body</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LAST_XML_RESPONSE_BODY</span> <span class="o">=</span> <span class="n">response_body</span>
         <span class="n">obj</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">BaseType</span><span class="o">.</span><span class="n">fromSOAPBody</span><span class="p">(</span><span class="n">response_body</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">obj</span>
 </div>
@@ -594,9 +629,9 @@
 <span class="sd">            * saved object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_update_object_body</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">request_body</span> <span class="o">=</span> <span class="n">request_body</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LAST_XML_REQUEST_BODY</span> <span class="o">=</span> <span class="n">request_body</span>
         <span class="n">response_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_response</span><span class="p">(</span><span class="n">request_body</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">response_body</span> <span class="o">=</span> <span class="n">response_body</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LAST_XML_RESPONSE_BODY</span> <span class="o">=</span> <span class="n">response_body</span>
         <span class="n">obj</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">BaseType</span><span class="o">.</span><span class="n">fromSOAPBody</span><span class="p">(</span><span class="n">response_body</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">obj</span>
 </div>
@@ -614,9 +649,9 @@
 <span class="sd">            * added object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_add_object_body</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">request_body</span> <span class="o">=</span> <span class="n">request_body</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LAST_XML_REQUEST_BODY</span> <span class="o">=</span> <span class="n">request_body</span>
         <span class="n">response_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_response</span><span class="p">(</span><span class="n">request_body</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">response_body</span> <span class="o">=</span> <span class="n">response_body</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LAST_XML_RESPONSE_BODY</span> <span class="o">=</span> <span class="n">response_body</span>
         <span class="n">obj</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">BaseType</span><span class="o">.</span><span class="n">fromSOAPBody</span><span class="p">(</span><span class="n">response_body</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">obj</span>
 </div>
@@ -634,9 +669,9 @@
 <span class="sd">            * deleted object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_delete_object_body</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">request_body</span> <span class="o">=</span> <span class="n">request_body</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LAST_XML_REQUEST_BODY</span> <span class="o">=</span> <span class="n">request_body</span>
         <span class="n">response_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_response</span><span class="p">(</span><span class="n">request_body</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">response_body</span> <span class="o">=</span> <span class="n">response_body</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LAST_XML_RESPONSE_BODY</span> <span class="o">=</span> <span class="n">response_body</span>
         <span class="n">obj</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">BaseType</span><span class="o">.</span><span class="n">fromSOAPBody</span><span class="p">(</span><span class="n">response_body</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">obj</span>
 </div>
@@ -654,9 +689,9 @@
 <span class="sd">            * results from running object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_run_plugin_object_body</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">request_body</span> <span class="o">=</span> <span class="n">request_body</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LAST_XML_REQUEST_BODY</span> <span class="o">=</span> <span class="n">request_body</span>
         <span class="n">response_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_response</span><span class="p">(</span><span class="n">request_body</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">response_body</span> <span class="o">=</span> <span class="n">response_body</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LAST_XML_RESPONSE_BODY</span> <span class="o">=</span> <span class="n">response_body</span>
         <span class="n">obj</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">BaseType</span><span class="o">.</span><span class="n">fromSOAPBody</span><span class="p">(</span><span class="n">response_body</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">obj</span>
 </div>
@@ -674,9 +709,9 @@
 <span class="sd">            * ResultInfo for `obj`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_get_result_info_body</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">request_body</span> <span class="o">=</span> <span class="n">request_body</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LAST_XML_REQUEST_BODY</span> <span class="o">=</span> <span class="n">request_body</span>
         <span class="n">response_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_response</span><span class="p">(</span><span class="n">request_body</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">response_body</span> <span class="o">=</span> <span class="n">response_body</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LAST_XML_RESPONSE_BODY</span> <span class="o">=</span> <span class="n">response_body</span>
         <span class="n">cdata_el</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_cdata_el</span><span class="p">(</span><span class="n">response_body</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">is_str</span><span class="p">(</span><span class="n">cdata_el</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">cdata_el</span>
@@ -698,9 +733,9 @@
 <span class="sd">            * otherwise, `obj` will be the ResultSet for `obj`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_get_result_data_body</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">request_body</span> <span class="o">=</span> <span class="n">request_body</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LAST_XML_REQUEST_BODY</span> <span class="o">=</span> <span class="n">request_body</span>
         <span class="n">response_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_response</span><span class="p">(</span><span class="n">request_body</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">response_body</span> <span class="o">=</span> <span class="n">response_body</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LAST_XML_RESPONSE_BODY</span> <span class="o">=</span> <span class="n">response_body</span>
         <span class="n">cdata_el</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_cdata_el</span><span class="p">(</span><span class="n">response_body</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">is_str</span><span class="p">(</span><span class="n">cdata_el</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">cdata_el</span>
@@ -1118,7 +1153,10 @@
             <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;HTTP response: GET request to {!r} failed: {}&quot;</span><span class="o">.</span><span class="n">format</span>
             <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HttpError</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">full_url</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">REQ_RESPONSE</span> <span class="o">=</span> <span class="n">response</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LAST_REQUESTS_RESPONSE</span> <span class="o">=</span> <span class="n">response</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">RECORD_ALL_REQUESTS</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ALL_REQUESTS_RESPONSES</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+
         <span class="n">response_body</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span>
         <span class="n">response_headers</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">headers</span>
 
@@ -1208,7 +1246,10 @@
             <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;HTTP response: POST request to {!r} failed: {}&quot;</span><span class="o">.</span><span class="n">format</span>
             <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HttpError</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">full_url</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">REQ_RESPONSE</span> <span class="o">=</span> <span class="n">response</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LAST_REQUESTS_RESPONSE</span> <span class="o">=</span> <span class="n">response</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">RECORD_ALL_REQUESTS</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ALL_REQUESTS_RESPONSES</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+
         <span class="n">response_body</span> <span class="o">=</span> <span class="n">xml_cleaner</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
         <span class="n">response_headers</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">headers</span>
 
@@ -1731,10 +1772,10 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_auth</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">last</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LAST_RESPONSE_INFO</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="n">request_command</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_response_for_regex</span><span class="p">(</span><span class="n">request_body</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">COMMAND_RE</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">last</span><span class="p">[</span><span class="s">&#39;request_command&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request_command</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LAST_RESPONSE_INFO</span><span class="p">[</span><span class="s">&#39;request_command&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request_command</span>
 
         <span class="n">req_args</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">req_args</span><span class="p">[</span><span class="s">&#39;body&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request_body</span>
@@ -1747,24 +1788,24 @@
         <span class="k">if</span> <span class="s">&#39;retry_count&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
             <span class="n">req_args</span><span class="p">[</span><span class="s">&#39;retry_count&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;retry_count&#39;</span><span class="p">]</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">last</span><span class="p">[</span><span class="s">&#39;request_args&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">req_args</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LAST_RESPONSE_INFO</span><span class="p">[</span><span class="s">&#39;request_args&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">req_args</span>
 
         <span class="n">sent</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">last</span><span class="p">[</span><span class="s">&#39;sent&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LAST_RESPONSE_INFO</span><span class="p">[</span><span class="s">&#39;sent&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sent</span>
 
         <span class="n">response_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">http_post</span><span class="p">(</span><span class="o">**</span><span class="n">req_args</span><span class="p">)</span>
 
         <span class="n">received</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">last</span><span class="p">[</span><span class="s">&#39;received&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">received</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LAST_RESPONSE_INFO</span><span class="p">[</span><span class="s">&#39;received&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">received</span>
 
         <span class="n">elapsed</span> <span class="o">=</span> <span class="n">received</span> <span class="o">-</span> <span class="n">sent</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">last</span><span class="p">[</span><span class="s">&#39;elapsed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">elapsed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LAST_RESPONSE_INFO</span><span class="p">[</span><span class="s">&#39;elapsed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">elapsed</span>
 
         <span class="c"># m = &quot;HTTP Response: Timing info -- SENT: {}, RECEIVED: {}, ELAPSED: {}&quot;.format</span>
         <span class="c"># self.mylog.debug(m(sent, received, elapsed))</span>
 
         <span class="n">response_command</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_response_for_regex</span><span class="p">(</span><span class="n">response_body</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">COMMAND_RE</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">last</span><span class="p">[</span><span class="s">&#39;response_command&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response_command</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LAST_RESPONSE_INFO</span><span class="p">[</span><span class="s">&#39;response_command&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response_command</span>
 
         <span class="k">if</span> <span class="s">&#39;forbidden&#39;</span> <span class="ow">in</span> <span class="n">response_command</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">retry_auth</span><span class="p">:</span>
@@ -1782,15 +1823,8 @@
                 <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">AuthorizationError</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">response_command</span><span class="p">))</span>
 
         <span class="k">elif</span> <span class="n">response_command</span> <span class="o">!=</span> <span class="n">request_command</span><span class="p">:</span>
-            <span class="n">response_prunes</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">,</span>
-                <span class="s">&#39;XML Parse Error: &#39;</span><span class="p">,</span>
-                <span class="s">&#39;SOAPProcessing Exception: class &#39;</span><span class="p">,</span>
-                <span class="s">&#39;ERROR: 400 Bad Request&#39;</span>
-            <span class="p">]</span>
-            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">response_prunes</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">BAD_RESPONSE_CMD_PRUNES</span><span class="p">:</span>
                 <span class="n">response_command</span> <span class="o">=</span> <span class="n">response_command</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-
             <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Response command {} does not match request command {}&quot;</span><span class="o">.</span><span class="n">format</span>
             <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">BadResponseError</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">response_command</span><span class="p">,</span> <span class="n">request_command</span><span class="p">))</span>
 
@@ -1815,7 +1849,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Aug 27, 2015.
+      Last updated on Aug 28, 2015.
     </p>
   </div>
 

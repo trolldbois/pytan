@@ -205,62 +205,67 @@
 <span class="sd">        * default: False</span>
 <span class="sd">        * False: do not print requests package debug</span>
 <span class="sd">        * True: do print requests package debug</span>
-<span class="sd">        * Session Passthru</span>
+<span class="sd">        * This is passed through to :class:`pytan.sessions.Session`</span>
 <span class="sd">    http_auth_retry: bool, optional</span>
 <span class="sd">        * default: True</span>
 <span class="sd">        * True: retry HTTP GET/POST&#39;s</span>
 <span class="sd">        * False: do not retry HTTP GET/POST&#39;s</span>
-<span class="sd">        * Session Passthru</span>
+<span class="sd">        * This is passed through to :class:`pytan.sessions.Session`</span>
 <span class="sd">    http_retry_count: int, optional</span>
 <span class="sd">        * default: 5</span>
 <span class="sd">        * number of times to retry HTTP GET/POST&#39;s if the connection times out/fails</span>
-<span class="sd">        * Session Passthru</span>
+<span class="sd">        * This is passed through to :class:`pytan.sessions.Session`</span>
 <span class="sd">    soap_request_headers : dict, optional</span>
 <span class="sd">        * default: {&#39;Content-Type&#39;: &#39;text/xml; charset=utf-8&#39;, &#39;Accept-Encoding&#39;: &#39;gzip&#39;}</span>
 <span class="sd">        * dictionary of headers to add to every HTTP GET/POST</span>
-<span class="sd">        * Session Passthru</span>
+<span class="sd">        * This is passed through to :class:`pytan.sessions.Session`</span>
 <span class="sd">    auth_connect_timeout_sec : int, optional</span>
 <span class="sd">        * default: 5</span>
 <span class="sd">        * number of seconds before timing out for a connection while authenticating</span>
-<span class="sd">        * Session Passthru</span>
+<span class="sd">        * This is passed through to :class:`pytan.sessions.Session`</span>
 <span class="sd">    auth_response_timeout_sec : int, optional</span>
 <span class="sd">        * default: 15</span>
 <span class="sd">        * number of seconds before timing out for a response while authenticating</span>
-<span class="sd">        * Session Passthru</span>
+<span class="sd">        * This is passed through to :class:`pytan.sessions.Session`</span>
 <span class="sd">    info_connect_timeout_sec : int, optional</span>
 <span class="sd">        * default: 5</span>
 <span class="sd">        * number of seconds before timing out for a connection while getting /info.json</span>
-<span class="sd">        * Session Passthru</span>
+<span class="sd">        * This is passed through to :class:`pytan.sessions.Session`</span>
 <span class="sd">    info_response_timeout_sec : int, optional</span>
 <span class="sd">        * default: 15</span>
 <span class="sd">        * number of seconds before timing out for a response while getting /info.json</span>
-<span class="sd">        * Session Passthru</span>
+<span class="sd">        * This is passed through to :class:`pytan.sessions.Session`</span>
 <span class="sd">    soap_connect_timeout_sec : int, optional</span>
 <span class="sd">        * default: 15</span>
 <span class="sd">        * number of seconds before timing out for a connection for a SOAP request</span>
-<span class="sd">        * Session Passthru</span>
+<span class="sd">        * This is passed through to :class:`pytan.sessions.Session`</span>
 <span class="sd">    soap_response_timeout_sec : int, optional</span>
 <span class="sd">        * default: 540</span>
 <span class="sd">        * number of seconds before timing out for a response for a SOAP request</span>
-<span class="sd">        * Session Passthru</span>
+<span class="sd">        * This is passed through to :class:`pytan.sessions.Session`</span>
 <span class="sd">    stats_loop_enabled : bool, optional</span>
 <span class="sd">        * default: False</span>
 <span class="sd">        * False: do not enable the statistics loop thread</span>
 <span class="sd">        * True: enable the statistics loop thread</span>
-<span class="sd">        * Session Passthru</span>
+<span class="sd">        * This is passed through to :class:`pytan.sessions.Session`</span>
 <span class="sd">    stats_loop_sleep_sec : int, optional</span>
 <span class="sd">        * default: 5</span>
 <span class="sd">        * number of seconds to sleep in between printing the statistics when stats_loop_enabled is True</span>
-<span class="sd">        * Session Passthru</span>
+<span class="sd">        * This is passed through to :class:`pytan.sessions.Session`</span>
+<span class="sd">    record_all_requests: bool, optional</span>
+<span class="sd">        * default: False</span>
+<span class="sd">        * False: do not add each requests response object to session.ALL_REQUESTS_RESPONSES</span>
+<span class="sd">        * True: add each requests response object to session.ALL_REQUESTS_RESPONSES</span>
+<span class="sd">        * This is passed through to :class:`pytan.sessions.Session`</span>
 <span class="sd">    stats_loop_targets : list of dict, optional</span>
 <span class="sd">        * default: [{&#39;Version&#39;: &#39;Settings/Version&#39;}, {&#39;Active Questions&#39;: &#39;Active Question Cache/Active Question Estimate&#39;}, {&#39;Clients&#39;: &#39;Active Question Cache/Active Client Estimate&#39;}, {&#39;Strings&#39;: &#39;String Cache/Total String Count&#39;}, {&#39;Handles&#39;: &#39;System Performance Info/HandleCount&#39;}, {&#39;Processes&#39;: &#39;System Performance Info/ProcessCount&#39;}, {&#39;Memory Available&#39;: &#39;percentage(System Performance Info/PhysicalAvailable,System Performance Info/PhysicalTotal)&#39;}]</span>
 <span class="sd">        * list of dictionaries with the key being the section of info.json to print info from, and the value being the item with in that section to print the value</span>
-<span class="sd">        * Session Passthru</span>
+<span class="sd">        * This is passed through to :class:`pytan.sessions.Session`</span>
 <span class="sd">    persistent: bool, optional</span>
 <span class="sd">        * default: False</span>
 <span class="sd">        * False: do not request a persistent session</span>
 <span class="sd">        * True: do request a persistent</span>
-<span class="sd">        * Session Authentication Passthru</span>
+<span class="sd">        * This is passed through to :func:`pytan.sessions.Session.authenticate`</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -306,11 +311,20 @@
             <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HandlerError</span><span class="p">(</span><span class="s">&quot;port must be an integer!&quot;</span><span class="p">)</span>
 
         <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">test_app_port</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
+
+        <span class="c"># establish our Session class</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">sessions</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c"># authenticate using the Session class</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">authenticate</span><span class="p">(</span>
             <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">,</span> <span class="n">session_id</span><span class="o">=</span><span class="n">session_id</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
         <span class="p">)</span>
+
+        <span class="c"># set the object&#39;s server_version to Not yet determined! for now, this will be updated</span>
+        <span class="c"># by self.get_server_version</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span> <span class="o">=</span> <span class="s">&quot;Not yet determined!&quot;</span>
+
+        <span class="c"># start up a background thread to get the server version</span>
         <span class="n">thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_server_version</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">())</span>
         <span class="n">thread</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="bp">True</span>
         <span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
@@ -1915,7 +1929,7 @@
 
             <span class="c"># get the sensor object</span>
             <span class="k">if</span> <span class="s">&#39;sensor_obj&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
-                <span class="n">d</span><span class="p">[</span><span class="s">&#39;sensor_obj&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;sensor&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">def_search</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">d</span><span class="p">[</span><span class="s">&#39;sensor_obj&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;sensor&#39;</span><span class="p">,</span> <span class="n">include_hidden_flag</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">def_search</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">defs</span>
 </div>
 <div class="viewcode-block" id="Handler._get_package_def"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._get_package_def">[docs]</a>    <span class="k">def</span> <span class="nf">_get_package_def</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
@@ -1927,7 +1941,7 @@
 
         <span class="c"># get the package object</span>
         <span class="k">if</span> <span class="s">&#39;package_obj&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
-            <span class="n">d</span><span class="p">[</span><span class="s">&#39;package_obj&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;package&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">def_search</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">d</span><span class="p">[</span><span class="s">&#39;package_obj&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;package&#39;</span><span class="p">,</span> <span class="n">include_hidden_flag</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">def_search</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">d</span>
 </div>
 <div class="viewcode-block" id="Handler._export_class_BaseType"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._export_class_BaseType">[docs]</a>    <span class="k">def</span> <span class="nf">_export_class_BaseType</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">export_format</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> <span class="c"># noqa</span>
@@ -2176,7 +2190,14 @@
             <span class="p">)</span><span class="o">.</span><span class="n">format</span>
             <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">RunFalse</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">report_path</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)))</span>
 
-        <span class="c"># BUILD THE OBJECT TO BE ADDED</span>
+        <span class="c"># BUILD THE PACKAGE OBEJECT TO BE ADDED TO THE ACTION</span>
+        <span class="n">add_package_obj</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">copy_package_obj_for_action</span><span class="p">(</span><span class="n">package_def</span><span class="p">[</span><span class="s">&#39;package_obj&#39;</span><span class="p">])</span>
+
+        <span class="c"># if source_id is specified, a new package will be created with the parameters</span>
+        <span class="c"># for this action embedded into it - specifying hidden = 1 will ensure the new package</span>
+        <span class="c"># is hidden</span>
+        <span class="n">add_package_obj</span><span class="o">.</span><span class="n">hidden_flag</span> <span class="o">=</span> <span class="mi">1</span>
+
         <span class="n">param_objlist</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">build_param_objlist</span><span class="p">(</span>
             <span class="n">obj</span><span class="o">=</span><span class="n">package_def</span><span class="p">[</span><span class="s">&#39;package_obj&#39;</span><span class="p">],</span>
             <span class="n">user_params</span><span class="o">=</span><span class="n">package_def</span><span class="p">[</span><span class="s">&#39;params&#39;</span><span class="p">],</span>
@@ -2184,6 +2205,14 @@
             <span class="n">derive_def</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
             <span class="n">empty_ok</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
         <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">param_objlist</span><span class="p">:</span>
+            <span class="n">add_package_obj</span><span class="o">.</span><span class="n">source_id</span> <span class="o">=</span> <span class="n">package_def</span><span class="p">[</span><span class="s">&#39;package_obj&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
+            <span class="n">add_package_obj</span><span class="o">.</span><span class="n">parameters</span> <span class="o">=</span> <span class="n">param_objlist</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">add_package_obj</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">package_def</span><span class="p">[</span><span class="s">&#39;package_obj&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
+            <span class="n">add_package_obj</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">package_def</span><span class="p">[</span><span class="s">&#39;package_obj&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+            <span class="n">add_package_obj</span><span class="o">.</span><span class="n">source_id</span> <span class="o">=</span> <span class="bp">None</span>
 
         <span class="sd">&quot;&quot;&quot;Branch out logic for 6.2 vs 6.5 here:</span>
 
@@ -2213,8 +2242,9 @@
         <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;DEPLOY_ACTION objtype: {}, objlisttype: {}, force_start_time: {}, version: {}&quot;</span><span class="o">.</span><span class="n">format</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">objtype</span><span class="p">,</span> <span class="n">objlisttype</span><span class="p">,</span> <span class="n">force_start_time</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span><span class="p">))</span>
 
+        <span class="c"># BUILD THE ACTION OBJECT TO BE ADDED</span>
         <span class="n">add_obj</span> <span class="o">=</span> <span class="n">objtype</span><span class="p">()</span>
-        <span class="n">add_obj</span><span class="o">.</span><span class="n">package_spec</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">PackageSpec</span><span class="p">()</span>
+        <span class="n">add_obj</span><span class="o">.</span><span class="n">package_spec</span> <span class="o">=</span> <span class="n">add_package_obj</span>
         <span class="n">add_obj</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
         <span class="n">add_obj</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">action_name</span>
         <span class="n">add_obj</span><span class="o">.</span><span class="n">issue_seconds</span> <span class="o">=</span> <span class="n">issue_seconds</span>
@@ -2227,13 +2257,6 @@
         <span class="n">add_obj</span><span class="o">.</span><span class="n">policy_flag</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">add_obj</span><span class="o">.</span><span class="n">approved_flag</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">add_obj</span><span class="o">.</span><span class="n">issue_count</span> <span class="o">=</span> <span class="mi">0</span>
-
-        <span class="k">if</span> <span class="n">param_objlist</span><span class="p">:</span>
-            <span class="n">add_obj</span><span class="o">.</span><span class="n">package_spec</span><span class="o">.</span><span class="n">source_id</span> <span class="o">=</span> <span class="n">package_def</span><span class="p">[</span><span class="s">&#39;package_obj&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
-            <span class="n">add_obj</span><span class="o">.</span><span class="n">package_spec</span><span class="o">.</span><span class="n">parameters</span> <span class="o">=</span> <span class="n">param_objlist</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">add_obj</span><span class="o">.</span><span class="n">package_spec</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">package_def</span><span class="p">[</span><span class="s">&#39;package_obj&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
-            <span class="n">add_obj</span><span class="o">.</span><span class="n">package_spec</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">package_def</span><span class="p">[</span><span class="s">&#39;package_obj&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
 
         <span class="k">if</span> <span class="n">action_filter_defs</span> <span class="ow">or</span> <span class="n">action_option_defs</span><span class="p">:</span>
             <span class="n">targetgroup_obj</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">build_group_obj</span><span class="p">(</span><span class="n">action_filter_defs</span><span class="p">,</span> <span class="n">action_option_defs</span><span class="p">)</span>
@@ -2438,13 +2461,24 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        dict, containing major, minor, revision, and build of tanium server version</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        If pytan has not yet fetched info.json, then server_version will == &quot;Not yet determined!&quot;</span>
+<span class="sd">        force a call to self.session.get_server_version() to attempt to get info.json and parse</span>
+<span class="sd">        the version from that and update self.server_version with that value</span>
+
+<span class="sd">        If pytan is unable to fetch info.json properly for some reason,</span>
+<span class="sd">        then server_version will == &quot;Unable to determine&quot;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span> <span class="o">==</span> <span class="s">&quot;Not yet determined!&quot;</span><span class="p">:</span>
+        <span class="n">server_version_bad_states</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;Not yet determined!&quot;</span><span class="p">,</span> <span class="s">&quot;Unable to determine&quot;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span> <span class="ow">in</span> <span class="n">server_version_bad_states</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get_server_version</span><span class="p">()</span>
 
         <span class="n">v_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;major&#39;</span><span class="p">,</span> <span class="s">&#39;minor&#39;</span><span class="p">,</span> <span class="s">&#39;revision&#39;</span><span class="p">,</span> <span class="s">&#39;build&#39;</span><span class="p">]</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span> <span class="o">==</span> <span class="s">&quot;Not yet determined!&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span> <span class="ow">in</span> <span class="n">server_version_bad_states</span><span class="p">:</span>
             <span class="n">v_ints</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
             <span class="n">v_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">v_keys</span><span class="p">,</span> <span class="n">v_ints</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
@@ -2595,7 +2629,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Aug 27, 2015.
+      Last updated on Aug 28, 2015.
     </p>
   </div>
 

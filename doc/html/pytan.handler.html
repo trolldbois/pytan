@@ -223,7 +223,7 @@
 <li>default: False</li>
 <li>False: do not print requests package debug</li>
 <li>True: do print requests package debug</li>
-<li>Session Passthru</li>
+<li>This is passed through to <a class="reference internal" href="pytan.sessions.html#pytan.sessions.Session" title="pytan.sessions.Session"><code class="xref py py-class docutils literal"><span class="pre">pytan.sessions.Session</span></code></a></li>
 </ul>
 </div></blockquote>
 <p><strong>http_auth_retry: bool, optional</strong></p>
@@ -232,7 +232,7 @@
 <li>default: True</li>
 <li>True: retry HTTP GET/POST&#8217;s</li>
 <li>False: do not retry HTTP GET/POST&#8217;s</li>
-<li>Session Passthru</li>
+<li>This is passed through to <a class="reference internal" href="pytan.sessions.html#pytan.sessions.Session" title="pytan.sessions.Session"><code class="xref py py-class docutils literal"><span class="pre">pytan.sessions.Session</span></code></a></li>
 </ul>
 </div></blockquote>
 <p><strong>http_retry_count: int, optional</strong></p>
@@ -240,7 +240,7 @@
 <div><ul class="simple">
 <li>default: 5</li>
 <li>number of times to retry HTTP GET/POST&#8217;s if the connection times out/fails</li>
-<li>Session Passthru</li>
+<li>This is passed through to <a class="reference internal" href="pytan.sessions.html#pytan.sessions.Session" title="pytan.sessions.Session"><code class="xref py py-class docutils literal"><span class="pre">pytan.sessions.Session</span></code></a></li>
 </ul>
 </div></blockquote>
 <p><strong>soap_request_headers</strong> : dict, optional</p>
@@ -248,7 +248,7 @@
 <div><ul class="simple">
 <li>default: {&#8216;Content-Type&#8217;: &#8216;text/xml; charset=utf-8&#8217;, &#8216;Accept-Encoding&#8217;: &#8216;gzip&#8217;}</li>
 <li>dictionary of headers to add to every HTTP GET/POST</li>
-<li>Session Passthru</li>
+<li>This is passed through to <a class="reference internal" href="pytan.sessions.html#pytan.sessions.Session" title="pytan.sessions.Session"><code class="xref py py-class docutils literal"><span class="pre">pytan.sessions.Session</span></code></a></li>
 </ul>
 </div></blockquote>
 <p><strong>auth_connect_timeout_sec</strong> : int, optional</p>
@@ -256,7 +256,7 @@
 <div><ul class="simple">
 <li>default: 5</li>
 <li>number of seconds before timing out for a connection while authenticating</li>
-<li>Session Passthru</li>
+<li>This is passed through to <a class="reference internal" href="pytan.sessions.html#pytan.sessions.Session" title="pytan.sessions.Session"><code class="xref py py-class docutils literal"><span class="pre">pytan.sessions.Session</span></code></a></li>
 </ul>
 </div></blockquote>
 <p><strong>auth_response_timeout_sec</strong> : int, optional</p>
@@ -264,7 +264,7 @@
 <div><ul class="simple">
 <li>default: 15</li>
 <li>number of seconds before timing out for a response while authenticating</li>
-<li>Session Passthru</li>
+<li>This is passed through to <a class="reference internal" href="pytan.sessions.html#pytan.sessions.Session" title="pytan.sessions.Session"><code class="xref py py-class docutils literal"><span class="pre">pytan.sessions.Session</span></code></a></li>
 </ul>
 </div></blockquote>
 <p><strong>info_connect_timeout_sec</strong> : int, optional</p>
@@ -272,7 +272,7 @@
 <div><ul class="simple">
 <li>default: 5</li>
 <li>number of seconds before timing out for a connection while getting /info.json</li>
-<li>Session Passthru</li>
+<li>This is passed through to <a class="reference internal" href="pytan.sessions.html#pytan.sessions.Session" title="pytan.sessions.Session"><code class="xref py py-class docutils literal"><span class="pre">pytan.sessions.Session</span></code></a></li>
 </ul>
 </div></blockquote>
 <p><strong>info_response_timeout_sec</strong> : int, optional</p>
@@ -280,7 +280,7 @@
 <div><ul class="simple">
 <li>default: 15</li>
 <li>number of seconds before timing out for a response while getting /info.json</li>
-<li>Session Passthru</li>
+<li>This is passed through to <a class="reference internal" href="pytan.sessions.html#pytan.sessions.Session" title="pytan.sessions.Session"><code class="xref py py-class docutils literal"><span class="pre">pytan.sessions.Session</span></code></a></li>
 </ul>
 </div></blockquote>
 <p><strong>soap_connect_timeout_sec</strong> : int, optional</p>
@@ -288,7 +288,7 @@
 <div><ul class="simple">
 <li>default: 15</li>
 <li>number of seconds before timing out for a connection for a SOAP request</li>
-<li>Session Passthru</li>
+<li>This is passed through to <a class="reference internal" href="pytan.sessions.html#pytan.sessions.Session" title="pytan.sessions.Session"><code class="xref py py-class docutils literal"><span class="pre">pytan.sessions.Session</span></code></a></li>
 </ul>
 </div></blockquote>
 <p><strong>soap_response_timeout_sec</strong> : int, optional</p>
@@ -296,7 +296,7 @@
 <div><ul class="simple">
 <li>default: 540</li>
 <li>number of seconds before timing out for a response for a SOAP request</li>
-<li>Session Passthru</li>
+<li>This is passed through to <a class="reference internal" href="pytan.sessions.html#pytan.sessions.Session" title="pytan.sessions.Session"><code class="xref py py-class docutils literal"><span class="pre">pytan.sessions.Session</span></code></a></li>
 </ul>
 </div></blockquote>
 <p><strong>stats_loop_enabled</strong> : bool, optional</p>
@@ -305,7 +305,7 @@
 <li>default: False</li>
 <li>False: do not enable the statistics loop thread</li>
 <li>True: enable the statistics loop thread</li>
-<li>Session Passthru</li>
+<li>This is passed through to <a class="reference internal" href="pytan.sessions.html#pytan.sessions.Session" title="pytan.sessions.Session"><code class="xref py py-class docutils literal"><span class="pre">pytan.sessions.Session</span></code></a></li>
 </ul>
 </div></blockquote>
 <p><strong>stats_loop_sleep_sec</strong> : int, optional</p>
@@ -313,7 +313,16 @@
 <div><ul class="simple">
 <li>default: 5</li>
 <li>number of seconds to sleep in between printing the statistics when stats_loop_enabled is True</li>
-<li>Session Passthru</li>
+<li>This is passed through to <a class="reference internal" href="pytan.sessions.html#pytan.sessions.Session" title="pytan.sessions.Session"><code class="xref py py-class docutils literal"><span class="pre">pytan.sessions.Session</span></code></a></li>
+</ul>
+</div></blockquote>
+<p><strong>record_all_requests: bool, optional</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>default: False</li>
+<li>False: do not add each requests response object to session.ALL_REQUESTS_RESPONSES</li>
+<li>True: add each requests response object to session.ALL_REQUESTS_RESPONSES</li>
+<li>This is passed through to <a class="reference internal" href="pytan.sessions.html#pytan.sessions.Session" title="pytan.sessions.Session"><code class="xref py py-class docutils literal"><span class="pre">pytan.sessions.Session</span></code></a></li>
 </ul>
 </div></blockquote>
 <p><strong>stats_loop_targets</strong> : list of dict, optional</p>
@@ -321,7 +330,7 @@
 <div><ul class="simple">
 <li>default: [{&#8216;Version&#8217;: &#8216;Settings/Version&#8217;}, {&#8216;Active Questions&#8217;: &#8216;Active Question Cache/Active Question Estimate&#8217;}, {&#8216;Clients&#8217;: &#8216;Active Question Cache/Active Client Estimate&#8217;}, {&#8216;Strings&#8217;: &#8216;String Cache/Total String Count&#8217;}, {&#8216;Handles&#8217;: &#8216;System Performance Info/HandleCount&#8217;}, {&#8216;Processes&#8217;: &#8216;System Performance Info/ProcessCount&#8217;}, {&#8216;Memory Available&#8217;: &#8216;percentage(System Performance Info/PhysicalAvailable,System Performance Info/PhysicalTotal)&#8217;}]</li>
 <li>list of dictionaries with the key being the section of info.json to print info from, and the value being the item with in that section to print the value</li>
-<li>Session Passthru</li>
+<li>This is passed through to <a class="reference internal" href="pytan.sessions.html#pytan.sessions.Session" title="pytan.sessions.Session"><code class="xref py py-class docutils literal"><span class="pre">pytan.sessions.Session</span></code></a></li>
 </ul>
 </div></blockquote>
 <p><strong>persistent: bool, optional</strong></p>
@@ -330,7 +339,7 @@
 <li>default: False</li>
 <li>False: do not request a persistent session</li>
 <li>True: do request a persistent</li>
-<li>Session Authentication Passthru</li>
+<li>This is passed through to <a class="reference internal" href="pytan.sessions.html#pytan.sessions.Session.authenticate" title="pytan.sessions.Session.authenticate"><code class="xref py py-func docutils literal"><span class="pre">pytan.sessions.Session.authenticate()</span></code></a></li>
 </ul>
 </div></blockquote>
 </td>
@@ -2177,6 +2186,12 @@ and as such is not meant for human consumption. Use <a class="reference internal
 </tr>
 </tbody>
 </table>
+<p class="rubric">Notes</p>
+<p>If pytan has not yet fetched info.json, then server_version will == &#8220;Not yet determined!&#8221;
+force a call to self.session.get_server_version() to attempt to get info.json and parse
+the version from that and update self.server_version with that value</p>
+<p>If pytan is unable to fetch info.json properly for some reason,
+then server_version will == &#8220;Unable to determine&#8221;</p>
 </dd></dl>
 
 <dl class="method">
@@ -2293,7 +2308,7 @@ the current servers version</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Aug 27, 2015.
+      Last updated on Aug 28, 2015.
     </p>
   </div>
 

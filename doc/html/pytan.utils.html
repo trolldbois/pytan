@@ -1597,6 +1597,13 @@ aginst the version of <a class="reference internal" href="pytan.html#module-pyta
 <li>Object to shrink</li>
 </ul>
 </div></blockquote>
+<p><strong>attrs</strong> : list of str</p>
+<blockquote>
+<div><ul class="simple">
+<li>default: None</li>
+<li>list of attribute str&#8217;s to copy over to new object, will default to [&#8216;name&#8217;, &#8216;id&#8217;, &#8216;hash&#8217;] if None</li>
+</ul>
+</div></blockquote>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>new_obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a></p>
@@ -2040,6 +2047,76 @@ aginst the version of <a class="reference internal" href="pytan.html#module-pyta
 </table>
 </dd></dl>
 
+<dl class="function">
+<dt id="pytan.utils.copy_obj">
+<code class="descclassname">pytan.utils.</code><code class="descname">copy_obj</code><span class="sig-paren">(</span><em>obj</em>, <em>skip_attrs=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#copy_obj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.copy_obj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a new class of obj with with out any attributes in skip_attrs specified</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a></p>
+<blockquote>
+<div><ul class="simple">
+<li>Object to copy</li>
+</ul>
+</div></blockquote>
+<p><strong>skip_attrs</strong> : list of str</p>
+<blockquote>
+<div><ul class="simple">
+<li>default: None</li>
+<li>list of attribute str&#8217;s to skip copying over to new object, will default to [] if None</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>new_obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a></p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>Copied object with attributes in skip_attrs skipped</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.utils.copy_package_obj_for_action">
+<code class="descclassname">pytan.utils.</code><code class="descname">copy_package_obj_for_action</code><span class="sig-paren">(</span><em>obj</em>, <em>skip_attrs=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/utils.html#copy_package_obj_for_action"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.utils.copy_package_obj_for_action" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a new class of package obj with with out any attributes in skip_attrs specified</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a></p>
+<blockquote>
+<div><ul class="simple">
+<li>Object to copy</li>
+</ul>
+</div></blockquote>
+<p><strong>skip_attrs</strong> : list of str</p>
+<blockquote>
+<div><ul class="simple">
+<li>default: None</li>
+<li>list of attribute str&#8217;s to skip copying over to new object, default if None: [&#8216;id&#8217;, &#8216;deleted_flag&#8217;, &#8216;available_time&#8217;, &#8216;creation_time&#8217;, &#8216;modification_time&#8217;, &#8216;source_id&#8217;]</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>new_obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a></p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>Copied object with attributes in skip_attrs skipped</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </div>
 <div class="section" id="utility-functions-definition-objects">
 <h2>2.6.12. Utility Functions: Definition objects<a class="headerlink" href="#utility-functions-definition-objects" title="Permalink to this headline">¶</a></h2>
@@ -2262,7 +2339,7 @@ aginst the version of <a class="reference internal" href="pytan.html#module-pyta
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Aug 27, 2015.
+      Last updated on Aug 28, 2015.
     </p>
   </div>
 
