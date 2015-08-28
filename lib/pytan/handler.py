@@ -65,62 +65,67 @@ class Handler(object):
         * default: False
         * False: do not print requests package debug
         * True: do print requests package debug
-        * Session Passthru
+        * This is passed through to :class:`pytan.sessions.Session`
     http_auth_retry: bool, optional
         * default: True
         * True: retry HTTP GET/POST's
         * False: do not retry HTTP GET/POST's
-        * Session Passthru
+        * This is passed through to :class:`pytan.sessions.Session`
     http_retry_count: int, optional
         * default: 5
         * number of times to retry HTTP GET/POST's if the connection times out/fails
-        * Session Passthru
+        * This is passed through to :class:`pytan.sessions.Session`
     soap_request_headers : dict, optional
         * default: {'Content-Type': 'text/xml; charset=utf-8', 'Accept-Encoding': 'gzip'}
         * dictionary of headers to add to every HTTP GET/POST
-        * Session Passthru
+        * This is passed through to :class:`pytan.sessions.Session`
     auth_connect_timeout_sec : int, optional
         * default: 5
         * number of seconds before timing out for a connection while authenticating
-        * Session Passthru
+        * This is passed through to :class:`pytan.sessions.Session`
     auth_response_timeout_sec : int, optional
         * default: 15
         * number of seconds before timing out for a response while authenticating
-        * Session Passthru
+        * This is passed through to :class:`pytan.sessions.Session`
     info_connect_timeout_sec : int, optional
         * default: 5
         * number of seconds before timing out for a connection while getting /info.json
-        * Session Passthru
+        * This is passed through to :class:`pytan.sessions.Session`
     info_response_timeout_sec : int, optional
         * default: 15
         * number of seconds before timing out for a response while getting /info.json
-        * Session Passthru
+        * This is passed through to :class:`pytan.sessions.Session`
     soap_connect_timeout_sec : int, optional
         * default: 15
         * number of seconds before timing out for a connection for a SOAP request
-        * Session Passthru
+        * This is passed through to :class:`pytan.sessions.Session`
     soap_response_timeout_sec : int, optional
         * default: 540
         * number of seconds before timing out for a response for a SOAP request
-        * Session Passthru
+        * This is passed through to :class:`pytan.sessions.Session`
     stats_loop_enabled : bool, optional
         * default: False
         * False: do not enable the statistics loop thread
         * True: enable the statistics loop thread
-        * Session Passthru
+        * This is passed through to :class:`pytan.sessions.Session`
     stats_loop_sleep_sec : int, optional
         * default: 5
         * number of seconds to sleep in between printing the statistics when stats_loop_enabled is True
-        * Session Passthru
+        * This is passed through to :class:`pytan.sessions.Session`
+    record_all_requests: bool, optional
+        * default: False
+        * False: do not add each requests response object to session.ALL_REQUESTS_RESPONSES
+        * True: add each requests response object to session.ALL_REQUESTS_RESPONSES
+        * This is passed through to :class:`pytan.sessions.Session`
     stats_loop_targets : list of dict, optional
         * default: [{'Version': 'Settings/Version'}, {'Active Questions': 'Active Question Cache/Active Question Estimate'}, {'Clients': 'Active Question Cache/Active Client Estimate'}, {'Strings': 'String Cache/Total String Count'}, {'Handles': 'System Performance Info/HandleCount'}, {'Processes': 'System Performance Info/ProcessCount'}, {'Memory Available': 'percentage(System Performance Info/PhysicalAvailable,System Performance Info/PhysicalTotal)'}]
         * list of dictionaries with the key being the section of info.json to print info from, and the value being the item with in that section to print the value
-        * Session Passthru
+        * This is passed through to :class:`pytan.sessions.Session`
     persistent: bool, optional
         * default: False
         * False: do not request a persistent session
         * True: do request a persistent
-        * Session Authentication Passthru
+        * This is passed through to :func:`pytan.sessions.Session.authenticate`
 
     Notes
     -----
@@ -166,11 +171,20 @@ class Handler(object):
             raise pytan.exceptions.HandlerError("port must be an integer!")
 
         pytan.utils.test_app_port(host, port)
+
+        # establish our Session class
         self.session = pytan.sessions.Session(host, port, **kwargs)
+
+        # authenticate using the Session class
         self.session.authenticate(
             username=username, password=password, session_id=session_id, **kwargs
         )
+
+        # set the object's server_version to Not yet determined! for now, this will be updated
+        # by self.get_server_version
         self.server_version = "Not yet determined!"
+
+        # start up a background thread to get the server version
         thread = threading.Thread(target=self.get_server_version, args=())
         thread.daemon = True
         thread.start()
