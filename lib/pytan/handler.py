@@ -2319,12 +2319,16 @@ class Handler(object):
             * True if self.server_version_dict major == 6 and minor == 2
             * False otherwise
         """
+        if not getattr(self, 'server_version_dict', None):
+            self.get_server_version()
+
         is6_2 = (
             # see if version is 6.2.xxx.xxx
             (self.server_version_dict['major'] == 6 and self.server_version_dict['minor'] == 2)
             # we will assume 6.2 if server_version is "Unable to determine"
             or self.server_version_dict.values() == [0, 0, 0, 0]
         )
+
         return is6_2
 
     def _version_support_check(self, v_maps):
@@ -2342,6 +2346,9 @@ class Handler(object):
             * True if all values in all v_maps are greater than or equal to all values in self.server_version_dict
             * False otherwise
         """
+        if not getattr(self, 'server_version_dict', None):
+            self.get_server_version()
+
         for v_map in v_maps:
             for k, v in v_map.iteritems():
                 if not self.server_version_dict[k] >= v:
