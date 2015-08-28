@@ -2120,6 +2120,11 @@ class Handler(object):
             added_obj = None
             action_obj = self._add(add_obj)
 
+        action_package = self._find(added_obj.package_spec)
+
+        m = "DEPLOY_ACTION ADDED: {}, ID: {}".format
+        self.mylog.debug(m(action_package.__class__.__name__, action_package.id))
+
         m = "DEPLOY_ACTION ADDED: {}, ID: {}".format
         self.mylog.debug(m(action_obj.__class__.__name__, action_obj.id))
 
@@ -2131,7 +2136,7 @@ class Handler(object):
         ret = {
             'saved_action_object': added_obj,
             'action_object': action_obj,
-            'package_object': package_def['package_obj'],
+            'package_object': action_package,
             'group_object': targetgroup_obj,
             'action_info': action_info,
             'poller_object': pytan.pollers.ActionPoller(self, action_obj, **kwargs),
