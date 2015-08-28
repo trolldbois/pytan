@@ -9,7 +9,7 @@
   * bug fix: in pytan.utils.log_session_communication(): Update to use LAST_REQUESTS_RESPONSE object instead of XML body variables
   * enhancement: in pytan.session.Session.get_server_info(): added better error handling
   * enhancement: in pytan.handler.Handler.deploy_action(): added action_name and action_comment options
-  * enhancement: in pytan.sessions.Session():
+  * enhancement: in pytan.sessions.Session(): Refactoring again:
     * move response_prunes in _get_response() to
     self.BAD_RESPONSE_CMD_PRUNES
     * renamed self.last to self.LAST_RESPONSE_INFO, add initial null
@@ -20,14 +20,22 @@
     whether every Requests response object gets appended to
     self.ALL_REQUESTS_RESPONSES, add kwargs pass thru to init, add kwargs pass through to pytan.handler.Handler
     * add self.ALL_REQUESTS_RESPONSES to Object level and doc
-    * rename self.request_body to self.LAST_XML_REQUEST_BODY, add initial
-    null variable to Object level and doc
-    * rename self.response_body to self.LAST_XML_RESPONSE_BODY, add initial
-    null variable to Object level and doc
     * add initial null variables to Object level and doc for: server, port,
     server_version
+    * get rid of the *_CMD object variables, unnecessary
+    * get rid of the *_RE object variables, replace with single ELEMENT_RE_TXT
+    * rename _parse_response_for_regex() to _regex_body_for_element()
+    * update _regex_body_for_element() to take element name to search for instead of regex, compile regex on the fly from self.ELEMENT_RE_TXT, log debug messages about regex results
+    * rename _extract_cdata_el() to _extract_resultxml()
+    * remove export_id element searching from _extract_resultxml()
+    * change _extract_resultxml() to return the raw resultxml text instead of the ElementTree object
+    * remove LAST_XML_REQUEST_BODY and LAST_XML_RESPONSE_BODY object variables from everywhere — these values can be retrieved from LAST_REQUESTS_RESPONSE.request.body and LAST_REQUESTS_RESPONSE.text respectively
+    * remove _extract_export_id()
+    * remove export_id handling code from get_result_data()
+    * add get_result_data_sse(), which explicitly expects an export_id to exist in the XML response
   * enhancement: in pytan.utils.setup_parser(): Modify the argument parser used by all bin scripts to expose more handler options
   * enhancement: in pytan.sessions.Session.get_server_version(): change log level for version parse failures to debug instead of warning
+  * enhancement: in pytan.sessions.Session(): Refactoring again:
   * doc update: doc string updates all over the place
   * doc update: pointers to KB/Tanium
   * doc update: double quotes for windows

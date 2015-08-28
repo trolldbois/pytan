@@ -81,27 +81,6 @@ class Session(object):
     REQUEST_BODY_TEMPLATE = string.Template(REQUEST_BODY_BASE)
     """The XML template used for all SOAP Requests in string.template form"""
 
-    GET_OBJECT_CMD = 'GetObject'
-    """The text used in the command element for XML requests to get objects"""
-
-    UPDATE_OBJECT_CMD = 'UpdateObject'
-    """The text used in the command element for XML requests to update objects"""
-
-    ADD_OBJECT_CMD = 'AddObject'
-    """The text used in the command element for XML requests to add objects"""
-
-    DELETE_OBJECT_CMD = 'DeleteObject'
-    """The text used in the command element for XML requests to delete objects"""
-
-    GET_RESULT_INFO_CMD = 'GetResultInfo'
-    """The text used in the command element for XML requests to get result info for an object"""
-
-    GET_RESULT_DATA_CMD = 'GetResultData'
-    """The text used in the command element for XML requests to get result data for an object"""
-
-    RUN_PLUGIN_CMD = 'RunPlugin'
-    """The text used in the command element for XML requests to run a plugin for an object"""
-
     AUTH_RES = 'auth'
     """The URL to use for authentication requests"""
 
@@ -132,23 +111,8 @@ class Session(object):
     SOAP_REQUEST_HEADERS = {'Content-Type': 'text/xml; charset=utf-8', 'Accept-Encoding': 'gzip'}
     """dictionary of headers to add to every HTTP GET/POST"""
 
-    COMMAND_RE_TXT = r'<command>(.*?)</command>'
-    """text string to search for command element in XML bodies"""
-
-    COMMAND_RE = re.compile(COMMAND_RE_TXT, re.IGNORECASE | re.DOTALL)
-    """regex object to search for command element in XML bodies"""
-
-    SESSION_RE_TXT = r'<session>(.*?)</session>'
-    """text string to search for session element in XML bodies"""
-
-    SESSION_RE = re.compile(SESSION_RE_TXT, re.IGNORECASE | re.DOTALL)
-    """regex object to search for session element in XML bodies"""
-
-    VERSION_RE_TXT = r'<server_version>(.*?)</server_version>'
-    """text string to search for server_version element in XML bodies"""
-
-    VERSION_RE = re.compile(VERSION_RE_TXT, re.IGNORECASE | re.DOTALL)
-    """regex object to search for server_version element in XML bodies"""
+    ELEMENT_RE_TXT = r'<{0}>(.*?)</{0}>'.format
+    """regex string to search for an element in XML bodies"""
 
     HTTP_DEBUG = False
     """print requests package debug or not"""
@@ -187,12 +151,6 @@ class Session(object):
 
     LAST_RESPONSE_INFO = {}
     """This variable will be updated with the information from the most recent call to _get_response()"""
-
-    LAST_XML_REQUEST_BODY = None
-    """This variable will be updated with the last XML request body"""
-
-    LAST_XML_RESPONSE_BODY = None
-    """This variable will be updated with the last XML response body"""
 
     BAD_RESPONSE_CMD_PRUNES = [
         '\n',
@@ -469,9 +427,7 @@ class Session(object):
             * found objects
         """
         request_body = self._create_get_object_body(object_type, **kwargs)
-        self.LAST_XML_REQUEST_BODY = request_body
         response_body = self._get_response(request_body)
-        self.LAST_XML_RESPONSE_BODY = response_body
         obj = taniumpy.BaseType.fromSOAPBody(response_body)
         return obj
 
@@ -489,9 +445,7 @@ class Session(object):
             * saved object
         """
         request_body = self._create_update_object_body(obj, **kwargs)
-        self.LAST_XML_REQUEST_BODY = request_body
         response_body = self._get_response(request_body)
-        self.LAST_XML_RESPONSE_BODY = response_body
         obj = taniumpy.BaseType.fromSOAPBody(response_body)
         return obj
 
@@ -509,9 +463,7 @@ class Session(object):
             * added object
         """
         request_body = self._create_add_object_body(obj, **kwargs)
-        self.LAST_XML_REQUEST_BODY = request_body
         response_body = self._get_response(request_body)
-        self.LAST_XML_RESPONSE_BODY = response_body
         obj = taniumpy.BaseType.fromSOAPBody(response_body)
         return obj
 
@@ -529,9 +481,7 @@ class Session(object):
             * deleted object
         """
         request_body = self._create_delete_object_body(obj, **kwargs)
-        self.LAST_XML_REQUEST_BODY = request_body
         response_body = self._get_response(request_body)
-        self.LAST_XML_RESPONSE_BODY = response_body
         obj = taniumpy.BaseType.fromSOAPBody(response_body)
         return obj
 
@@ -549,9 +499,7 @@ class Session(object):
             * results from running object
         """
         request_body = self._create_run_plugin_object_body(obj, **kwargs)
-        self.LAST_XML_REQUEST_BODY = request_body
         response_body = self._get_response(request_body)
-        self.LAST_XML_RESPONSE_BODY = response_body
         obj = taniumpy.BaseType.fromSOAPBody(response_body)
         return obj
 
@@ -569,13 +517,13 @@ class Session(object):
             * ResultInfo for `obj`
         """
         request_body = self._create_get_result_info_body(obj, **kwargs)
-        self.LAST_XML_REQUEST_BODY = request_body
         response_body = self._get_response(request_body)
-        self.LAST_XML_RESPONSE_BODY = response_body
-        cdata_el = self._extract_cdata_el(response_body)
-        if pytan.utils.is_str(cdata_el):
-            return cdata_el
+
+        # parse the ResultXML node into it's own element
+        resultxml_text = self._extract_resultxml(response_body)
+        cdata_el = ET.fromstring(resultxml_text)
         obj = taniumpy.ResultInfo.fromSOAPElement(cdata_el)
+        obj._RAW_XML = resultxml_text
         return obj
 
     def get_result_data(self, obj, **kwargs):
@@ -588,19 +536,38 @@ class Session(object):
 
         Returns
         -------
-        obj : :class:`taniumpy.object_types.result_set.ResultSet` or str
-            * if export_id element found in `obj`, element text value is extracted and returned as str
+        obj : :class:`taniumpy.object_types.result_set.ResultSet`
             * otherwise, `obj` will be the ResultSet for `obj`
         """
         request_body = self._create_get_result_data_body(obj, **kwargs)
-        self.LAST_XML_REQUEST_BODY = request_body
         response_body = self._get_response(request_body)
-        self.LAST_XML_RESPONSE_BODY = response_body
-        cdata_el = self._extract_cdata_el(response_body)
-        if pytan.utils.is_str(cdata_el):
-            return cdata_el
+
+        # parse the ResultXML node into it's own element
+        resultxml_text = self._extract_resultxml(response_body)
+        cdata_el = ET.fromstring(resultxml_text)
         obj = taniumpy.ResultSet.fromSOAPElement(cdata_el)
+        obj._RAW_XML = resultxml_text
         return obj
+
+    def get_result_data_sse(self, obj, **kwargs):
+        """Creates and sends a GetResultData XML Request body that starts a server side export from `obj` and parses the response for an export_id.
+
+        Parameters
+        ----------
+        obj : :class:`taniumpy.object_types.base.BaseType`
+            * object to start server side export
+
+        Returns
+        -------
+        export_id : str
+            * value of export_id element found in response
+        """
+        request_body = self._create_get_result_data_body(obj, **kwargs)
+        response_body = self._get_response(request_body)
+
+        # if there is an export_id node, return the contents of that
+        export_id = self._regex_body_for_element(response_body, 'export_id')
+        return export_id
 
     def get_server_info(self, port=None, fallback_port=444, **kwargs):
         """Gets the /info.json
@@ -1375,7 +1342,7 @@ class Session(object):
             * The XML request body created from :func:`pytan.sessions.Session._build_body`
         """
         object_list = obj.toSOAPBody(minimal=True)
-        obj_body = self._build_body(self.RUN_PLUGIN_CMD, object_list, **kwargs)
+        obj_body = self._build_body('RunPlugin', object_list, **kwargs)
         return obj_body
 
     def _create_add_object_body(self, obj, **kwargs):
@@ -1394,7 +1361,7 @@ class Session(object):
             * The XML request body created from :func:`pytan.sessions.Session._build_body`
         """
         object_list = obj.toSOAPBody(minimal=True)
-        obj_body = self._build_body(self.ADD_OBJECT_CMD, object_list, **kwargs)
+        obj_body = self._build_body('AddObject', object_list, **kwargs)
         return obj_body
 
     def _create_delete_object_body(self, obj, **kwargs):
@@ -1413,7 +1380,7 @@ class Session(object):
             * The XML request body created from :func:`pytan.sessions.Session._build_body`
         """
         object_list = obj.toSOAPBody(minimal=True)
-        obj_body = self._build_body(self.DELETE_OBJECT_CMD, object_list, **kwargs)
+        obj_body = self._build_body('DeleteObject', object_list, **kwargs)
         return obj_body
 
     def _create_get_result_info_body(self, obj, **kwargs):
@@ -1432,7 +1399,7 @@ class Session(object):
             * The XML request body created from :func:`pytan.sessions.Session._build_body`
         """
         object_list = obj.toSOAPBody(minimal=True)
-        obj_body = self._build_body(self.GET_RESULT_INFO_CMD, object_list, **kwargs)
+        obj_body = self._build_body('GetResultInfo', object_list, **kwargs)
         return obj_body
 
     def _create_get_result_data_body(self, obj, **kwargs):
@@ -1451,7 +1418,7 @@ class Session(object):
             * The XML request body created from :func:`pytan.sessions.Session._build_body`
         """
         object_list = obj.toSOAPBody(minimal=True)
-        obj_body = self._build_body(self.GET_RESULT_DATA_CMD, object_list, **kwargs)
+        obj_body = self._build_body('GetResultData', object_list, **kwargs)
         return obj_body
 
     def _create_get_object_body(self, object_or_type, **kwargs):
@@ -1474,7 +1441,7 @@ class Session(object):
         else:
             object_list = '<{}/>'.format(object_or_type._soap_tag)
 
-        obj_body = self._build_body(self.GET_OBJECT_CMD, object_list, **kwargs)
+        obj_body = self._build_body('GetObject', object_list, **kwargs)
         return obj_body
 
     def _create_update_object_body(self, obj, **kwargs):
@@ -1493,7 +1460,7 @@ class Session(object):
             * The XML request body created from :func:`pytan.sessions.Session._build_body`
         """
         object_list = obj.toSOAPBody(minimal=True)
-        obj_body = self._build_body(self.UPDATE_OBJECT_CMD, object_list, **kwargs)
+        obj_body = self._build_body('UpdateObject', object_list, **kwargs)
         return obj_body
 
     def _check_auth(self):
@@ -1503,15 +1470,15 @@ class Session(object):
             err = "Not yet authenticated, use {}.authenticate()!".format
             raise pytan.exceptions.AuthorizationError(err(class_name))
 
-    def _parse_response_for_regex(self, body, regex, fail=True):
+    def _regex_body_for_element(self, body, element, fail=True):
         """Utility method to use a regex to get an element from an XML body
 
         Parameters
         ----------
         body : str
             * XML to search
-        regex : re object
-            * regex object to search for in body
+        element : str
+            * element name to search for in body
         fail : bool, optional
             * default: True
             * True: throw exception if unable to find any matches for `regex` in `body`
@@ -1520,41 +1487,28 @@ class Session(object):
         Returns
         -------
         ret : str
-            * The first value that matches `regex`
+            * The first value that matches the regex ELEMENT_RE_TXT with element
 
         Notes
         -----
             * Using regex is WAY faster than ElementTree chewing the body in and out, this matters a LOT on LARGE return bodies
         """
+        regex_txt = self.ELEMENT_RE_TXT(element)
+        regex = re.compile(regex_txt, re.IGNORECASE | re.DOTALL)
+
         ret = regex.search(body)
+
         if not ret and fail:
             m = "Unable to find {} in body: {}".format
             raise Exception(m(regex.pattern, body))
-        elif ret:
+        else:
             ret = str(ret.groups()[0].strip())
+
+        m = "Value of element '{}': '{}' (using pattern: '{}'".format
+        self.mylog.debug(m(element, ret, regex.pattern))
         return ret
 
-    def _extract_export_id(self, el):
-        """Utility method to get the 'export_id' element from an ElementTree object
-
-        Parameters
-        ----------
-        el : ElementTree object
-            * ElementTree object to search for 'export_id' in
-
-        Returns
-        -------
-        ret : str
-            * The text value contained in the 'export_id' element, if found
-        """
-        ret = None
-        # if there is an export_id in the response_body, return just results of that
-        export_id_el = el.find('.//export_id')
-        if export_id_el is not None and export_id_el.text:
-            ret = export_id_el.text
-        return ret
-
-    def _extract_cdata_el(self, response_body):
+    def _extract_resultxml(self, response_body):
         """Utility method to get the 'ResultXML' element from an XML body
 
         Parameters
@@ -1564,9 +1518,8 @@ class Session(object):
 
         Returns
         -------
-        ret : str or ElementTree object
+        ret : str of ResultXML element
             * str if 'export_id' element found in XML
-            * ElementTree object of ResultXML element otherwise
         """
         el = ET.fromstring(response_body)
 
@@ -1574,28 +1527,16 @@ class Session(object):
         resultxml_el = el.find('.//ResultXML')
 
         if resultxml_el is None:
-            # if there is an export_id node, return the contents of that
-            export_id = self._extract_export_id(el)
-            if export_id:
-                return export_id
-
             m = "Unable to find ResultXML element in XML response: {}".format
             raise pytan.exceptions.AuthorizationError(m(response_body))
 
         resultxml_text = resultxml_el.text
 
         if not resultxml_text:
-            # if there is an export_id node, return the contents of that
-            export_id = self._extract_export_id(el)
-            if export_id:
-                return export_id
-
             m = "Empty ResultXML element in XML response: {}".format
             raise pytan.exceptions.AuthorizationError(m(response_body))
 
-        # parse the ResultXML node into it's own element
-        cdata_el = ET.fromstring(resultxml_text)
-        return cdata_el
+        return resultxml_text
 
     def _get_response(self, request_body, **kwargs):
         """This is a wrapper around :func:`pytan.sessions.Session.http_post` for SOAP XML requests and responses.
@@ -1634,7 +1575,7 @@ class Session(object):
 
         self.LAST_RESPONSE_INFO = {}
 
-        request_command = self._parse_response_for_regex(request_body, self.COMMAND_RE)
+        request_command = self._regex_body_for_element(request_body, 'command')
         self.LAST_RESPONSE_INFO['request_command'] = request_command
 
         req_args = {}
@@ -1664,7 +1605,7 @@ class Session(object):
         # m = "HTTP Response: Timing info -- SENT: {}, RECEIVED: {}, ELAPSED: {}".format
         # self.mylog.debug(m(sent, received, elapsed))
 
-        response_command = self._parse_response_for_regex(response_body, self.COMMAND_RE)
+        response_command = self._regex_body_for_element(response_body, 'command')
         self.LAST_RESPONSE_INFO['response_command'] = response_command
 
         if 'forbidden' in response_command.lower():
@@ -1689,11 +1630,11 @@ class Session(object):
             raise pytan.exceptions.BadResponseError(m(response_command, request_command))
 
         # update session_id, in case new one issued
-        self.session_id = self._parse_response_for_regex(response_body, self.SESSION_RE)
+        self.session_id = self._regex_body_for_element(response_body, 'session')
 
         # check to see if server_version set in response (6.5+ only)
         if not self.server_version:
-            server_version = self._parse_response_for_regex(response_body, self.VERSION_RE, False)
+            server_version = self._regex_body_for_element(response_body, 'server_version', False)
             if server_version and self.server_version != server_version:
                 self.server_version = server_version
 
