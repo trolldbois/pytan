@@ -10,6 +10,7 @@
   * bug fix: force pytan.handler.Handler.get_server_version() in _platform_is_6_2() if self.server_version_dict is not set yet
   * enhancement: added better error handling to pytan.session.Session.get_server_info()
   * enhancement: added action_name and action_comment options to pytan.handler.Handler.deploy_action()
+  * bug fix: in pytan.handler.Handler.deploy_action(): fix packages created by Tanium SOAP API when adding an action so that they are hidden from the console. also ensure more of the attributes for the source package are copied into the new package for continuity.
 
 # 2.0.3
 
