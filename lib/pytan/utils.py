@@ -192,7 +192,40 @@ def setup_parser(desc, help=False):
         action='store_true',
         default=False,
         dest='debugformat',
-        help=argparse.SUPPRESS,
+        help="Enable debug format for logging",
+    )
+    opt_group.add_argument(
+        '--record_all_requests',
+        required=False,
+        action='store_true',
+        default=False,
+        dest='record_all_requests',
+        help="Record all requests in handler.session.ALL_REQUESTS_RESPONSES",
+    )
+    opt_group.add_argument(
+        '--stats_loop_enabled',
+        required=False,
+        action='store_true',
+        default=False,
+        dest='stats_loop_enabled',
+        help="Enable the statistics loop",
+    )
+    opt_group.add_argument(
+        '--http_auth_retry',
+        required=False,
+        action='store_false',
+        default=True,
+        dest='http_auth_retry',
+        help="Disable retry on HTTP authentication failures",
+    )
+    opt_group.add_argument(
+        '--http_retry_count',
+        required=False,
+        action='store',
+        type=int,
+        default=5,
+        dest='http_retry_count',
+        help="Retry count for HTTP failures/invalid responses",
     )
 
     return parser

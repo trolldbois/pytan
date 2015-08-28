@@ -17,7 +17,7 @@
     null variable to Object level and doc
     * add self.RECORD_ALL_REQUESTS to Object level and doc, controls
     whether every Requests response object gets appended to
-    self.ALL_REQUESTS_RESPONSES, also add kwargs pass thru to init
+    self.ALL_REQUESTS_RESPONSES, add kwargs pass thru to init, add kwargs pass through to pytan.handler.Handler
     * add self.ALL_REQUESTS_RESPONSES to Object level and doc
     * rename self.request_body to self.LAST_XML_REQUEST_BODY, add initial
     null variable to Object level and doc
@@ -25,6 +25,7 @@
     null variable to Object level and doc
     * add initial null variables to Object level and doc for: server, port,
     server_version
+  * enhancement: in pytan.utils.setup_parser(): Modify the argument parser used by all bin scripts to expose more handler options
   * doc update: doc string updates all over the place
   * doc update: pointers to KB/Tanium
   * doc update: double quotes for windows
