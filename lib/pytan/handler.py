@@ -1891,6 +1891,12 @@ class Handler(object):
             * default: True
             * True: wait for result completion after deploying action
             * False: just deploy the action and return the object in `ret`
+        action_name : str, optional
+            * default: prepend package name with "API Deploy "
+            * custom name for action
+        action_comment : str, optional
+            * default:
+            * custom comment for action
 
         Returns
         -------
@@ -1952,20 +1958,6 @@ class Handler(object):
             **kwargs
         )
 
-        start_seconds_from_now = pytan.utils.get_kwargs_int(
-            'start_seconds_from_now', 0, **kwargs
-        )
-
-        expire_seconds = pytan.utils.get_kwargs_int('expire_seconds', **kwargs)
-
-        comment_default = 'Created by PyTan v{}'.format(pytan.__version__)
-        issue_seconds_default = 0
-        distribute_seconds_default = 0
-
-        comment = kwargs.get('comment', comment_default)
-        issue_seconds = kwargs.get('issue_seconds', issue_seconds_default)
-        distribute_seconds = kwargs.get('distribute_seconds', distribute_seconds_default)
-
         # do basic validation of our defs
         pytan.utils.val_sensor_defs(action_filter_defs)
         pytan.utils.val_package_def(package_def)
@@ -1974,6 +1966,24 @@ class Handler(object):
         # d['sensor_obj'] / d['package_obj']
         action_filter_defs = self._get_sensor_defs(action_filter_defs)
         package_def = self._get_package_def(package_def)
+
+        start_seconds_from_now = pytan.utils.get_kwargs_int(
+            'start_seconds_from_now', 0, **kwargs
+        )
+
+        expire_seconds = pytan.utils.get_kwargs_int('expire_seconds', **kwargs)
+
+        action_name_default = "API Deploy {}".format(package_def['package_obj'].name)
+        action_name = kwargs.get('action_name', action_name_default)
+
+        action_comment_default = 'Created by PyTan v{}'.format(pytan.__version__)
+        action_comment = kwargs.get('action_comment', action_comment_default)
+
+        issue_seconds_default = 0
+        issue_seconds = kwargs.get('issue_seconds', issue_seconds_default)
+
+        distribute_seconds_default = 0
+        distribute_seconds = kwargs.get('distribute_seconds', distribute_seconds_default)
 
         """
         ask the question that pertains to the action filter, save the result as CSV,
@@ -2066,10 +2076,10 @@ class Handler(object):
         add_obj = objtype()
         add_obj.package_spec = taniumpy.PackageSpec()
         add_obj.id = -1
-        add_obj.name = "API Deploy {}".format(package_def['package_obj'].name)
+        add_obj.name = action_name
         add_obj.issue_seconds = issue_seconds
         add_obj.distribute_seconds = distribute_seconds
-        add_obj.comment = comment
+        add_obj.comment = action_comment
         add_obj.status = 0
         add_obj.start_time = ''
         add_obj.end_time = ''
