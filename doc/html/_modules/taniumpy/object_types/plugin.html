@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>taniumpy.object_types.plugin &mdash; PyTan 2.0.0 documentation</title>
+  <title>taniumpy.object_types.plugin &mdash; PyTan 2.1.0 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="PyTan 2.0.0 documentation" href="../../../index.html"/>
+    <link rel="top" title="PyTan 2.1.0 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -69,18 +69,20 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../introduction.html#installation">1.5. Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../introduction.html#usage">1.6. Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../introduction.html#directory-layout">1.7. Directory Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../introduction.html#other-references">1.8. Other References</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pytan.html">2. pytan package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../examples/pytan_examples.html">2.1. PyTan API examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../pytan.handler.html">2.2. pytan.handler module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../pytan.exceptions.html">2.3. pytan.exceptions module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../pytan.sessions.html">2.4. pytan.sessions module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../pytan.pollers.html">2.5. pytan.pollers module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../pytan.constants.html">2.6. pytan.constants module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../pytan.utils.html">2.7. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pytan.handler.html">2.1. pytan.handler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pytan.exceptions.html">2.2. pytan.exceptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pytan.sessions.html">2.3. pytan.sessions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pytan.pollers.html">2.4. pytan.pollers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pytan.constants.html">2.5. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pytan.utils.html">2.6. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pytan.xml_clean.html">2.7. pytan.xml_clean module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../pytan.unittest.html">2.8. pytan Unit Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../pytan.functest.html">2.9. pytan Functional Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples/pytan_examples.html">2.10. PyTan API examples</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../taniumpy.html">3. taniumpy package</a><ul>
@@ -154,14 +156,25 @@
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">simple_properties</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                         <span class="s">&#39;bundle&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                        <span class="s">&#39;plugin_server&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                         <span class="s">&#39;input&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                         <span class="s">&#39;script_response&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                         <span class="s">&#39;exit_code&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
                         <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                         <span class="s">&#39;path&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                         <span class="s">&#39;filename&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                        <span class="s">&#39;plugin_url&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                        <span class="s">&#39;run_detached_flag&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                        <span class="s">&#39;execution_id&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                        <span class="s">&#39;timeout_seconds&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
                         <span class="s">&#39;cache_row_id&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-                        <span class="s">&#39;local_admin_flag&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">},</span>
+                        <span class="s">&#39;local_admin_flag&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                        <span class="s">&#39;allow_rest&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                        <span class="s">&#39;raw_http_response&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                        <span class="s">&#39;raw_http_request&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                        <span class="s">&#39;use_json_flag&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                        <span class="s">&#39;status&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                        <span class="s">&#39;status_file_content&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">},</span>
             <span class="n">complex_properties</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;arguments&#39;</span><span class="p">:</span> <span class="n">PluginArgumentList</span><span class="p">,</span>
                         <span class="s">&#39;sql_response&#39;</span><span class="p">:</span> <span class="n">PluginSql</span><span class="p">,</span>
                         <span class="s">&#39;metadata&#39;</span><span class="p">:</span> <span class="n">MetadataList</span><span class="p">,</span>
@@ -171,14 +184,25 @@
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bundle</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plugin_server</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">input</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">script_response</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">exit_code</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plugin_url</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">run_detached_flag</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">execution_id</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeout_seconds</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cache_row_id</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">local_admin_flag</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allow_rest</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">raw_http_response</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">raw_http_request</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">use_json_flag</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">status_file_content</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sql_response</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="bp">None</span>
@@ -202,7 +226,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Aug 07, 2015.
+      Last updated on Aug 27, 2015.
     </p>
   </div>
 
@@ -223,7 +247,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'2.0.0',
+            VERSION:'2.1.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

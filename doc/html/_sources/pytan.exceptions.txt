@@ -93,9 +93,3 @@ Exceptions used throughout :mod:`pytan`:
     :undoc-members:
     :private-members:
 
-
-.. autoexception:: pytan.exceptions.RunPluginError
-    :members:
-    :show-inheritance:
-    :undoc-members:
-    :private-members:

@@ -161,6 +161,13 @@ index_file = os.path.join(md_output_dir, 'index.md')
 index_out = []
 index_out.append("""PyTan Command Line Scripts
 ==========================
+
+This is the help section for using the Command Line functionality provided by PyTan.
+
+When running these scripts from OS X or Linux, you will want to run the .py scripts from the bin/ directory.
+
+When running these scripts from Windows, you will want to run the .bat scripts from the winbin/ directory. The .bat files in the winbin/ directory handle calling the python binary appropriately. Also, when running these scripts on Windows, ensure arguments that need to be quoted are enclosed in double quotes in order for Windows to properly parse your command line.
+
 """)
 
 for x, y in sorted(py_files.iteritems()):

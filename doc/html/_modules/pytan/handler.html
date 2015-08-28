@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pytan.handler &mdash; PyTan 2.0.0 documentation</title>
+  <title>pytan.handler &mdash; PyTan 2.1.0 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="PyTan 2.0.0 documentation" href="../../index.html"/>
+    <link rel="top" title="PyTan 2.1.0 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -69,18 +69,20 @@
 <li class="toctree-l2"><a class="reference internal" href="../../introduction.html#installation">1.5. Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../introduction.html#usage">1.6. Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../introduction.html#directory-layout">1.7. Directory Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../introduction.html#other-references">1.8. Other References</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../pytan.html">2. pytan package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../examples/pytan_examples.html">2.1. PyTan API examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../pytan.handler.html">2.2. pytan.handler module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../pytan.exceptions.html">2.3. pytan.exceptions module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../pytan.sessions.html">2.4. pytan.sessions module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../pytan.pollers.html">2.5. pytan.pollers module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../pytan.constants.html">2.6. pytan.constants module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../pytan.utils.html">2.7. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.handler.html">2.1. pytan.handler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.exceptions.html">2.2. pytan.exceptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.sessions.html">2.3. pytan.sessions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.pollers.html">2.4. pytan.pollers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.constants.html">2.5. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.utils.html">2.6. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.xml_clean.html">2.7. pytan.xml_clean module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../pytan.unittest.html">2.8. pytan Unit Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../pytan.functest.html">2.9. pytan Functional Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/pytan_examples.html">2.10. PyTan API examples</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../taniumpy.html">3. taniumpy package</a><ul>
@@ -139,7 +141,7 @@
 <span class="c"># -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-</span>
 <span class="c"># ex: set tabstop=4</span>
 <span class="c"># Please do not change the two lines above. See PEP 8, PEP 263.</span>
-<span class="sd">&quot;&quot;&quot;The main :mod:`pytan` module that provides methods for programmatic use.&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;The main :mod:`pytan` module that provides first level entities for programmatic use.&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
 <span class="c"># disable python from creating .pyc files everywhere</span>
@@ -149,6 +151,7 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">io</span>
 <span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
 
 <span class="n">my_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
 <span class="n">my_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">my_file</span><span class="p">)</span>
@@ -169,21 +172,95 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    username : str</span>
-<span class="sd">        `username` to connect to `host` with</span>
+<span class="sd">        * default: None</span>
+<span class="sd">        * `username` to connect to `host` with</span>
 <span class="sd">    password : str</span>
-<span class="sd">        `password` to connect to `host` with</span>
+<span class="sd">        * default: None</span>
+<span class="sd">        * `password` to connect to `host` with</span>
 <span class="sd">    host : str</span>
-<span class="sd">        hostname or ip of Tanium SOAP Server</span>
+<span class="sd">        * default: None</span>
+<span class="sd">        * hostname or ip of Tanium SOAP Server</span>
 <span class="sd">    port : int, optional</span>
-<span class="sd">        port of Tanium SOAP Server on `host`</span>
-<span class="sd">    get_version : bool, optional</span>
-<span class="sd">        get the version of the server from Tanium after authenticating, default to True</span>
-<span class="sd">    gmt_log : bool, optional</span>
-<span class="sd">        True use GMT timezone for log output, False use local time for log output</span>
+<span class="sd">        * default: 443</span>
+<span class="sd">        * port of Tanium SOAP Server on `host`</span>
 <span class="sd">    loglevel : int, optional</span>
-<span class="sd">        0 should not print anything, 1 and higher will print more</span>
+<span class="sd">        * default: 0</span>
+<span class="sd">        * 0 do not print anything except warnings/errors</span>
+<span class="sd">        * 1 and higher will print more</span>
 <span class="sd">    debugformat : bool, optional</span>
-<span class="sd">        False use one line logformat, True use two lines</span>
+<span class="sd">        * default: False</span>
+<span class="sd">        * False: use one line logformat</span>
+<span class="sd">        * True: use two lines</span>
+<span class="sd">    gmt_log : bool, optional</span>
+<span class="sd">        * default: True</span>
+<span class="sd">        * True: use GMT timezone for log output</span>
+<span class="sd">        * False: use local time for log output</span>
+<span class="sd">    session_id : str, optional</span>
+<span class="sd">        * default: None</span>
+<span class="sd">        * session_id to use while authenticating instead of username/password</span>
+
+<span class="sd">    Other Parameters</span>
+<span class="sd">    ----------------</span>
+<span class="sd">    http_debug : bool, optional</span>
+<span class="sd">        * default: False</span>
+<span class="sd">        * False: do not print requests package debug</span>
+<span class="sd">        * True: do print requests package debug</span>
+<span class="sd">        * Session Passthru</span>
+<span class="sd">    http_auth_retry: bool, optional</span>
+<span class="sd">        * default: True</span>
+<span class="sd">        * True: retry HTTP GET/POST&#39;s</span>
+<span class="sd">        * False: do not retry HTTP GET/POST&#39;s</span>
+<span class="sd">        * Session Passthru</span>
+<span class="sd">    http_retry_count: int, optional</span>
+<span class="sd">        * default: 5</span>
+<span class="sd">        * number of times to retry HTTP GET/POST&#39;s if the connection times out/fails</span>
+<span class="sd">        * Session Passthru</span>
+<span class="sd">    soap_request_headers : dict, optional</span>
+<span class="sd">        * default: {&#39;Content-Type&#39;: &#39;text/xml; charset=utf-8&#39;, &#39;Accept-Encoding&#39;: &#39;gzip&#39;}</span>
+<span class="sd">        * dictionary of headers to add to every HTTP GET/POST</span>
+<span class="sd">        * Session Passthru</span>
+<span class="sd">    auth_connect_timeout_sec : int, optional</span>
+<span class="sd">        * default: 5</span>
+<span class="sd">        * number of seconds before timing out for a connection while authenticating</span>
+<span class="sd">        * Session Passthru</span>
+<span class="sd">    auth_response_timeout_sec : int, optional</span>
+<span class="sd">        * default: 15</span>
+<span class="sd">        * number of seconds before timing out for a response while authenticating</span>
+<span class="sd">        * Session Passthru</span>
+<span class="sd">    info_connect_timeout_sec : int, optional</span>
+<span class="sd">        * default: 5</span>
+<span class="sd">        * number of seconds before timing out for a connection while getting /info.json</span>
+<span class="sd">        * Session Passthru</span>
+<span class="sd">    info_response_timeout_sec : int, optional</span>
+<span class="sd">        * default: 15</span>
+<span class="sd">        * number of seconds before timing out for a response while getting /info.json</span>
+<span class="sd">        * Session Passthru</span>
+<span class="sd">    soap_connect_timeout_sec : int, optional</span>
+<span class="sd">        * default: 15</span>
+<span class="sd">        * number of seconds before timing out for a connection for a SOAP request</span>
+<span class="sd">        * Session Passthru</span>
+<span class="sd">    soap_response_timeout_sec : int, optional</span>
+<span class="sd">        * default: 540</span>
+<span class="sd">        * number of seconds before timing out for a response for a SOAP request</span>
+<span class="sd">        * Session Passthru</span>
+<span class="sd">    stats_loop_enabled : bool, optional</span>
+<span class="sd">        * default: False</span>
+<span class="sd">        * False: do not enable the statistics loop thread</span>
+<span class="sd">        * True: enable the statistics loop thread</span>
+<span class="sd">        * Session Passthru</span>
+<span class="sd">    stats_loop_sleep_sec : int, optional</span>
+<span class="sd">        * default: 5</span>
+<span class="sd">        * number of seconds to sleep in between printing the statistics when stats_loop_enabled is True</span>
+<span class="sd">        * Session Passthru</span>
+<span class="sd">    stats_loop_targets : list of dict, optional</span>
+<span class="sd">        * default: [{&#39;Version&#39;: &#39;Settings/Version&#39;}, {&#39;Active Questions&#39;: &#39;Active Question Cache/Active Question Estimate&#39;}, {&#39;Clients&#39;: &#39;Active Question Cache/Active Client Estimate&#39;}, {&#39;Strings&#39;: &#39;String Cache/Total String Count&#39;}, {&#39;Handles&#39;: &#39;System Performance Info/HandleCount&#39;}, {&#39;Processes&#39;: &#39;System Performance Info/ProcessCount&#39;}, {&#39;Memory Available&#39;: &#39;percentage(System Performance Info/PhysicalAvailable,System Performance Info/PhysicalTotal)&#39;}]</span>
+<span class="sd">        * list of dictionaries with the key being the section of info.json to print info from, and the value being the item with in that section to print the value</span>
+<span class="sd">        * Session Passthru</span>
+<span class="sd">    persistent: bool, optional</span>
+<span class="sd">        * default: False</span>
+<span class="sd">        * False: do not request a persistent session</span>
+<span class="sd">        * True: do request a persistent</span>
+<span class="sd">        * Session Authentication Passthru</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -197,10 +274,11 @@
 <span class="sd">    :data:`pytan.constants.LOG_LEVEL_MAPS` : maps a given `loglevel` to respective logger names and their logger levels</span>
 <span class="sd">    :data:`pytan.constants.INFO_FORMAT` : debugformat=False</span>
 <span class="sd">    :data:`pytan.constants.DEBUG_FORMAT` : debugformat=True</span>
+<span class="sd">    :class:`taniumpy.session.Session` : Session object used by Handler</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="s">&quot;443&quot;</span><span class="p">,</span> <span class="n">loglevel</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                 <span class="n">debugformat</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">get_version</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">gmt_log</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">443</span><span class="p">,</span>
+                 <span class="n">loglevel</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">debugformat</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">gmt_log</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">session_id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Handler</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;pytan.handler&quot;</span><span class="p">)</span>
@@ -214,9 +292,9 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">loglevel</span> <span class="o">=</span> <span class="n">loglevel</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">username</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">username</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">session_id</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HandlerError</span><span class="p">(</span><span class="s">&quot;Must supply username!&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">password</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">password</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">session_id</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HandlerError</span><span class="p">(</span><span class="s">&quot;Must supply password!&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">host</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HandlerError</span><span class="p">(</span><span class="s">&quot;Must supply host!&quot;</span><span class="p">)</span>
@@ -228,29 +306,43 @@
             <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HandlerError</span><span class="p">(</span><span class="s">&quot;port must be an integer!&quot;</span><span class="p">)</span>
 
         <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">test_app_port</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">sessions</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">authenticate</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">get_version</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span> <span class="o">=</span> <span class="s">&quot;Not yet determined!&quot;</span>
-            <span class="n">thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_derive_server_version</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">())</span>
-            <span class="n">thread</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="bp">True</span>
-            <span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span> <span class="o">=</span> <span class="s">&quot;get_version is False!&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">sessions</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">authenticate</span><span class="p">(</span>
+            <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">,</span> <span class="n">session_id</span><span class="o">=</span><span class="n">session_id</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span> <span class="o">=</span> <span class="s">&quot;Not yet determined!&quot;</span>
+        <span class="n">thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_server_version</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">())</span>
+        <span class="n">thread</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">str_tpl</span> <span class="o">=</span> <span class="s">&quot;Handler for {}, Version: {}&quot;</span><span class="o">.</span><span class="n">format</span>
         <span class="n">ret</span> <span class="o">=</span> <span class="n">str_tpl</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;server_version&#39;</span><span class="p">,</span> <span class="s">&#39;Version Unavailable&#39;</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">ret</span>
 
-    <span class="c"># Questions</span>
+<div class="viewcode-block" id="Handler.get_server_version"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.get_server_version">[docs]</a>    <span class="k">def</span> <span class="nf">get_server_version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Uses :func:`taniumpy.session.Session.get_server_version` to get the version of the Tanium Server</span>
+
+<span class="sd">        Updates self.server_version with the return, and updates self.server_version_dict with a parsed version of self.server_version into major, minor, revision, and build.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self.server_version: str</span>
+<span class="sd">            * Version of Tanium Server in string format</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get_server_version</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">server_version_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_versioning</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span>
+
+    <span class="c"># Questions</span></div>
 <div class="viewcode-block" id="Handler.ask"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.ask">[docs]</a>    <span class="k">def</span> <span class="nf">ask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Ask a type of question and get the results back</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        qtype : str, optional</span>
-<span class="sd">            type of question to ask: saved, manual, or _manual, defaults to manual</span>
+<span class="sd">            * default: &#39;manual&#39;</span>
+<span class="sd">            * type of question to ask: {&#39;saved&#39;, &#39;manual&#39;, &#39;_manual&#39;}</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -261,6 +353,9 @@
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
 <span class="sd">        :data:`pytan.constants.Q_OBJ_MAP` : maps qtype to a method in Handler()</span>
+<span class="sd">        :func:`pytan.handler.Handler.ask_saved` : method used when qtype == &#39;saved&#39;</span>
+<span class="sd">        :func:`pytan.handler.Handler.ask_manual` : method used when qtype == &#39;manual&#39;</span>
+<span class="sd">        :func:`pytan.handler.Handler._ask_manual` : method used when qtype == &#39;_manual&#39;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">qtype</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;qtype&#39;</span><span class="p">,</span> <span class="s">&#39;manual&#39;</span><span class="p">)</span>
         <span class="n">q_obj_map</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">get_q_obj_map</span><span class="p">(</span><span class="n">qtype</span><span class="p">)</span>
@@ -268,25 +363,28 @@
         <span class="n">result</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q_obj_map</span><span class="p">[</span><span class="s">&#39;handler&#39;</span><span class="p">])(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span>
 </div>
-    <span class="nd">@pytan.utils.func_timing</span>
-    <span class="k">def</span> <span class="nf">ask_saved</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">refresh_data</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Handler.ask_saved"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.ask_saved">[docs]</a>    <span class="k">def</span> <span class="nf">ask_saved</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">refresh_data</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Ask a saved question and get the results back</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        id : int, list of int, optional</span>
-<span class="sd">            id of saved question to ask</span>
+<span class="sd">            * id of saved question to ask</span>
 <span class="sd">        name : str, list of str</span>
-<span class="sd">            name of saved question</span>
+<span class="sd">            * name of saved question</span>
 <span class="sd">        refresh_data: bool, optional</span>
-<span class="sd">            False: do not perform a getResultInfo before issuing a getResultData</span>
-<span class="sd">            True: perform a getResultInfo before issuing a getResultData</span>
+<span class="sd">            * default False</span>
+<span class="sd">            * False: do not perform a getResultInfo before issuing a getResultData</span>
+<span class="sd">            * True: perform a getResultInfo before issuing a getResultData</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        ret : dict, containing</span>
-<span class="sd">            * `question_object` : :class:`taniumpy.object_types.saved_question.SavedQuestion`</span>
-<span class="sd">            * `question_results` : :class:`taniumpy.object_types.result_set.ResultSet`</span>
+<span class="sd">            * `question_object` : :class:`taniumpy.object_types.saved_question.SavedQuestion`, the saved question object</span>
+<span class="sd">            * `question_object` : :class:`taniumpy.object_types.question.Question`, the question asked by `saved_question_object`</span>
+<span class="sd">            * `question_results` : :class:`taniumpy.object_types.result_set.ResultSet`, the results for `question_object`</span>
+<span class="sd">            * `poller_object` : None if `refresh_data` == False, elsewise :class:`pytan.pollers.QuestionPoller`, poller object used to wait until all results are in before getting `question_results`,</span>
+<span class="sd">            * `poller_success` : None if `refresh_data` == False, elsewise True or False</span>
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
@@ -342,7 +440,7 @@
         <span class="p">}</span>
 
         <span class="k">return</span> <span class="n">ret</span>
-
+</div>
 <div class="viewcode-block" id="Handler.ask_manual"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.ask_manual">[docs]</a>    <span class="k">def</span> <span class="nf">ask_manual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Ask a manual question using human strings and get the results back</span>
 
@@ -352,29 +450,38 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        sensors : str, list of str</span>
-<span class="sd">            sensors (columns) to include in question</span>
+<span class="sd">            * default: []</span>
+<span class="sd">            * sensors (columns) to include in question</span>
 <span class="sd">        question_filters : str, list of str, optional</span>
-<span class="sd">            filters that apply to the whole question</span>
+<span class="sd">            * default: []</span>
+<span class="sd">            * filters that apply to the whole question</span>
 <span class="sd">        question_options : str, list of str, optional</span>
-<span class="sd">            options that apply to the whole question</span>
+<span class="sd">            * default: []</span>
+<span class="sd">            * options that apply to the whole question</span>
 <span class="sd">        get_results : bool, optional</span>
+<span class="sd">            * default: True</span>
 <span class="sd">            * True: wait for result completion after asking question</span>
 <span class="sd">            * False: just ask the question and return it in result</span>
 <span class="sd">        sensors_help : bool, optional</span>
+<span class="sd">            * default: False</span>
 <span class="sd">            * False: do not print the help string for sensors</span>
 <span class="sd">            * True: print the help string for sensors and exit</span>
 <span class="sd">        filters_help : bool, optional</span>
+<span class="sd">            * default: False</span>
 <span class="sd">            * False: do not print the help string for filters</span>
 <span class="sd">            * True: print the help string for filters and exit</span>
 <span class="sd">        options_help : bool, optional</span>
+<span class="sd">            * default: False</span>
 <span class="sd">            * False: do not print the help string for options</span>
 <span class="sd">            * True: print the help string for options and exit</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        result : dict, containing:</span>
-<span class="sd">            * `question_object` : :class:`taniumpy.object_types.question.Question`</span>
-<span class="sd">            * `question_results` : :class:`taniumpy.object_types.result_set.ResultSet`</span>
+<span class="sd">            * `question_object` : :class:`taniumpy.object_types.question.Question`, the actual question created and added by PyTan</span>
+<span class="sd">            * `question_results` : :class:`taniumpy.object_types.result_set.ResultSet`, the Result Set for `question_object` if `get_results` == True</span>
+<span class="sd">            * `poller_object` : :class:`pytan.pollers.QuestionPoller`, poller object used to wait until all results are in before getting `question_results`</span>
+<span class="sd">            * `poller_success` : None if `get_results` == True, elsewise True or False</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
@@ -399,10 +506,49 @@
 <span class="sd">        &gt;&gt;&gt; # example of list of str for question_options</span>
 <span class="sd">        &gt;&gt;&gt; question_options = [&#39;max_data_age:3600&#39;, &#39;and&#39;]</span>
 
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+
+<span class="sd">        When asking a question from the Tanium console, you construct a question like:</span>
+
+<span class="sd">            Get Computer Name and IP Route Details from all machines with Is Windows containing &quot;True&quot;</span>
+
+<span class="sd">        Asking the same question in PyTan has some similarities:</span>
+
+<span class="sd">            &gt;&gt;&gt; r = handler.ask_manual(sensors=[&#39;Computer Name&#39;, &#39;IP Route Details&#39;], question_filters=[&#39;Is Windows, that contains:True&#39;])</span>
+
+<span class="sd">        There are two sensors in this question, after the &quot;Get&quot; and before the &quot;from all machines&quot;: &quot;Computer Name&quot; and &quot;IP Route Details&quot;. The sensors after the &quot;Get&quot; and before the &quot;from all machines&quot; can be referred to as any number of things:</span>
+
+<span class="sd">            * sensors</span>
+<span class="sd">            * left hand side</span>
+<span class="sd">            * column selects</span>
+
+<span class="sd">        The sensors that are defined after the &quot;Get&quot; and before the &quot;from all machines&quot; are best described as a column selection, and control what columns you want to show up in your results. These sensor names are the same ones that would need to be passed into ask_question() for the sensors arguments.</span>
+
+<span class="sd">        You can filter your column selections by using a filter in the console like so:</span>
+
+<span class="sd">            Get Computer Name starting with &quot;finance&quot; and IP Route Details from all machines with Is Windows containing &quot;True&quot;</span>
+
+<span class="sd">        And in PyTan:</span>
+
+<span class="sd">             &gt;&gt;&gt; r = handler.ask_manual(sensors=[&#39;Computer Name, that starts with:finance&#39;, &#39;IP Route Details&#39;], question_filters=[&#39;Is Windows, that contains:True&#39;])</span>
+
+<span class="sd">        This will cause the results to have the same number of columns, but for any machine that returns results that do not match the filter specified for a given sensor, the row for that column will contain &quot;[no results]&quot;.</span>
+
+<span class="sd">        There is also a sensor specified after the &quot;from all machines with&quot;: &quot;Is Windows&quot;. This sensor can be referred to as any number of things:</span>
+
+<span class="sd">            * question filters</span>
+<span class="sd">            * sensors (also)</span>
+<span class="sd">            * right hand side</span>
+<span class="sd">            * row selects</span>
+
+<span class="sd">        Any system that does not match the conditions in the question filters will return no results at all.  These question filters are really just sensors all over again, but instead of controlling what columns are output in the results, they control what rows are output in the results.</span>
+
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
 <span class="sd">        :data:`pytan.constants.FILTER_MAPS` : valid filter dictionaries for filters</span>
 <span class="sd">        :data:`pytan.constants.OPTION_MAPS` : valid option dictionaries for options</span>
+<span class="sd">        :func:`pytan.handler.Handler._ask_manual` : private method with the actual workflow used to create and add the question object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;sensors_help&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
@@ -454,39 +600,51 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        package : str</span>
-<span class="sd">            each string must describe a package</span>
+<span class="sd">            * package to deploy with this action</span>
 <span class="sd">        action_filters : str, list of str, optional</span>
-<span class="sd">            each string must describe a sensor and a filter which limits which computers the action will deploy `package` to</span>
+<span class="sd">            * default: []</span>
+<span class="sd">            * each string must describe a sensor and a filter which limits which computers the action will deploy `package` to</span>
 <span class="sd">        action_options : str, list of str, optional</span>
-<span class="sd">            options to apply to `action_filters`</span>
+<span class="sd">            * default: []</span>
+<span class="sd">            * options to apply to `action_filters`</span>
 <span class="sd">        start_seconds_from_now : int, optional</span>
-<span class="sd">            start action N seconds from now</span>
+<span class="sd">            * default: 0</span>
+<span class="sd">            * start action N seconds from now</span>
 <span class="sd">        expire_seconds : int, optional</span>
-<span class="sd">            expire action N seconds from now, will be derived from package if not supplied</span>
+<span class="sd">            * default: package.expire_seconds</span>
+<span class="sd">            * expire action N seconds from now, will be derived from package if not supplied</span>
 <span class="sd">        run : bool, optional</span>
+<span class="sd">            * default: False</span>
 <span class="sd">            * False: just ask the question that pertains to verify action, export the results to CSV, and raise pytan.exceptions.RunFalse -- does not deploy the action</span>
 <span class="sd">            * True: actually deploy the action</span>
 <span class="sd">        get_results : bool, optional</span>
+<span class="sd">            * default: True</span>
 <span class="sd">            * True: wait for result completion after deploying action</span>
 <span class="sd">            * False: just deploy the action and return the object in `ret`</span>
 <span class="sd">        package_help : bool, optional</span>
+<span class="sd">            * default: False</span>
 <span class="sd">            * False: do not print the help string for package</span>
 <span class="sd">            * True: print the help string for package and exit</span>
 <span class="sd">        filters_help : bool, optional</span>
+<span class="sd">            * default: False</span>
 <span class="sd">            * False: do not print the help string for filters</span>
 <span class="sd">            * True: print the help string for filters and exit</span>
 <span class="sd">        options_help : bool, optional</span>
+<span class="sd">            * default: False</span>
 <span class="sd">            * False: do not print the help string for options</span>
 <span class="sd">            * True: print the help string for options and exit</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        ret : dict, containing:</span>
-<span class="sd">            * `action_object` : :class:`taniumpy.object_types.action.Action`</span>
-<span class="sd">            * `action_results` : :class:`taniumpy.object_types.result_set.ResultSet`</span>
-<span class="sd">            * `action_progress_human` : str, progress map in human form</span>
-<span class="sd">            * `action_progress_map` : dict, progress map in dictionary form</span>
-<span class="sd">            * `pre_action_question_results` : :class:`taniumpy.object_types.result_set.ResultSet`</span>
+<span class="sd">            * `saved_action_object` : :class:`taniumpy.object_types.saved_action.SavedAction`, the saved_action added for this action (None if 6.2)</span>
+<span class="sd">            * `action_object` : :class:`taniumpy.object_types.action.Action`, the action object that tanium created for `saved_action`</span>
+<span class="sd">            * `package_object` : :class:`taniumpy.object_types.package_spec.PackageSPec`, the package object used in `saved_action`</span>
+<span class="sd">            * `action_info` : :class:`taniumpy.object_types.result_info.ResultInfo`, the initial GetResultInfo call done before getting results</span>
+<span class="sd">            * `poller_object` : :class:`pytan.pollers.ActionPoller`, poller object used to wait until all results are in before getting `action_results`</span>
+<span class="sd">            * `poller_success` : None if `get_results` == False, elsewise True or False</span>
+<span class="sd">            * `action_results` : None if `get_results` == False, elsewise :class:`taniumpy.object_types.result_set.ResultSet`, the results for `action_object`</span>
+<span class="sd">            * `action_result_map` : None if `get_results` == False, elsewise progress map for `action_object` in dictionary form</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
@@ -506,6 +664,7 @@
 <span class="sd">        --------</span>
 <span class="sd">        :data:`pytan.constants.FILTER_MAPS` : valid filter dictionaries for filters</span>
 <span class="sd">        :data:`pytan.constants.OPTION_MAPS` : valid option dictionaries for options</span>
+<span class="sd">        :func:`pytan.handler.Handler._deploy_action` : private method with the actual workflow used to create and add the action object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;package_help&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
@@ -543,13 +702,36 @@
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">deploy_result</span>
 </div>
+    <span class="k">def</span> <span class="nf">approve_saved_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Approve a saved action</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        id : int</span>
+<span class="sd">            * id of saved action to approve</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        saved_action_approve_obj : :class:`taniumpy.object_types.saved_action_approval.SavedActionApproval`</span>
+<span class="sd">            * The object containing the return from SavedActionApproval</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">saved_action_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;saved_action&#39;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">add_sap_obj</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">SavedActionApproval</span><span class="p">()</span>
+        <span class="n">add_sap_obj</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">saved_action_obj</span><span class="o">.</span><span class="n">id</span>
+        <span class="n">add_sap_obj</span><span class="o">.</span><span class="n">approved_flag</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="c"># we dont want to re-fetch the object, so use sessions add instead of handlers add</span>
+        <span class="n">sap_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">add_sap_obj</span><span class="p">)</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="s">&#39;Action approved successfully, ID of saved action : {}&#39;</span><span class="o">.</span><span class="n">format</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">sap_obj</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">sap_obj</span>
+
 <div class="viewcode-block" id="Handler.stop_action"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.stop_action">[docs]</a>    <span class="k">def</span> <span class="nf">stop_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Stop an action</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        id : int</span>
-<span class="sd">            id of action to stop</span>
+<span class="sd">            * id of action to stop</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -560,15 +742,12 @@
         <span class="n">add_action_stop_obj</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">ActionStop</span><span class="p">()</span>
         <span class="n">add_action_stop_obj</span><span class="o">.</span><span class="n">action</span> <span class="o">=</span> <span class="n">action_obj</span>
         <span class="n">action_stop_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add</span><span class="p">(</span><span class="n">add_action_stop_obj</span><span class="p">)</span>
-        <span class="n">m</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="s">&#39;Action stopped successfully, ID of action stop: {}&#39;</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">format</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="s">&#39;Action stopped successfully, ID of action stop: {}&#39;</span><span class="o">.</span><span class="n">format</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">action_stop_obj</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">action_stop_obj</span>
 
     <span class="c"># Result Data / Result Info</span></div>
-    <span class="nd">@pytan.utils.func_timing</span>
-    <span class="k">def</span> <span class="nf">get_result_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">aggregate</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Handler.get_result_data"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.get_result_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_result_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">aggregate</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the result data for a python API object</span>
 
 <span class="sd">        This method issues a GetResultData command to the SOAP api for `obj`. GetResultData returns the columns and rows that are currently available for `obj`.</span>
@@ -576,11 +755,13 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        obj : :class:`taniumpy.object_types.base.BaseType`</span>
-<span class="sd">            object to get result data for</span>
+<span class="sd">            * object to get result data for</span>
 <span class="sd">        aggregate : bool, optional</span>
+<span class="sd">            * default: False</span>
 <span class="sd">            * False: get all the data</span>
 <span class="sd">            * True: get just the aggregate data (row counts of matches)</span>
 <span class="sd">        shrink : bool, optional</span>
+<span class="sd">            * default: True</span>
 <span class="sd">            * True: Shrink the object down to just id/name/hash attributes (for smaller request)</span>
 <span class="sd">            * False: Use the full object as is</span>
 
@@ -591,19 +772,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="sd">&quot;&quot;&quot; note #1 from jwk:</span>
-<span class="sd">        For Action GetResultData:</span>
-
-<span class="sd">        You have to make a ResultInfo request at least once every 2 minutes.</span>
-<span class="sd">        The server gathers the result data by asking a saved question.</span>
-<span class="sd">        It won&#39;t re-issue the saved question unless you make a GetResultInfo</span>
-<span class="sd">        request. When you make a GetResultInfo request, if there is no</span>
-<span class="sd">        question that is less than 2 minutes old, the server will automatically</span>
-<span class="sd">        reissue a new question instance to make sure fresh data is available.</span>
+<span class="sd">        For Action GetResultData: You have to make a ResultInfo request at least once every 2 minutes. The server gathers the result data by asking a saved question. It won&#39;t re-issue the saved question unless you make a GetResultInfo request. When you make a GetResultInfo request, if there is no question that is less than 2 minutes old, the server will automatically reissue a new question instance to make sure fresh data is available.</span>
 
 <span class="sd">        note #2 from jwk:</span>
-<span class="sd">         To get the aggregate data (without computer names),</span>
-<span class="sd">         set row_counts_only_flag = 1. To get the computer names,</span>
-<span class="sd">         use row_counts_only_flag = 0 (default).</span>
+<span class="sd">        To get the aggregate data (without computer names), set row_counts_only_flag = 1. To get the computer names, use row_counts_only_flag = 0 (default).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">shrink</span><span class="p">:</span>
             <span class="n">shrunk_obj</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">shrink_obj</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
@@ -619,9 +791,99 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">rd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get_result_data</span><span class="p">(</span><span class="n">shrunk_obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">rd</span>
+</div>
+<div class="viewcode-block" id="Handler.get_result_data_sse"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.get_result_data_sse">[docs]</a>    <span class="k">def</span> <span class="nf">get_result_data_sse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">export_format</span><span class="o">=</span><span class="s">&#39;csv&#39;</span><span class="p">,</span> <span class="n">leading</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">trailing</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the result data for a python API object using a server side export (sse)</span>
 
-    <span class="nd">@pytan.utils.func_timing</span>
-    <span class="k">def</span> <span class="nf">get_result_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="sd">        This method issues a GetResultData command to the SOAP api for `obj` with the option</span>
+<span class="sd">        `export_flag` set to 1. This will cause the server to process all of the data for a given</span>
+<span class="sd">        result set and save it as `export_format`. Then the user can use an authenticated GET</span>
+<span class="sd">        request to get the status of the file via &quot;/export/${export_id}.status&quot;. Once the status</span>
+<span class="sd">        returns &quot;Completed.&quot;, the actual report file can be retrieved by an authenticated GET</span>
+<span class="sd">        request to &quot;/export/${export_id}.gz&quot;. This workflow saves a lot of processing time and removes the need to paginate large result sets necessary in normal GetResultData calls.</span>
+
+<span class="sd">        *Version support*</span>
+<span class="sd">            * 6.5.314.4231: initial sse support (csv only)</span>
+<span class="sd">            * 6.5.314.4300: export_format support (adds xml and cef)</span>
+<span class="sd">            * 6.5.314.4300: fix core dump if multiple sse done on empty resultset</span>
+<span class="sd">            * 6.5.314.4300: fix no status file if sse done on empty resultset</span>
+<span class="sd">            * 6.5.314.4300: fix response if more than two sse done in same second</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        obj : :class:`taniumpy.object_types.base.BaseType`</span>
+<span class="sd">            * object to get result data for</span>
+<span class="sd">        export_format : str, optional</span>
+<span class="sd">            * default: &#39;csv&#39;</span>
+<span class="sd">            * format to have server create report in, one of: {&#39;csv&#39;, &#39;xml&#39;, &#39;xml_obj&#39;, &#39;cef&#39;, 0, 1, 2}</span>
+<span class="sd">        leading : str, optional</span>
+<span class="sd">            * default: &#39;&#39;</span>
+<span class="sd">            * used for export_format &#39;cef&#39; only, the string to prepend to each row</span>
+<span class="sd">        trailing : str, optional</span>
+<span class="sd">            * default: &#39;&#39;</span>
+<span class="sd">            * used for export_format &#39;cef&#39; only, the string to append to each row</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :data:`pytan.constants.SSE_FORMAT_MAP` : maps `export_format` to an integer for use by the SOAP API</span>
+<span class="sd">        :data:`pytan.constants.SSE_RESTRICT_MAP` : maps export_format integers to supported platform versions</span>
+<span class="sd">        :data:`pytan.constants.SSE_CRASH_MAP` : maps platform versions that can cause issues in various scenarios</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        export_data : either `str` or :class:`taniumpy.object_types.result_set.ResultSet`</span>
+<span class="sd">            * If export_format is one of csv, xml, or cef, export_data will be a `str` containing the contents of the ResultSet in said format</span>
+<span class="sd">            * If export_format is xml_obj, export_data will be a :class:`taniumpy.object_types.result_set.ResultSet`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_sse_version</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_sse_crash_prevention</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+        <span class="n">export_format_int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_sse_format</span><span class="p">(</span><span class="n">export_format</span><span class="p">)</span>
+
+        <span class="c"># add the export_flag = 1 to the kwargs for inclusion in options node</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;export_flag&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="c"># add the export_format to the kwargs for inclusion in options node</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;export_format&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">export_format_int</span>
+
+        <span class="c"># add the export_leading_text to the kwargs for inclusion in options node</span>
+        <span class="k">if</span> <span class="n">leading</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;export_leading_text&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">leading</span>
+
+        <span class="c"># add the export_trailing_text to the kwargs for inclusion in options node</span>
+        <span class="k">if</span> <span class="n">trailing</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;export_trailing_text&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trailing</span>
+
+        <span class="n">export_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_result_data</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Server Side Export Started, id: &#39;{}&#39;&quot;</span><span class="o">.</span><span class="n">format</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">export_id</span><span class="p">))</span>
+
+        <span class="n">poller</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">pollers</span><span class="o">.</span><span class="n">SSEPoller</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">export_id</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">poller_success</span> <span class="o">=</span> <span class="n">poller</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">poller_success</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s">&quot;Server Side Export Poller failed while waiting for completion, last status: {}&quot;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">format</span>
+            <span class="n">sse_status</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">poller</span><span class="p">,</span> <span class="s">&#39;sse_status&#39;</span><span class="p">,</span> <span class="s">&#39;Unknown&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ServerSideExportError</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">sse_status</span><span class="p">))</span>
+
+        <span class="n">export_data</span> <span class="o">=</span> <span class="n">poller</span><span class="o">.</span><span class="n">get_sse_data</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">export_format</span> <span class="o">==</span> <span class="s">&#39;xml_obj&#39;</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Converting XML from Server Side Export into PyTan object&quot;</span><span class="o">.</span><span class="n">format</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">())</span>
+
+            <span class="n">export_rs_xml</span> <span class="o">=</span> <span class="s">&#39;&lt;result_sets&gt;&lt;result_set&gt;{}&lt;/result_set&gt;&lt;/result_sets&gt;&#39;</span><span class="o">.</span><span class="n">format</span>
+            <span class="n">export_rs_xml</span> <span class="o">=</span> <span class="n">export_rs_xml</span><span class="p">(</span><span class="n">export_data</span><span class="p">)</span>
+            <span class="n">export_rs_tree</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">sessions</span><span class="o">.</span><span class="n">ET</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">export_rs_xml</span><span class="p">)</span>
+            <span class="n">export_data</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">ResultSet</span><span class="o">.</span><span class="n">fromSOAPElement</span><span class="p">(</span><span class="n">export_rs_tree</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">export_data</span>
+</div>
+<div class="viewcode-block" id="Handler.get_result_info"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.get_result_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_result_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the result info for a python API object</span>
 
 <span class="sd">        This method issues a GetResultInfo command to the SOAP api for `obj`. GetResultInfo returns information about how many servers have passed the `obj`, total number of servers, and so on.</span>
@@ -629,15 +891,16 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        obj : :class:`taniumpy.object_types.base.BaseType`</span>
-<span class="sd">            object to get result data for</span>
+<span class="sd">            * object to get result data for</span>
 <span class="sd">        shrink : bool, optional</span>
+<span class="sd">            * default: True</span>
 <span class="sd">            * True: Shrink the object down to just id/name/hash attributes (for smaller request)</span>
 <span class="sd">            * False: Use the full object as is</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        ri : :class:`taniumpy.object_types.result_info.ResultInfo`</span>
-<span class="sd">            The return of GetResultData for `obj`</span>
+<span class="sd">            * The return of GetResultData for `obj`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">shrink</span><span class="p">:</span>
             <span class="n">shrunk_obj</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">shrink_obj</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
@@ -652,21 +915,21 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">ri</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ri</span>
 
-    <span class="c"># Objects</span>
+    <span class="c"># Objects</span></div>
 <div class="viewcode-block" id="Handler.create_from_json"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.create_from_json">[docs]</a>    <span class="k">def</span> <span class="nf">create_from_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objtype</span><span class="p">,</span> <span class="n">json_file</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a new object using the SOAP api from a json file</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        objtype : str</span>
-<span class="sd">            Type of object described in `json_file`</span>
+<span class="sd">            * Type of object described in `json_file`</span>
 <span class="sd">        json_file : str</span>
-<span class="sd">            path to JSON file that describes an API object</span>
+<span class="sd">            * path to JSON file that describes an API object</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        ret : :class:`taniumpy.object_types.base.BaseType`</span>
-<span class="sd">            TaniumPy object added to Tanium SOAP Server</span>
+<span class="sd">            * TaniumPy object added to Tanium SOAP Server</span>
 
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
@@ -718,6 +981,14 @@
         <span class="k">return</span> <span class="n">ret</span>
 </div>
 <div class="viewcode-block" id="Handler.run_plugin"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.run_plugin">[docs]</a>    <span class="k">def</span> <span class="nf">run_plugin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plugin</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Wrapper around :func:`pytan.session.Session.run_plugin` to run the plugin and zip up the SQL results into a python dictionary</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        plugin_result, sql_zipped : tuple</span>
+<span class="sd">            * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server</span>
+<span class="sd">            * sql_zipped will be a dict with the SQL results embedded in the SOAP response</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c"># run the plugin</span>
         <span class="n">plugin_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">run_plugin</span><span class="p">(</span><span class="n">plugin</span><span class="p">)</span>
 
@@ -728,7 +999,29 @@
         <span class="k">return</span> <span class="n">plugin_result</span><span class="p">,</span> <span class="n">sql_zipped</span>
 </div>
 <div class="viewcode-block" id="Handler.create_dashboard"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.create_dashboard">[docs]</a>    <span class="k">def</span> <span class="nf">create_dashboard</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">public_flag</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calls :func:`pytan.handler.Handler.run_plugin` to run the CreateDashboard plugin and parse the response</span>
 
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name : str</span>
+<span class="sd">            * name of dashboard to create</span>
+<span class="sd">        text : str, optional</span>
+<span class="sd">            * default: &#39;&#39;</span>
+<span class="sd">            * text for this dashboard</span>
+<span class="sd">        group : str, optional</span>
+<span class="sd">            * default: &#39;&#39;</span>
+<span class="sd">            * group name for this dashboard</span>
+<span class="sd">        public_flag : bool, optional</span>
+<span class="sd">            * default: True</span>
+<span class="sd">            * True: make this dashboard public</span>
+<span class="sd">            * False: do not make this dashboard public</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        plugin_result, sql_zipped : tuple</span>
+<span class="sd">            * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server</span>
+<span class="sd">            * sql_zipped will be a dict with the SQL results embedded in the SOAP response</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c"># get the ID for the group if a name was passed in</span>
         <span class="k">if</span> <span class="n">group</span><span class="p">:</span>
             <span class="n">group_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;group&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">group</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
@@ -785,6 +1078,19 @@
         <span class="k">return</span> <span class="n">plugin_result</span><span class="p">,</span> <span class="n">sql_zipped</span>
 </div>
 <div class="viewcode-block" id="Handler.delete_dashboard"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.delete_dashboard">[docs]</a>    <span class="k">def</span> <span class="nf">delete_dashboard</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calls :func:`pytan.handler.Handler.run_plugin` to run the DeleteDashboards plugin and parse the response</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name : str</span>
+<span class="sd">            * name of dashboard to delete</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        plugin_result, sql_zipped : tuple</span>
+<span class="sd">            * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server</span>
+<span class="sd">            * sql_zipped will be a dict with the SQL results embedded in the SOAP response</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">dashboards_to_del</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dashboards</span><span class="p">(</span><span class="n">name</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
 
         <span class="c"># create the plugin parent</span>
@@ -808,7 +1114,20 @@
         <span class="k">return</span> <span class="n">plugin_result</span><span class="p">,</span> <span class="n">sql_zipped</span>
 </div>
 <div class="viewcode-block" id="Handler.get_dashboards"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.get_dashboards">[docs]</a>    <span class="k">def</span> <span class="nf">get_dashboards</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calls :func:`pytan.handler.Handler.run_plugin` to run the GetDashboards plugin and parse the response</span>
 
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name : str, optional</span>
+<span class="sd">            * default: &#39;&#39;</span>
+<span class="sd">            * name of dashboard to get, if empty will return all dashboards</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        plugin_result, sql_zipped : tuple</span>
+<span class="sd">            * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server</span>
+<span class="sd">            * sql_zipped will be a dict with the SQL results embedded in the SOAP response</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c"># create the plugin parent</span>
         <span class="n">plugin</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">Plugin</span><span class="p">()</span>
         <span class="n">plugin</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#39;GetDashboards&#39;</span>
@@ -845,54 +1164,55 @@
         <span class="p">)</span>
         <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HandlerError</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="Handler.create_package"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.create_package">[docs]</a>    <span class="k">def</span> <span class="nf">create_package</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span>
-            <span class="n">name</span><span class="p">,</span>
-            <span class="n">command</span><span class="p">,</span>
-            <span class="n">display_name</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span>
-            <span class="n">file_urls</span><span class="o">=</span><span class="p">[],</span>
-            <span class="n">command_timeout_seconds</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
-            <span class="n">expire_seconds</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
-            <span class="n">parameters_json_file</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span>
-            <span class="n">verify_filters</span><span class="o">=</span><span class="p">[],</span>
-            <span class="n">verify_filter_options</span><span class="o">=</span><span class="p">[],</span>
-            <span class="n">verify_expire_seconds</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
-            <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Handler.create_package"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.create_package">[docs]</a>    <span class="k">def</span> <span class="nf">create_package</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="n">display_name</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">file_urls</span><span class="o">=</span><span class="p">[],</span>
+                       <span class="n">command_timeout_seconds</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">expire_seconds</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">parameters_json_file</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span>
+                       <span class="n">verify_filters</span><span class="o">=</span><span class="p">[],</span> <span class="n">verify_filter_options</span><span class="o">=</span><span class="p">[],</span> <span class="n">verify_expire_seconds</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+                       <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a package object</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        name : str</span>
-<span class="sd">            name of package to create</span>
+<span class="sd">            * name of package to create</span>
 <span class="sd">        command : str</span>
-<span class="sd">            command to execute</span>
+<span class="sd">            * command to execute</span>
 <span class="sd">        display_name : str, optional</span>
-<span class="sd">            display name of package</span>
+<span class="sd">            * display name of package</span>
 <span class="sd">        file_urls : list of strings, optional</span>
+<span class="sd">            * default: []</span>
 <span class="sd">            * URL of file to add to package</span>
 <span class="sd">            * can optionally define download_seconds by using SECONDS::URL</span>
 <span class="sd">            * can optionally define file name by using FILENAME||URL</span>
 <span class="sd">            * can combine optionals by using SECONDS::FILENAME||URL</span>
 <span class="sd">            * FILENAME will be extracted from basename of URL if not provided</span>
 <span class="sd">        command_timeout_seconds : int, optional</span>
-<span class="sd">            timeout for command execution in seconds</span>
+<span class="sd">            * default: 600</span>
+<span class="sd">            * timeout for command execution in seconds</span>
 <span class="sd">        parameters_json_file : str, optional</span>
-<span class="sd">            path to json file describing parameters for package</span>
+<span class="sd">            * default: &#39;&#39;</span>
+<span class="sd">            * path to json file describing parameters for package</span>
 <span class="sd">        expire_seconds : int, optional</span>
-<span class="sd">            timeout for action expiry in seconds</span>
+<span class="sd">            * default: 600</span>
+<span class="sd">            * timeout for action expiry in seconds</span>
 <span class="sd">        verify_filters : str or list of str, optional</span>
-<span class="sd">            each string must describe a filter to be used to verify the package</span>
+<span class="sd">            * default: []</span>
+<span class="sd">            * each string must describe a filter to be used to verify the package</span>
 <span class="sd">        verify_filter_options : str or list of str, optional</span>
-<span class="sd">            each string must describe an option for `verify_filters`</span>
+<span class="sd">            * default: []</span>
+<span class="sd">            * each string must describe an option for `verify_filters`</span>
 <span class="sd">        verify_expire_seconds : int, optional</span>
-<span class="sd">            timeout for verify action expiry in seconds</span>
+<span class="sd">            * default: 600</span>
+<span class="sd">            * timeout for verify action expiry in seconds</span>
 <span class="sd">        filters_help : bool, optional</span>
+<span class="sd">            * default: False</span>
 <span class="sd">            * False: do not print the help string for filters</span>
 <span class="sd">            * True: print the help string for filters and exit</span>
 <span class="sd">        options_help : bool, optional</span>
+<span class="sd">            * default: False</span>
 <span class="sd">            * False: do not print the help string for options</span>
 <span class="sd">            * True: print the help string for options and exit</span>
 <span class="sd">        metadata: list of list of strs, optional</span>
+<span class="sd">            * default: []</span>
 <span class="sd">            * each list must be a 2 item list:</span>
 <span class="sd">            * list item 1 property name</span>
 <span class="sd">            * list item 2 property value</span>
@@ -900,7 +1220,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        package_obj : :class:`taniumpy.object_types.package_spec.PackageSpec`</span>
-<span class="sd">            TaniumPy object added to Tanium SOAP Server</span>
+<span class="sd">            * TaniumPy object added to Tanium SOAP Server</span>
 
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
@@ -984,22 +1304,26 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        groupname : str</span>
-<span class="sd">            name of group to create</span>
+<span class="sd">            * name of group to create</span>
 <span class="sd">        filters : str or list of str, optional</span>
-<span class="sd">            each string must describe a filter</span>
+<span class="sd">            * default: []</span>
+<span class="sd">            * each string must describe a filter</span>
 <span class="sd">        filter_options : str or list of str, optional</span>
-<span class="sd">            each string must describe an option for `filters`</span>
+<span class="sd">            * default: []</span>
+<span class="sd">            * each string must describe an option for `filters`</span>
 <span class="sd">        filters_help : bool, optional</span>
+<span class="sd">            * default: False</span>
 <span class="sd">            * False: do not print the help string for filters</span>
 <span class="sd">            * True: print the help string for filters and exit</span>
 <span class="sd">        options_help : bool, optional</span>
+<span class="sd">            * default: False</span>
 <span class="sd">            * False: do not print the help string for options</span>
 <span class="sd">            * True: print the help string for options and exit</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        group_obj : :class:`taniumpy.object_types.group.Group`</span>
-<span class="sd">            TaniumPy object added to Tanium SOAP Server</span>
+<span class="sd">            * TaniumPy object added to Tanium SOAP Server</span>
 
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
@@ -1029,12 +1353,15 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        username : str</span>
-<span class="sd">            name of user to create</span>
+<span class="sd">            * name of user to create</span>
 <span class="sd">        rolename : str or list of str, optional</span>
-<span class="sd">            name(s) of roles to add to user</span>
+<span class="sd">            * default: []</span>
+<span class="sd">            * name(s) of roles to add to user</span>
 <span class="sd">        roleid : int or list of int, optional</span>
-<span class="sd">            id(s) of roles to add to user</span>
+<span class="sd">            * default: []</span>
+<span class="sd">            * id(s) of roles to add to user</span>
 <span class="sd">        properties: list of list of strs, optional</span>
+<span class="sd">            * default: []</span>
 <span class="sd">            * each list must be a 2 item list:</span>
 <span class="sd">            * list item 1 property name</span>
 <span class="sd">            * list item 2 property value</span>
@@ -1042,7 +1369,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        user_obj : :class:`taniumpy.object_types.user.User`</span>
-<span class="sd">            TaniumPy object added to Tanium SOAP Server</span>
+<span class="sd">            * TaniumPy object added to Tanium SOAP Server</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">roleid</span> <span class="ow">or</span> <span class="n">rolename</span><span class="p">:</span>
             <span class="n">rolelist_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;userrole&#39;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">roleid</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">rolename</span><span class="p">)</span>
@@ -1062,24 +1389,22 @@
         <span class="p">))</span>
         <span class="k">return</span> <span class="n">user_obj</span>
 </div>
-<div class="viewcode-block" id="Handler.create_whitelisted_url"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.create_whitelisted_url">[docs]</a>    <span class="k">def</span> <span class="nf">create_whitelisted_url</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span>
-            <span class="n">url</span><span class="p">,</span>
-            <span class="n">regex</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-            <span class="n">download_seconds</span><span class="o">=</span><span class="mi">86400</span><span class="p">,</span>
-            <span class="n">properties</span><span class="o">=</span><span class="p">[]):</span>
+<div class="viewcode-block" id="Handler.create_whitelisted_url"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.create_whitelisted_url">[docs]</a>    <span class="k">def</span> <span class="nf">create_whitelisted_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">download_seconds</span><span class="o">=</span><span class="mi">86400</span><span class="p">,</span> <span class="n">properties</span><span class="o">=</span><span class="p">[]):</span>
         <span class="sd">&quot;&quot;&quot;Create a whitelisted url object</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        url : str</span>
-<span class="sd">            text of new url</span>
+<span class="sd">            * text of new url</span>
 <span class="sd">        regex : bool, optional</span>
-<span class="sd">            * True: `url` is a regex pattern</span>
+<span class="sd">            * default: False</span>
 <span class="sd">            * False: `url` is not a regex pattern</span>
+<span class="sd">            * True: `url` is a regex pattern</span>
 <span class="sd">        download_seconds : int, optional</span>
-<span class="sd">            how often to re-download `url`</span>
+<span class="sd">            * default: 86400</span>
+<span class="sd">            * how often to re-download `url`</span>
 <span class="sd">        properties: list of list of strs, optional</span>
+<span class="sd">            * default: []</span>
 <span class="sd">            * each list must be a 2 item list:</span>
 <span class="sd">            * list item 1 property name</span>
 <span class="sd">            * list item 2 property value</span>
@@ -1087,7 +1412,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        url_obj : :class:`taniumpy.object_types.white_listed_url.WhiteListedUrl`</span>
-<span class="sd">            TaniumPy object added to Tanium SOAP Server</span>
+<span class="sd">            * TaniumPy object added to Tanium SOAP Server</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">regex</span><span class="p">:</span>
             <span class="n">url</span> <span class="o">=</span> <span class="s">&#39;regex:&#39;</span> <span class="o">+</span> <span class="n">url</span>
@@ -1110,14 +1435,14 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        objtype : string</span>
-<span class="sd">            type of object to delete</span>
+<span class="sd">            * type of object to delete</span>
 <span class="sd">        id/name/hash : int or string, list of int or string</span>
-<span class="sd">            search attributes of object to delete, must supply at least one valid search attr</span>
+<span class="sd">            * search attributes of object to delete, must supply at least one valid search attr</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        ret : dict</span>
-<span class="sd">            dict containing deploy action object and results from deploy action</span>
+<span class="sd">            * dict containing deploy action object and results from deploy action</span>
 
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
@@ -1140,38 +1465,44 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">del_obj</span><span class="p">)))</span>
         <span class="k">return</span> <span class="n">deleted_objects</span>
 </div>
-    <span class="nd">@pytan.utils.func_timing</span>
-    <span class="k">def</span> <span class="nf">export_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">export_format</span><span class="o">=</span><span class="s">&#39;csv&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Handler.export_obj"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.export_obj">[docs]</a>    <span class="k">def</span> <span class="nf">export_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">export_format</span><span class="o">=</span><span class="s">&#39;csv&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Exports a python API object to a given export format</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        obj : :class:`taniumpy.object_types.base.BaseType` or :class:`taniumpy.object_types.result_set.ResultSet`</span>
-<span class="sd">            TaniumPy object to export</span>
+<span class="sd">            * TaniumPy object to export</span>
 <span class="sd">        export_format : str, optional</span>
-<span class="sd">            the format to export `obj` to, can be one of: csv, xml, json</span>
+<span class="sd">            * default: &#39;csv&#39;</span>
+<span class="sd">            * the format to export `obj` to, one of: {&#39;csv&#39;, &#39;xml&#39;, &#39;json&#39;}</span>
 <span class="sd">        header_sort : list of str, bool, optional</span>
+<span class="sd">            * default: True</span>
 <span class="sd">            * for `export_format` csv and `obj` types :class:`taniumpy.object_types.base.BaseType` or :class:`taniumpy.object_types.result_set.ResultSet`</span>
 <span class="sd">            * True: sort the headers automatically</span>
 <span class="sd">            * False: do not sort the headers at all</span>
 <span class="sd">            * list of str: sort the headers returned by priority based on provided list</span>
 <span class="sd">        header_add_sensor : bool, optional</span>
+<span class="sd">            * default: False</span>
 <span class="sd">            * for `export_format` csv and `obj` type :class:`taniumpy.object_types.result_set.ResultSet`</span>
 <span class="sd">            * False: do not prefix the headers with the associated sensor name for each column</span>
 <span class="sd">            * True: prefix the headers with the associated sensor name for each column</span>
 <span class="sd">        header_add_type : bool, optional</span>
+<span class="sd">            * default: False</span>
 <span class="sd">            * for `export_format` csv and `obj` type :class:`taniumpy.object_types.result_set.ResultSet`</span>
 <span class="sd">            * False: do not postfix the headers with the result type for each column</span>
 <span class="sd">            * True: postfix the headers with the result type for each column</span>
 <span class="sd">        expand_grouped_columns : bool, optional</span>
+<span class="sd">            * default: False</span>
 <span class="sd">            * for `export_format` csv and `obj` type :class:`taniumpy.object_types.result_set.ResultSet`</span>
 <span class="sd">            * False: do not expand multiline row entries into their own rows</span>
 <span class="sd">            * True: expand multiline row entries into their own rows</span>
 <span class="sd">        explode_json_string_values : bool, optional</span>
+<span class="sd">            * default: False</span>
 <span class="sd">            * for `export_format` json or csv and `obj` type :class:`taniumpy.object_types.base.BaseType`</span>
 <span class="sd">            * False: do not explode JSON strings in object attributes into their own object attributes</span>
 <span class="sd">            * True: explode JSON strings in object attributes into their own object attributes</span>
 <span class="sd">        minimal : bool, optional</span>
+<span class="sd">            * default: False</span>
 <span class="sd">            * for `export_format` xml and `obj` type :class:`taniumpy.object_types.base.BaseType`</span>
 <span class="sd">            * False: include empty attributes in XML output</span>
 <span class="sd">            * True: do not include empty attributes in XML output</span>
@@ -1179,7 +1510,11 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        result : str</span>
-<span class="sd">            the contents of exporting `export_format`</span>
+<span class="sd">            * the contents of exporting `export_format`</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        When performing a CSV export and importing that CSV into excel, keep in mind that Excel has a per cell character limit of 32,000. Any cell larger than that will be broken up into a whole new row, which can wreak havoc with data in Excel.</span>
 
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
@@ -1237,56 +1572,74 @@
             <span class="n">err</span> <span class="o">=</span> <span class="s">&quot;{!r} not supported by Handler!&quot;</span><span class="o">.</span><span class="n">format</span>
             <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HandlerError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="n">objclassname</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">result</span>
-
+</div>
 <div class="viewcode-block" id="Handler.export_to_report_file"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.export_to_report_file">[docs]</a>    <span class="k">def</span> <span class="nf">export_to_report_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">export_format</span><span class="o">=</span><span class="s">&#39;csv&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Exports a python API object to a file</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        obj : :class:`taniumpy.object_types.base.BaseType` or :class:`taniumpy.object_types.result_set.ResultSet`</span>
-<span class="sd">            TaniumPy object to export</span>
-<span class="sd">        export_format : str</span>
-<span class="sd">            the format to export `obj` to, can be one of: csv, xml, json</span>
+<span class="sd">            * TaniumPy object to export</span>
+<span class="sd">        export_format : str, optional</span>
+<span class="sd">            * default: &#39;csv&#39;</span>
+<span class="sd">            * the format to export `obj` to, one of: {&#39;csv&#39;, &#39;xml&#39;, &#39;json&#39;}</span>
 <span class="sd">        header_sort : list of str, bool, optional</span>
+<span class="sd">            * default: True</span>
 <span class="sd">            * for `export_format` csv and `obj` types :class:`taniumpy.object_types.base.BaseType` or :class:`taniumpy.object_types.result_set.ResultSet`</span>
 <span class="sd">            * True: sort the headers automatically</span>
 <span class="sd">            * False: do not sort the headers at all</span>
 <span class="sd">            * list of str: sort the headers returned by priority based on provided list</span>
 <span class="sd">        header_add_sensor : bool, optional</span>
+<span class="sd">            * default: False</span>
 <span class="sd">            * for `export_format` csv and `obj` type :class:`taniumpy.object_types.result_set.ResultSet`</span>
 <span class="sd">            * False: do not prefix the headers with the associated sensor name for each column</span>
 <span class="sd">            * True: prefix the headers with the associated sensor name for each column</span>
 <span class="sd">        header_add_type : bool, optional</span>
+<span class="sd">            * default: False</span>
 <span class="sd">            * for `export_format` csv and `obj` type :class:`taniumpy.object_types.result_set.ResultSet`</span>
 <span class="sd">            * False: do not postfix the headers with the result type for each column</span>
 <span class="sd">            * True: postfix the headers with the result type for each column</span>
 <span class="sd">        expand_grouped_columns : bool, optional</span>
+<span class="sd">            * default: False</span>
 <span class="sd">            * for `export_format` csv and `obj` type :class:`taniumpy.object_types.result_set.ResultSet`</span>
 <span class="sd">            * False: do not expand multiline row entries into their own rows</span>
 <span class="sd">            * True: expand multiline row entries into their own rows</span>
 <span class="sd">        explode_json_string_values : bool, optional</span>
+<span class="sd">            * default: False</span>
 <span class="sd">            * for `export_format` json or csv and `obj` type :class:`taniumpy.object_types.base.BaseType`</span>
 <span class="sd">            * False: do not explode JSON strings in object attributes into their own object attributes</span>
 <span class="sd">            * True: explode JSON strings in object attributes into their own object attributes</span>
 <span class="sd">        minimal : bool, optional</span>
+<span class="sd">            * default: False</span>
 <span class="sd">            * for `export_format` xml and `obj` type :class:`taniumpy.object_types.base.BaseType`</span>
 <span class="sd">            * False: include empty attributes in XML output</span>
 <span class="sd">            * True: do not include empty attributes in XML output</span>
 <span class="sd">        report_file: str, optional</span>
-<span class="sd">            filename to save report as, will be automatically generated if not supplied</span>
+<span class="sd">            * default: None</span>
+<span class="sd">            * filename to save report as, will be automatically generated if not supplied</span>
 <span class="sd">        report_dir: str, optional</span>
-<span class="sd">            directory to save report in, if not supplied, will be extracted from `report_file`. if no directory in `report_file` or `report_file` not specified, will use current working directory.</span>
+<span class="sd">            * default: None</span>
+<span class="sd">            * directory to save report in, will use current working directory if not supplied</span>
 <span class="sd">        prefix: str, optional</span>
-<span class="sd">            prefix to add to `report_file`</span>
+<span class="sd">            * default: &#39;&#39;</span>
+<span class="sd">            * prefix to add to `report_file`</span>
 <span class="sd">        postfix: str, optional</span>
-<span class="sd">            postfix to add to `report_file`</span>
+<span class="sd">            * default: &#39;&#39;</span>
+<span class="sd">            * postfix to add to `report_file`</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        report_path : str</span>
-<span class="sd">            the full path to the file created with contents of `result`</span>
-<span class="sd">        result : str</span>
-<span class="sd">            the str of `export_format`</span>
+<span class="sd">        report_path, result : tuple</span>
+<span class="sd">            * report_path : str, the full path to the file created with contents of `result`</span>
+<span class="sd">            * result : str, the contents written to report_path</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :func:`pytan.handler.Handler.export_obj` : method that performs the actual work to do the exporting</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        When performing a CSV export and importing that CSV into excel, keep in mind that Excel has a per cell character limit of 32,000. Any cell larger than that will be broken up into a whole new row, which can wreak havoc with data in Excel.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">report_file</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;report_file&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
 
@@ -1336,20 +1689,26 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">report_path</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)))</span>
         <span class="k">return</span> <span class="n">report_path</span><span class="p">,</span> <span class="n">result</span>
 </div>
-    <span class="nd">@pytan.utils.func_timing</span>
-    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objtype</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Handler.get"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objtype</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get an object type</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        objtype : string</span>
-<span class="sd">            type of object to get</span>
+<span class="sd">            * type of object to get</span>
 <span class="sd">        id/name/hash : int or string, list of int or string</span>
-<span class="sd">            search attributes of object to get, must supply at least one valid search attr</span>
+<span class="sd">            * search attributes of object to get, must supply at least one valid search attr</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        obj_list : :class:`taniumpy.object_types.base.BaseType`</span>
+<span class="sd">            * The object list of items found for `objtype`</span>
 
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
 <span class="sd">        :data:`pytan.constants.GET_OBJ_MAP` : maps objtype to supported &#39;search&#39; keys</span>
+<span class="sd">        :func:`pytan.handler.Handler._get_multi` : private method used to get multiple items</span>
+<span class="sd">        :func:`pytan.handler.Handler._get_single` : private method used to get singular items</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">obj_map</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">get_obj_map</span><span class="p">(</span><span class="n">objtype</span><span class="p">)</span>
         <span class="n">manual_search</span> <span class="o">=</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;manual&#39;</span><span class="p">]</span>
@@ -1394,9 +1753,8 @@
 
         <span class="n">err</span> <span class="o">=</span> <span class="s">&quot;No single or multi search defined for {}&quot;</span><span class="o">.</span><span class="n">format</span>
         <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HandlerError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="n">objtype</span><span class="p">))</span>
-
-    <span class="nd">@pytan.utils.func_timing</span>
-    <span class="k">def</span> <span class="nf">get_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objtype</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</div>
+<div class="viewcode-block" id="Handler.get_all"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.get_all">[docs]</a>    <span class="k">def</span> <span class="nf">get_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objtype</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get all objects of a type</span>
 
 <span class="sd">        Parameters</span>
@@ -1404,18 +1762,23 @@
 <span class="sd">        objtype : string</span>
 <span class="sd">            type of object to get</span>
 
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        obj_list : :class:`taniumpy.object_types.base.BaseType`</span>
+<span class="sd">            * The object list of items found for `objtype`</span>
+
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
 <span class="sd">        :data:`pytan.constants.GET_OBJ_MAP` : maps objtype to supported &#39;search&#39; keys</span>
+<span class="sd">        :func:`pytan.handler.Handler._find` : private method used to find items</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">obj_map</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">get_obj_map</span><span class="p">(</span><span class="n">objtype</span><span class="p">)</span>
         <span class="n">api_obj_all</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">get_taniumpy_obj</span><span class="p">(</span><span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;all&#39;</span><span class="p">])()</span>
         <span class="n">found</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find</span><span class="p">(</span><span class="n">api_obj_all</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">found</span>
 
-    <span class="c"># BEGIN PRIVATE METHODS</span>
-    <span class="nd">@pytan.utils.func_timing</span>
-    <span class="k">def</span> <span class="nf">_add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api_object</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="c"># BEGIN PRIVATE METHODS</span></div>
+<div class="viewcode-block" id="Handler._add"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._add">[docs]</a>    <span class="k">def</span> <span class="nf">_add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api_object</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Wrapper for interfacing with :func:`taniumpy.session.Session.add`&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">search_str</span> <span class="o">=</span> <span class="s">&#39;; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">api_object</span><span class="p">])</span>
@@ -1429,7 +1792,7 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">added_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">api_object</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
             <span class="n">err</span> <span class="o">=</span> <span class="s">&quot;Error while trying to add object {}!!&quot;</span><span class="o">.</span><span class="n">format</span>
             <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HandlerError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="n">search_str</span><span class="p">))</span>
 
@@ -1444,9 +1807,8 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Added object {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">added_obj</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">added_obj</span>
-
-    <span class="nd">@pytan.utils.func_timing</span>
-    <span class="k">def</span> <span class="nf">_find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api_object</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</div>
+<div class="viewcode-block" id="Handler._find"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._find">[docs]</a>    <span class="k">def</span> <span class="nf">_find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api_object</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Wrapper for interfacing with :func:`taniumpy.session.Session.find`&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">search_str</span> <span class="o">=</span> <span class="s">&#39;; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">api_object</span><span class="p">])</span>
@@ -1460,9 +1822,9 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">found</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">api_object</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-            <span class="n">err</span> <span class="o">=</span> <span class="s">&quot;No results found searching for {}!!&quot;</span><span class="o">.</span><span class="n">format</span>
-            <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HandlerError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="n">search_str</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="n">err</span> <span class="o">=</span> <span class="s">&quot;No results found searching for {} (error: {})!!&quot;</span><span class="o">.</span><span class="n">format</span>
+            <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HandlerError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="n">search_str</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">empty_obj</span><span class="p">(</span><span class="n">found</span><span class="p">):</span>
             <span class="n">err</span> <span class="o">=</span> <span class="s">&quot;No results found searching for {}!!&quot;</span><span class="o">.</span><span class="n">format</span>
@@ -1470,7 +1832,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Found {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">found</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">found</span>
-
+</div>
 <div class="viewcode-block" id="Handler._get_multi"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._get_multi">[docs]</a>    <span class="k">def</span> <span class="nf">_get_multi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_map</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Find multiple item wrapper using :func:`_find`&quot;&quot;&quot;</span>
         <span class="n">api_attrs</span> <span class="o">=</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;search&#39;</span><span class="p">]</span>
@@ -1640,11 +2002,7 @@
         <span class="n">result</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">toSOAPBody</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span>
 </div>
-<div class="viewcode-block" id="Handler._derive_server_version"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._derive_server_version">[docs]</a>    <span class="k">def</span> <span class="nf">_derive_server_version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get_server_version</span><span class="p">()</span>
-</div>
-    <span class="nd">@pytan.utils.func_timing</span>
-    <span class="k">def</span> <span class="nf">_deploy_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">get_results</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Handler._deploy_action"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._deploy_action">[docs]</a>    <span class="k">def</span> <span class="nf">_deploy_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">get_results</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deploy an action and get the results back</span>
 
 <span class="sd">        This method requires in-depth knowledge of how filters and options are created in the API, and as such is not meant for human consumption. Use :func:`deploy_action` instead.</span>
@@ -1652,30 +2010,45 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        package_def : dict</span>
-<span class="sd">            definition that describes a package</span>
+<span class="sd">            * definition that describes a package</span>
 <span class="sd">        action_filter_defs : str, dict, list of str or dict, optional</span>
-<span class="sd">            action filter definitions</span>
+<span class="sd">            * default: []</span>
+<span class="sd">            * action filter definitions</span>
 <span class="sd">        action_option_defs : dict, list of dict, optional</span>
-<span class="sd">            action filter option definitions</span>
+<span class="sd">            * default: []</span>
+<span class="sd">            * action filter option definitions</span>
 <span class="sd">        start_seconds_from_now : int, optional</span>
-<span class="sd">            start action N seconds from now</span>
+<span class="sd">            * default: 0</span>
+<span class="sd">            * start action N seconds from now</span>
 <span class="sd">        expire_seconds : int, optional</span>
-<span class="sd">            expire action N seconds from now, will be derived from package if not supplied</span>
+<span class="sd">            * default: package.expire_seconds</span>
+<span class="sd">            * expire action N seconds from now, will be derived from package if not supplied</span>
 <span class="sd">        run : bool, optional</span>
+<span class="sd">            * default: False</span>
 <span class="sd">            * False: just ask the question that pertains to verify action, export the results to CSV, and raise pytan.exceptions.RunFalse -- does not deploy the action</span>
 <span class="sd">            * True: actually deploy the action</span>
 <span class="sd">        get_results : bool, optional</span>
+<span class="sd">            * default: True</span>
 <span class="sd">            * True: wait for result completion after deploying action</span>
 <span class="sd">            * False: just deploy the action and return the object in `ret`</span>
+<span class="sd">        action_name : str, optional</span>
+<span class="sd">            * default: prepend package name with &quot;API Deploy &quot;</span>
+<span class="sd">            * custom name for action</span>
+<span class="sd">        action_comment : str, optional</span>
+<span class="sd">            * default:</span>
+<span class="sd">            * custom comment for action</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        ret : dict, containing:</span>
-<span class="sd">            * `action_object` : :class:`taniumpy.object_types.action.Action`</span>
-<span class="sd">            * `action_results` : :class:`taniumpy.object_types.result_set.ResultSet`</span>
-<span class="sd">            * `action_progress_human` : str, progress map in human form</span>
-<span class="sd">            * `action_progress_map` : dict, progress map in dictionary form</span>
-<span class="sd">            * `pre_action_question_results` : :class:`taniumpy.object_types.result_set.ResultSet`</span>
+<span class="sd">            * `saved_action_object` : :class:`taniumpy.object_types.saved_action.SavedAction`, the saved_action added for this action (None if 6.2)</span>
+<span class="sd">            * `action_object` : :class:`taniumpy.object_types.action.Action`, the action object that tanium created for `saved_action`</span>
+<span class="sd">            * `package_object` : :class:`taniumpy.object_types.package_spec.PackageSPec`, the package object used in `saved_action`</span>
+<span class="sd">            * `action_info` : :class:`taniumpy.object_types.result_info.ResultInfo`, the initial GetResultInfo call done before getting results</span>
+<span class="sd">            * `poller_object` : :class:`pytan.pollers.ActionPoller`, poller object used to wait until all results are in before getting `action_results`</span>
+<span class="sd">            * `poller_success` : None if `get_results` == False, elsewise True or False</span>
+<span class="sd">            * `action_results` : None if `get_results` == False, elsewise :class:`taniumpy.object_types.result_set.ResultSet`, the results for `action_object`</span>
+<span class="sd">            * `action_result_map` : None if `get_results` == False, elsewise progress map for `action_object` in dictionary form</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
@@ -1725,20 +2098,6 @@
             <span class="o">**</span><span class="n">kwargs</span>
         <span class="p">)</span>
 
-        <span class="n">start_seconds_from_now</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">get_kwargs_int</span><span class="p">(</span>
-            <span class="s">&#39;start_seconds_from_now&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-        <span class="p">)</span>
-
-        <span class="n">expire_seconds</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">get_kwargs_int</span><span class="p">(</span><span class="s">&#39;expire_seconds&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-        <span class="n">comment_default</span> <span class="o">=</span> <span class="s">&#39;Created by PyTan v{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pytan</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
-        <span class="n">issue_seconds_default</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">distribute_seconds_default</span> <span class="o">=</span> <span class="mi">0</span>
-
-        <span class="n">comment</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;comment&#39;</span><span class="p">,</span> <span class="n">comment_default</span><span class="p">)</span>
-        <span class="n">issue_seconds</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;issue_seconds&#39;</span><span class="p">,</span> <span class="n">issue_seconds_default</span><span class="p">)</span>
-        <span class="n">distribute_seconds</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;distribute_seconds&#39;</span><span class="p">,</span> <span class="n">distribute_seconds_default</span><span class="p">)</span>
-
         <span class="c"># do basic validation of our defs</span>
         <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">val_sensor_defs</span><span class="p">(</span><span class="n">action_filter_defs</span><span class="p">)</span>
         <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">val_package_def</span><span class="p">(</span><span class="n">package_def</span><span class="p">)</span>
@@ -1747,6 +2106,24 @@
         <span class="c"># d[&#39;sensor_obj&#39;] / d[&#39;package_obj&#39;]</span>
         <span class="n">action_filter_defs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_sensor_defs</span><span class="p">(</span><span class="n">action_filter_defs</span><span class="p">)</span>
         <span class="n">package_def</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_package_def</span><span class="p">(</span><span class="n">package_def</span><span class="p">)</span>
+
+        <span class="n">start_seconds_from_now</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">get_kwargs_int</span><span class="p">(</span>
+            <span class="s">&#39;start_seconds_from_now&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="n">expire_seconds</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">get_kwargs_int</span><span class="p">(</span><span class="s">&#39;expire_seconds&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="n">action_name_default</span> <span class="o">=</span> <span class="s">&quot;API Deploy {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">package_def</span><span class="p">[</span><span class="s">&#39;package_obj&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">action_name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;action_name&#39;</span><span class="p">,</span> <span class="n">action_name_default</span><span class="p">)</span>
+
+        <span class="n">action_comment_default</span> <span class="o">=</span> <span class="s">&#39;Created by PyTan v{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pytan</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+        <span class="n">action_comment</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;action_comment&#39;</span><span class="p">,</span> <span class="n">action_comment_default</span><span class="p">)</span>
+
+        <span class="n">issue_seconds_default</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">issue_seconds</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;issue_seconds&#39;</span><span class="p">,</span> <span class="n">issue_seconds_default</span><span class="p">)</span>
+
+        <span class="n">distribute_seconds_default</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">distribute_seconds</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;distribute_seconds&#39;</span><span class="p">,</span> <span class="n">distribute_seconds_default</span><span class="p">)</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        ask the question that pertains to the action filter, save the result as CSV,</span>
@@ -1808,37 +2185,26 @@
             <span class="n">empty_ok</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="sd">&#39;&#39;&#39;Branch out logic for 6.2 vs 6.5 here:</span>
+        <span class="sd">&quot;&quot;&quot;Branch out logic for 6.2 vs 6.5 here:</span>
 
 <span class="sd">         * For 6.2:</span>
 <span class="sd">           * we need to add an Action object</span>
 <span class="sd">           * do not encapsulate it in a list object</span>
 <span class="sd">           * force a start time to be specified, if none is specified the action shows up as expired</span>
 
-<span class="sd">         * For 6.5:</span>
+<span class="sd">         * For 6.5 / 6.6:</span>
 <span class="sd">           * we need to add a SavedAction object</span>
 <span class="sd">           * the server creates the actual Action object for us</span>
 <span class="sd">           * to emulate what the console does, encapsulate the SavedAction in a SavedActionList</span>
 <span class="sd">           * start time does not need to be specified</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="c"># if server_version is None / &quot;Not yet determined!&quot; try to fetch the version</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span> <span class="o">==</span> <span class="s">&quot;Not yet determined!&quot;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get_server_version</span><span class="p">()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;6.2&#39;</span><span class="p">):</span>
-            <span class="n">objtype</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">Action</span>
-            <span class="n">objlisttype</span> <span class="o">=</span> <span class="bp">None</span>
-            <span class="n">force_start_time</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;6.5&#39;</span><span class="p">):</span>
-            <span class="n">objtype</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">SavedAction</span>
-            <span class="n">objlisttype</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">SavedActionList</span>
-            <span class="n">force_start_time</span> <span class="o">=</span> <span class="bp">False</span>
         <span class="c"># we will assume 6.2 if server_version is &quot;Unable to determine&quot;</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span> <span class="o">==</span> <span class="s">&quot;Unable to determine&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_platform_is_6_2</span><span class="p">():</span>
             <span class="n">objtype</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">Action</span>
             <span class="n">objlisttype</span> <span class="o">=</span> <span class="bp">None</span>
             <span class="n">force_start_time</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="c"># default to 6.5 logic for all unknowns</span>
+        <span class="c"># default to 6.5 logic for everything else</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">objtype</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">SavedAction</span>
             <span class="n">objlisttype</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">SavedActionList</span>
@@ -1850,10 +2216,10 @@
         <span class="n">add_obj</span> <span class="o">=</span> <span class="n">objtype</span><span class="p">()</span>
         <span class="n">add_obj</span><span class="o">.</span><span class="n">package_spec</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">PackageSpec</span><span class="p">()</span>
         <span class="n">add_obj</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-        <span class="n">add_obj</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;API Deploy {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">package_def</span><span class="p">[</span><span class="s">&#39;package_obj&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">add_obj</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">action_name</span>
         <span class="n">add_obj</span><span class="o">.</span><span class="n">issue_seconds</span> <span class="o">=</span> <span class="n">issue_seconds</span>
         <span class="n">add_obj</span><span class="o">.</span><span class="n">distribute_seconds</span> <span class="o">=</span> <span class="n">distribute_seconds</span>
-        <span class="n">add_obj</span><span class="o">.</span><span class="n">comment</span> <span class="o">=</span> <span class="n">comment</span>
+        <span class="n">add_obj</span><span class="o">.</span><span class="n">comment</span> <span class="o">=</span> <span class="n">action_comment</span>
         <span class="n">add_obj</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">add_obj</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
         <span class="n">add_obj</span><span class="o">.</span><span class="n">end_time</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
@@ -1904,6 +2270,11 @@
             <span class="n">added_obj</span> <span class="o">=</span> <span class="bp">None</span>
             <span class="n">action_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add</span><span class="p">(</span><span class="n">add_obj</span><span class="p">)</span>
 
+        <span class="n">action_package</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find</span><span class="p">(</span><span class="n">added_obj</span><span class="o">.</span><span class="n">package_spec</span><span class="p">)</span>
+
+        <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;DEPLOY_ACTION ADDED: {}, ID: {}&quot;</span><span class="o">.</span><span class="n">format</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">action_package</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">action_package</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+
         <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;DEPLOY_ACTION ADDED: {}, ID: {}&quot;</span><span class="o">.</span><span class="n">format</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">action_obj</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">action_obj</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
 
@@ -1915,7 +2286,7 @@
         <span class="n">ret</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s">&#39;saved_action_object&#39;</span><span class="p">:</span> <span class="n">added_obj</span><span class="p">,</span>
             <span class="s">&#39;action_object&#39;</span><span class="p">:</span> <span class="n">action_obj</span><span class="p">,</span>
-            <span class="s">&#39;package_object&#39;</span><span class="p">:</span> <span class="n">package_def</span><span class="p">[</span><span class="s">&#39;package_obj&#39;</span><span class="p">],</span>
+            <span class="s">&#39;package_object&#39;</span><span class="p">:</span> <span class="n">action_package</span><span class="p">,</span>
             <span class="s">&#39;group_object&#39;</span><span class="p">:</span> <span class="n">targetgroup_obj</span><span class="p">,</span>
             <span class="s">&#39;action_info&#39;</span><span class="p">:</span> <span class="n">action_info</span><span class="p">,</span>
             <span class="s">&#39;poller_object&#39;</span><span class="p">:</span> <span class="n">pytan</span><span class="o">.</span><span class="n">pollers</span><span class="o">.</span><span class="n">ActionPoller</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action_obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">),</span>
@@ -1930,9 +2301,8 @@
             <span class="n">ret</span><span class="p">[</span><span class="s">&#39;action_result_map&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ret</span><span class="p">[</span><span class="s">&#39;poller_object&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">result_map</span>
 
         <span class="k">return</span> <span class="n">ret</span>
-
-    <span class="nd">@pytan.utils.func_timing</span>
-    <span class="k">def</span> <span class="nf">_ask_manual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">get_results</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</div>
+<div class="viewcode-block" id="Handler._ask_manual"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._ask_manual">[docs]</a>    <span class="k">def</span> <span class="nf">_ask_manual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">get_results</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Ask a manual question using definitions and get the results back</span>
 
 <span class="sd">        This method requires in-depth knowledge of how filters and options are created in the API,</span>
@@ -1941,20 +2311,26 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        sensor_defs : str, dict, list of str or dict</span>
-<span class="sd">            sensor definitions</span>
+<span class="sd">            * default: []</span>
+<span class="sd">            * sensor definitions</span>
 <span class="sd">        question_filter_defs : dict, list of dict, optional</span>
-<span class="sd">            question filter definitions</span>
+<span class="sd">            * default: []</span>
+<span class="sd">            * question filter definitions</span>
 <span class="sd">        question_option_defs : dict, list of dict, optional</span>
-<span class="sd">            question option definitions</span>
+<span class="sd">            * default: []</span>
+<span class="sd">            * question option definitions</span>
 <span class="sd">        get_results : bool, optional</span>
+<span class="sd">            * default: True</span>
 <span class="sd">            * True: wait for result completion after asking question</span>
 <span class="sd">            * False: just ask the question and return it in `ret`</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        ret : dict, containing:</span>
-<span class="sd">            * `question_object` : :class:`taniumpy.object_types.question.Question`</span>
-<span class="sd">            * `question_results` : :class:`taniumpy.object_types.result_set.ResultSet`</span>
+<span class="sd">            * `question_object` : :class:`taniumpy.object_types.question.Question`, the actual question created and added by PyTan</span>
+<span class="sd">            * `question_results` : :class:`taniumpy.object_types.result_set.ResultSet`, the Result Set for `question_object` if `get_results` == True</span>
+<span class="sd">            * `poller_object` : :class:`pytan.pollers.QuestionPoller`, poller object used to wait until all results are in before getting `question_results`</span>
+<span class="sd">            * `poller_success` : None if `get_results` == True, elsewise True or False</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
@@ -2054,7 +2430,160 @@
             <span class="c"># add the sensors from this question to the ResultSet object for reporting</span>
             <span class="n">ret</span><span class="p">[</span><span class="s">&#39;question_results&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sensors</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="s">&#39;sensor_obj&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">sensor_defs</span><span class="p">]</span>
 
-        <span class="k">return</span> <span class="n">ret</span></div>
+        <span class="k">return</span> <span class="n">ret</span>
+</div>
+<div class="viewcode-block" id="Handler._parse_versioning"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._parse_versioning">[docs]</a>    <span class="k">def</span> <span class="nf">_parse_versioning</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Parses self.server_version into a dictionary</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict, containing major, minor, revision, and build of tanium server version</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span> <span class="o">==</span> <span class="s">&quot;Not yet determined!&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get_server_version</span><span class="p">()</span>
+
+        <span class="n">v_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;major&#39;</span><span class="p">,</span> <span class="s">&#39;minor&#39;</span><span class="p">,</span> <span class="s">&#39;revision&#39;</span><span class="p">,</span> <span class="s">&#39;build&#39;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span> <span class="o">==</span> <span class="s">&quot;Not yet determined!&quot;</span><span class="p">:</span>
+            <span class="n">v_ints</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+            <span class="n">v_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">v_keys</span><span class="p">,</span> <span class="n">v_ints</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">v_parts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">)</span>
+                <span class="n">v_ints</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">v_parts</span><span class="p">]</span>
+                <span class="n">v_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">v_keys</span><span class="p">,</span> <span class="n">v_ints</span><span class="p">))</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">m</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="s">&quot;Unable to parse major, minor, revision, and build from server &quot;</span>
+                    <span class="s">&quot;version string: {}&quot;</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">format</span>
+                <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">VersionParseError</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">server_version</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">v_dict</span>
+</div>
+<div class="viewcode-block" id="Handler._platform_is_6_2"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._platform_is_6_2">[docs]</a>    <span class="k">def</span> <span class="nf">_platform_is_6_2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check to see if self.server_version_dict matches 6.2.xxx.xxx</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            * True if self.server_version_dict major == 6 and minor == 2</span>
+<span class="sd">            * False otherwise</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;server_version_dict&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_server_version</span><span class="p">()</span>
+
+        <span class="n">is6_2</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="c"># see if version is 6.2.xxx.xxx</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">server_version_dict</span><span class="p">[</span><span class="s">&#39;major&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">6</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version_dict</span><span class="p">[</span><span class="s">&#39;minor&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="c"># we will assume 6.2 if server_version is &quot;Unable to determine&quot;</span>
+            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="o">==</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">is6_2</span>
+</div>
+<div class="viewcode-block" id="Handler._version_support_check"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._version_support_check">[docs]</a>    <span class="k">def</span> <span class="nf">_version_support_check</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v_maps</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Checks that each of the version maps in v_maps is greater than or equal to</span>
+<span class="sd">        the current servers version</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        v_maps : list of dict</span>
+<span class="sd">            * each dict can have major, minor, build, revision as keys, the corresponding values will be checked against self.server_version_dict to see if they are greater or equal to those values</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            * True if all values in all v_maps are greater than or equal to all values in self.server_version_dict</span>
+<span class="sd">            * False otherwise</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;server_version_dict&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_server_version</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">v_map</span> <span class="ow">in</span> <span class="n">v_maps</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">v_map</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version_dict</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">return</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="Handler._check_export_format_support"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._check_export_format_support">[docs]</a>    <span class="k">def</span> <span class="nf">_check_export_format_support</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">export_format</span><span class="p">,</span> <span class="n">export_format_int</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Determines if the export format integer is supported in the server version&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">export_format_int</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">pytan</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">SSE_RESTRICT_MAP</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">restrict_maps</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">SSE_RESTRICT_MAP</span><span class="p">[</span><span class="n">export_format_int</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_version_support_check</span><span class="p">(</span><span class="n">restrict_maps</span><span class="p">):</span>
+            <span class="n">restrict_maps_txt</span> <span class="o">=</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">restrict_maps</span><span class="p">])</span>
+
+            <span class="n">m</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s">&quot;Server version {} does not support export format {!r}, &quot;</span>
+                <span class="s">&quot;server version must be equal to or greater than one of:</span><span class="se">\n</span><span class="s">{}&quot;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">format</span>
+
+            <span class="n">m</span> <span class="o">=</span> <span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">server_version</span><span class="p">,</span> <span class="n">export_format</span><span class="p">,</span> <span class="n">restrict_maps_txt</span><span class="p">)</span>
+
+            <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">UnsupportedVersionError</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+
+        <span class="k">return</span>
+</div>
+<div class="viewcode-block" id="Handler._resolve_sse_format"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._resolve_sse_format">[docs]</a>    <span class="k">def</span> <span class="nf">_resolve_sse_format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">export_format</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Resolves the export format the user supplied to an integer for the API&quot;&quot;&quot;</span>
+        <span class="n">export_format_int</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">pytan</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">SSE_FORMAT_MAP</span> <span class="k">if</span> <span class="n">export_format</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">export_format_int</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Unsupport export format {!r}, must be one of:</span><span class="se">\n</span><span class="s">{}&quot;</span><span class="o">.</span><span class="n">format</span>
+            <span class="n">ef_map_txt</span> <span class="o">=</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="p">[</span><span class="s">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s">&#39;{!r}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">y</span><span class="p">])</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">pytan</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">SSE_FORMAT_MAP</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HandlerError</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">export_format</span><span class="p">,</span> <span class="n">ef_map_txt</span><span class="p">))</span>
+
+        <span class="n">export_format_int</span> <span class="o">=</span> <span class="n">export_format_int</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;&#39;export_format resolved from &#39;{}&#39; to &#39;{}&#39;&quot;</span><span class="o">.</span><span class="n">format</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">export_format</span><span class="p">,</span> <span class="n">export_format_int</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_export_format_support</span><span class="p">(</span><span class="n">export_format</span><span class="p">,</span> <span class="n">export_format_int</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">export_format_int</span>
+</div>
+<div class="viewcode-block" id="Handler._check_sse_version"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._check_sse_version">[docs]</a>    <span class="k">def</span> <span class="nf">_check_sse_version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Validates that the server version supports server side export&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_platform_is_6_2</span><span class="p">():</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Server side export not supported in version: {} / {}&quot;</span><span class="o">.</span><span class="n">format</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">server_version</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version_dict</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">UnsupportedVersionError</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Handler._check_sse_crash_prevention"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._check_sse_crash_prevention">[docs]</a>    <span class="k">def</span> <span class="nf">_check_sse_crash_prevention</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Runs a number of methods used to prevent crashing the platform server when performing server side exports&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_sse_timing</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_sse_empty_rs</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Handler._check_sse_timing"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._check_sse_timing">[docs]</a>    <span class="k">def</span> <span class="nf">_check_sse_timing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Checks that the last server side export was at least 1 second ago if server version is less than any versions in pytan.constants.SSE_CRASH_MAP</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">last_get_rd_sse</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;last_get_rd_sse&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">last_get_rd_sse</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_version_support_check</span><span class="p">(</span><span class="n">pytan</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">SSE_CRASH_MAP</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">last_get_rd_sse</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+            <span class="k">return</span>
+
+        <span class="n">last_elapsed</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span> <span class="o">-</span> <span class="n">last_get_rd_sse</span>
+        <span class="k">if</span> <span class="n">last_elapsed</span><span class="o">.</span><span class="n">seconds</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;You must wait at least one second between server side export requests!&quot;</span><span class="o">.</span><span class="n">format</span>
+                <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ServerSideExportError</span><span class="p">(</span><span class="n">m</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_get_rd_sse</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Handler._check_sse_empty_rs"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._check_sse_empty_rs">[docs]</a>    <span class="k">def</span> <span class="nf">_check_sse_empty_rs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Checks if the server version is less than any versions in pytan.constants.SSE_CRASH_MAP, if so verifies that the result set is not empty</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_version_support_check</span><span class="p">(</span><span class="n">pytan</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">SSE_CRASH_MAP</span><span class="p">):</span>
+            <span class="k">return</span>
+
+        <span class="n">ri</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_result_into</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ri</span><span class="o">.</span><span class="n">row_count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;No rows available to perform a server side export with, result info: {}&quot;</span><span class="o">.</span><span class="n">format</span>
+            <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ServerSideExportError</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">ri</span><span class="p">))</span></div></div>
 </pre></div>
 
           </div>
@@ -2066,7 +2595,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Aug 07, 2015.
+      Last updated on Aug 27, 2015.
     </p>
   </div>
 
@@ -2087,7 +2616,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'2.0.0',
+            VERSION:'2.1.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

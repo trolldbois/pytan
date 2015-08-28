@@ -1,0 +1,434 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pytan.xml_clean &mdash; PyTan 2.1.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="PyTan 2.1.0 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../../index.html" class="fa fa-home"> PyTan</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">1. PyTan Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../introduction.html#description">1.1. Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../introduction.html#why-it-was-created">1.2. Why it was created</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../introduction.html#requirements">1.3. Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../introduction.html#tanium-versions-validated-against">1.4. Tanium Versions Validated Against</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../introduction.html#installation">1.5. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../introduction.html#usage">1.6. Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../introduction.html#directory-layout">1.7. Directory Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../introduction.html#other-references">1.8. Other References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../pytan.html">2. pytan package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.handler.html">2.1. pytan.handler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.exceptions.html">2.2. pytan.exceptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.sessions.html">2.3. pytan.sessions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.pollers.html">2.4. pytan.pollers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.constants.html">2.5. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.utils.html">2.6. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.xml_clean.html">2.7. pytan.xml_clean module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.unittest.html">2.8. pytan Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.functest.html">2.9. pytan Functional Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/pytan_examples.html">2.10. PyTan API examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../taniumpy.html">3. taniumpy package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../taniumpy.object_types.html">3.1. taniumpy.object_types package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../xmltodict.html">4. xmltodict module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../ddt.html">5. ddt module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../threaded_http.html">6. threaded_http module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../requests.html">7. requests package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../requests.html#requests-http-library">7.1. requests HTTP library</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">PyTan</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      
+    <li>pytan.xml_clean</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <h1>Source code for pytan.xml_clean</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/env python</span>
+<span class="c"># -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-</span>
+<span class="c"># ex: set tabstop=4</span>
+<span class="c"># Please do not change the two lines above. See PEP 8, PEP 263.</span>
+<span class="sd">&quot;&quot;&quot;This is a regex based XML cleaner that will replace unsupported characters&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="c"># disable python from creating .pyc files everywhere</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">dont_write_bytecode</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="n">mylog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;XMLCleaner&quot;</span><span class="p">)</span>
+
+<span class="n">XML_1_0_VALID_HEX</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[</span><span class="mh">0x0009</span><span class="p">],</span>  <span class="c"># TAB</span>
+    <span class="p">[</span><span class="mh">0x000A</span><span class="p">],</span>  <span class="c"># LINEFEED</span>
+    <span class="p">[</span><span class="mh">0x000D</span><span class="p">],</span>  <span class="c"># CARRIAGE RETURN</span>
+    <span class="p">[</span><span class="mh">0x0020</span><span class="p">,</span> <span class="mh">0xD7FF</span><span class="p">],</span>  <span class="c"># VALID CHARACTER RANGE 1</span>
+    <span class="p">[</span><span class="mh">0xE000</span><span class="p">,</span> <span class="mh">0xFFFD</span><span class="p">],</span>  <span class="c"># VALID CHARACTER RANGE 2</span>
+<span class="p">]</span>
+<span class="sd">&quot;&quot;&quot;Valid Unicode characters for XML documents:</span>
+<span class="sd">    (any Unicode character, excluding the surrogate blocks, FFFE, and FFFF)</span>
+<span class="sd">    #x9,</span>
+<span class="sd">    #xA,</span>
+<span class="sd">    #xD,</span>
+<span class="sd">    [#x20-#xD7FF],</span>
+<span class="sd">    [#xE000-#xFFFD],</span>
+<span class="sd">    [#x10000-#x10FFFF]</span>
+
+<span class="sd">Source: http://www.w3.org/TR/REC-xml/#NT-Char</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">XML_1_0_RESTRICTED_HEX</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[</span><span class="mh">0x007F</span><span class="p">,</span> <span class="mh">0x0084</span><span class="p">],</span>  <span class="c"># one C0 control character and all but one C1 control</span>
+    <span class="p">[</span><span class="mh">0x0086</span><span class="p">,</span> <span class="mh">0x009F</span><span class="p">],</span>  <span class="c"># one C0 control character and all but one C1 control</span>
+    <span class="p">[</span><span class="mh">0xFDD0</span><span class="p">,</span> <span class="mh">0xFDEF</span><span class="p">],</span>  <span class="c"># control characters/permanently assigned to non-characters</span>
+<span class="p">]</span>
+<span class="sd">&quot;&quot;&quot;Restricted/discouraged Unicode characters for XML documents:</span>
+<span class="sd">    [#x7F-#x84],</span>
+<span class="sd">    [#x86-#x9F],</span>
+<span class="sd">    [#xFDD0-#xFDEF],</span>
+<span class="sd">    [#x1FFFE-#x1FFFF],</span>
+<span class="sd">    [#x2FFFE-#x2FFFF],</span>
+<span class="sd">    [#x3FFFE-#x3FFFF],</span>
+<span class="sd">    [#x4FFFE-#x4FFFF],</span>
+<span class="sd">    [#x5FFFE-#x5FFFF],</span>
+<span class="sd">    [#x6FFFE-#x6FFFF],</span>
+<span class="sd">    [#x7FFFE-#x7FFFF],</span>
+<span class="sd">    [#x8FFFE-#x8FFFF],</span>
+<span class="sd">    [#x9FFFE-#x9FFFF],</span>
+<span class="sd">    [#xAFFFE-#xAFFFF],</span>
+<span class="sd">    [#xBFFFE-#xBFFFF],</span>
+<span class="sd">    [#xCFFFE-#xCFFFF],</span>
+<span class="sd">    [#xDFFFE-#xDFFFF],</span>
+<span class="sd">    [#xEFFFE-#xEFFFF],</span>
+<span class="sd">    [#xFFFFE-#xFFFFF],</span>
+<span class="sd">    [#x10FFFE-#x10FFFF]</span>
+
+<span class="sd">Source: http://www.w3.org/TR/REC-xml/#NT-Char</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c"># If this python build supports unicode ranges above 10000, add to the valid range</span>
+<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">maxunicode</span> <span class="o">&gt;</span> <span class="mh">0x10000</span><span class="p">:</span>
+    <span class="n">XML_1_0_VALID_HEX</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="mh">0x10000</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">maxunicode</span><span class="p">,</span> <span class="mh">0x10FFFF</span><span class="p">)))</span>
+
+<span class="c"># Add control characters and non-characters to the restricted range if this python</span>
+<span class="c"># build supports the applicable range</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">hex</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">17</span><span class="p">)]:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sys</span><span class="o">.</span><span class="n">maxunicode</span> <span class="o">&gt;=</span> <span class="nb">int</span><span class="p">(</span><span class="s">&#39;{}FFFF&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">continue</span>
+    <span class="n">XML_1_0_RESTRICTED_HEX</span><span class="o">.</span><span class="n">append</span><span class="p">([</span>
+        <span class="nb">int</span><span class="p">(</span><span class="s">&#39;{}FFFE&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="nb">int</span><span class="p">(</span><span class="s">&#39;{}FFFF&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">])</span>
+
+<span class="n">XML_1_0_VALID_UNI</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;-&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">unichr</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">x</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">XML_1_0_VALID_HEX</span><span class="p">]</span>
+<span class="n">INVALID_UNICODE_RAW_RE</span> <span class="o">=</span> <span class="s">ur&#39;[^{}]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">XML_1_0_VALID_UNI</span><span class="p">))</span>
+<span class="sd">&quot;&quot;&quot;The raw regex string to use when replacing invalid characters&quot;&quot;&quot;</span>
+
+<span class="n">INVALID_UNICODE_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">INVALID_UNICODE_RAW_RE</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">U</span><span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;The regex object to use when replacing invalid characters&quot;&quot;&quot;</span>
+
+<span class="n">XML_1_0_RESTRICTED_UNI</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;-&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">unichr</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">x</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">XML_1_0_RESTRICTED_HEX</span><span class="p">]</span>
+<span class="n">RESTRICTED_UNICODE_RAW_RE</span> <span class="o">=</span> <span class="s">ur&#39;[{}]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">XML_1_0_RESTRICTED_UNI</span><span class="p">))</span>
+<span class="sd">&quot;&quot;&quot;The raw regex string to use when replacing restricted characters&quot;&quot;&quot;</span>
+
+<span class="n">RESTRICTED_UNICODE_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">RESTRICTED_UNICODE_RAW_RE</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">U</span><span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;The regex object to use when replacing restricted characters&quot;&quot;&quot;</span>
+
+<span class="n">DEFAULT_REPLACEMENT</span> <span class="o">=</span> <span class="s">u&#39;</span><span class="se">\uFFFD</span><span class="s">&#39;</span>
+<span class="sd">&quot;&quot;&quot;The default character to use when replacing characters&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="replace_invalid_unicode"><a class="viewcode-back" href="../../pytan.xml_clean.html#pytan.xml_clean.replace_invalid_unicode">[docs]</a><span class="k">def</span> <span class="nf">replace_invalid_unicode</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">replacement</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Replaces invalid unicode characters with `replacement`</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    text : str</span>
+<span class="sd">        * str to clean</span>
+<span class="sd">    replacement : str, optional</span>
+<span class="sd">        * default: None</span>
+<span class="sd">        * if invalid characters found, they will be replaced with this</span>
+<span class="sd">        * if not supplied, will default to DEFAULT_REPLACEMENT</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str, cnt, RE : tuple</span>
+<span class="sd">        * str : the cleaned version of `text`</span>
+<span class="sd">        * cnt : the number of replacements that took place</span>
+<span class="sd">        * RE : the regex object that was used to do the replacements</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">replacement</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">replacement</span> <span class="o">=</span> <span class="n">DEFAULT_REPLACEMENT</span>
+    <span class="n">s</span><span class="p">,</span> <span class="n">cnt</span> <span class="o">=</span> <span class="n">INVALID_UNICODE_RE</span><span class="o">.</span><span class="n">subn</span><span class="p">(</span><span class="n">replacement</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">s</span><span class="p">,</span> <span class="n">cnt</span><span class="p">,</span> <span class="n">INVALID_UNICODE_RE</span>
+
+</div>
+<div class="viewcode-block" id="replace_restricted_unicode"><a class="viewcode-back" href="../../pytan.xml_clean.html#pytan.xml_clean.replace_restricted_unicode">[docs]</a><span class="k">def</span> <span class="nf">replace_restricted_unicode</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">replacement</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Replaces restricted unicode characters with `replacement`</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    text : str</span>
+<span class="sd">        * str to clean</span>
+<span class="sd">    replacement : str, optional</span>
+<span class="sd">        * default: None</span>
+<span class="sd">        * if restricted characters found, they will be replaced with this</span>
+<span class="sd">        * if not supplied, will default to DEFAULT_REPLACEMENT</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str, cnt, RE : tuple</span>
+<span class="sd">        * str : the cleaned version of `text`</span>
+<span class="sd">        * cnt : the number of replacements that took place</span>
+<span class="sd">        * RE : the regex object that was used to do the replacements</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">replacement</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">replacement</span> <span class="o">=</span> <span class="n">DEFAULT_REPLACEMENT</span>
+    <span class="n">s</span><span class="p">,</span> <span class="n">cnt</span> <span class="o">=</span> <span class="n">RESTRICTED_UNICODE_RE</span><span class="o">.</span><span class="n">subn</span><span class="p">(</span><span class="n">replacement</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">s</span><span class="p">,</span> <span class="n">cnt</span><span class="p">,</span> <span class="n">RESTRICTED_UNICODE_RE</span>
+
+</div>
+<div class="viewcode-block" id="xml_cleaner"><a class="viewcode-back" href="../../pytan.xml_clean.html#pytan.xml_clean.xml_cleaner">[docs]</a><span class="k">def</span> <span class="nf">xml_cleaner</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">clean_restricted</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">log_messages</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                <span class="n">show_bad_characters</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Removes invalid /restricted characters per XML 1.0 spec</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    s : str</span>
+<span class="sd">        * str to clean</span>
+<span class="sd">    encoding : str, optional</span>
+<span class="sd">        * default: &#39;utf-8&#39;</span>
+<span class="sd">        * encoding of `s`</span>
+<span class="sd">    clean_restricted : bool, optional</span>
+<span class="sd">        * default: True</span>
+<span class="sd">        * remove restricted characters from `s` or not</span>
+<span class="sd">    log_messages : bool, optional</span>
+<span class="sd">        * default: True</span>
+<span class="sd">        * log messages using python logging or not</span>
+<span class="sd">    show_bad_characters : bool, optional</span>
+<span class="sd">        * default: False</span>
+<span class="sd">        * log bad character matches or not</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        * the cleaned version of `s`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c"># if orig_str is not unicode, decode the string into unicode with encoding</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">encoding</span><span class="p">,</span> <span class="s">&#39;xmlcharrefreplace&#39;</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">log_messages</span><span class="p">:</span>
+                <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Falling back to latin1 for decoding, unable to decode as UTF-8!&quot;</span><span class="o">.</span><span class="n">format</span>
+                <span class="n">mylog</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">m</span><span class="p">())</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c"># if can&#39;t decode as encoding, fallback to latin1</span>
+                <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;latin1&#39;</span><span class="p">,</span> <span class="s">&#39;xmlcharrefreplace&#39;</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">log_messages</span><span class="p">:</span>
+                    <span class="n">m</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="s">&quot;Unable to decode as latin-1 or UTF-8, decoding document as UTF-8 and &quot;</span>
+                        <span class="s">&quot;ignoring errors&quot;</span>
+                    <span class="p">)</span><span class="o">.</span><span class="n">format</span>
+                    <span class="n">mylog</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">m</span><span class="p">())</span>
+                <span class="n">s</span> <span class="o">=</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s">&#39;ignore&#39;</span><span class="p">)</span>
+
+    <span class="c"># encode the string as utf-8</span>
+    <span class="n">pass1</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">,</span> <span class="s">&#39;xmlcharrefreplace&#39;</span><span class="p">)</span>
+
+    <span class="c"># decode the string from utf-8 into unicode</span>
+    <span class="n">pass2</span> <span class="o">=</span> <span class="n">pass1</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">,</span> <span class="s">&#39;xmlcharrefreplace&#39;</span><span class="p">)</span>
+
+    <span class="c"># replace any invalid unicode characters</span>
+    <span class="n">pass3</span><span class="p">,</span> <span class="n">pass3_cnt</span><span class="p">,</span> <span class="n">pass3_re</span> <span class="o">=</span> <span class="n">replace_invalid_unicode</span><span class="p">(</span><span class="n">pass2</span><span class="p">)</span>
+
+    <span class="c"># if any invalid characters found, print how many were replaced</span>
+    <span class="k">if</span> <span class="n">pass3_cnt</span> <span class="ow">and</span> <span class="n">log_messages</span><span class="p">:</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Replaced {} invalid characters that match regex {!r}&quot;</span><span class="o">.</span><span class="n">format</span>
+        <span class="n">mylog</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">pass3_cnt</span><span class="p">,</span> <span class="n">pass3_re</span><span class="o">.</span><span class="n">pattern</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">show_bad_characters</span> <span class="ow">and</span> <span class="n">log_messages</span><span class="p">:</span>
+            <span class="n">matches</span> <span class="o">=</span> <span class="n">pass3_re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pass2</span><span class="p">)</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Invalid characters found: {!r}&quot;</span><span class="o">.</span><span class="n">format</span>
+            <span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">matches</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">pass3_cnt</span> <span class="ow">and</span> <span class="n">log_messages</span><span class="p">:</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;No invalid characters found that match regex {!r}&quot;</span><span class="o">.</span><span class="n">format</span>
+        <span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">pass3_re</span><span class="o">.</span><span class="n">pattern</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">clean_restricted</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pass3</span>
+
+    <span class="c"># replace any restricted unicode characters</span>
+    <span class="n">pass4</span><span class="p">,</span> <span class="n">pass4_cnt</span><span class="p">,</span> <span class="n">pass4_re</span> <span class="o">=</span> <span class="n">replace_restricted_unicode</span><span class="p">(</span><span class="n">pass3</span><span class="p">)</span>
+
+    <span class="c"># if any restricted characters found, print how many were replaced</span>
+    <span class="k">if</span> <span class="n">pass4_cnt</span> <span class="ow">and</span> <span class="n">log_messages</span><span class="p">:</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s">&quot;Replaced {} restricted characters that match the regex {!r}&quot;</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">format</span>
+        <span class="n">mylog</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">pass4_cnt</span><span class="p">,</span> <span class="n">pass4_re</span><span class="o">.</span><span class="n">pattern</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">show_bad_characters</span> <span class="ow">and</span> <span class="n">log_messages</span><span class="p">:</span>
+            <span class="n">matches</span> <span class="o">=</span> <span class="n">pass4_re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pass3</span><span class="p">)</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Restricted characters found: {!r}&quot;</span><span class="o">.</span><span class="n">format</span>
+            <span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">matches</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">pass4_cnt</span> <span class="ow">and</span> <span class="n">log_messages</span><span class="p">:</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;No restricted characters found that match regex {!r}&quot;</span><span class="o">.</span><span class="n">format</span>
+        <span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">pass4_re</span><span class="o">.</span><span class="n">pattern</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">pass4</span></div>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Tanium.
+      Last updated on Aug 27, 2015.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'2.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

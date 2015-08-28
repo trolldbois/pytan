@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pytan.utils &mdash; PyTan 2.0.0 documentation</title>
+  <title>pytan.utils &mdash; PyTan 2.1.0 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="PyTan 2.0.0 documentation" href="../../index.html"/>
+    <link rel="top" title="PyTan 2.1.0 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -69,18 +69,20 @@
 <li class="toctree-l2"><a class="reference internal" href="../../introduction.html#installation">1.5. Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../introduction.html#usage">1.6. Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../introduction.html#directory-layout">1.7. Directory Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../introduction.html#other-references">1.8. Other References</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../pytan.html">2. pytan package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../examples/pytan_examples.html">2.1. PyTan API examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../pytan.handler.html">2.2. pytan.handler module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../pytan.exceptions.html">2.3. pytan.exceptions module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../pytan.sessions.html">2.4. pytan.sessions module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../pytan.pollers.html">2.5. pytan.pollers module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../pytan.constants.html">2.6. pytan.constants module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../pytan.utils.html">2.7. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.handler.html">2.1. pytan.handler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.exceptions.html">2.2. pytan.exceptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.sessions.html">2.3. pytan.sessions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.pollers.html">2.4. pytan.pollers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.constants.html">2.5. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.utils.html">2.6. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.xml_clean.html">2.7. pytan.xml_clean module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../pytan.unittest.html">2.8. pytan Unit Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../pytan.functest.html">2.9. pytan Functional Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/pytan_examples.html">2.10. PyTan API examples</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../taniumpy.html">3. taniumpy package</a><ul>
@@ -184,14 +186,14 @@
 <span class="n">DEBUG_OUTPUT</span> <span class="o">=</span> <span class="bp">False</span>
 
 
-<div class="viewcode-block" id="SplitStreamHandler"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.SplitStreamHandler">[docs]</a><span class="k">class</span> <span class="nc">SplitStreamHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Handler</span><span class="p">):</span>
+<div class="viewcode-block" id="SplitStreamHandler"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.SplitStreamHandler">[docs]</a><span class="k">class</span> <span class="nc">SplitStreamHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Handler</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Custom :class:`logging.Handler` class that sends all messages that are logging.INFO and below to STDOUT, and all messages that are logging.WARNING and above to STDERR</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">Handler</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-<div class="viewcode-block" id="SplitStreamHandler.emit"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.SplitStreamHandler.emit">[docs]</a>    <span class="k">def</span> <span class="nf">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+<div class="viewcode-block" id="SplitStreamHandler.emit"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.SplitStreamHandler.emit">[docs]</a>    <span class="k">def</span> <span class="nf">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">record</span><span class="o">.</span><span class="n">levelno</span> <span class="o">&lt;</span> <span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">:</span>
@@ -218,7 +220,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">handleError</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
 
 </div></div>
-<div class="viewcode-block" id="CustomArgFormat"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.CustomArgFormat">[docs]</a><span class="k">class</span> <span class="nc">CustomArgFormat</span><span class="p">(</span><span class="n">A1</span><span class="p">,</span> <span class="n">A2</span><span class="p">):</span>
+<div class="viewcode-block" id="CustomArgFormat"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.CustomArgFormat">[docs]</a><span class="k">class</span> <span class="nc">CustomArgFormat</span><span class="p">(</span><span class="n">A1</span><span class="p">,</span> <span class="n">A2</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Multiple inheritance Formatter class for :class:`argparse.ArgumentParser`.</span>
 
 <span class="sd">    If a :class:`argparse.ArgumentParser` class uses this as it&#39;s Formatter class, it will show the defaults for each argument in the `help` output</span>
@@ -226,7 +228,7 @@
     <span class="k">pass</span>
 
 </div>
-<div class="viewcode-block" id="CustomArgParse"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.CustomArgParse">[docs]</a><span class="k">class</span> <span class="nc">CustomArgParse</span><span class="p">(</span><span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">):</span>
+<div class="viewcode-block" id="CustomArgParse"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.CustomArgParse">[docs]</a><span class="k">class</span> <span class="nc">CustomArgParse</span><span class="p">(</span><span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Custom :class:`argparse.ArgumentParser` class which does a number of things:</span>
 
 <span class="sd">        * Uses :class:`pytan.utils.CustomArgFormat` as it&#39;s Formatter class, if none was passed in</span>
@@ -239,12 +241,12 @@
         <span class="c"># print kwargs</span>
         <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-<div class="viewcode-block" id="CustomArgParse.error"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.CustomArgParse.error">[docs]</a>    <span class="k">def</span> <span class="nf">error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+<div class="viewcode-block" id="CustomArgParse.error"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.CustomArgParse.error">[docs]</a>    <span class="k">def</span> <span class="nf">error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
         <span class="k">print</span><span class="p">(</span><span class="s">&#39;ERROR:{}:{}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pname</span><span class="p">,</span> <span class="n">message</span><span class="p">))</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="CustomArgParse.print_help"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.CustomArgParse.print_help">[docs]</a>    <span class="k">def</span> <span class="nf">print_help</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="CustomArgParse.print_help"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.CustomArgParse.print_help">[docs]</a>    <span class="k">def</span> <span class="nf">print_help</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">CustomArgParse</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">print_help</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">subparsers_actions</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">action</span> <span class="k">for</span> <span class="n">action</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_actions</span>
@@ -260,7 +262,7 @@
                 <span class="k">print</span><span class="p">(</span><span class="n">subparser</span><span class="o">.</span><span class="n">format_help</span><span class="p">())</span>
 
 </div></div>
-<div class="viewcode-block" id="setup_parser"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.setup_parser">[docs]</a><span class="k">def</span> <span class="nf">setup_parser</span><span class="p">(</span><span class="n">desc</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="setup_parser"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.setup_parser">[docs]</a><span class="k">def</span> <span class="nf">setup_parser</span><span class="p">(</span><span class="n">desc</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts that use :mod:`pytan`. This establishes the basic arguments that are needed by all such scripts, such as:</span>
 
 <span class="sd">        * --help</span>
@@ -336,7 +338,7 @@
     <span class="k">return</span> <span class="n">parser</span>
 
 </div>
-<div class="viewcode-block" id="setup_get_object_argparser"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.setup_get_object_argparser">[docs]</a><span class="k">def</span> <span class="nf">setup_get_object_argparser</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">doc</span><span class="p">):</span>
+<div class="viewcode-block" id="setup_get_object_argparser"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.setup_get_object_argparser">[docs]</a><span class="k">def</span> <span class="nf">setup_get_object_argparser</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">doc</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to get objects.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">parent_parser</span> <span class="o">=</span> <span class="n">setup_parser</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
@@ -378,7 +380,7 @@
     <span class="k">return</span> <span class="n">parser</span>
 
 </div>
-<div class="viewcode-block" id="setup_create_json_object_argparser"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.setup_create_json_object_argparser">[docs]</a><span class="k">def</span> <span class="nf">setup_create_json_object_argparser</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">doc</span><span class="p">):</span>
+<div class="viewcode-block" id="setup_create_json_object_argparser"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.setup_create_json_object_argparser">[docs]</a><span class="k">def</span> <span class="nf">setup_create_json_object_argparser</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">doc</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to create objects from json files.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -405,7 +407,7 @@
     <span class="k">return</span> <span class="n">parser</span>
 
 </div>
-<div class="viewcode-block" id="setup_delete_object_argparser"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.setup_delete_object_argparser">[docs]</a><span class="k">def</span> <span class="nf">setup_delete_object_argparser</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">doc</span><span class="p">):</span>
+<div class="viewcode-block" id="setup_delete_object_argparser"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.setup_delete_object_argparser">[docs]</a><span class="k">def</span> <span class="nf">setup_delete_object_argparser</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">doc</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to delete objects.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">parent_parser</span> <span class="o">=</span> <span class="n">setup_parser</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
@@ -435,7 +437,7 @@
     <span class="k">return</span> <span class="n">parser</span>
 
 </div>
-<div class="viewcode-block" id="setup_ask_saved_argparser"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.setup_ask_saved_argparser">[docs]</a><span class="k">def</span> <span class="nf">setup_ask_saved_argparser</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
+<div class="viewcode-block" id="setup_ask_saved_argparser"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.setup_ask_saved_argparser">[docs]</a><span class="k">def</span> <span class="nf">setup_ask_saved_argparser</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to ask saved questions.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -461,7 +463,7 @@
     <span class="k">return</span> <span class="n">parser</span>
 
 </div>
-<div class="viewcode-block" id="setup_stop_action_argparser"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.setup_stop_action_argparser">[docs]</a><span class="k">def</span> <span class="nf">setup_stop_action_argparser</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
+<div class="viewcode-block" id="setup_stop_action_argparser"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.setup_stop_action_argparser">[docs]</a><span class="k">def</span> <span class="nf">setup_stop_action_argparser</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to stop actions.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -485,7 +487,7 @@
     <span class="k">return</span> <span class="n">parser</span>
 
 </div>
-<div class="viewcode-block" id="setup_deploy_action_argparser"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.setup_deploy_action_argparser">[docs]</a><span class="k">def</span> <span class="nf">setup_deploy_action_argparser</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
+<div class="viewcode-block" id="setup_deploy_action_argparser"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.setup_deploy_action_argparser">[docs]</a><span class="k">def</span> <span class="nf">setup_deploy_action_argparser</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to deploy actions.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -613,7 +615,7 @@
     <span class="k">return</span> <span class="n">parser</span>
 
 </div>
-<div class="viewcode-block" id="setup_get_result_argparser"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.setup_get_result_argparser">[docs]</a><span class="k">def</span> <span class="nf">setup_get_result_argparser</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
+<div class="viewcode-block" id="setup_get_result_argparser"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.setup_get_result_argparser">[docs]</a><span class="k">def</span> <span class="nf">setup_get_result_argparser</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to get results for questions or actions.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -648,7 +650,7 @@
     <span class="k">return</span> <span class="n">parser</span>
 
 </div>
-<div class="viewcode-block" id="setup_ask_manual_argparser"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.setup_ask_manual_argparser">[docs]</a><span class="k">def</span> <span class="nf">setup_ask_manual_argparser</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
+<div class="viewcode-block" id="setup_ask_manual_argparser"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.setup_ask_manual_argparser">[docs]</a><span class="k">def</span> <span class="nf">setup_ask_manual_argparser</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to ask manual questions.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">parent_parser</span> <span class="o">=</span> <span class="n">setup_parser</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
@@ -738,7 +740,7 @@
     <span class="k">return</span> <span class="n">parser</span>
 
 </div>
-<div class="viewcode-block" id="add_ask_report_argparser"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.add_ask_report_argparser">[docs]</a><span class="k">def</span> <span class="nf">add_ask_report_argparser</span><span class="p">(</span><span class="n">parser</span><span class="p">):</span>
+<div class="viewcode-block" id="add_ask_report_argparser"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.add_ask_report_argparser">[docs]</a><span class="k">def</span> <span class="nf">add_ask_report_argparser</span><span class="p">(</span><span class="n">parser</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Method to extend a :class:`pytan.utils.CustomArgParse` class for command line scripts with arguments for scripts that need to supply export format subparsers for asking questions.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">add_report_file_options</span><span class="p">(</span><span class="n">parser</span><span class="p">)</span>
@@ -746,7 +748,7 @@
     <span class="n">subparsers</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_subparsers</span><span class="p">(</span>
         <span class="n">title</span><span class="o">=</span><span class="s">&#39;Export Formats&#39;</span><span class="p">,</span>
         <span class="n">dest</span><span class="o">=</span><span class="s">&#39;export_format&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Export Format choices&#39;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Export Format choices -- these MUST be at the END of the command line, and their corresponding options must follow them!&#39;</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">csv_subparser</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span>
@@ -845,7 +847,7 @@
     <span class="k">return</span> <span class="n">parser</span>
 
 </div>
-<div class="viewcode-block" id="add_report_file_options"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.add_report_file_options">[docs]</a><span class="k">def</span> <span class="nf">add_report_file_options</span><span class="p">(</span><span class="n">parser</span><span class="p">):</span>
+<div class="viewcode-block" id="add_report_file_options"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.add_report_file_options">[docs]</a><span class="k">def</span> <span class="nf">add_report_file_options</span><span class="p">(</span><span class="n">parser</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Method to extend a :class:`pytan.utils.CustomArgParse` class for command line scripts with arguments for scripts that need to supply export file and directory options.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -871,7 +873,7 @@
     <span class="k">return</span> <span class="n">parser</span>
 
 </div>
-<div class="viewcode-block" id="add_get_object_report_argparser"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.add_get_object_report_argparser">[docs]</a><span class="k">def</span> <span class="nf">add_get_object_report_argparser</span><span class="p">(</span><span class="n">parser</span><span class="p">):</span>
+<div class="viewcode-block" id="add_get_object_report_argparser"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.add_get_object_report_argparser">[docs]</a><span class="k">def</span> <span class="nf">add_get_object_report_argparser</span><span class="p">(</span><span class="n">parser</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Method to extend a :class:`pytan.utils.CustomArgParse` class for command line scripts with arguments for scripts that need to supply export format subparsers for getting objects.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">add_report_file_options</span><span class="p">(</span><span class="n">parser</span><span class="p">)</span>
@@ -879,7 +881,7 @@
     <span class="n">subparsers</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_subparsers</span><span class="p">(</span>
         <span class="n">title</span><span class="o">=</span><span class="s">&#39;Export Formats&#39;</span><span class="p">,</span>
         <span class="n">dest</span><span class="o">=</span><span class="s">&#39;export_format&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Export Format choices&#39;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Export Format choices -- these MUST be at the END of the command line, and their corresponding options must follow them!&#39;</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">csv_subparser</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span>
@@ -1002,24 +1004,24 @@
     <span class="k">return</span> <span class="n">parser</span>
 
 </div>
-<div class="viewcode-block" id="process_create_json_object_args"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.process_create_json_object_args">[docs]</a><span class="k">def</span> <span class="nf">process_create_json_object_args</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">all_args</span><span class="p">):</span>
+<div class="viewcode-block" id="process_create_json_object_args"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.process_create_json_object_args">[docs]</a><span class="k">def</span> <span class="nf">process_create_json_object_args</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">all_args</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Process command line args supplied by user for create json object</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    parser : :class:`argparse.ArgParse`</span>
-<span class="sd">        ArgParse object used to parse `all_args`</span>
+<span class="sd">        * ArgParse object used to parse `all_args`</span>
 <span class="sd">    handler : :class:`pytan.handler.Handler`</span>
-<span class="sd">        Instance of Handler created from command line args</span>
+<span class="sd">        * Instance of Handler created from command line args</span>
 <span class="sd">    obj : str</span>
-<span class="sd">        Object type for create json object</span>
+<span class="sd">        * Object type for create json object</span>
 <span class="sd">    all_args : dict</span>
-<span class="sd">        dict of args parsed from `parser`</span>
+<span class="sd">        * dict of args parsed from `parser`</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    response : :class:`taniumpy.object_types.base.BaseType`</span>
-<span class="sd">        response from :func:`pytan.handler.Handler.create_from_json`</span>
+<span class="sd">        * response from :func:`pytan.handler.Handler.create_from_json`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c"># put our query args into their own dict and remove them from all_args</span>
     <span class="n">obj_grp_names</span> <span class="o">=</span> <span class="p">[</span>
@@ -1040,24 +1042,24 @@
     <span class="k">return</span> <span class="n">response</span>
 
 </div>
-<div class="viewcode-block" id="process_delete_object_args"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.process_delete_object_args">[docs]</a><span class="k">def</span> <span class="nf">process_delete_object_args</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">all_args</span><span class="p">):</span>
+<div class="viewcode-block" id="process_delete_object_args"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.process_delete_object_args">[docs]</a><span class="k">def</span> <span class="nf">process_delete_object_args</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">all_args</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Process command line args supplied by user for delete object</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    parser : :class:`argparse.ArgParse`</span>
-<span class="sd">        ArgParse object used to parse `all_args`</span>
+<span class="sd">        * ArgParse object used to parse `all_args`</span>
 <span class="sd">    handler : :class:`pytan.handler.Handler`</span>
-<span class="sd">        Instance of Handler created from command line args</span>
+<span class="sd">        * Instance of Handler created from command line args</span>
 <span class="sd">    obj : str</span>
-<span class="sd">        Object type for delete object</span>
+<span class="sd">        * Object type for delete object</span>
 <span class="sd">    all_args : dict</span>
-<span class="sd">        dict of args parsed from `parser`</span>
+<span class="sd">        * dict of args parsed from `parser`</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    response : :class:`taniumpy.object_types.base.BaseType`</span>
-<span class="sd">        response from :func:`pytan.handler.Handler.delete`</span>
+<span class="sd">        * response from :func:`pytan.handler.Handler.delete`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c"># put our query args into their own dict and remove them from all_args</span>
     <span class="n">obj_grp_names</span> <span class="o">=</span> <span class="p">[</span>
@@ -1075,24 +1077,24 @@
     <span class="k">return</span> <span class="n">response</span>
 
 </div>
-<div class="viewcode-block" id="process_get_object_args"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.process_get_object_args">[docs]</a><span class="k">def</span> <span class="nf">process_get_object_args</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">all_args</span><span class="p">):</span>
+<div class="viewcode-block" id="process_get_object_args"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.process_get_object_args">[docs]</a><span class="k">def</span> <span class="nf">process_get_object_args</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">all_args</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Process command line args supplied by user for get object</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    parser : :class:`argparse.ArgParse`</span>
-<span class="sd">        ArgParse object used to parse `all_args`</span>
+<span class="sd">        * ArgParse object used to parse `all_args`</span>
 <span class="sd">    handler : :class:`pytan.handler.Handler`</span>
-<span class="sd">        Instance of Handler created from command line args</span>
+<span class="sd">        * Instance of Handler created from command line args</span>
 <span class="sd">    obj : str</span>
-<span class="sd">        Object type for get object</span>
+<span class="sd">        * Object type for get object</span>
 <span class="sd">    all_args : dict</span>
-<span class="sd">        dict of args parsed from `parser`</span>
+<span class="sd">        * dict of args parsed from `parser`</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    response : :class:`taniumpy.object_types.base.BaseType`</span>
-<span class="sd">        response from :func:`pytan.handler.Handler.get`</span>
+<span class="sd">        * response from :func:`pytan.handler.Handler.get`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c"># put our query args into their own dict and remove them from all_args</span>
     <span class="n">obj_grp_names</span> <span class="o">=</span> <span class="p">[</span>
@@ -1118,59 +1120,59 @@
     <span class="k">return</span> <span class="n">response</span>
 
 </div>
-<div class="viewcode-block" id="get_grp_opts"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.get_grp_opts">[docs]</a><span class="k">def</span> <span class="nf">get_grp_opts</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">grp_names</span><span class="p">):</span>
+<div class="viewcode-block" id="get_grp_opts"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.get_grp_opts">[docs]</a><span class="k">def</span> <span class="nf">get_grp_opts</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">grp_names</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Used to get arguments in `parser` that match argument group names in `grp_names`</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    parser : :class:`argparse.ArgParse`</span>
-<span class="sd">        ArgParse object</span>
+<span class="sd">        * ArgParse object</span>
 <span class="sd">    grp_names : list of str</span>
-<span class="sd">        list of str of argument group names to get arguments for</span>
+<span class="sd">        * list of str of argument group names to get arguments for</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    grp_opts : list of str</span>
-<span class="sd">        list of arguments gathered from argument group names in `grp_names`</span>
+<span class="sd">        * list of arguments gathered from argument group names in `grp_names`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">action_grps</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">parser</span><span class="o">.</span><span class="n">_action_groups</span> <span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">title</span> <span class="ow">in</span> <span class="n">grp_names</span><span class="p">]</span>
     <span class="n">grp_opts</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">dest</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">action_grps</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">b</span><span class="o">.</span><span class="n">_group_actions</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">grp_opts</span>
 
 </div>
-<div class="viewcode-block" id="is_list"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.is_list">[docs]</a><span class="k">def</span> <span class="nf">is_list</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
+<div class="viewcode-block" id="is_list"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.is_list">[docs]</a><span class="k">def</span> <span class="nf">is_list</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;returns True if `l` is a list, False if not&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">]</span>
 
 </div>
-<div class="viewcode-block" id="is_str"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.is_str">[docs]</a><span class="k">def</span> <span class="nf">is_str</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
+<div class="viewcode-block" id="is_str"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.is_str">[docs]</a><span class="k">def</span> <span class="nf">is_str</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;returns True if `l` is a string, False if not&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">unicode</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
 
 </div>
-<div class="viewcode-block" id="is_dict"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.is_dict">[docs]</a><span class="k">def</span> <span class="nf">is_dict</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
+<div class="viewcode-block" id="is_dict"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.is_dict">[docs]</a><span class="k">def</span> <span class="nf">is_dict</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;returns True if `l` is a dictionary, False if not&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="n">OrderedDict</span><span class="p">]</span>
 
 </div>
-<div class="viewcode-block" id="is_num"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.is_num">[docs]</a><span class="k">def</span> <span class="nf">is_num</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
+<div class="viewcode-block" id="is_num"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.is_num">[docs]</a><span class="k">def</span> <span class="nf">is_num</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;returns True if `l` is a number, False if not&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">long</span><span class="p">]</span>
 
 </div>
-<div class="viewcode-block" id="version_check"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.version_check">[docs]</a><span class="k">def</span> <span class="nf">version_check</span><span class="p">(</span><span class="n">reqver</span><span class="p">):</span>
+<div class="viewcode-block" id="version_check"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.version_check">[docs]</a><span class="k">def</span> <span class="nf">version_check</span><span class="p">(</span><span class="n">reqver</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Allows scripts using :mod:`pytan` to validate the version of the script</span>
 <span class="sd">    aginst the version of :mod:`pytan`</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    reqver : str</span>
-<span class="sd">        string containing version number to check against :exc:`Exception`</span>
+<span class="sd">        * string containing version number to check against :exc:`Exception`</span>
 
 <span class="sd">    Raises</span>
 <span class="sd">    ------</span>
 <span class="sd">    VersionMismatchError : :exc:`Exception`</span>
-<span class="sd">        if :data:`pytan.__version__` is not greater or equal to `reqver`</span>
+<span class="sd">        * if :data:`pytan.__version__` is not greater or equal to `reqver`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">log_tpl</span> <span class="o">=</span> <span class="p">(</span>
         <span class="s">&quot;{}: {} version {}, required {}&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span>
@@ -1183,29 +1185,29 @@
     <span class="k">return</span> <span class="bp">True</span>
 
 </div>
-<div class="viewcode-block" id="jsonify"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.jsonify">[docs]</a><span class="k">def</span> <span class="nf">jsonify</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+<div class="viewcode-block" id="jsonify"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.jsonify">[docs]</a><span class="k">def</span> <span class="nf">jsonify</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Turns python object `v` into a pretty printed JSON string</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    v : object</span>
-<span class="sd">        python object to convert to JSON</span>
+<span class="sd">        * python object to convert to JSON</span>
 
 <span class="sd">    indent : int, 2</span>
-<span class="sd">        number of spaces to indent JSON string when pretty printing</span>
+<span class="sd">        * number of spaces to indent JSON string when pretty printing</span>
 
 <span class="sd">    sort_keys : bool, True</span>
-<span class="sd">        sort keys of JSON string when pretty printing</span>
+<span class="sd">        * sort keys of JSON string when pretty printing</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    str :</span>
-<span class="sd">        JSON pretty printed string</span>
+<span class="sd">        * JSON pretty printed string</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="n">indent</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="n">sort_keys</span><span class="p">)</span>
 
 </div>
-<div class="viewcode-block" id="get_now"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.get_now">[docs]</a><span class="k">def</span> <span class="nf">get_now</span><span class="p">():</span>
+<div class="viewcode-block" id="get_now"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.get_now">[docs]</a><span class="k">def</span> <span class="nf">get_now</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Get current time in human friendly format</span>
 
 <span class="sd">    Returns</span>
@@ -1216,40 +1218,40 @@
     <span class="k">return</span> <span class="n">human_time</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">())</span>
 
 </div>
-<div class="viewcode-block" id="human_time"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.human_time">[docs]</a><span class="k">def</span> <span class="nf">human_time</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">tformat</span><span class="o">=</span><span class="s">&#39;%Y_%m_</span><span class="si">%d</span><span class="s">-%H_%M_%S-%Z&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="human_time"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.human_time">[docs]</a><span class="k">def</span> <span class="nf">human_time</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">tformat</span><span class="o">=</span><span class="s">&#39;%Y_%m_</span><span class="si">%d</span><span class="s">-%H_%M_%S-%Z&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Get time in human friendly format</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    t : int, float, time</span>
-<span class="sd">        either a unix epoch or struct_time object to convert to string</span>
+<span class="sd">        * either a unix epoch or struct_time object to convert to string</span>
 <span class="sd">    tformat : str, optional</span>
-<span class="sd">        format of string to convert time to</span>
+<span class="sd">        * format of string to convert time to</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    str :</span>
-<span class="sd">        `t` converted to str</span>
+<span class="sd">        * `t` converted to str</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">is_num</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
         <span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">tformat</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
 
 </div>
-<div class="viewcode-block" id="seconds_from_now"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.seconds_from_now">[docs]</a><span class="k">def</span> <span class="nf">seconds_from_now</span><span class="p">(</span><span class="n">secs</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="s">&#39;utc&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="seconds_from_now"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.seconds_from_now">[docs]</a><span class="k">def</span> <span class="nf">seconds_from_now</span><span class="p">(</span><span class="n">secs</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="s">&#39;utc&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Get time in Tanium SOAP API format `secs` from now</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    secs : int</span>
-<span class="sd">        seconds from now to get time str</span>
+<span class="sd">        * seconds from now to get time str</span>
 <span class="sd">    tz : str, optional</span>
-<span class="sd">        time zone to return string in, default is &#39;utc&#39; - supplying anything else will supply local time</span>
+<span class="sd">        * time zone to return string in, default is &#39;utc&#39; - supplying anything else will supply local time</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    str :</span>
-<span class="sd">        time `secs` from now in Tanium SOAP API format</span>
+<span class="sd">        * time `secs` from now in Tanium SOAP API format</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">tz</span> <span class="o">==</span> <span class="s">&#39;utc&#39;</span><span class="p">:</span>
         <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
@@ -1260,54 +1262,54 @@
     <span class="k">return</span> <span class="n">from_now</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;%Y-%m-</span><span class="si">%d</span><span class="s">T%H:%M:%S&#39;</span><span class="p">)</span>
 
 </div>
-<div class="viewcode-block" id="timestr_to_datetime"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.timestr_to_datetime">[docs]</a><span class="k">def</span> <span class="nf">timestr_to_datetime</span><span class="p">(</span><span class="n">timestr</span><span class="p">):</span>
+<div class="viewcode-block" id="timestr_to_datetime"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.timestr_to_datetime">[docs]</a><span class="k">def</span> <span class="nf">timestr_to_datetime</span><span class="p">(</span><span class="n">timestr</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Get a datetime.datetime object for `timestr`</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    timestr : str</span>
-<span class="sd">        date &amp; time in taniums format</span>
+<span class="sd">        * date &amp; time in taniums format</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    datetime.datetime</span>
-<span class="sd">        the datetime object for the timestr</span>
+<span class="sd">        * the datetime object for the timestr</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">timestr</span><span class="p">,</span> <span class="n">pytan</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">TIME_FORMAT</span><span class="p">)</span>
 
 </div>
-<div class="viewcode-block" id="datetime_to_timestr"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.datetime_to_timestr">[docs]</a><span class="k">def</span> <span class="nf">datetime_to_timestr</span><span class="p">(</span><span class="n">dt</span><span class="p">):</span>
+<div class="viewcode-block" id="datetime_to_timestr"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.datetime_to_timestr">[docs]</a><span class="k">def</span> <span class="nf">datetime_to_timestr</span><span class="p">(</span><span class="n">dt</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Get a timestr for `dt`</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    dt : datetime.datetime</span>
-<span class="sd">        datetime object</span>
+<span class="sd">        * datetime object</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    timestr: str</span>
-<span class="sd">        the timestr for `dt` in taniums format</span>
+<span class="sd">        * the timestr for `dt` in taniums format</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">pytan</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">TIME_FORMAT</span><span class="p">)</span>
 
 </div>
-<div class="viewcode-block" id="port_check"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.port_check">[docs]</a><span class="k">def</span> <span class="nf">port_check</span><span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<div class="viewcode-block" id="port_check"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.port_check">[docs]</a><span class="k">def</span> <span class="nf">port_check</span><span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Check if `address`:`port` can be reached within `timeout`</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    address : str</span>
-<span class="sd">        hostname/ip address to check `port` on</span>
+<span class="sd">        * hostname/ip address to check `port` on</span>
 <span class="sd">    port : int</span>
-<span class="sd">        port to check on `address`</span>
+<span class="sd">        * port to check on `address`</span>
 <span class="sd">    timeout : int, optional</span>
-<span class="sd">        timeout after N seconds of not being able to connect</span>
+<span class="sd">        * timeout after N seconds of not being able to connect</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    :mod:`socket` or False :</span>
-<span class="sd">        if connection succeeds, the socket object is returned, else False is returned</span>
+<span class="sd">        * if connection succeeds, the socket object is returned, else False is returned</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">socket</span><span class="o">.</span><span class="n">create_connection</span><span class="p">((</span><span class="n">address</span><span class="p">,</span> <span class="n">port</span><span class="p">),</span> <span class="n">timeout</span><span class="p">)</span>
@@ -1315,21 +1317,20 @@
         <span class="k">return</span> <span class="bp">False</span>
 
 </div>
-<div class="viewcode-block" id="test_app_port"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.test_app_port">[docs]</a><span class="k">def</span> <span class="nf">test_app_port</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">):</span>
+<div class="viewcode-block" id="test_app_port"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.test_app_port">[docs]</a><span class="k">def</span> <span class="nf">test_app_port</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Validates that `host`:`port` can be reached using :func:`port_check`</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    host : str</span>
-<span class="sd">        hostname/ip address to check `port` on</span>
+<span class="sd">        * hostname/ip address to check `port` on</span>
 <span class="sd">    port : int</span>
-<span class="sd">        port to check on `host`</span>
+<span class="sd">        * port to check on `host`</span>
 
 <span class="sd">    Raises</span>
 <span class="sd">    ------</span>
 <span class="sd">    pytan.exceptions.HandlerError : :exc:`pytan.exceptions.HandlerError`</span>
-<span class="sd">        if `host`:`port` can not be reached</span>
-
+<span class="sd">        * if `host`:`port` can not be reached</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">chk_tpl</span> <span class="o">=</span> <span class="s">&quot;Port test to {}:{} {}&quot;</span><span class="o">.</span><span class="n">format</span>
     <span class="k">if</span> <span class="n">port_check</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">):</span>
@@ -1338,25 +1339,25 @@
         <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HandlerError</span><span class="p">(</span><span class="n">chk_tpl</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="s">&quot;FAILURE&quot;</span><span class="p">))</span>
 
 </div>
-<div class="viewcode-block" id="spew"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.spew">[docs]</a><span class="k">def</span> <span class="nf">spew</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+<div class="viewcode-block" id="spew"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.spew">[docs]</a><span class="k">def</span> <span class="nf">spew</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Prints a string based on DEBUG_OUTPUT bool</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    t : str</span>
-<span class="sd">        string to debug print</span>
+<span class="sd">        * string to debug print</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">DEBUG_OUTPUT</span><span class="p">:</span>
         <span class="k">print</span> <span class="s">&quot;DEBUG::{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
 
 </div>
-<div class="viewcode-block" id="remove_logging_handler"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.remove_logging_handler">[docs]</a><span class="k">def</span> <span class="nf">remove_logging_handler</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;all&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="remove_logging_handler"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.remove_logging_handler">[docs]</a><span class="k">def</span> <span class="nf">remove_logging_handler</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;all&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Removes a logging handler</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    name : str</span>
-<span class="sd">        name of logging handler to remove. if name == &#39;all&#39; then all logging handlers are removed</span>
+<span class="sd">        * name of logging handler to remove. if name == &#39;all&#39; then all logging handlers are removed</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">get_all_loggers</span><span class="p">()</span><span class="o">.</span><span class="n">iteritems</span><span class="p">()):</span>
         <span class="k">for</span> <span class="n">handler</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">handlers</span><span class="p">:</span>
@@ -1368,7 +1369,7 @@
                 <span class="n">v</span><span class="o">.</span><span class="n">removeHandler</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
 
 </div>
-<div class="viewcode-block" id="setup_console_logging"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.setup_console_logging">[docs]</a><span class="k">def</span> <span class="nf">setup_console_logging</span><span class="p">(</span><span class="n">gmt_tz</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+<div class="viewcode-block" id="setup_console_logging"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.setup_console_logging">[docs]</a><span class="k">def</span> <span class="nf">setup_console_logging</span><span class="p">(</span><span class="n">gmt_tz</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Creates a console logging handler using :class:`SplitStreamHandler`&quot;&quot;&quot;</span>
 
     <span class="n">ch_name</span> <span class="o">=</span> <span class="s">&#39;console&#39;</span>
@@ -1390,7 +1391,7 @@
         <span class="n">v</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
 
 </div>
-<div class="viewcode-block" id="change_console_format"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.change_console_format">[docs]</a><span class="k">def</span> <span class="nf">change_console_format</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="change_console_format"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.change_console_format">[docs]</a><span class="k">def</span> <span class="nf">change_console_format</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Changes the logging format for console handler to :data:`pytan.constants.DEBUG_FORMAT` or :data:`pytan.constants.INFO_FORMAT`</span>
 
 <span class="sd">    Parameters</span>
@@ -1408,13 +1409,13 @@
                     <span class="n">handler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="n">pytan</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">INFO_FORMAT</span><span class="p">))</span>
 
 </div>
-<div class="viewcode-block" id="set_log_levels"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.set_log_levels">[docs]</a><span class="k">def</span> <span class="nf">set_log_levels</span><span class="p">(</span><span class="n">loglevel</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="set_log_levels"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.set_log_levels">[docs]</a><span class="k">def</span> <span class="nf">set_log_levels</span><span class="p">(</span><span class="n">loglevel</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Enables loggers based on loglevel and :data:`pytan.constants.LOG_LEVEL_MAPS`</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    loglevel : int, optional</span>
-<span class="sd">        loglevel to match against each item in :data:`pytan.constants.LOG_LEVEL_MAPS` - each item that is greater than or equal to loglevel will have the according loggers set to their respective levels identified there-in.</span>
+<span class="sd">        * loglevel to match against each item in :data:`pytan.constants.LOG_LEVEL_MAPS` - each item that is greater than or equal to loglevel will have the according loggers set to their respective levels identified there-in.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">loglevel</span> <span class="o">&gt;=</span> <span class="mi">20</span><span class="p">:</span>
         <span class="n">set_all_loglevels</span><span class="p">(</span><span class="s">&#39;DEBUG&#39;</span><span class="p">)</span>
@@ -1432,7 +1433,7 @@
                 <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">lname</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">logging</span><span class="p">,</span> <span class="n">llevel</span><span class="p">))</span>
 
 </div>
-<div class="viewcode-block" id="print_log_levels"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.print_log_levels">[docs]</a><span class="k">def</span> <span class="nf">print_log_levels</span><span class="p">():</span>
+<div class="viewcode-block" id="print_log_levels"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.print_log_levels">[docs]</a><span class="k">def</span> <span class="nf">print_log_levels</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Prints info about each loglevel from :data:`pytan.constants.LOG_LEVEL_MAPS`&quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">logmap</span> <span class="ow">in</span> <span class="n">pytan</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">LOG_LEVEL_MAPS</span><span class="p">:</span>
         <span class="k">print</span> <span class="s">&quot;Logging level: {} - Description: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">logmap</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">logmap</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
@@ -1444,7 +1445,7 @@
             <span class="k">print</span> <span class="s">&quot;</span><span class="se">\t</span><span class="s">Logger {!r} will show {} and above&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lname</span><span class="p">,</span> <span class="n">llevel</span><span class="p">)</span>
 
 </div>
-<div class="viewcode-block" id="set_all_loglevels"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.set_all_loglevels">[docs]</a><span class="k">def</span> <span class="nf">set_all_loglevels</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s">&#39;DEBUG&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="set_all_loglevels"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.set_all_loglevels">[docs]</a><span class="k">def</span> <span class="nf">set_all_loglevels</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s">&#39;DEBUG&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Sets all loggers that the logging system knows about to a given logger level&quot;&quot;&quot;</span>
     <span class="n">my_loggers</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">pytan</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">LOG_LEVEL_MAPS</span> <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
     <span class="n">my_loggers</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="n">my_loggers</span><span class="p">)))))</span>
@@ -1458,7 +1459,8 @@
         <span class="n">v</span><span class="o">.</span><span class="n">propagate</span> <span class="o">=</span> <span class="bp">False</span>
 
 </div>
-<div class="viewcode-block" id="get_all_loggers"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.get_all_loggers">[docs]</a><span class="k">def</span> <span class="nf">get_all_loggers</span><span class="p">():</span>
+<div class="viewcode-block" id="get_all_loggers"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.get_all_loggers">[docs]</a><span class="k">def</span> <span class="nf">get_all_loggers</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Gets all loggers currently known to pythons logging system that exist in :data:`pytan.constants.LOG_LEVEL_MAPS`&quot;&quot;&quot;</span>
     <span class="n">logger_dict</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">loggerDict</span>
     <span class="n">all_loggers</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">logger_dict</span><span class="o">.</span><span class="n">iteritems</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span><span class="p">)}</span>
     <span class="n">all_loggers</span><span class="p">[</span><span class="s">&#39;root&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
@@ -1468,20 +1470,19 @@
             <span class="n">all_loggers</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">all_loggers</span>
 
-
-<span class="c"># issue #6</span></div>
-<div class="viewcode-block" id="load_taniumpy_from_json"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.load_taniumpy_from_json">[docs]</a><span class="k">def</span> <span class="nf">load_taniumpy_from_json</span><span class="p">(</span><span class="n">json_file</span><span class="p">):</span>
+</div>
+<div class="viewcode-block" id="load_taniumpy_from_json"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.load_taniumpy_from_json">[docs]</a><span class="k">def</span> <span class="nf">load_taniumpy_from_json</span><span class="p">(</span><span class="n">json_file</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Opens a json file and parses it into an taniumpy object</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    json_file : str</span>
-<span class="sd">        path to JSON file that describes an API object</span>
+<span class="sd">        * path to JSON file that describes an API object</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    obj : :class:`taniumpy.object_types.base.BaseType`</span>
-<span class="sd">        TaniumPy object converted from json file</span>
+<span class="sd">        * TaniumPy object converted from json file</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">fh</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span>
@@ -1501,7 +1502,6 @@
         <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Unable to parse json_file {!r}, {}</span><span class="se">\n</span><span class="s">{}&quot;</span><span class="o">.</span><span class="n">format</span>
         <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HandlerError</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">json_file</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">howto_m</span><span class="p">))</span>
 
-    <span class="c"># issue #6</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">fh</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
     <span class="k">except</span><span class="p">:</span>
@@ -1521,10 +1521,20 @@
         <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HandlerError</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">json_file</span><span class="p">,</span> <span class="n">json_dict</span><span class="p">[</span><span class="s">&#39;_type&#39;</span><span class="p">],</span> <span class="n">e</span><span class="p">,</span> <span class="n">howto_m</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">obj</span>
 
+</div>
+<div class="viewcode-block" id="load_param_json_file"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.load_param_json_file">[docs]</a><span class="k">def</span> <span class="nf">load_param_json_file</span><span class="p">(</span><span class="n">parameters_json_file</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Opens a json file and sanity checks it for use as a parameters element for a taniumpy object</span>
 
-<span class="c"># issue #6</span></div>
-<div class="viewcode-block" id="load_param_json_file"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.load_param_json_file">[docs]</a><span class="k">def</span> <span class="nf">load_param_json_file</span><span class="p">(</span><span class="n">parameters_json_file</span><span class="p">):</span>
-    <span class="c"># issue #6</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parameters_json_file : str</span>
+<span class="sd">        * path to JSON file that describes an API object</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    obj</span>
+<span class="sd">        * contents of parameters_json_file de-serialized</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">pf</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">parameters_json_file</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
@@ -1574,23 +1584,23 @@
     <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">pd</span><span class="p">)</span>
 
 </div>
-<div class="viewcode-block" id="dehumanize_sensors"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.dehumanize_sensors">[docs]</a><span class="k">def</span> <span class="nf">dehumanize_sensors</span><span class="p">(</span><span class="n">sensors</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s">&#39;sensors&#39;</span><span class="p">,</span> <span class="n">empty_ok</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+<div class="viewcode-block" id="dehumanize_sensors"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.dehumanize_sensors">[docs]</a><span class="k">def</span> <span class="nf">dehumanize_sensors</span><span class="p">(</span><span class="n">sensors</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s">&#39;sensors&#39;</span><span class="p">,</span> <span class="n">empty_ok</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Turns a sensors str or list of str into a sensor definition</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    sensors : str, list of str</span>
-<span class="sd">        A str or list of str that describes a sensor(s) and optionally a selector, parameters, filter, and/or options</span>
+<span class="sd">        * A str or list of str that describes a sensor(s) and optionally a selector, parameters, filter, and/or options</span>
 <span class="sd">    key : str, optional</span>
-<span class="sd">        Name of key that user should have provided `sensors` as</span>
+<span class="sd">        * Name of key that user should have provided `sensors` as</span>
 <span class="sd">    empty_ok : bool, optional</span>
-<span class="sd">        False: `sensors` is not allowed to be empty, throw :exc:`pytan.exceptions.HumanParserError` if it is empty</span>
-<span class="sd">        True: `sensors` is allowed to be empty</span>
+<span class="sd">        * False: `sensors` is not allowed to be empty, throw :exc:`pytan.exceptions.HumanParserError` if it is empty</span>
+<span class="sd">        * True: `sensors` is allowed to be empty</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    sensor_defs : list of dict</span>
-<span class="sd">        list of dict parsed from `sensors`</span>
+<span class="sd">        * list of dict parsed from `sensors`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">([</span><span class="n">is_list</span><span class="p">(</span><span class="n">sensors</span><span class="p">),</span> <span class="n">is_str</span><span class="p">(</span><span class="n">sensors</span><span class="p">)]):</span>
         <span class="n">err</span> <span class="o">=</span> <span class="s">&quot;A string or list of strings must be supplied as &#39;{0}&#39;!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
@@ -1628,18 +1638,18 @@
     <span class="k">return</span> <span class="n">sensor_defs</span>
 
 </div>
-<div class="viewcode-block" id="dehumanize_package"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.dehumanize_package">[docs]</a><span class="k">def</span> <span class="nf">dehumanize_package</span><span class="p">(</span><span class="n">package</span><span class="p">):</span>
+<div class="viewcode-block" id="dehumanize_package"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.dehumanize_package">[docs]</a><span class="k">def</span> <span class="nf">dehumanize_package</span><span class="p">(</span><span class="n">package</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Turns a package str into a package definition</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    package : str</span>
-<span class="sd">        A str that describes a package and optionally a selector and/or parameters</span>
+<span class="sd">        * A str that describes a package and optionally a selector and/or parameters</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    package_def : dict</span>
-<span class="sd">        dict parsed from `sensors`</span>
+<span class="sd">        * dict parsed from `sensors`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">is_str</span><span class="p">(</span><span class="n">package</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">package</span><span class="p">:</span>
         <span class="n">err</span> <span class="o">=</span> <span class="s">&quot;{!r} must be a string supplied as &#39;package&#39;&quot;</span><span class="o">.</span><span class="n">format</span>
@@ -1656,18 +1666,18 @@
     <span class="k">return</span> <span class="n">package_def</span>
 
 </div>
-<div class="viewcode-block" id="dehumanize_question_filters"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.dehumanize_question_filters">[docs]</a><span class="k">def</span> <span class="nf">dehumanize_question_filters</span><span class="p">(</span><span class="n">question_filters</span><span class="p">):</span>
+<div class="viewcode-block" id="dehumanize_question_filters"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.dehumanize_question_filters">[docs]</a><span class="k">def</span> <span class="nf">dehumanize_question_filters</span><span class="p">(</span><span class="n">question_filters</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Turns a question_filters str or list of str into a question filter definition</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    question_filters : str, list of str</span>
-<span class="sd">        A str or list of str that describes a sensor for a question filter(s) and optionally a selector and/or filter</span>
+<span class="sd">        * A str or list of str that describes a sensor for a question filter(s) and optionally a selector and/or filter</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    question_filter_defs : list of dict</span>
-<span class="sd">        list of dict parsed from `question_filters`</span>
+<span class="sd">        * list of dict parsed from `question_filters`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">question_filters</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">[]</span>
@@ -1698,18 +1708,18 @@
     <span class="k">return</span> <span class="n">question_filter_defs</span>
 
 </div>
-<div class="viewcode-block" id="dehumanize_question_options"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.dehumanize_question_options">[docs]</a><span class="k">def</span> <span class="nf">dehumanize_question_options</span><span class="p">(</span><span class="n">question_options</span><span class="p">):</span>
+<div class="viewcode-block" id="dehumanize_question_options"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.dehumanize_question_options">[docs]</a><span class="k">def</span> <span class="nf">dehumanize_question_options</span><span class="p">(</span><span class="n">question_options</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Turns a question_options str or list of str into a question option definition</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    question_options : str, list of str</span>
-<span class="sd">        A str or list of str that describes question options</span>
+<span class="sd">        * A str or list of str that describes question options</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    question_option_defs : list of dict</span>
-<span class="sd">        list of dict parsed from `question_options`</span>
+<span class="sd">        * list of dict parsed from `question_options`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">question_options</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">{}</span>
@@ -1728,20 +1738,20 @@
     <span class="k">return</span> <span class="n">question_option_defs</span>
 
 </div>
-<div class="viewcode-block" id="extract_selector"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.extract_selector">[docs]</a><span class="k">def</span> <span class="nf">extract_selector</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+<div class="viewcode-block" id="extract_selector"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.extract_selector">[docs]</a><span class="k">def</span> <span class="nf">extract_selector</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Extracts a selector from str `s`</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    s : str</span>
-<span class="sd">        A str that may or may not have a selector in the beginning in the form of id:, name:, or :hash -- if no selector found, name will be assumed as the default selector</span>
+<span class="sd">        * A str that may or may not have a selector in the beginning in the form of id:, name:, or :hash -- if no selector found, name will be assumed as the default selector</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    s : str</span>
-<span class="sd">        str `s` without the parsed_selector included</span>
+<span class="sd">        * str `s` without the parsed_selector included</span>
 <span class="sd">    parsed_selector : str</span>
-<span class="sd">        selector extracted from `s`, or &#39;name&#39; if none found</span>
+<span class="sd">        * selector extracted from `s`, or &#39;name&#39; if none found</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">parsed_selector</span> <span class="o">=</span> <span class="s">&#39;name&#39;</span>
     <span class="k">for</span> <span class="n">selector</span> <span class="ow">in</span> <span class="n">pytan</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">SELECTORS</span><span class="p">:</span>
@@ -1755,20 +1765,20 @@
     <span class="k">return</span> <span class="n">s</span><span class="p">,</span> <span class="n">parsed_selector</span>
 
 </div>
-<div class="viewcode-block" id="extract_params"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.extract_params">[docs]</a><span class="k">def</span> <span class="nf">extract_params</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+<div class="viewcode-block" id="extract_params"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.extract_params">[docs]</a><span class="k">def</span> <span class="nf">extract_params</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Extracts parameters from str `s`</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    s : str</span>
-<span class="sd">        A str that may or may not have parameters identified by {key=value}</span>
+<span class="sd">        * A str that may or may not have parameters identified by {key=value}</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    s : str</span>
-<span class="sd">        str `s` without the parsed_params included</span>
+<span class="sd">        * str `s` without the parsed_params included</span>
 <span class="sd">    parsed_params : list</span>
-<span class="sd">        parameters extracted from `s` if any found</span>
+<span class="sd">        * parameters extracted from `s` if any found</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c"># extract params from s</span>
 
@@ -1822,20 +1832,20 @@
     <span class="k">return</span> <span class="n">s</span><span class="p">,</span> <span class="n">parsed_params</span>
 
 </div>
-<div class="viewcode-block" id="extract_options"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.extract_options">[docs]</a><span class="k">def</span> <span class="nf">extract_options</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+<div class="viewcode-block" id="extract_options"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.extract_options">[docs]</a><span class="k">def</span> <span class="nf">extract_options</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Extracts options from str `s`</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    s : str</span>
-<span class="sd">        A str that may or may not have options identified by &#39;, opt:name[:value]&#39;</span>
+<span class="sd">        * A str that may or may not have options identified by &#39;, opt:name[:value]&#39;</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    s : str</span>
-<span class="sd">        str `s` without the parsed_options included</span>
+<span class="sd">        * str `s` without the parsed_options included</span>
 <span class="sd">    parsed_options : list</span>
-<span class="sd">        options extracted from `s` if any found</span>
+<span class="sd">        * options extracted from `s` if any found</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c"># parse options out of s</span>
 
@@ -1864,20 +1874,20 @@
     <span class="k">return</span> <span class="n">s</span><span class="p">,</span> <span class="n">parsed_options</span>
 
 </div>
-<div class="viewcode-block" id="map_options"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.map_options">[docs]</a><span class="k">def</span> <span class="nf">map_options</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">dest</span><span class="p">):</span>
+<div class="viewcode-block" id="map_options"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.map_options">[docs]</a><span class="k">def</span> <span class="nf">map_options</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">dest</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Maps a list of options using :func:`map_option`</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    options : list of str</span>
-<span class="sd">        list of str that should be validated</span>
+<span class="sd">        * list of str that should be validated</span>
 <span class="sd">    dest : list of str</span>
-<span class="sd">        list of valid destinations (i.e. `filter` or `group`)</span>
+<span class="sd">        * list of valid destinations (i.e. `filter` or `group`)</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    mapped_options : dict</span>
-<span class="sd">        dict of all mapped_options</span>
+<span class="sd">        * dict of all mapped_options</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">mapped_options</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
@@ -1891,20 +1901,20 @@
     <span class="k">return</span> <span class="n">mapped_options</span>
 
 </div>
-<div class="viewcode-block" id="map_option"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.map_option">[docs]</a><span class="k">def</span> <span class="nf">map_option</span><span class="p">(</span><span class="n">opt</span><span class="p">,</span> <span class="n">dest</span><span class="p">):</span>
+<div class="viewcode-block" id="map_option"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.map_option">[docs]</a><span class="k">def</span> <span class="nf">map_option</span><span class="p">(</span><span class="n">opt</span><span class="p">,</span> <span class="n">dest</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Maps an opt str against :data:`constants.OPTION_MAPS`</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    opt : str</span>
-<span class="sd">        option str that should be validated</span>
+<span class="sd">        * option str that should be validated</span>
 <span class="sd">    dest : list of str</span>
-<span class="sd">        list of valid destinations (i.e. `filter` or `group`)</span>
+<span class="sd">        * list of valid destinations (i.e. `filter` or `group`)</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    opt_attrs : dict</span>
-<span class="sd">        dict containing mapped option attributes for SOAP API</span>
+<span class="sd">        * dict containing mapped option attributes for SOAP API</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">opt_attrs</span> <span class="o">=</span> <span class="p">{}</span>
 
@@ -1947,20 +1957,20 @@
     <span class="k">return</span> <span class="n">opt_attrs</span>
 
 </div>
-<div class="viewcode-block" id="extract_filter"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.extract_filter">[docs]</a><span class="k">def</span> <span class="nf">extract_filter</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+<div class="viewcode-block" id="extract_filter"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.extract_filter">[docs]</a><span class="k">def</span> <span class="nf">extract_filter</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Extracts a filter from str `s`</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    s : str</span>
-<span class="sd">        A str that may or may not have a filter identified by &#39;, that HUMAN VALUE&#39;</span>
+<span class="sd">        * A str that may or may not have a filter identified by &#39;, that HUMAN VALUE&#39;</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    s : str</span>
-<span class="sd">        str `s` without the parsed_filter included</span>
+<span class="sd">        * str `s` without the parsed_filter included</span>
 <span class="sd">    parsed_filter : dict</span>
-<span class="sd">        filter attributes mapped from filter from `s` if any found</span>
+<span class="sd">        * filter attributes mapped from filter from `s` if any found</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">split_filter</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">pytan</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">FILTER_RE</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
     <span class="c"># split_filter = [&#39;Folder Name Search with RegEx Match&#39;, &#39; is:.*&#39;]</span>
@@ -1989,18 +1999,18 @@
     <span class="k">return</span> <span class="n">s</span><span class="p">,</span> <span class="n">parsed_filter</span>
 
 </div>
-<div class="viewcode-block" id="map_filter"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.map_filter">[docs]</a><span class="k">def</span> <span class="nf">map_filter</span><span class="p">(</span><span class="n">filter_str</span><span class="p">):</span>
+<div class="viewcode-block" id="map_filter"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.map_filter">[docs]</a><span class="k">def</span> <span class="nf">map_filter</span><span class="p">(</span><span class="n">filter_str</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Maps a filter str against :data:`constants.FILTER_MAPS`</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    filter_str : str</span>
-<span class="sd">        filter_str str that should be validated</span>
+<span class="sd">        * filter_str str that should be validated</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    filter_attrs : dict</span>
-<span class="sd">        dict containing mapped filter attributes for SOAP API</span>
+<span class="sd">        * dict containing mapped filter attributes for SOAP API</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">filter_attrs</span> <span class="o">=</span> <span class="p">{}</span>
 
@@ -2041,17 +2051,17 @@
     <span class="k">return</span> <span class="n">filter_attrs</span>
 
 </div>
-<div class="viewcode-block" id="get_kwargs_int"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.get_kwargs_int">[docs]</a><span class="k">def</span> <span class="nf">get_kwargs_int</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="get_kwargs_int"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.get_kwargs_int">[docs]</a><span class="k">def</span> <span class="nf">get_kwargs_int</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Gets key from kwargs and validates it is an int</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    key : str</span>
-<span class="sd">        key to get from kwargs</span>
+<span class="sd">        * key to get from kwargs</span>
 <span class="sd">    default : int, optional</span>
-<span class="sd">        default value to use if key not found in kwargs</span>
-<span class="sd">    **kwargs : dict</span>
-<span class="sd">        kwargs to get key from</span>
+<span class="sd">        * default value to use if key not found in kwargs</span>
+<span class="sd">    kwargs : dict</span>
+<span class="sd">        * kwargs to get key from</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -2070,17 +2080,17 @@
     <span class="k">return</span> <span class="n">val</span>
 
 </div>
-<div class="viewcode-block" id="parse_defs"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.parse_defs">[docs]</a><span class="k">def</span> <span class="nf">parse_defs</span><span class="p">(</span><span class="n">defname</span><span class="p">,</span> <span class="n">deftypes</span><span class="p">,</span> <span class="n">strconv</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">empty_ok</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">defs</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="parse_defs"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.parse_defs">[docs]</a><span class="k">def</span> <span class="nf">parse_defs</span><span class="p">(</span><span class="n">defname</span><span class="p">,</span> <span class="n">deftypes</span><span class="p">,</span> <span class="n">strconv</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">empty_ok</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">defs</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Parses and validates defs into new_defs</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    defname : str</span>
-<span class="sd">        Name of definition</span>
+<span class="sd">        * Name of definition</span>
 <span class="sd">    deftypes : list of str</span>
-<span class="sd">        list of valid types that defs can be</span>
+<span class="sd">        * list of valid types that defs can be</span>
 <span class="sd">    strconv : str</span>
-<span class="sd">        if supplied, and defs is a str, turn defs into a dict with key = strconv, value = defs</span>
+<span class="sd">        * if supplied, and defs is a str, turn defs into a dict with key = strconv, value = defs</span>
 <span class="sd">    empty_ok : bool</span>
 <span class="sd">        * True: defs is allowed to be empty</span>
 <span class="sd">        * False: defs is not allowed to be empty</span>
@@ -2088,7 +2098,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    new_defs : list of dict</span>
-<span class="sd">        parsed and validated defs</span>
+<span class="sd">        * parsed and validated defs</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">defs</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
         <span class="n">defs</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">defname</span><span class="p">,</span> <span class="nb">eval</span><span class="p">(</span><span class="n">deftypes</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
@@ -2141,7 +2151,7 @@
     <span class="k">return</span> <span class="n">new_defs</span>
 
 </div>
-<div class="viewcode-block" id="val_sensor_defs"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.val_sensor_defs">[docs]</a><span class="k">def</span> <span class="nf">val_sensor_defs</span><span class="p">(</span><span class="n">sensor_defs</span><span class="p">):</span>
+<div class="viewcode-block" id="val_sensor_defs"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.val_sensor_defs">[docs]</a><span class="k">def</span> <span class="nf">val_sensor_defs</span><span class="p">(</span><span class="n">sensor_defs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Validates sensor definitions</span>
 
 <span class="sd">    Ensures each sensor definition has a selector, and if a sensor definition has a params, options, or filter key, that each key is valid</span>
@@ -2149,7 +2159,7 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    sensor_defs : list of dict</span>
-<span class="sd">        list of sensor definitions</span>
+<span class="sd">        * list of sensor definitions</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">s_obj_map</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">GET_OBJ_MAP</span><span class="p">[</span><span class="s">&#39;sensor&#39;</span><span class="p">]</span>
     <span class="n">search_keys</span> <span class="o">=</span> <span class="n">s_obj_map</span><span class="p">[</span><span class="s">&#39;search&#39;</span><span class="p">]</span>
@@ -2172,7 +2182,7 @@
         <span class="n">chk_def_key</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="s">&#39;filter&#39;</span><span class="p">,</span> <span class="p">[</span><span class="nb">dict</span><span class="p">])</span>
 
 </div>
-<div class="viewcode-block" id="val_package_def"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.val_package_def">[docs]</a><span class="k">def</span> <span class="nf">val_package_def</span><span class="p">(</span><span class="n">package_def</span><span class="p">):</span>
+<div class="viewcode-block" id="val_package_def"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.val_package_def">[docs]</a><span class="k">def</span> <span class="nf">val_package_def</span><span class="p">(</span><span class="n">package_def</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Validates package definitions</span>
 
 <span class="sd">    Ensures package definition has a selector, and if a package definition has a params key, that key is valid</span>
@@ -2180,7 +2190,7 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    package_def : dict</span>
-<span class="sd">        package definition</span>
+<span class="sd">        * package definition</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">s_obj_map</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">GET_OBJ_MAP</span><span class="p">[</span><span class="s">&#39;package&#39;</span><span class="p">]</span>
     <span class="n">search_keys</span> <span class="o">=</span> <span class="n">s_obj_map</span><span class="p">[</span><span class="s">&#39;search&#39;</span><span class="p">]</span>
@@ -2203,7 +2213,7 @@
     <span class="n">chk_def_key</span><span class="p">(</span><span class="n">package_def</span><span class="p">,</span> <span class="s">&#39;params&#39;</span><span class="p">,</span> <span class="p">[</span><span class="nb">dict</span><span class="p">])</span>
 
 </div>
-<div class="viewcode-block" id="val_q_filter_defs"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.val_q_filter_defs">[docs]</a><span class="k">def</span> <span class="nf">val_q_filter_defs</span><span class="p">(</span><span class="n">q_filter_defs</span><span class="p">):</span>
+<div class="viewcode-block" id="val_q_filter_defs"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.val_q_filter_defs">[docs]</a><span class="k">def</span> <span class="nf">val_q_filter_defs</span><span class="p">(</span><span class="n">q_filter_defs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Validates question filter definitions</span>
 
 <span class="sd">    Ensures each question filter definition has a selector, and if a question filter definition has a filter key, that key is valid</span>
@@ -2211,7 +2221,7 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    q_filter_defs : list of dict</span>
-<span class="sd">        list of question filter definitions</span>
+<span class="sd">        * list of question filter definitions</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">s_obj_map</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">GET_OBJ_MAP</span><span class="p">[</span><span class="s">&#39;sensor&#39;</span><span class="p">]</span>
     <span class="n">search_keys</span> <span class="o">=</span> <span class="n">s_obj_map</span><span class="p">[</span><span class="s">&#39;search&#39;</span><span class="p">]</span>
@@ -2232,18 +2242,18 @@
         <span class="n">chk_def_key</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="s">&#39;filter&#39;</span><span class="p">,</span> <span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="n">req</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
 </div>
-<div class="viewcode-block" id="build_selectlist_obj"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.build_selectlist_obj">[docs]</a><span class="k">def</span> <span class="nf">build_selectlist_obj</span><span class="p">(</span><span class="n">sensor_defs</span><span class="p">):</span>
+<div class="viewcode-block" id="build_selectlist_obj"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.build_selectlist_obj">[docs]</a><span class="k">def</span> <span class="nf">build_selectlist_obj</span><span class="p">(</span><span class="n">sensor_defs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Creates a SelectList object from sensor_defs</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    sensor_defs : list of dict</span>
-<span class="sd">        List of dict that are sensor definitions</span>
+<span class="sd">        * List of dict that are sensor definitions</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    select_objlist : :class:`taniumpy.object_types.select_list.SelectList`</span>
-<span class="sd">        SelectList object with list of :class:`taniumpy.object_types.select.Select` built from `sensor_defs`</span>
+<span class="sd">        * SelectList object with list of :class:`taniumpy.object_types.select.Select` built from `sensor_defs`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">select_objlist</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">SelectList</span><span class="p">()</span>
 
@@ -2289,20 +2299,20 @@
     <span class="k">return</span> <span class="n">select_objlist</span>
 
 </div>
-<div class="viewcode-block" id="build_group_obj"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.build_group_obj">[docs]</a><span class="k">def</span> <span class="nf">build_group_obj</span><span class="p">(</span><span class="n">q_filter_defs</span><span class="p">,</span> <span class="n">q_option_defs</span><span class="p">):</span>
+<div class="viewcode-block" id="build_group_obj"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.build_group_obj">[docs]</a><span class="k">def</span> <span class="nf">build_group_obj</span><span class="p">(</span><span class="n">q_filter_defs</span><span class="p">,</span> <span class="n">q_option_defs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Creates a Group object from q_filter_defs and q_option_defs</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    q_filter_defs : list of dict</span>
-<span class="sd">        List of dict that are question filter definitions</span>
+<span class="sd">        * List of dict that are question filter definitions</span>
 <span class="sd">    q_option_defs : dict</span>
-<span class="sd">        dict of question filter options</span>
+<span class="sd">        * dict of question filter options</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    group_obj : :class:`taniumpy.object_types.group.Group`</span>
-<span class="sd">        Group object with list of :class:`taniumpy.object_types.filter.Filter` built from `q_filter_defs` and `q_option_defs`</span>
+<span class="sd">        * Group object with list of :class:`taniumpy.object_types.filter.Filter` built from `q_filter_defs` and `q_option_defs`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">filter_objlist</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">FilterList</span><span class="p">()</span>
 
@@ -2321,20 +2331,20 @@
     <span class="k">return</span> <span class="n">group_obj</span>
 
 </div>
-<div class="viewcode-block" id="build_manual_q"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.build_manual_q">[docs]</a><span class="k">def</span> <span class="nf">build_manual_q</span><span class="p">(</span><span class="n">selectlist_obj</span><span class="p">,</span> <span class="n">group_obj</span><span class="p">):</span>
+<div class="viewcode-block" id="build_manual_q"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.build_manual_q">[docs]</a><span class="k">def</span> <span class="nf">build_manual_q</span><span class="p">(</span><span class="n">selectlist_obj</span><span class="p">,</span> <span class="n">group_obj</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Creates a Question object from selectlist_obj and group_obj</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    selectlist_obj : :class:`taniumpy.object_types.select_list.SelectList`</span>
-<span class="sd">        SelectList object to add to Question object</span>
+<span class="sd">        * SelectList object to add to Question object</span>
 <span class="sd">    group_obj : :class:`taniumpy.object_types.group.Group`</span>
-<span class="sd">        Group object to add to Question object</span>
+<span class="sd">        * Group object to add to Question object</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    add_q_obj : :class:`taniumpy.object_types.question.Question`</span>
-<span class="sd">        Question object built from selectlist_obj and group_obj</span>
+<span class="sd">        * Question object built from selectlist_obj and group_obj</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">add_q_obj</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">Question</span><span class="p">()</span>
     <span class="n">add_q_obj</span><span class="o">.</span><span class="n">selects</span> <span class="o">=</span> <span class="n">selectlist_obj</span>
@@ -2342,16 +2352,16 @@
     <span class="k">return</span> <span class="n">add_q_obj</span>
 
 </div>
-<div class="viewcode-block" id="get_obj_params"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.get_obj_params">[docs]</a><span class="k">def</span> <span class="nf">get_obj_params</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+<div class="viewcode-block" id="get_obj_params"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.get_obj_params">[docs]</a><span class="k">def</span> <span class="nf">get_obj_params</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Get the parameters from a TaniumPy object and JSON load them</span>
 
 <span class="sd">    obj : :class:`taniumpy.object_types.base.BaseType`</span>
-<span class="sd">        TaniumPy object to get parameters from</span>
+<span class="sd">        * TaniumPy object to get parameters from</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    params : dict</span>
-<span class="sd">        JSON loaded dict of parameters from `obj`</span>
+<span class="sd">        * JSON loaded dict of parameters from `obj`</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c"># get the parameter definitions</span>
@@ -2366,22 +2376,22 @@
     <span class="k">return</span> <span class="n">params</span>
 
 </div>
-<div class="viewcode-block" id="build_param_obj"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.build_param_obj">[docs]</a><span class="k">def</span> <span class="nf">build_param_obj</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">delim</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="build_param_obj"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.build_param_obj">[docs]</a><span class="k">def</span> <span class="nf">build_param_obj</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">delim</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Creates a Parameter object from key and value, surrounding key with delim</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    key : str</span>
-<span class="sd">        key to use for parameter</span>
+<span class="sd">        * key to use for parameter</span>
 <span class="sd">    value : str</span>
-<span class="sd">        value to use for parameter</span>
+<span class="sd">        * value to use for parameter</span>
 <span class="sd">    delim : str</span>
-<span class="sd">        str to surround key with when adding to parameter object</span>
+<span class="sd">        * str to surround key with when adding to parameter object</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    param_obj : :class:`taniumpy.object_types.parameter.Parameter`</span>
-<span class="sd">        Parameter object built from key and val</span>
+<span class="sd">        * Parameter object built from key and val</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c"># create a parameter object</span>
     <span class="n">param_obj</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">Parameter</span><span class="p">()</span>
@@ -2390,18 +2400,18 @@
     <span class="k">return</span> <span class="n">param_obj</span>
 
 </div>
-<div class="viewcode-block" id="derive_param_default"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.derive_param_default">[docs]</a><span class="k">def</span> <span class="nf">derive_param_default</span><span class="p">(</span><span class="n">obj_param</span><span class="p">):</span>
+<div class="viewcode-block" id="derive_param_default"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.derive_param_default">[docs]</a><span class="k">def</span> <span class="nf">derive_param_default</span><span class="p">(</span><span class="n">obj_param</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Derive a parameter default</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    obj_param : dict</span>
-<span class="sd">        parameter dict from TaniumPy object</span>
+<span class="sd">        * parameter dict from TaniumPy object</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    def_val : str</span>
-<span class="sd">        default value derived from obj_param</span>
+<span class="sd">        * default value derived from obj_param</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c"># get the default value for this param if it exists</span>
     <span class="n">def_val</span> <span class="o">=</span> <span class="n">obj_param</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;defaultValue&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
@@ -2420,17 +2430,17 @@
     <span class="k">return</span> <span class="n">def_val</span>
 
 </div>
-<div class="viewcode-block" id="build_param_objlist"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.build_param_objlist">[docs]</a><span class="k">def</span> <span class="nf">build_param_objlist</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">user_params</span><span class="p">,</span> <span class="n">delim</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">derive_def</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">empty_ok</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="build_param_objlist"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.build_param_objlist">[docs]</a><span class="k">def</span> <span class="nf">build_param_objlist</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">user_params</span><span class="p">,</span> <span class="n">delim</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">derive_def</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">empty_ok</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Creates a ParameterList object from user_params</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    obj : :class:`taniumpy.object_types.base.BaseType`</span>
-<span class="sd">        TaniumPy object to verify parameters against</span>
+<span class="sd">        * TaniumPy object to verify parameters against</span>
 <span class="sd">    user_params : dict</span>
-<span class="sd">        dict describing key and value of user supplied params</span>
+<span class="sd">        * dict describing key and value of user supplied params</span>
 <span class="sd">    delim : str</span>
-<span class="sd">        str to surround key with when adding to parameter object</span>
+<span class="sd">        * str to surround key with when adding to parameter object</span>
 <span class="sd">    derive_def : bool, optional</span>
 <span class="sd">        * False: Do not derive default values, and throw a :exc:`pytan.exceptions.HandlerError` if user did not supply a value for a given parameter</span>
 <span class="sd">        * True: Try to derive a default value for each parameter if user did not supply one</span>
@@ -2485,18 +2495,18 @@
     <span class="k">return</span> <span class="n">param_objlist</span>
 
 </div>
-<div class="viewcode-block" id="shrink_obj"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.shrink_obj">[docs]</a><span class="k">def</span> <span class="nf">shrink_obj</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="shrink_obj"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.shrink_obj">[docs]</a><span class="k">def</span> <span class="nf">shrink_obj</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Returns a new class of obj with only id/name/hash defined</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    obj : :class:`taniumpy.object_types.base.BaseType`</span>
-<span class="sd">        Object to shrink</span>
+<span class="sd">        * Object to shrink</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    new_obj : :class:`taniumpy.object_types.base.BaseType`</span>
-<span class="sd">        Shrunken object</span>
+<span class="sd">        * Shrunken object</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">attrs</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
         <span class="n">attrs</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="s">&#39;hash&#39;</span><span class="p">]</span>
@@ -2506,18 +2516,18 @@
     <span class="k">return</span> <span class="n">new_obj</span>
 
 </div>
-<div class="viewcode-block" id="get_filter_obj"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.get_filter_obj">[docs]</a><span class="k">def</span> <span class="nf">get_filter_obj</span><span class="p">(</span><span class="n">sensor_def</span><span class="p">):</span>
+<div class="viewcode-block" id="get_filter_obj"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.get_filter_obj">[docs]</a><span class="k">def</span> <span class="nf">get_filter_obj</span><span class="p">(</span><span class="n">sensor_def</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Creates a Filter object from sensor_def</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    sensor_def : dict</span>
-<span class="sd">        dict containing sensor definition</span>
+<span class="sd">        * dict containing sensor definition</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    filter_obj : :class:`taniumpy.object_types.filter.Filter`</span>
-<span class="sd">        Filter object created from `sensor_def`</span>
+<span class="sd">        * Filter object created from `sensor_def`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">sensor_obj</span> <span class="o">=</span> <span class="n">sensor_def</span><span class="p">[</span><span class="s">&#39;sensor_obj&#39;</span><span class="p">]</span>
 
@@ -2573,22 +2583,22 @@
     <span class="k">return</span> <span class="n">filter_obj</span>
 
 </div>
-<div class="viewcode-block" id="apply_options_obj"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.apply_options_obj">[docs]</a><span class="k">def</span> <span class="nf">apply_options_obj</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">dest</span><span class="p">):</span>
+<div class="viewcode-block" id="apply_options_obj"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.apply_options_obj">[docs]</a><span class="k">def</span> <span class="nf">apply_options_obj</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">dest</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Updates an object with options</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    options : dict</span>
-<span class="sd">        dict containing options definition</span>
+<span class="sd">        * dict containing options definition</span>
 <span class="sd">    obj : :class:`taniumpy.object_types.base.BaseType`</span>
-<span class="sd">        TaniumPy object to apply `options` to</span>
+<span class="sd">        * TaniumPy object to apply `options` to</span>
 <span class="sd">    dest : list of str</span>
-<span class="sd">        list of valid destinations (i.e. `filter` or `group`)</span>
+<span class="sd">        * list of valid destinations (i.e. `filter` or `group`)</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    obj : :class:`taniumpy.object_types.base.BaseType`</span>
-<span class="sd">        TaniumPy object updated with attributes from `options`</span>
+<span class="sd">        * TaniumPy object updated with attributes from `options`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c"># if no user supplied options, return the filter object unchanged</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="p">:</span>
@@ -2670,19 +2680,19 @@
     <span class="k">return</span> <span class="n">obj</span>
 
 </div>
-<div class="viewcode-block" id="chk_def_key"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.chk_def_key">[docs]</a><span class="k">def</span> <span class="nf">chk_def_key</span><span class="p">(</span><span class="n">def_dict</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">keytypes</span><span class="p">,</span> <span class="n">keysubtypes</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">req</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="chk_def_key"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.chk_def_key">[docs]</a><span class="k">def</span> <span class="nf">chk_def_key</span><span class="p">(</span><span class="n">def_dict</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">keytypes</span><span class="p">,</span> <span class="n">keysubtypes</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">req</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Checks that def_dict has key</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    def_dict : dict</span>
-<span class="sd">        Definition dictionary</span>
+<span class="sd">        * Definition dictionary</span>
 <span class="sd">    key : str</span>
-<span class="sd">        key to check for in def_dict</span>
+<span class="sd">        * key to check for in def_dict</span>
 <span class="sd">    keytypes : list of str</span>
-<span class="sd">        list of str of valid types for key</span>
+<span class="sd">        * list of str of valid types for key</span>
 <span class="sd">    keysubtypes : list of str</span>
-<span class="sd">        if key is a dict or list, validate that all values of dict or list are in keysubtypes</span>
+<span class="sd">        * if key is a dict or list, validate that all values of dict or list are in keysubtypes</span>
 <span class="sd">    req : bool</span>
 <span class="sd">        * False: key does not have to be in def_dict</span>
 <span class="sd">        * True: key must be in def_dict, throw :exc:`pytan.exceptions.DefinitionParserError` if not</span>
@@ -2717,18 +2727,18 @@
         <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">DefinitionParserError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">keytypes</span><span class="p">,</span> <span class="n">keysubtypes</span><span class="p">,</span> <span class="n">subtypes</span><span class="p">))</span>
 
 </div>
-<div class="viewcode-block" id="empty_obj"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.empty_obj">[docs]</a><span class="k">def</span> <span class="nf">empty_obj</span><span class="p">(</span><span class="n">taniumpy_object</span><span class="p">):</span>
+<div class="viewcode-block" id="empty_obj"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.empty_obj">[docs]</a><span class="k">def</span> <span class="nf">empty_obj</span><span class="p">(</span><span class="n">taniumpy_object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Validate that a given TaniumPy object is not empty</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    taniumpy_object : :class:`taniumpy.object_types.base.BaseType`</span>
-<span class="sd">        object to check if empty</span>
+<span class="sd">        * object to check if empty</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    bool</span>
-<span class="sd">        True if `taniumpy_object` is considered empty, False otherwise</span>
+<span class="sd">        * True if `taniumpy_object` is considered empty, False otherwise</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="nb">getattr</span><span class="p">(</span><span class="n">taniumpy_object</span><span class="p">,</span> <span class="s">&#39;_list_properties&#39;</span><span class="p">,</span> <span class="p">{}),</span> <span class="n">is_str</span><span class="p">(</span><span class="n">taniumpy_object</span><span class="p">)]</span>
     <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">taniumpy_object</span><span class="p">:</span>
@@ -2737,18 +2747,18 @@
         <span class="k">return</span> <span class="bp">False</span>
 
 </div>
-<div class="viewcode-block" id="get_q_obj_map"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.get_q_obj_map">[docs]</a><span class="k">def</span> <span class="nf">get_q_obj_map</span><span class="p">(</span><span class="n">qtype</span><span class="p">):</span>
+<div class="viewcode-block" id="get_q_obj_map"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.get_q_obj_map">[docs]</a><span class="k">def</span> <span class="nf">get_q_obj_map</span><span class="p">(</span><span class="n">qtype</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Gets an object map for `qtype`</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    qtype : str</span>
-<span class="sd">        question type to get object map from in :data:`pytan.constants.Q_OBJ_MAP`</span>
+<span class="sd">        * question type to get object map from in :data:`pytan.constants.Q_OBJ_MAP`</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    obj_map : dict</span>
-<span class="sd">        matching object map for `qtype` from :data:`pytan.constants.Q_OBJ_MAP`</span>
+<span class="sd">        * matching object map for `qtype` from :data:`pytan.constants.Q_OBJ_MAP`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">obj_map</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">Q_OBJ_MAP</span><span class="p">[</span><span class="n">qtype</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
@@ -2758,18 +2768,18 @@
     <span class="k">return</span> <span class="n">obj_map</span>
 
 </div>
-<div class="viewcode-block" id="get_obj_map"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.get_obj_map">[docs]</a><span class="k">def</span> <span class="nf">get_obj_map</span><span class="p">(</span><span class="n">objtype</span><span class="p">):</span>
+<div class="viewcode-block" id="get_obj_map"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.get_obj_map">[docs]</a><span class="k">def</span> <span class="nf">get_obj_map</span><span class="p">(</span><span class="n">objtype</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Gets an object map for `objtype`</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    objtype : str</span>
-<span class="sd">        object type to get object map from in :data:`pytan.constants.GET_OBJ_MAP`</span>
+<span class="sd">        * object type to get object map from in :data:`pytan.constants.GET_OBJ_MAP`</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    obj_map : dict</span>
-<span class="sd">        matching object map for `objtype` from :data:`pytan.constants.GET_OBJ_MAP`</span>
+<span class="sd">        * matching object map for `objtype` from :data:`pytan.constants.GET_OBJ_MAP`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">obj_map</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">GET_OBJ_MAP</span><span class="p">[</span><span class="n">objtype</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
@@ -2779,18 +2789,18 @@
     <span class="k">return</span> <span class="n">obj_map</span>
 
 </div>
-<div class="viewcode-block" id="get_taniumpy_obj"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.get_taniumpy_obj">[docs]</a><span class="k">def</span> <span class="nf">get_taniumpy_obj</span><span class="p">(</span><span class="n">obj_map</span><span class="p">):</span>
+<div class="viewcode-block" id="get_taniumpy_obj"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.get_taniumpy_obj">[docs]</a><span class="k">def</span> <span class="nf">get_taniumpy_obj</span><span class="p">(</span><span class="n">obj_map</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Gets a taniumpy object from `obj_map`</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    obj_map : str</span>
-<span class="sd">        str of taniumpy object to fetch</span>
+<span class="sd">        * str of taniumpy object to fetch</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    obj : :class:`taniumpy.object_types.base.BaseType`</span>
-<span class="sd">        matching taniumpy object for `obj_map`</span>
+<span class="sd">        * matching taniumpy object for `obj_map`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">obj</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">taniumpy</span><span class="p">,</span> <span class="n">obj_map</span><span class="p">)</span>
@@ -2801,19 +2811,19 @@
     <span class="k">return</span> <span class="n">obj</span>
 
 </div>
-<div class="viewcode-block" id="check_dictkey"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.check_dictkey">[docs]</a><span class="k">def</span> <span class="nf">check_dictkey</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">valid_types</span><span class="p">,</span> <span class="n">valid_list_types</span><span class="p">):</span>
+<div class="viewcode-block" id="check_dictkey"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.check_dictkey">[docs]</a><span class="k">def</span> <span class="nf">check_dictkey</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">valid_types</span><span class="p">,</span> <span class="n">valid_list_types</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Yet another method to check a dictionary for a key</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    d : dict</span>
-<span class="sd">        dictionary to check for key</span>
+<span class="sd">        * dictionary to check for key</span>
 <span class="sd">    key : str</span>
-<span class="sd">        key to check for in d</span>
+<span class="sd">        * key to check for in d</span>
 <span class="sd">    valid_types : list of str</span>
-<span class="sd">        list of str of valid types for key</span>
+<span class="sd">        * list of str of valid types for key</span>
 <span class="sd">    valid_list_types : list of str</span>
-<span class="sd">        if key is a list, validate that all values of list are in valid_list_types</span>
+<span class="sd">        * if key is a list, validate that all values of list are in valid_list_types</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
         <span class="n">k_val</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
@@ -2830,7 +2840,7 @@
                 <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HandlerError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">valid_list_types</span><span class="p">,</span> <span class="n">list_types</span><span class="p">))</span>
 
 </div>
-<div class="viewcode-block" id="func_timing"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.func_timing">[docs]</a><span class="k">def</span> <span class="nf">func_timing</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+<div class="viewcode-block" id="func_timing"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.func_timing">[docs]</a><span class="k">def</span> <span class="nf">func_timing</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Decorator to add timing information around a function &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">wrap</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">time1</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
@@ -2843,18 +2853,18 @@
     <span class="k">return</span> <span class="n">wrap</span>
 
 </div>
-<div class="viewcode-block" id="xml_pretty"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.xml_pretty">[docs]</a><span class="k">def</span> <span class="nf">xml_pretty</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="viewcode-block" id="xml_pretty"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.xml_pretty">[docs]</a><span class="k">def</span> <span class="nf">xml_pretty</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Uses :mod:`xmltodict` to pretty print an XML str `x`</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    x : str</span>
-<span class="sd">        XML string to pretty print</span>
+<span class="sd">        * XML string to pretty print</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    str :</span>
-<span class="sd">        The pretty printed string of `x`</span>
+<span class="sd">        * The pretty printed string of `x`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">x_parsed</span> <span class="o">=</span> <span class="n">xmltodict</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -2862,14 +2872,14 @@
     <span class="k">return</span> <span class="n">x_unparsed</span>
 
 </div>
-<div class="viewcode-block" id="log_session_communication"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.log_session_communication">[docs]</a><span class="k">def</span> <span class="nf">log_session_communication</span><span class="p">(</span><span class="n">h</span><span class="p">):</span>
+<div class="viewcode-block" id="log_session_communication"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.log_session_communication">[docs]</a><span class="k">def</span> <span class="nf">log_session_communication</span><span class="p">(</span><span class="n">h</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Uses :func:`xml_pretty` to pretty print the last request and response bodies from the</span>
 <span class="sd">    session object in h to the logging system</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    h : Handler object</span>
-<span class="sd">        Handler object with session object containing last request and response body</span>
+<span class="sd">        * Handler object with session object containing last request and response body</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">req</span> <span class="o">=</span> <span class="n">xml_pretty</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">request_body</span><span class="p">)</span>
@@ -2886,18 +2896,18 @@
     <span class="n">prettylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Last HTTP response:</span><span class="se">\n</span><span class="s">{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">xml_pretty</span><span class="p">(</span><span class="n">resp</span><span class="p">)))</span>
 
 </div>
-<div class="viewcode-block" id="xml_pretty_resultxml"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.xml_pretty_resultxml">[docs]</a><span class="k">def</span> <span class="nf">xml_pretty_resultxml</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="viewcode-block" id="xml_pretty_resultxml"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.xml_pretty_resultxml">[docs]</a><span class="k">def</span> <span class="nf">xml_pretty_resultxml</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Uses :mod:`xmltodict` to pretty print an the ResultXML element in XML str `x`</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    x : str</span>
-<span class="sd">        XML string to pretty print</span>
+<span class="sd">        * XML string to pretty print</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    str :</span>
-<span class="sd">        The pretty printed string of ResultXML in `x`</span>
+<span class="sd">        * The pretty printed string of ResultXML in `x`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">x_parsed</span> <span class="o">=</span> <span class="n">xmltodict</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -2906,18 +2916,18 @@
     <span class="k">return</span> <span class="n">x_unparsed</span>
 
 </div>
-<div class="viewcode-block" id="xml_pretty_resultobj"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.xml_pretty_resultobj">[docs]</a><span class="k">def</span> <span class="nf">xml_pretty_resultobj</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="viewcode-block" id="xml_pretty_resultobj"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.xml_pretty_resultobj">[docs]</a><span class="k">def</span> <span class="nf">xml_pretty_resultobj</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Uses :mod:`xmltodict` to pretty print an the result-object element in XML str `x`</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    x : str</span>
-<span class="sd">        XML string to pretty print</span>
+<span class="sd">        * XML string to pretty print</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    str :</span>
-<span class="sd">        The pretty printed string of result-object in `x`</span>
+<span class="sd">        * The pretty printed string of result-object in `x`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">x_parsed</span> <span class="o">=</span> <span class="n">xmltodict</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -2927,15 +2937,15 @@
     <span class="k">return</span> <span class="n">x_unparsed</span>
 
 </div>
-<div class="viewcode-block" id="get_dict_list_len"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.get_dict_list_len">[docs]</a><span class="k">def</span> <span class="nf">get_dict_list_len</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="p">[],</span> <span class="n">negate</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="get_dict_list_len"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.get_dict_list_len">[docs]</a><span class="k">def</span> <span class="nf">get_dict_list_len</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="p">[],</span> <span class="n">negate</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Gets the sum of each list in dict `d`</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    d : dict of str : list</span>
-<span class="sd">        dict to sums of</span>
+<span class="sd">        * dict to sums of</span>
 <span class="sd">    keys : list of str</span>
-<span class="sd">        list of keys to get sums of, if empty gets a sum of all keys</span>
+<span class="sd">        * list of keys to get sums of, if empty gets a sum of all keys</span>
 <span class="sd">    negate : bool</span>
 <span class="sd">        * only used if keys supplied</span>
 <span class="sd">        * False : get the sums of `d` that do match keys</span>
@@ -2944,7 +2954,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    list_len : int</span>
-<span class="sd">        sum of lists in `d` that match keys</span>
+<span class="sd">        * sum of lists in `d` that match keys</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">keys</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">negate</span><span class="p">:</span>
@@ -2956,20 +2966,20 @@
     <span class="k">return</span> <span class="n">list_len</span>
 
 </div>
-<div class="viewcode-block" id="build_metadatalist_obj"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.build_metadatalist_obj">[docs]</a><span class="k">def</span> <span class="nf">build_metadatalist_obj</span><span class="p">(</span><span class="n">properties</span><span class="p">,</span> <span class="n">nameprefix</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="build_metadatalist_obj"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.build_metadatalist_obj">[docs]</a><span class="k">def</span> <span class="nf">build_metadatalist_obj</span><span class="p">(</span><span class="n">properties</span><span class="p">,</span> <span class="n">nameprefix</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Creates a MetadataList object from properties</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    properties : list of list of strs</span>
-<span class="sd">        list of lists, each list having two strs - str 1: property key, str2: property value</span>
+<span class="sd">        * list of lists, each list having two strs - str 1: property key, str2: property value</span>
 <span class="sd">    nameprefix : str</span>
-<span class="sd">        prefix to insert in front of property key when creating MetadataItem</span>
+<span class="sd">        * prefix to insert in front of property key when creating MetadataItem</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    metadatalist_obj : :class:`taniumpy.object_types.metadata_list.MetadataList`</span>
-<span class="sd">        MetadataList object with list of :class:`taniumpy.object_types.metadata_item.MetadataItem` built from `properties`</span>
+<span class="sd">        * MetadataList object with list of :class:`taniumpy.object_types.metadata_item.MetadataItem` built from `properties`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">metadatalist_obj</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">MetadataList</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">properties</span><span class="p">:</span>
@@ -2986,18 +2996,51 @@
     <span class="k">return</span> <span class="n">metadatalist_obj</span>
 
 </div>
-<div class="viewcode-block" id="get_percentage"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.get_percentage">[docs]</a><span class="k">def</span> <span class="nf">get_percentage</span><span class="p">(</span><span class="n">part</span><span class="p">,</span> <span class="n">whole</span><span class="p">):</span>
+<div class="viewcode-block" id="get_percentage"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.get_percentage">[docs]</a><span class="k">def</span> <span class="nf">get_percentage</span><span class="p">(</span><span class="n">part</span><span class="p">,</span> <span class="n">whole</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Utility method for getting percentage of part out of whole</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    part: int, float</span>
+<span class="sd">    whole: int, float</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    int : the percentage of part out of whole</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="mi">0</span> <span class="ow">in</span> <span class="p">[</span><span class="n">part</span><span class="p">,</span> <span class="n">whole</span><span class="p">]:</span>
         <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
     <span class="k">return</span> <span class="mi">100</span> <span class="o">*</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">part</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">whole</span><span class="p">))</span>
 
 </div>
-<div class="viewcode-block" id="calc_percent"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.calc_percent">[docs]</a><span class="k">def</span> <span class="nf">calc_percent</span><span class="p">(</span><span class="n">percent</span><span class="p">,</span> <span class="n">whole</span><span class="p">):</span>
+<div class="viewcode-block" id="calc_percent"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.calc_percent">[docs]</a><span class="k">def</span> <span class="nf">calc_percent</span><span class="p">(</span><span class="n">percent</span><span class="p">,</span> <span class="n">whole</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Utility method for getting percentage of whole</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    percent: int, float</span>
+<span class="sd">    whole: int, float</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    int : the percentage of whole</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">int</span><span class="p">((</span><span class="n">percent</span> <span class="o">*</span> <span class="n">whole</span><span class="p">)</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">)</span>
 
 </div>
-<div class="viewcode-block" id="plugin_zip"><a class="viewcode-back" href="../../pytan.utils.html#pytan.handler.plugin_zip">[docs]</a><span class="k">def</span> <span class="nf">plugin_zip</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;maps columns to values for each row in a plugins sql_response and returns a list of dicts&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="plugin_zip"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.plugin_zip">[docs]</a><span class="k">def</span> <span class="nf">plugin_zip</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Maps columns to values for each row in a plugins sql_response and returns a list of dicts</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    p : :class:`taniumpy.object_types.plugin.Plugin`</span>
+<span class="sd">        * plugin object</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">        * the columns and result_rows of the sql_response in Plugin object zipped up into a dictionary</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">[</span>
         <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">sql_response</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">sql_response</span><span class="o">.</span><span class="n">result_row</span>
     <span class="p">]</span></div>
@@ -3012,7 +3055,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Aug 07, 2015.
+      Last updated on Aug 27, 2015.
     </p>
   </div>
 
@@ -3033,7 +3076,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'2.0.0',
+            VERSION:'2.1.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

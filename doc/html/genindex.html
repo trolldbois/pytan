@@ -8,7 +8,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Index &mdash; PyTan 2.0.0 documentation</title>
+  <title>Index &mdash; PyTan 2.1.0 documentation</title>
   
 
   
@@ -29,7 +29,7 @@
   
 
   
-    <link rel="top" title="PyTan 2.0.0 documentation" href="index.html"/> 
+    <link rel="top" title="PyTan 2.1.0 documentation" href="index.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -69,18 +69,20 @@
 <li class="toctree-l2"><a class="reference internal" href="introduction.html#installation">1.5. Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="introduction.html#usage">1.6. Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="introduction.html#directory-layout">1.7. Directory Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#other-references">1.8. Other References</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pytan.html">2. pytan package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="examples/pytan_examples.html">2.1. PyTan API examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.handler.html">2.2. pytan.handler module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.exceptions.html">2.3. pytan.exceptions module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.sessions.html">2.4. pytan.sessions module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.pollers.html">2.5. pytan.pollers module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.constants.html">2.6. pytan.constants module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html">2.7. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.handler.html">2.1. pytan.handler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.exceptions.html">2.2. pytan.exceptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.sessions.html">2.3. pytan.sessions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.pollers.html">2.4. pytan.pollers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.constants.html">2.5. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html">2.6. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.xml_clean.html">2.7. pytan.xml_clean module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pytan.unittest.html">2.8. pytan Unit Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pytan.functest.html">2.9. pytan Functional Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/pytan_examples.html">2.10. PyTan API examples</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="taniumpy.html">3. taniumpy package</a><ul>
@@ -178,19 +180,13 @@
   <dt><a href="pytan.pollers.html#pytan.pollers.QuestionPoller.__dict__">__dict__ (pytan.pollers.QuestionPoller attribute)</a>
   </dt>
 
-      <dd><dl>
-        
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.__dict__">(pytan.sessions.Session attribute)</a>
-  </dt>
-
-      </dl></dd>
       
   <dt><a href="pytan.pollers.html#pytan.pollers.QuestionPoller.__init__">__init__() (pytan.pollers.QuestionPoller method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.__init__">(pytan.sessions.Session method)</a>
+  <dt><a href="pytan.pollers.html#pytan.pollers.SSEPoller.__init__">(pytan.pollers.SSEPoller method)</a>
   </dt>
 
       </dl></dd>
@@ -208,15 +204,11 @@
   </dt>
 
         
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.__module__">(pytan.sessions.Session attribute)</a>
+  <dt><a href="pytan.pollers.html#pytan.pollers.SSEPoller.__module__">(pytan.pollers.SSEPoller attribute)</a>
   </dt>
 
         
-  <dt><a href="pytan.functest.html#test_pytan_func.InvalidServerTests.__module__">(test_pytan_func.InvalidServerTests attribute)</a>
-  </dt>
-
-        
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.__module__">(test_pytan_func.ValidServerTests attribute)</a>
+  <dt><a href="pytan.functest.html#test_pytan_invalid_server_tests.InvalidServerTests.__module__">(test_pytan_invalid_server_tests.InvalidServerTests attribute)</a>
   </dt>
 
         
@@ -272,7 +264,11 @@
   </dt>
 
         
-  <dt><a href="threaded_http.html#threaded_http.Handler.__module__">(threaded_http.Handler attribute)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.__module__">(test_pytan_valid_server_tests.ValidServerTests attribute)</a>
+  </dt>
+
+        
+  <dt><a href="threaded_http.html#threaded_http.CustomHTTPHandler.__module__">(threaded_http.CustomHTTPHandler attribute)</a>
   </dt>
 
         
@@ -284,12 +280,6 @@
   <dt><a href="pytan.pollers.html#pytan.pollers.QuestionPoller.__str__">__str__() (pytan.pollers.QuestionPoller method)</a>
   </dt>
 
-      <dd><dl>
-        
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.__str__">(pytan.sessions.Session method)</a>
-  </dt>
-
-      </dl></dd>
       
   <dt><a href="pytan.html#pytan.__version__">__version__ (in module pytan)</a>
   </dt>
@@ -298,12 +288,6 @@
   <dt><a href="pytan.pollers.html#pytan.pollers.QuestionPoller.__weakref__">__weakref__ (pytan.pollers.QuestionPoller attribute)</a>
   </dt>
 
-      <dd><dl>
-        
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.__weakref__">(pytan.sessions.Session attribute)</a>
-  </dt>
-
-      </dl></dd>
       
   <dt><a href="pytan.handler.html#pytan.handler.Handler._add">_add() (pytan.handler.Handler method)</a>
   </dt>
@@ -313,39 +297,63 @@
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session._build_body">_build_body() (pytan.sessions.Session method)</a>, <a href="pytan.sessions.html#pytan.sessions.Session._build_body">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session._build_body">_build_body() (pytan.sessions.Session method)</a>
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session._check_auth">_check_auth() (pytan.sessions.Session method)</a>, <a href="pytan.sessions.html#pytan.sessions.Session._check_auth">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session._check_auth">_check_auth() (pytan.sessions.Session method)</a>
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session._create_add_object_body">_create_add_object_body() (pytan.sessions.Session method)</a>, <a href="pytan.sessions.html#pytan.sessions.Session._create_add_object_body">[1]</a>
+  <dt><a href="pytan.handler.html#pytan.handler.Handler._check_export_format_support">_check_export_format_support() (pytan.handler.Handler method)</a>
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session._create_delete_object_body">_create_delete_object_body() (pytan.sessions.Session method)</a>, <a href="pytan.sessions.html#pytan.sessions.Session._create_delete_object_body">[1]</a>
+  <dt><a href="pytan.handler.html#pytan.handler.Handler._check_sse_crash_prevention">_check_sse_crash_prevention() (pytan.handler.Handler method)</a>
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session._create_get_object_body">_create_get_object_body() (pytan.sessions.Session method)</a>, <a href="pytan.sessions.html#pytan.sessions.Session._create_get_object_body">[1]</a>
+  <dt><a href="pytan.handler.html#pytan.handler.Handler._check_sse_empty_rs">_check_sse_empty_rs() (pytan.handler.Handler method)</a>
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session._create_get_result_data_body">_create_get_result_data_body() (pytan.sessions.Session method)</a>, <a href="pytan.sessions.html#pytan.sessions.Session._create_get_result_data_body">[1]</a>
+  <dt><a href="pytan.handler.html#pytan.handler.Handler._check_sse_timing">_check_sse_timing() (pytan.handler.Handler method)</a>
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session._create_get_result_info_body">_create_get_result_info_body() (pytan.sessions.Session method)</a>, <a href="pytan.sessions.html#pytan.sessions.Session._create_get_result_info_body">[1]</a>
+  <dt><a href="pytan.handler.html#pytan.handler.Handler._check_sse_version">_check_sse_version() (pytan.handler.Handler method)</a>
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session._create_run_plugin_object_body">_create_run_plugin_object_body() (pytan.sessions.Session method)</a>, <a href="pytan.sessions.html#pytan.sessions.Session._create_run_plugin_object_body">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session._clean_headers">_clean_headers() (pytan.sessions.Session method)</a>
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session._create_update_object_body">_create_update_object_body() (pytan.sessions.Session method)</a>, <a href="pytan.sessions.html#pytan.sessions.Session._create_update_object_body">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session._create_add_object_body">_create_add_object_body() (pytan.sessions.Session method)</a>
+  </dt>
+
+      
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session._create_delete_object_body">_create_delete_object_body() (pytan.sessions.Session method)</a>
+  </dt>
+
+      
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session._create_get_object_body">_create_get_object_body() (pytan.sessions.Session method)</a>
+  </dt>
+
+      
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session._create_get_result_data_body">_create_get_result_data_body() (pytan.sessions.Session method)</a>
+  </dt>
+
+      
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session._create_get_result_info_body">_create_get_result_info_body() (pytan.sessions.Session method)</a>
+  </dt>
+
+      
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session._create_run_plugin_object_body">_create_run_plugin_object_body() (pytan.sessions.Session method)</a>
+  </dt>
+
+      
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session._create_update_object_body">_create_update_object_body() (pytan.sessions.Session method)</a>
   </dt>
 
       
@@ -367,12 +375,12 @@
 
       </dl></dd>
       
-  <dt><a href="pytan.pollers.html#pytan.pollers.ActionPoller._derive_info">_derive_info() (pytan.pollers.ActionPoller method)</a>, <a href="pytan.pollers.html#pytan.pollers.ActionPoller._derive_info">[1]</a>
+  <dt><a href="pytan.pollers.html#pytan.pollers.ActionPoller._derive_object_info">_derive_object_info() (pytan.pollers.ActionPoller method)</a>, <a href="pytan.pollers.html#pytan.pollers.ActionPoller._derive_object_info">[1]</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="pytan.pollers.html#pytan.pollers.QuestionPoller._derive_info">(pytan.pollers.QuestionPoller method)</a>, <a href="pytan.pollers.html#pytan.pollers.QuestionPoller._derive_info">[1]</a>
+  <dt><a href="pytan.pollers.html#pytan.pollers.QuestionPoller._derive_object_info">(pytan.pollers.QuestionPoller method)</a>, <a href="pytan.pollers.html#pytan.pollers.QuestionPoller._derive_object_info">[1]</a>
   </dt>
 
       </dl></dd>
@@ -385,12 +393,6 @@
   </dt>
 
       
-  <dt><a href="pytan.handler.html#pytan.handler.Handler._derive_server_version">_derive_server_version() (pytan.handler.Handler method)</a>
-  </dt>
-
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
-      
   <dt><a href="pytan.pollers.html#pytan.pollers.ActionPoller._derive_status">_derive_status() (pytan.pollers.ActionPoller method)</a>, <a href="pytan.pollers.html#pytan.pollers.ActionPoller._derive_status">[1]</a>
   </dt>
 
@@ -398,6 +400,8 @@
   <dt><a href="pytan.pollers.html#pytan.pollers.ActionPoller._derive_stopped_flag">_derive_stopped_flag() (pytan.pollers.ActionPoller method)</a>, <a href="pytan.pollers.html#pytan.pollers.ActionPoller._derive_stopped_flag">[1]</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="pytan.pollers.html#pytan.pollers.ActionPoller._derive_target_group">_derive_target_group() (pytan.pollers.ActionPoller method)</a>, <a href="pytan.pollers.html#pytan.pollers.ActionPoller._derive_target_group">[1]</a>
   </dt>
@@ -427,11 +431,19 @@
   </dt>
 
       
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session._extract_cdata_el">_extract_cdata_el() (pytan.sessions.Session method)</a>
+  </dt>
+
+      
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session._extract_export_id">_extract_export_id() (pytan.sessions.Session method)</a>
+  </dt>
+
+      
   <dt><a href="pytan.handler.html#pytan.handler.Handler._find">_find() (pytan.handler.Handler method)</a>
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session._find_stat_target">_find_stat_target() (pytan.sessions.Session method)</a>, <a href="pytan.sessions.html#pytan.sessions.Session._find_stat_target">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session._find_stat_target">_find_stat_target() (pytan.sessions.Session method)</a>
   </dt>
 
       
@@ -439,7 +451,11 @@
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session._flatten_server_info">_flatten_server_info() (pytan.sessions.Session method)</a>, <a href="pytan.sessions.html#pytan.sessions.Session._flatten_server_info">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session._flatten_server_info">_flatten_server_info() (pytan.sessions.Session method)</a>
+  </dt>
+
+      
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session._full_url">_full_url() (pytan.sessions.Session method)</a>
   </dt>
 
       
@@ -451,11 +467,11 @@
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session._get_percentage">_get_percentage() (pytan.sessions.Session method)</a>, <a href="pytan.sessions.html#pytan.sessions.Session._get_percentage">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session._get_percentage">_get_percentage() (pytan.sessions.Session method)</a>
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session._get_response">_get_response() (pytan.sessions.Session method)</a>, <a href="pytan.sessions.html#pytan.sessions.Session._get_response">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session._get_response">_get_response() (pytan.sessions.Session method)</a>
   </dt>
 
       
@@ -467,11 +483,23 @@
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session._http_post">_http_post() (pytan.sessions.Session method)</a>, <a href="pytan.sessions.html#pytan.sessions.Session._http_post">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session._http_get">_http_get() (pytan.sessions.Session method)</a>
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session._parse_response_for_regex">_parse_response_for_regex() (pytan.sessions.Session method)</a>, <a href="pytan.sessions.html#pytan.sessions.Session._parse_response_for_regex">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session._http_post">_http_post() (pytan.sessions.Session method)</a>
+  </dt>
+
+      
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session._parse_response_for_regex">_parse_response_for_regex() (pytan.sessions.Session method)</a>
+  </dt>
+
+      
+  <dt><a href="pytan.handler.html#pytan.handler.Handler._parse_versioning">_parse_versioning() (pytan.handler.Handler method)</a>
+  </dt>
+
+      
+  <dt><a href="pytan.handler.html#pytan.handler.Handler._platform_is_6_2">_platform_is_6_2() (pytan.handler.Handler method)</a>
   </dt>
 
       
@@ -483,13 +511,25 @@
   <dt><a href="pytan.pollers.html#pytan.pollers.QuestionPoller._post_init">(pytan.pollers.QuestionPoller method)</a>, <a href="pytan.pollers.html#pytan.pollers.QuestionPoller._post_init">[1]</a>
   </dt>
 
+        
+  <dt><a href="pytan.pollers.html#pytan.pollers.SSEPoller._post_init">(pytan.pollers.SSEPoller method)</a>
+  </dt>
+
       </dl></dd>
       
   <dt><a href="pytan.pollers.html#pytan.pollers.QuestionPoller._refetch_obj">_refetch_obj() (pytan.pollers.QuestionPoller method)</a>, <a href="pytan.pollers.html#pytan.pollers.QuestionPoller._refetch_obj">[1]</a>
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session._resolve_stat_target">_resolve_stat_target() (pytan.sessions.Session method)</a>, <a href="pytan.sessions.html#pytan.sessions.Session._resolve_stat_target">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session._replace_auth">_replace_auth() (pytan.sessions.Session method)</a>
+  </dt>
+
+      
+  <dt><a href="pytan.handler.html#pytan.handler.Handler._resolve_sse_format">_resolve_sse_format() (pytan.handler.Handler method)</a>
+  </dt>
+
+      
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session._resolve_stat_target">_resolve_stat_target() (pytan.sessions.Session method)</a>
   </dt>
 
       
@@ -497,11 +537,15 @@
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session._start_stats_thread">_start_stats_thread() (pytan.sessions.Session method)</a>, <a href="pytan.sessions.html#pytan.sessions.Session._start_stats_thread">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session._start_stats_thread">_start_stats_thread() (pytan.sessions.Session method)</a>
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session._stats_loop">_stats_loop() (pytan.sessions.Session method)</a>, <a href="pytan.sessions.html#pytan.sessions.Session._stats_loop">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session._stats_loop">_stats_loop() (pytan.sessions.Session method)</a>
+  </dt>
+
+      
+  <dt><a href="pytan.handler.html#pytan.handler.Handler._version_support_check">_version_support_check() (pytan.handler.Handler method)</a>
   </dt>
 
   </dl></td>
@@ -539,7 +583,7 @@
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.add">add() (pytan.sessions.Session method)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.add">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.add">add() (pytan.sessions.Session method)</a>
   </dt>
 
       
@@ -551,7 +595,7 @@
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.ADD_OBJECT_CMD">ADD_OBJECT_CMD (pytan.sessions.Session attribute)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.ADD_OBJECT_CMD">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.ADD_OBJECT_CMD">ADD_OBJECT_CMD (pytan.sessions.Session attribute)</a>
   </dt>
 
       
@@ -593,23 +637,19 @@
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.AUTH_CONNECT_TIMEOUT_SEC">AUTH_CONNECT_TIMEOUT_SEC (pytan.sessions.Session attribute)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.AUTH_CONNECT_TIMEOUT_SEC">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.AUTH_CONNECT_TIMEOUT_SEC">AUTH_CONNECT_TIMEOUT_SEC (pytan.sessions.Session attribute)</a>
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.AUTH_RES">AUTH_RES (pytan.sessions.Session attribute)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.AUTH_RES">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.AUTH_RES">AUTH_RES (pytan.sessions.Session attribute)</a>
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.AUTH_RESPONSE_TIMEOUT_SEC">AUTH_RESPONSE_TIMEOUT_SEC (pytan.sessions.Session attribute)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.AUTH_RESPONSE_TIMEOUT_SEC">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.AUTH_RESPONSE_TIMEOUT_SEC">AUTH_RESPONSE_TIMEOUT_SEC (pytan.sessions.Session attribute)</a>
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.authenticate">authenticate() (pytan.sessions.Session method)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.authenticate">[1]</a>
-  </dt>
-
-      
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.authlog">authlog (pytan.sessions.Session attribute)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.authlog">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.authenticate">authenticate() (pytan.sessions.Session method)</a>
   </dt>
 
       
@@ -628,10 +668,6 @@
 
       
   <dt><a href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType">BaseType (class in taniumpy.object_types.base)</a>
-  </dt>
-
-      
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.bodyhttplog">bodyhttplog (pytan.sessions.Session attribute)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.bodyhttplog">[1]</a>
   </dt>
 
       
@@ -691,7 +727,7 @@
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.chew_csv">chew_csv() (in module test_pytan_func)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.chew_csv">chew_csv() (in module test_pytan_valid_server_tests)</a>
   </dt>
 
       
@@ -715,7 +751,7 @@
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.COMMAND_RE">COMMAND_RE (pytan.sessions.Session attribute)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.COMMAND_RE">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.COMMAND_RE">COMMAND_RE (pytan.sessions.Session attribute)</a>
   </dt>
 
       
@@ -782,6 +818,10 @@
   <dt><a href="pytan.utils.html#pytan.utils.CustomArgParse">CustomArgParse (class in pytan.utils)</a>
   </dt>
 
+      
+  <dt><a href="threaded_http.html#threaded_http.CustomHTTPHandler">CustomHTTPHandler (class in threaded_http)</a>
+  </dt>
+
   </dl></td>
 </tr></table>
 
@@ -806,6 +846,10 @@
 
       
   <dt><a href="pytan.constants.html#pytan.constants.DEBUG_FORMAT">DEBUG_FORMAT (in module pytan.constants)</a>
+  </dt>
+
+      
+  <dt><a href="pytan.xml_clean.html#pytan.xml_clean.DEFAULT_REPLACEMENT">DEFAULT_REPLACEMENT (in module pytan.xml_clean)</a>
   </dt>
 
       
@@ -836,7 +880,7 @@
 
       <dd><dl>
         
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.delete">(pytan.sessions.Session method)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.delete">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.delete">(pytan.sessions.Session method)</a>
   </dt>
 
       </dl></dd>
@@ -845,7 +889,7 @@
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.DELETE_OBJECT_CMD">DELETE_OBJECT_CMD (pytan.sessions.Session attribute)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.DELETE_OBJECT_CMD">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.DELETE_OBJECT_CMD">DELETE_OBJECT_CMD (pytan.sessions.Session attribute)</a>
   </dt>
 
       
@@ -857,15 +901,15 @@
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.disable_stats_loop">disable_stats_loop() (pytan.sessions.Session method)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.disable_stats_loop">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.disable_stats_loop">disable_stats_loop() (pytan.sessions.Session method)</a>
   </dt>
 
       
-  <dt><a href="threaded_http.html#threaded_http.Handler.do_GET">do_GET() (threaded_http.Handler method)</a>
+  <dt><a href="threaded_http.html#threaded_http.CustomHTTPHandler.do_GET">do_GET() (threaded_http.CustomHTTPHandler method)</a>
   </dt>
 
       
-  <dt><a href="threaded_http.html#threaded_http.Handler.do_POST">do_POST() (threaded_http.Handler method)</a>
+  <dt><a href="threaded_http.html#threaded_http.CustomHTTPHandler.do_POST">do_POST() (threaded_http.CustomHTTPHandler method)</a>
   </dt>
 
   </dl></td>
@@ -883,7 +927,11 @@
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.enable_stats_loop">enable_stats_loop() (pytan.sessions.Session method)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.enable_stats_loop">[1]</a>
+  <dt><a href="threaded_http.html#threaded_http.CustomHTTPHandler.ENABLE_LOGGING">ENABLE_LOGGING (threaded_http.CustomHTTPHandler attribute)</a>
+  </dt>
+
+      
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.enable_stats_loop">enable_stats_loop() (pytan.sessions.Session method)</a>
   </dt>
 
       
@@ -959,7 +1007,7 @@
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.find">find() (pytan.sessions.Session method)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.find">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.find">find() (pytan.sessions.Session method)</a>
   </dt>
 
   </dl></td>
@@ -1065,15 +1113,15 @@
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.GET_OBJECT_CMD">GET_OBJECT_CMD (pytan.sessions.Session attribute)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.GET_OBJECT_CMD">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.GET_OBJECT_CMD">GET_OBJECT_CMD (pytan.sessions.Session attribute)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="pytan.utils.html#pytan.utils.get_percentage">get_percentage() (in module pytan.utils)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="pytan.utils.html#pytan.utils.get_q_obj_map">get_q_obj_map() (in module pytan.utils)</a>
   </dt>
@@ -1088,12 +1136,16 @@
   </dt>
 
         
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.get_result_data">(pytan.sessions.Session method)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.get_result_data">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.get_result_data">(pytan.sessions.Session method)</a>
   </dt>
 
       </dl></dd>
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.GET_RESULT_DATA_CMD">GET_RESULT_DATA_CMD (pytan.sessions.Session attribute)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.GET_RESULT_DATA_CMD">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.GET_RESULT_DATA_CMD">GET_RESULT_DATA_CMD (pytan.sessions.Session attribute)</a>
+  </dt>
+
+      
+  <dt><a href="pytan.handler.html#pytan.handler.Handler.get_result_data_sse">get_result_data_sse() (pytan.handler.Handler method)</a>
   </dt>
 
       
@@ -1106,24 +1158,38 @@
   </dt>
 
         
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.get_result_info">(pytan.sessions.Session method)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.get_result_info">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.get_result_info">(pytan.sessions.Session method)</a>
   </dt>
 
       </dl></dd>
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.GET_RESULT_INFO_CMD">GET_RESULT_INFO_CMD (pytan.sessions.Session attribute)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.GET_RESULT_INFO_CMD">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.GET_RESULT_INFO_CMD">GET_RESULT_INFO_CMD (pytan.sessions.Session attribute)</a>
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.get_server_info">get_server_info() (pytan.sessions.Session method)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.get_server_info">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.get_server_info">get_server_info() (pytan.sessions.Session method)</a>
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.get_server_stats">get_server_stats() (pytan.sessions.Session method)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.get_server_stats">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.get_server_stats">get_server_stats() (pytan.sessions.Session method)</a>
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.get_server_version">get_server_version() (pytan.sessions.Session method)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.get_server_version">[1]</a>
+  <dt><a href="pytan.handler.html#pytan.handler.Handler.get_server_version">get_server_version() (pytan.handler.Handler method)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.get_server_version">(pytan.sessions.Session method)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="pytan.pollers.html#pytan.pollers.SSEPoller.get_sse_data">get_sse_data() (pytan.pollers.SSEPoller method)</a>
+  </dt>
+
+      
+  <dt><a href="pytan.pollers.html#pytan.pollers.SSEPoller.get_sse_status">get_sse_status() (pytan.pollers.SSEPoller method)</a>
   </dt>
 
       
@@ -1148,40 +1214,34 @@
   <dt><a href="pytan.handler.html#pytan.handler.Handler">Handler (class in pytan.handler)</a>
   </dt>
 
-      <dd><dl>
-        
-  <dt><a href="threaded_http.html#threaded_http.Handler">(class in threaded_http)</a>
-  </dt>
-
-      </dl></dd>
       
   <dt><a href="pytan.exceptions.html#pytan.exceptions.HandlerError">HandlerError</a>
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.HTTP_AUTH_RETRY">HTTP_AUTH_RETRY (pytan.sessions.Session attribute)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.HTTP_AUTH_RETRY">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.HTTP_AUTH_RETRY">HTTP_AUTH_RETRY (pytan.sessions.Session attribute)</a>
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.HTTP_DEBUG">HTTP_DEBUG (pytan.sessions.Session attribute)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.HTTP_DEBUG">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.HTTP_DEBUG">HTTP_DEBUG (pytan.sessions.Session attribute)</a>
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.http_post">http_post() (pytan.sessions.Session method)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.http_post">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.http_get">http_get() (pytan.sessions.Session method)</a>
   </dt>
 
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.HTTP_RETRY_COUNT">HTTP_RETRY_COUNT (pytan.sessions.Session attribute)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.HTTP_RETRY_COUNT">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.http_post">http_post() (pytan.sessions.Session method)</a>
+  </dt>
+
+      
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.HTTP_RETRY_COUNT">HTTP_RETRY_COUNT (pytan.sessions.Session attribute)</a>
   </dt>
 
       
   <dt><a href="pytan.exceptions.html#pytan.exceptions.HttpError">HttpError</a>
-  </dt>
-
-      
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.httplog">httplog (pytan.sessions.Session attribute)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.httplog">[1]</a>
   </dt>
 
       
@@ -1203,7 +1263,7 @@
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.INFO_CONNECT_TIMEOUT_SEC">INFO_CONNECT_TIMEOUT_SEC (pytan.sessions.Session attribute)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.INFO_CONNECT_TIMEOUT_SEC">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.INFO_CONNECT_TIMEOUT_SEC">INFO_CONNECT_TIMEOUT_SEC (pytan.sessions.Session attribute)</a>
   </dt>
 
       
@@ -1211,21 +1271,29 @@
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.INFO_RES">INFO_RES (pytan.sessions.Session attribute)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.INFO_RES">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.INFO_RES">INFO_RES (pytan.sessions.Session attribute)</a>
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.INFO_RESPONSE_TIMEOUT_SEC">INFO_RESPONSE_TIMEOUT_SEC (pytan.sessions.Session attribute)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.INFO_RESPONSE_TIMEOUT_SEC">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.INFO_RESPONSE_TIMEOUT_SEC">INFO_RESPONSE_TIMEOUT_SEC (pytan.sessions.Session attribute)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.InvalidServerTests">InvalidServerTests (class in test_pytan_func)</a>
+  <dt><a href="pytan.xml_clean.html#pytan.xml_clean.INVALID_UNICODE_RAW_RE">INVALID_UNICODE_RAW_RE (in module pytan.xml_clean)</a>
+  </dt>
+
+      
+  <dt><a href="pytan.xml_clean.html#pytan.xml_clean.INVALID_UNICODE_RE">INVALID_UNICODE_RE (in module pytan.xml_clean)</a>
   </dt>
 
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.is_auth">is_auth (pytan.sessions.Session attribute)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.is_auth">[1]</a>
+  <dt><a href="pytan.functest.html#test_pytan_invalid_server_tests.InvalidServerTests">InvalidServerTests (class in test_pytan_invalid_server_tests)</a>
+  </dt>
+
+      
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.is_auth">is_auth (pytan.sessions.Session attribute)</a>
   </dt>
 
       
@@ -1279,7 +1347,7 @@
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="threaded_http.html#threaded_http.Handler.log_message">log_message() (threaded_http.Handler method)</a>
+  <dt><a href="threaded_http.html#threaded_http.CustomHTTPHandler.log_message">log_message() (threaded_http.CustomHTTPHandler method)</a>
   </dt>
 
       
@@ -1287,7 +1355,7 @@
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.logout">logout() (pytan.sessions.Session method)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.logout">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.logout">logout() (pytan.sessions.Session method)</a>
   </dt>
 
   </dl></td>
@@ -1308,22 +1376,18 @@
   <dt><a href="pytan.utils.html#pytan.utils.map_options">map_options() (in module pytan.utils)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="taniumpy.object_types.html#taniumpy.object_types.metadata_item.MetadataItem">MetadataItem (class in taniumpy.object_types.metadata_item)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="taniumpy.object_types.html#taniumpy.object_types.metadata_list.MetadataList">MetadataList (class in taniumpy.object_types.metadata_list)</a>
   </dt>
 
       
   <dt><a href="ddt.html#ddt.mk_test_name">mk_test_name() (in module ddt)</a>
-  </dt>
-
-      
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.mylog">mylog (pytan.sessions.Session attribute)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.mylog">[1]</a>
   </dt>
 
   </dl></td>
@@ -1480,12 +1544,12 @@
   <dt><a href="pytan.utils.html#pytan.utils.plugin_zip">plugin_zip() (in module pytan.utils)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="taniumpy.object_types.html#taniumpy.object_types.plugin_argument.PluginArgument">PluginArgument (class in taniumpy.object_types.plugin_argument)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="taniumpy.object_types.html#taniumpy.object_types.plugin_argument_list.PluginArgumentList">PluginArgumentList (class in taniumpy.object_types.plugin_argument_list)</a>
   </dt>
@@ -1519,9 +1583,29 @@
   </dt>
 
       
+  <dt><a href="pytan.pollers.html#pytan.pollers.ActionPoller.pollerlog">pollerlog (pytan.pollers.ActionPoller attribute)</a>, <a href="pytan.pollers.html#pytan.pollers.ActionPoller.pollerlog">[1]</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="pytan.pollers.html#pytan.pollers.QuestionPoller.pollerlog">(pytan.pollers.QuestionPoller attribute)</a>, <a href="pytan.pollers.html#pytan.pollers.QuestionPoller.pollerlog">[1]</a>
+  </dt>
+
+        
+  <dt><a href="pytan.pollers.html#pytan.pollers.SSEPoller.pollerlog">(pytan.pollers.SSEPoller attribute)</a>
+  </dt>
+
+      </dl></dd>
+      
   <dt><a href="pytan.pollers.html#pytan.pollers.QuestionPoller.POLLING_SECS">POLLING_SECS (pytan.pollers.QuestionPoller attribute)</a>, <a href="pytan.pollers.html#pytan.pollers.QuestionPoller.POLLING_SECS">[1]</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="pytan.pollers.html#pytan.pollers.SSEPoller.POLLING_SECS">(pytan.pollers.SSEPoller attribute)</a>
+  </dt>
+
+      </dl></dd>
       
   <dt><a href="pytan.exceptions.html#pytan.exceptions.PollingError">PollingError</a>
   </dt>
@@ -1551,6 +1635,20 @@
   </dt>
 
       
+  <dt><a href="pytan.pollers.html#pytan.pollers.ActionPoller.progresslog">progresslog (pytan.pollers.ActionPoller attribute)</a>, <a href="pytan.pollers.html#pytan.pollers.ActionPoller.progresslog">[1]</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="pytan.pollers.html#pytan.pollers.QuestionPoller.progresslog">(pytan.pollers.QuestionPoller attribute)</a>, <a href="pytan.pollers.html#pytan.pollers.QuestionPoller.progresslog">[1]</a>
+  </dt>
+
+        
+  <dt><a href="pytan.pollers.html#pytan.pollers.SSEPoller.progresslog">(pytan.pollers.SSEPoller attribute)</a>
+  </dt>
+
+      </dl></dd>
+      
   <dt><a href="pytan.html#module-pytan">pytan (module)</a>
   </dt>
 
@@ -1579,6 +1677,10 @@
   </dt>
 
       
+  <dt><a href="pytan.xml_clean.html#module-pytan.xml_clean">pytan.xml_clean (module)</a>
+  </dt>
+
+      
   <dt><a href="pytan.exceptions.html#pytan.exceptions.PytanHelp">PytanHelp</a>
   </dt>
 
@@ -1593,35 +1695,15 @@
   </dt>
 
       
-  <dt><a href="pytan.pollers.html#pytan.pollers.ActionPoller.qplog">qplog (pytan.pollers.ActionPoller attribute)</a>, <a href="pytan.pollers.html#pytan.pollers.ActionPoller.qplog">[1]</a>
-  </dt>
-
-      <dd><dl>
-        
-  <dt><a href="pytan.pollers.html#pytan.pollers.QuestionPoller.qplog">(pytan.pollers.QuestionPoller attribute)</a>, <a href="pytan.pollers.html#pytan.pollers.QuestionPoller.qplog">[1]</a>
-  </dt>
-
-      </dl></dd>
-      
-  <dt><a href="pytan.pollers.html#pytan.pollers.ActionPoller.qpplog">qpplog (pytan.pollers.ActionPoller attribute)</a>, <a href="pytan.pollers.html#pytan.pollers.ActionPoller.qpplog">[1]</a>
-  </dt>
-
-      <dd><dl>
-        
-  <dt><a href="pytan.pollers.html#pytan.pollers.QuestionPoller.qpplog">(pytan.pollers.QuestionPoller attribute)</a>, <a href="pytan.pollers.html#pytan.pollers.QuestionPoller.qpplog">[1]</a>
-  </dt>
-
-      </dl></dd>
-      
   <dt><a href="taniumpy.object_types.html#taniumpy.object_types.question.Question">Question (class in taniumpy.object_types.question)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="taniumpy.object_types.html#taniumpy.object_types.question_list.QuestionList">QuestionList (class in taniumpy.object_types.question_list)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="taniumpy.object_types.html#taniumpy.object_types.question_list_info.QuestionListInfo">QuestionListInfo (class in taniumpy.object_types.question_list_info)</a>
   </dt>
@@ -1641,23 +1723,41 @@
   </dt>
 
       
+  <dt><a href="pytan.xml_clean.html#pytan.xml_clean.replace_invalid_unicode">replace_invalid_unicode() (in module pytan.xml_clean)</a>
+  </dt>
+
+      
+  <dt><a href="pytan.xml_clean.html#pytan.xml_clean.replace_restricted_unicode">replace_restricted_unicode() (in module pytan.xml_clean)</a>
+  </dt>
+
+      
   <dt><a href="pytan.constants.html#pytan.constants.REQ_KWARGS">REQ_KWARGS (in module pytan.constants)</a>
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.REQ_SESSION">REQ_SESSION (pytan.sessions.Session attribute)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.REQ_SESSION">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.REQ_SESSION">REQ_SESSION (pytan.sessions.Session attribute)</a>
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.REQUEST_BODY_BASE">REQUEST_BODY_BASE (pytan.sessions.Session attribute)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.REQUEST_BODY_BASE">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.REQUEST_BODY_BASE">REQUEST_BODY_BASE (pytan.sessions.Session attribute)</a>
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.REQUEST_BODY_TEMPLATE">REQUEST_BODY_TEMPLATE (pytan.sessions.Session attribute)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.REQUEST_BODY_TEMPLATE">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.REQUEST_BODY_TEMPLATE">REQUEST_BODY_TEMPLATE (pytan.sessions.Session attribute)</a>
   </dt>
 
       
   <dt><a href="requests.html#module-requests">requests (module)</a>
+  </dt>
+
+      
+  <dt><a href="pytan.xml_clean.html#pytan.xml_clean.RESTRICTED_UNICODE_RAW_RE">RESTRICTED_UNICODE_RAW_RE (in module pytan.xml_clean)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pytan.xml_clean.html#pytan.xml_clean.RESTRICTED_UNICODE_RE">RESTRICTED_UNICODE_RE (in module pytan.xml_clean)</a>
   </dt>
 
       
@@ -1668,8 +1768,6 @@
   <dt><a href="taniumpy.object_types.html#taniumpy.object_types.result_set.ResultSet">ResultSet (class in taniumpy.object_types.result_set)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="taniumpy.object_types.html#taniumpy.object_types.row.Row">Row (class in taniumpy.object_types.row)</a>
   </dt>
@@ -1683,6 +1781,10 @@
   <dt><a href="pytan.pollers.html#pytan.pollers.QuestionPoller.run">(pytan.pollers.QuestionPoller method)</a>, <a href="pytan.pollers.html#pytan.pollers.QuestionPoller.run">[1]</a>
   </dt>
 
+        
+  <dt><a href="pytan.pollers.html#pytan.pollers.SSEPoller.run">(pytan.pollers.SSEPoller method)</a>
+  </dt>
+
       </dl></dd>
       
   <dt><a href="pytan.handler.html#pytan.handler.Handler.run_plugin">run_plugin() (pytan.handler.Handler method)</a>
@@ -1690,12 +1792,12 @@
 
       <dd><dl>
         
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.run_plugin">(pytan.sessions.Session method)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.run_plugin">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.run_plugin">(pytan.sessions.Session method)</a>
   </dt>
 
       </dl></dd>
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.RUN_PLUGIN_CMD">RUN_PLUGIN_CMD (pytan.sessions.Session attribute)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.RUN_PLUGIN_CMD">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.RUN_PLUGIN_CMD">RUN_PLUGIN_CMD (pytan.sessions.Session attribute)</a>
   </dt>
 
       
@@ -1706,10 +1808,6 @@
   <dt><a href="pytan.pollers.html#pytan.pollers.ActionPoller.RUNNING_STATUSES">RUNNING_STATUSES (pytan.pollers.ActionPoller attribute)</a>, <a href="pytan.pollers.html#pytan.pollers.ActionPoller.RUNNING_STATUSES">[1]</a>
   </dt>
 
-      
-  <dt><a href="pytan.exceptions.html#pytan.exceptions.RunPluginError">RunPluginError</a>
-  </dt>
-
   </dl></td>
 </tr></table>
 
@@ -1717,7 +1815,7 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.save">save() (pytan.sessions.Session method)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.save">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.save">save() (pytan.sessions.Session method)</a>
   </dt>
 
       
@@ -1797,27 +1895,15 @@
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.SERVER_STATS">SERVER_STATS (pytan.sessions.Session attribute)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.SERVER_STATS">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session">Session (class in pytan.sessions)</a>
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.SERVER_STATS_SLEEP">SERVER_STATS_SLEEP (pytan.sessions.Session attribute)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.SERVER_STATS_SLEEP">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.session_id">session_id (pytan.sessions.Session attribute)</a>
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.SERVER_STATS_TARGETS">SERVER_STATS_TARGETS (pytan.sessions.Session attribute)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.SERVER_STATS_TARGETS">[1]</a>
-  </dt>
-
-      
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session">Session (class in pytan.sessions)</a>, <a href="pytan.sessions.html#pytan.sessions.Session">[1]</a>
-  </dt>
-
-      
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.session_id">session_id (pytan.sessions.Session attribute)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.session_id">[1]</a>
-  </dt>
-
-      
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.SESSION_RE">SESSION_RE (pytan.sessions.Session attribute)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.SESSION_RE">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.SESSION_RE">SESSION_RE (pytan.sessions.Session attribute)</a>
   </dt>
 
       
@@ -1832,8 +1918,6 @@
   <dt><a href="pytan.utils.html#pytan.utils.set_log_levels">set_log_levels() (in module pytan.utils)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="pytan.utils.html#pytan.utils.setup_ask_manual_argparser">setup_ask_manual_argparser() (in module pytan.utils)</a>
   </dt>
@@ -1854,6 +1938,8 @@
   <dt><a href="pytan.utils.html#pytan.utils.setup_delete_object_argparser">setup_delete_object_argparser() (in module pytan.utils)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="pytan.utils.html#pytan.utils.setup_deploy_action_argparser">setup_deploy_action_argparser() (in module pytan.utils)</a>
   </dt>
@@ -1875,20 +1961,20 @@
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.setup_test">setup_test() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.setup_test">setup_test() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.InvalidServerTests.setUpClass">setUpClass() (test_pytan_func.InvalidServerTests class method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_invalid_server_tests.InvalidServerTests.setUpClass">setUpClass() (test_pytan_invalid_server_tests.InvalidServerTests class method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.setUpClass">(test_pytan_func.ValidServerTests class method)</a>
+  <dt><a href="pytan.unittest.html#test_pytan_unit.TestManualBuildObjectUtils.setUpClass">(test_pytan_unit.TestManualBuildObjectUtils class method)</a>
   </dt>
 
         
-  <dt><a href="pytan.unittest.html#test_pytan_unit.TestManualBuildObjectUtils.setUpClass">(test_pytan_unit.TestManualBuildObjectUtils class method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.setUpClass">(test_pytan_valid_server_tests.ValidServerTests class method)</a>
   </dt>
 
       </dl></dd>
@@ -1897,19 +1983,19 @@
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.SOAP_CONNECT_TIMEOUT_SEC">SOAP_CONNECT_TIMEOUT_SEC (pytan.sessions.Session attribute)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.SOAP_CONNECT_TIMEOUT_SEC">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.SOAP_CONNECT_TIMEOUT_SEC">SOAP_CONNECT_TIMEOUT_SEC (pytan.sessions.Session attribute)</a>
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.SOAP_REQUEST_HEADERS">SOAP_REQUEST_HEADERS (pytan.sessions.Session attribute)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.SOAP_REQUEST_HEADERS">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.SOAP_REQUEST_HEADERS">SOAP_REQUEST_HEADERS (pytan.sessions.Session attribute)</a>
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.SOAP_RES">SOAP_RES (pytan.sessions.Session attribute)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.SOAP_RES">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.SOAP_RES">SOAP_RES (pytan.sessions.Session attribute)</a>
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.SOAP_RESPONSE_TIMEOUT_SEC">SOAP_RESPONSE_TIMEOUT_SEC (pytan.sessions.Session attribute)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.SOAP_RESPONSE_TIMEOUT_SEC">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.SOAP_RESPONSE_TIMEOUT_SEC">SOAP_RESPONSE_TIMEOUT_SEC (pytan.sessions.Session attribute)</a>
   </dt>
 
       
@@ -1922,7 +2008,11 @@
 
       <dd><dl>
         
-  <dt><a href="pytan.functest.html#test_pytan_func.spew">(in module test_pytan_func)</a>
+  <dt><a href="pytan.functest.html#test_pytan_invalid_server_tests.spew">(in module test_pytan_invalid_server_tests)</a>
+  </dt>
+
+        
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.spew">(in module test_pytan_valid_server_tests)</a>
   </dt>
 
       </dl></dd>
@@ -1931,7 +2021,35 @@
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.statslog">statslog (pytan.sessions.Session attribute)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.statslog">[1]</a>
+  <dt><a href="pytan.constants.html#pytan.constants.SSE_CRASH_MAP">SSE_CRASH_MAP (in module pytan.constants)</a>
+  </dt>
+
+      
+  <dt><a href="pytan.constants.html#pytan.constants.SSE_FORMAT_MAP">SSE_FORMAT_MAP (in module pytan.constants)</a>
+  </dt>
+
+      
+  <dt><a href="pytan.constants.html#pytan.constants.SSE_RESTRICT_MAP">SSE_RESTRICT_MAP (in module pytan.constants)</a>
+  </dt>
+
+      
+  <dt><a href="pytan.pollers.html#pytan.pollers.SSEPoller.sse_status_completed">sse_status_completed() (pytan.pollers.SSEPoller method)</a>
+  </dt>
+
+      
+  <dt><a href="pytan.pollers.html#pytan.pollers.SSEPoller">SSEPoller (class in pytan.pollers)</a>
+  </dt>
+
+      
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.STATS_LOOP_ENABLED">STATS_LOOP_ENABLED (pytan.sessions.Session attribute)</a>
+  </dt>
+
+      
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.STATS_LOOP_SLEEP_SEC">STATS_LOOP_SLEEP_SEC (pytan.sessions.Session attribute)</a>
+  </dt>
+
+      
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.STATS_LOOP_TARGETS">STATS_LOOP_TARGETS (pytan.sessions.Session attribute)</a>
   </dt>
 
       
@@ -1946,6 +2064,12 @@
   <dt><a href="pytan.pollers.html#pytan.pollers.QuestionPoller.STR_ATTRS">STR_ATTRS (pytan.pollers.QuestionPoller attribute)</a>, <a href="pytan.pollers.html#pytan.pollers.QuestionPoller.STR_ATTRS">[1]</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="pytan.pollers.html#pytan.pollers.SSEPoller.STR_ATTRS">(pytan.pollers.SSEPoller attribute)</a>
+  </dt>
+
+      </dl></dd>
       
   <dt><a href="taniumpy.object_types.html#taniumpy.object_types.string_hint_list.StringHintList">StringHintList (class in taniumpy.object_types.string_hint_list)</a>
   </dt>
@@ -2373,6 +2497,10 @@
   </dt>
 
       
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.tearDownClass">tearDownClass() (test_pytan_valid_server_tests.ValidServerTests class method)</a>
+  </dt>
+
+      
   <dt><a href="pytan.utils.html#pytan.utils.test_app_port">test_app_port() (in module pytan.utils)</a>
   </dt>
 
@@ -2561,115 +2689,115 @@
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.InvalidServerTests.test_invalid_connect_1_bad_username">test_invalid_connect_1_bad_username() (test_pytan_func.InvalidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_invalid_server_tests.InvalidServerTests.test_invalid_connect_1_bad_username">test_invalid_connect_1_bad_username() (test_pytan_invalid_server_tests.InvalidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.InvalidServerTests.test_invalid_connect_2_bad_host_and_non_ssl_port">test_invalid_connect_2_bad_host_and_non_ssl_port() (test_pytan_func.InvalidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_invalid_server_tests.InvalidServerTests.test_invalid_connect_2_bad_host_and_non_ssl_port">test_invalid_connect_2_bad_host_and_non_ssl_port() (test_pytan_invalid_server_tests.InvalidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.InvalidServerTests.test_invalid_connect_3_bad_password">test_invalid_connect_3_bad_password() (test_pytan_func.InvalidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_invalid_server_tests.InvalidServerTests.test_invalid_connect_3_bad_password">test_invalid_connect_3_bad_password() (test_pytan_invalid_server_tests.InvalidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.InvalidServerTests.test_invalid_connect_4_bad_host_and_bad_port">test_invalid_connect_4_bad_host_and_bad_port() (test_pytan_func.InvalidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_invalid_server_tests.InvalidServerTests.test_invalid_connect_4_bad_host_and_bad_port">test_invalid_connect_4_bad_host_and_bad_port() (test_pytan_invalid_server_tests.InvalidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_invalid_create_object_1_invalid_create_sensor">test_invalid_create_object_1_invalid_create_sensor() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_create_object_1_invalid_create_sensor">test_invalid_create_object_1_invalid_create_sensor() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_invalid_create_object_from_json_1_invalid_create_saved_action_from_json">test_invalid_create_object_from_json_1_invalid_create_saved_action_from_json() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_create_object_from_json_1_invalid_create_saved_action_from_json">test_invalid_create_object_from_json_1_invalid_create_saved_action_from_json() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_invalid_create_object_from_json_2_invalid_create_client_from_json">test_invalid_create_object_from_json_2_invalid_create_client_from_json() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_create_object_from_json_2_invalid_create_client_from_json">test_invalid_create_object_from_json_2_invalid_create_client_from_json() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_invalid_create_object_from_json_3_invalid_create_userrole_from_json">test_invalid_create_object_from_json_3_invalid_create_userrole_from_json() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_create_object_from_json_3_invalid_create_userrole_from_json">test_invalid_create_object_from_json_3_invalid_create_userrole_from_json() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_invalid_create_object_from_json_4_invalid_create_setting_from_json">test_invalid_create_object_from_json_4_invalid_create_setting_from_json() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_create_object_from_json_4_invalid_create_setting_from_json">test_invalid_create_object_from_json_4_invalid_create_setting_from_json() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_invalid_deploy_action_1_invalid_deploy_action_run_false">test_invalid_deploy_action_1_invalid_deploy_action_run_false() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_deploy_action_1_invalid_deploy_action_run_false">test_invalid_deploy_action_1_invalid_deploy_action_run_false() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_invalid_deploy_action_2_invalid_deploy_action_package_help">test_invalid_deploy_action_2_invalid_deploy_action_package_help() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_deploy_action_2_invalid_deploy_action_package_help">test_invalid_deploy_action_2_invalid_deploy_action_package_help() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_invalid_deploy_action_3_invalid_deploy_action_package">test_invalid_deploy_action_3_invalid_deploy_action_package() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_deploy_action_3_invalid_deploy_action_package">test_invalid_deploy_action_3_invalid_deploy_action_package() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_invalid_deploy_action_4_invalid_deploy_action_options_help">test_invalid_deploy_action_4_invalid_deploy_action_options_help() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_deploy_action_4_invalid_deploy_action_options_help">test_invalid_deploy_action_4_invalid_deploy_action_options_help() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_invalid_deploy_action_5_invalid_deploy_action_empty_package">test_invalid_deploy_action_5_invalid_deploy_action_empty_package() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_deploy_action_5_invalid_deploy_action_empty_package">test_invalid_deploy_action_5_invalid_deploy_action_empty_package() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_invalid_deploy_action_6_invalid_deploy_action_filters_help">test_invalid_deploy_action_6_invalid_deploy_action_filters_help() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_deploy_action_6_invalid_deploy_action_filters_help">test_invalid_deploy_action_6_invalid_deploy_action_filters_help() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_invalid_deploy_action_7_invalid_deploy_action_missing_parameters">test_invalid_deploy_action_7_invalid_deploy_action_missing_parameters() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_deploy_action_7_invalid_deploy_action_missing_parameters">test_invalid_deploy_action_7_invalid_deploy_action_missing_parameters() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_invalid_export_basetype_1_invalid_export_basetype_csv_bad_explode_type">test_invalid_export_basetype_1_invalid_export_basetype_csv_bad_explode_type() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_export_basetype_1_invalid_export_basetype_csv_bad_explode_type">test_invalid_export_basetype_1_invalid_export_basetype_csv_bad_explode_type() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_invalid_export_basetype_2_invalid_export_basetype_csv_bad_sort_sub_type">test_invalid_export_basetype_2_invalid_export_basetype_csv_bad_sort_sub_type() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_export_basetype_2_invalid_export_basetype_csv_bad_sort_sub_type">test_invalid_export_basetype_2_invalid_export_basetype_csv_bad_sort_sub_type() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_invalid_export_basetype_3_invalid_export_basetype_csv_bad_sort_type">test_invalid_export_basetype_3_invalid_export_basetype_csv_bad_sort_type() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_export_basetype_3_invalid_export_basetype_csv_bad_sort_type">test_invalid_export_basetype_3_invalid_export_basetype_csv_bad_sort_type() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_invalid_export_basetype_4_invalid_export_basetype_xml_bad_minimal_type">test_invalid_export_basetype_4_invalid_export_basetype_xml_bad_minimal_type() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_export_basetype_4_invalid_export_basetype_xml_bad_minimal_type">test_invalid_export_basetype_4_invalid_export_basetype_xml_bad_minimal_type() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_invalid_export_basetype_5_invalid_export_basetype_json_bad_include_type">test_invalid_export_basetype_5_invalid_export_basetype_json_bad_include_type() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_export_basetype_5_invalid_export_basetype_json_bad_include_type">test_invalid_export_basetype_5_invalid_export_basetype_json_bad_include_type() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_invalid_export_basetype_6_invalid_export_basetype_json_bad_explode_type">test_invalid_export_basetype_6_invalid_export_basetype_json_bad_explode_type() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_export_basetype_6_invalid_export_basetype_json_bad_explode_type">test_invalid_export_basetype_6_invalid_export_basetype_json_bad_explode_type() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_invalid_export_basetype_7_invalid_export_basetype_bad_format">test_invalid_export_basetype_7_invalid_export_basetype_bad_format() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_export_basetype_7_invalid_export_basetype_bad_format">test_invalid_export_basetype_7_invalid_export_basetype_bad_format() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_invalid_export_resultset_1_invalid_export_resultset_csv_bad_sort_sub_type">test_invalid_export_resultset_1_invalid_export_resultset_csv_bad_sort_sub_type() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_export_resultset_1_invalid_export_resultset_csv_bad_sort_sub_type">test_invalid_export_resultset_1_invalid_export_resultset_csv_bad_sort_sub_type() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_invalid_export_resultset_2_invalid_export_resultset_csv_bad_sort_type">test_invalid_export_resultset_2_invalid_export_resultset_csv_bad_sort_type() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_export_resultset_2_invalid_export_resultset_csv_bad_sort_type">test_invalid_export_resultset_2_invalid_export_resultset_csv_bad_sort_type() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_invalid_export_resultset_3_invalid_export_resultset_csv_bad_expand_type">test_invalid_export_resultset_3_invalid_export_resultset_csv_bad_expand_type() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_export_resultset_3_invalid_export_resultset_csv_bad_expand_type">test_invalid_export_resultset_3_invalid_export_resultset_csv_bad_expand_type() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_invalid_export_resultset_4_invalid_export_resultset_csv_bad_sensors_sub_type">test_invalid_export_resultset_4_invalid_export_resultset_csv_bad_sensors_sub_type() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_export_resultset_4_invalid_export_resultset_csv_bad_sensors_sub_type">test_invalid_export_resultset_4_invalid_export_resultset_csv_bad_sensors_sub_type() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_invalid_export_resultset_5_invalid_export_resultset_bad_format">test_invalid_export_resultset_5_invalid_export_resultset_bad_format() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_export_resultset_5_invalid_export_resultset_bad_format">test_invalid_export_resultset_5_invalid_export_resultset_bad_format() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
@@ -2685,11 +2813,11 @@
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_invalid_get_object_1_invalid_get_action_single_by_name">test_invalid_get_object_1_invalid_get_action_single_by_name() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_get_object_1_invalid_get_action_single_by_name">test_invalid_get_object_1_invalid_get_action_single_by_name() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_invalid_get_object_2_invalid_get_question_by_name">test_invalid_get_object_2_invalid_get_question_by_name() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_get_object_2_invalid_get_question_by_name">test_invalid_get_object_2_invalid_get_question_by_name() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
@@ -2707,35 +2835,35 @@
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_invalid_question_1_invalid_ask_manual_question_sensor_help">test_invalid_question_1_invalid_ask_manual_question_sensor_help() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_question_1_invalid_ask_manual_question_sensor_help">test_invalid_question_1_invalid_ask_manual_question_sensor_help() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_invalid_question_2_invalid_ask_manual_question_parameter_split">test_invalid_question_2_invalid_ask_manual_question_parameter_split() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_question_2_invalid_ask_manual_question_parameter_split">test_invalid_question_2_invalid_ask_manual_question_parameter_split() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_invalid_question_3_invalid_ask_manual_question_filter_help">test_invalid_question_3_invalid_ask_manual_question_filter_help() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_question_3_invalid_ask_manual_question_filter_help">test_invalid_question_3_invalid_ask_manual_question_filter_help() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_invalid_question_4_invalid_ask_manual_question_option">test_invalid_question_4_invalid_ask_manual_question_option() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_question_4_invalid_ask_manual_question_option">test_invalid_question_4_invalid_ask_manual_question_option() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_invalid_question_5_invalid_ask_manual_question_sensor">test_invalid_question_5_invalid_ask_manual_question_sensor() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_question_5_invalid_ask_manual_question_sensor">test_invalid_question_5_invalid_ask_manual_question_sensor() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_invalid_question_6_invalid_ask_manual_question_option_help">test_invalid_question_6_invalid_ask_manual_question_option_help() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_question_6_invalid_ask_manual_question_option_help">test_invalid_question_6_invalid_ask_manual_question_option_help() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_invalid_question_7_invalid_ask_manual_question_paramater_too_many">test_invalid_question_7_invalid_ask_manual_question_paramater_too_many() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_question_7_invalid_ask_manual_question_paramater_too_many">test_invalid_question_7_invalid_ask_manual_question_paramater_too_many() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_invalid_question_8_invalid_ask_manual_question_filter">test_invalid_question_8_invalid_ask_manual_question_filter() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_question_8_invalid_ask_manual_question_filter">test_invalid_question_8_invalid_ask_manual_question_filter() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
@@ -2935,11 +3063,15 @@
   </dt>
 
       
-  <dt><a href="pytan.functest.html#module-test_pytan_func">test_pytan_func (module)</a>
+  <dt><a href="pytan.functest.html#module-test_pytan_invalid_server_tests">test_pytan_invalid_server_tests (module)</a>
   </dt>
 
       
   <dt><a href="pytan.unittest.html#module-test_pytan_unit">test_pytan_unit (module)</a>
+  </dt>
+
+      
+  <dt><a href="pytan.functest.html#module-test_pytan_valid_server_tests">test_pytan_valid_server_tests (module)</a>
   </dt>
 
       
@@ -3003,367 +3135,367 @@
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_create_object_1_create_user">test_valid_create_object_1_create_user() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_create_object_1_create_user">test_valid_create_object_1_create_user() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_create_object_2_create_package">test_valid_create_object_2_create_package() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_create_object_2_create_package">test_valid_create_object_2_create_package() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_create_object_3_create_group">test_valid_create_object_3_create_group() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_create_object_3_create_group">test_valid_create_object_3_create_group() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_create_object_4_create_whitelisted_url">test_valid_create_object_4_create_whitelisted_url() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_create_object_4_create_whitelisted_url">test_valid_create_object_4_create_whitelisted_url() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_create_object_from_json_1_create_package_from_json">test_valid_create_object_from_json_1_create_package_from_json() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_create_object_from_json_1_create_package_from_json">test_valid_create_object_from_json_1_create_package_from_json() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_create_object_from_json_2_create_user_from_json">test_valid_create_object_from_json_2_create_user_from_json() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_create_object_from_json_2_create_user_from_json">test_valid_create_object_from_json_2_create_user_from_json() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_create_object_from_json_3_create_saved_question_from_json">test_valid_create_object_from_json_3_create_saved_question_from_json() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_create_object_from_json_3_create_saved_question_from_json">test_valid_create_object_from_json_3_create_saved_question_from_json() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_create_object_from_json_4_create_action_from_json">test_valid_create_object_from_json_4_create_action_from_json() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_create_object_from_json_4_create_action_from_json">test_valid_create_object_from_json_4_create_action_from_json() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_create_object_from_json_5_create_sensor_from_json">test_valid_create_object_from_json_5_create_sensor_from_json() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_create_object_from_json_5_create_sensor_from_json">test_valid_create_object_from_json_5_create_sensor_from_json() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_create_object_from_json_6_create_question_from_json">test_valid_create_object_from_json_6_create_question_from_json() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_create_object_from_json_6_create_question_from_json">test_valid_create_object_from_json_6_create_question_from_json() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_create_object_from_json_7_create_whitelisted_url_from_json">test_valid_create_object_from_json_7_create_whitelisted_url_from_json() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_create_object_from_json_7_create_whitelisted_url_from_json">test_valid_create_object_from_json_7_create_whitelisted_url_from_json() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_create_object_from_json_8_create_group_from_json">test_valid_create_object_from_json_8_create_group_from_json() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_create_object_from_json_8_create_group_from_json">test_valid_create_object_from_json_8_create_group_from_json() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_deploy_action_1_deploy_action_simple_against_windows_computers">test_valid_deploy_action_1_deploy_action_simple_against_windows_computers() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_deploy_action_1_deploy_action_simple_against_windows_computers">test_valid_deploy_action_1_deploy_action_simple_against_windows_computers() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_deploy_action_2_deploy_action_simple_without_results">test_valid_deploy_action_2_deploy_action_simple_without_results() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_deploy_action_2_deploy_action_simple_without_results">test_valid_deploy_action_2_deploy_action_simple_without_results() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_deploy_action_3_deploy_action_with_params_against_windows_computers">test_valid_deploy_action_3_deploy_action_with_params_against_windows_computers() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_deploy_action_3_deploy_action_with_params_against_windows_computers">test_valid_deploy_action_3_deploy_action_with_params_against_windows_computers() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_deploy_action_4_deploy_action_simple">test_valid_deploy_action_4_deploy_action_simple() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_deploy_action_4_deploy_action_simple">test_valid_deploy_action_4_deploy_action_simple() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_export_basetype_10_export_basetype_xml_default_options">test_valid_export_basetype_10_export_basetype_xml_default_options() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_export_basetype_10_export_basetype_xml_default_options">test_valid_export_basetype_10_export_basetype_xml_default_options() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_export_basetype_11_export_basetype_csv_with_explode_true">test_valid_export_basetype_11_export_basetype_csv_with_explode_true() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_export_basetype_11_export_basetype_csv_with_explode_true">test_valid_export_basetype_11_export_basetype_csv_with_explode_true() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_export_basetype_12_export_basetype_json_explode_false">test_valid_export_basetype_12_export_basetype_json_explode_false() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_export_basetype_12_export_basetype_json_explode_false">test_valid_export_basetype_12_export_basetype_json_explode_false() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_export_basetype_13_export_basetype_json_type_false">test_valid_export_basetype_13_export_basetype_json_type_false() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_export_basetype_13_export_basetype_json_type_false">test_valid_export_basetype_13_export_basetype_json_type_false() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_export_basetype_14_export_basetype_json_default_options">test_valid_export_basetype_14_export_basetype_json_default_options() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_export_basetype_14_export_basetype_json_default_options">test_valid_export_basetype_14_export_basetype_json_default_options() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_export_basetype_1_export_basetype_csv_with_sort_list">test_valid_export_basetype_1_export_basetype_csv_with_sort_list() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_export_basetype_1_export_basetype_csv_with_sort_list">test_valid_export_basetype_1_export_basetype_csv_with_sort_list() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_export_basetype_2_export_basetype_csv_with_explode_false">test_valid_export_basetype_2_export_basetype_csv_with_explode_false() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_export_basetype_2_export_basetype_csv_with_explode_false">test_valid_export_basetype_2_export_basetype_csv_with_explode_false() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_export_basetype_3_export_basetype_json_type_true">test_valid_export_basetype_3_export_basetype_json_type_true() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_export_basetype_3_export_basetype_json_type_true">test_valid_export_basetype_3_export_basetype_json_type_true() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_export_basetype_4_export_basetype_xml_minimal_false">test_valid_export_basetype_4_export_basetype_xml_minimal_false() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_export_basetype_4_export_basetype_xml_minimal_false">test_valid_export_basetype_4_export_basetype_xml_minimal_false() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_export_basetype_5_export_basetype_xml_minimal_true">test_valid_export_basetype_5_export_basetype_xml_minimal_true() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_export_basetype_5_export_basetype_xml_minimal_true">test_valid_export_basetype_5_export_basetype_xml_minimal_true() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_export_basetype_6_export_basetype_csv_with_sort_empty_list">test_valid_export_basetype_6_export_basetype_csv_with_sort_empty_list() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_export_basetype_6_export_basetype_csv_with_sort_empty_list">test_valid_export_basetype_6_export_basetype_csv_with_sort_empty_list() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_export_basetype_7_export_basetype_csv_default_options">test_valid_export_basetype_7_export_basetype_csv_default_options() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_export_basetype_7_export_basetype_csv_default_options">test_valid_export_basetype_7_export_basetype_csv_default_options() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_export_basetype_8_export_basetype_json_explode_true">test_valid_export_basetype_8_export_basetype_json_explode_true() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_export_basetype_8_export_basetype_json_explode_true">test_valid_export_basetype_8_export_basetype_json_explode_true() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_export_basetype_9_export_basetype_csv_with_sort_true">test_valid_export_basetype_9_export_basetype_csv_with_sort_true() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_export_basetype_9_export_basetype_csv_with_sort_true">test_valid_export_basetype_9_export_basetype_csv_with_sort_true() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_export_resultset_10_export_resultset_csv_default_options">test_valid_export_resultset_10_export_resultset_csv_default_options() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_export_resultset_10_export_resultset_csv_default_options">test_valid_export_resultset_10_export_resultset_csv_default_options() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_export_resultset_11_export_resultset_csv_type_true">test_valid_export_resultset_11_export_resultset_csv_type_true() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_export_resultset_11_export_resultset_csv_type_true">test_valid_export_resultset_11_export_resultset_csv_type_true() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_export_resultset_12_export_resultset_csv_all_options">test_valid_export_resultset_12_export_resultset_csv_all_options() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_export_resultset_12_export_resultset_csv_all_options">test_valid_export_resultset_12_export_resultset_csv_all_options() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_export_resultset_13_export_resultset_csv_sort_false">test_valid_export_resultset_13_export_resultset_csv_sort_false() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_export_resultset_13_export_resultset_csv_sort_false">test_valid_export_resultset_13_export_resultset_csv_sort_false() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_export_resultset_1_export_resultset_json">test_valid_export_resultset_1_export_resultset_json() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_export_resultset_1_export_resultset_json">test_valid_export_resultset_1_export_resultset_json() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_export_resultset_2_export_resultset_csv_sensor_true">test_valid_export_resultset_2_export_resultset_csv_sensor_true() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_export_resultset_2_export_resultset_csv_sensor_true">test_valid_export_resultset_2_export_resultset_csv_sensor_true() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_export_resultset_3_export_resultset_csv_type_false">test_valid_export_resultset_3_export_resultset_csv_type_false() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_export_resultset_3_export_resultset_csv_type_false">test_valid_export_resultset_3_export_resultset_csv_type_false() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_export_resultset_4_export_resultset_csv_expand_false">test_valid_export_resultset_4_export_resultset_csv_expand_false() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_export_resultset_4_export_resultset_csv_expand_false">test_valid_export_resultset_4_export_resultset_csv_expand_false() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_export_resultset_5_export_resultset_csv_sort_empty">test_valid_export_resultset_5_export_resultset_csv_sort_empty() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_export_resultset_5_export_resultset_csv_sort_empty">test_valid_export_resultset_5_export_resultset_csv_sort_empty() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_export_resultset_6_export_resultset_csv_sort_true">test_valid_export_resultset_6_export_resultset_csv_sort_true() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_export_resultset_6_export_resultset_csv_sort_true">test_valid_export_resultset_6_export_resultset_csv_sort_true() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_export_resultset_7_export_resultset_csv_sort_list">test_valid_export_resultset_7_export_resultset_csv_sort_list() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_export_resultset_7_export_resultset_csv_sort_list">test_valid_export_resultset_7_export_resultset_csv_sort_list() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_export_resultset_8_export_resultset_csv_sensor_false">test_valid_export_resultset_8_export_resultset_csv_sensor_false() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_export_resultset_8_export_resultset_csv_sensor_false">test_valid_export_resultset_8_export_resultset_csv_sensor_false() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_export_resultset_9_export_resultset_csv_expand_true">test_valid_export_resultset_9_export_resultset_csv_expand_true() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_export_resultset_9_export_resultset_csv_expand_true">test_valid_export_resultset_9_export_resultset_csv_expand_true() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_get_object_10_get_all_saved_questions">test_valid_get_object_10_get_all_saved_questions() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_get_object_10_get_all_saved_questions">test_valid_get_object_10_get_all_saved_questions() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_get_object_11_get_user_by_name">test_valid_get_object_11_get_user_by_name() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_get_object_11_get_user_by_name">test_valid_get_object_11_get_user_by_name() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_get_object_12_get_all_userroless">test_valid_get_object_12_get_all_userroless() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_get_object_12_get_all_userroless">test_valid_get_object_12_get_all_userroless() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_get_object_13_get_all_questions">test_valid_get_object_13_get_all_questions() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_get_object_13_get_all_questions">test_valid_get_object_13_get_all_questions() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_get_object_14_get_sensor_by_id">test_valid_get_object_14_get_sensor_by_id() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_get_object_14_get_sensor_by_id">test_valid_get_object_14_get_sensor_by_id() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_get_object_15_get_all_groups">test_valid_get_object_15_get_all_groups() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_get_object_15_get_all_groups">test_valid_get_object_15_get_all_groups() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_get_object_16_get_all_sensors">test_valid_get_object_16_get_all_sensors() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_get_object_16_get_all_sensors">test_valid_get_object_16_get_all_sensors() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_get_object_17_get_sensor_by_mixed">test_valid_get_object_17_get_sensor_by_mixed() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_get_object_17_get_sensor_by_mixed">test_valid_get_object_17_get_sensor_by_mixed() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_get_object_18_get_whitelisted_url_by_id">test_valid_get_object_18_get_whitelisted_url_by_id() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_get_object_18_get_whitelisted_url_by_id">test_valid_get_object_18_get_whitelisted_url_by_id() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_get_object_19_get_group_by_name">test_valid_get_object_19_get_group_by_name() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_get_object_19_get_group_by_name">test_valid_get_object_19_get_group_by_name() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_get_object_1_get_all_users">test_valid_get_object_1_get_all_users() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_get_object_1_get_all_users">test_valid_get_object_1_get_all_users() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_get_object_20_get_all_whitelisted_urls">test_valid_get_object_20_get_all_whitelisted_urls() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_get_object_20_get_all_whitelisted_urls">test_valid_get_object_20_get_all_whitelisted_urls() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_get_object_21_get_sensor_by_hash">test_valid_get_object_21_get_sensor_by_hash() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_get_object_21_get_sensor_by_hash">test_valid_get_object_21_get_sensor_by_hash() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_get_object_22_get_package_by_name">test_valid_get_object_22_get_package_by_name() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_get_object_22_get_package_by_name">test_valid_get_object_22_get_package_by_name() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_get_object_23_get_all_clients">test_valid_get_object_23_get_all_clients() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_get_object_23_get_all_clients">test_valid_get_object_23_get_all_clients() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_get_object_24_get_sensor_by_names">test_valid_get_object_24_get_sensor_by_names() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_get_object_24_get_sensor_by_names">test_valid_get_object_24_get_sensor_by_names() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_get_object_25_get_all_packages">test_valid_get_object_25_get_all_packages() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_get_object_25_get_all_packages">test_valid_get_object_25_get_all_packages() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_get_object_26_get_saved_question_by_name">test_valid_get_object_26_get_saved_question_by_name() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_get_object_26_get_saved_question_by_name">test_valid_get_object_26_get_saved_question_by_name() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_get_object_27_get_all_actions">test_valid_get_object_27_get_all_actions() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_get_object_27_get_all_actions">test_valid_get_object_27_get_all_actions() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_get_object_28_get_user_by_id">test_valid_get_object_28_get_user_by_id() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_get_object_28_get_user_by_id">test_valid_get_object_28_get_user_by_id() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_get_object_29_get_sensor_by_name">test_valid_get_object_29_get_sensor_by_name() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_get_object_29_get_sensor_by_name">test_valid_get_object_29_get_sensor_by_name() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_get_object_2_get_action_by_id">test_valid_get_object_2_get_action_by_id() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_get_object_2_get_action_by_id">test_valid_get_object_2_get_action_by_id() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_get_object_30_get_saved_action_by_name">test_valid_get_object_30_get_saved_action_by_name() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_get_object_30_get_saved_action_by_name">test_valid_get_object_30_get_saved_action_by_name() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_get_object_3_get_question_by_id">test_valid_get_object_3_get_question_by_id() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_get_object_3_get_question_by_id">test_valid_get_object_3_get_question_by_id() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_get_object_4_get_saved_question_by_names">test_valid_get_object_4_get_saved_question_by_names() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_get_object_4_get_saved_question_by_names">test_valid_get_object_4_get_saved_question_by_names() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_get_object_5_get_userrole_by_id">test_valid_get_object_5_get_userrole_by_id() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_get_object_5_get_userrole_by_id">test_valid_get_object_5_get_userrole_by_id() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_get_object_6_get_all_saved_actions">test_valid_get_object_6_get_all_saved_actions() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_get_object_6_get_all_saved_actions">test_valid_get_object_6_get_all_saved_actions() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_get_object_7_get_leader_clients">test_valid_get_object_7_get_leader_clients() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_get_object_7_get_leader_clients">test_valid_get_object_7_get_leader_clients() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_get_object_8_get_all_settings">test_valid_get_object_8_get_all_settings() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_get_object_8_get_all_settings">test_valid_get_object_8_get_all_settings() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_get_object_9_get_setting_by_name">test_valid_get_object_9_get_setting_by_name() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_get_object_9_get_setting_by_name">test_valid_get_object_9_get_setting_by_name() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_question_10_ask_manual_question_sensor_with_filter">test_valid_question_10_ask_manual_question_sensor_with_filter() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_question_10_ask_manual_question_sensor_with_filter">test_valid_question_10_ask_manual_question_sensor_with_filter() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_question_11_ask_manual_question_multiple_sensors_identified_by_name">test_valid_question_11_ask_manual_question_multiple_sensors_identified_by_name() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_question_11_ask_manual_question_multiple_sensors_identified_by_name">test_valid_question_11_ask_manual_question_multiple_sensors_identified_by_name() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_question_12_ask_manual_question_sensor_with_parameters_and_filter_and_options">test_valid_question_12_ask_manual_question_sensor_with_parameters_and_filter_and_options() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_question_12_ask_manual_question_sensor_with_parameters_and_filter_and_options">test_valid_question_12_ask_manual_question_sensor_with_parameters_and_filter_and_options() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_question_13_ask_manual_question_sensor_with_filter_and_3_options">test_valid_question_13_ask_manual_question_sensor_with_filter_and_3_options() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_question_13_ask_manual_question_sensor_with_filter_and_3_options">test_valid_question_13_ask_manual_question_sensor_with_filter_and_3_options() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_question_14_ask_manual_question_complex_query2">test_valid_question_14_ask_manual_question_complex_query2() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_question_14_ask_manual_question_complex_query2">test_valid_question_14_ask_manual_question_complex_query2() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_question_15_ask_manual_question_complex_query1">test_valid_question_15_ask_manual_question_complex_query1() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_question_15_ask_manual_question_complex_query1">test_valid_question_15_ask_manual_question_complex_query1() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_question_1_ask_manual_question_sensor_with_parameters_and_some_supplied_parameters">test_valid_question_1_ask_manual_question_sensor_with_parameters_and_some_supplied_parameters() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_question_1_ask_manual_question_sensor_with_parameters_and_some_supplied_parameters">test_valid_question_1_ask_manual_question_sensor_with_parameters_and_some_supplied_parameters() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_question_2_ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters">test_valid_question_2_ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_question_2_ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters">test_valid_question_2_ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_question_3_ask_manual_question_simple_multiple_sensors">test_valid_question_3_ask_manual_question_simple_multiple_sensors() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_question_3_ask_manual_question_simple_multiple_sensors">test_valid_question_3_ask_manual_question_simple_multiple_sensors() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_question_4_ask_manual_question_sensor_without_parameters_and_supplied_parameters">test_valid_question_4_ask_manual_question_sensor_without_parameters_and_supplied_parameters() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_question_4_ask_manual_question_sensor_without_parameters_and_supplied_parameters">test_valid_question_4_ask_manual_question_sensor_without_parameters_and_supplied_parameters() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_question_5_ask_manual_question_sensor_with_filter_and_2_options">test_valid_question_5_ask_manual_question_sensor_with_filter_and_2_options() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_question_5_ask_manual_question_sensor_with_filter_and_2_options">test_valid_question_5_ask_manual_question_sensor_with_filter_and_2_options() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_question_6_ask_manual_question_sensor_with_parameters_and_filter">test_valid_question_6_ask_manual_question_sensor_with_parameters_and_filter() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_question_6_ask_manual_question_sensor_with_parameters_and_filter">test_valid_question_6_ask_manual_question_sensor_with_parameters_and_filter() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_question_7__ask_manual_question_sensor_complex">test_valid_question_7__ask_manual_question_sensor_complex() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_question_7__ask_manual_question_sensor_complex">test_valid_question_7__ask_manual_question_sensor_complex() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_question_8_ask_manual_question_sensor_with_parameters_and_no_supplied_parameters">test_valid_question_8_ask_manual_question_sensor_with_parameters_and_no_supplied_parameters() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_question_8_ask_manual_question_sensor_with_parameters_and_no_supplied_parameters">test_valid_question_8_ask_manual_question_sensor_with_parameters_and_no_supplied_parameters() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_question_9_ask_manual_question_simple_single_sensor">test_valid_question_9_ask_manual_question_simple_single_sensor() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_question_9_ask_manual_question_simple_single_sensor">test_valid_question_9_ask_manual_question_simple_single_sensor() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_saved_question_1_ask_saved_question_refresh_data">test_valid_saved_question_1_ask_saved_question_refresh_data() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_saved_question_1_ask_saved_question_refresh_data">test_valid_saved_question_1_ask_saved_question_refresh_data() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_saved_question_2_ask_saved_question_by_name">test_valid_saved_question_2_ask_saved_question_by_name() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_saved_question_2_ask_saved_question_by_name">test_valid_saved_question_2_ask_saved_question_by_name() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests.test_valid_saved_question_3_ask_saved_question_by_name_in_list">test_valid_saved_question_3_ask_saved_question_by_name_in_list() (test_pytan_func.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_valid_saved_question_3_ask_saved_question_by_name_in_list">test_valid_saved_question_3_ask_saved_question_by_name_in_list() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
@@ -3517,7 +3649,7 @@
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.UPDATE_OBJECT_CMD">UPDATE_OBJECT_CMD (pytan.sessions.Session attribute)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.UPDATE_OBJECT_CMD">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.UPDATE_OBJECT_CMD">UPDATE_OBJECT_CMD (pytan.sessions.Session attribute)</a>
   </dt>
 
       
@@ -3569,7 +3701,7 @@
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_func.ValidServerTests">ValidServerTests (class in test_pytan_func)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests">ValidServerTests (class in test_pytan_valid_server_tests)</a>
   </dt>
 
       
@@ -3579,7 +3711,7 @@
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.VERSION_RE">VERSION_RE (pytan.sessions.Session attribute)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.VERSION_RE">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.VERSION_RE">VERSION_RE (pytan.sessions.Session attribute)</a>
   </dt>
 
       
@@ -3627,6 +3759,18 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
+  <dt><a href="pytan.xml_clean.html#pytan.xml_clean.XML_1_0_RESTRICTED_HEX">XML_1_0_RESTRICTED_HEX (in module pytan.xml_clean)</a>
+  </dt>
+
+      
+  <dt><a href="pytan.xml_clean.html#pytan.xml_clean.XML_1_0_VALID_HEX">XML_1_0_VALID_HEX (in module pytan.xml_clean)</a>
+  </dt>
+
+      
+  <dt><a href="pytan.xml_clean.html#pytan.xml_clean.xml_cleaner">xml_cleaner() (in module pytan.xml_clean)</a>
+  </dt>
+
+      
   <dt><a href="pytan.utils.html#pytan.utils.xml_pretty">xml_pretty() (in module pytan.utils)</a>
   </dt>
 
@@ -3634,18 +3778,18 @@
   <dt><a href="pytan.utils.html#pytan.utils.xml_pretty_resultobj">xml_pretty_resultobj() (in module pytan.utils)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="pytan.utils.html#pytan.utils.xml_pretty_resultxml">xml_pretty_resultxml() (in module pytan.utils)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="taniumpy.object_types.html#taniumpy.object_types.xml_error.XmlError">XmlError (class in taniumpy.object_types.xml_error)</a>
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.XMLNS">XMLNS (pytan.sessions.Session attribute)</a>, <a href="pytan.sessions.html#pytan.sessions.Session.XMLNS">[1]</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.XMLNS">XMLNS (pytan.sessions.Session attribute)</a>
   </dt>
 
       
@@ -3666,7 +3810,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Aug 07, 2015.
+      Last updated on Aug 27, 2015.
     </p>
   </div>
 
@@ -3687,7 +3831,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'2.0.0',
+            VERSION:'2.1.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

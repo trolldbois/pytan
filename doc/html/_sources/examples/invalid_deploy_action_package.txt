@@ -1,0 +1,106 @@
+
+Invalid deploy action package
+==========================================================================================
+
+Deploy an action using a non-existing package.
+
+Example Python Code
+----------------------------------------------------------------------------------------
+
+.. code-block:: python
+    :linenos:
+
+
+    
+    import os
+    import sys
+    sys.dont_write_bytecode = True
+    
+    # Determine our script name, script dir
+    my_file = os.path.abspath(sys.argv[0])
+    my_dir = os.path.dirname(my_file)
+    
+    # determine the pytan lib dir and add it to the path
+    parent_dir = os.path.dirname(my_dir)
+    pytan_root_dir = os.path.dirname(parent_dir)
+    lib_dir = os.path.join(pytan_root_dir, 'lib')
+    path_adds = [lib_dir]
+    
+    for aa in path_adds:
+        if aa not in sys.path:
+            sys.path.append(aa)
+    
+    
+    # connection info for Tanium Server
+    USERNAME = "Tanium User"
+    PASSWORD = "T@n!um"
+    HOST = "172.16.31.128"
+    PORT = "443"
+    
+    # Logging conrols
+    LOGLEVEL = 2
+    DEBUGFORMAT = False
+    
+    import tempfile
+    
+    import pytan
+    handler = pytan.Handler(
+        username=USERNAME,
+        password=PASSWORD,
+        host=HOST,
+        port=PORT,
+        loglevel=LOGLEVEL,
+        debugformat=DEBUGFORMAT,
+    )
+    
+    print handler
+    
+    # setup the arguments for the handler method
+    kwargs = {}
+    kwargs['report_dir'] = tempfile.gettempdir()
+    kwargs["run"] = True
+    kwargs["package"] = u'Invalid Package'
+    
+    
+    # call the handler with the deploy_action method, passing in kwargs for arguments
+    # this should throw an exception: pytan.exceptions.HandlerError
+    import traceback
+    try:
+        handler.deploy_action(**kwargs)
+    except Exception as e:
+        traceback.print_exc(file=sys.stdout)
+    
+    
+
+
+Output from Python Code
+----------------------------------------------------------------------------------------
+
+.. code-block:: none
+    :linenos:
+
+
+    Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
+    Traceback (most recent call last):
+      File "<string>", line 56, in <module>
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 404, in deploy_action
+        **kwargs
+      File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2699, in wrap
+        ret = f(*args, **kwargs)
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1611, in _deploy_action
+        package_def = self._get_package_def(package_def)
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1430, in _get_package_def
+        d['package_obj'] = self.get('package', **def_search)[0]
+      File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2699, in wrap
+        ret = f(*args, **kwargs)
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1255, in get
+        return self._get_single(obj_map, **kwargs)
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1390, in _get_single
+        for x in self._single_find(obj_map, k, v, **kwargs):
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1400, in _single_find
+        obj_ret = self._find(api_obj_single, **kwargs)
+      File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2699, in wrap
+        ret = f(*args, **kwargs)
+      File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1327, in _find
+        raise pytan.exceptions.HandlerError(err(search_str))
+    HandlerError: No results found searching for PackageSpec, name: u'Invalid Package'!!

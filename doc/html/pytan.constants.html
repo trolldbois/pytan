@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>2.6. pytan.constants module &mdash; PyTan 2.0.0 documentation</title>
+  <title>2.5. pytan.constants module &mdash; PyTan 2.1.0 documentation</title>
   
 
   
@@ -28,10 +28,10 @@
   
 
   
-    <link rel="top" title="PyTan 2.0.0 documentation" href="index.html"/>
+    <link rel="top" title="PyTan 2.1.0 documentation" href="index.html"/>
         <link rel="up" title="2. pytan package" href="pytan.html"/>
-        <link rel="next" title="2.7. pytan.utils module" href="pytan.utils.html"/>
-        <link rel="prev" title="2.5. pytan.pollers module" href="pytan.pollers.html"/> 
+        <link rel="next" title="2.6. pytan.utils module" href="pytan.utils.html"/>
+        <link rel="prev" title="2.4. pytan.pollers module" href="pytan.pollers.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -71,18 +71,20 @@
 <li class="toctree-l2"><a class="reference internal" href="introduction.html#installation">1.5. Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="introduction.html#usage">1.6. Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="introduction.html#directory-layout">1.7. Directory Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#other-references">1.8. Other References</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="pytan.html">2. pytan package</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="examples/pytan_examples.html">2.1. PyTan API examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.handler.html">2.2. pytan.handler module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.exceptions.html">2.3. pytan.exceptions module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.sessions.html">2.4. pytan.sessions module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.pollers.html">2.5. pytan.pollers module</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">2.6. pytan.constants module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html">2.7. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.handler.html">2.1. pytan.handler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.exceptions.html">2.2. pytan.exceptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.sessions.html">2.3. pytan.sessions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.pollers.html">2.4. pytan.pollers module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">2.5. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html">2.6. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.xml_clean.html">2.7. pytan.xml_clean module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pytan.unittest.html">2.8. pytan Unit Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pytan.functest.html">2.9. pytan Functional Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/pytan_examples.html">2.10. PyTan API examples</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="taniumpy.html">3. taniumpy package</a><ul>
@@ -128,7 +130,7 @@
       
           <li><a href="pytan.html">2. pytan package</a> &raquo;</li>
       
-    <li>2.6. pytan.constants module</li>
+    <li>2.5. pytan.constants module</li>
       <li class="wy-breadcrumbs-aside">
         
           <a href="_sources/pytan.constants.txt" rel="nofollow"> View page source</a>
@@ -140,7 +142,7 @@
           <div role="main" class="document">
             
   <div class="section" id="module-pytan.constants">
-<span id="pytan-constants-module"></span><h1>2.6. pytan.constants module<a class="headerlink" href="#module-pytan.constants" title="Permalink to this headline">¶</a></h1>
+<span id="pytan-constants-module"></span><h1>2.5. pytan.constants module<a class="headerlink" href="#module-pytan.constants" title="Permalink to this headline">¶</a></h1>
 <p>PyTan Constants</p>
 <p>This contains a number of constants that drive PyTan.</p>
 <dl class="data">
@@ -211,7 +213,7 @@
 
 <dl class="data">
 <dt id="pytan.constants.LOG_LEVEL_MAPS">
-<code class="descclassname">pytan.constants.</code><code class="descname">LOG_LEVEL_MAPS</code><em class="property"> = [(0, {}, 'Sets all loggers to only output at WARNING or above.'), (1, {'pytan.handler.QuestionPoller': 'INFO', 'pytan.handler.ActionPoller': 'INFO', 'pytan.handler.ActionPoller.progress': 'INFO', 'pytan.handler.QuestionPoller.progress': 'INFO', 'pytan': 'INFO'}, 'Pytan poller loggers show output at INFO or above'), (2, {'pytan.handler.QuestionPoller.progress': 'DEBUG', 'pytan.handler.QuestionPoller': 'DEBUG', 'pytan.handler': 'INFO', 'pytan': 'DEBUG', 'pytan.handler.ActionPoller': 'DEBUG', 'pytan.handler.ActionPoller.progress': 'DEBUG'}, 'Pytan handler logger show output at INFO or above and poller logs at DEBUG or above'), (3, {'pytan.handler': 'DEBUG', 'XMLCleaner': 'DEBUG'}, 'Pytan handler logger and XMLCleaner show output at DEBUG or above'), (4, {'pytan.handler.ask_manual': 'DEBUG'}, 'Pytan ask manual logger show output at DEBUG or above'), (5, {'pytan.handler.ask_manual_human': 'DEBUG'}, 'Pytan ask manual human logger show output at DEBUG or above'), (6, {'pytan.handler.timing': 'DEBUG'}, 'Pytan timing logger show output at DEBUG or above'), (7, {'pytan.sessions.Session': 'DEBUG'}, 'Taniumpy session loggers show output at DEBUG or above'), (8, {'pytan.sessions.Session.auth': 'DEBUG'}, 'PyTan session authentication loggers show output at DEBUG or above'), (9, {'pytan.sessions.Session.http': 'DEBUG'}, 'PyTan session http loggers show output at DEBUG or above'), (10, {'pytan.handler.prettybody': 'DEBUG'}, 'Pytan handler pretty XML body loggers show output at DEBUG or above'), (11, {'pytan.sessions.Session.http.body': 'DEBUG'}, 'PyTan session raw XML body loggers show output at DEBUG or above'), (12, {'requests': 'DEBUG', 'requests.packages.urllib3.util.retry': 'DEBUG', 'requests.packages.urllib3.poolmanager': 'DEBUG', 'requests.packages.urllib3.connectionpool': 'DEBUG', 'requests.packages.urllib3': 'DEBUG'}, 'Requests package show logging at DEBUG or above')]</em><a class="headerlink" href="#pytan.constants.LOG_LEVEL_MAPS" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pytan.constants.</code><code class="descname">LOG_LEVEL_MAPS</code><em class="property"> = [(0, {'stats': 'DEBUG'}, 'Sets all loggers to only output at WARNING or above except for stats'), (1, {'pytan.handler.QuestionPoller': 'INFO', 'pytan.handler.SSEPoller': 'INFO', 'pytan.handler.ActionPoller': 'INFO', 'pytan': 'INFO'}, 'Pytan poller loggers show output at INFO or above'), (2, {'pytan.handler.SSEPoller': 'DEBUG', 'pytan.handler.ActionPoller': 'DEBUG', 'pytan.handler.SSEPoller.progress': 'INFO', 'pytan.handler.QuestionPoller.progress': 'INFO', 'pytan.handler.QuestionPoller': 'DEBUG', 'pytan.handler': 'INFO', 'pytan.handler.ActionPoller.progress': 'INFO', 'pytan': 'DEBUG'}, 'Pytan handler logger show output at INFO or above and poller logs at DEBUG or above'), (3, {'pytan.handler': 'DEBUG', 'pytan.handler.SSEPoller.progress': 'DEBUG', 'pytan.handler.ActionPoller.progress': 'DEBUG', 'pytan.handler.QuestionPoller.progress': 'DEBUG'}, 'Pytan handler logger show output at DEBUG or above'), (4, {'pytan.handler.ask_manual': 'DEBUG'}, 'Pytan ask manual logger show output at DEBUG or above'), (5, {'pytan.handler.ask_manual_human': 'DEBUG'}, 'Pytan ask manual human logger show output at DEBUG or above'), (6, {'pytan.handler.timing': 'DEBUG', 'XMLCleaner': 'DEBUG'}, 'Pytan timing and XMLCleaner loggers show output at DEBUG or above'), (7, {'pytan.sessions.Session': 'DEBUG'}, 'Taniumpy session loggers show output at DEBUG or above'), (8, {'pytan.sessions.Session.auth': 'DEBUG'}, 'PyTan session authentication loggers show output at DEBUG or above'), (9, {'pytan.sessions.Session.http': 'DEBUG'}, 'PyTan session http loggers show output at DEBUG or above'), (10, {'pytan.handler.prettybody': 'DEBUG'}, 'Pytan handler pretty XML body loggers show output at DEBUG or above'), (11, {'pytan.sessions.Session.http.body': 'DEBUG'}, 'PyTan session raw XML body loggers show output at DEBUG or above'), (12, {'requests': 'DEBUG', 'requests.packages.urllib3.util.retry': 'DEBUG', 'requests.packages.urllib3.poolmanager': 'DEBUG', 'requests.packages.urllib3.connectionpool': 'DEBUG', 'requests.packages.urllib3': 'DEBUG'}, 'Requests package show logging at DEBUG or above')]</em><a class="headerlink" href="#pytan.constants.LOG_LEVEL_MAPS" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt>Map for loglevel(int) -&gt; logger -&gt; logger level(logging.INFO|WARN|DEBUG|...). Higher loglevels will include all levels up to and including that level. Contains a list of tuples, each tuple consisting of:</dt>
 <dd><ul class="first last simple">
@@ -296,6 +298,24 @@
 </dd></dl>
 
 <dl class="data">
+<dt id="pytan.constants.SSE_CRASH_MAP">
+<code class="descclassname">pytan.constants.</code><code class="descname">SSE_CRASH_MAP</code><em class="property"> = [{'major': 6, 'build': 4300, 'minor': 5, 'revision': 314}]</em><a class="headerlink" href="#pytan.constants.SSE_CRASH_MAP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mapping of versions to watch out for crashes/handle bugs for server side export</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="pytan.constants.SSE_FORMAT_MAP">
+<code class="descclassname">pytan.constants.</code><code class="descname">SSE_FORMAT_MAP</code><em class="property"> = [('csv', '0', 0), ('xml', '1', 1), ('xml_obj', '1', 1), ('cef', '2', 2)]</em><a class="headerlink" href="#pytan.constants.SSE_FORMAT_MAP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mapping of human friendly strings to API integers for server side export</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="pytan.constants.SSE_RESTRICT_MAP">
+<code class="descclassname">pytan.constants.</code><code class="descname">SSE_RESTRICT_MAP</code><em class="property"> = {1: [{'major': 6, 'build': 4300, 'minor': 5, 'revision': 314}], 2: [{'major': 6, 'build': 4300, 'minor': 5, 'revision': 314}]}</em><a class="headerlink" href="#pytan.constants.SSE_RESTRICT_MAP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mapping of API integers for server side export format to version support</p>
+</dd></dl>
+
+<dl class="data">
 <dt id="pytan.constants.TIME_FORMAT">
 <code class="descclassname">pytan.constants.</code><code class="descname">TIME_FORMAT</code><em class="property"> = '%Y-%m-%dT%H:%M:%S'</em><a class="headerlink" href="#pytan.constants.TIME_FORMAT" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tanium&#8217;s format for date time strings</p>
@@ -313,10 +333,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="pytan.utils.html" class="btn btn-neutral float-right" title="2.7. pytan.utils module">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="pytan.utils.html" class="btn btn-neutral float-right" title="2.6. pytan.utils module">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="pytan.pollers.html" class="btn btn-neutral" title="2.5. pytan.pollers module"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="pytan.pollers.html" class="btn btn-neutral" title="2.4. pytan.pollers module"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -326,7 +346,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Aug 07, 2015.
+      Last updated on Aug 27, 2015.
     </p>
   </div>
 
@@ -347,7 +367,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'2.0.0',
+            VERSION:'2.1.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

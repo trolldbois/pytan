@@ -2,6 +2,7 @@ pytan.handler module
 ====================
 
 .. automodule:: pytan.handler
+    :show-inheritance:
 
 Handler Class
 -------------
@@ -148,6 +149,11 @@ Get Dashboards
 
 .. automethod:: pytan.handler.Handler.get_dashboards
 
+Get Server Version
+***************************************************************
+
+.. automethod:: pytan.handler.Handler.get_server_version
+
 
 ------------
 
@@ -156,6 +162,7 @@ Handler Methods: Getting Result Data / Result Info
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 .. automethod:: pytan.handler.Handler.get_result_data
+.. automethod:: pytan.handler.Handler.get_result_data_sse
 .. automethod:: pytan.handler.Handler.get_result_info
 
 
@@ -174,7 +181,6 @@ Handler Methods: Private Methods
 .. automethod:: pytan.handler.Handler._add
 .. automethod:: pytan.handler.Handler._ask_manual
 .. automethod:: pytan.handler.Handler._deploy_action
-.. automethod:: pytan.handler.Handler._derive_server_version
 .. automethod:: pytan.handler.Handler._export_class_BaseType
 .. automethod:: pytan.handler.Handler._export_class_ResultSet
 .. automethod:: pytan.handler.Handler._export_format_csv
@@ -186,5 +192,14 @@ Handler Methods: Private Methods
 .. automethod:: pytan.handler.Handler._get_sensor_defs
 .. automethod:: pytan.handler.Handler._get_single
 .. automethod:: pytan.handler.Handler._single_find
+.. automethod:: pytan.handler.Handler._parse_versioning
+.. automethod:: pytan.handler.Handler._platform_is_6_2
+.. automethod:: pytan.handler.Handler._version_support_check
+.. automethod:: pytan.handler.Handler._check_export_format_support
+.. automethod:: pytan.handler.Handler._resolve_sse_format
+.. automethod:: pytan.handler.Handler._check_sse_version
+.. automethod:: pytan.handler.Handler._check_sse_crash_prevention
+.. automethod:: pytan.handler.Handler._check_sse_timing
+.. automethod:: pytan.handler.Handler._check_sse_empty_rs
 
 .. toctree::

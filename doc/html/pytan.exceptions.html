@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>2.3. pytan.exceptions module &mdash; PyTan 2.0.0 documentation</title>
+  <title>2.2. pytan.exceptions module &mdash; PyTan 2.1.0 documentation</title>
   
 
   
@@ -28,10 +28,10 @@
   
 
   
-    <link rel="top" title="PyTan 2.0.0 documentation" href="index.html"/>
+    <link rel="top" title="PyTan 2.1.0 documentation" href="index.html"/>
         <link rel="up" title="2. pytan package" href="pytan.html"/>
-        <link rel="next" title="2.4. pytan.sessions module" href="pytan.sessions.html"/>
-        <link rel="prev" title="2.2. pytan.handler module" href="pytan.handler.html"/> 
+        <link rel="next" title="2.3. pytan.sessions module" href="pytan.sessions.html"/>
+        <link rel="prev" title="2.1. pytan.handler module" href="pytan.handler.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -71,18 +71,20 @@
 <li class="toctree-l2"><a class="reference internal" href="introduction.html#installation">1.5. Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="introduction.html#usage">1.6. Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="introduction.html#directory-layout">1.7. Directory Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#other-references">1.8. Other References</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="pytan.html">2. pytan package</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="examples/pytan_examples.html">2.1. PyTan API examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.handler.html">2.2. pytan.handler module</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">2.3. pytan.exceptions module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.sessions.html">2.4. pytan.sessions module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.pollers.html">2.5. pytan.pollers module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.constants.html">2.6. pytan.constants module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html">2.7. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.handler.html">2.1. pytan.handler module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">2.2. pytan.exceptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.sessions.html">2.3. pytan.sessions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.pollers.html">2.4. pytan.pollers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.constants.html">2.5. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html">2.6. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.xml_clean.html">2.7. pytan.xml_clean module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pytan.unittest.html">2.8. pytan Unit Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pytan.functest.html">2.9. pytan Functional Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/pytan_examples.html">2.10. PyTan API examples</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="taniumpy.html">3. taniumpy package</a><ul>
@@ -128,7 +130,7 @@
       
           <li><a href="pytan.html">2. pytan package</a> &raquo;</li>
       
-    <li>2.3. pytan.exceptions module</li>
+    <li>2.2. pytan.exceptions module</li>
       <li class="wy-breadcrumbs-aside">
         
           <a href="_sources/pytan.exceptions.txt" rel="nofollow"> View page source</a>
@@ -140,16 +142,16 @@
           <div role="main" class="document">
             
   <div class="section" id="module-pytan.exceptions">
-<span id="pytan-exceptions-module"></span><h1>2.3. pytan.exceptions module<a class="headerlink" href="#module-pytan.exceptions" title="Permalink to this headline">¶</a></h1>
+<span id="pytan-exceptions-module"></span><h1>2.2. pytan.exceptions module<a class="headerlink" href="#module-pytan.exceptions" title="Permalink to this headline">¶</a></h1>
 <p>Provides exceptions for the <a class="reference internal" href="pytan.html#module-pytan" title="pytan"><code class="xref py py-mod docutils literal"><span class="pre">pytan</span></code></a> module.</p>
 <div class="section" id="exception-classes">
-<h2>2.3.1. Exception Classes<a class="headerlink" href="#exception-classes" title="Permalink to this headline">¶</a></h2>
+<h2>2.2.1. Exception Classes<a class="headerlink" href="#exception-classes" title="Permalink to this headline">¶</a></h2>
 <p>Exceptions used throughout <a class="reference internal" href="pytan.html#module-pytan" title="pytan"><code class="xref py py-mod docutils literal"><span class="pre">pytan</span></code></a>:</p>
 <dl class="exception">
 <dt id="pytan.exceptions.HandlerError">
 <em class="property">exception </em><code class="descclassname">pytan.exceptions.</code><code class="descname">HandlerError</code><a class="reference internal" href="_modules/pytan/exceptions.html#HandlerError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.exceptions.HandlerError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="http://docs.python.org/2.7/library/exceptions.html#exceptions.Exception" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></a></p>
-<p>Exception thrown for most errors in <a class="reference internal" href="pytan.handler.html#module-pytan.handler" title="pytan.handler"><code class="xref py py-mod docutils literal"><span class="pre">pytan.handler</span></code></a></p>
+<p>Exception thrown for errors in <a class="reference internal" href="pytan.handler.html#module-pytan.handler" title="pytan.handler"><code class="xref py py-mod docutils literal"><span class="pre">pytan.handler</span></code></a></p>
 </dd></dl>
 
 <dl class="exception">
@@ -184,7 +186,7 @@
 <dt id="pytan.exceptions.PollingError">
 <em class="property">exception </em><code class="descclassname">pytan.exceptions.</code><code class="descname">PollingError</code><a class="reference internal" href="_modules/pytan/exceptions.html#PollingError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.exceptions.PollingError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="http://docs.python.org/2.7/library/exceptions.html#exceptions.Exception" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></a></p>
-<p>Exception thrown for most errors in <code class="xref py py-mod docutils literal"><span class="pre">pytan.polling</span></code></p>
+<p>Exception thrown for errors in <code class="xref py py-mod docutils literal"><span class="pre">pytan.polling</span></code></p>
 </dd></dl>
 
 <dl class="exception">
@@ -229,13 +231,6 @@
 <p>Exception thrown for version_check in <a class="reference internal" href="pytan.utils.html#module-pytan.utils" title="pytan.utils"><code class="xref py py-mod docutils literal"><span class="pre">pytan.utils</span></code></a></p>
 </dd></dl>
 
-<dl class="exception">
-<dt id="pytan.exceptions.RunPluginError">
-<em class="property">exception </em><code class="descclassname">pytan.exceptions.</code><code class="descname">RunPluginError</code><a class="reference internal" href="_modules/pytan/exceptions.html#RunPluginError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.exceptions.RunPluginError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="http://docs.python.org/2.7/library/exceptions.html#exceptions.Exception" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></a></p>
-<p>Exception thrown for run_plugin in <a class="reference internal" href="pytan.sessions.html#module-pytan.sessions" title="pytan.sessions"><code class="xref py py-mod docutils literal"><span class="pre">pytan.sessions</span></code></a></p>
-</dd></dl>
-
 </div>
 </div>
 
@@ -245,10 +240,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="pytan.sessions.html" class="btn btn-neutral float-right" title="2.4. pytan.sessions module">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="pytan.sessions.html" class="btn btn-neutral float-right" title="2.3. pytan.sessions module">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="pytan.handler.html" class="btn btn-neutral" title="2.2. pytan.handler module"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="pytan.handler.html" class="btn btn-neutral" title="2.1. pytan.handler module"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -258,7 +253,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Aug 07, 2015.
+      Last updated on Aug 27, 2015.
     </p>
   </div>
 
@@ -279,7 +274,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'2.0.0',
+            VERSION:'2.1.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

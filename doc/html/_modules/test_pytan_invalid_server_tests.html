@@ -1,0 +1,300 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>test_pytan_invalid_server_tests &mdash; PyTan 2.1.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="PyTan 2.1.0 documentation" href="../index.html"/>
+        <link rel="up" title="Module code" href="index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../index.html" class="fa fa-home"> PyTan</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">1. PyTan Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#description">1.1. Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#why-it-was-created">1.2. Why it was created</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#requirements">1.3. Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#tanium-versions-validated-against">1.4. Tanium Versions Validated Against</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#installation">1.5. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#usage">1.6. Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#directory-layout">1.7. Directory Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#other-references">1.8. Other References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../pytan.html">2. pytan package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.handler.html">2.1. pytan.handler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.exceptions.html">2.2. pytan.exceptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.sessions.html">2.3. pytan.sessions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.pollers.html">2.4. pytan.pollers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.constants.html">2.5. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.utils.html">2.6. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.xml_clean.html">2.7. pytan.xml_clean module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.unittest.html">2.8. pytan Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.functest.html">2.9. pytan Functional Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/pytan_examples.html">2.10. PyTan API examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../taniumpy.html">3. taniumpy package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../taniumpy.object_types.html">3.1. taniumpy.object_types package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../xmltodict.html">4. xmltodict module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ddt.html">5. ddt module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../threaded_http.html">6. threaded_http module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../requests.html">7. requests package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../requests.html#requests-http-library">7.1. requests HTTP library</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">PyTan</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Module code</a> &raquo;</li>
+      
+    <li>test_pytan_invalid_server_tests</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <h1>Source code for test_pytan_invalid_server_tests</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/env python -ttB</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This contains invalid functional tests for pytan.</span>
+
+<span class="sd">These functional tests require a connection to a Tanium server in order to run.</span>
+<span class="sd">The connection info is pulled from the SERVER_INFO dictionary in test/API_INFO.py.</span>
+
+<span class="sd">These tests all use :mod:`ddt`, a package that provides for data driven tests via JSON files.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="c"># disable python from creating .pyc files everywhere</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">dont_write_bytecode</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">unittest</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">json</span>  <span class="c"># noqa</span>
+
+<span class="n">my_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">my_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">my_file</span><span class="p">)</span>
+<span class="n">root_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">my_dir</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">pardir</span><span class="p">)</span>
+<span class="n">root_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">root_dir</span><span class="p">)</span>
+<span class="n">lib_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root_dir</span><span class="p">,</span> <span class="s">&#39;lib&#39;</span><span class="p">)</span>
+<span class="n">path_adds</span> <span class="o">=</span> <span class="p">[</span><span class="n">my_dir</span><span class="p">,</span> <span class="n">lib_dir</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">aa</span> <span class="ow">in</span> <span class="n">path_adds</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">aa</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">aa</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">pytan</span>
+<span class="kn">import</span> <span class="nn">ddt</span>
+<span class="kn">import</span> <span class="nn">threaded_http</span>
+
+<span class="c"># get our server connection info</span>
+<span class="kn">from</span> <span class="nn">API_INFO</span> <span class="kn">import</span> <span class="n">SERVER_INFO</span>
+
+<span class="c"># where the output files from the tests will be stored</span>
+<span class="n">TEST_OUT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">my_dir</span><span class="p">,</span> <span class="s">&#39;TEST_OUT&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="spew"><a class="viewcode-back" href="../pytan.functest.html#test_pytan_invalid_server_tests.spew">[docs]</a><span class="k">def</span> <span class="nf">spew</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">l</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">SERVER_INFO</span><span class="p">[</span><span class="s">&quot;testlevel&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">l</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="nb">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+
+</div>
+<span class="nd">@ddt.ddt</span>
+<div class="viewcode-block" id="InvalidServerTests"><a class="viewcode-back" href="../pytan.functest.html#test_pytan_invalid_server_tests.InvalidServerTests">[docs]</a><span class="k">class</span> <span class="nc">InvalidServerTests</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="InvalidServerTests.setUpClass"><a class="viewcode-back" href="../pytan.functest.html#test_pytan_invalid_server_tests.InvalidServerTests.setUpClass">[docs]</a>    <span class="k">def</span> <span class="nf">setUpClass</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span> <span class="c"># noqa</span>
+        <span class="n">cls</span><span class="o">.</span><span class="n">__http</span> <span class="o">=</span> <span class="n">threaded_http</span><span class="o">.</span><span class="n">threaded_http</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="mi">4433</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="n">SERVER_INFO</span><span class="p">[</span><span class="s">&quot;testlevel&quot;</span><span class="p">])</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}: PyTan v&#39;{}&#39; against Tanium v&#39;{}&#39; -- Invalid Tests Starting&quot;</span><span class="o">.</span><span class="n">format</span>
+        <span class="n">spew</span><span class="p">(</span><span class="n">m</span><span class="p">(</span>
+            <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">seconds_from_now</span><span class="p">(),</span>
+            <span class="n">pytan</span><span class="o">.</span><span class="n">__version__</span><span class="p">,</span>
+            <span class="s">&#39;N/A&#39;</span><span class="p">,</span>
+        <span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+</div>
+    <span class="nd">@ddt.file_data</span><span class="p">(</span><span class="s">&#39;ddt/ddt_invalid_connects.json&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_invalid_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+
+        <span class="n">args</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;args&#39;</span><span class="p">]</span>
+        <span class="n">exc</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s">&#39;exception&#39;</span><span class="p">])</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;error_str&#39;</span><span class="p">]</span>
+
+        <span class="n">mykwargs</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">SERVER_INFO</span><span class="p">)</span>
+        <span class="n">mykwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="n">spew</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">spew</span><span class="p">(</span><span class="s">&quot;+++ TESTING EXPECTED FAILURE Handler() with kwargs </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">mykwargs</span><span class="p">))</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">assertRaisesRegexp</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+            <span class="n">pytan</span><span class="o">.</span><span class="n">Handler</span><span class="p">(</span><span class="o">**</span><span class="n">mykwargs</span><span class="p">)</span>
+
+</div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">TEST_OUT</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">TEST_OUT</span><span class="p">)</span>
+
+    <span class="n">test_files</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">TEST_OUT</span> <span class="o">+</span> <span class="s">&#39;/*.*&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">test_files</span><span class="p">:</span>
+        <span class="n">spew</span><span class="p">(</span><span class="s">&quot;Cleaning up </span><span class="si">%s</span><span class="s"> old test files&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_files</span><span class="p">))</span>
+        <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">test_files</span><span class="p">]</span>
+
+    <span class="n">unittest</span><span class="o">.</span><span class="n">main</span><span class="p">(</span>
+        <span class="n">verbosity</span><span class="o">=</span><span class="n">SERVER_INFO</span><span class="p">[</span><span class="s">&quot;testlevel&quot;</span><span class="p">],</span>
+        <span class="n">failfast</span><span class="o">=</span><span class="n">SERVER_INFO</span><span class="p">[</span><span class="s">&quot;FAILFAST&quot;</span><span class="p">],</span>
+        <span class="n">catchbreak</span><span class="o">=</span><span class="n">SERVER_INFO</span><span class="p">[</span><span class="s">&quot;CATCHBREAK&quot;</span><span class="p">],</span>
+        <span class="nb">buffer</span><span class="o">=</span><span class="n">SERVER_INFO</span><span class="p">[</span><span class="s">&quot;BUFFER&quot;</span><span class="p">],</span>
+    <span class="p">)</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}: PyTan v&#39;{}&#39; against Tanium v&#39;{}&#39; -- All Tests Finished&quot;</span><span class="o">.</span><span class="n">format</span>
+    <span class="n">spew</span><span class="p">(</span><span class="n">m</span><span class="p">(</span>
+        <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">seconds_from_now</span><span class="p">(),</span>
+        <span class="n">pytan</span><span class="o">.</span><span class="n">__version__</span><span class="p">,</span>
+        <span class="s">&#39;N/A&#39;</span><span class="p">,</span>
+    <span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Tanium.
+      Last updated on Aug 27, 2015.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

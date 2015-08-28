@@ -197,6 +197,7 @@ pseudoxml:
 
 staticdoc:
 	cp $(STATIC_DOCDIR)/* $(REALBUILDDIR)/
+	cp $(STATIC_DOCDIR)/* $(REALBUILDDIR)/html
 	@echo "Static docs copied to $(REALBUILDDIR)"
 
 all: clean html staticdoc coverage latexpdf cleanbuild

@@ -15,13 +15,14 @@ pytan package
 
 .. toctree::
 
-   examples/pytan_examples
    pytan.handler
    pytan.exceptions
    pytan.sessions
    pytan.pollers
    pytan.constants
    pytan.utils
+   pytan.xml_clean
    pytan.unittest
    pytan.functest
+   examples/pytan_examples
 

@@ -4,6 +4,8 @@ This is a set of packages and scripts that provide a simple way for interfacing 
 
   * Current Stable Version: 
     * **2.0.3 (Aug 26 2015)** [Release Link](https://github.com/tanium/pytan/releases/tag/2.0.3)
+  * Current Development Version:
+    * **2.1.0** [Develop Branch](https://github.com/tanium/pytan/tree/develop)
   * [PyTan Change Log](CHANGELOG.md)
   * [PyTan To Do List](TODO.md)
 
@@ -12,7 +14,7 @@ This is a set of packages and scripts that provide a simple way for interfacing 
 All of the documentation linked below is also available under the doc/ directory.
 
   * [Full HTML documentation for PyTan](http://tanium.github.io/pytan)
-  * [Full PDF documentation for PyTan](http://tanium.github.io/pytan/PyTan-2.0.0.pdf)
+  * [Full PDF documentation for PyTan](doc/PyTan-2.1.0.pdf)
   * [API Examples for PyTan](http://tanium.github.io/pytan/examples/pytan_examples.html)
   * [Command line Documentation for PyTan](http://tanium.github.io/pytan/_static/bin_doc/index.html)
 

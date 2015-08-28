@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>2.1.5.1. Get action by id &mdash; PyTan 2.0.0 documentation</title>
+  <title>2.10.5.1. Get action by id &mdash; PyTan 2.1.0 documentation</title>
   
 
   
@@ -28,10 +28,10 @@
   
 
   
-    <link rel="top" title="PyTan 2.0.0 documentation" href="../index.html"/>
-        <link rel="up" title="2.1.5. PyTan API Valid Get Object Examples" href="valid_get_objects.html"/>
-        <link rel="next" title="2.1.5.2. Get question by id" href="get_question_by_id.html"/>
-        <link rel="prev" title="2.1.5. PyTan API Valid Get Object Examples" href="valid_get_objects.html"/> 
+    <link rel="top" title="PyTan 2.1.0 documentation" href="../index.html"/>
+        <link rel="up" title="2.10.5. PyTan API Valid Get Object Examples" href="valid_get_objects.html"/>
+        <link rel="next" title="2.10.5.2. Get question by id" href="get_question_by_id.html"/>
+        <link rel="prev" title="2.10.5. PyTan API Valid Get Object Examples" href="valid_get_objects.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -71,18 +71,20 @@
 <li class="toctree-l2"><a class="reference internal" href="../introduction.html#installation">1.5. Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../introduction.html#usage">1.6. Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../introduction.html#directory-layout">1.7. Directory Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#other-references">1.8. Other References</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="../pytan.html">2. pytan package</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="pytan_examples.html">2.1. PyTan API examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.handler.html">2.2. pytan.handler module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.exceptions.html">2.3. pytan.exceptions module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.sessions.html">2.4. pytan.sessions module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.pollers.html">2.5. pytan.pollers module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.constants.html">2.6. pytan.constants module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.utils.html">2.7. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.handler.html">2.1. pytan.handler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.exceptions.html">2.2. pytan.exceptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.sessions.html">2.3. pytan.sessions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.pollers.html">2.4. pytan.pollers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.constants.html">2.5. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.utils.html">2.6. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.xml_clean.html">2.7. pytan.xml_clean module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../pytan.unittest.html">2.8. pytan Unit Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../pytan.functest.html">2.9. pytan Functional Tests</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="pytan_examples.html">2.10. PyTan API examples</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../taniumpy.html">3. taniumpy package</a><ul>
@@ -128,11 +130,11 @@
       
           <li><a href="../pytan.html">2. pytan package</a> &raquo;</li>
       
-          <li><a href="pytan_examples.html">2.1. PyTan API examples</a> &raquo;</li>
+          <li><a href="pytan_examples.html">2.10. PyTan API examples</a> &raquo;</li>
       
-          <li><a href="valid_get_objects.html">2.1.5. PyTan API Valid Get Object Examples</a> &raquo;</li>
+          <li><a href="valid_get_objects.html">2.10.5. PyTan API Valid Get Object Examples</a> &raquo;</li>
       
-    <li>2.1.5.1. Get action by id</li>
+    <li>2.10.5.1. Get action by id</li>
       <li class="wy-breadcrumbs-aside">
         
           <a href="../_sources/examples/get_action_by_id.txt" rel="nofollow"> View page source</a>
@@ -144,10 +146,10 @@
           <div role="main" class="document">
             
   <div class="section" id="get-action-by-id">
-<h1>2.1.5.1. Get action by id<a class="headerlink" href="#get-action-by-id" title="Permalink to this headline">¶</a></h1>
+<h1>2.10.5.1. Get action by id<a class="headerlink" href="#get-action-by-id" title="Permalink to this headline">¶</a></h1>
 <p>Get an action by id</p>
 <div class="section" id="example-python-code">
-<h2>2.1.5.1.1. Example Python Code<a class="headerlink" href="#example-python-code" title="Permalink to this headline">¶</a></h2>
+<h2>2.10.5.1.1. Example Python Code<a class="headerlink" href="#example-python-code" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -293,7 +295,7 @@
 </td></tr></table></div>
 </div>
 <div class="section" id="output-from-python-code">
-<h2>2.1.5.1.2. Output from Python Code<a class="headerlink" href="#output-from-python-code" title="Permalink to this headline">¶</a></h2>
+<h2>2.10.5.1.2. Output from Python Code<a class="headerlink" href="#output-from-python-code" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-none"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -358,10 +360,10 @@ print the first object returned in JSON format:
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="get_question_by_id.html" class="btn btn-neutral float-right" title="2.1.5.2. Get question by id">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="get_question_by_id.html" class="btn btn-neutral float-right" title="2.10.5.2. Get question by id">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="valid_get_objects.html" class="btn btn-neutral" title="2.1.5. PyTan API Valid Get Object Examples"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="valid_get_objects.html" class="btn btn-neutral" title="2.10.5. PyTan API Valid Get Object Examples"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -371,7 +373,7 @@ print the first object returned in JSON format:
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Aug 07, 2015.
+      Last updated on Aug 27, 2015.
     </p>
   </div>
 
@@ -392,7 +394,7 @@ print the first object returned in JSON format:
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'2.0.0',
+            VERSION:'2.1.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

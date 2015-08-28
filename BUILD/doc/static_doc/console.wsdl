@@ -4,6 +4,7 @@
    All interfaces are subject to change as we refine and extend our APIs.
    Please see the terms of use for more information.
 -->
+<!-- From Tanium Server Version: 6.5.314.3400 -->
 <!-- Version: 0.0.1 -->
 <definitions
   xmlns:typens="urn:TaniumSOAP"
@@ -52,7 +53,7 @@
           -->
           <xsd:element name="auth"          type="auth"           minOccurs="0"/>
           <xsd:element name="command"       type="xsd:string"     minOccurs="0"/>
-          <xsd:element name="object_list"   type="object_list"    minOccurs="0"/>   
+          <xsd:element name="object_list"   type="object_list"    minOccurs="0"/>
           <!--
             GetResultInfo and GetResultData:
               The GetResult commands are used to retrieve the data reported to the server by the clients in response to Question objects.
@@ -69,7 +70,7 @@
                   in particular, if you set the "row counts only" flag then you can retrieve a special "summary" of action status, collated by action status value.
           -->
           <xsd:element name="options"       type="options"        minOccurs="0"/>   <!-- This replaces all of the DEPRECATED tags below, except ID and IDType which are replaced by the object_list tag -->
-          
+
           <!-- DEPRECATED:  the following tags are deprecated.  They have been replaced by the Options tag -->
           <xsd:element name="ID"            type="xsd:int"        minOccurs="0"/>   <!-- DEPRECATED: Formerly used by GetResultInfo/Data. Replaced by the object_list tag -->
           <xsd:element name="IDType"        type="xsd:string"     minOccurs="0"/>   <!-- DEPRECATED: One of Question, SavedQuestion, ArchivedQuestion, Action. Formerly used by GetResultInfo/Data. Replaced by the object_list tag -->
@@ -80,7 +81,7 @@
                 2: include answer times
                 4: row counts only, for IDType "Action" selects between action status "summary" and "details"
                 8: aggregate over time
-                16: include most recent 
+                16: include most recent
                 32: include hash values
                 64: hide "no results"
           -->
@@ -90,15 +91,15 @@
              samplefrequency: how far apart each sample should be (in seconds)
              sampleStart: how many samples into the past we should start with (0 == start with the most recent sample)
              sampleCount: how many samples we should examine
-            
+
              Note: 600 seconds == 10 minutes, 10 minutes * 144 = one day
              Example: 600, 0, 144 means give me the last day at 10 minute resolution.
              Example: 600, 1440, 144 means give me the day starting from 11 days ago to 10 days ago at 10 minute resolution.
-            
+
              Note: 3600 seconds == 1 hour, 1 hour * 168 = one week
              Example: 3600, 0, 168 means give me the last week at 1 hour resolution.
              Example: 3600, 168, 168 means give me the week before last week at 1 hour resolution.
-            
+
              Note: if you ask for 168 samples, you may get fewer (if data is not available) but not more
           -->
           <xsd:element name="SampleFrequency" type="xsd:int"      minOccurs="0"/>
@@ -120,7 +121,7 @@
       </xsd:complexType>
       <xsd:complexType name="auth">
         <xsd:all>
-          <!-- 
+          <!--
             When authentication is successful the <session> element is populated in the resulting XML.
             Subsequent requests need only supply the session.  Each request extends the lifetime of the session.
             In some situations the session ID may change, so after each request the returned session ID should be checked.
@@ -143,7 +144,7 @@
         <xsd:all>
           <xsd:element name="platform"      type="xsd:string"     minOccurs="0"/>   <!--  Windows, Linux, Solaris, AIX or Mac. Defaults to Windows. -->
           <xsd:element name="script"        type="xsd:string"     minOccurs="0"/>   <!-- The script that will be executed on the client -->
-          <!-- 
+          <!--
             The script_type specifies how the script will be executed.
             WMIQuery: execute the script as a WMI Query
             BESRelevance: execute the script as a BigFix Relevance expression (using QNA)
@@ -164,7 +165,7 @@
         <xsd:all>
           <xsd:element name="name"          type="xsd:string"     minOccurs="0"/>
           <xsd:element name="index"         type="xsd:int"        minOccurs="0"/>   <!-- The index into to the delimited sensor data represented by this column -->
-          <!-- 
+          <!--
             The value_type specifies how the values are compared.
             String: standard lexicographical comparison (the default)
             Version: values are expected to be version strings, e.g. 9.4.2 is less than 10.1.3
@@ -207,14 +208,14 @@
           <xsd:element name="row_filter_group_id" type="xsd:long" minOccurs="0"/> <!-- deprecated, use row_filter_group instead -->
           <xsd:element name="row_filter_group" type="group" minOccurs="0"/>
           <xsd:element name="max_age" type="xsd:long" minOccurs="0"/> <!-- defaults to saved_action.issue_seconds -->
-          <xsd:element name="min_count" type="xsd:int" minOccurs="0"/> <!-- the number of matching machines required to issue the saved_action. Defaults to the global setting policy_default_min_count -->      
+          <xsd:element name="min_count" type="xsd:int" minOccurs="0"/> <!-- the number of matching machines required to issue the saved_action. Defaults to the global setting policy_default_min_count -->
         </xsd:all>
       </xsd:complexType>
       <xsd:complexType name="saved_action_approval"> <!-- For approving actions use AddObject and supply this -->
         <xsd:all>
           <xsd:element name="id"            type="xsd:long"   minOccurs="0"/> <!-- ID of the saved action to be approved -->
           <xsd:element name="name"          type="xsd:string" minOccurs="0"/> <!-- Name of action to be approved.  Not needed if ID is supplied -->
-          <xsd:element name="approved_flag" type="xsd:int"    minOccurs="0"/> <!-- Is action approved or not? This uses the posting user to supply the approver name and ID. -->  
+          <xsd:element name="approved_flag" type="xsd:int"    minOccurs="0"/> <!-- Is action approved or not? This uses the posting user to supply the approver name and ID. -->
           <xsd:element name="metadata" type="metadata_list" minOccurs="0"/> <!-- metadata to be used for approval comments.  entries are associated to the saved action being approved -->
         </xsd:all>
       </xsd:complexType>
@@ -222,7 +223,7 @@
         <xsd:sequence>
           <xsd:element name="row_id" type="xsd:long" minOccurs="0" maxOccurs="unbounded"/>
         </xsd:sequence>
-      </xsd:complexType>      
+      </xsd:complexType>
       <xsd:complexType name="saved_action">
         <xsd:all>
           <xsd:element name="id"                 type="xsd:long"   minOccurs="0"/>
@@ -232,7 +233,7 @@
           <xsd:element name="issue_seconds"      type="xsd:int"    minOccurs="0"/>
           <xsd:element name="distribute_seconds" type="xsd:int"    minOccurs="0"/>
           <xsd:element name="start_time"         type="xsd:string" minOccurs="0"/> <!-- the date and time when the action became active, empty string or null means "ASAP" -->
-          <xsd:element name="end_time"           type="xsd:string" minOccurs="0"/> 
+          <xsd:element name="end_time"           type="xsd:string" minOccurs="0"/>
           <xsd:element name="package_spec"       type="package_spec" minOccurs="0"/> <!-- The package deployed by this action -->
           <xsd:element name="action_group_id"    type="xsd:long"   minOccurs="0"/> <!-- deprecated, use action_group instead -->
           <xsd:element name="action_group"       type="group"      minOccurs="0"/> <!-- The parent group of machines to target -->
@@ -251,17 +252,17 @@
           <xsd:element name="creation_time"      type="xsd:string" minOccurs="0"/>
           <xsd:element name="next_start_time"    type="xsd:string" minOccurs="0"/>
           <xsd:element name="last_start_time"    type="xsd:string" minOccurs="0"/>
-          <xsd:element name="user_start_time"    type="xsd:string" minOccurs="0"/>          
+          <xsd:element name="user_start_time"    type="xsd:string" minOccurs="0"/>
           <xsd:element name="last_action"        type="action"     minOccurs="0"/>
-          <xsd:element name="cache_row_id"       type="xsd:int"    minOccurs="0"/> <!-- ID used as a unqiue identifier in the response cache. Refer to cache_id in options. -->          
+          <xsd:element name="cache_row_id"       type="xsd:int"    minOccurs="0"/> <!-- ID used as a unqiue identifier in the response cache. Refer to cache_id in options. -->
         </xsd:all>
       </xsd:complexType>
       <xsd:complexType name="saved_action_list">
         <xsd:sequence>
           <xsd:element name="saved_action" type="saved_action" minOccurs="0" maxOccurs="unbounded"/>
-          <xsd:element name="cache_info" type="cache_info" minOccurs="0"/>          
+          <xsd:element name="cache_info" type="cache_info" minOccurs="0"/>
         </xsd:sequence>
-      </xsd:complexType>          
+      </xsd:complexType>
       <xsd:complexType name="sensor">
         <xsd:annotation>
             <xsd:appinfo>
@@ -346,7 +347,7 @@
           <xsd:element name="source_hash"   type="xsd:int"       minOccurs="0"/>    <!-- the hash of the sensor into which the parameters are substituted, if specified, source_id may be omitted -->
           <xsd:element name="parameters"    type="parameter_list" minOccurs="0"/>   <!-- List of parameters to substitute into the source sensor -->
           <xsd:element name="parameter_definition" type="xsd:string" minOccurs="0"/>
-          <!-- 
+          <!--
             The value_type specifies how the values are compared.
             String: standard lexicographical comparison (the default)
             Version: values are expected to be version strings, e.g. 9.4.2 is less than 10.1.3
@@ -364,9 +365,9 @@
           <xsd:element name="exclude_from_parse_flag" type="xsd:int" minOccurs="0"/><!-- if true, then the string results of this sensor will not be used by the natural language parser -->
           <xsd:element name="delimiter"     type="xsd:string"     minOccurs="0"/>   <!-- the character(s) used to split the result into subcolumns -->
           <xsd:element name="subcolumns"    type="sensor_subcolumn_list" minOccurs="0"/>
-          <xsd:element name="creation_time"   type="xsd:string"    minOccurs="0"/>   <!-- When this was created in the database -->  
+          <xsd:element name="creation_time"   type="xsd:string"    minOccurs="0"/>   <!-- When this was created in the database -->
           <xsd:element name="modification_time" type="xsd:string"  minOccurs="0"/>   <!-- Last time it was modified -->
-          <xsd:element name="last_modified_by" type="xsd:string"   minOccurs="0"/>   <!-- name of the user who last modified or created this --> 
+          <xsd:element name="last_modified_by" type="xsd:string"   minOccurs="0"/>   <!-- name of the user who last modified or created this -->
           <xsd:element name="string_hints" type="string_hint_list" minOccurs="0"/>   <!-- define initial strings to be hashed and added to the string cache for this sensor. -->
           <xsd:element name="preview_sensor_flag" type="xsd:int" minOccurs="0"/><!-- creates/acquires a preview sensor -->
           <xsd:element name="metadata" type="metadata_list" minOccurs="0"/>
@@ -377,9 +378,9 @@
       </xsd:complexType>
       <xsd:complexType name="audit_data">
         <xsd:sequence>
-          <xsd:element name="creation_time"     type="xsd:string" minOccurs="0"/>   <!-- When this was created in the database -->  
+          <xsd:element name="creation_time"     type="xsd:string" minOccurs="0"/>   <!-- When this was created in the database -->
           <xsd:element name="modification_time" type="xsd:string" minOccurs="0"/>   <!-- Last time it was modified -->
-          <xsd:element name="last_modified_by"  type="xsd:string" minOccurs="0"/>   <!-- name of the user who last modified or created this --> 
+          <xsd:element name="last_modified_by"  type="xsd:string" minOccurs="0"/>   <!-- name of the user who last modified or created this -->
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="metadata_item">
@@ -393,7 +394,7 @@
         <xsd:sequence>
           <xsd:element name="item" type="metadata_item" minOccurs="0" maxOccurs="unbounded"/>
         </xsd:sequence>
-      </xsd:complexType>      
+      </xsd:complexType>
       <xsd:complexType name="filter">
         <xsd:all>
           <xsd:element name="id"            type="xsd:int"        minOccurs="0"/>
@@ -406,7 +407,7 @@
               Less, Greater, LessEqual, GreaterEqual, Equal: the item passes if its value is Less, Greater, LessEqual, GreaterEqual, Equal to the filter value
           -->
           <xsd:element name="operator"      type="xsd:string"     minOccurs="0"/>
-          <!-- 
+          <!--
             The value_type specifies how the values are compared.  This does not apply if the operator is HashMatch or RegexMatch.  The default is the result type of the sensor.
             String: standard lexicographical comparison (the default)
             Version: values are expected to be version strings, e.g. 9.4.2 is less than 10.1.3
@@ -474,7 +475,7 @@
           <xsd:element name="sub_groups"   type="group_list"     minOccurs="0"/>
           <xsd:element name="filters"      type="filter_list"    minOccurs="0"/>
           <xsd:element name="source_id"    type="xsd:int"        minOccurs="0"/>   <!-- source id of group for parameterized groups -->
-          <xsd:element name="parameters"   type="parameter_list" minOccurs="0"/>   <!-- List of parameters to substitute into the source group. -->         
+          <xsd:element name="parameters"   type="parameter_list" minOccurs="0"/>   <!-- List of parameters to substitute into the source group. -->
           <!-- the following elements are not used at creation time... they are essentially "read-only" -->
           <xsd:element name="deleted_flag" type="xsd:int"        minOccurs="0"/>
         </xsd:all>
@@ -519,7 +520,7 @@
           <xsd:element name="expiration"       type="xsd:string" minOccurs="0"/> <!-- The time that this cache will expire -->
           <xsd:element name="errors"           type="error_list" minOccurs="0"/> <!-- if there was a problem generating the XML errors will be listed here -->
         </xsd:all>
-      </xsd:complexType>      
+      </xsd:complexType>
       <xsd:complexType name="question_list_info">
         <xsd:all>
           <xsd:element name="highest_id"      type="xsd:int"       minOccurs="0"/>
@@ -535,7 +536,7 @@
       </xsd:complexType>
       <xsd:complexType name="question">
         <xsd:all>
-          <!-- 
+          <!--
             A question object is a list of data to be retrieved (the "selects"), plus a group that defines the set of machines from which the data should be retrieved.
           -->
           <xsd:element name="id"             type="xsd:int"            minOccurs="0"/>
@@ -595,7 +596,7 @@
         <xsd:sequence>
           <xsd:element name="status" type="package_file_status" minOccurs="0" maxOccurs="unbounded"/>
         </xsd:sequence>
-      </xsd:complexType>      
+      </xsd:complexType>
       <xsd:complexType name="package_file_list">
         <xsd:sequence>
           <xsd:element name="file" type="package_file" minOccurs="0" maxOccurs="unbounded"/>
@@ -644,7 +645,7 @@
       </xsd:complexType>
       <xsd:complexType name="package_spec">
         <xsd:all>
-          <!-- 
+          <!--
             A package_spec object is a list of files to be distributed and a command to be executed. Typically referred to simply as a "package"
           -->
           <xsd:element name="id"              type="xsd:long"       minOccurs="0"/>
@@ -666,7 +667,7 @@
           <xsd:element name="parameter_definition" type="xsd:string" minOccurs="0"/>
           <xsd:element name="sensors"              type="sensor_list" minOccurs="0" /> <!-- sensors associated with a particular package -->
           <!-- following elements are not used at creation time... they are essentially "read-only" -->
-          <xsd:element name="creation_time"   type="xsd:string"    minOccurs="0"/>   <!-- When this was created in the database -->  
+          <xsd:element name="creation_time"   type="xsd:string"    minOccurs="0"/>   <!-- When this was created in the database -->
           <xsd:element name="modification_time" type="xsd:string"  minOccurs="0"/>   <!-- Last time it was modified -->
           <xsd:element name="last_modified_by" type="xsd:string"   minOccurs="0"/>   <!-- name of the user who last modified or created this -->
           <xsd:element name="available_time"  type="xsd:string"    minOccurs="0"/>   <!-- the date and time when all of the files became available -->
@@ -678,7 +679,7 @@
       </xsd:complexType>
       <xsd:complexType name="client_status">
         <xsd:all>
-          <!-- 
+          <!--
             A client_status object is details about a client at the last time it reported.
           -->
           <xsd:element name="host_name"         type="xsd:string"          minOccurs="0"/>
@@ -712,7 +713,7 @@
 
           <xsd:element name="cache_row_id" type="xsd:int" minOccurs="0"/> <!-- ID used as a unqiue identifier in the response cache. Refer to cache_id in options. -->
         </xsd:all>
-      </xsd:complexType>      
+      </xsd:complexType>
       <xsd:complexType name="soap_error">
         <xsd:all>
           <xsd:element name="object_name"    type="xsd:string"    minOccurs="0"/>
@@ -734,7 +735,7 @@
         <xsd:sequence>
           <xsd:element name="white_listed_url" type="white_listed_url" minOccurs="0" maxOccurs="unbounded"/>
         </xsd:sequence>
-      </xsd:complexType>      
+      </xsd:complexType>
       <xsd:complexType name="version_aggregate">
         <xsd:sequence>
           <xsd:element name="version_string" type="xsd:string" minOccurs="0"/>
@@ -853,7 +854,7 @@
         <xsd:sequence>
           <xsd:element name="role" type="user_role" minOccurs="0" maxOccurs="unbounded"/>
         </xsd:sequence>
-      </xsd:complexType>      
+      </xsd:complexType>
       <xsd:complexType name="user">
         <xsd:all>
           <xsd:element name="id"                      type="xsd:int"          minOccurs="0"/>
@@ -884,7 +885,7 @@
       </xsd:complexType>
       <xsd:complexType name="action">
         <xsd:all>
-          <!-- 
+          <!--
             An action object is a package to be deployed, plus a group that defines the set of machines to be deployed to (the target).
           -->
           <xsd:element name="id"              type="xsd:long"       minOccurs="0"/>
@@ -917,7 +918,7 @@
       </xsd:complexType>
       <xsd:complexType name="action_stop">
         <xsd:all>
-          <!-- 
+          <!--
             An action stop object causes the given action (identified by its id) to be stopped
           -->
           <xsd:element name="id"              type="xsd:int"       minOccurs="0"/>
@@ -937,7 +938,7 @@
       <xsd:complexType name="saved_question_list">
         <xsd:sequence>
           <xsd:element name="saved_question" type="saved_question" minOccurs="0" maxOccurs="unbounded"/>
-          <xsd:element name="cache_info" type="cache_info" minOccurs="0"/>          
+          <xsd:element name="cache_info" type="cache_info" minOccurs="0"/>
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="saved_question">
@@ -1072,7 +1073,7 @@
           <xsd:sequence>
             <xsd:element name="command" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
           </xsd:sequence>
-      </xsd:complexType> 
+      </xsd:complexType>
       <xsd:complexType name="upload_file">
         <xsd:all>
           <xsd:element name="id" type="xsd:int" minOccurs="0"/> <!-- When an upload is started this will be populated with the ID, use for subsequent upload chunks -->
@@ -1093,7 +1094,7 @@
           <xsd:sequence>
             <xsd:element name="upload_file" type="upload_file" minOccurs="0" maxOccurs="unbounded"/>
           </xsd:sequence>
-      </xsd:complexType>      
+      </xsd:complexType>
       <xsd:complexType name="upload_file_status">
         <xsd:all>
           <xsd:element name="hash" type="xsd:string" minOccurs="0"/> <!-- The expected SHA-256 of the completed file. -->
@@ -1101,7 +1102,7 @@
           <xsd:element name="file_cached" type="xsd:int" minOccurs="0"/> <!-- If the file is complete and has been moved to the download cache this will be true -->
           <xsd:element name="file_parts" type="upload_file_list" minOccurs="0"/> <!-- returns the details of each uploaded file part -->
         </xsd:all>
-      </xsd:complexType> 
+      </xsd:complexType>
       <xsd:complexType name="plugin">
         <xsd:annotation>
             <xsd:appinfo>
@@ -1136,7 +1137,7 @@
           <xsd:element name="run_detached_flag" type="xsd:int"             minOccurs="0"/> <!-- This plugin execution request will respond immediately running the plugin in the background. -->
           <xsd:element name="execution_id"     type="xsd:int"              minOccurs="0"/> <!-- If this is a detached plugin request this will have the ID used to look up the results. If this is supplied in a GetObject request the status will be returned. -->
           <xsd:element name="timeout_seconds"  type="xsd:int"              minOccurs="0"/> <!-- The maximum run-time of a plugin, defaults to 10 seconds. -->
-          <xsd:element name="cache_row_id"     type="xsd:int"              minOccurs="0"/> <!-- ID used as a unqiue identifier in the response cache. Refer to cache_id in options. --> 
+          <xsd:element name="cache_row_id"     type="xsd:int"              minOccurs="0"/> <!-- ID used as a unqiue identifier in the response cache. Refer to cache_id in options. -->
           <xsd:element name="local_admin_flag" type="xsd:int"              minOccurs="0"/>
           <xsd:element name="allow_rest"       type="xsd:int"              minOccurs="0"/>
           <xsd:element name="raw_http_response" type="xsd:int"             minOccurs="0"/>
@@ -1151,7 +1152,7 @@
       <xsd:complexType name="plugin_list">
           <xsd:sequence>
             <xsd:element name="plugin" type="plugin" minOccurs="0" maxOccurs="unbounded"/>
-            <xsd:element name="cache_info" type="cache_info" minOccurs="0"/>          
+            <xsd:element name="cache_info" type="cache_info" minOccurs="0"/>
           </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="plugin_schedule">
@@ -1165,24 +1166,24 @@
           <xsd:element name="start_hour"           type="xsd:int"              minOccurs="0"/> <!-- if supplied the schedule will only run between start_hour and end_hour -->
           <xsd:element name="end_hour"             type="xsd:int"              minOccurs="0"/>
           <xsd:element name="start_date"           type="xsd:int"              minOccurs="0"/> <!-- if supplied the schedule will only run after the specified date -->
-          <xsd:element name="end_date"             type="xsd:int"              minOccurs="0"/> <!-- if supplied the schedule will only run until the specified date -->         
+          <xsd:element name="end_date"             type="xsd:int"              minOccurs="0"/> <!-- if supplied the schedule will only run until the specified date -->
           <xsd:element name="run_on_days"          type="xsd:string"           minOccurs="0"/> <!-- If supplied plugin will only run on specified days separated by commas.  As: Mon, Tue, Wed, Thu, Fri, Sat, Sun. -->
           <xsd:element name="run_interval_seconds" type="xsd:int"              minOccurs="0"/> <!-- the interval between executions of the plugin. -->
           <xsd:element name="enabled"              type="xsd:int"              minOccurs="0"/> <!-- Whether or not this schedule is enabled. 1 or 0. -->
           <xsd:element name="deleted_flag"         type="xsd:int"              minOccurs="0"/> <!-- Whether or not this schedule is deleted. 1 or 0. -->
           <xsd:element name="input"                type="xsd:string"           minOccurs="0"/> <!-- If the plugin is a script this is what is passed to the stdin of that script -->
-          <xsd:element name="arguments"            type="plugin_argument_list" minOccurs="0"/> <!-- if this is a SQL plugin these will be the arguments supplied to the query -->          
+          <xsd:element name="arguments"            type="plugin_argument_list" minOccurs="0"/> <!-- if this is a SQL plugin these will be the arguments supplied to the query -->
           <xsd:element name="user"                 type="user"                 minOccurs="0"/> <!-- Read Only: The user the plugin will run as -->
           <xsd:element name="last_run_time"        type="xsd:string"           minOccurs="0"/> <!-- Read Only: The last time this was run -->
           <xsd:element name="last_exit_code"       type="xsd:int"              minOccurs="0"/> <!-- Read Only: Exit code of last run. -->
           <xsd:element name="last_run_text"        type="xsd:string"           minOccurs="0"/> <!-- Read Only: If the plugin is not SQL this will have the output. -->
           <xsd:element name="last_run_sql"         type="plugin_sql"           minOccurs="0"/> <!-- Read Only: SQL output if applicable. -->
         </xsd:all>
-      </xsd:complexType>      
+      </xsd:complexType>
       <xsd:complexType name="plugin_schedule_list">
           <xsd:sequence>
             <xsd:element name="plugin_schedule" type="plugin_schedule" minOccurs="0" maxOccurs="unbounded"/>
-            <xsd:element name="cache_info" type="cache_info" minOccurs="0"/>          
+            <xsd:element name="cache_info" type="cache_info" minOccurs="0"/>
           </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="computer_group_spec">
@@ -1197,7 +1198,7 @@
           <xsd:element name="computer_spec" type="computer_group_spec" minOccurs="0" maxOccurs="unbounded"/>
           <xsd:element name="cache_info"    type="cache_info"          minOccurs="0"/>
         </xsd:sequence>
-      </xsd:complexType>      
+      </xsd:complexType>
       <xsd:complexType name="computer_group">
         <xsd:sequence>
           <xsd:element name="id"             type="xsd:int"            minOccurs="0"/>
@@ -1261,7 +1262,7 @@
           <xsd:element name="plugins"             type="plugin_list"             minOccurs="0" maxOccurs="unbounded"/>
           <xsd:element name="plugin_schedule"     type="plugin_schedule"         minOccurs="0" maxOccurs="unbounded"/>
           <xsd:element name="plugin_schedules"    type="plugin_schedule_list"    minOccurs="0" maxOccurs="unbounded"/>
-          <xsd:element name="white_listed_url"    type="white_listed_url"        minOccurs="0" maxOccurs="unbounded"/>          
+          <xsd:element name="white_listed_url"    type="white_listed_url"        minOccurs="0" maxOccurs="unbounded"/>
           <xsd:element name="white_listed_urls"   type="white_listed_url_list"   minOccurs="0"/>
           <xsd:element name="upload_file"         type="upload_file"             minOccurs="0" maxOccurs="unbounded"/>
           <xsd:element name="upload_file_status"  type="upload_file_status"      minOccurs="0" maxOccurs="unbounded"/>
@@ -1273,14 +1274,14 @@
       </xsd:complexType>
       <xsd:complexType name="cache_filter">
         <xsd:all>
-            <!-- 
-              Specify which field the filter is matched against (by default filter is matched if it matches against any of the fields) 
-              Filter field can also be a path to a particular element in the response XML.  
+            <!--
+              Specify which field the filter is matched against (by default filter is matched if it matches against any of the fields)
+              Filter field can also be a path to a particular element in the response XML.
                 For example:  queries/query/platform
             -->
             <xsd:element name="field"          type="xsd:string"  minOccurs="0"/>
             <xsd:element name="value"          type="xsd:string"  minOccurs="0"/>
-            <!-- 
+            <!--
               The value_type specifies how the values are compared.
               String: standard lexicographical comparison (the default)
               Version: values are expected to be version strings, e.g. 9.4.2 is less than 10.1.3
@@ -1315,12 +1316,15 @@
               2: include answer times
               4: row counts only, for IDType "Action" selects between action status "summary" and "details"
               8: aggregate over time
-              16: include most recent 
+              16: include most recent
               32: include hash values
               64: hide "no results"
               128: use user context (applies to GetSavedQuestions, and restricts results to only those visible by the user associated with the session )
           -->
-          <xsd:element name="export_flag" type="xsd:int"  minOccurs="0"/> <!-- used to tell server to export all data to a file in "Tanium Server\http\export" folder with name "<timestamp>.cvs". Related "<timestamp>.status" and "<timestamp>.qid" will be created in the same directory for progress tracking and debugging  -->
+          <xsd:element name="export_flag"           type="xsd:int"     minOccurs="0"/> <!-- used to tell server to export all data to a file in "Tanium Server\http\export" folder with name "<timestamp>.cvs". Related "<timestamp>.status" and "<timestamp>.qid" will be created in the same directory for progress tracking and debugging  -->
+          <xsd:element name="export_format"         type="xsd:int"     minOccurs="0"/> <!-- 0 == csv format (backward compatible with console export), 1 == result xml format, similar to normal api use, 2 == CEF format, flattened -->
+          <xsd:element name="export_leading_text"   type="xsd:string"  minOccurs="0"/> <!-- when exporting, insert this text at the beginning of each line -->
+          <xsd:element name="export_trailing_text"  type="xsd:string"  minOccurs="0"/> <!-- when exporting, append this text at the end of each line -->
           <xsd:element name="flags"                 type="xsd:int"     minOccurs="0"/>
           <xsd:element name="hide_errors_flag"      type="xsd:int"     minOccurs="0"/>
           <xsd:element name="include_answer_times_flag" type="xsd:int" minOccurs="0"/>
@@ -1339,15 +1343,15 @@
              samplefrequency: how far apart each sample should be (in seconds)
              sampleStart: how many samples into the past we should start with (0 == start with the most recent sample)
              sampleCount: how many samples we should examine
-            
+
              Note: 600 seconds == 10 minutes, 10 minutes * 144 = one day
              Example: 600, 0, 144 means give me the last day at 10 minute resolution.
              Example: 600, 1440, 144 means give me the day starting from 11 days ago to 10 days ago at 10 minute resolution.
-            
+
              Note: 3600 seconds == 1 hour, 1 hour * 168 = one week
              Example: 3600, 0, 168 means give me the last week at 1 hour resolution.
              Example: 3600, 168, 168 means give me the week before last week at 1 hour resolution.
-            
+
              Note: if you ask for 168 samples, you may get fewer (if data is not available) but not more
           -->
           <xsd:element name="sample_frequency"      type="xsd:int"     minOccurs="0"/>
@@ -1365,28 +1369,28 @@
              a negative number indicates descending sort order.
              Example: "3,-2" means sort by the third column ascending first, and break ties by sorting by the second column descending
           -->
-          <xsd:element name="sort_order"            type="xsd:string"  minOccurs="0"/> 
+          <xsd:element name="sort_order"            type="xsd:string"  minOccurs="0"/>
 
           <!-- These filter what results are returned. For multiple filters if any one filter doesn't pass for an item the item is skipped. -->
           <xsd:element name="cache_filters" minOccurs="0" type="cache_filter_list"/>
- 
+
           <!-- These two options are not used with cache_filters.  They have their own criteria -->
           <xsd:element name="filter_string"         type="xsd:string"  minOccurs="0"/>   <!-- Filter results to only include items that match this regular expression -->
           <xsd:element name="filter_not_flag"       type="xsd:int"     minOccurs="0"/>   <!-- If set, the rows returned will be all the rows that do NOT match the filter_string -->
-          <!-- 
-            recent_result_buckets is a comma separated list of integers. 
-            
+          <!--
+            recent_result_buckets is a comma separated list of integers.
+
             If empty or unspecified the default value is: "600,3600,86400,604800"
-            
+
             When the most_recent_flag is set, results that are identical other than age will be grouped into age range buckets.
-            By default, all ages less than 600 seconds will be in the first ("current results") group. 
+            By default, all ages less than 600 seconds will be in the first ("current results") group.
             The second group will contain all ages less than 3600 seconds but greater than or equal to 600.
             The final group will include all ages greater than the last specified range.
             You may include any number of buckets.
           -->
           <xsd:element name="recent_result_buckets" type="xsd:string"  minOccurs="0"/>
 
-          <!-- 
+          <!--
                cache usage: requests that support a cache will respond with cache_info populated
                Using cache_id in subsequent requests will use this cache and have significant performance gains.
                cache_expiration is the number of seconds the cache will remain in memory on the server.  Each request renews the specified cache.
@@ -1395,8 +1399,8 @@
           <xsd:element name="cache_id" type="xsd:long"        minOccurs="0"/>
         <xsd:element name="cache_expiration" type="xsd:int" minOccurs="0"/>
           <!--
-              cache_sort_fields is used to sort the objects in a particular cache.  
-              only sorting of top level tags of SOAP objects is supported. (client_status/sensor/etc..) 
+              cache_sort_fields is used to sort the objects in a particular cache.
+              only sorting of top level tags of SOAP objects is supported. (client_status/sensor/etc..)
               This is a comma delimited list with a - in front of the field name for reverse sort.
           -->
           <xsd:element name="cache_sort_fields"    type="xsd:string" minOccurs="0"/>

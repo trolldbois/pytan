@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>2.4. pytan.sessions module &mdash; PyTan 2.0.0 documentation</title>
+  <title>2.3. pytan.sessions module &mdash; PyTan 2.1.0 documentation</title>
   
 
   
@@ -28,10 +28,10 @@
   
 
   
-    <link rel="top" title="PyTan 2.0.0 documentation" href="index.html"/>
+    <link rel="top" title="PyTan 2.1.0 documentation" href="index.html"/>
         <link rel="up" title="2. pytan package" href="pytan.html"/>
-        <link rel="next" title="2.5. pytan.pollers module" href="pytan.pollers.html"/>
-        <link rel="prev" title="2.3. pytan.exceptions module" href="pytan.exceptions.html"/> 
+        <link rel="next" title="2.4. pytan.pollers module" href="pytan.pollers.html"/>
+        <link rel="prev" title="2.2. pytan.exceptions module" href="pytan.exceptions.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -71,18 +71,20 @@
 <li class="toctree-l2"><a class="reference internal" href="introduction.html#installation">1.5. Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="introduction.html#usage">1.6. Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="introduction.html#directory-layout">1.7. Directory Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#other-references">1.8. Other References</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="pytan.html">2. pytan package</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="examples/pytan_examples.html">2.1. PyTan API examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.handler.html">2.2. pytan.handler module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.exceptions.html">2.3. pytan.exceptions module</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">2.4. pytan.sessions module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.pollers.html">2.5. pytan.pollers module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.constants.html">2.6. pytan.constants module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html">2.7. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.handler.html">2.1. pytan.handler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.exceptions.html">2.2. pytan.exceptions module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">2.3. pytan.sessions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.pollers.html">2.4. pytan.pollers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.constants.html">2.5. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html">2.6. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.xml_clean.html">2.7. pytan.xml_clean module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pytan.unittest.html">2.8. pytan Unit Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pytan.functest.html">2.9. pytan Functional Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/pytan_examples.html">2.10. PyTan API examples</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="taniumpy.html">3. taniumpy package</a><ul>
@@ -128,7 +130,7 @@
       
           <li><a href="pytan.html">2. pytan package</a> &raquo;</li>
       
-    <li>2.4. pytan.sessions module</li>
+    <li>2.3. pytan.sessions module</li>
       <li class="wy-breadcrumbs-aside">
         
           <a href="_sources/pytan.sessions.txt" rel="nofollow"> View page source</a>
@@ -140,842 +142,1751 @@
           <div role="main" class="document">
             
   <div class="section" id="module-pytan.sessions">
-<span id="pytan-sessions-module"></span><h1>2.4. pytan.sessions module<a class="headerlink" href="#module-pytan.sessions" title="Permalink to this headline">¶</a></h1>
+<span id="pytan-sessions-module"></span><h1>2.3. pytan.sessions module<a class="headerlink" href="#module-pytan.sessions" title="Permalink to this headline">¶</a></h1>
 <p>Session classes for the <a class="reference internal" href="pytan.html#module-pytan" title="pytan"><code class="xref py py-mod docutils literal"><span class="pre">pytan</span></code></a> module.</p>
+<div class="section" id="session-class">
+<h2>2.3.1. Session Class<a class="headerlink" href="#session-class" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="pytan.sessions.Session">
 <em class="property">class </em><code class="descclassname">pytan.sessions.</code><code class="descname">Session</code><span class="sig-paren">(</span><em>server</em>, <em>port=443</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="http://docs.python.org/2.7/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
-<p>This is session object uses the requests package instead of the built in httplib library.
-This provides support for keep alive, gzip, cookies, forwarding, and a host of other features
+<p>This session object uses the <a class="reference internal" href="requests.html#module-requests" title="requests"><code class="xref py py-mod docutils literal"><span class="pre">requests</span></code></a> package instead of the built in httplib library.</p>
+<p>This provides support for keep alive, gzip, cookies, forwarding, and a host of other features
 automatically.</p>
-<p>The Requests Session object allows you to persist certain parameters across requests.
-It also persists cookies across all requests made from the Session instance.
-Any requests that you make within a session will automatically reuse the appropriate connection</p>
-<dl class="attribute">
-<dt id="pytan.sessions.Session.ADD_OBJECT_CMD">
-<code class="descname">ADD_OBJECT_CMD</code><em class="property"> = 'AddObject'</em><a class="headerlink" href="#pytan.sessions.Session.ADD_OBJECT_CMD" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+</dd></dl>
 
-<dl class="attribute">
-<dt id="pytan.sessions.Session.AUTH_CONNECT_TIMEOUT_SEC">
-<code class="descname">AUTH_CONNECT_TIMEOUT_SEC</code><em class="property"> = 5</em><a class="headerlink" href="#pytan.sessions.Session.AUTH_CONNECT_TIMEOUT_SEC" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pytan.sessions.Session.AUTH_RES">
-<code class="descname">AUTH_RES</code><em class="property"> = 'auth'</em><a class="headerlink" href="#pytan.sessions.Session.AUTH_RES" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pytan.sessions.Session.AUTH_RESPONSE_TIMEOUT_SEC">
-<code class="descname">AUTH_RESPONSE_TIMEOUT_SEC</code><em class="property"> = 15</em><a class="headerlink" href="#pytan.sessions.Session.AUTH_RESPONSE_TIMEOUT_SEC" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pytan.sessions.Session.COMMAND_RE">
-<code class="descname">COMMAND_RE</code><em class="property"> = &lt;_sre.SRE_Pattern object at 0x7ff15bac7f40&gt;</em><a class="headerlink" href="#pytan.sessions.Session.COMMAND_RE" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pytan.sessions.Session.DELETE_OBJECT_CMD">
-<code class="descname">DELETE_OBJECT_CMD</code><em class="property"> = 'DeleteObject'</em><a class="headerlink" href="#pytan.sessions.Session.DELETE_OBJECT_CMD" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pytan.sessions.Session.GET_OBJECT_CMD">
-<code class="descname">GET_OBJECT_CMD</code><em class="property"> = 'GetObject'</em><a class="headerlink" href="#pytan.sessions.Session.GET_OBJECT_CMD" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pytan.sessions.Session.GET_RESULT_DATA_CMD">
-<code class="descname">GET_RESULT_DATA_CMD</code><em class="property"> = 'GetResultData'</em><a class="headerlink" href="#pytan.sessions.Session.GET_RESULT_DATA_CMD" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pytan.sessions.Session.GET_RESULT_INFO_CMD">
-<code class="descname">GET_RESULT_INFO_CMD</code><em class="property"> = 'GetResultInfo'</em><a class="headerlink" href="#pytan.sessions.Session.GET_RESULT_INFO_CMD" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pytan.sessions.Session.HTTP_AUTH_RETRY">
-<code class="descname">HTTP_AUTH_RETRY</code><em class="property"> = True</em><a class="headerlink" href="#pytan.sessions.Session.HTTP_AUTH_RETRY" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pytan.sessions.Session.HTTP_DEBUG">
-<code class="descname">HTTP_DEBUG</code><em class="property"> = False</em><a class="headerlink" href="#pytan.sessions.Session.HTTP_DEBUG" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pytan.sessions.Session.HTTP_RETRY_COUNT">
-<code class="descname">HTTP_RETRY_COUNT</code><em class="property"> = 5</em><a class="headerlink" href="#pytan.sessions.Session.HTTP_RETRY_COUNT" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pytan.sessions.Session.INFO_CONNECT_TIMEOUT_SEC">
-<code class="descname">INFO_CONNECT_TIMEOUT_SEC</code><em class="property"> = 5</em><a class="headerlink" href="#pytan.sessions.Session.INFO_CONNECT_TIMEOUT_SEC" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pytan.sessions.Session.INFO_RES">
-<code class="descname">INFO_RES</code><em class="property"> = 'info.json'</em><a class="headerlink" href="#pytan.sessions.Session.INFO_RES" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pytan.sessions.Session.INFO_RESPONSE_TIMEOUT_SEC">
-<code class="descname">INFO_RESPONSE_TIMEOUT_SEC</code><em class="property"> = 15</em><a class="headerlink" href="#pytan.sessions.Session.INFO_RESPONSE_TIMEOUT_SEC" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pytan.sessions.Session.REQUEST_BODY_BASE">
-<code class="descname">REQUEST_BODY_BASE</code><em class="property"> = '&lt;SOAP-ENV:Envelope xmlns:SOAP-ENV=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&gt;\n&lt;SOAP-ENV:Body&gt;\n  &lt;typens:tanium_soap_request xmlns:typens=&quot;urn:TaniumSOAP&quot;&gt;\n    &lt;command&gt;$command&lt;/command&gt;\n    &lt;object_list&gt;$object_list&lt;/object_list&gt;\n    $options\n  &lt;/typens:tanium_soap_request&gt;\n&lt;/SOAP-ENV:Body&gt;\n&lt;/SOAP-ENV:Envelope&gt;'</em><a class="headerlink" href="#pytan.sessions.Session.REQUEST_BODY_BASE" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pytan.sessions.Session.REQUEST_BODY_TEMPLATE">
-<code class="descname">REQUEST_BODY_TEMPLATE</code><em class="property"> = &lt;string.Template object at 0x110a3c890&gt;</em><a class="headerlink" href="#pytan.sessions.Session.REQUEST_BODY_TEMPLATE" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<div class="section" id="example-create-a-session-object">
+<h3>2.3.1.1. Example: Create a Session object<a class="headerlink" href="#example-create-a-session-object" title="Permalink to this headline">¶</a></h3>
+<p>Setup a Session() object:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;/path/to/pytan/&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pytan</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">session</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">sessions</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="s">&#39;host&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Authenticate with the Session() object:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">session</span><span class="o">.</span><span class="n">authenticate</span><span class="p">(</span><span class="s">&#39;username&#39;</span><span class="p">,</span> <span class="s">&#39;password&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="session-attributes">
+<h3>2.3.1.2. Session Attributes<a class="headerlink" href="#session-attributes" title="Permalink to this headline">¶</a></h3>
 <dl class="attribute">
 <dt id="pytan.sessions.Session.REQ_SESSION">
-<code class="descname">REQ_SESSION</code><em class="property"> = &lt;requests.sessions.Session object at 0x110b6f090&gt;</em><a class="headerlink" href="#pytan.sessions.Session.REQ_SESSION" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pytan.sessions.Session.RUN_PLUGIN_CMD">
-<code class="descname">RUN_PLUGIN_CMD</code><em class="property"> = 'RunPlugin'</em><a class="headerlink" href="#pytan.sessions.Session.RUN_PLUGIN_CMD" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pytan.sessions.Session.SERVER_STATS">
-<code class="descname">SERVER_STATS</code><em class="property"> = False</em><a class="headerlink" href="#pytan.sessions.Session.SERVER_STATS" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pytan.sessions.Session.SERVER_STATS_SLEEP">
-<code class="descname">SERVER_STATS_SLEEP</code><em class="property"> = 5</em><a class="headerlink" href="#pytan.sessions.Session.SERVER_STATS_SLEEP" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pytan.sessions.Session.SERVER_STATS_TARGETS">
-<code class="descname">SERVER_STATS_TARGETS</code><em class="property"> = [{'Version': 'Settings/Version'}, {'Active Questions': 'Active Question Cache/Active Question Estimate'}, {'Clients': 'Active Question Cache/Active Client Estimate'}, {'Strings': 'String Cache/Total String Count'}, {'Handles': 'System Performance Info/HandleCount'}, {'Processes': 'System Performance Info/ProcessCount'}, {'Memory Available': 'percentage(System Performance Info/PhysicalAvailable,System Performance Info/PhysicalTotal)'}]</em><a class="headerlink" href="#pytan.sessions.Session.SERVER_STATS_TARGETS" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pytan.sessions.Session.SESSION_RE">
-<code class="descname">SESSION_RE</code><em class="property"> = &lt;_sre.SRE_Pattern object at 0x7ff15bac7800&gt;</em><a class="headerlink" href="#pytan.sessions.Session.SESSION_RE" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pytan.sessions.Session.SOAP_CONNECT_TIMEOUT_SEC">
-<code class="descname">SOAP_CONNECT_TIMEOUT_SEC</code><em class="property"> = 15</em><a class="headerlink" href="#pytan.sessions.Session.SOAP_CONNECT_TIMEOUT_SEC" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pytan.sessions.Session.SOAP_REQUEST_HEADERS">
-<code class="descname">SOAP_REQUEST_HEADERS</code><em class="property"> = {'Content-Type': 'text/xml; charset=utf-8', 'Accept-Encoding': 'gzip'}</em><a class="headerlink" href="#pytan.sessions.Session.SOAP_REQUEST_HEADERS" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pytan.sessions.Session.SOAP_RES">
-<code class="descname">SOAP_RES</code><em class="property"> = 'soap'</em><a class="headerlink" href="#pytan.sessions.Session.SOAP_RES" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pytan.sessions.Session.SOAP_RESPONSE_TIMEOUT_SEC">
-<code class="descname">SOAP_RESPONSE_TIMEOUT_SEC</code><em class="property"> = 540</em><a class="headerlink" href="#pytan.sessions.Session.SOAP_RESPONSE_TIMEOUT_SEC" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pytan.sessions.Session.UPDATE_OBJECT_CMD">
-<code class="descname">UPDATE_OBJECT_CMD</code><em class="property"> = 'UpdateObject'</em><a class="headerlink" href="#pytan.sessions.Session.UPDATE_OBJECT_CMD" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pytan.sessions.Session.VERSION_RE">
-<code class="descname">VERSION_RE</code><em class="property"> = &lt;_sre.SRE_Pattern object at 0x7ff15bac83d0&gt;</em><a class="headerlink" href="#pytan.sessions.Session.VERSION_RE" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descclassname">Session.</code><code class="descname">REQ_SESSION</code><em class="property"> = &lt;requests.sessions.Session object at 0x106b32490&gt;</em><a class="headerlink" href="#pytan.sessions.Session.REQ_SESSION" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Requests session allows you to persist certain parameters across requests. It also persists cookies across all requests made from the Session instance. Any requests that you make within a session will automatically reuse the appropriate connection</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="pytan.sessions.Session.XMLNS">
-<code class="descname">XMLNS</code><em class="property"> = {'xsi': 'xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;', 'typens': 'xmlns:typens=&quot;urn:TaniumSOAP&quot;', 'xsd': 'xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;', 'SOAP-ENV': 'xmlns:SOAP-ENV=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;'}</em><a class="headerlink" href="#pytan.sessions.Session.XMLNS" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descclassname">Session.</code><code class="descname">XMLNS</code><em class="property"> = {'xsi': 'xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;', 'typens': 'xmlns:typens=&quot;urn:TaniumSOAP&quot;', 'xsd': 'xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;', 'SOAP-ENV': 'xmlns:SOAP-ENV=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;'}</em><a class="headerlink" href="#pytan.sessions.Session.XMLNS" title="Permalink to this definition">¶</a></dt>
+<dd><p>The namespace mappings for use in XML Request bodies</p>
+</dd></dl>
 
 <dl class="attribute">
-<dt id="pytan.sessions.Session.__dict__">
-<code class="descname">__dict__</code><em class="property"> = dict_proxy({'_create_add_object_body': &lt;function _create_add_object_body at 0x110a42ed8&gt;, 'HTTP_DEBUG': False, 'get_server_info': &lt;function get_server_info at 0x110a427d0&gt;, '__dict__': &lt;attribute '__dict__' of 'Session' objects&gt;, 'GET_RESULT_DATA_CMD': 'GetResultData', '__weakref__': &lt;attribute '__weakref__' of 'Session' objects&gt;, 'find': &lt;function find at 0x110a42488&gt;, '_get_percentage': &lt;function _get_percentage at 0x110a42c80&gt;, '_create_get_object_body': &lt;function _create_get_object_body at 0x110a44140&gt;, '_resolve_stat_target': &lt;function _resolve_stat_target at 0x110a42d70&gt;, 'REQUEST_BODY_BASE': '&lt;SOAP-ENV:Envelope xmlns:SOAP-ENV=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&gt;\n&lt;SOAP-ENV:Body&gt;\n  &lt;typens:tanium_soap_request xmlns:typens=&quot;urn:TaniumSOAP&quot;&gt;\n    &lt;command&gt;$command&lt;/command&gt;\n    &lt;object_list&gt;$object_list&lt;/object_list&gt;\n    $options\n  &lt;/typens:tanium_soap_request&gt;\n&lt;/SOAP-ENV:Body&gt;\n&lt;/SOAP-ENV:Envelope&gt;', '_create_get_result_data_body': &lt;function _create_get_result_data_body at 0x110a440c8&gt;, 'add': &lt;function add at 0x110a42578&gt;, 'AUTH_RESPONSE_TIMEOUT_SEC': 15, 'save': &lt;function save at 0x110a42500&gt;, '__doc__': '\n    This is session object uses the requests package instead of the built in httplib library.\n    This provides support for keep alive, gzip, cookies, forwarding, and a host of other features\n    automatically.\n\n    The Requests Session object allows you to persist certain parameters across requests.\n    It also persists cookies across all requests made from the Session instance.\n    Any requests that you make within a session will automatically reuse the appropriate connection\n    ', 'REQUEST_BODY_TEMPLATE': &lt;string.Template object at 0x110a3c890&gt;, 'is_auth': &lt;property object at 0x110a43260&gt;, 'XMLNS': {'xsi': 'xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;', 'typens': 'xmlns:typens=&quot;urn:TaniumSOAP&quot;', 'xsd': 'xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;', 'SOAP-ENV': 'xmlns:SOAP-ENV=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;'}, '_flatten_server_info': &lt;function _flatten_server_info at 0x110a42c08&gt;, 'INFO_RESPONSE_TIMEOUT_SEC': 15, 'get_server_stats': &lt;function get_server_stats at 0x110a428c0&gt;, '_get_response': &lt;function _get_response at 0x110a44320&gt;, '__str__': &lt;function __str__ at 0x110a421b8&gt;, 'AUTH_CONNECT_TIMEOUT_SEC': 5, 'SOAP_CONNECT_TIMEOUT_SEC': 15, 'http_post': &lt;function http_post at 0x110a42a28&gt;, '_stats_loop': &lt;function _stats_loop at 0x110a42b90&gt;, 'REQ_SESSION': &lt;requests.sessions.Session object at 0x110b6f090&gt;, '_create_delete_object_body': &lt;function _create_delete_object_body at 0x110a42f50&gt;, '_create_update_object_body': &lt;function _create_update_object_body at 0x110a441b8&gt;, 'RUN_PLUGIN_CMD': 'RunPlugin', 'SERVER_STATS': False, '_http_post': &lt;function _http_post at 0x110a42aa0&gt;, 'HTTP_RETRY_COUNT': 5, 'delete': &lt;function delete at 0x110a425f0&gt;, 'bodyhttplog': &lt;logging.Logger object at 0x110813310&gt;, '__module__': 'pytan.sessions', 'SOAP_RESPONSE_TIMEOUT_SEC': 540, 'SOAP_REQUEST_HEADERS': {'Content-Type': 'text/xml; charset=utf-8', 'Accept-Encoding': 'gzip'}, '_start_stats_thread': &lt;function _start_stats_thread at 0x110a42b18&gt;, '_parse_response_for_regex': &lt;function _parse_response_for_regex at 0x110a442a8&gt;, 'GET_OBJECT_CMD': 'GetObject', 'INFO_RES': 'info.json', 'run_plugin': &lt;function run_plugin at 0x110a42668&gt;, 'SESSION_RE': &lt;_sre.SRE_Pattern object at 0x7ff15bac7800&gt;, 'authenticate': &lt;function authenticate at 0x110a42410&gt;, 'mylog': &lt;logging.Logger object at 0x110813190&gt;, 'SERVER_STATS_TARGETS': [{'Version': 'Settings/Version'}, {'Active Questions': 'Active Question Cache/Active Question Estimate'}, {'Clients': 'Active Question Cache/Active Client Estimate'}, {'Strings': 'String Cache/Total String Count'}, {'Handles': 'System Performance Info/HandleCount'}, {'Processes': 'System Performance Info/ProcessCount'}, {'Memory Available': 'percentage(System Performance Info/PhysicalAvailable,System Performance Info/PhysicalTotal)'}], '_check_auth': &lt;function _check_auth at 0x110a44230&gt;, 'get_result_data': &lt;function get_result_data at 0x110a42758&gt;, 'GET_RESULT_INFO_CMD': 'GetResultInfo', 'SERVER_STATS_SLEEP': 5, 'get_server_version': &lt;function get_server_version at 0x110a42848&gt;, '__init__': &lt;function __init__ at 0x110a42140&gt;, 'get_result_info': &lt;function get_result_info at 0x110a426e0&gt;, '_build_body': &lt;function _build_body at 0x110a42de8&gt;, 'authlog': &lt;logging.Logger object at 0x110813210&gt;, 'HTTP_AUTH_RETRY': True, 'ADD_OBJECT_CMD': 'AddObject', 'logout': &lt;function logout at 0x110a42398&gt;, 'SOAP_RES': 'soap', '_find_stat_target': &lt;function _find_stat_target at 0x110a42cf8&gt;, 'enable_stats_loop': &lt;function enable_stats_loop at 0x110a42938&gt;, 'httplog': &lt;logging.Logger object at 0x110813290&gt;, '_create_run_plugin_object_body': &lt;function _create_run_plugin_object_body at 0x110a42e60&gt;, '_create_get_result_info_body': &lt;function _create_get_result_info_body at 0x110a44050&gt;, 'UPDATE_OBJECT_CMD': 'UpdateObject', 'session_id': &lt;property object at 0x110a432b8&gt;, 'COMMAND_RE': &lt;_sre.SRE_Pattern object at 0x7ff15bac7f40&gt;, 'INFO_CONNECT_TIMEOUT_SEC': 5, 'DELETE_OBJECT_CMD': 'DeleteObject', 'statslog': &lt;logging.Logger object at 0x110a3c8d0&gt;, 'AUTH_RES': 'auth', 'disable_stats_loop': &lt;function disable_stats_loop at 0x110a429b0&gt;, 'VERSION_RE': &lt;_sre.SRE_Pattern object at 0x7ff15bac83d0&gt;})</em><a class="headerlink" href="#pytan.sessions.Session.__dict__" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="pytan.sessions.Session.REQUEST_BODY_BASE">
+<code class="descclassname">Session.</code><code class="descname">REQUEST_BODY_BASE</code><em class="property"> = '&lt;SOAP-ENV:Envelope xmlns:SOAP-ENV=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&gt;\n&lt;SOAP-ENV:Body&gt;\n  &lt;typens:tanium_soap_request xmlns:typens=&quot;urn:TaniumSOAP&quot;&gt;\n    &lt;command&gt;$command&lt;/command&gt;\n    &lt;object_list&gt;$object_list&lt;/object_list&gt;\n    $options\n  &lt;/typens:tanium_soap_request&gt;\n&lt;/SOAP-ENV:Body&gt;\n&lt;/SOAP-ENV:Envelope&gt;'</em><a class="headerlink" href="#pytan.sessions.Session.REQUEST_BODY_BASE" title="Permalink to this definition">¶</a></dt>
+<dd><p>The XML template used for all SOAP Requests in string form</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.sessions.Session.REQUEST_BODY_TEMPLATE">
+<code class="descclassname">Session.</code><code class="descname">REQUEST_BODY_TEMPLATE</code><em class="property"> = &lt;string.Template object at 0x106db7790&gt;</em><a class="headerlink" href="#pytan.sessions.Session.REQUEST_BODY_TEMPLATE" title="Permalink to this definition">¶</a></dt>
+<dd><p>The XML template used for all SOAP Requests in string.template form</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.sessions.Session.GET_OBJECT_CMD">
+<code class="descclassname">Session.</code><code class="descname">GET_OBJECT_CMD</code><em class="property"> = 'GetObject'</em><a class="headerlink" href="#pytan.sessions.Session.GET_OBJECT_CMD" title="Permalink to this definition">¶</a></dt>
+<dd><p>The text used in the command element for XML requests to get objects</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.sessions.Session.UPDATE_OBJECT_CMD">
+<code class="descclassname">Session.</code><code class="descname">UPDATE_OBJECT_CMD</code><em class="property"> = 'UpdateObject'</em><a class="headerlink" href="#pytan.sessions.Session.UPDATE_OBJECT_CMD" title="Permalink to this definition">¶</a></dt>
+<dd><p>The text used in the command element for XML requests to update objects</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.sessions.Session.ADD_OBJECT_CMD">
+<code class="descclassname">Session.</code><code class="descname">ADD_OBJECT_CMD</code><em class="property"> = 'AddObject'</em><a class="headerlink" href="#pytan.sessions.Session.ADD_OBJECT_CMD" title="Permalink to this definition">¶</a></dt>
+<dd><p>The text used in the command element for XML requests to add objects</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.sessions.Session.DELETE_OBJECT_CMD">
+<code class="descclassname">Session.</code><code class="descname">DELETE_OBJECT_CMD</code><em class="property"> = 'DeleteObject'</em><a class="headerlink" href="#pytan.sessions.Session.DELETE_OBJECT_CMD" title="Permalink to this definition">¶</a></dt>
+<dd><p>The text used in the command element for XML requests to delete objects</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.sessions.Session.GET_RESULT_INFO_CMD">
+<code class="descclassname">Session.</code><code class="descname">GET_RESULT_INFO_CMD</code><em class="property"> = 'GetResultInfo'</em><a class="headerlink" href="#pytan.sessions.Session.GET_RESULT_INFO_CMD" title="Permalink to this definition">¶</a></dt>
+<dd><p>The text used in the command element for XML requests to get result info for an object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.sessions.Session.GET_RESULT_DATA_CMD">
+<code class="descclassname">Session.</code><code class="descname">GET_RESULT_DATA_CMD</code><em class="property"> = 'GetResultData'</em><a class="headerlink" href="#pytan.sessions.Session.GET_RESULT_DATA_CMD" title="Permalink to this definition">¶</a></dt>
+<dd><p>The text used in the command element for XML requests to get result data for an object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.sessions.Session.RUN_PLUGIN_CMD">
+<code class="descclassname">Session.</code><code class="descname">RUN_PLUGIN_CMD</code><em class="property"> = 'RunPlugin'</em><a class="headerlink" href="#pytan.sessions.Session.RUN_PLUGIN_CMD" title="Permalink to this definition">¶</a></dt>
+<dd><p>The text used in the command element for XML requests to run a plugin for an object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.sessions.Session.AUTH_RES">
+<code class="descclassname">Session.</code><code class="descname">AUTH_RES</code><em class="property"> = 'auth'</em><a class="headerlink" href="#pytan.sessions.Session.AUTH_RES" title="Permalink to this definition">¶</a></dt>
+<dd><p>The URL to use for authentication requests</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.sessions.Session.SOAP_RES">
+<code class="descclassname">Session.</code><code class="descname">SOAP_RES</code><em class="property"> = 'soap'</em><a class="headerlink" href="#pytan.sessions.Session.SOAP_RES" title="Permalink to this definition">¶</a></dt>
+<dd><p>The URL to use for SOAP requests</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.sessions.Session.INFO_RES">
+<code class="descclassname">Session.</code><code class="descname">INFO_RES</code><em class="property"> = 'info.json'</em><a class="headerlink" href="#pytan.sessions.Session.INFO_RES" title="Permalink to this definition">¶</a></dt>
+<dd><p>The URL to use for server info requests</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.sessions.Session.AUTH_CONNECT_TIMEOUT_SEC">
+<code class="descclassname">Session.</code><code class="descname">AUTH_CONNECT_TIMEOUT_SEC</code><em class="property"> = 5</em><a class="headerlink" href="#pytan.sessions.Session.AUTH_CONNECT_TIMEOUT_SEC" title="Permalink to this definition">¶</a></dt>
+<dd><p>number of seconds before timing out for a connection while authenticating</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.sessions.Session.AUTH_RESPONSE_TIMEOUT_SEC">
+<code class="descclassname">Session.</code><code class="descname">AUTH_RESPONSE_TIMEOUT_SEC</code><em class="property"> = 15</em><a class="headerlink" href="#pytan.sessions.Session.AUTH_RESPONSE_TIMEOUT_SEC" title="Permalink to this definition">¶</a></dt>
+<dd><p>number of seconds before timing out for a response while authenticating</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.sessions.Session.INFO_CONNECT_TIMEOUT_SEC">
+<code class="descclassname">Session.</code><code class="descname">INFO_CONNECT_TIMEOUT_SEC</code><em class="property"> = 5</em><a class="headerlink" href="#pytan.sessions.Session.INFO_CONNECT_TIMEOUT_SEC" title="Permalink to this definition">¶</a></dt>
+<dd><p>number of seconds before timing out for a connection while getting server info</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.sessions.Session.INFO_RESPONSE_TIMEOUT_SEC">
+<code class="descclassname">Session.</code><code class="descname">INFO_RESPONSE_TIMEOUT_SEC</code><em class="property"> = 15</em><a class="headerlink" href="#pytan.sessions.Session.INFO_RESPONSE_TIMEOUT_SEC" title="Permalink to this definition">¶</a></dt>
+<dd><p>number of seconds before timing out for a response while getting server info</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.sessions.Session.SOAP_CONNECT_TIMEOUT_SEC">
+<code class="descclassname">Session.</code><code class="descname">SOAP_CONNECT_TIMEOUT_SEC</code><em class="property"> = 15</em><a class="headerlink" href="#pytan.sessions.Session.SOAP_CONNECT_TIMEOUT_SEC" title="Permalink to this definition">¶</a></dt>
+<dd><p>number of seconds before timing out for a connection while sending a SOAP Request</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.sessions.Session.SOAP_RESPONSE_TIMEOUT_SEC">
+<code class="descclassname">Session.</code><code class="descname">SOAP_RESPONSE_TIMEOUT_SEC</code><em class="property"> = 540</em><a class="headerlink" href="#pytan.sessions.Session.SOAP_RESPONSE_TIMEOUT_SEC" title="Permalink to this definition">¶</a></dt>
+<dd><p>number of seconds before timing out for a response while sending a SOAP request</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.sessions.Session.SOAP_REQUEST_HEADERS">
+<code class="descclassname">Session.</code><code class="descname">SOAP_REQUEST_HEADERS</code><em class="property"> = {'Content-Type': 'text/xml; charset=utf-8', 'Accept-Encoding': 'gzip'}</em><a class="headerlink" href="#pytan.sessions.Session.SOAP_REQUEST_HEADERS" title="Permalink to this definition">¶</a></dt>
+<dd><p>dictionary of headers to add to every HTTP GET/POST</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.sessions.Session.COMMAND_RE">
+<code class="descclassname">Session.</code><code class="descname">COMMAND_RE</code><em class="property"> = &lt;_sre.SRE_Pattern object at 0x106b48ae0&gt;</em><a class="headerlink" href="#pytan.sessions.Session.COMMAND_RE" title="Permalink to this definition">¶</a></dt>
+<dd><p>regex object to search for command element in XML bodies</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.sessions.Session.SESSION_RE">
+<code class="descclassname">Session.</code><code class="descname">SESSION_RE</code><em class="property"> = &lt;_sre.SRE_Pattern object at 0x106b48c10&gt;</em><a class="headerlink" href="#pytan.sessions.Session.SESSION_RE" title="Permalink to this definition">¶</a></dt>
+<dd><p>regex object to search for session element in XML bodies</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.sessions.Session.VERSION_RE">
+<code class="descclassname">Session.</code><code class="descname">VERSION_RE</code><em class="property"> = &lt;_sre.SRE_Pattern object at 0x106ad8370&gt;</em><a class="headerlink" href="#pytan.sessions.Session.VERSION_RE" title="Permalink to this definition">¶</a></dt>
+<dd><p>regex object to search for server_version element in XML bodies</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.sessions.Session.HTTP_DEBUG">
+<code class="descclassname">Session.</code><code class="descname">HTTP_DEBUG</code><em class="property"> = False</em><a class="headerlink" href="#pytan.sessions.Session.HTTP_DEBUG" title="Permalink to this definition">¶</a></dt>
+<dd><p>print requests package debug or not</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.sessions.Session.HTTP_RETRY_COUNT">
+<code class="descclassname">Session.</code><code class="descname">HTTP_RETRY_COUNT</code><em class="property"> = 5</em><a class="headerlink" href="#pytan.sessions.Session.HTTP_RETRY_COUNT" title="Permalink to this definition">¶</a></dt>
+<dd><p>number of times to retry HTTP GET/POST&#8217;s if the connection times out/fails</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.sessions.Session.HTTP_AUTH_RETRY">
+<code class="descclassname">Session.</code><code class="descname">HTTP_AUTH_RETRY</code><em class="property"> = True</em><a class="headerlink" href="#pytan.sessions.Session.HTTP_AUTH_RETRY" title="Permalink to this definition">¶</a></dt>
+<dd><p>retry HTTP GET/POST&#8217;s with username/password if session_id fails or not</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.sessions.Session.STATS_LOOP_ENABLED">
+<code class="descclassname">Session.</code><code class="descname">STATS_LOOP_ENABLED</code><em class="property"> = False</em><a class="headerlink" href="#pytan.sessions.Session.STATS_LOOP_ENABLED" title="Permalink to this definition">¶</a></dt>
+<dd><p>enable the statistics loop thread or not</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.sessions.Session.STATS_LOOP_SLEEP_SEC">
+<code class="descclassname">Session.</code><code class="descname">STATS_LOOP_SLEEP_SEC</code><em class="property"> = 5</em><a class="headerlink" href="#pytan.sessions.Session.STATS_LOOP_SLEEP_SEC" title="Permalink to this definition">¶</a></dt>
+<dd><p>number of seconds to sleep in between printing the statistics when stats_loop_enabled is True</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.sessions.Session.STATS_LOOP_TARGETS">
+<code class="descclassname">Session.</code><code class="descname">STATS_LOOP_TARGETS</code><em class="property"> = [{'Version': 'Settings/Version'}, {'Active Questions': 'Active Question Cache/Active Question Estimate'}, {'Clients': 'Active Question Cache/Active Client Estimate'}, {'Strings': 'String Cache/Total String Count'}, {'Handles': 'System Performance Info/HandleCount'}, {'Processes': 'System Performance Info/ProcessCount'}, {'Memory Available': 'percentage(System Performance Info/PhysicalAvailable,System Performance Info/PhysicalTotal)'}]</em><a class="headerlink" href="#pytan.sessions.Session.STATS_LOOP_TARGETS" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of dictionaries with the key being the section of info.json to print info from, and the value being the item with in that section to print the value</p>
+</dd></dl>
+
+</div>
+<div class="section" id="session-methods">
+<h3>2.3.1.3. Session Methods<a class="headerlink" href="#session-methods" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="authentication">
+<h4>2.3.1.3.1. Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h4>
+<dl class="method">
+<dt id="pytan.sessions.Session.authenticate">
+<code class="descclassname">Session.</code><code class="descname">authenticate</code><span class="sig-paren">(</span><em>username=None</em>, <em>password=None</em>, <em>session_id=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.authenticate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session.authenticate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authenticate against a Tanium Server using a username/password or a session ID</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>username</strong> : str, optional</p>
+<blockquote>
+<div><ul class="simple">
+<li>default: None</li>
+<li>username to authenticate as</li>
+</ul>
+</div></blockquote>
+<p><strong>password</strong> : str, optional</p>
+<blockquote>
+<div><ul class="simple">
+<li>default: None</li>
+<li>password for <cite>username</cite></li>
+</ul>
+</div></blockquote>
+<p><strong>session_id</strong> : str, optional</p>
+<blockquote>
+<div><ul class="simple">
+<li>default: None</li>
+<li>session_id to authenticate with, this will be used in favor of username/password if all 3 are supplied.</li>
+</ul>
+</div></blockquote>
+<p><strong>persistent: bool, optional</strong></p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>default: False</li>
+<li>False: do not request a persistent session (returns a session_id that expires 5 minutes after last use)</li>
+<li>True: do request a persistent (returns a session_id that expires 1 week after last use)</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Can request a persistent session that will last up to 1 week when authenticating
+with username and password.</p>
+<p>New persistent sessions may be handed out by the Tanium server when the session handed
+by this auth call is used to login with that week. The new session must be used to login,
+as no matter what persistent sessions will expire 1 week after issuance (or when logout is
+called with that session, or when logout with all_sessions=True is called for any session
+for this user)</p>
+<p>the way sessions get issued:</p>
+<blockquote>
+<div><ul class="simple">
+<li>a GET request to /auth is issued</li>
+<li>username/password supplied in headers as base64 encoded, or session is supplied in
+headers as string</li>
+<li>session is returned upon successful auth</li>
+<li>if there is a header &#8220;persistent=1&#8221; in the headers, a session that expires after 1 week
+will be issued if username/password was used to auth. persistent is ignored if session
+is used to auth.</li>
+<li>if there is not a header &#8220;persistent=1&#8221; in the headers, a session that expires after 5
+minutes will be issued</li>
+<li>if session is used before it expires, it&#8217;s expiry will be extended by 5 minutes or 1
+week, depending on the type of persistence</li>
+<li>while using the SOAP api, new session ID&#8217;s may be returned as part of the response.
+these new session ID&#8217;s should be used in lieu of the old session ID</li>
+</ul>
+</div></blockquote>
+<p>/auth URL
+This url is used for validating a server user&#8217;s credentials. It supports a few different
+ways to authenticate and returns a SOAP session ID on success.  These sessions expire
+after 5 minutes by default if they aren&#8217;t used in SOAP requests.  This expiration is
+configured with the server setting &#8216;session_expiration_seconds&#8217;.</p>
+<dl class="docutils">
+<dt>Supported Authentication Methods:</dt>
+<dd><ul class="first last simple">
+<li>HTTP Basic Auth (Clear Text/BASE64)</li>
+<li>Username/Password/Domain Headers (Clear Text)</li>
+<li>Negotiate (NTLM Only)</li>
+</ul>
+</dd>
+</dl>
+<p>NTLM is enabled by default in 6.3 or greater and requires a persistent connection until a
+session is generated.</p>
+</dd></dl>
 
 <dl class="method">
-<dt id="pytan.sessions.Session.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>server</em>, <em>port=443</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session.__init__" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="pytan.sessions.Session.logout">
+<code class="descclassname">Session.</code><code class="descname">logout</code><span class="sig-paren">(</span><em>all_session_ids=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.logout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session.logout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logout a given session_id from Tanium. If not session_id currently set, it will authenticate to get one.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>all_session_ids</strong> : bool, optional</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>default: False</li>
+<li>False: only log out the current session id for the current user</li>
+<li>True: log out ALL session id&#8217;s associated for the current user</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="attribute">
-<dt id="pytan.sessions.Session.__module__">
-<code class="descname">__module__</code><em class="property"> = 'pytan.sessions'</em><a class="headerlink" href="#pytan.sessions.Session.__module__" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="pytan.sessions.Session.is_auth">
+<code class="descclassname">Session.</code><code class="descname">is_auth</code><a class="headerlink" href="#pytan.sessions.Session.is_auth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property to determine if there is a valid session_id or username and password stored in this object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">bool</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>True: if self._session_id or self._username and _self.password are set</li>
+<li>False: if not</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.sessions.Session.session_id">
+<code class="descclassname">Session.</code><code class="descname">session_id</code><a class="headerlink" href="#pytan.sessions.Session.session_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property to fetch the session_id for this object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>self._session_id</strong> : str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="soap-api-wrappers">
+<h4>2.3.1.3.2. SOAP API Wrappers<a class="headerlink" href="#soap-api-wrappers" title="Permalink to this headline">¶</a></h4>
+<dl class="method">
+<dt id="pytan.sessions.Session.find">
+<code class="descclassname">Session.</code><code class="descname">find</code><span class="sig-paren">(</span><em>object_type</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.find"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session.find" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates and sends a GetObject XML Request body from <cite>object_type</cite> and parses the response into an appropriate <a class="reference internal" href="taniumpy.html#module-taniumpy" title="taniumpy"><code class="xref py py-mod docutils literal"><span class="pre">taniumpy</span></code></a> object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a></p>
+<blockquote>
+<div><ul class="simple">
+<li>object to find</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a></p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>found objects</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
-<dt id="pytan.sessions.Session.__str__">
-<code class="descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.__str__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session.__str__" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="pytan.sessions.Session.save">
+<code class="descclassname">Session.</code><code class="descname">save</code><span class="sig-paren">(</span><em>obj</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates and sends a UpdateObject XML Request body from <cite>obj</cite> and parses the response into an appropriate <a class="reference internal" href="taniumpy.html#module-taniumpy" title="taniumpy"><code class="xref py py-mod docutils literal"><span class="pre">taniumpy</span></code></a> object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a></p>
+<blockquote>
+<div><ul class="simple">
+<li>object to save</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a></p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>saved object</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
-<dl class="attribute">
-<dt id="pytan.sessions.Session.__weakref__">
-<code class="descname">__weakref__</code><a class="headerlink" href="#pytan.sessions.Session.__weakref__" title="Permalink to this definition">¶</a></dt>
-<dd><p>list of weak references to the object (if defined)</p>
+<dl class="method">
+<dt id="pytan.sessions.Session.add">
+<code class="descclassname">Session.</code><code class="descname">add</code><span class="sig-paren">(</span><em>obj</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates and sends a AddObject XML Request body from <cite>obj</cite> and parses the response into an appropriate <a class="reference internal" href="taniumpy.html#module-taniumpy" title="taniumpy"><code class="xref py py-mod docutils literal"><span class="pre">taniumpy</span></code></a> object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a></p>
+<blockquote>
+<div><ul class="simple">
+<li>object to add</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a></p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>added object</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.sessions.Session.delete">
+<code class="descclassname">Session.</code><code class="descname">delete</code><span class="sig-paren">(</span><em>obj</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates and sends a DeleteObject XML Request body from <cite>obj</cite> and parses the response into an appropriate <a class="reference internal" href="taniumpy.html#module-taniumpy" title="taniumpy"><code class="xref py py-mod docutils literal"><span class="pre">taniumpy</span></code></a> object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a></p>
+<blockquote>
+<div><ul class="simple">
+<li>object to delete</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a></p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>deleted object</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.sessions.Session.run_plugin">
+<code class="descclassname">Session.</code><code class="descname">run_plugin</code><span class="sig-paren">(</span><em>obj</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.run_plugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session.run_plugin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates and sends a RunPlugin XML Request body from <cite>obj</cite> and parses the response into an appropriate <a class="reference internal" href="taniumpy.html#module-taniumpy" title="taniumpy"><code class="xref py py-mod docutils literal"><span class="pre">taniumpy</span></code></a> object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a></p>
+<blockquote>
+<div><ul class="simple">
+<li>object to run</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a></p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>results from running object</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.sessions.Session.get_result_info">
+<code class="descclassname">Session.</code><code class="descname">get_result_info</code><span class="sig-paren">(</span><em>obj</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.get_result_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session.get_result_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates and sends a GetResultInfo XML Request body from <cite>obj</cite> and parses the response into an appropriate <a class="reference internal" href="taniumpy.html#module-taniumpy" title="taniumpy"><code class="xref py py-mod docutils literal"><span class="pre">taniumpy</span></code></a> object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a></p>
+<blockquote>
+<div><ul class="simple">
+<li>object to get result info for</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.result_info.ResultInfo" title="taniumpy.object_types.result_info.ResultInfo"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.result_info.ResultInfo</span></code></a></p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>ResultInfo for <cite>obj</cite></li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.sessions.Session.get_result_data">
+<code class="descclassname">Session.</code><code class="descname">get_result_data</code><span class="sig-paren">(</span><em>obj</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.get_result_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session.get_result_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates and sends a GetResultData XML Request body from <cite>obj</cite> and parses the response into an appropriate <a class="reference internal" href="taniumpy.html#module-taniumpy" title="taniumpy"><code class="xref py py-mod docutils literal"><span class="pre">taniumpy</span></code></a> object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a></p>
+<blockquote>
+<div><ul class="simple">
+<li>object to get result set for</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.result_set.ResultSet" title="taniumpy.object_types.result_set.ResultSet"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.result_set.ResultSet</span></code></a> or str</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>if export_id element found in <cite>obj</cite>, element text value is extracted and returned as str</li>
+<li>otherwise, <cite>obj</cite> will be the ResultSet for <cite>obj</cite></li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="server-info-version-stats">
+<h4>2.3.1.3.3. Server Info / Version / Stats<a class="headerlink" href="#server-info-version-stats" title="Permalink to this headline">¶</a></h4>
+<dl class="method">
+<dt id="pytan.sessions.Session.get_server_info">
+<code class="descclassname">Session.</code><code class="descname">get_server_info</code><span class="sig-paren">(</span><em>port=None</em>, <em>fallback_port=444</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.get_server_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session.get_server_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the /info.json</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>port</strong> : int, optional</p>
+<blockquote>
+<div><ul class="simple">
+<li>default: None</li>
+<li>port to attempt getting /info.json from, if not specified will use self.port</li>
+</ul>
+</div></blockquote>
+<p><strong>fallback_port</strong> : int, optional</p>
+<blockquote>
+<div><ul class="simple">
+<li>default: 444</li>
+<li>fallback port to attempt getting /info.json from if <cite>port</cite> fails</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>info_dict</strong> : dict</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>raw json response converted into python dict</li>
+<li>&#8216;diags_flat&#8217;: info.json flattened out into an easier to use structure for python handling</li>
+<li>&#8216;server_info_pass_msgs&#8217;: messages about successfully retrieving info.json</li>
+<li>&#8216;server_info_fail_msgs&#8217;: messages about failing to retrieve info.json</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<dl class="last docutils">
+<dt><a class="reference internal" href="#pytan.sessions.Session._flatten_server_info" title="pytan.sessions.Session._flatten_server_info"><code class="xref py py-func docutils literal"><span class="pre">pytan.sessions.Session._flatten_server_info()</span></code></a></dt>
+<dd>method to flatten the dictionary received from info.json into a python friendly format</dd>
+</dl>
+</div>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li>6.2 /info.json is only available on soap port (default port: 444)</li>
+<li>6.5 /info.json is only available on server port (default port: 443)</li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.sessions.Session.get_server_version">
+<code class="descclassname">Session.</code><code class="descname">get_server_version</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.get_server_version"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session.get_server_version" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tries to parse the server version from /info.json</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">str</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>str containing server version from /info.json</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.sessions.Session.get_server_stats">
+<code class="descclassname">Session.</code><code class="descname">get_server_stats</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.get_server_stats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session.get_server_stats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a str containing a number of stats gathered from /info.json</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">str</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>str containing stats from /info.json</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<dl class="last docutils">
+<dt><a class="reference internal" href="#pytan.sessions.Session.STATS_LOOP_TARGETS" title="pytan.sessions.Session.STATS_LOOP_TARGETS"><code class="xref py py-data docutils literal"><span class="pre">pytan.sessions.Session.STATS_LOOP_TARGETS</span></code></a></dt>
+<dd>list of dict containing stat keys to pull from /info.json</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.sessions.Session.enable_stats_loop">
+<code class="descclassname">Session.</code><code class="descname">enable_stats_loop</code><span class="sig-paren">(</span><em>sleep=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.enable_stats_loop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session.enable_stats_loop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enables the stats loop thread, which will print out the results of <a class="reference internal" href="#pytan.sessions.Session.get_server_stats" title="pytan.sessions.Session.get_server_stats"><code class="xref py py-func docutils literal"><span class="pre">pytan.sessions.Session.get_server_stats()</span></code></a> every <a class="reference internal" href="#pytan.sessions.Session.STATS_LOOP_SLEEP_SEC" title="pytan.sessions.Session.STATS_LOOP_SLEEP_SEC"><code class="xref py py-data docutils literal"><span class="pre">pytan.sessions.Session.STATS_LOOP_SLEEP_SEC</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>sleep</strong> : int, optional</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>when enabling the stats loop, update <a class="reference internal" href="#pytan.sessions.Session.STATS_LOOP_SLEEP_SEC" title="pytan.sessions.Session.STATS_LOOP_SLEEP_SEC"><code class="xref py py-data docutils literal"><span class="pre">pytan.sessions.Session.STATS_LOOP_SLEEP_SEC</span></code></a> with <cite>sleep</cite></li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<dl class="last docutils">
+<dt><a class="reference internal" href="#pytan.sessions.Session._stats_loop" title="pytan.sessions.Session._stats_loop"><code class="xref py py-func docutils literal"><span class="pre">pytan.sessions.Session._stats_loop()</span></code></a></dt>
+<dd>method started as a thread which checks self.STATS_LOOP_ENABLED before running <a class="reference internal" href="#pytan.sessions.Session.get_server_stats" title="pytan.sessions.Session.get_server_stats"><code class="xref py py-func docutils literal"><span class="pre">pytan.sessions.Session.get_server_stats()</span></code></a></dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.sessions.Session.disable_stats_loop">
+<code class="descclassname">Session.</code><code class="descname">disable_stats_loop</code><span class="sig-paren">(</span><em>sleep=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.disable_stats_loop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session.disable_stats_loop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Disables the stats loop thread, which will print out the results of <a class="reference internal" href="#pytan.sessions.Session.get_server_stats" title="pytan.sessions.Session.get_server_stats"><code class="xref py py-func docutils literal"><span class="pre">pytan.sessions.Session.get_server_stats()</span></code></a> every <a class="reference internal" href="#pytan.sessions.Session.STATS_LOOP_SLEEP_SEC" title="pytan.sessions.Session.STATS_LOOP_SLEEP_SEC"><code class="xref py py-data docutils literal"><span class="pre">pytan.sessions.Session.STATS_LOOP_SLEEP_SEC</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>sleep</strong> : int, optional</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>when disabling the stats loop, update <a class="reference internal" href="#pytan.sessions.Session.STATS_LOOP_SLEEP_SEC" title="pytan.sessions.Session.STATS_LOOP_SLEEP_SEC"><code class="xref py py-data docutils literal"><span class="pre">pytan.sessions.Session.STATS_LOOP_SLEEP_SEC</span></code></a> with <cite>sleep</cite></li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<dl class="last docutils">
+<dt><a class="reference internal" href="#pytan.sessions.Session._stats_loop" title="pytan.sessions.Session._stats_loop"><code class="xref py py-func docutils literal"><span class="pre">pytan.sessions.Session._stats_loop()</span></code></a></dt>
+<dd>method started as a thread which checks self.STATS_LOOP_ENABLED before running <a class="reference internal" href="#pytan.sessions.Session.get_server_stats" title="pytan.sessions.Session.get_server_stats"><code class="xref py py-func docutils literal"><span class="pre">pytan.sessions.Session.get_server_stats()</span></code></a></dd>
+</dl>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="http-get-post">
+<h4>2.3.1.3.4. HTTP GET / POST<a class="headerlink" href="#http-get-post" title="Permalink to this headline">¶</a></h4>
+<dl class="method">
+<dt id="pytan.sessions.Session.http_get">
+<code class="descclassname">Session.</code><code class="descname">http_get</code><span class="sig-paren">(</span><em>url</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.http_get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session.http_get" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is an authenticated HTTP GET method. It will always forcibly use the authentication credentials that are stored in the current object when performing an HTTP GET.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>url</strong> : str</p>
+<blockquote>
+<div><ul class="simple">
+<li>url to fetch on the server</li>
+</ul>
+</div></blockquote>
+<p><strong>host: str, optional</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>default: self.server</li>
+<li>host to connect to</li>
+</ul>
+</div></blockquote>
+<p><strong>port: int, optional</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>default: self.port</li>
+<li>port to connect to</li>
+</ul>
+</div></blockquote>
+<p><strong>headers: dict, optional</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>default: {}</li>
+<li>headers to supply as part of GET request</li>
+</ul>
+</div></blockquote>
+<p><strong>connect_timeout: int, optional</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>default: self.SOAP_CONNECT_TIMEOUT_SEC</li>
+<li>timeout in seconds for connection to host</li>
+</ul>
+</div></blockquote>
+<p><strong>response_timeout: int, optional</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>default: self.SOAP_RESPONSE_TIMEOUT_SEC</li>
+<li>timeout in seconds for response from host</li>
+</ul>
+</div></blockquote>
+<p><strong>debug: bool, optional</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>default: self.HTTP_DEBUG</li>
+<li>False: do not print requests debug messages</li>
+<li>True: print requests debug messages</li>
+</ul>
+</div></blockquote>
+<p><strong>auth_retry: bool, optional</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>default: self.HTTP_AUTH_RETRY</li>
+<li>True: retry authentication with username/password if session_id fails</li>
+<li>False: throw exception if session_id fails</li>
+</ul>
+</div></blockquote>
+<p><strong>retry_count: int, optional</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>default: self.HTTP_RETRY_COUNT</li>
+<li>number of times to retry the GET request if the server fails to respond properly or in time</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>body</strong> : str</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>str containing body of response from server</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<dl class="last docutils">
+<dt><a class="reference internal" href="#pytan.sessions.Session._http_get" title="pytan.sessions.Session._http_get"><code class="xref py py-func docutils literal"><span class="pre">pytan.sessions.Session._http_get()</span></code></a></dt>
+<dd>private method used to perform the actual HTTP GET</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.sessions.Session._http_get">
+<code class="descclassname">Session.</code><code class="descname">_http_get</code><span class="sig-paren">(</span><em>host</em>, <em>port</em>, <em>url</em>, <em>headers=None</em>, <em>connect_timeout=15</em>, <em>response_timeout=180</em>, <em>debug=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._http_get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._http_get" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is an HTTP GET method that utilizes the <a class="reference internal" href="requests.html#module-requests" title="requests"><code class="xref py py-mod docutils literal"><span class="pre">requests</span></code></a> package.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>host: str</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>host to connect to</li>
+</ul>
+</div></blockquote>
+<p><strong>port: int</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>port to connect to</li>
+</ul>
+</div></blockquote>
+<p><strong>url</strong> : str</p>
+<blockquote>
+<div><ul class="simple">
+<li>url to fetch on the server</li>
+</ul>
+</div></blockquote>
+<p><strong>headers: dict, optional</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>default: None</li>
+<li>headers to supply as part of POST request</li>
+</ul>
+</div></blockquote>
+<p><strong>connect_timeout: int, optional</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>default: 15</li>
+<li>timeout in seconds for connection to host</li>
+</ul>
+</div></blockquote>
+<p><strong>response_timeout: int, optional</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>default: 180</li>
+<li>timeout in seconds for response from host</li>
+</ul>
+</div></blockquote>
+<p><strong>debug: bool, optional</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>default: False</li>
+<li>False: do not print requests debug messages</li>
+<li>True: print requests debug messages</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>body</strong> : str</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>str containing body of response from server</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.sessions.Session.http_post">
+<code class="descclassname">Session.</code><code class="descname">http_post</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.http_post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session.http_post" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is an authenticated HTTP POST method. It will always forcibly use the authentication credentials that are stored in the current object when performing an HTTP POST.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>url</strong> : str, optional</p>
+<blockquote>
+<div><ul class="simple">
+<li>default: self.SOAP_RES</li>
+<li>url to fetch on the server</li>
+</ul>
+</div></blockquote>
+<p><strong>host: str, optional</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>default: self.server</li>
+<li>host to connect to</li>
+</ul>
+</div></blockquote>
+<p><strong>port: int, optional</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>default: self.port</li>
+<li>port to connect to</li>
+</ul>
+</div></blockquote>
+<p><strong>headers: dict, optional</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>default: {}</li>
+<li>headers to supply as part of POST request</li>
+</ul>
+</div></blockquote>
+<p><strong>body: str, optional</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>default: &#8216;&#8217;</li>
+<li>body to send as part of the POST request</li>
+</ul>
+</div></blockquote>
+<p><strong>connect_timeout: int, optional</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>default: self.SOAP_CONNECT_TIMEOUT_SEC</li>
+<li>timeout in seconds for connection to host</li>
+</ul>
+</div></blockquote>
+<p><strong>response_timeout: int, optional</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>default: self.SOAP_RESPONSE_TIMEOUT_SEC</li>
+<li>timeout in seconds for response from host</li>
+</ul>
+</div></blockquote>
+<p><strong>debug: bool, optional</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>default: self.HTTP_DEBUG</li>
+<li>False: do not print requests debug messages</li>
+<li>True: print requests debug messages</li>
+</ul>
+</div></blockquote>
+<p><strong>auth_retry: bool, optional</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>default: self.HTTP_AUTH_RETRY</li>
+<li>True: retry authentication with username/password if session_id fails</li>
+<li>False: throw exception if session_id fails</li>
+</ul>
+</div></blockquote>
+<p><strong>retry_count: int, optional</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>default: self.HTTP_RETRY_COUNT</li>
+<li>number of times to retry the POST request if the server fails to respond properly or in time</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>body</strong> : str</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>str containing body of response from server</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<dl class="last docutils">
+<dt><a class="reference internal" href="#pytan.sessions.Session._http_post" title="pytan.sessions.Session._http_post"><code class="xref py py-func docutils literal"><span class="pre">pytan.sessions.Session._http_post()</span></code></a></dt>
+<dd>private method used to perform the actual HTTP POST</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.sessions.Session._http_post">
+<code class="descclassname">Session.</code><code class="descname">_http_post</code><span class="sig-paren">(</span><em>host</em>, <em>port</em>, <em>url</em>, <em>body=None</em>, <em>headers=None</em>, <em>connect_timeout=15</em>, <em>response_timeout=180</em>, <em>debug=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._http_post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._http_post" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is an HTTP POST method that utilizes the <a class="reference internal" href="requests.html#module-requests" title="requests"><code class="xref py py-mod docutils literal"><span class="pre">requests</span></code></a> package.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>host: str</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>host to connect to</li>
+</ul>
+</div></blockquote>
+<p><strong>port: int</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>port to connect to</li>
+</ul>
+</div></blockquote>
+<p><strong>url</strong> : str</p>
+<blockquote>
+<div><ul class="simple">
+<li>url to fetch on the server</li>
+</ul>
+</div></blockquote>
+<p><strong>body: str, optional</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>default: None</li>
+<li>body to send as part of the POST request</li>
+</ul>
+</div></blockquote>
+<p><strong>headers: dict, optional</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>default: None</li>
+<li>headers to supply as part of POST request</li>
+</ul>
+</div></blockquote>
+<p><strong>connect_timeout: int, optional</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>default: 15</li>
+<li>timeout in seconds for connection to host</li>
+</ul>
+</div></blockquote>
+<p><strong>response_timeout: int, optional</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>default: 180</li>
+<li>timeout in seconds for response from host</li>
+</ul>
+</div></blockquote>
+<p><strong>debug: bool, optional</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>default: False</li>
+<li>False: do not print requests debug messages</li>
+<li>True: print requests debug messages</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>body</strong> : str</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>str containing body of response from server</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<dl class="last docutils">
+<dt><a class="reference internal" href="pytan.xml_clean.html#pytan.xml_clean.xml_cleaner" title="pytan.xml_clean.xml_cleaner"><code class="xref py py-func docutils literal"><span class="pre">pytan.xml_clean.xml_cleaner()</span></code></a></dt>
+<dd>function to remove invalid/bad characters from XML responses</dd>
+</dl>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="utility-methods">
+<h4>2.3.1.3.5. Utility Methods<a class="headerlink" href="#utility-methods" title="Permalink to this headline">¶</a></h4>
+<dl class="method">
+<dt id="pytan.sessions.Session._replace_auth">
+<code class="descclassname">Session.</code><code class="descname">_replace_auth</code><span class="sig-paren">(</span><em>headers</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._replace_auth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._replace_auth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility method for removing username, password, and/or session from supplied headers and replacing them with the current objects session or username and password</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>headers</strong> : dict</p>
+<blockquote>
+<div><ul class="simple">
+<li>dict of key/value pairs for a set of headers for a given request</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>headers</strong> : dict</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>dict of key/value pairs for a set of headers for a given request</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.sessions.Session._full_url">
+<code class="descclassname">Session.</code><code class="descname">_full_url</code><span class="sig-paren">(</span><em>url</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._full_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._full_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility method for constructing a full url</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>url</strong> : str</p>
+<blockquote>
+<div><ul class="simple">
+<li>url to use in string</li>
+</ul>
+</div></blockquote>
+<p><strong>host</strong> : str, optional</p>
+<blockquote>
+<div><ul class="simple">
+<li>default: self.server</li>
+<li>hostname/IP address to use in string</li>
+</ul>
+</div></blockquote>
+<p><strong>port</strong> : str, optional</p>
+<blockquote>
+<div><ul class="simple">
+<li>default: self.port</li>
+<li>port to use in string</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>full_url</strong> : str</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>full url in the form of <a class="reference external" href="https://$host:$port/$url">https://$host:$port/$url</a></li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.sessions.Session._clean_headers">
+<code class="descclassname">Session.</code><code class="descname">_clean_headers</code><span class="sig-paren">(</span><em>headers=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._clean_headers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._clean_headers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility method for getting the headers for the current request, combining them with the session headers used for every request, and obfuscating the value of any &#8216;password&#8217; header.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>headers</strong> : dict</p>
+<blockquote>
+<div><ul class="simple">
+<li>dict of key/value pairs for a set of headers for a given request</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>headers</strong> : dict</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>dict of key/value pairs for a set of cleaned headers for a given request</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.sessions.Session._start_stats_thread">
+<code class="descclassname">Session.</code><code class="descname">_start_stats_thread</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._start_stats_thread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._start_stats_thread" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility method starting the <a class="reference internal" href="#pytan.sessions.Session._stats_loop" title="pytan.sessions.Session._stats_loop"><code class="xref py py-func docutils literal"><span class="pre">pytan.sessions.Session._stats_loop()</span></code></a> method in a threaded daemon</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.sessions.Session._stats_loop">
+<code class="descclassname">Session.</code><code class="descname">_stats_loop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._stats_loop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._stats_loop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility method for logging server stats via <a class="reference internal" href="#pytan.sessions.Session.get_server_stats" title="pytan.sessions.Session.get_server_stats"><code class="xref py py-func docutils literal"><span class="pre">pytan.sessions.Session.get_server_stats()</span></code></a> every self.STATS_LOOP_SLEEP_SEC</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.sessions.Session._flatten_server_info">
+<code class="descclassname">Session.</code><code class="descname">_flatten_server_info</code><span class="sig-paren">(</span><em>structure</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._flatten_server_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._flatten_server_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility method for flattening the JSON structure for info.json into a more python usable format</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>structure</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>dict/tuple/list to flatten</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">flattened</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>the dict/tuple/list flattened out</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.sessions.Session._get_percentage">
+<code class="descclassname">Session.</code><code class="descname">_get_percentage</code><span class="sig-paren">(</span><em>part</em>, <em>whole</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._get_percentage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._get_percentage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility method for getting percentage of part out of whole</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>part: int, float</strong></p>
+<p><strong>whole: int, float</strong></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>str</strong> : the percentage of part out of whole in 2 decimal places</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.sessions.Session._find_stat_target">
+<code class="descclassname">Session.</code><code class="descname">_find_stat_target</code><span class="sig-paren">(</span><em>target</em>, <em>diags</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._find_stat_target"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._find_stat_target" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility method for finding a target in info.json and returning the value, optionally performing a percentage calculation on two values if the target[0] starts with percentage(</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>target</strong> : list</p>
+<blockquote>
+<div><ul class="simple">
+<li>index0 : label : human friendly name to refer to search_path</li>
+<li>index1 : search_path : / seperated search path to find a given value from info.json</li>
+</ul>
+</div></blockquote>
+<p><strong>diags</strong> : dict</p>
+<blockquote>
+<div><ul class="simple">
+<li>flattened dictionary of info.json diagnostics</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">dict</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>label : same as provided in <cite>target</cite> index0 (label)</li>
+<li>result : value resolved from <a class="reference internal" href="#pytan.sessions.Session._resolve_stat_target" title="pytan.sessions.Session._resolve_stat_target"><code class="xref py py-func docutils literal"><span class="pre">pytan.sessions.Session._resolve_stat_target()</span></code></a> for <cite>target</cite> index1 (search_path)</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.sessions.Session._resolve_stat_target">
+<code class="descclassname">Session.</code><code class="descname">_resolve_stat_target</code><span class="sig-paren">(</span><em>search_path</em>, <em>diags</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._resolve_stat_target"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._resolve_stat_target" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility method for resolving the value of search_path in info.json and returning the value</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>search_path</strong> : str</p>
+<blockquote>
+<div><ul class="simple">
+<li>/ seperated search path to find a given value from info.json</li>
+</ul>
+</div></blockquote>
+<p><strong>diags</strong> : dict</p>
+<blockquote>
+<div><ul class="simple">
+<li>flattened dictionary of info.json diagnostics</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">str</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>value resolved from <cite>diags</cite> for <cite>search_path</cite></li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="pytan.sessions.Session._build_body">
-<code class="descname">_build_body</code><span class="sig-paren">(</span><em>command</em>, <em>object_list</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._build_body"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._build_body" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pytan.sessions.Session._check_auth">
-<code class="descname">_check_auth</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._check_auth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._check_auth" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pytan.sessions.Session._create_add_object_body">
-<code class="descname">_create_add_object_body</code><span class="sig-paren">(</span><em>obj</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._create_add_object_body"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._create_add_object_body" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pytan.sessions.Session._create_delete_object_body">
-<code class="descname">_create_delete_object_body</code><span class="sig-paren">(</span><em>obj</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._create_delete_object_body"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._create_delete_object_body" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pytan.sessions.Session._create_get_object_body">
-<code class="descname">_create_get_object_body</code><span class="sig-paren">(</span><em>object_or_type</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._create_get_object_body"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._create_get_object_body" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pytan.sessions.Session._create_get_result_data_body">
-<code class="descname">_create_get_result_data_body</code><span class="sig-paren">(</span><em>obj</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._create_get_result_data_body"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._create_get_result_data_body" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pytan.sessions.Session._create_get_result_info_body">
-<code class="descname">_create_get_result_info_body</code><span class="sig-paren">(</span><em>obj</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._create_get_result_info_body"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._create_get_result_info_body" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descclassname">Session.</code><code class="descname">_build_body</code><span class="sig-paren">(</span><em>command</em>, <em>object_list</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._build_body"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._build_body" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility method for building an XML Request Body</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>command</strong> : str</p>
+<blockquote>
+<div><ul class="simple">
+<li>text to use in command node when building template</li>
+</ul>
+</div></blockquote>
+<p><strong>object_list</strong> : str</p>
+<blockquote>
+<div><ul class="simple">
+<li>XML string to use in object list node when building template</li>
+</ul>
+</div></blockquote>
+<p><strong>kwargs</strong> : dict, optional</p>
+<blockquote>
+<div><ul class="simple">
+<li>any number of attributes that can be set via <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.options.Options" title="taniumpy.object_types.options.Options"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.options.Options</span></code></a> that control the servers response.</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>body</strong> : str</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>The XML request body created from the string.template self.REQUEST_BODY_TEMPLATE</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="pytan.sessions.Session._create_run_plugin_object_body">
-<code class="descname">_create_run_plugin_object_body</code><span class="sig-paren">(</span><em>obj</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._create_run_plugin_object_body"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._create_run_plugin_object_body" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descclassname">Session.</code><code class="descname">_create_run_plugin_object_body</code><span class="sig-paren">(</span><em>obj</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._create_run_plugin_object_body"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._create_run_plugin_object_body" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility method for building an XML Request Body to run a plugin</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a></p>
+<blockquote>
+<div><ul class="simple">
+<li>object to convert into XML</li>
+</ul>
+</div></blockquote>
+<p><strong>kwargs</strong> : dict, optional</p>
+<blockquote>
+<div><ul class="simple">
+<li>any number of attributes that can be set via <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.options.Options" title="taniumpy.object_types.options.Options"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.options.Options</span></code></a> that control the servers response.</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>obj_body</strong> : str</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>The XML request body created from <a class="reference internal" href="#pytan.sessions.Session._build_body" title="pytan.sessions.Session._build_body"><code class="xref py py-func docutils literal"><span class="pre">pytan.sessions.Session._build_body()</span></code></a></li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.sessions.Session._create_add_object_body">
+<code class="descclassname">Session.</code><code class="descname">_create_add_object_body</code><span class="sig-paren">(</span><em>obj</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._create_add_object_body"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._create_add_object_body" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility method for building an XML Request Body to add an object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a></p>
+<blockquote>
+<div><ul class="simple">
+<li>object to convert into XML</li>
+</ul>
+</div></blockquote>
+<p><strong>kwargs</strong> : dict, optional</p>
+<blockquote>
+<div><ul class="simple">
+<li>any number of attributes that can be set via <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.options.Options" title="taniumpy.object_types.options.Options"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.options.Options</span></code></a> that control the servers response.</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>obj_body</strong> : str</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>The XML request body created from <a class="reference internal" href="#pytan.sessions.Session._build_body" title="pytan.sessions.Session._build_body"><code class="xref py py-func docutils literal"><span class="pre">pytan.sessions.Session._build_body()</span></code></a></li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.sessions.Session._create_delete_object_body">
+<code class="descclassname">Session.</code><code class="descname">_create_delete_object_body</code><span class="sig-paren">(</span><em>obj</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._create_delete_object_body"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._create_delete_object_body" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility method for building an XML Request Body to delete an object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a></p>
+<blockquote>
+<div><ul class="simple">
+<li>object to convert into XML</li>
+</ul>
+</div></blockquote>
+<p><strong>kwargs</strong> : dict, optional</p>
+<blockquote>
+<div><ul class="simple">
+<li>any number of attributes that can be set via <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.options.Options" title="taniumpy.object_types.options.Options"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.options.Options</span></code></a> that control the servers response.</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>obj_body</strong> : str</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>The XML request body created from <a class="reference internal" href="#pytan.sessions.Session._build_body" title="pytan.sessions.Session._build_body"><code class="xref py py-func docutils literal"><span class="pre">pytan.sessions.Session._build_body()</span></code></a></li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.sessions.Session._create_get_result_info_body">
+<code class="descclassname">Session.</code><code class="descname">_create_get_result_info_body</code><span class="sig-paren">(</span><em>obj</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._create_get_result_info_body"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._create_get_result_info_body" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility method for building an XML Request Body to get result info for an object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a></p>
+<blockquote>
+<div><ul class="simple">
+<li>object to convert into XML</li>
+</ul>
+</div></blockquote>
+<p><strong>kwargs</strong> : dict, optional</p>
+<blockquote>
+<div><ul class="simple">
+<li>any number of attributes that can be set via <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.options.Options" title="taniumpy.object_types.options.Options"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.options.Options</span></code></a> that control the servers response.</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>obj_body</strong> : str</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>The XML request body created from <a class="reference internal" href="#pytan.sessions.Session._build_body" title="pytan.sessions.Session._build_body"><code class="xref py py-func docutils literal"><span class="pre">pytan.sessions.Session._build_body()</span></code></a></li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.sessions.Session._create_get_result_data_body">
+<code class="descclassname">Session.</code><code class="descname">_create_get_result_data_body</code><span class="sig-paren">(</span><em>obj</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._create_get_result_data_body"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._create_get_result_data_body" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility method for building an XML Request Body to get result data for an object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a></p>
+<blockquote>
+<div><ul class="simple">
+<li>object to convert into XML</li>
+</ul>
+</div></blockquote>
+<p><strong>kwargs</strong> : dict, optional</p>
+<blockquote>
+<div><ul class="simple">
+<li>any number of attributes that can be set via <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.options.Options" title="taniumpy.object_types.options.Options"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.options.Options</span></code></a> that control the servers response.</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>obj_body</strong> : str</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>The XML request body created from <a class="reference internal" href="#pytan.sessions.Session._build_body" title="pytan.sessions.Session._build_body"><code class="xref py py-func docutils literal"><span class="pre">pytan.sessions.Session._build_body()</span></code></a></li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.sessions.Session._create_get_object_body">
+<code class="descclassname">Session.</code><code class="descname">_create_get_object_body</code><span class="sig-paren">(</span><em>object_or_type</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._create_get_object_body"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._create_get_object_body" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility method for building an XML Request Body to get an object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a></p>
+<blockquote>
+<div><ul class="simple">
+<li>object to convert into XML</li>
+</ul>
+</div></blockquote>
+<p><strong>kwargs</strong> : dict, optional</p>
+<blockquote>
+<div><ul class="simple">
+<li>any number of attributes that can be set via <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.options.Options" title="taniumpy.object_types.options.Options"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.options.Options</span></code></a> that control the servers response.</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>obj_body</strong> : str</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>The XML request body created from <a class="reference internal" href="#pytan.sessions.Session._build_body" title="pytan.sessions.Session._build_body"><code class="xref py py-func docutils literal"><span class="pre">pytan.sessions.Session._build_body()</span></code></a></li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="pytan.sessions.Session._create_update_object_body">
-<code class="descname">_create_update_object_body</code><span class="sig-paren">(</span><em>obj</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._create_update_object_body"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._create_update_object_body" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descclassname">Session.</code><code class="descname">_create_update_object_body</code><span class="sig-paren">(</span><em>obj</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._create_update_object_body"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._create_update_object_body" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility method for building an XML Request Body to update an object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>obj</strong> : <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.base.BaseType" title="taniumpy.object_types.base.BaseType"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.base.BaseType</span></code></a></p>
+<blockquote>
+<div><ul class="simple">
+<li>object to convert into XML</li>
+</ul>
+</div></blockquote>
+<p><strong>kwargs</strong> : dict, optional</p>
+<blockquote>
+<div><ul class="simple">
+<li>any number of attributes that can be set via <a class="reference internal" href="taniumpy.object_types.html#taniumpy.object_types.options.Options" title="taniumpy.object_types.options.Options"><code class="xref py py-class docutils literal"><span class="pre">taniumpy.object_types.options.Options</span></code></a> that control the servers response.</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>obj_body</strong> : str</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>The XML request body created from <a class="reference internal" href="#pytan.sessions.Session._build_body" title="pytan.sessions.Session._build_body"><code class="xref py py-func docutils literal"><span class="pre">pytan.sessions.Session._build_body()</span></code></a></li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
-<dt id="pytan.sessions.Session._find_stat_target">
-<code class="descname">_find_stat_target</code><span class="sig-paren">(</span><em>target</em>, <em>diags</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._find_stat_target"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._find_stat_target" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pytan.sessions.Session._flatten_server_info">
-<code class="descname">_flatten_server_info</code><span class="sig-paren">(</span><em>structure</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._flatten_server_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._flatten_server_info" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pytan.sessions.Session._get_percentage">
-<code class="descname">_get_percentage</code><span class="sig-paren">(</span><em>part</em>, <em>whole</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._get_percentage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._get_percentage" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pytan.sessions.Session._get_response">
-<code class="descname">_get_response</code><span class="sig-paren">(</span><em>request_body</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._get_response"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._get_response" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pytan.sessions.Session._http_post">
-<code class="descname">_http_post</code><span class="sig-paren">(</span><em>host</em>, <em>port</em>, <em>url</em>, <em>body=None</em>, <em>headers=None</em>, <em>connect_timeout=15</em>, <em>response_timeout=180</em>, <em>debug=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._http_post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._http_post" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="pytan.sessions.Session._check_auth">
+<code class="descclassname">Session.</code><code class="descname">_check_auth</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._check_auth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._check_auth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility method to check if authentication has been done yet, and throw an exception if not</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pytan.sessions.Session._parse_response_for_regex">
-<code class="descname">_parse_response_for_regex</code><span class="sig-paren">(</span><em>body</em>, <em>regex</em>, <em>fail=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._parse_response_for_regex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._parse_response_for_regex" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pytan.sessions.Session._resolve_stat_target">
-<code class="descname">_resolve_stat_target</code><span class="sig-paren">(</span><em>search_path</em>, <em>diags</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._resolve_stat_target"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._resolve_stat_target" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pytan.sessions.Session._start_stats_thread">
-<code class="descname">_start_stats_thread</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._start_stats_thread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._start_stats_thread" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pytan.sessions.Session._stats_loop">
-<code class="descname">_stats_loop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._stats_loop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._stats_loop" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pytan.sessions.Session.add">
-<code class="descname">add</code><span class="sig-paren">(</span><em>obj</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session.add" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pytan.sessions.Session.authenticate">
-<code class="descname">authenticate</code><span class="sig-paren">(</span><em>username=None</em>, <em>password=None</em>, <em>session_id=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.authenticate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session.authenticate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Authenticate against a Tanium Server using a username/password or a session ID</p>
-<p>Can request a persistent session that will last up to 1 week when authenticating
-with username and password.</p>
-<p>New persistent sessions may be handed out by the Tanium server when the session handed
-by this auth call is used to login with that week. The new session must be used to login,
-as no matter what persistent sessions will expire 1 week after issuance (or when logout is
-called with that session, or when logout with all_sessions=True is called for any session
-for this user)</p>
-<p>the way sessions get issued:</p>
+<code class="descclassname">Session.</code><code class="descname">_parse_response_for_regex</code><span class="sig-paren">(</span><em>body</em>, <em>regex</em>, <em>fail=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._parse_response_for_regex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._parse_response_for_regex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility method to use a regex to get an element from an XML body</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>body</strong> : str</p>
 <blockquote>
 <div><ul class="simple">
-<li>a POST request to /auth is issued</li>
-<li>username/password supplied in headers as base64 encoded, or session is supplied in
-headers as string</li>
-<li>session is returned upon successful auth</li>
-<li>if there is a header &#8220;persistent=1&#8221; in the headers, a session that expires after 1 week
-will be issued if username/password was used to auth. persistent is ignored if session
-is used to auth.</li>
-<li>if there is not a header &#8220;persistent=1&#8221; in the headers, a session that expires after 5
-minutes will be issued</li>
-<li>if session is used before it expires, it&#8217;s expiry will be extended by 5 minutes or 1
-week, depending on the type of persistence</li>
-<li>while using the SOAP api, new session ID&#8217;s may be returned as part of the response.
-these new session ID&#8217;s should be used in lieu of the old session ID</li>
+<li>XML to search</li>
 </ul>
 </div></blockquote>
-<p>/auth URL
-This url is used for validating a server user&#8217;s credentials. It supports a few different
-ways to authenticate and returns a SOAP session ID on success.  These sessions expire
-after 5 minutes by default if they aren&#8217;t used in SOAP requests.  This expiration is
-configured with the server setting &#8216;session_expiration_seconds&#8217;.</p>
-<dl class="docutils">
-<dt>Supported Authentication Methods:</dt>
-<dd><ul class="first last simple">
-<li>HTTP Basic Auth (Clear Text/BASE64)</li>
-<li>Username/Password/Domain Headers (Clear Text)</li>
-<li>Negotiate (NTLM Only)</li>
-</ul>
-</dd>
-</dl>
-<p>NTLM is enabled by default in 6.3 or greater and requires a persistent connection until a
-session is generated.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pytan.sessions.Session.authlog">
-<code class="descname">authlog</code><em class="property"> = &lt;logging.Logger object at 0x110813210&gt;</em><a class="headerlink" href="#pytan.sessions.Session.authlog" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pytan.sessions.Session.bodyhttplog">
-<code class="descname">bodyhttplog</code><em class="property"> = &lt;logging.Logger object at 0x110813310&gt;</em><a class="headerlink" href="#pytan.sessions.Session.bodyhttplog" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pytan.sessions.Session.delete">
-<code class="descname">delete</code><span class="sig-paren">(</span><em>obj</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session.delete" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pytan.sessions.Session.disable_stats_loop">
-<code class="descname">disable_stats_loop</code><span class="sig-paren">(</span><em>sleep=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.disable_stats_loop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session.disable_stats_loop" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pytan.sessions.Session.enable_stats_loop">
-<code class="descname">enable_stats_loop</code><span class="sig-paren">(</span><em>sleep=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.enable_stats_loop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session.enable_stats_loop" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pytan.sessions.Session.find">
-<code class="descname">find</code><span class="sig-paren">(</span><em>object_type</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.find"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session.find" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pytan.sessions.Session.get_result_data">
-<code class="descname">get_result_data</code><span class="sig-paren">(</span><em>obj</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.get_result_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session.get_result_data" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pytan.sessions.Session.get_result_info">
-<code class="descname">get_result_info</code><span class="sig-paren">(</span><em>obj</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.get_result_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session.get_result_info" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pytan.sessions.Session.get_server_info">
-<code class="descname">get_server_info</code><span class="sig-paren">(</span><em>port=None</em>, <em>fallback_port=444</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.get_server_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session.get_server_info" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pytan.sessions.Session.get_server_stats">
-<code class="descname">get_server_stats</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.get_server_stats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session.get_server_stats" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pytan.sessions.Session.get_server_version">
-<code class="descname">get_server_version</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.get_server_version"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session.get_server_version" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pytan.sessions.Session.http_post">
-<code class="descname">http_post</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.http_post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session.http_post" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pytan.sessions.Session.httplog">
-<code class="descname">httplog</code><em class="property"> = &lt;logging.Logger object at 0x110813290&gt;</em><a class="headerlink" href="#pytan.sessions.Session.httplog" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pytan.sessions.Session.is_auth">
-<code class="descname">is_auth</code><a class="headerlink" href="#pytan.sessions.Session.is_auth" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pytan.sessions.Session.logout">
-<code class="descname">logout</code><span class="sig-paren">(</span><em>all_session_ids=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.logout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session.logout" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pytan.sessions.Session.mylog">
-<code class="descname">mylog</code><em class="property"> = &lt;logging.Logger object at 0x110813190&gt;</em><a class="headerlink" href="#pytan.sessions.Session.mylog" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pytan.sessions.Session.run_plugin">
-<code class="descname">run_plugin</code><span class="sig-paren">(</span><em>obj</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.run_plugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session.run_plugin" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pytan.sessions.Session.save">
-<code class="descname">save</code><span class="sig-paren">(</span><em>obj</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session.save" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pytan.sessions.Session.session_id">
-<code class="descname">session_id</code><a class="headerlink" href="#pytan.sessions.Session.session_id" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pytan.sessions.Session.statslog">
-<code class="descname">statslog</code><em class="property"> = &lt;logging.Logger object at 0x110a3c8d0&gt;</em><a class="headerlink" href="#pytan.sessions.Session.statslog" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt>
-<em class="property">class </em><code class="descclassname">pytan.sessions.</code><code class="descname">Session</code><span class="sig-paren">(</span><em>server</em>, <em>port=443</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Bases: <a class="reference external" href="http://docs.python.org/2.7/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
-<p>This is session object uses the requests package instead of the built in httplib library.
-This provides support for keep alive, gzip, cookies, forwarding, and a host of other features
-automatically.</p>
-<p>The Requests Session object allows you to persist certain parameters across requests.
-It also persists cookies across all requests made from the Session instance.
-Any requests that you make within a session will automatically reuse the appropriate connection</p>
-<dl class="attribute">
-<dt>
-<code class="descname">ADD_OBJECT_CMD</code><em class="property"> = 'AddObject'</em></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">AUTH_CONNECT_TIMEOUT_SEC</code><em class="property"> = 5</em></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">AUTH_RES</code><em class="property"> = 'auth'</em></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">AUTH_RESPONSE_TIMEOUT_SEC</code><em class="property"> = 15</em></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">COMMAND_RE</code><em class="property"> = &lt;_sre.SRE_Pattern object at 0x7ff15bac7f40&gt;</em></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">DELETE_OBJECT_CMD</code><em class="property"> = 'DeleteObject'</em></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">GET_OBJECT_CMD</code><em class="property"> = 'GetObject'</em></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">GET_RESULT_DATA_CMD</code><em class="property"> = 'GetResultData'</em></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">GET_RESULT_INFO_CMD</code><em class="property"> = 'GetResultInfo'</em></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">HTTP_AUTH_RETRY</code><em class="property"> = True</em></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">HTTP_DEBUG</code><em class="property"> = False</em></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">HTTP_RETRY_COUNT</code><em class="property"> = 5</em></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">INFO_CONNECT_TIMEOUT_SEC</code><em class="property"> = 5</em></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">INFO_RES</code><em class="property"> = 'info.json'</em></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">INFO_RESPONSE_TIMEOUT_SEC</code><em class="property"> = 15</em></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">REQUEST_BODY_BASE</code><em class="property"> = '&lt;SOAP-ENV:Envelope xmlns:SOAP-ENV=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&gt;\n&lt;SOAP-ENV:Body&gt;\n  &lt;typens:tanium_soap_request xmlns:typens=&quot;urn:TaniumSOAP&quot;&gt;\n    &lt;command&gt;$command&lt;/command&gt;\n    &lt;object_list&gt;$object_list&lt;/object_list&gt;\n    $options\n  &lt;/typens:tanium_soap_request&gt;\n&lt;/SOAP-ENV:Body&gt;\n&lt;/SOAP-ENV:Envelope&gt;'</em></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">REQUEST_BODY_TEMPLATE</code><em class="property"> = &lt;string.Template object at 0x110a3c890&gt;</em></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">REQ_SESSION</code><em class="property"> = &lt;requests.sessions.Session object at 0x110b6f090&gt;</em></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">RUN_PLUGIN_CMD</code><em class="property"> = 'RunPlugin'</em></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">SERVER_STATS</code><em class="property"> = False</em></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">SERVER_STATS_SLEEP</code><em class="property"> = 5</em></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">SERVER_STATS_TARGETS</code><em class="property"> = [{'Version': 'Settings/Version'}, {'Active Questions': 'Active Question Cache/Active Question Estimate'}, {'Clients': 'Active Question Cache/Active Client Estimate'}, {'Strings': 'String Cache/Total String Count'}, {'Handles': 'System Performance Info/HandleCount'}, {'Processes': 'System Performance Info/ProcessCount'}, {'Memory Available': 'percentage(System Performance Info/PhysicalAvailable,System Performance Info/PhysicalTotal)'}]</em></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">SESSION_RE</code><em class="property"> = &lt;_sre.SRE_Pattern object at 0x7ff15bac7800&gt;</em></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">SOAP_CONNECT_TIMEOUT_SEC</code><em class="property"> = 15</em></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">SOAP_REQUEST_HEADERS</code><em class="property"> = {'Content-Type': 'text/xml; charset=utf-8', 'Accept-Encoding': 'gzip'}</em></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">SOAP_RES</code><em class="property"> = 'soap'</em></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">SOAP_RESPONSE_TIMEOUT_SEC</code><em class="property"> = 540</em></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">UPDATE_OBJECT_CMD</code><em class="property"> = 'UpdateObject'</em></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">VERSION_RE</code><em class="property"> = &lt;_sre.SRE_Pattern object at 0x7ff15bac83d0&gt;</em></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">XMLNS</code><em class="property"> = {'xsi': 'xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;', 'typens': 'xmlns:typens=&quot;urn:TaniumSOAP&quot;', 'xsd': 'xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;', 'SOAP-ENV': 'xmlns:SOAP-ENV=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;'}</em></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt>
-<code class="descname">_build_body</code><span class="sig-paren">(</span><em>command</em>, <em>object_list</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._build_body"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt>
-<code class="descname">_check_auth</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._check_auth"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt>
-<code class="descname">_create_add_object_body</code><span class="sig-paren">(</span><em>obj</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._create_add_object_body"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt>
-<code class="descname">_create_delete_object_body</code><span class="sig-paren">(</span><em>obj</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._create_delete_object_body"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt>
-<code class="descname">_create_get_object_body</code><span class="sig-paren">(</span><em>object_or_type</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._create_get_object_body"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt>
-<code class="descname">_create_get_result_data_body</code><span class="sig-paren">(</span><em>obj</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._create_get_result_data_body"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt>
-<code class="descname">_create_get_result_info_body</code><span class="sig-paren">(</span><em>obj</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._create_get_result_info_body"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt>
-<code class="descname">_create_run_plugin_object_body</code><span class="sig-paren">(</span><em>obj</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._create_run_plugin_object_body"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt>
-<code class="descname">_create_update_object_body</code><span class="sig-paren">(</span><em>obj</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._create_update_object_body"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt>
-<code class="descname">_find_stat_target</code><span class="sig-paren">(</span><em>target</em>, <em>diags</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._find_stat_target"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt>
-<code class="descname">_flatten_server_info</code><span class="sig-paren">(</span><em>structure</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._flatten_server_info"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt>
-<code class="descname">_get_percentage</code><span class="sig-paren">(</span><em>part</em>, <em>whole</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._get_percentage"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt>
-<code class="descname">_get_response</code><span class="sig-paren">(</span><em>request_body</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._get_response"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt>
-<code class="descname">_http_post</code><span class="sig-paren">(</span><em>host</em>, <em>port</em>, <em>url</em>, <em>body=None</em>, <em>headers=None</em>, <em>connect_timeout=15</em>, <em>response_timeout=180</em>, <em>debug=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._http_post"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt>
-<code class="descname">_parse_response_for_regex</code><span class="sig-paren">(</span><em>body</em>, <em>regex</em>, <em>fail=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._parse_response_for_regex"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt>
-<code class="descname">_resolve_stat_target</code><span class="sig-paren">(</span><em>search_path</em>, <em>diags</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._resolve_stat_target"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt>
-<code class="descname">_start_stats_thread</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._start_stats_thread"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt>
-<code class="descname">_stats_loop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._stats_loop"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt>
-<code class="descname">add</code><span class="sig-paren">(</span><em>obj</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.add"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt>
-<code class="descname">authenticate</code><span class="sig-paren">(</span><em>username=None</em>, <em>password=None</em>, <em>session_id=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.authenticate"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Authenticate against a Tanium Server using a username/password or a session ID</p>
-<p>Can request a persistent session that will last up to 1 week when authenticating
-with username and password.</p>
-<p>New persistent sessions may be handed out by the Tanium server when the session handed
-by this auth call is used to login with that week. The new session must be used to login,
-as no matter what persistent sessions will expire 1 week after issuance (or when logout is
-called with that session, or when logout with all_sessions=True is called for any session
-for this user)</p>
-<p>the way sessions get issued:</p>
+<p><strong>regex</strong> : re object</p>
 <blockquote>
 <div><ul class="simple">
-<li>a POST request to /auth is issued</li>
-<li>username/password supplied in headers as base64 encoded, or session is supplied in
-headers as string</li>
-<li>session is returned upon successful auth</li>
-<li>if there is a header &#8220;persistent=1&#8221; in the headers, a session that expires after 1 week
-will be issued if username/password was used to auth. persistent is ignored if session
-is used to auth.</li>
-<li>if there is not a header &#8220;persistent=1&#8221; in the headers, a session that expires after 5
-minutes will be issued</li>
-<li>if session is used before it expires, it&#8217;s expiry will be extended by 5 minutes or 1
-week, depending on the type of persistence</li>
-<li>while using the SOAP api, new session ID&#8217;s may be returned as part of the response.
-these new session ID&#8217;s should be used in lieu of the old session ID</li>
+<li>regex object to search for in body</li>
 </ul>
 </div></blockquote>
-<p>/auth URL
-This url is used for validating a server user&#8217;s credentials. It supports a few different
-ways to authenticate and returns a SOAP session ID on success.  These sessions expire
-after 5 minutes by default if they aren&#8217;t used in SOAP requests.  This expiration is
-configured with the server setting &#8216;session_expiration_seconds&#8217;.</p>
-<dl class="docutils">
-<dt>Supported Authentication Methods:</dt>
-<dd><ul class="first last simple">
-<li>HTTP Basic Auth (Clear Text/BASE64)</li>
-<li>Username/Password/Domain Headers (Clear Text)</li>
-<li>Negotiate (NTLM Only)</li>
+<p><strong>fail</strong> : bool, optional</p>
+<blockquote>
+<div><ul class="simple">
+<li>default: True</li>
+<li>True: throw exception if unable to find any matches for <cite>regex</cite> in <cite>body</cite></li>
+<li>False do not throw exception if unable to find any matches for <cite>regex</cite> in <cite>body</cite></li>
 </ul>
-</dd>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>ret</strong> : str</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>The first value that matches <cite>regex</cite></li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li>Using regex is WAY faster than ElementTree chewing the body in and out, this matters a LOT on LARGE return bodies</li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.sessions.Session._extract_export_id">
+<code class="descclassname">Session.</code><code class="descname">_extract_export_id</code><span class="sig-paren">(</span><em>el</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._extract_export_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._extract_export_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility method to get the &#8216;export_id&#8217; element from an ElementTree object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>el</strong> : ElementTree object</p>
+<blockquote>
+<div><ul class="simple">
+<li>ElementTree object to search for &#8216;export_id&#8217; in</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>ret</strong> : str</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>The text value contained in the &#8216;export_id&#8217; element, if found</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.sessions.Session._extract_cdata_el">
+<code class="descclassname">Session.</code><code class="descname">_extract_cdata_el</code><span class="sig-paren">(</span><em>response_body</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._extract_cdata_el"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._extract_cdata_el" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility method to get the &#8216;ResultXML&#8217; element from an XML body</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>response_body</strong> : str</p>
+<blockquote>
+<div><ul class="simple">
+<li>XML body to search for the &#8216;ResultXML&#8217; element in</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>ret</strong> : str or ElementTree object</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>str if &#8216;export_id&#8217; element found in XML</li>
+<li>ElementTree object of ResultXML element otherwise</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.sessions.Session._get_response">
+<code class="descclassname">Session.</code><code class="descname">_get_response</code><span class="sig-paren">(</span><em>request_body</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session._get_response"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session._get_response" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a wrapper around <a class="reference internal" href="#pytan.sessions.Session.http_post" title="pytan.sessions.Session.http_post"><code class="xref py py-func docutils literal"><span class="pre">pytan.sessions.Session.http_post()</span></code></a> for SOAP XML requests and responses.</p>
+<p>This method will update self.session_id if the response contains a different session_id than what is currently in this object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>request_body</strong> : str</p>
+<blockquote>
+<div><ul class="simple">
+<li>the XML request body to send to the server</li>
+</ul>
+</div></blockquote>
+<p><strong>connect_timeout: int, optional</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>default: self.SOAP_CONNECT_TIMEOUT_SEC</li>
+<li>timeout in seconds for connection to host</li>
+</ul>
+</div></blockquote>
+<p><strong>response_timeout: int, optional</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>default: self.SOAP_RESPONSE_TIMEOUT_SEC</li>
+<li>timeout in seconds for response from host</li>
+</ul>
+</div></blockquote>
+<p><strong>retry_auth: bool, optional</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>default: True</li>
+<li>True: retry authentication with username/password if session_id fails</li>
+<li>False: throw exception if session_id fails</li>
+</ul>
+</div></blockquote>
+<p><strong>retry_count: int, optional</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>number of times to retry the request if the server fails to respond properly or in time</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>body</strong> : str</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>str containing body of response from server</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<dl class="last docutils">
+<dt><a class="reference internal" href="#pytan.sessions.Session.http_post" title="pytan.sessions.Session.http_post"><code class="xref py py-func docutils literal"><span class="pre">pytan.sessions.Session.http_post()</span></code></a></dt>
+<dd>wrapper method used to perform the HTTP POST</dd>
 </dl>
-<p>NTLM is enabled by default in 6.3 or greater and requires a persistent connection until a
-session is generated.</p>
+</div>
 </dd></dl>
 
-<dl class="attribute">
-<dt>
-<code class="descname">authlog</code><em class="property"> = &lt;logging.Logger object at 0x110813210&gt;</em></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">bodyhttplog</code><em class="property"> = &lt;logging.Logger object at 0x110813310&gt;</em></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt>
-<code class="descname">delete</code><span class="sig-paren">(</span><em>obj</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.delete"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt>
-<code class="descname">disable_stats_loop</code><span class="sig-paren">(</span><em>sleep=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.disable_stats_loop"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt>
-<code class="descname">enable_stats_loop</code><span class="sig-paren">(</span><em>sleep=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.enable_stats_loop"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt>
-<code class="descname">find</code><span class="sig-paren">(</span><em>object_type</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.find"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt>
-<code class="descname">get_result_data</code><span class="sig-paren">(</span><em>obj</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.get_result_data"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt>
-<code class="descname">get_result_info</code><span class="sig-paren">(</span><em>obj</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.get_result_info"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt>
-<code class="descname">get_server_info</code><span class="sig-paren">(</span><em>port=None</em>, <em>fallback_port=444</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.get_server_info"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt>
-<code class="descname">get_server_stats</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.get_server_stats"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt>
-<code class="descname">get_server_version</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.get_server_version"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt>
-<code class="descname">http_post</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.http_post"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">httplog</code><em class="property"> = &lt;logging.Logger object at 0x110813290&gt;</em></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">is_auth</code></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt>
-<code class="descname">logout</code><span class="sig-paren">(</span><em>all_session_ids=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.logout"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">mylog</code><em class="property"> = &lt;logging.Logger object at 0x110813190&gt;</em></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt>
-<code class="descname">run_plugin</code><span class="sig-paren">(</span><em>obj</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.run_plugin"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt>
-<code class="descname">save</code><span class="sig-paren">(</span><em>obj</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.save"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">session_id</code></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt>
-<code class="descname">statslog</code><em class="property"> = &lt;logging.Logger object at 0x110a3c8d0&gt;</em></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
+</div>
+</div>
+</div>
 </div>
 
 
@@ -984,10 +1895,10 @@ session is generated.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="pytan.pollers.html" class="btn btn-neutral float-right" title="2.5. pytan.pollers module">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="pytan.pollers.html" class="btn btn-neutral float-right" title="2.4. pytan.pollers module">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="pytan.exceptions.html" class="btn btn-neutral" title="2.3. pytan.exceptions module"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="pytan.exceptions.html" class="btn btn-neutral" title="2.2. pytan.exceptions module"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -997,7 +1908,7 @@ session is generated.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Aug 07, 2015.
+      Last updated on Aug 27, 2015.
     </p>
   </div>
 
@@ -1018,7 +1929,7 @@ session is generated.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'2.0.0',
+            VERSION:'2.1.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

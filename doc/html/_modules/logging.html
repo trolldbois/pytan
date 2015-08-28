@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>logging &mdash; PyTan 2.0.0 documentation</title>
+  <title>logging &mdash; PyTan 2.1.0 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="PyTan 2.0.0 documentation" href="../index.html"/>
+    <link rel="top" title="PyTan 2.1.0 documentation" href="../index.html"/>
         <link rel="up" title="Module code" href="index.html"/> 
 
   
@@ -69,18 +69,20 @@
 <li class="toctree-l2"><a class="reference internal" href="../introduction.html#installation">1.5. Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../introduction.html#usage">1.6. Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../introduction.html#directory-layout">1.7. Directory Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#other-references">1.8. Other References</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../pytan.html">2. pytan package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../examples/pytan_examples.html">2.1. PyTan API examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.handler.html">2.2. pytan.handler module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.exceptions.html">2.3. pytan.exceptions module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.sessions.html">2.4. pytan.sessions module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.pollers.html">2.5. pytan.pollers module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.constants.html">2.6. pytan.constants module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.utils.html">2.7. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.handler.html">2.1. pytan.handler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.exceptions.html">2.2. pytan.exceptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.sessions.html">2.3. pytan.sessions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.pollers.html">2.4. pytan.pollers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.constants.html">2.5. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.utils.html">2.6. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.xml_clean.html">2.7. pytan.xml_clean module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../pytan.unittest.html">2.8. pytan Unit Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../pytan.functest.html">2.9. pytan Functional Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/pytan_examples.html">2.10. PyTan API examples</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../taniumpy.html">3. taniumpy package</a><ul>
@@ -136,7 +138,7 @@
           <div role="main" class="document">
             
   <h1>Source code for logging</h1><div class="highlight"><pre>
-<span class="c"># Copyright 2001-2012 by Vinay Sajip. All Rights Reserved.</span>
+<span class="c"># Copyright 2001-2014 by Vinay Sajip. All Rights Reserved.</span>
 <span class="c">#</span>
 <span class="c"># Permission to use, copy, modify, and distribute this software and its</span>
 <span class="c"># documentation for any purpose and without fee is hereby granted,</span>
@@ -156,12 +158,12 @@
 <span class="sd">Logging package for Python. Based on PEP 282 and comments thereto in</span>
 <span class="sd">comp.lang.python.</span>
 
-<span class="sd">Copyright (C) 2001-2012 Vinay Sajip. All Rights Reserved.</span>
+<span class="sd">Copyright (C) 2001-2014 Vinay Sajip. All Rights Reserved.</span>
 
 <span class="sd">To use, simply &#39;import logging&#39; and log away!</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">time</span><span class="o">,</span> <span class="nn">cStringIO</span><span class="o">,</span> <span class="nn">traceback</span><span class="o">,</span> <span class="nn">warnings</span><span class="o">,</span> <span class="nn">weakref</span>
+<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">time</span><span class="o">,</span> <span class="nn">cStringIO</span><span class="o">,</span> <span class="nn">traceback</span><span class="o">,</span> <span class="nn">warnings</span><span class="o">,</span> <span class="nn">weakref</span><span class="o">,</span> <span class="nn">collections</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;BASIC_FORMAT&#39;</span><span class="p">,</span> <span class="s">&#39;BufferingFormatter&#39;</span><span class="p">,</span> <span class="s">&#39;CRITICAL&#39;</span><span class="p">,</span> <span class="s">&#39;DEBUG&#39;</span><span class="p">,</span> <span class="s">&#39;ERROR&#39;</span><span class="p">,</span>
            <span class="s">&#39;FATAL&#39;</span><span class="p">,</span> <span class="s">&#39;FileHandler&#39;</span><span class="p">,</span> <span class="s">&#39;Filter&#39;</span><span class="p">,</span> <span class="s">&#39;Formatter&#39;</span><span class="p">,</span> <span class="s">&#39;Handler&#39;</span><span class="p">,</span> <span class="s">&#39;INFO&#39;</span><span class="p">,</span>
@@ -184,6 +186,7 @@
 
 <span class="n">__author__</span>  <span class="o">=</span> <span class="s">&quot;Vinay Sajip &lt;vinay_sajip@red-dove.com&gt;&quot;</span>
 <span class="n">__status__</span>  <span class="o">=</span> <span class="s">&quot;production&quot;</span>
+<span class="c"># Note: the attributes below are no longer maintained.</span>
 <span class="n">__version__</span> <span class="o">=</span> <span class="s">&quot;0.5.1.2&quot;</span>
 <span class="n">__date__</span>    <span class="o">=</span> <span class="s">&quot;07 February 2010&quot;</span>
 
@@ -398,7 +401,13 @@
         <span class="c"># &#39;Value is %d&#39; instead of &#39;Value is 0&#39;.</span>
         <span class="c"># For the use case of passing a dictionary, this should not be a</span>
         <span class="c"># problem.</span>
-        <span class="k">if</span> <span class="n">args</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="c"># Issue #21172: a request was made to relax the isinstance check</span>
+        <span class="c"># to hasattr(args[0], &#39;__getitem__&#39;). However, the docs on string</span>
+        <span class="c"># formatting still seem to suggest a mapping object is required.</span>
+        <span class="c"># Thus, while not removing the isinstance check, it does now look</span>
+        <span class="c"># for collections.Mapping rather than, as before, dict.</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">args</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">collections</span><span class="o">.</span><span class="n">Mapping</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
             <span class="n">args</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">args</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">levelname</span> <span class="o">=</span> <span class="n">getLevelName</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
@@ -760,16 +769,17 @@
 <span class="sd">    Remove a handler reference from the internal cleanup list.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c"># This function can be called during module teardown, when globals are</span>
-    <span class="c"># set to None. If _acquireLock is None, assume this is the case and do</span>
-    <span class="c"># nothing.</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">_acquireLock</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">_handlerList</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span>
-        <span class="n">_releaseLock</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">):</span>
-        <span class="n">_acquireLock</span><span class="p">()</span>
+    <span class="c"># set to None. It can also be called from another thread. So we need to</span>
+    <span class="c"># pre-emptively grab the necessary globals and check if they&#39;re None,</span>
+    <span class="c"># to prevent race conditions and failures during interpreter shutdown.</span>
+    <span class="n">acquire</span><span class="p">,</span> <span class="n">release</span><span class="p">,</span> <span class="n">handlers</span> <span class="o">=</span> <span class="n">_acquireLock</span><span class="p">,</span> <span class="n">_releaseLock</span><span class="p">,</span> <span class="n">_handlerList</span>
+    <span class="k">if</span> <span class="n">acquire</span> <span class="ow">and</span> <span class="n">release</span> <span class="ow">and</span> <span class="n">handlers</span><span class="p">:</span>
+        <span class="n">acquire</span><span class="p">()</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">wr</span> <span class="ow">in</span> <span class="n">_handlerList</span><span class="p">:</span>
-                <span class="n">_handlerList</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">wr</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">wr</span> <span class="ow">in</span> <span class="n">handlers</span><span class="p">:</span>
+                <span class="n">handlers</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">wr</span><span class="p">)</span>
         <span class="k">finally</span><span class="p">:</span>
-            <span class="n">_releaseLock</span><span class="p">()</span>
+            <span class="n">release</span><span class="p">()</span>
 
 <span class="k">def</span> <span class="nf">_addHandlerRef</span><span class="p">(</span><span class="n">handler</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -1046,12 +1056,19 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
-                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="p">,</span> <span class="s">&quot;close&quot;</span><span class="p">):</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+                    <span class="k">finally</span><span class="p">:</span>
+                        <span class="n">stream</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">stream</span> <span class="o">=</span> <span class="bp">None</span>
+                        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="s">&quot;close&quot;</span><span class="p">):</span>
+                            <span class="n">stream</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="k">finally</span><span class="p">:</span>
+                <span class="c"># Issue #19523: call unconditionally to</span>
+                <span class="c"># prevent a handler leak when delay is set</span>
                 <span class="n">StreamHandler</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">stream</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
 
@@ -1874,7 +1891,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Aug 07, 2015.
+      Last updated on Aug 27, 2015.
     </p>
   </div>
 
@@ -1895,7 +1912,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'2.0.0',
+            VERSION:'2.1.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

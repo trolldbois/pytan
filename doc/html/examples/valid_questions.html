@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>2.1.3. PyTan API Valid Question Examples &mdash; PyTan 2.0.0 documentation</title>
+  <title>2.10.3. PyTan API Valid Question Examples &mdash; PyTan 2.1.0 documentation</title>
   
 
   
@@ -28,10 +28,10 @@
   
 
   
-    <link rel="top" title="PyTan 2.0.0 documentation" href="../index.html"/>
-        <link rel="up" title="2.1. PyTan API examples" href="pytan_examples.html"/>
-        <link rel="next" title="2.1.3.1. Ask manual question simple multiple sensors" href="ask_manual_question_simple_multiple_sensors.html"/>
-        <link rel="prev" title="2.1.2.3. Ask saved question by name in list" href="ask_saved_question_by_name_in_list.html"/> 
+    <link rel="top" title="PyTan 2.1.0 documentation" href="../index.html"/>
+        <link rel="up" title="2.10. PyTan API examples" href="pytan_examples.html"/>
+        <link rel="next" title="2.10.3.1. Ask manual question simple multiple sensors" href="ask_manual_question_simple_multiple_sensors.html"/>
+        <link rel="prev" title="2.10.2.3. Ask saved question by name in list" href="ask_saved_question_by_name_in_list.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -71,18 +71,20 @@
 <li class="toctree-l2"><a class="reference internal" href="../introduction.html#installation">1.5. Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../introduction.html#usage">1.6. Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../introduction.html#directory-layout">1.7. Directory Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#other-references">1.8. Other References</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="../pytan.html">2. pytan package</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="pytan_examples.html">2.1. PyTan API examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.handler.html">2.2. pytan.handler module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.exceptions.html">2.3. pytan.exceptions module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.sessions.html">2.4. pytan.sessions module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.pollers.html">2.5. pytan.pollers module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.constants.html">2.6. pytan.constants module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pytan.utils.html">2.7. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.handler.html">2.1. pytan.handler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.exceptions.html">2.2. pytan.exceptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.sessions.html">2.3. pytan.sessions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.pollers.html">2.4. pytan.pollers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.constants.html">2.5. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.utils.html">2.6. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pytan.xml_clean.html">2.7. pytan.xml_clean module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../pytan.unittest.html">2.8. pytan Unit Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../pytan.functest.html">2.9. pytan Functional Tests</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="pytan_examples.html">2.10. PyTan API examples</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../taniumpy.html">3. taniumpy package</a><ul>
@@ -128,9 +130,9 @@
       
           <li><a href="../pytan.html">2. pytan package</a> &raquo;</li>
       
-          <li><a href="pytan_examples.html">2.1. PyTan API examples</a> &raquo;</li>
+          <li><a href="pytan_examples.html">2.10. PyTan API examples</a> &raquo;</li>
       
-    <li>2.1.3. PyTan API Valid Question Examples</li>
+    <li>2.10.3. PyTan API Valid Question Examples</li>
       <li class="wy-breadcrumbs-aside">
         
           <a href="../_sources/examples/valid_questions.txt" rel="nofollow"> View page source</a>
@@ -142,82 +144,82 @@
           <div role="main" class="document">
             
   <div class="section" id="pytan-api-valid-question-examples">
-<h1>2.1.3. PyTan API Valid Question Examples<a class="headerlink" href="#pytan-api-valid-question-examples" title="Permalink to this headline">¶</a></h1>
+<h1>2.10.3. PyTan API Valid Question Examples<a class="headerlink" href="#pytan-api-valid-question-examples" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_simple_multiple_sensors.html">2.1.3.1. Ask manual question simple multiple sensors</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_simple_multiple_sensors.html#example-python-code">2.1.3.1.1. Example Python Code</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_simple_multiple_sensors.html#output-from-python-code">2.1.3.1.2. Output from Python Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_simple_multiple_sensors.html">2.10.3.1. Ask manual question simple multiple sensors</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_simple_multiple_sensors.html#example-python-code">2.10.3.1.1. Example Python Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_simple_multiple_sensors.html#output-from-python-code">2.10.3.1.2. Output from Python Code</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_simple_single_sensor.html">2.1.3.2. Ask manual question simple single sensor</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_simple_single_sensor.html#example-python-code">2.1.3.2.1. Example Python Code</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_simple_single_sensor.html#output-from-python-code">2.1.3.2.2. Output from Python Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_simple_single_sensor.html">2.10.3.2. Ask manual question simple single sensor</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_simple_single_sensor.html#example-python-code">2.10.3.2.1. Example Python Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_simple_single_sensor.html#output-from-python-code">2.10.3.2.2. Output from Python Code</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_multiple_sensors_identified_by_name.html">2.1.3.3. Ask manual question multiple sensors identified by name</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_identified_by_name.html#example-python-code">2.1.3.3.1. Example Python Code</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_identified_by_name.html#output-from-python-code">2.1.3.3.2. Output from Python Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_multiple_sensors_identified_by_name.html">2.10.3.3. Ask manual question multiple sensors identified by name</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_identified_by_name.html#example-python-code">2.10.3.3.1. Example Python Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_identified_by_name.html#output-from-python-code">2.10.3.3.2. Output from Python Code</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_some_supplied_parameters.html">2.1.3.4. Ask manual question sensor with parameters and some supplied parameters</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_some_supplied_parameters.html#example-python-code">2.1.3.4.1. Example Python Code</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_some_supplied_parameters.html#output-from-python-code">2.1.3.4.2. Output from Python Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_some_supplied_parameters.html">2.10.3.4. Ask manual question sensor with parameters and some supplied parameters</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_some_supplied_parameters.html#example-python-code">2.10.3.4.1. Example Python Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_some_supplied_parameters.html#output-from-python-code">2.10.3.4.2. Output from Python Code</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html">2.1.3.5. Ask manual question multiple sensors with parameters and some supplied parameters</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html#example-python-code">2.1.3.5.1. Example Python Code</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html#output-from-python-code">2.1.3.5.2. Output from Python Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html">2.10.3.5. Ask manual question multiple sensors with parameters and some supplied parameters</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html#example-python-code">2.10.3.5.1. Example Python Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html#output-from-python-code">2.10.3.5.2. Output from Python Code</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_sensor_without_parameters_and_supplied_parameters.html">2.1.3.6. Ask manual question sensor without parameters and supplied parameters</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_without_parameters_and_supplied_parameters.html#example-python-code">2.1.3.6.1. Example Python Code</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_without_parameters_and_supplied_parameters.html#output-from-python-code">2.1.3.6.2. Output from Python Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_sensor_without_parameters_and_supplied_parameters.html">2.10.3.6. Ask manual question sensor without parameters and supplied parameters</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_without_parameters_and_supplied_parameters.html#example-python-code">2.10.3.6.1. Example Python Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_without_parameters_and_supplied_parameters.html#output-from-python-code">2.10.3.6.2. Output from Python Code</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_no_supplied_parameters.html">2.1.3.7. Ask manual question sensor with parameters and no supplied parameters</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_no_supplied_parameters.html#example-python-code">2.1.3.7.1. Example Python Code</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_no_supplied_parameters.html#output-from-python-code">2.1.3.7.2. Output from Python Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_no_supplied_parameters.html">2.10.3.7. Ask manual question sensor with parameters and no supplied parameters</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_no_supplied_parameters.html#example-python-code">2.10.3.7.1. Example Python Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_no_supplied_parameters.html#output-from-python-code">2.10.3.7.2. Output from Python Code</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter.html">2.1.3.8. Ask manual question sensor with parameters and filter</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter.html#example-python-code">2.1.3.8.1. Example Python Code</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter.html#output-from-python-code">2.1.3.8.2. Output from Python Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter.html">2.10.3.8. Ask manual question sensor with parameters and filter</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter.html#example-python-code">2.10.3.8.1. Example Python Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter.html#output-from-python-code">2.10.3.8.2. Output from Python Code</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_sensor_with_filter_and_2_options.html">2.1.3.9. Ask manual question sensor with filter and 2 options</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_filter_and_2_options.html#example-python-code">2.1.3.9.1. Example Python Code</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_filter_and_2_options.html#output-from-python-code">2.1.3.9.2. Output from Python Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_sensor_with_filter_and_2_options.html">2.10.3.9. Ask manual question sensor with filter and 2 options</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_filter_and_2_options.html#example-python-code">2.10.3.9.1. Example Python Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_filter_and_2_options.html#output-from-python-code">2.10.3.9.2. Output from Python Code</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_sensor_with_filter.html">2.1.3.10. Ask manual question sensor with filter</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_filter.html#example-python-code">2.1.3.10.1. Example Python Code</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_filter.html#output-from-python-code">2.1.3.10.2. Output from Python Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_sensor_with_filter.html">2.10.3.10. Ask manual question sensor with filter</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_filter.html#example-python-code">2.10.3.10.1. Example Python Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_filter.html#output-from-python-code">2.10.3.10.2. Output from Python Code</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter_and_options.html">2.1.3.11. Ask manual question sensor with parameters and filter and options</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter_and_options.html#example-python-code">2.1.3.11.1. Example Python Code</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter_and_options.html#output-from-python-code">2.1.3.11.2. Output from Python Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter_and_options.html">2.10.3.11. Ask manual question sensor with parameters and filter and options</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter_and_options.html#example-python-code">2.10.3.11.1. Example Python Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter_and_options.html#output-from-python-code">2.10.3.11.2. Output from Python Code</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_sensor_with_filter_and_3_options.html">2.1.3.12. Ask manual question sensor with filter and 3 options</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_filter_and_3_options.html#example-python-code">2.1.3.12.1. Example Python Code</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_filter_and_3_options.html#output-from-python-code">2.1.3.12.2. Output from Python Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_sensor_with_filter_and_3_options.html">2.10.3.12. Ask manual question sensor with filter and 3 options</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_filter_and_3_options.html#example-python-code">2.10.3.12.1. Example Python Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_filter_and_3_options.html#output-from-python-code">2.10.3.12.2. Output from Python Code</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_complex_query1.html">2.1.3.13. Ask manual question complex query1</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_complex_query1.html#example-python-code">2.1.3.13.1. Example Python Code</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_complex_query1.html#output-from-python-code">2.1.3.13.2. Output from Python Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_complex_query1.html">2.10.3.13. Ask manual question complex query1</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_complex_query1.html#example-python-code">2.10.3.13.1. Example Python Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_complex_query1.html#output-from-python-code">2.10.3.13.2. Output from Python Code</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_complex_query2.html">2.1.3.14. Ask manual question complex query2</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_complex_query2.html#example-python-code">2.1.3.14.1. Example Python Code</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_complex_query2.html#output-from-python-code">2.1.3.14.2. Output from Python Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_complex_query2.html">2.10.3.14. Ask manual question complex query2</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_complex_query2.html#example-python-code">2.10.3.14.1. Example Python Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_complex_query2.html#output-from-python-code">2.10.3.14.2. Output from Python Code</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="_ask_manual_question_sensor_complex.html">2.1.3.15. ask manual question sensor complex</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="_ask_manual_question_sensor_complex.html#example-python-code">2.1.3.15.1. Example Python Code</a></li>
-<li class="toctree-l2"><a class="reference internal" href="_ask_manual_question_sensor_complex.html#output-from-python-code">2.1.3.15.2. Output from Python Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_ask_manual_question_sensor_complex.html">2.10.3.15. ask manual question sensor complex</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="_ask_manual_question_sensor_complex.html#example-python-code">2.10.3.15.1. Example Python Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_ask_manual_question_sensor_complex.html#output-from-python-code">2.10.3.15.2. Output from Python Code</a></li>
 </ul>
 </li>
 </ul>
@@ -230,10 +232,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="ask_manual_question_simple_multiple_sensors.html" class="btn btn-neutral float-right" title="2.1.3.1. Ask manual question simple multiple sensors">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="ask_manual_question_simple_multiple_sensors.html" class="btn btn-neutral float-right" title="2.10.3.1. Ask manual question simple multiple sensors">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="ask_saved_question_by_name_in_list.html" class="btn btn-neutral" title="2.1.2.3. Ask saved question by name in list"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="ask_saved_question_by_name_in_list.html" class="btn btn-neutral" title="2.10.2.3. Ask saved question by name in list"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -243,7 +245,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Aug 07, 2015.
+      Last updated on Aug 27, 2015.
     </p>
   </div>
 
@@ -264,7 +266,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'2.0.0',
+            VERSION:'2.1.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>2.5. pytan.pollers module &mdash; PyTan 2.0.0 documentation</title>
+  <title>2.4. pytan.pollers module &mdash; PyTan 2.1.0 documentation</title>
   
 
   
@@ -28,10 +28,10 @@
   
 
   
-    <link rel="top" title="PyTan 2.0.0 documentation" href="index.html"/>
+    <link rel="top" title="PyTan 2.1.0 documentation" href="index.html"/>
         <link rel="up" title="2. pytan package" href="pytan.html"/>
-        <link rel="next" title="2.6. pytan.constants module" href="pytan.constants.html"/>
-        <link rel="prev" title="2.4. pytan.sessions module" href="pytan.sessions.html"/> 
+        <link rel="next" title="2.5. pytan.constants module" href="pytan.constants.html"/>
+        <link rel="prev" title="2.3. pytan.sessions module" href="pytan.sessions.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -71,18 +71,20 @@
 <li class="toctree-l2"><a class="reference internal" href="introduction.html#installation">1.5. Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="introduction.html#usage">1.6. Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="introduction.html#directory-layout">1.7. Directory Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#other-references">1.8. Other References</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="pytan.html">2. pytan package</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="examples/pytan_examples.html">2.1. PyTan API examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.handler.html">2.2. pytan.handler module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.exceptions.html">2.3. pytan.exceptions module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.sessions.html">2.4. pytan.sessions module</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">2.5. pytan.pollers module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.constants.html">2.6. pytan.constants module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html">2.7. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.handler.html">2.1. pytan.handler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.exceptions.html">2.2. pytan.exceptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.sessions.html">2.3. pytan.sessions module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">2.4. pytan.pollers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.constants.html">2.5. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.utils.html">2.6. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.xml_clean.html">2.7. pytan.xml_clean module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pytan.unittest.html">2.8. pytan Unit Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pytan.functest.html">2.9. pytan Functional Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/pytan_examples.html">2.10. PyTan API examples</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="taniumpy.html">3. taniumpy package</a><ul>
@@ -128,7 +130,7 @@
       
           <li><a href="pytan.html">2. pytan package</a> &raquo;</li>
       
-    <li>2.5. pytan.pollers module</li>
+    <li>2.4. pytan.pollers module</li>
       <li class="wy-breadcrumbs-aside">
         
           <a href="_sources/pytan.pollers.txt" rel="nofollow"> View page source</a>
@@ -140,7 +142,7 @@
           <div role="main" class="document">
             
   <div class="section" id="module-pytan.pollers">
-<span id="pytan-pollers-module"></span><h1>2.5. pytan.pollers module<a class="headerlink" href="#module-pytan.pollers" title="Permalink to this headline">¶</a></h1>
+<span id="pytan-pollers-module"></span><h1>2.4. pytan.pollers module<a class="headerlink" href="#module-pytan.pollers" title="Permalink to this headline">¶</a></h1>
 <p>Collection of classes and methods for polling of actions/questions in <a class="reference internal" href="pytan.html#module-pytan" title="pytan"><code class="xref py py-mod docutils literal"><span class="pre">pytan</span></code></a></p>
 <dl class="class">
 <dt id="pytan.pollers.ActionPoller">
@@ -213,9 +215,9 @@ AnswersComplete</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pytan.pollers.ActionPoller._derive_info">
-<code class="descname">_derive_info</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#ActionPoller._derive_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.ActionPoller._derive_info" title="Permalink to this definition">¶</a></dt>
-<dd><p>Derive self.obj_info from self.obj</p>
+<dt id="pytan.pollers.ActionPoller._derive_object_info">
+<code class="descname">_derive_object_info</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#ActionPoller._derive_object_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.ActionPoller._derive_object_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Derive self.object_info from self.obj</p>
 </dd></dl>
 
 <dl class="method">
@@ -270,13 +272,13 @@ at package creation/update</p>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="pytan.pollers.ActionPoller.qplog">
-<code class="descname">qplog</code><em class="property"> = &lt;logging.Logger object at 0x110a4ab90&gt;</em><a class="headerlink" href="#pytan.pollers.ActionPoller.qplog" title="Permalink to this definition">¶</a></dt>
+<dt id="pytan.pollers.ActionPoller.pollerlog">
+<code class="descname">pollerlog</code><em class="property"> = &lt;logging.Logger object at 0x106cdedd0&gt;</em><a class="headerlink" href="#pytan.pollers.ActionPoller.pollerlog" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="pytan.pollers.ActionPoller.qpplog">
-<code class="descname">qpplog</code><em class="property"> = &lt;logging.Logger object at 0x110a4ac50&gt;</em><a class="headerlink" href="#pytan.pollers.ActionPoller.qpplog" title="Permalink to this definition">¶</a></dt>
+<dt id="pytan.pollers.ActionPoller.progresslog">
+<code class="descname">progresslog</code><em class="property"> = &lt;logging.Logger object at 0x106cdee90&gt;</em><a class="headerlink" href="#pytan.pollers.ActionPoller.progresslog" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -371,12 +373,12 @@ AnswersComplete</p>
 
 <dl class="attribute">
 <dt id="pytan.pollers.QuestionPoller.STR_ATTRS">
-<code class="descname">STR_ATTRS</code><em class="property"> = ['obj_info', 'polling_secs', 'override_timeout_secs', 'complete_pct', 'expiration']</em><a class="headerlink" href="#pytan.pollers.QuestionPoller.STR_ATTRS" title="Permalink to this definition">¶</a></dt>
+<code class="descname">STR_ATTRS</code><em class="property"> = ['object_info', 'polling_secs', 'override_timeout_secs', 'complete_pct', 'expiration']</em><a class="headerlink" href="#pytan.pollers.QuestionPoller.STR_ATTRS" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="pytan.pollers.QuestionPoller.__dict__">
-<code class="descname">__dict__</code><em class="property"> = dict_proxy({'passed_eq_est_total_loop': &lt;function passed_eq_est_total_loop at 0x110a52410&gt;, '__module__': 'pytan.pollers', 'run': &lt;function run at 0x110a52398&gt;, 'EXPIRY_FALLBACK_SECS': 600, 'stop': &lt;function stop at 0x110a52488&gt;, '__str__': &lt;function __str__ at 0x110a44ed8&gt;, 'OBJECT_TYPE': &lt;class 'taniumpy.object_types.question.Question'&gt;, '_derive_expiration': &lt;function _derive_expiration at 0x110a521b8&gt;, 'qplog': &lt;logging.Logger object at 0x110a4a9d0&gt;, '_derive_attribute': &lt;function _derive_attribute at 0x110a520c8&gt;, 'POLLING_SECS': 5, 'COMPLETE_PCT': 99, '__dict__': &lt;attribute '__dict__' of 'QuestionPoller' objects&gt;, 'STR_ATTRS': ['obj_info', 'polling_secs', 'override_timeout_secs', 'complete_pct', 'expiration'], '_post_init': &lt;function _post_init at 0x110a44f50&gt;, '__init__': &lt;function __init__ at 0x110a44e60&gt;, 'get_result_data': &lt;function get_result_data at 0x110a52320&gt;, '__weakref__': &lt;attribute '__weakref__' of 'QuestionPoller' objects&gt;, 'set_complect_pct': &lt;function set_complect_pct at 0x110a52230&gt;, 'qpplog': &lt;logging.Logger object at 0x110a4aa90&gt;, '_derive_info': &lt;function _derive_info at 0x110a52140&gt;, 'get_result_info': &lt;function get_result_info at 0x110a522a8&gt;, '_refetch_obj': &lt;function _refetch_obj at 0x110a52050&gt;, '__doc__': 'A class to poll the progress of a Question.\n\n    The primary function of this class is to poll for result info for questions, and fire off events:\n\n    ProgressChanged\n    AnswersChanged\n    AnswersComplete\n\n    Parameters\n    ----------\n    handler : :class:`pytan.handler.Handler`\n        PyTan handler to use for GetResultInfo calls\n    obj : :class:`taniumpy.object_types.question.Question`\n        object to poll for progress\n    polling_secs : int, optional\n        Number of seconds to wait in between GetResultInfo loops\n    complete_pct : int/float, optional\n        Percentage of mr_tested out of estimated_total to consider the question &quot;done&quot;\n    override_timeout_secs : int, optional\n        If supplied and not 0, timeout in seconds instead of when object expires\n    '})</em><a class="headerlink" href="#pytan.pollers.QuestionPoller.__dict__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__dict__</code><em class="property"> = dict_proxy({'passed_eq_est_total_loop': &lt;function passed_eq_est_total_loop at 0x106ce4230&gt;, '__module__': 'pytan.pollers', 'run': &lt;function run at 0x106ce41b8&gt;, 'EXPIRY_FALLBACK_SECS': 600, '_derive_expiration': &lt;function _derive_expiration at 0x106cc8f50&gt;, '__str__': &lt;function __str__ at 0x106cc8cf8&gt;, 'OBJECT_TYPE': &lt;class 'taniumpy.object_types.question.Question'&gt;, 'stop': &lt;function stop at 0x106ce42a8&gt;, '_derive_attribute': &lt;function _derive_attribute at 0x106cc8e60&gt;, 'POLLING_SECS': 5, 'STR_ATTRS': ['object_info', 'polling_secs', 'override_timeout_secs', 'complete_pct', 'expiration'], '__dict__': &lt;attribute '__dict__' of 'QuestionPoller' objects&gt;, 'COMPLETE_PCT': 99, 'progresslog': &lt;logging.Logger object at 0x106cdecd0&gt;, '_post_init': &lt;function _post_init at 0x106cc8d70&gt;, '__init__': &lt;function __init__ at 0x106cc8c80&gt;, 'get_result_data': &lt;function get_result_data at 0x106ce4140&gt;, '__weakref__': &lt;attribute '__weakref__' of 'QuestionPoller' objects&gt;, 'set_complect_pct': &lt;function set_complect_pct at 0x106ce4050&gt;, '_derive_object_info': &lt;function _derive_object_info at 0x106cc8ed8&gt;, 'pollerlog': &lt;logging.Logger object at 0x106cdec10&gt;, 'get_result_info': &lt;function get_result_info at 0x106ce40c8&gt;, '_refetch_obj': &lt;function _refetch_obj at 0x106cc8de8&gt;, '__doc__': 'A class to poll the progress of a Question.\n\n    The primary function of this class is to poll for result info for questions, and fire off events:\n\n    ProgressChanged\n    AnswersChanged\n    AnswersComplete\n\n    Parameters\n    ----------\n    handler : :class:`pytan.handler.Handler`\n        PyTan handler to use for GetResultInfo calls\n    obj : :class:`taniumpy.object_types.question.Question`\n        object to poll for progress\n    polling_secs : int, optional\n        Number of seconds to wait in between GetResultInfo loops\n    complete_pct : int/float, optional\n        Percentage of mr_tested out of estimated_total to consider the question &quot;done&quot;\n    override_timeout_secs : int, optional\n        If supplied and not 0, timeout in seconds instead of when object expires\n    '})</em><a class="headerlink" href="#pytan.pollers.QuestionPoller.__dict__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -438,9 +440,9 @@ if fallback is None, an exception will be raised</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pytan.pollers.QuestionPoller._derive_info">
-<code class="descname">_derive_info</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#QuestionPoller._derive_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.QuestionPoller._derive_info" title="Permalink to this definition">¶</a></dt>
-<dd><p>Derive self.obj_info from self.obj</p>
+<dt id="pytan.pollers.QuestionPoller._derive_object_info">
+<code class="descname">_derive_object_info</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#QuestionPoller._derive_object_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.QuestionPoller._derive_object_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Derive self.object_info from self.obj</p>
 </dd></dl>
 
 <dl class="method">
@@ -475,13 +477,13 @@ available</p>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="pytan.pollers.QuestionPoller.qplog">
-<code class="descname">qplog</code><em class="property"> = &lt;logging.Logger object at 0x110a4a9d0&gt;</em><a class="headerlink" href="#pytan.pollers.QuestionPoller.qplog" title="Permalink to this definition">¶</a></dt>
+<dt id="pytan.pollers.QuestionPoller.pollerlog">
+<code class="descname">pollerlog</code><em class="property"> = &lt;logging.Logger object at 0x106cdec10&gt;</em><a class="headerlink" href="#pytan.pollers.QuestionPoller.pollerlog" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="pytan.pollers.QuestionPoller.qpplog">
-<code class="descname">qpplog</code><em class="property"> = &lt;logging.Logger object at 0x110a4aa90&gt;</em><a class="headerlink" href="#pytan.pollers.QuestionPoller.qpplog" title="Permalink to this definition">¶</a></dt>
+<dt id="pytan.pollers.QuestionPoller.progresslog">
+<code class="descname">progresslog</code><em class="property"> = &lt;logging.Logger object at 0x106cdecd0&gt;</em><a class="headerlink" href="#pytan.pollers.QuestionPoller.progresslog" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -530,6 +532,95 @@ available</p>
 <dl class="method">
 <dt id="pytan.pollers.QuestionPoller.stop">
 <code class="descname">stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#QuestionPoller.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.QuestionPoller.stop" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pytan.pollers.SSEPoller">
+<em class="property">class </em><code class="descclassname">pytan.pollers.</code><code class="descname">SSEPoller</code><span class="sig-paren">(</span><em>handler</em>, <em>export_id</em>, <em>timeout_secs=600</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#SSEPoller"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.SSEPoller" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pytan.pollers.QuestionPoller" title="pytan.pollers.QuestionPoller"><code class="xref py py-class docutils literal"><span class="pre">pytan.pollers.QuestionPoller</span></code></a></p>
+<p>A class to poll the progress of a Server Side Export.</p>
+<p>The primary function of this class is to poll for status of server side exports.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>handler</strong> : <a class="reference internal" href="pytan.handler.html#pytan.handler.Handler" title="pytan.handler.Handler"><code class="xref py py-class docutils literal"><span class="pre">pytan.handler.Handler</span></code></a></p>
+<blockquote>
+<div><p>PyTan handler to use for GetResultInfo calls</p>
+</div></blockquote>
+<p><strong>export_id</strong> : str</p>
+<blockquote>
+<div><p>ID of server side export</p>
+</div></blockquote>
+<p><strong>polling_secs</strong> : int, optional</p>
+<blockquote>
+<div><p>Number of seconds to wait in between status check loops (default: 2)</p>
+</div></blockquote>
+<p><strong>timeout_secs</strong> : int, optional</p>
+<blockquote class="last">
+<div><p>timeout in seconds for waiting for status completion, 0 does not time out (default: 600)</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="pytan.pollers.SSEPoller.POLLING_SECS">
+<code class="descname">POLLING_SECS</code><em class="property"> = 2</em><a class="headerlink" href="#pytan.pollers.SSEPoller.POLLING_SECS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.pollers.SSEPoller.STR_ATTRS">
+<code class="descname">STR_ATTRS</code><em class="property"> = ['export_id', 'polling_secs', 'timeout_secs', 'sse_status']</em><a class="headerlink" href="#pytan.pollers.SSEPoller.STR_ATTRS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pytan.pollers.SSEPoller.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>handler</em>, <em>export_id</em>, <em>timeout_secs=600</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#SSEPoller.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.SSEPoller.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.pollers.SSEPoller.__module__">
+<code class="descname">__module__</code><em class="property"> = 'pytan.pollers'</em><a class="headerlink" href="#pytan.pollers.SSEPoller.__module__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pytan.pollers.SSEPoller._post_init">
+<code class="descname">_post_init</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#SSEPoller._post_init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.SSEPoller._post_init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Post init class setup</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.pollers.SSEPoller.get_sse_data">
+<code class="descname">get_sse_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#SSEPoller.get_sse_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.SSEPoller.get_sse_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pytan.pollers.SSEPoller.get_sse_status">
+<code class="descname">get_sse_status</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#SSEPoller.get_sse_status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.SSEPoller.get_sse_status" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.pollers.SSEPoller.pollerlog">
+<code class="descname">pollerlog</code><em class="property"> = &lt;logging.Logger object at 0x106cdef50&gt;</em><a class="headerlink" href="#pytan.pollers.SSEPoller.pollerlog" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pytan.pollers.SSEPoller.progresslog">
+<code class="descname">progresslog</code><em class="property"> = &lt;logging.Logger object at 0x106ced050&gt;</em><a class="headerlink" href="#pytan.pollers.SSEPoller.progresslog" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pytan.pollers.SSEPoller.run">
+<code class="descname">run</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#SSEPoller.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.SSEPoller.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Poll for server side export status</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pytan.pollers.SSEPoller.sse_status_completed">
+<code class="descname">sse_status_completed</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#SSEPoller.sse_status_completed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.pollers.SSEPoller.sse_status_completed" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -594,7 +685,7 @@ AnswersComplete</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">STR_ATTRS</code><em class="property"> = ['obj_info', 'polling_secs', 'override_timeout_secs', 'complete_pct', 'expiration']</em></dt>
+<code class="descname">STR_ATTRS</code><em class="property"> = ['object_info', 'polling_secs', 'override_timeout_secs', 'complete_pct', 'expiration']</em></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -636,8 +727,8 @@ if fallback is None, an exception will be raised</p>
 
 <dl class="method">
 <dt>
-<code class="descname">_derive_info</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#QuestionPoller._derive_info"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Derive self.obj_info from self.obj</p>
+<code class="descname">_derive_object_info</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#QuestionPoller._derive_object_info"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Derive self.object_info from self.obj</p>
 </dd></dl>
 
 <dl class="method">
@@ -673,12 +764,12 @@ available</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">qplog</code><em class="property"> = &lt;logging.Logger object at 0x110a4a9d0&gt;</em></dt>
+<code class="descname">pollerlog</code><em class="property"> = &lt;logging.Logger object at 0x106cdec10&gt;</em></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">qpplog</code><em class="property"> = &lt;logging.Logger object at 0x110a4aa90&gt;</em></dt>
+<code class="descname">progresslog</code><em class="property"> = &lt;logging.Logger object at 0x106cdecd0&gt;</em></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -798,8 +889,8 @@ AnswersComplete</p>
 
 <dl class="method">
 <dt>
-<code class="descname">_derive_info</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#ActionPoller._derive_info"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Derive self.obj_info from self.obj</p>
+<code class="descname">_derive_object_info</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/pollers.html#ActionPoller._derive_object_info"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Derive self.object_info from self.obj</p>
 </dd></dl>
 
 <dl class="method">
@@ -855,12 +946,12 @@ at package creation/update</p>
 
 <dl class="attribute">
 <dt>
-<code class="descname">qplog</code><em class="property"> = &lt;logging.Logger object at 0x110a4ab90&gt;</em></dt>
+<code class="descname">pollerlog</code><em class="property"> = &lt;logging.Logger object at 0x106cdedd0&gt;</em></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">qpplog</code><em class="property"> = &lt;logging.Logger object at 0x110a4ac50&gt;</em></dt>
+<code class="descname">progresslog</code><em class="property"> = &lt;logging.Logger object at 0x106cdee90&gt;</em></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -903,10 +994,10 @@ at package creation/update</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="pytan.constants.html" class="btn btn-neutral float-right" title="2.6. pytan.constants module">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="pytan.constants.html" class="btn btn-neutral float-right" title="2.5. pytan.constants module">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="pytan.sessions.html" class="btn btn-neutral" title="2.4. pytan.sessions module"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="pytan.sessions.html" class="btn btn-neutral" title="2.3. pytan.sessions module"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -916,7 +1007,7 @@ at package creation/update</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Aug 07, 2015.
+      Last updated on Aug 27, 2015.
     </p>
   </div>
 
@@ -937,7 +1028,7 @@ at package creation/update</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'2.0.0',
+            VERSION:'2.1.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pytan.pollers &mdash; PyTan 2.0.0 documentation</title>
+  <title>pytan.pollers &mdash; PyTan 2.1.0 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="PyTan 2.0.0 documentation" href="../../index.html"/>
+    <link rel="top" title="PyTan 2.1.0 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -69,18 +69,20 @@
 <li class="toctree-l2"><a class="reference internal" href="../../introduction.html#installation">1.5. Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../introduction.html#usage">1.6. Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../introduction.html#directory-layout">1.7. Directory Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../introduction.html#other-references">1.8. Other References</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../pytan.html">2. pytan package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../examples/pytan_examples.html">2.1. PyTan API examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../pytan.handler.html">2.2. pytan.handler module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../pytan.exceptions.html">2.3. pytan.exceptions module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../pytan.sessions.html">2.4. pytan.sessions module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../pytan.pollers.html">2.5. pytan.pollers module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../pytan.constants.html">2.6. pytan.constants module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../pytan.utils.html">2.7. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.handler.html">2.1. pytan.handler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.exceptions.html">2.2. pytan.exceptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.sessions.html">2.3. pytan.sessions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.pollers.html">2.4. pytan.pollers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.constants.html">2.5. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.utils.html">2.6. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.xml_clean.html">2.7. pytan.xml_clean module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../pytan.unittest.html">2.8. pytan Unit Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../pytan.functest.html">2.9. pytan Functional Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/pytan_examples.html">2.10. PyTan API examples</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../taniumpy.html">3. taniumpy package</a><ul>
@@ -199,7 +201,7 @@
 
     <span class="c"># class attributes to include in __str__ output</span>
     <span class="n">STR_ATTRS</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s">&#39;obj_info&#39;</span><span class="p">,</span>
+        <span class="s">&#39;object_info&#39;</span><span class="p">,</span>
         <span class="s">&#39;polling_secs&#39;</span><span class="p">,</span>
         <span class="s">&#39;override_timeout_secs&#39;</span><span class="p">,</span>
         <span class="s">&#39;complete_pct&#39;</span><span class="p">,</span>
@@ -209,8 +211,8 @@
     <span class="n">COMPLETE_PCT</span> <span class="o">=</span> <span class="mi">99</span>
     <span class="n">POLLING_SECS</span> <span class="o">=</span> <span class="mi">5</span>
 
-    <span class="n">qplog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;pytan.handler.QuestionPoller&quot;</span><span class="p">)</span>
-    <span class="n">qpplog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;pytan.handler.QuestionPoller.progress&quot;</span><span class="p">)</span>
+    <span class="n">pollerlog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;pytan.handler.QuestionPoller&quot;</span><span class="p">)</span>
+    <span class="n">progresslog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;pytan.handler.QuestionPoller.progress&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="QuestionPoller.__init__"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.QuestionPoller.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">override_timeout_secs</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 
@@ -244,7 +246,7 @@
 <div class="viewcode-block" id="QuestionPoller._post_init"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.QuestionPoller._post_init">[docs]</a>    <span class="k">def</span> <span class="nf">_post_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Post init class setup&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_derive_expiration</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_derive_info</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_derive_object_info</span><span class="p">()</span>
 </div>
 <div class="viewcode-block" id="QuestionPoller._refetch_obj"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.QuestionPoller._refetch_obj">[docs]</a>    <span class="k">def</span> <span class="nf">_refetch_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Utility method to re-fetch a object</span>
@@ -283,7 +285,7 @@
         <span class="c"># let&#39;s use the handler to re-fetch it</span>
         <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}{!r} not available, re-fetching object&quot;</span><span class="o">.</span><span class="n">format</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">qplog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="n">attr</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pollerlog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="n">attr</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_refetch_obj</span><span class="p">()</span>
 
         <span class="n">val</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
@@ -293,22 +295,22 @@
                 <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">PollingError</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="n">attr</span><span class="p">))</span>
 
             <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}{!r} is None even after re-fetching object - using fallback of {}&quot;</span><span class="o">.</span><span class="n">format</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">qplog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">fallback</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pollerlog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">fallback</span><span class="p">))</span>
             <span class="n">val</span> <span class="o">=</span> <span class="n">fallback</span>
 
-        <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}{} resolved to {}&quot;</span><span class="o">.</span><span class="n">format</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">qplog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">val</span><span class="p">))</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}&#39;{}&#39; resolved to &#39;{}&#39;&quot;</span><span class="o">.</span><span class="n">format</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pollerlog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">val</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">val</span>
 </div>
-<div class="viewcode-block" id="QuestionPoller._derive_info"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.QuestionPoller._derive_info">[docs]</a>    <span class="k">def</span> <span class="nf">_derive_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Derive self.obj_info from self.obj&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="QuestionPoller._derive_object_info"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.QuestionPoller._derive_object_info">[docs]</a>    <span class="k">def</span> <span class="nf">_derive_object_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Derive self.object_info from self.obj&quot;&quot;&quot;</span>
         <span class="n">question_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_derive_attribute</span><span class="p">(</span><span class="s">&#39;query_text&#39;</span><span class="p">,</span> <span class="s">&#39;Unable to fetch question text&#39;</span><span class="p">)</span>
         <span class="n">question_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_derive_attribute</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">obj_info</span> <span class="o">=</span> <span class="s">&quot;Question ID: {}, Query: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">question_id</span><span class="p">,</span> <span class="n">question_text</span><span class="p">)</span>
+        <span class="n">object_info</span> <span class="o">=</span> <span class="s">&quot;Question ID: {}, Query: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">question_id</span><span class="p">,</span> <span class="n">question_text</span><span class="p">)</span>
 
-        <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}Object Info resolved to {}&quot;</span><span class="o">.</span><span class="n">format</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">qplog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="n">obj_info</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">obj_info</span> <span class="o">=</span> <span class="n">obj_info</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}&#39;object_info&#39; resolved to &#39;{}&#39;&quot;</span><span class="o">.</span><span class="n">format</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pollerlog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="n">object_info</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object_info</span> <span class="o">=</span> <span class="n">object_info</span>
 </div>
 <div class="viewcode-block" id="QuestionPoller._derive_expiration"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.QuestionPoller._derive_expiration">[docs]</a>    <span class="k">def</span> <span class="nf">_derive_expiration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Derive the expiration datetime string from a object</span>
@@ -400,7 +402,7 @@
                 <span class="s">&quot;MR Tested: {0.mr_tested}, MR Passed: {0.mr_passed}, &quot;</span>
                 <span class="s">&quot;Est Total: {0.estimated_total}, Row Count: {0.row_count}&quot;</span>
             <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result_info</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">qplog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;{}{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">progress_str</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">progresslog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;{}{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">progress_str</span><span class="p">))</span>
 
             <span class="c"># print a timing debug string</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">override_timeout</span><span class="p">:</span>
@@ -419,7 +421,7 @@
                 <span class="n">time_till_expiry</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">loop_count</span><span class="p">,</span>
             <span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">qplog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;{}{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">timing_str</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pollerlog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;{}{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">timing_str</span><span class="p">))</span>
 
             <span class="c"># check to see if progress has changed, if so run the callback</span>
             <span class="n">progress_changed</span> <span class="o">=</span> <span class="nb">any</span><span class="p">([</span>
@@ -433,7 +435,7 @@
 
             <span class="k">if</span> <span class="n">progress_changed</span><span class="p">:</span>
                 <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}Progress Changed {} ({} of {})&quot;</span><span class="o">.</span><span class="n">format</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">qplog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">progresslog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span>
                     <span class="n">new_pct_str</span><span class="p">,</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">result_info</span><span class="o">.</span><span class="n">mr_tested</span><span class="p">,</span>
@@ -455,7 +457,7 @@
             <span class="c"># check to see if new_pct has reached complete_pct threshold, if so return True</span>
             <span class="k">if</span> <span class="n">new_pct</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">complete_pct</span><span class="p">:</span>
                 <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}Reached Threshold of {} ({} of {})&quot;</span><span class="o">.</span><span class="n">format</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">qplog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pollerlog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span>
                     <span class="n">complete_pct_str</span><span class="p">,</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">result_info</span><span class="o">.</span><span class="n">mr_tested</span><span class="p">,</span>
@@ -470,19 +472,19 @@
             <span class="c"># False</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">override_timeout</span> <span class="ow">and</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">override_timeout</span><span class="p">:</span>
                 <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}Reached override timeout of {}&quot;</span><span class="o">.</span><span class="n">format</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">qplog</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">override_timeout</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pollerlog</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">override_timeout</span><span class="p">))</span>
                 <span class="k">return</span> <span class="bp">False</span>
 
             <span class="c"># check to see if we have passed the actions expiration timeout, if so return False</span>
             <span class="k">if</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">expiration_timeout</span><span class="p">:</span>
                 <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}Reached expiration timeout of {}&quot;</span><span class="o">.</span><span class="n">format</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">qplog</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">expiration_timeout</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pollerlog</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">expiration_timeout</span><span class="p">))</span>
                 <span class="k">return</span> <span class="bp">False</span>
 
             <span class="c"># if stop is called, return True</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop</span><span class="p">:</span>
                 <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}Stop called at {}&quot;</span><span class="o">.</span><span class="n">format</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">qplog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="n">new_pct_str</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pollerlog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="n">new_pct_str</span><span class="p">))</span>
                 <span class="k">return</span> <span class="bp">False</span>
 
             <span class="c"># update our class variables to the new values determined by this loop</span>
@@ -525,8 +527,8 @@
     <span class="n">ACTION_DONE_KEY</span> <span class="o">=</span> <span class="s">&#39;success&#39;</span>
     <span class="n">RUNNING_STATUSES</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;active&quot;</span><span class="p">,</span> <span class="s">&quot;open&quot;</span><span class="p">]</span>
 
-    <span class="n">qplog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;pytan.handler.ActionPoller&quot;</span><span class="p">)</span>
-    <span class="n">qpplog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;pytan.handler.ActionPoller.progress&quot;</span><span class="p">)</span>
+    <span class="n">pollerlog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;pytan.handler.ActionPoller&quot;</span><span class="p">)</span>
+    <span class="n">progresslog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;pytan.handler.ActionPoller.progress&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ActionPoller._post_init"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.ActionPoller._post_init">[docs]</a>    <span class="k">def</span> <span class="nf">_post_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Post init class setup&quot;&quot;&quot;</span>
@@ -537,7 +539,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_derive_expiration</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_derive_status</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_derive_stopped_flag</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_derive_info</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_derive_object_info</span><span class="p">()</span>
 </div>
 <div class="viewcode-block" id="ActionPoller._derive_status"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.ActionPoller._derive_status">[docs]</a>    <span class="k">def</span> <span class="nf">_derive_status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_derive_attribute</span><span class="p">(</span><span class="s">&#39;status&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
@@ -572,7 +574,7 @@
             <span class="k">except</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">passed_count_reliable</span> <span class="o">=</span> <span class="bp">False</span>
                 <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}Passed Count unreliable! Unable to find Actions Target Group: {}&quot;</span><span class="o">.</span><span class="n">format</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">qplog</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_group</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pollerlog</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_group</span><span class="p">))</span>
 </div>
 <div class="viewcode-block" id="ActionPoller._fix_group"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.ActionPoller._fix_group">[docs]</a>    <span class="k">def</span> <span class="nf">_fix_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Sets ID to null on a group object and all of it&#39;s sub_groups, needed for 6.5&#39;&#39;&#39;</span>
@@ -636,21 +638,21 @@
             <span class="n">v</span><span class="p">[</span><span class="s">&#39;total&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}Result Map resolved to {}&quot;</span><span class="o">.</span><span class="n">format</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">qplog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">result_map</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pollerlog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">result_map</span><span class="p">))</span>
 </div>
-<div class="viewcode-block" id="ActionPoller._derive_info"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.ActionPoller._derive_info">[docs]</a>    <span class="k">def</span> <span class="nf">_derive_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Derive self.obj_info from self.obj&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="ActionPoller._derive_object_info"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.ActionPoller._derive_object_info">[docs]</a>    <span class="k">def</span> <span class="nf">_derive_object_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Derive self.object_info from self.obj&quot;&quot;&quot;</span>
         <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}Package: &#39;{}&#39;, Target: &#39;{}&#39;, Verify: {}, Stopped: {}, Status: {}&quot;</span><span class="o">.</span><span class="n">format</span>
 
-        <span class="n">obj_info</span> <span class="o">=</span> <span class="n">m</span><span class="p">(</span>
+        <span class="n">object_info</span> <span class="o">=</span> <span class="n">m</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">package_spec</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_group</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">verify_enabled</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">stopped_flag</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}Object Info resolved to {}&quot;</span><span class="o">.</span><span class="n">format</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">qplog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="n">obj_info</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pollerlog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="n">object_info</span><span class="p">))</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">obj_info</span> <span class="o">=</span> <span class="n">obj_info</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object_info</span> <span class="o">=</span> <span class="n">object_info</span>
 </div>
 <div class="viewcode-block" id="ActionPoller.run"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.ActionPoller.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callbacks</span><span class="o">=</span><span class="p">{},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Poll for action data and issue callbacks.</span>
@@ -680,7 +682,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">override_timeout</span> <span class="o">=</span> <span class="bp">None</span>
 
         <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}Adding Question to derive passed count&quot;</span><span class="o">.</span><span class="n">format</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">qplog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pollerlog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">pre_question</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">Question</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pre_question</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_group</span>
@@ -691,7 +693,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">passed_count</span> <span class="o">=</span> <span class="n">poller</span><span class="o">.</span><span class="n">result_info</span><span class="o">.</span><span class="n">passed</span>
         <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}Passed Count resolved to {}&quot;</span><span class="o">.</span><span class="n">format</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">qplog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">passed_count</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pollerlog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">passed_count</span><span class="p">))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">seen_eq_passed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">seen_eq_passed_loop</span><span class="p">(</span><span class="n">callbacks</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">finished_eq_passed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">finished_eq_passed_loop</span><span class="p">(</span><span class="n">callbacks</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -713,7 +715,7 @@
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">passed_count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Passed Count of Clients for filter {} is 0 -- no clients match filter&quot;</span><span class="o">.</span><span class="n">format</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">qplog</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target_group</span><span class="o">.</span><span class="n">text</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pollerlog</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target_group</span><span class="o">.</span><span class="n">text</span><span class="p">))</span>
             <span class="k">return</span> <span class="bp">False</span>
 
         <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop</span><span class="p">:</span>
@@ -739,7 +741,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">progress_str</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="s">&quot;Progress: Seen Action: {}, Expected Seen: {}, Percent: {}&quot;</span>
             <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">seen_count</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">passed_count</span><span class="p">,</span> <span class="n">new_pct_str</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">qplog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;{}{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">progress_str</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">progresslog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;{}{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">progress_str</span><span class="p">))</span>
 
             <span class="c"># print a timing debug string</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">override_timeout</span><span class="p">:</span>
@@ -758,7 +760,7 @@
                 <span class="n">time_till_expiry</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">seen_loop_count</span><span class="p">,</span>
             <span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">qplog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;{}{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">timing_str</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pollerlog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;{}{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">timing_str</span><span class="p">))</span>
 
             <span class="c"># check to see if progress has changed, if so run the callback</span>
             <span class="n">seen_changed</span> <span class="o">=</span> <span class="n">seen_count</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">seen_count</span>
@@ -767,7 +769,7 @@
 
             <span class="k">if</span> <span class="n">progress_changed</span><span class="p">:</span>
                 <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}Progress Changed for Seen Count {} ({} of {})&quot;</span><span class="o">.</span><span class="n">format</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">qplog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="n">new_pct_str</span><span class="p">,</span> <span class="n">seen_count</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">passed_count</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">progresslog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="n">new_pct_str</span><span class="p">,</span> <span class="n">seen_count</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">passed_count</span><span class="p">))</span>
                 <span class="k">if</span> <span class="n">callbacks</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;SeenProgressChanged&#39;</span><span class="p">):</span>
                     <span class="n">callbacks</span><span class="p">[</span><span class="s">&#39;SeenProgressChanged&#39;</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_pct</span><span class="p">)</span>
 
@@ -779,19 +781,19 @@
             <span class="c"># check to see if action is stopped, if it is, return False</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stopped_flag</span><span class="p">:</span>
                 <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}Actions stopped flag is True&quot;</span><span class="o">.</span><span class="n">format</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">qplog</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pollerlog</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">))</span>
                 <span class="k">return</span> <span class="bp">False</span>
 
             <span class="c"># check to see if action is not active, if it is not, False</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">RUNNING_STATUSES</span><span class="p">:</span>
                 <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}Action status is {}, which is not one of: {}&quot;</span><span class="o">.</span><span class="n">format</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">qplog</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="p">,</span> <span class="s">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">RUNNING_STATUSES</span><span class="p">)))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pollerlog</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="p">,</span> <span class="s">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">RUNNING_STATUSES</span><span class="p">)))</span>
                 <span class="k">return</span> <span class="bp">False</span>
 
             <span class="c"># check to see if new_pct has reached complete_pct threshold, if so return True</span>
             <span class="k">if</span> <span class="n">new_pct</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">complete_pct</span><span class="p">:</span>
                 <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}Reached Threshold for Seen Count of {} ({} of {})&quot;</span><span class="o">.</span><span class="n">format</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">qplog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="n">complete_pct_str</span><span class="p">,</span> <span class="n">seen_count</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">passed_count</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pollerlog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="n">complete_pct_str</span><span class="p">,</span> <span class="n">seen_count</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">passed_count</span><span class="p">))</span>
 
                 <span class="k">if</span> <span class="n">callbacks</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;SeenAnswersComplete&#39;</span><span class="p">):</span>
                     <span class="n">callbacks</span><span class="p">[</span><span class="s">&#39;SeenAnswersComplete&#39;</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_pct</span><span class="p">)</span>
@@ -801,19 +803,19 @@
             <span class="c"># False</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">override_timeout</span> <span class="ow">and</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">override_timeout</span><span class="p">:</span>
                 <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}Reached override timeout of {}&quot;</span><span class="o">.</span><span class="n">format</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">qplog</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">override_timeout</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pollerlog</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">override_timeout</span><span class="p">))</span>
                 <span class="k">return</span> <span class="bp">False</span>
 
             <span class="c"># check to see if we have passed the actions expiration timeout, if so return False</span>
             <span class="k">if</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">expiration_timeout</span><span class="p">:</span>
                 <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}Reached expiration timeout of {}&quot;</span><span class="o">.</span><span class="n">format</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">qplog</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">expiration</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pollerlog</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">expiration</span><span class="p">))</span>
                 <span class="k">return</span> <span class="bp">False</span>
 
             <span class="c"># if stop is called, return True</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop</span><span class="p">:</span>
                 <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}Stop called at {}&quot;</span><span class="o">.</span><span class="n">format</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">qplog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="n">new_pct_str</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pollerlog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="n">new_pct_str</span><span class="p">))</span>
                 <span class="k">return</span> <span class="bp">True</span>
 
             <span class="c"># update our class variables to the new values determined by this loop</span>
@@ -888,7 +890,7 @@
             <span class="n">progress_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;Done Key: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ACTION_DONE_KEY</span><span class="p">))</span>
             <span class="n">progress_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;Passed Count: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">passed_count</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">progress_str</span> <span class="o">=</span> <span class="s">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">progress_list</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">qplog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;{}{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">progress_str</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">progresslog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;{}{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">progress_str</span><span class="p">))</span>
 
             <span class="c"># print a timing debug string</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">override_timeout</span><span class="p">:</span>
@@ -907,7 +909,7 @@
                 <span class="n">time_till_expiry</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">loop_count</span><span class="p">,</span>
             <span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">qplog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;{}{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">timing_str</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pollerlog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;{}{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">timing_str</span><span class="p">))</span>
 
             <span class="c"># check to see if progress has changed, if so run the callback</span>
             <span class="n">finished_changed</span> <span class="o">=</span> <span class="n">finished_count</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">finished_count</span>
@@ -916,7 +918,7 @@
 
             <span class="k">if</span> <span class="n">progress_changed</span><span class="p">:</span>
                 <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}Progress Changed for Finished Count {} ({} of {})&quot;</span><span class="o">.</span><span class="n">format</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">qplog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="n">new_pct_str</span><span class="p">,</span> <span class="n">finished_count</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">passed_count</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">progresslog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="n">new_pct_str</span><span class="p">,</span> <span class="n">finished_count</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">passed_count</span><span class="p">))</span>
                 <span class="k">if</span> <span class="n">callbacks</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;SeenProgressChanged&#39;</span><span class="p">):</span>
                     <span class="n">callbacks</span><span class="p">[</span><span class="s">&#39;SeenProgressChanged&#39;</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_pct</span><span class="p">)</span>
 
@@ -928,19 +930,19 @@
             <span class="c"># check to see if action is stopped, if it is, return False</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stopped_flag</span><span class="p">:</span>
                 <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}Actions stopped flag is True&quot;</span><span class="o">.</span><span class="n">format</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">qplog</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pollerlog</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">))</span>
                 <span class="k">return</span> <span class="bp">False</span>
 
             <span class="c"># check to see if action is not active, if it is not, False</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">RUNNING_STATUSES</span><span class="p">:</span>
                 <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}Action status is {}, which is not one of: {}&quot;</span><span class="o">.</span><span class="n">format</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">qplog</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="p">,</span> <span class="s">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">RUNNING_STATUSES</span><span class="p">)))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pollerlog</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="p">,</span> <span class="s">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">RUNNING_STATUSES</span><span class="p">)))</span>
                 <span class="k">return</span> <span class="bp">False</span>
 
             <span class="c"># check to see if new_pct has reached complete_pct threshold, if so return True</span>
             <span class="k">if</span> <span class="n">new_pct</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">complete_pct</span><span class="p">:</span>
                 <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}Reached Threshold for Finished Count of {} ({} of {})&quot;</span><span class="o">.</span><span class="n">format</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">qplog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pollerlog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
                     <span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="n">complete_pct_str</span><span class="p">,</span> <span class="n">finished_count</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">passed_count</span><span class="p">)</span>
                 <span class="p">)</span>
 
@@ -952,19 +954,19 @@
             <span class="c"># False</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">override_timeout</span> <span class="ow">and</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">override_timeout</span><span class="p">:</span>
                 <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}Reached override timeout of {}&quot;</span><span class="o">.</span><span class="n">format</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">qplog</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">override_timeout</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pollerlog</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">override_timeout</span><span class="p">))</span>
                 <span class="k">return</span> <span class="bp">False</span>
 
             <span class="c"># check to see if we have passed the actions expiration timeout, if so return False</span>
             <span class="k">if</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">expiration_timeout</span><span class="p">:</span>
                 <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}Reached expiration timeout of {}&quot;</span><span class="o">.</span><span class="n">format</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">qplog</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">expiration</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pollerlog</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">expiration</span><span class="p">))</span>
                 <span class="k">return</span> <span class="bp">False</span>
 
             <span class="c"># if stop is called, return True</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop</span><span class="p">:</span>
                 <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}Stop called at {}&quot;</span><span class="o">.</span><span class="n">format</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">qplog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="n">new_pct_str</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pollerlog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="n">new_pct_str</span><span class="p">))</span>
                 <span class="k">return</span> <span class="bp">True</span>
 
             <span class="c"># update our class variables to the new values determined by this loop</span>
@@ -972,6 +974,157 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">finished_count</span> <span class="o">=</span> <span class="n">finished_count</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">previous_result_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result_info</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">previous_result_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result_data</span>
+
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">polling_secs</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">loop_count</span> <span class="o">+=</span> <span class="mi">1</span>
+
+</div></div>
+<div class="viewcode-block" id="SSEPoller"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.SSEPoller">[docs]</a><span class="k">class</span> <span class="nc">SSEPoller</span><span class="p">(</span><span class="n">QuestionPoller</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A class to poll the progress of a Server Side Export.</span>
+
+<span class="sd">    The primary function of this class is to poll for status of server side exports.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    handler : :class:`pytan.handler.Handler`</span>
+<span class="sd">        PyTan handler to use for GetResultInfo calls</span>
+<span class="sd">    export_id : str</span>
+<span class="sd">        ID of server side export</span>
+<span class="sd">    polling_secs : int, optional</span>
+<span class="sd">        Number of seconds to wait in between status check loops (default: 2)</span>
+<span class="sd">    timeout_secs : int, optional</span>
+<span class="sd">        timeout in seconds for waiting for status completion, 0 does not time out (default: 600)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># class attributes to include in __str__ output</span>
+    <span class="n">STR_ATTRS</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s">&#39;export_id&#39;</span><span class="p">,</span>
+        <span class="s">&#39;polling_secs&#39;</span><span class="p">,</span>
+        <span class="s">&#39;timeout_secs&#39;</span><span class="p">,</span>
+        <span class="s">&#39;sse_status&#39;</span><span class="p">,</span>
+    <span class="p">]</span>
+
+    <span class="n">POLLING_SECS</span> <span class="o">=</span> <span class="mi">2</span>
+
+    <span class="n">pollerlog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;pytan.handler.SSEPoller&quot;</span><span class="p">)</span>
+    <span class="n">progresslog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;pytan.handler.SSEPoller.progress&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SSEPoller.__init__"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.SSEPoller.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">export_id</span><span class="p">,</span> <span class="n">timeout_secs</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">handler</span><span class="p">,</span> <span class="n">pytan</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">Handler</span><span class="p">):</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{} is not a valid handler instance! Must be a: {!r}&quot;</span><span class="o">.</span><span class="n">format</span>
+            <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">PollingError</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">handler</span><span class="p">),</span> <span class="n">pytan</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">Handler</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">handler</span> <span class="o">=</span> <span class="n">handler</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">export_id</span> <span class="o">=</span> <span class="n">export_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">polling_secs</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;polling_secs&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">POLLING_SECS</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeout_secs</span> <span class="o">=</span> <span class="n">timeout_secs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_stop</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id_str</span> <span class="o">=</span> <span class="s">&quot;ID &#39;{}&#39;: &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">export_id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">poller_result</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sse_status</span> <span class="o">=</span> <span class="s">&quot;Not yet run&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_post_init</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="SSEPoller._post_init"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.SSEPoller._post_init">[docs]</a>    <span class="k">def</span> <span class="nf">_post_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Post init class setup&quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="SSEPoller.get_sse_status"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.SSEPoller.get_sse_status">[docs]</a>    <span class="k">def</span> <span class="nf">get_sse_status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">short_url</span> <span class="o">=</span> <span class="s">&#39;export/{}.status&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">export_id</span><span class="p">)</span>
+        <span class="n">full_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">_full_url</span><span class="p">(</span><span class="n">short_url</span><span class="p">)</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">http_get</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">short_url</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="c"># print a progress debug string</span>
+        <span class="n">progress_str</span> <span class="o">=</span> <span class="s">&quot;Server Side Export Progress: &#39;{}&#39; from URL: {}&quot;</span><span class="o">.</span><span class="n">format</span>
+        <span class="n">progress_str</span> <span class="o">=</span> <span class="n">progress_str</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="n">full_url</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">progresslog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;{}{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="n">progress_str</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">ret</span>
+</div>
+<div class="viewcode-block" id="SSEPoller.get_sse_data"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.SSEPoller.get_sse_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_sse_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">short_url</span> <span class="o">=</span> <span class="s">&#39;export/{}.gz&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">export_id</span><span class="p">)</span>
+        <span class="n">full_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">_full_url</span><span class="p">(</span><span class="n">short_url</span><span class="p">)</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">http_get</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">short_url</span><span class="p">)</span>
+
+        <span class="c"># print a progress debug string</span>
+        <span class="n">progress_str</span> <span class="o">=</span> <span class="s">&quot;Server Side Export Data Length: {} from URL: {}&quot;</span><span class="o">.</span><span class="n">format</span>
+        <span class="n">progress_str</span> <span class="o">=</span> <span class="n">progress_str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ret</span><span class="p">),</span> <span class="n">full_url</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">progresslog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;{}{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="n">progress_str</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">ret</span>
+</div>
+<div class="viewcode-block" id="SSEPoller.run"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.SSEPoller.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Poll for server side export status&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout_secs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout_secs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sse_status_completed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sse_status_completed</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">poller_result</span> <span class="o">=</span> <span class="nb">all</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">sse_status_completed</span><span class="p">])</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">poller_result</span>
+</div>
+<div class="viewcode-block" id="SSEPoller.sse_status_completed"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.SSEPoller.sse_status_completed">[docs]</a>    <span class="k">def</span> <span class="nf">sse_status_completed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c"># loop counter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loop_count</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="c"># establish a previous result_info that&#39;s empty</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">previous_sse_status</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+
+        <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop</span><span class="p">:</span>
+            <span class="c"># get the SSE status</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sse_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sse_status</span><span class="p">()</span>
+
+            <span class="c"># print a timing debug string</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">:</span>
+                <span class="n">time_till_expiry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">-</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">time_till_expiry</span> <span class="o">=</span> <span class="s">&#39;Never&#39;</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">timing_str</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s">&quot;Timing: Started: {}, Timeout: {}, Elapsed Time: {}, Left till expiry: {}, &quot;</span>
+                <span class="s">&quot;Loop Count: {}&quot;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">,</span>
+                <span class="n">time_till_expiry</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">loop_count</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pollerlog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;{}{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">timing_str</span><span class="p">))</span>
+
+            <span class="c"># check to see if progress has changed, if so print progress log info</span>
+            <span class="n">progress_changed</span> <span class="o">=</span> <span class="nb">any</span><span class="p">([</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">previous_sse_status</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sse_status</span><span class="p">,</span>
+            <span class="p">])</span>
+
+            <span class="k">if</span> <span class="n">progress_changed</span><span class="p">:</span>
+                <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}Progress Changed: &#39;{}&#39;&quot;</span><span class="o">.</span><span class="n">format</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">progresslog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sse_status</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="s">&#39;failed&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sse_status</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}Server Side Export Failed: &#39;{}&#39;&quot;</span><span class="o">.</span><span class="n">format</span>
+                <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ServerSideExportError</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sse_status</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="s">&#39;completed&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sse_status</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}Server Side Export Completed: &#39;{}&#39;&quot;</span><span class="o">.</span><span class="n">format</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pollerlog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sse_status</span><span class="p">))</span>
+                <span class="k">return</span> <span class="bp">True</span>
+
+            <span class="c"># check to see if timeout is specified, if so and we have passed it, return</span>
+            <span class="c"># False</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="ow">and</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">:</span>
+                <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}Reached timeout of {}&quot;</span><span class="o">.</span><span class="n">format</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pollerlog</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">))</span>
+                <span class="k">return</span> <span class="bp">False</span>
+
+            <span class="c"># if stop is called, return True</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop</span><span class="p">:</span>
+                <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}Stop called at {}&quot;</span><span class="o">.</span><span class="n">format</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pollerlog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sse_status</span><span class="p">))</span>
+                <span class="k">return</span> <span class="bp">False</span>
+
+            <span class="c"># update our class variables to the new values determined by this loop</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">previous_sse_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sse_status</span>
 
             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">polling_secs</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">loop_count</span> <span class="o">+=</span> <span class="mi">1</span></div></div>
@@ -986,7 +1139,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Aug 07, 2015.
+      Last updated on Aug 27, 2015.
     </p>
   </div>
 
@@ -1007,7 +1160,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'2.0.0',
+            VERSION:'2.1.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
