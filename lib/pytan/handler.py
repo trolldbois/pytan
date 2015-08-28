@@ -1875,10 +1875,16 @@ class Handler(object):
 
     def _export_format_xml(self, obj, **kwargs):
         """Handles exporting format: XML"""
-        if not hasattr(obj, 'toSOAPBody'):
-            err = "{!r} has no toSOAPBody() method!".format
+        result = None
+        if hasattr(obj, 'toSOAPBody'):
+            result = pytan.utils.xml_pretty(obj.toSOAPBody(**kwargs))
+        elif hasattr(obj, '_RAW_XML'):
+            result = pytan.utils.xml_pretty(obj._RAW_XML)
+
+        if result is None:
+            err = "{!r} has no toSOAPBody() method or _RAW_XML attribute!".format
             raise pytan.exceptions.HandlerError(err(obj))
-        result = obj.toSOAPBody(**kwargs)
+
         return result
 
     def _deploy_action(self, run=False, get_results=True, **kwargs):
