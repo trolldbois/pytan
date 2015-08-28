@@ -1,6 +1,15 @@
-# 2.0.4
+# 2.1.0
 
 [Development branch](https://github.com/tanium/pytan/tree/develop) on N/A
+  * Massive doc string updates all over the place
+  * Added doc note: pointers to KB/Tanium
+  * Added doc note: double quotes for windows
+  * Added doc note: console.wsdl ref link
+  * Added doc note: command line help has note about export format needing to be at end of command line now
+  * bug fix: changed pytan.handler.Handler.deploy_action() to return package object that was created for said action, not the package object that was sourced from
+  * bug fix: force pytan.handler.Handler.get_server_version() in _platform_is_6_2() if self.server_version_dict is not set yet
+  * enhancement: added better error handling to pytan.session.Session.get_server_info()
+  * enhancement: added action_name and action_comment options to pytan.handler.Handler.deploy_action()
 
 # 2.0.3
 
