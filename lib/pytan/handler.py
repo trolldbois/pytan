@@ -2036,7 +2036,14 @@ class Handler(object):
             ).format
             raise pytan.exceptions.RunFalse(m(report_path, len(result)))
 
-        # BUILD THE OBJECT TO BE ADDED
+        # BUILD THE PACKAGE OBEJECT TO BE ADDED TO THE ACTION
+        add_package_obj = pytan.utils.copy_package_obj_for_action(package_def['package_obj'])
+
+        # if source_id is specified, a new package will be created with the parameters
+        # for this action embedded into it - specifying hidden = 1 will ensure the new package
+        # is hidden
+        add_package_obj.hidden_flag = 1
+
         param_objlist = pytan.utils.build_param_objlist(
             obj=package_def['package_obj'],
             user_params=package_def['params'],
@@ -2044,6 +2051,14 @@ class Handler(object):
             derive_def=False,
             empty_ok=False,
         )
+
+        if param_objlist:
+            add_package_obj.source_id = package_def['package_obj'].id
+            add_package_obj.parameters = param_objlist
+        else:
+            add_package_obj.id = package_def['package_obj'].id
+            add_package_obj.name = package_def['package_obj'].name
+            add_package_obj.source_id = None
 
         """Branch out logic for 6.2 vs 6.5 here:
 
@@ -2073,8 +2088,9 @@ class Handler(object):
         m = "DEPLOY_ACTION objtype: {}, objlisttype: {}, force_start_time: {}, version: {}".format
         self.mylog.debug(m(objtype, objlisttype, force_start_time, self.server_version))
 
+        # BUILD THE ACTION OBJECT TO BE ADDED
         add_obj = objtype()
-        add_obj.package_spec = taniumpy.PackageSpec()
+        add_obj.package_spec = add_package_obj
         add_obj.id = -1
         add_obj.name = action_name
         add_obj.issue_seconds = issue_seconds
@@ -2087,13 +2103,6 @@ class Handler(object):
         add_obj.policy_flag = 0
         add_obj.approved_flag = 0
         add_obj.issue_count = 0
-
-        if param_objlist:
-            add_obj.package_spec.source_id = package_def['package_obj'].id
-            add_obj.package_spec.parameters = param_objlist
-        else:
-            add_obj.package_spec.id = package_def['package_obj'].id
-            add_obj.package_spec.name = package_def['package_obj'].name
 
         if action_filter_defs or action_option_defs:
             targetgroup_obj = pytan.utils.build_group_obj(action_filter_defs, action_option_defs)

@@ -2362,6 +2362,9 @@ def shrink_obj(obj, attrs=None):
     ----------
     obj : :class:`taniumpy.object_types.base.BaseType`
         * Object to shrink
+    attrs : list of str
+        * default: None
+        * list of attribute str's to copy over to new object, will default to ['name', 'id', 'hash'] if None
 
     Returns
     -------
@@ -2373,6 +2376,67 @@ def shrink_obj(obj, attrs=None):
 
     new_obj = obj.__class__()
     [setattr(new_obj, a, getattr(obj, a)) for a in attrs if getattr(obj, a, '')]
+    return new_obj
+
+
+def copy_obj(obj, skip_attrs=None):
+    """Returns a new class of obj with with out any attributes in skip_attrs specified
+
+    Parameters
+    ----------
+    obj : :class:`taniumpy.object_types.base.BaseType`
+        * Object to copy
+    skip_attrs : list of str
+        * default: None
+        * list of attribute str's to skip copying over to new object, will default to [] if None
+
+    Returns
+    -------
+    new_obj : :class:`taniumpy.object_types.base.BaseType`
+        * Copied object with attributes in skip_attrs skipped
+    """
+    if not skip_attrs:
+        skip_attrs = []
+
+    new_obj = obj.__class__()
+    [
+        setattr(new_obj, a, getattr(obj, a))
+        for a in vars(obj)
+        if getattr(obj, a, None) is not None
+        and a not in skip_attrs
+    ]
+    return new_obj
+
+
+def copy_package_obj_for_action(obj, skip_attrs=None):
+    """Returns a new class of package obj with with out any attributes in skip_attrs specified
+
+    Parameters
+    ----------
+    obj : :class:`taniumpy.object_types.base.BaseType`
+        * Object to copy
+    skip_attrs : list of str
+        * default: None
+        * list of attribute str's to skip copying over to new object, default if None: ['id', 'deleted_flag', 'available_time', 'creation_time', 'modification_time', 'source_id']
+
+    Returns
+    -------
+    new_obj : :class:`taniumpy.object_types.base.BaseType`
+        * Copied object with attributes in skip_attrs skipped
+    """
+    if skip_attrs is None:
+        # names of attributes to skip copying over from source package
+        skip_attrs = [
+            'id',
+            'deleted_flag',
+            'available_time',
+            'creation_time',
+            'modification_time',
+            'source_id',
+            'files',
+        ]
+
+    new_obj = copy_obj(obj, skip_attrs)
     return new_obj
 
 
