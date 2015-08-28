@@ -366,6 +366,44 @@ class Handler(object):
         >>> # example of list of str for question_options
         >>> question_options = ['max_data_age:3600', 'and']
 
+        Notes
+        -----
+
+        When asking a question from the Tanium console, you construct a question like:
+
+            Get Computer Name and IP Route Details from all machines with Is Windows containing "True"
+
+        Asking the same question in PyTan has some similarities:
+
+            >>> r = handler.ask_manual(sensors=['Computer Name', 'IP Route Details'], question_filters=['Is Windows, that contains:True'])
+
+        There are two sensors in this question, after the "Get" and before the "from all machines": "Computer Name" and "IP Route Details". The sensors after the "Get" and before the "from all machines" can be referred to as any number of things:
+
+            * sensors
+            * left hand side
+            * column selects
+
+        The sensors that are defined after the "Get" and before the "from all machines" are best described as a column selection, and control what columns you want to show up in your results. These sensor names are the same ones that would need to be passed into ask_question() for the sensors arguments.
+
+        You can filter your column selections by using a filter in the console like so:
+
+            Get Computer Name starting with "finance" and IP Route Details from all machines with Is Windows containing "True"
+
+        And in PyTan:
+
+             >>> r = handler.ask_manual(sensors=['Computer Name, that starts with:finance', 'IP Route Details'], question_filters=['Is Windows, that contains:True'])
+
+        This will cause the results to have the same number of columns, but for any machine that returns results that do not match the filter specified for a given sensor, the row for that column will contain "[no results]".
+
+        There is also a sensor specified after the "from all machines with": "Is Windows". This sensor can be referred to as any number of things:
+
+            * question filters
+            * sensors (also)
+            * right hand side
+            * row selects
+
+        Any system that does not match the conditions in the question filters will return no results at all.  These question filters are really just sensors all over again, but instead of controlling what columns are output in the results, they control what rows are output in the results.
+
         See Also
         --------
         :data:`pytan.constants.FILTER_MAPS` : valid filter dictionaries for filters
