@@ -1,8 +1,8 @@
   * DOC:
-
+    * add validation results of testing against various platform versions for each release
+    
   * BUG:
     * work on deploy action & start_seconds_from_now (a new action gets created at actual start time)
-    * work on package selection by name (only get non-hidden?)
 
   * GEN:
     * add secondary loop for if any data == current result unavail/etc (MEDIUM)
@@ -22,7 +22,6 @@
     * add tests for dashboard stuffs
     * add approve action to pytan (need doc update and test update)
     * rebuild zip_dists, and test on win
-    * add validation results of testing against various platform versions for each release
     * cache_results test: If you are adding tests for that mechanism you could make tests that verify it returns an error if you specify a cache that has expired and make sure that the results that come back don’t change.
     * test verify checks work against package with verification (unable to do) (UNKNOWN)
     * test against all the different levels of user privs (UNKNOWN)
