@@ -1372,6 +1372,10 @@ class Handler(object):
         result : str
             * the contents of exporting `export_format`
 
+        Notes
+        -----
+        When performing a CSV export and importing that CSV into excel, keep in mind that Excel has a per cell character limit of 32,000. Any cell larger than that will be broken up into a whole new row, which can wreak havoc with data in Excel.
+
         See Also
         --------
         :data:`pytan.constants.EXPORT_MAPS` : maps the type `obj` to `export_format` and the optional args supported for each
@@ -1488,6 +1492,14 @@ class Handler(object):
         report_path, result : tuple
             * report_path : str, the full path to the file created with contents of `result`
             * result : str, the contents written to report_path
+
+        See Also
+        --------
+        :func:`pytan.handler.Handler.export_obj` : method that performs the actual work to do the exporting
+
+        Notes
+        -----
+        When performing a CSV export and importing that CSV into excel, keep in mind that Excel has a per cell character limit of 32,000. Any cell larger than that will be broken up into a whole new row, which can wreak havoc with data in Excel.
         """
         report_file = kwargs.get('report_file', None)
 
