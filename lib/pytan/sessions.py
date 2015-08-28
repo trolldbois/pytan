@@ -712,13 +712,13 @@ class Session(object):
             version = self.server_info['diags_flat']['Settings']['Version']
         except:
             m = "Unable to find Version key in Settings: {}".format
-            self.mylog.warning(m(self.server_info['diags_flat']))
+            self.mylog.debug(m(self.server_info['diags_flat']))
 
         if version:
             server_version = version
         else:
             m = "Unable to find Version key in Settings: {}".format
-            self.mylog.warning(m(self.server_info['diags_flat']))
+            self.mylog.debug(m(self.server_info['diags_flat']))
 
         if server_version:
             self.server_version = server_version
