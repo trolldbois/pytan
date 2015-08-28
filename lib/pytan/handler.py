@@ -1775,7 +1775,7 @@ class Handler(object):
 
             # get the sensor object
             if 'sensor_obj' not in d:
-                d['sensor_obj'] = self.get('sensor', **def_search)[0]
+                d['sensor_obj'] = self.get('sensor', include_hidden_flag=0, **def_search)[0]
         return defs
 
     def _get_package_def(self, d):
@@ -1787,7 +1787,7 @@ class Handler(object):
 
         # get the package object
         if 'package_obj' not in d:
-            d['package_obj'] = self.get('package', **def_search)[0]
+            d['package_obj'] = self.get('package', include_hidden_flag=0, **def_search)[0]
         return d
 
     def _export_class_BaseType(self, obj, export_format, **kwargs): # noqa
