@@ -659,11 +659,16 @@ class Handler(object):
         if 'suppress_object_list' not in kwargs:
             kwargs['suppress_object_list'] = 1
 
+        if int(kwargs.get('export_flag', 0)):
+            grd = self.session.get_result_data_sse
+        else:
+            grd = self.session.get_result_data
+
         # do a getresultdata
         if aggregate:
-            rd = self.session.get_result_data(shrunk_obj, row_counts_only_flag=1, **kwargs)
+            rd = grd(shrunk_obj, row_counts_only_flag=1, **kwargs)
         else:
-            rd = self.session.get_result_data(shrunk_obj, **kwargs)
+            rd = grd(shrunk_obj, **kwargs)
         return rd
 
     def get_result_data_sse(self, obj, export_format='csv', leading='', trailing='', **kwargs):
@@ -1670,7 +1675,7 @@ class Handler(object):
             err = "Error while trying to add object {}!!".format
             raise pytan.exceptions.HandlerError(err(search_str))
 
-        pytan.utils.log_session_communication(self)
+        # pytan.utils.log_session_communication(self)
 
         try:
             added_obj = self._find(added_obj)
@@ -1826,7 +1831,7 @@ class Handler(object):
         header_add_sensor = kwargs.get('header_add_sensor', False)
         sensors = kwargs.get('sensors', []) or getattr(obj, 'sensors', [])
 
-        if header_add_sensor:
+        if header_add_sensor and export_format == 'csv':
             kwargs['sensors'] = sensors
             sensor_hashes = [x.hash for x in sensors]
             column_hashes = [x.what_hash for x in obj.columns]
