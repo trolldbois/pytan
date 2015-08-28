@@ -631,6 +631,7 @@ EXPORT_MAPS = {
             },
         ],
         'json': [],
+        'xml': [],
     },
     'BaseType': {
         'csv': [

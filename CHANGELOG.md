@@ -9,6 +9,7 @@
   * bug fix: in pytan.utils.log_session_communication(): Update to use LAST_REQUESTS_RESPONSE object instead of XML body variables
   * enhancement: in pytan.session.Session.get_server_info(): added better error handling
   * enhancement: in pytan.handler.Handler.deploy_action(): added action_name and action_comment options
+  * enhancement: in pytan.constants.EXPORT_MAPS(): add xml as supported format for ResultSet
   * enhancement: in pytan.sessions.Session(): Refactoring again:
     * move response_prunes in _get_response() to
     self.BAD_RESPONSE_CMD_PRUNES
