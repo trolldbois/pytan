@@ -3,6 +3,8 @@
         "desc": "Create a sensor (Unsupported!)",
         "priority": "1",
         "method": "create_sensor",
+        "method_template": "invalid_basic",
+        "response_template": "NONE",
         "args": {},
         "exception": "pytan.exceptions.HandlerError",
         "error_str": "Sensor creation not supported via PyTan as of yet, too complex.*"

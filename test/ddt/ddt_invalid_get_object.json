@@ -3,6 +3,8 @@
         "desc": "Get an action by name (name is not a supported selector for action)",
         "priority": "1",
         "method": "get",
+        "method_template": "invalid_basic",
+        "response_template": "NONE",
         "args": {
             "objtype": "action",
             "name": "Distribute Tanium Standard Utilities"
@@ -14,6 +16,8 @@
         "desc": "Get a question by name (name is not a supported selector for question)",
         "priority": "1",
         "method": "get",
+        "method_template": "invalid_basic",
+        "response_template": "NONE",
         "args": {
             "objtype": "question",
             "name": "dweedle"

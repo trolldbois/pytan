@@ -3,6 +3,8 @@
         "desc": "Create a package called package49",
         "priority": "1",
         "method": "create_package",
+        "method_template": "delete_first",
+        "response_template": "object_delete_after",
         "delete": {"objtype": "package", "name": "package49"},
         "taniumpyobj": "taniumpy.PackageSpec",
         "args": {
@@ -28,6 +30,8 @@
         "desc": "Create a group called All Windows Computers API Test",
         "priority": "1",
         "method": "create_group",
+        "method_template": "delete_first",
+        "response_template": "object_delete_after",
         "delete": {"objtype": "group", "name": "All Windows Computers API Test"},
         "taniumpyobj": "taniumpy.Group",
         "args": {
@@ -44,6 +48,8 @@
         "desc": "Create a user called API Test User",
         "priority": "1",
         "method": "create_user",
+        "method_template": "delete_first",
+        "response_template": "object_delete_after",
         "delete": {"objtype": "user", "name": "API Test User"},
         "taniumpyobj": "taniumpy.User",
         "args": {
@@ -61,6 +67,8 @@
         "desc": "Create a whitelisted url",
         "priority": "1",
         "method": "create_whitelisted_url",
+        "method_template": "delete_first",
+        "response_template": "object_delete_after",
         "delete": {"objtype": "whitelisted_url", "url_regex": "regex:http://test.com/.*API_Test.*URL"},
         "taniumpyobj": "taniumpy.WhiteListedUrl",
         "args": {

@@ -3,6 +3,8 @@
         "desc": "Export a ResultSet from asking a question as CSV with the default options",
         "priority": "1",
         "args": {"export_format": "csv"},
+        "method_template": "export_resultset",
+        "response_template": "export_obj",
         "tests": [
             "export_str_list[0][0].startswith('Computer Name')",
             "export_str_list[0][0].startswith('Computer Name')",
@@ -20,6 +22,8 @@
         "desc": "Export a ResultSet from asking a question as CSV with an empty list for header_sort",
         "priority": "2",
         "args": {"export_format": "csv", "header_sort": []},
+        "method_template": "export_resultset",
+        "response_template": "export_obj",
         "tests": [
             "export_str_list[0][0].startswith('Computer Name')",
             "export_str_list[0][1].startswith('Destination')",
@@ -36,6 +40,8 @@
         "desc": "Export a ResultSet from asking a question as CSV with true for header_sort",
         "priority": "3",
         "args": {"export_format": "csv", "header_sort": true},
+        "method_template": "export_resultset",
+        "response_template": "export_obj",
         "tests": [
             "export_str_list[0][0].startswith('Computer Name')",
             "export_str_list[0][1].startswith('Destination')",
@@ -52,6 +58,8 @@
         "desc": "Export a ResultSet from asking a question as CSV with false for header_sort",
         "priority": "4",
         "args": {"export_format": "csv", "header_sort": false},
+        "method_template": "export_resultset",
+        "response_template": "export_obj",
         "tests": [
             "export_str_list[0][0].startswith('Computer Name')",
             "export_str_list[0][1].startswith('Destination')",
@@ -68,6 +76,8 @@
         "desc": "Export a ResultSet from asking a question as CSV with Computer Name and IP Address for the header_sort",
         "priority": "5",
         "args": {"export_format": "csv", "header_sort": ["Computer Name", "IP Address"]},
+        "method_template": "export_resultset",
+        "response_template": "export_obj",
         "tests": [
             "export_str_list[0][0].startswith('Computer Name')",
             "export_str_list[0][1].startswith('IP Address')",
@@ -84,6 +94,8 @@
         "desc": "Export a ResultSet from asking a question as CSV with false for header_add_type",
         "priority": "6",
         "args": {"export_format": "csv", "header_add_type": false},
+        "method_template": "export_resultset",
+        "response_template": "export_obj",
         "tests": [
             "export_str_list[0][0].startswith('Computer Name')",
             "export_str_list[0][1].startswith('Destination')",
@@ -100,6 +112,8 @@
         "desc": "Export a ResultSet from asking a question as CSV with true for header_add_type",
         "priority": "7",
         "args": {"export_format": "csv", "header_add_type": true},
+        "method_template": "export_resultset",
+        "response_template": "export_obj",
         "tests": [
             "export_str_list[0][0].startswith('Computer Name (String)')",
             "export_str_list[0][1].startswith('Destination (IPAddress)')",
@@ -117,6 +131,8 @@
         "desc": "Export a ResultSet from asking a question as CSV with false for header_add_sensor",
         "priority": "8",
         "args": {"export_format": "csv", "header_add_sensor": false},
+        "method_template": "export_resultset",
+        "response_template": "export_obj",
         "tests": [
             "export_str_list[0][0].startswith('Computer Name')",
             "export_str_list[0][1].startswith('Destination')",
@@ -133,6 +149,8 @@
         "desc": "Export a ResultSet from asking a question as CSV with true for header_add_sensor",
         "priority": "9",
         "args": {"export_format": "csv", "header_add_sensor": true},
+        "method_template": "export_resultset",
+        "response_template": "export_obj",
         "tests": [
             "export_str_list[0][0].startswith('Computer Name: Computer Name')",
             "export_str_list[0][1].startswith('Folder Name Search with RegEx Match')",
@@ -149,6 +167,8 @@
         "desc": "Export a ResultSet from asking a question as CSV with false for expand_grouped_columns",
         "priority": "10",
         "args": {"export_format": "csv", "expand_grouped_columns": false},
+        "method_template": "export_resultset",
+        "response_template": "export_obj",
         "tests": [
             "export_str_list[0][0].startswith('Computer Name')",
             "export_str_list[0][1].startswith('Destination')",
@@ -165,6 +185,8 @@
         "desc": "Export a ResultSet from asking a question as CSV with true for expand_grouped_columns",
         "priority": "11",
         "args": {"export_format": "csv", "expand_grouped_columns": true},
+        "method_template": "export_resultset",
+        "response_template": "export_obj",
         "tests": [
             "export_str_list[0][0].startswith('Computer Name')",
             "export_str_list[0][1].startswith('Destination')",
@@ -188,6 +210,8 @@
             "header_sort": true,
             "expand_grouped_columns": true
         },
+        "method_template": "export_resultset",
+        "response_template": "export_obj",
         "tests": [
             "export_str_list[0][0].startswith('Computer Name: Computer Name (String)')",
             "export_str_list[0][1].startswith('Folder Name Search with RegEx Match')",
@@ -206,6 +230,8 @@
         "desc": "Export a ResultSet from asking a question as JSON with the default options",
         "priority": "13",
         "args": {"export_format": "json"},
+        "method_template": "export_resultset",
+        "response_template": "export_obj",
         "tests": [
             "'Computer Name' == json.loads(export_str)[0]['row0'][0]['column.display_name']"
         ]

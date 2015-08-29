@@ -3,6 +3,8 @@
         "desc": "Export a ResultSet from asking a question using a bad export_format",
         "priority": "1",
         "args": {"export_format": "bad"},
+        "method_template": "invalid_export_resultset",
+        "response_template": "NONE",
         "exception": "pytan.exceptions.HandlerError",
         "error_str": ".*not a supported export format for ResultSet, must be one of.*"
     },
@@ -10,6 +12,8 @@
         "desc": "Export a ResultSet from asking a question using a bad expand_grouped_columns",
         "priority": "1",
         "args": {"export_format": "csv", "expand_grouped_columns": "bad"},
+        "method_template": "invalid_export_resultset",
+        "response_template": "NONE",
         "exception": "pytan.exceptions.HandlerError",
         "error_str": ".*must be one of.*you supplied.*"
     },
@@ -17,6 +21,8 @@
         "desc": "Export a ResultSet from asking a question using a bad header_sort",
         "priority": "1",
         "args": {"export_format": "csv", "header_sort": "bad"},
+        "method_template": "invalid_export_resultset",
+        "response_template": "NONE",
         "exception": "pytan.exceptions.HandlerError",
         "error_str": ".*must be one of.*you supplied.*"
     },
@@ -24,6 +30,8 @@
         "desc": "Export a ResultSet from asking a question using a bad header_sort",
         "priority": "1",
         "args": {"export_format": "csv", "header_sort": [[]]},
+        "method_template": "invalid_export_resultset",
+        "response_template": "NONE",
         "exception": "pytan.exceptions.HandlerError",
         "error_str": ".*must be a list of.*you supplied.*"
     },
@@ -31,6 +39,8 @@
         "desc": "Export a ResultSet from asking a question using a bad sensors",
         "priority": "1",
         "args": {"export_format": "csv", "header_add_sensor": true, "sensors": [[]]},
+        "method_template": "invalid_export_resultset",
+        "response_template": "NONE",
         "exception": "pytan.exceptions.HandlerError",
         "error_str": ".*must be a list of.*you supplied.*"
     }

@@ -3,6 +3,8 @@
         "desc": "Get an action by id",
         "priority": "1",
         "method": "get",
+        "method_template": "valid_response",
+        "response_template": "object",
         "args": {"objtype": "action", "id": 1},
         "tests": [
             "len(response) == 1",
@@ -14,6 +16,8 @@
         "desc": "Get a group by name",
         "priority": "1",
         "method": "get",
+        "method_template": "valid_response",
+        "response_template": "object",
         "args": {"objtype": "group", "name": "All Computers"},
         "tests": [
             "len(response) == 1",
@@ -25,6 +29,8 @@
         "desc": "Get a package by name",
         "priority": "1",
         "method": "get",
+        "method_template": "valid_response",
+        "response_template": "object",
         "args": {"objtype": "package", "name": "Distribute Tanium Standard Utilities"},
         "tests": [
             "len(response) == 1",
@@ -36,6 +42,8 @@
         "desc": "Get a question by id",
         "priority": "1",
         "method": "get",
+        "method_template": "valid_response",
+        "response_template": "object",
         "args": {"objtype": "question", "id": 1},
         "tests": [
             "len(response) == 1",
@@ -47,6 +55,8 @@
         "desc": "Get a saved action by name",
         "priority": "1",
         "method": "get",
+        "method_template": "valid_response",
+        "response_template": "object",
         "args": {
             "objtype": "saved_action",
             "name": "Distribute Tanium Standard Utilities"
@@ -61,6 +71,8 @@
         "desc": "Get saved question by name",
         "priority": "1",
         "method": "get",
+        "method_template": "valid_response",
+        "response_template": "object",
         "args": {
             "objtype": "saved_question",
             "name": "Installed Applications"
@@ -75,6 +87,8 @@
         "desc": "Get two saved questions by name",
         "priority": "1",
         "method": "get",
+        "method_template": "valid_response",
+        "response_template": "object",
         "args": {
             "objtype": "saved_question",
             "name": ["Installed Applications", "Computer Name"]
@@ -89,6 +103,8 @@
         "desc": "Get a sensor by name",
         "priority": "1",
         "method": "get",
+        "method_template": "valid_response",
+        "response_template": "object",
         "args": {"objtype": "sensor", "name": "Computer Name"},
         "tests": [
             "len(response) == 1",
@@ -100,6 +116,8 @@
         "desc": "Get a sensor by id",
         "priority": "1",
         "method": "get",
+        "method_template": "valid_response",
+        "response_template": "object",
         "args": {"objtype": "sensor", "id": 1},
         "tests": [
             "len(response) == 1",
@@ -111,6 +129,8 @@
         "desc": "Get a sensor by hash",
         "priority": "1",
         "method": "get",
+        "method_template": "valid_response",
+        "response_template": "object",
         "args": {"objtype": "sensor", "hash": "322086833"},
         "tests": [
             "len(response) == 1",
@@ -122,6 +142,8 @@
         "desc": "Get multiple sensors by name",
         "priority": "1",
         "method": "get",
+        "method_template": "valid_response",
+        "response_template": "object",
         "args": {
             "objtype": "sensor",
             "name": ["Computer Name", "Action Statuses"]
@@ -136,6 +158,8 @@
         "desc": "Get multiple sensors by id, name, and hash",
         "priority": "1",
         "method": "get",
+        "method_template": "valid_response",
+        "response_template": "object",
         "args": {
             "objtype": "sensor",
             "name": ["Computer Name"],
@@ -152,6 +176,8 @@
         "desc": "Get a system setting by name",
         "priority": "1",
         "method": "get",
+        "method_template": "valid_response",
+        "response_template": "object",
         "args": {"objtype": "setting", "name": "control_address"},
         "tests": [
             "len(response) == 1",
@@ -163,6 +189,8 @@
         "desc": "Get a user by id",
         "priority": "1",
         "method": "get",
+        "method_template": "valid_response",
+        "response_template": "object",
         "args": {"objtype": "user", "id": 1},
         "tests": [
             "len(response) == 1",
@@ -174,6 +202,8 @@
         "desc": "Get a user by name",
         "priority": "1",
         "method": "get",
+        "method_template": "valid_response",
+        "response_template": "object",
         "args": {"objtype": "user", "name": "Administrator"},
         "tests": [
             "len(response) == 1",
@@ -185,6 +215,8 @@
         "desc": "Get a user role by id.",
         "priority": "1",
         "method": "get",
+        "method_template": "valid_response",
+        "response_template": "object",
         "args": {"objtype": "userrole", "id": 1},
         "tests": [
             "len(response) == 1",
@@ -196,6 +228,8 @@
         "desc": "Get a whitelisted url by id",
         "priority": "1",
         "method": "get",
+        "method_template": "valid_response",
+        "response_template": "object",
         "args": {"objtype": "whitelisted_url", "id": 1},
         "tests": [
             "len(response) == 1",
@@ -207,6 +241,8 @@
         "desc": "Get all clients that are Leader status",
         "priority": "1",
         "method": "get",
+        "method_template": "valid_response",
+        "response_template": "object",
         "args": {"objtype": "client", "status": "Leader"},
         "tests": [
             "len(response) >= 1",
@@ -218,6 +254,8 @@
         "desc": "Get all actions",
         "priority": "2",
         "method": "get_all",
+        "method_template": "valid_response",
+        "response_template": "object",
         "args": {"objtype": "action"},
         "tests": [
             "len(response) >= 1",
@@ -229,6 +267,8 @@
         "desc": "Get all clients",
         "priority": "2",
         "method": "get_all",
+        "method_template": "valid_response",
+        "response_template": "object",
         "args": {"objtype": "client"},
         "tests": [
             "len(response) >= 1",
@@ -240,6 +280,8 @@
         "desc": "Get all groups",
         "priority": "2",
         "method": "get_all",
+        "method_template": "valid_response",
+        "response_template": "object",
         "args": {"objtype": "group"},
         "tests": [
             "len(response) >= 1",
@@ -251,6 +293,8 @@
         "desc": "Get all packages",
         "priority": "2",
         "method": "get_all",
+        "method_template": "valid_response",
+        "response_template": "object",
         "args": {"objtype": "package"},
         "tests": [
             "len(response) >= 1",
@@ -262,6 +306,8 @@
         "desc": "Get all questions",
         "priority": "2",
         "method": "get_all",
+        "method_template": "valid_response",
+        "response_template": "object",
         "args": {"objtype": "question"},
         "tests": [
             "len(response) >= 1",
@@ -273,6 +319,8 @@
         "desc": "Get all saved actions",
         "priority": "2",
         "method": "get_all",
+        "method_template": "valid_response",
+        "response_template": "object",
         "args": {"objtype": "saved_action"},
         "tests": [
             "len(response) >= 1",
@@ -284,6 +332,8 @@
         "desc": "Get all saved questions",
         "priority": "2",
         "method": "get_all",
+        "method_template": "valid_response",
+        "response_template": "object",
         "args": {"objtype": "saved_question"},
         "tests": [
             "len(response) >= 1",
@@ -295,6 +345,8 @@
         "desc": "Get all sensors",
         "priority": "2",
         "method": "get_all",
+        "method_template": "valid_response",
+        "response_template": "object",
         "args": {"objtype": "sensor"},
         "tests": [
             "len(response) >= 1",
@@ -306,6 +358,8 @@
         "desc": "Get all system settings",
         "priority": "2",
         "method": "get_all",
+        "method_template": "valid_response",
+        "response_template": "object",
         "args": {"objtype": "setting"},
         "tests": [
             "len(response) >= 1",
@@ -317,6 +371,8 @@
         "desc": "Get all users",
         "priority": "2",
         "method": "get_all",
+        "method_template": "valid_response",
+        "response_template": "object",
         "args": {"objtype": "user"},
         "tests": [
             "len(response) >= 1",
@@ -328,6 +384,8 @@
         "desc": "Get all user roles",
         "priority": "2",
         "method": "get_all",
+        "method_template": "valid_response",
+        "response_template": "object",
         "args": {"objtype": "userrole"},
         "tests": [
             "len(response) >= 1",
@@ -339,6 +397,8 @@
         "desc": "Get all whitelisted urls",
         "priority": "2",
         "method": "get_all",
+        "method_template": "valid_response",
+        "response_template": "object",
         "args": {"objtype": "whitelisted_url"},
         "tests": [
             "len(response) >= 1",

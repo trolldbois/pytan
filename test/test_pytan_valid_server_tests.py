@@ -238,15 +238,15 @@ class ValidServerTests(unittest.TestCase):
 
         orig_objs = handler.get(**value['get'])
 
-        if value['transform']:
+        if value['transform_attr']:
             for x in orig_objs:
-                transform_val = getattr(x, value['transform'][0])
-                transform_val += value['transform'][1]
-                setattr(x, value['transform'][0], transform_val)
+                transform_val = getattr(x, value['transform_attr'])
+                transform_val += value['transform_value']
+                setattr(x, value['transform_attr'], transform_val)
                 del_kwargs = {}
                 del_kwargs['objtype'] = value['objtype']
-                del_kwargs[value['transform'][0]] = transform_val
-                if value['delete']:
+                del_kwargs[value['transform_attr']] = transform_val
+                if value['delete_before']:
                     try:
                         handler.delete(**del_kwargs)
                     except Exception as e:

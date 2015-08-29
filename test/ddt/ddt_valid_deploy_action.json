@@ -3,6 +3,8 @@
         "desc": "Deploy an action against all computers using human strings.",
         "priority": "1",
         "method": "deploy_action",
+        "method_template": "valid_response",
+        "response_template": "action",
         "args": {
             "package": "Distribute Tanium Standard Utilities",
             "run": true
@@ -12,6 +14,8 @@
         "desc": "Deploy an action against all computers using human strings, but do not get the completed results of the job -- return right away with the deploy action object.",
         "priority": "2",
         "method": "deploy_action",
+        "method_template": "valid_response",
+        "response_template": "action",
         "args": {
             "package": "Distribute Tanium Standard Utilities",
             "get_results": false,
@@ -22,6 +26,8 @@
         "desc": "Deploy an action against only windows computers using human strings. This requires passing in an action filter",
         "priority": "3",
         "method": "deploy_action",
+        "method_template": "valid_response",
+        "response_template": "action",
         "args": {
             "package": "Distribute Tanium Standard Utilities",
             "action_filters": "Operating System, that contains:Windows",
@@ -32,6 +38,8 @@
         "desc": "Deploy an action with parameters against only windows computers using human strings.\n\nThis will use the Package 'Custom Tagging - Add Tags' and supply two parameters. The second parameter will be ignored because the package in question only requires one parameter.",
         "priority": "4",
         "method": "deploy_action",
+        "method_template": "valid_response",
+        "response_template": "action",
         "args": {
             "package": "Custom Tagging - Add Tags{$1=tag_should_be_added,$2=tag_should_be_ignore}",
             "action_filters": "Operating System, that contains:Windows",
