@@ -29,6 +29,7 @@
 
   * PLATFORM:
     * open enhancement for console.wsdl to contain platform version
+    * await update on cs values in SSE XML
 
   * LOW:
     * re-work build API example scripts to be more better-er
