@@ -27,10 +27,7 @@ root_dir = os.path.join(my_dir, os.pardir)
 root_dir = os.path.abspath(root_dir)
 lib_dir = os.path.join(root_dir, 'lib')
 path_adds = [my_dir, lib_dir]
-
-for aa in path_adds:
-    if aa not in sys.path:
-        sys.path.insert(0, aa)
+[sys.path.insert(0, aa) for aa in path_adds if aa not in sys.path]
 
 import pytan
 import taniumpy
@@ -68,34 +65,39 @@ class ValidServerTests(unittest.TestCase):
             cls.handler.session.get_server_version(),
         ), 2)
 
-        wlus = ['test1', 'test2', 'test3']
-        # create whitelisted_urls for getobject tests
-        for wlu in wlus:
-            try:
-                cls.handler.create_whitelisted_url(url=wlu)
-            except:
-                pass
+        if not hasattr(cls, 'base_type_objs'):
+            # fetch objects for export tests
+            kwargs = {
+                'name': [
+                    "Computer Name", "IP Route Details", "IP Address",
+                    'Folder Name Search with RegEx Match',
+                ],
+                'objtype': 'sensor',
+            }
+            spew("TESTSETUP: Getting base_type objects for export tests")
+            cls.base_type_objs = cls.handler.get(**kwargs)
 
-        # fetch objects for export tests
-        kwargs = {
-            'name': [
-                "Computer Name", "IP Route Details", "IP Address",
-                'Folder Name Search with RegEx Match',
-            ],
-            'objtype': 'sensor',
-        }
+        if not hasattr(cls, 'wlus'):
+            # create whitelisted_urls for getobject tests
+            cls.wlus = ['test1', 'test2', 'test3']
+            spew("TESTSETUP: Creating whitelisted URLs for get object tests")
+            for wlu in cls.wlus:
+                try:
+                    cls.handler.create_whitelisted_url(url=wlu)
+                except:
+                    pass
 
-        cls.base_type_objs = cls.handler.get(**kwargs)
-
-        # ask questions for export tests
-        kwargs = {
-            'qtype': 'manual',
-            'sensors': [
-                "Computer Name", "IP Route Details", "IP Address",
-                'Folder Name Search with RegEx Match{dirname=Program Files,regex=.*Shared.*}',
-            ],
-        }
-        cls.result_set_objs = cls.handler.ask(**kwargs)
+        if not hasattr(cls, 'result_set_objs'):
+            # ask questions for export tests
+            kwargs = {
+                'qtype': 'manual',
+                'sensors': [
+                    "Computer Name", "IP Route Details", "IP Address",
+                    'Folder Name Search with RegEx Match{dirname=Program Files,regex=.*Shared.*}',
+                ],
+            }
+            spew("TESTSETUP: Getting result_set objects for export tests")
+            cls.result_set_objs = cls.handler.ask(**kwargs)
 
         spew('\n' + str(cls.handler))
 
