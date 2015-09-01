@@ -1,49 +1,61 @@
 # 2.1.0
 
 [Development branch](https://github.com/tanium/pytan/tree/develop) on N/A
-  * bug fix: in pytan.handler.Handler.deploy_action(): changed to return package object that was created for said action, not the package object that was sourced from
-  * bug fix: in pytan.handler.Handler._platform_is_6_2(): force a call to pytan.handler.Handler.get_server_version() if self.server_version_dict is not set yet
-  * bug fix: in pytan.handler.Handler.deploy_action(): fix packages created by Tanium SOAP API when adding an action so that they are hidden from the console. also ensure more of the attributes for the source package are copied into the new package for continuity.
-  * bug fix: in pytan.handler.Handler._get_package_def(): fix for pytan.handler.Handler.deploy_action() when searching for packages by name -- if using a package that has in the past existed, had actions deployed against it that created hidden packages, then the actual visible package was deleted and re-created with the same name, _get_package_def() would actually target one of the hidden packages. added include_hidden_flag=0 to GetObject call in _get_package_def() to fix this. also added to pytan.handler.Handler.sensor_def() to stem possible similar issues for pytan.handler.Handler.ask_manual()
-  * bug fix: in pytan.handler.Handler._parse_versioning(): Added notes re: server_version states and added server_version_bad_states. both checks for server_version will check against server_version_bad_states.
-  * bug fix: in pytan.utils.log_session_communication(): Update to use LAST_REQUESTS_RESPONSE object instead of XML body variables
-  * enhancement: enhancement: in pytan.utils.add_ask_report_argparser(): Add XML option for command line scripts that support export format options for asking reports
-  * enhancement: in pytan.handler.Handler._export_format_xml(): Add support for ResultSet by checking for _RAW_XML on object, and also run XML through pytan.utils.xml_pretty()
-  * enhancement: in pytan.session.Session.get_server_info(): added better error handling
-  * enhancement: in pytan.handler.Handler.deploy_action(): added action_name and action_comment options
-  * enhancement: in pytan.constants.EXPORT_MAPS(): add xml as supported format for ResultSet
-  * enhancement: in pytan.sessions.Session(): Refactoring again:
-    * move response_prunes in _get_response() to
-    self.BAD_RESPONSE_CMD_PRUNES
-    * renamed self.last to self.LAST_RESPONSE_INFO, add initial null
-    variable to Object level and doc
-    * renamed self.REQ_RESPONSE to self.LAST_REQUESTS_RESPONSE, add initial
-    null variable to Object level and doc
-    * add self.RECORD_ALL_REQUESTS to Object level and doc, controls
-    whether every Requests response object gets appended to
-    self.ALL_REQUESTS_RESPONSES, add kwargs pass thru to init, add kwargs pass through to pytan.handler.Handler
-    * add self.ALL_REQUESTS_RESPONSES to Object level and doc
-    * add initial null variables to Object level and doc for: server, port,
-    server_version
-    * get rid of the *_CMD object variables, unnecessary
-    * get rid of the *_RE object variables, replace with single ELEMENT_RE_TXT
-    * rename _parse_response_for_regex() to _regex_body_for_element()
-    * update _regex_body_for_element() to take element name to search for instead of regex, compile regex on the fly from self.ELEMENT_RE_TXT, log debug messages about regex results
-    * rename _extract_cdata_el() to _extract_resultxml()
-    * remove export_id element searching from _extract_resultxml()
-    * change _extract_resultxml() to return the raw resultxml text instead of the ElementTree object
-    * remove LAST_XML_REQUEST_BODY and LAST_XML_RESPONSE_BODY object variables from everywhere — these values can be retrieved from LAST_REQUESTS_RESPONSE.request.body and LAST_REQUESTS_RESPONSE.text respectively
-    * remove _extract_export_id()
-    * remove export_id handling code from get_result_data()
-    * add get_result_data_sse(), which explicitly expects an export_id to exist in the XML response
-  * enhancement: in pytan.utils.setup_parser(): Modify the argument parser used by all bin scripts to expose more handler options
-  * enhancement: in pytan.sessions.Session.get_server_version(): change log level for version parse failures to debug instead of warning
-  * enhancement: in pytan.sessions.Session(): Refactoring again:
-  * doc update: doc string updates all over the place
-  * doc update: pointers to KB/Tanium
-  * doc update: double quotes for windows
-  * doc update: console.wsdl ref link
-  * doc update: command line help has note about export format needing to be at end of command line now
+  * bug fixes:
+    * pytan.handler.Handler.deploy_action(): changed to return package object that was created for said action, not the package object that was sourced from
+    * pytan.handler.Handler._platform_is_6_2(): force a call to pytan.handler.Handler.get_server_version() if self.server_version_dict is not set yet
+    * pytan.handler.Handler.deploy_action(): fix packages created by Tanium SOAP API when adding an action so that they are hidden from the console. also ensure more of the attributes for the source package are copied into the new package for continuity.
+    * pytan.handler.Handler._get_package_def(): fix for pytan.handler.Handler.deploy_action() when searching for packages by name -- if using a package that has in the past existed, had actions deployed against it that created hidden packages, then the actual visible package was deleted and re-created with the same name, _get_package_def() would actually target one of the hidden packages. added include_hidden_flag=0 to GetObject call in _get_package_def() to fix this. also added to pytan.handler.Handler.sensor_def() to stem possible similar issues for pytan.handler.Handler.ask_manual()
+    * in pytan.handler.Handler._parse_versioning(): Added notes re: server_version states and added server_version_bad_states. both checks for server_version will check against server_version_bad_states.
+    * pytan.utils.log_session_communication(): Update to use LAST_REQUESTS_RESPONSE object instead of XML body variables
+  * enhancements:
+    * massive refactor, bringing all code from bin scripts into pytan.binsupport
+    * massive refactor, moving all command line code from pytan.utils to pytan.binsupport
+    * 
+    * pytan.handler.Handler._export_format_xml(): Add support for ResultSet by checking for _RAW_XML on object, and also run XML through pytan.utils.xml_pretty()
+    * pytan.session.Session.get_server_info(): added better error handling
+    * pytan.binsupport.add_ask_report_argparser(): Add XML option for command line scripts that support export format options for asking reports
+    * pytan.binsupport.setup_parser(): Modify the argument parser used by all bin scripts to expose more handler options
+    * pytan.handler.Handler.deploy_action(): added action_name and action_comment options
+    * pytan.constants: add xml as supported format for ResultSet
+    * pytan.constants: add ask_parsed as supported question type
+    * pytan.sessions.Session(): massive refactor:
+      * move response_prunes in _get_response() to self.BAD_RESPONSE_CMD_PRUNES
+      * renamed self.last to self.LAST_RESPONSE_INFO, add initial null variable to Object level and doc
+      * renamed self.REQ_RESPONSE to self.LAST_REQUESTS_RESPONSE, add initial null variable to Object level and doc
+      * add self.RECORD_ALL_REQUESTS to Object level and doc, controls whether every Requests response object gets appended to self.ALL_REQUESTS_RESPONSES, add kwargs pass thru to init, add kwargs pass through to pytan.handler.Handler
+      * add self.ALL_REQUESTS_RESPONSES to Object level and doc
+      * add initial null variables to Object level and doc for: server, port, server_version
+      * get rid of the *_CMD object variables, unnecessary
+      * get rid of the *_RE object variables, replace with single ELEMENT_RE_TXT
+      * rename _parse_response_for_regex() to _regex_body_for_element()
+      * update _regex_body_for_element() to take element name to search for instead of regex, compile regex on the fly from self.ELEMENT_RE_TXT, log debug messages about regex results
+      * rename _extract_cdata_el() to _extract_resultxml()
+      * remove export_id element searching from _extract_resultxml()
+      * change _extract_resultxml() to return the raw resultxml text instead of the ElementTree object
+      * remove LAST_XML_REQUEST_BODY and LAST_XML_RESPONSE_BODY object variables from everywhere — these values can be retrieved from LAST_REQUESTS_RESPONSE.request.body and LAST_REQUESTS_RESPONSE.text respectively
+      * remove _extract_export_id()
+      * remove export_id handling code from get_result_data()
+      * add get_result_data_sse(), which explicitly expects an export_id to exist in the XML response
+    * bin/ and winbin/: 
+      * all new bin scripts
+      * now every script is automatically generated and maintained by build system
+      * ask_saved_question is now ask_saved
+      * ask_manual_quesiton is now ask_manual
+      * Tanium_Sensor_Analysis_Tool is now tsat
+      * Tanium_Unmanaged_Asset_Tracker moved to EXAMPLES/POC for now, unmaintained
+      * new script: ask_parsed
+    * pytan.sessions.Session.get_server_version(): change log level for version parse failures to debug instead of warning
+  * doc updates:
+    * doc string updates all over the place
+    * pointers to KB/Tanium
+    * double quotes for windows
+    * console.wsdl ref link
+    * command line help has note about export format needing to be at end of command line now
+    * re-wrote BUILD/build_api_examples.py as a real process
+    * started adding XML recording capability to BUILD/build_api_examples.py, still lots of work to do
+    * flattened out doc structure
+    * made all documentation more automated, no more need to update RST files with new methods/removed methods
 
 # 2.0.3
 
