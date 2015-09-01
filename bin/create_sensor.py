@@ -6,48 +6,29 @@
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
 __version__ = '2.1.0'
 
-examples = []
-
 import os
 import sys
 sys.dont_write_bytecode = True
+
 my_file = os.path.abspath(sys.argv[0])
+my_name = os.path.splitext(os.path.basename(my_file))[0]
 my_dir = os.path.dirname(my_file)
 parent_dir = os.path.dirname(my_dir)
 lib_dir = os.path.join(parent_dir, 'lib')
 path_adds = [lib_dir]
-
-for aa in path_adds:
-    if aa not in sys.path:
-        sys.path.append(aa)
+[sys.path.append(aa) for aa in path_adds if aa not in sys.path]
 
 import pytan
-from pytan import utils
-
-
-def process_handler_args(parser, all_args):
-    handler_grp_names = ['Handler Authentication', 'Handler Options']
-    handler_opts = utils.get_grp_opts(parser, handler_grp_names)
-    handler_args = {k: all_args.pop(k) for k in handler_opts}
-
-    h = pytan.Handler(**handler_args)
-    print str(h)
-    return h
-
+import pytan.binsupport
 
 if __name__ == "__main__":
+    pytan.binsupport.version_check(reqver=__version__)
 
-    utils.version_check(__version__)
-    # parser = utils.setup_parser(__doc__)
-    # arggroup = parser.add_argument_group('Create User Options')
+    setupmethod = getattr(pytan.binsupport, 'setup_{}_argparser'.format(my_name))
+    responsemethod = getattr(pytan.binsupport, 'process_{}_args'.format(my_name))
 
-    # args = parser.parse_args()
-    # all_args = args.__dict__
-    # handler = process_handler_args(parser, all_args)
+    parser = setupmethod(doc=__doc__)
+    args = parser.parse_args()
 
-    m = (
-        "Sensor creation not supported via PyTan as of yet, too complex\n"
-        "Use create_sensor_from_json() instead!"
-    )
-    print m
-    sys.exit(0)
+    handler = pytan.binsupport.process_handler_args(parser=parser, args=args)
+    response = responsemethod(parser=parser, handler=handler, args=args)

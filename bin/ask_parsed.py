@@ -2,7 +2,7 @@
 # -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
-'''Get an object of type: saved_action and save the object to a report file'''
+'''Ask a parsed question and save the results as a report format'''
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
 __version__ = '2.1.0'
 
@@ -24,11 +24,11 @@ import pytan.binsupport
 if __name__ == "__main__":
     pytan.binsupport.version_check(reqver=__version__)
 
-    parser = pytan.binsupport.setup_get_object_argparser(obj='saved_action', doc=__doc__)
-    pytan.binsupport.add_get_object_report_argparser(parser=parser)
+    setupmethod = getattr(pytan.binsupport, 'setup_{}_argparser'.format(my_name))
+    responsemethod = getattr(pytan.binsupport, 'process_{}_args'.format(my_name))
+
+    parser = setupmethod(doc=__doc__)
     args = parser.parse_args()
 
     handler = pytan.binsupport.process_handler_args(parser=parser, args=args)
-    response = pytan.binsupport.process_get_object_args(
-        parser=parser, handler=handler, obj='saved_action', all_args=all_args,
-    )
+    response = responsemethod(parser=parser, handler=handler, args=args)
