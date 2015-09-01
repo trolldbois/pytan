@@ -33,7 +33,7 @@ import md_doctester
 utils.version_check(__version__)
 
 bin_dir = os.path.join(parent_dir, 'bin')
-ini_output_dir = os.path.join(my_dir, 'bin_doc')
+ini_output_dir = os.path.join('/tmp', 'bin_doc')
 md_output_dir = os.path.join(my_dir, 'doc', 'source', '_static', 'bin_doc')
 
 conf_temp = """[CONFIG]
