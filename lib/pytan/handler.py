@@ -155,11 +155,13 @@ class Handler(object):
         self.mylog = logging.getLogger("pytan.handler")
 
         # setup the console logging handler
-        pytan.utils.setup_console_logging(gmt_log)
+        pytan.utils.setup_console_logging(gmt_tz=gmt_log)
+
         # create all the loggers and set their levels based on loglevel
-        pytan.utils.set_log_levels(loglevel)
+        pytan.utils.set_log_levels(loglevel=loglevel)
+
         # change the format of console logging handler if need be
-        pytan.utils.change_console_format(debugformat)
+        pytan.utils.change_console_format(debug=debugformat)
 
         self.loglevel = loglevel
 
