@@ -3054,19 +3054,19 @@ class Handler(object):
         Parameters
         ----------
         v_maps : list of dict
-            * each dict can have major, minor, build, revision as keys, the corresponding values will be checked against self.server_version_dict to see if they are greater or equal to those values
+            * each dict can have major, minor, build, revision as keys, the corresponding values will be checked against self.session.server_version_dict to see if they are greater or equal to those values
 
         Returns
         -------
         bool
-            * True if all values in all v_maps are greater than or equal to all values in self.server_version_dict
+            * True if all values in all v_maps are greater than or equal to all values in self.session.server_version_dict
             * False otherwise
         """
-        v_dict = getattr(self, 'server_version_dict', {})
+        v_dict = getattr(self.session, 'server_version_dict', {})
         if not v_dict:
             self.session.get_server_version(**kwargs)
 
-        v_dict = getattr(self, 'server_version_dict', {})
+        v_dict = getattr(self.session, 'server_version_dict', {})
         for v_map in v_maps:
             for k, v in v_map.iteritems():
                 if not v_dict.get(k, 0) >= v:
