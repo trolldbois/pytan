@@ -79,5 +79,15 @@ class ServerSideExportError(Exception):
 
 
 class VersionParseError(Exception):
-    """Exception thrown for server version parsing errors  in :mod:`pytan.handler`"""
+    """Exception thrown for server version parsing errors in :mod:`pytan.handler`"""
+    pass
+
+
+class ServerParseError(Exception):
+    """Exception thrown for server parsing errors in :mod:`pytan.handler`"""
+    pass
+
+
+class PickerError(Exception):
+    """Exception thrown for picker errors in :mod:`pytan.handler`"""
     pass

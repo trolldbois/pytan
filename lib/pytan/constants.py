@@ -59,7 +59,7 @@ LOG_LEVEL_MAPS = [
             'pytan.handler.ActionPoller': 'DEBUG',
             'pytan.handler.SSEPoller': 'DEBUG',
         },
-        'Pytan handler logger show output at INFO or above and poller logs at DEBUG or above',
+        'Pytan handler logger show output at INFO or above, poller logs at DEBUG or above, and poller progress logs at INFO or above',
     ),
     (
         3,
@@ -68,15 +68,21 @@ LOG_LEVEL_MAPS = [
             'pytan.handler.QuestionPoller.progress': 'DEBUG',
             'pytan.handler.ActionPoller.progress': 'DEBUG',
             'pytan.handler.SSEPoller.progress': 'DEBUG',
+            'pytan.handler.QuestionPoller.resolver': 'INFO',
+            'pytan.handler.ActionPoller.resolver': 'INFO',
+            'pytan.handler.SSEPoller.resolver': 'INFO',
         },
-        'Pytan handler logger show output at DEBUG or above',
+        'Pytan handler logger show output at DEBUG or above, poller progress at DEBUG or above, and poller resolver at INFO or above',
     ),
     (
         4,
         {
             'pytan.handler.ask_manual': 'DEBUG',
+            'pytan.handler.QuestionPoller.resolver': 'DEBUG',
+            'pytan.handler.ActionPoller.resolver': 'DEBUG',
+            'pytan.handler.SSEPoller.resolver': 'DEBUG',
         },
-        'Pytan ask manual logger show output at DEBUG or above',
+        'Pytan ask manual logger show output at DEBUG or above and poller resolver at DEBUG or above',
     ),
     (
         5,
@@ -308,6 +314,9 @@ Q_OBJ_MAP = {
     },
     '_manual': {
         'handler': '_ask_manual',
+    },
+    'parsed': {
+        'handler': 'ask_parsed',
     },
 }
 """

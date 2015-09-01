@@ -13,10 +13,7 @@ my_file = os.path.abspath(__file__)
 my_dir = os.path.dirname(my_file)
 parent_dir = os.path.dirname(my_dir)
 path_adds = [parent_dir]
-
-for aa in path_adds:
-    if aa not in sys.path:
-        sys.path.append(aa)
+[sys.path.append(aa) for aa in path_adds if aa not in sys.path]
 
 import pytan
 
@@ -29,7 +26,7 @@ def passmein(func):
 
 
 @passmein
-def help_sensors(me):
+def sensors_help(me):
     """
 Sensors Help
 ============
@@ -182,7 +179,7 @@ the default type for most sensors), re-fetch data older than
 
 
 @passmein
-def help_package(me):
+def package_help(me):
     """
 Package Help
 ============
@@ -246,7 +243,7 @@ Supplying a package with two parameters, '$1' and '$2':
 
 
 @passmein
-def help_filters(me):
+def filters_help(me):
     """
 Filters Help
 ============
@@ -275,7 +272,7 @@ Valid Filters
 
 
 @passmein
-def help_options(me):
+def options_help(me):
     """
 Options Help
 ============

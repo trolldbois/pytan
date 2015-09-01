@@ -142,8 +142,8 @@ def replace_restricted_unicode(text, replacement=None):
     return s, cnt, RESTRICTED_UNICODE_RE
 
 
-def xml_cleaner(s, encoding='utf-8', clean_restricted=True, log_messages=True,
-                show_bad_characters=False, **kwargs):
+def xml_cleaner(s, encoding='utf-8', clean_restricted=True, log_clean_messages=True,
+                log_bad_characters=False, replacement=None, **kwargs):
     """Removes invalid /restricted characters per XML 1.0 spec
 
     Parameters
@@ -156,10 +156,10 @@ def xml_cleaner(s, encoding='utf-8', clean_restricted=True, log_messages=True,
     clean_restricted : bool, optional
         * default: True
         * remove restricted characters from `s` or not
-    log_messages : bool, optional
+    log_clean_messages : bool, optional
         * default: True
         * log messages using python logging or not
-    show_bad_characters : bool, optional
+    log_bad_characters : bool, optional
         * default: False
         * log bad character matches or not
 
@@ -173,14 +173,14 @@ def xml_cleaner(s, encoding='utf-8', clean_restricted=True, log_messages=True,
             # if orig_str is not unicode, decode the string into unicode with encoding
             s = s.decode(encoding, 'xmlcharrefreplace')
         except:
-            if log_messages:
+            if log_clean_messages:
                 m = "Falling back to latin1 for decoding, unable to decode as UTF-8!".format
                 mylog.warning(m())
             try:
                 # if can't decode as encoding, fallback to latin1
                 s = s.decode('latin1', 'xmlcharrefreplace')
             except:
-                if log_messages:
+                if log_clean_messages:
                     m = (
                         "Unable to decode as latin-1 or UTF-8, decoding document as UTF-8 and "
                         "ignoring errors"
@@ -195,18 +195,18 @@ def xml_cleaner(s, encoding='utf-8', clean_restricted=True, log_messages=True,
     pass2 = pass1.decode('utf-8', 'xmlcharrefreplace')
 
     # replace any invalid unicode characters
-    pass3, pass3_cnt, pass3_re = replace_invalid_unicode(pass2)
+    pass3, pass3_cnt, pass3_re = replace_invalid_unicode(text=pass2, replacement=replacement)
 
     # if any invalid characters found, print how many were replaced
-    if pass3_cnt and log_messages:
+    if pass3_cnt and log_clean_messages:
         m = "Replaced {} invalid characters that match regex {!r}".format
         mylog.warning(m(pass3_cnt, pass3_re.pattern))
-        if show_bad_characters and log_messages:
+        if log_bad_characters and log_clean_messages:
             matches = pass3_re.findall(pass2)
             m = "Invalid characters found: {!r}".format
             mylog.debug(m(matches))
 
-    if not pass3_cnt and log_messages:
+    if not pass3_cnt and log_clean_messages:
         m = "No invalid characters found that match regex {!r}".format
         mylog.debug(m(pass3_re.pattern))
 
@@ -214,20 +214,20 @@ def xml_cleaner(s, encoding='utf-8', clean_restricted=True, log_messages=True,
         return pass3
 
     # replace any restricted unicode characters
-    pass4, pass4_cnt, pass4_re = replace_restricted_unicode(pass3)
+    pass4, pass4_cnt, pass4_re = replace_restricted_unicode(text=pass3, replacement=replacement)
 
     # if any restricted characters found, print how many were replaced
-    if pass4_cnt and log_messages:
+    if pass4_cnt and log_clean_messages:
         m = (
             "Replaced {} restricted characters that match the regex {!r}"
         ).format
         mylog.warning(m(pass4_cnt, pass4_re.pattern))
-        if show_bad_characters and log_messages:
+        if log_bad_characters and log_clean_messages:
             matches = pass4_re.findall(pass3)
             m = "Restricted characters found: {!r}".format
             mylog.debug(m(matches))
 
-    if not pass4_cnt and log_messages:
+    if not pass4_cnt and log_clean_messages:
         m = "No restricted characters found that match regex {!r}".format
         mylog.debug(m(pass4_re.pattern))
 
