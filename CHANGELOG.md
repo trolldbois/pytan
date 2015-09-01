@@ -9,9 +9,13 @@
     * in pytan.handler.Handler._parse_versioning(): Added notes re: server_version states and added server_version_bad_states. both checks for server_version will check against server_version_bad_states.
     * pytan.utils.log_session_communication(): Update to use LAST_REQUESTS_RESPONSE object instead of XML body variables
   * enhancements:
+    * pytan.handler has new methods: ask_parsed, parse_query, xml_to_result_set_obj, create_report_file
     * massive refactor, bringing all code from bin scripts into pytan.binsupport
     * massive refactor, moving all command line code from pytan.utils to pytan.binsupport
-    * 
+    * massive refactor:
+      * cleaned up all arguments everywhere 
+      * ensured every method takes kwargs that needs to
+      * changed all argument passing to explicit name/value pairs
     * pytan.handler.Handler._export_format_xml(): Add support for ResultSet by checking for _RAW_XML on object, and also run XML through pytan.utils.xml_pretty()
     * pytan.session.Session.get_server_info(): added better error handling
     * pytan.binsupport.add_ask_report_argparser(): Add XML option for command line scripts that support export format options for asking reports
