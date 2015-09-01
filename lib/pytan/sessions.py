@@ -150,15 +150,6 @@ class Session(object):
     RECORD_ALL_REQUESTS = False
     """Controls whether each requests response object is appended to the self.ALL_REQUESTS_RESPONSES list"""
 
-    ALL_REQUESTS_RESPONSES = []
-    """This list will be updated with each requests response object that was received"""
-
-    LAST_REQUESTS_RESPONSE = None
-    """This variable will be updated with the last requests response object that was received"""
-
-    LAST_RESPONSE_INFO = {}
-    """This variable will be updated with the information from the most recent call to _get_response()"""
-
     BAD_RESPONSE_CMD_PRUNES = [
         '\n',
         'XML Parse Error: ',
@@ -172,6 +163,16 @@ class Session(object):
 
     BAD_SERVER_VERSIONS = [None, '', 'Unable to determine', 'Not yet determined']
     """List of server versions that are not valid"""
+
+    # TRACKING VARIABLES -- THESE GET UPDATED BY SESSION
+    ALL_REQUESTS_RESPONSES = []
+    """This list will be updated with each requests response object that was received"""
+
+    LAST_REQUESTS_RESPONSE = None
+    """This variable will be updated with the last requests response object that was received"""
+
+    LAST_RESPONSE_INFO = {}
+    """This variable will be updated with the information from the most recent call to _get_response()"""
 
     host = None
     """host to connect to"""
@@ -224,6 +225,11 @@ class Session(object):
         self.STATS_LOOP_SLEEP_SEC = kwargs.get('stats_loop_sleep_sec', self.STATS_LOOP_SLEEP_SEC)
         self.STATS_LOOP_TARGETS = kwargs.get('stats_loop_targets', self.STATS_LOOP_TARGETS)
         self.RECORD_ALL_REQUESTS = kwargs.get('record_all_requests', self.RECORD_ALL_REQUESTS)
+
+        # re-enforce empty variables for init of session
+        self.ALL_REQUESTS_RESPONSES = []
+        self.LAST_RESPONSE_INFO = {}
+        self.LAST_REQUESTS_RESPONSE = None
 
         self._start_stats_thread()
 
