@@ -246,7 +246,7 @@ class Session(object):
     def __str__(self):
         class_name = self.__class__.__name__
         server_version = self.get_server_version()
-        str_tpl = "{} to {}:{}, Authenticated: {}, Version: {}".format
+        str_tpl = "{} to {}:{}, Authenticated: {}, Platform Version: {}".format
         ret = str_tpl(class_name, self.host, self.port, self.is_auth, server_version)
         return ret
 

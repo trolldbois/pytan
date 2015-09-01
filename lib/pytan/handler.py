@@ -189,8 +189,8 @@ class Handler(object):
         )
 
     def __str__(self):
-        str_tpl = "Handler for {}".format
-        ret = str_tpl(self.session)
+        str_tpl = "PyTan v{} Handler for {}".format
+        ret = str_tpl(pytan.__version__, self.session)
         return ret
 
     def get_server_version(self, **kwargs):
