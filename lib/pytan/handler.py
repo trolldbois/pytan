@@ -10,7 +10,6 @@ sys.dont_write_bytecode = True
 import os
 import logging
 import io
-import threading
 import datetime
 
 my_file = os.path.abspath(__file__)
@@ -189,34 +188,21 @@ class Handler(object):
             username=username, password=password, session_id=session_id, **kwargs
         )
 
-        # set the object's server_version to Not yet determined for now, this will be updated
-        # by self.get_server_version
-        self.server_version = "Not yet determined"
-
-        # start up a background thread to get the server version
-        thread = threading.Thread(target=self.get_server_version, args=())
-        thread.daemon = True
-        thread.start()
-
     def __str__(self):
-        str_tpl = "Handler for {}, Version: {}".format
-        server_version = getattr(self, 'server_version', 'Version Unavailable')
-        ret = str_tpl(self.session, server_version)
+        str_tpl = "Handler for {}".format
+        ret = str_tpl(self.session)
         return ret
 
     def get_server_version(self, **kwargs):
         """Uses :func:`taniumpy.session.Session.get_server_version` to get the version of the Tanium Server
 
-        Updates self.server_version with the return, and updates self.server_version_dict with a parsed version of self.server_version into major, minor, revision, and build.
-
         Returns
         -------
-        self.server_version: str
+        server_version: str
             * Version of Tanium Server in string format
         """
-        self.server_version = self.session.get_server_version(**kwargs)
-        self.server_version_dict = self._parse_versioning()
-        return self.server_version
+        server_version = self.session.get_server_version(**kwargs)
+        return server_version
 
     # Questions
     def ask(self, **kwargs):
@@ -351,7 +337,7 @@ class Handler(object):
             poller_success = poller.run(**clean_kwargs)
 
         # get the results
-        if sse and not self._platform_is_6_2():
+        if sse and not self.session.platform_is_6_2(**clean_kwargs):
             h = (
                 "Issue a GetResultData for a server side export to get the answers for the last "
                 "asked question of this saved question"
@@ -537,9 +523,9 @@ class Handler(object):
         -------
         parse_job_results : :class:`taniumpy.object_types.parse_result_group.ParseResultGroup`
         """
-        if self._platform_is_6_2(**kwargs):
+        if self.session.platform_is_6_2(**kwargs):
             m = "ParseJob not supported in version: {} / {}".format
-            m = m(self.server_version, self.server_version_dict)
+            m = m(self.session.server_version, self.session.server_version_dict)
             raise pytan.exceptions.UnsupportedVersionError(m)
 
         parse_job = taniumpy.ParseJob()
@@ -614,9 +600,9 @@ class Handler(object):
         Ask the server to parse 'computer name' and pick index 1 as the question you want to run:
             >>> v = handler.ask_parsed('computer name', picker=1)
         """
-        if self._platform_is_6_2(**kwargs):
+        if self.session.platform_is_6_2(**kwargs):
             m = "ParseJob not supported in version: {} / {}".format
-            m = m(self.server_version, self.server_version_dict)
+            m = m(self.session.server_version, self.session.server_version_dict)
             raise pytan.exceptions.UnsupportedVersionError(m)
 
         clean_keys = ['obj', 'question_text', 'handler']
@@ -2608,7 +2594,7 @@ class Handler(object):
 
         clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
-        if self._platform_is_6_2(**kwargs):
+        if self.session.platform_is_6_2(**kwargs):
             objtype = taniumpy.Action
             objlisttype = None
             force_start_time = True
@@ -2766,7 +2752,7 @@ class Handler(object):
             add_package_obj.source_id = None
 
         m = "DEPLOY_ACTION objtype: {}, objlisttype: {}, force_start_time: {}, version: {}".format
-        self.mylog.debug(m(objtype, objlisttype, force_start_time, self.server_version))
+        self.mylog.debug(m(objtype, objlisttype, force_start_time, self.session.server_version))
 
         # BUILD THE ACTION OBJECT TO BE ADDED
         add_obj = objtype()
@@ -3049,7 +3035,7 @@ class Handler(object):
             ret['poller_success'] = ret['poller_object'].run(**clean_kwargs)
 
             # get the results
-            if sse and not self._platform_is_6_2():
+            if sse and not self.session.platform_is_6_2(**clean_kwargs):
                 rd = self.get_result_data_sse(obj=added_obj, **clean_kwargs)
             else:
                 rd = self.get_result_data(obj=added_obj, **clean_kwargs)
@@ -3060,66 +3046,6 @@ class Handler(object):
 
             ret['question_results'] = rd
         return ret
-
-    def _parse_versioning(self, **kwargs):
-        """Parses self.server_version into a dictionary
-
-        Returns
-        -------
-        dict, containing major, minor, revision, and build of tanium server version
-
-        Notes
-        -----
-        If pytan has not yet fetched info.json, then server_version will == "Not yet determined"
-        force a call to self.session.get_server_version() to attempt to get info.json and parse
-        the version from that and update self.server_version with that value
-
-        If pytan is unable to fetch info.json properly for some reason,
-        then server_version will == "Unable to determine"
-        """
-        server_version_bad_states = ["Not yet determined", "Unable to determine"]
-
-        if not self.server_version or self.server_version in server_version_bad_states:
-            self.server_version = self.session.get_server_version(**kwargs)
-
-        v_keys = ['major', 'minor', 'revision', 'build']
-
-        if not self.server_version or self.server_version in server_version_bad_states:
-            v_ints = [0, 0, 0, 0]
-            v_dict = dict(zip(v_keys, v_ints))
-        else:
-            try:
-                v_parts = self.server_version.split('.')
-                v_ints = [int(x) for x in v_parts]
-                v_dict = dict(zip(v_keys, v_ints))
-            except:
-                m = (
-                    "Unable to parse major, minor, revision, and build from server "
-                    "version string: {}"
-                ).format
-                raise pytan.exceptions.VersionParseError(m(self.server_version))
-        return v_dict
-
-    def _platform_is_6_2(self, **kwargs):
-        """Check to see if self.server_version_dict matches 6.2.xxx.xxx
-
-        Returns
-        -------
-        bool
-            * True if self.server_version_dict major == 6 and minor == 2
-            * False otherwise
-        """
-        if not getattr(self, 'server_version_dict', None):
-            self.get_server_version(**kwargs)
-
-        is6_2 = (
-            # see if version is 6.2.xxx.xxx
-            (self.server_version_dict['major'] == 6 and self.server_version_dict['minor'] == 2)
-            # we will assume 6.2 if server_version is "Unable to determine"
-            or self.server_version_dict.values() == [0, 0, 0, 0]
-        )
-
-        return is6_2
 
     def _version_support_check(self, v_maps, **kwargs):
         """Checks that each of the version maps in v_maps is greater than or equal to
@@ -3136,12 +3062,14 @@ class Handler(object):
             * True if all values in all v_maps are greater than or equal to all values in self.server_version_dict
             * False otherwise
         """
-        if not getattr(self, 'server_version_dict', None):
-            self.get_server_version(**kwargs)
+        v_dict = getattr(self, 'server_version_dict', {})
+        if not v_dict:
+            self.session.get_server_version(**kwargs)
 
+        v_dict = getattr(self, 'server_version_dict', {})
         for v_map in v_maps:
             for k, v in v_map.iteritems():
-                if not self.server_version_dict[k] >= v:
+                if not v_dict.get(k, 0) >= v:
                     return False
         return True
 
@@ -3168,7 +3096,7 @@ class Handler(object):
                 "server version must be equal to or greater than one of:\n{}"
             ).format
 
-            m = m(self.server_version, sse_format, restrict_maps_txt)
+            m = m(self.session.server_version, sse_format, restrict_maps_txt)
 
             raise pytan.exceptions.UnsupportedVersionError(m)
 
@@ -3207,9 +3135,9 @@ class Handler(object):
 
     def _check_sse_version(self, **kwargs):
         """Validates that the server version supports server side export"""
-        if self._platform_is_6_2(**kwargs):
+        if self.session.platform_is_6_2(**kwargs):
             m = "Server side export not supported in version: {} / {}".format
-            m = m(self.server_version, self.server_version_dict)
+            m = m(self.session.server_version, self.session.server_version_dict)
             raise pytan.exceptions.UnsupportedVersionError(m)
 
     def _check_sse_crash_prevention(self, obj, **kwargs):

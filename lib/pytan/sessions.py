@@ -180,8 +180,11 @@ class Session(object):
     port = None
     """port to connect to"""
 
-    server_version = None
-    """version string of server, will be updated if get_server_version() is called"""
+    server_version = "Not yet determined"
+    """version string of server, will be updated when get_server_version() is called"""
+
+    server_version_dict = {}
+    """dictionary of self.server_version parsed into major, minor, build, revision -- will be updated when get_server_version() is called"""
 
     mylog = logging.getLogger("session")
     authlog = logging.getLogger("session.auth")
@@ -230,8 +233,8 @@ class Session(object):
         self.ALL_REQUESTS_RESPONSES = []
         self.LAST_RESPONSE_INFO = {}
         self.LAST_REQUESTS_RESPONSE = None
-
-        self._start_stats_thread()
+        self.server_version = "Not yet determined"
+        self.server_version_dict = {}
 
     def setup_logging(self):
         self.qualname = "{}.{}".format(self.__class__.__module__, self.__class__.__name__)
@@ -242,8 +245,9 @@ class Session(object):
 
     def __str__(self):
         class_name = self.__class__.__name__
-        str_tpl = "{} to {}:{}, Authenticated: {}".format
-        ret = str_tpl(class_name, self.host, self.port, self.is_auth)
+        server_version = self.get_server_version()
+        str_tpl = "{} to {}:{}, Authenticated: {}, Version: {}".format
+        ret = str_tpl(class_name, self.host, self.port, self.is_auth, server_version)
         return ret
 
     @property
@@ -452,6 +456,9 @@ class Session(object):
                 "session id using {}"
             ).format
             self.authlog.debug(m(auth_type))
+
+        # start the stats thread loop in a background thread
+        self._start_stats_thread(**kwargs)
 
     def find(self, obj, **kwargs):
         """Creates and sends a GetObject XML Request body from `object_type` and parses the response into an appropriate :mod:`taniumpy` object
@@ -731,9 +738,7 @@ class Session(object):
         str
             * str containing server version from /info.json
         """
-        current_server_version = getattr(self, 'server_version', '')
-
-        if current_server_version not in self.BAD_SERVER_VERSIONS:
+        if not self._invalid_server_version():
             return self.server_version
 
         h = "Get the server version via /info.json"
@@ -764,6 +769,7 @@ class Session(object):
         if server_version:
             self.server_version = server_version
 
+        self.server_version_dict = self._parse_versioning()
         return server_version
 
     def get_server_stats(self, **kwargs):
@@ -1326,17 +1332,76 @@ class Session(object):
 
         return return_headers
 
-    def _start_stats_thread(self):
+    def _start_stats_thread(self, **kwargs):
         """Utility method starting the :func:`pytan.sessions.Session._stats_loop` method in a threaded daemon"""
-        self.stats_thread = threading.Thread(target=self._stats_loop)
-        self.stats_thread.daemon = True
-        self.stats_thread.start()
+        stats_thread = threading.Thread(target=self._stats_loop, args=(), kwargs=kwargs)
+        stats_thread.daemon = True
+        stats_thread.start()
 
-    def _stats_loop(self):
+    def _parse_versioning(self, **kwargs):
+        """Parses self.server_version into a dictionary
+
+        Returns
+        -------
+        dict
+            * dict of parsed tanium server version containing keys: major, minor, revision, and build
+
+        Notes
+        -----
+          * If Session is unable to fetch info.json properly for some reason, then self.server_version will be "Unable to determine"
+          * If Session has not yet fetched info.json, then self.server_version will be "Not yet determined"
+        """
+        v_keys = ['major', 'minor', 'revision', 'build']
+
+        if self._invalid_server_version():
+            v_ints = [0, 0, 0, 0]
+        else:
+            try:
+                v_parts = self.server_version.split('.')
+                v_ints = [int(x) for x in v_parts]
+            except:
+                m = (
+                    "Unable to parse major, minor, revision, and build from server "
+                    "version string: {}"
+                ).format
+                raise pytan.exceptions.VersionParseError(m(self.server_version))
+
+        v_dict = dict(zip(v_keys, v_ints))
+        return v_dict
+
+    def platform_is_6_2(self, **kwargs):
+        """Check to see if self.server_version_dict matches 6.2.xxx.xxx
+
+        Returns
+        -------
+        bool
+            * True if self.server_version_dict major == 6 and minor == 2
+            * False otherwise
+        """
+        is6_2 = False
+
+        v_dict = getattr(self, 'server_version_dict', {})
+        if self._invalid_server_version() or not v_dict:
+            # server version is not valid, force a refresh right now
+            self.get_server_version(**kwargs)
+
+        v_dict = getattr(self, 'server_version_dict', {})
+        if self._invalid_server_version() or not v_dict:
+            # server version is STILL invalid, we will assume its 6.2 since port 444 may be
+            # inaccessible
+            is6_2 = True
+        else:
+            # server version is valid, get the major and minor keys from server_version_dict
+            major_ver = v_dict.get('major', 0)
+            minor_ver = v_dict.get('minor', 0)
+            is6_2 = (major_ver == 6 and minor_ver == 2) or (major_ver == 0 and minor_ver == 0)
+        return is6_2
+
+    def _stats_loop(self, **kwargs):
         """Utility method for logging server stats via :func:`pytan.sessions.Session.get_server_stats` every self.STATS_LOOP_SLEEP_SEC"""
         while True:
             if self.STATS_LOOP_ENABLED:
-                server_stats = self.get_server_stats()
+                server_stats = self.get_server_stats(**kwargs)
                 self.statslog.warning(server_stats)
             time.sleep(self.STATS_LOOP_SLEEP_SEC)
 
@@ -1824,8 +1889,7 @@ class Session(object):
         )
 
         # check to see if server_version set in response (6.5+ only)
-        current_server_version = getattr(self, 'server_version', '')
-        if current_server_version in self.BAD_SERVER_VERSIONS:
+        if self._invalid_server_version():
             server_version = self._regex_body_for_element(
                 body=response_body, element='server_version', fail=False,
             )
@@ -1833,3 +1897,10 @@ class Session(object):
                 self.server_version = server_version
 
         return response_body
+
+    def _invalid_server_version(self):
+        """Utility method to find out if self.server_version is valid or not"""
+        current_server_version = getattr(self, 'server_version', '')
+        if current_server_version in self.BAD_SERVER_VERSIONS:
+            return True
+        return False
