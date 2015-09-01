@@ -6,7 +6,6 @@ pytan Functional Tests
     :members:
     :undoc-members:
     :private-members:
-    :special-members:
 
 
 .. automodule:: test_pytan_invalid_server_tests
@@ -14,7 +13,6 @@ pytan Functional Tests
     :members:
     :undoc-members:
     :private-members:
-    :special-members:
 
 
 .. toctree::

@@ -201,3 +201,5 @@ staticdoc:
 	@echo "Static docs copied to $(REALBUILDDIR)"
 
 all: clean html staticdoc coverage latexpdf cleanbuild
+
+alldirty: html staticdoc coverage latexpdf

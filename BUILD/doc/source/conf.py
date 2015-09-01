@@ -71,7 +71,6 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'PyTan'
 copyright = u'2015, Tanium'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -83,6 +82,8 @@ pyscript_path = os.path.join(lib_dir, 'pytan', '__init__.py')
 a = imp.load_source('a', pyscript_path)
 version = a.__version__
 release = version
+
+project = u'PyTan v{}'.format(version)
 
 # The short X.Y version.
 # version = '1.0.4'
@@ -242,7 +243,8 @@ latex_elements = {
     #'pointsize': '10pt',
 
     # Additional stuff for the LaTeX preamble.
-    #'preamble': '',
+    'preamble': '''\usepackage{enumitem}
+\setlistdepth{99}''',
 
     # Latex figure (float) alignment
     #'figure_align': 'htbp',

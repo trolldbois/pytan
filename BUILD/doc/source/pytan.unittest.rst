@@ -6,6 +6,5 @@ pytan Unit Tests
     :members:
     :undoc-members:
     :private-members:
-    :special-members:
 
 .. toctree::

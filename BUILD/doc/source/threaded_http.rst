@@ -6,6 +6,5 @@ threaded_http module
     :members:
     :undoc-members:
     :private-members:
-    :special-members:
 
 .. toctree::

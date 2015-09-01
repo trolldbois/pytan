@@ -1,8 +1,9 @@
-pytan.exceptions module
+pytan.binsupport module
 =======================
 
-.. automodule:: pytan.exceptions
+.. automodule:: pytan.binsupport
     :show-inheritance:
     :members:
     :undoc-members:
     :private-members:
+
