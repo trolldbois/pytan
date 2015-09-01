@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python -i
 # -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
@@ -13,6 +13,7 @@ import StringIO
 import contextlib
 import glob
 import pprint
+import tempfile
 
 sys.dont_write_bytecode = True
 my_file = os.path.abspath(sys.argv[0])
@@ -377,6 +378,10 @@ PORT = "443"  # optional
 LOGLEVEL = 2  # optional
 DEBUGFORMAT = False  # optional
 
+# optional, this saves all response objects to handler.session.ALL_REQUESTS_RESPONSES
+# very useful for capturing the full exchange of XML requests and responses
+RECORD_ALL_REQUESTS = True
+
 import pytan
 handler = pytan.Handler(
     username=USERNAME,
@@ -385,6 +390,7 @@ handler = pytan.Handler(
     port=PORT,
     loglevel=LOGLEVEL,
     debugformat=DEBUGFORMAT,
+    record_all_requests=RECORD_ALL_REQUESTS,
 )
 
 print handler
@@ -393,6 +399,19 @@ BASIC_NAME = "pytan_api_basic_handler_example"
 BASIC_DESC = """This is an example for how to instantiate a :class:`pytan.Handler` object.
 
 The username, password, host, and maybe port as well need to be provided on a per Tanium server basis.
+"""
+
+GET_COMS = "handler.session.ALL_REQUESTS_RESPONSES"
+
+RESPONSE_BLOCK_TEMPLATE = """
+Request URL: {0.request.url}
+Request Headers: {0.request.headers}
+Request Body: {0.request.body}
+
+Response Headers: {0.headers}
+Response Body: {0.text}
+Response Encoding: {0.encoding}
+Response Elapsed: {0.elapsed}
 """
 
 
@@ -409,15 +428,15 @@ class ExampleProcesser(object):
         self.ddt_dir = os.path.join(self.test_dir, 'ddt')
 
         # output directory for RST files
-        self.rst_out_dir = os.path.join('/tmp', 'REST_EXAMPLES')
+        self.rst_out_dir = os.path.join(tempfile.gettempdir(), 'REST_EXAMPLES')
         self.dest_rst_out_dir = os.path.join(parent_dir, 'BUILD', 'doc', 'source', 'examples')
 
         # output directory for python example files
-        self.pytan_example_out_dir = os.path.join('/tmp', 'PYTAN_API')
+        self.pytan_example_out_dir = os.path.join(tempfile.gettempdir(), 'PYTAN_API')
         self.dest_pytan_example_out_dir = os.path.join(parent_dir, 'EXAMPLES', 'PYTAN_API')
 
         # output directory for RST API example files
-        self.soap_example_out_dir = os.path.join('/tmp', 'SOAP_API')
+        self.soap_example_out_dir = os.path.join(tempfile.gettempdir(), 'SOAP_API')
         self.dest_soap_example_out_dir = os.path.join(parent_dir, 'EXAMPLES', 'SOAP_API')
 
     def clean_up_output_dirs(self):
@@ -454,7 +473,8 @@ class ExampleProcesser(object):
         if self.VERBOSE:
             print "Code output:\n{}".format(code_output)
 
-        return code_output
+        response_objects = eval(GET_COMS)
+        return code_output, response_objects
 
     def read_file(self, f):
         with open(f) as fh:
@@ -510,6 +530,10 @@ class ExampleProcesser(object):
         ret = "{}\n{}".format(code_block, output_block)
         return ret
 
+    def build_response_blocks(self, response_objects):
+        out = '\n'.join([RESPONSE_BLOCK_TEMPLATE.format(x) for x in response_objects])
+        return out
+
     def build_pytan_rst_example(self, name, desc, py_code, py_output):
         example_rst_out = "{}\n{}{}".format(
             self.build_pytan_rst_title(name),
@@ -517,6 +541,14 @@ class ExampleProcesser(object):
             self.build_rst_pycode_block(py_code, py_output)
         )
         return example_rst_out
+
+    def build_xml_example(self, name, desc, response_objects):
+        example_xml_out = "{}\n{}{}".format(
+            self.build_pytan_rst_title(name),
+            self.build_pytan_rst_desc(desc),
+            self.build_response_blocks(response_objects)
+        )
+        return example_xml_out
 
     def build_rst_filename(self, name):
         fn = name + '.rst'
@@ -528,6 +560,10 @@ class ExampleProcesser(object):
 
     def build_py_filename(self, name):
         fn = name + '.py'
+        return fn
+
+    def build_xml_filename(self, name):
+        fn = name + '.xml'
         return fn
 
     def write_rst_file(self, name, out):
@@ -546,6 +582,11 @@ class ExampleProcesser(object):
         self.write_file(filepath, out)
         self.py_examples.append({'filename': filename, 'desc': desc})
 
+    def write_xml_file(self, name, out):
+        filename = self.build_xml_filename(name)
+        filepath = os.path.join(self.soap_example_out_dir, filename)
+        self.write_file(filepath, out)
+
     def make_py_readme(self, name='README.MD'):
         title = "PyTan API Python Examples"
         toc_template = '  * {}: {}'.format
@@ -560,9 +601,10 @@ class ExampleProcesser(object):
         self.write_rst_file(name, out)
 
     def make_examples(self, name, desc, py_code):
-        py_output = self.get_exec_output(name, py_code)
+        py_output, response_objects = self.get_exec_output(name, py_code)
         self.make_rst_example(name, desc, py_code, py_output)
         self.make_py_example(name, desc, py_code, py_output)
+        self.make_xml_example(name, desc, response_objects)
 
     def make_rst_example(self, name, desc, py_code, py_output):
         out = self.build_pytan_rst_example(name, desc, py_code, py_output)
@@ -571,6 +613,10 @@ class ExampleProcesser(object):
     def make_py_example(self, name, desc, py_code, py_output):
         out = EXAMPLE_PY_TEMPLATE.format(desc=desc, py_code=py_code, py_output=py_output)
         self.write_py_file(name, out, desc)
+
+    def make_xml_example(self, name, desc, response_objects):
+        out = self.build_xml_example(name, desc, response_objects)
+        self.write_xml_file(name, out)
 
     def build_args_str(self, args_name, args):
         args_template = '{}["{}"] = {}'.format
@@ -638,6 +684,8 @@ class ExampleProcesser(object):
         invalid_json_files = sorted(glob.glob(self.ddt_dir + '/ddt_invalid_*.*'))
 
         all_json_files = valid_json_files + invalid_json_files
+        all_json_files = [os.path.basename(x) for x in all_json_files]
+
         skip_json_files = ['ddt_invalid_connects.json']
         all_json_files = [x for x in all_json_files if x not in skip_json_files]
 
@@ -651,5 +699,5 @@ class ExampleProcesser(object):
 
 ep = ExampleProcesser()
 
-if __name__ == '__main__':
-    ep.main()
+# if __name__ == '__main__':
+ep.main()

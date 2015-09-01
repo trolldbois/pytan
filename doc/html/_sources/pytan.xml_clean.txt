@@ -6,4 +6,3 @@ pytan.xml_clean module
     :members:
     :undoc-members:
     :private-members:
-    :special-members:

@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pytan.utils &mdash; PyTan 2.1.0 documentation</title>
+  <title>pytan.utils &mdash; PyTan v2.1.0 2.1.0 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="PyTan 2.1.0 documentation" href="../../index.html"/>
+    <link rel="top" title="PyTan v2.1.0 2.1.0 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -44,7 +44,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-nav-search">
         
-          <a href="../../index.html" class="fa fa-home"> PyTan</a>
+          <a href="../../index.html" class="fa fa-home"> PyTan v2.1.0</a>
         
         
 <div role="search">
@@ -79,16 +79,14 @@
 <li class="toctree-l2"><a class="reference internal" href="../../pytan.pollers.html">2.4. pytan.pollers module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../pytan.constants.html">2.5. pytan.constants module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../pytan.utils.html">2.6. pytan.utils module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../pytan.xml_clean.html">2.7. pytan.xml_clean module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../pytan.unittest.html">2.8. pytan Unit Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../pytan.functest.html">2.9. pytan Functional Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../examples/pytan_examples.html">2.10. PyTan API examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.binsupport.html">2.7. pytan.binsupport module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.xml_clean.html">2.8. pytan.xml_clean module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.unittest.html">2.9. pytan Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.functest.html">2.10. pytan Functional Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/pytan_examples.html">2.11. PyTan API examples</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../taniumpy.html">3. taniumpy package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../taniumpy.object_types.html">3.1. taniumpy.object_types package</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../../taniumpy.html">3. taniumpy package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../xmltodict.html">4. xmltodict module</a><ul class="simple">
 </ul>
 </li>
@@ -115,7 +113,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../../index.html">PyTan</a>
+        <a href="../../index.html">PyTan v2.1.0</a>
       </nav>
 
 
@@ -142,7 +140,7 @@
 <span class="c"># -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-</span>
 <span class="c"># ex: set tabstop=4</span>
 <span class="c"># Please do not change the two lines above. See PEP 8, PEP 263.</span>
-<span class="sd">&quot;&quot;&quot;Collection of exceptions, classes, and methods used throughout :mod:`pytan`&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;Collection of classes and methods used throughout :mod:`pytan`&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
 <span class="c"># disable python from creating .pyc files everywhere</span>
@@ -153,22 +151,16 @@
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">argparse</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
-<span class="kn">from</span> <span class="nn">argparse</span> <span class="kn">import</span> <span class="n">ArgumentDefaultsHelpFormatter</span> <span class="k">as</span> <span class="n">A1</span> <span class="c"># noqa</span>
-<span class="kn">from</span> <span class="nn">argparse</span> <span class="kn">import</span> <span class="n">RawDescriptionHelpFormatter</span> <span class="k">as</span> <span class="n">A2</span> <span class="c"># noqa</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
 
 <span class="n">my_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
 <span class="n">my_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">my_file</span><span class="p">)</span>
 <span class="n">parent_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">my_dir</span><span class="p">)</span>
 <span class="n">path_adds</span> <span class="o">=</span> <span class="p">[</span><span class="n">parent_dir</span><span class="p">]</span>
-
-<span class="k">for</span> <span class="n">aa</span> <span class="ow">in</span> <span class="n">path_adds</span><span class="p">:</span>
-    <span class="k">if</span> <span class="n">aa</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
-        <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">aa</span><span class="p">)</span>
+<span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">aa</span><span class="p">)</span> <span class="k">for</span> <span class="n">aa</span> <span class="ow">in</span> <span class="n">path_adds</span> <span class="k">if</span> <span class="n">aa</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">]</span>
 
 <span class="kn">import</span> <span class="nn">taniumpy</span>
 <span class="kn">import</span> <span class="nn">xmltodict</span>
@@ -182,7 +174,6 @@
 <span class="n">prettylog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;pytan.handler.prettybody&quot;</span><span class="p">)</span>
 <span class="n">timinglog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;pytan.handler.timing&quot;</span><span class="p">)</span>
 
-<span class="n">pname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]))[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">DEBUG_OUTPUT</span> <span class="o">=</span> <span class="bp">False</span>
 
 
@@ -220,926 +211,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">handleError</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
 
 </div></div>
-<div class="viewcode-block" id="CustomArgFormat"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.CustomArgFormat">[docs]</a><span class="k">class</span> <span class="nc">CustomArgFormat</span><span class="p">(</span><span class="n">A1</span><span class="p">,</span> <span class="n">A2</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Multiple inheritance Formatter class for :class:`argparse.ArgumentParser`.</span>
-
-<span class="sd">    If a :class:`argparse.ArgumentParser` class uses this as it&#39;s Formatter class, it will show the defaults for each argument in the `help` output</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">pass</span>
-
-</div>
-<div class="viewcode-block" id="CustomArgParse"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.CustomArgParse">[docs]</a><span class="k">class</span> <span class="nc">CustomArgParse</span><span class="p">(</span><span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Custom :class:`argparse.ArgumentParser` class which does a number of things:</span>
-
-<span class="sd">        * Uses :class:`pytan.utils.CustomArgFormat` as it&#39;s Formatter class, if none was passed in</span>
-<span class="sd">        * Prints help if there is an error</span>
-<span class="sd">        * Prints the help for any subparsers that exist</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">if</span> <span class="s">&#39;formatter_class&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-            <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;formatter_class&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">CustomArgFormat</span>
-        <span class="c"># print kwargs</span>
-        <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-<div class="viewcode-block" id="CustomArgParse.error"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.CustomArgParse.error">[docs]</a>    <span class="k">def</span> <span class="nf">error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">&#39;ERROR:{}:{}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pname</span><span class="p">,</span> <span class="n">message</span><span class="p">))</span>
-        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="CustomArgParse.print_help"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.CustomArgParse.print_help">[docs]</a>    <span class="k">def</span> <span class="nf">print_help</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">CustomArgParse</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">print_help</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="n">subparsers_actions</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">action</span> <span class="k">for</span> <span class="n">action</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_actions</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">argparse</span><span class="o">.</span><span class="n">_SubParsersAction</span><span class="p">)</span>
-        <span class="p">]</span>
-        <span class="k">for</span> <span class="n">subparsers_action</span> <span class="ow">in</span> <span class="n">subparsers_actions</span><span class="p">:</span>
-            <span class="k">print</span> <span class="s">&quot;&quot;</span>
-            <span class="c"># get all subparsers and print help</span>
-            <span class="k">for</span> <span class="n">choice</span><span class="p">,</span> <span class="n">subparser</span> <span class="ow">in</span> <span class="n">subparsers_action</span><span class="o">.</span><span class="n">choices</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="c"># print subparser</span>
-                <span class="c"># print(&quot; ** {} &#39;{}&#39;:&quot;.format(</span>
-                    <span class="c"># subparsers_action.dest, choice))</span>
-                <span class="k">print</span><span class="p">(</span><span class="n">subparser</span><span class="o">.</span><span class="n">format_help</span><span class="p">())</span>
-
-</div></div>
-<div class="viewcode-block" id="setup_parser"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.setup_parser">[docs]</a><span class="k">def</span> <span class="nf">setup_parser</span><span class="p">(</span><span class="n">desc</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts that use :mod:`pytan`. This establishes the basic arguments that are needed by all such scripts, such as:</span>
-
-<span class="sd">        * --help</span>
-<span class="sd">        * --username</span>
-<span class="sd">        * --password</span>
-<span class="sd">        * --host</span>
-<span class="sd">        * --port</span>
-<span class="sd">        * --loglevel</span>
-<span class="sd">        * --debugformat (not shown in --help)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">parser</span> <span class="o">=</span> <span class="n">CustomArgParse</span><span class="p">(</span>
-        <span class="n">description</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span>
-        <span class="n">add_help</span><span class="o">=</span><span class="n">help</span><span class="p">,</span>
-        <span class="n">formatter_class</span><span class="o">=</span><span class="n">CustomArgFormat</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">auth_group</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_argument_group</span><span class="p">(</span><span class="s">&#39;Handler Authentication&#39;</span><span class="p">)</span>
-    <span class="n">auth_group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;-u&#39;</span><span class="p">,</span>
-        <span class="s">&#39;--username&#39;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store&#39;</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;username&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Name of user&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">auth_group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;-p&#39;</span><span class="p">,</span>
-        <span class="s">&#39;--password&#39;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;password&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Password of user&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">auth_group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--host&#39;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;host&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Hostname/ip of SOAP Server&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">auth_group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--port&#39;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="s">&quot;443&quot;</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;port&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Port to use when connecting to SOAP Server&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="n">opt_group</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_argument_group</span><span class="p">(</span><span class="s">&#39;Handler Options&#39;</span><span class="p">)</span>
-    <span class="n">opt_group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;-l&#39;</span><span class="p">,</span>
-        <span class="s">&#39;--loglevel&#39;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store&#39;</span><span class="p">,</span>
-        <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;loglevel&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Logging level to use, increase for more verbosity&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">opt_group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--debugformat&#39;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_true&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;debugformat&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">SUPPRESS</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">parser</span>
-
-</div>
-<div class="viewcode-block" id="setup_get_object_argparser"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.setup_get_object_argparser">[docs]</a><span class="k">def</span> <span class="nf">setup_get_object_argparser</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">doc</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to get objects.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">parent_parser</span> <span class="o">=</span> <span class="n">setup_parser</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
-    <span class="n">parser</span> <span class="o">=</span> <span class="n">CustomArgParse</span><span class="p">(</span>
-        <span class="n">description</span><span class="o">=</span><span class="n">doc</span><span class="p">,</span>
-        <span class="n">parents</span><span class="o">=</span><span class="p">[</span><span class="n">parent_parser</span><span class="p">],</span>
-    <span class="p">)</span>
-    <span class="n">get_object_group</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_argument_group</span><span class="p">(</span>
-        <span class="s">&#39;Get {} Options&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;_&#39;</span><span class="p">,</span> <span class="s">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">capitalize</span><span class="p">())</span>
-    <span class="p">)</span>
-    <span class="n">get_object_group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--all&#39;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_true&#39;</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;all&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Get all {}s&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">obj</span><span class="p">),</span>
-    <span class="p">)</span>
-
-    <span class="n">obj_map</span> <span class="o">=</span> <span class="n">get_obj_map</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-    <span class="n">search_keys</span> <span class="o">=</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;search&#39;</span><span class="p">]</span>
-
-    <span class="k">if</span> <span class="s">&#39;id&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">search_keys</span><span class="p">:</span>
-        <span class="n">search_keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">obj</span> <span class="o">==</span> <span class="s">&#39;whitelisted_url&#39;</span><span class="p">:</span>
-        <span class="n">search_keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;url_regex&#39;</span><span class="p">)</span>
-
-    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">search_keys</span><span class="p">:</span>
-        <span class="n">get_object_group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-            <span class="s">&#39;--{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">),</span>
-            <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-            <span class="n">action</span><span class="o">=</span><span class="s">&#39;append&#39;</span><span class="p">,</span>
-            <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
-            <span class="n">dest</span><span class="o">=</span><span class="n">k</span><span class="p">,</span>
-            <span class="n">help</span><span class="o">=</span><span class="s">&#39;{} of {} to get&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">obj</span><span class="p">),</span>
-        <span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">parser</span>
-
-</div>
-<div class="viewcode-block" id="setup_create_json_object_argparser"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.setup_create_json_object_argparser">[docs]</a><span class="k">def</span> <span class="nf">setup_create_json_object_argparser</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">doc</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to create objects from json files.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">parent_parser</span> <span class="o">=</span> <span class="n">setup_parser</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
-    <span class="n">parser</span> <span class="o">=</span> <span class="n">CustomArgParse</span><span class="p">(</span>
-        <span class="n">description</span><span class="o">=</span><span class="n">doc</span><span class="p">,</span>
-        <span class="n">parents</span><span class="o">=</span><span class="p">[</span><span class="n">parent_parser</span><span class="p">],</span>
-    <span class="p">)</span>
-    <span class="n">arggroup</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_argument_group</span><span class="p">(</span>
-        <span class="s">&#39;Create {} from JSON Options&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">obj</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;_&#39;</span><span class="p">,</span> <span class="s">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span>
-        <span class="p">)</span>
-    <span class="p">)</span>
-
-    <span class="n">arggroup</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;-j&#39;</span><span class="p">,</span>
-        <span class="s">&#39;--json&#39;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;json_file&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;JSON file to use for creating the object&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="k">return</span> <span class="n">parser</span>
-
-</div>
-<div class="viewcode-block" id="setup_delete_object_argparser"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.setup_delete_object_argparser">[docs]</a><span class="k">def</span> <span class="nf">setup_delete_object_argparser</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">doc</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to delete objects.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">parent_parser</span> <span class="o">=</span> <span class="n">setup_parser</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
-    <span class="n">parser</span> <span class="o">=</span> <span class="n">CustomArgParse</span><span class="p">(</span>
-        <span class="n">description</span><span class="o">=</span><span class="n">doc</span><span class="p">,</span>
-        <span class="n">parents</span><span class="o">=</span><span class="p">[</span><span class="n">parent_parser</span><span class="p">],</span>
-    <span class="p">)</span>
-    <span class="n">arggroup</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_argument_group</span><span class="p">(</span>
-        <span class="s">&#39;Delete {} Options&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;_&#39;</span><span class="p">,</span> <span class="s">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">capitalize</span><span class="p">())</span>
-    <span class="p">)</span>
-
-    <span class="n">obj_map</span> <span class="o">=</span> <span class="n">get_obj_map</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-    <span class="n">search_keys</span> <span class="o">=</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;search&#39;</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">obj</span> <span class="o">==</span> <span class="s">&#39;whitelisted_url&#39;</span><span class="p">:</span>
-        <span class="n">search_keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;url_regex&#39;</span><span class="p">)</span>
-
-    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">search_keys</span><span class="p">:</span>
-        <span class="n">arggroup</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-            <span class="s">&#39;--{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">),</span>
-            <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-            <span class="n">action</span><span class="o">=</span><span class="s">&#39;append&#39;</span><span class="p">,</span>
-            <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
-            <span class="n">dest</span><span class="o">=</span><span class="n">k</span><span class="p">,</span>
-            <span class="n">help</span><span class="o">=</span><span class="s">&#39;{} of {} to get&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">obj</span><span class="p">),</span>
-        <span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">parser</span>
-
-</div>
-<div class="viewcode-block" id="setup_ask_saved_argparser"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.setup_ask_saved_argparser">[docs]</a><span class="k">def</span> <span class="nf">setup_ask_saved_argparser</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to ask saved questions.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">obj</span> <span class="o">=</span> <span class="s">&#39;saved_question&#39;</span>
-    <span class="n">parent_parser</span> <span class="o">=</span> <span class="n">setup_parser</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
-    <span class="n">parser</span> <span class="o">=</span> <span class="n">CustomArgParse</span><span class="p">(</span>
-        <span class="n">description</span><span class="o">=</span><span class="n">doc</span><span class="p">,</span>
-        <span class="n">parents</span><span class="o">=</span><span class="p">[</span><span class="n">parent_parser</span><span class="p">],</span>
-    <span class="p">)</span>
-    <span class="n">arggroup</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_argument_group</span><span class="p">(</span><span class="s">&#39;Saved Question Selectors&#39;</span><span class="p">)</span>
-    <span class="n">group</span> <span class="o">=</span> <span class="n">arggroup</span><span class="o">.</span><span class="n">add_mutually_exclusive_group</span><span class="p">()</span>
-
-    <span class="n">obj_map</span> <span class="o">=</span> <span class="n">get_obj_map</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-    <span class="n">search_keys</span> <span class="o">=</span> <span class="n">obj_map</span><span class="p">[</span><span class="s">&#39;search&#39;</span><span class="p">]</span>
-    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">search_keys</span><span class="p">:</span>
-        <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-            <span class="s">&#39;--{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">),</span>
-            <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-            <span class="n">action</span><span class="o">=</span><span class="s">&#39;store&#39;</span><span class="p">,</span>
-            <span class="n">dest</span><span class="o">=</span><span class="n">k</span><span class="p">,</span>
-            <span class="n">help</span><span class="o">=</span><span class="s">&#39;{} of {} to ask&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">obj</span><span class="p">),</span>
-        <span class="p">)</span>
-    <span class="k">return</span> <span class="n">parser</span>
-
-</div>
-<div class="viewcode-block" id="setup_stop_action_argparser"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.setup_stop_action_argparser">[docs]</a><span class="k">def</span> <span class="nf">setup_stop_action_argparser</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to stop actions.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">parent_parser</span> <span class="o">=</span> <span class="n">setup_parser</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
-    <span class="n">parser</span> <span class="o">=</span> <span class="n">CustomArgParse</span><span class="p">(</span>
-        <span class="n">description</span><span class="o">=</span><span class="n">doc</span><span class="p">,</span>
-        <span class="n">parents</span><span class="o">=</span><span class="p">[</span><span class="n">parent_parser</span><span class="p">],</span>
-    <span class="p">)</span>
-    <span class="n">arggroup</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_argument_group</span><span class="p">(</span><span class="s">&#39;Stop Action Options&#39;</span><span class="p">)</span>
-
-    <span class="n">arggroup</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;-i&#39;</span><span class="p">,</span>
-        <span class="s">&#39;--id&#39;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
-        <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store&#39;</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;id&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;ID of Deploy Action to stop&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">parser</span>
-
-</div>
-<div class="viewcode-block" id="setup_deploy_action_argparser"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.setup_deploy_action_argparser">[docs]</a><span class="k">def</span> <span class="nf">setup_deploy_action_argparser</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to deploy actions.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">parent_parser</span> <span class="o">=</span> <span class="n">setup_parser</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
-    <span class="n">parser</span> <span class="o">=</span> <span class="n">CustomArgParse</span><span class="p">(</span>
-        <span class="n">description</span><span class="o">=</span><span class="n">doc</span><span class="p">,</span>
-        <span class="n">parents</span><span class="o">=</span><span class="p">[</span><span class="n">parent_parser</span><span class="p">],</span>
-    <span class="p">)</span>
-    <span class="n">arggroup</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_argument_group</span><span class="p">(</span><span class="s">&#39;Deploy Action Options&#39;</span><span class="p">)</span>
-
-    <span class="n">arggroup</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--run&#39;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_true&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;run&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Run the deploy action, if not supplied the deploy action will &#39;</span>
-        <span class="s">&#39;only ask the question that matches --filter and save the results to &#39;</span>
-        <span class="s">&#39;csv file for verification&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="n">group</span> <span class="o">=</span> <span class="n">arggroup</span><span class="o">.</span><span class="n">add_mutually_exclusive_group</span><span class="p">()</span>
-
-    <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--no-results&#39;</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_false&#39;</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;get_results&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">SUPPRESS</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Do not get the results after starting the deploy &#39;</span>
-        <span class="s">&#39;action&#39;</span>
-    <span class="p">)</span>
-    <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--results&#39;</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_true&#39;</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;get_results&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Get the results after starting the deploy action &#39;</span>
-        <span class="s">&#39;(default)&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="n">arggroup</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;-k&#39;</span><span class="p">,</span>
-        <span class="s">&#39;--package&#39;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;package&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Package to deploy action with, optionally describe parameters, &#39;</span>
-        <span class="s">&#39;pass --package-help to get a full description&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="n">arggroup</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;-f&#39;</span><span class="p">,</span>
-        <span class="s">&#39;--filter&#39;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;append&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;action_filters&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Filter to deploy action against; pass --filters-help&#39;</span>
-        <span class="s">&#39;to get a full description&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="n">arggroup</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;-o&#39;</span><span class="p">,</span>
-        <span class="s">&#39;--option&#39;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;append&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;action_options&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Options for deploy action filter; pass --options-help to get a &#39;</span>
-        <span class="s">&#39;full description&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="n">arggroup</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--start_seconds_from_now&#39;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store&#39;</span><span class="p">,</span>
-        <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;start_seconds_from_now&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Start the action N seconds from now&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="n">arggroup</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--expire_seconds&#39;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store&#39;</span><span class="p">,</span>
-        <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;expire_seconds&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Expire the action N seconds after it starts, if not supplied &#39;</span>
-        <span class="s">&#39;the packages own expire_seconds will be used&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="n">arggroup</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--package-help&#39;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_true&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;package_help&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Get the full help for package string&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="n">arggroup</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--filters-help&#39;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_true&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;filters_help&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Get the full help for filters strings&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="n">arggroup</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--options-help&#39;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_true&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;options_help&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Get the full help for options strings&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">parser</span> <span class="o">=</span> <span class="n">add_report_file_options</span><span class="p">(</span><span class="n">parser</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">parser</span>
-
-</div>
-<div class="viewcode-block" id="setup_get_result_argparser"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.setup_get_result_argparser">[docs]</a><span class="k">def</span> <span class="nf">setup_get_result_argparser</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to get results for questions or actions.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">parent_parser</span> <span class="o">=</span> <span class="n">setup_parser</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
-    <span class="n">parser</span> <span class="o">=</span> <span class="n">CustomArgParse</span><span class="p">(</span>
-        <span class="n">description</span><span class="o">=</span><span class="n">doc</span><span class="p">,</span>
-        <span class="n">parents</span><span class="o">=</span><span class="p">[</span><span class="n">parent_parser</span><span class="p">],</span>
-    <span class="p">)</span>
-    <span class="n">arggroup</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_argument_group</span><span class="p">(</span><span class="s">&#39;Get Result Options&#39;</span><span class="p">)</span>
-
-    <span class="n">arggroup</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;-o&#39;</span><span class="p">,</span>
-        <span class="s">&#39;--object&#39;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span>
-        <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;saved_question&#39;</span><span class="p">,</span> <span class="s">&#39;question&#39;</span><span class="p">,</span> <span class="s">&#39;action&#39;</span><span class="p">],</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;object_type&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Type of object to get results for&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="n">arggroup</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;-i&#39;</span><span class="p">,</span>
-        <span class="s">&#39;--id&#39;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span>
-        <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;object_id&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;id of object to get results for&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="k">return</span> <span class="n">parser</span>
-
-</div>
-<div class="viewcode-block" id="setup_ask_manual_argparser"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.setup_ask_manual_argparser">[docs]</a><span class="k">def</span> <span class="nf">setup_ask_manual_argparser</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to ask manual questions.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">parent_parser</span> <span class="o">=</span> <span class="n">setup_parser</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
-    <span class="n">parser</span> <span class="o">=</span> <span class="n">CustomArgParse</span><span class="p">(</span>
-        <span class="n">description</span><span class="o">=</span><span class="n">doc</span><span class="p">,</span>
-        <span class="n">parents</span><span class="o">=</span><span class="p">[</span><span class="n">parent_parser</span><span class="p">],</span>
-    <span class="p">)</span>
-    <span class="n">arggroup</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_argument_group</span><span class="p">(</span><span class="s">&#39;Manual Question Options&#39;</span><span class="p">)</span>
-
-    <span class="n">arggroup</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;-s&#39;</span><span class="p">,</span>
-        <span class="s">&#39;--sensor&#39;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;append&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;sensors&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Sensor, optionally describe parameters, options, and a filter&#39;</span>
-        <span class="s">&#39;; pass --sensors-help to get a full description&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="n">arggroup</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;-f&#39;</span><span class="p">,</span>
-        <span class="s">&#39;--filter&#39;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;append&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;question_filters&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Whole question filter; pass --filters-help to get a full description&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="n">arggroup</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;-o&#39;</span><span class="p">,</span>
-        <span class="s">&#39;--option&#39;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;append&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;question_options&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Whole question option; pass --options-help to get a full description&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="n">arggroup</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--sensors-help&#39;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_true&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;sensors_help&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Get the full help for sensor strings&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="n">arggroup</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--filters-help&#39;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_true&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;filters_help&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Get the full help for filters strings&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="n">arggroup</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--options-help&#39;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_true&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;options_help&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Get the full help for options strings&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">group</span> <span class="o">=</span> <span class="n">arggroup</span><span class="o">.</span><span class="n">add_mutually_exclusive_group</span><span class="p">()</span>
-
-    <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--no-results&#39;</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_false&#39;</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;get_results&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">SUPPRESS</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Do not get the results after asking the quesiton &#39;</span>
-        <span class="s">&#39;action&#39;</span>
-    <span class="p">)</span>
-    <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--results&#39;</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_true&#39;</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;get_results&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Get the results after asking the quesiton &#39;</span>
-        <span class="s">&#39;(default)&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="k">return</span> <span class="n">parser</span>
-
-</div>
-<div class="viewcode-block" id="add_ask_report_argparser"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.add_ask_report_argparser">[docs]</a><span class="k">def</span> <span class="nf">add_ask_report_argparser</span><span class="p">(</span><span class="n">parser</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Method to extend a :class:`pytan.utils.CustomArgParse` class for command line scripts with arguments for scripts that need to supply export format subparsers for asking questions.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">parser</span> <span class="o">=</span> <span class="n">add_report_file_options</span><span class="p">(</span><span class="n">parser</span><span class="p">)</span>
-
-    <span class="n">subparsers</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_subparsers</span><span class="p">(</span>
-        <span class="n">title</span><span class="o">=</span><span class="s">&#39;Export Formats&#39;</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;export_format&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Export Format choices -- these MUST be at the END of the command line, and their corresponding options must follow them!&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="n">csv_subparser</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span>
-        <span class="s">&#39;csv&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Produce a CSV report, supply &quot;csv -h&quot; to see CSV options&#39;</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s">&quot;CSV Export Options&quot;</span>
-    <span class="p">)</span>
-
-    <span class="n">group</span> <span class="o">=</span> <span class="n">csv_subparser</span><span class="o">.</span><span class="n">add_mutually_exclusive_group</span><span class="p">()</span>
-    <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--sort&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;append&#39;</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;header_sort&#39;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Sort headers by given names&#39;</span>
-    <span class="p">)</span>
-    <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--no-sort&#39;</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_false&#39;</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;header_sort&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">SUPPRESS</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Do not sort the headers at all&#39;</span>
-    <span class="p">)</span>
-    <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--auto_sort&#39;</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_true&#39;</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;header_sort&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">SUPPRESS</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Sort the headers with a basic alphanumeric sort (default)&#39;</span>
-    <span class="p">)</span>
-
-    <span class="n">group</span> <span class="o">=</span> <span class="n">csv_subparser</span><span class="o">.</span><span class="n">add_mutually_exclusive_group</span><span class="p">()</span>
-    <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--add-sensor&#39;</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_true&#39;</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;header_add_sensor&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">SUPPRESS</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Add the sensor names to each header&#39;</span>
-    <span class="p">)</span>
-    <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--no-add-sensor&#39;</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_false&#39;</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;header_add_sensor&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">SUPPRESS</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Do not add the sensor names to each header (default)&#39;</span>
-    <span class="p">)</span>
-
-    <span class="n">group</span> <span class="o">=</span> <span class="n">csv_subparser</span><span class="o">.</span><span class="n">add_mutually_exclusive_group</span><span class="p">()</span>
-    <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--add-type&#39;</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_true&#39;</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;header_add_type&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">SUPPRESS</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Add the result type to each header&#39;</span>
-    <span class="p">)</span>
-    <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--no-add-type&#39;</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_false&#39;</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;header_add_type&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">SUPPRESS</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Do not add the result type to each header (default)&#39;</span>
-    <span class="p">)</span>
-
-    <span class="n">group</span> <span class="o">=</span> <span class="n">csv_subparser</span><span class="o">.</span><span class="n">add_mutually_exclusive_group</span><span class="p">()</span>
-    <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--expand-columns&#39;</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_true&#39;</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;expand_grouped_columns&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">SUPPRESS</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Expand multi-line cells into their own rows that have sensor &#39;</span>
-        <span class="s">&#39;correlated columns in the new rows&#39;</span>
-    <span class="p">)</span>
-    <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--no-columns&#39;</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_false&#39;</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;expand_grouped_columns&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">SUPPRESS</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Do not add expand multi-line cells into their own rows (default)&#39;</span>
-    <span class="p">)</span>
-
-    <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span>
-        <span class="s">&#39;json&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Produce a JSON report, supply &quot;json -h&quot; to see JSON options&#39;</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s">&quot;JSON Export Options&quot;</span>
-    <span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">parser</span>
-
-</div>
-<div class="viewcode-block" id="add_report_file_options"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.add_report_file_options">[docs]</a><span class="k">def</span> <span class="nf">add_report_file_options</span><span class="p">(</span><span class="n">parser</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Method to extend a :class:`pytan.utils.CustomArgParse` class for command line scripts with arguments for scripts that need to supply export file and directory options.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">opt_group</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_argument_group</span><span class="p">(</span><span class="s">&#39;Report File Options&#39;</span><span class="p">)</span>
-    <span class="n">opt_group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--file&#39;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;report_file&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;File to save report to (will be automatically generated if not &#39;</span>
-        <span class="s">&#39;supplied)&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">opt_group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--dir&#39;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;report_dir&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Directory to save report to (current directory will be used if &#39;</span>
-        <span class="s">&#39;not supplied)&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="k">return</span> <span class="n">parser</span>
-
-</div>
-<div class="viewcode-block" id="add_get_object_report_argparser"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.add_get_object_report_argparser">[docs]</a><span class="k">def</span> <span class="nf">add_get_object_report_argparser</span><span class="p">(</span><span class="n">parser</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Method to extend a :class:`pytan.utils.CustomArgParse` class for command line scripts with arguments for scripts that need to supply export format subparsers for getting objects.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">parser</span> <span class="o">=</span> <span class="n">add_report_file_options</span><span class="p">(</span><span class="n">parser</span><span class="p">)</span>
-
-    <span class="n">subparsers</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_subparsers</span><span class="p">(</span>
-        <span class="n">title</span><span class="o">=</span><span class="s">&#39;Export Formats&#39;</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;export_format&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Export Format choices -- these MUST be at the END of the command line, and their corresponding options must follow them!&#39;</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="n">csv_subparser</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span>
-        <span class="s">&#39;csv&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Produce a CSV report, supply &quot;csv -h&quot; to see CSV options&#39;</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s">&quot;CSV Export Options&quot;</span>
-    <span class="p">)</span>
-
-    <span class="n">group</span> <span class="o">=</span> <span class="n">csv_subparser</span><span class="o">.</span><span class="n">add_mutually_exclusive_group</span><span class="p">()</span>
-    <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--sort&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;append&#39;</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;header_sort&#39;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Sort headers by given names&#39;</span>
-    <span class="p">)</span>
-    <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--no-sort&#39;</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_false&#39;</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;header_sort&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">SUPPRESS</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Do not sort the headers at all&#39;</span>
-    <span class="p">)</span>
-    <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--auto_sort&#39;</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_true&#39;</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;header_sort&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">SUPPRESS</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Sort the headers with a basic alphanumeric sort (default)&#39;</span>
-    <span class="p">)</span>
-
-    <span class="n">group</span> <span class="o">=</span> <span class="n">csv_subparser</span><span class="o">.</span><span class="n">add_mutually_exclusive_group</span><span class="p">()</span>
-    <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--no-explode-json&#39;</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_false&#39;</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;explode_json_string_values&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">SUPPRESS</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Do not explode any embedded JSON into their own columns&#39;</span>
-    <span class="p">)</span>
-    <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--explode-json&#39;</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_true&#39;</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;explode_json_string_values&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">SUPPRESS</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Explode any embedded JSON into their own columns (default)&#39;</span>
-    <span class="p">)</span>
-
-    <span class="n">json_subparser</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span>
-        <span class="s">&#39;json&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Produce a JSON report, supply &quot;json -h&quot; to see JSON options&#39;</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s">&quot;JSON Export Options&quot;</span>
-    <span class="p">)</span>
-
-    <span class="n">group</span> <span class="o">=</span> <span class="n">json_subparser</span><span class="o">.</span><span class="n">add_mutually_exclusive_group</span><span class="p">()</span>
-    <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--explode-json&#39;</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_true&#39;</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;explode_json_string_values&#39;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">SUPPRESS</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Explode any embedded JSON into their own columns&#39;</span>
-    <span class="p">)</span>
-    <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--no-explode-json&#39;</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_false&#39;</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;explode_json_string_values&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">SUPPRESS</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Do not explode any embedded JSON into their own columns &#39;</span>
-        <span class="s">&#39;(default)&#39;</span>
-    <span class="p">)</span>
-
-    <span class="n">group</span> <span class="o">=</span> <span class="n">json_subparser</span><span class="o">.</span><span class="n">add_mutually_exclusive_group</span><span class="p">()</span>
-    <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--no-include_type&#39;</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_false&#39;</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;include_type&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">SUPPRESS</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Do not include SOAP type in JSON output&#39;</span>
-    <span class="p">)</span>
-    <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--include_type&#39;</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_true&#39;</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;include_type&#39;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">SUPPRESS</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Include SOAP type in JSON output (default)&#39;</span>
-    <span class="p">)</span>
-
-    <span class="n">xml_subparser</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span>
-        <span class="s">&#39;xml&#39;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Produce a XML report, supply &quot;xml -h&quot; to see XML options&#39;</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s">&quot;XML Export Options&quot;</span>
-    <span class="p">)</span>
-
-    <span class="n">group</span> <span class="o">=</span> <span class="n">xml_subparser</span><span class="o">.</span><span class="n">add_mutually_exclusive_group</span><span class="p">()</span>
-    <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--no-minimal&#39;</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_false&#39;</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;minimal&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">SUPPRESS</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Produce the full XML representation, including empty attributes&#39;</span>
-    <span class="p">)</span>
-    <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--minimal&#39;</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_true&#39;</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;minimal&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">SUPPRESS</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Only include attributes that are not empty (default)&#39;</span>
-    <span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">parser</span>
-
-</div>
-<div class="viewcode-block" id="process_create_json_object_args"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.process_create_json_object_args">[docs]</a><span class="k">def</span> <span class="nf">process_create_json_object_args</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">all_args</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Process command line args supplied by user for create json object</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    parser : :class:`argparse.ArgParse`</span>
-<span class="sd">        * ArgParse object used to parse `all_args`</span>
-<span class="sd">    handler : :class:`pytan.handler.Handler`</span>
-<span class="sd">        * Instance of Handler created from command line args</span>
-<span class="sd">    obj : str</span>
-<span class="sd">        * Object type for create json object</span>
-<span class="sd">    all_args : dict</span>
-<span class="sd">        * dict of args parsed from `parser`</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    response : :class:`taniumpy.object_types.base.BaseType`</span>
-<span class="sd">        * response from :func:`pytan.handler.Handler.create_from_json`</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c"># put our query args into their own dict and remove them from all_args</span>
-    <span class="n">obj_grp_names</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s">&#39;Create {} from JSON Options&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">obj</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;_&#39;</span><span class="p">,</span> <span class="s">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span>
-        <span class="p">)</span>
-    <span class="p">]</span>
-    <span class="n">obj_grp_opts</span> <span class="o">=</span> <span class="n">get_grp_opts</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">obj_grp_names</span><span class="p">)</span>
-    <span class="n">obj_grp_args</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">all_args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">obj_grp_opts</span><span class="p">}</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">create_from_json</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">obj_grp_args</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="k">print</span> <span class="n">e</span>
-        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
-        <span class="n">obj_id</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="s">&#39;unknown&#39;</span><span class="p">)</span>
-        <span class="k">print</span> <span class="s">&quot;Created item: {}, ID: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">obj_id</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">response</span>
-
-</div>
-<div class="viewcode-block" id="process_delete_object_args"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.process_delete_object_args">[docs]</a><span class="k">def</span> <span class="nf">process_delete_object_args</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">all_args</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Process command line args supplied by user for delete object</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    parser : :class:`argparse.ArgParse`</span>
-<span class="sd">        * ArgParse object used to parse `all_args`</span>
-<span class="sd">    handler : :class:`pytan.handler.Handler`</span>
-<span class="sd">        * Instance of Handler created from command line args</span>
-<span class="sd">    obj : str</span>
-<span class="sd">        * Object type for delete object</span>
-<span class="sd">    all_args : dict</span>
-<span class="sd">        * dict of args parsed from `parser`</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    response : :class:`taniumpy.object_types.base.BaseType`</span>
-<span class="sd">        * response from :func:`pytan.handler.Handler.delete`</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c"># put our query args into their own dict and remove them from all_args</span>
-    <span class="n">obj_grp_names</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s">&#39;Delete {} Options&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;_&#39;</span><span class="p">,</span> <span class="s">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">capitalize</span><span class="p">())</span>
-    <span class="p">]</span>
-    <span class="n">obj_grp_opts</span> <span class="o">=</span> <span class="n">get_grp_opts</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">obj_grp_names</span><span class="p">)</span>
-    <span class="n">obj_grp_args</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">all_args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">obj_grp_opts</span><span class="p">}</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">obj_grp_args</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="k">print</span> <span class="n">e</span>
-        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
-        <span class="k">print</span> <span class="s">&quot;Deleted item: &quot;</span><span class="p">,</span> <span class="n">i</span>
-    <span class="k">return</span> <span class="n">response</span>
-
-</div>
-<div class="viewcode-block" id="process_get_object_args"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.process_get_object_args">[docs]</a><span class="k">def</span> <span class="nf">process_get_object_args</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">all_args</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Process command line args supplied by user for get object</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    parser : :class:`argparse.ArgParse`</span>
-<span class="sd">        * ArgParse object used to parse `all_args`</span>
-<span class="sd">    handler : :class:`pytan.handler.Handler`</span>
-<span class="sd">        * Instance of Handler created from command line args</span>
-<span class="sd">    obj : str</span>
-<span class="sd">        * Object type for get object</span>
-<span class="sd">    all_args : dict</span>
-<span class="sd">        * dict of args parsed from `parser`</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    response : :class:`taniumpy.object_types.base.BaseType`</span>
-<span class="sd">        * response from :func:`pytan.handler.Handler.get`</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c"># put our query args into their own dict and remove them from all_args</span>
-    <span class="n">obj_grp_names</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s">&#39;Get {} Options&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;_&#39;</span><span class="p">,</span> <span class="s">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">capitalize</span><span class="p">())</span>
-    <span class="p">]</span>
-    <span class="n">obj_grp_opts</span> <span class="o">=</span> <span class="n">get_grp_opts</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">obj_grp_names</span><span class="p">)</span>
-    <span class="n">obj_grp_args</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">all_args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">obj_grp_opts</span><span class="p">}</span>
-    <span class="n">get_all</span> <span class="o">=</span> <span class="n">obj_grp_args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;all&#39;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">get_all</span><span class="p">:</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">response</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">get_all</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">print</span> <span class="n">e</span>
-            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">response</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">obj_grp_args</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">print</span> <span class="n">e</span>
-            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
-
-    <span class="k">print</span> <span class="s">&quot;Found items: &quot;</span><span class="p">,</span> <span class="n">response</span>
-    <span class="k">return</span> <span class="n">response</span>
-
-</div>
-<div class="viewcode-block" id="get_grp_opts"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.get_grp_opts">[docs]</a><span class="k">def</span> <span class="nf">get_grp_opts</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">grp_names</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Used to get arguments in `parser` that match argument group names in `grp_names`</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    parser : :class:`argparse.ArgParse`</span>
-<span class="sd">        * ArgParse object</span>
-<span class="sd">    grp_names : list of str</span>
-<span class="sd">        * list of str of argument group names to get arguments for</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    grp_opts : list of str</span>
-<span class="sd">        * list of arguments gathered from argument group names in `grp_names`</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">action_grps</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">parser</span><span class="o">.</span><span class="n">_action_groups</span> <span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">title</span> <span class="ow">in</span> <span class="n">grp_names</span><span class="p">]</span>
-    <span class="n">grp_opts</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">dest</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">action_grps</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">b</span><span class="o">.</span><span class="n">_group_actions</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">grp_opts</span>
-
-</div>
 <div class="viewcode-block" id="is_list"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.is_list">[docs]</a><span class="k">def</span> <span class="nf">is_list</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;returns True if `l` is a list, False if not&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">]</span>
@@ -1158,31 +229,6 @@
 <div class="viewcode-block" id="is_num"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.is_num">[docs]</a><span class="k">def</span> <span class="nf">is_num</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;returns True if `l` is a number, False if not&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">long</span><span class="p">]</span>
-
-</div>
-<div class="viewcode-block" id="version_check"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.version_check">[docs]</a><span class="k">def</span> <span class="nf">version_check</span><span class="p">(</span><span class="n">reqver</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Allows scripts using :mod:`pytan` to validate the version of the script</span>
-<span class="sd">    aginst the version of :mod:`pytan`</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    reqver : str</span>
-<span class="sd">        * string containing version number to check against :exc:`Exception`</span>
-
-<span class="sd">    Raises</span>
-<span class="sd">    ------</span>
-<span class="sd">    VersionMismatchError : :exc:`Exception`</span>
-<span class="sd">        * if :data:`pytan.__version__` is not greater or equal to `reqver`</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">log_tpl</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s">&quot;{}: {} version {}, required {}&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">__version__</span> <span class="o">&gt;=</span> <span class="n">reqver</span><span class="p">:</span>
-        <span class="n">s</span> <span class="o">=</span> <span class="s">&quot;Script and API Version mismatch!&quot;</span>
-        <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">VersionMismatchError</span><span class="p">(</span><span class="n">log_tpl</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">__version__</span><span class="p">,</span> <span class="n">reqver</span><span class="p">))</span>
-
-    <span class="n">s</span> <span class="o">=</span> <span class="s">&quot;Script and API Version match&quot;</span>
-    <span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">log_tpl</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">__version__</span><span class="p">,</span> <span class="n">reqver</span><span class="p">))</span>
-    <span class="k">return</span> <span class="bp">True</span>
 
 </div>
 <div class="viewcode-block" id="jsonify"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.jsonify">[docs]</a><span class="k">def</span> <span class="nf">jsonify</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
@@ -1253,6 +299,9 @@
 <span class="sd">    str :</span>
 <span class="sd">        * time `secs` from now in Tanium SOAP API format</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">secs</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">secs</span> <span class="o">=</span> <span class="mi">0</span>
+
     <span class="k">if</span> <span class="n">tz</span> <span class="o">==</span> <span class="s">&#39;utc&#39;</span><span class="p">:</span>
         <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
     <span class="k">else</span><span class="p">:</span>
@@ -2917,7 +1966,20 @@
     <span class="k">return</span> <span class="n">wrap</span>
 
 </div>
-<div class="viewcode-block" id="xml_pretty"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.xml_pretty">[docs]</a><span class="k">def</span> <span class="nf">xml_pretty</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="viewcode-block" id="eval_timing"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.eval_timing">[docs]</a><span class="k">def</span> <span class="nf">eval_timing</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Yet another method to time things -- c will be evaluated and timing information will be printed out</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">t_start</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+    <span class="n">t_end</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="n">t_elapsed</span> <span class="o">=</span> <span class="n">t_end</span> <span class="o">-</span> <span class="n">t_start</span>
+
+    <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Timing info for {} -- START: {}, END: {}, ELAPSED: {}, RESPONSE LEN: {}&quot;</span><span class="o">.</span><span class="n">format</span>
+    <span class="n">mylog</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">t_start</span><span class="p">,</span> <span class="n">t_end</span><span class="p">,</span> <span class="n">t_elapsed</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">t_start</span><span class="p">,</span> <span class="n">t_end</span><span class="p">,</span> <span class="n">t_elapsed</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="xml_pretty"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.xml_pretty">[docs]</a><span class="k">def</span> <span class="nf">xml_pretty</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pretty</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="s">&#39;  &#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Uses :mod:`xmltodict` to pretty print an XML str `x`</span>
 
 <span class="sd">    Parameters</span>
@@ -2932,7 +1994,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">x_parsed</span> <span class="o">=</span> <span class="n">xmltodict</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="n">x_unparsed</span> <span class="o">=</span> <span class="n">xmltodict</span><span class="o">.</span><span class="n">unparse</span><span class="p">(</span><span class="n">x_parsed</span><span class="p">,</span> <span class="n">pretty</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="s">&#39;  &#39;</span><span class="p">)</span>
+    <span class="n">x_unparsed</span> <span class="o">=</span> <span class="n">xmltodict</span><span class="o">.</span><span class="n">unparse</span><span class="p">(</span><span class="n">x_parsed</span><span class="p">,</span> <span class="n">pretty</span><span class="o">=</span><span class="n">pretty</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="n">indent</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">x_unparsed</span>
 
 </div>
@@ -2945,17 +2007,21 @@
 <span class="sd">    h : Handler object</span>
 <span class="sd">        * Handler object with session object containing last request and response body</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">response_obj</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">LAST_REQUESTS_RESPONSE</span>
+    <span class="n">request_body</span> <span class="o">=</span> <span class="n">response_obj</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">body</span>
+    <span class="n">response_body</span> <span class="o">=</span> <span class="n">response_obj</span><span class="o">.</span><span class="n">text</span>
+
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">req</span> <span class="o">=</span> <span class="n">xml_pretty</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">request_body</span><span class="p">)</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="n">xml_pretty</span><span class="p">(</span><span class="n">request_body</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">req</span> <span class="o">=</span> <span class="s">&quot;Failed to prettify xml: {}, raw xml:</span><span class="se">\n</span><span class="s">{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">h</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">request_body</span><span class="p">)</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="s">&quot;Failed to prettify xml: {}, raw xml:</span><span class="se">\n</span><span class="s">{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">request_body</span><span class="p">)</span>
 
     <span class="n">prettylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Last HTTP request:</span><span class="se">\n</span><span class="s">{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">req</span><span class="p">))</span>
 
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">resp</span> <span class="o">=</span> <span class="n">xml_pretty</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">response_body</span><span class="p">)</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">xml_pretty</span><span class="p">(</span><span class="n">response_body</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">resp</span> <span class="o">=</span> <span class="s">&quot;Failed to prettify xml: {}, raw xml:</span><span class="se">\n</span><span class="s">{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">h</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">response_body</span><span class="p">)</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="s">&quot;Failed to prettify xml: {}, raw xml:</span><span class="se">\n</span><span class="s">{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">response_body</span><span class="p">)</span>
 
     <span class="n">prettylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Last HTTP response:</span><span class="se">\n</span><span class="s">{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">xml_pretty</span><span class="p">(</span><span class="n">resp</span><span class="p">)))</span>
 
@@ -3107,7 +2173,46 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">[</span>
         <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">sql_response</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">sql_response</span><span class="o">.</span><span class="n">result_row</span>
-    <span class="p">]</span></div>
+    <span class="p">]</span>
+
+</div>
+<div class="viewcode-block" id="clean_kwargs"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.clean_kwargs">[docs]</a><span class="k">def</span> <span class="nf">clean_kwargs</span><span class="p">(</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Removes each key from kwargs dict if found</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    kwargs : dict</span>
+<span class="sd">        * dict of keyword args</span>
+<span class="sd">    keys : list of str, optional</span>
+<span class="sd">        * default: [&#39;obj&#39;, &#39;pytan_help&#39;, &#39;objtype&#39;]</span>
+<span class="sd">        * list of strs of keys to remove from kwargs</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    clean_kwargs : dict</span>
+<span class="sd">        * the new dict of kwargs with keys removed</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">keys</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;obj&#39;</span><span class="p">,</span> <span class="s">&#39;pytan_help&#39;</span><span class="p">,</span> <span class="s">&#39;objtype&#39;</span><span class="p">]</span>
+
+    <span class="n">clean_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="p">[</span><span class="n">clean_kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">keys</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">clean_kwargs</span>
+
+</div>
+<div class="viewcode-block" id="check_for_help"><a class="viewcode-back" href="../../pytan.utils.html#pytan.utils.check_for_help">[docs]</a><span class="k">def</span> <span class="nf">check_for_help</span><span class="p">(</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Utility method to check for any help arguments and raise a PytanHelp exception with the appropriate help</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    kwargs : dict</span>
+<span class="sd">        * dict of keyword args</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">help_keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">pytan</span><span class="o">.</span><span class="n">help</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;_help&#39;</span><span class="p">)]</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">help_keys</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+            <span class="n">help_out</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">pytan</span><span class="o">.</span><span class="n">help</span><span class="p">,</span> <span class="n">x</span><span class="p">)()</span>
+            <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">PytanHelp</span><span class="p">(</span><span class="n">help_out</span><span class="p">)</span></div>
 </pre></div>
 
           </div>
@@ -3119,7 +2224,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Aug 28, 2015.
+      Last updated on Aug 31, 2015.
     </p>
   </div>
 

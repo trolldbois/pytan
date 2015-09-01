@@ -6,7 +6,6 @@ pytan package
     :members:
     :undoc-members:
     :private-members:
-    :special-members:
 
 .. autodata:: pytan.__version__
 .. autodata:: pytan.__copyright__
@@ -21,6 +20,7 @@ pytan package
    pytan.pollers
    pytan.constants
    pytan.utils
+   pytan.binsupport
    pytan.xml_clean
    pytan.unittest
    pytan.functest
