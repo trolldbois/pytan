@@ -2,7 +2,7 @@
 # -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
-"""Collection of exceptions, classes, and methods used throughout :mod:`pytan`"""
+"""Collection of classes and methods used throughout :mod:`pytan`"""
 import sys
 
 # disable python from creating .pyc files everywhere
@@ -13,22 +13,16 @@ import socket
 import time
 import logging
 import json
-import argparse
 import datetime
 import re
 import itertools
-from argparse import ArgumentDefaultsHelpFormatter as A1 # noqa
-from argparse import RawDescriptionHelpFormatter as A2 # noqa
 from collections import OrderedDict
 
 my_file = os.path.abspath(__file__)
 my_dir = os.path.dirname(my_file)
 parent_dir = os.path.dirname(my_dir)
 path_adds = [parent_dir]
-
-for aa in path_adds:
-    if aa not in sys.path:
-        sys.path.append(aa)
+[sys.path.append(aa) for aa in path_adds if aa not in sys.path]
 
 import taniumpy
 import xmltodict
@@ -42,7 +36,6 @@ manuallog = logging.getLogger("pytan.handler.ask_manual")
 prettylog = logging.getLogger("pytan.handler.prettybody")
 timinglog = logging.getLogger("pytan.handler.timing")
 
-pname = os.path.splitext(os.path.basename(sys.argv[0]))[0]
 DEBUG_OUTPUT = False
 
 
@@ -80,964 +73,6 @@ class SplitStreamHandler(logging.Handler):
             self.handleError(record)
 
 
-class CustomArgFormat(A1, A2):
-    """Multiple inheritance Formatter class for :class:`argparse.ArgumentParser`.
-
-    If a :class:`argparse.ArgumentParser` class uses this as it's Formatter class, it will show the defaults for each argument in the `help` output
-    """
-    pass
-
-
-class CustomArgParse(argparse.ArgumentParser):
-    """Custom :class:`argparse.ArgumentParser` class which does a number of things:
-
-        * Uses :class:`pytan.utils.CustomArgFormat` as it's Formatter class, if none was passed in
-        * Prints help if there is an error
-        * Prints the help for any subparsers that exist
-    """
-    def __init__(self, *args, **kwargs):
-        if 'formatter_class' not in kwargs:
-            kwargs['formatter_class'] = CustomArgFormat
-        # print kwargs
-        argparse.ArgumentParser.__init__(self, *args, **kwargs)
-
-    def error(self, message):
-        self.print_help()
-        print('ERROR:{}:{}\n'.format(pname, message))
-        sys.exit(2)
-
-    def print_help(self, **kwargs):
-        super(CustomArgParse, self).print_help(**kwargs)
-        subparsers_actions = [
-            action for action in self._actions
-            if isinstance(action, argparse._SubParsersAction)
-        ]
-        for subparsers_action in subparsers_actions:
-            print ""
-            # get all subparsers and print help
-            for choice, subparser in subparsers_action.choices.items():
-                # print subparser
-                # print(" ** {} '{}':".format(
-                    # subparsers_action.dest, choice))
-                print(subparser.format_help())
-
-
-def setup_parser(desc, help=False):
-    """Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts that use :mod:`pytan`. This establishes the basic arguments that are needed by all such scripts, such as:
-
-        * --help
-        * --username
-        * --password
-        * --host
-        * --port
-        * --loglevel
-        * --debugformat (not shown in --help)
-    """
-
-    parser = CustomArgParse(
-        description=desc,
-        add_help=help,
-        formatter_class=CustomArgFormat,
-    )
-    auth_group = parser.add_argument_group('Handler Authentication')
-    auth_group.add_argument(
-        '-u',
-        '--username',
-        required=False,
-        action='store',
-        dest='username',
-        default=None,
-        help='Name of user',
-    )
-    auth_group.add_argument(
-        '-p',
-        '--password',
-        required=False,
-        action='store',
-        default=None,
-        dest='password',
-        help='Password of user',
-    )
-    auth_group.add_argument(
-        '--host',
-        required=False,
-        action='store',
-        default=None,
-        dest='host',
-        help='Hostname/ip of SOAP Server',
-    )
-    auth_group.add_argument(
-        '--port',
-        required=False,
-        action='store',
-        default="443",
-        dest='port',
-        help='Port to use when connecting to SOAP Server',
-    )
-
-    opt_group = parser.add_argument_group('Handler Options')
-    opt_group.add_argument(
-        '-l',
-        '--loglevel',
-        required=False,
-        action='store',
-        type=int,
-        default=0,
-        dest='loglevel',
-        help='Logging level to use, increase for more verbosity',
-    )
-    opt_group.add_argument(
-        '--debugformat',
-        required=False,
-        action='store_true',
-        default=False,
-        dest='debugformat',
-        help="Enable debug format for logging",
-    )
-    opt_group.add_argument(
-        '--record_all_requests',
-        required=False,
-        action='store_true',
-        default=False,
-        dest='record_all_requests',
-        help="Record all requests in handler.session.ALL_REQUESTS_RESPONSES",
-    )
-    opt_group.add_argument(
-        '--stats_loop_enabled',
-        required=False,
-        action='store_true',
-        default=False,
-        dest='stats_loop_enabled',
-        help="Enable the statistics loop",
-    )
-    opt_group.add_argument(
-        '--http_auth_retry',
-        required=False,
-        action='store_false',
-        default=True,
-        dest='http_auth_retry',
-        help="Disable retry on HTTP authentication failures",
-    )
-    opt_group.add_argument(
-        '--http_retry_count',
-        required=False,
-        action='store',
-        type=int,
-        default=5,
-        dest='http_retry_count',
-        help="Retry count for HTTP failures/invalid responses",
-    )
-
-    return parser
-
-
-def setup_get_object_argparser(obj, doc):
-    """Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to get objects.
-    """
-    parent_parser = setup_parser(doc)
-    parser = CustomArgParse(
-        description=doc,
-        parents=[parent_parser],
-    )
-    get_object_group = parser.add_argument_group(
-        'Get {} Options'.format(obj.replace('_', ' ').capitalize())
-    )
-    get_object_group.add_argument(
-        '--all',
-        required=False,
-        default=False,
-        action='store_true',
-        dest='all',
-        help='Get all {}s'.format(obj),
-    )
-
-    obj_map = get_obj_map(obj)
-    search_keys = obj_map['search']
-
-    if 'id' not in search_keys:
-        search_keys.append('id')
-
-    if obj == 'whitelisted_url':
-        search_keys.append('url_regex')
-
-    for k in search_keys:
-        get_object_group.add_argument(
-            '--{}'.format(k),
-            required=False,
-            action='append',
-            default=[],
-            dest=k,
-            help='{} of {} to get'.format(k, obj),
-        )
-
-    return parser
-
-
-def setup_create_json_object_argparser(obj, doc):
-    """Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to create objects from json files.
-    """
-
-    parent_parser = setup_parser(doc)
-    parser = CustomArgParse(
-        description=doc,
-        parents=[parent_parser],
-    )
-    arggroup = parser.add_argument_group(
-        'Create {} from JSON Options'.format(
-            obj.replace('_', ' ').capitalize()
-        )
-    )
-
-    arggroup.add_argument(
-        '-j',
-        '--json',
-        required=True,
-        action='store',
-        default='',
-        dest='json_file',
-        help='JSON file to use for creating the object',
-    )
-    return parser
-
-
-def setup_delete_object_argparser(obj, doc):
-    """Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to delete objects.
-    """
-    parent_parser = setup_parser(doc)
-    parser = CustomArgParse(
-        description=doc,
-        parents=[parent_parser],
-    )
-    arggroup = parser.add_argument_group(
-        'Delete {} Options'.format(obj.replace('_', ' ').capitalize())
-    )
-
-    obj_map = get_obj_map(obj)
-    search_keys = obj_map['search']
-    if obj == 'whitelisted_url':
-        search_keys.append('url_regex')
-
-    for k in search_keys:
-        arggroup.add_argument(
-            '--{}'.format(k),
-            required=False,
-            action='append',
-            default=[],
-            dest=k,
-            help='{} of {} to get'.format(k, obj),
-        )
-
-    return parser
-
-
-def setup_ask_saved_argparser(doc):
-    """Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to ask saved questions.
-    """
-
-    obj = 'saved_question'
-    parent_parser = setup_parser(doc)
-    parser = CustomArgParse(
-        description=doc,
-        parents=[parent_parser],
-    )
-    arggroup = parser.add_argument_group('Saved Question Selectors')
-    group = arggroup.add_mutually_exclusive_group()
-
-    obj_map = get_obj_map(obj)
-    search_keys = obj_map['search']
-    for k in search_keys:
-        group.add_argument(
-            '--{}'.format(k),
-            required=False,
-            action='store',
-            dest=k,
-            help='{} of {} to ask'.format(k, obj),
-        )
-    return parser
-
-
-def setup_stop_action_argparser(doc):
-    """Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to stop actions.
-    """
-
-    parent_parser = setup_parser(doc)
-    parser = CustomArgParse(
-        description=doc,
-        parents=[parent_parser],
-    )
-    arggroup = parser.add_argument_group('Stop Action Options')
-
-    arggroup.add_argument(
-        '-i',
-        '--id',
-        required=True,
-        type=int,
-        action='store',
-        dest='id',
-        help='ID of Deploy Action to stop',
-    )
-
-    return parser
-
-
-def setup_deploy_action_argparser(doc):
-    """Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to deploy actions.
-    """
-
-    parent_parser = setup_parser(doc)
-    parser = CustomArgParse(
-        description=doc,
-        parents=[parent_parser],
-    )
-    arggroup = parser.add_argument_group('Deploy Action Options')
-
-    arggroup.add_argument(
-        '--run',
-        required=False,
-        action='store_true',
-        default=False,
-        dest='run',
-        help='Run the deploy action, if not supplied the deploy action will '
-        'only ask the question that matches --filter and save the results to '
-        'csv file for verification',
-    )
-
-    group = arggroup.add_mutually_exclusive_group()
-
-    group.add_argument(
-        '--no-results',
-        action='store_false',
-        dest='get_results',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='Do not get the results after starting the deploy '
-        'action'
-    )
-    group.add_argument(
-        '--results',
-        action='store_true',
-        dest='get_results',
-        default=True,
-        required=False,
-        help='Get the results after starting the deploy action '
-        '(default)',
-    )
-
-    arggroup.add_argument(
-        '-k',
-        '--package',
-        required=False,
-        action='store',
-        default='',
-        dest='package',
-        help='Package to deploy action with, optionally describe parameters, '
-        'pass --package-help to get a full description',
-    )
-
-    arggroup.add_argument(
-        '-f',
-        '--filter',
-        required=False,
-        action='append',
-        default=[],
-        dest='action_filters',
-        help='Filter to deploy action against; pass --filters-help'
-        'to get a full description',
-    )
-
-    arggroup.add_argument(
-        '-o',
-        '--option',
-        required=False,
-        action='append',
-        default=[],
-        dest='action_options',
-        help='Options for deploy action filter; pass --options-help to get a '
-        'full description',
-    )
-
-    arggroup.add_argument(
-        '--start_seconds_from_now',
-        required=False,
-        action='store',
-        type=int,
-        default=None,
-        dest='start_seconds_from_now',
-        help='Start the action N seconds from now',
-    )
-
-    arggroup.add_argument(
-        '--expire_seconds',
-        required=False,
-        action='store',
-        type=int,
-        default=None,
-        dest='expire_seconds',
-        help='Expire the action N seconds after it starts, if not supplied '
-        'the packages own expire_seconds will be used',
-    )
-
-    arggroup.add_argument(
-        '--package-help',
-        required=False,
-        action='store_true',
-        default=False,
-        dest='package_help',
-        help='Get the full help for package string',
-    )
-
-    arggroup.add_argument(
-        '--filters-help',
-        required=False,
-        action='store_true',
-        default=False,
-        dest='filters_help',
-        help='Get the full help for filters strings',
-    )
-
-    arggroup.add_argument(
-        '--options-help',
-        required=False,
-        action='store_true',
-        default=False,
-        dest='options_help',
-        help='Get the full help for options strings',
-    )
-    parser = add_report_file_options(parser)
-
-    return parser
-
-
-def setup_get_result_argparser(doc):
-    """Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to get results for questions or actions.
-    """
-
-    parent_parser = setup_parser(doc)
-    parser = CustomArgParse(
-        description=doc,
-        parents=[parent_parser],
-    )
-    arggroup = parser.add_argument_group('Get Result Options')
-
-    arggroup.add_argument(
-        '-o',
-        '--object',
-        required=True,
-        action='store',
-        default='',
-        choices=['saved_question', 'question', 'action'],
-        dest='object_type',
-        help='Type of object to get results for',
-    )
-
-    arggroup.add_argument(
-        '-i',
-        '--id',
-        required=True,
-        action='store',
-        default='',
-        type=int,
-        dest='object_id',
-        help='id of object to get results for',
-    )
-    return parser
-
-
-def setup_ask_manual_argparser(doc):
-    """Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to ask manual questions.
-    """
-    parent_parser = setup_parser(doc)
-    parser = CustomArgParse(
-        description=doc,
-        parents=[parent_parser],
-    )
-    arggroup = parser.add_argument_group('Manual Question Options')
-
-    arggroup.add_argument(
-        '-s',
-        '--sensor',
-        required=False,
-        action='append',
-        default=[],
-        dest='sensors',
-        help='Sensor, optionally describe parameters, options, and a filter'
-        '; pass --sensors-help to get a full description',
-    )
-
-    arggroup.add_argument(
-        '-f',
-        '--filter',
-        required=False,
-        action='append',
-        default=[],
-        dest='question_filters',
-        help='Whole question filter; pass --filters-help to get a full description',
-    )
-
-    arggroup.add_argument(
-        '-o',
-        '--option',
-        required=False,
-        action='append',
-        default=[],
-        dest='question_options',
-        help='Whole question option; pass --options-help to get a full description',
-    )
-
-    arggroup.add_argument(
-        '--sensors-help',
-        required=False,
-        action='store_true',
-        default=False,
-        dest='sensors_help',
-        help='Get the full help for sensor strings',
-    )
-
-    arggroup.add_argument(
-        '--filters-help',
-        required=False,
-        action='store_true',
-        default=False,
-        dest='filters_help',
-        help='Get the full help for filters strings',
-    )
-
-    arggroup.add_argument(
-        '--options-help',
-        required=False,
-        action='store_true',
-        default=False,
-        dest='options_help',
-        help='Get the full help for options strings',
-    )
-    group = arggroup.add_mutually_exclusive_group()
-
-    group.add_argument(
-        '--no-results',
-        action='store_false',
-        dest='get_results',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='Do not get the results after asking the quesiton '
-        'action'
-    )
-    group.add_argument(
-        '--results',
-        action='store_true',
-        dest='get_results',
-        default=True,
-        required=False,
-        help='Get the results after asking the quesiton '
-        '(default)',
-    )
-    return parser
-
-
-def add_ask_report_argparser(parser):
-    """Method to extend a :class:`pytan.utils.CustomArgParse` class for command line scripts with arguments for scripts that need to supply export format subparsers for asking questions.
-    """
-    parser = add_report_file_options(parser)
-
-    subparsers = parser.add_subparsers(
-        title='Export Formats',
-        dest='export_format',
-        help='Export Format choices -- these MUST be at the END of the command line, and their corresponding options must follow them!',
-    )
-
-    csv_subparser = subparsers.add_parser(
-        'csv',
-        help='Produce a CSV report, supply "csv -h" to see CSV options',
-        description="CSV Export Options"
-    )
-
-    group = csv_subparser.add_mutually_exclusive_group()
-    group.add_argument(
-        '--sort',
-        default=[],
-        action='append',
-        dest='header_sort',
-        required=False,
-        help='Sort headers by given names'
-    )
-    group.add_argument(
-        '--no-sort',
-        action='store_false',
-        dest='header_sort',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='Do not sort the headers at all'
-    )
-    group.add_argument(
-        '--auto_sort',
-        action='store_true',
-        dest='header_sort',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='Sort the headers with a basic alphanumeric sort (default)'
-    )
-
-    group = csv_subparser.add_mutually_exclusive_group()
-    group.add_argument(
-        '--add-sensor',
-        action='store_true',
-        dest='header_add_sensor',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='Add the sensor names to each header'
-    )
-    group.add_argument(
-        '--no-add-sensor',
-        action='store_false',
-        dest='header_add_sensor',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='Do not add the sensor names to each header (default)'
-    )
-
-    group = csv_subparser.add_mutually_exclusive_group()
-    group.add_argument(
-        '--add-type',
-        action='store_true',
-        dest='header_add_type',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='Add the result type to each header'
-    )
-    group.add_argument(
-        '--no-add-type',
-        action='store_false',
-        dest='header_add_type',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='Do not add the result type to each header (default)'
-    )
-
-    group = csv_subparser.add_mutually_exclusive_group()
-    group.add_argument(
-        '--expand-columns',
-        action='store_true',
-        dest='expand_grouped_columns',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='Expand multi-line cells into their own rows that have sensor '
-        'correlated columns in the new rows'
-    )
-    group.add_argument(
-        '--no-columns',
-        action='store_false',
-        dest='expand_grouped_columns',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='Do not add expand multi-line cells into their own rows (default)'
-    )
-
-    subparsers.add_parser(
-        'json',
-        help='Produce a JSON report, supply "json -h" to see JSON options',
-        description="JSON Export Options"
-    )
-
-    subparsers.add_parser(
-        'xml',
-        help='Produce an XML report, supply "xml -h" to see XML options',
-        description="XML Export Options"
-    )
-    return parser
-
-
-def add_report_file_options(parser):
-    """Method to extend a :class:`pytan.utils.CustomArgParse` class for command line scripts with arguments for scripts that need to supply export file and directory options.
-    """
-
-    opt_group = parser.add_argument_group('Report File Options')
-    opt_group.add_argument(
-        '--file',
-        required=False,
-        action='store',
-        default=None,
-        dest='report_file',
-        help='File to save report to (will be automatically generated if not '
-        'supplied)',
-    )
-    opt_group.add_argument(
-        '--dir',
-        required=False,
-        action='store',
-        default=None,
-        dest='report_dir',
-        help='Directory to save report to (current directory will be used if '
-        'not supplied)',
-    )
-    return parser
-
-
-def add_get_object_report_argparser(parser):
-    """Method to extend a :class:`pytan.utils.CustomArgParse` class for command line scripts with arguments for scripts that need to supply export format subparsers for getting objects.
-    """
-    parser = add_report_file_options(parser)
-
-    subparsers = parser.add_subparsers(
-        title='Export Formats',
-        dest='export_format',
-        help='Export Format choices -- these MUST be at the END of the command line, and their corresponding options must follow them!',
-    )
-
-    csv_subparser = subparsers.add_parser(
-        'csv',
-        help='Produce a CSV report, supply "csv -h" to see CSV options',
-        description="CSV Export Options"
-    )
-
-    group = csv_subparser.add_mutually_exclusive_group()
-    group.add_argument(
-        '--sort',
-        default=[],
-        action='append',
-        dest='header_sort',
-        required=False,
-        help='Sort headers by given names'
-    )
-    group.add_argument(
-        '--no-sort',
-        action='store_false',
-        dest='header_sort',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='Do not sort the headers at all'
-    )
-    group.add_argument(
-        '--auto_sort',
-        action='store_true',
-        dest='header_sort',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='Sort the headers with a basic alphanumeric sort (default)'
-    )
-
-    group = csv_subparser.add_mutually_exclusive_group()
-    group.add_argument(
-        '--no-explode-json',
-        action='store_false',
-        dest='explode_json_string_values',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='Do not explode any embedded JSON into their own columns'
-    )
-    group.add_argument(
-        '--explode-json',
-        action='store_true',
-        dest='explode_json_string_values',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='Explode any embedded JSON into their own columns (default)'
-    )
-
-    json_subparser = subparsers.add_parser(
-        'json',
-        help='Produce a JSON report, supply "json -h" to see JSON options',
-        description="JSON Export Options"
-    )
-
-    group = json_subparser.add_mutually_exclusive_group()
-    group.add_argument(
-        '--explode-json',
-        action='store_true',
-        dest='explode_json_string_values',
-        required=False,
-        default=argparse.SUPPRESS,
-        help='Explode any embedded JSON into their own columns'
-    )
-    group.add_argument(
-        '--no-explode-json',
-        action='store_false',
-        dest='explode_json_string_values',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='Do not explode any embedded JSON into their own columns '
-        '(default)'
-    )
-
-    group = json_subparser.add_mutually_exclusive_group()
-    group.add_argument(
-        '--no-include_type',
-        action='store_false',
-        dest='include_type',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='Do not include SOAP type in JSON output'
-    )
-    group.add_argument(
-        '--include_type',
-        action='store_true',
-        dest='include_type',
-        required=False,
-        default=argparse.SUPPRESS,
-        help='Include SOAP type in JSON output (default)'
-    )
-
-    xml_subparser = subparsers.add_parser(
-        'xml',
-        help='Produce a XML report, supply "xml -h" to see XML options',
-        description="XML Export Options"
-    )
-
-    group = xml_subparser.add_mutually_exclusive_group()
-    group.add_argument(
-        '--no-minimal',
-        action='store_false',
-        dest='minimal',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='Produce the full XML representation, including empty attributes'
-    )
-    group.add_argument(
-        '--minimal',
-        action='store_true',
-        dest='minimal',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='Only include attributes that are not empty (default)'
-    )
-
-    return parser
-
-
-def process_create_json_object_args(parser, handler, obj, all_args):
-    """Process command line args supplied by user for create json object
-
-    Parameters
-    ----------
-    parser : :class:`argparse.ArgParse`
-        * ArgParse object used to parse `all_args`
-    handler : :class:`pytan.handler.Handler`
-        * Instance of Handler created from command line args
-    obj : str
-        * Object type for create json object
-    all_args : dict
-        * dict of args parsed from `parser`
-
-    Returns
-    -------
-    response : :class:`taniumpy.object_types.base.BaseType`
-        * response from :func:`pytan.handler.Handler.create_from_json`
-    """
-    # put our query args into their own dict and remove them from all_args
-    obj_grp_names = [
-        'Create {} from JSON Options'.format(
-            obj.replace('_', ' ').capitalize()
-        )
-    ]
-    obj_grp_opts = get_grp_opts(parser, obj_grp_names)
-    obj_grp_args = {k: all_args.pop(k) for k in obj_grp_opts}
-    try:
-        response = handler.create_from_json(obj, **obj_grp_args)
-    except Exception as e:
-        print e
-        sys.exit(100)
-    for i in response:
-        obj_id = getattr(i, 'id', 'unknown')
-        print "Created item: {}, ID: {}".format(i, obj_id)
-    return response
-
-
-def process_delete_object_args(parser, handler, obj, all_args):
-    """Process command line args supplied by user for delete object
-
-    Parameters
-    ----------
-    parser : :class:`argparse.ArgParse`
-        * ArgParse object used to parse `all_args`
-    handler : :class:`pytan.handler.Handler`
-        * Instance of Handler created from command line args
-    obj : str
-        * Object type for delete object
-    all_args : dict
-        * dict of args parsed from `parser`
-
-    Returns
-    -------
-    response : :class:`taniumpy.object_types.base.BaseType`
-        * response from :func:`pytan.handler.Handler.delete`
-    """
-    # put our query args into their own dict and remove them from all_args
-    obj_grp_names = [
-        'Delete {} Options'.format(obj.replace('_', ' ').capitalize())
-    ]
-    obj_grp_opts = get_grp_opts(parser, obj_grp_names)
-    obj_grp_args = {k: all_args.pop(k) for k in obj_grp_opts}
-    try:
-        response = handler.delete(obj, **obj_grp_args)
-    except Exception as e:
-        print e
-        sys.exit(100)
-    for i in response:
-        print "Deleted item: ", i
-    return response
-
-
-def process_get_object_args(parser, handler, obj, all_args):
-    """Process command line args supplied by user for get object
-
-    Parameters
-    ----------
-    parser : :class:`argparse.ArgParse`
-        * ArgParse object used to parse `all_args`
-    handler : :class:`pytan.handler.Handler`
-        * Instance of Handler created from command line args
-    obj : str
-        * Object type for get object
-    all_args : dict
-        * dict of args parsed from `parser`
-
-    Returns
-    -------
-    response : :class:`taniumpy.object_types.base.BaseType`
-        * response from :func:`pytan.handler.Handler.get`
-    """
-    # put our query args into their own dict and remove them from all_args
-    obj_grp_names = [
-        'Get {} Options'.format(obj.replace('_', ' ').capitalize())
-    ]
-    obj_grp_opts = get_grp_opts(parser, obj_grp_names)
-    obj_grp_args = {k: all_args.pop(k) for k in obj_grp_opts}
-    get_all = obj_grp_args.pop('all')
-    if get_all:
-        try:
-            response = handler.get_all(obj)
-        except Exception as e:
-            print e
-            sys.exit(100)
-    else:
-        try:
-            response = handler.get(obj, **obj_grp_args)
-        except Exception as e:
-            print e
-            sys.exit(100)
-
-    print "Found items: ", response
-    return response
-
-
-def get_grp_opts(parser, grp_names):
-    """Used to get arguments in `parser` that match argument group names in `grp_names`
-
-    Parameters
-    ----------
-    parser : :class:`argparse.ArgParse`
-        * ArgParse object
-    grp_names : list of str
-        * list of str of argument group names to get arguments for
-
-    Returns
-    -------
-    grp_opts : list of str
-        * list of arguments gathered from argument group names in `grp_names`
-    """
-    action_grps = [a for a in parser._action_groups if a.title in grp_names]
-    grp_opts = [a.dest for b in action_grps for a in b._group_actions]
-    return grp_opts
-
-
 def is_list(l):
     """returns True if `l` is a list, False if not"""
     return type(l) in [list, tuple]
@@ -1056,31 +91,6 @@ def is_dict(l):
 def is_num(l):
     """returns True if `l` is a number, False if not"""
     return type(l) in [float, int, long]
-
-
-def version_check(reqver):
-    """Allows scripts using :mod:`pytan` to validate the version of the script
-    aginst the version of :mod:`pytan`
-
-    Parameters
-    ----------
-    reqver : str
-        * string containing version number to check against :exc:`Exception`
-
-    Raises
-    ------
-    VersionMismatchError : :exc:`Exception`
-        * if :data:`pytan.__version__` is not greater or equal to `reqver`
-    """
-    log_tpl = (
-        "{}: {} version {}, required {}").format
-    if not __version__ >= reqver:
-        s = "Script and API Version mismatch!"
-        raise pytan.exceptions.VersionMismatchError(log_tpl(s, sys.argv[0], __version__, reqver))
-
-    s = "Script and API Version match"
-    mylog.debug(log_tpl(s, sys.argv[0], __version__, reqver))
-    return True
 
 
 def jsonify(v, indent=2, sort_keys=True):
@@ -1151,6 +161,9 @@ def seconds_from_now(secs=0, tz='utc'):
     str :
         * time `secs` from now in Tanium SOAP API format
     """
+    if secs is None:
+        secs = 0
+
     if tz == 'utc':
         now = datetime.datetime.utcnow()
     else:
@@ -2815,7 +1828,20 @@ def func_timing(f):
     return wrap
 
 
-def xml_pretty(x):
+def eval_timing(c):
+    """Yet another method to time things -- c will be evaluated and timing information will be printed out
+    """
+    t_start = datetime.now()
+    r = eval(c)
+    t_end = datetime.now()
+    t_elapsed = t_end - t_start
+
+    m = "Timing info for {} -- START: {}, END: {}, ELAPSED: {}, RESPONSE LEN: {}".format
+    mylog.warn(m(c, t_start, t_end, t_elapsed, len(r)))
+    return (c, r, t_start, t_end, t_elapsed)
+
+
+def xml_pretty(x, pretty=True, indent='  ', **kwargs):
     """Uses :mod:`xmltodict` to pretty print an XML str `x`
 
     Parameters
@@ -2830,7 +1856,7 @@ def xml_pretty(x):
     """
 
     x_parsed = xmltodict.parse(x)
-    x_unparsed = xmltodict.unparse(x_parsed, pretty=True, indent='  ')
+    x_unparsed = xmltodict.unparse(x_parsed, pretty=pretty, indent=indent)
     return x_unparsed
 
 
@@ -3010,3 +2036,42 @@ def plugin_zip(p):
     return [
         dict(zip(p.sql_response.columns, x)) for x in p.sql_response.result_row
     ]
+
+
+def clean_kwargs(kwargs, keys=None):
+    """Removes each key from kwargs dict if found
+
+    Parameters
+    ----------
+    kwargs : dict
+        * dict of keyword args
+    keys : list of str, optional
+        * default: ['obj', 'pytan_help', 'objtype']
+        * list of strs of keys to remove from kwargs
+
+    Returns
+    -------
+    clean_kwargs : dict
+        * the new dict of kwargs with keys removed
+    """
+    if keys is None:
+        keys = ['obj', 'pytan_help', 'objtype']
+
+    clean_kwargs = dict(kwargs)
+    [clean_kwargs.pop(x) for x in keys if x in kwargs]
+    return clean_kwargs
+
+
+def check_for_help(kwargs):
+    """Utility method to check for any help arguments and raise a PytanHelp exception with the appropriate help
+
+    Parameters
+    ----------
+    kwargs : dict
+        * dict of keyword args
+    """
+    help_keys = [x for x in dir(pytan.help) if x.endswith('_help')]
+    for x in help_keys:
+        if kwargs.get(x, False):
+            help_out = getattr(pytan.help, x)()
+            raise pytan.exceptions.PytanHelp(help_out)
