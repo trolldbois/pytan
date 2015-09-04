@@ -12,6 +12,10 @@ taniumpydir=`cd "${rootdir}"/../taniumpy ; pwd`
 echo "Generating taniumpy API at: -o ${TMPDIR}/api"
 ${taniumpydir}/BUILD/generate_api.py -i ${rootdir}/doc/console.wsdl -o ${TMPDIR} -f
 
+# disable the session and question asker modules from taniumpy
+perl -pi -e 's/^(from .session import Session)/# $1/' ${TMPDIR}/api/__init__.py
+perl -pi -e 's/^(from .question_asker import QuestionAsker)/# $1/' ${TMPDIR}/api/__init__.py
+
 echo ""
 echo "Differences between ${TMPDIR}/api and ${rootdir}/lib/taniumpy:"
 diff -urq ${TMPDIR}/api ${rootdir}/lib/taniumpy
