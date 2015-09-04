@@ -1,8 +1,0 @@
-pytan.exceptions module
-=======================
-
-.. automodule:: pytan.exceptions
-    :show-inheritance:
-    :members:
-    :undoc-members:
-    :private-members:

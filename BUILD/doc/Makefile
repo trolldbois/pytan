@@ -61,6 +61,9 @@ cleanbuild:
 	rm -rf $(BUILDDIR)/*
 
 html:
+	@echo "Re-building source/taniumpy"
+	sphinx-apidoc -f -T -M -o source/taniumpy ../../lib/taniumpy/
+	perl -pi -e "s/taniumpy package/TaniumPy Package/" source/taniumpy/taniumpy.rst
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(REALBUILDDIR)/html
 	@echo
 	@echo "Build finished. The HTML pages are in $(REALBUILDDIR)/html."

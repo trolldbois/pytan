@@ -1,7 +1,7 @@
 # -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
-'''A python package that makes using (:mod:`taniumpy`) more human friendly.'''
+'''A python package that makes using the Tanium Server SOAP API easy.'''
 
 __title__ = 'PyTan'
 __version__ = '2.1.0'

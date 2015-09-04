@@ -16,6 +16,10 @@ ${taniumpydir}/BUILD/generate_api.py -i ${rootdir}/doc/console.wsdl -o ${TMPDIR}
 perl -pi -e 's/^(from .session import Session)/# $1/' ${TMPDIR}/api/__init__.py
 perl -pi -e 's/^(from .question_asker import QuestionAsker)/# $1/' ${TMPDIR}/api/__init__.py
 
+rm -f ${TMPDIR}/api/session.py
+rm -f ${TMPDIR}/api/question_asker.py
+rm -f ${TMPDIR}/api/request_body_template.xml
+
 echo ""
 echo "Differences between ${TMPDIR}/api and ${rootdir}/lib/taniumpy:"
 diff -urq ${TMPDIR}/api ${rootdir}/lib/taniumpy
