@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+  <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <t:return>
+      <command>GetResultData</command>
+      <session>1-6926-7c9f86afdc2c2f45e9ecbf221adbe2421485042a7374e8aeeb4f1784b59a9d7871e3e7f03dd101ec65a513f8a177ccc3ebc3bcac441baa49eb8bcf8ad80e555e</session>
+      <ID></ID>
+      <IDType></IDType>
+      <ContextID></ContextID>
+      <server_version>6.5.314.4301</server_version>
+      <object_list>
+        <action>
+          <id>524</id>
+          <name>API Deploy Distribute Tanium Standard Utilities</name>
+        </action>
+      </object_list>
+      <options>
+        <export_flag>0</export_flag>
+        <row_counts_only_flag>1</row_counts_only_flag>
+        <suppress_object_list>1</suppress_object_list>
+      </options>
+      <ResultXML>&lt;result_sets&gt;&lt;now&gt;2015/09/04 02:45:39 GMT-0000&lt;/now&gt;
+&lt;result_set&gt;&lt;age&gt;0&lt;/age&gt;&lt;archived_question_id&gt;0&lt;/archived_question_id&gt;&lt;saved_question_id&gt;228&lt;/saved_question_id&gt;&lt;question_id&gt;10148&lt;/question_id&gt;&lt;report_count&gt;4&lt;/report_count&gt;&lt;seconds_since_issued&gt;1852&lt;/seconds_since_issued&gt;&lt;issue_seconds&gt;0&lt;/issue_seconds&gt;&lt;expire_seconds&gt;3660&lt;/expire_seconds&gt;&lt;tested&gt;2&lt;/tested&gt;&lt;passed&gt;2&lt;/passed&gt;&lt;mr_tested&gt;2&lt;/mr_tested&gt;&lt;mr_passed&gt;2&lt;/mr_passed&gt;&lt;estimated_total&gt;2&lt;/estimated_total&gt;&lt;select_count&gt;2&lt;/select_count&gt;&lt;cs&gt;&lt;c&gt;&lt;wh&gt;1792443391&lt;/wh&gt;&lt;dn&gt;Action Statuses&lt;/dn&gt;&lt;rt&gt;1&lt;/rt&gt;&lt;/c&gt;&lt;c&gt;&lt;wh&gt;0&lt;/wh&gt;&lt;dn&gt;Count&lt;/dn&gt;&lt;rt&gt;3&lt;/rt&gt;&lt;/c&gt;&lt;/cs&gt;&lt;filtered_row_count&gt;0&lt;/filtered_row_count&gt;&lt;filtered_row_count_machines&gt;0&lt;/filtered_row_count_machines&gt;&lt;row_count&gt;0&lt;/row_count&gt;&lt;row_count_machines&gt;0&lt;/row_count_machines&gt;&lt;item_count&gt;0&lt;/item_count&gt;&lt;rs&gt;&lt;/rs&gt;&lt;/result_set&gt;&lt;/result_sets&gt;</ResultXML>
+      <result_object></result_object>
+    </t:return>
+  </soap:Body>
+</soap:Envelope>

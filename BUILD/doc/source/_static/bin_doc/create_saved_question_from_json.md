@@ -1,19 +1,23 @@
-Create Saved Question From Json Readme
+Create Saved Question From JSON Readme
 ===========================
 
 ---------------------------
 <a name='toc'>Table of contents:</a>
 
-  * [Create Saved Question From Json Help](#user-content-create-saved-question-from-json-help)
+  * [Help for Create Saved Question From JSON](#user-content-help-for-create-saved-question-from-json)
   * [Export saved_question id 1 as JSON](#user-content-export-saved_question-id-1-as-json)
   * [Change name or url_regex in the JSON](#user-content-change-name-or-url_regex-in-the-json)
   * [Create a new saved_question from the modified JSON file](#user-content-create-a-new-saved_question-from-the-modified-json-file)
 
 ---------------------------
 
-# Create Saved Question From Json Help
+# Help for Create Saved Question From JSON
 
-  * Create a saved_question object from a json file
+  * Print the help for create_saved_question_from_json.py
+  * All scripts in bin/ will supply help if -h is on the command line
+  * If passing in a parameter with a space or a special character, you need to surround it with quotes properly. On Windows this means double quotes. On Linux/Mac, this means single or double quotes, depending on what kind of character escaping you need.
+  * If running this script on Linux or Mac, use the python scripts directly as the bin/create_saved_question_from_json.py
+  * If running this script on Windows, use the batch script in the winbin/create_saved_question_from_json.bat so that python is called correctly.
 
 ```bash
 create_saved_question_from_json.py -h
@@ -21,10 +25,16 @@ create_saved_question_from_json.py -h
 
 ```
 usage: create_saved_question_from_json.py [-h] [-u USERNAME] [-p PASSWORD]
+                                          [--session_id SESSION_ID]
                                           [--host HOST] [--port PORT]
-                                          [-l LOGLEVEL] -j JSON_FILE
+                                          [-l LOGLEVEL] [--debugformat]
+                                          [--record_all_requests]
+                                          [--stats_loop_enabled]
+                                          [--http_auth_retry]
+                                          [--http_retry_count HTTP_RETRY_COUNT]
+                                          -j JSON_FILE
 
-Create a saved_question object from a json file
+Create an object of type: saved_question from a JSON file
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -34,6 +44,9 @@ Handler Authentication:
                         Name of user (default: None)
   -p PASSWORD, --password PASSWORD
                         Password of user (default: None)
+  --session_id SESSION_ID
+                        Session ID to authenticate with instead of
+                        username/password (default: None)
   --host HOST           Hostname/ip of SOAP Server (default: None)
   --port PORT           Port to use when connecting to SOAP Server (default:
                         443)
@@ -42,6 +55,17 @@ Handler Options:
   -l LOGLEVEL, --loglevel LOGLEVEL
                         Logging level to use, increase for more verbosity
                         (default: 0)
+  --debugformat         Enable debug format for logging (default: False)
+  --record_all_requests
+                        Record all requests in
+                        handler.session.ALL_REQUESTS_RESPONSES (default:
+                        False)
+  --stats_loop_enabled  Enable the statistics loop (default: False)
+  --http_auth_retry     Disable retry on HTTP authentication failures
+                        (default: True)
+  --http_retry_count HTTP_RETRY_COUNT
+                        Retry count for HTTP failures/invalid responses
+                        (default: 5)
 
 Create Saved question from JSON Options:
   -j JSON_FILE, --json JSON_FILE
@@ -51,6 +75,10 @@ Create Saved question from JSON Options:
   * Validation Test: exitcode
     * Valid: **True**
     * Messages: Exit Code is 0
+
+  * Validation Test: noerror
+    * Valid: **True**
+    * Messages: No error texts found in stderr/stdout
 
 
 
@@ -63,13 +91,13 @@ Create Saved question from JSON Options:
   * Save the results to a JSON file
 
 ```bash
-get_saved_question.py -u 'Tanium User' -p 'T@n!um' --host '172.16.31.128' --loglevel 1 --id 1 --file "/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json" json
+bin/get_saved_question.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --loglevel 1 --id 1 --file "/tmp/out.json" --export_format json
 ```
 
 ```
-Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
+PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 Found items:  SavedQuestionList, len: 1
-Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written with 11892 bytes
+Report file '/tmp/out.json' written with 11907 bytes
 ```
 
   * Validation Test: exitcode
@@ -78,7 +106,7 @@ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written 
 
   * Validation Test: file_exist_contents
     * Valid: **True**
-    * Messages: File /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json exists, content:
+    * Messages: File /tmp/out.json exists, content:
 
 ```
 {
@@ -94,6 +122,10 @@ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written 
 ...trimmed for brevity...
 ```
 
+  * Validation Test: noerror
+    * Valid: **True**
+    * Messages: No error texts found in stderr/stdout
+
 
 
 [TOC](#user-content-toc)
@@ -104,7 +136,7 @@ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written 
   * Add CMDLINE TEST to name or url_regex in the JSON file
 
 ```bash
-perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 9261"/gm' /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json && cat /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json
+perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 8199"/gm' /tmp/out.json && cat /tmp/out.json
 ```
 
 ```
@@ -124,13 +156,13 @@ perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 9261"/gm' /va
       "issue_seconds": 120, 
       "issue_seconds_never_flag": 0, 
       "keep_seconds": 0, 
-      "mod_time": "2015-08-07T13:22:22", 
+      "mod_time": "2015-08-26T20:14:35", 
       "mod_user": {
         "_type": "user", 
-        "name": "Jim Olsen"
+        "name": "Administrator"
       }, 
-      "most_recent_question_id": 1256, 
-      "name": "Has Tanium Standard Utilities CMDLINE TEST 9261", 
+      "most_recent_question_id": 9964, 
+      "name": "Has Tanium Standard Utilities CMDLINE TEST 8199", 
       "packages": {
         "_type": "package_specs", 
         "package_spec": [
@@ -146,11 +178,11 @@ perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 9261"/gm' /va
       "question": {
         "_type": "question", 
         "action_tracking_flag": 0, 
-        "expiration": "2015-08-07T19:32:37", 
+        "expiration": "2015-09-03T23:28:22", 
         "expire_seconds": 0, 
         "force_computer_id_flag": 0, 
         "hidden_flag": 0, 
-        "id": 1256, 
+        "id": 9964, 
         "management_rights_group": {
           "_type": "group", 
           "id": 0
@@ -185,7 +217,7 @@ perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 9261"/gm' /va
               "sensor": {
                 "_type": "sensor", 
                 "category": "Tanium", 
-                "creation_time": "2015-08-07T13:22:09", 
+                "creation_time": "2015-08-26T20:14:29", 
                 "delimiter": ",", 
                 "description": "Returns whether a machine has the Tanium Standard Utilities\nExample: Yes", 
                 "exclude_from_parse_flag": 1, 
@@ -193,9 +225,9 @@ perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 9261"/gm' /va
                 "hidden_flag": 0, 
                 "id": 194, 
                 "ignore_case_flag": 1, 
-                "last_modified_by": "Jim Olsen", 
+                "last_modified_by": "Administrator", 
                 "max_age_seconds": 900, 
-                "modification_time": "2015-08-07T13:22:09", 
+                "modification_time": "2015-08-26T20:14:29", 
                 "name": "Has Tanium Standard Utilities", 
                 "queries": {
                   "_type": "queries", 
@@ -233,7 +265,7 @@ perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 9261"/gm' /va
                   ]
                 }, 
                 "source_id": 0, 
-                "string_count": 16, 
+                "string_count": 4, 
                 "value_type": "String"
               }
             }
@@ -243,7 +275,7 @@ perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 9261"/gm' /va
         "user": {
           "_type": "user", 
           "id": 1, 
-          "name": "Jim Olsen"
+          "name": "Administrator"
         }
       }, 
       "row_count_flag": 0, 
@@ -251,7 +283,7 @@ perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 9261"/gm' /va
       "user": {
         "_type": "user", 
         "id": 1, 
-        "name": "Jim Olsen"
+        "name": "Administrator"
       }
     }
   ]
@@ -264,7 +296,11 @@ perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 9261"/gm' /va
 
   * Validation Test: file_exist
     * Valid: **True**
-    * Messages: File /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json exists
+    * Messages: File /tmp/out.json exists
+
+  * Validation Test: noerror
+    * Valid: **True**
+    * Messages: No error texts found in stderr/stdout
 
 
 
@@ -274,21 +310,25 @@ perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 9261"/gm' /va
 # Create a new saved_question from the modified JSON file
 
 ```bash
-create_saved_question_from_json.py -u 'Tanium User' -p 'T@n!um' --host '172.16.31.128' --loglevel 1 -j "/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json"
+bin/create_saved_question_from_json.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --loglevel 1 -j "/tmp/out.json"
 ```
 
 ```
-Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
-Created item: SavedQuestion, name: 'Has Tanium Standard Utilities CMDLINE TEST 9261', id: 110, ID: 110
+PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+Created item: SavedQuestion, name: 'Has Tanium Standard Utilities CMDLINE TEST 8199', id: 233, ID: 233
 ```
 
   * Validation Test: exitcode
     * Valid: **True**
     * Messages: Exit Code is 0
 
+  * Validation Test: noerror
+    * Valid: **True**
+    * Messages: No error texts found in stderr/stdout
+
 
 
 [TOC](#user-content-toc)
 
 
-###### generated by: `build_bin_doc v1.4.5`, date: Fri Aug  7 15:27:39 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**
+###### generated by: `build_bin_doc v2.1.0`, date: Thu Sep  3 21:50:23 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+  <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <t:return>
+      <command>GetObject</command>
+      <session>1-6922-c6924768f0749f065a818926b06de2a4da74c8f3d64ad752386557a9d4f379fb3163056e554fd9456cbbf5312d38b3a58994b4ee3cc7a51655f4cdf0f4bdf31c</session>
+      <server_version>6.5.314.4301</server_version>
+      <ID></ID>
+      <IDType></IDType>
+      <ContextID></ContextID>
+      <result_object>
+        <white_listed_url>
+          <id>33002</id>
+          <download_seconds>86400</download_seconds>
+          <url_regex>test1 API TEST</url_regex>
+        </white_listed_url>
+      </result_object>
+      <ResultXML></ResultXML>
+      <options>
+        <suppress_object_list>1</suppress_object_list>
+      </options>
+    </t:return>
+  </soap:Body>
+</soap:Envelope>
