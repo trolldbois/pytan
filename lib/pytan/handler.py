@@ -1663,7 +1663,7 @@ class Handler(object):
 
         deleted_objects = []
         for obj_to_del in objs_to_del:
-            h = "Issue a GetObject to find the object to be deleted"
+            h = "Issue a DeleteObject to delete an object"
             del_obj = self.session.delete(obj=obj_to_del, pytan_help=h, **clean_kwargs)
 
             deleted_objects.append(del_obj)
