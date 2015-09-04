@@ -90,10 +90,6 @@ class QuestionPoller(object):
     _stop = False
     """Controls whether a run() loop should stop or not"""
 
-    mylog = logging.getLogger("poller")
-    progresslog = logging.getLogger("poller.progress")
-    resolverlog = logging.getLogger("poller.resolver")
-
     def __init__(self, handler, obj, **kwargs):
         self.setup_logging()
 
@@ -120,7 +116,7 @@ class QuestionPoller(object):
 
     def setup_logging(self):
         """Setup loggers for this object"""
-        self.qualname = "{}.{}".format(self.__class__.__module__, self.__class__.__name__)
+        self.qualname = "pytan.pollers.{}".format(self.__class__.__name__)
         self.mylog = logging.getLogger(self.qualname)
         self.progresslog = logging.getLogger(self.qualname + ".progress")
         self.resolverlog = logging.getLogger(self.qualname + ".resolver")
@@ -678,7 +674,9 @@ class ActionPoller(QuestionPoller):
 
         self.pre_question = taniumpy.Question()
         self.pre_question.group = self.target_group
-        self.pre_question = self.handler._add(obj=self.pre_question, pytan_help=m, **clean_kwargs)
+        self.pre_question = self.handler._add(
+            obj=self.pre_question, pytan_help=m(self.id_str, self.obj), **clean_kwargs
+        )
 
         self.pre_question_poller = pytan.pollers.QuestionPoller(
             handler=self.handler, obj=self.pre_question, **clean_kwargs
