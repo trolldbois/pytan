@@ -3,7 +3,7 @@
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
 '''Get an object of type: saved_action and save the object to a report file'''
-__author__ = 'Jim Olsen (jim.olsen@tanium.com)'
+__author__ = 'Jim Olsen <jim.olsen@tanium.com>'
 __version__ = '2.1.0'
 
 import os
@@ -30,5 +30,5 @@ if __name__ == "__main__":
 
     handler = pytan.binsupport.process_handler_args(parser=parser, args=args)
     response = pytan.binsupport.process_get_object_args(
-        parser=parser, handler=handler, obj='saved_action', all_args=all_args,
+        parser=parser, handler=handler, obj='saved_action', args=args,
     )

@@ -2,8 +2,8 @@
 # -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
-'''Tanium Sensor Analysis Tool: asks a question for every sensor and saves the results as CSV reports'''
-__author__ = 'Jim Olsen (jim.olsen@tanium.com)'
+'''Tanium Sensor Analysis Tool: asks a question for every sensor and saves theresults as CSV reports'''
+__author__ = 'Jim Olsen <jim.olsen@tanium.com>'
 __version__ = '2.1.0'
 
 import os

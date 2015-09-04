@@ -3,7 +3,7 @@
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
 '''Provides an interactive console with pytan available as handler'''
-__author__ = 'Jim Olsen (jim.olsen@tanium.com)'
+__author__ = 'Jim Olsen <jim.olsen@tanium.com>'
 __version__ = '2.1.0'
 
 import os
