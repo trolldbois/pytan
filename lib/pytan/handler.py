@@ -1531,12 +1531,12 @@ class Handler(object):
         self.mylog.info(m(group_obj.name, group_obj.id, group_obj.text))
         return group_obj
 
-    def create_user(self, username, rolename=[], roleid=[], properties=[], **kwargs):
+    def create_user(self, name, rolename=[], roleid=[], properties=[], **kwargs):
         """Create a user object
 
         Parameters
         ----------
-        username : str
+        name : str
             * name of user to create
         rolename : str or list of str, optional
             * default: []
@@ -1564,7 +1564,7 @@ class Handler(object):
             properties=properties, nameprefix='TConsole.User.Property',
         )
         add_user_obj = taniumpy.User()
-        add_user_obj.name = username
+        add_user_obj.name = name
         add_user_obj.roles = rolelist_obj
         add_user_obj.metadata = metadatalist_obj
 
