@@ -1,0 +1,484 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>5. Other Packages &mdash; PyTan v2.1.0 2.1.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="PyTan v2.1.0 2.1.0 documentation" href="index.html"/>
+        <link rel="next" title="6. PyTan API Examples" href="examples/pytan_examples.html"/>
+        <link rel="prev" title="4.1.1. taniumpy.object_types package" href="taniumpy/taniumpy.object_types.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="index.html" class="fa fa-home"> PyTan v2.1.0</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">1. PyTan Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#description">1.1. Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#why-it-was-created">1.2. Why it was created</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#requirements">1.3. Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#tanium-versions-validated-against">1.4. Tanium Versions Validated Against</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#installation">1.5. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#usage">1.6. Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#directory-layout">1.7. Directory Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#other-references">1.8. Other References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pytan.html">2. PyTan Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pytan.html#module-pytan.handler">2.1. pytan.handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.html#module-pytan.sessions">2.2. pytan.sessions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.html#module-pytan.pollers">2.3. pytan.pollers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.html#module-pytan.constants">2.4. pytan.constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.html#module-pytan.utils">2.5. pytan.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.html#module-pytan.binsupport">2.6. pytan.binsupport</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.html#module-pytan.exceptions">2.7. pytan.exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan.html#module-pytan.xml_clean">2.8. pytan.xml_clean</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pytan_tests.html">3. PyTan Tests</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pytan_tests.html#module-test_pytan_valid_server_tests">3.1. Valid Server Functional Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan_tests.html#module-test_pytan_invalid_server_tests">3.2. Invalid Server Functional Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pytan_tests.html#module-test_pytan_unit">3.3. Unit Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="taniumpy/taniumpy.html">4. TaniumPy Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="taniumpy/taniumpy.html#subpackages">4.1. Subpackages</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">5. Other Packages</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#requests-package">5.1. requests Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#threaded-http-package">5.2. threaded_http Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#xmltodict-package">5.3. xmltodict Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ddt-package">5.4. ddt Package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples/pytan_examples.html">6. PyTan API Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/pytan_api_basic_handler_example.html">6.1. PyTan API Basic Handler Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/valid_create_object.html">6.2. PyTan API Valid Create Object Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/valid_create_object_from_json.html">6.3. PyTan API Valid Create Object From JSON Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/valid_deploy_action.html">6.4. PyTan API Valid Deploy Action Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/valid_export_basetype.html">6.5. PyTan API Valid Export Basetype Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/valid_export_resultset.html">6.6. PyTan API Valid Export ResultSet Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/valid_get_object.html">6.7. PyTan API Valid Get Object Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/valid_questions.html">6.8. PyTan API Valid Questions Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/valid_saved_questions.html">6.9. PyTan API Valid Saved Questions Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/invalid_create_object.html">6.10. PyTan API Invalid Create Object Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/invalid_create_object_from_json.html">6.11. PyTan API Invalid Create Object From JSON Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/invalid_deploy_action.html">6.12. PyTan API Invalid Deploy Action Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/invalid_export_basetype.html">6.13. PyTan API Invalid Export Basetype Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/invalid_export_resultset.html">6.14. PyTan API Invalid Export ResultSet Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/invalid_get_object.html">6.15. PyTan API Invalid Get Object Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/invalid_questions.html">6.16. PyTan API Invalid Questions Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="soap_examples_index.html">7. SOAP API Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="soap_examples/6.5.314.4301/soap_examples_6.5.314.4301.html">7.1. SOAP API Examples for Platform Version 6.5.314.4301</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">PyTan v2.1.0</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>5. Other Packages</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/other_packages.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="other-packages">
+<h1>5. Other Packages<a class="headerlink" href="#other-packages" title="Permalink to this headline">¶</a></h1>
+<p>PyTan relies on a number of python packages to function properly. All dependencies are bundled with PyTan in order to make it easier for the user to start using PyTan right away.</p>
+<div class="section" id="requests-package">
+<h2>5.1. requests Package<a class="headerlink" href="#requests-package" title="Permalink to this headline">¶</a></h2>
+<p>PyTan uses requests for all HTTP requests in order to get automatic keep alive support, session tracking, and a host of other things. requests is an open source package maintained at: <a class="reference external" href="https://github.com/kennethreitz/requests">https://github.com/kennethreitz/requests</a></p>
+<span class="target" id="module-requests"></span><div class="section" id="requests-http-library">
+<h3>5.1.1. requests HTTP library<a class="headerlink" href="#requests-http-library" title="Permalink to this headline">¶</a></h3>
+<p>Requests is an HTTP library, written in Python, for human beings. Basic GET
+usage:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;https://www.python.org&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="n">status_code</span>
+<span class="go">200</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s">&#39;Python is a programming language&#39;</span> <span class="ow">in</span> <span class="n">r</span><span class="o">.</span><span class="n">content</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>... or POST:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">payload</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">key1</span><span class="o">=</span><span class="s">&#39;value1&#39;</span><span class="p">,</span> <span class="n">key2</span><span class="o">=</span><span class="s">&#39;value2&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s">&#39;http://httpbin.org/post&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+<span class="go">{</span>
+<span class="go">  ...</span>
+<span class="go">  &quot;form&quot;: {</span>
+<span class="go">    &quot;key2&quot;: &quot;value2&quot;,</span>
+<span class="go">    &quot;key1&quot;: &quot;value1&quot;</span>
+<span class="go">  },</span>
+<span class="go">  ...</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+<p>The other HTTP methods are supported - see <cite>requests.api</cite>. Full documentation
+is at &lt;<a class="reference external" href="http://python-requests.org">http://python-requests.org</a>&gt;.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">copyright:</th><td class="field-body"><ol class="first loweralpha simple" start="3">
+<li>2015 by Kenneth Reitz.</li>
+</ol>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">license:</th><td class="field-body"><p class="first last">Apache 2.0, see LICENSE for more details.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="threaded-http-package">
+<h2>5.2. threaded_http Package<a class="headerlink" href="#threaded-http-package" title="Permalink to this headline">¶</a></h2>
+<p>PyTan uses threaded_http to create a fake HTTP server on localhost for the invalid server functional tests (see: <code class="xref py py-mod docutils literal"><span class="pre">pytan.test_pytan_invalid_server_tests</span></code>). threaded_http is developed and maintained by Tanium.</p>
+<span class="target" id="module-threaded_http"></span><p>Simple HTTP server for testing purposes</p>
+<dl class="class">
+<dt id="threaded_http.CustomHTTPHandler">
+<em class="property">class </em><code class="descclassname">threaded_http.</code><code class="descname">CustomHTTPHandler</code><span class="sig-paren">(</span><em>request</em>, <em>client_address</em>, <em>server</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/threaded_http.html#CustomHTTPHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#threaded_http.CustomHTTPHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/2.7/library/basehttpserver.html#BaseHTTPServer.BaseHTTPRequestHandler" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">BaseHTTPServer.BaseHTTPRequestHandler</span></code></a></p>
+<dl class="attribute">
+<dt id="threaded_http.CustomHTTPHandler.ENABLE_LOGGING">
+<code class="descname">ENABLE_LOGGING</code><em class="property"> = True</em><a class="headerlink" href="#threaded_http.CustomHTTPHandler.ENABLE_LOGGING" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="threaded_http.CustomHTTPHandler.do_GET">
+<code class="descname">do_GET</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/threaded_http.html#CustomHTTPHandler.do_GET"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#threaded_http.CustomHTTPHandler.do_GET" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="threaded_http.CustomHTTPHandler.do_POST">
+<code class="descname">do_POST</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/threaded_http.html#CustomHTTPHandler.do_POST"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#threaded_http.CustomHTTPHandler.do_POST" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="threaded_http.CustomHTTPHandler.log_message">
+<code class="descname">log_message</code><span class="sig-paren">(</span><em>format</em>, <em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/threaded_http.html#CustomHTTPHandler.log_message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#threaded_http.CustomHTTPHandler.log_message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="threaded_http.ThreadedHTTPServer">
+<em class="property">class </em><code class="descclassname">threaded_http.</code><code class="descname">ThreadedHTTPServer</code><span class="sig-paren">(</span><em>server_address</em>, <em>RequestHandlerClass</em>, <em>bind_and_activate=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/threaded_http.html#ThreadedHTTPServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#threaded_http.ThreadedHTTPServer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">SocketServer.ThreadingMixIn</span></code>, <a class="reference external" href="http://docs.python.org/2.7/library/basehttpserver.html#BaseHTTPServer.HTTPServer" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">BaseHTTPServer.HTTPServer</span></code></a></p>
+<p>Handle requests in a separate thread.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="threaded_http.threaded_http">
+<code class="descclassname">threaded_http.</code><code class="descname">threaded_http</code><span class="sig-paren">(</span><em>host='localhost'</em>, <em>port=4443</em>, <em>verbosity=2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/threaded_http.html#threaded_http"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#threaded_http.threaded_http" title="Permalink to this definition">¶</a></dt>
+<dd><p>establishes an HTTP server on host:port in a thread</p>
+</dd></dl>
+
+</div>
+<div class="section" id="xmltodict-package">
+<h2>5.3. xmltodict Package<a class="headerlink" href="#xmltodict-package" title="Permalink to this headline">¶</a></h2>
+<p>PyTan uses xmltodict for pretty printing XML documents (see: <a class="reference internal" href="pytan.html#pytan.utils.xml_pretty" title="pytan.utils.xml_pretty"><code class="xref py py-func docutils literal"><span class="pre">pytan.utils.xml_pretty()</span></code></a>). xmltodict is an open source package maintained at: <a class="reference external" href="https://github.com/martinblech/xmltodict">https://github.com/martinblech/xmltodict</a></p>
+<span class="target" id="module-xmltodict"></span><p>Makes working with XML feel like you are working with JSON</p>
+<dl class="function">
+<dt id="xmltodict.parse">
+<code class="descclassname">xmltodict.</code><code class="descname">parse</code><span class="sig-paren">(</span><em>xml_input</em>, <em>encoding=None</em>, <em>expat=&lt;module 'xml.parsers.expat' from '/Library/Python/2.7/site-packages/_xmlplus/parsers/expat.pyc'&gt;</em>, <em>process_namespaces=False</em>, <em>namespace_separator=':'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xmltodict.html#parse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xmltodict.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the given XML input and convert it into a dictionary.</p>
+<p><cite>xml_input</cite> can either be a <cite>string</cite> or a file-like object.</p>
+<p>If <cite>xml_attribs</cite> is <cite>True</cite>, element attributes are put in the dictionary
+among regular child elements, using <cite>&#64;</cite> as a prefix to avoid collisions. If
+set to <cite>False</cite>, they are just ignored.</p>
+<p>Simple example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">xmltodict</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">doc</span> <span class="o">=</span> <span class="n">xmltodict</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s">&quot;&quot;&quot;</span>
+<span class="gp">... </span><span class="s">&lt;a prop=&quot;x&quot;&gt;</span>
+<span class="gp">... </span><span class="s">  &lt;b&gt;1&lt;/b&gt;</span>
+<span class="gp">... </span><span class="s">  &lt;b&gt;2&lt;/b&gt;</span>
+<span class="gp">... </span><span class="s">&lt;/a&gt;</span>
+<span class="gp">... </span><span class="s">&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">doc</span><span class="p">[</span><span class="s">&#39;a&#39;</span><span class="p">][</span><span class="s">&#39;@prop&#39;</span><span class="p">]</span>
+<span class="go">u&#39;x&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">doc</span><span class="p">[</span><span class="s">&#39;a&#39;</span><span class="p">][</span><span class="s">&#39;b&#39;</span><span class="p">]</span>
+<span class="go">[u&#39;1&#39;, u&#39;2&#39;]</span>
+</pre></div>
+</div>
+<p>If <cite>item_depth</cite> is <cite>0</cite>, the function returns a dictionary for the root
+element (default behavior). Otherwise, it calls <cite>item_callback</cite> every time
+an item at the specified depth is found and returns <cite>None</cite> in the end
+(streaming mode).</p>
+<p>The callback function receives two parameters: the <cite>path</cite> from the document
+root to the item (name-attribs pairs), and the <cite>item</cite> (dict). If the
+callback&#8217;s return value is false-ish, parsing will be stopped with the
+<code class="xref py py-class docutils literal"><span class="pre">ParsingInterrupted</span></code> exception.</p>
+<p>Streaming example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="s">&#39;path:</span><span class="si">%s</span><span class="s"> item:</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="bp">True</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xmltodict</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s">&quot;&quot;&quot;</span>
+<span class="gp">... </span><span class="s">&lt;a prop=&quot;x&quot;&gt;</span>
+<span class="gp">... </span><span class="s">  &lt;b&gt;1&lt;/b&gt;</span>
+<span class="gp">... </span><span class="s">  &lt;b&gt;2&lt;/b&gt;</span>
+<span class="gp">... </span><span class="s">&lt;/a&gt;&quot;&quot;&quot;</span><span class="p">,</span> <span class="n">item_depth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">item_callback</span><span class="o">=</span><span class="n">handle</span><span class="p">)</span>
+<span class="go">path:[(u&#39;a&#39;, {u&#39;prop&#39;: u&#39;x&#39;}), (u&#39;b&#39;, None)] item:1</span>
+<span class="go">path:[(u&#39;a&#39;, {u&#39;prop&#39;: u&#39;x&#39;}), (u&#39;b&#39;, None)] item:2</span>
+</pre></div>
+</div>
+<p>The optional argument <cite>postprocessor</cite> is a function that takes <cite>path</cite>,
+<cite>key</cite> and <cite>value</cite> as positional arguments and returns a new <cite>(key, value)</cite>
+pair where both <cite>key</cite> and <cite>value</cite> may have changed. Usage example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">postprocessor</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="n">key</span> <span class="o">+</span> <span class="s">&#39;:int&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xmltodict</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s">&#39;&lt;a&gt;&lt;b&gt;1&lt;/b&gt;&lt;b&gt;2&lt;/b&gt;&lt;b&gt;x&lt;/b&gt;&lt;/a&gt;&#39;</span><span class="p">,</span>
+<span class="gp">... </span>                <span class="n">postprocessor</span><span class="o">=</span><span class="n">postprocessor</span><span class="p">)</span>
+<span class="go">OrderedDict([(u&#39;a&#39;, OrderedDict([(u&#39;b:int&#39;, [1, 2]), (u&#39;b&#39;, u&#39;x&#39;)]))])</span>
+</pre></div>
+</div>
+<p>You can pass an alternate version of <cite>expat</cite> (such as <cite>defusedexpat</cite>) by
+using the <cite>expat</cite> parameter. E.g:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">defusedexpat</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xmltodict</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s">&#39;&lt;a&gt;hello&lt;/a&gt;&#39;</span><span class="p">,</span> <span class="n">expat</span><span class="o">=</span><span class="n">defusedexpat</span><span class="o">.</span><span class="n">pyexpat</span><span class="p">)</span>
+<span class="go">OrderedDict([(u&#39;a&#39;, u&#39;hello&#39;)])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="xmltodict.unparse">
+<code class="descclassname">xmltodict.</code><code class="descname">unparse</code><span class="sig-paren">(</span><em>input_dict</em>, <em>output=None</em>, <em>encoding='utf-8'</em>, <em>full_document=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/xmltodict.html#unparse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xmltodict.unparse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Emit an XML document for the given <cite>input_dict</cite> (reverse of <cite>parse</cite>).</p>
+<p>The resulting XML document is returned as a string, but if <cite>output</cite> (a
+file-like object) is specified, it is written there instead.</p>
+<p>Dictionary keys prefixed with <cite>attr_prefix</cite> (default=`&#8217;&#64;&#8217;<cite>) are interpreted
+as XML node attributes, whereas keys equal to `cdata_key</cite>
+(default=`&#8217;#text&#8217;`) are treated as character data.</p>
+<p>The <cite>pretty</cite> parameter (default=`False`) enables pretty-printing. In this
+mode, lines are terminated with <cite>&#8216;n&#8217;</cite> and indented with <cite>&#8216;t&#8217;</cite>, but this
+can be customized with the <cite>newl</cite> and <cite>indent</cite> parameters.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="ddt-package">
+<h2>5.4. ddt Package<a class="headerlink" href="#ddt-package" title="Permalink to this headline">¶</a></h2>
+<p>PyTan uses ddt for creating automatically generating test cases from JSON files (see: <code class="xref py py-mod docutils literal"><span class="pre">pytan.test_pytan_valid_server_tests</span></code>). ddt is an open source package maintained at: <a class="reference external" href="https://github.com/txels/ddt">https://github.com/txels/ddt</a></p>
+<span class="target" id="module-ddt"></span><dl class="function">
+<dt id="ddt.data">
+<code class="descclassname">ddt.</code><code class="descname">data</code><span class="sig-paren">(</span><em>*values</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ddt.html#data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ddt.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method decorator to add to your test methods.</p>
+<p>Should be added to methods of instances of <code class="docutils literal"><span class="pre">unittest.TestCase</span></code>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ddt.ddt">
+<code class="descclassname">ddt.</code><code class="descname">ddt</code><span class="sig-paren">(</span><em>cls</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ddt.html#ddt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ddt.ddt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class decorator for subclasses of <code class="docutils literal"><span class="pre">unittest.TestCase</span></code>.</p>
+<p>Apply this decorator to the test case class, and then
+decorate test methods with <code class="docutils literal"><span class="pre">&#64;data</span></code>.</p>
+<p>For each method decorated with <code class="docutils literal"><span class="pre">&#64;data</span></code>, this will effectively create as
+many methods as data items are passed as parameters to <code class="docutils literal"><span class="pre">&#64;data</span></code>.</p>
+<p>The names of the test methods follow the pattern
+<code class="docutils literal"><span class="pre">original_test_name_{ordinal}_{data}</span></code>. <code class="docutils literal"><span class="pre">ordinal</span></code> is the position of the
+data argument, starting with 1.</p>
+<p>For data we use a string representation of the data value converted into a
+valid python identifier.  If <code class="docutils literal"><span class="pre">data.__name__</span></code> exists, we use that instead.</p>
+<p>For each method decorated with <code class="docutils literal"><span class="pre">&#64;file_data('test_data.json')</span></code>, the
+decorator will try to load the test_data.json file located relative
+to the python file containing the method that is decorated. It will,
+for each <code class="docutils literal"><span class="pre">test_name</span></code> key create as many methods in the list of values
+from the <code class="docutils literal"><span class="pre">data</span></code> key.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ddt.file_data">
+<code class="descclassname">ddt.</code><code class="descname">file_data</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ddt.html#file_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ddt.file_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method decorator to add to your test methods.</p>
+<p>Should be added to methods of instances of <code class="docutils literal"><span class="pre">unittest.TestCase</span></code>.</p>
+<p><code class="docutils literal"><span class="pre">value</span></code> should be a path relative to the directory of the file
+containing the decorated <code class="docutils literal"><span class="pre">unittest.TestCase</span></code>. The file
+should contain JSON encoded data, that can either be a list or a
+dict.</p>
+<p>In case of a list, each value in the list will correspond to one
+test case, and the value will be concatenated to the test method
+name.</p>
+<p>In case of a dict, keys will be used as suffixes to the name of the
+test case, and values will be fed as test data.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ddt.is_hash_randomized">
+<code class="descclassname">ddt.</code><code class="descname">is_hash_randomized</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ddt.html#is_hash_randomized"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ddt.is_hash_randomized" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ddt.mk_test_name">
+<code class="descclassname">ddt.</code><code class="descname">mk_test_name</code><span class="sig-paren">(</span><em>name</em>, <em>value</em>, <em>index=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ddt.html#mk_test_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ddt.mk_test_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a new name for a test case.</p>
+<p>It will take the original test name and append an ordinal index and a
+string representation of the value, and convert the result into a valid
+python identifier by replacing extraneous characters with <code class="docutils literal"><span class="pre">_</span></code>.</p>
+<p>If hash randomization is enabled (a feature available since 2.7.3/3.2.3
+and enabled by default since 3.3) and a &#8220;non-trivial&#8221; value is passed
+this will omit the name argument by default. Set <cite>PYTHONHASHSEED</cite>
+to a fixed value before running tests in these cases to get the
+names back consistently or use the <cite>__name__</cite> attribute on data values.</p>
+<p>A &#8220;trivial&#8221; value is a plain scalar, or a tuple or list consisting
+only of trivial values.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ddt.unpack">
+<code class="descclassname">ddt.</code><code class="descname">unpack</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ddt.html#unpack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ddt.unpack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method decorator to add unpack feature.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="examples/pytan_examples.html" class="btn btn-neutral float-right" title="6. PyTan API Examples">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="taniumpy/taniumpy.object_types.html" class="btn btn-neutral" title="4.1.1. taniumpy.object_types package"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Tanium.
+      Last updated on Sep 04, 2015.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'2.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
