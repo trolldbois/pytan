@@ -11,6 +11,19 @@
             "run": true
         }
     },
+    "deploy_action_simple": {
+        "desc": "Deploy an action against all computers using human strings and use Server Side Export when performing a GetResultData",
+        "xml_desc": "Deploy an action using the package 'Distribute Tanium Standard Utilities' to all computers, wait for result data to be complete, and then get result data using Server Side Export",
+        "priority": "1",
+        "method": "deploy_action",
+        "method_template": "valid_response",
+        "response_template": "action",
+        "args": {
+            "package": "Distribute Tanium Standard Utilities",
+            "run": true,
+            "sse": true
+        }
+    },
     "deploy_action_simple_without_results": {
         "desc": "Deploy an action against all computers using human strings, but do not get the completed results of the job -- return right away with the deploy action object.",
         "xml_desc": "Deploy an action using the package 'Distribute Tanium Standard Utilities' to all computers and do not wait for result data to be complete and do not get result data",

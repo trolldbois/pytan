@@ -270,13 +270,13 @@ def remove_logging_handler(name='all'):
     name : str
         * name of logging handler to remove. if name == 'all' then all logging handlers are removed
     """
-    for k, v in sorted(get_all_loggers().iteritems()):
+    for k, v in sorted(get_all_pytan_loggers().iteritems()):
         for handler in v.handlers:
             if name == 'all':
-                spew("Removing handler: {0}/{0.name} due to 'all'".format(handler))
+                spew("Removing logging handler: {0}/{0.name} due to 'all'".format(handler))
                 v.removeHandler(handler)
             elif handler.name == name:
-                spew("Removing handler: {0}/{0.name} due to match".format(handler))
+                spew("Removing logging handler: {0}/{0.name} due to match".format(handler))
                 v.removeHandler(handler)
 
 
@@ -297,9 +297,9 @@ def setup_console_logging(gmt_tz=True):
     ch.setLevel(logging.DEBUG)
     ch.setFormatter(logging.Formatter(pytan.constants.INFO_FORMAT))
 
-    for k, v in sorted(get_all_loggers().iteritems()):
+    for k, v in sorted(get_all_pytan_loggers().iteritems()):
+        spew("setup_console_logging(): add handler: {0}/{0.name} to logger {1}".format(ch, k))
         v.addHandler(ch)
-        v.setLevel(logging.DEBUG)
 
 
 def change_console_format(debug=False):
@@ -311,7 +311,7 @@ def change_console_format(debug=False):
         * False : set logging format for console handler to :data:`pytan.constants.INFO_FORMAT`
         * True :  set logging format for console handler to :data:`pytan.constants.DEBUG_FORMAT`
     """
-    for k, v in sorted(get_all_loggers().iteritems()):
+    for k, v in sorted(get_all_pytan_loggers().iteritems()):
         for handler in v.handlers:
             if handler.name == 'console':
                 if debug:
@@ -334,9 +334,6 @@ def set_log_levels(loglevel=0):
 
     set_all_loglevels('WARN')
 
-    if loglevel == 0:
-        return
-
     for logmap in pytan.constants.LOG_LEVEL_MAPS:
         if loglevel >= logmap[0]:
             for lname, llevel in logmap[1].iteritems():
@@ -349,7 +346,7 @@ def print_log_levels():
     for logmap in pytan.constants.LOG_LEVEL_MAPS:
         print "Logging level: {} - Description: {}".format(logmap[0], logmap[2])
         if logmap[0] == 0:
-            for k, v in sorted(get_all_loggers().iteritems()):
+            for k, v in sorted(get_all_pytan_loggers().iteritems()):
                 print "\tLogger {!r} will only show WARNING and above".format(k)
             continue
         for lname, llevel in logmap[1].iteritems():
@@ -358,27 +355,30 @@ def print_log_levels():
 
 def set_all_loglevels(level='DEBUG'):
     """Sets all loggers that the logging system knows about to a given logger level"""
-    my_loggers = [x[1].keys() for x in pytan.constants.LOG_LEVEL_MAPS if x[1].keys()]
-    my_loggers = sorted(list(set(list(itertools.chain(*my_loggers)))))
 
-    for k, v in sorted(get_all_loggers().iteritems()):
-        if k not in my_loggers:
-            spew("not touching logger: {}".format(k))
-            continue
-        spew("set_all_loglevels(): setting {} to {}".format(k, level))
+    for k, v in sorted(get_all_pytan_loggers().iteritems()):
+        spew("set_all_loglevels(): setting pytan logger '{}' to {}".format(k, level))
         v.setLevel(getattr(logging, level))
         v.propagate = False
 
 
+def get_all_pytan_loggers():
+    """Gets all loggers currently known to pythons logging system that exist in :data:`pytan.constants.LOG_LEVEL_MAPS`
+
+    Creates loggers for any pytan loggers that do not exist yet
+    """
+    pytan_log_strings = [x[1].keys() for x in pytan.constants.LOG_LEVEL_MAPS if x[1].keys()]
+    pytan_log_strings = sorted(list(set(list(itertools.chain(*pytan_log_strings)))))
+
+    pytan_loggers = {x: logging.getLogger(x) for x in pytan_log_strings}
+    return pytan_loggers
+
+
 def get_all_loggers():
-    """Gets all loggers currently known to pythons logging system that exist in :data:`pytan.constants.LOG_LEVEL_MAPS`"""
+    """Gets all loggers currently known to pythons logging system`"""
     logger_dict = logging.Logger.manager.loggerDict
     all_loggers = {k: v for k, v in logger_dict.iteritems() if isinstance(v, logging.Logger)}
     all_loggers['root'] = logging.getLogger()
-    pytan_loggers = list(set([y for x in pytan.constants.LOG_LEVEL_MAPS for y in x[1].keys()]))
-    for x in pytan_loggers:
-        if x not in all_loggers:
-            all_loggers[x] = logging.getLogger(x)
     return all_loggers
 
 

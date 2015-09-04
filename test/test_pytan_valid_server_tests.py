@@ -291,6 +291,10 @@ class ValidServerTests(unittest.TestCase):
         self.assertIsInstance(ret['question_object'], taniumpy.Question)
         self.assertIsInstance(ret['poller_object'], pytan.pollers.QuestionPoller)
 
+        parsed_q = args['qtype'] == 'parsed'
+        if parsed_q:
+            self.assertIsInstance(ret['parse_results'], taniumpy.ParseResultGroupList)
+
         get_results = args.get('get_results', True)
         if get_results:
             self.assertIsNotNone(ret['poller_success'])

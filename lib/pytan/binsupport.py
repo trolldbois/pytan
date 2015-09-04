@@ -207,6 +207,14 @@ def setup_parser(desc, help=False):
         help="Enable debug format for logging",
     )
     opt_group.add_argument(
+        '--debug_method_locals',
+        required=False,
+        action='store_true',
+        default=False,
+        dest='debug_method_locals',
+        help="Enable debug logging for each methods local variables",
+    )
+    opt_group.add_argument(
         '--record_all_requests',
         required=False,
         action='store_true',

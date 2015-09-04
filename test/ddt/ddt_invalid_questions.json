@@ -77,7 +77,6 @@
         "exception": "pytan.exceptions.HumanParserError",
         "error_str": "More than one parameter.*"
     },
-
     "invalid_ask_manual_question_bad_option": {
         "desc": "Ask a question using an invalid option.",
         "priority": "4",
@@ -103,5 +102,18 @@
         },
         "exception": "pytan.exceptions.HumanParserError",
         "error_str": "Parameter.*missing key/value seperator"
+    },
+    "invalid_ask_parsed_question_no_picker": {
+        "desc": "Ask a parsed question without supplying a picker",
+        "priority": "2",
+        "method": "ask",
+        "method_template": "invalid_basic",
+        "response_template": "NONE",
+        "args": {
+            "qtype": "parsed",
+            "question_text": "Computer Name"
+        },
+        "exception": "pytan.exceptions.PickerError",
+        "error_str": ".*You must supply an index.*"
     }
 }

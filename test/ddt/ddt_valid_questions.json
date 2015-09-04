@@ -11,6 +11,32 @@
             "sensors": "Computer Name"
         }
     },
+    "ask_manual_question_simple_single_sensor_no_results": {
+        "desc": "Ask a manual question using human strings by referencing the name of a single sensor in a string, return right away and do not wait for results to complete/do not get result data at all.\n\nNo sensor filters, sensor parameters, sensor filter options, question filters, or question options supplied.",
+        "xml_desc" : "Ask the question 'Get Computer Name from all machines' and do not get result data",
+        "priority": "2",
+        "method": "ask",
+        "method_template": "valid_response",
+        "response_template": "question",
+        "args": {
+            "qtype": "manual",
+            "sensors": "Computer Name",
+            "get_results": false
+        }
+    },
+    "ask_manual_question_simple_single_sensor_sse": {
+        "desc": "Ask a manual question using human strings by referencing the name of a single sensor in a string and use server side export when getting result data.",
+        "xml_desc" : "Ask the question 'Get Computer Name from all machines', wait for result data to be complete, and get result data",
+        "priority": "2",
+        "method": "ask",
+        "method_template": "valid_response",
+        "response_template": "question",
+        "args": {
+            "qtype": "manual",
+            "sensors": "Computer Name",
+            "sse": true
+        }
+    },
     "ask_manual_question_simple_multiple_sensors": {
         "desc": "Ask a manual question using human strings by referencing the name of multiple sensors in a list.\n\nNo sensor filters, sensor parameters, sensor filter options, question filters, or question options supplied.",
         "xml_desc" : "Ask the question 'Get Computer Name and Installed Applications from all machines', wait for result data to be complete, and get result data",
@@ -225,5 +251,47 @@
                 "and_flag": 0
             }
         }
+    },
+    "ask_parsed_question_pick_first": {
+        "desc": "Ask the server to parse the question text 'computer name and ip route details' and choose the first parsed result as the question to run",
+        "xml_desc": "Ask the server to parse the question text 'computer name and ip route details' and add the question object that is returned in the first ParseResultGroup,  wait for result data to be complete, then get result data",
+        "priority": "1",
+        "method": "ask",
+        "method_template": "valid_response",
+        "response_template": "question",
+        "args": {
+            "qtype": "parsed",
+            "question_text": "computer name and ip route details",
+            "picker": 1
+        }
+    },
+    "ask_parsed_question_pick_first_no_results": {
+        "desc": "Ask the server to parse the question text 'computer name and ip route details' and choose the first parsed result as the question to run, return right away and do not wait for results to complete/do not get result data at all",
+        "xml_desc": "Ask the server to parse the question text 'computer name and ip route details' and add the question object that is returned in the first ParseResultGroup, do not get result data",
+        "priority": "1",
+        "method": "ask",
+        "method_template": "valid_response",
+        "response_template": "question",
+        "args": {
+            "qtype": "parsed",
+            "question_text": "computer name and ip route details",
+            "get_results": false,
+            "picker": 1
+        }
+    },
+    "ask_parsed_question_pick_first_sse": {
+        "desc": "Ask the server to parse the question text 'computer name and ip route details' and choose the first parsed result as the question to run and use server side export when performing a GetResultData",
+        "xml_desc": "Ask the server to parse the question text 'computer name and ip route details' and add the question object that is returned in the first ParseResultGroup,  wait for result data to be complete, then use server side export to get the result data",
+        "priority": "1",
+        "method": "ask",
+        "method_template": "valid_response",
+        "response_template": "question",
+        "args": {
+            "qtype": "parsed",
+            "question_text": "computer name and ip route details",
+            "picker": 1,
+            "sse": true
+        }
     }
+
 }

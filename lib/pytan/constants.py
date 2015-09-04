@@ -34,8 +34,9 @@ LOG_LEVEL_MAPS = [
         0,
         {
             'stats': 'DEBUG',
+            'method_debug': 'DEBUG',
         },
-        'Sets all loggers to only output at WARNING or above except for stats',
+        'Sets all loggers to only output at WARNING or above except for stats & method_debug',
     ),
     (
         1,
