@@ -56,11 +56,16 @@ help:
 clean:
 	rm -rf $(BUILDDIR)/*
 	rm -rf $(REALBUILDDIR)/*
+	mkdir -p $(BUILDDIR)/
+	mkdir -p $(REALBUILDDIR)/
 
 cleanbuild:
 	rm -rf $(BUILDDIR)/*
+	mkdir -p $(BUILDDIR)/
 
 html:
+	mkdir -p $(BUILDDIR)/
+	mkdir -p $(REALBUILDDIR)/
 	@echo "Re-building source/taniumpy"
 	sphinx-apidoc -f -T -M -o source/taniumpy ../../lib/taniumpy/
 	perl -pi -e "s/taniumpy package/TaniumPy Package/" source/taniumpy/taniumpy.rst
@@ -203,6 +208,6 @@ staticdoc:
 	cp $(STATIC_DOCDIR)/* $(REALBUILDDIR)/html
 	@echo "Static docs copied to $(REALBUILDDIR)"
 
-all: clean html staticdoc coverage latexpdf cleanbuild
+all: clean html staticdoc coverage latexpdf
 
 alldirty: html staticdoc coverage latexpdf
