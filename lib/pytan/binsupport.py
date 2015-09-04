@@ -735,7 +735,7 @@ def setup_create_user_argparser(doc):
         '--name',
         required=True,
         action='store',
-        dest='username',
+        dest='name',
         default=None,
         help='Name of user to create',
     )
@@ -1471,7 +1471,8 @@ def process_create_json_object_args(parser, handler, obj, args):
     try:
         response = handler.create_from_json(obj, **obj_grp_args)
     except Exception as e:
-        print e
+        traceback.print_exc()
+        print "\n\nError occurred: {}".format(e)
         sys.exit(100)
     for i in response:
         obj_id = getattr(i, 'id', 'unknown')
@@ -1686,7 +1687,8 @@ def process_delete_object_args(parser, handler, obj, args):
     try:
         response = handler.delete(obj, **obj_grp_args)
     except Exception as e:
-        print e
+        traceback.print_exc()
+        print "\n\nError occurred: {}".format(e)
         sys.exit(100)
     for i in response:
         print "Deleted item: ", i
@@ -1713,7 +1715,8 @@ def process_stop_action_args(parser, handler, args):
     try:
         action_stop = handler.stop_action(**args.__dict__)
     except Exception as e:
-        print e
+        traceback.print_exc()
+        print "\n\nError occurred: {}".format(e)
         sys.exit(99)
 
     print "++ Action ID stopped successfully: {0.id!r}".format(action_stop)
@@ -1740,7 +1743,8 @@ def process_get_results_args(parser, handler, args):
     try:
         obj = handler.get(**args.__dict__)[0]
     except Exception as e:
-        print e
+        traceback.print_exc()
+        print "\n\nError occurred: {}".format(e)
         sys.exit(99)
 
     m = "++ Found object: {}".format
@@ -1750,14 +1754,14 @@ def process_get_results_args(parser, handler, args):
         try:
             results_obj = handler.get_result_data_sse(obj=obj, **args.__dict__)
         except Exception as e:
-            print e
+            print "\n\nError occurred: {}".format(e)
             sys.exit(99)
 
     else:
         try:
             results_obj = handler.get_result_data(obj=obj, **args.__dict__)
         except Exception as e:
-            print e
+            print "\n\nError occurred: {}".format(e)
             sys.exit(99)
 
     if isinstance(results_obj, taniumpy.object_types.result_set.ResultSet):
@@ -1770,7 +1774,8 @@ def process_get_results_args(parser, handler, args):
                     obj=results_obj, **args.__dict__
                 )
             except Exception as e:
-                print e
+                traceback.print_exc()
+                print "\n\nError occurred: {}".format(e)
                 sys.exit(99)
 
             m = "++ Report file {!r} written with {} bytes".format
@@ -1815,7 +1820,8 @@ def process_create_user_args(parser, handler, args):
     try:
         response = handler.create_user(**obj_grp_args)
     except Exception as e:
-        print e
+        traceback.print_exc()
+        print "\n\nError occurred: {}".format(e)
         sys.exit(99)
 
     roles_txt = ', '.join([x.name for x in response.roles])
@@ -1849,7 +1855,8 @@ def process_create_package_args(parser, handler, args):
     try:
         response = handler.create_package(**obj_grp_args)
     except Exception as e:
-        print e
+        traceback.print_exc()
+        print "\n\nError occurred: {}".format(e)
         sys.exit(99)
 
     m = "New package {0.name!r} created with ID {0.id!r}, command: {0.command!r}".format
@@ -1881,7 +1888,8 @@ def process_create_sensor_args(parser, handler, args):
     try:
         response = handler.create_sensor(**obj_grp_args)
     except Exception as e:
-        print e
+        traceback.print_exc()
+        print "\n\nError occurred: {}".format(e)
         sys.exit(99)
 
     m = "New sensor {0.name!r} created with ID {0.id!r}".format
@@ -1913,7 +1921,8 @@ def process_create_whitelisted_url_args(parser, handler, args):
     try:
         response = handler.create_whitelisted_url(**obj_grp_args)
     except Exception as e:
-        print e
+        traceback.print_exc()
+        print "\n\nError occurred: {}".format(e)
         sys.exit(99)
 
     m = "New Whitelisted URL {0.url_regex!r} created with ID {0.id!r}".format
@@ -1945,7 +1954,8 @@ def process_create_group_args(parser, handler, args):
     try:
         response = handler.create_group(**obj_grp_args)
     except Exception as e:
-        print e
+        traceback.print_exc()
+        print "\n\nError occurred: {}".format(e)
         sys.exit(99)
 
     m = "New group {0.name!r} created with ID {0.id!r}, filter text: {0.text!r}".format
@@ -2076,13 +2086,15 @@ def process_get_object_args(parser, handler, obj, args, report=True):
         try:
             response = handler.get_all(obj)
         except Exception as e:
-            print e
+            traceback.print_exc()
+            print "\n\nError occurred: {}".format(e)
             sys.exit(100)
     else:
         try:
             response = handler.get(obj, **obj_grp_args)
         except Exception as e:
-            print e
+            traceback.print_exc()
+            print "\n\nError occurred: {}".format(e)
             sys.exit(100)
 
     print "Found items: ", response
@@ -2123,7 +2135,8 @@ def process_ask_parsed_args(parser, handler, args):
     try:
         response = handler.ask(qtype='parsed', **obj_grp_args)
     except Exception as e:
-        print e
+        traceback.print_exc()
+        print "\n\nError occurred: {}".format(e)
         sys.exit(99)
 
     question = response['question_object']
@@ -2134,7 +2147,7 @@ def process_ask_parsed_args(parser, handler, args):
         try:
             report_file, report_contents = handler.export_to_report_file(obj=results, **args.__dict__)
         except Exception as e:
-            print e
+            print "\n\nError occurred: {}".format(e)
             sys.exit(99)
 
         m = "++ Report file {!r} written with {} bytes".format
@@ -2166,13 +2179,15 @@ def process_ask_manual_args(parser, handler, args):
     obj_grp_names = ['Manual Question Options']
     obj_grp_opts = get_grp_opts(parser=parser, grp_names=obj_grp_names)
     obj_grp_args = {k: getattr(args, k) for k in obj_grp_opts}
+    other_args = {a: b for a, b in args.__dict__.iteritems() if a not in obj_grp_args}
 
     print "++ Asking manual question:\n{}".format(pytan.utils.jsonify(obj_grp_args))
 
     try:
         response = handler.ask(qtype='manual', **obj_grp_args)
     except Exception as e:
-        print e
+        traceback.print_exc()
+        print "\n\nError occurred: {}".format(e)
         sys.exit(99)
 
     question = response['question_object']
@@ -2181,9 +2196,10 @@ def process_ask_manual_args(parser, handler, args):
 
     if results:
         try:
-            report_file, report_contents = handler.export_to_report_file(obj=results, **args.__dict__)
+            report_file, report_contents = handler.export_to_report_file(obj=results, **other_args)
         except Exception as e:
-            print e
+            traceback.print_exc()
+            print "\n\nError occurred: {}".format(e)
             sys.exit(99)
 
         m = "++ Report file {!r} written with {} bytes".format
@@ -2221,7 +2237,8 @@ def process_deploy_action_args(parser, handler, args):
     try:
         response = handler.deploy_action(**obj_grp_args)
     except Exception as e:
-        print e
+        traceback.print_exc()
+        print "\n\nError occurred: {}".format(e)
         sys.exit(99)
 
     action = response['action_object']
@@ -2243,7 +2260,7 @@ def process_deploy_action_args(parser, handler, args):
                 obj=results, **obj_grp_args
             )
         except Exception as e:
-            print e
+            print "\n\nError occurred: {}".format(e)
             sys.exit(99)
 
         response['report_file'] = report_file
@@ -2313,7 +2330,8 @@ def process_ask_saved_args(parser, handler, args):
     try:
         response = handler.ask(qtype='saved', **q_args)
     except Exception as e:
-        print e
+        traceback.print_exc()
+        print "\n\nError occurred: {}".format(e)
         sys.exit(99)
 
     question = response['question_object']
@@ -2323,7 +2341,8 @@ def process_ask_saved_args(parser, handler, args):
     try:
         report_file, report_contents = handler.export_to_report_file(obj=results, **args.__dict__)
     except Exception as e:
-        print e
+        traceback.print_exc()
+        print "\n\nError occurred: {}".format(e)
         sys.exit(99)
 
     response['report_file'] = report_file
@@ -2353,11 +2372,12 @@ def process_handler_args(parser, args):
     handler_grp_names = ['Handler Authentication', 'Handler Options']
     handler_opts = get_grp_opts(parser=parser, grp_names=handler_grp_names)
     handler_args = {k: getattr(args, k) for k in handler_opts}
-
+    # print handler_args
     try:
         h = pytan.Handler(**handler_args)
-    except Exception:
+    except Exception as e:
         traceback.print_exc()
+        print "\n\nError occurred: {}".format(e)
         sys.exit(99)
 
     print str(h)
