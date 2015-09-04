@@ -337,7 +337,7 @@ class Handler(object):
             poller_success = poller.run(**clean_kwargs)
 
         # get the results
-        if sse and not self.session.platform_is_6_2(**clean_kwargs):
+        if sse and self.session.platform_is_6_5(**clean_kwargs):
             h = (
                 "Issue a GetResultData for a server side export to get the answers for the last "
                 "asked question of this saved question"
@@ -523,9 +523,9 @@ class Handler(object):
         -------
         parse_job_results : :class:`taniumpy.object_types.parse_result_group.ParseResultGroup`
         """
-        if self.session.platform_is_6_2(**kwargs):
-            m = "ParseJob not supported in version: {} / {}".format
-            m = m(self.session.server_version, self.session.server_version_dict)
+        if not self.session.platform_is_6_5(**kwargs):
+            m = "ParseJob not supported in version: {}".format
+            m = m(self.session.server_version)
             raise pytan.exceptions.UnsupportedVersionError(m)
 
         parse_job = taniumpy.ParseJob()
@@ -600,9 +600,9 @@ class Handler(object):
         Ask the server to parse 'computer name' and pick index 1 as the question you want to run:
             >>> v = handler.ask_parsed('computer name', picker=1)
         """
-        if self.session.platform_is_6_2(**kwargs):
-            m = "ParseJob not supported in version: {} / {}".format
-            m = m(self.session.server_version, self.session.server_version_dict)
+        if not self.session.platform_is_6_5(**kwargs):
+            m = "ParseJob not supported in version: {}".format
+            m = m(self.session.server_version)
             raise pytan.exceptions.UnsupportedVersionError(m)
 
         clean_keys = ['obj', 'question_text', 'handler']
@@ -2596,7 +2596,7 @@ class Handler(object):
 
         clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
-        if self.session.platform_is_6_2(**kwargs):
+        if not self.session.platform_is_6_5(**kwargs):
             objtype = taniumpy.Action
             objlisttype = None
             force_start_time = True
@@ -3037,7 +3037,7 @@ class Handler(object):
             ret['poller_success'] = ret['poller_object'].run(**clean_kwargs)
 
             # get the results
-            if sse and not self.session.platform_is_6_2(**clean_kwargs):
+            if sse and self.session.platform_is_6_5(**clean_kwargs):
                 rd = self.get_result_data_sse(obj=added_obj, **clean_kwargs)
             else:
                 rd = self.get_result_data(obj=added_obj, **clean_kwargs)
@@ -3055,24 +3055,30 @@ class Handler(object):
 
         Parameters
         ----------
-        v_maps : list of dict
-            * each dict can have major, minor, build, revision as keys, the corresponding values will be checked against self.session.server_version_dict to see if they are greater or equal to those values
+        v_maps : list of str
+            * each str should be a platform version
+            * each str will be checked against self.session.server_version
+            * if any str is not greater than or equal to self.session.server_version, return will be False
+            * if all strs are greater than or equal to self.session.server_version, return will be True
+            * if self.server_version is invalid/can't be determined, return will be False
 
         Returns
         -------
         bool
-            * True if all values in all v_maps are greater than or equal to all values in self.session.server_version_dict
+            * True if all values in all v_maps are greater than or equal to self.session.server_version
             * False otherwise
         """
-        v_dict = getattr(self.session, 'server_version_dict', {})
-        if not v_dict:
+        if self.session._invalid_server_version():
+            # server version is not valid, force a refresh right now
             self.session.get_server_version(**kwargs)
 
-        v_dict = getattr(self.session, 'server_version_dict', {})
+        if self.session._invalid_server_version():
+            # server version is STILL invalid, return False
+            return False
+
         for v_map in v_maps:
-            for k, v in v_map.iteritems():
-                if not v_dict.get(k, 0) >= v:
-                    return False
+            if not v_map >= self.session.server_version:
+                return False
         return True
 
     def _check_sse_format_support(self, sse_format, sse_format_int, **kwargs):
@@ -3137,9 +3143,9 @@ class Handler(object):
 
     def _check_sse_version(self, **kwargs):
         """Validates that the server version supports server side export"""
-        if self.session.platform_is_6_2(**kwargs):
-            m = "Server side export not supported in version: {} / {}".format
-            m = m(self.session.server_version, self.session.server_version_dict)
+        if not self.session.platform_is_6_5(**kwargs):
+            m = "Server side export not supported in version: {}".format
+            m = m(self.session.server_version)
             raise pytan.exceptions.UnsupportedVersionError(m)
 
     def _check_sse_crash_prevention(self, obj, **kwargs):
@@ -3153,9 +3159,9 @@ class Handler(object):
         clean_keys = ['obj', 'v_maps', 'ok_version']
         clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
-        ok_version = self._version_support_check(
-            v_maps=pytan.constants.SSE_CRASH_MAP, **clean_kwargs
-        )
+        restrict_maps = pytan.constants.SSE_CRASH_MAP
+
+        ok_version = self._version_support_check(v_maps=restrict_maps, **clean_kwargs)
 
         self._check_sse_timing(ok_version=ok_version, **clean_kwargs)
         self._check_sse_empty_rs(obj=obj, ok_version=ok_version, **clean_kwargs)

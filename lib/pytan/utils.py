@@ -2075,3 +2075,31 @@ def check_for_help(kwargs):
         if kwargs.get(x, False):
             help_out = getattr(pytan.help, x)()
             raise pytan.exceptions.PytanHelp(help_out)
+
+
+def parse_versioning(server_version):
+    """Parses server_version into a dictionary
+
+    Parameters
+    ----------
+    server_version : str
+        * str of server version
+
+    Returns
+    -------
+    dict
+        * dict of parsed tanium server version containing keys: major, minor, revision, and build
+    """
+    v_keys = ['major', 'minor', 'revision', 'build']
+    # fallback_ints = [-1, -1, -1, -1]
+    try:
+        v_parts = server_version.split('.')
+        v_ints = [int(x) for x in v_parts]
+        v_dict = dict(zip(v_keys, v_ints))
+    except:
+        m = (
+            "Unable to parse major, minor, revision, and build from server "
+            "version string: {}"
+        ).format
+        raise pytan.exceptions.VersionParseError(m(server_version))
+    return v_dict

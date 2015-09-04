@@ -2,6 +2,7 @@
     * add parsed and sse tests with xml_doc
     * generate soap examples for 6.2
     * add no6_2 flag to unit tests that use sse or any other non 6.2 stuffs, and add it to the xml doc too, and add it to the examples too (but add an example of running it on 6_2?), also add only6_2 for invalid tests 
+    * move soap docs to first level of toctree
     * make sure unit tests still work
     * test on windows, linux
     * test against all the major releases of 6.2/6.5 as well as pre-release of 6.6

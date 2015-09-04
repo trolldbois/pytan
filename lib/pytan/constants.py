@@ -700,20 +700,14 @@ Mapping of human friendly strings to API integers for server side export
 """
 
 SSE_RESTRICT_MAP = {
-    1: [
-        {'major': 6, 'minor': 5, 'revision': 314, 'build': 4300},
-    ],
-    2: [
-        {'major': 6, 'minor': 5, 'revision': 314, 'build': 4300},
-    ],
+    1: ['6.5.314.4300'],
+    2: ['6.5.314.4300'],
 }
 """
 Mapping of API integers for server side export format to version support
 """
 
-SSE_CRASH_MAP = [
-    {'major': 6, 'minor': 5, 'revision': 314, 'build': 4300},
-]
+SSE_CRASH_MAP = ['6.5.314.4300']
 """
 Mapping of versions to watch out for crashes/handle bugs for server side export
 """

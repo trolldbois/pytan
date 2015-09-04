@@ -177,9 +177,6 @@ class Session(object):
     server_version = "Not yet determined"
     """version string of server, will be updated when get_server_version() is called"""
 
-    server_version_dict = {}
-    """dictionary of self.server_version parsed into major, minor, build, revision -- will be updated when get_server_version() is called"""
-
     def __init__(self, host, port=443, **kwargs):
         self.setup_logging()
 
@@ -229,7 +226,6 @@ class Session(object):
         self.LAST_RESPONSE_INFO = {}
         self.LAST_REQUESTS_RESPONSE = None
         self.server_version = "Not yet determined"
-        self.server_version_dict = {}
 
     def setup_logging(self):
         self.qualname = "pytan.sessions.{}".format(self.__class__.__name__)
@@ -762,9 +758,8 @@ class Session(object):
             self.mylog.debug(m(self.server_info['diags_flat']))
 
         if server_version:
-            self.server_version = server_version
+            self.server_version = str(server_version)
 
-        self.server_version_dict = self._parse_versioning()
         return server_version
 
     def get_server_stats(self, **kwargs):
@@ -1364,33 +1359,26 @@ class Session(object):
         v_dict = dict(zip(v_keys, v_ints))
         return v_dict
 
-    def platform_is_6_2(self, **kwargs):
-        """Check to see if self.server_version_dict matches 6.2.xxx.xxx
+    def platform_is_6_5(self, **kwargs):
+        """Check to see if self.server_version is less than 6.5
 
         Returns
         -------
-        bool
-            * True if self.server_version_dict major == 6 and minor == 2
-            * False otherwise
+        is6_5 : bool
+            * True if self.server_version is greater than or equal to 6.5
+            * False if self.server_version is less than 6.5
         """
-        is6_2 = False
-
-        v_dict = getattr(self, 'server_version_dict', {})
-        if self._invalid_server_version() or not v_dict:
+        if self._invalid_server_version():
             # server version is not valid, force a refresh right now
             self.get_server_version(**kwargs)
 
-        v_dict = getattr(self, 'server_version_dict', {})
-        if self._invalid_server_version() or not v_dict:
+        if self._invalid_server_version():
             # server version is STILL invalid, we will assume its 6.2 since port 444 may be
             # inaccessible
-            is6_2 = True
-        else:
-            # server version is valid, get the major and minor keys from server_version_dict
-            major_ver = v_dict.get('major', 0)
-            minor_ver = v_dict.get('minor', 0)
-            is6_2 = (major_ver == 6 and minor_ver == 2) or (major_ver == 0 and minor_ver == 0)
-        return is6_2
+            return False
+
+        is6_5 = self.server_version >= '6.5'
+        return is6_5
 
     def _stats_loop(self, **kwargs):
         """Utility method for logging server stats via :func:`pytan.sessions.Session.get_server_stats` every self.STATS_LOOP_SLEEP_SEC"""
