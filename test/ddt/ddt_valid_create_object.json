@@ -1,6 +1,7 @@
 {
     "create_package": {
         "desc": "Create a package called package49",
+        "xml_desc": "Create a package called package49",
         "priority": "1",
         "method": "create_package",
         "method_template": "delete_first",
@@ -28,6 +29,7 @@
     },
     "create_group": {
         "desc": "Create a group called All Windows Computers API Test",
+        "xml_desc": "Create a group called All Windows Computers API Test",
         "priority": "1",
         "method": "create_group",
         "method_template": "delete_first",
@@ -46,6 +48,7 @@
     },
     "create_user": {
         "desc": "Create a user called API Test User",
+        "xml_desc": "Create a user called API Test User",
         "priority": "1",
         "method": "create_user",
         "method_template": "delete_first",
@@ -53,7 +56,7 @@
         "delete": {"objtype": "user", "name": "API Test User"},
         "taniumpyobj": "taniumpy.User",
         "args": {
-            "username": "API Test User",
+            "name": "API Test User",
             "rolename": "Administrator",
             "properties": [
                 [
@@ -65,6 +68,7 @@
     },
     "create_whitelisted_url": {
         "desc": "Create a whitelisted url",
+        "xml_desc": "Create a whitelisted url",
         "priority": "1",
         "method": "create_whitelisted_url",
         "method_template": "delete_first",

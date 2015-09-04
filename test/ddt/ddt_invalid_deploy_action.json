@@ -42,7 +42,8 @@
         "method_template": "invalid_basic",
         "response_template": "NONE",
         "args": {
-            "package": "Distribute Tanium Standard Utilities"
+            "package": "Distribute Tanium Standard Utilities",
+            "report_dir": "/tmp"
         },
         "exception": "pytan.exceptions.RunFalse",
         "error_str": ".*'Run' is not True.*"

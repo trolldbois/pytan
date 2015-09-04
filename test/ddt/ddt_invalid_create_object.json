@@ -5,7 +5,7 @@
         "method": "create_sensor",
         "method_template": "invalid_basic",
         "response_template": "NONE",
-        "args": {},
+        "args": {"unsupported": true},
         "exception": "pytan.exceptions.HandlerError",
         "error_str": "Sensor creation not supported via PyTan as of yet, too complex.*"
     }

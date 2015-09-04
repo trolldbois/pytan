@@ -471,7 +471,6 @@ class ValidServerTests(unittest.TestCase):
 
         method = value['method']
         args = value['args']
-        args['report_dir'] = TEST_OUT
         exc = eval(value['exception'])
         e = value['error_str']
 

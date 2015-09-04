@@ -1,6 +1,7 @@
 {
     "get_action_by_id": {
         "desc": "Get an action by id",
+        "xml_desc": "Get an action object by id",
         "priority": "1",
         "method": "get",
         "method_template": "valid_response",
@@ -14,6 +15,7 @@
     },
     "get_group_by_name": {
         "desc": "Get a group by name",
+        "xml_desc": "Get a group object by name",
         "priority": "1",
         "method": "get",
         "method_template": "valid_response",
@@ -27,6 +29,7 @@
     },
     "get_package_by_name": {
         "desc": "Get a package by name",
+        "xml_desc": "Get a package object by name",
         "priority": "1",
         "method": "get",
         "method_template": "valid_response",
@@ -40,6 +43,7 @@
     },
     "get_question_by_id": {
         "desc": "Get a question by id",
+        "xml_desc": "Get a question object by id",
         "priority": "1",
         "method": "get",
         "method_template": "valid_response",
@@ -53,6 +57,7 @@
     },
     "get_saved_action_by_name": {
         "desc": "Get a saved action by name",
+        "xml_desc": "Get a saved action object by name",
         "priority": "1",
         "method": "get",
         "method_template": "valid_response",
@@ -69,6 +74,7 @@
     },
     "get_saved_question_by_name": {
         "desc": "Get saved question by name",
+        "xml_desc": "Get saved question object by name",
         "priority": "1",
         "method": "get",
         "method_template": "valid_response",
@@ -85,6 +91,7 @@
     },
     "get_saved_question_by_names": {
         "desc": "Get two saved questions by name",
+        "xml_desc": "Get two saved question objects by name",
         "priority": "1",
         "method": "get",
         "method_template": "valid_response",
@@ -101,6 +108,7 @@
     },
     "get_sensor_by_name": {
         "desc": "Get a sensor by name",
+        "xml_desc": "Get a sensor object by name",
         "priority": "1",
         "method": "get",
         "method_template": "valid_response",
@@ -114,6 +122,7 @@
     },
     "get_sensor_by_id": {
         "desc": "Get a sensor by id",
+        "xml_desc": "Get a sensor object by id",
         "priority": "1",
         "method": "get",
         "method_template": "valid_response",
@@ -127,6 +136,7 @@
     },
     "get_sensor_by_hash": {
         "desc": "Get a sensor by hash",
+        "xml_desc": "Get a sensor object by hash",
         "priority": "1",
         "method": "get",
         "method_template": "valid_response",
@@ -140,6 +150,7 @@
     },
     "get_sensor_by_names": {
         "desc": "Get multiple sensors by name",
+        "xml_desc": "Get multiple sensor objects by name",
         "priority": "1",
         "method": "get",
         "method_template": "valid_response",
@@ -156,6 +167,7 @@
     },
     "get_sensor_by_mixed": {
         "desc": "Get multiple sensors by id, name, and hash",
+        "xml_desc": "Get multiple sensor objects by id, name, and hash",
         "priority": "1",
         "method": "get",
         "method_template": "valid_response",
@@ -174,6 +186,7 @@
     },
     "get_setting_by_name": {
         "desc": "Get a system setting by name",
+        "xml_desc": "Get a system setting object by name",
         "priority": "1",
         "method": "get",
         "method_template": "valid_response",
@@ -187,6 +200,7 @@
     },
     "get_user_by_id": {
         "desc": "Get a user by id",
+        "xml_desc": "Get a user object by id",
         "priority": "1",
         "method": "get",
         "method_template": "valid_response",
@@ -200,6 +214,7 @@
     },
     "get_user_by_name": {
         "desc": "Get a user by name",
+        "xml_desc": "Get a user object by name",
         "priority": "1",
         "method": "get",
         "method_template": "valid_response",
@@ -213,6 +228,7 @@
     },
     "get_userrole_by_id": {
         "desc": "Get a user role by id.",
+        "xml_desc": "Get a user role object by id.",
         "priority": "1",
         "method": "get",
         "method_template": "valid_response",
@@ -226,6 +242,7 @@
     },
     "get_whitelisted_url_by_id": {
         "desc": "Get a whitelisted url by id",
+        "xml_desc": "Get a whitelisted url object by id",
         "priority": "1",
         "method": "get",
         "method_template": "valid_response",
@@ -252,6 +269,7 @@
     },
     "get_all_actions": {
         "desc": "Get all actions",
+        "xml_desc": "Get all action objects",
         "priority": "2",
         "method": "get_all",
         "method_template": "valid_response",
@@ -265,6 +283,7 @@
     },
     "get_all_clients": {
         "desc": "Get all clients",
+        "xml_desc": "Get all client objects",
         "priority": "2",
         "method": "get_all",
         "method_template": "valid_response",
@@ -278,6 +297,7 @@
     },
     "get_all_groups": {
         "desc": "Get all groups",
+        "xml_desc": "Get all group objects",
         "priority": "2",
         "method": "get_all",
         "method_template": "valid_response",
@@ -291,6 +311,7 @@
     },
     "get_all_packages": {
         "desc": "Get all packages",
+        "xml_desc": "Get all package objects",
         "priority": "2",
         "method": "get_all",
         "method_template": "valid_response",
@@ -304,6 +325,7 @@
     },
     "get_all_questions": {
         "desc": "Get all questions",
+        "xml_desc": "Get all question objects",
         "priority": "2",
         "method": "get_all",
         "method_template": "valid_response",
@@ -317,6 +339,7 @@
     },
     "get_all_saved_actions": {
         "desc": "Get all saved actions",
+        "xml_desc": "Get all saved action objects",
         "priority": "2",
         "method": "get_all",
         "method_template": "valid_response",
@@ -330,6 +353,7 @@
     },
     "get_all_saved_questions": {
         "desc": "Get all saved questions",
+        "xml_desc": "Get all saved question objects",
         "priority": "2",
         "method": "get_all",
         "method_template": "valid_response",
@@ -343,6 +367,7 @@
     },
     "get_all_sensors": {
         "desc": "Get all sensors",
+        "xml_desc": "Get all sensor objects",
         "priority": "2",
         "method": "get_all",
         "method_template": "valid_response",
@@ -356,6 +381,7 @@
     },
     "get_all_settings": {
         "desc": "Get all system settings",
+        "xml_desc": "Get all system setting objects",
         "priority": "2",
         "method": "get_all",
         "method_template": "valid_response",
@@ -369,6 +395,7 @@
     },
     "get_all_users": {
         "desc": "Get all users",
+        "xml_desc": "Get all user objects",
         "priority": "2",
         "method": "get_all",
         "method_template": "valid_response",
@@ -382,6 +409,7 @@
     },
     "get_all_userroless": {
         "desc": "Get all user roles",
+        "xml_desc": "Get all user role objects",
         "priority": "2",
         "method": "get_all",
         "method_template": "valid_response",
@@ -395,6 +423,7 @@
     },
     "get_all_whitelisted_urls": {
         "desc": "Get all whitelisted urls",
+        "xml_desc": "Get all whitelisted url objects",
         "priority": "2",
         "method": "get_all",
         "method_template": "valid_response",
