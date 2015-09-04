@@ -1,10 +1,23 @@
+  * NOW:
+    * add parsed and sse tests with xml_doc
+    * generate soap examples for 6.2
+    * add no6_2 flag to unit tests that use sse or any other non 6.2 stuffs, and add it to the xml doc too, and add it to the examples too (but add an example of running it on 6_2?), also add only6_2 for invalid tests 
+    * make sure unit tests still work
+    * test on windows, linux
+    * test against all the major releases of 6.2/6.5 as well as pre-release of 6.6
+    
   * DOC:
+    * examples for ask_parsed.py
+    * examples for tsat.py
+    * add more examples for sse everywhere
     * add validation results of testing against various platform versions for each release
+    * go through SOAP doc and verify everything looks sane
 
   * BUG:
     * work on deploy action & start_seconds_from_now (a new action gets created at actual start time)
 
   * GEN:
+    * rewrite write_csv
     * add secondary loop for if any data == current result unavail/etc (MEDIUM)
     * Add method to get question progress (MEDIUM)
     * add print_user bin script (SMALL)
@@ -16,12 +29,10 @@
     * add export_obj option for csv to split columns longer than 32k
 
   * TEST:
-    * add tests for SSE
+    * add approve action to pytan (need doc update and test update)
+    * add tests for dashboard stuffs
     * add unit tests for logout()
     * add unit tests for auth with session
-    * add unit tests for sessions_lib
-    * add tests for dashboard stuffs
-    * add approve action to pytan (need doc update and test update)
     * rebuild zip_dists, and test on win
     * cache_results test: If you are adding tests for that mechanism you could make tests that verify it returns an error if you specify a cache that has expired and make sure that the results that come back don’t change.
     * test verify checks work against package with verification (unable to do) (UNKNOWN)
@@ -32,7 +43,8 @@
     * await update on cs values in SSE XML
 
   * LOW:
-    * re-work build API example scripts to be more better-er
+    * fix build bin doc to run on windows (figure out later)
+    * write get_session_id.py (later)
     * update EXAMPLES to work with 2.0.0
     * look into update object methods (UNKNOWN)
     * logfile support (MEDIUM)
