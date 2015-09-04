@@ -63,12 +63,6 @@ class Session(object):
 
         >>> session.authenticate('username', 'password')
     """
-
-    REQUESTS_SESSION = requests.Session()
-    """
-    The Requests session allows you to persist certain parameters across requests. It also persists cookies across all requests made from the Session instance. Any requests that you make within a session will automatically reuse the appropriate connection
-    """
-
     XMLNS = {
         'SOAP-ENV': 'xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"',
         'xsd': 'xmlns:xsd="http://www.w3.org/2001/XMLSchema"',
@@ -186,14 +180,15 @@ class Session(object):
     server_version_dict = {}
     """dictionary of self.server_version parsed into major, minor, build, revision -- will be updated when get_server_version() is called"""
 
-    mylog = logging.getLogger("session")
-    authlog = logging.getLogger("session.auth")
-    httplog = logging.getLogger("session.http")
-    bodyhttplog = logging.getLogger("session.http.body")
-    statslog = logging.getLogger("stats")
-
     def __init__(self, host, port=443, **kwargs):
         self.setup_logging()
+
+        self.REQUESTS_SESSION = requests.Session()
+        """
+        The Requests session allows you to persist certain parameters across requests. It also
+        persists cookies across all requests made from the Session instance. Any requests that you
+        make within a session will automatically reuse the appropriate connection
+        """
 
         # disable SSL cert verification for all requests made in this session
         self.REQUESTS_SESSION.verify = False
@@ -237,7 +232,7 @@ class Session(object):
         self.server_version_dict = {}
 
     def setup_logging(self):
-        self.qualname = "{}.{}".format(self.__class__.__module__, self.__class__.__name__)
+        self.qualname = "pytan.sessions.{}".format(self.__class__.__name__)
         self.mylog = logging.getLogger(self.qualname)
         self.authlog = logging.getLogger(self.qualname + ".auth")
         self.httplog = logging.getLogger(self.qualname + ".http")
