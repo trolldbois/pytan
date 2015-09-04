@@ -83,7 +83,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../pytan.xml_clean.html">2.8. pytan.xml_clean module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../pytan.unittest.html">2.9. pytan Unit Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../pytan.functest.html">2.10. pytan Functional Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../examples/pytan_examples.html">2.11. PyTan API examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/pytan_examples.html">2.11. PyTan API Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../soap_examples/6.5.314.4301/soap_examples_6.5.314.4301.html">2.12. SOAP API Examples for Platform Version 6.5.314.4301</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../taniumpy.html">3. taniumpy package</a></li>
@@ -228,10 +229,6 @@
     <span class="n">_stop</span> <span class="o">=</span> <span class="bp">False</span>
     <span class="sd">&quot;&quot;&quot;Controls whether a run() loop should stop or not&quot;&quot;&quot;</span>
 
-    <span class="n">mylog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;poller&quot;</span><span class="p">)</span>
-    <span class="n">progresslog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;poller.progress&quot;</span><span class="p">)</span>
-    <span class="n">resolverlog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;poller.resolver&quot;</span><span class="p">)</span>
-
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setup_logging</span><span class="p">()</span>
 
@@ -258,11 +255,11 @@
 
 <div class="viewcode-block" id="QuestionPoller.setup_logging"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.QuestionPoller.setup_logging">[docs]</a>    <span class="k">def</span> <span class="nf">setup_logging</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Setup loggers for this object&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">qualname</span> <span class="o">=</span> <span class="s">&quot;{}.{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__module__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">qualname</span> <span class="o">=</span> <span class="s">&quot;pytan.pollers.{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qualname</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">progresslog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qualname</span> <span class="o">+</span> <span class="s">&quot;.progress&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">resolverlog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qualname</span> <span class="o">+</span> <span class="s">&quot;.resolver&quot;</span><span class="p">)</span>
-</div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resolverlog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qualname</span> <span class="o">+</span> <span class="s">&quot;.resolver&quot;</span><span class="p">)</span></div>
+
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">class_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span>
         <span class="n">attrs</span> <span class="o">=</span> <span class="s">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s">&#39;{0}: &quot;{1}&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="bp">None</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">STR_ATTRS</span><span class="p">])</span>
@@ -272,8 +269,8 @@
 <div class="viewcode-block" id="QuestionPoller._post_init"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.QuestionPoller._post_init">[docs]</a>    <span class="k">def</span> <span class="nf">_post_init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Post init class setup&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_derive_expiration</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_derive_object_info</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-</div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_derive_object_info</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="QuestionPoller._refetch_obj"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.QuestionPoller._refetch_obj">[docs]</a>    <span class="k">def</span> <span class="nf">_refetch_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Utility method to re-fetch a object</span>
 
@@ -289,8 +286,8 @@
             <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Unable to find object: {}&quot;</span><span class="o">.</span><span class="n">format</span>
             <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">PollingError</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">))</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">obj</span>
-</div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">obj</span></div>
+
 <div class="viewcode-block" id="QuestionPoller._derive_attribute"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.QuestionPoller._derive_attribute">[docs]</a>    <span class="k">def</span> <span class="nf">_derive_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">fallback</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Derive an attributes value from self.obj</span>
 
@@ -338,8 +335,8 @@
 
         <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}attribute &#39;{}&#39; resolved to &#39;{}&#39;&quot;</span><span class="o">.</span><span class="n">format</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">val</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">val</span>
-</div>
+        <span class="k">return</span> <span class="n">val</span></div>
+
 <div class="viewcode-block" id="QuestionPoller._derive_object_info"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.QuestionPoller._derive_object_info">[docs]</a>    <span class="k">def</span> <span class="nf">_derive_object_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Derive self.object_info from self.obj&quot;&quot;&quot;</span>
         <span class="n">clean_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;attr&#39;</span><span class="p">,</span> <span class="s">&#39;fallback&#39;</span><span class="p">]</span>
@@ -357,8 +354,8 @@
 
         <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}&#39;object_info&#39; resolved to &#39;{}&#39;&quot;</span><span class="o">.</span><span class="n">format</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">resolverlog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="n">object_info</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">object_info</span> <span class="o">=</span> <span class="n">object_info</span>
-</div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object_info</span> <span class="o">=</span> <span class="n">object_info</span></div>
+
 <div class="viewcode-block" id="QuestionPoller._derive_expiration"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.QuestionPoller._derive_expiration">[docs]</a>    <span class="k">def</span> <span class="nf">_derive_expiration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Derive the expiration datetime string from a object</span>
 
@@ -369,8 +366,8 @@
 
         <span class="n">attr_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">EXPIRATION_ATTR</span>
         <span class="n">fb</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">seconds_from_now</span><span class="p">(</span><span class="n">secs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">EXPIRY_FALLBACK_SECS</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">expiration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_derive_attribute</span><span class="p">(</span><span class="n">attr</span><span class="o">=</span><span class="n">attr_name</span><span class="p">,</span> <span class="n">fallback</span><span class="o">=</span><span class="n">fb</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
-</div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">expiration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_derive_attribute</span><span class="p">(</span><span class="n">attr</span><span class="o">=</span><span class="n">attr_name</span><span class="p">,</span> <span class="n">fallback</span><span class="o">=</span><span class="n">fb</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="QuestionPoller.run_callback"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.QuestionPoller.run_callback">[docs]</a>    <span class="k">def</span> <span class="nf">run_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callbacks</span><span class="p">,</span> <span class="n">callback</span><span class="p">,</span> <span class="n">pct</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Utility method to find a callback in callbacks dict and run it</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -386,8 +383,8 @@
             <span class="n">callbacks</span><span class="p">[</span><span class="n">callback</span><span class="p">](</span><span class="n">poller</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">pct</span><span class="o">=</span><span class="n">pct</span><span class="p">,</span> <span class="o">**</span><span class="n">cb_clean_kwargs</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Exception occurred in &#39;{}&#39; Callback: {}&quot;</span><span class="o">.</span><span class="n">format</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">callback</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
-</div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">callback</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span></div>
+
 <div class="viewcode-block" id="QuestionPoller.set_complect_pct"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.QuestionPoller.set_complect_pct">[docs]</a>    <span class="k">def</span> <span class="nf">set_complect_pct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span> <span class="c"># noqa</span>
         <span class="sd">&quot;&quot;&quot;Set the complete_pct to a new value</span>
 
@@ -396,8 +393,8 @@
 <span class="sd">        val : int/float</span>
 <span class="sd">            float value representing the new percentage to consider self.obj complete</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">complete_pct</span> <span class="o">=</span> <span class="n">val</span>
-</div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">complete_pct</span> <span class="o">=</span> <span class="n">val</span></div>
+
 <div class="viewcode-block" id="QuestionPoller.get_result_info"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.QuestionPoller.get_result_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_result_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Simple utility wrapper around :func:`pytan.handler.Handler.get_result_info`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -407,16 +404,16 @@
         <span class="k">if</span> <span class="n">result_info</span><span class="o">.</span><span class="n">estimated_total</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Estimated Total of Clients is 0 -- no clients available?&quot;</span><span class="o">.</span><span class="n">format</span>
             <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">PollingError</span><span class="p">(</span><span class="n">m</span><span class="p">())</span>
-        <span class="k">return</span> <span class="n">result_info</span>
-</div>
+        <span class="k">return</span> <span class="n">result_info</span></div>
+
 <div class="viewcode-block" id="QuestionPoller.get_result_data"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.QuestionPoller.get_result_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_result_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Simple utility wrapper around :func:`pytan.handler.Handler.get_result_data`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">clean_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;obj&#39;</span><span class="p">]</span>
         <span class="n">clean_kwargs</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">clean_kwargs</span><span class="p">(</span><span class="n">kwargs</span><span class="o">=</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="n">clean_keys</span><span class="p">)</span>
         <span class="n">result_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">get_result_data</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">result_data</span>
-</div>
+        <span class="k">return</span> <span class="n">result_data</span></div>
+
 <div class="viewcode-block" id="QuestionPoller.run"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.QuestionPoller.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callbacks</span><span class="o">=</span><span class="p">{},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Poll for question data and issue callbacks.</span>
 
@@ -454,8 +451,8 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">passed_eq_total</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">passed_eq_est_total_loop</span><span class="p">(</span><span class="n">callbacks</span><span class="o">=</span><span class="n">callbacks</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">poller_result</span> <span class="o">=</span> <span class="nb">all</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">passed_eq_total</span><span class="p">])</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">poller_result</span>
-</div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">poller_result</span></div>
+
 <div class="viewcode-block" id="QuestionPoller.passed_eq_est_total_loop"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.QuestionPoller.passed_eq_est_total_loop">[docs]</a>    <span class="k">def</span> <span class="nf">passed_eq_est_total_loop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callbacks</span><span class="o">=</span><span class="p">{},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to poll Result Info for self.obj until the percentage of &#39;passed&#39; out of &#39;estimated_total&#39; is greater than or equal to self.complete_pct</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -571,12 +568,12 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">previous_result_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result_info</span>
 
             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">polling_secs</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">loop_count</span> <span class="o">+=</span> <span class="mi">1</span>
-</div>
-<div class="viewcode-block" id="QuestionPoller.stop"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.QuestionPoller.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_stop</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">loop_count</span> <span class="o">+=</span> <span class="mi">1</span></div>
 
-</div></div>
+<div class="viewcode-block" id="QuestionPoller.stop"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.QuestionPoller.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_stop</span> <span class="o">=</span> <span class="bp">True</span></div></div>
+
+
 <div class="viewcode-block" id="ActionPoller"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.ActionPoller">[docs]</a><span class="k">class</span> <span class="nc">ActionPoller</span><span class="p">(</span><span class="n">QuestionPoller</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A class to poll the progress of an Action.</span>
 
@@ -627,8 +624,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_derive_expiration</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_derive_status</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_derive_stopped_flag</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_derive_object_info</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-</div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_derive_object_info</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="ActionPoller._derive_status"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.ActionPoller._derive_status">[docs]</a>    <span class="k">def</span> <span class="nf">_derive_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the status attribute for self.obj&quot;&quot;&quot;</span>
         <span class="n">clean_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;attr&#39;</span><span class="p">,</span> <span class="s">&#39;fallback&#39;</span><span class="p">]</span>
@@ -636,8 +633,8 @@
 
         <span class="n">attr_name</span> <span class="o">=</span> <span class="s">&#39;status&#39;</span>
         <span class="n">fb</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_derive_attribute</span><span class="p">(</span><span class="n">attr</span><span class="o">=</span><span class="n">attr_name</span><span class="p">,</span> <span class="n">fallback</span><span class="o">=</span><span class="n">fb</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
-</div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_derive_attribute</span><span class="p">(</span><span class="n">attr</span><span class="o">=</span><span class="n">attr_name</span><span class="p">,</span> <span class="n">fallback</span><span class="o">=</span><span class="n">fb</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="ActionPoller._derive_stopped_flag"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.ActionPoller._derive_stopped_flag">[docs]</a>    <span class="k">def</span> <span class="nf">_derive_stopped_flag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the stopped_flag attribute for self.obj&quot;&quot;&quot;</span>
         <span class="n">clean_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;attr&#39;</span><span class="p">,</span> <span class="s">&#39;fallback&#39;</span><span class="p">]</span>
@@ -647,8 +644,8 @@
         <span class="n">fb</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stopped_flag</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_derive_attribute</span><span class="p">(</span><span class="n">attr</span><span class="o">=</span><span class="n">attr_name</span><span class="p">,</span> <span class="n">fallback</span><span class="o">=</span><span class="n">fb</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stopped_flag</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stopped_flag</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">stopped_flag</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stopped_flag</span><span class="p">)</span>
-</div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stopped_flag</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stopped_flag</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="ActionPoller._derive_package_spec"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.ActionPoller._derive_package_spec">[docs]</a>    <span class="k">def</span> <span class="nf">_derive_package_spec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the package_spec attribute for self.obj, then fetch the full package_spec object&quot;&quot;&quot;</span>
         <span class="n">clean_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;attr&#39;</span><span class="p">,</span> <span class="s">&#39;fallback&#39;</span><span class="p">,</span> <span class="s">&#39;obj&#39;</span><span class="p">]</span>
@@ -661,8 +658,8 @@
         <span class="c"># get the full package object associated with this action</span>
         <span class="n">h</span> <span class="o">=</span> <span class="s">&quot;Issue a GetObject on the package for an action to get the full object&quot;</span>
         <span class="n">clean_kwargs</span><span class="p">[</span><span class="s">&#39;pytan_help&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">package_spec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">_find</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">package_spec</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
-</div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">package_spec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">_find</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">package_spec</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="ActionPoller._derive_target_group"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.ActionPoller._derive_target_group">[docs]</a>    <span class="k">def</span> <span class="nf">_derive_target_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the target_group attribute for self.obj, then fetch the full group object&quot;&quot;&quot;</span>
         <span class="n">clean_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;attr&#39;</span><span class="p">,</span> <span class="s">&#39;fallback&#39;</span><span class="p">,</span> <span class="s">&#39;obj&#39;</span><span class="p">]</span>
@@ -686,15 +683,15 @@
             <span class="k">except</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">passed_count_reliable</span> <span class="o">=</span> <span class="bp">False</span>
                 <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}Passed Count unreliable! Unable to find Actions Target Group: {}&quot;</span><span class="o">.</span><span class="n">format</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_group</span><span class="p">))</span>
-</div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_group</span><span class="p">))</span></div>
+
 <div class="viewcode-block" id="ActionPoller._fix_group"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.ActionPoller._fix_group">[docs]</a>    <span class="k">def</span> <span class="nf">_fix_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Sets ID to null on a group object and all of it&#39;s sub_groups, needed for 6.5&quot;&quot;&quot;</span>
         <span class="n">g</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">sub_groups</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">sub_groups</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_fix_group</span><span class="p">(</span><span class="n">g</span><span class="o">=</span><span class="n">x</span><span class="p">)</span>
-</div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_fix_group</span><span class="p">(</span><span class="n">g</span><span class="o">=</span><span class="n">x</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="ActionPoller._derive_verify_enabled"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.ActionPoller._derive_verify_enabled">[docs]</a>    <span class="k">def</span> <span class="nf">_derive_verify_enabled</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Determine if this action has verification enabled&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">verify_enabled</span> <span class="o">=</span> <span class="bp">False</span>
@@ -703,8 +700,8 @@
         <span class="n">vg</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">package_spec</span><span class="p">,</span> <span class="s">&#39;verify_group&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
         <span class="n">vg_id</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">vg</span><span class="p">,</span> <span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">ps_verify_group_id</span> <span class="ow">or</span> <span class="n">vg_id</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">verify_enabled</span> <span class="o">=</span> <span class="bp">True</span>
-</div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">verify_enabled</span> <span class="o">=</span> <span class="bp">True</span></div>
+
 <div class="viewcode-block" id="ActionPoller._derive_result_map"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.ActionPoller._derive_result_map">[docs]</a>    <span class="k">def</span> <span class="nf">_derive_result_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Determine what self.result_map should contain for the various statuses an action can have</span>
 
@@ -754,8 +751,8 @@
             <span class="n">v</span><span class="p">[</span><span class="s">&#39;total&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}Result Map resolved to {}&quot;</span><span class="o">.</span><span class="n">format</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">resolverlog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">result_map</span><span class="p">))</span>
-</div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resolverlog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">result_map</span><span class="p">))</span></div>
+
 <div class="viewcode-block" id="ActionPoller._derive_object_info"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.ActionPoller._derive_object_info">[docs]</a>    <span class="k">def</span> <span class="nf">_derive_object_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Derive self.object_info from self.obj&quot;&quot;&quot;</span>
         <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}Package: &#39;{}&#39;, Target: &#39;{}&#39;, Verify: {}, Stopped: {}, Status: {}&quot;</span><span class="o">.</span><span class="n">format</span>
@@ -768,8 +765,8 @@
         <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}Object Info resolved to {}&quot;</span><span class="o">.</span><span class="n">format</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">resolverlog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="n">object_info</span><span class="p">))</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">object_info</span> <span class="o">=</span> <span class="n">object_info</span>
-</div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object_info</span> <span class="o">=</span> <span class="n">object_info</span></div>
+
 <div class="viewcode-block" id="ActionPoller.run"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.ActionPoller.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callbacks</span><span class="o">=</span><span class="p">{},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Poll for action data and issue callbacks.</span>
 
@@ -816,7 +813,9 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">pre_question</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">Question</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pre_question</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_group</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pre_question</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">_add</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pre_question</span><span class="p">,</span> <span class="n">pytan_help</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pre_question</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="o">.</span><span class="n">_add</span><span class="p">(</span>
+            <span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pre_question</span><span class="p">,</span> <span class="n">pytan_help</span><span class="o">=</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">),</span> <span class="o">**</span><span class="n">clean_kwargs</span>
+        <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">pre_question_poller</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">pollers</span><span class="o">.</span><span class="n">QuestionPoller</span><span class="p">(</span>
             <span class="n">handler</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="p">,</span> <span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pre_question</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span>
@@ -832,8 +831,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">seen_eq_passed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">seen_eq_passed_loop</span><span class="p">(</span><span class="n">callbacks</span><span class="o">=</span><span class="n">callbacks</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">finished_eq_passed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">finished_eq_passed_loop</span><span class="p">(</span><span class="n">callbacks</span><span class="o">=</span><span class="n">callbacks</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">poller_result</span> <span class="o">=</span> <span class="nb">all</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">seen_eq_passed</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">finished_eq_passed</span><span class="p">])</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">poller_result</span>
-</div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">poller_result</span></div>
+
 <div class="viewcode-block" id="ActionPoller.seen_eq_passed_loop"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.ActionPoller.seen_eq_passed_loop">[docs]</a>    <span class="k">def</span> <span class="nf">seen_eq_passed_loop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callbacks</span><span class="o">=</span><span class="p">{},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to poll Result Info for self.obj until the percentage of &#39;seen_count&#39; out of &#39;self.passed_count&#39; is greater than or equal to self.complete_pct</span>
 
@@ -981,8 +980,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">previous_result_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result_data</span>
 
             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">polling_secs</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">seen_loop_count</span> <span class="o">+=</span> <span class="mi">1</span>
-</div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">seen_loop_count</span> <span class="o">+=</span> <span class="mi">1</span></div>
+
 <div class="viewcode-block" id="ActionPoller.finished_eq_passed_loop"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.ActionPoller.finished_eq_passed_loop">[docs]</a>    <span class="k">def</span> <span class="nf">finished_eq_passed_loop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callbacks</span><span class="o">=</span><span class="p">{},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to poll Result Info for self.obj until the percentage of &#39;finished_count&#39; out of &#39;self.passed_count&#39; is greater than or equal to self.complete_pct</span>
 
@@ -1152,9 +1151,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">previous_result_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result_data</span>
 
             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">polling_secs</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">loop_count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">loop_count</span> <span class="o">+=</span> <span class="mi">1</span></div></div>
 
-</div></div>
+
 <div class="viewcode-block" id="SSEPoller"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.SSEPoller">[docs]</a><span class="k">class</span> <span class="nc">SSEPoller</span><span class="p">(</span><span class="n">QuestionPoller</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A class to poll the progress of a Server Side Export.</span>
 
@@ -1209,8 +1208,8 @@
 
 <div class="viewcode-block" id="SSEPoller._post_init"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.SSEPoller._post_init">[docs]</a>    <span class="k">def</span> <span class="nf">_post_init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Post init class setup&quot;&quot;&quot;</span>
-        <span class="k">pass</span>
-</div>
+        <span class="k">pass</span></div>
+
 <div class="viewcode-block" id="SSEPoller.get_sse_status"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.SSEPoller.get_sse_status">[docs]</a>    <span class="k">def</span> <span class="nf">get_sse_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Function to get the status of a server side export</span>
 
@@ -1233,8 +1232,8 @@
         <span class="n">progress_str</span> <span class="o">=</span> <span class="n">progress_str</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="n">full_url</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">progresslog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;{}{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="n">progress_str</span><span class="p">))</span>
 
-        <span class="k">return</span> <span class="n">ret</span>
-</div>
+        <span class="k">return</span> <span class="n">ret</span></div>
+
 <div class="viewcode-block" id="SSEPoller.get_sse_data"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.SSEPoller.get_sse_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_sse_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Function to get the data of a server side export</span>
 
@@ -1257,8 +1256,8 @@
         <span class="n">progress_str</span> <span class="o">=</span> <span class="n">progress_str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ret</span><span class="p">),</span> <span class="n">full_url</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">progresslog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;{}{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="n">progress_str</span><span class="p">))</span>
 
-        <span class="k">return</span> <span class="n">ret</span>
-</div>
+        <span class="k">return</span> <span class="n">ret</span></div>
+
 <div class="viewcode-block" id="SSEPoller.run"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.SSEPoller.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Poll for server side export status&quot;&quot;&quot;</span>
 
@@ -1272,8 +1271,8 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">sse_status_completed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sse_status_has_completed_loop</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">poller_result</span> <span class="o">=</span> <span class="nb">all</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">sse_status_completed</span><span class="p">])</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">poller_result</span>
-</div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">poller_result</span></div>
+
 <div class="viewcode-block" id="SSEPoller.sse_status_has_completed_loop"><a class="viewcode-back" href="../../pytan.pollers.html#pytan.pollers.SSEPoller.sse_status_has_completed_loop">[docs]</a>    <span class="k">def</span> <span class="nf">sse_status_has_completed_loop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method to poll the status file for a server side export until it contains &#39;Completed&#39;&quot;&quot;&quot;</span>
         <span class="c"># loop counter</span>
@@ -1350,7 +1349,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Aug 31, 2015.
+      Last updated on Sep 03, 2015.
     </p>
   </div>
 

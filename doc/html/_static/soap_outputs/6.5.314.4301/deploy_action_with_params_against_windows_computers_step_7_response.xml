@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+  <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <t:return>
+      <command>GetObject</command>
+      <session>1-6927-2aa140382c7dcbeb4eab3476ec0021626f7fa2a6ac87f3ba55e7ab26add2b77a0461b7247e2ae3e0aa1eb77c055272d55ec83f59d07979a093b57326abbdd6ee</session>
+      <server_version>6.5.314.4301</server_version>
+      <ID></ID>
+      <IDType></IDType>
+      <ContextID></ContextID>
+      <result_object>
+        <action>
+          <id>525</id>
+          <name>API Deploy Custom Tagging - Add Tags</name>
+          <comment>Created by PyTan v2.1.0</comment>
+          <target_group>
+            <id>3042</id>
+            <name>Default</name>
+          </target_group>
+          <action_group>
+            <id>0</id>
+            <name>Default</name>
+          </action_group>
+          <package_spec>
+            <id>411</id>
+            <name>Custom Tagging - Add Tags</name>
+            <command>cmd /c cscript //T:60 add-tags.vbs "tag%5fshould%5fbe%5fadded"</command>
+          </package_spec>
+          <skip_lock_flag>0</skip_lock_flag>
+          <expire_seconds>660</expire_seconds>
+          <creation_time>2015-09-04T02:46:00</creation_time>
+          <start_time>2015-09-04T02:46:02</start_time>
+          <expiration_time>2015-09-04T02:57:02</expiration_time>
+          <distribute_seconds>0</distribute_seconds>
+          <status>Open</status>
+          <stopped_flag>0</stopped_flag>
+          <user>
+            <id>1</id>
+            <name>Administrator</name>
+            <domain></domain>
+            <group_id>0</group_id>
+            <last_login>2015-09-04T02:45:44</last_login>
+          </user>
+          <history_saved_question>
+            <id>228</id>
+          </history_saved_question>
+          <saved_action>
+            <id>501</id>
+          </saved_action>
+          <approver>
+            <id>1</id>
+            <name>Administrator</name>
+          </approver>
+        </action>
+      </result_object>
+      <ResultXML></ResultXML>
+      <options>
+        <suppress_object_list>1</suppress_object_list>
+      </options>
+    </t:return>
+  </soap:Body>
+</soap:Envelope>

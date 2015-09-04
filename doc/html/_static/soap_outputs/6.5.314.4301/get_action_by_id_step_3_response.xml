@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+  <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <t:return>
+      <command>GetObject</command>
+      <session>1-6955-1ecb5e037fa01e1d9a4f45f8fbff3e57f8dba89d70dacf4bd0a59848f85391bc00f9370a08b9748dde013c686bf3c1a72e8c7c2db76c2f5c12c3569bcd4bbe16</session>
+      <server_version>6.5.314.4301</server_version>
+      <ID></ID>
+      <IDType></IDType>
+      <ContextID></ContextID>
+      <result_object>
+        <action>
+          <id>1</id>
+          <name>Distribute Tanium Standard Utilities</name>
+          <comment>Distribute Tanium Standard Utilities</comment>
+          <target_group>
+            <id>37</id>
+            <name>Default</name>
+          </target_group>
+          <action_group>
+            <id>0</id>
+            <name>Default</name>
+          </action_group>
+          <package_spec>
+            <id>20</id>
+            <name>Distribute Tanium Standard Utilities</name>
+            <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+          </package_spec>
+          <skip_lock_flag>0</skip_lock_flag>
+          <expire_seconds>3300</expire_seconds>
+          <creation_time>2015-08-26T20:14:40</creation_time>
+          <start_time></start_time>
+          <expiration_time></expiration_time>
+          <distribute_seconds>3200</distribute_seconds>
+          <status>Pending</status>
+          <stopped_flag>1</stopped_flag>
+          <user>
+            <id>1</id>
+            <name>Administrator</name>
+            <domain></domain>
+            <group_id>0</group_id>
+            <last_login>2015-09-04T02:56:08</last_login>
+          </user>
+          <history_saved_question>
+            <id>102</id>
+          </history_saved_question>
+          <saved_action>
+            <id>1</id>
+          </saved_action>
+          <approver>
+            <id>1</id>
+            <name>Administrator</name>
+          </approver>
+        </action>
+      </result_object>
+      <ResultXML></ResultXML>
+      <options>
+        <suppress_object_list>1</suppress_object_list>
+      </options>
+    </t:return>
+  </soap:Body>
+</soap:Envelope>

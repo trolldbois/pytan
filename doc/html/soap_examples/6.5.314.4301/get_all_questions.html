@@ -1,0 +1,352 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>2.12.40. Get All Questions &mdash; PyTan v2.1.0 2.1.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="PyTan v2.1.0 2.1.0 documentation" href="../../index.html"/>
+        <link rel="up" title="2.12. SOAP API Examples for Platform Version 6.5.314.4301" href="soap_examples_6.5.314.4301.html"/>
+        <link rel="next" title="2.12.41. Get All Groups" href="get_all_groups.html"/>
+        <link rel="prev" title="2.12.39. Get All Userroless" href="get_all_userroless.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../../index.html" class="fa fa-home"> PyTan v2.1.0</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">1. PyTan Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../introduction.html#description">1.1. Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../introduction.html#why-it-was-created">1.2. Why it was created</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../introduction.html#requirements">1.3. Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../introduction.html#tanium-versions-validated-against">1.4. Tanium Versions Validated Against</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../introduction.html#installation">1.5. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../introduction.html#usage">1.6. Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../introduction.html#directory-layout">1.7. Directory Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../introduction.html#other-references">1.8. Other References</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../pytan.html">2. pytan package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.handler.html">2.1. pytan.handler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.exceptions.html">2.2. pytan.exceptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.sessions.html">2.3. pytan.sessions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.pollers.html">2.4. pytan.pollers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.constants.html">2.5. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.utils.html">2.6. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.binsupport.html">2.7. pytan.binsupport module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.xml_clean.html">2.8. pytan.xml_clean module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.unittest.html">2.9. pytan Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.functest.html">2.10. pytan Functional Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/pytan_examples.html">2.11. PyTan API Examples</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="soap_examples_6.5.314.4301.html">2.12. SOAP API Examples for Platform Version 6.5.314.4301</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../taniumpy.html">3. taniumpy package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../xmltodict.html">4. xmltodict module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../ddt.html">5. ddt module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../threaded_http.html">6. threaded_http module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../requests.html">7. requests package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../requests.html#requests-http-library">7.1. requests HTTP library</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">PyTan v2.1.0</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../pytan.html">2. pytan package</a> &raquo;</li>
+      
+          <li><a href="soap_examples_6.5.314.4301.html">2.12. SOAP API Examples for Platform Version 6.5.314.4301</a> &raquo;</li>
+      
+    <li>2.12.40. Get All Questions</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="../../_sources/soap_examples/6.5.314.4301/get_all_questions.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="get-all-questions">
+<h1>2.12.40. Get All Questions<a class="headerlink" href="#get-all-questions" title="Permalink to this headline">¶</a></h1>
+<p>Get all question objects</p>
+<div class="section" id="step-1-authenticate-to-the-soap-api-via-auth">
+<h2>2.12.40.1. Step 1 - Authenticate to the SOAP API via /auth<a class="headerlink" href="#step-1-authenticate-to-the-soap-api-via-auth" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>URL: <a class="reference external" href="https://10.0.1.240:443/auth">https://10.0.1.240:443/auth</a></li>
+<li>HTTP Method: GET</li>
+<li>Elapsed Time: 0:00:00.005505</li>
+<li><a class="reference external" href="../_static/soap_outputs/get_all_questions_step_1_request.txt">Step 1 Request Body</a></li>
+<li><a class="reference external" href="../_static/soap_outputs/get_all_questions_step_1_response.txt">Step 1 Response Body</a></li>
+<li>Request Headers:</li>
+</ul>
+<div class="highlight-json"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="highlight"><pre><span class="p">{</span>
+  <span class="nt">&quot;Accept&quot;</span><span class="p">:</span> <span class="s2">&quot;*/*&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;Accept-Encoding&quot;</span><span class="p">:</span> <span class="s2">&quot;gzip, deflate&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;Connection&quot;</span><span class="p">:</span> <span class="s2">&quot;keep-alive&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="s2">&quot;python-requests/2.6.0 CPython/2.7.10 Darwin/14.5.0&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;password&quot;</span><span class="p">:</span> <span class="s2">&quot;VGFuaXVtMjAxNSE=&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;QWRtaW5pc3RyYXRvcg==&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+<ul class="simple">
+<li>Response Headers:</li>
+</ul>
+<div class="highlight-json"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span class="p">{</span>
+  <span class="nt">&quot;connection&quot;</span><span class="p">:</span> <span class="s2">&quot;keep-alive&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;content-length&quot;</span><span class="p">:</span> <span class="s2">&quot;135&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;content-type&quot;</span><span class="p">:</span> <span class="s2">&quot;text/plain; charset=us-ascii&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="step-2-get-the-server-version-via-info-json">
+<h2>2.12.40.2. Step 2 - Get the server version via /info.json<a class="headerlink" href="#step-2-get-the-server-version-via-info-json" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>URL: <a class="reference external" href="https://10.0.1.240:443/info.json">https://10.0.1.240:443/info.json</a></li>
+<li>HTTP Method: GET</li>
+<li>Elapsed Time: 0:00:00.007130</li>
+<li><a class="reference external" href="../_static/soap_outputs/get_all_questions_step_2_request.txt">Step 2 Request Body</a></li>
+<li><a class="reference external" href="../_static/soap_outputs/get_all_questions_step_2_response.json">Step 2 Response Body</a></li>
+<li>Request Headers:</li>
+</ul>
+<div class="highlight-json"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="highlight"><pre><span class="p">{</span>
+  <span class="nt">&quot;Accept&quot;</span><span class="p">:</span> <span class="s2">&quot;*/*&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;Accept-Encoding&quot;</span><span class="p">:</span> <span class="s2">&quot;gzip, deflate&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;Connection&quot;</span><span class="p">:</span> <span class="s2">&quot;keep-alive&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="s2">&quot;python-requests/2.6.0 CPython/2.7.10 Darwin/14.5.0&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;session&quot;</span><span class="p">:</span> <span class="s2">&quot;1-6978-61e3b03c15a9ca14d1703f5e6f87356c3c51edbf0bfcdfd4196b8449918de1fcfac4540b6e65518a06cfe329a8d70351374bd14531486241918b27a06fef79f8&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+<ul class="simple">
+<li>Response Headers:</li>
+</ul>
+<div class="highlight-json"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span class="p">{</span>
+  <span class="nt">&quot;connection&quot;</span><span class="p">:</span> <span class="s2">&quot;keep-alive&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;content-length&quot;</span><span class="p">:</span> <span class="s2">&quot;87508&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;content-type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="step-3-issue-a-getobject-to-find-an-object">
+<h2>2.12.40.3. Step 3 - Issue a GetObject to find an object<a class="headerlink" href="#step-3-issue-a-getobject-to-find-an-object" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>URL: <a class="reference external" href="https://10.0.1.240:443/soap">https://10.0.1.240:443/soap</a></li>
+<li>HTTP Method: POST</li>
+<li>Elapsed Time: 0:00:00.143477</li>
+<li><a class="reference external" href="../_static/soap_outputs/get_all_questions_step_3_request.xml">Step 3 Request Body</a></li>
+<li><a class="reference external" href="../_static/soap_outputs/get_all_questions_step_3_response.xml">Step 3 Response Body</a></li>
+<li>Request Headers:</li>
+</ul>
+<div class="highlight-json"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></div></td><td class="code"><div class="highlight"><pre><span class="p">{</span>
+  <span class="nt">&quot;Accept&quot;</span><span class="p">:</span> <span class="s2">&quot;*/*&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;Accept-Encoding&quot;</span><span class="p">:</span> <span class="s2">&quot;gzip&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;Connection&quot;</span><span class="p">:</span> <span class="s2">&quot;keep-alive&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;Content-Length&quot;</span><span class="p">:</span> <span class="s2">&quot;472&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;text/xml; charset=utf-8&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="s2">&quot;python-requests/2.6.0 CPython/2.7.10 Darwin/14.5.0&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;session&quot;</span><span class="p">:</span> <span class="s2">&quot;1-6978-61e3b03c15a9ca14d1703f5e6f87356c3c51edbf0bfcdfd4196b8449918de1fcfac4540b6e65518a06cfe329a8d70351374bd14531486241918b27a06fef79f8&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+<ul class="simple">
+<li>Response Headers:</li>
+</ul>
+<div class="highlight-json"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="highlight"><pre><span class="p">{</span>
+  <span class="nt">&quot;connection&quot;</span><span class="p">:</span> <span class="s2">&quot;keep-alive&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;content-encoding&quot;</span><span class="p">:</span> <span class="s2">&quot;gzip&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;content-type&quot;</span><span class="p">:</span> <span class="s2">&quot;text/xml;charset=UTF-8&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;transfer-encoding&quot;</span><span class="p">:</span> <span class="s2">&quot;chunked&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+<p class="rubric">Footnotes</p>
+<table class="docutils footnote" frame="void" id="id1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[1]</td><td>this file automatically created by BUILD/build_api_examples.py</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="get_all_groups.html" class="btn btn-neutral float-right" title="2.12.41. Get All Groups">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="get_all_userroless.html" class="btn btn-neutral" title="2.12.39. Get All Userroless"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Tanium.
+      Last updated on Sep 03, 2015.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'2.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

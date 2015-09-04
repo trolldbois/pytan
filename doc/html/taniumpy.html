@@ -30,7 +30,7 @@
   
     <link rel="top" title="PyTan v2.1.0 2.1.0 documentation" href="index.html"/>
         <link rel="next" title="4. xmltodict module" href="xmltodict.html"/>
-        <link rel="prev" title="2.11.16.7. Invalid export basetype bad format" href="examples/invalid_export_basetype_bad_format.html"/> 
+        <link rel="prev" title="2.12.60. Ask Saved Question By Name" href="soap_examples/6.5.314.4301/ask_saved_question_by_name.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -84,7 +84,8 @@
 <li class="toctree-l2"><a class="reference internal" href="pytan.xml_clean.html">2.8. pytan.xml_clean module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pytan.unittest.html">2.9. pytan Unit Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pytan.functest.html">2.10. pytan Functional Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/pytan_examples.html">2.11. PyTan API examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/pytan_examples.html">2.11. PyTan API Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="soap_examples/6.5.314.4301/soap_examples_6.5.314.4301.html">2.12. SOAP API Examples for Platform Version 6.5.314.4301</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">3. taniumpy package</a></li>
@@ -234,7 +235,7 @@ requests/responses from Tanium to/from python objects.</p>
 <dd><p>Bases: <a class="reference external" href="http://docs.python.org/2.7/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <dl class="classmethod">
 <dt id="taniumpy.object_types.base.BaseType._from_json">
-<em class="property">classmethod </em><code class="descname">_from_json</code><span class="sig-paren">(</span><em>jsonable</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/taniumpy/object_types/base.html#BaseType._from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#taniumpy.object_types.base.BaseType._from_json" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">_from_json</code><span class="sig-paren">(</span><em>jsonable</em><span class="sig-paren">)</span><a class="headerlink" href="#taniumpy.object_types.base.BaseType._from_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Private helper to parse from JSON after type is instantiated</p>
 </dd></dl>
 
@@ -245,7 +246,7 @@ requests/responses from Tanium to/from python objects.</p>
 
 <dl class="method">
 <dt id="taniumpy.object_types.base.BaseType.append">
-<code class="descname">append</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/taniumpy/object_types/base.html#BaseType.append"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#taniumpy.object_types.base.BaseType.append" title="Permalink to this definition">¶</a></dt>
+<code class="descname">append</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#taniumpy.object_types.base.BaseType.append" title="Permalink to this definition">¶</a></dt>
 <dd><p>Allow adding to list.</p>
 <p>Only supported on types that have a single property
 that is in list_properties</p>
@@ -253,17 +254,17 @@ that is in list_properties</p>
 
 <dl class="method">
 <dt id="taniumpy.object_types.base.BaseType.explode_json">
-<code class="descname">explode_json</code><span class="sig-paren">(</span><em>val</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/taniumpy/object_types/base.html#BaseType.explode_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#taniumpy.object_types.base.BaseType.explode_json" title="Permalink to this definition">¶</a></dt>
+<code class="descname">explode_json</code><span class="sig-paren">(</span><em>val</em><span class="sig-paren">)</span><a class="headerlink" href="#taniumpy.object_types.base.BaseType.explode_json" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="taniumpy.object_types.base.BaseType.flatten_jsonable">
-<code class="descname">flatten_jsonable</code><span class="sig-paren">(</span><em>val</em>, <em>prefix</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/taniumpy/object_types/base.html#BaseType.flatten_jsonable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#taniumpy.object_types.base.BaseType.flatten_jsonable" title="Permalink to this definition">¶</a></dt>
+<code class="descname">flatten_jsonable</code><span class="sig-paren">(</span><em>val</em>, <em>prefix</em><span class="sig-paren">)</span><a class="headerlink" href="#taniumpy.object_types.base.BaseType.flatten_jsonable" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="classmethod">
 <dt id="taniumpy.object_types.base.BaseType.fromSOAPBody">
-<em class="property">classmethod </em><code class="descname">fromSOAPBody</code><span class="sig-paren">(</span><em>body</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/taniumpy/object_types/base.html#BaseType.fromSOAPBody"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#taniumpy.object_types.base.BaseType.fromSOAPBody" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">fromSOAPBody</code><span class="sig-paren">(</span><em>body</em><span class="sig-paren">)</span><a class="headerlink" href="#taniumpy.object_types.base.BaseType.fromSOAPBody" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse body (text) and produce Python tanium objects.</p>
 <p>This method assumes a single result_object, which
 may be a list or a single object.</p>
@@ -271,12 +272,12 @@ may be a list or a single object.</p>
 
 <dl class="classmethod">
 <dt id="taniumpy.object_types.base.BaseType.fromSOAPElement">
-<em class="property">classmethod </em><code class="descname">fromSOAPElement</code><span class="sig-paren">(</span><em>el</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/taniumpy/object_types/base.html#BaseType.fromSOAPElement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#taniumpy.object_types.base.BaseType.fromSOAPElement" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">fromSOAPElement</code><span class="sig-paren">(</span><em>el</em><span class="sig-paren">)</span><a class="headerlink" href="#taniumpy.object_types.base.BaseType.fromSOAPElement" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="staticmethod">
 <dt id="taniumpy.object_types.base.BaseType.from_jsonable">
-<em class="property">static </em><code class="descname">from_jsonable</code><span class="sig-paren">(</span><em>jsonable</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/taniumpy/object_types/base.html#BaseType.from_jsonable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#taniumpy.object_types.base.BaseType.from_jsonable" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="descname">from_jsonable</code><span class="sig-paren">(</span><em>jsonable</em><span class="sig-paren">)</span><a class="headerlink" href="#taniumpy.object_types.base.BaseType.from_jsonable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Inverse of to_jsonable, with explode_json_string_values=False.</p>
 <p>This can be used to import objects from serialized JSON. This JSON should come from BaseType.to_jsonable(explode_json_string_values=False, include+type=True)</p>
 <p class="rubric">Examples</p>
@@ -291,29 +292,29 @@ may be a list or a single object.</p>
 
 <dl class="method">
 <dt id="taniumpy.object_types.base.BaseType.toSOAPBody">
-<code class="descname">toSOAPBody</code><span class="sig-paren">(</span><em>minimal=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/taniumpy/object_types/base.html#BaseType.toSOAPBody"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#taniumpy.object_types.base.BaseType.toSOAPBody" title="Permalink to this definition">¶</a></dt>
+<code class="descname">toSOAPBody</code><span class="sig-paren">(</span><em>minimal=False</em><span class="sig-paren">)</span><a class="headerlink" href="#taniumpy.object_types.base.BaseType.toSOAPBody" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="taniumpy.object_types.base.BaseType.toSOAPElement">
-<code class="descname">toSOAPElement</code><span class="sig-paren">(</span><em>minimal=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/taniumpy/object_types/base.html#BaseType.toSOAPElement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#taniumpy.object_types.base.BaseType.toSOAPElement" title="Permalink to this definition">¶</a></dt>
+<code class="descname">toSOAPElement</code><span class="sig-paren">(</span><em>minimal=False</em><span class="sig-paren">)</span><a class="headerlink" href="#taniumpy.object_types.base.BaseType.toSOAPElement" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="taniumpy.object_types.base.BaseType.to_flat_dict">
-<code class="descname">to_flat_dict</code><span class="sig-paren">(</span><em>prefix=''</em>, <em>explode_json_string_values=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/taniumpy/object_types/base.html#BaseType.to_flat_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#taniumpy.object_types.base.BaseType.to_flat_dict" title="Permalink to this definition">¶</a></dt>
+<code class="descname">to_flat_dict</code><span class="sig-paren">(</span><em>prefix=''</em>, <em>explode_json_string_values=False</em><span class="sig-paren">)</span><a class="headerlink" href="#taniumpy.object_types.base.BaseType.to_flat_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert the object to a dict, flattening any lists or nested types</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="taniumpy.object_types.base.BaseType.to_flat_dict_explode_json">
-<code class="descname">to_flat_dict_explode_json</code><span class="sig-paren">(</span><em>val</em>, <em>prefix=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/taniumpy/object_types/base.html#BaseType.to_flat_dict_explode_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#taniumpy.object_types.base.BaseType.to_flat_dict_explode_json" title="Permalink to this definition">¶</a></dt>
+<code class="descname">to_flat_dict_explode_json</code><span class="sig-paren">(</span><em>val</em>, <em>prefix=''</em><span class="sig-paren">)</span><a class="headerlink" href="#taniumpy.object_types.base.BaseType.to_flat_dict_explode_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>see if the value is json. If so, flatten it out into a dict</p>
 </dd></dl>
 
 <dl class="staticmethod">
 <dt id="taniumpy.object_types.base.BaseType.to_json">
-<em class="property">static </em><code class="descname">to_json</code><span class="sig-paren">(</span><em>jsonable</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/taniumpy/object_types/base.html#BaseType.to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#taniumpy.object_types.base.BaseType.to_json" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="descname">to_json</code><span class="sig-paren">(</span><em>jsonable</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#taniumpy.object_types.base.BaseType.to_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert to a json string.</p>
 <p>jsonable can be a single BaseType instance of a list
 of BaseType</p>
@@ -321,12 +322,12 @@ of BaseType</p>
 
 <dl class="method">
 <dt id="taniumpy.object_types.base.BaseType.to_jsonable">
-<code class="descname">to_jsonable</code><span class="sig-paren">(</span><em>explode_json_string_values=False</em>, <em>include_type=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/taniumpy/object_types/base.html#BaseType.to_jsonable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#taniumpy.object_types.base.BaseType.to_jsonable" title="Permalink to this definition">¶</a></dt>
+<code class="descname">to_jsonable</code><span class="sig-paren">(</span><em>explode_json_string_values=False</em>, <em>include_type=True</em><span class="sig-paren">)</span><a class="headerlink" href="#taniumpy.object_types.base.BaseType.to_jsonable" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="staticmethod">
 <dt id="taniumpy.object_types.base.BaseType.write_csv">
-<em class="property">static </em><code class="descname">write_csv</code><span class="sig-paren">(</span><em>fd</em>, <em>val</em>, <em>explode_json_string_values=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/taniumpy/object_types/base.html#BaseType.write_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#taniumpy.object_types.base.BaseType.write_csv" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="descname">write_csv</code><span class="sig-paren">(</span><em>fd</em>, <em>val</em>, <em>explode_json_string_values=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#taniumpy.object_types.base.BaseType.write_csv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write &#8216;val&#8217; to CSV. val can be a BaseType instance or a list of
 BaseType</p>
 <p>This does a two-pass, calling to_flat_dict for each object, then
@@ -409,7 +410,7 @@ value</p>
 <dd><p>Bases: <a class="reference external" href="http://docs.python.org/2.7/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <dl class="classmethod">
 <dt id="taniumpy.object_types.column.Column.fromSOAPElement">
-<em class="property">classmethod </em><code class="descname">fromSOAPElement</code><span class="sig-paren">(</span><em>el</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/taniumpy/object_types/column.html#Column.fromSOAPElement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#taniumpy.object_types.column.Column.fromSOAPElement" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">fromSOAPElement</code><span class="sig-paren">(</span><em>el</em><span class="sig-paren">)</span><a class="headerlink" href="#taniumpy.object_types.column.Column.fromSOAPElement" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -420,7 +421,7 @@ value</p>
 <dd><p>Bases: <a class="reference external" href="http://docs.python.org/2.7/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <dl class="classmethod">
 <dt id="taniumpy.object_types.column_set.ColumnSet.fromSOAPElement">
-<em class="property">classmethod </em><code class="descname">fromSOAPElement</code><span class="sig-paren">(</span><em>el</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/taniumpy/object_types/column_set.html#ColumnSet.fromSOAPElement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#taniumpy.object_types.column_set.ColumnSet.fromSOAPElement" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">fromSOAPElement</code><span class="sig-paren">(</span><em>el</em><span class="sig-paren">)</span><a class="headerlink" href="#taniumpy.object_types.column_set.ColumnSet.fromSOAPElement" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -1330,7 +1331,7 @@ by key using []</p>
         <a href="xmltodict.html" class="btn btn-neutral float-right" title="4. xmltodict module">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="examples/invalid_export_basetype_bad_format.html" class="btn btn-neutral" title="2.11.16.7. Invalid export basetype bad format"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="soap_examples/6.5.314.4301/ask_saved_question_by_name.html" class="btn btn-neutral" title="2.12.60. Ask Saved Question By Name"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -1340,7 +1341,7 @@ by key using []</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Aug 31, 2015.
+      Last updated on Sep 03, 2015.
     </p>
   </div>
 

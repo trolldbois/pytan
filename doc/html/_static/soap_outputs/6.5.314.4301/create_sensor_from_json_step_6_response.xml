@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+  <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <t:return>
+      <command>AddObject</command>
+      <session>1-6920-fc22898975af19a91cf1560c9c9cfea6669820e7ed35e7a1672ed77d3adb12add41e4acb3ba28830fba43c79b355102b22050e9e1febbbc69e4891a3a79f37fd</session>
+      <ID></ID>
+      <IDType></IDType>
+      <ContextID></ContextID>
+      <server_version>6.5.314.4301</server_version>
+      <object_list></object_list>
+      <options>
+        <suppress_object_list>1</suppress_object_list>
+      </options>
+      <ResultXML></ResultXML>
+      <result_object>
+        <sensor>
+          <id>865</id>
+        </sensor>
+      </result_object>
+    </t:return>
+  </soap:Body>
+</soap:Envelope>

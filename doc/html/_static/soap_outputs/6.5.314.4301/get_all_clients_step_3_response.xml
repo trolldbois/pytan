@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+  <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <t:return>
+      <command>GetObject</command>
+      <session>1-6982-93453cd0ca79099442b16bfccd073eb355105c088557acca3dd8e3b9708e812692b8a8272047fa33bacc5a229857343969ca42b98928676d844ff615d6a2e28b</session>
+      <server_version>6.5.314.4301</server_version>
+      <ID></ID>
+      <IDType></IDType>
+      <ContextID></ContextID>
+      <result_object>
+        <system_status>
+          <client_status>
+            <host_name>Casus-Belli.local</host_name>
+            <computer_id>1620570686</computer_id>
+            <ipaddress_client>10.0.1.15</ipaddress_client>
+            <ipaddress_server>10.0.1.15</ipaddress_server>
+            <port_number>17472</port_number>
+            <send_state>Forward Only</send_state>
+            <receive_state></receive_state>
+            <status>Leader, Slow Link Behind</status>
+            <protocol_version>314</protocol_version>
+            <full_version>5.1.314.7724</full_version>
+            <last_registration>2015-09-04T02:56:48</last_registration>
+            <public_key_valid>1</public_key_valid>
+            <cache_row_id>0</cache_row_id>
+          </client_status>
+          <client_status>
+            <host_name>TPT1-0.localdomain</host_name>
+            <computer_id>1311396924</computer_id>
+            <ipaddress_client>10.0.1.240</ipaddress_client>
+            <ipaddress_server>10.0.1.240</ipaddress_server>
+            <port_number>17473</port_number>
+            <send_state>Backward Only</send_state>
+            <receive_state>Previous Only</receive_state>
+            <status>Leader</status>
+            <protocol_version>314</protocol_version>
+            <full_version>6.0.314.1195</full_version>
+            <last_registration>2015-09-04T02:56:49</last_registration>
+            <public_key_valid>1</public_key_valid>
+            <cache_row_id>1</cache_row_id>
+          </client_status>
+          <aggregate>
+            <send_forward_count>1</send_forward_count>
+            <send_backward_count>1</send_backward_count>
+            <send_none_count>0</send_none_count>
+            <send_ok_count>0</send_ok_count>
+            <receive_forward_count>0</receive_forward_count>
+            <receive_backward_count>1</receive_backward_count>
+            <receive_none_count>0</receive_none_count>
+            <receive_ok_count>1</receive_ok_count>
+            <slowlink_count>1</slowlink_count>
+            <blocked_count>0</blocked_count>
+            <leader_count>2</leader_count>
+            <normal_count>0</normal_count>
+            <versions>
+              <version>
+                <version_string>5.1.314.7724</version_string>
+                <count>1</count>
+                <filtered>1</filtered>
+              </version>
+              <version>
+                <version_string>6.0.314.1195</version_string>
+                <count>1</count>
+                <filtered>1</filtered>
+              </version>
+            </versions>
+          </aggregate>
+          <cache_info>
+            <cache_id>1634667896</cache_id>
+            <page_row_count>2</page_row_count>
+            <filtered_row_count>2</filtered_row_count>
+            <cache_row_count>2</cache_row_count>
+            <expiration>2015-09-04T02:56:58</expiration>
+          </cache_info>
+        </system_status>
+      </result_object>
+      <ResultXML></ResultXML>
+      <options>
+        <suppress_object_list>1</suppress_object_list>
+      </options>
+    </t:return>
+  </soap:Body>
+</soap:Envelope>

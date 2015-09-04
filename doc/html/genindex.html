@@ -83,7 +83,8 @@
 <li class="toctree-l2"><a class="reference internal" href="pytan.xml_clean.html">2.8. pytan.xml_clean module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pytan.unittest.html">2.9. pytan Unit Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pytan.functest.html">2.10. pytan Functional Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/pytan_examples.html">2.11. PyTan API examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/pytan_examples.html">2.11. PyTan API Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="soap_examples/6.5.314.4301/soap_examples_6.5.314.4301.html">2.12. SOAP API Examples for Platform Version 6.5.314.4301</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="taniumpy.html">3. taniumpy package</a></li>
@@ -379,11 +380,11 @@
   </dt>
 
       
-  <dt><a href="pytan.handler.html#pytan.handler.Handler._parse_versioning">_parse_versioning() (pytan.handler.Handler method)</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session._invalid_server_version">_invalid_server_version() (pytan.sessions.Session method)</a>
   </dt>
 
       
-  <dt><a href="pytan.handler.html#pytan.handler.Handler._platform_is_6_2">_platform_is_6_2() (pytan.handler.Handler method)</a>
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session._parse_versioning">_parse_versioning() (pytan.sessions.Session method)</a>
   </dt>
 
       
@@ -923,10 +924,6 @@
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.authlog">authlog (pytan.sessions.Session attribute)</a>
-  </dt>
-
-      
   <dt><a href="pytan.exceptions.html#pytan.exceptions.AuthorizationError">AuthorizationError</a>
   </dt>
 
@@ -950,10 +947,6 @@
 
       
   <dt><a href="taniumpy.html#taniumpy.object_types.base.BaseType">BaseType (class in taniumpy.object_types.base)</a>
-  </dt>
-
-      
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.bodyhttplog">bodyhttplog (pytan.sessions.Session attribute)</a>
   </dt>
 
       
@@ -1599,10 +1592,6 @@
   </dt>
 
       
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.httplog">httplog (pytan.sessions.Session attribute)</a>
-  </dt>
-
-      
   <dt><a href="pytan.utils.html#pytan.utils.human_time">human_time() (in module pytan.utils)</a>
   </dt>
 
@@ -1754,12 +1743,12 @@
   <dt><a href="pytan.utils.html#pytan.utils.map_options">map_options() (in module pytan.utils)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="taniumpy.html#taniumpy.object_types.metadata_item.MetadataItem">MetadataItem (class in taniumpy.object_types.metadata_item)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="taniumpy.html#taniumpy.object_types.metadata_list.MetadataList">MetadataList (class in taniumpy.object_types.metadata_list)</a>
   </dt>
@@ -1768,16 +1757,6 @@
   <dt><a href="ddt.html#ddt.mk_test_name">mk_test_name() (in module ddt)</a>
   </dt>
 
-      
-  <dt><a href="pytan.pollers.html#pytan.pollers.QuestionPoller.mylog">mylog (pytan.pollers.QuestionPoller attribute)</a>
-  </dt>
-
-      <dd><dl>
-        
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.mylog">(pytan.sessions.Session attribute)</a>
-  </dt>
-
-      </dl></dd>
   </dl></td>
 </tr></table>
 
@@ -1945,6 +1924,10 @@
   </dt>
 
       
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.platform_is_6_2">platform_is_6_2() (pytan.sessions.Session method)</a>
+  </dt>
+
+      
   <dt><a href="taniumpy.html#taniumpy.object_types.plugin.Plugin">Plugin (class in taniumpy.object_types.plugin)</a>
   </dt>
 
@@ -2029,6 +2012,10 @@
   </dt>
 
       
+  <dt><a href="pytan.binsupport.html#pytan.binsupport.process_ask_parsed_args">process_ask_parsed_args() (in module pytan.binsupport)</a>
+  </dt>
+
+      
   <dt><a href="pytan.binsupport.html#pytan.binsupport.process_ask_saved_args">process_ask_saved_args() (in module pytan.binsupport)</a>
   </dt>
 
@@ -2094,10 +2081,6 @@
 
       
   <dt><a href="pytan.binsupport.html#pytan.binsupport.process_tsat_args">process_tsat_args() (in module pytan.binsupport)</a>
-  </dt>
-
-      
-  <dt><a href="pytan.pollers.html#pytan.pollers.QuestionPoller.progresslog">progresslog (pytan.pollers.QuestionPoller attribute)</a>
   </dt>
 
       
@@ -2208,10 +2191,6 @@
 
       
   <dt><a href="pytan.sessions.html#pytan.sessions.Session.REQUESTS_SESSION">REQUESTS_SESSION (pytan.sessions.Session attribute)</a>
-  </dt>
-
-      
-  <dt><a href="pytan.pollers.html#pytan.pollers.QuestionPoller.resolverlog">resolverlog (pytan.pollers.QuestionPoller attribute)</a>
   </dt>
 
       
@@ -2371,6 +2350,10 @@
   </dt>
 
       
+  <dt><a href="pytan.sessions.html#pytan.sessions.Session.server_version_dict">server_version_dict (pytan.sessions.Session attribute)</a>
+  </dt>
+
+      
   <dt><a href="pytan.exceptions.html#pytan.exceptions.ServerParseError">ServerParseError</a>
   </dt>
 
@@ -2403,6 +2386,10 @@
   </dt>
 
       
+  <dt><a href="pytan.binsupport.html#pytan.binsupport.setup_ask_parsed_argparser">setup_ask_parsed_argparser() (in module pytan.binsupport)</a>
+  </dt>
+
+      
   <dt><a href="pytan.binsupport.html#pytan.binsupport.setup_ask_saved_argparser">setup_ask_saved_argparser() (in module pytan.binsupport)</a>
   </dt>
 
@@ -2430,6 +2417,8 @@
   <dt><a href="pytan.binsupport.html#pytan.binsupport.setup_create_user_argparser">setup_create_user_argparser() (in module pytan.binsupport)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="pytan.binsupport.html#pytan.binsupport.setup_create_whitelisted_url_argparser">setup_create_whitelisted_url_argparser() (in module pytan.binsupport)</a>
   </dt>
@@ -2438,8 +2427,6 @@
   <dt><a href="pytan.binsupport.html#pytan.binsupport.setup_delete_object_argparser">setup_delete_object_argparser() (in module pytan.binsupport)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="pytan.binsupport.html#pytan.binsupport.setup_deploy_action_argparser">setup_deploy_action_argparser() (in module pytan.binsupport)</a>
   </dt>
@@ -2580,10 +2567,6 @@
 
       
   <dt><a href="pytan.sessions.html#pytan.sessions.Session.STATS_LOOP_TARGETS">STATS_LOOP_TARGETS (pytan.sessions.Session attribute)</a>
-  </dt>
-
-      
-  <dt><a href="pytan.sessions.html#pytan.sessions.Session.statslog">statslog (pytan.sessions.Session attribute)</a>
   </dt>
 
       
@@ -3373,7 +3356,7 @@
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_question_2_invalid_ask_manual_question_parameter_split">test_invalid_question_2_invalid_ask_manual_question_parameter_split() (test_pytan_valid_server_tests.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_question_2_invalid_ask_manual_question_bad_filter">test_invalid_question_2_invalid_ask_manual_question_bad_filter() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
@@ -3381,11 +3364,11 @@
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_question_4_invalid_ask_manual_question_option">test_invalid_question_4_invalid_ask_manual_question_option() (test_pytan_valid_server_tests.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_question_4_invalid_ask_manual_question_bad_option">test_invalid_question_4_invalid_ask_manual_question_bad_option() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_question_5_invalid_ask_manual_question_sensor">test_invalid_question_5_invalid_ask_manual_question_sensor() (test_pytan_valid_server_tests.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_question_5_invalid_ask_manual_question_missing_parameter_split">test_invalid_question_5_invalid_ask_manual_question_missing_parameter_split() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
@@ -3393,11 +3376,11 @@
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_question_7_invalid_ask_manual_question_paramater_too_many">test_invalid_question_7_invalid_ask_manual_question_paramater_too_many() (test_pytan_valid_server_tests.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_question_7_invalid_ask_manual_question_too_many_parameter_blocks">test_invalid_question_7_invalid_ask_manual_question_too_many_parameter_blocks() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
-  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_question_8_invalid_ask_manual_question_filter">test_invalid_question_8_invalid_ask_manual_question_filter() (test_pytan_valid_server_tests.ValidServerTests method)</a>
+  <dt><a href="pytan.functest.html#test_pytan_valid_server_tests.ValidServerTests.test_invalid_question_8_invalid_ask_manual_question_bad_sensorname">test_invalid_question_8_invalid_ask_manual_question_bad_sensorname() (test_pytan_valid_server_tests.ValidServerTests method)</a>
   </dt>
 
       
@@ -4352,7 +4335,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Aug 31, 2015.
+      Last updated on Sep 03, 2015.
     </p>
   </div>
 

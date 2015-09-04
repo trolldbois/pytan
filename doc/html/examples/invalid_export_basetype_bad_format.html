@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>2.11.16.7. Invalid export basetype bad format &mdash; PyTan v2.1.0 2.1.0 documentation</title>
+  <title>2.11.13.7. Invalid Export Basetype Bad Format &mdash; PyTan v2.1.0 2.1.0 documentation</title>
   
 
   
@@ -29,9 +29,9 @@
 
   
     <link rel="top" title="PyTan v2.1.0 2.1.0 documentation" href="../index.html"/>
-        <link rel="up" title="2.11.16. PyTan API Invalid Export BaseType Examples" href="invalid_export_basetype.html"/>
-        <link rel="next" title="3. taniumpy package" href="../taniumpy.html"/>
-        <link rel="prev" title="2.11.16.6. Invalid export basetype json bad explode type" href="invalid_export_basetype_json_bad_explode_type.html"/> 
+        <link rel="up" title="2.11.13. PyTan API Invalid Export Basetype Examples" href="invalid_export_basetype.html"/>
+        <link rel="next" title="2.11.14. PyTan API Invalid Export ResultSet Examples" href="invalid_export_resultset.html"/>
+        <link rel="prev" title="2.11.13.6. Invalid Export Basetype JSON Bad Explode Type" href="invalid_export_basetype_json_bad_explode_type.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -85,7 +85,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../pytan.xml_clean.html">2.8. pytan.xml_clean module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../pytan.unittest.html">2.9. pytan Unit Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../pytan.functest.html">2.10. pytan Functional Tests</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="pytan_examples.html">2.11. PyTan API examples</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="pytan_examples.html">2.11. PyTan API Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../soap_examples/6.5.314.4301/soap_examples_6.5.314.4301.html">2.12. SOAP API Examples for Platform Version 6.5.314.4301</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../taniumpy.html">3. taniumpy package</a></li>
@@ -128,11 +129,11 @@
       
           <li><a href="../pytan.html">2. pytan package</a> &raquo;</li>
       
-          <li><a href="pytan_examples.html">2.11. PyTan API examples</a> &raquo;</li>
+          <li><a href="pytan_examples.html">2.11. PyTan API Examples</a> &raquo;</li>
       
-          <li><a href="invalid_export_basetype.html">2.11.16. PyTan API Invalid Export BaseType Examples</a> &raquo;</li>
+          <li><a href="invalid_export_basetype.html">2.11.13. PyTan API Invalid Export Basetype Examples</a> &raquo;</li>
       
-    <li>2.11.16.7. Invalid export basetype bad format</li>
+    <li>2.11.13.7. Invalid Export Basetype Bad Format</li>
       <li class="wy-breadcrumbs-aside">
         
           <a href="../_sources/examples/invalid_export_basetype_bad_format.txt" rel="nofollow"> View page source</a>
@@ -144,10 +145,13 @@
           <div role="main" class="document">
             
   <div class="section" id="invalid-export-basetype-bad-format">
-<h1>2.11.16.7. Invalid export basetype bad format<a class="headerlink" href="#invalid-export-basetype-bad-format" title="Permalink to this headline">¶</a></h1>
+<h1>2.11.13.7. Invalid Export Basetype Bad Format<a class="headerlink" href="#invalid-export-basetype-bad-format" title="Permalink to this headline">¶</a></h1>
 <p>Export a BaseType from getting objects using a bad export_format</p>
-<div class="section" id="example-python-code">
-<h2>2.11.16.7.1. Example Python Code<a class="headerlink" href="#example-python-code" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="../_static/pytan_outputs/invalid_export_basetype_bad_format_stdout.txt">STDOUT from Example Python Code</a></li>
+<li><a class="reference external" href="../_static/pytan_outputs/invalid_export_basetype_bad_format_stderr.txt">STDERR from Example Python Code</a></li>
+<li>Example Python Code</li>
+</ul>
 <div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -213,54 +217,88 @@
 63
 64
 65
-66</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">os</span>
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86</pre></div></td><td class="code"><div class="highlight"><pre><span class="c"># import the basic python packages we need</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">import</span> <span class="nn">pprint</span>
+<span class="kn">import</span> <span class="nn">traceback</span>
+
+<span class="c"># disable python from generating a .pyc file</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">dont_write_bytecode</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="c"># change me to the path of pytan if this script is not running from EXAMPLES/PYTAN_API</span>
+<span class="n">pytan_loc</span> <span class="o">=</span> <span class="s">&quot;~/gh/pytan&quot;</span>
+<span class="n">pytan_static_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">pytan_loc</span><span class="p">),</span> <span class="s">&#39;lib&#39;</span><span class="p">)</span>
 
 <span class="c"># Determine our script name, script dir</span>
 <span class="n">my_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="n">my_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">my_file</span><span class="p">)</span>
 
-<span class="c"># determine the pytan lib dir and add it to the path</span>
+<span class="c"># try to automatically determine the pytan lib directory by assuming it is in &#39;../../lib/&#39;</span>
 <span class="n">parent_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">my_dir</span><span class="p">)</span>
 <span class="n">pytan_root_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">parent_dir</span><span class="p">)</span>
 <span class="n">lib_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pytan_root_dir</span><span class="p">,</span> <span class="s">&#39;lib&#39;</span><span class="p">)</span>
-<span class="n">path_adds</span> <span class="o">=</span> <span class="p">[</span><span class="n">lib_dir</span><span class="p">]</span>
 
-<span class="k">for</span> <span class="n">aa</span> <span class="ow">in</span> <span class="n">path_adds</span><span class="p">:</span>
-    <span class="k">if</span> <span class="n">aa</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
-        <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">aa</span><span class="p">)</span>
+<span class="c"># add pytan_loc and lib_dir to the PYTHONPATH variable</span>
+<span class="n">path_adds</span> <span class="o">=</span> <span class="p">[</span><span class="n">lib_dir</span><span class="p">,</span> <span class="n">pytan_static_path</span><span class="p">]</span>
+<span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">aa</span><span class="p">)</span> <span class="k">for</span> <span class="n">aa</span> <span class="ow">in</span> <span class="n">path_adds</span> <span class="k">if</span> <span class="n">aa</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">]</span>
 
-
-<span class="c"># connection info for Tanium Server</span>
-<span class="n">USERNAME</span> <span class="o">=</span> <span class="s">&quot;Tanium User&quot;</span>
-<span class="n">PASSWORD</span> <span class="o">=</span> <span class="s">&quot;T@n!um&quot;</span>
-<span class="n">HOST</span> <span class="o">=</span> <span class="s">&quot;172.16.31.128&quot;</span>
-<span class="n">PORT</span> <span class="o">=</span> <span class="s">&quot;443&quot;</span>
-
-<span class="c"># Logging conrols</span>
-<span class="n">LOGLEVEL</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="n">DEBUGFORMAT</span> <span class="o">=</span> <span class="bp">False</span>
-
-<span class="kn">import</span> <span class="nn">tempfile</span>
-
+<span class="c"># import pytan</span>
 <span class="kn">import</span> <span class="nn">pytan</span>
-<span class="n">handler</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">Handler</span><span class="p">(</span>
-    <span class="n">username</span><span class="o">=</span><span class="n">USERNAME</span><span class="p">,</span>
-    <span class="n">password</span><span class="o">=</span><span class="n">PASSWORD</span><span class="p">,</span>
-    <span class="n">host</span><span class="o">=</span><span class="n">HOST</span><span class="p">,</span>
-    <span class="n">port</span><span class="o">=</span><span class="n">PORT</span><span class="p">,</span>
-    <span class="n">loglevel</span><span class="o">=</span><span class="n">LOGLEVEL</span><span class="p">,</span>
-    <span class="n">debugformat</span><span class="o">=</span><span class="n">DEBUGFORMAT</span><span class="p">,</span>
-<span class="p">)</span>
 
-<span class="k">print</span> <span class="n">handler</span>
+<span class="c"># create a dictionary of arguments for the pytan handler</span>
+<span class="n">handler_args</span> <span class="o">=</span> <span class="p">{}</span>
 
-<span class="c"># setup the export_obj kwargs for later</span>
-<span class="n">export_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="n">export_kwargs</span><span class="p">[</span><span class="s">&quot;export_format&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;bad&#39;</span>
+<span class="c"># establish our connection info for the Tanium Server</span>
+<span class="n">handler_args</span><span class="p">[</span><span class="s">&#39;username&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;Administrator&quot;</span>
+<span class="n">handler_args</span><span class="p">[</span><span class="s">&#39;password&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;Tanium2015!&quot;</span>
+<span class="n">handler_args</span><span class="p">[</span><span class="s">&#39;host&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;10.0.1.240&quot;</span>
+<span class="n">handler_args</span><span class="p">[</span><span class="s">&#39;port&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;443&quot;</span>  <span class="c"># optional</span>
 
-<span class="c"># get the objects that will provide the basetype that we want to use</span>
+<span class="c"># optional, level 0 is no output except warnings/errors</span>
+<span class="c"># level 1 through 12 are more and more verbose</span>
+<span class="n">handler_args</span><span class="p">[</span><span class="s">&#39;loglevel&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="c"># optional, use a debug format for the logging output (uses two lines per log entry)</span>
+<span class="n">handler_args</span><span class="p">[</span><span class="s">&#39;debugformat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+
+<span class="c"># optional, this saves all response objects to handler.session.ALL_REQUESTS_RESPONSES</span>
+<span class="c"># very useful for capturing the full exchange of XML requests and responses</span>
+<span class="n">handler_args</span><span class="p">[</span><span class="s">&#39;record_all_requests&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="c"># instantiate a handler using all of the arguments in the handler_args dictionary</span>
+<span class="k">print</span> <span class="s">&quot;...CALLING: pytan.handler() with args: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">handler_args</span><span class="p">)</span>
+<span class="n">handler</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">Handler</span><span class="p">(</span><span class="o">**</span><span class="n">handler_args</span><span class="p">)</span>
+
+<span class="c"># print out the handler string</span>
+<span class="k">print</span> <span class="s">&quot;...OUTPUT: handler string: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
+
+<span class="c"># setup the arguments for the handler() class</span>
+<span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">kwargs</span><span class="p">[</span><span class="s">&quot;export_format&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;bad&#39;</span>
+
+<span class="c"># setup the arguments for handler.get()</span>
 <span class="n">get_kwargs</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="p">[</span>
         <span class="s">&quot;Computer Name&quot;</span><span class="p">,</span> <span class="s">&quot;IP Route Details&quot;</span><span class="p">,</span> <span class="s">&quot;IP Address&quot;</span><span class="p">,</span>
@@ -268,40 +306,32 @@
     <span class="p">],</span>
     <span class="s">&#39;objtype&#39;</span><span class="p">:</span> <span class="s">&#39;sensor&#39;</span><span class="p">,</span>
 <span class="p">}</span>
+
+<span class="c"># get the objects that will provide the basetype that we want to use</span>
+<span class="k">print</span> <span class="s">&quot;...CALLING: handler.get() with args: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">get_kwargs</span><span class="p">)</span>
 <span class="n">response</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="o">**</span><span class="n">get_kwargs</span><span class="p">)</span>
-<span class="n">export_kwargs</span><span class="p">[</span><span class="s">&#39;obj&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response</span>
+
+<span class="c"># store the basetype object as the obj we want to export</span>
+<span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;obj&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response</span>
 
 <span class="c"># export the object to a string</span>
-<span class="c"># this should throw an exception: pytan.exceptions.HandlerError</span>
-<span class="kn">import</span> <span class="nn">traceback</span>
-
+<span class="k">print</span> <span class="s">&quot;...CALLING: handler.export_obj() with args {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
 <span class="k">try</span><span class="p">:</span>
-    <span class="n">handler</span><span class="o">.</span><span class="n">export_obj</span><span class="p">(</span><span class="o">**</span><span class="n">export_kwargs</span><span class="p">)</span>
+    <span class="n">handler</span><span class="o">.</span><span class="n">export_obj</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-    <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">(</span><span class="nb">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+    <span class="k">print</span> <span class="s">&quot;...EXCEPTION: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+    <span class="c"># this should throw an exception of type: pytan.exceptions.HandlerError</span>
+    <span class="c"># uncomment to see full exception</span>
+    <span class="c"># traceback.print_exc(file=sys.stdout)</span>
 </pre></div>
 </td></tr></table></div>
-</div>
-<div class="section" id="output-from-python-code">
-<h2>2.11.16.7.2. Output from Python Code<a class="headerlink" href="#output-from-python-code" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-none"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6
-7
-8</pre></div></td><td class="code"><div class="highlight"><pre>Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
-Traceback (most recent call last):
-  File &quot;&lt;string&gt;&quot;, line 65, in &lt;module&gt;
-  File &quot;/Users/jolsen/gh/pytan/lib/pytan/utils.py&quot;, line 2699, in wrap
-    ret = f(*args, **kwargs)
-  File &quot;/Users/jolsen/gh/pytan/lib/pytan/handler.py&quot;, line 1078, in export_obj
-    raise pytan.exceptions.HandlerError(err)
-HandlerError: u&#39;bad&#39; not a supported export format for SensorList, must be one of: xml, json, csv
-</pre></div>
-</td></tr></table></div>
-</div>
+<p class="rubric">Footnotes</p>
+<table class="docutils footnote" frame="void" id="id1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[1]</td><td>this file automatically created by BUILD/build_api_examples.py</td></tr>
+</tbody>
+</table>
 </div>
 
 
@@ -310,10 +340,10 @@ HandlerError: u&#39;bad&#39; not a supported export format for SensorList, must 
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../taniumpy.html" class="btn btn-neutral float-right" title="3. taniumpy package">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="invalid_export_resultset.html" class="btn btn-neutral float-right" title="2.11.14. PyTan API Invalid Export ResultSet Examples">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="invalid_export_basetype_json_bad_explode_type.html" class="btn btn-neutral" title="2.11.16.6. Invalid export basetype json bad explode type"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="invalid_export_basetype_json_bad_explode_type.html" class="btn btn-neutral" title="2.11.13.6. Invalid Export Basetype JSON Bad Explode Type"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -323,7 +353,7 @@ HandlerError: u&#39;bad&#39; not a supported export format for SensorList, must 
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Aug 31, 2015.
+      Last updated on Sep 03, 2015.
     </p>
   </div>
 

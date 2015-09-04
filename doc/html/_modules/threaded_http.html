@@ -83,7 +83,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../pytan.xml_clean.html">2.8. pytan.xml_clean module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../pytan.unittest.html">2.9. pytan Unit Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../pytan.functest.html">2.10. pytan Functional Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/pytan_examples.html">2.11. PyTan API examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/pytan_examples.html">2.11. PyTan API Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../soap_examples/6.5.314.4301/soap_examples_6.5.314.4301.html">2.12. SOAP API Examples for Platform Version 6.5.314.4301</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../taniumpy.html">3. taniumpy package</a></li>
@@ -163,9 +164,9 @@
         <span class="n">message</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">currentThread</span><span class="p">()</span><span class="o">.</span><span class="n">getName</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
-        <span class="k">return</span>
-</div>
-<div class="viewcode-block" id="CustomHTTPHandler.do_POST"><a class="viewcode-back" href="../threaded_http.html#threaded_http.CustomHTTPHandler.do_POST">[docs]</a>    <span class="k">def</span> <span class="nf">do_POST</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c"># noqa</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="CustomHTTPHandler.do_POST"><a class="viewcode-back" href="../threaded_http.html#threaded_http.CustomHTTPHandler.do_POST">[docs]</a>    <span class="k">def</span> <span class="nf">do_POST</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c"># noqa</span></div>
         <span class="c"># Parse the form data posted</span>
         <span class="n">form</span> <span class="o">=</span> <span class="n">cgi</span><span class="o">.</span><span class="n">FieldStorage</span><span class="p">(</span>
             <span class="n">fp</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rfile</span><span class="p">,</span>
@@ -201,18 +202,18 @@
         <span class="k">return</span>
 
     <span class="c"># turn off logging messages so we don&#39;t see the get requests in console</span>
-    <span class="c"># during unittests</span></div>
+    <span class="c"># during unittests</span>
 <div class="viewcode-block" id="CustomHTTPHandler.log_message"><a class="viewcode-back" href="../threaded_http.html#threaded_http.CustomHTTPHandler.log_message">[docs]</a>    <span class="k">def</span> <span class="nf">log_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">format</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ENABLE_LOGGING</span><span class="p">:</span>
             <span class="n">BaseHTTPRequestHandler</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">format</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">pass</span>
+            <span class="k">pass</span></div></div>
 
-</div></div>
+
 <div class="viewcode-block" id="ThreadedHTTPServer"><a class="viewcode-back" href="../threaded_http.html#threaded_http.ThreadedHTTPServer">[docs]</a><span class="k">class</span> <span class="nc">ThreadedHTTPServer</span><span class="p">(</span><span class="n">ThreadingMixIn</span><span class="p">,</span> <span class="n">HTTPServer</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Handle requests in a separate thread.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Handle requests in a separate thread.&quot;&quot;&quot;</span></div>
 
-</div>
+
 <div class="viewcode-block" id="threaded_http"><a class="viewcode-back" href="../threaded_http.html#threaded_http.threaded_http">[docs]</a><span class="k">def</span> <span class="nf">threaded_http</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">&#39;localhost&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">4443</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;establishes an HTTP server on host:port in a thread&#39;&#39;&#39;</span>
     <span class="n">server</span> <span class="o">=</span> <span class="n">ThreadedHTTPServer</span><span class="p">((</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">),</span> <span class="n">CustomHTTPHandler</span><span class="p">)</span>
@@ -240,7 +241,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Aug 31, 2015.
+      Last updated on Sep 03, 2015.
     </p>
   </div>
 

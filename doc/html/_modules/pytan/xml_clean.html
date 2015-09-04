@@ -83,7 +83,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../pytan.xml_clean.html">2.8. pytan.xml_clean module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../pytan.unittest.html">2.9. pytan Unit Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../pytan.functest.html">2.10. pytan Functional Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../examples/pytan_examples.html">2.11. PyTan API examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/pytan_examples.html">2.11. PyTan API Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../soap_examples/6.5.314.4301/soap_examples_6.5.314.4301.html">2.12. SOAP API Examples for Platform Version 6.5.314.4301</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../taniumpy.html">3. taniumpy package</a></li>
@@ -252,9 +253,9 @@
     <span class="k">if</span> <span class="n">replacement</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
         <span class="n">replacement</span> <span class="o">=</span> <span class="n">DEFAULT_REPLACEMENT</span>
     <span class="n">s</span><span class="p">,</span> <span class="n">cnt</span> <span class="o">=</span> <span class="n">INVALID_UNICODE_RE</span><span class="o">.</span><span class="n">subn</span><span class="p">(</span><span class="n">replacement</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">s</span><span class="p">,</span> <span class="n">cnt</span><span class="p">,</span> <span class="n">INVALID_UNICODE_RE</span>
+    <span class="k">return</span> <span class="n">s</span><span class="p">,</span> <span class="n">cnt</span><span class="p">,</span> <span class="n">INVALID_UNICODE_RE</span></div>
 
-</div>
+
 <div class="viewcode-block" id="replace_restricted_unicode"><a class="viewcode-back" href="../../pytan.xml_clean.html#pytan.xml_clean.replace_restricted_unicode">[docs]</a><span class="k">def</span> <span class="nf">replace_restricted_unicode</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">replacement</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Replaces restricted unicode characters with `replacement`</span>
 
@@ -277,9 +278,9 @@
     <span class="k">if</span> <span class="n">replacement</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
         <span class="n">replacement</span> <span class="o">=</span> <span class="n">DEFAULT_REPLACEMENT</span>
     <span class="n">s</span><span class="p">,</span> <span class="n">cnt</span> <span class="o">=</span> <span class="n">RESTRICTED_UNICODE_RE</span><span class="o">.</span><span class="n">subn</span><span class="p">(</span><span class="n">replacement</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">s</span><span class="p">,</span> <span class="n">cnt</span><span class="p">,</span> <span class="n">RESTRICTED_UNICODE_RE</span>
+    <span class="k">return</span> <span class="n">s</span><span class="p">,</span> <span class="n">cnt</span><span class="p">,</span> <span class="n">RESTRICTED_UNICODE_RE</span></div>
 
-</div>
+
 <div class="viewcode-block" id="xml_cleaner"><a class="viewcode-back" href="../../pytan.xml_clean.html#pytan.xml_clean.xml_cleaner">[docs]</a><span class="k">def</span> <span class="nf">xml_cleaner</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">clean_restricted</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">log_clean_messages</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
                 <span class="n">log_bad_characters</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">replacement</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Removes invalid /restricted characters per XML 1.0 spec</span>
@@ -381,7 +382,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Aug 31, 2015.
+      Last updated on Sep 03, 2015.
     </p>
   </div>
 

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+  <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <t:return>
+      <command>GetObject</command>
+      <session>1-6925-6c9d7f096a4dc99b8e34bb9d09d699963f8235f2534720facac0830700c5f8799b79fa5d2d9e828c7120d1592c07806bd780f4f645b3c7ff53d50351414793a4</session>
+      <server_version>6.5.314.4301</server_version>
+      <ID></ID>
+      <IDType></IDType>
+      <ContextID></ContextID>
+      <result_object>
+        <action>
+          <id>523</id>
+          <name>API Deploy Distribute Tanium Standard Utilities</name>
+          <comment>Created by PyTan v2.1.0</comment>
+          <target_group>
+            <id>0</id>
+            <name>Default</name>
+          </target_group>
+          <action_group>
+            <id>0</id>
+            <name>Default</name>
+          </action_group>
+          <package_spec>
+            <id>20</id>
+            <name>Distribute Tanium Standard Utilities</name>
+            <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+          </package_spec>
+          <skip_lock_flag>0</skip_lock_flag>
+          <expire_seconds>3300</expire_seconds>
+          <creation_time>2015-09-04T02:45:35</creation_time>
+          <start_time>2015-09-04T02:45:37</start_time>
+          <expiration_time>2015-09-04T03:40:37</expiration_time>
+          <distribute_seconds>0</distribute_seconds>
+          <status>Open</status>
+          <stopped_flag>0</stopped_flag>
+          <user>
+            <id>1</id>
+            <name>Administrator</name>
+            <domain></domain>
+            <group_id>0</group_id>
+            <last_login>2015-09-04T02:45:18</last_login>
+          </user>
+          <history_saved_question>
+            <id>228</id>
+          </history_saved_question>
+          <saved_action>
+            <id>499</id>
+          </saved_action>
+          <approver>
+            <id>1</id>
+            <name>Administrator</name>
+          </approver>
+        </action>
+      </result_object>
+      <ResultXML></ResultXML>
+      <options>
+        <suppress_object_list>1</suppress_object_list>
+      </options>
+    </t:return>
+  </soap:Body>
+</soap:Envelope>

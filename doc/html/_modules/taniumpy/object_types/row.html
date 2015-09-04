@@ -83,7 +83,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../pytan.xml_clean.html">2.8. pytan.xml_clean module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../pytan.unittest.html">2.9. pytan Unit Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../pytan.functest.html">2.10. pytan Functional Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../examples/pytan_examples.html">2.11. PyTan API examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples/pytan_examples.html">2.11. PyTan API Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../soap_examples/6.5.314.4301/soap_examples_6.5.314.4301.html">2.12. SOAP API Examples for Platform Version 6.5.314.4301</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../taniumpy.html">3. taniumpy package</a></li>
@@ -136,9 +137,11 @@
           <div role="main" class="document">
             
   <h1>Source code for taniumpy.object_types.row</h1><div class="highlight"><pre>
-<span class="k">class</span> <span class="nc">Row</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+
+<div class="viewcode-block" id="Row"><a class="viewcode-back" href="../../../taniumpy.html#taniumpy.object_types.row.Row">[docs]</a><span class="k">class</span> <span class="nc">Row</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A row in a result set.</span>
-<div class="viewcode-block" id="Row"><a class="viewcode-back" href="../../../taniumpy.html#taniumpy.object_types.row.Row">[docs]</a>
+
 <span class="sd">    Values are stored in column order, also accessible</span>
 <span class="sd">    by key using []</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -162,9 +165,9 @@
         <span class="k">return</span> <span class="n">ret</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">fromSOAPElement</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">el</span><span class="p">,</span> <span class="n">columns</span><span class="p">):</span>
+<div class="viewcode-block" id="Row.fromSOAPElement"><a class="viewcode-back" href="../../../taniumpy.html#taniumpy.object_types.row.Row.fromSOAPElement">[docs]</a>    <span class="k">def</span> <span class="nf">fromSOAPElement</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">el</span><span class="p">,</span> <span class="n">columns</span><span class="p">):</span>
         <span class="n">row</span> <span class="o">=</span> <span class="n">Row</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span>
-<div class="viewcode-block" id="Row.fromSOAPElement"><a class="viewcode-back" href="../../../taniumpy.html#taniumpy.object_types.row.Row.fromSOAPElement">[docs]</a>        <span class="n">val</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">)</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">row</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">text</span>
         <span class="n">val</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;cid&quot;</span><span class="p">)</span>
@@ -175,17 +178,17 @@
             <span class="n">row_vals</span> <span class="o">=</span> <span class="n">rc</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s">&quot;v&quot;</span><span class="p">)</span>
             <span class="n">vals_text</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">row_vals</span><span class="p">]</span>
             <span class="n">row</span><span class="o">.</span><span class="n">vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vals_text</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">row</span>
+        <span class="k">return</span> <span class="n">row</span></div>
 
     <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vals</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vals</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_name</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">)):</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">display_name</span> <span class="o">==</span> <span class="n">column_name</span><span class="p">:</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;Column {} not found&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">column_name</span><span class="p">))</span>
-</pre></div></div>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;Column {} not found&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">column_name</span><span class="p">))</span></div>
+</pre></div>
 
           </div>
           <footer>
@@ -196,7 +199,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Aug 31, 2015.
+      Last updated on Sep 03, 2015.
     </p>
   </div>
 

@@ -85,7 +85,8 @@
 <li class="toctree-l2"><a class="reference internal" href="pytan.xml_clean.html">2.8. pytan.xml_clean module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pytan.unittest.html">2.9. pytan Unit Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pytan.functest.html">2.10. pytan Functional Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/pytan_examples.html">2.11. PyTan API examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/pytan_examples.html">2.11. PyTan API Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="soap_examples/6.5.314.4301/soap_examples_6.5.314.4301.html">2.12. SOAP API Examples for Platform Version 6.5.314.4301</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="taniumpy.html">3. taniumpy package</a></li>
@@ -440,9 +441,10 @@ and as such is not meant for human consumption. Use <a class="reference internal
 <p><strong>sse</strong> : bool, optional</p>
 <blockquote>
 <div><ul class="simple">
-<li>default: True</li>
+<li>default: False</li>
 <li>True: perform a server side export when getting result data</li>
 <li>False: perform a normal get result data (default for 6.2)</li>
+<li>Keeping False by default for now until the columnset&#8217;s are properly identified in the server export</li>
 </ul>
 </div></blockquote>
 <p><strong>sse_format</strong> : str, optional</p>
@@ -1088,47 +1090,6 @@ and as such is not meant for human consumption. Use <a class="reference internal
 </dd></dl>
 
 <dl class="method">
-<dt id="pytan.handler.Handler._parse_versioning">
-<code class="descname">_parse_versioning</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler._parse_versioning"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler._parse_versioning" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parses self.server_version into a dictionary</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">dict, containing major, minor, revision, and build of tanium server version</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Notes</p>
-<p>If pytan has not yet fetched info.json, then server_version will == &#8220;Not yet determined&#8221;
-force a call to self.session.get_server_version() to attempt to get info.json and parse
-the version from that and update self.server_version with that value</p>
-<p>If pytan is unable to fetch info.json properly for some reason,
-then server_version will == &#8220;Unable to determine&#8221;</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pytan.handler.Handler._platform_is_6_2">
-<code class="descname">_platform_is_6_2</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler._platform_is_6_2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler._platform_is_6_2" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check to see if self.server_version_dict matches 6.2.xxx.xxx</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">bool</p>
-<blockquote class="last">
-<div><ul class="simple">
-<li>True if self.server_version_dict major == 6 and minor == 2</li>
-<li>False otherwise</li>
-</ul>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="pytan.handler.Handler._resolve_sse_format">
 <code class="descname">_resolve_sse_format</code><span class="sig-paren">(</span><em>sse_format</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler._resolve_sse_format"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler._resolve_sse_format" title="Permalink to this definition">¶</a></dt>
 <dd><p>Resolves the server side export format the user supplied to an integer for the API</p>
@@ -1208,7 +1169,7 @@ the current servers version</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>v_maps</strong> : list of dict</p>
 <blockquote>
 <div><ul class="simple">
-<li>each dict can have major, minor, build, revision as keys, the corresponding values will be checked against self.server_version_dict to see if they are greater or equal to those values</li>
+<li>each dict can have major, minor, build, revision as keys, the corresponding values will be checked against self.session.server_version_dict to see if they are greater or equal to those values</li>
 </ul>
 </div></blockquote>
 </td>
@@ -1216,7 +1177,7 @@ the current servers version</p>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">bool</p>
 <blockquote class="last">
 <div><ul class="simple">
-<li>True if all values in all v_maps are greater than or equal to all values in self.server_version_dict</li>
+<li>True if all values in all v_maps are greater than or equal to all values in self.session.server_version_dict</li>
 <li>False otherwise</li>
 </ul>
 </div></blockquote>
@@ -1515,9 +1476,10 @@ their corresponding definitions needed by <a class="reference internal" href="#p
 <p><strong>sse</strong> : bool, optional</p>
 <blockquote>
 <div><ul class="simple">
-<li>default: True</li>
+<li>default: False</li>
 <li>True: perform a server side export when getting result data</li>
 <li>False: perform a normal get result data (default for 6.2)</li>
+<li>Keeping False by default for now until the columnset&#8217;s are properly identified in the server export</li>
 </ul>
 </div></blockquote>
 <p><strong>sse_format</strong> : str, optional</p>
@@ -1634,9 +1596,10 @@ their corresponding definitions needed by <a class="reference internal" href="#p
 <p><strong>sse</strong> : bool, optional</p>
 <blockquote>
 <div><ul class="simple">
-<li>default: True</li>
+<li>default: False</li>
 <li>True: perform a server side export when getting result data</li>
 <li>False: perform a normal get result data (default for 6.2)</li>
+<li>Keeping False by default for now until the columnset&#8217;s are properly identified in the server export</li>
 </ul>
 </div></blockquote>
 <p><strong>sse_format</strong> : str, optional</p>
@@ -2042,13 +2005,13 @@ Use <a class="reference internal" href="#pytan.handler.Handler.create_from_json"
 
 <dl class="method">
 <dt id="pytan.handler.Handler.create_user">
-<code class="descname">create_user</code><span class="sig-paren">(</span><em>username</em>, <em>rolename=[]</em>, <em>roleid=[]</em>, <em>properties=[]</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.create_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.create_user" title="Permalink to this definition">¶</a></dt>
+<code class="descname">create_user</code><span class="sig-paren">(</span><em>name</em>, <em>rolename=[]</em>, <em>roleid=[]</em>, <em>properties=[]</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.create_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.create_user" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a user object</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>username</strong> : str</p>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>name</strong> : str</p>
 <blockquote>
 <div><ul class="simple">
 <li>name of user to create</li>
@@ -2849,12 +2812,11 @@ request to &#8220;/export/${export_id}.gz&#8221;. This workflow saves a lot of p
 <dt id="pytan.handler.Handler.get_server_version">
 <code class="descname">get_server_version</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.get_server_version"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.get_server_version" title="Permalink to this definition">¶</a></dt>
 <dd><p>Uses <code class="xref py py-func docutils literal"><span class="pre">taniumpy.session.Session.get_server_version()</span></code> to get the version of the Tanium Server</p>
-<p>Updates self.server_version with the return, and updates self.server_version_dict with a parsed version of self.server_version into major, minor, revision, and build.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">self.server_version: str</p>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">server_version: str</p>
 <blockquote class="last">
 <div><ul class="simple">
 <li>Version of Tanium Server in string format</li>
@@ -2995,7 +2957,7 @@ request to &#8220;/export/${export_id}.gz&#8221;. This workflow saves a lot of p
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Aug 31, 2015.
+      Last updated on Sep 03, 2015.
     </p>
   </div>
 

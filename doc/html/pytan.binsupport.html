@@ -85,7 +85,8 @@
 <li class="toctree-l2"><a class="reference internal" href="pytan.xml_clean.html">2.8. pytan.xml_clean module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pytan.unittest.html">2.9. pytan Unit Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pytan.functest.html">2.10. pytan Functional Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/pytan_examples.html">2.11. PyTan API examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/pytan_examples.html">2.11. PyTan API Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="soap_examples/6.5.314.4301/soap_examples_6.5.314.4301.html">2.12. SOAP API Examples for Platform Version 6.5.314.4301</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="taniumpy.html">3. taniumpy package</a></li>
@@ -349,6 +350,46 @@
 <blockquote class="last">
 <div><ul class="simple">
 <li>response from <a class="reference internal" href="pytan.handler.html#pytan.handler.Handler.ask_manual" title="pytan.handler.Handler.ask_manual"><code class="xref py py-func docutils literal"><span class="pre">pytan.handler.Handler.ask_manual()</span></code></a></li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pytan.binsupport.process_ask_parsed_args">
+<code class="descclassname">pytan.binsupport.</code><code class="descname">process_ask_parsed_args</code><span class="sig-paren">(</span><em>parser</em>, <em>handler</em>, <em>args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/binsupport.html#process_ask_parsed_args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.binsupport.process_ask_parsed_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process command line args supplied by user for ask parsed</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>parser</strong> : <code class="xref py py-class docutils literal"><span class="pre">argparse.ArgParse</span></code></p>
+<blockquote>
+<div><ul class="simple">
+<li>ArgParse object used to parse <cite>all_args</cite></li>
+</ul>
+</div></blockquote>
+<p><strong>handler</strong> : <a class="reference internal" href="pytan.handler.html#pytan.handler.Handler" title="pytan.handler.Handler"><code class="xref py py-class docutils literal"><span class="pre">pytan.handler.Handler</span></code></a></p>
+<blockquote>
+<div><ul class="simple">
+<li>Instance of Handler created from command line args</li>
+</ul>
+</div></blockquote>
+<p><strong>args</strong> : args object</p>
+<blockquote>
+<div><ul class="simple">
+<li>args parsed from <cite>parser</cite></li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">response</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>response from <a class="reference internal" href="pytan.handler.html#pytan.handler.Handler.ask_parsed" title="pytan.handler.Handler.ask_parsed"><code class="xref py py-func docutils literal"><span class="pre">pytan.handler.Handler.ask_parsed()</span></code></a></li>
 </ul>
 </div></blockquote>
 </td>
@@ -1030,6 +1071,12 @@
 </dd></dl>
 
 <dl class="function">
+<dt id="pytan.binsupport.setup_ask_parsed_argparser">
+<code class="descclassname">pytan.binsupport.</code><code class="descname">setup_ask_parsed_argparser</code><span class="sig-paren">(</span><em>doc</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/binsupport.html#setup_ask_parsed_argparser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.binsupport.setup_ask_parsed_argparser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to setup the base <code class="xref py py-class docutils literal"><span class="pre">pytan.utils.CustomArgParse</span></code> class for command line scripts using <code class="xref py py-func docutils literal"><span class="pre">pytan.utils.setup_parser()</span></code>, then add specific arguments for scripts that use <a class="reference internal" href="pytan.html#module-pytan" title="pytan"><code class="xref py py-mod docutils literal"><span class="pre">pytan</span></code></a> to ask parsed questions.</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="pytan.binsupport.setup_ask_saved_argparser">
 <code class="descclassname">pytan.binsupport.</code><code class="descname">setup_ask_saved_argparser</code><span class="sig-paren">(</span><em>doc</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/binsupport.html#setup_ask_saved_argparser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.binsupport.setup_ask_saved_argparser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to setup the base <code class="xref py py-class docutils literal"><span class="pre">pytan.utils.CustomArgParse</span></code> class for command line scripts using <code class="xref py py-func docutils literal"><span class="pre">pytan.utils.setup_parser()</span></code>, then add specific arguments for scripts that use <a class="reference internal" href="pytan.html#module-pytan" title="pytan"><code class="xref py py-mod docutils literal"><span class="pre">pytan</span></code></a> to ask saved questions.</p>
@@ -1196,7 +1243,7 @@ aginst the version of <a class="reference internal" href="pytan.html#module-pyta
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Aug 31, 2015.
+      Last updated on Sep 03, 2015.
     </p>
   </div>
 

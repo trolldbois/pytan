@@ -83,7 +83,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../pytan.xml_clean.html">2.8. pytan.xml_clean module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../pytan.unittest.html">2.9. pytan Unit Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../pytan.functest.html">2.10. pytan Functional Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../examples/pytan_examples.html">2.11. PyTan API examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/pytan_examples.html">2.11. PyTan API Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../soap_examples/6.5.314.4301/soap_examples_6.5.314.4301.html">2.12. SOAP API Examples for Platform Version 6.5.314.4301</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../taniumpy.html">3. taniumpy package</a></li>
@@ -201,12 +202,6 @@
 
 <span class="sd">        &gt;&gt;&gt; session.authenticate(&#39;username&#39;, &#39;password&#39;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">REQUESTS_SESSION</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    The Requests session allows you to persist certain parameters across requests. It also persists cookies across all requests made from the Session instance. Any requests that you make within a session will automatically reuse the appropriate connection</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="n">XMLNS</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s">&#39;SOAP-ENV&#39;</span><span class="p">:</span> <span class="s">&#39;xmlns:SOAP-ENV=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;&#39;</span><span class="p">,</span>
         <span class="s">&#39;xsd&#39;</span><span class="p">:</span> <span class="s">&#39;xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;&#39;</span><span class="p">,</span>
@@ -288,15 +283,6 @@
     <span class="n">RECORD_ALL_REQUESTS</span> <span class="o">=</span> <span class="bp">False</span>
     <span class="sd">&quot;&quot;&quot;Controls whether each requests response object is appended to the self.ALL_REQUESTS_RESPONSES list&quot;&quot;&quot;</span>
 
-    <span class="n">ALL_REQUESTS_RESPONSES</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="sd">&quot;&quot;&quot;This list will be updated with each requests response object that was received&quot;&quot;&quot;</span>
-
-    <span class="n">LAST_REQUESTS_RESPONSE</span> <span class="o">=</span> <span class="bp">None</span>
-    <span class="sd">&quot;&quot;&quot;This variable will be updated with the last requests response object that was received&quot;&quot;&quot;</span>
-
-    <span class="n">LAST_RESPONSE_INFO</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="sd">&quot;&quot;&quot;This variable will be updated with the information from the most recent call to _get_response()&quot;&quot;&quot;</span>
-
     <span class="n">BAD_RESPONSE_CMD_PRUNES</span> <span class="o">=</span> <span class="p">[</span>
         <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">,</span>
         <span class="s">&#39;XML Parse Error: &#39;</span><span class="p">,</span>
@@ -311,23 +297,37 @@
     <span class="n">BAD_SERVER_VERSIONS</span> <span class="o">=</span> <span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;Unable to determine&#39;</span><span class="p">,</span> <span class="s">&#39;Not yet determined&#39;</span><span class="p">]</span>
     <span class="sd">&quot;&quot;&quot;List of server versions that are not valid&quot;&quot;&quot;</span>
 
+    <span class="c"># TRACKING VARIABLES -- THESE GET UPDATED BY SESSION</span>
+    <span class="n">ALL_REQUESTS_RESPONSES</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="sd">&quot;&quot;&quot;This list will be updated with each requests response object that was received&quot;&quot;&quot;</span>
+
+    <span class="n">LAST_REQUESTS_RESPONSE</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="sd">&quot;&quot;&quot;This variable will be updated with the last requests response object that was received&quot;&quot;&quot;</span>
+
+    <span class="n">LAST_RESPONSE_INFO</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="sd">&quot;&quot;&quot;This variable will be updated with the information from the most recent call to _get_response()&quot;&quot;&quot;</span>
+
     <span class="n">host</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="sd">&quot;&quot;&quot;host to connect to&quot;&quot;&quot;</span>
 
     <span class="n">port</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="sd">&quot;&quot;&quot;port to connect to&quot;&quot;&quot;</span>
 
-    <span class="n">server_version</span> <span class="o">=</span> <span class="bp">None</span>
-    <span class="sd">&quot;&quot;&quot;version string of server, will be updated if get_server_version() is called&quot;&quot;&quot;</span>
+    <span class="n">server_version</span> <span class="o">=</span> <span class="s">&quot;Not yet determined&quot;</span>
+    <span class="sd">&quot;&quot;&quot;version string of server, will be updated when get_server_version() is called&quot;&quot;&quot;</span>
 
-    <span class="n">mylog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;session&quot;</span><span class="p">)</span>
-    <span class="n">authlog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;session.auth&quot;</span><span class="p">)</span>
-    <span class="n">httplog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;session.http&quot;</span><span class="p">)</span>
-    <span class="n">bodyhttplog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;session.http.body&quot;</span><span class="p">)</span>
-    <span class="n">statslog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;stats&quot;</span><span class="p">)</span>
+    <span class="n">server_version_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="sd">&quot;&quot;&quot;dictionary of self.server_version parsed into major, minor, build, revision -- will be updated when get_server_version() is called&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">443</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setup_logging</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">REQUESTS_SESSION</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The Requests session allows you to persist certain parameters across requests. It also</span>
+<span class="sd">        persists cookies across all requests made from the Session instance. Any requests that you</span>
+<span class="sd">        make within a session will automatically reuse the appropriate connection</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c"># disable SSL cert verification for all requests made in this session</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">REQUESTS_SESSION</span><span class="o">.</span><span class="n">verify</span> <span class="o">=</span> <span class="bp">False</span>
@@ -363,19 +363,25 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">STATS_LOOP_TARGETS</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;stats_loop_targets&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">STATS_LOOP_TARGETS</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">RECORD_ALL_REQUESTS</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;record_all_requests&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">RECORD_ALL_REQUESTS</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_start_stats_thread</span><span class="p">()</span>
+        <span class="c"># re-enforce empty variables for init of session</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ALL_REQUESTS_RESPONSES</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LAST_RESPONSE_INFO</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">LAST_REQUESTS_RESPONSE</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span> <span class="o">=</span> <span class="s">&quot;Not yet determined&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">server_version_dict</span> <span class="o">=</span> <span class="p">{}</span>
 
 <div class="viewcode-block" id="Session.setup_logging"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session.setup_logging">[docs]</a>    <span class="k">def</span> <span class="nf">setup_logging</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">qualname</span> <span class="o">=</span> <span class="s">&quot;{}.{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__module__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">qualname</span> <span class="o">=</span> <span class="s">&quot;pytan.sessions.{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qualname</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">authlog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qualname</span> <span class="o">+</span> <span class="s">&quot;.auth&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">httplog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qualname</span> <span class="o">+</span> <span class="s">&quot;.http&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">bodyhttplog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qualname</span> <span class="o">+</span> <span class="s">&quot;.http.body&quot;</span><span class="p">)</span>
-</div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bodyhttplog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qualname</span> <span class="o">+</span> <span class="s">&quot;.http.body&quot;</span><span class="p">)</span></div>
+
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">class_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span>
-        <span class="n">str_tpl</span> <span class="o">=</span> <span class="s">&quot;{} to {}:{}, Authenticated: {}&quot;</span><span class="o">.</span><span class="n">format</span>
-        <span class="n">ret</span> <span class="o">=</span> <span class="n">str_tpl</span><span class="p">(</span><span class="n">class_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_auth</span><span class="p">)</span>
+        <span class="n">server_version</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_server_version</span><span class="p">()</span>
+        <span class="n">str_tpl</span> <span class="o">=</span> <span class="s">&quot;{} to {}:{}, Authenticated: {}, Platform Version: {}&quot;</span><span class="o">.</span><span class="n">format</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">str_tpl</span><span class="p">(</span><span class="n">class_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_auth</span><span class="p">,</span> <span class="n">server_version</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ret</span>
 
     <span class="nd">@property</span>
@@ -457,8 +463,8 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">authlog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Successfully logged out current session id for current user&quot;</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">session_id</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
-</div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session_id</span> <span class="o">=</span> <span class="s">&#39;&#39;</span></div>
+
 <div class="viewcode-block" id="Session.authenticate"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session.authenticate">[docs]</a>    <span class="k">def</span> <span class="nf">authenticate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">session_id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Authenticate against a Tanium Server using a username/password or a session ID</span>
 
@@ -584,7 +590,10 @@
                 <span class="s">&quot;session id using {}&quot;</span>
             <span class="p">)</span><span class="o">.</span><span class="n">format</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">authlog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">auth_type</span><span class="p">))</span>
-</div>
+
+        <span class="c"># start the stats thread loop in a background thread</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_start_stats_thread</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="Session.find"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session.find">[docs]</a>    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates and sends a GetObject XML Request body from `object_type` and parses the response into an appropriate :mod:`taniumpy` object</span>
 
@@ -604,8 +613,8 @@
         <span class="n">request_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_get_object_body</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
         <span class="n">response_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_response</span><span class="p">(</span><span class="n">request_body</span><span class="o">=</span><span class="n">request_body</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
         <span class="n">obj</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">BaseType</span><span class="o">.</span><span class="n">fromSOAPBody</span><span class="p">(</span><span class="n">body</span><span class="o">=</span><span class="n">response_body</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">obj</span>
-</div>
+        <span class="k">return</span> <span class="n">obj</span></div>
+
 <div class="viewcode-block" id="Session.save"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates and sends a UpdateObject XML Request body from `obj` and parses the response into an appropriate :mod:`taniumpy` object</span>
 
@@ -625,8 +634,8 @@
         <span class="n">request_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_update_object_body</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
         <span class="n">response_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_response</span><span class="p">(</span><span class="n">request_body</span><span class="o">=</span><span class="n">request_body</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
         <span class="n">obj</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">BaseType</span><span class="o">.</span><span class="n">fromSOAPBody</span><span class="p">(</span><span class="n">body</span><span class="o">=</span><span class="n">response_body</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">obj</span>
-</div>
+        <span class="k">return</span> <span class="n">obj</span></div>
+
 <div class="viewcode-block" id="Session.add"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates and sends a AddObject XML Request body from `obj` and parses the response into an appropriate :mod:`taniumpy` object</span>
 
@@ -646,8 +655,8 @@
         <span class="n">request_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_add_object_body</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
         <span class="n">response_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_response</span><span class="p">(</span><span class="n">request_body</span><span class="o">=</span><span class="n">request_body</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
         <span class="n">obj</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">BaseType</span><span class="o">.</span><span class="n">fromSOAPBody</span><span class="p">(</span><span class="n">body</span><span class="o">=</span><span class="n">response_body</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">obj</span>
-</div>
+        <span class="k">return</span> <span class="n">obj</span></div>
+
 <div class="viewcode-block" id="Session.delete"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates and sends a DeleteObject XML Request body from `obj` and parses the response into an appropriate :mod:`taniumpy` object</span>
 
@@ -667,8 +676,8 @@
         <span class="n">request_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_delete_object_body</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
         <span class="n">response_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_response</span><span class="p">(</span><span class="n">request_body</span><span class="o">=</span><span class="n">request_body</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
         <span class="n">obj</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">BaseType</span><span class="o">.</span><span class="n">fromSOAPBody</span><span class="p">(</span><span class="n">body</span><span class="o">=</span><span class="n">response_body</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">obj</span>
-</div>
+        <span class="k">return</span> <span class="n">obj</span></div>
+
 <div class="viewcode-block" id="Session.run_plugin"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session.run_plugin">[docs]</a>    <span class="k">def</span> <span class="nf">run_plugin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates and sends a RunPlugin XML Request body from `obj` and parses the response into an appropriate :mod:`taniumpy` object</span>
 
@@ -688,8 +697,8 @@
         <span class="n">request_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_run_plugin_object_body</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
         <span class="n">response_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_response</span><span class="p">(</span><span class="n">request_body</span><span class="o">=</span><span class="n">request_body</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
         <span class="n">obj</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">BaseType</span><span class="o">.</span><span class="n">fromSOAPBody</span><span class="p">(</span><span class="n">body</span><span class="o">=</span><span class="n">response_body</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">obj</span>
-</div>
+        <span class="k">return</span> <span class="n">obj</span></div>
+
 <div class="viewcode-block" id="Session.get_result_info"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session.get_result_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_result_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates and sends a GetResultInfo XML Request body from `obj` and parses the response into an appropriate :mod:`taniumpy` object</span>
 
@@ -715,8 +724,8 @@
         <span class="n">cdata_el</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">resultxml_text</span><span class="p">)</span>
         <span class="n">obj</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">ResultInfo</span><span class="o">.</span><span class="n">fromSOAPElement</span><span class="p">(</span><span class="n">cdata_el</span><span class="p">)</span>
         <span class="n">obj</span><span class="o">.</span><span class="n">_RAW_XML</span> <span class="o">=</span> <span class="n">resultxml_text</span>
-        <span class="k">return</span> <span class="n">obj</span>
-</div>
+        <span class="k">return</span> <span class="n">obj</span></div>
+
 <div class="viewcode-block" id="Session.get_result_data"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session.get_result_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_result_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates and sends a GetResultData XML Request body from `obj` and parses the response into an appropriate :mod:`taniumpy` object</span>
 
@@ -742,8 +751,8 @@
         <span class="n">cdata_el</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">resultxml_text</span><span class="p">)</span>
         <span class="n">obj</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">ResultSet</span><span class="o">.</span><span class="n">fromSOAPElement</span><span class="p">(</span><span class="n">cdata_el</span><span class="p">)</span>
         <span class="n">obj</span><span class="o">.</span><span class="n">_RAW_XML</span> <span class="o">=</span> <span class="n">resultxml_text</span>
-        <span class="k">return</span> <span class="n">obj</span>
-</div>
+        <span class="k">return</span> <span class="n">obj</span></div>
+
 <div class="viewcode-block" id="Session.get_result_data_sse"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session.get_result_data_sse">[docs]</a>    <span class="k">def</span> <span class="nf">get_result_data_sse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates and sends a GetResultData XML Request body that starts a server side export from `obj` and parses the response for an export_id.</span>
 
@@ -767,8 +776,8 @@
         <span class="n">export_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_regex_body_for_element</span><span class="p">(</span>
             <span class="n">body</span><span class="o">=</span><span class="n">response_body</span><span class="p">,</span> <span class="n">element</span><span class="o">=</span><span class="s">&#39;export_id&#39;</span><span class="p">,</span> <span class="n">fail</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">export_id</span>
-</div>
+        <span class="k">return</span> <span class="n">export_id</span></div>
+
 <div class="viewcode-block" id="Session.get_server_info"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session.get_server_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_server_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">fallback_port</span><span class="o">=</span><span class="mi">444</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Gets the /info.json</span>
 
@@ -853,8 +862,8 @@
 
         <span class="n">info_dict</span><span class="p">[</span><span class="s">&#39;server_info_pass_msgs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">server_info_pass_msgs</span>
         <span class="n">info_dict</span><span class="p">[</span><span class="s">&#39;server_info_fail_msgs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">server_info_fail_msgs</span>
-        <span class="k">return</span> <span class="n">info_dict</span>
-</div>
+        <span class="k">return</span> <span class="n">info_dict</span></div>
+
 <div class="viewcode-block" id="Session.get_server_version"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session.get_server_version">[docs]</a>    <span class="k">def</span> <span class="nf">get_server_version</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Tries to parse the server version from /info.json</span>
 
@@ -863,9 +872,7 @@
 <span class="sd">        str</span>
 <span class="sd">            * str containing server version from /info.json</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">current_server_version</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;server_version&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">current_server_version</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">BAD_SERVER_VERSIONS</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invalid_server_version</span><span class="p">():</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span>
 
         <span class="n">h</span> <span class="o">=</span> <span class="s">&quot;Get the server version via /info.json&quot;</span>
@@ -896,8 +903,9 @@
         <span class="k">if</span> <span class="n">server_version</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span> <span class="o">=</span> <span class="n">server_version</span>
 
-        <span class="k">return</span> <span class="n">server_version</span>
-</div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">server_version_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_versioning</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">server_version</span></div>
+
 <div class="viewcode-block" id="Session.get_server_stats"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session.get_server_stats">[docs]</a>    <span class="k">def</span> <span class="nf">get_server_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a str containing a number of stats gathered from /info.json</span>
 
@@ -925,8 +933,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_find_stat_target</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">diags</span><span class="o">=</span><span class="n">diags</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">STATS_LOOP_TARGETS</span>
         <span class="p">]</span>
         <span class="n">stats_text</span> <span class="o">=</span> <span class="s">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s">&quot;{}: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">i</span><span class="o">.</span><span class="n">items</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">stats_resolved</span><span class="p">])</span>
-        <span class="k">return</span> <span class="n">stats_text</span>
-</div>
+        <span class="k">return</span> <span class="n">stats_text</span></div>
+
 <div class="viewcode-block" id="Session.enable_stats_loop"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session.enable_stats_loop">[docs]</a>    <span class="k">def</span> <span class="nf">enable_stats_loop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sleep</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Enables the stats loop thread, which will print out the results of :func:`pytan.sessions.Session.get_server_stats` every :data:`pytan.sessions.Session.STATS_LOOP_SLEEP_SEC`</span>
 
@@ -941,8 +949,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">STATS_LOOP_ENABLED</span> <span class="o">=</span> <span class="bp">True</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sleep</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">STATS_LOOP_SLEEP_SEC</span> <span class="o">=</span> <span class="n">sleep</span>
-</div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">STATS_LOOP_SLEEP_SEC</span> <span class="o">=</span> <span class="n">sleep</span></div>
+
 <div class="viewcode-block" id="Session.disable_stats_loop"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session.disable_stats_loop">[docs]</a>    <span class="k">def</span> <span class="nf">disable_stats_loop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sleep</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Disables the stats loop thread, which will print out the results of :func:`pytan.sessions.Session.get_server_stats` every :data:`pytan.sessions.Session.STATS_LOOP_SLEEP_SEC`</span>
 
@@ -957,8 +965,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">STATS_LOOP_ENABLED</span> <span class="o">=</span> <span class="bp">False</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sleep</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">STATS_LOOP_SLEEP_SEC</span> <span class="o">=</span> <span class="n">sleep</span>
-</div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">STATS_LOOP_SLEEP_SEC</span> <span class="o">=</span> <span class="n">sleep</span></div>
+
 <div class="viewcode-block" id="Session.http_get"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session.http_get">[docs]</a>    <span class="k">def</span> <span class="nf">http_get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;This is an authenticated HTTP GET method. It will always forcibly use the authentication credentials that are stored in the current object when performing an HTTP GET.</span>
 
@@ -1051,8 +1059,8 @@
                     <span class="k">raise</span>
                 <span class="n">current_try</span> <span class="o">+=</span> <span class="mi">1</span>
 
-        <span class="k">return</span> <span class="n">body</span>
-</div>
+        <span class="k">return</span> <span class="n">body</span></div>
+
 <div class="viewcode-block" id="Session.http_post"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session.http_post">[docs]</a>    <span class="k">def</span> <span class="nf">http_post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;This is an authenticated HTTP POST method. It will always forcibly use the authentication credentials that are stored in the current object when performing an HTTP POST.</span>
 
@@ -1150,8 +1158,8 @@
                     <span class="k">raise</span>
                 <span class="n">current_try</span> <span class="o">+=</span> <span class="mi">1</span>
 
-        <span class="k">return</span> <span class="n">body</span>
-</div>
+        <span class="k">return</span> <span class="n">body</span></div>
+
 <div class="viewcode-block" id="Session._http_get"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session._http_get">[docs]</a>    <span class="k">def</span> <span class="nf">_http_get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">connect_timeout</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
                   <span class="n">response_timeout</span><span class="o">=</span><span class="mi">180</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">pytan_help</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;This is an HTTP GET method that utilizes the :mod:`requests` package.</span>
@@ -1258,8 +1266,8 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">bodyhttplog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;HTTP response: body:</span><span class="se">\n</span><span class="s">{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">response_body</span><span class="p">))</span>
 
-        <span class="k">return</span> <span class="n">response_body</span>
-</div>
+        <span class="k">return</span> <span class="n">response_body</span></div>
+
 <div class="viewcode-block" id="Session._http_post"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session._http_post">[docs]</a>    <span class="k">def</span> <span class="nf">_http_post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">connect_timeout</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
                    <span class="n">response_timeout</span><span class="o">=</span><span class="mi">180</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">pytan_help</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;This is an HTTP POST method that utilizes the :mod:`requests` package.</span>
@@ -1382,8 +1390,8 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">bodyhttplog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;HTTP response: body:</span><span class="se">\n</span><span class="s">{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">response_body</span><span class="p">))</span>
 
-        <span class="k">return</span> <span class="n">response_body</span>
-</div>
+        <span class="k">return</span> <span class="n">response_body</span></div>
+
 <div class="viewcode-block" id="Session._replace_auth"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session._replace_auth">[docs]</a>    <span class="k">def</span> <span class="nf">_replace_auth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">headers</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Utility method for removing username, password, and/or session from supplied headers and replacing them with the current objects session or username and password</span>
 
@@ -1410,8 +1418,8 @@
             <span class="n">headers</span><span class="p">[</span><span class="s">&#39;username&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">b64encode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_username</span><span class="p">)</span>
             <span class="n">headers</span><span class="p">[</span><span class="s">&#39;password&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">b64encode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_password</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">authlog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Using Username/Password for authentication headers&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">headers</span>
-</div>
+        <span class="k">return</span> <span class="n">headers</span></div>
+
 <div class="viewcode-block" id="Session._full_url"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session._full_url">[docs]</a>    <span class="k">def</span> <span class="nf">_full_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Utility method for constructing a full url</span>
 
@@ -1434,8 +1442,8 @@
         <span class="n">host</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;host&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">)</span>
         <span class="n">port</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;port&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">)</span>
         <span class="n">full_url</span> <span class="o">=</span> <span class="s">&quot;https://{0}:{1}/{2}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">full_url</span>
-</div>
+        <span class="k">return</span> <span class="n">full_url</span></div>
+
 <div class="viewcode-block" id="Session._clean_headers"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session._clean_headers">[docs]</a>    <span class="k">def</span> <span class="nf">_clean_headers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Utility method for getting the headers for the current request, combining them with the session headers used for every request, and obfuscating the value of any &#39;password&#39; header.</span>
 
@@ -1456,22 +1464,81 @@
         <span class="k">if</span> <span class="s">&#39;password&#39;</span> <span class="ow">in</span> <span class="n">return_headers</span><span class="p">:</span>
             <span class="n">return_headers</span><span class="p">[</span><span class="s">&#39;password&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;**PASSWORD**&#39;</span>
 
-        <span class="k">return</span> <span class="n">return_headers</span>
-</div>
-<div class="viewcode-block" id="Session._start_stats_thread"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session._start_stats_thread">[docs]</a>    <span class="k">def</span> <span class="nf">_start_stats_thread</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">return_headers</span></div>
+
+<div class="viewcode-block" id="Session._start_stats_thread"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session._start_stats_thread">[docs]</a>    <span class="k">def</span> <span class="nf">_start_stats_thread</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Utility method starting the :func:`pytan.sessions.Session._stats_loop` method in a threaded daemon&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">stats_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_stats_loop</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">stats_thread</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">stats_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-</div>
-<div class="viewcode-block" id="Session._stats_loop"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session._stats_loop">[docs]</a>    <span class="k">def</span> <span class="nf">_stats_loop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">stats_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_stats_loop</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(),</span> <span class="n">kwargs</span><span class="o">=</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">stats_thread</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">stats_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Session._parse_versioning"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session._parse_versioning">[docs]</a>    <span class="k">def</span> <span class="nf">_parse_versioning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Parses self.server_version into a dictionary</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            * dict of parsed tanium server version containing keys: major, minor, revision, and build</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">          * If Session is unable to fetch info.json properly for some reason, then self.server_version will be &quot;Unable to determine&quot;</span>
+<span class="sd">          * If Session has not yet fetched info.json, then self.server_version will be &quot;Not yet determined&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">v_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;major&#39;</span><span class="p">,</span> <span class="s">&#39;minor&#39;</span><span class="p">,</span> <span class="s">&#39;revision&#39;</span><span class="p">,</span> <span class="s">&#39;build&#39;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invalid_server_version</span><span class="p">():</span>
+            <span class="n">v_ints</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">v_parts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">)</span>
+                <span class="n">v_ints</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">v_parts</span><span class="p">]</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">m</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="s">&quot;Unable to parse major, minor, revision, and build from server &quot;</span>
+                    <span class="s">&quot;version string: {}&quot;</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">format</span>
+                <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">VersionParseError</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">server_version</span><span class="p">))</span>
+
+        <span class="n">v_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">v_keys</span><span class="p">,</span> <span class="n">v_ints</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">v_dict</span></div>
+
+<div class="viewcode-block" id="Session.platform_is_6_2"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session.platform_is_6_2">[docs]</a>    <span class="k">def</span> <span class="nf">platform_is_6_2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check to see if self.server_version_dict matches 6.2.xxx.xxx</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            * True if self.server_version_dict major == 6 and minor == 2</span>
+<span class="sd">            * False otherwise</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">is6_2</span> <span class="o">=</span> <span class="bp">False</span>
+
+        <span class="n">v_dict</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;server_version_dict&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invalid_server_version</span><span class="p">()</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">v_dict</span><span class="p">:</span>
+            <span class="c"># server version is not valid, force a refresh right now</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_server_version</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="n">v_dict</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;server_version_dict&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invalid_server_version</span><span class="p">()</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">v_dict</span><span class="p">:</span>
+            <span class="c"># server version is STILL invalid, we will assume its 6.2 since port 444 may be</span>
+            <span class="c"># inaccessible</span>
+            <span class="n">is6_2</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># server version is valid, get the major and minor keys from server_version_dict</span>
+            <span class="n">major_ver</span> <span class="o">=</span> <span class="n">v_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;major&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">minor_ver</span> <span class="o">=</span> <span class="n">v_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;minor&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">is6_2</span> <span class="o">=</span> <span class="p">(</span><span class="n">major_ver</span> <span class="o">==</span> <span class="mi">6</span> <span class="ow">and</span> <span class="n">minor_ver</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">major_ver</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">minor_ver</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">is6_2</span></div>
+
+<div class="viewcode-block" id="Session._stats_loop"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session._stats_loop">[docs]</a>    <span class="k">def</span> <span class="nf">_stats_loop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Utility method for logging server stats via :func:`pytan.sessions.Session.get_server_stats` every self.STATS_LOOP_SLEEP_SEC&quot;&quot;&quot;</span>
         <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">STATS_LOOP_ENABLED</span><span class="p">:</span>
-                <span class="n">server_stats</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_server_stats</span><span class="p">()</span>
+                <span class="n">server_stats</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_server_stats</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">statslog</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">server_stats</span><span class="p">)</span>
-            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">STATS_LOOP_SLEEP_SEC</span><span class="p">)</span>
-</div>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">STATS_LOOP_SLEEP_SEC</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="Session._flatten_server_info"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session._flatten_server_info">[docs]</a>    <span class="k">def</span> <span class="nf">_flatten_server_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structure</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Utility method for flattening the JSON structure for info.json into a more python usable format</span>
 
@@ -1493,8 +1560,8 @@
             <span class="k">if</span> <span class="nb">all</span><span class="p">([</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">structure</span><span class="p">]):</span>
                 <span class="n">flattened</span> <span class="o">=</span> <span class="p">{}</span>
                 <span class="p">[</span><span class="n">flattened</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_flatten_server_info</span><span class="p">(</span><span class="n">structure</span><span class="o">=</span><span class="n">i</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">structure</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">flattened</span>
-</div>
+        <span class="k">return</span> <span class="n">flattened</span></div>
+
 <div class="viewcode-block" id="Session._get_percentage"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session._get_percentage">[docs]</a>    <span class="k">def</span> <span class="nf">_get_percentage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">part</span><span class="p">,</span> <span class="n">whole</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Utility method for getting percentage of part out of whole</span>
 
@@ -1508,8 +1575,8 @@
 <span class="sd">        str : the percentage of part out of whole in 2 decimal places</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">f</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">part</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">whole</span><span class="p">)</span>
-        <span class="k">return</span> <span class="s">&quot;{0:.2f}%&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-</div>
+        <span class="k">return</span> <span class="s">&quot;{0:.2f}%&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="Session._find_stat_target"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session._find_stat_target">[docs]</a>    <span class="k">def</span> <span class="nf">_find_stat_target</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">diags</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Utility method for finding a target in info.json and returning the value, optionally performing a percentage calculation on two values if the target[0] starts with percentage(</span>
 
@@ -1545,8 +1612,8 @@
                 <span class="n">result</span> <span class="o">=</span> <span class="s">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_stat_target</span><span class="p">(</span><span class="n">search_path</span><span class="o">=</span><span class="n">search_path</span><span class="p">,</span> <span class="n">diags</span><span class="o">=</span><span class="n">diags</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">{</span><span class="n">label</span><span class="p">:</span> <span class="n">result</span><span class="p">}</span>
-</div>
+        <span class="k">return</span> <span class="p">{</span><span class="n">label</span><span class="p">:</span> <span class="n">result</span><span class="p">}</span></div>
+
 <div class="viewcode-block" id="Session._resolve_stat_target"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session._resolve_stat_target">[docs]</a>    <span class="k">def</span> <span class="nf">_resolve_stat_target</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">search_path</span><span class="p">,</span> <span class="n">diags</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Utility method for resolving the value of search_path in info.json and returning the value</span>
 
@@ -1567,8 +1634,8 @@
                 <span class="n">diags</span> <span class="o">=</span> <span class="n">diags</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">return</span> <span class="s">&quot;Unable to find diagnostic: {}, exception: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">search_path</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">diags</span>
-</div>
+        <span class="k">return</span> <span class="n">diags</span></div>
+
 <div class="viewcode-block" id="Session._build_body"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session._build_body">[docs]</a>    <span class="k">def</span> <span class="nf">_build_body</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="n">object_list</span><span class="p">,</span> <span class="n">log_options</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Utility method for building an XML Request Body</span>
 
@@ -1606,8 +1673,8 @@
         <span class="n">options</span> <span class="o">=</span> <span class="n">options_obj</span><span class="o">.</span><span class="n">toSOAPBody</span><span class="p">(</span><span class="n">minimal</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
         <span class="n">body_template</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">Template</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">REQUEST_BODY_BASE</span><span class="p">)</span>
         <span class="n">body</span> <span class="o">=</span> <span class="n">body_template</span><span class="o">.</span><span class="n">substitute</span><span class="p">(</span><span class="n">command</span><span class="o">=</span><span class="n">command</span><span class="p">,</span> <span class="n">object_list</span><span class="o">=</span><span class="n">object_list</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">body</span>
-</div>
+        <span class="k">return</span> <span class="n">body</span></div>
+
 <div class="viewcode-block" id="Session._create_run_plugin_object_body"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session._create_run_plugin_object_body">[docs]</a>    <span class="k">def</span> <span class="nf">_create_run_plugin_object_body</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Utility method for building an XML Request Body to run a plugin</span>
 
@@ -1629,8 +1696,8 @@
         <span class="n">object_list</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">toSOAPBody</span><span class="p">(</span><span class="n">minimal</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
         <span class="n">cmd</span> <span class="o">=</span> <span class="s">&#39;RunPlugin&#39;</span>
         <span class="n">obj_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_body</span><span class="p">(</span><span class="n">command</span><span class="o">=</span><span class="n">cmd</span><span class="p">,</span> <span class="n">object_list</span><span class="o">=</span><span class="n">object_list</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">obj_body</span>
-</div>
+        <span class="k">return</span> <span class="n">obj_body</span></div>
+
 <div class="viewcode-block" id="Session._create_add_object_body"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session._create_add_object_body">[docs]</a>    <span class="k">def</span> <span class="nf">_create_add_object_body</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Utility method for building an XML Request Body to add an object</span>
 
@@ -1652,8 +1719,8 @@
         <span class="n">object_list</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">toSOAPBody</span><span class="p">(</span><span class="n">minimal</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
         <span class="n">cmd</span> <span class="o">=</span> <span class="s">&#39;AddObject&#39;</span>
         <span class="n">obj_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_body</span><span class="p">(</span><span class="n">command</span><span class="o">=</span><span class="n">cmd</span><span class="p">,</span> <span class="n">object_list</span><span class="o">=</span><span class="n">object_list</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">obj_body</span>
-</div>
+        <span class="k">return</span> <span class="n">obj_body</span></div>
+
 <div class="viewcode-block" id="Session._create_delete_object_body"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session._create_delete_object_body">[docs]</a>    <span class="k">def</span> <span class="nf">_create_delete_object_body</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Utility method for building an XML Request Body to delete an object</span>
 
@@ -1675,8 +1742,8 @@
         <span class="n">object_list</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">toSOAPBody</span><span class="p">(</span><span class="n">minimal</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
         <span class="n">cmd</span> <span class="o">=</span> <span class="s">&#39;DeleteObject&#39;</span>
         <span class="n">obj_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_body</span><span class="p">(</span><span class="n">command</span><span class="o">=</span><span class="n">cmd</span><span class="p">,</span> <span class="n">object_list</span><span class="o">=</span><span class="n">object_list</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">obj_body</span>
-</div>
+        <span class="k">return</span> <span class="n">obj_body</span></div>
+
 <div class="viewcode-block" id="Session._create_get_result_info_body"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session._create_get_result_info_body">[docs]</a>    <span class="k">def</span> <span class="nf">_create_get_result_info_body</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Utility method for building an XML Request Body to get result info for an object</span>
 
@@ -1698,8 +1765,8 @@
         <span class="n">object_list</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">toSOAPBody</span><span class="p">(</span><span class="n">minimal</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
         <span class="n">cmd</span> <span class="o">=</span> <span class="s">&#39;GetResultInfo&#39;</span>
         <span class="n">obj_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_body</span><span class="p">(</span><span class="n">command</span><span class="o">=</span><span class="n">cmd</span><span class="p">,</span> <span class="n">object_list</span><span class="o">=</span><span class="n">object_list</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">obj_body</span>
-</div>
+        <span class="k">return</span> <span class="n">obj_body</span></div>
+
 <div class="viewcode-block" id="Session._create_get_result_data_body"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session._create_get_result_data_body">[docs]</a>    <span class="k">def</span> <span class="nf">_create_get_result_data_body</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Utility method for building an XML Request Body to get result data for an object</span>
 
@@ -1721,8 +1788,8 @@
         <span class="n">object_list</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">toSOAPBody</span><span class="p">(</span><span class="n">minimal</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
         <span class="n">cmd</span> <span class="o">=</span> <span class="s">&#39;GetResultData&#39;</span>
         <span class="n">obj_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_body</span><span class="p">(</span><span class="n">command</span><span class="o">=</span><span class="n">cmd</span><span class="p">,</span> <span class="n">object_list</span><span class="o">=</span><span class="n">object_list</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">obj_body</span>
-</div>
+        <span class="k">return</span> <span class="n">obj_body</span></div>
+
 <div class="viewcode-block" id="Session._create_get_object_body"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session._create_get_object_body">[docs]</a>    <span class="k">def</span> <span class="nf">_create_get_object_body</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Utility method for building an XML Request Body to get an object</span>
 
@@ -1748,8 +1815,8 @@
 
         <span class="n">cmd</span> <span class="o">=</span> <span class="s">&#39;GetObject&#39;</span>
         <span class="n">obj_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_body</span><span class="p">(</span><span class="n">command</span><span class="o">=</span><span class="n">cmd</span><span class="p">,</span> <span class="n">object_list</span><span class="o">=</span><span class="n">object_list</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">obj_body</span>
-</div>
+        <span class="k">return</span> <span class="n">obj_body</span></div>
+
 <div class="viewcode-block" id="Session._create_update_object_body"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session._create_update_object_body">[docs]</a>    <span class="k">def</span> <span class="nf">_create_update_object_body</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Utility method for building an XML Request Body to update an object</span>
 
@@ -1771,15 +1838,15 @@
         <span class="n">object_list</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">toSOAPBody</span><span class="p">(</span><span class="n">minimal</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
         <span class="n">cmd</span> <span class="o">=</span> <span class="s">&#39;UpdateObject&#39;</span>
         <span class="n">obj_body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_body</span><span class="p">(</span><span class="n">command</span><span class="o">=</span><span class="n">cmd</span><span class="p">,</span> <span class="n">object_list</span><span class="o">=</span><span class="n">object_list</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">obj_body</span>
-</div>
+        <span class="k">return</span> <span class="n">obj_body</span></div>
+
 <div class="viewcode-block" id="Session._check_auth"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session._check_auth">[docs]</a>    <span class="k">def</span> <span class="nf">_check_auth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Utility method to check if authentication has been done yet, and throw an exception if not &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_auth</span><span class="p">:</span>
             <span class="n">class_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span>
             <span class="n">err</span> <span class="o">=</span> <span class="s">&quot;Not yet authenticated, use {}.authenticate()!&quot;</span><span class="o">.</span><span class="n">format</span>
-            <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">AuthorizationError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="n">class_name</span><span class="p">))</span>
-</div>
+            <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">AuthorizationError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="n">class_name</span><span class="p">))</span></div>
+
 <div class="viewcode-block" id="Session._regex_body_for_element"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session._regex_body_for_element">[docs]</a>    <span class="k">def</span> <span class="nf">_regex_body_for_element</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">element</span><span class="p">,</span> <span class="n">fail</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Utility method to use a regex to get an element from an XML body</span>
 
@@ -1816,8 +1883,8 @@
 
         <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Value of element &#39;{}&#39;: &#39;{}&#39; (using pattern: &#39;{}&#39;&quot;</span><span class="o">.</span><span class="n">format</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">ret</span><span class="p">,</span> <span class="n">regex</span><span class="o">.</span><span class="n">pattern</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">ret</span>
-</div>
+        <span class="k">return</span> <span class="n">ret</span></div>
+
 <div class="viewcode-block" id="Session._extract_resultxml"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session._extract_resultxml">[docs]</a>    <span class="k">def</span> <span class="nf">_extract_resultxml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response_body</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Utility method to get the &#39;ResultXML&#39; element from an XML body</span>
 
@@ -1846,8 +1913,8 @@
             <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Empty ResultXML element in XML response: {}&quot;</span><span class="o">.</span><span class="n">format</span>
             <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">AuthorizationError</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">response_body</span><span class="p">))</span>
 
-        <span class="k">return</span> <span class="n">resultxml_text</span>
-</div>
+        <span class="k">return</span> <span class="n">resultxml_text</span></div>
+
 <div class="viewcode-block" id="Session._get_response"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session._get_response">[docs]</a>    <span class="k">def</span> <span class="nf">_get_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request_body</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;This is a wrapper around :func:`pytan.sessions.Session.http_post` for SOAP XML requests and responses.</span>
 
@@ -1956,15 +2023,21 @@
         <span class="p">)</span>
 
         <span class="c"># check to see if server_version set in response (6.5+ only)</span>
-        <span class="n">current_server_version</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;server_version&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">current_server_version</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">BAD_SERVER_VERSIONS</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invalid_server_version</span><span class="p">():</span>
             <span class="n">server_version</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_regex_body_for_element</span><span class="p">(</span>
                 <span class="n">body</span><span class="o">=</span><span class="n">response_body</span><span class="p">,</span> <span class="n">element</span><span class="o">=</span><span class="s">&#39;server_version&#39;</span><span class="p">,</span> <span class="n">fail</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="k">if</span> <span class="n">server_version</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span> <span class="o">!=</span> <span class="n">server_version</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span> <span class="o">=</span> <span class="n">server_version</span>
 
-        <span class="k">return</span> <span class="n">response_body</span></div></div>
+        <span class="k">return</span> <span class="n">response_body</span></div>
+
+<div class="viewcode-block" id="Session._invalid_server_version"><a class="viewcode-back" href="../../pytan.sessions.html#pytan.sessions.Session._invalid_server_version">[docs]</a>    <span class="k">def</span> <span class="nf">_invalid_server_version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Utility method to find out if self.server_version is valid or not&quot;&quot;&quot;</span>
+        <span class="n">current_server_version</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;server_version&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">current_server_version</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">BAD_SERVER_VERSIONS</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">return</span> <span class="bp">False</span></div></div>
 </pre></div>
 
           </div>
@@ -1976,7 +2049,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Aug 31, 2015.
+      Last updated on Sep 03, 2015.
     </p>
   </div>
 

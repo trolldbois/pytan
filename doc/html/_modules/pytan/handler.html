@@ -83,7 +83,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../pytan.xml_clean.html">2.8. pytan.xml_clean module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../pytan.unittest.html">2.9. pytan Unit Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../pytan.functest.html">2.10. pytan Functional Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../examples/pytan_examples.html">2.11. PyTan API examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/pytan_examples.html">2.11. PyTan API Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../soap_examples/6.5.314.4301/soap_examples_6.5.314.4301.html">2.12. SOAP API Examples for Platform Version 6.5.314.4301</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../taniumpy.html">3. taniumpy package</a></li>
@@ -148,7 +149,6 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">io</span>
-<span class="kn">import</span> <span class="nn">threading</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 
 <span class="n">my_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
@@ -293,11 +293,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;pytan.handler&quot;</span><span class="p">)</span>
 
         <span class="c"># setup the console logging handler</span>
-        <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">setup_console_logging</span><span class="p">(</span><span class="n">gmt_log</span><span class="p">)</span>
+        <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">setup_console_logging</span><span class="p">(</span><span class="n">gmt_tz</span><span class="o">=</span><span class="n">gmt_log</span><span class="p">)</span>
+
         <span class="c"># create all the loggers and set their levels based on loglevel</span>
-        <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">set_log_levels</span><span class="p">(</span><span class="n">loglevel</span><span class="p">)</span>
+        <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">set_log_levels</span><span class="p">(</span><span class="n">loglevel</span><span class="o">=</span><span class="n">loglevel</span><span class="p">)</span>
+
         <span class="c"># change the format of console logging handler if need be</span>
-        <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">change_console_format</span><span class="p">(</span><span class="n">debugformat</span><span class="p">)</span>
+        <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">change_console_format</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="n">debugformat</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">loglevel</span> <span class="o">=</span> <span class="n">loglevel</span>
 
@@ -325,36 +327,23 @@
             <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">,</span> <span class="n">session_id</span><span class="o">=</span><span class="n">session_id</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
         <span class="p">)</span>
 
-        <span class="c"># set the object&#39;s server_version to Not yet determined for now, this will be updated</span>
-        <span class="c"># by self.get_server_version</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span> <span class="o">=</span> <span class="s">&quot;Not yet determined&quot;</span>
-
-        <span class="c"># start up a background thread to get the server version</span>
-        <span class="n">thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_server_version</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">())</span>
-        <span class="n">thread</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">str_tpl</span> <span class="o">=</span> <span class="s">&quot;Handler for {}, Version: {}&quot;</span><span class="o">.</span><span class="n">format</span>
-        <span class="n">server_version</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;server_version&#39;</span><span class="p">,</span> <span class="s">&#39;Version Unavailable&#39;</span><span class="p">)</span>
-        <span class="n">ret</span> <span class="o">=</span> <span class="n">str_tpl</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">,</span> <span class="n">server_version</span><span class="p">)</span>
+        <span class="n">str_tpl</span> <span class="o">=</span> <span class="s">&quot;PyTan v{} Handler for {}&quot;</span><span class="o">.</span><span class="n">format</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">str_tpl</span><span class="p">(</span><span class="n">pytan</span><span class="o">.</span><span class="n">__version__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ret</span>
 
 <div class="viewcode-block" id="Handler.get_server_version"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.get_server_version">[docs]</a>    <span class="k">def</span> <span class="nf">get_server_version</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Uses :func:`taniumpy.session.Session.get_server_version` to get the version of the Tanium Server</span>
 
-<span class="sd">        Updates self.server_version with the return, and updates self.server_version_dict with a parsed version of self.server_version into major, minor, revision, and build.</span>
-
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        self.server_version: str</span>
+<span class="sd">        server_version: str</span>
 <span class="sd">            * Version of Tanium Server in string format</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get_server_version</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">server_version_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_versioning</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span>
+        <span class="n">server_version</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get_server_version</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">server_version</span></div>
 
-    <span class="c"># Questions</span></div>
+    <span class="c"># Questions</span>
 <div class="viewcode-block" id="Handler.ask"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.ask">[docs]</a>    <span class="k">def</span> <span class="nf">ask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Ask a type of question and get the results back</span>
 
@@ -386,8 +375,8 @@
 
         <span class="n">method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q_obj_map</span><span class="p">[</span><span class="s">&#39;handler&#39;</span><span class="p">])</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">method</span><span class="p">(</span><span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">result</span>
-</div>
+        <span class="k">return</span> <span class="n">result</span></div>
+
 <div class="viewcode-block" id="Handler.ask_saved"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.ask_saved">[docs]</a>    <span class="k">def</span> <span class="nf">ask_saved</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">refresh_data</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Ask a saved question and get the results back</span>
 
@@ -402,9 +391,10 @@
 <span class="sd">            * False: do not perform a getResultInfo before issuing a getResultData</span>
 <span class="sd">            * True: perform a getResultInfo before issuing a getResultData</span>
 <span class="sd">        sse : bool, optional</span>
-<span class="sd">            * default: True</span>
+<span class="sd">            * default: False</span>
 <span class="sd">            * True: perform a server side export when getting result data</span>
 <span class="sd">            * False: perform a normal get result data (default for 6.2)</span>
+<span class="sd">            * Keeping False by default for now until the columnset&#39;s are properly identified in the server export</span>
 <span class="sd">        sse_format : str, optional</span>
 <span class="sd">            * default: &#39;xml_obj&#39;</span>
 <span class="sd">            * format to have server side export report in, one of: {&#39;csv&#39;, &#39;xml&#39;, &#39;xml_obj&#39;, &#39;cef&#39;, 0, 1, 2}</span>
@@ -429,7 +419,7 @@
 <span class="sd">        id or name must be supplied</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">clean_kwargs</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">clean_kwargs</span><span class="p">(</span><span class="n">kwargs</span><span class="o">=</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="n">sse</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;sse&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="n">sse</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;sse&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
         <span class="n">clean_kwargs</span><span class="p">[</span><span class="s">&#39;sse_format&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">clean_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;sse_format&#39;</span><span class="p">,</span> <span class="s">&#39;xml_obj&#39;</span><span class="p">)</span>
 
         <span class="c"># get the saved_question object the user passed in</span>
@@ -486,7 +476,7 @@
             <span class="n">poller_success</span> <span class="o">=</span> <span class="n">poller</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
 
         <span class="c"># get the results</span>
-        <span class="k">if</span> <span class="n">sse</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_platform_is_6_2</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">sse</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">platform_is_6_2</span><span class="p">(</span><span class="o">**</span><span class="n">clean_kwargs</span><span class="p">):</span>
             <span class="n">h</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="s">&quot;Issue a GetResultData for a server side export to get the answers for the last &quot;</span>
                 <span class="s">&quot;asked question of this saved question&quot;</span>
@@ -512,8 +502,8 @@
             <span class="s">&#39;question_results&#39;</span><span class="p">:</span> <span class="n">rd</span><span class="p">,</span>
         <span class="p">}</span>
 
-        <span class="k">return</span> <span class="n">ret</span>
-</div>
+        <span class="k">return</span> <span class="n">ret</span></div>
+
 <div class="viewcode-block" id="Handler.ask_manual"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.ask_manual">[docs]</a>    <span class="k">def</span> <span class="nf">ask_manual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Ask a manual question using human strings and get the results back</span>
 
@@ -658,8 +648,8 @@
             <span class="n">question_option_defs</span><span class="o">=</span><span class="n">q_option_defs</span><span class="p">,</span>
             <span class="o">**</span><span class="n">clean_kwargs</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">result</span>
-</div>
+        <span class="k">return</span> <span class="n">result</span></div>
+
 <div class="viewcode-block" id="Handler.parse_query"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.parse_query">[docs]</a>    <span class="k">def</span> <span class="nf">parse_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">question_text</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Ask a parsed question as `question_text` and get a list of parsed results back</span>
 
@@ -672,9 +662,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        parse_job_results : :class:`taniumpy.object_types.parse_result_group.ParseResultGroup`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_platform_is_6_2</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">platform_is_6_2</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
             <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;ParseJob not supported in version: {} / {}&quot;</span><span class="o">.</span><span class="n">format</span>
-            <span class="n">m</span> <span class="o">=</span> <span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">server_version</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version_dict</span><span class="p">)</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">server_version</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">server_version_dict</span><span class="p">)</span>
             <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">UnsupportedVersionError</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
 
         <span class="n">parse_job</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">ParseJob</span><span class="p">()</span>
@@ -685,8 +675,8 @@
         <span class="n">clean_kwargs</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">clean_kwargs</span><span class="p">(</span><span class="n">kwargs</span><span class="o">=</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="n">clean_keys</span><span class="p">)</span>
 
         <span class="n">parse_job_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">parse_job</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">parse_job_results</span>
-</div>
+        <span class="k">return</span> <span class="n">parse_job_results</span></div>
+
 <div class="viewcode-block" id="Handler.ask_parsed"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.ask_parsed">[docs]</a>    <span class="k">def</span> <span class="nf">ask_parsed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">question_text</span><span class="p">,</span> <span class="n">picker</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">get_results</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Ask a parsed question as `question_text` and use the index of the parsed results from `picker`</span>
 
@@ -702,9 +692,10 @@
 <span class="sd">            * True: wait for result completion after asking question</span>
 <span class="sd">            * False: just ask the question and return it in `ret`</span>
 <span class="sd">        sse : bool, optional</span>
-<span class="sd">            * default: True</span>
+<span class="sd">            * default: False</span>
 <span class="sd">            * True: perform a server side export when getting result data</span>
 <span class="sd">            * False: perform a normal get result data (default for 6.2)</span>
+<span class="sd">            * Keeping False by default for now until the columnset&#39;s are properly identified in the server export</span>
 <span class="sd">        sse_format : str, optional</span>
 <span class="sd">            * default: &#39;xml_obj&#39;</span>
 <span class="sd">            * format to have server side export report in, one of: {&#39;csv&#39;, &#39;xml&#39;, &#39;xml_obj&#39;, &#39;cef&#39;, 0, 1, 2}</span>
@@ -748,15 +739,15 @@
 <span class="sd">        Ask the server to parse &#39;computer name&#39; and pick index 1 as the question you want to run:</span>
 <span class="sd">            &gt;&gt;&gt; v = handler.ask_parsed(&#39;computer name&#39;, picker=1)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_platform_is_6_2</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">platform_is_6_2</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
             <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;ParseJob not supported in version: {} / {}&quot;</span><span class="o">.</span><span class="n">format</span>
-            <span class="n">m</span> <span class="o">=</span> <span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">server_version</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version_dict</span><span class="p">)</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">server_version</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">server_version_dict</span><span class="p">)</span>
             <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">UnsupportedVersionError</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
 
         <span class="n">clean_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;obj&#39;</span><span class="p">,</span> <span class="s">&#39;question_text&#39;</span><span class="p">,</span> <span class="s">&#39;handler&#39;</span><span class="p">]</span>
         <span class="n">clean_kwargs</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">clean_kwargs</span><span class="p">(</span><span class="n">kwargs</span><span class="o">=</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="n">clean_keys</span><span class="p">)</span>
 
-        <span class="n">sse</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;sse&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="n">sse</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;sse&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
         <span class="n">clean_kwargs</span><span class="p">[</span><span class="s">&#39;sse_format&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">clean_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;sse_format&#39;</span><span class="p">,</span> <span class="s">&#39;xml_obj&#39;</span><span class="p">)</span>
 
         <span class="n">h</span> <span class="o">=</span> <span class="s">&quot;Issue an AddObject to add a ParseJob for question_text and get back ParseResultGroups&quot;</span>
@@ -828,9 +819,9 @@
                 <span class="n">rd</span><span class="o">.</span><span class="n">sensors</span> <span class="o">=</span> <span class="n">rd</span><span class="o">.</span><span class="n">sensors</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">sensor</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">added_obj</span><span class="o">.</span><span class="n">selects</span><span class="p">]</span>
 
             <span class="n">ret</span><span class="p">[</span><span class="s">&#39;question_results&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rd</span>
-        <span class="k">return</span> <span class="n">ret</span>
+        <span class="k">return</span> <span class="n">ret</span></div>
 
-    <span class="c"># Actions</span></div>
+    <span class="c"># Actions</span>
 <div class="viewcode-block" id="Handler.deploy_action"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.deploy_action">[docs]</a>    <span class="k">def</span> <span class="nf">deploy_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deploy an action and get the results back</span>
 
@@ -932,8 +923,8 @@
             <span class="n">package_def</span><span class="o">=</span><span class="n">package_def</span><span class="p">,</span>
             <span class="o">**</span><span class="n">clean_kwargs</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">deploy_result</span>
-</div>
+        <span class="k">return</span> <span class="n">deploy_result</span></div>
+
 <div class="viewcode-block" id="Handler.approve_saved_action"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.approve_saved_action">[docs]</a>    <span class="k">def</span> <span class="nf">approve_saved_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Approve a saved action</span>
 
@@ -964,8 +955,8 @@
         <span class="n">m</span> <span class="o">=</span> <span class="s">&#39;Action approved successfully, ID of saved action : {}&#39;</span><span class="o">.</span><span class="n">format</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">sap_obj</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
 
-        <span class="k">return</span> <span class="n">sap_obj</span>
-</div>
+        <span class="k">return</span> <span class="n">sap_obj</span></div>
+
 <div class="viewcode-block" id="Handler.stop_action"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.stop_action">[docs]</a>    <span class="k">def</span> <span class="nf">stop_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Stop an action</span>
 
@@ -1003,9 +994,9 @@
             <span class="p">)</span><span class="o">.</span><span class="n">format</span>
             <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HandlerError</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">export_obj</span><span class="p">(</span><span class="n">after_action_obj</span><span class="p">,</span> <span class="s">&#39;json&#39;</span><span class="p">)))</span>
 
-        <span class="k">return</span> <span class="n">action_stop_obj</span>
+        <span class="k">return</span> <span class="n">action_stop_obj</span></div>
 
-    <span class="c"># Result Data / Result Info</span></div>
+    <span class="c"># Result Data / Result Info</span>
 <div class="viewcode-block" id="Handler.get_result_data"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.get_result_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_result_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">aggregate</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the result data for a python API object</span>
 
@@ -1061,8 +1052,8 @@
             <span class="n">clean_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;obj&#39;</span><span class="p">]</span>
             <span class="n">clean_kwargs</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">clean_kwargs</span><span class="p">(</span><span class="n">kwargs</span><span class="o">=</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="n">clean_keys</span><span class="p">)</span>
             <span class="n">rd</span> <span class="o">=</span> <span class="n">grd</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">shrunk_obj</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">rd</span>
-</div>
+        <span class="k">return</span> <span class="n">rd</span></div>
+
 <div class="viewcode-block" id="Handler.get_result_data_sse"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.get_result_data_sse">[docs]</a>    <span class="k">def</span> <span class="nf">get_result_data_sse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">sse_format</span><span class="o">=</span><span class="s">&#39;csv&#39;</span><span class="p">,</span> <span class="n">leading</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">trailing</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the result data for a python API object using a server side export (sse)</span>
 
@@ -1150,8 +1141,8 @@
         <span class="k">if</span> <span class="n">sse_format</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#39;xml_obj&#39;</span><span class="p">:</span>
             <span class="n">export_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xml_to_result_set_obj</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">export_data</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">export_data</span>
-</div>
+        <span class="k">return</span> <span class="n">export_data</span></div>
+
 <div class="viewcode-block" id="Handler.xml_to_result_set_obj"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.xml_to_result_set_obj">[docs]</a>    <span class="k">def</span> <span class="nf">xml_to_result_set_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Wraps a Result Set XML from a server side export in the appropriate tags and returns a ResultSet object</span>
 
@@ -1169,8 +1160,9 @@
         <span class="n">rs_xml</span> <span class="o">=</span> <span class="n">rs_xml</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">rs_tree</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">sessions</span><span class="o">.</span><span class="n">ET</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">rs_xml</span><span class="p">)</span>
         <span class="n">rs</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">ResultSet</span><span class="o">.</span><span class="n">fromSOAPElement</span><span class="p">(</span><span class="n">rs_tree</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">rs</span>
-</div>
+        <span class="n">rs</span><span class="o">.</span><span class="n">_RAW_XML</span> <span class="o">=</span> <span class="n">rs_xml</span>
+        <span class="k">return</span> <span class="n">rs</span></div>
+
 <div class="viewcode-block" id="Handler.get_result_info"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.get_result_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_result_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the result info for a python API object</span>
 
@@ -1203,9 +1195,9 @@
         <span class="n">clean_kwargs</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">clean_kwargs</span><span class="p">(</span><span class="n">kwargs</span><span class="o">=</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="n">clean_keys</span><span class="p">)</span>
 
         <span class="n">ri</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get_result_info</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">shrunk_obj</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">ri</span>
+        <span class="k">return</span> <span class="n">ri</span></div>
 
-    <span class="c"># Objects</span></div>
+    <span class="c"># Objects</span>
 <div class="viewcode-block" id="Handler.create_from_json"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.create_from_json">[docs]</a>    <span class="k">def</span> <span class="nf">create_from_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objtype</span><span class="p">,</span> <span class="n">json_file</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a new object using the SOAP api from a json file</span>
 
@@ -1276,8 +1268,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">list_obj</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">list_obj</span><span class="p">,</span> <span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="s">&#39;Unknown&#39;</span><span class="p">)))</span>
 
             <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">list_obj</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">ret</span>
-</div>
+        <span class="k">return</span> <span class="n">ret</span></div>
+
 <div class="viewcode-block" id="Handler.run_plugin"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.run_plugin">[docs]</a>    <span class="k">def</span> <span class="nf">run_plugin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Wrapper around :func:`pytan.session.Session.run_plugin` to run the plugin and zip up the SQL results into a python dictionary</span>
 
@@ -1305,8 +1297,8 @@
         <span class="n">sql_zipped</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">plugin_zip</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="n">plugin_result</span><span class="p">)</span>
 
         <span class="c"># return the plugin result and the python dictionary of results</span>
-        <span class="k">return</span> <span class="n">plugin_result</span><span class="p">,</span> <span class="n">sql_zipped</span>
-</div>
+        <span class="k">return</span> <span class="n">plugin_result</span><span class="p">,</span> <span class="n">sql_zipped</span></div>
+
 <div class="viewcode-block" id="Handler.create_dashboard"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.create_dashboard">[docs]</a>    <span class="k">def</span> <span class="nf">create_dashboard</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">public_flag</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Calls :func:`pytan.handler.Handler.run_plugin` to run the CreateDashboard plugin and parse the response</span>
 
@@ -1388,8 +1380,8 @@
         <span class="n">plugin_result</span><span class="p">,</span> <span class="n">sql_zipped</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_plugin</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">plugin</span><span class="p">,</span> <span class="n">pytan_help</span><span class="o">=</span><span class="n">h</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
 
         <span class="c"># return the plugin result and the python dictionary of results</span>
-        <span class="k">return</span> <span class="n">plugin_result</span><span class="p">,</span> <span class="n">sql_zipped</span>
-</div>
+        <span class="k">return</span> <span class="n">plugin_result</span><span class="p">,</span> <span class="n">sql_zipped</span></div>
+
 <div class="viewcode-block" id="Handler.delete_dashboard"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.delete_dashboard">[docs]</a>    <span class="k">def</span> <span class="nf">delete_dashboard</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Calls :func:`pytan.handler.Handler.run_plugin` to run the DeleteDashboards plugin and parse the response</span>
 
@@ -1428,8 +1420,8 @@
         <span class="n">plugin_result</span><span class="p">,</span> <span class="n">sql_zipped</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_plugin</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">plugin</span><span class="p">,</span> <span class="n">pytan_help</span><span class="o">=</span><span class="n">h</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
 
         <span class="c"># return the plugin result and the python dictionary of results</span>
-        <span class="k">return</span> <span class="n">plugin_result</span><span class="p">,</span> <span class="n">sql_zipped</span>
-</div>
+        <span class="k">return</span> <span class="n">plugin_result</span><span class="p">,</span> <span class="n">sql_zipped</span></div>
+
 <div class="viewcode-block" id="Handler.get_dashboards"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.get_dashboards">[docs]</a>    <span class="k">def</span> <span class="nf">get_dashboards</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Calls :func:`pytan.handler.Handler.run_plugin` to run the GetDashboards plugin and parse the response</span>
 
@@ -1465,8 +1457,8 @@
                 <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">NotFoundError</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
 
         <span class="c"># return the plugin result and the python dictionary of results</span>
-        <span class="k">return</span> <span class="n">plugin_result</span><span class="p">,</span> <span class="n">sql_zipped</span>
-</div>
+        <span class="k">return</span> <span class="n">plugin_result</span><span class="p">,</span> <span class="n">sql_zipped</span></div>
+
 <div class="viewcode-block" id="Handler.create_sensor"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.create_sensor">[docs]</a>    <span class="k">def</span> <span class="nf">create_sensor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a sensor object</span>
 
@@ -1483,8 +1475,8 @@
             <span class="s">&quot;Sensor creation not supported via PyTan as of yet, too complex</span><span class="se">\n</span><span class="s">&quot;</span>
             <span class="s">&quot;Use create_sensor_from_json() instead!&quot;</span>
         <span class="p">)</span>
-        <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HandlerError</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
-</div>
+        <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HandlerError</span><span class="p">(</span><span class="n">m</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="Handler.create_package"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.create_package">[docs]</a>    <span class="k">def</span> <span class="nf">create_package</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="n">display_name</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">file_urls</span><span class="o">=</span><span class="p">[],</span>
                        <span class="n">command_timeout_seconds</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">expire_seconds</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">parameters_json_file</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span>
                        <span class="n">verify_filters</span><span class="o">=</span><span class="p">[],</span> <span class="n">verify_filter_options</span><span class="o">=</span><span class="p">[],</span> <span class="n">verify_expire_seconds</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
@@ -1620,8 +1612,8 @@
 
         <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;New package {!r} created with ID {!r}, command: {!r}&quot;</span><span class="o">.</span><span class="n">format</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">package_obj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">package_obj</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">package_obj</span><span class="o">.</span><span class="n">command</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">package_obj</span>
-</div>
+        <span class="k">return</span> <span class="n">package_obj</span></div>
+
 <div class="viewcode-block" id="Handler.create_group"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.create_group">[docs]</a>    <span class="k">def</span> <span class="nf">create_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">groupname</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="p">[],</span> <span class="n">filter_options</span><span class="o">=</span><span class="p">[],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a group object</span>
 
@@ -1676,14 +1668,14 @@
 
         <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;New group {!r} created with ID {!r}, filter text: {!r}&quot;</span><span class="o">.</span><span class="n">format</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">group_obj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">group_obj</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">group_obj</span><span class="o">.</span><span class="n">text</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">group_obj</span>
-</div>
-<div class="viewcode-block" id="Handler.create_user"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.create_user">[docs]</a>    <span class="k">def</span> <span class="nf">create_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">rolename</span><span class="o">=</span><span class="p">[],</span> <span class="n">roleid</span><span class="o">=</span><span class="p">[],</span> <span class="n">properties</span><span class="o">=</span><span class="p">[],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">group_obj</span></div>
+
+<div class="viewcode-block" id="Handler.create_user"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.create_user">[docs]</a>    <span class="k">def</span> <span class="nf">create_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">rolename</span><span class="o">=</span><span class="p">[],</span> <span class="n">roleid</span><span class="o">=</span><span class="p">[],</span> <span class="n">properties</span><span class="o">=</span><span class="p">[],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a user object</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        username : str</span>
+<span class="sd">        name : str</span>
 <span class="sd">            * name of user to create</span>
 <span class="sd">        rolename : str or list of str, optional</span>
 <span class="sd">            * default: []</span>
@@ -1711,7 +1703,7 @@
             <span class="n">properties</span><span class="o">=</span><span class="n">properties</span><span class="p">,</span> <span class="n">nameprefix</span><span class="o">=</span><span class="s">&#39;TConsole.User.Property&#39;</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">add_user_obj</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">User</span><span class="p">()</span>
-        <span class="n">add_user_obj</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">username</span>
+        <span class="n">add_user_obj</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="n">add_user_obj</span><span class="o">.</span><span class="n">roles</span> <span class="o">=</span> <span class="n">rolelist_obj</span>
         <span class="n">add_user_obj</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="n">metadatalist_obj</span>
 
@@ -1724,8 +1716,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span>
             <span class="n">user_obj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">user_obj</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">rolelist_obj</span><span class="p">]</span>
         <span class="p">))</span>
-        <span class="k">return</span> <span class="n">user_obj</span>
-</div>
+        <span class="k">return</span> <span class="n">user_obj</span></div>
+
 <div class="viewcode-block" id="Handler.create_whitelisted_url"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.create_whitelisted_url">[docs]</a>    <span class="k">def</span> <span class="nf">create_whitelisted_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">download_seconds</span><span class="o">=</span><span class="mi">86400</span><span class="p">,</span> <span class="n">properties</span><span class="o">=</span><span class="p">[],</span>
                                <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a whitelisted url object</span>
@@ -1771,8 +1763,8 @@
 
         <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;New Whitelisted URL {!r} created with ID {!r}&quot;</span><span class="o">.</span><span class="n">format</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">url_obj</span><span class="o">.</span><span class="n">url_regex</span><span class="p">,</span> <span class="n">url_obj</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">url_obj</span>
-</div>
+        <span class="k">return</span> <span class="n">url_obj</span></div>
+
 <div class="viewcode-block" id="Handler.delete"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objtype</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete an object type</span>
 
@@ -1810,7 +1802,7 @@
 
         <span class="n">deleted_objects</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">obj_to_del</span> <span class="ow">in</span> <span class="n">objs_to_del</span><span class="p">:</span>
-            <span class="n">h</span> <span class="o">=</span> <span class="s">&quot;Issue a GetObject to find the object to be deleted&quot;</span>
+            <span class="n">h</span> <span class="o">=</span> <span class="s">&quot;Issue a DeleteObject to delete an object&quot;</span>
             <span class="n">del_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">obj_to_del</span><span class="p">,</span> <span class="n">pytan_help</span><span class="o">=</span><span class="n">h</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
 
             <span class="n">deleted_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">del_obj</span><span class="p">)</span>
@@ -1818,8 +1810,8 @@
             <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Deleted {!r}&quot;</span><span class="o">.</span><span class="n">format</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">del_obj</span><span class="p">)))</span>
 
-        <span class="k">return</span> <span class="n">deleted_objects</span>
-</div>
+        <span class="k">return</span> <span class="n">deleted_objects</span></div>
+
 <div class="viewcode-block" id="Handler.export_obj"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.export_obj">[docs]</a>    <span class="k">def</span> <span class="nf">export_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">export_format</span><span class="o">=</span><span class="s">&#39;csv&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Exports a python API object to a given export format</span>
 
@@ -1927,8 +1919,8 @@
             <span class="n">err</span> <span class="o">=</span> <span class="s">&quot;{!r} not supported by Handler!&quot;</span><span class="o">.</span><span class="n">format</span>
             <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HandlerError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="n">objclassname</span><span class="p">))</span>
 
-        <span class="k">return</span> <span class="n">result</span>
-</div>
+        <span class="k">return</span> <span class="n">result</span></div>
+
 <div class="viewcode-block" id="Handler.create_report_file"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.create_report_file">[docs]</a>    <span class="k">def</span> <span class="nf">create_report_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">contents</span><span class="p">,</span> <span class="n">report_file</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Exports a python API object to a file</span>
 
@@ -1988,8 +1980,8 @@
 
         <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Report file {!r} written with {} bytes&quot;</span><span class="o">.</span><span class="n">format</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">report_path</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">contents</span><span class="p">)))</span>
-        <span class="k">return</span> <span class="n">report_path</span>
-</div>
+        <span class="k">return</span> <span class="n">report_path</span></div>
+
 <div class="viewcode-block" id="Handler.export_to_report_file"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.export_to_report_file">[docs]</a>    <span class="k">def</span> <span class="nf">export_to_report_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">export_format</span><span class="o">=</span><span class="s">&#39;csv&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Exports a python API object to a file</span>
 
@@ -2076,8 +2068,8 @@
         <span class="n">report_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_report_file</span><span class="p">(</span>
             <span class="n">report_file</span><span class="o">=</span><span class="n">report_file</span><span class="p">,</span> <span class="n">contents</span><span class="o">=</span><span class="n">contents</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">report_path</span><span class="p">,</span> <span class="n">contents</span>
-</div>
+        <span class="k">return</span> <span class="n">report_path</span><span class="p">,</span> <span class="n">contents</span></div>
+
 <div class="viewcode-block" id="Handler.get"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objtype</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get an object type</span>
 
@@ -2104,6 +2096,9 @@
 
         <span class="n">clean_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;obj&#39;</span><span class="p">,</span> <span class="s">&#39;objtype&#39;</span><span class="p">,</span> <span class="s">&#39;obj_map&#39;</span><span class="p">]</span>
         <span class="n">clean_kwargs</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">clean_kwargs</span><span class="p">(</span><span class="n">kwargs</span><span class="o">=</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="n">clean_keys</span><span class="p">)</span>
+
+        <span class="n">err_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;pytan_help&#39;</span><span class="p">]</span>
+        <span class="n">err_args</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">clean_kwargs</span><span class="p">(</span><span class="n">kwargs</span><span class="o">=</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="n">err_keys</span><span class="p">)</span>
 
         <span class="n">obj_map</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">get_obj_map</span><span class="p">(</span><span class="n">objtype</span><span class="o">=</span><span class="n">objtype</span><span class="p">)</span>
 
@@ -2132,7 +2127,7 @@
 
             <span class="k">if</span> <span class="ow">not</span> <span class="n">return_objs</span><span class="p">:</span>
                 <span class="n">err</span> <span class="o">=</span> <span class="s">&quot;No results found searching for {} with {}!!&quot;</span><span class="o">.</span><span class="n">format</span>
-                <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HandlerError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="n">objtype</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span>
+                <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HandlerError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="n">objtype</span><span class="p">,</span> <span class="n">err_args</span><span class="p">))</span>
 
             <span class="k">return</span> <span class="n">return_objs</span>
 
@@ -2153,8 +2148,8 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_single</span><span class="p">(</span><span class="n">obj_map</span><span class="o">=</span><span class="n">obj_map</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
 
         <span class="n">err</span> <span class="o">=</span> <span class="s">&quot;No single or multi search defined for {}&quot;</span><span class="o">.</span><span class="n">format</span>
-        <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HandlerError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="n">objtype</span><span class="p">))</span>
-</div>
+        <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HandlerError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="n">objtype</span><span class="p">))</span></div>
+
 <div class="viewcode-block" id="Handler.get_all"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler.get_all">[docs]</a>    <span class="k">def</span> <span class="nf">get_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objtype</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get all objects of a type</span>
 
@@ -2185,9 +2180,9 @@
         <span class="n">api_obj_all</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">get_taniumpy_obj</span><span class="p">(</span><span class="n">obj_map</span><span class="o">=</span><span class="n">all_type</span><span class="p">)()</span>
 
         <span class="n">found</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">api_obj_all</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">found</span>
+        <span class="k">return</span> <span class="n">found</span></div>
 
-    <span class="c"># BEGIN PRIVATE METHODS</span></div>
+    <span class="c"># BEGIN PRIVATE METHODS</span>
 <div class="viewcode-block" id="Handler._add"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._add">[docs]</a>    <span class="k">def</span> <span class="nf">_add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Wrapper for interfacing with :func:`taniumpy.session.Session.add`</span>
 
@@ -2219,9 +2214,8 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">added_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-            <span class="n">err</span> <span class="o">=</span> <span class="s">&quot;Error while trying to add object {}!!&quot;</span><span class="o">.</span><span class="n">format</span>
-            <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HandlerError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="n">search_str</span><span class="p">))</span>
+            <span class="n">err</span> <span class="o">=</span> <span class="s">&quot;Error while trying to add object &#39;{}&#39;: {}!!&quot;</span><span class="o">.</span><span class="n">format</span>
+            <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HandlerError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="n">search_str</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
 
         <span class="n">h</span> <span class="o">=</span> <span class="s">&quot;Issue a GetObject on the recently added object in order to get the full object&quot;</span>
         <span class="n">clean_kwargs</span><span class="p">[</span><span class="s">&#39;pytan_help&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>
@@ -2234,8 +2228,8 @@
             <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HandlerError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="n">search_str</span><span class="p">))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Added object {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">added_obj</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">added_obj</span>
-</div>
+        <span class="k">return</span> <span class="n">added_obj</span></div>
+
 <div class="viewcode-block" id="Handler._find"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._find">[docs]</a>    <span class="k">def</span> <span class="nf">_find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Wrapper for interfacing with :func:`taniumpy.session.Session.find`</span>
 
@@ -2276,8 +2270,8 @@
             <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HandlerError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="n">search_str</span><span class="p">))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Found {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">found</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">found</span>
-</div>
+        <span class="k">return</span> <span class="n">found</span></div>
+
 <div class="viewcode-block" id="Handler._get_multi"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._get_multi">[docs]</a>    <span class="k">def</span> <span class="nf">_get_multi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_map</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Find multiple item wrapper using :func:`_find`</span>
 
@@ -2323,8 +2317,8 @@
 
         <span class="c"># find the multi list object</span>
         <span class="n">found</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">api_obj_multi</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">found</span>
-</div>
+        <span class="k">return</span> <span class="n">found</span></div>
+
 <div class="viewcode-block" id="Handler._get_single"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._get_single">[docs]</a>    <span class="k">def</span> <span class="nf">_get_single</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_map</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Find single item wrapper using :func:`_find`</span>
 
@@ -2368,8 +2362,8 @@
                 <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_single_find</span><span class="p">(</span><span class="n">obj_map</span><span class="o">=</span><span class="n">obj_map</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="n">v</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">):</span>
                     <span class="n">found</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">found</span>
-</div>
+        <span class="k">return</span> <span class="n">found</span></div>
+
 <div class="viewcode-block" id="Handler._single_find"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._single_find">[docs]</a>    <span class="k">def</span> <span class="nf">_single_find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_map</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Wrapper for single item searches interfacing with :func:`taniumpy.session.Session.find`</span>
 
@@ -2405,8 +2399,8 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">found</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj_ret</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">found</span>
-</div>
+        <span class="k">return</span> <span class="n">found</span></div>
+
 <div class="viewcode-block" id="Handler._get_sensor_defs"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._get_sensor_defs">[docs]</a>    <span class="k">def</span> <span class="nf">_get_sensor_defs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">defs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Uses :func:`get` to update a definition with a sensor object</span>
 
@@ -2433,15 +2427,15 @@
             <span class="n">def_search</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">clean_kwargs</span><span class="p">)</span>
 
             <span class="c"># get the sensor object</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;sensor_obj&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="s">&#39;sensor_obj&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
                 <span class="n">h</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="s">&quot;Issue a GetObject to get the full object of a sensor for inclusion in a &quot;</span>
                     <span class="s">&quot;question or action&quot;</span>
                 <span class="p">)</span>
                 <span class="n">def_search</span><span class="p">[</span><span class="s">&#39;pytan_help&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">def_search</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;pytan_help&#39;</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
                 <span class="n">d</span><span class="p">[</span><span class="s">&#39;sensor_obj&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">objtype</span><span class="o">=</span><span class="s">&#39;sensor&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">def_search</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">defs</span>
-</div>
+        <span class="k">return</span> <span class="n">defs</span></div>
+
 <div class="viewcode-block" id="Handler._get_package_def"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._get_package_def">[docs]</a>    <span class="k">def</span> <span class="nf">_get_package_def</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Uses :func:`get` to update a definition with a package object</span>
 
@@ -2467,15 +2461,15 @@
         <span class="n">def_search</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">clean_kwargs</span><span class="p">)</span>
 
         <span class="c"># get the package object</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;package_obj&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s">&#39;package_obj&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
             <span class="n">h</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="s">&quot;Issue a GetObject to get the full object of a package for inclusion in an &quot;</span>
                 <span class="s">&quot;action&quot;</span>
             <span class="p">)</span>
             <span class="n">def_search</span><span class="p">[</span><span class="s">&#39;pytan_help&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">def_search</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;pytan_help&#39;</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
             <span class="n">d</span><span class="p">[</span><span class="s">&#39;package_obj&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">objtype</span><span class="o">=</span><span class="s">&#39;package&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">def_search</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">d</span>
-</div>
+        <span class="k">return</span> <span class="n">d</span></div>
+
 <div class="viewcode-block" id="Handler._export_class_BaseType"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._export_class_BaseType">[docs]</a>    <span class="k">def</span> <span class="nf">_export_class_BaseType</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">export_format</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> <span class="c"># noqa</span>
         <span class="sd">&quot;&quot;&quot;Handles exporting :class:`taniumpy.object_types.base.BaseType`</span>
 
@@ -2504,8 +2498,8 @@
             <span class="n">err</span> <span class="o">=</span> <span class="s">&quot;{!r} not coded for in Handler!&quot;</span><span class="o">.</span><span class="n">format</span>
             <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HandlerError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="n">export_format</span><span class="p">))</span>
 
-        <span class="k">return</span> <span class="n">result</span>
-</div>
+        <span class="k">return</span> <span class="n">result</span></div>
+
 <div class="viewcode-block" id="Handler._export_class_ResultSet"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._export_class_ResultSet">[docs]</a>    <span class="k">def</span> <span class="nf">_export_class_ResultSet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">export_format</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> <span class="c"># noqa</span>
         <span class="sd">&quot;&quot;&quot;Handles exporting :class:`taniumpy.object_types.result_set.ResultSet`</span>
 
@@ -2554,8 +2548,8 @@
             <span class="n">err</span> <span class="o">=</span> <span class="s">&quot;{!r} not coded for in Handler!&quot;</span><span class="o">.</span><span class="n">format</span>
             <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HandlerError</span><span class="p">(</span><span class="n">err</span><span class="p">(</span><span class="n">export_format</span><span class="p">))</span>
 
-        <span class="k">return</span> <span class="n">result</span>
-</div>
+        <span class="k">return</span> <span class="n">result</span></div>
+
 <div class="viewcode-block" id="Handler._export_format_csv"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._export_format_csv">[docs]</a>    <span class="k">def</span> <span class="nf">_export_format_csv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Handles exporting format: CSV</span>
 
@@ -2584,8 +2578,8 @@
             <span class="n">result</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">write_csv</span><span class="p">(</span><span class="n">fd</span><span class="o">=</span><span class="n">out</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
 
         <span class="n">result</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">result</span>
-</div>
+        <span class="k">return</span> <span class="n">result</span></div>
+
 <div class="viewcode-block" id="Handler._export_format_json"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._export_format_json">[docs]</a>    <span class="k">def</span> <span class="nf">_export_format_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Handles exporting format: JSON</span>
 
@@ -2607,8 +2601,8 @@
         <span class="n">clean_kwargs</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">clean_kwargs</span><span class="p">(</span><span class="n">kwargs</span><span class="o">=</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="n">clean_keys</span><span class="p">)</span>
 
         <span class="n">result</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">jsonable</span><span class="o">=</span><span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">result</span>
-</div>
+        <span class="k">return</span> <span class="n">result</span></div>
+
 <div class="viewcode-block" id="Handler._export_format_xml"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._export_format_xml">[docs]</a>    <span class="k">def</span> <span class="nf">_export_format_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Handles exporting format: XML</span>
 
@@ -2636,8 +2630,8 @@
         <span class="n">clean_kwargs</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">clean_kwargs</span><span class="p">(</span><span class="n">kwargs</span><span class="o">=</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="n">clean_keys</span><span class="p">)</span>
 
         <span class="n">result</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">xml_pretty</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">raw_xml</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">result</span>
-</div>
+        <span class="k">return</span> <span class="n">result</span></div>
+
 <div class="viewcode-block" id="Handler._deploy_action"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._deploy_action">[docs]</a>    <span class="k">def</span> <span class="nf">_deploy_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">get_results</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deploy an action and get the results back</span>
 
@@ -2741,7 +2735,7 @@
 
         <span class="n">clean_kwargs</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">clean_kwargs</span><span class="p">(</span><span class="n">kwargs</span><span class="o">=</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="n">clean_keys</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_platform_is_6_2</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">platform_is_6_2</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
             <span class="n">objtype</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">Action</span>
             <span class="n">objlisttype</span> <span class="o">=</span> <span class="bp">None</span>
             <span class="n">force_start_time</span> <span class="o">=</span> <span class="bp">True</span>
@@ -2899,7 +2893,7 @@
             <span class="n">add_package_obj</span><span class="o">.</span><span class="n">source_id</span> <span class="o">=</span> <span class="bp">None</span>
 
         <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;DEPLOY_ACTION objtype: {}, objlisttype: {}, force_start_time: {}, version: {}&quot;</span><span class="o">.</span><span class="n">format</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">objtype</span><span class="p">,</span> <span class="n">objlisttype</span><span class="p">,</span> <span class="n">force_start_time</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">objtype</span><span class="p">,</span> <span class="n">objlisttype</span><span class="p">,</span> <span class="n">force_start_time</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">server_version</span><span class="p">))</span>
 
         <span class="c"># BUILD THE ACTION OBJECT TO BE ADDED</span>
         <span class="n">add_obj</span> <span class="o">=</span> <span class="n">objtype</span><span class="p">()</span>
@@ -2992,8 +2986,8 @@
             <span class="n">ret</span><span class="p">[</span><span class="s">&#39;action_results&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ret</span><span class="p">[</span><span class="s">&#39;poller_object&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">result_data</span>
             <span class="n">ret</span><span class="p">[</span><span class="s">&#39;action_result_map&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ret</span><span class="p">[</span><span class="s">&#39;poller_object&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">result_map</span>
 
-        <span class="k">return</span> <span class="n">ret</span>
-</div>
+        <span class="k">return</span> <span class="n">ret</span></div>
+
 <div class="viewcode-block" id="Handler._ask_manual"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._ask_manual">[docs]</a>    <span class="k">def</span> <span class="nf">_ask_manual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">get_results</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Ask a manual question using definitions and get the results back</span>
 
@@ -3016,9 +3010,10 @@
 <span class="sd">            * True: wait for result completion after asking question</span>
 <span class="sd">            * False: just ask the question and return it in `ret`</span>
 <span class="sd">        sse : bool, optional</span>
-<span class="sd">            * default: True</span>
+<span class="sd">            * default: False</span>
 <span class="sd">            * True: perform a server side export when getting result data</span>
 <span class="sd">            * False: perform a normal get result data (default for 6.2)</span>
+<span class="sd">            * Keeping False by default for now until the columnset&#39;s are properly identified in the server export</span>
 <span class="sd">        sse_format : str, optional</span>
 <span class="sd">            * default: &#39;xml_obj&#39;</span>
 <span class="sd">            * format to have server side export report in, one of: {&#39;csv&#39;, &#39;xml&#39;, &#39;xml_obj&#39;, &#39;cef&#39;, 0, 1, 2}</span>
@@ -3124,7 +3119,7 @@
             <span class="o">**</span><span class="n">clean_kwargs</span>
         <span class="p">)</span>
 
-        <span class="n">sse</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;sse&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="n">sse</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;sse&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
         <span class="n">clean_kwargs</span><span class="p">[</span><span class="s">&#39;sse_format&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">clean_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;sse_format&#39;</span><span class="p">,</span> <span class="s">&#39;xml_obj&#39;</span><span class="p">)</span>
 
         <span class="n">max_age_seconds</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">get_kwargs_int</span><span class="p">(</span>
@@ -3181,7 +3176,7 @@
             <span class="n">ret</span><span class="p">[</span><span class="s">&#39;poller_success&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ret</span><span class="p">[</span><span class="s">&#39;poller_object&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
 
             <span class="c"># get the results</span>
-            <span class="k">if</span> <span class="n">sse</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_platform_is_6_2</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">sse</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">platform_is_6_2</span><span class="p">(</span><span class="o">**</span><span class="n">clean_kwargs</span><span class="p">):</span>
                 <span class="n">rd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_result_data_sse</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">added_obj</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">rd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_result_data</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">added_obj</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
@@ -3191,68 +3186,8 @@
                 <span class="n">rd</span><span class="o">.</span><span class="n">sensors</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="s">&#39;sensor_obj&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">sensor_defs</span><span class="p">]</span>
 
             <span class="n">ret</span><span class="p">[</span><span class="s">&#39;question_results&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rd</span>
-        <span class="k">return</span> <span class="n">ret</span>
-</div>
-<div class="viewcode-block" id="Handler._parse_versioning"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._parse_versioning">[docs]</a>    <span class="k">def</span> <span class="nf">_parse_versioning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Parses self.server_version into a dictionary</span>
+        <span class="k">return</span> <span class="n">ret</span></div>
 
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        dict, containing major, minor, revision, and build of tanium server version</span>
-
-<span class="sd">        Notes</span>
-<span class="sd">        -----</span>
-<span class="sd">        If pytan has not yet fetched info.json, then server_version will == &quot;Not yet determined&quot;</span>
-<span class="sd">        force a call to self.session.get_server_version() to attempt to get info.json and parse</span>
-<span class="sd">        the version from that and update self.server_version with that value</span>
-
-<span class="sd">        If pytan is unable to fetch info.json properly for some reason,</span>
-<span class="sd">        then server_version will == &quot;Unable to determine&quot;</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">server_version_bad_states</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;Not yet determined&quot;</span><span class="p">,</span> <span class="s">&quot;Unable to determine&quot;</span><span class="p">]</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span> <span class="ow">in</span> <span class="n">server_version_bad_states</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get_server_version</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-        <span class="n">v_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;major&#39;</span><span class="p">,</span> <span class="s">&#39;minor&#39;</span><span class="p">,</span> <span class="s">&#39;revision&#39;</span><span class="p">,</span> <span class="s">&#39;build&#39;</span><span class="p">]</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span> <span class="ow">in</span> <span class="n">server_version_bad_states</span><span class="p">:</span>
-            <span class="n">v_ints</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-            <span class="n">v_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">v_keys</span><span class="p">,</span> <span class="n">v_ints</span><span class="p">))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">v_parts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">)</span>
-                <span class="n">v_ints</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">v_parts</span><span class="p">]</span>
-                <span class="n">v_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">v_keys</span><span class="p">,</span> <span class="n">v_ints</span><span class="p">))</span>
-            <span class="k">except</span><span class="p">:</span>
-                <span class="n">m</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="s">&quot;Unable to parse major, minor, revision, and build from server &quot;</span>
-                    <span class="s">&quot;version string: {}&quot;</span>
-                <span class="p">)</span><span class="o">.</span><span class="n">format</span>
-                <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">VersionParseError</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">server_version</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">v_dict</span>
-</div>
-<div class="viewcode-block" id="Handler._platform_is_6_2"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._platform_is_6_2">[docs]</a>    <span class="k">def</span> <span class="nf">_platform_is_6_2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Check to see if self.server_version_dict matches 6.2.xxx.xxx</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        bool</span>
-<span class="sd">            * True if self.server_version_dict major == 6 and minor == 2</span>
-<span class="sd">            * False otherwise</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;server_version_dict&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">get_server_version</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-        <span class="n">is6_2</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="c"># see if version is 6.2.xxx.xxx</span>
-            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">server_version_dict</span><span class="p">[</span><span class="s">&#39;major&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">6</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version_dict</span><span class="p">[</span><span class="s">&#39;minor&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
-            <span class="c"># we will assume 6.2 if server_version is &quot;Unable to determine&quot;</span>
-            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="o">==</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-        <span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">is6_2</span>
-</div>
 <div class="viewcode-block" id="Handler._version_support_check"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._version_support_check">[docs]</a>    <span class="k">def</span> <span class="nf">_version_support_check</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v_maps</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Checks that each of the version maps in v_maps is greater than or equal to</span>
 <span class="sd">        the current servers version</span>
@@ -3260,23 +3195,25 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        v_maps : list of dict</span>
-<span class="sd">            * each dict can have major, minor, build, revision as keys, the corresponding values will be checked against self.server_version_dict to see if they are greater or equal to those values</span>
+<span class="sd">            * each dict can have major, minor, build, revision as keys, the corresponding values will be checked against self.session.server_version_dict to see if they are greater or equal to those values</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
-<span class="sd">            * True if all values in all v_maps are greater than or equal to all values in self.server_version_dict</span>
+<span class="sd">            * True if all values in all v_maps are greater than or equal to all values in self.session.server_version_dict</span>
 <span class="sd">            * False otherwise</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;server_version_dict&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">get_server_version</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">v_dict</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">,</span> <span class="s">&#39;server_version_dict&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">v_dict</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get_server_version</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
+        <span class="n">v_dict</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">,</span> <span class="s">&#39;server_version_dict&#39;</span><span class="p">,</span> <span class="p">{})</span>
         <span class="k">for</span> <span class="n">v_map</span> <span class="ow">in</span> <span class="n">v_maps</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">v_map</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version_dict</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">v</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">v_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">v</span><span class="p">:</span>
                     <span class="k">return</span> <span class="bp">False</span>
-        <span class="k">return</span> <span class="bp">True</span>
-</div>
+        <span class="k">return</span> <span class="bp">True</span></div>
+
 <div class="viewcode-block" id="Handler._check_sse_format_support"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._check_sse_format_support">[docs]</a>    <span class="k">def</span> <span class="nf">_check_sse_format_support</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sse_format</span><span class="p">,</span> <span class="n">sse_format_int</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Determines if the export format integer is supported in the server version</span>
 
@@ -3300,10 +3237,10 @@
                 <span class="s">&quot;server version must be equal to or greater than one of:</span><span class="se">\n</span><span class="s">{}&quot;</span>
             <span class="p">)</span><span class="o">.</span><span class="n">format</span>
 
-            <span class="n">m</span> <span class="o">=</span> <span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">server_version</span><span class="p">,</span> <span class="n">sse_format</span><span class="p">,</span> <span class="n">restrict_maps_txt</span><span class="p">)</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">server_version</span><span class="p">,</span> <span class="n">sse_format</span><span class="p">,</span> <span class="n">restrict_maps_txt</span><span class="p">)</span>
 
-            <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">UnsupportedVersionError</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
-</div>
+            <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">UnsupportedVersionError</span><span class="p">(</span><span class="n">m</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="Handler._resolve_sse_format"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._resolve_sse_format">[docs]</a>    <span class="k">def</span> <span class="nf">_resolve_sse_format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sse_format</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Resolves the server side export format the user supplied to an integer for the API</span>
 
@@ -3335,15 +3272,15 @@
             <span class="n">sse_format</span><span class="o">=</span><span class="n">sse_format</span><span class="p">,</span> <span class="n">sse_format_int</span><span class="o">=</span><span class="n">sse_format_int</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
         <span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">sse_format_int</span>
-</div>
+        <span class="k">return</span> <span class="n">sse_format_int</span></div>
+
 <div class="viewcode-block" id="Handler._check_sse_version"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._check_sse_version">[docs]</a>    <span class="k">def</span> <span class="nf">_check_sse_version</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Validates that the server version supports server side export&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_platform_is_6_2</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">platform_is_6_2</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
             <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Server side export not supported in version: {} / {}&quot;</span><span class="o">.</span><span class="n">format</span>
-            <span class="n">m</span> <span class="o">=</span> <span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">server_version</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_version_dict</span><span class="p">)</span>
-            <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">UnsupportedVersionError</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
-</div>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">server_version</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">server_version_dict</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">UnsupportedVersionError</span><span class="p">(</span><span class="n">m</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="Handler._check_sse_crash_prevention"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._check_sse_crash_prevention">[docs]</a>    <span class="k">def</span> <span class="nf">_check_sse_crash_prevention</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Runs a number of methods used to prevent crashing the platform server when performing server side exports</span>
 
@@ -3360,8 +3297,8 @@
         <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_sse_timing</span><span class="p">(</span><span class="n">ok_version</span><span class="o">=</span><span class="n">ok_version</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_check_sse_empty_rs</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">obj</span><span class="p">,</span> <span class="n">ok_version</span><span class="o">=</span><span class="n">ok_version</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
-</div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_sse_empty_rs</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">obj</span><span class="p">,</span> <span class="n">ok_version</span><span class="o">=</span><span class="n">ok_version</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="Handler._check_sse_timing"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._check_sse_timing">[docs]</a>    <span class="k">def</span> <span class="nf">_check_sse_timing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ok_version</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Checks that the last server side export was at least 1 second ago if server version is less than any versions in pytan.constants.SSE_CRASH_MAP</span>
 
@@ -3378,8 +3315,8 @@
                 <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;You must wait at least one second between server side export requests!&quot;</span><span class="o">.</span><span class="n">format</span>
                 <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ServerSideExportError</span><span class="p">(</span><span class="n">m</span><span class="p">())</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">last_get_rd_sse</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
-</div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_get_rd_sse</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span></div>
+
 <div class="viewcode-block" id="Handler._check_sse_empty_rs"><a class="viewcode-back" href="../../pytan.handler.html#pytan.handler.Handler._check_sse_empty_rs">[docs]</a>    <span class="k">def</span> <span class="nf">_check_sse_empty_rs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">ok_version</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Checks if the server version is less than any versions in pytan.constants.SSE_CRASH_MAP, if so verifies that the result set is not empty</span>
 
@@ -3411,7 +3348,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Aug 31, 2015.
+      Last updated on Sep 03, 2015.
     </p>
   </div>
 

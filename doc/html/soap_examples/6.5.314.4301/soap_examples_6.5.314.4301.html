@@ -1,0 +1,885 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>2.12. SOAP API Examples for Platform Version 6.5.314.4301 &mdash; PyTan v2.1.0 2.1.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="PyTan v2.1.0 2.1.0 documentation" href="../../index.html"/>
+        <link rel="up" title="2. pytan package" href="../../pytan.html"/>
+        <link rel="next" title="2.12.1. Basic API Authentication" href="basic_api_authentication.html"/>
+        <link rel="prev" title="2.11.16.8. Invalid Ask Manual Question Missing Parameter Split" href="../../examples/invalid_ask_manual_question_missing_parameter_split.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="../../index.html" class="fa fa-home"> PyTan v2.1.0</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">1. PyTan Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../introduction.html#description">1.1. Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../introduction.html#why-it-was-created">1.2. Why it was created</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../introduction.html#requirements">1.3. Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../introduction.html#tanium-versions-validated-against">1.4. Tanium Versions Validated Against</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../introduction.html#installation">1.5. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../introduction.html#usage">1.6. Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../introduction.html#directory-layout">1.7. Directory Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../introduction.html#other-references">1.8. Other References</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../pytan.html">2. pytan package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.handler.html">2.1. pytan.handler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.exceptions.html">2.2. pytan.exceptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.sessions.html">2.3. pytan.sessions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.pollers.html">2.4. pytan.pollers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.constants.html">2.5. pytan.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.utils.html">2.6. pytan.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.binsupport.html">2.7. pytan.binsupport module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.xml_clean.html">2.8. pytan.xml_clean module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.unittest.html">2.9. pytan Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../pytan.functest.html">2.10. pytan Functional Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/pytan_examples.html">2.11. PyTan API Examples</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">2.12. SOAP API Examples for Platform Version 6.5.314.4301</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../taniumpy.html">3. taniumpy package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../xmltodict.html">4. xmltodict module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../ddt.html">5. ddt module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../threaded_http.html">6. threaded_http module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../requests.html">7. requests package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../requests.html#requests-http-library">7.1. requests HTTP library</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">PyTan v2.1.0</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../pytan.html">2. pytan package</a> &raquo;</li>
+      
+    <li>2.12. SOAP API Examples for Platform Version 6.5.314.4301</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="../../_sources/soap_examples/6.5.314.4301/soap_examples_6.5.314.4301.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="soap-api-examples-for-platform-version-6-5-314-4301">
+<h1>2.12. SOAP API Examples for Platform Version 6.5.314.4301<a class="headerlink" href="#soap-api-examples-for-platform-version-6-5-314-4301" title="Permalink to this headline">¶</a></h1>
+<p>Each of these sections contains examples that show the HTTP request and response for each step in a given workflow.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="basic_api_authentication.html">2.12.1. Basic API Authentication</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="basic_api_authentication.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.1.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic_api_authentication.html#step-2-get-the-server-version-via-info-json">2.12.1.2. Step 2 - Get the server version via /info.json</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="create_user.html">2.12.2. Create User</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="create_user.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.2.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_user.html#step-2-get-the-server-version-via-info-json">2.12.2.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_user.html#step-3-issue-a-getobject-to-find-the-object-to-be-deleted">2.12.2.3. Step 3 - Issue a GetObject to find the object to be deleted</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_user.html#step-4-issue-a-getobject-to-find-an-object">2.12.2.4. Step 4 - Issue a GetObject to find an object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_user.html#step-5-issue-an-addobject-to-add-a-user-object">2.12.2.5. Step 5 - Issue an AddObject to add a User object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_user.html#step-6-issue-a-getobject-on-the-recently-added-object-in-order-to-get-the-full-object">2.12.2.6. Step 6 - Issue a GetObject on the recently added object in order to get the full object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_user.html#step-7-issue-a-getobject-to-find-the-object-to-be-deleted">2.12.2.7. Step 7 - Issue a GetObject to find the object to be deleted</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_user.html#step-8-issue-a-deleteobject-to-delete-an-object">2.12.2.8. Step 8 - Issue a DeleteObject to delete an object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="create_package.html">2.12.3. Create Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="create_package.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.3.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_package.html#step-2-get-the-server-version-via-info-json">2.12.3.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_package.html#step-3-issue-a-getobject-to-find-the-object-to-be-deleted">2.12.3.3. Step 3 - Issue a GetObject to find the object to be deleted</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_package.html#step-4-issue-a-getobject-to-get-the-full-object-of-a-sensor-for-inclusion-in-a-question-or-action">2.12.3.4. Step 4 - Issue a GetObject to get the full object of a sensor for inclusion in a question or action</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_package.html#step-5-issue-an-addobject-to-add-a-group-object-for-this-package">2.12.3.5. Step 5 - Issue an AddObject to add a Group object for this package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_package.html#step-6-issue-a-getobject-on-the-recently-added-object-in-order-to-get-the-full-object">2.12.3.6. Step 6 - Issue a GetObject on the recently added object in order to get the full object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_package.html#step-7-issue-an-addobject-to-add-a-group-object-for-this-package">2.12.3.7. Step 7 - Issue an AddObject to add a Group object for this package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_package.html#step-8-issue-a-getobject-on-the-recently-added-object-in-order-to-get-the-full-object">2.12.3.8. Step 8 - Issue a GetObject on the recently added object in order to get the full object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_package.html#step-9-issue-a-getobject-to-find-the-object-to-be-deleted">2.12.3.9. Step 9 - Issue a GetObject to find the object to be deleted</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_package.html#step-10-issue-a-deleteobject-to-delete-an-object">2.12.3.10. Step 10 - Issue a DeleteObject to delete an object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="create_group.html">2.12.4. Create Group</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="create_group.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.4.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_group.html#step-2-get-the-server-version-via-info-json">2.12.4.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_group.html#step-3-issue-a-getobject-to-find-the-object-to-be-deleted">2.12.4.3. Step 3 - Issue a GetObject to find the object to be deleted</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_group.html#step-4-issue-a-getobject-to-get-the-full-object-of-specified-sensors-for-inclusion-in-a-group">2.12.4.4. Step 4 - Issue a GetObject to get the full object of specified sensors for inclusion in a group</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_group.html#step-5-issue-an-addobject-to-add-a-group-object">2.12.4.5. Step 5 - Issue an AddObject to add a Group object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_group.html#step-6-issue-a-getobject-on-the-recently-added-object-in-order-to-get-the-full-object">2.12.4.6. Step 6 - Issue a GetObject on the recently added object in order to get the full object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_group.html#step-7-issue-a-getobject-to-find-the-object-to-be-deleted">2.12.4.7. Step 7 - Issue a GetObject to find the object to be deleted</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_group.html#step-8-issue-a-deleteobject-to-delete-an-object">2.12.4.8. Step 8 - Issue a DeleteObject to delete an object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="create_whitelisted_url.html">2.12.5. Create Whitelisted Url</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="create_whitelisted_url.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.5.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_whitelisted_url.html#step-2-get-the-server-version-via-info-json">2.12.5.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_whitelisted_url.html#step-3-issue-a-getobject-to-find-the-object-to-be-deleted">2.12.5.3. Step 3 - Issue a GetObject to find the object to be deleted</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_whitelisted_url.html#step-4-issue-an-addobject-to-add-a-whitelistedurl-object">2.12.5.4. Step 4 - Issue an AddObject to add a WhitelistedURL object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_whitelisted_url.html#step-5-issue-a-getobject-on-the-recently-added-object-in-order-to-get-the-full-object">2.12.5.5. Step 5 - Issue a GetObject on the recently added object in order to get the full object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_whitelisted_url.html#step-6-issue-a-getobject-to-find-the-object-to-be-deleted">2.12.5.6. Step 6 - Issue a GetObject to find the object to be deleted</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_whitelisted_url.html#step-7-issue-a-deleteobject-to-delete-an-object">2.12.5.7. Step 7 - Issue a DeleteObject to delete an object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="create_package_from_json.html">2.12.6. Create Package From JSON</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="create_package_from_json.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.6.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_package_from_json.html#step-2-get-the-server-version-via-info-json">2.12.6.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_package_from_json.html#step-3-issue-a-getobject-to-find-an-object">2.12.6.3. Step 3 - Issue a GetObject to find an object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_package_from_json.html#step-4-issue-a-getobject-to-find-the-object-to-be-deleted">2.12.6.4. Step 4 - Issue a GetObject to find the object to be deleted</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_package_from_json.html#step-5-issue-a-deleteobject-to-delete-an-object">2.12.6.5. Step 5 - Issue a DeleteObject to delete an object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_package_from_json.html#step-6-issue-an-addobject-to-add-an-object">2.12.6.6. Step 6 - Issue an AddObject to add an object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_package_from_json.html#step-7-issue-a-getobject-on-the-recently-added-object-in-order-to-get-the-full-object">2.12.6.7. Step 7 - Issue a GetObject on the recently added object in order to get the full object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="create_user_from_json.html">2.12.7. Create User From JSON</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="create_user_from_json.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.7.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_user_from_json.html#step-2-get-the-server-version-via-info-json">2.12.7.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_user_from_json.html#step-3-issue-a-getobject-to-find-an-object">2.12.7.3. Step 3 - Issue a GetObject to find an object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_user_from_json.html#step-4-issue-a-getobject-to-find-the-object-to-be-deleted">2.12.7.4. Step 4 - Issue a GetObject to find the object to be deleted</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_user_from_json.html#step-5-issue-a-deleteobject-to-delete-an-object">2.12.7.5. Step 5 - Issue a DeleteObject to delete an object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_user_from_json.html#step-6-issue-an-addobject-to-add-an-object">2.12.7.6. Step 6 - Issue an AddObject to add an object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_user_from_json.html#step-7-issue-a-getobject-on-the-recently-added-object-in-order-to-get-the-full-object">2.12.7.7. Step 7 - Issue a GetObject on the recently added object in order to get the full object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="create_saved_question_from_json.html">2.12.8. Create Saved Question From JSON</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="create_saved_question_from_json.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.8.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_saved_question_from_json.html#step-2-get-the-server-version-via-info-json">2.12.8.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_saved_question_from_json.html#step-3-issue-a-getobject-to-find-an-object">2.12.8.3. Step 3 - Issue a GetObject to find an object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_saved_question_from_json.html#step-4-issue-a-getobject-to-find-the-object-to-be-deleted">2.12.8.4. Step 4 - Issue a GetObject to find the object to be deleted</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_saved_question_from_json.html#step-5-issue-a-deleteobject-to-delete-an-object">2.12.8.5. Step 5 - Issue a DeleteObject to delete an object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_saved_question_from_json.html#step-6-issue-an-addobject-to-add-an-object">2.12.8.6. Step 6 - Issue an AddObject to add an object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_saved_question_from_json.html#step-7-issue-a-getobject-on-the-recently-added-object-in-order-to-get-the-full-object">2.12.8.7. Step 7 - Issue a GetObject on the recently added object in order to get the full object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="create_action_from_json.html">2.12.9. Create Action From JSON</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="create_action_from_json.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.9.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_action_from_json.html#step-2-get-the-server-version-via-info-json">2.12.9.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_action_from_json.html#step-3-issue-a-getobject-to-find-an-object">2.12.9.3. Step 3 - Issue a GetObject to find an object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_action_from_json.html#step-4-issue-an-addobject-to-add-an-object">2.12.9.4. Step 4 - Issue an AddObject to add an object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_action_from_json.html#step-5-issue-a-getobject-on-the-recently-added-object-in-order-to-get-the-full-object">2.12.9.5. Step 5 - Issue a GetObject on the recently added object in order to get the full object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="create_sensor_from_json.html">2.12.10. Create Sensor From JSON</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="create_sensor_from_json.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.10.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_sensor_from_json.html#step-2-get-the-server-version-via-info-json">2.12.10.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_sensor_from_json.html#step-3-issue-a-getobject-to-find-an-object">2.12.10.3. Step 3 - Issue a GetObject to find an object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_sensor_from_json.html#step-4-issue-a-getobject-to-find-the-object-to-be-deleted">2.12.10.4. Step 4 - Issue a GetObject to find the object to be deleted</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_sensor_from_json.html#step-5-issue-a-deleteobject-to-delete-an-object">2.12.10.5. Step 5 - Issue a DeleteObject to delete an object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_sensor_from_json.html#step-6-issue-an-addobject-to-add-an-object">2.12.10.6. Step 6 - Issue an AddObject to add an object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_sensor_from_json.html#step-7-issue-a-getobject-on-the-recently-added-object-in-order-to-get-the-full-object">2.12.10.7. Step 7 - Issue a GetObject on the recently added object in order to get the full object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="create_question_from_json.html">2.12.11. Create Question From JSON</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="create_question_from_json.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.11.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_question_from_json.html#step-2-get-the-server-version-via-info-json">2.12.11.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_question_from_json.html#step-3-issue-a-getobject-to-find-an-object">2.12.11.3. Step 3 - Issue a GetObject to find an object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_question_from_json.html#step-4-issue-an-addobject-to-add-an-object">2.12.11.4. Step 4 - Issue an AddObject to add an object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_question_from_json.html#step-5-issue-a-getobject-on-the-recently-added-object-in-order-to-get-the-full-object">2.12.11.5. Step 5 - Issue a GetObject on the recently added object in order to get the full object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="create_whitelisted_url_from_json.html">2.12.12. Create Whitelisted Url From JSON</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="create_whitelisted_url_from_json.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.12.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_whitelisted_url_from_json.html#step-2-get-the-server-version-via-info-json">2.12.12.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_whitelisted_url_from_json.html#step-3-issue-a-getobject-to-find-an-object">2.12.12.3. Step 3 - Issue a GetObject to find an object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_whitelisted_url_from_json.html#step-4-issue-a-getobject-to-find-the-object-to-be-deleted">2.12.12.4. Step 4 - Issue a GetObject to find the object to be deleted</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_whitelisted_url_from_json.html#step-5-issue-a-deleteobject-to-delete-an-object">2.12.12.5. Step 5 - Issue a DeleteObject to delete an object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_whitelisted_url_from_json.html#step-6-issue-an-addobject-to-add-an-object">2.12.12.6. Step 6 - Issue an AddObject to add an object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_whitelisted_url_from_json.html#step-7-issue-a-getobject-on-the-recently-added-object-in-order-to-get-the-full-object">2.12.12.7. Step 7 - Issue a GetObject on the recently added object in order to get the full object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="create_group_from_json.html">2.12.13. Create Group From JSON</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="create_group_from_json.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.13.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_group_from_json.html#step-2-get-the-server-version-via-info-json">2.12.13.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_group_from_json.html#step-3-issue-a-getobject-to-find-an-object">2.12.13.3. Step 3 - Issue a GetObject to find an object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_group_from_json.html#step-4-issue-a-getobject-to-find-the-object-to-be-deleted">2.12.13.4. Step 4 - Issue a GetObject to find the object to be deleted</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_group_from_json.html#step-5-issue-a-deleteobject-to-delete-an-object">2.12.13.5. Step 5 - Issue a DeleteObject to delete an object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_group_from_json.html#step-6-issue-an-addobject-to-add-an-object">2.12.13.6. Step 6 - Issue an AddObject to add an object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_group_from_json.html#step-7-issue-a-getobject-on-the-recently-added-object-in-order-to-get-the-full-object">2.12.13.7. Step 7 - Issue a GetObject on the recently added object in order to get the full object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="deploy_action_simple.html">2.12.14. Deploy Action Simple</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.14.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple.html#step-2-get-the-server-version-via-info-json">2.12.14.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple.html#step-3-issue-a-getobject-to-get-the-full-object-of-a-package-for-inclusion-in-an-action">2.12.14.3. Step 3 - Issue a GetObject to get the full object of a package for inclusion in an action</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple.html#step-4-issue-an-addobject-to-add-a-list-of-savedactions-6-5-logic">2.12.14.4. Step 4 - Issue an AddObject to add a list of SavedActions (6.5 logic)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple.html#step-5-issue-a-getobject-on-the-recently-added-object-in-order-to-get-the-full-object">2.12.14.5. Step 5 - Issue a GetObject on the recently added object in order to get the full object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple.html#step-6-issue-a-getobject-to-get-the-last-action-created-for-a-savedaction">2.12.14.6. Step 6 - Issue a GetObject to get the last action created for a SavedAction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple.html#step-7-issue-a-getobject-to-get-the-package-for-an-action">2.12.14.7. Step 7 - Issue a GetObject to get the package for an Action</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple.html#step-8-issue-a-getresultinfo-on-an-action-to-have-the-server-create-a-question-that-tracks-the-results-for-a-deployed-action">2.12.14.8. Step 8 - Issue a GetResultInfo on an Action to have the Server create a question that tracks the results for a Deployed Action</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple.html#step-9-issue-a-getobject-on-the-package-for-an-action-to-get-the-full-object">2.12.14.9. Step 9 - Issue a GetObject on the package for an action to get the full object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple.html#step-10-id-522-issuing-an-addobject-of-a-question-object-with-no-selects-and-the-same-group-used-by-the-action-object-the-number-of-systems-that-should-successfully-run-the-action-will-be-taken-from-result-info-passed-count-for-the-question-asked-when-all-answers-for-the-question-have-reported-in">2.12.14.10. Step 10 - ID 522: Issuing an AddObject of a Question object with no Selects and the same Group used  by the Action object. The number of systems that should successfully run the Action will be taken from result_info.passed_count for the Question asked when all answers for the question have reported in.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple.html#step-11-issue-a-getobject-on-the-recently-added-object-in-order-to-get-the-full-object">2.12.14.11. Step 11 - Issue a GetObject on the recently added object in order to get the full object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple.html#step-12-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.14.12. Step 12 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple.html#step-13-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.14.13. Step 13 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple.html#step-14-issue-a-getobject-for-an-action-in-order-to-have-access-to-the-latest-values-for-stopped-flag-and-status">2.12.14.14. Step 14 - Issue a GetObject for an Action in order to have access to the latest values for stopped_flag and status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple.html#step-15-issue-a-getresultinfo-for-an-action-to-ensure-fresh-data-is-available-for-a-getresultdata-call">2.12.14.15. Step 15 - Issue a GetResultInfo for an Action to ensure fresh data is available for a GetResultData call</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple.html#step-16-issue-a-getresultdata-with-the-aggregate-option-set-to-true-this-will-return-row-counts-of-machines-that-have-answered-instead-of-all-the-data">2.12.14.16. Step 16 - Issue a GetResultData with the aggregate option set to True.This will return row counts of machines that have answered instead of all the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple.html#step-17-issue-a-getobject-for-an-action-in-order-to-have-access-to-the-latest-values-for-stopped-flag-and-status">2.12.14.17. Step 17 - Issue a GetObject for an Action in order to have access to the latest values for stopped_flag and status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple.html#step-18-issue-a-getresultinfo-for-an-action-to-ensure-fresh-data-is-available-for-a-getresultdata-call">2.12.14.18. Step 18 - Issue a GetResultInfo for an Action to ensure fresh data is available for a GetResultData call</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple.html#step-19-issue-a-getresultdata-with-the-aggregate-option-set-to-true-this-will-return-row-counts-of-machines-that-have-answered-instead-of-all-the-data">2.12.14.19. Step 19 - Issue a GetResultData with the aggregate option set to True.This will return row counts of machines that have answered instead of all the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple.html#step-20-issue-a-getobject-for-an-action-in-order-to-have-access-to-the-latest-values-for-stopped-flag-and-status">2.12.14.20. Step 20 - Issue a GetObject for an Action in order to have access to the latest values for stopped_flag and status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple.html#step-21-issue-a-getresultinfo-for-an-action-to-ensure-fresh-data-is-available-for-a-getresultdata-call">2.12.14.21. Step 21 - Issue a GetResultInfo for an Action to ensure fresh data is available for a GetResultData call</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple.html#step-22-issue-a-getresultdata-with-the-aggregate-option-set-to-true-this-will-return-row-counts-of-machines-that-have-answered-instead-of-all-the-data">2.12.14.22. Step 22 - Issue a GetResultData with the aggregate option set to True.This will return row counts of machines that have answered instead of all the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple.html#step-23-issue-a-getobject-for-an-action-in-order-to-have-access-to-the-latest-values-for-stopped-flag-and-status">2.12.14.23. Step 23 - Issue a GetObject for an Action in order to have access to the latest values for stopped_flag and status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple.html#step-24-issue-a-getresultinfo-for-an-action-to-ensure-fresh-data-is-available-for-a-getresultdata-call">2.12.14.24. Step 24 - Issue a GetResultInfo for an Action to ensure fresh data is available for a GetResultData call</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple.html#step-25-issue-a-getresultdata-with-the-aggregate-option-set-to-true-this-will-return-row-counts-of-machines-that-have-answered-instead-of-all-the-data">2.12.14.25. Step 25 - Issue a GetResultData with the aggregate option set to True.This will return row counts of machines that have answered instead of all the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple.html#step-26-issue-a-getobject-for-an-action-in-order-to-have-access-to-the-latest-values-for-stopped-flag-and-status">2.12.14.26. Step 26 - Issue a GetObject for an Action in order to have access to the latest values for stopped_flag and status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple.html#step-27-issue-a-getresultinfo-for-an-action-to-ensure-fresh-data-is-available-for-a-getresultdata-call">2.12.14.27. Step 27 - Issue a GetResultInfo for an Action to ensure fresh data is available for a GetResultData call</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple.html#step-28-issue-a-getresultdata-with-the-aggregate-option-set-to-true-this-will-return-row-counts-of-machines-that-have-answered-instead-of-all-the-data">2.12.14.28. Step 28 - Issue a GetResultData with the aggregate option set to True.This will return row counts of machines that have answered instead of all the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple.html#step-29-issue-a-getobject-for-an-action-in-order-to-have-access-to-the-latest-values-for-stopped-flag-and-status">2.12.14.29. Step 29 - Issue a GetObject for an Action in order to have access to the latest values for stopped_flag and status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple.html#step-30-issue-a-getresultinfo-for-an-action-to-ensure-fresh-data-is-available-for-a-getresultdata-call">2.12.14.30. Step 30 - Issue a GetResultInfo for an Action to ensure fresh data is available for a GetResultData call</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple.html#step-31-issue-a-getresultdata-for-an-action-with-the-aggregate-option-set-to-false-this-will-return-all-of-the-action-statuses-for-each-computer-that-have-run-this-action">2.12.14.31. Step 31 - Issue a GetResultData for an Action with the aggregate option set to False. This will return all of the Action Statuses for each computer that have run this Action</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="deploy_action_simple_without_results.html">2.12.15. Deploy Action Simple Without Results</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_without_results.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.15.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_without_results.html#step-2-get-the-server-version-via-info-json">2.12.15.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_without_results.html#step-3-issue-a-getobject-to-get-the-full-object-of-a-package-for-inclusion-in-an-action">2.12.15.3. Step 3 - Issue a GetObject to get the full object of a package for inclusion in an action</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_without_results.html#step-4-issue-an-addobject-to-add-a-list-of-savedactions-6-5-logic">2.12.15.4. Step 4 - Issue an AddObject to add a list of SavedActions (6.5 logic)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_without_results.html#step-5-issue-a-getobject-on-the-recently-added-object-in-order-to-get-the-full-object">2.12.15.5. Step 5 - Issue a GetObject on the recently added object in order to get the full object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_without_results.html#step-6-issue-a-getobject-to-get-the-last-action-created-for-a-savedaction">2.12.15.6. Step 6 - Issue a GetObject to get the last action created for a SavedAction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_without_results.html#step-7-issue-a-getobject-to-get-the-package-for-an-action">2.12.15.7. Step 7 - Issue a GetObject to get the package for an Action</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_without_results.html#step-8-issue-a-getresultinfo-on-an-action-to-have-the-server-create-a-question-that-tracks-the-results-for-a-deployed-action">2.12.15.8. Step 8 - Issue a GetResultInfo on an Action to have the Server create a question that tracks the results for a Deployed Action</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_without_results.html#step-9-issue-a-getobject-on-the-package-for-an-action-to-get-the-full-object">2.12.15.9. Step 9 - Issue a GetObject on the package for an action to get the full object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="deploy_action_simple_against_windows_computers.html">2.12.16. Deploy Action Simple Against Windows Computers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_against_windows_computers.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.16.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_against_windows_computers.html#step-2-get-the-server-version-via-info-json">2.12.16.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_against_windows_computers.html#step-3-issue-a-getobject-to-get-the-full-object-of-a-package-for-inclusion-in-an-action">2.12.16.3. Step 3 - Issue a GetObject to get the full object of a package for inclusion in an action</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_against_windows_computers.html#step-4-issue-a-getobject-to-get-the-full-object-of-a-sensor-for-inclusion-in-a-group-for-an-action">2.12.16.4. Step 4 - Issue a GetObject to get the full object of a sensor for inclusion in a Group for an Action</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_against_windows_computers.html#step-5-issue-an-addobject-to-add-a-list-of-savedactions-6-5-logic">2.12.16.5. Step 5 - Issue an AddObject to add a list of SavedActions (6.5 logic)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_against_windows_computers.html#step-6-issue-a-getobject-on-the-recently-added-object-in-order-to-get-the-full-object">2.12.16.6. Step 6 - Issue a GetObject on the recently added object in order to get the full object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_against_windows_computers.html#step-7-issue-a-getobject-to-get-the-last-action-created-for-a-savedaction">2.12.16.7. Step 7 - Issue a GetObject to get the last action created for a SavedAction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_against_windows_computers.html#step-8-issue-a-getobject-to-get-the-package-for-an-action">2.12.16.8. Step 8 - Issue a GetObject to get the package for an Action</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_against_windows_computers.html#step-9-issue-a-getresultinfo-on-an-action-to-have-the-server-create-a-question-that-tracks-the-results-for-a-deployed-action">2.12.16.9. Step 9 - Issue a GetResultInfo on an Action to have the Server create a question that tracks the results for a Deployed Action</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_against_windows_computers.html#step-10-issue-a-getobject-on-the-package-for-an-action-to-get-the-full-object">2.12.16.10. Step 10 - Issue a GetObject on the package for an action to get the full object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_against_windows_computers.html#step-11-issue-a-getobject-on-the-target-group-for-an-action-to-get-the-full-group-object">2.12.16.11. Step 11 - Issue a GetObject on the target_group for an action to get the full Group object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_against_windows_computers.html#step-12-id-524-issuing-an-addobject-of-a-question-object-with-no-selects-and-the-same-group-used-by-the-action-object-the-number-of-systems-that-should-successfully-run-the-action-will-be-taken-from-result-info-passed-count-for-the-question-asked-when-all-answers-for-the-question-have-reported-in">2.12.16.12. Step 12 - ID 524: Issuing an AddObject of a Question object with no Selects and the same Group used  by the Action object. The number of systems that should successfully run the Action will be taken from result_info.passed_count for the Question asked when all answers for the question have reported in.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_against_windows_computers.html#step-13-issue-a-getobject-on-the-recently-added-object-in-order-to-get-the-full-object">2.12.16.13. Step 13 - Issue a GetObject on the recently added object in order to get the full object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_against_windows_computers.html#step-14-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.16.14. Step 14 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_against_windows_computers.html#step-15-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.16.15. Step 15 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_against_windows_computers.html#step-16-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.16.16. Step 16 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_against_windows_computers.html#step-17-issue-a-getobject-for-an-action-in-order-to-have-access-to-the-latest-values-for-stopped-flag-and-status">2.12.16.17. Step 17 - Issue a GetObject for an Action in order to have access to the latest values for stopped_flag and status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_against_windows_computers.html#step-18-issue-a-getresultinfo-for-an-action-to-ensure-fresh-data-is-available-for-a-getresultdata-call">2.12.16.18. Step 18 - Issue a GetResultInfo for an Action to ensure fresh data is available for a GetResultData call</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_against_windows_computers.html#step-19-issue-a-getresultdata-with-the-aggregate-option-set-to-true-this-will-return-row-counts-of-machines-that-have-answered-instead-of-all-the-data">2.12.16.19. Step 19 - Issue a GetResultData with the aggregate option set to True.This will return row counts of machines that have answered instead of all the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_against_windows_computers.html#step-20-issue-a-getobject-for-an-action-in-order-to-have-access-to-the-latest-values-for-stopped-flag-and-status">2.12.16.20. Step 20 - Issue a GetObject for an Action in order to have access to the latest values for stopped_flag and status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_against_windows_computers.html#step-21-issue-a-getresultinfo-for-an-action-to-ensure-fresh-data-is-available-for-a-getresultdata-call">2.12.16.21. Step 21 - Issue a GetResultInfo for an Action to ensure fresh data is available for a GetResultData call</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_against_windows_computers.html#step-22-issue-a-getresultdata-with-the-aggregate-option-set-to-true-this-will-return-row-counts-of-machines-that-have-answered-instead-of-all-the-data">2.12.16.22. Step 22 - Issue a GetResultData with the aggregate option set to True.This will return row counts of machines that have answered instead of all the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_against_windows_computers.html#step-23-issue-a-getobject-for-an-action-in-order-to-have-access-to-the-latest-values-for-stopped-flag-and-status">2.12.16.23. Step 23 - Issue a GetObject for an Action in order to have access to the latest values for stopped_flag and status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_against_windows_computers.html#step-24-issue-a-getresultinfo-for-an-action-to-ensure-fresh-data-is-available-for-a-getresultdata-call">2.12.16.24. Step 24 - Issue a GetResultInfo for an Action to ensure fresh data is available for a GetResultData call</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_against_windows_computers.html#step-25-issue-a-getresultdata-with-the-aggregate-option-set-to-true-this-will-return-row-counts-of-machines-that-have-answered-instead-of-all-the-data">2.12.16.25. Step 25 - Issue a GetResultData with the aggregate option set to True.This will return row counts of machines that have answered instead of all the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_against_windows_computers.html#step-26-issue-a-getobject-for-an-action-in-order-to-have-access-to-the-latest-values-for-stopped-flag-and-status">2.12.16.26. Step 26 - Issue a GetObject for an Action in order to have access to the latest values for stopped_flag and status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_against_windows_computers.html#step-27-issue-a-getresultinfo-for-an-action-to-ensure-fresh-data-is-available-for-a-getresultdata-call">2.12.16.27. Step 27 - Issue a GetResultInfo for an Action to ensure fresh data is available for a GetResultData call</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_against_windows_computers.html#step-28-issue-a-getresultdata-with-the-aggregate-option-set-to-true-this-will-return-row-counts-of-machines-that-have-answered-instead-of-all-the-data">2.12.16.28. Step 28 - Issue a GetResultData with the aggregate option set to True.This will return row counts of machines that have answered instead of all the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_against_windows_computers.html#step-29-issue-a-getobject-for-an-action-in-order-to-have-access-to-the-latest-values-for-stopped-flag-and-status">2.12.16.29. Step 29 - Issue a GetObject for an Action in order to have access to the latest values for stopped_flag and status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_against_windows_computers.html#step-30-issue-a-getresultinfo-for-an-action-to-ensure-fresh-data-is-available-for-a-getresultdata-call">2.12.16.30. Step 30 - Issue a GetResultInfo for an Action to ensure fresh data is available for a GetResultData call</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_simple_against_windows_computers.html#step-31-issue-a-getresultdata-for-an-action-with-the-aggregate-option-set-to-false-this-will-return-all-of-the-action-statuses-for-each-computer-that-have-run-this-action">2.12.16.31. Step 31 - Issue a GetResultData for an Action with the aggregate option set to False. This will return all of the Action Statuses for each computer that have run this Action</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="deploy_action_with_params_against_windows_computers.html">2.12.17. Deploy Action With Params Against Windows Computers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_with_params_against_windows_computers.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.17.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_with_params_against_windows_computers.html#step-2-get-the-server-version-via-info-json">2.12.17.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_with_params_against_windows_computers.html#step-3-issue-a-getobject-to-get-the-full-object-of-a-package-for-inclusion-in-an-action">2.12.17.3. Step 3 - Issue a GetObject to get the full object of a package for inclusion in an action</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_with_params_against_windows_computers.html#step-4-issue-a-getobject-to-get-the-full-object-of-a-sensor-for-inclusion-in-a-group-for-an-action">2.12.17.4. Step 4 - Issue a GetObject to get the full object of a sensor for inclusion in a Group for an Action</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_with_params_against_windows_computers.html#step-5-issue-an-addobject-to-add-a-list-of-savedactions-6-5-logic">2.12.17.5. Step 5 - Issue an AddObject to add a list of SavedActions (6.5 logic)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_with_params_against_windows_computers.html#step-6-issue-a-getobject-on-the-recently-added-object-in-order-to-get-the-full-object">2.12.17.6. Step 6 - Issue a GetObject on the recently added object in order to get the full object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_with_params_against_windows_computers.html#step-7-issue-a-getobject-to-get-the-last-action-created-for-a-savedaction">2.12.17.7. Step 7 - Issue a GetObject to get the last action created for a SavedAction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_with_params_against_windows_computers.html#step-8-issue-a-getobject-to-get-the-package-for-an-action">2.12.17.8. Step 8 - Issue a GetObject to get the package for an Action</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_with_params_against_windows_computers.html#step-9-issue-a-getresultinfo-on-an-action-to-have-the-server-create-a-question-that-tracks-the-results-for-a-deployed-action">2.12.17.9. Step 9 - Issue a GetResultInfo on an Action to have the Server create a question that tracks the results for a Deployed Action</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_with_params_against_windows_computers.html#step-10-issue-a-getobject-on-the-package-for-an-action-to-get-the-full-object">2.12.17.10. Step 10 - Issue a GetObject on the package for an action to get the full object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_with_params_against_windows_computers.html#step-11-issue-a-getobject-on-the-target-group-for-an-action-to-get-the-full-group-object">2.12.17.11. Step 11 - Issue a GetObject on the target_group for an action to get the full Group object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_with_params_against_windows_computers.html#step-12-id-525-issuing-an-addobject-of-a-question-object-with-no-selects-and-the-same-group-used-by-the-action-object-the-number-of-systems-that-should-successfully-run-the-action-will-be-taken-from-result-info-passed-count-for-the-question-asked-when-all-answers-for-the-question-have-reported-in">2.12.17.12. Step 12 - ID 525: Issuing an AddObject of a Question object with no Selects and the same Group used  by the Action object. The number of systems that should successfully run the Action will be taken from result_info.passed_count for the Question asked when all answers for the question have reported in.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_with_params_against_windows_computers.html#step-13-issue-a-getobject-on-the-recently-added-object-in-order-to-get-the-full-object">2.12.17.13. Step 13 - Issue a GetObject on the recently added object in order to get the full object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_with_params_against_windows_computers.html#step-14-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.17.14. Step 14 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_with_params_against_windows_computers.html#step-15-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.17.15. Step 15 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_with_params_against_windows_computers.html#step-16-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.17.16. Step 16 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_with_params_against_windows_computers.html#step-17-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.17.17. Step 17 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_with_params_against_windows_computers.html#step-18-issue-a-getobject-for-an-action-in-order-to-have-access-to-the-latest-values-for-stopped-flag-and-status">2.12.17.18. Step 18 - Issue a GetObject for an Action in order to have access to the latest values for stopped_flag and status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_with_params_against_windows_computers.html#step-19-issue-a-getresultinfo-for-an-action-to-ensure-fresh-data-is-available-for-a-getresultdata-call">2.12.17.19. Step 19 - Issue a GetResultInfo for an Action to ensure fresh data is available for a GetResultData call</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_with_params_against_windows_computers.html#step-20-issue-a-getresultdata-with-the-aggregate-option-set-to-true-this-will-return-row-counts-of-machines-that-have-answered-instead-of-all-the-data">2.12.17.20. Step 20 - Issue a GetResultData with the aggregate option set to True.This will return row counts of machines that have answered instead of all the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_with_params_against_windows_computers.html#step-21-issue-a-getobject-for-an-action-in-order-to-have-access-to-the-latest-values-for-stopped-flag-and-status">2.12.17.21. Step 21 - Issue a GetObject for an Action in order to have access to the latest values for stopped_flag and status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_with_params_against_windows_computers.html#step-22-issue-a-getresultinfo-for-an-action-to-ensure-fresh-data-is-available-for-a-getresultdata-call">2.12.17.22. Step 22 - Issue a GetResultInfo for an Action to ensure fresh data is available for a GetResultData call</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_with_params_against_windows_computers.html#step-23-issue-a-getresultdata-with-the-aggregate-option-set-to-true-this-will-return-row-counts-of-machines-that-have-answered-instead-of-all-the-data">2.12.17.23. Step 23 - Issue a GetResultData with the aggregate option set to True.This will return row counts of machines that have answered instead of all the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_with_params_against_windows_computers.html#step-24-issue-a-getobject-for-an-action-in-order-to-have-access-to-the-latest-values-for-stopped-flag-and-status">2.12.17.24. Step 24 - Issue a GetObject for an Action in order to have access to the latest values for stopped_flag and status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_with_params_against_windows_computers.html#step-25-issue-a-getresultinfo-for-an-action-to-ensure-fresh-data-is-available-for-a-getresultdata-call">2.12.17.25. Step 25 - Issue a GetResultInfo for an Action to ensure fresh data is available for a GetResultData call</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_with_params_against_windows_computers.html#step-26-issue-a-getresultdata-with-the-aggregate-option-set-to-true-this-will-return-row-counts-of-machines-that-have-answered-instead-of-all-the-data">2.12.17.26. Step 26 - Issue a GetResultData with the aggregate option set to True.This will return row counts of machines that have answered instead of all the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_with_params_against_windows_computers.html#step-27-issue-a-getobject-for-an-action-in-order-to-have-access-to-the-latest-values-for-stopped-flag-and-status">2.12.17.27. Step 27 - Issue a GetObject for an Action in order to have access to the latest values for stopped_flag and status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_with_params_against_windows_computers.html#step-28-issue-a-getresultinfo-for-an-action-to-ensure-fresh-data-is-available-for-a-getresultdata-call">2.12.17.28. Step 28 - Issue a GetResultInfo for an Action to ensure fresh data is available for a GetResultData call</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy_action_with_params_against_windows_computers.html#step-29-issue-a-getresultdata-for-an-action-with-the-aggregate-option-set-to-false-this-will-return-all-of-the-action-statuses-for-each-computer-that-have-run-this-action">2.12.17.29. Step 29 - Issue a GetResultData for an Action with the aggregate option set to False. This will return all of the Action Statuses for each computer that have run this Action</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="get_action_by_id.html">2.12.18. Get Action By Id</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="get_action_by_id.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.18.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_action_by_id.html#step-2-get-the-server-version-via-info-json">2.12.18.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_action_by_id.html#step-3-issue-a-getobject-to-find-an-object">2.12.18.3. Step 3 - Issue a GetObject to find an object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="get_question_by_id.html">2.12.19. Get Question By Id</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="get_question_by_id.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.19.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_question_by_id.html#step-2-get-the-server-version-via-info-json">2.12.19.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_question_by_id.html#step-3-issue-a-getobject-to-find-an-object">2.12.19.3. Step 3 - Issue a GetObject to find an object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="get_saved_question_by_names.html">2.12.20. Get Saved Question By Names</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="get_saved_question_by_names.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.20.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_saved_question_by_names.html#step-2-get-the-server-version-via-info-json">2.12.20.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_saved_question_by_names.html#step-3-issue-a-getobject-to-find-an-object">2.12.20.3. Step 3 - Issue a GetObject to find an object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_saved_question_by_names.html#step-4-issue-a-getobject-to-find-an-object">2.12.20.4. Step 4 - Issue a GetObject to find an object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="get_userrole_by_id.html">2.12.21. Get Userrole By Id</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="get_userrole_by_id.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.21.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_userrole_by_id.html#step-2-get-the-server-version-via-info-json">2.12.21.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_userrole_by_id.html#step-3-issue-a-getobject-to-find-an-object">2.12.21.3. Step 3 - Issue a GetObject to find an object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="get_setting_by_name.html">2.12.22. Get Setting By Name</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="get_setting_by_name.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.22.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_setting_by_name.html#step-2-get-the-server-version-via-info-json">2.12.22.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_setting_by_name.html#step-3-issue-a-getobject-to-find-an-object">2.12.22.3. Step 3 - Issue a GetObject to find an object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="get_user_by_name.html">2.12.23. Get User By Name</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="get_user_by_name.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.23.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_user_by_name.html#step-2-get-the-server-version-via-info-json">2.12.23.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_user_by_name.html#step-3-issue-a-getobject-to-find-an-object">2.12.23.3. Step 3 - Issue a GetObject to find an object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="get_sensor_by_id.html">2.12.24. Get Sensor By Id</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="get_sensor_by_id.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.24.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_sensor_by_id.html#step-2-get-the-server-version-via-info-json">2.12.24.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_sensor_by_id.html#step-3-issue-a-getobject-to-find-an-object">2.12.24.3. Step 3 - Issue a GetObject to find an object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="get_sensor_by_mixed.html">2.12.25. Get Sensor By Mixed</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="get_sensor_by_mixed.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.25.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_sensor_by_mixed.html#step-2-get-the-server-version-via-info-json">2.12.25.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_sensor_by_mixed.html#step-3-issue-a-getobject-to-find-an-object">2.12.25.3. Step 3 - Issue a GetObject to find an object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="get_whitelisted_url_by_id.html">2.12.26. Get Whitelisted Url By Id</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="get_whitelisted_url_by_id.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.26.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_whitelisted_url_by_id.html#step-2-get-the-server-version-via-info-json">2.12.26.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_whitelisted_url_by_id.html#step-3-issue-a-getobject-to-find-an-object">2.12.26.3. Step 3 - Issue a GetObject to find an object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="get_group_by_name.html">2.12.27. Get Group By Name</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="get_group_by_name.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.27.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_group_by_name.html#step-2-get-the-server-version-via-info-json">2.12.27.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_group_by_name.html#step-3-issue-a-getobject-to-find-an-object">2.12.27.3. Step 3 - Issue a GetObject to find an object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="get_sensor_by_hash.html">2.12.28. Get Sensor By Hash</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="get_sensor_by_hash.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.28.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_sensor_by_hash.html#step-2-get-the-server-version-via-info-json">2.12.28.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_sensor_by_hash.html#step-3-issue-a-getobject-to-find-an-object">2.12.28.3. Step 3 - Issue a GetObject to find an object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="get_package_by_name.html">2.12.29. Get Package By Name</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="get_package_by_name.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.29.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_package_by_name.html#step-2-get-the-server-version-via-info-json">2.12.29.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_package_by_name.html#step-3-issue-a-getobject-to-find-an-object">2.12.29.3. Step 3 - Issue a GetObject to find an object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="get_sensor_by_names.html">2.12.30. Get Sensor By Names</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="get_sensor_by_names.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.30.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_sensor_by_names.html#step-2-get-the-server-version-via-info-json">2.12.30.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_sensor_by_names.html#step-3-issue-a-getobject-to-find-an-object">2.12.30.3. Step 3 - Issue a GetObject to find an object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="get_saved_question_by_name.html">2.12.31. Get Saved Question By Name</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="get_saved_question_by_name.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.31.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_saved_question_by_name.html#step-2-get-the-server-version-via-info-json">2.12.31.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_saved_question_by_name.html#step-3-issue-a-getobject-to-find-an-object">2.12.31.3. Step 3 - Issue a GetObject to find an object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="get_user_by_id.html">2.12.32. Get User By Id</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="get_user_by_id.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.32.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_user_by_id.html#step-2-get-the-server-version-via-info-json">2.12.32.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_user_by_id.html#step-3-issue-a-getobject-to-find-an-object">2.12.32.3. Step 3 - Issue a GetObject to find an object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="get_sensor_by_name.html">2.12.33. Get Sensor By Name</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="get_sensor_by_name.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.33.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_sensor_by_name.html#step-2-get-the-server-version-via-info-json">2.12.33.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_sensor_by_name.html#step-3-issue-a-getobject-to-find-an-object">2.12.33.3. Step 3 - Issue a GetObject to find an object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="get_saved_action_by_name.html">2.12.34. Get Saved Action By Name</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="get_saved_action_by_name.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.34.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_saved_action_by_name.html#step-2-get-the-server-version-via-info-json">2.12.34.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_saved_action_by_name.html#step-3-issue-a-getobject-to-find-an-object">2.12.34.3. Step 3 - Issue a GetObject to find an object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="get_all_users.html">2.12.35. Get All Users</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="get_all_users.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.35.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_all_users.html#step-2-get-the-server-version-via-info-json">2.12.35.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_all_users.html#step-3-issue-a-getobject-to-find-an-object">2.12.35.3. Step 3 - Issue a GetObject to find an object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="get_all_saved_actions.html">2.12.36. Get All Saved Actions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="get_all_saved_actions.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.36.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_all_saved_actions.html#step-2-get-the-server-version-via-info-json">2.12.36.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_all_saved_actions.html#step-3-issue-a-getobject-to-find-an-object">2.12.36.3. Step 3 - Issue a GetObject to find an object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="get_all_settings.html">2.12.37. Get All Settings</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="get_all_settings.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.37.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_all_settings.html#step-2-get-the-server-version-via-info-json">2.12.37.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_all_settings.html#step-3-issue-a-getobject-to-find-an-object">2.12.37.3. Step 3 - Issue a GetObject to find an object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="get_all_saved_questions.html">2.12.38. Get All Saved Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="get_all_saved_questions.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.38.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_all_saved_questions.html#step-2-get-the-server-version-via-info-json">2.12.38.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_all_saved_questions.html#step-3-issue-a-getobject-to-find-an-object">2.12.38.3. Step 3 - Issue a GetObject to find an object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="get_all_userroless.html">2.12.39. Get All Userroless</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="get_all_userroless.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.39.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_all_userroless.html#step-2-get-the-server-version-via-info-json">2.12.39.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_all_userroless.html#step-3-issue-a-getobject-to-find-an-object">2.12.39.3. Step 3 - Issue a GetObject to find an object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="get_all_questions.html">2.12.40. Get All Questions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="get_all_questions.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.40.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_all_questions.html#step-2-get-the-server-version-via-info-json">2.12.40.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_all_questions.html#step-3-issue-a-getobject-to-find-an-object">2.12.40.3. Step 3 - Issue a GetObject to find an object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="get_all_groups.html">2.12.41. Get All Groups</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="get_all_groups.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.41.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_all_groups.html#step-2-get-the-server-version-via-info-json">2.12.41.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_all_groups.html#step-3-issue-a-getobject-to-find-an-object">2.12.41.3. Step 3 - Issue a GetObject to find an object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="get_all_sensors.html">2.12.42. Get All Sensors</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="get_all_sensors.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.42.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_all_sensors.html#step-2-get-the-server-version-via-info-json">2.12.42.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_all_sensors.html#step-3-issue-a-getobject-to-find-an-object">2.12.42.3. Step 3 - Issue a GetObject to find an object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="get_all_whitelisted_urls.html">2.12.43. Get All Whitelisted Urls</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="get_all_whitelisted_urls.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.43.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_all_whitelisted_urls.html#step-2-get-the-server-version-via-info-json">2.12.43.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_all_whitelisted_urls.html#step-3-issue-a-getobject-to-find-an-object">2.12.43.3. Step 3 - Issue a GetObject to find an object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="get_all_clients.html">2.12.44. Get All Clients</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="get_all_clients.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.44.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_all_clients.html#step-2-get-the-server-version-via-info-json">2.12.44.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_all_clients.html#step-3-issue-a-getobject-to-find-an-object">2.12.44.3. Step 3 - Issue a GetObject to find an object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="get_all_packages.html">2.12.45. Get All Packages</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="get_all_packages.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.45.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_all_packages.html#step-2-get-the-server-version-via-info-json">2.12.45.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_all_packages.html#step-3-issue-a-getobject-to-find-an-object">2.12.45.3. Step 3 - Issue a GetObject to find an object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="get_all_actions.html">2.12.46. Get All Actions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="get_all_actions.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.46.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_all_actions.html#step-2-get-the-server-version-via-info-json">2.12.46.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_all_actions.html#step-3-issue-a-getobject-to-find-an-object">2.12.46.3. Step 3 - Issue a GetObject to find an object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_simple_multiple_sensors.html">2.12.47. Ask Manual Question Simple Multiple Sensors</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_simple_multiple_sensors.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.47.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_simple_multiple_sensors.html#step-2-get-the-server-version-via-info-json">2.12.47.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_simple_multiple_sensors.html#step-3-issue-a-getobject-to-get-the-full-object-of-a-sensor-for-inclusion-in-a-select-for-a-question">2.12.47.3. Step 3 - Issue a GetObject to get the full object of a sensor for inclusion in a Select for a Question</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_simple_multiple_sensors.html#step-4-issue-a-getobject-to-get-the-full-object-of-a-sensor-for-inclusion-in-a-select-for-a-question">2.12.47.4. Step 4 - Issue a GetObject to get the full object of a sensor for inclusion in a Select for a Question</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_simple_multiple_sensors.html#step-5-issue-an-addobject-to-add-a-question-object">2.12.47.5. Step 5 - Issue an AddObject to add a Question object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_simple_multiple_sensors.html#step-6-issue-a-getobject-on-the-recently-added-object-in-order-to-get-the-full-object">2.12.47.6. Step 6 - Issue a GetObject on the recently added object in order to get the full object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_simple_multiple_sensors.html#step-7-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.47.7. Step 7 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_simple_multiple_sensors.html#step-8-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.47.8. Step 8 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_simple_multiple_sensors.html#step-9-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.47.9. Step 9 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_simple_multiple_sensors.html#step-10-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.47.10. Step 10 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_simple_multiple_sensors.html#step-11-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.47.11. Step 11 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_simple_multiple_sensors.html#step-12-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.47.12. Step 12 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_simple_multiple_sensors.html#step-13-issue-a-getresultdata-to-get-answers-for-a-question">2.12.47.13. Step 13 - Issue a GetResultData to get answers for a question</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_simple_single_sensor.html">2.12.48. Ask Manual Question Simple Single Sensor</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_simple_single_sensor.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.48.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_simple_single_sensor.html#step-2-get-the-server-version-via-info-json">2.12.48.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_simple_single_sensor.html#step-3-issue-a-getobject-to-get-the-full-object-of-a-sensor-for-inclusion-in-a-select-for-a-question">2.12.48.3. Step 3 - Issue a GetObject to get the full object of a sensor for inclusion in a Select for a Question</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_simple_single_sensor.html#step-4-issue-an-addobject-to-add-a-question-object">2.12.48.4. Step 4 - Issue an AddObject to add a Question object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_simple_single_sensor.html#step-5-issue-a-getobject-on-the-recently-added-object-in-order-to-get-the-full-object">2.12.48.5. Step 5 - Issue a GetObject on the recently added object in order to get the full object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_simple_single_sensor.html#step-6-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.48.6. Step 6 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_simple_single_sensor.html#step-7-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.48.7. Step 7 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_simple_single_sensor.html#step-8-issue-a-getresultdata-to-get-answers-for-a-question">2.12.48.8. Step 8 - Issue a GetResultData to get answers for a question</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_some_supplied_parameters.html">2.12.49. Ask Manual Question Sensor With Parameters And Some Supplied Parameters</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_some_supplied_parameters.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.49.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_some_supplied_parameters.html#step-2-get-the-server-version-via-info-json">2.12.49.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_some_supplied_parameters.html#step-3-issue-a-getobject-to-get-the-full-object-of-a-sensor-for-inclusion-in-a-select-for-a-question">2.12.49.3. Step 3 - Issue a GetObject to get the full object of a sensor for inclusion in a Select for a Question</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_some_supplied_parameters.html#step-4-issue-an-addobject-to-add-a-question-object">2.12.49.4. Step 4 - Issue an AddObject to add a Question object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_some_supplied_parameters.html#step-5-issue-a-getobject-on-the-recently-added-object-in-order-to-get-the-full-object">2.12.49.5. Step 5 - Issue a GetObject on the recently added object in order to get the full object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_some_supplied_parameters.html#step-6-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.49.6. Step 6 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_some_supplied_parameters.html#step-7-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.49.7. Step 7 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_some_supplied_parameters.html#step-8-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.49.8. Step 8 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_some_supplied_parameters.html#step-9-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.49.9. Step 9 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_some_supplied_parameters.html#step-10-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.49.10. Step 10 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_some_supplied_parameters.html#step-11-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.49.11. Step 11 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_some_supplied_parameters.html#step-12-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.49.12. Step 12 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_some_supplied_parameters.html#step-13-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.49.13. Step 13 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_some_supplied_parameters.html#step-14-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.49.14. Step 14 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_some_supplied_parameters.html#step-15-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.49.15. Step 15 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_some_supplied_parameters.html#step-16-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.49.16. Step 16 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_some_supplied_parameters.html#step-17-issue-a-getresultdata-to-get-answers-for-a-question">2.12.49.17. Step 17 - Issue a GetResultData to get answers for a question</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html">2.12.50. Ask Manual Question Multiple Sensors With Parameters And Some Supplied Parameters</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.50.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html#step-2-get-the-server-version-via-info-json">2.12.50.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html#step-3-issue-a-getobject-to-get-the-full-object-of-a-sensor-for-inclusion-in-a-select-for-a-question">2.12.50.3. Step 3 - Issue a GetObject to get the full object of a sensor for inclusion in a Select for a Question</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html#step-4-issue-a-getobject-to-get-the-full-object-of-a-sensor-for-inclusion-in-a-select-for-a-question">2.12.50.4. Step 4 - Issue a GetObject to get the full object of a sensor for inclusion in a Select for a Question</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html#step-5-issue-an-addobject-to-add-a-question-object">2.12.50.5. Step 5 - Issue an AddObject to add a Question object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html#step-6-issue-a-getobject-on-the-recently-added-object-in-order-to-get-the-full-object">2.12.50.6. Step 6 - Issue a GetObject on the recently added object in order to get the full object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html#step-7-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.50.7. Step 7 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html#step-8-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.50.8. Step 8 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html#step-9-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.50.9. Step 9 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html#step-10-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.50.10. Step 10 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html#step-11-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.50.11. Step 11 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html#step-12-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.50.12. Step 12 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html#step-13-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.50.13. Step 13 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html#step-14-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.50.14. Step 14 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html#step-15-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.50.15. Step 15 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html#step-16-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.50.16. Step 16 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html#step-17-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.50.17. Step 17 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html#step-18-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.50.18. Step 18 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html#step-19-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.50.19. Step 19 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html#step-20-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.50.20. Step 20 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html#step-21-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.50.21. Step 21 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html#step-22-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.50.22. Step 22 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html#step-23-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.50.23. Step 23 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html#step-24-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.50.24. Step 24 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html#step-25-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.50.25. Step 25 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html#step-26-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.50.26. Step 26 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html#step-27-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.50.27. Step 27 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html#step-28-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.50.28. Step 28 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html#step-29-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.50.29. Step 29 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html#step-30-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.50.30. Step 30 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html#step-31-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.50.31. Step 31 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html#step-32-issue-a-getresultdata-to-get-answers-for-a-question">2.12.50.32. Step 32 - Issue a GetResultData to get answers for a question</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_no_supplied_parameters.html">2.12.51. Ask Manual Question Sensor With Parameters And No Supplied Parameters</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_no_supplied_parameters.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.51.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_no_supplied_parameters.html#step-2-get-the-server-version-via-info-json">2.12.51.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_no_supplied_parameters.html#step-3-issue-a-getobject-to-get-the-full-object-of-a-sensor-for-inclusion-in-a-select-for-a-question">2.12.51.3. Step 3 - Issue a GetObject to get the full object of a sensor for inclusion in a Select for a Question</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_no_supplied_parameters.html#step-4-issue-an-addobject-to-add-a-question-object">2.12.51.4. Step 4 - Issue an AddObject to add a Question object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_no_supplied_parameters.html#step-5-issue-a-getobject-on-the-recently-added-object-in-order-to-get-the-full-object">2.12.51.5. Step 5 - Issue a GetObject on the recently added object in order to get the full object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_no_supplied_parameters.html#step-6-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.51.6. Step 6 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_no_supplied_parameters.html#step-7-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.51.7. Step 7 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_no_supplied_parameters.html#step-8-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.51.8. Step 8 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_no_supplied_parameters.html#step-9-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.51.9. Step 9 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_no_supplied_parameters.html#step-10-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.51.10. Step 10 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_no_supplied_parameters.html#step-11-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.51.11. Step 11 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_no_supplied_parameters.html#step-12-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.51.12. Step 12 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_no_supplied_parameters.html#step-13-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.51.13. Step 13 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_no_supplied_parameters.html#step-14-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.51.14. Step 14 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_no_supplied_parameters.html#step-15-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.51.15. Step 15 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_no_supplied_parameters.html#step-16-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.51.16. Step 16 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_no_supplied_parameters.html#step-17-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.51.17. Step 17 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_no_supplied_parameters.html#step-18-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.51.18. Step 18 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_no_supplied_parameters.html#step-19-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.51.19. Step 19 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_no_supplied_parameters.html#step-20-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.51.20. Step 20 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_no_supplied_parameters.html#step-21-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.51.21. Step 21 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_no_supplied_parameters.html#step-22-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.51.22. Step 22 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_no_supplied_parameters.html#step-23-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.51.23. Step 23 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_no_supplied_parameters.html#step-24-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.51.24. Step 24 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_no_supplied_parameters.html#step-25-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.51.25. Step 25 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_no_supplied_parameters.html#step-26-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.51.26. Step 26 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_no_supplied_parameters.html#step-27-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.51.27. Step 27 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_no_supplied_parameters.html#step-28-issue-a-getresultdata-to-get-answers-for-a-question">2.12.51.28. Step 28 - Issue a GetResultData to get answers for a question</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter.html">2.12.52. Ask Manual Question Sensor With Parameters And Filter</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.52.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter.html#step-2-get-the-server-version-via-info-json">2.12.52.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter.html#step-3-issue-a-getobject-to-get-the-full-object-of-a-sensor-for-inclusion-in-a-select-for-a-question">2.12.52.3. Step 3 - Issue a GetObject to get the full object of a sensor for inclusion in a Select for a Question</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter.html#step-4-issue-an-addobject-to-add-a-question-object">2.12.52.4. Step 4 - Issue an AddObject to add a Question object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter.html#step-5-issue-a-getobject-on-the-recently-added-object-in-order-to-get-the-full-object">2.12.52.5. Step 5 - Issue a GetObject on the recently added object in order to get the full object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter.html#step-6-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.52.6. Step 6 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter.html#step-7-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.52.7. Step 7 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter.html#step-8-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.52.8. Step 8 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter.html#step-9-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.52.9. Step 9 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter.html#step-10-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.52.10. Step 10 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter.html#step-11-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.52.11. Step 11 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter.html#step-12-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.52.12. Step 12 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter.html#step-13-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.52.13. Step 13 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter.html#step-14-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.52.14. Step 14 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter.html#step-15-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.52.15. Step 15 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter.html#step-16-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.52.16. Step 16 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter.html#step-17-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.52.17. Step 17 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter.html#step-18-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.52.18. Step 18 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter.html#step-19-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.52.19. Step 19 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter.html#step-20-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.52.20. Step 20 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter.html#step-21-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.52.21. Step 21 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter.html#step-22-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.52.22. Step 22 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter.html#step-23-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.52.23. Step 23 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter.html#step-24-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.52.24. Step 24 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter.html#step-25-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.52.25. Step 25 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter.html#step-26-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.52.26. Step 26 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter.html#step-27-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.52.27. Step 27 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter.html#step-28-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.52.28. Step 28 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter.html#step-29-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.52.29. Step 29 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter.html#step-30-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.52.30. Step 30 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter.html#step-31-issue-a-getresultdata-to-get-answers-for-a-question">2.12.52.31. Step 31 - Issue a GetResultData to get answers for a question</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_sensor_with_filter_and_2_options.html">2.12.53. Ask Manual Question Sensor With Filter And 2 Options</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_filter_and_2_options.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.53.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_filter_and_2_options.html#step-2-get-the-server-version-via-info-json">2.12.53.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_filter_and_2_options.html#step-3-issue-a-getobject-to-get-the-full-object-of-a-sensor-for-inclusion-in-a-select-for-a-question">2.12.53.3. Step 3 - Issue a GetObject to get the full object of a sensor for inclusion in a Select for a Question</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_filter_and_2_options.html#step-4-issue-an-addobject-to-add-a-question-object">2.12.53.4. Step 4 - Issue an AddObject to add a Question object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_filter_and_2_options.html#step-5-issue-a-getobject-on-the-recently-added-object-in-order-to-get-the-full-object">2.12.53.5. Step 5 - Issue a GetObject on the recently added object in order to get the full object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_filter_and_2_options.html#step-6-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.53.6. Step 6 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_filter_and_2_options.html#step-7-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.53.7. Step 7 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_filter_and_2_options.html#step-8-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.53.8. Step 8 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_filter_and_2_options.html#step-9-issue-a-getresultdata-to-get-answers-for-a-question">2.12.53.9. Step 9 - Issue a GetResultData to get answers for a question</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_sensor_with_filter.html">2.12.54. Ask Manual Question Sensor With Filter</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_filter.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.54.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_filter.html#step-2-get-the-server-version-via-info-json">2.12.54.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_filter.html#step-3-issue-a-getobject-to-get-the-full-object-of-a-sensor-for-inclusion-in-a-select-for-a-question">2.12.54.3. Step 3 - Issue a GetObject to get the full object of a sensor for inclusion in a Select for a Question</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_filter.html#step-4-issue-an-addobject-to-add-a-question-object">2.12.54.4. Step 4 - Issue an AddObject to add a Question object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_filter.html#step-5-issue-a-getobject-on-the-recently-added-object-in-order-to-get-the-full-object">2.12.54.5. Step 5 - Issue a GetObject on the recently added object in order to get the full object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_filter.html#step-6-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.54.6. Step 6 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_filter.html#step-7-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.54.7. Step 7 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_filter.html#step-8-issue-a-getresultdata-to-get-answers-for-a-question">2.12.54.8. Step 8 - Issue a GetResultData to get answers for a question</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter_and_options.html">2.12.55. Ask Manual Question Sensor With Parameters And Filter And Options</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter_and_options.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.55.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter_and_options.html#step-2-get-the-server-version-via-info-json">2.12.55.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter_and_options.html#step-3-issue-a-getobject-to-get-the-full-object-of-a-sensor-for-inclusion-in-a-select-for-a-question">2.12.55.3. Step 3 - Issue a GetObject to get the full object of a sensor for inclusion in a Select for a Question</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter_and_options.html#step-4-issue-an-addobject-to-add-a-question-object">2.12.55.4. Step 4 - Issue an AddObject to add a Question object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter_and_options.html#step-5-issue-a-getobject-on-the-recently-added-object-in-order-to-get-the-full-object">2.12.55.5. Step 5 - Issue a GetObject on the recently added object in order to get the full object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter_and_options.html#step-6-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.55.6. Step 6 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter_and_options.html#step-7-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.55.7. Step 7 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter_and_options.html#step-8-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.55.8. Step 8 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter_and_options.html#step-9-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.55.9. Step 9 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter_and_options.html#step-10-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.55.10. Step 10 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter_and_options.html#step-11-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.55.11. Step 11 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter_and_options.html#step-12-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.55.12. Step 12 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_parameters_and_filter_and_options.html#step-13-issue-a-getresultdata-to-get-answers-for-a-question">2.12.55.13. Step 13 - Issue a GetResultData to get answers for a question</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_sensor_with_filter_and_3_options.html">2.12.56. Ask Manual Question Sensor With Filter And 3 Options</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_filter_and_3_options.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.56.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_filter_and_3_options.html#step-2-get-the-server-version-via-info-json">2.12.56.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_filter_and_3_options.html#step-3-issue-a-getobject-to-get-the-full-object-of-a-sensor-for-inclusion-in-a-select-for-a-question">2.12.56.3. Step 3 - Issue a GetObject to get the full object of a sensor for inclusion in a Select for a Question</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_filter_and_3_options.html#step-4-issue-an-addobject-to-add-a-question-object">2.12.56.4. Step 4 - Issue an AddObject to add a Question object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_filter_and_3_options.html#step-5-issue-a-getobject-on-the-recently-added-object-in-order-to-get-the-full-object">2.12.56.5. Step 5 - Issue a GetObject on the recently added object in order to get the full object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_filter_and_3_options.html#step-6-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.56.6. Step 6 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_filter_and_3_options.html#step-7-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.56.7. Step 7 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_filter_and_3_options.html#step-8-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.56.8. Step 8 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_sensor_with_filter_and_3_options.html#step-9-issue-a-getresultdata-to-get-answers-for-a-question">2.12.56.9. Step 9 - Issue a GetResultData to get answers for a question</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_complex_query1.html">2.12.57. Ask Manual Question Complex Query1</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_complex_query1.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.57.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_complex_query1.html#step-2-get-the-server-version-via-info-json">2.12.57.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_complex_query1.html#step-3-issue-a-getobject-to-get-the-full-object-of-a-sensor-for-inclusion-in-a-select-for-a-question">2.12.57.3. Step 3 - Issue a GetObject to get the full object of a sensor for inclusion in a Select for a Question</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_complex_query1.html#step-4-issue-a-getobject-to-get-the-full-object-of-a-sensor-for-inclusion-in-a-select-for-a-question">2.12.57.4. Step 4 - Issue a GetObject to get the full object of a sensor for inclusion in a Select for a Question</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_complex_query1.html#step-5-issue-a-getobject-to-get-the-full-object-of-a-sensor-for-inclusion-in-a-group-for-a-question">2.12.57.5. Step 5 - Issue a GetObject to get the full object of a sensor for inclusion in a Group for a Question</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_complex_query1.html#step-6-issue-a-getobject-to-get-the-full-object-of-a-sensor-for-inclusion-in-a-group-for-a-question">2.12.57.6. Step 6 - Issue a GetObject to get the full object of a sensor for inclusion in a Group for a Question</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_complex_query1.html#step-7-issue-an-addobject-to-add-a-question-object">2.12.57.7. Step 7 - Issue an AddObject to add a Question object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_complex_query1.html#step-8-issue-a-getobject-on-the-recently-added-object-in-order-to-get-the-full-object">2.12.57.8. Step 8 - Issue a GetObject on the recently added object in order to get the full object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_complex_query1.html#step-9-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.57.9. Step 9 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_complex_query1.html#step-10-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.57.10. Step 10 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_complex_query1.html#step-11-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.57.11. Step 11 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_complex_query1.html#step-12-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.57.12. Step 12 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_complex_query1.html#step-13-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.57.13. Step 13 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_complex_query1.html#step-14-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.57.14. Step 14 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_complex_query1.html#step-15-issue-a-getresultdata-to-get-answers-for-a-question">2.12.57.15. Step 15 - Issue a GetResultData to get answers for a question</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ask_manual_question_complex_query2.html">2.12.58. Ask Manual Question Complex Query2</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_complex_query2.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.58.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_complex_query2.html#step-2-get-the-server-version-via-info-json">2.12.58.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_complex_query2.html#step-3-issue-a-getobject-to-get-the-full-object-of-a-sensor-for-inclusion-in-a-select-for-a-question">2.12.58.3. Step 3 - Issue a GetObject to get the full object of a sensor for inclusion in a Select for a Question</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_complex_query2.html#step-4-issue-a-getobject-to-get-the-full-object-of-a-sensor-for-inclusion-in-a-select-for-a-question">2.12.58.4. Step 4 - Issue a GetObject to get the full object of a sensor for inclusion in a Select for a Question</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_complex_query2.html#step-5-issue-a-getobject-to-get-the-full-object-of-a-sensor-for-inclusion-in-a-select-for-a-question">2.12.58.5. Step 5 - Issue a GetObject to get the full object of a sensor for inclusion in a Select for a Question</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_complex_query2.html#step-6-issue-a-getobject-to-get-the-full-object-of-a-sensor-for-inclusion-in-a-group-for-a-question">2.12.58.6. Step 6 - Issue a GetObject to get the full object of a sensor for inclusion in a Group for a Question</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_complex_query2.html#step-7-issue-an-addobject-to-add-a-question-object">2.12.58.7. Step 7 - Issue an AddObject to add a Question object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_complex_query2.html#step-8-issue-a-getobject-on-the-recently-added-object-in-order-to-get-the-full-object">2.12.58.8. Step 8 - Issue a GetObject on the recently added object in order to get the full object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_complex_query2.html#step-9-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.58.9. Step 9 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_complex_query2.html#step-10-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.58.10. Step 10 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_complex_query2.html#step-11-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.58.11. Step 11 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_manual_question_complex_query2.html#step-12-issue-a-getresultdata-to-get-answers-for-a-question">2.12.58.12. Step 12 - Issue a GetResultData to get answers for a question</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ask_saved_question_refresh_data.html">2.12.59. Ask Saved Question Refresh Data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ask_saved_question_refresh_data.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.59.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_saved_question_refresh_data.html#step-2-get-the-server-version-via-info-json">2.12.59.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_saved_question_refresh_data.html#step-3-issue-a-getobject-to-find-saved-question-objects">2.12.59.3. Step 3 - Issue a GetObject to find saved question objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_saved_question_refresh_data.html#step-4-issue-a-getobject-to-get-the-full-object-of-the-last-question-asked-by-a-saved-question">2.12.59.4. Step 4 - Issue a GetObject to get the full object of the last question asked by a saved question</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_saved_question_refresh_data.html#step-5-issue-a-getresultinfo-for-a-saved-question-in-order-to-issue-a-new-question-which-refreshes-the-data-for-that-saved-question">2.12.59.5. Step 5 - Issue a GetResultInfo for a saved question in order to issue a new question, which refreshes the data for that saved question</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_saved_question_refresh_data.html#step-6-issue-a-getobject-for-the-saved-question-in-order-get-the-id-of-the-newly-asked-question">2.12.59.6. Step 6 - Issue a GetObject for the saved question in order get the ID of the newly asked question</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_saved_question_refresh_data.html#step-7-issue-a-getobject-to-get-the-full-object-of-the-last-question-asked-by-a-saved-question">2.12.59.7. Step 7 - Issue a GetObject to get the full object of the last question asked by a saved question</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_saved_question_refresh_data.html#step-8-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.59.8. Step 8 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_saved_question_refresh_data.html#step-9-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.59.9. Step 9 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_saved_question_refresh_data.html#step-10-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">2.12.59.10. Step 10 - Issue a GetResultInfo for a Question to check the current progress of answers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_saved_question_refresh_data.html#step-11-issue-a-getresultdata-to-get-the-answers-for-the-last-asked-question-of-this-saved-question">2.12.59.11. Step 11 - Issue a GetResultData to get the answers for the last asked question of this saved question</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ask_saved_question_by_name.html">2.12.60. Ask Saved Question By Name</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ask_saved_question_by_name.html#step-1-authenticate-to-the-soap-api-via-auth">2.12.60.1. Step 1 - Authenticate to the SOAP API via /auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_saved_question_by_name.html#step-2-get-the-server-version-via-info-json">2.12.60.2. Step 2 - Get the server version via /info.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_saved_question_by_name.html#step-3-issue-a-getobject-to-find-saved-question-objects">2.12.60.3. Step 3 - Issue a GetObject to find saved question objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_saved_question_by_name.html#step-4-issue-a-getobject-to-get-the-full-object-of-the-last-question-asked-by-a-saved-question">2.12.60.4. Step 4 - Issue a GetObject to get the full object of the last question asked by a saved question</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ask_saved_question_by_name.html#step-5-issue-a-getresultdata-to-get-the-answers-for-the-last-asked-question-of-this-saved-question">2.12.60.5. Step 5 - Issue a GetResultData to get the answers for the last asked question of this saved question</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="basic_api_authentication.html" class="btn btn-neutral float-right" title="2.12.1. Basic API Authentication">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../../examples/invalid_ask_manual_question_missing_parameter_split.html" class="btn btn-neutral" title="2.11.16.8. Invalid Ask Manual Question Missing Parameter Split"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Tanium.
+      Last updated on Sep 03, 2015.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'2.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

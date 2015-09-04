@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+  <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <t:return>
+      <command>GetObject</command>
+      <session>1-7000-0b3a77745c282aea1f47fc9b35ea6d94e18e7f95336eb79657a3b449756d4ce45f272fff7ec4e30a8b8e4e86b07c39ed8122c70a7695dc18afbc0603d9c885c8</session>
+      <server_version>6.5.314.4301</server_version>
+      <ID></ID>
+      <IDType></IDType>
+      <ContextID></ContextID>
+      <result_object>
+        <saved_question>
+          <id>64</id>
+          <name>Installed Applications</name>
+          <question>
+            <id>10238</id>
+            <expire_seconds>0</expire_seconds>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expiration>2015-09-04T03:17:10</expiration>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+            </user>
+            <management_rights_group>
+              <id>0</id>
+            </management_rights_group>
+            <saved_question>
+              <id>64</id>
+            </saved_question>
+            <name></name>
+            <query_text>Get number of machines</query_text>
+            <hidden_flag>0</hidden_flag>
+            <action_tracking_flag>0</action_tracking_flag>
+            <selects></selects>
+            <force_computer_id_flag>0</force_computer_id_flag>
+          </question>
+          <public_flag>1</public_flag>
+          <hidden_flag>0</hidden_flag>
+          <issue_seconds>120</issue_seconds>
+          <issue_seconds_never_flag>0</issue_seconds_never_flag>
+          <expire_seconds>600</expire_seconds>
+          <sort_column>0</sort_column>
+          <query_text>Get number of machines</query_text>
+          <packages></packages>
+          <row_count_flag>0</row_count_flag>
+          <keep_seconds>0</keep_seconds>
+          <archive_enabled_flag>0</archive_enabled_flag>
+          <most_recent_question_id>10238</most_recent_question_id>
+          <user>
+            <id>1</id>
+            <name>Administrator</name>
+          </user>
+          <archive_owner></archive_owner>
+          <mod_time>2015-08-26T20:14:36</mod_time>
+          <mod_user>
+            <name>Administrator</name>
+          </mod_user>
+          <action_tracking_flag>0</action_tracking_flag>
+          <metadata>
+            <item>
+              <name>defined</name>
+              <value>Tanium</value>
+              <admin_flag>0</admin_flag>
+            </item>
+            <item>
+              <name>category</name>
+              <value>Tanium</value>
+              <admin_flag>0</admin_flag>
+            </item>
+          </metadata>
+        </saved_question>
+      </result_object>
+      <ResultXML></ResultXML>
+      <options>
+        <suppress_object_list>1</suppress_object_list>
+      </options>
+    </t:return>
+  </soap:Body>
+</soap:Envelope>

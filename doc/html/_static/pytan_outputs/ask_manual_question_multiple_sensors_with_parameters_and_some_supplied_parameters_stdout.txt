@@ -1,0 +1,30 @@
+...CALLING: pytan.handler() with args: {'username': 'Administrator', 'record_all_requests': True, 'loglevel': 1, 'debugformat': False, 'host': '10.0.1.240', 'password': 'Tanium2015!', 'port': '443'}
+...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+...CALLING: handler.ask with args: {'sensors': [u'Folder Name Search with RegEx Match{dirname=Program Files,regex=Microsoft.*}', u'Computer Name'], 'qtype': u'manual'}
+2015-09-04 03:00:51,423 INFO     pytan.pollers.QuestionPoller: ID 10224: Reached Threshold of 99% (2 of 2)
+...OUTPUT: Type of response:  <type 'dict'>
+...OUTPUT: Pretty print of response:
+{'poller_object': <pytan.pollers.QuestionPoller object at 0x107f2a5d0>,
+ 'poller_success': True,
+ 'question_object': <taniumpy.object_types.question.Question object at 0x107f2abd0>,
+ 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x1059b5850>}
+...OUTPUT: Equivalent Question if it were to be asked in the Tanium Console: 
+Get Folder Name Search with RegEx Match[Program Files, , No, No, Microsoft.*] and Computer Name from all machines
+...CALLING: handler.export_obj() with args {'export_format': 'csv', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x1059b5850>}
+...OUTPUT: CSV Results of response: 
+Computer Name,"Folder Name Search with RegEx Match[Program Files, , No, No, Microsoft.*]"
+Casus-Belli.local,Windows Only
+TPT1-0.localdomain,"C:\Program Files\OpenSSH\home\Administrator\Documents\SQL Server Management Studio\Templates\ItemTemplates
+C:\Program Files\VMware\VMware Tools\plugins\vmsvc
+C:\Program Files\OpenSSH\home\All Users\Microsoft\Windows\Start Menu\Programs\7-Zip
+C:\Program Files\Microsoft SQL Server\110\Setup Bootstrap\SQLServer2012\1040_ITA_LP\x64\1040\help
+C:\Program Files\Common Files\Microsoft Shared\VS7Debug
+C:\Program Files\Tanium\Tanium Server\http\taniumjs\sensor-query\src
+C:\Program Files\OpenSSH\home\All Users\Microsoft\Windows\Start Menu\Programs\Microsoft SQL Server 2012\Integration Services
+C:\Program Files\Tanium\Tanium Server\http\tux\spin\src
+C:\Program Files\OpenSSH\home\Administrator\AppData\Roaming\Macromedia\Flash Player\macromedia.com\support\flashplayer
+C:\Program Files\Tanium\Tanium Server\http\taniumjs\archived-question\src
+C:\Program Files\Tanium\Tanium Module Server\plugins\content
+C:\Program Files\Tanium\Tanium Server\http\libraries\kendoui\styles\Moonlight
+C:\Program Files\Common Files\VMware\Drivers\vmci\sockets\include
+..trimmed for brevity..

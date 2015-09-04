@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>2.11.3.11. Ask manual question sensor with parameters and filter and options &mdash; PyTan v2.1.0 2.1.0 documentation</title>
+  <title>2.11.8.11. Ask Manual Question Sensor With Parameters And Filter And Options &mdash; PyTan v2.1.0 2.1.0 documentation</title>
   
 
   
@@ -29,9 +29,9 @@
 
   
     <link rel="top" title="PyTan v2.1.0 2.1.0 documentation" href="../index.html"/>
-        <link rel="up" title="2.11.3. PyTan API Valid Question Examples" href="valid_questions.html"/>
-        <link rel="next" title="2.11.3.12. Ask manual question sensor with filter and 3 options" href="ask_manual_question_sensor_with_filter_and_3_options.html"/>
-        <link rel="prev" title="2.11.3.10. Ask manual question sensor with filter" href="ask_manual_question_sensor_with_filter.html"/> 
+        <link rel="up" title="2.11.8. PyTan API Valid Questions Examples" href="valid_questions.html"/>
+        <link rel="next" title="2.11.8.12. Ask Manual Question Sensor With Filter And 3 Options" href="ask_manual_question_sensor_with_filter_and_3_options.html"/>
+        <link rel="prev" title="2.11.8.10. Ask Manual Question Sensor With Filter" href="ask_manual_question_sensor_with_filter.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -85,7 +85,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../pytan.xml_clean.html">2.8. pytan.xml_clean module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../pytan.unittest.html">2.9. pytan Unit Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../pytan.functest.html">2.10. pytan Functional Tests</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="pytan_examples.html">2.11. PyTan API examples</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="pytan_examples.html">2.11. PyTan API Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../soap_examples/6.5.314.4301/soap_examples_6.5.314.4301.html">2.12. SOAP API Examples for Platform Version 6.5.314.4301</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../taniumpy.html">3. taniumpy package</a></li>
@@ -128,11 +129,11 @@
       
           <li><a href="../pytan.html">2. pytan package</a> &raquo;</li>
       
-          <li><a href="pytan_examples.html">2.11. PyTan API examples</a> &raquo;</li>
+          <li><a href="pytan_examples.html">2.11. PyTan API Examples</a> &raquo;</li>
       
-          <li><a href="valid_questions.html">2.11.3. PyTan API Valid Question Examples</a> &raquo;</li>
+          <li><a href="valid_questions.html">2.11.8. PyTan API Valid Questions Examples</a> &raquo;</li>
       
-    <li>2.11.3.11. Ask manual question sensor with parameters and filter and options</li>
+    <li>2.11.8.11. Ask Manual Question Sensor With Parameters And Filter And Options</li>
       <li class="wy-breadcrumbs-aside">
         
           <a href="../_sources/examples/ask_manual_question_sensor_with_parameters_and_filter_and_options.txt" rel="nofollow"> View page source</a>
@@ -144,12 +145,15 @@
           <div role="main" class="document">
             
   <div class="section" id="ask-manual-question-sensor-with-parameters-and-filter-and-options">
-<h1>2.11.3.11. Ask manual question sensor with parameters and filter and options<a class="headerlink" href="#ask-manual-question-sensor-with-parameters-and-filter-and-options" title="Permalink to this headline">¶</a></h1>
+<h1>2.11.8.11. Ask Manual Question Sensor With Parameters And Filter And Options<a class="headerlink" href="#ask-manual-question-sensor-with-parameters-and-filter-and-options" title="Permalink to this headline">¶</a></h1>
 <p>Ask a manual question using human strings by referencing the name of a single sensor that takes parameters, but supplying only two of the four parameters that are used by the sensor.</p>
 <p>Also supply a sensor filter that limits the column data that is shown to values that match the regex &#8216;.*Shared.*&#8217;, and a sensor filter option that re-fetches any cached data that is older than 3600 seconds.</p>
 <p>No question filters or question options supplied.</p>
-<div class="section" id="example-python-code">
-<h2>2.11.3.11.1. Example Python Code<a class="headerlink" href="#example-python-code" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="../_static/pytan_outputs/ask_manual_question_sensor_with_parameters_and_filter_and_options_stdout.txt">STDOUT from Example Python Code</a></li>
+<li><a class="reference external" href="../_static/pytan_outputs/ask_manual_question_sensor_with_parameters_and_filter_and_options_stderr.txt">STDERR from Example Python Code</a></li>
+<li>Example Python Code</li>
+</ul>
 <div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -226,200 +230,116 @@
 74
 75
 76
-77</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">os</span>
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89</pre></div></td><td class="code"><div class="highlight"><pre><span class="c"># import the basic python packages we need</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">import</span> <span class="nn">pprint</span>
+<span class="kn">import</span> <span class="nn">traceback</span>
+
+<span class="c"># disable python from generating a .pyc file</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">dont_write_bytecode</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="c"># change me to the path of pytan if this script is not running from EXAMPLES/PYTAN_API</span>
+<span class="n">pytan_loc</span> <span class="o">=</span> <span class="s">&quot;~/gh/pytan&quot;</span>
+<span class="n">pytan_static_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">pytan_loc</span><span class="p">),</span> <span class="s">&#39;lib&#39;</span><span class="p">)</span>
 
 <span class="c"># Determine our script name, script dir</span>
 <span class="n">my_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="n">my_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">my_file</span><span class="p">)</span>
 
-<span class="c"># determine the pytan lib dir and add it to the path</span>
+<span class="c"># try to automatically determine the pytan lib directory by assuming it is in &#39;../../lib/&#39;</span>
 <span class="n">parent_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">my_dir</span><span class="p">)</span>
 <span class="n">pytan_root_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">parent_dir</span><span class="p">)</span>
 <span class="n">lib_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pytan_root_dir</span><span class="p">,</span> <span class="s">&#39;lib&#39;</span><span class="p">)</span>
-<span class="n">path_adds</span> <span class="o">=</span> <span class="p">[</span><span class="n">lib_dir</span><span class="p">]</span>
 
-<span class="k">for</span> <span class="n">aa</span> <span class="ow">in</span> <span class="n">path_adds</span><span class="p">:</span>
-    <span class="k">if</span> <span class="n">aa</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
-        <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">aa</span><span class="p">)</span>
+<span class="c"># add pytan_loc and lib_dir to the PYTHONPATH variable</span>
+<span class="n">path_adds</span> <span class="o">=</span> <span class="p">[</span><span class="n">lib_dir</span><span class="p">,</span> <span class="n">pytan_static_path</span><span class="p">]</span>
+<span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">aa</span><span class="p">)</span> <span class="k">for</span> <span class="n">aa</span> <span class="ow">in</span> <span class="n">path_adds</span> <span class="k">if</span> <span class="n">aa</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">]</span>
 
-
-<span class="c"># connection info for Tanium Server</span>
-<span class="n">USERNAME</span> <span class="o">=</span> <span class="s">&quot;Tanium User&quot;</span>
-<span class="n">PASSWORD</span> <span class="o">=</span> <span class="s">&quot;T@n!um&quot;</span>
-<span class="n">HOST</span> <span class="o">=</span> <span class="s">&quot;172.16.31.128&quot;</span>
-<span class="n">PORT</span> <span class="o">=</span> <span class="s">&quot;443&quot;</span>
-
-<span class="c"># Logging conrols</span>
-<span class="n">LOGLEVEL</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="n">DEBUGFORMAT</span> <span class="o">=</span> <span class="bp">False</span>
-
-<span class="kn">import</span> <span class="nn">tempfile</span>
-
+<span class="c"># import pytan</span>
 <span class="kn">import</span> <span class="nn">pytan</span>
-<span class="n">handler</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">Handler</span><span class="p">(</span>
-    <span class="n">username</span><span class="o">=</span><span class="n">USERNAME</span><span class="p">,</span>
-    <span class="n">password</span><span class="o">=</span><span class="n">PASSWORD</span><span class="p">,</span>
-    <span class="n">host</span><span class="o">=</span><span class="n">HOST</span><span class="p">,</span>
-    <span class="n">port</span><span class="o">=</span><span class="n">PORT</span><span class="p">,</span>
-    <span class="n">loglevel</span><span class="o">=</span><span class="n">LOGLEVEL</span><span class="p">,</span>
-    <span class="n">debugformat</span><span class="o">=</span><span class="n">DEBUGFORMAT</span><span class="p">,</span>
-<span class="p">)</span>
 
-<span class="k">print</span> <span class="n">handler</span>
+<span class="c"># create a dictionary of arguments for the pytan handler</span>
+<span class="n">handler_args</span> <span class="o">=</span> <span class="p">{}</span>
 
-<span class="c"># setup the arguments for the handler method</span>
+<span class="c"># establish our connection info for the Tanium Server</span>
+<span class="n">handler_args</span><span class="p">[</span><span class="s">&#39;username&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;Administrator&quot;</span>
+<span class="n">handler_args</span><span class="p">[</span><span class="s">&#39;password&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;Tanium2015!&quot;</span>
+<span class="n">handler_args</span><span class="p">[</span><span class="s">&#39;host&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;10.0.1.240&quot;</span>
+<span class="n">handler_args</span><span class="p">[</span><span class="s">&#39;port&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;443&quot;</span>  <span class="c"># optional</span>
+
+<span class="c"># optional, level 0 is no output except warnings/errors</span>
+<span class="c"># level 1 through 12 are more and more verbose</span>
+<span class="n">handler_args</span><span class="p">[</span><span class="s">&#39;loglevel&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="c"># optional, use a debug format for the logging output (uses two lines per log entry)</span>
+<span class="n">handler_args</span><span class="p">[</span><span class="s">&#39;debugformat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+
+<span class="c"># optional, this saves all response objects to handler.session.ALL_REQUESTS_RESPONSES</span>
+<span class="c"># very useful for capturing the full exchange of XML requests and responses</span>
+<span class="n">handler_args</span><span class="p">[</span><span class="s">&#39;record_all_requests&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="c"># instantiate a handler using all of the arguments in the handler_args dictionary</span>
+<span class="k">print</span> <span class="s">&quot;...CALLING: pytan.handler() with args: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">handler_args</span><span class="p">)</span>
+<span class="n">handler</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">Handler</span><span class="p">(</span><span class="o">**</span><span class="n">handler_args</span><span class="p">)</span>
+
+<span class="c"># print out the handler string</span>
+<span class="k">print</span> <span class="s">&quot;...OUTPUT: handler string: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
+
+<span class="c"># setup the arguments for the handler() class</span>
 <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="n">kwargs</span><span class="p">[</span><span class="s">&quot;sensors&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;Folder Name Search with RegEx Match{dirname=Program Files,regex=Microsoft.*}, that regex match:.*Shared.*, opt:max_data_age:3600&#39;</span>
 <span class="n">kwargs</span><span class="p">[</span><span class="s">&quot;qtype&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;manual&#39;</span>
 
-<span class="c"># call the handler with the ask method, passing in kwargs for arguments</span>
+<span class="k">print</span> <span class="s">&quot;...CALLING: handler.ask with args: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
 <span class="n">response</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">ask</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="kn">import</span> <span class="nn">pprint</span><span class="o">,</span> <span class="nn">io</span>
 
-<span class="k">print</span> <span class="s">&quot;&quot;</span>
-<span class="k">print</span> <span class="s">&quot;Type of response: &quot;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&quot;...OUTPUT: Type of response: &quot;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
 
-<span class="k">print</span> <span class="s">&quot;&quot;</span>
-<span class="k">print</span> <span class="s">&quot;Pretty print of response:&quot;</span>
+<span class="k">print</span> <span class="s">&quot;...OUTPUT: Pretty print of response:&quot;</span>
 <span class="k">print</span> <span class="n">pprint</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
 
-<span class="k">print</span> <span class="s">&quot;&quot;</span>
-<span class="k">print</span> <span class="s">&quot;Equivalent Question if it were to be asked in the Tanium Console: &quot;</span>
+<span class="k">print</span> <span class="s">&quot;...OUTPUT: Equivalent Question if it were to be asked in the Tanium Console: &quot;</span>
 <span class="k">print</span> <span class="n">response</span><span class="p">[</span><span class="s">&#39;question_object&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">query_text</span>
 
-<span class="c"># create an IO stream to store CSV results to</span>
-<span class="n">out</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">()</span>
+<span class="c"># call the export_obj() method to convert response to CSV and store it in out</span>
+<span class="n">export_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">export_kwargs</span><span class="p">[</span><span class="s">&#39;obj&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s">&#39;question_results&#39;</span><span class="p">]</span>
+<span class="n">export_kwargs</span><span class="p">[</span><span class="s">&#39;export_format&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;csv&#39;</span>
 
-<span class="c"># call the write_csv() method to convert response to CSV and store it in out</span>
-<span class="n">response</span><span class="p">[</span><span class="s">&#39;question_results&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">write_csv</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">response</span><span class="p">[</span><span class="s">&#39;question_results&#39;</span><span class="p">])</span>
+<span class="k">print</span> <span class="s">&quot;...CALLING: handler.export_obj() with args {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">export_kwargs</span><span class="p">)</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">export_obj</span><span class="p">(</span><span class="o">**</span><span class="n">export_kwargs</span><span class="p">)</span>
 
-<span class="k">print</span> <span class="s">&quot;&quot;</span>
-<span class="k">print</span> <span class="s">&quot;CSV Results of response: &quot;</span>
-<span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
+<span class="c"># trim the output if it is more than 15 lines long</span>
 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">splitlines</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">15</span><span class="p">:</span>
     <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[</span><span class="mi">0</span><span class="p">:</span><span class="mi">15</span><span class="p">]</span>
     <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;..trimmed for brevity..&#39;</span><span class="p">)</span>
     <span class="n">out</span> <span class="o">=</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="s">&quot;...OUTPUT: CSV Results of response: &quot;</span>
 <span class="k">print</span> <span class="n">out</span>
 </pre></div>
 </td></tr></table></div>
-</div>
-<div class="section" id="output-from-python-code">
-<h2>2.11.3.11.2. Output from Python Code<a class="headerlink" href="#output-from-python-code" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-none"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55</pre></div></td><td class="code"><div class="highlight"><pre>Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
-2015-08-07 19:43:16,405 DEBUG    pytan.handler.QuestionPoller: ID 1294: id resolved to 1294
-2015-08-07 19:43:16,405 DEBUG    pytan.handler.QuestionPoller: ID 1294: expiration resolved to 2015-08-07T19:53:16
-2015-08-07 19:43:16,405 DEBUG    pytan.handler.QuestionPoller: ID 1294: query_text resolved to Get Folder Name Search with RegEx Match[Program Files, , No, No, Microsoft.*] containing &quot;Shared&quot; from all machines
-2015-08-07 19:43:16,405 DEBUG    pytan.handler.QuestionPoller: ID 1294: id resolved to 1294
-2015-08-07 19:43:16,405 DEBUG    pytan.handler.QuestionPoller: ID 1294: Object Info resolved to Question ID: 1294, Query: Get Folder Name Search with RegEx Match[Program Files, , No, No, Microsoft.*] containing &quot;Shared&quot; from all machines
-2015-08-07 19:43:16,408 DEBUG    pytan.handler.QuestionPoller: ID 1294: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
-2015-08-07 19:43:16,408 DEBUG    pytan.handler.QuestionPoller: ID 1294: Timing: Started: 2015-08-07 19:43:16.405735, Expiration: 2015-08-07 19:53:16, Override Timeout: None, Elapsed Time: 0:00:00.002844, Left till expiry: 0:09:59.591424, Loop Count: 1
-2015-08-07 19:43:16,408 INFO     pytan.handler.QuestionPoller: ID 1294: Progress Changed 0% (0 of 2)
-2015-08-07 19:43:21,414 DEBUG    pytan.handler.QuestionPoller: ID 1294: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
-2015-08-07 19:43:21,414 DEBUG    pytan.handler.QuestionPoller: ID 1294: Timing: Started: 2015-08-07 19:43:16.405735, Expiration: 2015-08-07 19:53:16, Override Timeout: None, Elapsed Time: 0:00:05.008819, Left till expiry: 0:09:54.585449, Loop Count: 2
-2015-08-07 19:43:26,420 DEBUG    pytan.handler.QuestionPoller: ID 1294: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
-2015-08-07 19:43:26,420 DEBUG    pytan.handler.QuestionPoller: ID 1294: Timing: Started: 2015-08-07 19:43:16.405735, Expiration: 2015-08-07 19:53:16, Override Timeout: None, Elapsed Time: 0:00:10.014489, Left till expiry: 0:09:49.579779, Loop Count: 3
-2015-08-07 19:43:31,424 DEBUG    pytan.handler.QuestionPoller: ID 1294: Progress: Tested: 0, Passed: 0, MR Tested: 0, MR Passed: 0, Est Total: 2, Row Count: 0
-2015-08-07 19:43:31,424 DEBUG    pytan.handler.QuestionPoller: ID 1294: Timing: Started: 2015-08-07 19:43:16.405735, Expiration: 2015-08-07 19:53:16, Override Timeout: None, Elapsed Time: 0:00:15.018711, Left till expiry: 0:09:44.575556, Loop Count: 4
-2015-08-07 19:43:36,428 DEBUG    pytan.handler.QuestionPoller: ID 1294: Progress: Tested: 1, Passed: 1, MR Tested: 1, MR Passed: 1, Est Total: 2, Row Count: 74
-2015-08-07 19:43:36,428 DEBUG    pytan.handler.QuestionPoller: ID 1294: Timing: Started: 2015-08-07 19:43:16.405735, Expiration: 2015-08-07 19:53:16, Override Timeout: None, Elapsed Time: 0:00:20.022489, Left till expiry: 0:09:39.571779, Loop Count: 5
-2015-08-07 19:43:36,428 INFO     pytan.handler.QuestionPoller: ID 1294: Progress Changed 50% (1 of 2)
-2015-08-07 19:43:41,432 DEBUG    pytan.handler.QuestionPoller: ID 1294: Progress: Tested: 1, Passed: 1, MR Tested: 1, MR Passed: 1, Est Total: 2, Row Count: 74
-2015-08-07 19:43:41,432 DEBUG    pytan.handler.QuestionPoller: ID 1294: Timing: Started: 2015-08-07 19:43:16.405735, Expiration: 2015-08-07 19:53:16, Override Timeout: None, Elapsed Time: 0:00:25.027214, Left till expiry: 0:09:34.567054, Loop Count: 6
-2015-08-07 19:43:46,441 DEBUG    pytan.handler.QuestionPoller: ID 1294: Progress: Tested: 1, Passed: 1, MR Tested: 1, MR Passed: 1, Est Total: 2, Row Count: 74
-2015-08-07 19:43:46,442 DEBUG    pytan.handler.QuestionPoller: ID 1294: Timing: Started: 2015-08-07 19:43:16.405735, Expiration: 2015-08-07 19:53:16, Override Timeout: None, Elapsed Time: 0:00:30.036345, Left till expiry: 0:09:29.557923, Loop Count: 7
-2015-08-07 19:43:51,449 DEBUG    pytan.handler.QuestionPoller: ID 1294: Progress: Tested: 2, Passed: 2, MR Tested: 2, MR Passed: 2, Est Total: 2, Row Count: 75
-2015-08-07 19:43:51,449 DEBUG    pytan.handler.QuestionPoller: ID 1294: Timing: Started: 2015-08-07 19:43:16.405735, Expiration: 2015-08-07 19:53:16, Override Timeout: None, Elapsed Time: 0:00:35.044025, Left till expiry: 0:09:24.550243, Loop Count: 8
-2015-08-07 19:43:51,449 INFO     pytan.handler.QuestionPoller: ID 1294: Progress Changed 100% (2 of 2)
-2015-08-07 19:43:51,449 INFO     pytan.handler.QuestionPoller: ID 1294: Reached Threshold of 99% (2 of 2)
-
-Type of response:  &lt;type &#39;dict&#39;&gt;
-
-Pretty print of response:
-{&#39;poller_object&#39;: &lt;pytan.pollers.QuestionPoller object at 0x10a615f10&gt;,
- &#39;poller_success&#39;: True,
- &#39;question_object&#39;: &lt;taniumpy.object_types.question.Question object at 0x10a5f57d0&gt;,
- &#39;question_results&#39;: &lt;taniumpy.object_types.result_set.ResultSet object at 0x10a5b9a10&gt;}
-
-Equivalent Question if it were to be asked in the Tanium Console:
-Get Folder Name Search with RegEx Match[Program Files, , No, No, Microsoft.*] containing &quot;Shared&quot; from all machines
-
-CSV Results of response:
-&quot;Folder Name Search with RegEx Match[Program Files, , No, No, Microsoft.*]&quot;
-[no results]
-C:\Program Files\Common Files\Microsoft Shared\VS7Debug
-C:\Program Files\Common Files\Microsoft Shared\ink\ar-SA
-C:\Program Files\Common Files\Microsoft Shared\ink\ru-RU
-C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\keypad
-C:\Program Files\Common Files\Microsoft Shared\ink
-C:\Program Files\Common Files\Microsoft Shared\ink\sv-SE
-C:\Program Files\Common Files\Microsoft Shared\ink\uk-UA
-C:\Program Files\Common Files\Microsoft Shared\ink\sl-SI
-C:\Program Files\Common Files\Microsoft Shared\ink\hu-HU
-C:\Program Files\Common Files\Microsoft Shared\ink\zh-TW
-C:\Program Files\Common Files\Microsoft Shared\ink\zh-CN
-C:\Program Files\Common Files\Microsoft Shared\ink\fi-FI
-C:\Program Files\Common Files\Microsoft Shared
-..trimmed for brevity..
-</pre></div>
-</td></tr></table></div>
-</div>
+<p class="rubric">Footnotes</p>
+<table class="docutils footnote" frame="void" id="id1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[1]</td><td>this file automatically created by BUILD/build_api_examples.py</td></tr>
+</tbody>
+</table>
 </div>
 
 
@@ -428,10 +348,10 @@ C:\Program Files\Common Files\Microsoft Shared
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="ask_manual_question_sensor_with_filter_and_3_options.html" class="btn btn-neutral float-right" title="2.11.3.12. Ask manual question sensor with filter and 3 options">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="ask_manual_question_sensor_with_filter_and_3_options.html" class="btn btn-neutral float-right" title="2.11.8.12. Ask Manual Question Sensor With Filter And 3 Options">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="ask_manual_question_sensor_with_filter.html" class="btn btn-neutral" title="2.11.3.10. Ask manual question sensor with filter"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="ask_manual_question_sensor_with_filter.html" class="btn btn-neutral" title="2.11.8.10. Ask Manual Question Sensor With Filter"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -441,7 +361,7 @@ C:\Program Files\Common Files\Microsoft Shared
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Aug 31, 2015.
+      Last updated on Sep 03, 2015.
     </p>
   </div>
 

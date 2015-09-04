@@ -83,7 +83,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../pytan.xml_clean.html">2.8. pytan.xml_clean module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../pytan.unittest.html">2.9. pytan Unit Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../pytan.functest.html">2.10. pytan Functional Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/pytan_examples.html">2.11. PyTan API examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/pytan_examples.html">2.11. PyTan API Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../soap_examples/6.5.314.4301/soap_examples_6.5.314.4301.html">2.12. SOAP API Examples for Platform Version 6.5.314.4301</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../taniumpy.html">3. taniumpy package</a></li>
@@ -160,9 +161,9 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="nb">setattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">UNPACK_ATTR</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">func</span>
+    <span class="k">return</span> <span class="n">func</span></div>
 
-</div>
+
 <div class="viewcode-block" id="data"><a class="viewcode-back" href="../ddt.html#ddt.data">[docs]</a><span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="o">*</span><span class="n">values</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Method decorator to add to your test methods.</span>
@@ -173,9 +174,9 @@
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
         <span class="nb">setattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">DATA_ATTR</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">func</span>
-    <span class="k">return</span> <span class="n">wrapper</span>
+    <span class="k">return</span> <span class="n">wrapper</span></div>
 
-</div>
+
 <div class="viewcode-block" id="file_data"><a class="viewcode-back" href="../ddt.html#ddt.file_data">[docs]</a><span class="k">def</span> <span class="nf">file_data</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Method decorator to add to your test methods.</span>
@@ -198,17 +199,17 @@
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
         <span class="nb">setattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">FILE_ATTR</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">func</span>
-    <span class="k">return</span> <span class="n">wrapper</span>
+    <span class="k">return</span> <span class="n">wrapper</span></div>
 
-</div>
+
 <div class="viewcode-block" id="is_hash_randomized"><a class="viewcode-back" href="../ddt.html#ddt.is_hash_randomized">[docs]</a><span class="k">def</span> <span class="nf">is_hash_randomized</span><span class="p">():</span>
     <span class="k">return</span> <span class="p">(((</span><span class="n">sys</span><span class="o">.</span><span class="n">hexversion</span> <span class="o">&gt;=</span> <span class="mh">0x02070300</span> <span class="ow">and</span>
               <span class="n">sys</span><span class="o">.</span><span class="n">hexversion</span> <span class="o">&lt;</span> <span class="mh">0x03000000</span><span class="p">)</span> <span class="ow">or</span>
              <span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">hexversion</span> <span class="o">&gt;=</span> <span class="mh">0x03020300</span><span class="p">))</span> <span class="ow">and</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">hash_randomization</span> <span class="ow">and</span>
-            <span class="s">&#39;PYTHONHASHSEED&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">)</span>
+            <span class="s">&#39;PYTHONHASHSEED&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">)</span></div>
 
-</div>
+
 <div class="viewcode-block" id="mk_test_name"><a class="viewcode-back" href="../ddt.html#ddt.mk_test_name">[docs]</a><span class="k">def</span> <span class="nf">mk_test_name</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a new name for a test case.</span>
@@ -264,9 +265,9 @@
         <span class="c"># fallback for python2</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;ascii&#39;</span><span class="p">,</span> <span class="s">&#39;backslashreplace&#39;</span><span class="p">)</span>
     <span class="n">test_name</span> <span class="o">=</span> <span class="s">&quot;{0}_{1}_{2}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&#39;\W|^(?=\d)&#39;</span><span class="p">,</span> <span class="s">&#39;_&#39;</span><span class="p">,</span> <span class="n">test_name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&#39;\W|^(?=\d)&#39;</span><span class="p">,</span> <span class="s">&#39;_&#39;</span><span class="p">,</span> <span class="n">test_name</span><span class="p">)</span></div>
 
-</div>
+
 <div class="viewcode-block" id="ddt"><a class="viewcode-back" href="../ddt.html#ddt.ddt">[docs]</a><span class="k">def</span> <span class="nf">ddt</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class decorator for subclasses of ``unittest.TestCase``.</span>
@@ -366,7 +367,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Aug 31, 2015.
+      Last updated on Sep 03, 2015.
     </p>
   </div>
 

@@ -13,6 +13,7 @@ pytan package
 .. autodata:: pytan.__author__
 
 .. toctree::
+   :glob:
 
    pytan.handler
    pytan.exceptions
@@ -25,4 +26,4 @@ pytan package
    pytan.unittest
    pytan.functest
    examples/pytan_examples
-
+   soap_examples/*/soap_examples*

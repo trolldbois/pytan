@@ -83,7 +83,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../pytan.xml_clean.html">2.8. pytan.xml_clean module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../pytan.unittest.html">2.9. pytan Unit Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../pytan.functest.html">2.10. pytan Functional Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../examples/pytan_examples.html">2.11. PyTan API examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples/pytan_examples.html">2.11. PyTan API Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../soap_examples/6.5.314.4301/soap_examples_6.5.314.4301.html">2.12. SOAP API Examples for Platform Version 6.5.314.4301</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../taniumpy.html">3. taniumpy package</a></li>
@@ -156,10 +157,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">expected</span> <span class="o">=</span> <span class="n">expected</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">actual</span> <span class="o">=</span> <span class="n">actual</span>
         <span class="n">err</span> <span class="o">=</span> <span class="s">&#39;Property {} is not of type {}, got {}&#39;</span><span class="o">.</span><span class="n">format</span>
-        <span class="ne">Exception</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">err</span><span class="p">(</span><span class="nb">property</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">expected</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">actual</span><span class="p">)))</span>
+        <span class="ne">Exception</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">err</span><span class="p">(</span><span class="nb">property</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">expected</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">actual</span><span class="p">)))</span></div>
 
-</div>
-<div class="viewcode-block" id="BaseType"><a class="viewcode-back" href="../../../taniumpy.html#taniumpy.object_types.base.BaseType">[docs]</a><span class="k">class</span> <span class="nc">BaseType</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+<div class="viewcode-block" id="BaseType"><a class="viewcode-back" href="../../../taniumpy.html#taniumpy.object_types.base.BaseType">[docs]</a><span class="k">class</span> <span class="nc">BaseType</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span></div>
 
     <span class="n">_soap_tag</span> <span class="o">=</span> <span class="bp">None</span>
 
@@ -232,7 +233,7 @@
                 <span class="p">)</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">BaseType</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__setattr__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
-<div class="viewcode-block" id="BaseType.append"><a class="viewcode-back" href="../../../taniumpy.html#taniumpy.object_types.base.BaseType.append">[docs]</a>    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Allow adding to list.</span>
 
 <span class="sd">        Only supported on types that have a single property</span>
@@ -245,8 +246,8 @@
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
                 <span class="s">&#39;Not simply a list type, append not supported&#39;</span>
             <span class="p">)</span>
-</div>
-<div class="viewcode-block" id="BaseType.toSOAPElement"><a class="viewcode-back" href="../../../taniumpy.html#taniumpy.object_types.base.BaseType.toSOAPElement">[docs]</a>    <span class="k">def</span> <span class="nf">toSOAPElement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span> <span class="c"># noqa</span>
+
+    <span class="k">def</span> <span class="nf">toSOAPElement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span> <span class="c"># noqa</span>
         <span class="n">root</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_soap_tag</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_simple_properties</span><span class="p">:</span>
             <span class="n">el</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
@@ -291,14 +292,14 @@
                     <span class="k">if</span> <span class="n">vals</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">minimal</span><span class="p">:</span>
                         <span class="n">root</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">el</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">root</span>
-</div>
-<div class="viewcode-block" id="BaseType.toSOAPBody"><a class="viewcode-back" href="../../../taniumpy.html#taniumpy.object_types.base.BaseType.toSOAPBody">[docs]</a>    <span class="k">def</span> <span class="nf">toSOAPBody</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span> <span class="c"># noqa</span>
+
+    <span class="k">def</span> <span class="nf">toSOAPBody</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span> <span class="c"># noqa</span>
         <span class="n">out</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">()</span>
         <span class="n">ET</span><span class="o">.</span><span class="n">ElementTree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">toSOAPElement</span><span class="p">(</span><span class="n">minimal</span><span class="o">=</span><span class="n">minimal</span><span class="p">))</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">out</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
-</div>
+
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="BaseType.fromSOAPElement"><a class="viewcode-back" href="../../../taniumpy.html#taniumpy.object_types.base.BaseType.fromSOAPElement">[docs]</a>    <span class="k">def</span> <span class="nf">fromSOAPElement</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">el</span><span class="p">):</span> <span class="c"># noqa</span>
+    <span class="k">def</span> <span class="nf">fromSOAPElement</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">el</span><span class="p">):</span> <span class="c"># noqa</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">cls</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">_simple_properties</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
             <span class="n">pel</span> <span class="o">=</span> <span class="n">el</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;./{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">p</span><span class="p">))</span>
@@ -330,9 +331,9 @@
                     <span class="nb">getattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elem</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">result</span>
-</div>
+
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="BaseType.fromSOAPBody"><a class="viewcode-back" href="../../../taniumpy.html#taniumpy.object_types.base.BaseType.fromSOAPBody">[docs]</a>    <span class="k">def</span> <span class="nf">fromSOAPBody</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">body</span><span class="p">):</span> <span class="c"># noqa</span>
+    <span class="k">def</span> <span class="nf">fromSOAPBody</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">body</span><span class="p">):</span> <span class="c"># noqa</span>
         <span class="sd">&quot;&quot;&quot;Parse body (text) and produce Python tanium objects.</span>
 
 <span class="sd">        This method assumes a single result_object, which</span>
@@ -351,8 +352,8 @@
         <span class="n">r</span> <span class="o">=</span> <span class="n">OBJECT_LIST_TYPES</span><span class="p">[</span><span class="n">result_object</span><span class="o">.</span><span class="n">tag</span><span class="p">]</span><span class="o">.</span><span class="n">fromSOAPElement</span><span class="p">(</span><span class="n">result_object</span><span class="p">)</span>
         <span class="n">r</span><span class="o">.</span><span class="n">_RESULT_OBJECT</span> <span class="o">=</span> <span class="n">result_object</span>
         <span class="k">return</span> <span class="n">r</span>
-</div>
-<div class="viewcode-block" id="BaseType.flatten_jsonable"><a class="viewcode-back" href="../../../taniumpy.html#taniumpy.object_types.base.BaseType.flatten_jsonable">[docs]</a>    <span class="k">def</span> <span class="nf">flatten_jsonable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">prefix</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">flatten_jsonable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">prefix</span><span class="p">):</span>
         <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
@@ -369,16 +370,16 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">result</span><span class="p">[</span><span class="n">prefix</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
         <span class="k">return</span> <span class="n">result</span>
-</div>
-<div class="viewcode-block" id="BaseType.to_flat_dict_explode_json"><a class="viewcode-back" href="../../../taniumpy.html#taniumpy.object_types.base.BaseType.to_flat_dict_explode_json">[docs]</a>    <span class="k">def</span> <span class="nf">to_flat_dict_explode_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">to_flat_dict_explode_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;see if the value is json. If so, flatten it out into a dict&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">js</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">flatten_jsonable</span><span class="p">(</span><span class="n">js</span><span class="p">,</span> <span class="n">prefix</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">None</span>
-</div>
-<div class="viewcode-block" id="BaseType.to_flat_dict"><a class="viewcode-back" href="../../../taniumpy.html#taniumpy.object_types.base.BaseType.to_flat_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_flat_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">explode_json_string_values</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">to_flat_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">explode_json_string_values</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Convert the object to a dict, flattening any lists or nested types</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
@@ -413,14 +414,14 @@
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">result</span><span class="p">[</span><span class="n">prefix</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span>
         <span class="k">return</span> <span class="n">result</span>
-</div>
-<div class="viewcode-block" id="BaseType.explode_json"><a class="viewcode-back" href="../../../taniumpy.html#taniumpy.object_types.base.BaseType.explode_json">[docs]</a>    <span class="k">def</span> <span class="nf">explode_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">explode_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">None</span>
-</div>
-<div class="viewcode-block" id="BaseType.to_jsonable"><a class="viewcode-back" href="../../../taniumpy.html#taniumpy.object_types.base.BaseType.to_jsonable">[docs]</a>    <span class="k">def</span> <span class="nf">to_jsonable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">explode_json_string_values</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">include_type</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">to_jsonable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">explode_json_string_values</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">include_type</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
         <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="n">include_type</span><span class="p">:</span>
             <span class="n">result</span><span class="p">[</span><span class="s">&#39;_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_soap_tag</span>
@@ -452,9 +453,9 @@
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">result</span><span class="p">[</span><span class="n">p</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span>
-</div>
+
     <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="BaseType.to_json"><a class="viewcode-back" href="../../../taniumpy.html#taniumpy.object_types.base.BaseType.to_json">[docs]</a>    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="n">jsonable</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="n">jsonable</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Convert to a json string.</span>
 
 <span class="sd">        jsonable can be a single BaseType instance of a list</span>
@@ -473,9 +474,9 @@
                 <span class="n">sort_keys</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
                 <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
             <span class="p">)</span>
-</div>
+
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="BaseType._from_json"><a class="viewcode-back" href="../../../taniumpy.html#taniumpy.object_types.base.BaseType._from_json">[docs]</a>    <span class="k">def</span> <span class="nf">_from_json</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">jsonable</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_from_json</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">jsonable</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Private helper to parse from JSON after type is instantiated&quot;&quot;&quot;</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">cls</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">_simple_properties</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
@@ -497,9 +498,9 @@
                         <span class="n">vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
                 <span class="nb">setattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">vals</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span>
-</div>
+
     <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="BaseType.from_jsonable"><a class="viewcode-back" href="../../../taniumpy.html#taniumpy.object_types.base.BaseType.from_jsonable">[docs]</a>    <span class="k">def</span> <span class="nf">from_jsonable</span><span class="p">(</span><span class="n">jsonable</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">from_jsonable</span><span class="p">(</span><span class="n">jsonable</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Inverse of to_jsonable, with explode_json_string_values=False.</span>
 
 <span class="sd">        This can be used to import objects from serialized JSON. This JSON should come from BaseType.to_jsonable(explode_json_string_values=False, include+type=True)</span>
@@ -525,9 +526,9 @@
             <span class="k">return</span> <span class="n">result</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;Expected list or dict to deserialize&#39;</span><span class="p">)</span>
-</div>
+
     <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="BaseType.write_csv"><a class="viewcode-back" href="../../../taniumpy.html#taniumpy.object_types.base.BaseType.write_csv">[docs]</a>    <span class="k">def</span> <span class="nf">write_csv</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">explode_json_string_values</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">write_csv</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">explode_json_string_values</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Write &#39;val&#39; to CSV. val can be a BaseType instance or a list of</span>
 <span class="sd">        BaseType</span>
 
@@ -597,7 +598,7 @@
             <span class="n">row</span> <span class="o">=</span> <span class="n">base_type</span><span class="o">.</span><span class="n">to_flat_dict</span><span class="p">(</span><span class="n">explode_json_string_values</span><span class="o">=</span><span class="n">explode_json_string_values</span><span class="p">)</span>
             <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span>
                 <span class="p">[</span><span class="n">fix_newlines</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">))</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">headers_sorted</span><span class="p">]</span>
-            <span class="p">)</span></div></div>
+            <span class="p">)</span>
 </pre></div>
 
           </div>
@@ -609,7 +610,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Aug 31, 2015.
+      Last updated on Sep 03, 2015.
     </p>
   </div>
 
