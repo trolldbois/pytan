@@ -1958,6 +1958,9 @@ class Handler(object):
         clean_keys = ['obj', 'objtype', 'obj_map']
         clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
+        err_keys = ['pytan_help']
+        err_args = pytan.utils.clean_kwargs(kwargs=kwargs, keys=err_keys)
+
         obj_map = pytan.utils.get_obj_map(objtype=objtype)
 
         manual_search = obj_map['manual']
@@ -1985,7 +1988,7 @@ class Handler(object):
 
             if not return_objs:
                 err = "No results found searching for {} with {}!!".format
-                raise pytan.exceptions.HandlerError(err(objtype, kwargs))
+                raise pytan.exceptions.HandlerError(err(objtype, err_args))
 
             return return_objs
 
@@ -2072,9 +2075,8 @@ class Handler(object):
         try:
             added_obj = self.session.add(obj=obj, **clean_kwargs)
         except Exception as e:
-            self.mylog.debug(e)
-            err = "Error while trying to add object {}!!".format
-            raise pytan.exceptions.HandlerError(err(search_str))
+            err = "Error while trying to add object '{}': {}!!".format
+            raise pytan.exceptions.HandlerError(err(search_str, e))
 
         h = "Issue a GetObject on the recently added object in order to get the full object"
         clean_kwargs['pytan_help'] = h
