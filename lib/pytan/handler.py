@@ -2286,7 +2286,7 @@ class Handler(object):
             def_search.update(clean_kwargs)
 
             # get the sensor object
-            if not d.get('sensor_obj', ''):
+            if 'sensor_obj' not in d:
                 h = (
                     "Issue a GetObject to get the full object of a sensor for inclusion in a "
                     "question or action"
@@ -2320,7 +2320,7 @@ class Handler(object):
         def_search.update(clean_kwargs)
 
         # get the package object
-        if not d.get('package_obj', ''):
+        if 'package_obj' not in d:
             h = (
                 "Issue a GetObject to get the full object of a package for inclusion in an "
                 "action"
