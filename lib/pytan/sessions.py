@@ -1328,37 +1328,6 @@ class Session(object):
         stats_thread.daemon = True
         stats_thread.start()
 
-    def _parse_versioning(self, **kwargs):
-        """Parses self.server_version into a dictionary
-
-        Returns
-        -------
-        dict
-            * dict of parsed tanium server version containing keys: major, minor, revision, and build
-
-        Notes
-        -----
-          * If Session is unable to fetch info.json properly for some reason, then self.server_version will be "Unable to determine"
-          * If Session has not yet fetched info.json, then self.server_version will be "Not yet determined"
-        """
-        v_keys = ['major', 'minor', 'revision', 'build']
-
-        if self._invalid_server_version():
-            v_ints = [0, 0, 0, 0]
-        else:
-            try:
-                v_parts = self.server_version.split('.')
-                v_ints = [int(x) for x in v_parts]
-            except:
-                m = (
-                    "Unable to parse major, minor, revision, and build from server "
-                    "version string: {}"
-                ).format
-                raise pytan.exceptions.VersionParseError(m(self.server_version))
-
-        v_dict = dict(zip(v_keys, v_ints))
-        return v_dict
-
     def platform_is_6_5(self, **kwargs):
         """Check to see if self.server_version is less than 6.5
 
