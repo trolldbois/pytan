@@ -34,7 +34,7 @@ my_file = os.path.abspath(__file__)
 my_dir = os.path.dirname(my_file)
 parent_dir = os.path.dirname(my_dir)
 path_adds = [parent_dir]
-[sys.path.append(aa) for aa in path_adds if aa not in sys.path]
+[sys.path.insert(0, aa) for aa in path_adds]
 
 import taniumpy  # noqa
 
