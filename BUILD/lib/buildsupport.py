@@ -14,6 +14,7 @@ import glob
 import string
 import json
 import StringIO
+import platform
 from random import randint
 
 
@@ -191,3 +192,21 @@ def process_example(example_idx, example_dict, sub_dict):
 def spew(t, verbose=False):
     if verbose:
         print t
+
+
+def determine_os_ver():
+    os_system = platform.system()
+    if os_system.lower() == 'darwin':
+        os_name = 'OS X'
+        os_version = platform.mac_ver()[0]
+        os_version = "{} {}".format(os_name, os_version)
+    elif os_system.lower() == 'windows':
+        os_name = os_system
+        os_version = platform.release()
+        os_patch = platform.win32_ver()[2]
+        os_version = "{} {} {}".format(os_name, os_version, os_patch)
+    elif os_system.lower() == 'linux':
+        os_version = ' '.join(platform.linux_distribution())
+    else:
+        raise Exception("OS System not coded for: {}".format(os_system))
+    return os_version

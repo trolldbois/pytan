@@ -12,6 +12,7 @@ import json
 import glob
 import pprint
 import shutil
+import tempfile
 
 sys.dont_write_bytecode = True
 my_file = os.path.abspath(sys.argv[0])
@@ -22,7 +23,7 @@ build_lib_dir = os.path.join(my_dir, 'lib')
 test_dir = os.path.join(parent_dir, 'test')
 path_adds = [build_lib_dir, pytan_lib_dir, test_dir]
 
-[sys.path.append(aa) for aa in path_adds if aa not in sys.path]
+[sys.path.insert(0, aa) for aa in path_adds if aa not in sys.path]
 
 import pytan
 import pytan.binsupport
@@ -31,9 +32,20 @@ import script_definitions
 import API_INFO
 
 pytan.binsupport.version_check(__version__)
-handler = pytan.handler.Handler(**API_INFO.SERVER_INFO)
+
+api_info = API_INFO.SERVER_INFO
+# # override 6.5 host
+api_info['host'] = "10.0.1.240"
+
+# # override 6.2 host
+# api_info['host'] = "172.16.31.128"
+
+handler = pytan.handler.Handler(**api_info)
 platform_version = handler.get_server_version()
+is6_5 = handler.session.platform_is_6_5()
 print "Platform Version: {}".format(platform_version)
+
+BASIC_PY_CODE = script_definitions.BASIC_PY_CODE.format(**api_info)
 
 
 class ExampleProcesser(object):
@@ -51,9 +63,11 @@ class ExampleProcesser(object):
         self.ddt_dir = os.path.join(self.test_dir, 'ddt')
 
         if tempdir:
-            doc_dir = '/tmp'
+            doc_dir = os.path.join('/tmp/API_BUILDER', platform_version)
+            staticdoc_dir = os.path.join('/tmp/API_BUILDER', platform_version)
         else:
-            doc_dir = os.path.join(parent_dir, 'BUILD', 'doc', 'source')
+            doc_dir = script_definitions.doc_source
+            staticdoc_dir = script_definitions.staticdoc_source
 
         # output directory for RST files
         self.rst_out_dir = os.path.join(doc_dir, 'examples')
@@ -64,7 +78,7 @@ class ExampleProcesser(object):
         # output directory for RST API example files
         self.soap_example_out_dir = os.path.join(doc_dir, 'soap_examples', platform_version)
         # output directory for response/request files for RST file linkage
-        self.soap_outputs_dir = os.path.join(doc_dir, '_static', 'soap_outputs', platform_version)
+        self.soap_outputs_dir = os.path.join(staticdoc_dir, 'soap_outputs', platform_version)
 
     def clean_up_output_dirs(self):
         output_dirs = [
@@ -164,6 +178,7 @@ class ExampleProcesser(object):
             resp = self.magic_parser(out=x.text)
             req_headers = self.indent_block(pytan.utils.jsonify(dict(x.request.headers)))
             resp_headers = self.indent_block(pytan.utils.jsonify(dict(x.headers)))
+            x.platform_version = platform_version
             x.number = idx + 1
             x.stepname = 'step_{}_response'.format(x.number)
             x.request.stepname = 'step_{}_request'.format(x.number)
@@ -295,6 +310,13 @@ class ExampleProcesser(object):
         self.ddt_examples = []
 
         for name, info in sorted(ddt_tests.items(), key=lambda x: x[1]['priority']):
+            only_65 = info.get('6_5_only', False)
+            if only_65 and not is6_5:
+                print "Skipping {} - not valid for 6.2 platform".format(name)
+                continue
+
+            if 'invalid' in name and 'deploy' in name:
+                info["report_dir"] = info.get('report_dir', tempfile.gettempdir())
 
             get_args_block = self.build_args_block(
                 'get_kwargs', info, 'get', 'handler.get() method',
@@ -315,7 +337,7 @@ class ExampleProcesser(object):
             response_block = response_template.format(**info)
 
             py_code_items = [
-                script_definitions.BASIC_PY_CODE,
+                BASIC_PY_CODE,
                 get_args_block,
                 delete_args_block,
                 args_block,
@@ -357,7 +379,7 @@ class ExampleProcesser(object):
         ew = buildsupport.ExecWrap()
         ew_ret = ew.main(
             name=script_definitions.BASIC_NAME,
-            code_block=script_definitions.BASIC_PY_CODE,
+            code_block=BASIC_PY_CODE,
             verbose=self.VERBOSE,
         )
         py_stdout, py_stderr, response_objects = ew_ret
@@ -365,14 +387,14 @@ class ExampleProcesser(object):
         self.make_rst_example(
             script_definitions.BASIC_NAME,
             script_definitions.BASIC_DESC,
-            script_definitions.BASIC_PY_CODE,
+            BASIC_PY_CODE,
             py_stdout,
             py_stderr,
         )
         self.make_py_example(
             script_definitions.BASIC_NAME,
             script_definitions.BASIC_DESC,
-            script_definitions.BASIC_PY_CODE,
+            BASIC_PY_CODE,
             py_stdout,
             py_stderr,
         )
@@ -406,6 +428,6 @@ class ExampleProcesser(object):
 if __name__ == '__main__':
     skip_files = ['ddt_invalid_connects.json']
 
-    ep = ExampleProcesser(verbose=False, tempdir=False)
+    ep = ExampleProcesser(verbose=False, tempdir=True)
     ep.main(skip_files=skip_files, clean=True)
     console = pytan.binsupport.HistoryConsole()

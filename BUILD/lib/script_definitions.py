@@ -21,6 +21,9 @@ path_adds = [my_dir, pytan_lib_dir]
 
 import pytan
 
+doc_source = os.path.join(parent_dir, 'BUILD', 'doc', 'source')
+staticdoc_source = os.path.join(doc_source, '_static')
+
 scripts = {}
 sname = 'ask_manual'
 scripts[sname] = {}
@@ -315,6 +318,22 @@ EXAMPLE_PY_TEMPLATE = '''#!/usr/bin/env python
 \'\'\'
 '''
 
+VALIDATION_RST_TEMPLATE = """
+
+Tanium: {platform_version}, OS: {os_version}, Python: {python_version_short}
+========================================================================================
+
+This is the output from running test/test_pytan_valid_server_tests.py against the following:
+
+* PyTan Version: {pytan_version}
+* Tanium Platform Version: {platform_version}
+* Test Date: {test_date}
+* OS Version running PyTan: {os_version}
+* Python version running PyTan: {python_version_full}
+* Output from tests: `{stdout_fn} <../_static/{dir_base}/{stdout_fn}>`_
+
+"""
+
 EXAMPLE_RST_TEMPLATE = """
 {title}
 ========================================================================================
@@ -355,8 +374,8 @@ Step {response.number} - {response.pytan_help}
 * URL: {response.url}
 * HTTP Method: {response.request.method}
 * Elapsed Time: {response.elapsed}
-* `Step {response.number} Request Body <../_static/soap_outputs/{response.request.inc_file}>`_
-* `Step {response.number} Response Body <../_static/soap_outputs/{response.inc_file}>`_
+* `Step {response.number} Request Body <../../_static/soap_outputs/{response.platform_version}/{response.request.inc_file}>`_
+* `Step {response.number} Response Body <../../_static/soap_outputs/{response.platform_version}/{response.inc_file}>`_
 
 * Request Headers:
 
@@ -618,22 +637,23 @@ print pprint.pformat(response)
 print "...OUTPUT: Equivalent Question if it were to be asked in the Tanium Console: "
 print response['question_object'].query_text
 
-# call the export_obj() method to convert response to CSV and store it in out
-export_kwargs = {{}}
-export_kwargs['obj'] = response['question_results']
-export_kwargs['export_format'] = 'csv'
+if response['question_results']:
+    # call the export_obj() method to convert response to CSV and store it in out
+    export_kwargs = {{}}
+    export_kwargs['obj'] = response['question_results']
+    export_kwargs['export_format'] = 'csv'
 
-print "...CALLING: handler.export_obj() with args {{}}".format(export_kwargs)
-out = handler.export_obj(**export_kwargs)
+    print "...CALLING: handler.export_obj() with args {{}}".format(export_kwargs)
+    out = handler.export_obj(**export_kwargs)
 
-# trim the output if it is more than 15 lines long
-if len(out.splitlines()) > 15:
-    out = out.splitlines()[0:15]
-    out.append('..trimmed for brevity..')
-    out = '\\n'.join(out)
+    # trim the output if it is more than 15 lines long
+    if len(out.splitlines()) > 15:
+        out = out.splitlines()[0:15]
+        out.append('..trimmed for brevity..')
+        out = '\\n'.join(out)
 
-print "...OUTPUT: CSV Results of response: "
-print out
+    print "...OUTPUT: CSV Results of response: "
+    print out
 """
 
 RESPONSE_TEMPLATES['action'] = """
@@ -759,13 +779,13 @@ path_adds = [lib_dir, pytan_static_path]
 import pytan
 
 # create a dictionary of arguments for the pytan handler
-handler_args = {}
+handler_args = {{}}
 
 # establish our connection info for the Tanium Server
-handler_args['username'] = "Administrator"
-handler_args['password'] = "Tanium2015!"
-handler_args['host'] = "10.0.1.240"
-handler_args['port'] = "443"  # optional
+handler_args['username'] = "{username}"
+handler_args['password'] = "{password}"
+handler_args['host'] = "{host}"
+handler_args['port'] = "{port}"  # optional
 
 # optional, level 0 is no output except warnings/errors
 # level 1 through 12 are more and more verbose
@@ -779,11 +799,11 @@ handler_args['debugformat'] = False
 handler_args['record_all_requests'] = True
 
 # instantiate a handler using all of the arguments in the handler_args dictionary
-print "...CALLING: pytan.handler() with args: {}".format(handler_args)
+print "...CALLING: pytan.handler() with args: {{}}".format(handler_args)
 handler = pytan.Handler(**handler_args)
 
 # print out the handler string
-print "...OUTPUT: handler string: {}".format(handler)"""
+print "...OUTPUT: handler string: {{}}".format(handler)"""
 
 BASIC_NAME = "pytan_api_basic_handler_example"
 BASIC_DESC = """This is an example for how to instantiate a :class:`pytan.Handler` object.
