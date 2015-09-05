@@ -1,6 +1,10 @@
-# 2.1.0
+# 2.1.1
 
 [Development branch](https://github.com/tanium/pytan/tree/develop) on N/A
+
+# 2.1.0
+
+[Released](https://github.com/tanium/pytan/releases/tag/2.1.0) on Sep 05 2015 
   * bug fixes:
     * pytan.handler.Handler.deploy_action(): changed to return package object that was created for said action, not the package object that was sourced from
     * pytan.handler.Handler._platform_is_6_2(): force a call to pytan.handler.Handler.get_server_version() if self.server_version_dict is not set yet
@@ -57,8 +61,9 @@
     * console.wsdl ref link
     * command line help has note about export format needing to be at end of command line now
     * re-wrote BUILD/build_api_examples.py as a real process
-    * started adding XML recording capability to BUILD/build_api_examples.py, still lots of work to do
-    * flattened out doc structure
+    * added auto build of SOAP API documentation
+    * added auto build of pytan validation tests documentation
+    * flattened, reformatted, and cleaned up doc structure
     * made all documentation more automated, no more need to update RST files with new methods/removed methods
 
 # 2.0.3
