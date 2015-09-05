@@ -22,7 +22,7 @@ my_file = os.path.abspath(__file__)
 my_dir = os.path.dirname(my_file)
 parent_dir = os.path.dirname(my_dir)
 path_adds = [parent_dir]
-[sys.path.append(aa) for aa in path_adds if aa not in sys.path]
+[sys.path.insert(0, aa) for aa in path_adds if aa not in sys.path]
 
 import taniumpy
 import xmltodict
@@ -281,7 +281,7 @@ def remove_logging_handler(name='all'):
 
 
 def setup_console_logging(gmt_tz=True):
-    """Creates a console logging handler using :class:`SplitStreamHandler`"""
+    """Creates a console logging handler using logging.StreamHandler(sys.stdout)"""
 
     ch_name = 'console'
     remove_logging_handler('console')
@@ -291,8 +291,10 @@ def setup_console_logging(gmt_tz=True):
         logging.Formatter.converter = time.gmtime
 
     # add a console handler to all loggers that goes to STDOUT for INFO
-    # and below, but STDERR for WARNING and above
-    ch = SplitStreamHandler()
+    # and below, but STDERR for WARNING and above (old method)
+    # ch = SplitStreamHandler()
+
+    ch = logging.StreamHandler(sys.stdout)
     ch.set_name(ch_name)
     ch.setLevel(logging.DEBUG)
     ch.setFormatter(logging.Formatter(pytan.constants.INFO_FORMAT))
