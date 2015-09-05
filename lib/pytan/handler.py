@@ -2909,7 +2909,7 @@ class Handler(object):
             action_obj = self._add(obj=add_obj, pytan_help=h, **clean_kwargs)
 
         h = "Issue a GetObject to get the package for an Action"
-        action_package = self._find(obj=added_obj.package_spec, pytan_help=h, **clean_kwargs)
+        action_package = self._find(obj=action_obj.package_spec, pytan_help=h, **clean_kwargs)
 
         m = "DEPLOY_ACTION ADDED: {}, ID: {}".format
         self.mylog.debug(m(action_package.__class__.__name__, action_package.id))
