@@ -15,8 +15,10 @@ All of the documentation linked below is also available under the doc/ directory
 
   * [Full HTML documentation for PyTan](http://tanium.github.io/pytan)
   * [Full PDF documentation for PyTan](doc/pdf/PyTan-2.1.0.pdf)
-  * [API Examples for PyTan](http://tanium.github.io/pytan/examples/pytan_examples.html)
+  * [PyTan API Examples](http://tanium.github.io/pytan/examples/pytan_examples.html)
   * [Command line Documentation for PyTan](http://tanium.github.io/pytan/_static/bin_doc/index.html)
+
+Please contact Jim Olsen at jim.olsen@tanium.com with any questions or suggestions!
 
 ## Release strategy
 
