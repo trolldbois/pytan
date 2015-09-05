@@ -3,26 +3,26 @@
   <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <t:return>
       <command>GetResultInfo</command>
-      <session>1-6995-5602dcc91eee5e83246cd8affc00dae46fea49c258488a5456894e0bc6f91aac05fb2d73881976faf223cd41ee90b17e59c4cee7d20bc7f3a5740dd307cd6393</session>
+      <session>1-8133-2f23d765f79a2c299c2d76ee90b0c21a5d229ccc8deabbe2f498fb781d829296c5dc03568a4b628b9bb2871b4306b3f7769eab67f596e9c9ceb0844738eb559c</session>
       <ID></ID>
       <IDType></IDType>
       <ContextID></ContextID>
       <server_version>6.5.314.4301</server_version>
       <object_list>
         <question>
-          <id>10231</id>
+          <id>11655</id>
         </question>
       </object_list>
       <options>
         <suppress_object_list>1</suppress_object_list>
       </options>
-      <ResultXML>&lt;result_infos&gt;&lt;now&gt;2015/09/04 03:05:33 GMT-0000&lt;/now&gt;
+      <ResultXML>&lt;result_infos&gt;&lt;now&gt;2015/09/05 05:47:03 GMT-0000&lt;/now&gt;
 &lt;max_available_age&gt;0&lt;/max_available_age&gt;
 &lt;result_info&gt;&lt;age&gt;0&lt;/age&gt;
-&lt;id&gt;10231&lt;/id&gt;
+&lt;id&gt;11655&lt;/id&gt;
 &lt;report_count&gt;0&lt;/report_count&gt;
 &lt;saved_question_id&gt;0&lt;/saved_question_id&gt;
-&lt;question_id&gt;10231&lt;/question_id&gt;
+&lt;question_id&gt;11655&lt;/question_id&gt;
 &lt;archived_question_id&gt;0&lt;/archived_question_id&gt;&lt;seconds_since_issued&gt;0&lt;/seconds_since_issued&gt;&lt;issue_seconds&gt;0&lt;/issue_seconds&gt;&lt;expire_seconds&gt;0&lt;/expire_seconds&gt;&lt;tested&gt;0&lt;/tested&gt;&lt;passed&gt;0&lt;/passed&gt;&lt;mr_tested&gt;0&lt;/mr_tested&gt;&lt;mr_passed&gt;0&lt;/mr_passed&gt;&lt;estimated_total&gt;2&lt;/estimated_total&gt;
 &lt;select_count&gt;2&lt;/select_count&gt;
 &lt;row_count&gt;0&lt;/row_count&gt;&lt;error_count&gt;0&lt;/error_count&gt;&lt;no_results_count&gt;0&lt;/no_results_count&gt;&lt;row_count_machines&gt;0&lt;/row_count_machines&gt;&lt;row_count_flag&gt;0&lt;/row_count_flag&gt;&lt;/result_info&gt;

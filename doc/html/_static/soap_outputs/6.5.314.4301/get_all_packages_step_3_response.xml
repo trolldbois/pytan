@@ -3,7 +3,7 @@
   <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <t:return>
       <command>GetObject</command>
-      <session>1-6983-3cc1ff3c8446559d98a5700a15ce3106b11b317becff4716b35e037470c711ca51079fd83f54c80dfc3df43b5da5ae00dc766f188d07d96cf4262f42476c80fb</session>
+      <session>1-8116-33caaeaa26afcb134536c987895e561f702aec08b384d208cf01edfcbe8604566b06a6ef75a5797502d9ec6fe6cdcb9fc6b37eeb4a9a6e4a9775273995c0c2ce</session>
       <server_version>6.5.314.4301</server_version>
       <ID></ID>
       <IDType></IDType>
@@ -4470,11 +4470,11 @@
             <cache_row_id>140</cache_row_id>
           </package_spec>
           <package_spec>
-            <id>410</id>
+            <id>468</id>
             <name>Disable Java Auto Update API TEST</name>
             <display_name>Disable Java Auto Update</display_name>
-            <creation_time>2015-09-04T02:44:41</creation_time>
-            <modification_time>2015-09-04T02:44:41</modification_time>
+            <creation_time>2015-09-05T05:27:04</creation_time>
+            <modification_time>2015-09-05T05:27:04</modification_time>
             <last_modified_by>Administrator</last_modified_by>
             <files>
               <file>
@@ -4512,9 +4512,9 @@
             <skip_lock_flag>0</skip_lock_flag>
             <hidden_flag>0</hidden_flag>
             <signature></signature>
-            <available_time>2015-09-04T02:44:51</available_time>
+            <available_time>2015-09-05T05:27:14</available_time>
             <deleted_flag>0</deleted_flag>
-            <last_update>2015-09-04T02:44:41</last_update>
+            <last_update>2015-09-05T05:27:04</last_update>
             <source_id>0</source_id>
             <verify_group_id>0</verify_group_id>
             <verify_group>
@@ -4532,14 +4532,14 @@
                 <admin_flag>0</admin_flag>
               </item>
             </metadata>
-            <cache_row_id>143</cache_row_id>
+            <cache_row_id>161</cache_row_id>
           </package_spec>
           <cache_info>
-            <cache_id>3097169886</cache_id>
+            <cache_id>2605629776</cache_id>
             <page_row_count>67</page_row_count>
             <filtered_row_count>67</filtered_row_count>
             <cache_row_count>67</cache_row_count>
-            <expiration>2015-09-04T02:56:58</expiration>
+            <expiration>2015-09-05T05:41:17</expiration>
           </cache_info>
         </package_specs>
       </result_object>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+  <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <t:return>
+      <command>GetResultData</command>
+      <session>1-8123-bc10deab6ff38bb19ae2f1de584d2b661a1a94091d873c58f98168842d9a4bd9c8f44de946b485015cbf15bd964577a81bd6017c9e01eebf7ebdd1482d5727af</session>
+      <ID></ID>
+      <IDType></IDType>
+      <ContextID></ContextID>
+      <server_version>6.5.314.4301</server_version>
+      <object_list>
+        <question>
+          <id>11643</id>
+        </question>
+      </object_list>
+      <options>
+        <export_flag>1</export_flag>
+        <export_format>1</export_format>
+        <suppress_object_list>1</suppress_object_list>
+      </options>
+      <ResultXML></ResultXML>
+      <result_object>
+        <export_id>1/494746930877.xml</export_id>
+      </result_object>
+    </t:return>
+  </soap:Body>
+</soap:Envelope>

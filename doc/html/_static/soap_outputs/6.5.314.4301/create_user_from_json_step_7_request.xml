@@ -10,7 +10,7 @@
           <last_login>2001-01-01T00:00:00</last_login>
           <local_admin_flag>1</local_admin_flag>
           <group_id>0</group_id>
-          <id>271</id>
+          <id>311</id>
           <roles>
             <role>
               <description>Administrators can perform all functions in the system, including creating other users, viewing the System Status, changing Global Settings, and creating Computer Groups.</description>

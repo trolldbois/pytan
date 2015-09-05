@@ -8,20 +8,20 @@
           <expire_seconds>660</expire_seconds>
           <display_name>Disable Java Auto Update</display_name>
           <name>Disable Java Auto Update API TEST</name>
-          <modification_time>2015-09-04T02:10:57</modification_time>
+          <modification_time>2015-09-05T04:41:09</modification_time>
           <verify_expire_seconds>600</verify_expire_seconds>
-          <creation_time>2015-09-04T02:10:57</creation_time>
+          <creation_time>2015-09-05T04:41:09</creation_time>
           <verify_group_id>0</verify_group_id>
           <skip_lock_flag>0</skip_lock_flag>
           <last_modified_by>Administrator</last_modified_by>
-          <last_update>2015-09-04T02:10:57</last_update>
+          <last_update>2015-09-05T04:41:09</last_update>
           <source_id>0</source_id>
           <hidden_flag>0</hidden_flag>
           <command>cmd /c cscript //T:60 disable-java-auto-update.vbs</command>
           <command_timeout>60</command_timeout>
           <deleted_flag>0</deleted_flag>
-          <available_time>2015-09-04T02:11:07</available_time>
-          <id>407</id>
+          <available_time>2015-09-05T04:41:19</available_time>
+          <id>465</id>
           <files>
             <file>
               <status>200</status>

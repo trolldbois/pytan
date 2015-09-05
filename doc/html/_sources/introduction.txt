@@ -31,6 +31,8 @@ Python v3.x is not supported. PyTan has been fully tested against the following 
 * 2.7.9
 * 2.7.10
 
+Refer to :doc:`pytan_validation_index` to see the validation tests for a number of different configurations.
+
 Tanium Platform Versions Supported
 ----------------------------------
 
@@ -41,6 +43,9 @@ PyTan has been fully tested against the following versions of the Tanium Platfor
 * 6.5.314.4254
 * 6.5.314.4268
 * 6.5.314.4275
+* 6.5.314.4301
+
+Refer to :doc:`pytan_validation_index` to see the validation tests for a number of different configurations.
 
 Installation
 ---------------------------------
@@ -51,7 +56,7 @@ Windows Installation
 * Download a supported Python version from https://www.python.org/downloads/windows/
 * Install Python -- if you accept the default paths it will install to ``C:\Python27``
 * Copy PyTan from github to your local machine somewhere
-* If you did not accept the default install path for Python 2.7, edit ``pytan\winbin\CONFIG.bat`` to change the *PYTHON- variable to point to the full path of *python.exe*
+* If you did not accept the default install path for Python 2.7, edit ``pytan\winbin\CONFIG.bat`` to change the PYTHON variable to point to the full path of *python.exe*
 
 OS X Installation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -70,8 +75,8 @@ Usage
 ---------------------------------
 
 * For command line usage, refer to `Command Line Help Index <_static/bin_doc/index.html>`_
-* For API Examples, refer to the :doc:`examples/pytan_examples`
-* For in depth API Documentation, refer to the :doc:`pytan`, especially the :mod:`pytan.handler`
+* For PyTan API Examples, refer to the :doc:`examples/pytan_examples`
+* For in depth API Documentation, refer to the :doc:`pytan` documentation, especially the :mod:`pytan.handler`
 
 Directory Layout
 ---------------------------------

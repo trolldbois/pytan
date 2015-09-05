@@ -13,6 +13,7 @@ Table of Contents
    pytan_tests.rst
    taniumpy/taniumpy.rst
    other_packages.rst
+   pytan_validation_index.rst
    examples/pytan_examples.rst
    soap_examples_index.rst
 

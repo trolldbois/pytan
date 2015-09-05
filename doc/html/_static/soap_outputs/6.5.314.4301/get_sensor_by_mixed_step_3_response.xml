@@ -3,7 +3,7 @@
   <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <t:return>
       <command>GetObject</command>
-      <session>1-6963-f44b617a66fdcecc597a2437863b9e76d3683d54c033c4bd505ea69c8b5ffec05d18e420e4b98f91b8e0b0dd570400dfb980f6b7bc44e61667a81329542c4414</session>
+      <session>1-8096-6e2c6035bb39c0d7b390351346415f0b2f831e4526e5ae0e16d07367e6856c50ea7841e758cf4148635a3a3eb5d17d5af110bae50cbc8e8a319f5de5867032cd</session>
       <server_version>6.5.314.4301</server_version>
       <ID></ID>
       <IDType></IDType>
@@ -38,7 +38,7 @@ Example: 05839407baccdfccfd8e2c1ffc0ff27541cc053d15b52cfd4ed904510e59b428:100</d
             <id>1</id>
             <name>Action Statuses</name>
             <hash>1792443391</hash>
-            <string_count>667</string_count>
+            <string_count>793</string_count>
             <category>Reserved</category>
             <description>The recorded state of each action a client has taken recently in the form of id:status.
 Example: 1:Completed</description>
@@ -62,7 +62,7 @@ Example: 1:Completed</description>
             <id>2</id>
             <name>Computer ID</name>
             <hash>3556221173</hash>
-            <string_count>26</string_count>
+            <string_count>32</string_count>
             <category>Reserved</category>
             <description>A unique identifier of each computer for internal use.
 Example: 4202979704</description>

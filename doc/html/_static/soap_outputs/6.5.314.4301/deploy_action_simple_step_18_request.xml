@@ -4,10 +4,9 @@
     <typens:tanium_soap_request xmlns:typens="urn:TaniumSOAP">
       <command>GetResultInfo</command>
       <object_list>
-        <action>
-          <id>522</id>
-          <name>API Deploy Distribute Tanium Standard Utilities</name>
-        </action>
+        <question>
+          <id>11614</id>
+        </question>
       </object_list>
       <options>
         <suppress_object_list>1</suppress_object_list>

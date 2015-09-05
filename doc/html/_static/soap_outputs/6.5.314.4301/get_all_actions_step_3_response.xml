@@ -3,7 +3,7 @@
   <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <t:return>
       <command>GetObject</command>
-      <session>1-6984-bb4f26ed649c869eb5b67f115eb1497f835c4631cbe1dda8cfa17b0d9167d3116690b950084050672395e6e788de5c0358642ef6e95d4dd7fa3000ddbca43638</session>
+      <session>1-8117-b517190adf39a879dffffbd9efc03f2f61d4de6cf1ad282e8fe96b631486b61534a753cf85f2a9d8791e8268e76962b96d4c8991e59960ceaa8105b06e2809f9</session>
       <server_version>6.5.314.4301</server_version>
       <ID></ID>
       <IDType></IDType>
@@ -23366,7 +23366,7 @@
             <start_time>2015-09-04T02:11:00</start_time>
             <expiration_time>2015-09-04T03:06:00</expiration_time>
             <distribute_seconds>3200</distribute_seconds>
-            <status>Open</status>
+            <status>Closed</status>
             <stopped_flag>0</stopped_flag>
             <user>
               <id>1</id>
@@ -23410,7 +23410,7 @@
             <start_time>2015-09-04T02:11:27</start_time>
             <expiration_time>2015-09-04T03:06:27</expiration_time>
             <distribute_seconds>0</distribute_seconds>
-            <status>Open</status>
+            <status>Closed</status>
             <stopped_flag>0</stopped_flag>
             <user>
               <id>1</id>
@@ -23454,7 +23454,7 @@
             <start_time>2015-09-04T02:11:48</start_time>
             <expiration_time>2015-09-04T03:06:48</expiration_time>
             <distribute_seconds>0</distribute_seconds>
-            <status>Open</status>
+            <status>Closed</status>
             <stopped_flag>0</stopped_flag>
             <user>
               <id>1</id>
@@ -23498,7 +23498,7 @@
             <start_time>2015-09-04T02:11:48</start_time>
             <expiration_time>2015-09-04T03:06:48</expiration_time>
             <distribute_seconds>0</distribute_seconds>
-            <status>Open</status>
+            <status>Closed</status>
             <stopped_flag>0</stopped_flag>
             <user>
               <id>1</id>
@@ -23598,7 +23598,7 @@
             <start_time>2015-09-04T02:44:43</start_time>
             <expiration_time>2015-09-04T03:39:43</expiration_time>
             <distribute_seconds>3200</distribute_seconds>
-            <status>Open</status>
+            <status>Closed</status>
             <stopped_flag>0</stopped_flag>
             <user>
               <id>1</id>
@@ -23642,7 +23642,7 @@
             <start_time>2015-09-04T02:45:11</start_time>
             <expiration_time>2015-09-04T03:40:11</expiration_time>
             <distribute_seconds>0</distribute_seconds>
-            <status>Open</status>
+            <status>Closed</status>
             <stopped_flag>0</stopped_flag>
             <user>
               <id>1</id>
@@ -23686,7 +23686,7 @@
             <start_time>2015-09-04T02:45:37</start_time>
             <expiration_time>2015-09-04T03:40:37</expiration_time>
             <distribute_seconds>0</distribute_seconds>
-            <status>Open</status>
+            <status>Closed</status>
             <stopped_flag>0</stopped_flag>
             <user>
               <id>1</id>
@@ -23730,7 +23730,7 @@
             <start_time>2015-09-04T02:45:37</start_time>
             <expiration_time>2015-09-04T03:40:37</expiration_time>
             <distribute_seconds>0</distribute_seconds>
-            <status>Open</status>
+            <status>Closed</status>
             <stopped_flag>0</stopped_flag>
             <user>
               <id>1</id>
@@ -23807,12 +23807,4320 @@
             </approver>
             <cache_row_id>520</cache_row_id>
           </action>
+          <action>
+            <id>526</id>
+            <name>Tanium - Clean Stale Tanium Client Data</name>
+            <comment>Will remove data from Tanium Client directory which is stale, and will safely kill any stale sensor or action processes.  Action processes are only terminated when they are run from the Downloads directory.</comment>
+            <target_group>
+              <id>55</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>54</id>
+              <name>Clean Stale Tanium Client Data</name>
+              <command>cmd /c cscript //T:1200 clean-stale-tanium-client-data.vbs /StaleDownloadsRestart:True /MaxClientRAMInMB:200</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>1800</expire_seconds>
+            <creation_time>2015-09-04T04:15:17</creation_time>
+            <start_time>2015-09-04T04:14:50</start_time>
+            <expiration_time>2015-09-04T04:44:50</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-04T03:08:16</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>4</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>521</cache_row_id>
+          </action>
+          <action>
+            <id>527</id>
+            <name>Distribute Tanium Standard Utilities</name>
+            <comment>Distribute Tanium Standard Utilities</comment>
+            <target_group>
+              <id>37</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-04T14:23:59</creation_time>
+            <start_time>2015-09-04T14:24:01</start_time>
+            <expiration_time>2015-09-04T15:19:01</expiration_time>
+            <distribute_seconds>3200</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-04T14:22:51</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>502</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>522</cache_row_id>
+          </action>
+          <action>
+            <id>528</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>3083</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-04T14:24:04</creation_time>
+            <start_time>2015-09-04T14:24:06</start_time>
+            <expiration_time>2015-09-04T15:19:06</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-04T14:22:51</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>503</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>523</cache_row_id>
+          </action>
+          <action>
+            <id>529</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>0</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-04T14:28:55</creation_time>
+            <start_time>2015-09-04T14:28:57</start_time>
+            <expiration_time>2015-09-04T15:23:57</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-04T14:22:51</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>504</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>524</cache_row_id>
+          </action>
+          <action>
+            <id>530</id>
+            <name>API Deploy Custom Tagging - Add Tags</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>3085</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>414</id>
+              <name>Custom Tagging - Add Tags</name>
+              <command>cmd /c cscript //T:60 add-tags.vbs "tag%5fshould%5fbe%5fadded"</command>
+              <parameters>
+                <parameter>
+                  <key>$1</key>
+                  <value>tag_should_be_added</value>
+                  <type>0</type>
+                </parameter>
+                <parameter>
+                  <key>$2</key>
+                  <value>tag_should_be_ignore</value>
+                  <type>0</type>
+                </parameter>
+              </parameters>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>660</expire_seconds>
+            <creation_time>2015-09-04T14:28:55</creation_time>
+            <start_time>2015-09-04T14:28:57</start_time>
+            <expiration_time>2015-09-04T14:39:57</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-04T14:22:51</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>505</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>525</cache_row_id>
+          </action>
+          <action>
+            <id>531</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>0</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-04T14:29:25</creation_time>
+            <start_time>2015-09-04T14:29:27</start_time>
+            <expiration_time>2015-09-04T15:24:27</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-04T14:22:51</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>506</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>526</cache_row_id>
+          </action>
+          <action>
+            <id>532</id>
+            <name>Distribute Tanium Standard Utilities</name>
+            <comment>Distribute Tanium Standard Utilities</comment>
+            <target_group>
+              <id>37</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-04T17:33:06</creation_time>
+            <start_time>2015-09-04T17:33:08</start_time>
+            <expiration_time>2015-09-04T18:28:08</expiration_time>
+            <distribute_seconds>3200</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-04T17:31:43</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>507</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>527</cache_row_id>
+          </action>
+          <action>
+            <id>533</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>3107</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-04T17:33:12</creation_time>
+            <start_time>2015-09-04T17:33:14</start_time>
+            <expiration_time>2015-09-04T18:28:14</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-04T17:31:43</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>508</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>528</cache_row_id>
+          </action>
+          <action>
+            <id>534</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>0</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-04T17:33:48</creation_time>
+            <start_time>2015-09-04T17:33:50</start_time>
+            <expiration_time>2015-09-04T18:28:50</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-04T17:31:43</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>509</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>529</cache_row_id>
+          </action>
+          <action>
+            <id>535</id>
+            <name>API Deploy Custom Tagging - Add Tags</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>3109</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>417</id>
+              <name>Custom Tagging - Add Tags</name>
+              <command>cmd /c cscript //T:60 add-tags.vbs "tag%5fshould%5fbe%5fadded"</command>
+              <parameters>
+                <parameter>
+                  <key>$1</key>
+                  <value>tag_should_be_added</value>
+                  <type>0</type>
+                </parameter>
+                <parameter>
+                  <key>$2</key>
+                  <value>tag_should_be_ignore</value>
+                  <type>0</type>
+                </parameter>
+              </parameters>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>660</expire_seconds>
+            <creation_time>2015-09-04T17:33:48</creation_time>
+            <start_time>2015-09-04T17:33:50</start_time>
+            <expiration_time>2015-09-04T17:44:50</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-04T17:31:43</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>510</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>530</cache_row_id>
+          </action>
+          <action>
+            <id>536</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>0</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-04T17:34:13</creation_time>
+            <start_time>2015-09-04T17:34:15</start_time>
+            <expiration_time>2015-09-04T18:29:15</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-04T17:31:43</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>511</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>531</cache_row_id>
+          </action>
+          <action>
+            <id>537</id>
+            <name>Distribute Tanium Standard Utilities</name>
+            <comment>Distribute Tanium Standard Utilities</comment>
+            <target_group>
+              <id>37</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-04T19:22:52</creation_time>
+            <start_time>2015-09-04T19:22:54</start_time>
+            <expiration_time>2015-09-04T20:17:54</expiration_time>
+            <distribute_seconds>3200</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-04T19:21:54</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>512</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>532</cache_row_id>
+          </action>
+          <action>
+            <id>538</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>3140</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-04T19:22:58</creation_time>
+            <start_time>2015-09-04T19:23:00</start_time>
+            <expiration_time>2015-09-04T20:18:00</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-04T19:21:54</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>513</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>533</cache_row_id>
+          </action>
+          <action>
+            <id>539</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>0</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-04T19:23:23</creation_time>
+            <start_time>2015-09-04T19:23:25</start_time>
+            <expiration_time>2015-09-04T20:18:25</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-04T19:21:54</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>514</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>534</cache_row_id>
+          </action>
+          <action>
+            <id>540</id>
+            <name>API Deploy Custom Tagging - Add Tags</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>3142</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>420</id>
+              <name>Custom Tagging - Add Tags</name>
+              <command>cmd /c cscript //T:60 add-tags.vbs "tag%5fshould%5fbe%5fadded"</command>
+              <parameters>
+                <parameter>
+                  <key>$1</key>
+                  <value>tag_should_be_added</value>
+                  <type>0</type>
+                </parameter>
+                <parameter>
+                  <key>$2</key>
+                  <value>tag_should_be_ignore</value>
+                  <type>0</type>
+                </parameter>
+              </parameters>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>660</expire_seconds>
+            <creation_time>2015-09-04T19:23:23</creation_time>
+            <start_time>2015-09-04T19:23:25</start_time>
+            <expiration_time>2015-09-04T19:34:25</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-04T19:21:54</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>515</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>535</cache_row_id>
+          </action>
+          <action>
+            <id>541</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>0</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-04T19:23:49</creation_time>
+            <start_time>2015-09-04T19:23:51</start_time>
+            <expiration_time>2015-09-04T20:18:51</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-04T19:21:54</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>516</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>536</cache_row_id>
+          </action>
+          <action>
+            <id>542</id>
+            <name>Distribute Tanium Standard Utilities</name>
+            <comment>Distribute Tanium Standard Utilities</comment>
+            <target_group>
+              <id>37</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-04T21:26:59</creation_time>
+            <start_time>2015-09-04T21:27:01</start_time>
+            <expiration_time>2015-09-04T22:22:01</expiration_time>
+            <distribute_seconds>3200</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-04T21:25:27</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>517</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>537</cache_row_id>
+          </action>
+          <action>
+            <id>543</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>3170</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-04T21:27:05</creation_time>
+            <start_time>2015-09-04T21:27:07</start_time>
+            <expiration_time>2015-09-04T22:22:07</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-04T21:25:27</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>518</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>538</cache_row_id>
+          </action>
+          <action>
+            <id>544</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>0</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-04T21:27:35</creation_time>
+            <start_time>2015-09-04T21:27:37</start_time>
+            <expiration_time>2015-09-04T22:22:37</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-04T21:25:27</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>519</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>539</cache_row_id>
+          </action>
+          <action>
+            <id>545</id>
+            <name>API Deploy Custom Tagging - Add Tags</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>3172</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>423</id>
+              <name>Custom Tagging - Add Tags</name>
+              <command>cmd /c cscript //T:60 add-tags.vbs "tag%5fshould%5fbe%5fadded"</command>
+              <parameters>
+                <parameter>
+                  <key>$1</key>
+                  <value>tag_should_be_added</value>
+                  <type>0</type>
+                </parameter>
+                <parameter>
+                  <key>$2</key>
+                  <value>tag_should_be_ignore</value>
+                  <type>0</type>
+                </parameter>
+              </parameters>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>660</expire_seconds>
+            <creation_time>2015-09-04T21:27:35</creation_time>
+            <start_time>2015-09-04T21:27:37</start_time>
+            <expiration_time>2015-09-04T21:38:37</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-04T21:25:27</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>520</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>540</cache_row_id>
+          </action>
+          <action>
+            <id>546</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>0</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-04T21:27:50</creation_time>
+            <start_time>2015-09-04T21:27:52</start_time>
+            <expiration_time>2015-09-04T22:22:52</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-04T21:25:27</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>521</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>541</cache_row_id>
+          </action>
+          <action>
+            <id>547</id>
+            <name>Distribute Tanium Standard Utilities</name>
+            <comment>Distribute Tanium Standard Utilities</comment>
+            <target_group>
+              <id>37</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-04T21:43:06</creation_time>
+            <start_time>2015-09-04T21:43:08</start_time>
+            <expiration_time>2015-09-04T22:38:08</expiration_time>
+            <distribute_seconds>3200</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-04T21:40:33</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>522</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>542</cache_row_id>
+          </action>
+          <action>
+            <id>548</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>3196</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-04T21:43:12</creation_time>
+            <start_time>2015-09-04T21:43:14</start_time>
+            <expiration_time>2015-09-04T22:38:14</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-04T21:40:33</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>523</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>543</cache_row_id>
+          </action>
+          <action>
+            <id>549</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>0</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-04T21:43:42</creation_time>
+            <start_time>2015-09-04T21:43:44</start_time>
+            <expiration_time>2015-09-04T22:38:44</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-04T21:40:33</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>524</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>544</cache_row_id>
+          </action>
+          <action>
+            <id>550</id>
+            <name>API Deploy Custom Tagging - Add Tags</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>3198</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>426</id>
+              <name>Custom Tagging - Add Tags</name>
+              <command>cmd /c cscript //T:60 add-tags.vbs "tag%5fshould%5fbe%5fadded"</command>
+              <parameters>
+                <parameter>
+                  <key>$1</key>
+                  <value>tag_should_be_added</value>
+                  <type>0</type>
+                </parameter>
+                <parameter>
+                  <key>$2</key>
+                  <value>tag_should_be_ignore</value>
+                  <type>0</type>
+                </parameter>
+              </parameters>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>660</expire_seconds>
+            <creation_time>2015-09-04T21:43:42</creation_time>
+            <start_time>2015-09-04T21:43:44</start_time>
+            <expiration_time>2015-09-04T21:54:44</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-04T21:40:33</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>525</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>545</cache_row_id>
+          </action>
+          <action>
+            <id>551</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>0</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-04T21:44:12</creation_time>
+            <start_time>2015-09-04T21:44:14</start_time>
+            <expiration_time>2015-09-04T22:39:14</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-04T21:40:33</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>526</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>546</cache_row_id>
+          </action>
+          <action>
+            <id>552</id>
+            <name>Tanium - Clean Stale Tanium Client Data</name>
+            <comment>Will remove data from Tanium Client directory which is stale, and will safely kill any stale sensor or action processes.  Action processes are only terminated when they are run from the Downloads directory.</comment>
+            <target_group>
+              <id>55</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>54</id>
+              <name>Clean Stale Tanium Client Data</name>
+              <command>cmd /c cscript //T:1200 clean-stale-tanium-client-data.vbs /StaleDownloadsRestart:True /MaxClientRAMInMB:200</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>1800</expire_seconds>
+            <creation_time>2015-09-05T00:15:57</creation_time>
+            <start_time>2015-09-05T00:14:50</start_time>
+            <expiration_time>2015-09-05T00:44:50</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-04T21:40:33</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>4</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>547</cache_row_id>
+          </action>
+          <action>
+            <id>553</id>
+            <name>Distribute Tanium Standard Utilities</name>
+            <comment>Distribute Tanium Standard Utilities</comment>
+            <target_group>
+              <id>37</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T00:43:50</creation_time>
+            <start_time>2015-09-05T00:43:52</start_time>
+            <expiration_time>2015-09-05T01:38:52</expiration_time>
+            <distribute_seconds>3200</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T00:43:34</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>527</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>548</cache_row_id>
+          </action>
+          <action>
+            <id>554</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>0</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T00:44:18</creation_time>
+            <start_time>2015-09-05T00:44:20</start_time>
+            <expiration_time>2015-09-05T01:39:20</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T00:44:02</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>528</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>549</cache_row_id>
+          </action>
+          <action>
+            <id>555</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>0</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T00:44:44</creation_time>
+            <start_time>2015-09-05T00:44:46</start_time>
+            <expiration_time>2015-09-05T01:39:46</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T00:44:28</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>529</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>550</cache_row_id>
+          </action>
+          <action>
+            <id>556</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>3220</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T00:44:44</creation_time>
+            <start_time>2015-09-05T00:44:46</start_time>
+            <expiration_time>2015-09-05T01:39:46</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T00:44:28</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>530</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>551</cache_row_id>
+          </action>
+          <action>
+            <id>557</id>
+            <name>API Deploy Custom Tagging - Add Tags</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>3222</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>429</id>
+              <name>Custom Tagging - Add Tags</name>
+              <command>cmd /c cscript //T:60 add-tags.vbs "tag%5fshould%5fbe%5fadded"</command>
+              <parameters>
+                <parameter>
+                  <key>$1</key>
+                  <value>tag_should_be_added</value>
+                  <type>0</type>
+                </parameter>
+                <parameter>
+                  <key>$2</key>
+                  <value>tag_should_be_ignore</value>
+                  <type>0</type>
+                </parameter>
+              </parameters>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>660</expire_seconds>
+            <creation_time>2015-09-05T00:45:05</creation_time>
+            <start_time>2015-09-05T00:45:07</start_time>
+            <expiration_time>2015-09-05T00:56:07</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T00:44:48</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>531</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>552</cache_row_id>
+          </action>
+          <action>
+            <id>558</id>
+            <name>Distribute Tanium Standard Utilities</name>
+            <comment>Distribute Tanium Standard Utilities</comment>
+            <target_group>
+              <id>37</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T01:04:49</creation_time>
+            <start_time>2015-09-05T01:04:51</start_time>
+            <expiration_time>2015-09-05T01:59:51</expiration_time>
+            <distribute_seconds>3200</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T01:04:34</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>532</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>553</cache_row_id>
+          </action>
+          <action>
+            <id>559</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>0</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T01:05:18</creation_time>
+            <start_time>2015-09-05T01:05:20</start_time>
+            <expiration_time>2015-09-05T02:00:20</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T01:05:02</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>533</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>554</cache_row_id>
+          </action>
+          <action>
+            <id>560</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>0</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T01:05:44</creation_time>
+            <start_time>2015-09-05T01:05:46</start_time>
+            <expiration_time>2015-09-05T02:00:46</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T01:05:27</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>534</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>555</cache_row_id>
+          </action>
+          <action>
+            <id>561</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>3240</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T01:05:44</creation_time>
+            <start_time>2015-09-05T01:05:46</start_time>
+            <expiration_time>2015-09-05T02:00:46</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T01:05:27</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>535</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>556</cache_row_id>
+          </action>
+          <action>
+            <id>562</id>
+            <name>API Deploy Custom Tagging - Add Tags</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>3242</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>432</id>
+              <name>Custom Tagging - Add Tags</name>
+              <command>cmd /c cscript //T:60 add-tags.vbs "tag%5fshould%5fbe%5fadded"</command>
+              <parameters>
+                <parameter>
+                  <key>$1</key>
+                  <value>tag_should_be_added</value>
+                  <type>0</type>
+                </parameter>
+                <parameter>
+                  <key>$2</key>
+                  <value>tag_should_be_ignore</value>
+                  <type>0</type>
+                </parameter>
+              </parameters>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>660</expire_seconds>
+            <creation_time>2015-09-05T01:06:19</creation_time>
+            <start_time>2015-09-05T01:06:21</start_time>
+            <expiration_time>2015-09-05T01:17:21</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T01:06:03</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>536</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>557</cache_row_id>
+          </action>
+          <action>
+            <id>563</id>
+            <name>Distribute Tanium Standard Utilities</name>
+            <comment>Distribute Tanium Standard Utilities</comment>
+            <target_group>
+              <id>37</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T01:44:46</creation_time>
+            <start_time>2015-09-05T01:44:48</start_time>
+            <expiration_time>2015-09-05T02:39:48</expiration_time>
+            <distribute_seconds>3200</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T01:44:30</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>537</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>558</cache_row_id>
+          </action>
+          <action>
+            <id>564</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>0</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T01:45:15</creation_time>
+            <start_time>2015-09-05T01:45:17</start_time>
+            <expiration_time>2015-09-05T02:40:17</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T01:44:59</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>538</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>559</cache_row_id>
+          </action>
+          <action>
+            <id>565</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>0</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T01:45:46</creation_time>
+            <start_time>2015-09-05T01:45:48</start_time>
+            <expiration_time>2015-09-05T02:40:48</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T01:45:29</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>539</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>560</cache_row_id>
+          </action>
+          <action>
+            <id>566</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>3283</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T01:45:46</creation_time>
+            <start_time>2015-09-05T01:45:48</start_time>
+            <expiration_time>2015-09-05T02:40:48</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T01:45:29</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>540</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>561</cache_row_id>
+          </action>
+          <action>
+            <id>567</id>
+            <name>API Deploy Custom Tagging - Add Tags</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>3285</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>435</id>
+              <name>Custom Tagging - Add Tags</name>
+              <command>cmd /c cscript //T:60 add-tags.vbs "tag%5fshould%5fbe%5fadded"</command>
+              <parameters>
+                <parameter>
+                  <key>$1</key>
+                  <value>tag_should_be_added</value>
+                  <type>0</type>
+                </parameter>
+                <parameter>
+                  <key>$2</key>
+                  <value>tag_should_be_ignore</value>
+                  <type>0</type>
+                </parameter>
+              </parameters>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>660</expire_seconds>
+            <creation_time>2015-09-05T01:46:06</creation_time>
+            <start_time>2015-09-05T01:46:08</start_time>
+            <expiration_time>2015-09-05T01:57:08</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T01:45:50</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>541</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>562</cache_row_id>
+          </action>
+          <action>
+            <id>568</id>
+            <name>Distribute Tanium Standard Utilities</name>
+            <comment>Distribute Tanium Standard Utilities</comment>
+            <target_group>
+              <id>37</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T01:47:52</creation_time>
+            <start_time>2015-09-05T01:47:54</start_time>
+            <expiration_time>2015-09-05T02:42:54</expiration_time>
+            <distribute_seconds>3200</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T01:47:27</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>542</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>563</cache_row_id>
+          </action>
+          <action>
+            <id>569</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>3295</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T01:47:58</creation_time>
+            <start_time>2015-09-05T01:48:00</start_time>
+            <expiration_time>2015-09-05T02:43:00</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T01:47:27</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>543</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>564</cache_row_id>
+          </action>
+          <action>
+            <id>570</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>0</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T01:48:18</creation_time>
+            <start_time>2015-09-05T01:48:20</start_time>
+            <expiration_time>2015-09-05T02:43:20</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T01:47:52</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>544</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>565</cache_row_id>
+          </action>
+          <action>
+            <id>571</id>
+            <name>API Deploy Custom Tagging - Add Tags</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>3298</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>438</id>
+              <name>Custom Tagging - Add Tags</name>
+              <command>cmd /c cscript //T:60 add-tags.vbs "tag%5fshould%5fbe%5fadded"</command>
+              <parameters>
+                <parameter>
+                  <key>$1</key>
+                  <value>tag_should_be_added</value>
+                  <type>0</type>
+                </parameter>
+                <parameter>
+                  <key>$2</key>
+                  <value>tag_should_be_ignore</value>
+                  <type>0</type>
+                </parameter>
+              </parameters>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>660</expire_seconds>
+            <creation_time>2015-09-05T01:48:19</creation_time>
+            <start_time>2015-09-05T01:48:21</start_time>
+            <expiration_time>2015-09-05T01:59:21</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T01:47:52</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>545</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>566</cache_row_id>
+          </action>
+          <action>
+            <id>572</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>0</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T01:48:39</creation_time>
+            <start_time>2015-09-05T01:48:41</start_time>
+            <expiration_time>2015-09-05T02:43:41</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T01:48:23</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>546</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>567</cache_row_id>
+          </action>
+          <action>
+            <id>573</id>
+            <name>Distribute Tanium Standard Utilities</name>
+            <comment>Distribute Tanium Standard Utilities</comment>
+            <target_group>
+              <id>37</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T02:32:20</creation_time>
+            <start_time>2015-09-05T02:32:22</start_time>
+            <expiration_time>2015-09-05T03:27:22</expiration_time>
+            <distribute_seconds>3200</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T02:32:04</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>547</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>568</cache_row_id>
+          </action>
+          <action>
+            <id>574</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>0</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T02:32:51</creation_time>
+            <start_time>2015-09-05T02:32:53</start_time>
+            <expiration_time>2015-09-05T03:27:53</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T02:32:34</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>548</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>569</cache_row_id>
+          </action>
+          <action>
+            <id>575</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>0</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T02:33:36</creation_time>
+            <start_time>2015-09-05T02:33:38</start_time>
+            <expiration_time>2015-09-05T03:28:38</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T02:33:20</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>549</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>570</cache_row_id>
+          </action>
+          <action>
+            <id>576</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>3352</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T02:33:36</creation_time>
+            <start_time>2015-09-05T02:33:38</start_time>
+            <expiration_time>2015-09-05T03:28:38</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T02:33:20</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>550</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>571</cache_row_id>
+          </action>
+          <action>
+            <id>577</id>
+            <name>API Deploy Custom Tagging - Add Tags</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>3354</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>441</id>
+              <name>Custom Tagging - Add Tags</name>
+              <command>cmd /c cscript //T:60 add-tags.vbs "tag%5fshould%5fbe%5fadded"</command>
+              <parameters>
+                <parameter>
+                  <key>$1</key>
+                  <value>tag_should_be_added</value>
+                  <type>0</type>
+                </parameter>
+                <parameter>
+                  <key>$2</key>
+                  <value>tag_should_be_ignore</value>
+                  <type>0</type>
+                </parameter>
+              </parameters>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>660</expire_seconds>
+            <creation_time>2015-09-05T02:34:02</creation_time>
+            <start_time>2015-09-05T02:34:04</start_time>
+            <expiration_time>2015-09-05T02:45:04</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T02:33:46</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>551</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>572</cache_row_id>
+          </action>
+          <action>
+            <id>578</id>
+            <name>Distribute Tanium Standard Utilities</name>
+            <comment>Distribute Tanium Standard Utilities</comment>
+            <target_group>
+              <id>37</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T02:57:08</creation_time>
+            <start_time>2015-09-05T02:57:10</start_time>
+            <expiration_time>2015-09-05T03:52:10</expiration_time>
+            <distribute_seconds>3200</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T02:55:54</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>552</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>573</cache_row_id>
+          </action>
+          <action>
+            <id>579</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>3378</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T02:57:14</creation_time>
+            <start_time>2015-09-05T02:57:16</start_time>
+            <expiration_time>2015-09-05T03:52:16</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T02:55:54</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>553</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>574</cache_row_id>
+          </action>
+          <action>
+            <id>580</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>0</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T02:57:49</creation_time>
+            <start_time>2015-09-05T02:57:51</start_time>
+            <expiration_time>2015-09-05T03:52:51</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T02:55:54</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>554</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>575</cache_row_id>
+          </action>
+          <action>
+            <id>581</id>
+            <name>API Deploy Custom Tagging - Add Tags</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>3380</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>446</id>
+              <name>Custom Tagging - Add Tags</name>
+              <command>cmd /c cscript //T:60 add-tags.vbs "tag%5fshould%5fbe%5fadded"</command>
+              <parameters>
+                <parameter>
+                  <key>$1</key>
+                  <value>tag_should_be_added</value>
+                  <type>0</type>
+                </parameter>
+                <parameter>
+                  <key>$2</key>
+                  <value>tag_should_be_ignore</value>
+                  <type>0</type>
+                </parameter>
+              </parameters>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>660</expire_seconds>
+            <creation_time>2015-09-05T02:57:49</creation_time>
+            <start_time>2015-09-05T02:57:51</start_time>
+            <expiration_time>2015-09-05T03:08:51</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T02:55:54</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>555</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>576</cache_row_id>
+          </action>
+          <action>
+            <id>582</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>0</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T02:58:15</creation_time>
+            <start_time>2015-09-05T02:58:17</start_time>
+            <expiration_time>2015-09-05T03:53:17</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T02:55:54</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>556</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>577</cache_row_id>
+          </action>
+          <action>
+            <id>583</id>
+            <name>Distribute Tanium Standard Utilities</name>
+            <comment>Distribute Tanium Standard Utilities</comment>
+            <target_group>
+              <id>37</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T03:08:55</creation_time>
+            <start_time>2015-09-05T03:08:57</start_time>
+            <expiration_time>2015-09-05T04:03:57</expiration_time>
+            <distribute_seconds>3200</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T03:08:39</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>557</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>578</cache_row_id>
+          </action>
+          <action>
+            <id>584</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>0</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T03:10:01</creation_time>
+            <start_time>2015-09-05T03:10:03</start_time>
+            <expiration_time>2015-09-05T04:05:03</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T03:09:45</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>558</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>579</cache_row_id>
+          </action>
+          <action>
+            <id>585</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>0</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T03:10:22</creation_time>
+            <start_time>2015-09-05T03:10:24</start_time>
+            <expiration_time>2015-09-05T04:05:24</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T03:10:06</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>559</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>580</cache_row_id>
+          </action>
+          <action>
+            <id>586</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>3402</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T03:10:22</creation_time>
+            <start_time>2015-09-05T03:10:24</start_time>
+            <expiration_time>2015-09-05T04:05:24</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T03:10:06</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>560</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>581</cache_row_id>
+          </action>
+          <action>
+            <id>587</id>
+            <name>API Deploy Custom Tagging - Add Tags</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>3404</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>449</id>
+              <name>Custom Tagging - Add Tags</name>
+              <command>cmd /c cscript //T:60 add-tags.vbs "tag%5fshould%5fbe%5fadded"</command>
+              <parameters>
+                <parameter>
+                  <key>$1</key>
+                  <value>tag_should_be_added</value>
+                  <type>0</type>
+                </parameter>
+                <parameter>
+                  <key>$2</key>
+                  <value>tag_should_be_ignore</value>
+                  <type>0</type>
+                </parameter>
+              </parameters>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>660</expire_seconds>
+            <creation_time>2015-09-05T03:10:43</creation_time>
+            <start_time>2015-09-05T03:10:45</start_time>
+            <expiration_time>2015-09-05T03:21:45</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T03:10:27</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>561</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>582</cache_row_id>
+          </action>
+          <action>
+            <id>588</id>
+            <name>Distribute Tanium Standard Utilities</name>
+            <comment>Distribute Tanium Standard Utilities</comment>
+            <target_group>
+              <id>37</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T03:15:10</creation_time>
+            <start_time>2015-09-05T03:15:12</start_time>
+            <expiration_time>2015-09-05T04:10:12</expiration_time>
+            <distribute_seconds>3200</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T03:14:46</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>562</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>583</cache_row_id>
+          </action>
+          <action>
+            <id>589</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>3417</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T03:15:18</creation_time>
+            <start_time>2015-09-05T03:15:20</start_time>
+            <expiration_time>2015-09-05T04:10:20</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T03:15:06</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>563</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>584</cache_row_id>
+          </action>
+          <action>
+            <id>590</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>0</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T03:15:44</creation_time>
+            <start_time>2015-09-05T03:15:46</start_time>
+            <expiration_time>2015-09-05T04:10:46</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T03:15:06</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>564</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>585</cache_row_id>
+          </action>
+          <action>
+            <id>591</id>
+            <name>API Deploy Custom Tagging - Add Tags</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>3420</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>452</id>
+              <name>Custom Tagging - Add Tags</name>
+              <command>cmd /c cscript //T:60 add-tags.vbs "tag%5fshould%5fbe%5fadded"</command>
+              <parameters>
+                <parameter>
+                  <key>$1</key>
+                  <value>tag_should_be_added</value>
+                  <type>0</type>
+                </parameter>
+                <parameter>
+                  <key>$2</key>
+                  <value>tag_should_be_ignore</value>
+                  <type>0</type>
+                </parameter>
+              </parameters>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>660</expire_seconds>
+            <creation_time>2015-09-05T03:15:44</creation_time>
+            <start_time>2015-09-05T03:15:46</start_time>
+            <expiration_time>2015-09-05T03:26:46</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T03:15:06</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>565</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>586</cache_row_id>
+          </action>
+          <action>
+            <id>592</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>0</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T03:16:04</creation_time>
+            <start_time>2015-09-05T03:16:06</start_time>
+            <expiration_time>2015-09-05T04:11:06</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T03:15:51</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>566</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>587</cache_row_id>
+          </action>
+          <action>
+            <id>593</id>
+            <name>Distribute Tanium Standard Utilities</name>
+            <comment>Distribute Tanium Standard Utilities</comment>
+            <target_group>
+              <id>37</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T03:37:49</creation_time>
+            <start_time>2015-09-05T03:37:51</start_time>
+            <expiration_time>2015-09-05T04:32:51</expiration_time>
+            <distribute_seconds>3200</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T03:37:34</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>567</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>588</cache_row_id>
+          </action>
+          <action>
+            <id>594</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>0</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T03:38:31</creation_time>
+            <start_time>2015-09-05T03:38:33</start_time>
+            <expiration_time>2015-09-05T04:33:33</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T03:38:14</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>568</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>589</cache_row_id>
+          </action>
+          <action>
+            <id>595</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>0</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T03:38:56</creation_time>
+            <start_time>2015-09-05T03:38:58</start_time>
+            <expiration_time>2015-09-05T04:33:58</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T03:38:40</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>569</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>590</cache_row_id>
+          </action>
+          <action>
+            <id>596</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>3473</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T03:38:57</creation_time>
+            <start_time>2015-09-05T03:38:59</start_time>
+            <expiration_time>2015-09-05T04:33:59</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T03:38:40</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>570</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>591</cache_row_id>
+          </action>
+          <action>
+            <id>597</id>
+            <name>API Deploy Custom Tagging - Add Tags</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>3475</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>457</id>
+              <name>Custom Tagging - Add Tags</name>
+              <command>cmd /c cscript //T:60 add-tags.vbs "tag%5fshould%5fbe%5fadded"</command>
+              <parameters>
+                <parameter>
+                  <key>$1</key>
+                  <value>tag_should_be_added</value>
+                  <type>0</type>
+                </parameter>
+                <parameter>
+                  <key>$2</key>
+                  <value>tag_should_be_ignore</value>
+                  <type>0</type>
+                </parameter>
+              </parameters>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>660</expire_seconds>
+            <creation_time>2015-09-05T03:39:27</creation_time>
+            <start_time>2015-09-05T03:39:29</start_time>
+            <expiration_time>2015-09-05T03:50:29</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T03:39:11</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>571</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>592</cache_row_id>
+          </action>
+          <action>
+            <id>598</id>
+            <name>Distribute Tanium Standard Utilities</name>
+            <comment>Distribute Tanium Standard Utilities</comment>
+            <target_group>
+              <id>37</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T04:13:49</creation_time>
+            <start_time>2015-09-05T04:13:51</start_time>
+            <expiration_time>2015-09-05T05:08:51</expiration_time>
+            <distribute_seconds>3200</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T04:13:33</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>572</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>593</cache_row_id>
+          </action>
+          <action>
+            <id>599</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>0</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T04:14:22</creation_time>
+            <start_time>2015-09-05T04:14:24</start_time>
+            <expiration_time>2015-09-05T05:09:24</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T04:14:06</last_login>
+            </user>
+            <history_saved_question>
+              <id>228</id>
+            </history_saved_question>
+            <saved_action>
+              <id>573</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>594</cache_row_id>
+          </action>
+          <action>
+            <id>600</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>0</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T04:14:48</creation_time>
+            <start_time>2015-09-05T04:14:50</start_time>
+            <expiration_time>2015-09-05T05:09:50</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T04:14:32</last_login>
+            </user>
+            <history_saved_question>
+              <id>252</id>
+            </history_saved_question>
+            <saved_action>
+              <id>574</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>595</cache_row_id>
+          </action>
+          <action>
+            <id>601</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>3516</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T04:14:48</creation_time>
+            <start_time>2015-09-05T04:14:50</start_time>
+            <expiration_time>2015-09-05T05:09:50</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T04:14:32</last_login>
+            </user>
+            <history_saved_question>
+              <id>252</id>
+            </history_saved_question>
+            <saved_action>
+              <id>575</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>596</cache_row_id>
+          </action>
+          <action>
+            <id>602</id>
+            <name>API Deploy Custom Tagging - Add Tags</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>3518</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>460</id>
+              <name>Custom Tagging - Add Tags</name>
+              <command>cmd /c cscript //T:60 add-tags.vbs "tag%5fshould%5fbe%5fadded"</command>
+              <parameters>
+                <parameter>
+                  <key>$1</key>
+                  <value>tag_should_be_added</value>
+                  <type>0</type>
+                </parameter>
+                <parameter>
+                  <key>$2</key>
+                  <value>tag_should_be_ignore</value>
+                  <type>0</type>
+                </parameter>
+              </parameters>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>660</expire_seconds>
+            <creation_time>2015-09-05T04:15:08</creation_time>
+            <start_time>2015-09-05T04:15:10</start_time>
+            <expiration_time>2015-09-05T04:26:10</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T04:14:52</last_login>
+            </user>
+            <history_saved_question>
+              <id>252</id>
+            </history_saved_question>
+            <saved_action>
+              <id>576</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>597</cache_row_id>
+          </action>
+          <action>
+            <id>603</id>
+            <name>Tanium - Clean Stale Tanium Client Data</name>
+            <comment>Will remove data from Tanium Client directory which is stale, and will safely kill any stale sensor or action processes.  Action processes are only terminated when they are run from the Downloads directory.</comment>
+            <target_group>
+              <id>55</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>54</id>
+              <name>Clean Stale Tanium Client Data</name>
+              <command>cmd /c cscript //T:1200 clean-stale-tanium-client-data.vbs /StaleDownloadsRestart:True /MaxClientRAMInMB:200</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>1800</expire_seconds>
+            <creation_time>2015-09-05T04:15:15</creation_time>
+            <start_time>2015-09-05T04:14:50</start_time>
+            <expiration_time>2015-09-05T04:44:50</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T04:14:52</last_login>
+            </user>
+            <history_saved_question>
+              <id>252</id>
+            </history_saved_question>
+            <saved_action>
+              <id>4</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>598</cache_row_id>
+          </action>
+          <action>
+            <id>604</id>
+            <name>Distribute Tanium Standard Utilities</name>
+            <comment>Distribute Tanium Standard Utilities</comment>
+            <target_group>
+              <id>37</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T04:27:09</creation_time>
+            <start_time>2015-09-05T04:27:11</start_time>
+            <expiration_time>2015-09-05T05:22:11</expiration_time>
+            <distribute_seconds>3200</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T04:26:49</last_login>
+            </user>
+            <history_saved_question>
+              <id>252</id>
+            </history_saved_question>
+            <saved_action>
+              <id>577</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>599</cache_row_id>
+          </action>
+          <action>
+            <id>605</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>3538</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T04:27:15</creation_time>
+            <start_time>2015-09-05T04:27:17</start_time>
+            <expiration_time>2015-09-05T05:22:17</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T04:27:06</last_login>
+            </user>
+            <history_saved_question>
+              <id>252</id>
+            </history_saved_question>
+            <saved_action>
+              <id>578</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>600</cache_row_id>
+          </action>
+          <action>
+            <id>606</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>0</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T04:27:40</creation_time>
+            <start_time>2015-09-05T04:27:42</start_time>
+            <expiration_time>2015-09-05T05:22:42</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T04:27:24</last_login>
+            </user>
+            <history_saved_question>
+              <id>252</id>
+            </history_saved_question>
+            <saved_action>
+              <id>579</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>601</cache_row_id>
+          </action>
+          <action>
+            <id>607</id>
+            <name>API Deploy Custom Tagging - Add Tags</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>3541</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>463</id>
+              <name>Custom Tagging - Add Tags</name>
+              <command>cmd /c cscript //T:60 add-tags.vbs "tag%5fshould%5fbe%5fadded"</command>
+              <parameters>
+                <parameter>
+                  <key>$1</key>
+                  <value>tag_should_be_added</value>
+                  <type>0</type>
+                </parameter>
+                <parameter>
+                  <key>$2</key>
+                  <value>tag_should_be_ignore</value>
+                  <type>0</type>
+                </parameter>
+              </parameters>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>660</expire_seconds>
+            <creation_time>2015-09-05T04:27:40</creation_time>
+            <start_time>2015-09-05T04:27:42</start_time>
+            <expiration_time>2015-09-05T04:38:42</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T04:27:24</last_login>
+            </user>
+            <history_saved_question>
+              <id>252</id>
+            </history_saved_question>
+            <saved_action>
+              <id>580</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>602</cache_row_id>
+          </action>
+          <action>
+            <id>608</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>0</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T04:28:01</creation_time>
+            <start_time>2015-09-05T04:28:03</start_time>
+            <expiration_time>2015-09-05T05:23:03</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T04:27:24</last_login>
+            </user>
+            <history_saved_question>
+              <id>252</id>
+            </history_saved_question>
+            <saved_action>
+              <id>581</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>603</cache_row_id>
+          </action>
+          <action>
+            <id>609</id>
+            <name>Distribute Tanium Standard Utilities</name>
+            <comment>Distribute Tanium Standard Utilities</comment>
+            <target_group>
+              <id>37</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T04:41:10</creation_time>
+            <start_time>2015-09-05T04:41:12</start_time>
+            <expiration_time>2015-09-05T05:36:12</expiration_time>
+            <distribute_seconds>3200</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T04:40:54</last_login>
+            </user>
+            <history_saved_question>
+              <id>252</id>
+            </history_saved_question>
+            <saved_action>
+              <id>582</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>604</cache_row_id>
+          </action>
+          <action>
+            <id>610</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>0</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T04:41:41</creation_time>
+            <start_time>2015-09-05T04:41:43</start_time>
+            <expiration_time>2015-09-05T05:36:43</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T04:41:25</last_login>
+            </user>
+            <history_saved_question>
+              <id>252</id>
+            </history_saved_question>
+            <saved_action>
+              <id>583</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>605</cache_row_id>
+          </action>
+          <action>
+            <id>611</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>0</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T04:42:16</creation_time>
+            <start_time>2015-09-05T04:42:18</start_time>
+            <expiration_time>2015-09-05T05:37:18</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T04:42:00</last_login>
+            </user>
+            <history_saved_question>
+              <id>252</id>
+            </history_saved_question>
+            <saved_action>
+              <id>584</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>606</cache_row_id>
+          </action>
+          <action>
+            <id>612</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>3585</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T04:42:17</creation_time>
+            <start_time>2015-09-05T04:42:19</start_time>
+            <expiration_time>2015-09-05T05:37:19</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T04:42:00</last_login>
+            </user>
+            <history_saved_question>
+              <id>252</id>
+            </history_saved_question>
+            <saved_action>
+              <id>585</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>607</cache_row_id>
+          </action>
+          <action>
+            <id>613</id>
+            <name>API Deploy Custom Tagging - Add Tags</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>3587</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>466</id>
+              <name>Custom Tagging - Add Tags</name>
+              <command>cmd /c cscript //T:60 add-tags.vbs "tag%5fshould%5fbe%5fadded"</command>
+              <parameters>
+                <parameter>
+                  <key>$1</key>
+                  <value>tag_should_be_added</value>
+                  <type>0</type>
+                </parameter>
+                <parameter>
+                  <key>$2</key>
+                  <value>tag_should_be_ignore</value>
+                  <type>0</type>
+                </parameter>
+              </parameters>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>660</expire_seconds>
+            <creation_time>2015-09-05T04:42:47</creation_time>
+            <start_time>2015-09-05T04:42:49</start_time>
+            <expiration_time>2015-09-05T04:53:49</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T04:42:31</last_login>
+            </user>
+            <history_saved_question>
+              <id>252</id>
+            </history_saved_question>
+            <saved_action>
+              <id>586</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>608</cache_row_id>
+          </action>
+          <action>
+            <id>614</id>
+            <name>Distribute Tanium Standard Utilities</name>
+            <comment>Distribute Tanium Standard Utilities</comment>
+            <target_group>
+              <id>37</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T05:27:05</creation_time>
+            <start_time>2015-09-05T05:27:07</start_time>
+            <expiration_time>2015-09-05T06:22:07</expiration_time>
+            <distribute_seconds>3200</distribute_seconds>
+            <status>Open</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T05:26:49</last_login>
+            </user>
+            <history_saved_question>
+              <id>252</id>
+            </history_saved_question>
+            <saved_action>
+              <id>587</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>609</cache_row_id>
+          </action>
+          <action>
+            <id>615</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>0</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T05:27:35</creation_time>
+            <start_time>2015-09-05T05:27:37</start_time>
+            <expiration_time>2015-09-05T06:22:37</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Open</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T05:27:19</last_login>
+            </user>
+            <history_saved_question>
+              <id>252</id>
+            </history_saved_question>
+            <saved_action>
+              <id>588</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>610</cache_row_id>
+          </action>
+          <action>
+            <id>616</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>0</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T05:29:40</creation_time>
+            <start_time>2015-09-05T05:29:42</start_time>
+            <expiration_time>2015-09-05T06:24:42</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Open</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T05:29:24</last_login>
+            </user>
+            <history_saved_question>
+              <id>252</id>
+            </history_saved_question>
+            <saved_action>
+              <id>589</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>611</cache_row_id>
+          </action>
+          <action>
+            <id>617</id>
+            <name>API Deploy Distribute Tanium Standard Utilities</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>3615</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>20</id>
+              <name>Distribute Tanium Standard Utilities</name>
+              <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>3300</expire_seconds>
+            <creation_time>2015-09-05T05:29:41</creation_time>
+            <start_time>2015-09-05T05:29:43</start_time>
+            <expiration_time>2015-09-05T06:24:43</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Open</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T05:29:24</last_login>
+            </user>
+            <history_saved_question>
+              <id>252</id>
+            </history_saved_question>
+            <saved_action>
+              <id>590</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>612</cache_row_id>
+          </action>
+          <action>
+            <id>618</id>
+            <name>API Deploy Custom Tagging - Add Tags</name>
+            <comment>Created by PyTan v2.1.0</comment>
+            <target_group>
+              <id>3617</id>
+              <name>Default</name>
+            </target_group>
+            <action_group>
+              <id>0</id>
+              <name>Default</name>
+            </action_group>
+            <package_spec>
+              <id>469</id>
+              <name>Custom Tagging - Add Tags</name>
+              <command>cmd /c cscript //T:60 add-tags.vbs "tag%5fshould%5fbe%5fadded"</command>
+              <parameters>
+                <parameter>
+                  <key>$1</key>
+                  <value>tag_should_be_added</value>
+                  <type>0</type>
+                </parameter>
+                <parameter>
+                  <key>$2</key>
+                  <value>tag_should_be_ignore</value>
+                  <type>0</type>
+                </parameter>
+              </parameters>
+            </package_spec>
+            <skip_lock_flag>0</skip_lock_flag>
+            <expire_seconds>660</expire_seconds>
+            <creation_time>2015-09-05T05:30:06</creation_time>
+            <start_time>2015-09-05T05:30:08</start_time>
+            <expiration_time>2015-09-05T05:41:08</expiration_time>
+            <distribute_seconds>0</distribute_seconds>
+            <status>Closed</status>
+            <stopped_flag>0</stopped_flag>
+            <user>
+              <id>1</id>
+              <name>Administrator</name>
+              <domain></domain>
+              <group_id>0</group_id>
+              <last_login>2015-09-05T05:29:50</last_login>
+            </user>
+            <history_saved_question>
+              <id>252</id>
+            </history_saved_question>
+            <saved_action>
+              <id>591</id>
+            </saved_action>
+            <approver>
+              <id>1</id>
+              <name>Administrator</name>
+            </approver>
+            <cache_row_id>613</cache_row_id>
+          </action>
           <cache_info>
-            <cache_id>449283455</cache_id>
-            <page_row_count>521</page_row_count>
-            <filtered_row_count>521</filtered_row_count>
-            <cache_row_count>521</cache_row_count>
-            <expiration>2015-09-04T02:56:59</expiration>
+            <cache_id>2622796328</cache_id>
+            <page_row_count>614</page_row_count>
+            <filtered_row_count>614</filtered_row_count>
+            <cache_row_count>614</cache_row_count>
+            <expiration>2015-09-05T05:41:17</expiration>
           </cache_info>
         </actions>
       </result_object>

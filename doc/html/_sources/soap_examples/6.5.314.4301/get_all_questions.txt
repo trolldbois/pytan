@@ -10,9 +10,9 @@ Step 1 - Authenticate to the SOAP API via /auth
 
 * URL: https://10.0.1.240:443/auth
 * HTTP Method: GET
-* Elapsed Time: 0:00:00.005505
-* `Step 1 Request Body <../_static/soap_outputs/get_all_questions_step_1_request.txt>`_
-* `Step 1 Response Body <../_static/soap_outputs/get_all_questions_step_1_response.txt>`_
+* Elapsed Time: 0:00:00.015374
+* `Step 1 Request Body <../../_static/soap_outputs/6.5.314.4301/get_all_questions_step_1_request.txt>`_
+* `Step 1 Response Body <../../_static/soap_outputs/6.5.314.4301/get_all_questions_step_1_response.txt>`_
 
 * Request Headers:
 
@@ -24,7 +24,7 @@ Step 1 - Authenticate to the SOAP API via /auth
       "Accept": "*/*", 
       "Accept-Encoding": "gzip, deflate", 
       "Connection": "keep-alive", 
-      "User-Agent": "python-requests/2.6.0 CPython/2.7.10 Darwin/14.5.0", 
+      "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
       "password": "VGFuaXVtMjAxNSE=", 
       "username": "QWRtaW5pc3RyYXRvcg=="
     }
@@ -47,9 +47,9 @@ Step 2 - Get the server version via /info.json
 
 * URL: https://10.0.1.240:443/info.json
 * HTTP Method: GET
-* Elapsed Time: 0:00:00.007130
-* `Step 2 Request Body <../_static/soap_outputs/get_all_questions_step_2_request.txt>`_
-* `Step 2 Response Body <../_static/soap_outputs/get_all_questions_step_2_response.json>`_
+* Elapsed Time: 0:00:00.009043
+* `Step 2 Request Body <../../_static/soap_outputs/6.5.314.4301/get_all_questions_step_2_request.txt>`_
+* `Step 2 Response Body <../../_static/soap_outputs/6.5.314.4301/get_all_questions_step_2_response.json>`_
 
 * Request Headers:
 
@@ -61,8 +61,8 @@ Step 2 - Get the server version via /info.json
       "Accept": "*/*", 
       "Accept-Encoding": "gzip, deflate", 
       "Connection": "keep-alive", 
-      "User-Agent": "python-requests/2.6.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-6978-61e3b03c15a9ca14d1703f5e6f87356c3c51edbf0bfcdfd4196b8449918de1fcfac4540b6e65518a06cfe329a8d70351374bd14531486241918b27a06fef79f8"
+      "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
+      "session": "1-8111-c73b10cf9b2b7b58856429de9c8b5fb3dd860475c663ff6f4f749ef8541254f8499ea1370db3a27bea54df3f7cf96347a69c8d0084f71ba98774b78289a459c7"
     }
 
 * Response Headers:
@@ -73,7 +73,7 @@ Step 2 - Get the server version via /info.json
     
     {
       "connection": "keep-alive", 
-      "content-length": "87508", 
+      "content-length": "113368", 
       "content-type": "application/json"
     }
 
@@ -83,9 +83,9 @@ Step 3 - Issue a GetObject to find an object
 
 * URL: https://10.0.1.240:443/soap
 * HTTP Method: POST
-* Elapsed Time: 0:00:00.143477
-* `Step 3 Request Body <../_static/soap_outputs/get_all_questions_step_3_request.xml>`_
-* `Step 3 Response Body <../_static/soap_outputs/get_all_questions_step_3_response.xml>`_
+* Elapsed Time: 0:00:00.164309
+* `Step 3 Request Body <../../_static/soap_outputs/6.5.314.4301/get_all_questions_step_3_request.xml>`_
+* `Step 3 Response Body <../../_static/soap_outputs/6.5.314.4301/get_all_questions_step_3_response.xml>`_
 
 * Request Headers:
 
@@ -99,8 +99,8 @@ Step 3 - Issue a GetObject to find an object
       "Connection": "keep-alive", 
       "Content-Length": "472", 
       "Content-Type": "text/xml; charset=utf-8", 
-      "User-Agent": "python-requests/2.6.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-6978-61e3b03c15a9ca14d1703f5e6f87356c3c51edbf0bfcdfd4196b8449918de1fcfac4540b6e65518a06cfe329a8d70351374bd14531486241918b27a06fef79f8"
+      "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
+      "session": "1-8111-c73b10cf9b2b7b58856429de9c8b5fb3dd860475c663ff6f4f749ef8541254f8499ea1370db3a27bea54df3f7cf96347a69c8d0084f71ba98774b78289a459c7"
     }
 
 * Response Headers:

@@ -3,7 +3,7 @@
   <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <t:return>
       <command>GetObject</command>
-      <session>1-6955-1ecb5e037fa01e1d9a4f45f8fbff3e57f8dba89d70dacf4bd0a59848f85391bc00f9370a08b9748dde013c686bf3c1a72e8c7c2db76c2f5c12c3569bcd4bbe16</session>
+      <session>1-8088-75821a96b600ad5f70763a982d676e6628d116522b1d4c42b5a0968f8dab8f627ef31e4336fdf46989587d3744ebc3eb4de984bb9cf34e10ab634047ec54e415</session>
       <server_version>6.5.314.4301</server_version>
       <ID></ID>
       <IDType></IDType>
@@ -39,7 +39,7 @@
             <name>Administrator</name>
             <domain></domain>
             <group_id>0</group_id>
-            <last_login>2015-09-04T02:56:08</last_login>
+            <last_login>2015-09-05T05:40:21</last_login>
           </user>
           <history_saved_question>
             <id>102</id>

@@ -3,17 +3,17 @@
   <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <t:return>
       <command>DeleteObject</command>
-      <session>1-6916-f129723d3fb3582780ccc4638951752cca124ed745d06b4b45e6e4a925fa6be83376f5ba18a4097d374576525260abee020a3387f938175ad53368fc23e03ba7</session>
+      <session>1-8049-d96766cf864b79d184b1c1f78fedcffba134a8c8731c6c7280c163e82d0126b4444995fd27394ab470d3054290a9839e0e19d6d6ef8c6d4d0adef51cebd05efd</session>
       <ID></ID>
       <IDType></IDType>
       <ContextID></ContextID>
       <server_version>6.5.314.4301</server_version>
       <object_list>
         <package_spec>
-          <available_time>2015-09-04T02:11:07</available_time>
+          <available_time>2015-09-05T04:41:19</available_time>
           <command>cmd /c cscript //T:60 disable-java-auto-update.vbs</command>
           <command_timeout>60</command_timeout>
-          <creation_time>2015-09-04T02:10:57</creation_time>
+          <creation_time>2015-09-05T04:41:09</creation_time>
           <deleted_flag>0</deleted_flag>
           <display_name>Disable Java Auto Update</display_name>
           <expire_seconds>660</expire_seconds>
@@ -46,9 +46,9 @@
             </file>
           </files>
           <hidden_flag>0</hidden_flag>
-          <id>407</id>
+          <id>465</id>
           <last_modified_by>Administrator</last_modified_by>
-          <last_update>2015-09-04T02:10:57</last_update>
+          <last_update>2015-09-05T04:41:09</last_update>
           <metadata>
             <item>
               <admin_flag>0</admin_flag>
@@ -61,7 +61,7 @@
               <value>Tanium</value>
             </item>
           </metadata>
-          <modification_time>2015-09-04T02:10:57</modification_time>
+          <modification_time>2015-09-05T04:41:09</modification_time>
           <name>Disable Java Auto Update API TEST</name>
           <skip_lock_flag>0</skip_lock_flag>
           <source_id>0</source_id>
@@ -76,7 +76,7 @@
       <ResultXML></ResultXML>
       <result_object>
         <package_spec>
-          <id>407</id>
+          <id>465</id>
         </package_spec>
       </result_object>
     </t:return>

@@ -8,11 +8,11 @@
           <hidden_flag>0</hidden_flag>
           <skip_lock_flag>0</skip_lock_flag>
           <query_text>Get Installed Applications from all machines</query_text>
-          <id>10181</id>
+          <id>11550</id>
           <expire_seconds>0</expire_seconds>
           <force_computer_id_flag>0</force_computer_id_flag>
           <action_tracking_flag>0</action_tracking_flag>
-          <expiration>2015-09-04T02:39:31</expiration>
+          <expiration>2015-09-05T04:44:06</expiration>
           <user>
             <name>Administrator</name>
             <id>1</id>
@@ -47,7 +47,7 @@
                 <creation_time>2015-08-26T20:14:28</creation_time>
                 <exclude_from_parse_flag>1</exclude_from_parse_flag>
                 <last_modified_by>Administrator</last_modified_by>
-                <string_count>394</string_count>
+                <string_count>398</string_count>
                 <modification_time>2015-08-26T20:14:28</modification_time>
                 <ignore_case_flag>1</ignore_case_flag>
                 <max_age_seconds>600</max_age_seconds>

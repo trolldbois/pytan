@@ -52,7 +52,12 @@ Each of these sections contains examples that show the HTTP request and response
    get_all_clients
    get_all_packages
    get_all_actions
+   ask_parsed_question_pick_first_no_results
+   ask_parsed_question_pick_first_sse
+   ask_parsed_question_pick_first
+   ask_manual_question_simple_single_sensor_no_results
    ask_manual_question_simple_multiple_sensors
+   ask_manual_question_simple_single_sensor_sse
    ask_manual_question_simple_single_sensor
    ask_manual_question_sensor_with_parameters_and_some_supplied_parameters
    ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters
@@ -65,4 +70,5 @@ Each of these sections contains examples that show the HTTP request and response
    ask_manual_question_complex_query1
    ask_manual_question_complex_query2
    ask_saved_question_refresh_data
+   ask_saved_question_by_name_sse
    ask_saved_question_by_name
