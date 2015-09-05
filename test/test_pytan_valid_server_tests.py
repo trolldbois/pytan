@@ -20,6 +20,7 @@ import unittest
 import json  # noqa
 import csv
 import StringIO
+import tempfile
 
 my_file = os.path.abspath(sys.argv[0])
 my_dir = os.path.dirname(my_file)
@@ -37,7 +38,7 @@ import ddt
 from API_INFO import SERVER_INFO
 
 # where the output files from the tests will be stored
-TEST_OUT = os.path.join(my_dir, 'TEST_OUT')
+TEST_OUT = os.path.join(tempfile.gettempdir(), 'TEST_OUT')
 
 
 def chew_csv(c):
@@ -49,7 +50,7 @@ def chew_csv(c):
 
 def spew(m, l=3):
     if SERVER_INFO["testlevel"] >= l:
-        print(m, file=sys.stderr)
+        print(m, file=sys.stdout)
 
 
 @ddt.ddt
@@ -58,8 +59,9 @@ class ValidServerTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls): # noqa
         cls.handler = pytan.Handler(**SERVER_INFO)
-        m = "{}: PyTan v'{}' against Tanium v'{}' -- Valid Tests Starting".format
+        m = "{}\n{}: PyTan v'{}' against Tanium v'{}' -- Valid Tests Starting\n".format
         spew(m(
+            '*' * 100,
             pytan.utils.seconds_from_now(),
             pytan.__version__,
             cls.handler.session.get_server_version(),
@@ -74,7 +76,7 @@ class ValidServerTests(unittest.TestCase):
                 ],
                 'objtype': 'sensor',
             }
-            spew("TESTSETUP: Getting base_type objects for export tests")
+            spew("TESTSETUP: Getting sensor objects for export tests of BaseType")
             cls.base_type_objs = cls.handler.get(**kwargs)
 
         if not hasattr(cls, 'wlus'):
@@ -96,15 +98,16 @@ class ValidServerTests(unittest.TestCase):
                     'Folder Name Search with RegEx Match{dirname=Program Files,regex=.*Shared.*}',
                 ],
             }
-            spew("TESTSETUP: Getting result_set objects for export tests")
+            spew("TESTSETUP: Asking a question for export tests of ResultSet")
             cls.result_set_objs = cls.handler.ask(**kwargs)
 
         spew('\n' + str(cls.handler))
 
     @classmethod
     def tearDownClass(cls): # noqa
-        m = "{}: PyTan v'{}' against Tanium v'{}' -- Valid Tests Finished".format
+        m = "{}\n{}: PyTan v'{}' against Tanium v'{}' -- Valid Tests Finished".format
         spew(m(
+            '*' * 100,
             pytan.utils.seconds_from_now(),
             pytan.__version__,
             cls.handler.session.get_server_version(),
@@ -282,36 +285,49 @@ class ValidServerTests(unittest.TestCase):
         method = value['method']
         args = value['args']
 
-        s = (
-            "+++ TESTING EXPECTED QUESTION SUCCESS Handler.{}() with kwargs {}"
-        ).format
-        spew(s(method, args))
+        parsed_q = 'parsed' in args.get('qtype', '')
+        is6_5 = handler.session.platform_is_6_5()
+        if not is6_5 and parsed_q:
+            exc = eval('pytan.exceptions.UnsupportedVersionError')
+            e = '.*not supported in version.*'
+            s = (
+                "+++ TESTING EXPECTED QUESTION FAILURE Handler.{}() with kwargs {}"
+            ).format
+            spew(s(method, args))
 
-        ret = getattr(handler, method)(**args)
-        self.assertIsInstance(ret['question_object'], taniumpy.Question)
-        self.assertIsInstance(ret['poller_object'], pytan.pollers.QuestionPoller)
+            with self.assertRaisesRegexp(exc, e):
+                getattr(handler, method)(**args)
+        else:
+            s = (
+                "+++ TESTING EXPECTED QUESTION SUCCESS Handler.{}() with kwargs {}"
+            ).format
+            spew(s(method, args))
 
-        parsed_q = args['qtype'] == 'parsed'
-        if parsed_q:
-            self.assertIsInstance(ret['parse_results'], taniumpy.ParseResultGroupList)
+            ret = getattr(handler, method)(**args)
+            self.assertIsInstance(ret['question_object'], taniumpy.Question)
+            self.assertIsInstance(ret['poller_object'], pytan.pollers.QuestionPoller)
 
-        get_results = args.get('get_results', True)
-        if get_results:
-            self.assertIsNotNone(ret['poller_success'])
-            self.assertIsInstance(ret['question_results'], taniumpy.ResultSet)
-            self.assertGreaterEqual(len(ret['question_results'].rows), 1)
-            self.assertGreaterEqual(len(ret['question_results'].columns), 1)
-            for ft in pytan.constants.EXPORT_MAPS['ResultSet'].keys():
-                report_file, result = handler.export_to_report_file(
-                    obj=ret['question_results'],
-                    export_format=ft,
-                    report_dir=TEST_OUT,
-                    prefix=sys._getframe().f_code.co_name + '_',
-                )
-                self.assertTrue(report_file)
-                self.assertTrue(result)
-                self.assertTrue(os.path.isfile(report_file))
-                self.assertGreaterEqual(len(result), 10)
+            parsed_q = args['qtype'] == 'parsed'
+            if parsed_q:
+                self.assertIsInstance(ret['parse_results'], taniumpy.ParseResultGroupList)
+
+            get_results = args.get('get_results', True)
+            if get_results:
+                self.assertIsNotNone(ret['poller_success'])
+                self.assertIsInstance(ret['question_results'], taniumpy.ResultSet)
+                self.assertGreaterEqual(len(ret['question_results'].rows), 1)
+                self.assertGreaterEqual(len(ret['question_results'].columns), 1)
+                for ft in pytan.constants.EXPORT_MAPS['ResultSet'].keys():
+                    report_file, result = handler.export_to_report_file(
+                        obj=ret['question_results'],
+                        export_format=ft,
+                        report_dir=TEST_OUT,
+                        prefix=sys._getframe().f_code.co_name + '_',
+                    )
+                    self.assertTrue(report_file)
+                    self.assertTrue(result)
+                    self.assertTrue(os.path.isfile(report_file))
+                    self.assertGreaterEqual(len(result), 10)
 
     @ddt.file_data('ddt/ddt_valid_saved_questions.json')
     def test_valid_saved_question(self, value):
@@ -427,6 +443,12 @@ class ValidServerTests(unittest.TestCase):
         exc = eval(value['exception'])
         e = value['error_str']
 
+        parsed_q = 'parsed' in args.get('qtype', '')
+        is6_5 = handler.session.platform_is_6_5()
+        if not is6_5 and parsed_q:
+            exc = eval('pytan.exceptions.UnsupportedVersionError')
+            e = '.*not supported in version.*'
+
         s = (
             "+++ TESTING EXPECTED QUESTION FAILURE Handler.{}() with kwargs {}"
         ).format
@@ -477,7 +499,7 @@ class ValidServerTests(unittest.TestCase):
         args = value['args']
         exc = eval(value['exception'])
         e = value['error_str']
-
+        args["report_dir"] = args.get('report_dir', tempfile.gettempdir())
         s = (
             "+++ TESTING EXPECTED DEPLOY ACTION FAILURE Handler.{}() with kwargs {}"
         ).format

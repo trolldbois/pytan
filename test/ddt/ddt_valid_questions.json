@@ -258,6 +258,7 @@
         "priority": "1",
         "method": "ask",
         "method_template": "valid_response",
+        "6_5_only": true,
         "response_template": "question",
         "args": {
             "qtype": "parsed",
@@ -270,6 +271,7 @@
         "xml_desc": "Ask the server to parse the question text 'computer name and ip route details' and add the question object that is returned in the first ParseResultGroup, do not get result data",
         "priority": "1",
         "method": "ask",
+        "6_5_only": true,
         "method_template": "valid_response",
         "response_template": "question",
         "args": {
@@ -284,6 +286,7 @@
         "xml_desc": "Ask the server to parse the question text 'computer name and ip route details' and add the question object that is returned in the first ParseResultGroup,  wait for result data to be complete, then use server side export to get the result data",
         "priority": "1",
         "method": "ask",
+        "6_5_only": true,
         "method_template": "valid_response",
         "response_template": "question",
         "args": {

@@ -1,8 +1,3 @@
-  * NOW:
-    * test against all the major releases of 6.2/6.5 as well as pre-release of 6.6
-    * generate soap examples for 6.2
-    * test on windows, linux
-    
   * DOC:
     * examples for ask_parsed.py
     * examples for tsat.py
