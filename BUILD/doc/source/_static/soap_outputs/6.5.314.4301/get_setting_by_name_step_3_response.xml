@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+  <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <t:return>
+      <command>GetObject</command>
+      <session>1-8093-b75baddb91150f001fec4480b4139749676f051d2358e06a74f9e7f40a03412eb7a8f812257e923cc94a3342c12a3df735b03f500ed151edbd10564b5f8c4073</session>
+      <server_version>6.5.314.4301</server_version>
+      <ID></ID>
+      <IDType></IDType>
+      <ContextID></ContextID>
+      <result_object>
+        <system_settings>
+          <system_setting>
+            <id>58</id>
+            <name>control_address</name>
+            <value>512:17473:127.0.0.1</value>
+            <default_value>512:17473:127.0.0.1</default_value>
+            <value_type>Text</value_type>
+            <setting_type>Server</setting_type>
+            <hidden_flag>0</hidden_flag>
+            <read_only_flag>0</read_only_flag>
+          </system_setting>
+        </system_settings>
+      </result_object>
+      <ResultXML></ResultXML>
+      <options>
+        <suppress_object_list>1</suppress_object_list>
+      </options>
+    </t:return>
+  </soap:Body>
+</soap:Envelope>

@@ -1,4 +1,4 @@
-pytan package
+PyTan Package
 =============
 
 .. automodule:: pytan
@@ -6,22 +6,80 @@ pytan package
     :members:
     :undoc-members:
     :private-members:
-    :special-members:
 
 .. autodata:: pytan.__version__
 .. autodata:: pytan.__copyright__
 .. autodata:: pytan.__license__
 .. autodata:: pytan.__author__
 
-.. toctree::
+pytan.handler
+--------------------------------------------------------------------------------------------
 
-   examples/pytan_examples
-   pytan.handler
-   pytan.exceptions
-   pytan.sessions
-   pytan.pollers
-   pytan.constants
-   pytan.utils
-   pytan.unittest
-   pytan.functest
+.. automodule:: pytan.handler
+    :show-inheritance:
+    :members:
+    :undoc-members:
+    :private-members:
 
+pytan.sessions
+--------------------------------------------------------------------------------------------
+
+.. automodule:: pytan.sessions
+    :show-inheritance:
+    :members:
+    :undoc-members:
+    :private-members:
+
+pytan.pollers
+--------------------------------------------------------------------------------------------
+
+.. automodule:: pytan.pollers
+    :show-inheritance:
+    :members:
+    :undoc-members:
+    :private-members:
+
+
+pytan.constants
+--------------------------------------------------------------------------------------------
+
+.. automodule:: pytan.constants
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+pytan.utils
+--------------------------------------------------------------------------------------------
+
+.. automodule:: pytan.utils
+    :show-inheritance:
+    :members:
+    :undoc-members:
+    :private-members:
+
+pytan.binsupport
+--------------------------------------------------------------------------------------------
+
+.. automodule:: pytan.binsupport
+    :show-inheritance:
+    :members:
+    :undoc-members:
+    :private-members:
+
+pytan.exceptions
+--------------------------------------------------------------------------------------------
+
+.. automodule:: pytan.exceptions
+    :show-inheritance:
+    :members:
+    :undoc-members:
+    :private-members:
+
+pytan.xml_clean
+--------------------------------------------------------------------------------------------
+
+.. automodule:: pytan.xml_clean
+    :show-inheritance:
+    :members:
+    :undoc-members:
+    :private-members:

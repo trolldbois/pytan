@@ -1,17 +1,35 @@
 {
     "ask_saved_question_by_name": {
         "desc": "Ask a saved question by referencing the name of a saved question in a string.",
+        "xml_desc": "Get the Saved Question object for Installed Applications then get the latest result data available for that Saved Question",
         "priority": "1",
         "method": "ask",
+        "method_template": "valid_response",
+        "response_template": "question",
         "args": {
             "qtype": "saved",
             "name": "Installed Applications"
+        }
+    },
+    "ask_saved_question_by_name_sse": {
+        "desc": "Ask a saved question by referencing the name of a saved question in a string and use Server Side Export when performing a GetResultData",
+        "xml_desc": "Get the Saved Question object for Installed Applications then get the latest result data available using Server Side Export for that Saved Question",
+        "priority": "1",
+        "method": "ask",
+        "method_template": "valid_response",
+        "response_template": "question",
+        "args": {
+            "qtype": "saved",
+            "name": "Installed Applications",
+            "sse": true
         }
     },
     "ask_saved_question_by_name_in_list": {
         "desc": "Ask a saved question by referencing the name of a saved question in a list of strings.",
         "priority": "1",
         "method": "ask",
+        "method_template": "valid_response",
+        "response_template": "question",
         "args": {
             "qtype": "saved",
             "name": ["Installed Applications"]
@@ -19,8 +37,11 @@
     },
     "ask_saved_question_refresh_data": {
         "desc": "Ask a saved question and refresh the data for the saved question (asks a new question)",
+        "xml_desc": "Get the Saved Question object for Installed Applications, ask the server to refresh the data vailable, wait for the new question spawned to complete results, then get the latest result data available for that Saved Question",
         "priority": "1",
         "method": "ask",
+        "method_template": "valid_response",
+        "response_template": "question",
         "args": {
             "qtype": "saved",
             "name": "Installed Applications",

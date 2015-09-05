@@ -1,12 +1,13 @@
 SERVER_INFO = {
     "username": "Administrator",
     "password": "Tanium2015!",
-    "host": "10.0.1.240",
+    "host": "10.0.1.240",  # 6.5
+    # "host": "172.16.31.128",  # 6.2
     "port": "443",
     # control level of logging for pytan
-    "loglevel": 0,
+    "loglevel": 1,
     # control level of logging / verbosity for unittest
-    "testlevel": 2,
+    "testlevel": 3,
     "debugformat": False,
     # have unittest exit immediately on unexpected error
     'FAILFAST': True,

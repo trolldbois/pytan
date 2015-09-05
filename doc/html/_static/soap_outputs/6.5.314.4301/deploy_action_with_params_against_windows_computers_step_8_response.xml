@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+  <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <t:return>
+      <command>GetObject</command>
+      <session>1-8060-4036783b325b1636e7b576ebbf9c7c6fb32c48c955a7af7af6f2f50b06e514642ba5216bbae7f99f9626b682d4f7cbe6c790bcff1577ec41cfa24d3592ff1de8</session>
+      <server_version>6.5.314.4301</server_version>
+      <ID></ID>
+      <IDType></IDType>
+      <ContextID></ContextID>
+      <result_object>
+        <package_spec>
+          <id>469</id>
+          <name>Custom Tagging - Add Tags</name>
+          <display_name>Custom Tagging - Add Tags</display_name>
+          <creation_time>2001-01-01T00:00:00</creation_time>
+          <modification_time>2001-01-01T00:00:00</modification_time>
+          <last_modified_by></last_modified_by>
+          <files>
+            <file>
+              <id>66</id>
+              <hash>55aa6c54d82282ad2d41390e49f7b9939c582e14fa5cfca1b7b7fb9264261182</hash>
+              <name>add-tags.vbs</name>
+              <size>1972</size>
+              <source>https://content.tanium.com/files/published/InitialContent/2015-06-04_18-59-45_6.5.1.0011-ga516c3c/custom_tagging_-_add_tags/add-tags.vbs</source>
+              <download_seconds>0</download_seconds>
+              <cache_status>Cached</cache_status>
+              <bytes_total>1972</bytes_total>
+              <status>0</status>
+              <bytes_downloaded>1972</bytes_downloaded>
+              <file_status>
+                <status>
+                  <server_id>1</server_id>
+                  <server_name>TPT1-0.localdomain:17472</server_name>
+                  <status>0</status>
+                  <cache_status>Cached</cache_status>
+                  <cache_message></cache_message>
+                  <bytes_downloaded>1972</bytes_downloaded>
+                  <bytes_total>1972</bytes_total>
+                </status>
+              </file_status>
+            </file>
+          </files>
+          <command>cmd /c cscript //T:60 add-tags.vbs "tag%5fshould%5fbe%5fadded"</command>
+          <command_timeout>60</command_timeout>
+          <expire_seconds>660</expire_seconds>
+          <verify_expire_seconds>600</verify_expire_seconds>
+          <skip_lock_flag>0</skip_lock_flag>
+          <hidden_flag>1</hidden_flag>
+          <signature></signature>
+          <available_time>2001-01-01T00:00:00</available_time>
+          <deleted_flag>0</deleted_flag>
+          <last_update>2001-01-01T00:00:00</last_update>
+          <source_id>76</source_id>
+          <verify_group_id>0</verify_group_id>
+          <verify_group>
+            <id>0</id>
+          </verify_group>
+          <parameter_definition>{"parameters":[{"helpString":"Enter tags space-delimited.","restrict":null,"maxChars":0,"defaultValue":"","validationExpressions":[{"helpString":"You must enter a value","flags":"","expression":"\\S","model":"com.tanium.models::ValidationExpression","parameterType":"com.tanium.models::ValidationExpression"}],"value":"","key":"$1","label":"Add tags (space-delimited)","promptText":"e.g. PCI DMZ Decomm","model":"com.tanium.components.parameters::TextInputParameter","parameterType":"com.tanium.components.parameters::TextInputParameter"}],"model":"com.tanium.components.parameters::ParametersArray","parameterType":"com.tanium.components.parameters::ParametersArray"}</parameter_definition>
+          <parameters>
+            <parameter>
+              <key>$1</key>
+              <value>tag_should_be_added</value>
+              <type>0</type>
+            </parameter>
+            <parameter>
+              <key>$2</key>
+              <value>tag_should_be_ignore</value>
+              <type>0</type>
+            </parameter>
+          </parameters>
+          <metadata>
+            <item>
+              <name>defined</name>
+              <value>Tanium</value>
+              <admin_flag>0</admin_flag>
+            </item>
+            <item>
+              <name>category</name>
+              <value>Tanium</value>
+              <admin_flag>0</admin_flag>
+            </item>
+          </metadata>
+        </package_spec>
+      </result_object>
+      <ResultXML></ResultXML>
+      <options>
+        <suppress_object_list>1</suppress_object_list>
+      </options>
+    </t:return>
+  </soap:Body>
+</soap:Envelope>

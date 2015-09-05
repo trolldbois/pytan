@@ -9,7 +9,7 @@ sys.dont_write_bytecode = True
 
 
 class HandlerError(Exception):
-    """Exception thrown for most errors in :mod:`pytan.handler`"""
+    """Exception thrown for errors in :mod:`pytan.handler`"""
     pass
 
 
@@ -34,7 +34,7 @@ class PytanHelp(Exception):
 
 
 class PollingError(Exception):
-    """Exception thrown for most errors in :mod:`pytan.polling`"""
+    """Exception thrown for errors in :mod:`pytan.polling`"""
     pass
 
 
@@ -58,11 +58,6 @@ class BadResponseError(Exception):
     pass
 
 
-class GetResultDataError(Exception):
-    """Exception thrown for GetResulDataError messages from Tanium in :mod:`pytan.sessions`"""
-    pass
-
-
 class NotFoundError(Exception):
     """Exception thrown for Not Found messages from Tanium in :mod:`pytan.handler`"""
     pass
@@ -74,20 +69,25 @@ class VersionMismatchError(Exception):
 
 
 class UnsupportedVersionError(Exception):
-    """Exception thrown for version_check in :mod:`pytan.utils`"""
+    """Exception thrown for version checks in :mod:`pytan.handler`"""
     pass
 
 
 class ServerSideExportError(Exception):
-    """Exception thrown for version_check in :mod:`pytan.utils`"""
+    """Exception thrown for server side export errors in :mod:`pytan.handler`"""
     pass
 
 
 class VersionParseError(Exception):
-    """Exception thrown for version_check in :mod:`pytan.utils`"""
+    """Exception thrown for server version parsing errors in :mod:`pytan.handler`"""
     pass
 
 
-class RunPluginError(Exception):
-    """Exception thrown for run_plugin in :mod:`pytan.sessions`"""
+class ServerParseError(Exception):
+    """Exception thrown for server parsing errors in :mod:`pytan.handler`"""
+    pass
+
+
+class PickerError(Exception):
+    """Exception thrown for picker errors in :mod:`pytan.handler`"""
     pass

@@ -8,13 +8,14 @@ Table of Contents
    :maxdepth: 4
    :numbered:
 
-   introduction
-   pytan
-   taniumpy
-   xmltodict
-   ddt
-   threaded_http
-   requests
+   introduction.rst
+   pytan.rst
+   pytan_tests.rst
+   taniumpy/taniumpy.rst
+   other_packages.rst
+   pytan_validation_index.rst
+   examples/pytan_examples.rst
+   soap_examples_index.rst
 
 Indices and tables
 ==================

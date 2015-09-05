@@ -1,17 +1,36 @@
 {
     "deploy_action_simple": {
         "desc": "Deploy an action against all computers using human strings.",
+        "xml_desc": "Deploy an action using the package 'Distribute Tanium Standard Utilities' to all computers, wait for result data to be complete, and then get result data",
         "priority": "1",
         "method": "deploy_action",
+        "method_template": "valid_response",
+        "response_template": "action",
         "args": {
             "package": "Distribute Tanium Standard Utilities",
             "run": true
         }
     },
+    "deploy_action_simple": {
+        "desc": "Deploy an action against all computers using human strings and use Server Side Export when performing a GetResultData",
+        "xml_desc": "Deploy an action using the package 'Distribute Tanium Standard Utilities' to all computers, wait for result data to be complete, and then get result data using Server Side Export",
+        "priority": "1",
+        "method": "deploy_action",
+        "method_template": "valid_response",
+        "response_template": "action",
+        "args": {
+            "package": "Distribute Tanium Standard Utilities",
+            "run": true,
+            "sse": true
+        }
+    },
     "deploy_action_simple_without_results": {
         "desc": "Deploy an action against all computers using human strings, but do not get the completed results of the job -- return right away with the deploy action object.",
+        "xml_desc": "Deploy an action using the package 'Distribute Tanium Standard Utilities' to all computers and do not wait for result data to be complete and do not get result data",
         "priority": "2",
         "method": "deploy_action",
+        "method_template": "valid_response",
+        "response_template": "action",
         "args": {
             "package": "Distribute Tanium Standard Utilities",
             "get_results": false,
@@ -20,8 +39,11 @@
     },
     "deploy_action_simple_against_windows_computers": {
         "desc": "Deploy an action against only windows computers using human strings. This requires passing in an action filter",
+        "xml_desc": "Deploy an action using the package 'Distribute Tanium Standard Utilities' to all computers that pass the filter Operating System, that contains Windows, wait for result data to be complete, and then get result data",
         "priority": "3",
         "method": "deploy_action",
+        "method_template": "valid_response",
+        "response_template": "action",
         "args": {
             "package": "Distribute Tanium Standard Utilities",
             "action_filters": "Operating System, that contains:Windows",
@@ -30,8 +52,11 @@
     },
     "deploy_action_with_params_against_windows_computers": {
         "desc": "Deploy an action with parameters against only windows computers using human strings.\n\nThis will use the Package 'Custom Tagging - Add Tags' and supply two parameters. The second parameter will be ignored because the package in question only requires one parameter.",
+        "xml_desc": "Deploy an action using the package 'Custom Tagging - Add Tags' with parameter $1 set to 'tag_should_be_added' and parameter $2 set to 'tag_should_be_ignore' to all computers that pass the filter Operating System, that contains Windows, wait for result data to be complete, and then get result data",
         "priority": "4",
         "method": "deploy_action",
+        "method_template": "valid_response",
+        "response_template": "action",
         "args": {
             "package": "Custom Tagging - Add Tags{$1=tag_should_be_added,$2=tag_should_be_ignore}",
             "action_filters": "Operating System, that contains:Windows",

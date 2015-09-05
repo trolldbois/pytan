@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+  <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <t:return>
+      <command>GetObject</command>
+      <session>1-8049-d96766cf864b79d184b1c1f78fedcffba134a8c8731c6c7280c163e82d0126b4444995fd27394ab470d3054290a9839e0e19d6d6ef8c6d4d0adef51cebd05efd</session>
+      <server_version>6.5.314.4301</server_version>
+      <ID></ID>
+      <IDType></IDType>
+      <ContextID></ContextID>
+      <result_object>
+        <package_spec>
+          <id>31</id>
+          <name>Disable Java Auto Update</name>
+          <display_name>Disable Java Auto Update</display_name>
+          <creation_time>2015-08-26T20:14:33</creation_time>
+          <modification_time>2015-08-26T20:14:33</modification_time>
+          <last_modified_by>Administrator</last_modified_by>
+          <files>
+            <file>
+              <id>43</id>
+              <hash>9e36208ce643c767ad76ef2ad6a69141fbb5a59a607b8eb8065db09e3a153c0d</hash>
+              <name>disable-java-auto-update.vbs</name>
+              <size>11377</size>
+              <source>https://content.tanium.com/files/published/InitialContent/2015-06-04_18-59-45_6.5.1.0011-ga516c3c/disable_java_auto_update/disable-java-auto-update.vbs</source>
+              <download_seconds>0</download_seconds>
+              <cache_status>Cached</cache_status>
+              <bytes_total>11377</bytes_total>
+              <status>200</status>
+              <bytes_downloaded>11377</bytes_downloaded>
+              <download_start_time>2015-08-26T20:16:41</download_start_time>
+              <last_download_progress_time>2015-08-26T20:17:02</last_download_progress_time>
+              <file_status>
+                <status>
+                  <server_id>1</server_id>
+                  <server_name>TPT1-0.localdomain:17472</server_name>
+                  <status>200</status>
+                  <cache_status>Cached</cache_status>
+                  <cache_message></cache_message>
+                  <bytes_downloaded>11377</bytes_downloaded>
+                  <bytes_total>11377</bytes_total>
+                  <download_start_time>2015-08-26T20:16:41</download_start_time>
+                  <last_download_progress_time>2015-08-26T20:17:02</last_download_progress_time>
+                </status>
+              </file_status>
+            </file>
+          </files>
+          <command>cmd /c cscript //T:60 disable-java-auto-update.vbs</command>
+          <command_timeout>60</command_timeout>
+          <expire_seconds>660</expire_seconds>
+          <verify_expire_seconds>600</verify_expire_seconds>
+          <skip_lock_flag>0</skip_lock_flag>
+          <hidden_flag>0</hidden_flag>
+          <signature></signature>
+          <available_time>2015-08-26T20:16:52</available_time>
+          <deleted_flag>0</deleted_flag>
+          <last_update>2015-08-26T20:14:33</last_update>
+          <source_id>0</source_id>
+          <verify_group_id>0</verify_group_id>
+          <verify_group>
+            <id>0</id>
+          </verify_group>
+          <metadata>
+            <item>
+              <name>defined</name>
+              <value>Tanium</value>
+              <admin_flag>0</admin_flag>
+            </item>
+            <item>
+              <name>category</name>
+              <value>Tanium</value>
+              <admin_flag>0</admin_flag>
+            </item>
+          </metadata>
+        </package_spec>
+      </result_object>
+      <ResultXML></ResultXML>
+      <options>
+        <suppress_object_list>1</suppress_object_list>
+      </options>
+    </t:return>
+  </soap:Body>
+</soap:Envelope>

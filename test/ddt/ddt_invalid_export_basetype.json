@@ -3,6 +3,8 @@
         "desc": "Export a BaseType from getting objects using a bad export_format",
         "priority": "1",
         "args": {"export_format": "bad"},
+        "method_template": "invalid_export_basetype",
+        "response_template": "NONE",
         "exception": "pytan.exceptions.HandlerError",
         "error_str": ".*not a supported export format for .*, must be one of.*"
     },
@@ -10,6 +12,8 @@
         "desc": "Export a BaseType from getting objects using a bad header_sort",
         "priority": "1",
         "args": {"export_format": "csv", "header_sort": "bad"},
+        "method_template": "invalid_export_basetype",
+        "response_template": "NONE",
         "exception": "pytan.exceptions.HandlerError",
         "error_str": ".*must be one of.*you supplied.*"
     },
@@ -17,6 +21,8 @@
         "desc": "Export a BaseType from getting objects using a bad explode_json_string_values",
         "priority": "1",
         "args": {"export_format": "csv", "explode_json_string_values": "bad"},
+        "method_template": "invalid_export_basetype",
+        "response_template": "NONE",
         "exception": "pytan.exceptions.HandlerError",
         "error_str": ".*must be one of.*you supplied.*"
     },
@@ -24,6 +30,8 @@
         "desc": "Export a BaseType from getting objects using a bad header_sort",
         "priority": "1",
         "args": {"export_format": "csv", "header_sort": [[]]},
+        "method_template": "invalid_export_basetype",
+        "response_template": "NONE",
         "exception": "pytan.exceptions.HandlerError",
         "error_str": ".*must be a list of.*you supplied.*"
     },
@@ -31,6 +39,8 @@
         "desc": "Export a BaseType from getting objects using a bad explode_json_string_values",
         "priority": "1",
         "args": {"export_format": "json", "explode_json_string_values": "bad"},
+        "method_template": "invalid_export_basetype",
+        "response_template": "NONE",
         "exception": "pytan.exceptions.HandlerError",
         "error_str": ".*must be one of.*you supplied.*"
     },
@@ -38,6 +48,8 @@
         "desc": "Export a BaseType from getting objects using a bad include_type",
         "priority": "1",
         "args": {"export_format": "json", "include_type": "bad"},
+        "method_template": "invalid_export_basetype",
+        "response_template": "NONE",
         "exception": "pytan.exceptions.HandlerError",
         "error_str": ".*must be one of.*you supplied.*"
     },
@@ -45,6 +57,8 @@
         "desc": "Export a BaseType from getting objects using a bad minimal",
         "priority": "1",
         "args": {"export_format": "xml", "minimal": "bad"},
+        "method_template": "invalid_export_basetype",
+        "response_template": "NONE",
         "exception": "pytan.exceptions.HandlerError",
         "error_str": ".*must be one of.*you supplied.*"
     }

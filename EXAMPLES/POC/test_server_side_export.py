@@ -16,6 +16,9 @@ for aa in path_adds:
     if aa not in sys.path:
         sys.path.append(aa)
 
+pytan_loc = '~/gh/pytan'
+sys.path.append(os.path.join(os.path.expanduser(pytan_loc), 'lib'))
+
 import pytan
 import taniumpy # noqa
 import taniumpy as api # noqa

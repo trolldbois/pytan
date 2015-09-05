@@ -4,1164 +4,430 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 '''generates all of the examples from the test/ddt JSON files'''
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
-__version__ = '1.0.4'
+__version__ = '2.1.0'
 
 import os
 import sys
 import json
-import StringIO
-import contextlib
 import glob
 import pprint
-
-sys.dont_write_bytecode = True
-my_file = os.path.abspath(sys.argv[0])
-my_dir = os.path.dirname(my_file)
-parent_dir = os.path.dirname(my_dir)
-lib_dir = os.path.join(parent_dir, 'lib')
-path_adds = [lib_dir]
-
-for aa in path_adds:
-    if aa not in sys.path:
-        sys.path.append(aa)
-
-# import pytan
-from pytan import utils
-
-utils.version_check(__version__)
-
-
-def read_file(f):
-    with open(f) as fh:
-        out = fh.read()
-    return out
-
-
-def json_read(f):
-    return json.loads(read_file(f))
-
-
-@contextlib.contextmanager
-def stdoutIO(stdout=None):
-    old = sys.stdout
-    if stdout is None:
-        stdout = StringIO.StringIO()
-    sys.stdout = stdout
-    yield stdout
-    sys.stdout = old
-
-
-def get_exec_output(c):
-    print "executing code block:\n{}".format(c)
-    with stdoutIO() as s:
-        exec(c)
-    return s.getvalue()
-
-
-def indent_block(c):
-    return '\n    ' + '\n    '.join(c.splitlines())
-
-
-def get_name_title(t):
-    return t.replace('_', ' ').strip().capitalize()
-
-
-def write_file(f, c):
-    with open(f, 'w') as fh:
-        fh.write(c)
-    print "Wrote file: {}".format(f)
-
-
-rst_name_template = "\n{{}}\n{}\n".format("=" * 90).format
-rst_desc_template = "{}\n".format
-
-example_py_out = '''
-"""
-{0}
-"""
-{1}
-\'\'\'Output from running this:
-{2}
-\'\'\'
-'''.format
-
-example_index_rst_out = """
-{}
-========================================================================================
-
-.. toctree::
-
-   {}
-""".format
-
-
-def rst_code_block(c, out):
-    base_block = """
-{}
-----------------------------------------------------------------------------------------
-
-.. code-block:: {}
-    :linenos:
-
-{}
-""".format
-    c_block = indent_block(c)
-    code_block = base_block('Example Python Code', 'python', c_block)
-
-    out_block = indent_block(out)
-    output_block = base_block('Output from Python Code', 'none', out_block)
-    ret = "{}\n{}".format(code_block, output_block)
-    return ret
-
-#####
-
-test_dir = os.path.join(parent_dir, 'test')
-ddt_dir = os.path.join(test_dir, 'ddt')
-rst_out_dir = os.path.join(parent_dir, 'BUILD', 'doc', 'source', 'examples')
-example_out_dir = os.path.join(parent_dir, 'EXAMPLES', 'API')
-if not os.path.isdir(example_out_dir):
-    os.makedirs(example_out_dir)
-
-####################### BASE EXAMPLE
-
-base_example = """
-import os
-import sys
-sys.dont_write_bytecode = True
-
-# Determine our script name, script dir
-my_file = os.path.abspath(sys.argv[0])
-my_dir = os.path.dirname(my_file)
-
-# determine the pytan lib dir and add it to the path
-parent_dir = os.path.dirname(my_dir)
-pytan_root_dir = os.path.dirname(parent_dir)
-lib_dir = os.path.join(pytan_root_dir, 'lib')
-path_adds = [lib_dir]
-
-for aa in path_adds:
-    if aa not in sys.path:
-        sys.path.append(aa)
-
-
-# connection info for Tanium Server
-USERNAME = "Tanium User"
-PASSWORD = "T@n!um"
-HOST = "172.16.31.128"
-PORT = "443"
-
-# Logging controls
-LOGLEVEL = 2
-DEBUGFORMAT = False
-
+import shutil
 import tempfile
 
+sys.dont_write_bytecode = True
+my_file = os.path.abspath(sys.argv[0])
+my_dir = os.path.dirname(my_file)
+parent_dir = os.path.dirname(my_dir)
+pytan_lib_dir = os.path.join(parent_dir, 'lib')
+build_lib_dir = os.path.join(my_dir, 'lib')
+test_dir = os.path.join(parent_dir, 'test')
+path_adds = [build_lib_dir, pytan_lib_dir, test_dir]
+
+[sys.path.insert(0, aa) for aa in path_adds if aa not in sys.path]
+
 import pytan
-handler = pytan.Handler(
-    username=USERNAME,
-    password=PASSWORD,
-    host=HOST,
-    port=PORT,
-    loglevel=LOGLEVEL,
-    debugformat=DEBUGFORMAT,
-)
-
-print handler
-"""
-
-old_files = glob.glob(rst_out_dir + '/*.*')
-if old_files:
-    for x in old_files:
-        print "Cleaning up old example RST file {}".format(x)
-        os.unlink(x)
-
-old_files = glob.glob(example_out_dir + '/*.*')
-if old_files:
-    for x in old_files:
-        print "Cleaning up old example RST file {}".format(x)
-        os.unlink(x)
-
-examples = []
-
-base_name = "pytan_api_basic_handler_example"
-base_desc = """Here is an example for how to instantiate a :class:`pytan.Handler` object.
-
-The username, password, host, and maybe port as well need to be provided on a per Tanium server basis.
-"""
-out = get_exec_output(base_example)
-example_rst_out = "{}\n{}{}".format(
-    rst_name_template(get_name_title(base_name)),
-    rst_desc_template(base_desc),
-    rst_code_block(base_example, out)
-)
-
-example_rst_file = base_name + '.rst'
-example_py_file = base_name + '.py'
-
-examples.append(example_rst_file)
-write_file(os.path.join(rst_out_dir, example_rst_file), example_rst_out)
-write_file(
-    os.path.join(example_out_dir, example_py_file), example_py_out(base_desc, base_example, out))
-
-
-####################### VALID SAVED QUESTION DDT
-
-ddt = os.path.join(ddt_dir, 'ddt_valid_saved_questions.json')
-ddt_objs = json_read(ddt)
-
-q_examples = []
-for qname, qinfo in sorted(ddt_objs.items(), key=lambda x: x[1]['priority']):
-
-    q_kwargs = ''.join([
-        'kwargs["{}"] = {}\n'.format(k, pprint.pformat(v))
-        for k, v in qinfo['args'].iteritems()
-    ])
-    q_kwargs = """
-# setup the arguments for the handler method
-kwargs = {{}}
-{}""".format(q_kwargs)
-
-    q_method = """
-# call the handler with the {0} method, passing in kwargs for arguments
-response = handler.{0}(**kwargs)
-""".format(qinfo['method'])
-
-    q_response = """import pprint, io
-
-print ""
-print "Type of response: ", type(response)
-
-print ""
-print "Pretty print of response:"
-print pprint.pformat(response)
-
-print ""
-print "Equivalent Question if it were to be asked in the Tanium Console: "
-print response['question_object'].query_text
-
-# create an IO stream to store CSV results to
-out = io.BytesIO()
-
-# call the write_csv() method to convert response to CSV and store it in out
-response['question_results'].write_csv(out, response['question_results'])
-
-print ""
-print "CSV Results of response: "
-out = out.getvalue()
-if len(out.splitlines()) > 15:
-    out = out.splitlines()[0:15]
-    out.append('..trimmed for brevity..')
-    out = '\\n'.join(out)
-print out
-"""
-    q_code = '{}{}{}{}\n'.format(base_example, q_kwargs, q_method, q_response)
-    example_rst_file = qname + '.rst'
-    example_py_file = qname + '.py'
-    out = get_exec_output(q_code)
-    example_rst_out = "{}\n{}{}".format(
-        rst_name_template(get_name_title(qname)),
-        rst_desc_template(qinfo['desc']),
-        rst_code_block(q_code, out)
-    )
-    q_examples.append(example_rst_file)
-    write_file(os.path.join(rst_out_dir, example_rst_file), example_rst_out)
-    write_file(
-        os.path.join(example_out_dir, example_py_file), example_py_out(qinfo['desc'], q_code, out))
-
-q_examples_rst = os.path.join(rst_out_dir, 'valid_saved_questions.rst')
-write_file(q_examples_rst, example_index_rst_out(
-    'PyTan API Valid Saved Question Examples', '\n   '.join(q_examples)))
-examples.append('valid_saved_questions')
-
-####################### VALID QUESTION DDT
-
-ddt = os.path.join(ddt_dir, 'ddt_valid_questions.json')
-ddt_objs = json_read(ddt)
-
-q_examples = []
-for qname, qinfo in sorted(ddt_objs.items(), key=lambda x: x[1]['priority']):
-
-    q_kwargs = ''.join([
-        'kwargs["{}"] = {}\n'.format(k, pprint.pformat(v))
-        for k, v in qinfo['args'].iteritems()
-    ])
-    q_kwargs = """
-# setup the arguments for the handler method
-kwargs = {{}}
-{}""".format(q_kwargs)
-
-    q_method = """
-# call the handler with the {0} method, passing in kwargs for arguments
-response = handler.{0}(**kwargs)
-""".format(qinfo['method'])
-
-    q_response = """import pprint, io
-
-print ""
-print "Type of response: ", type(response)
-
-print ""
-print "Pretty print of response:"
-print pprint.pformat(response)
-
-print ""
-print "Equivalent Question if it were to be asked in the Tanium Console: "
-print response['question_object'].query_text
-
-# create an IO stream to store CSV results to
-out = io.BytesIO()
-
-# call the write_csv() method to convert response to CSV and store it in out
-response['question_results'].write_csv(out, response['question_results'])
-
-print ""
-print "CSV Results of response: "
-out = out.getvalue()
-if len(out.splitlines()) > 15:
-    out = out.splitlines()[0:15]
-    out.append('..trimmed for brevity..')
-    out = '\\n'.join(out)
-print out
-"""
-    q_code = '{}{}{}{}\n'.format(base_example, q_kwargs, q_method, q_response)
-    example_rst_file = qname + '.rst'
-    example_py_file = qname + '.py'
-    out = get_exec_output(q_code)
-    example_rst_out = "{}\n{}{}".format(
-        rst_name_template(get_name_title(qname)),
-        rst_desc_template(qinfo['desc']),
-        rst_code_block(q_code, out)
-    )
-    q_examples.append(example_rst_file)
-    write_file(os.path.join(rst_out_dir, example_rst_file), example_rst_out)
-    write_file(
-        os.path.join(example_out_dir, example_py_file), example_py_out(qinfo['desc'], q_code, out))
-
-q_examples_rst = os.path.join(rst_out_dir, 'valid_questions.rst')
-write_file(q_examples_rst, example_index_rst_out(
-    'PyTan API Valid Question Examples', '\n   '.join(q_examples)))
-examples.append('valid_questions')
-
-####################### INVALID QUESTION DDT
-
-ddt = os.path.join(ddt_dir, 'ddt_invalid_questions.json')
-ddt_objs = json_read(ddt)
-
-q_examples = []
-for qname, qinfo in sorted(ddt_objs.items(), key=lambda x: x[1]['priority']):
-
-    q_kwargs = ''.join([
-        'kwargs["{}"] = {}\n'.format(k, pprint.pformat(v))
-        for k, v in qinfo['args'].iteritems()
-    ])
-    q_kwargs = """
-# setup the arguments for the handler method
-kwargs = {{}}
-{}""".format(q_kwargs)
-
-    q_method = """
-
-# call the handler with the {0} method, passing in kwargs for arguments
-# this should throw an exception: {1}
-import traceback
-try:
-    handler.{0}(**kwargs)
-except Exception as e:
-    traceback.print_exc(file=sys.stdout)
-
-""".format(qinfo['method'], qinfo['exception'])
-
-    q_response = """"""
-    q_code = '{}{}{}{}\n'.format(base_example, q_kwargs, q_method, q_response)
-    example_rst_file = qname + '.rst'
-    example_py_file = qname + '.py'
-
-    out = get_exec_output(q_code)
-    example_rst_out = "{}\n{}{}".format(
-        rst_name_template(get_name_title(qname)),
-        rst_desc_template(qinfo['desc']),
-        rst_code_block(q_code, out)
-    )
-    q_examples.append(example_rst_file)
-    write_file(os.path.join(rst_out_dir, example_rst_file), example_rst_out)
-    write_file(
-        os.path.join(example_out_dir, example_py_file), example_py_out(qinfo['desc'], q_code, out))
-
-q_examples_rst = os.path.join(rst_out_dir, 'invalid_questions.rst')
-write_file(q_examples_rst, example_index_rst_out(
-    'PyTan API Invalid Question Examples', '\n   '.join(q_examples)))
-examples.append('invalid_questions')
-
-####################### VALID GET OBJECT DDT
-
-ddt = os.path.join(ddt_dir, 'ddt_valid_get_object.json')
-ddt_objs = json_read(ddt)
-
-q_examples = []
-for qname, qinfo in sorted(ddt_objs.items(), key=lambda x: x[1]['priority']):
-
-    q_kwargs = ''.join([
-        'kwargs["{}"] = {}\n'.format(k, pprint.pformat(v))
-        for k, v in qinfo['args'].iteritems()
-    ])
-    q_kwargs = """
-# setup the arguments for the handler method
-kwargs = {{}}
-{}""".format(q_kwargs)
-
-    q_method = """
-# call the handler with the {0} method, passing in kwargs for arguments
-response = handler.{0}(**kwargs)
-""".format(qinfo['method'])
-
-    q_response = """
-print ""
-print "Type of response: ", type(response)
-
-print ""
-print "print of response:"
-print response
-
-print ""
-print "length of response (number of objects returned): "
-print len(response)
-
-print ""
-print "print the first object returned in JSON format:"
-out = response.to_json(response[0])
-if len(out.splitlines()) > 15:
-    out = out.splitlines()[0:15]
-    out.append('..trimmed for brevity..')
-    out = '\\n'.join(out)
-
-print out
-
-"""
-    q_code = '{}{}{}{}\n'.format(base_example, q_kwargs, q_method, q_response)
-    example_rst_file = qname + '.rst'
-    example_py_file = qname + '.py'
-
-    out = get_exec_output(q_code)
-    example_rst_out = "{}\n{}{}".format(
-        rst_name_template(get_name_title(qname)),
-        rst_desc_template(qinfo['desc']),
-        rst_code_block(q_code, out)
-    )
-    q_examples.append(example_rst_file)
-    write_file(os.path.join(rst_out_dir, example_rst_file), example_rst_out)
-    write_file(
-        os.path.join(example_out_dir, example_py_file), example_py_out(qinfo['desc'], q_code, out))
-
-q_examples_rst = os.path.join(rst_out_dir, 'valid_get_objects.rst')
-write_file(q_examples_rst, example_index_rst_out(
-    'PyTan API Valid Get Object Examples', '\n   '.join(q_examples)))
-examples.append('valid_get_objects')
-
-####################### INVALID GET OBJECT DDT
-
-ddt = os.path.join(ddt_dir, 'ddt_invalid_get_object.json')
-ddt_objs = json_read(ddt)
-
-q_examples = []
-for qname, qinfo in sorted(ddt_objs.items(), key=lambda x: x[1]['priority']):
-
-    q_kwargs = ''.join([
-        'kwargs["{}"] = {}\n'.format(k, pprint.pformat(v))
-        for k, v in qinfo['args'].iteritems()
-    ])
-    q_kwargs = """
-# setup the arguments for the handler method
-kwargs = {{}}
-{}""".format(q_kwargs)
-
-    q_method = """
-
-# call the handler with the {0} method, passing in kwargs for arguments
-# this should throw an exception: {1}
-import traceback
-try:
-    handler.{0}(**kwargs)
-except Exception as e:
-    traceback.print_exc(file=sys.stdout)
-
-""".format(qinfo['method'], qinfo['exception'])
-
-    q_response = """"""
-    q_code = '{}{}{}{}\n'.format(base_example, q_kwargs, q_method, q_response)
-    example_rst_file = qname + '.rst'
-    example_py_file = qname + '.py'
-
-    out = get_exec_output(q_code)
-    example_rst_out = "{}\n{}{}".format(
-        rst_name_template(get_name_title(qname)),
-        rst_desc_template(qinfo['desc']),
-        rst_code_block(q_code, out)
-    )
-    q_examples.append(example_rst_file)
-    write_file(os.path.join(rst_out_dir, example_rst_file), example_rst_out)
-    write_file(
-        os.path.join(example_out_dir, example_py_file), example_py_out(qinfo['desc'], q_code, out))
-
-q_examples_rst = os.path.join(rst_out_dir, 'invalid_get_objects.rst')
-write_file(q_examples_rst, example_index_rst_out(
-    'PyTan API Invalid Get Object Examples', '\n   '.join(q_examples)))
-examples.append('invalid_get_objects')
-
-####################### VALID DEPLOY ACTION DDT
-
-ddt = os.path.join(ddt_dir, 'ddt_valid_deploy_action.json')
-ddt_objs = json_read(ddt)
-
-q_examples = []
-for qname, qinfo in sorted(ddt_objs.items(), key=lambda x: x[1]['priority']):
-
-    q_kwargs = ''.join([
-        'kwargs["{}"] = {}\n'.format(k, pprint.pformat(v))
-        for k, v in qinfo['args'].iteritems()
-    ])
-    q_kwargs = """
-# setup the arguments for the handler method
-kwargs = {{}}
-{}""".format(q_kwargs)
-
-    q_method = """
-# call the handler with the {0} method, passing in kwargs for arguments
-response = handler.{0}(**kwargs)
-""".format(qinfo['method'])
-
-    q_response = """import pprint, io
-
-print ""
-print "Type of response: ", type(response)
-
-print ""
-print "Pretty print of response:"
-print pprint.pformat(response)
-
-print ""
-print "Print of action object: "
-print response['action_object']
-
-# create an IO stream to store CSV results to
-out = io.BytesIO()
-
-# if results were returned (i.e. get_results=True was one of the kwargs passed in):
-if response['action_results']:
-    # call the write_csv() method to convert response to CSV and store it in out
-    response['action_results'].write_csv(out, response['action_results'])
-
-    print ""
-    print "CSV Results of response: "
-    print out.getvalue()
-
-"""
-    q_code = '{}{}{}{}\n'.format(base_example, q_kwargs, q_method, q_response)
-    example_rst_file = qname + '.rst'
-    example_py_file = qname + '.py'
-
-    out = get_exec_output(q_code)
-    example_rst_out = "{}\n{}{}".format(
-        rst_name_template(get_name_title(qname)),
-        rst_desc_template(qinfo['desc']),
-        rst_code_block(q_code, out)
-    )
-    q_examples.append(example_rst_file)
-    write_file(os.path.join(rst_out_dir, example_rst_file), example_rst_out)
-    write_file(
-        os.path.join(example_out_dir, example_py_file), example_py_out(qinfo['desc'], q_code, out))
-
-q_examples_rst = os.path.join(rst_out_dir, 'valid_deploy_actions.rst')
-write_file(q_examples_rst, example_index_rst_out(
-    'PyTan API Valid Deploy Action Examples', '\n   '.join(q_examples)))
-examples.append('valid_deploy_actions')
-
-####################### INVALID DEPLOY ACTION DDT
-
-ddt = os.path.join(ddt_dir, 'ddt_invalid_deploy_action.json')
-ddt_objs = json_read(ddt)
-
-q_examples = []
-for qname, qinfo in sorted(ddt_objs.items(), key=lambda x: x[1]['priority']):
-
-    q_kwargs = ''.join([
-        'kwargs["{}"] = {}\n'.format(k, pprint.pformat(v))
-        for k, v in qinfo['args'].iteritems()
-    ])
-    q_kwargs = """
-# setup the arguments for the handler method
-kwargs = {{}}
-kwargs['report_dir'] = tempfile.gettempdir()
-{}""".format(q_kwargs)
-
-    q_method = """
-
-# call the handler with the {0} method, passing in kwargs for arguments
-# this should throw an exception: {1}
-import traceback
-try:
-    handler.{0}(**kwargs)
-except Exception as e:
-    traceback.print_exc(file=sys.stdout)
-
-""".format(qinfo['method'], qinfo['exception'])
-
-    q_response = """"""
-    q_code = '{}{}{}{}\n'.format(base_example, q_kwargs, q_method, q_response)
-    example_rst_file = qname + '.rst'
-    example_py_file = qname + '.py'
-
-    out = get_exec_output(q_code)
-    example_rst_out = "{}\n{}{}".format(
-        rst_name_template(get_name_title(qname)),
-        rst_desc_template(qinfo['desc']),
-        rst_code_block(q_code, out)
-    )
-    q_examples.append(example_rst_file)
-    write_file(os.path.join(rst_out_dir, example_rst_file), example_rst_out)
-    write_file(
-        os.path.join(example_out_dir, example_py_file), example_py_out(qinfo['desc'], q_code, out))
-
-q_examples_rst = os.path.join(rst_out_dir, 'invalid_deploy_actions.rst')
-write_file(q_examples_rst, example_index_rst_out(
-    'PyTan API Invalid Deploy Action Examples', '\n   '.join(q_examples)))
-examples.append('invalid_deploy_actions')
-
-####################### VALID CREATE OBJECT DDT
-
-ddt = os.path.join(ddt_dir, 'ddt_valid_create_object.json')
-ddt_objs = json_read(ddt)
-
-q_examples = []
-for qname, qinfo in sorted(ddt_objs.items(), key=lambda x: x[1]['priority']):
-    delete_args = {str(k): str(v) for k, v in qinfo['delete'].iteritems()}
-    q_delete_args = ''.join([
-        'delete_kwargs["{}"] = {}\n'.format(k, pprint.pformat(v))
-        for k, v in delete_args.iteritems()
-    ])
-
-    q_kwargs = ''.join([
-        'kwargs["{}"] = {}\n'.format(k, pprint.pformat(v))
-        for k, v in qinfo['args'].iteritems()
-    ])
-    q_kwargs = """
-# setup the arguments for the delete method (to remove the package in case it exists)
-delete_kwargs = {{}}
-{}
-
-# setup the arguments for the handler method
-kwargs = {{}}
-{}""".format(q_delete_args, q_kwargs)
-
-    q_method = """
-# delete the object in case it already exists
-try:
-    handler.delete(**delete_kwargs)
-except Exception as e:
-    print e
-
-# call the handler with the {0} method, passing in kwargs for arguments
-response = handler.{0}(**kwargs)
-
-""".format(qinfo['method'])
-
-    q_response = """
-print ""
-print "Type of response: ", type(response)
-
-print ""
-print "print of response:"
-print response
-
-print ""
-print "print the object returned in JSON format:"
-print response.to_json(response)
-
-# delete the object, we are done with it now
-try:
-    handler.delete(**delete_kwargs)
-except Exception as e:
-    print e
-
-"""
-    q_code = '{}{}{}{}\n'.format(base_example, q_kwargs, q_method, q_response)
-    example_rst_file = qname + '.rst'
-    example_py_file = qname + '.py'
-
-    out = get_exec_output(q_code)
-    example_rst_out = "{}\n{}{}".format(
-        rst_name_template(get_name_title(qname)),
-        rst_desc_template(qinfo['desc']),
-        rst_code_block(q_code, out)
-    )
-    q_examples.append(example_rst_file)
-    write_file(os.path.join(rst_out_dir, example_rst_file), example_rst_out)
-    write_file(
-        os.path.join(example_out_dir, example_py_file), example_py_out(qinfo['desc'], q_code, out))
-
-q_examples_rst = os.path.join(rst_out_dir, 'valid_create_objects.rst')
-write_file(q_examples_rst, example_index_rst_out(
-    'PyTan API Valid Create Object Examples', '\n   '.join(q_examples)))
-examples.append('valid_create_objects')
-
-####################### INVALID CREATE OBJECT DDT
-
-ddt = os.path.join(ddt_dir, 'ddt_invalid_create_object.json')
-ddt_objs = json_read(ddt)
-
-q_examples = []
-for qname, qinfo in sorted(ddt_objs.items(), key=lambda x: x[1]['priority']):
-
-    q_kwargs = ''.join([
-        'kwargs["{}"] = {}\n'.format(k, pprint.pformat(v))
-        for k, v in qinfo['args'].iteritems()
-    ])
-    q_kwargs = """
-# setup the arguments for the handler method
-kwargs = {{}}
-{}""".format(q_kwargs)
-
-    q_method = """
-
-# call the handler with the {0} method, passing in kwargs for arguments
-# this should throw an exception: {1}
-import traceback
-try:
-    handler.{0}(**kwargs)
-except Exception as e:
-    traceback.print_exc(file=sys.stdout)
-
-""".format(qinfo['method'], qinfo['exception'])
-
-    q_response = """"""
-    q_code = '{}{}{}{}\n'.format(base_example, q_kwargs, q_method, q_response)
-    example_rst_file = qname + '.rst'
-    example_py_file = qname + '.py'
-
-    out = get_exec_output(q_code)
-    example_rst_out = "{}\n{}{}".format(
-        rst_name_template(get_name_title(qname)),
-        rst_desc_template(qinfo['desc']),
-        rst_code_block(q_code, out)
-    )
-    q_examples.append(example_rst_file)
-    write_file(os.path.join(rst_out_dir, example_rst_file), example_rst_out)
-    write_file(
-        os.path.join(example_out_dir, example_py_file), example_py_out(qinfo['desc'], q_code, out))
-
-q_examples_rst = os.path.join(rst_out_dir, 'invalid_create_objects.rst')
-write_file(q_examples_rst, example_index_rst_out(
-    'PyTan API Invalid Create Object Examples', '\n   '.join(q_examples)))
-examples.append('invalid_create_objects')
-
-####################### VALID CREATE OBJECT FROM JSON DDT
-
-ddt = os.path.join(ddt_dir, 'ddt_valid_create_object_from_json.json')
-ddt_objs = json_read(ddt)
-
-q_examples = []
-for qname, qinfo in sorted(ddt_objs.items(), key=lambda x: x[1]['priority']):
-    aname = ''
-    avalue = ''
-
-    if qinfo['transform']:
-        aname = qinfo['transform'][0]
-        avalue = qinfo['transform'][1]
-
-    q_kwargs = ''.join([
-        'get_kwargs["{}"] = {}\n'.format(k, pprint.pformat(v))
-        for k, v in qinfo['get'].iteritems()
-    ])
-    q_kwargs = """
-# set the attribute name and value we want to add to the original object (if any)
-attr_name = "{}"
-attr_add = "{}"
-
-# delete object before creating it?
-delete = {}
-
-# setup the arguments for getting an object to export as json file
-get_kwargs = {{}}
-{}""".format(aname, avalue, qinfo['delete'], q_kwargs)
-
-    q_method = """
-
-# get objects to use as an export to JSON file
-orig_objs = handler.get(**get_kwargs)
-
-# if attr_name and attr_add exists, modify the orig_objs to add attr_add to the attribute
-# attr_name
-if attr_name:
-    for x in orig_objs:
-        new_attr = getattr(x, attr_name)
-        new_attr += attr_add
-        setattr(x, attr_name, new_attr)
-        if delete:
-            # delete the object in case it already exists
-            del_kwargs = {{}}
-            del_kwargs[attr_name] = new_attr
-            del_kwargs['objtype'] = {0!r}
+import pytan.binsupport
+import buildsupport
+import script_definitions
+import API_INFO
+
+pytan.binsupport.version_check(__version__)
+
+api_info = API_INFO.SERVER_INFO
+# # override 6.5 host
+api_info['host'] = "10.0.1.240"
+
+# # override 6.2 host
+# api_info['host'] = "172.16.31.128"
+
+handler = pytan.handler.Handler(**api_info)
+platform_version = handler.get_server_version()
+is6_5 = handler.session.platform_is_6_5()
+print "Platform Version: {}".format(platform_version)
+
+BASIC_PY_CODE = script_definitions.BASIC_PY_CODE.format(**api_info)
+
+
+class ExampleProcesser(object):
+    rst_examples = []
+    py_examples = []
+    soap_examples = []
+    VERBOSE = False
+
+    def __init__(self, verbose=False, tempdir=False):
+        self.VERBOSE = verbose
+        self.my_file = os.path.abspath(sys.argv[0])
+        self.my_dir = os.path.dirname(self.my_file)
+        self.parent_dir = os.path.dirname(self.my_dir)
+        self.test_dir = os.path.join(self.parent_dir, 'test')
+        self.ddt_dir = os.path.join(self.test_dir, 'ddt')
+
+        if tempdir:
+            doc_dir = os.path.join('/tmp/API_BUILDER', platform_version)
+            staticdoc_dir = os.path.join('/tmp/API_BUILDER', platform_version)
+        else:
+            doc_dir = script_definitions.doc_source
+            staticdoc_dir = script_definitions.staticdoc_source
+
+        # output directory for RST files
+        self.rst_out_dir = os.path.join(doc_dir, 'examples')
+        # output directory for stdout/stderr files for RST file linkage
+        self.rst_outputs_dir = os.path.join(doc_dir, '_static', 'pytan_outputs')
+        # output directory for python example files
+        self.pytan_example_out_dir = os.path.join(parent_dir, 'EXAMPLES', 'PYTAN_API')
+        # output directory for RST API example files
+        self.soap_example_out_dir = os.path.join(doc_dir, 'soap_examples', platform_version)
+        # output directory for response/request files for RST file linkage
+        self.soap_outputs_dir = os.path.join(staticdoc_dir, 'soap_outputs', platform_version)
+
+    def clean_up_output_dirs(self):
+        output_dirs = [
+            self.rst_out_dir,
+            self.pytan_example_out_dir,
+            self.soap_example_out_dir,
+            self.rst_outputs_dir,
+            self.soap_outputs_dir,
+        ]
+
+        for i in output_dirs:
+            if os.path.isdir(i):
+                print "Deleting and re-making old output dir: {}".format(i)
+                shutil.rmtree(i)
+                os.makedirs(i)
+
+    def indent_block(self, c):
+        return '\n    ' + '\n    '.join(c.splitlines())
+
+    def build_rst_title(self, name, sep='='):
+        title_sep = "{}".format(sep * 90)
+        title_name = buildsupport.get_name_title(name)
+        ret = "\n{}\n{}\n".format(title_name, title_sep)
+        return ret
+
+    def build_rst_desc(self, desc):
+        return "{}\n".format(desc)
+
+    def build_rst_code_block(self, title, block, code_type='none'):
+        i_block = self.indent_block(block)
+        code_block = script_definitions.CODE_BLOCK_TEMPLATE.format
+        code_block = code_block(title=title, code_type=code_type, code_block=i_block)
+        return code_block
+
+    def build_response_blocks(self, response_objects):
+        out = '\n'.join(
+            [script_definitions.RESPONSE_BLOCK_TEMPLATE.format(x) for x in response_objects]
+        )
+        return out
+
+    def write_rst_include_file(self, name, stepname, out, ext, out_dir):
+        filename = "{}_{}.{}".format(name, stepname, ext)
+        filepath = os.path.join(out_dir, filename)
+        if not out:
+            out = 'None\n'
+        buildsupport.write_file(filepath, out)
+        return filename
+
+    def build_pytan_rst_example(self, name, desc, py_code, py_stdout, py_stderr):
+        inc_code = self.write_rst_include_file(
+            name=name, stepname='code', out=py_code, ext='py', out_dir=self.rst_out_dir,
+        )
+        inc_stdout = self.write_rst_include_file(
+            name=name, stepname='stdout', out=py_stdout, ext='txt', out_dir=self.rst_outputs_dir,
+        )
+        inc_stderr = self.write_rst_include_file(
+            name=name, stepname='stderr', out=py_stderr, ext='txt', out_dir=self.rst_outputs_dir,
+        )
+        title = buildsupport.get_name_title(name)
+        rst_out = script_definitions.EXAMPLE_RST_TEMPLATE.format(
+            title=title, desc=desc,
+            inc_code=inc_code, inc_stdout=inc_stdout, inc_stderr=inc_stderr,
+        )
+        return rst_out
+
+    def magic_parser(self, out):
+        pretty_out = None
+
+        if not out:
+            pretty_out = 'none'
+            ext = 'txt'
+
+        if not pretty_out:
             try:
-                handler.delete(**del_kwargs)
-            except Exception as e:
-                print e
+                pretty_out = pytan.utils.xml_pretty(out)
+                ext = 'xml'
+            except:
+                pass
 
-# export orig_objs to a json file
-json_file, results = handler.export_to_report_file(
-    obj=orig_objs,
-    export_format='json',
-    report_dir=tempfile.gettempdir(),
-)
+        if not pretty_out:
+            try:
+                pretty_out = pytan.utils.jsonify(json.loads(out))
+                ext = 'json'
+            except:
+                pass
 
-# create the object from the exported JSON file
-create_kwargs = {{'objtype': {0!r}, 'json_file': json_file}}
-response = handler.create_from_json(**create_kwargs)
+        if not pretty_out:
+            pretty_out = out
+            ext = 'txt'
 
-""".format(qinfo['objtype'])
+        return ext, pretty_out
 
-    q_response = """
-print ""
-print "Type of response: ", type(response)
+    def build_soap_example(self, name, desc, response_objects):
 
-print ""
-print "print of response:"
-print response
+        for idx, x in enumerate(response_objects):
+            req = self.magic_parser(out=x.request.body)
+            resp = self.magic_parser(out=x.text)
+            req_headers = self.indent_block(pytan.utils.jsonify(dict(x.request.headers)))
+            resp_headers = self.indent_block(pytan.utils.jsonify(dict(x.headers)))
+            x.platform_version = platform_version
+            x.number = idx + 1
+            x.stepname = 'step_{}_response'.format(x.number)
+            x.request.stepname = 'step_{}_request'.format(x.number)
+            x.request.ext, x.request.pretty_out = req
+            x.ext, x.pretty_out, = resp
+            x.out_dir = self.soap_outputs_dir
+            x.pretty_headers = resp_headers
+            x.request.pretty_headers = req_headers
+            x.inc_file = self.write_rst_include_file(
+                name=name,
+                stepname=x.stepname,
+                out=x.pretty_out,
+                ext=x.ext,
+                out_dir=x.out_dir,
+            )
+            x.request.inc_file = self.write_rst_include_file(
+                name=name,
+                stepname=x.request.stepname,
+                out=x.request.pretty_out,
+                ext=x.request.ext,
+                out_dir=x.out_dir,
+            )
+        title = buildsupport.get_name_title(name)
+        steps = [script_definitions.SOAP_RST_STEP.format(response=x) for x in response_objects]
+        steps = '\n'.join(steps)
+        soap_out = script_definitions.SOAP_RST_HEAD.format(title=title, desc=desc, steps=steps)
+        return soap_out
 
-print ""
-print "print the object returned in JSON format:"
-print response.to_json(response)
-"""
-    q_code = '{}{}{}{}\n'.format(base_example, q_kwargs, q_method, q_response)
-    example_rst_file = qname + '.rst'
-    example_py_file = qname + '.py'
+    def build_rst_filename(self, name):
+        fn = name + '.rst'
+        return fn
 
-    out = get_exec_output(q_code)
-    example_rst_out = "{}\n{}{}".format(
-        rst_name_template(get_name_title(qname)),
-        rst_desc_template(qinfo['desc']),
-        rst_code_block(q_code, out)
-    )
-    q_examples.append(example_rst_file)
-    write_file(os.path.join(rst_out_dir, example_rst_file), example_rst_out)
-    write_file(
-        os.path.join(example_out_dir, example_py_file), example_py_out(qinfo['desc'], q_code, out))
+    def build_md_filename(self, name):
+        fn = name + '.md'
+        return fn
 
-q_examples_rst = os.path.join(rst_out_dir, 'valid_create_objects_from_json.rst')
-write_file(q_examples_rst, example_index_rst_out(
-    'PyTan API Valid Create Object From JSON Examples', '\n   '.join(q_examples)))
-examples.append('valid_create_objects_from_json')
+    def build_py_filename(self, name):
+        fn = name + '.py'
+        return fn
 
-####################### INVALID CREATE OBJECT FROM JSON DDT
+    def write_rst_file(self, name, out):
+        filename = self.build_rst_filename(name)
+        filepath = os.path.join(self.rst_out_dir, filename)
+        buildsupport.write_file(filepath, out)
 
-ddt = os.path.join(ddt_dir, 'ddt_invalid_create_object_from_json.json')
-ddt_objs = json_read(ddt)
+    def write_md_file(self, name, out, out_dir):
+        filename = self.build_md_filename(name)
+        filepath = os.path.join(out_dir, filename)
+        buildsupport.write_file(filepath, out)
 
-q_examples = []
-for qname, qinfo in sorted(ddt_objs.items(), key=lambda x: x[1]['priority']):
-    q_kwargs = ''.join([
-        'get_kwargs["{}"] = {}\n'.format(k, pprint.pformat(v))
-        for k, v in qinfo['get'].iteritems()
-    ])
-    q_kwargs = """
-# setup the arguments for getting an object to export as json file
-get_kwargs = {{}}
-{}""".format(q_kwargs)
+    def write_py_file(self, name, out, desc):
+        filename = self.build_py_filename(name)
+        filepath = os.path.join(self.pytan_example_out_dir, filename)
+        buildsupport.write_file(filepath, out)
+        os.chmod(filepath, 0755)
+        self.py_examples.append({'filename': filename, 'desc': desc})
 
-    q_method = """
-# get objects to use as an export to JSON file
-orig_objs = handler.get(**get_kwargs)
+    def write_soap_file(self, name, out):
+        filename = self.build_rst_filename(name)
+        filepath = os.path.join(self.soap_example_out_dir, filename)
+        buildsupport.write_file(filepath, out)
 
-# export orig_objs to a json file
-json_file, results = handler.export_to_report_file(
-    obj=orig_objs,
-    export_format='json',
-    report_dir=tempfile.gettempdir(),
-)
+    def make_py_readme(self, name='README.MD'):
+        title = "PyTan API Python Examples"
+        ti_temp = '  * {filename}: {desc}'.format
 
-# call the handler with the create_from_json method, passing in kwargs for arguments
-# this should throw an exception: {1}
-import traceback
+        tocitems = [ti_temp(**z).replace('\n', ' ') for z in self.py_examples]
+        tocitems = '\n'.join(tocitems)
 
-# create the object from the exported JSON file
-create_kwargs = {{'objtype': {0!r}, 'json_file': json_file}}
-try:
-    response = handler.create_from_json(**create_kwargs)
-except Exception as e:
-    traceback.print_exc(file=sys.stdout)
+        out = script_definitions.README_MD_TEMPLATE.format(title=title, tocitems=tocitems)
+        self.write_md_file(name, out, self.pytan_example_out_dir)
 
-""".format(qinfo['objtype'], qinfo['exception'])
+    def make_pytan_api_index(self):
+        name = 'pytan_examples'
+        index_title = 'PyTan API Examples'
+        desc = "Each of these sections contains examples that show Example Python code for using a PyTan method, along with the standard output and standard error from running each example"
+        index_tocitems = '\n   '.join(self.rst_examples)
+        out = script_definitions.RST_INDEX_TEMPLATE.format(
+            title=index_title, desc=desc, tocitems=index_tocitems,
+        )
+        self.write_rst_file(name, out)
 
-    q_response = """"""
-    q_code = '{}{}{}{}\n'.format(base_example, q_kwargs, q_method, q_response)
-    example_rst_file = qname + '.rst'
-    example_py_file = qname + '.py'
+    def make_soap_api_index(self):
+        name = 'soap_examples_{}'.format(platform_version)
+        index_title = 'SOAP API Examples for Platform Version {}'.format(platform_version)
+        desc = "Each of these sections contains examples that show the HTTP request and response for each step in a given workflow."
+        index_tocitems = '\n   '.join(self.soap_examples)
+        out = script_definitions.RST_INDEX_TEMPLATE.format(
+            title=index_title, desc=desc, tocitems=index_tocitems,
+        )
+        self.write_soap_file(name, out)
 
-    out = get_exec_output(q_code)
-    example_rst_out = "{}\n{}{}".format(
-        rst_name_template(get_name_title(qname)),
-        rst_desc_template(qinfo['desc']),
-        rst_code_block(q_code, out)
-    )
-    q_examples.append(example_rst_file)
-    write_file(os.path.join(rst_out_dir, example_rst_file), example_rst_out)
-    write_file(
-        os.path.join(example_out_dir, example_py_file), example_py_out(qinfo['desc'], q_code, out))
+    def make_rst_example(self, name, desc, py_code, py_stdout, py_stderr):
+        out = self.build_pytan_rst_example(name, desc, py_code, py_stdout, py_stderr)
+        self.write_rst_file(name, out)
 
-q_examples_rst = os.path.join(rst_out_dir, 'invalid_create_objects_from_json.rst')
-write_file(q_examples_rst, example_index_rst_out(
-    'PyTan API Invalid Create Object From JSON Examples', '\n   '.join(q_examples)))
-examples.append('invalid_create_objects_from_json')
+    def make_py_example(self, name, desc, py_code, py_stdout, py_stderr):
+        out = script_definitions.EXAMPLE_PY_TEMPLATE.format(
+            desc=desc, py_code=py_code, py_stdout=py_stdout, py_stderr=py_stderr,
+        )
+        self.write_py_file(name, out, desc)
 
-####################### VALID EXPORT RESULTSET DDT
+    def make_soap_example(self, name, desc, response_objects):
+        out = self.build_soap_example(name, desc, response_objects)
+        self.soap_examples.append(name)
+        self.write_soap_file(name, out)
 
-ddt = os.path.join(ddt_dir, 'ddt_valid_export_resultset.json')
-ddt_objs = json_read(ddt)
+    def build_args_str(self, args_name, args):
+        args_template = '{}["{}"] = {}'.format
+        args_str_list = [
+            args_template(args_name, k, pprint.pformat(v)) for k, v in args.iteritems()
+        ]
+        args_str = '\n'.join(args_str_list)
+        return args_str
 
-q_examples = []
-for qname, qinfo in sorted(ddt_objs.items(), key=lambda x: x[1]['priority']):
-    q_kwargs = ''.join([
-        'export_kwargs["{}"] = {}\n'.format(k, pprint.pformat(v))
-        for k, v in qinfo['args'].iteritems()
-    ])
-    q_kwargs = """
-# setup the export_obj kwargs for later
-export_kwargs = {{}}
-{}""".format(q_kwargs)
+    def build_args_block(self, args_name, info, info_key, method):
+        args_block = ''
+        if info.get(info_key, ''):
+            args_str = self.build_args_str(args_name, info[info_key])
+            args_block = script_definitions.HANDLER_ARGS_TEMPLATE.format(
+                args_name=args_name, args_str=args_str, method=method,
+            )
+        return args_block
 
-    q_method = """
-# ask the question that will provide the resultset that we want to use
-ask_kwargs = {{
-    'qtype': 'manual',
-    'sensors': [
-        "Computer Name", "IP Route Details", "IP Address",
-        'Folder Name Search with RegEx Match{{dirname=Program Files,regex=.*Shared.*}}',
-    ],
-}}
-response = handler.ask(**ask_kwargs)
+    def process_ddt(self, ddt_file):
+        ddt_basename = ddt_file.replace('ddt_', '').replace('.json', '')
+        ddt = os.path.join(self.ddt_dir, ddt_file)
+        ddt_tests = buildsupport.json_read(ddt)
+        self.ddt_examples = []
 
-# export the object to a string
-# (we could just as easily export to a file using export_to_report_file)
-export_kwargs['obj'] = response['question_results']
-export_str = handler.export_obj(**export_kwargs)
+        for name, info in sorted(ddt_tests.items(), key=lambda x: x[1]['priority']):
+            only_65 = info.get('6_5_only', False)
+            if only_65 and not is6_5:
+                print "Skipping {} - not valid for 6.2 platform".format(name)
+                continue
 
-""".format()
+            if 'invalid' in name and 'deploy' in name:
+                info["report_dir"] = info.get('report_dir', tempfile.gettempdir())
 
-    q_response = """
-print ""
-print "print the export_str returned from export_obj():"
-if len(out.splitlines()) > 15:
-    out = out.splitlines()[0:15]
-    out.append('..trimmed for brevity..')
-    out = '\\n'.join(out)
+            get_args_block = self.build_args_block(
+                'get_kwargs', info, 'get', 'handler.get() method',
+            )
+            delete_args_block = self.build_args_block(
+                'delete_kwargs', info, 'delete', 'handler.delete() method',
+            )
+            args_block = self.build_args_block(
+                'kwargs', info, 'args', 'handler() class',
+            )
 
-print out
-"""
-    q_code = '{}{}{}{}\n'.format(base_example, q_kwargs, q_method, q_response)
-    example_rst_file = qname + '.rst'
-    example_py_file = qname + '.py'
+            method_template = script_definitions.METHOD_TEMPLATES.get(info['method_template'], '')
+            method_block = method_template.format(**info)
 
-    out = get_exec_output(q_code)
-    example_rst_out = "{}\n{}{}".format(
-        rst_name_template(get_name_title(qname)),
-        rst_desc_template(qinfo['desc']),
-        rst_code_block(q_code, out)
-    )
-    q_examples.append(example_rst_file)
-    write_file(os.path.join(rst_out_dir, example_rst_file), example_rst_out)
-    write_file(
-        os.path.join(example_out_dir, example_py_file), example_py_out(qinfo['desc'], q_code, out))
+            response_template = script_definitions.RESPONSE_TEMPLATES.get(
+                info['response_template'], ''
+            )
+            response_block = response_template.format(**info)
 
-q_examples_rst = os.path.join(rst_out_dir, 'valid_export_resultset.rst')
-write_file(q_examples_rst, example_index_rst_out(
-    'PyTan API Valid Export ResultSet Examples', '\n   '.join(q_examples)))
-examples.append('valid_export_resultset')
+            py_code_items = [
+                BASIC_PY_CODE,
+                get_args_block,
+                delete_args_block,
+                args_block,
+                method_block,
+                response_block
+            ]
 
-####################### INVALID EXPORT RESULTSET DDT
+            py_code_items = [x for x in py_code_items if x]
+            py_code = '\n'.join(py_code_items)
 
-ddt = os.path.join(ddt_dir, 'ddt_invalid_export_resultset.json')
-ddt_objs = json_read(ddt)
+            ew = buildsupport.ExecWrap()
+            ew_ret = ew.main(name=name, code_block=py_code, verbose=self.VERBOSE)
+            py_stdout, py_stderr, response_objects = ew_ret
 
-q_examples = []
-for qname, qinfo in sorted(ddt_objs.items(), key=lambda x: x[1]['priority']):
-    q_kwargs = ''.join([
-        'export_kwargs["{}"] = {}\n'.format(k, pprint.pformat(v))
-        for k, v in qinfo['args'].iteritems()
-    ])
-    q_kwargs = """
-# setup the export_obj kwargs for later
-export_kwargs = {{}}
-{}""".format(q_kwargs)
+            self.make_rst_example(name, info['desc'], py_code, py_stdout, py_stderr)
+            self.make_py_example(name, info['desc'], py_code, py_stdout, py_stderr)
+            if info.get('xml_desc', ''):
+                self.make_soap_example(name, info['xml_desc'], response_objects)
 
-    q_method = """
-# ask the question that will provide the resultset that we want to use
-ask_kwargs = {{
-    'qtype': 'manual',
-    'sensors': [
-        "Computer Name"
-    ],
-}}
-response = handler.ask(**ask_kwargs)
-export_kwargs['obj'] = response['question_results']
+            ddt_example_file = self.build_rst_filename(name)
+            self.ddt_examples.append(ddt_example_file)
 
-# export the object to a string
-# this should throw an exception: {0}
-import traceback
+        name_title = buildsupport.get_name_title(ddt_basename)
 
-try:
-    handler.export_obj(**export_kwargs)
-except Exception as e:
-    traceback.print_exc(file=sys.stdout)
+        pytan_title = 'PyTan API {} Examples'.format(name_title)
+        pytan_desc = "All of the PyTan API examples for {}".format(name_title)
+        pytan_tocitems = '\n   '.join(self.ddt_examples)
+        pytan_index_out = script_definitions.RST_INDEX_TEMPLATE.format(
+            title=pytan_title, desc=pytan_desc, tocitems=pytan_tocitems,
+        )
+        self.write_rst_file(ddt_basename, pytan_index_out)
+        self.rst_examples.append(ddt_basename)
 
-""".format(qinfo['exception'])
+    def main(self, skip_files=[], all_json_files=None, clean=True):
 
-    q_response = """"""
-    q_code = '{}{}{}{}\n'.format(base_example, q_kwargs, q_method, q_response)
-    example_rst_file = qname + '.rst'
-    example_py_file = qname + '.py'
+        if clean:
+            self.clean_up_output_dirs()
 
-    out = get_exec_output(q_code)
-    example_rst_out = "{}\n{}{}".format(
-        rst_name_template(get_name_title(qname)),
-        rst_desc_template(qinfo['desc']),
-        rst_code_block(q_code, out)
-    )
-    q_examples.append(example_rst_file)
-    write_file(os.path.join(rst_out_dir, example_rst_file), example_rst_out)
-    write_file(
-        os.path.join(example_out_dir, example_py_file), example_py_out(qinfo['desc'], q_code, out))
+        ew = buildsupport.ExecWrap()
+        ew_ret = ew.main(
+            name=script_definitions.BASIC_NAME,
+            code_block=BASIC_PY_CODE,
+            verbose=self.VERBOSE,
+        )
+        py_stdout, py_stderr, response_objects = ew_ret
 
-q_examples_rst = os.path.join(rst_out_dir, 'invalid_export_resultset.rst')
-write_file(q_examples_rst, example_index_rst_out(
-    'PyTan API Invalid Export ResultSet Examples', '\n   '.join(q_examples)))
-examples.append('invalid_export_resultset')
+        self.make_rst_example(
+            script_definitions.BASIC_NAME,
+            script_definitions.BASIC_DESC,
+            BASIC_PY_CODE,
+            py_stdout,
+            py_stderr,
+        )
+        self.make_py_example(
+            script_definitions.BASIC_NAME,
+            script_definitions.BASIC_DESC,
+            BASIC_PY_CODE,
+            py_stdout,
+            py_stderr,
+        )
+        self.make_soap_example(
+            script_definitions.SOAP_BASIC_NAME,
+            script_definitions.SOAP_BASIC_DESC,
+            response_objects,
+        )
+        self.rst_examples.append(script_definitions.BASIC_NAME)
 
-####################### VALID EXPORT BASETYPE DDT
+        valid_json_files = sorted(glob.glob(self.ddt_dir + '/ddt_valid_*.*'))
+        invalid_json_files = sorted(glob.glob(self.ddt_dir + '/ddt_invalid_*.*'))
 
-ddt = os.path.join(ddt_dir, 'ddt_valid_export_basetype.json')
-ddt_objs = json_read(ddt)
+        if not all_json_files:
+            all_json_files = valid_json_files + invalid_json_files
+            all_json_files = [os.path.basename(x) for x in all_json_files]
 
-q_examples = []
-for qname, qinfo in sorted(ddt_objs.items(), key=lambda x: x[1]['priority']):
-    q_kwargs = ''.join([
-        'export_kwargs["{}"] = {}\n'.format(k, pprint.pformat(v))
-        for k, v in qinfo['args'].iteritems()
-    ])
-    q_kwargs = """
-# setup the export_obj kwargs for later
-export_kwargs = {{}}
-{}""".format(q_kwargs)
+        if skip_files:
+            all_json_files = [x for x in all_json_files if x not in skip_files]
 
-    q_method = """
-# get the objects that will provide the basetype that we want to use
-get_kwargs = {{
-    'name': [
-        "Computer Name", "IP Route Details", "IP Address",
-        'Folder Name Search with RegEx Match',
-    ],
-    'objtype': 'sensor',
-}}
-response = handler.get(**get_kwargs)
+        # all_json_files = all_json_files[0:1]
+        for x in all_json_files:
+            print "Now processing ddt file: {}".format(x)
+            self.process_ddt(x)
 
-# export the object to a string
-# (we could just as easily export to a file using export_to_report_file)
-export_kwargs['obj'] = response
-export_str = handler.export_obj(**export_kwargs)
+        self.make_pytan_api_index()
+        self.make_soap_api_index()
+        self.make_py_readme()
 
-""".format()
 
-    q_response = """
-print ""
-print "print the export_str returned from export_obj():"
+if __name__ == '__main__':
+    skip_files = ['ddt_invalid_connects.json']
 
-out = export_str
-if len(out.splitlines()) > 15:
-    out = out.splitlines()[0:15]
-    out.append('..trimmed for brevity..')
-    out = '\\n'.join(out)
-
-print out
-"""
-    q_code = '{}{}{}{}\n'.format(base_example, q_kwargs, q_method, q_response)
-    example_rst_file = qname + '.rst'
-    example_py_file = qname + '.py'
-
-    out = get_exec_output(q_code)
-    example_rst_out = "{}\n{}{}".format(
-        rst_name_template(get_name_title(qname)),
-        rst_desc_template(qinfo['desc']),
-        rst_code_block(q_code, out)
-    )
-    q_examples.append(example_rst_file)
-    write_file(os.path.join(rst_out_dir, example_rst_file), example_rst_out)
-    write_file(
-        os.path.join(example_out_dir, example_py_file), example_py_out(qinfo['desc'], q_code, out))
-
-q_examples_rst = os.path.join(rst_out_dir, 'valid_export_basetype.rst')
-write_file(q_examples_rst, example_index_rst_out(
-    'PyTan API Valid Export BaseType Examples', '\n   '.join(q_examples)))
-examples.append('valid_export_basetype')
-
-####################### INVALID EXPORT BASETYPE DDT
-
-ddt = os.path.join(ddt_dir, 'ddt_invalid_export_basetype.json')
-ddt_objs = json_read(ddt)
-
-q_examples = []
-for qname, qinfo in sorted(ddt_objs.items(), key=lambda x: x[1]['priority']):
-    q_kwargs = ''.join([
-        'export_kwargs["{}"] = {}\n'.format(k, pprint.pformat(v))
-        for k, v in qinfo['args'].iteritems()
-    ])
-    q_kwargs = """
-# setup the export_obj kwargs for later
-export_kwargs = {{}}
-{}""".format(q_kwargs)
-
-    q_method = """
-# get the objects that will provide the basetype that we want to use
-get_kwargs = {{
-    'name': [
-        "Computer Name", "IP Route Details", "IP Address",
-        'Folder Name Search with RegEx Match',
-    ],
-    'objtype': 'sensor',
-}}
-response = handler.get(**get_kwargs)
-export_kwargs['obj'] = response
-
-# export the object to a string
-# this should throw an exception: {0}
-import traceback
-
-try:
-    handler.export_obj(**export_kwargs)
-except Exception as e:
-    traceback.print_exc(file=sys.stdout)
-
-""".format(qinfo['exception'])
-
-    q_response = """"""
-    q_code = '{}{}{}{}\n'.format(base_example, q_kwargs, q_method, q_response)
-    example_rst_file = qname + '.rst'
-    example_py_file = qname + '.py'
-
-    out = get_exec_output(q_code)
-    example_rst_out = "{}\n{}{}".format(
-        rst_name_template(get_name_title(qname)),
-        rst_desc_template(qinfo['desc']),
-        rst_code_block(q_code, out)
-    )
-    q_examples.append(example_rst_file)
-    write_file(os.path.join(rst_out_dir, example_rst_file), example_rst_out)
-    write_file(
-        os.path.join(example_out_dir, example_py_file), example_py_out(qinfo['desc'], q_code, out))
-
-q_examples_rst = os.path.join(rst_out_dir, 'invalid_export_basetype.rst')
-write_file(q_examples_rst, example_index_rst_out(
-    'PyTan API Invalid Export BaseType Examples', '\n   '.join(q_examples)))
-examples.append('invalid_export_basetype')
-
-####################### EXAMPLE INDEX
-
-examples_rst = os.path.join(rst_out_dir, 'pytan_examples.rst')
-
-write_file(examples_rst, example_index_rst_out('PyTan API examples', '\n   '.join(examples)))
+    ep = ExampleProcesser(verbose=False, tempdir=True)
+    ep.main(skip_files=skip_files, clean=True)
+    console = pytan.binsupport.HistoryConsole()

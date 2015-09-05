@@ -8,7 +8,7 @@ Last validated to work with:
 - Python 2.7.5
 '''
 __author__ = 'Jim Olsen (jim@lifehack.com)'
-__version__ = '1.4.5'
+__version__ = '2.1.0'
 
 '''
 N.B. I go through great lengths to keep this a single monolithic script.
@@ -27,8 +27,8 @@ import getpass
 import fnmatch
 import glob
 from ConfigParser import SafeConfigParser
-from argparse import ArgumentDefaultsHelpFormatter as A1
-from argparse import RawDescriptionHelpFormatter as A2
+from argparse import ArgumentDefaultsHelpFormatter as A1  # noqa
+from argparse import RawDescriptionHelpFormatter as A2  # noqa
 from urllib2 import Request, urlopen, HTTPError, URLError
 
 reload(sys)
@@ -521,6 +521,30 @@ class MDTest():
             self.set_valid(vt, 'File {} exists, content:{}'.format(file_exist, c))
         else:
             self.set_invalid(vt, 'File {} does not exist'.format(file_exist))
+
+    def val_test_noerror(self, sectname, vt):
+        s = self.t[sectname]
+        sect = s['SECTION']
+        vt = s['VALRESULTS'][vt]
+        ret = s.get('RETURN', {})
+        errormatch_def = 'Traceback ,Error occurred: ,ERROR:'
+        errormatch = sect.get('errormatch', errormatch_def).split(',')
+        errormatch = [x for x in errormatch if x]
+        if not ret:
+            self.set_invalid(vt, 'No command was run')
+            return
+        stdout = ret.get('stdout').strip().splitlines()
+        stderr = ret.get('stderr').strip().splitlines()
+        for x in errormatch:
+            for y in stdout:
+                if x in y:
+                    self.set_invalid(vt, 'Found {} in standard output'.format(x))
+                    return
+            for y in stderr:
+                if x in y:
+                    self.set_invalid(vt, 'Found {} in standard error'.format(x))
+                    return
+        self.set_valid(vt, 'No error texts found in stderr/stdout')
 
     def val_test_filematch(self, sectname, vt):
         s = self.t[sectname]

@@ -3,24 +3,28 @@
         "desc": "Create a client from json (not supported!)",
         "priority": "1",
         "objtype": "client",
+        "method_template": "invalid_create_from_json",
+        "response_template": "NONE",
         "get": {"objtype": "client", "status": "Leader"},
         "exception": "pytan.exceptions.HandlerError",
         "error_str": ".*is not a json createable object! Supported objects.*"
-
     },
     "invalid_create_saved_action_from_json": {
         "desc": "Create a saved action from json (not supported!)",
         "priority": "1",
         "objtype": "saved_action",
+        "method_template": "invalid_create_from_json",
+        "response_template": "NONE",
         "get": {"objtype": "saved_action", "name": "Distribute Tanium Standard Utilities"},
         "exception": "pytan.exceptions.HandlerError",
         "error_str": ".*is not a json createable object! Supported objects.*"
-
     },
     "invalid_create_setting_from_json": {
         "desc": "Create a setting from json (not supported!)",
         "priority": "1",
         "objtype": "setting",
+        "method_template": "invalid_create_from_json",
+        "response_template": "NONE",
         "get": {"objtype": "setting", "id": 1},
         "exception": "pytan.exceptions.HandlerError",
         "error_str": ".*is not a json createable object! Supported objects.*"
@@ -29,6 +33,8 @@
         "desc": "Create a user role from json (not supported!)",
         "priority": "1",
         "objtype": "userrole",
+        "method_template": "invalid_create_from_json",
+        "response_template": "NONE",
         "get": {"objtype": "userrole", "name": "Administrator"},
         "exception": "pytan.exceptions.HandlerError",
         "error_str": ".*is not a json createable object! Supported objects.*"

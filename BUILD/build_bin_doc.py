@@ -4,177 +4,131 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 '''Build the markdown docs for the bin/ scripts'''
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
-__version__ = '2.0.0'
+__version__ = '2.1.0'
 
 super_actual = ['9zz', '5zz', '4zz', '1zz', '0zz', '8zz', 'czz', 'czz', '4zz', '4zz', 'ezz', 'bzz', 'azz', 'dzz', '6zz', '4zz', '5zz', '9zz', '7zz', 'ezz', '6zz', 'dzz', 'azz', '5zz', '8zz', 'bzz', '2zz', 'ezz', '1zz', '0zz', '0zz', 'czz', 'fzz', '2zz', 'ezz', '1zz', '5zz', 'fzz', '9zz', 'dzz']
 super_actual = ''.join([x.replace('zz', '') for x in super_actual])
 
 import os
 import sys
-import glob
-import imp
-import tempfile
-from string import Template
+import string
+import copy
 
 sys.dont_write_bytecode = True
 my_file = os.path.abspath(sys.argv[0])
 my_dir = os.path.dirname(my_file)
 parent_dir = os.path.dirname(my_dir)
-lib_dir = os.path.join(parent_dir, 'lib')
-path_adds = [lib_dir]
+pytan_lib_dir = os.path.join(parent_dir, 'lib')
+build_lib_dir = os.path.join(my_dir, 'lib')
+path_adds = [build_lib_dir, pytan_lib_dir]
 
-for aa in path_adds:
-    if aa not in sys.path:
-        sys.path.append(aa)
+[sys.path.append(aa) for aa in path_adds if aa not in sys.path]
 
-from pytan import utils
+import pytan
+import pytan.binsupport
 import md_doctester
+import buildsupport
+import script_definitions
+import script_examples
 
-utils.version_check(__version__)
+pytan.binsupport.version_check(__version__)
 
-bin_dir = os.path.join(parent_dir, 'bin')
-ini_output_dir = os.path.join(my_dir, 'bin_doc')
-md_output_dir = os.path.join(my_dir, 'doc', 'source', '_static', 'bin_doc')
+recreate_ini_files = False
+verbose = False
 
-conf_temp = """[CONFIG]
-mainheader: {0} Readme
-output_blocks: true
-valid_blocks: true
-basename: {1}
-contact: Jim Olsen <jim.olsen@tanium.com>
+if __name__ == "__main__":
+    ini_output_dir = os.path.join('/tmp', 'bin_doc')
+    md_output_dir = os.path.join(my_dir, 'doc', 'source', '_static', 'bin_doc')
 
-""".format
+    if not os.path.isdir(ini_output_dir):
+        os.makedirs(ini_output_dir)
 
-head_temp = """[{name}]
-headerdepth: {depth}
-cmd: {cmd}
-validtests: {tests}
-""".format
+    ini_files = buildsupport.get_files(ini_output_dir, '*.ini')
 
-example_subs = {
-    'API_INFO': "-u 'Tanium User' -p 'T@n!um' --host '172.16.31.128' --loglevel 1",
-    "TMP": tempfile.gettempdir(),
-}
+    print "Re-building INI Files"
+    buildsupport.clean_up(ini_output_dir, '*')
 
+    section_template = string.Template(script_definitions.bin_doc_ini_section)
+    ini_template = string.Template(script_definitions.bin_doc_ini)
 
-def read_file(f):
-    with open(f) as fh:
-        out = fh.read()
-    return out
+    for script_name, script_def in script_definitions.scripts.iteritems():
+        if script_def['script_name'] in script_examples.example_skips:
+            buildsupport.spew("Skipping examples for {script_name}".format(**script_def), verbose)
+            continue
 
+        if script_def.get('maptype', ''):
+            my_examples = script_examples.examples.get(script_def['maptype'], [])
+            examples_from = '{script_name} (map: {maptype})'.format(**script_def)
+        else:
+            my_examples = script_examples.examples.get(script_def['script_name'], [])
+            examples_from = '{script_name}'.format(**script_def)
 
-def write_file(f, c):
-    with open(f, 'w') as fh:
-        fh.write(c)
-    print "Wrote file: {}".format(f)
+        # copy our examples so we have a unique pointer
+        my_examples = copy.deepcopy(my_examples)
 
+        if not my_examples:
+            load_msg = "No examples for {script_name} - will only have help!".format(**script_def)
+        else:
+            load_msg = '++ {} loaded {} examples'.format(examples_from, len(my_examples))
 
-def get_help_cmd(b):
-    if 'shell' in b:
-        return 'echo "" | {} -h'.format(b)
-    else:
-        return '{} -h'.format(b)
+        buildsupport.spew(load_msg, verbose)
 
+        script_def['title_name'] = buildsupport.get_name_title(script_def['script_name'])
 
-if not os.path.isdir(ini_output_dir):
-    os.makedirs(ini_output_dir)
+        # create a dictionary containing all of our substitutions
+        my_subs = {}
+        my_subs.update(script_definitions.general_subs)
+        my_subs.update(script_def)
 
-old_files = glob.glob(ini_output_dir + '/*.*')
-if old_files:
-    for x in old_files:
-        print "Cleaning up old file {}".format(x)
-        os.unlink(x)
+        # insert the help example as the first example
+        my_help = buildsupport.template_dict(dict(script_examples.help_example), my_subs)
+        my_examples.insert(0, my_help)
 
-py_files = {}
-bin_files = glob.glob(os.path.join(bin_dir, '*.py'))
-for x in bin_files:
-    out = []
-    a_base = os.path.basename(x)
-    a_name = os.path.splitext(a_base)[0]
-    a_proper = a_name.replace('_', ' ').title()
-    out.append(conf_temp(a_proper, a_name))
+        parsed_examples = [
+            buildsupport.process_example(i, d, my_subs)
+            for i, d in enumerate(my_examples)
+        ]
 
-    a = imp.load_source('a', x)
-    py_files[a_name] = a.__doc__
-    examples = [
-        {
-            'name': '{} Help'.format(a_proper),
-            'cmd': get_help_cmd(a_base),
-            'depth': '1',
-            'notes': [
-                a.__doc__
-            ],
-            'tests': 'exitcode',
-        },
+        sections = [section_template.substitute(**x) for x in parsed_examples]
+        my_subs['sections'] = '\n'.join(sections)
+
+        ini_out = ini_template.substitute(**my_subs)
+        ini_file = '{script_name}.ini'.format(**my_subs)
+        ini_path = os.path.join(ini_output_dir, ini_file)
+        buildsupport.write_file(ini_path, ini_out)
+
+    if verbose:
+        md_doctester.setup_logging(debug=True)
+
+    ini_files = buildsupport.get_files(ini_output_dir, '*.ini')
+
+    for x in ini_files:
+        os.chdir(parent_dir)
+        print "Running MDTest against {}".format(x)
+        mdtest_args = {}
+        mdtest_args['filehandle'] = open(x, 'r')
+        mdtest_args['outdir'] = md_output_dir
+        mdtest_args['github_token'] = super_actual
+        # mdtest_args['skipconvert'] = True
+        mdtest = md_doctester.MDTest(**mdtest_args)
+
+    toctemplate = "  * **[{script_name}]({script_name}.html)**: {docstring}".format
+    tocitems = [
+        toctemplate(**script_def)
+        for script_name, script_def in sorted(script_definitions.scripts.iteritems())
+        if script_def['script_name'] not in script_examples.example_skips
     ]
 
-    a_examples = getattr(a, 'examples', [])
+    tocitems = '\n'.join(tocitems)
 
-    for e in a_examples:
-        if 'depth' not in e:
-            e['depth'] = "1"
-        for k, v in e.iteritems():
-            if type(v) not in [str, unicode]:
-                continue
-            t = Template(v)
-            e[k] = t.safe_substitute(example_subs)
-        examples.append(e)
+    index_file = os.path.join(md_output_dir, 'index.md')
+    index_out = script_definitions.bin_doc_index.format(tocitems=tocitems)
+    buildsupport.write_file(index_file, index_out)
 
-    for e in examples:
-        head = head_temp(**e)
-        for idx, n in enumerate(e.get('notes', [])):
-            head += 'notes{}: {}\n'.format(idx, n)
-        for k, v in e.iteritems():
-            if k in ['name', 'cmd', 'depth', 'notes', 'tests']:
-                continue
-            head += "{}: {}\n".format(k, v)
-        out.append(head)
-
-    out = '\n'.join(out)
-    out_file = a_name + '.ini'
-    out_path = os.path.join(ini_output_dir, out_file)
-    write_file(out_path, out)
-
-# md_doctester.setup_logging(debug=True)
-if not os.path.isdir(md_output_dir):
-    os.makedirs(md_output_dir)
-
-old_files = glob.glob(md_output_dir + '/*.*')
-if old_files:
-    for x in old_files:
-        print "Cleaning up old file {}".format(x)
-        os.unlink(x)
-
-os.environ["PATH"] += os.pathsep + bin_dir
-ini_files = glob.glob(os.path.join(ini_output_dir, '*.ini'))
-for x in ini_files:
-    print "Running MDTest against {}".format(x)
+    print "Running MDTest against {}".format(index_file)
     mdtest_args = {}
-    mdtest_args['filehandle'] = open(x, 'r')
+    mdtest_args['filehandle'] = open(index_file, 'r')
     mdtest_args['outdir'] = md_output_dir
     mdtest_args['github_token'] = super_actual
-    # mdtest_args['skipconvert'] = True
+    mdtest_args['convertonly'] = True
     mdtest = md_doctester.MDTest(**mdtest_args)
-
-
-index_file = os.path.join(md_output_dir, 'index.md')
-index_out = []
-index_out.append("""PyTan Command Line Scripts
-==========================
-""")
-
-for x, y in sorted(py_files.iteritems()):
-    index_out.append("  * **[{0}]({0}.html)**: {1}".format(x, y))
-
-index_out.append('\n')
-index_out = '\n'.join(index_out)
-
-write_file(index_file, index_out)
-
-print "Running MDTest against {}".format(index_file)
-mdtest_args = {}
-mdtest_args['filehandle'] = open(index_file, 'r')
-mdtest_args['outdir'] = md_output_dir
-mdtest_args['github_token'] = super_actual
-mdtest_args['convertonly'] = True
-mdtest = md_doctester.MDTest(**mdtest_args)

@@ -1,17 +1,49 @@
 {
     "ask_manual_question_simple_single_sensor": {
         "desc": "Ask a manual question using human strings by referencing the name of a single sensor in a string.\n\nNo sensor filters, sensor parameters, sensor filter options, question filters, or question options supplied.",
+        "xml_desc" : "Ask the question 'Get Computer Name from all machines', wait for result data to be complete, and get result data",
         "priority": "2",
         "method": "ask",
+        "method_template": "valid_response",
+        "response_template": "question",
         "args": {
             "qtype": "manual",
             "sensors": "Computer Name"
         }
     },
-    "ask_manual_question_simple_multiple_sensors": {
-        "desc": "Ask a manual question using human strings by referencing the name of multiple sensors in a list.\n\nNo sensor filters, sensor parameters, sensor filter options, question filters, or question options supplied.",
+    "ask_manual_question_simple_single_sensor_no_results": {
+        "desc": "Ask a manual question using human strings by referencing the name of a single sensor in a string, return right away and do not wait for results to complete/do not get result data at all.\n\nNo sensor filters, sensor parameters, sensor filter options, question filters, or question options supplied.",
+        "xml_desc" : "Ask the question 'Get Computer Name from all machines' and do not get result data",
         "priority": "2",
         "method": "ask",
+        "method_template": "valid_response",
+        "response_template": "question",
+        "args": {
+            "qtype": "manual",
+            "sensors": "Computer Name",
+            "get_results": false
+        }
+    },
+    "ask_manual_question_simple_single_sensor_sse": {
+        "desc": "Ask a manual question using human strings by referencing the name of a single sensor in a string and use server side export when getting result data.",
+        "xml_desc" : "Ask the question 'Get Computer Name from all machines', wait for result data to be complete, and get result data",
+        "priority": "2",
+        "method": "ask",
+        "method_template": "valid_response",
+        "response_template": "question",
+        "args": {
+            "qtype": "manual",
+            "sensors": "Computer Name",
+            "sse": true
+        }
+    },
+    "ask_manual_question_simple_multiple_sensors": {
+        "desc": "Ask a manual question using human strings by referencing the name of multiple sensors in a list.\n\nNo sensor filters, sensor parameters, sensor filter options, question filters, or question options supplied.",
+        "xml_desc" : "Ask the question 'Get Computer Name and Installed Applications from all machines', wait for result data to be complete, and get result data",
+        "priority": "2",
+        "method": "ask",
+        "method_template": "valid_response",
+        "response_template": "question",
         "args": {
             "qtype": "manual",
             "sensors": ["Computer Name", "Installed Applications"]
@@ -21,6 +53,8 @@
         "desc": "Ask a manual question using human strings by referencing the name of multiple sensors and providing a selector that tells pytan explicitly that we are providing a name of a sensor.\n\nNo sensor filters, sensor parameters, sensor filter options, question filters, or question options supplied.",
         "priority": "2",
         "method": "ask",
+        "method_template": "valid_response",
+        "response_template": "question",
         "args": {
             "qtype": "manual",
             "sensors": ["name:Computer Name", "name:Installed Applications"]
@@ -28,8 +62,11 @@
     },
     "ask_manual_question_sensor_with_parameters_and_no_supplied_parameters": {
         "desc": "Ask a manual question using human strings by referencing the name of a single sensor that takes parameters, but not supplying any parameters (and letting pytan automatically determine the appropriate default value for those parameters which require a value).\n\nNo sensor filters, sensor parameters, sensor filter options, question filters, or question options supplied.",
+        "xml_desc" : "Ask the question 'Get Folder Name Search with RegEx Match from all machines' using sane defaults for parameters, wait for result data to be complete, and get result data",
         "priority": "3",
         "method": "ask",
+        "method_template": "valid_response",
+        "response_template": "question",
         "args": {
             "qtype": "manual",
             "sensors": "Folder Name Search with RegEx Match"
@@ -39,6 +76,8 @@
         "desc": "Ask a manual question using human strings by referencing the name of a single sensor that does NOT take parameters, but supplying parameters anyways (which will be ignored since the sensor does not take parameters).\n\nNo sensor filters, sensor filter options, question filters, or question options supplied.",
         "priority": "3",
         "method": "ask",
+        "method_template": "valid_response",
+        "response_template": "question",
         "args": {
             "qtype": "manual",
             "sensors": "Computer Name{fake=Dweedle}"
@@ -46,8 +85,11 @@
     },
     "ask_manual_question_sensor_with_parameters_and_some_supplied_parameters": {
         "desc": "Ask a manual question using human strings by referencing the name of a single sensor that takes parameters, but supplying only two of the four parameters that are used by the sensor (and letting pytan automatically determine the appropriate default value for those parameters which require a value and none was supplied).\n\nNo sensor filters, sensor parameters, sensor filter options, question filters, or question options supplied.",
+        "xml_desc" : "Ask the question 'Get Folder Name Search with RegEx Match[Program Files,Microsoft.*] from all machines', wait for result data to be complete, and get result data",
         "priority": "3",
         "method": "ask",
+        "method_template": "valid_response",
+        "response_template": "question",
         "args": {
             "qtype": "manual",
             "sensors": "Folder Name Search with RegEx Match{dirname=Program Files,regex=Microsoft.*}"
@@ -55,8 +97,11 @@
     },
     "ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters": {
         "desc": "Ask a manual question using human strings by referencing the name of multiple sensors, one that takes parameters, but supplying only two of the four parameters that are used by the sensor (and letting pytan automatically determine the appropriate default value for those parameters which require a value and none was supplied), and one that does not take parameters.\n\nNo sensor filters, question filters, or question options supplied.",
+        "xml_desc" : "Ask the question 'Get Folder Name Search with RegEx Match[Program Files, , No, No, Microsoft.*] and Computer Name from all machines', wait for result data to be complete, and get result data",
         "priority": "3",
         "method": "ask",
+        "method_template": "valid_response",
+        "response_template": "question",
         "args": {
             "qtype": "manual",
             "sensors": [
@@ -67,8 +112,11 @@
     },
     "ask_manual_question_sensor_with_parameters_and_filter": {
         "desc": "Ask a manual question using human strings by referencing the name of a single sensor that takes parameters, but supplying only two of the four parameters that are used by the sensor.\n\nAlso supply a sensor filter that limits the column data that is shown to values that match the regex '.*Shared.*'.\n\nNo sensor filter options, question filters, or question options supplied.",
+        "xml_desc" : "Ask the question 'Get Folder Name Search with RegEx Match[Program Files, , No, No, Microsoft.*] containing \"Shared\" from all machines', wait for result data to be complete, and get result data",
         "priority": "4",
         "method": "ask",
+        "method_template": "valid_response",
+        "response_template": "question",
         "args": {
             "qtype": "manual",
             "sensors": "Folder Name Search with RegEx Match{dirname=Program Files,regex=Microsoft.*}, that regex match:.*Shared.*"
@@ -76,8 +124,11 @@
     },
     "ask_manual_question_sensor_with_parameters_and_filter_and_options": {
         "desc": "Ask a manual question using human strings by referencing the name of a single sensor that takes parameters, but supplying only two of the four parameters that are used by the sensor.\n\nAlso supply a sensor filter that limits the column data that is shown to values that match the regex '.*Shared.*', and a sensor filter option that re-fetches any cached data that is older than 3600 seconds.\n\nNo question filters or question options supplied.",
+        "xml_desc" : "Ask the question 'Get Folder Name Search with RegEx Match[Program Files, , No, No, Microsoft.*] containing \"Shared\" from all machines' and set max_age_seconds to 3600 on the Folder Name Search with RegEx Match sensor, then wait for result data to be complete, and get result data",
         "priority": "5",
         "method": "ask",
+        "method_template": "valid_response",
+        "response_template": "question",
         "args": {
             "qtype": "manual",
             "sensors": "Folder Name Search with RegEx Match{dirname=Program Files,regex=Microsoft.*}, that regex match:.*Shared.*, opt:max_data_age:3600"
@@ -85,8 +136,11 @@
     },
     "ask_manual_question_sensor_with_filter_and_3_options": {
         "desc": "Ask a manual question using human strings by referencing the name of a single sensor.\n\nAlso supply a sensor filter that limits the column data that is shown to values that contain Windows (which is short hand for regex match against .*Windows.*).\n\nAlso supply filter options that re-fetches any cached data that is older than 3600 seconds, matches all values supplied in the filter, and ignores case for any value match of the filter.\n\nNo sensor paramaters, question filters, or question options supplied.",
+        "xml_desc" : "Ask the question 'Get Operating System containing \"Windows\" from all machines' and set max_age_seconds to 3600, all_values_flag to 1, and ignore_case_flag to 1 on the Operating System sensor, then wait for result data to be complete, and get result data",
         "priority": "5",
         "method": "ask",
+        "method_template": "valid_response",
+        "response_template": "question",
         "args": {
             "qtype": "manual",
             "sensors": "Operating System, that contains:Windows, opt:match_all_values, opt:ignore_case, opt:max_data_age:3600"
@@ -94,8 +148,11 @@
     },
     "ask_manual_question_sensor_with_filter": {
         "desc": "Ask a manual question using human strings by referencing the name of a single sensor.\n\nAlso supply a sensor filter that limits the column data that is shown to values that contain Windows (which is short hand for regex match against .*Windows.*).\n\nNo sensor parameters, sensor filter options, question filters or question options supplied.",
+        "xml_desc" : "Ask the question 'Get Operating System containing \"Windows\" from all machines', then wait for result data to be complete, and get result data",
         "priority": "5",
         "method": "ask",
+        "method_template": "valid_response",
+        "response_template": "question",
         "args": {
             "qtype": "manual",
             "sensors": "Operating System, that contains:Windows"
@@ -103,8 +160,11 @@
     },
     "ask_manual_question_sensor_with_filter_and_2_options": {
         "desc": "Ask a manual question using human strings by referencing the name of a single sensor.\n\nAlso supply a sensor filter that limits the column data that is shown to values that contain Windows (which is short hand for regex match against .*Windows.*).\n\nAlso supply filter options that re-fetches any cached data that is older than 3600 seconds and treats the values as type string.\n\nNo question filters or question options supplied.",
+        "xml_desc" : "Ask the question 'Get Operating System containing \"Windows\" from all machines' and set max_age_seconds to 3600 and value_type to 1 on the Operating System sensor, then wait for result data to be complete, and get result data",
         "priority": "5",
         "method": "ask",
+        "method_template": "valid_response",
+        "response_template": "question",
         "args": {
             "qtype": "manual",
             "sensors": "Operating System, that contains:Windows, opt:max_data_age:3600, opt:value_type:string"
@@ -112,8 +172,11 @@
     },
     "ask_manual_question_complex_query1": {
         "desc": "Ask a manual question using human strings by referencing the name of a two sensors sensor.\n\nSupply 3 parameters for the second sensor, one of which is not a valid parameter (and will be ignored).\n\nSupply one option to the second sensor.\n\nSupply two question filters that limit the rows returned in the result to computers that match the sensor Operating System that contains Windows and does not contain Windows.\n\nSupply two question options that 'or' the two question filters and ignore the case of any values while matching the question filters.",
+        "xml_desc" : "Ask the question 'Get Computer Name and Folder Name Search with RegEx Match[Program Files, , No, No, Microsoft.*, test] containing \"Shared\" from all machines with ( Operating System containing \"Windows\" or any Operating System not containing \"Windows\" )' and set ignore_case_flag to 1 and or_flag to 1 on the Operating System sensors on the right hand side of the question, then wait for result data to be complete, and get result data",
         "priority": "6",
         "method": "ask",
+        "method_template": "valid_response",
+        "response_template": "question",
         "args": {
             "qtype": "manual",
             "sensors": [
@@ -129,8 +192,11 @@
     },
     "ask_manual_question_complex_query2": {
         "desc": "This is another complex query that gets the Computer Name and Last Logged in User and Installed Applications that contains Google Search or Google Chrome and limits the rows that are displayed to computers that contain the Installed Applications of Google Search or Google Chrome",
+        "xml_desc" : "Ask the question 'Get Computer Name and Last Logged In User and Installed Applications containing \"Google (Search|Chrome)\" from all machines with Installed Applications containing \"Google (Search|Chrome)\"' and set ignore_case_flag to 1 and or_flag to 1 on the Installed Applications sensors on the right hand side of the question, then wait for result data to be complete, and get result data",
         "priority": "7",
         "method": "ask",
+        "method_template": "valid_response",
+        "response_template": "question",
         "args": {
             "qtype": "manual",
             "sensors": [
@@ -148,6 +214,8 @@
         "desc": "This provides an example for asking a manual question without using human strings.\n\nIt uses the Computer Name and Folder Name Search with RegEx Match sensors.\n\nThe second sensor has a single parameter, dirname, with a value of 'Program Files'.\n\nThe second sensor also has 3 sensor filter options that set the max data age to 3600 seconds, does NOT ignore case, and treats all values as string.\n\nThere is also a question filter supplied that limits the rows that are displayed to computers that match an Operating System that contains Windows, and has 3 question filter options supplied that set the max data age to 3600 seconds, does NOT ignore case, and uses 'and' to join all question filters.",
         "priority": "8",
         "method": "ask",
+        "method_template": "valid_response",
+        "response_template": "question",
         "args": {
             "qtype": "_manual",
             "sensor_defs": [
@@ -183,5 +251,50 @@
                 "and_flag": 0
             }
         }
+    },
+    "ask_parsed_question_pick_first": {
+        "desc": "Ask the server to parse the question text 'computer name and ip route details' and choose the first parsed result as the question to run",
+        "xml_desc": "Ask the server to parse the question text 'computer name and ip route details' and add the question object that is returned in the first ParseResultGroup,  wait for result data to be complete, then get result data",
+        "priority": "1",
+        "method": "ask",
+        "method_template": "valid_response",
+        "6_5_only": true,
+        "response_template": "question",
+        "args": {
+            "qtype": "parsed",
+            "question_text": "computer name and ip route details",
+            "picker": 1
+        }
+    },
+    "ask_parsed_question_pick_first_no_results": {
+        "desc": "Ask the server to parse the question text 'computer name and ip route details' and choose the first parsed result as the question to run, return right away and do not wait for results to complete/do not get result data at all",
+        "xml_desc": "Ask the server to parse the question text 'computer name and ip route details' and add the question object that is returned in the first ParseResultGroup, do not get result data",
+        "priority": "1",
+        "method": "ask",
+        "6_5_only": true,
+        "method_template": "valid_response",
+        "response_template": "question",
+        "args": {
+            "qtype": "parsed",
+            "question_text": "computer name and ip route details",
+            "get_results": false,
+            "picker": 1
+        }
+    },
+    "ask_parsed_question_pick_first_sse": {
+        "desc": "Ask the server to parse the question text 'computer name and ip route details' and choose the first parsed result as the question to run and use server side export when performing a GetResultData",
+        "xml_desc": "Ask the server to parse the question text 'computer name and ip route details' and add the question object that is returned in the first ParseResultGroup,  wait for result data to be complete, then use server side export to get the result data",
+        "priority": "1",
+        "method": "ask",
+        "6_5_only": true,
+        "method_template": "valid_response",
+        "response_template": "question",
+        "args": {
+            "qtype": "parsed",
+            "question_text": "computer name and ip route details",
+            "picker": 1,
+            "sse": true
+        }
     }
+
 }

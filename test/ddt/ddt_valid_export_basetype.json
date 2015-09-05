@@ -3,6 +3,8 @@
         "desc": "Export a BaseType from getting objects as CSV with the default options",
         "priority": "1",
         "args": {"export_format": "csv"},
+        "method_template": "export_basetype",
+        "response_template": "export_obj",
         "tests": [
             "'parameter_definition' in export_str.splitlines()[0].split(',')",
             "'parameter_definition_parameters_0_defaultValue' not in export_str.splitlines()[0].split(',')",
@@ -13,6 +15,8 @@
         "desc": "Export a BaseType from getting objects as CSV with false for explode_json_string_values",
         "priority": "2",
         "args": {"export_format": "csv", "explode_json_string_values": false},
+        "method_template": "export_basetype",
+        "response_template": "export_obj",
         "tests": [
             "'parameter_definition' in export_str.splitlines()[0].split(',')",
             "'parameter_definition_parameters_0_defaultValue' not in export_str.splitlines()[0].split(',')",
@@ -23,6 +27,8 @@
         "desc": "Export a BaseType from getting objects as CSV with true for explode_json_string_values",
         "priority": "3",
         "args": {"export_format": "csv", "explode_json_string_values": true},
+        "method_template": "export_basetype",
+        "response_template": "export_obj",
         "tests": [
             "'parameter_definition_parameters_0_defaultValue' in export_str.splitlines()[0].split(',')",
             "'category' == export_str.splitlines()[0].split(',')[0]"
@@ -32,6 +38,8 @@
         "desc": "Export a BaseType from getting objects as CSV with true for header_sort",
         "priority": "4",
         "args": {"export_format": "csv", "header_sort": true},
+        "method_template": "export_basetype",
+        "response_template": "export_obj",
         "tests": [
             "'parameter_definition' in export_str.splitlines()[0].split(',')",
             "'category' == export_str.splitlines()[0].split(',')[0]"
@@ -41,6 +49,8 @@
         "desc": "Export a BaseType from getting objects as CSV with an empty list for header_sort",
         "priority": "5",
         "args": {"export_format": "csv", "header_sort": []},
+        "method_template": "export_basetype",
+        "response_template": "export_obj",
         "tests": [
             "'parameter_definition' in export_str.splitlines()[0].split(',')",
             "'category' == export_str.splitlines()[0].split(',')[0]"
@@ -50,6 +60,8 @@
         "desc": "Export a BaseType from getting objects as CSV with true for header_sort",
         "priority": "6",
         "args": {"export_format": "csv", "header_sort": true},
+        "method_template": "export_basetype",
+        "response_template": "export_obj",
         "tests": [
             "'parameter_definition' in export_str.splitlines()[0].split(',')",
             "'category' == export_str.splitlines()[0].split(',')[0]"
@@ -59,6 +71,8 @@
         "desc": "Export a BaseType from getting objects as CSV with name and description for header_sort",
         "priority": "7",
         "args": {"export_format": "csv", "header_sort": ["name", "description"]},
+        "method_template": "export_basetype",
+        "response_template": "export_obj",
         "tests": [
             "'parameter_definition' in export_str.splitlines()[0].split(',')",
             "['name', 'description'] == export_str.splitlines()[0].split(',')[0:2]"
@@ -68,6 +82,8 @@
         "desc": "Export a BaseType from getting objects as JSON with the default options",
         "priority": "8",
         "args": {"export_format": "json"},
+        "method_template": "export_basetype",
+        "response_template": "export_obj",
         "tests": [
             "'_type' in json.loads(export_str)",
             "'sensor' in json.loads(export_str)",
@@ -79,6 +95,8 @@
         "desc": "Export a BaseType from getting objects as JSON with true for include_type",
         "priority": "9",
         "args": {"export_format": "json", "include_type": true},
+        "method_template": "export_basetype",
+        "response_template": "export_obj",
         "tests": [
             "'_type' in json.loads(export_str)",
             "'sensor' in json.loads(export_str)",
@@ -90,6 +108,8 @@
         "desc": "Export a BaseType from getting objects as JSON with false for include_type",
         "priority": "10",
         "args": {"export_format": "json", "include_type": false},
+        "method_template": "export_basetype",
+        "response_template": "export_obj",
         "tests": [
             "'_type' not in json.loads(export_str)",
             "'sensor' in json.loads(export_str)",
@@ -101,6 +121,8 @@
         "desc": "Export a BaseType from getting objects as JSON with false for explode_json_string_values",
         "priority": "11",
         "args": {"export_format": "json", "explode_json_string_values": false},
+        "method_template": "export_basetype",
+        "response_template": "export_obj",
         "tests": [
             "'_type' in json.loads(export_str)",
             "'sensor' in json.loads(export_str)",
@@ -112,6 +134,8 @@
         "desc": "Export a BaseType from getting objects as JSON with true for explode_json_string_values",
         "priority": "12",
         "args": {"export_format": "json", "explode_json_string_values": true},
+        "method_template": "export_basetype",
+        "response_template": "export_obj",
         "tests": [
             "'_type' in json.loads(export_str)",
             "'sensor' in json.loads(export_str)",
@@ -124,24 +148,30 @@
         "desc": "Export a BaseType from getting objects as XML with the default options",
         "priority": "13",
         "args": {"export_format": "xml"},
+        "method_template": "export_basetype",
+        "response_template": "export_obj",
         "tests": [
-            "export_str.startswith('<sensors><cache_info />')"
+            "'<sensors>' in export_str"
         ]
     },
     "export_basetype_xml_minimal_false": {
         "desc": "Export a BaseType from getting objects as XML with false for minimal",
         "priority": "14",
         "args": {"export_format": "xml", "minimal": false},
+        "method_template": "export_basetype",
+        "response_template": "export_obj",
         "tests": [
-            "export_str.startswith('<sensors><cache_info />')"
+            "'<sensors>' in export_str"
         ]
     },
     "export_basetype_xml_minimal_true": {
         "desc": "Export a BaseType from getting objects as XML with true for minimal",
         "priority": "15",
         "args": {"export_format": "xml", "minimal": true},
+        "method_template": "export_basetype",
+        "response_template": "export_obj",
         "tests": [
-            "export_str.startswith('<sensors><sensor><category>')"
+            "'<sensors>' in export_str"
         ]
     }
 }

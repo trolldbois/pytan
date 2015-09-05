@@ -2,7 +2,7 @@
 # -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
-"""Collection of exceptions, classes, and methods used throughout :mod:`pytan`"""
+"""Collection of classes and methods used throughout :mod:`pytan`"""
 import sys
 
 # disable python from creating .pyc files everywhere
@@ -13,22 +13,16 @@ import socket
 import time
 import logging
 import json
-import argparse
 import datetime
 import re
 import itertools
-from argparse import ArgumentDefaultsHelpFormatter as A1 # noqa
-from argparse import RawDescriptionHelpFormatter as A2 # noqa
 from collections import OrderedDict
 
 my_file = os.path.abspath(__file__)
 my_dir = os.path.dirname(my_file)
 parent_dir = os.path.dirname(my_dir)
 path_adds = [parent_dir]
-
-for aa in path_adds:
-    if aa not in sys.path:
-        sys.path.append(aa)
+[sys.path.insert(0, aa) for aa in path_adds if aa not in sys.path]
 
 import taniumpy
 import xmltodict
@@ -42,7 +36,6 @@ manuallog = logging.getLogger("pytan.handler.ask_manual")
 prettylog = logging.getLogger("pytan.handler.prettybody")
 timinglog = logging.getLogger("pytan.handler.timing")
 
-pname = os.path.splitext(os.path.basename(sys.argv[0]))[0]
 DEBUG_OUTPUT = False
 
 
@@ -80,926 +73,6 @@ class SplitStreamHandler(logging.Handler):
             self.handleError(record)
 
 
-class CustomArgFormat(A1, A2):
-    """Multiple inheritance Formatter class for :class:`argparse.ArgumentParser`.
-
-    If a :class:`argparse.ArgumentParser` class uses this as it's Formatter class, it will show the defaults for each argument in the `help` output
-    """
-    pass
-
-
-class CustomArgParse(argparse.ArgumentParser):
-    """Custom :class:`argparse.ArgumentParser` class which does a number of things:
-
-        * Uses :class:`pytan.utils.CustomArgFormat` as it's Formatter class, if none was passed in
-        * Prints help if there is an error
-        * Prints the help for any subparsers that exist
-    """
-    def __init__(self, *args, **kwargs):
-        if 'formatter_class' not in kwargs:
-            kwargs['formatter_class'] = CustomArgFormat
-        # print kwargs
-        argparse.ArgumentParser.__init__(self, *args, **kwargs)
-
-    def error(self, message):
-        self.print_help()
-        print('ERROR:{}:{}\n'.format(pname, message))
-        sys.exit(2)
-
-    def print_help(self, **kwargs):
-        super(CustomArgParse, self).print_help(**kwargs)
-        subparsers_actions = [
-            action for action in self._actions
-            if isinstance(action, argparse._SubParsersAction)
-        ]
-        for subparsers_action in subparsers_actions:
-            print ""
-            # get all subparsers and print help
-            for choice, subparser in subparsers_action.choices.items():
-                # print subparser
-                # print(" ** {} '{}':".format(
-                    # subparsers_action.dest, choice))
-                print(subparser.format_help())
-
-
-def setup_parser(desc, help=False):
-    """Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts that use :mod:`pytan`. This establishes the basic arguments that are needed by all such scripts, such as:
-
-        * --help
-        * --username
-        * --password
-        * --host
-        * --port
-        * --loglevel
-        * --debugformat (not shown in --help)
-    """
-
-    parser = CustomArgParse(
-        description=desc,
-        add_help=help,
-        formatter_class=CustomArgFormat,
-    )
-    auth_group = parser.add_argument_group('Handler Authentication')
-    auth_group.add_argument(
-        '-u',
-        '--username',
-        required=False,
-        action='store',
-        dest='username',
-        default=None,
-        help='Name of user',
-    )
-    auth_group.add_argument(
-        '-p',
-        '--password',
-        required=False,
-        action='store',
-        default=None,
-        dest='password',
-        help='Password of user',
-    )
-    auth_group.add_argument(
-        '--host',
-        required=False,
-        action='store',
-        default=None,
-        dest='host',
-        help='Hostname/ip of SOAP Server',
-    )
-    auth_group.add_argument(
-        '--port',
-        required=False,
-        action='store',
-        default="443",
-        dest='port',
-        help='Port to use when connecting to SOAP Server',
-    )
-
-    opt_group = parser.add_argument_group('Handler Options')
-    opt_group.add_argument(
-        '-l',
-        '--loglevel',
-        required=False,
-        action='store',
-        type=int,
-        default=0,
-        dest='loglevel',
-        help='Logging level to use, increase for more verbosity',
-    )
-    opt_group.add_argument(
-        '--debugformat',
-        required=False,
-        action='store_true',
-        default=False,
-        dest='debugformat',
-        help=argparse.SUPPRESS,
-    )
-
-    return parser
-
-
-def setup_get_object_argparser(obj, doc):
-    """Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to get objects.
-    """
-    parent_parser = setup_parser(doc)
-    parser = CustomArgParse(
-        description=doc,
-        parents=[parent_parser],
-    )
-    get_object_group = parser.add_argument_group(
-        'Get {} Options'.format(obj.replace('_', ' ').capitalize())
-    )
-    get_object_group.add_argument(
-        '--all',
-        required=False,
-        default=False,
-        action='store_true',
-        dest='all',
-        help='Get all {}s'.format(obj),
-    )
-
-    obj_map = get_obj_map(obj)
-    search_keys = obj_map['search']
-
-    if 'id' not in search_keys:
-        search_keys.append('id')
-
-    if obj == 'whitelisted_url':
-        search_keys.append('url_regex')
-
-    for k in search_keys:
-        get_object_group.add_argument(
-            '--{}'.format(k),
-            required=False,
-            action='append',
-            default=[],
-            dest=k,
-            help='{} of {} to get'.format(k, obj),
-        )
-
-    return parser
-
-
-def setup_create_json_object_argparser(obj, doc):
-    """Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to create objects from json files.
-    """
-
-    parent_parser = setup_parser(doc)
-    parser = CustomArgParse(
-        description=doc,
-        parents=[parent_parser],
-    )
-    arggroup = parser.add_argument_group(
-        'Create {} from JSON Options'.format(
-            obj.replace('_', ' ').capitalize()
-        )
-    )
-
-    arggroup.add_argument(
-        '-j',
-        '--json',
-        required=True,
-        action='store',
-        default='',
-        dest='json_file',
-        help='JSON file to use for creating the object',
-    )
-    return parser
-
-
-def setup_delete_object_argparser(obj, doc):
-    """Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to delete objects.
-    """
-    parent_parser = setup_parser(doc)
-    parser = CustomArgParse(
-        description=doc,
-        parents=[parent_parser],
-    )
-    arggroup = parser.add_argument_group(
-        'Delete {} Options'.format(obj.replace('_', ' ').capitalize())
-    )
-
-    obj_map = get_obj_map(obj)
-    search_keys = obj_map['search']
-    if obj == 'whitelisted_url':
-        search_keys.append('url_regex')
-
-    for k in search_keys:
-        arggroup.add_argument(
-            '--{}'.format(k),
-            required=False,
-            action='append',
-            default=[],
-            dest=k,
-            help='{} of {} to get'.format(k, obj),
-        )
-
-    return parser
-
-
-def setup_ask_saved_argparser(doc):
-    """Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to ask saved questions.
-    """
-
-    obj = 'saved_question'
-    parent_parser = setup_parser(doc)
-    parser = CustomArgParse(
-        description=doc,
-        parents=[parent_parser],
-    )
-    arggroup = parser.add_argument_group('Saved Question Selectors')
-    group = arggroup.add_mutually_exclusive_group()
-
-    obj_map = get_obj_map(obj)
-    search_keys = obj_map['search']
-    for k in search_keys:
-        group.add_argument(
-            '--{}'.format(k),
-            required=False,
-            action='store',
-            dest=k,
-            help='{} of {} to ask'.format(k, obj),
-        )
-    return parser
-
-
-def setup_stop_action_argparser(doc):
-    """Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to stop actions.
-    """
-
-    parent_parser = setup_parser(doc)
-    parser = CustomArgParse(
-        description=doc,
-        parents=[parent_parser],
-    )
-    arggroup = parser.add_argument_group('Stop Action Options')
-
-    arggroup.add_argument(
-        '-i',
-        '--id',
-        required=True,
-        type=int,
-        action='store',
-        dest='id',
-        help='ID of Deploy Action to stop',
-    )
-
-    return parser
-
-
-def setup_deploy_action_argparser(doc):
-    """Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to deploy actions.
-    """
-
-    parent_parser = setup_parser(doc)
-    parser = CustomArgParse(
-        description=doc,
-        parents=[parent_parser],
-    )
-    arggroup = parser.add_argument_group('Deploy Action Options')
-
-    arggroup.add_argument(
-        '--run',
-        required=False,
-        action='store_true',
-        default=False,
-        dest='run',
-        help='Run the deploy action, if not supplied the deploy action will '
-        'only ask the question that matches --filter and save the results to '
-        'csv file for verification',
-    )
-
-    group = arggroup.add_mutually_exclusive_group()
-
-    group.add_argument(
-        '--no-results',
-        action='store_false',
-        dest='get_results',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='Do not get the results after starting the deploy '
-        'action'
-    )
-    group.add_argument(
-        '--results',
-        action='store_true',
-        dest='get_results',
-        default=True,
-        required=False,
-        help='Get the results after starting the deploy action '
-        '(default)',
-    )
-
-    arggroup.add_argument(
-        '-k',
-        '--package',
-        required=False,
-        action='store',
-        default='',
-        dest='package',
-        help='Package to deploy action with, optionally describe parameters, '
-        'pass --package-help to get a full description',
-    )
-
-    arggroup.add_argument(
-        '-f',
-        '--filter',
-        required=False,
-        action='append',
-        default=[],
-        dest='action_filters',
-        help='Filter to deploy action against; pass --filters-help'
-        'to get a full description',
-    )
-
-    arggroup.add_argument(
-        '-o',
-        '--option',
-        required=False,
-        action='append',
-        default=[],
-        dest='action_options',
-        help='Options for deploy action filter; pass --options-help to get a '
-        'full description',
-    )
-
-    arggroup.add_argument(
-        '--start_seconds_from_now',
-        required=False,
-        action='store',
-        type=int,
-        default=None,
-        dest='start_seconds_from_now',
-        help='Start the action N seconds from now',
-    )
-
-    arggroup.add_argument(
-        '--expire_seconds',
-        required=False,
-        action='store',
-        type=int,
-        default=None,
-        dest='expire_seconds',
-        help='Expire the action N seconds after it starts, if not supplied '
-        'the packages own expire_seconds will be used',
-    )
-
-    arggroup.add_argument(
-        '--package-help',
-        required=False,
-        action='store_true',
-        default=False,
-        dest='package_help',
-        help='Get the full help for package string',
-    )
-
-    arggroup.add_argument(
-        '--filters-help',
-        required=False,
-        action='store_true',
-        default=False,
-        dest='filters_help',
-        help='Get the full help for filters strings',
-    )
-
-    arggroup.add_argument(
-        '--options-help',
-        required=False,
-        action='store_true',
-        default=False,
-        dest='options_help',
-        help='Get the full help for options strings',
-    )
-    parser = add_report_file_options(parser)
-
-    return parser
-
-
-def setup_get_result_argparser(doc):
-    """Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to get results for questions or actions.
-    """
-
-    parent_parser = setup_parser(doc)
-    parser = CustomArgParse(
-        description=doc,
-        parents=[parent_parser],
-    )
-    arggroup = parser.add_argument_group('Get Result Options')
-
-    arggroup.add_argument(
-        '-o',
-        '--object',
-        required=True,
-        action='store',
-        default='',
-        choices=['saved_question', 'question', 'action'],
-        dest='object_type',
-        help='Type of object to get results for',
-    )
-
-    arggroup.add_argument(
-        '-i',
-        '--id',
-        required=True,
-        action='store',
-        default='',
-        type=int,
-        dest='object_id',
-        help='id of object to get results for',
-    )
-    return parser
-
-
-def setup_ask_manual_argparser(doc):
-    """Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to ask manual questions.
-    """
-    parent_parser = setup_parser(doc)
-    parser = CustomArgParse(
-        description=doc,
-        parents=[parent_parser],
-    )
-    arggroup = parser.add_argument_group('Manual Question Options')
-
-    arggroup.add_argument(
-        '-s',
-        '--sensor',
-        required=False,
-        action='append',
-        default=[],
-        dest='sensors',
-        help='Sensor, optionally describe parameters, options, and a filter'
-        '; pass --sensors-help to get a full description',
-    )
-
-    arggroup.add_argument(
-        '-f',
-        '--filter',
-        required=False,
-        action='append',
-        default=[],
-        dest='question_filters',
-        help='Whole question filter; pass --filters-help to get a full description',
-    )
-
-    arggroup.add_argument(
-        '-o',
-        '--option',
-        required=False,
-        action='append',
-        default=[],
-        dest='question_options',
-        help='Whole question option; pass --options-help to get a full description',
-    )
-
-    arggroup.add_argument(
-        '--sensors-help',
-        required=False,
-        action='store_true',
-        default=False,
-        dest='sensors_help',
-        help='Get the full help for sensor strings',
-    )
-
-    arggroup.add_argument(
-        '--filters-help',
-        required=False,
-        action='store_true',
-        default=False,
-        dest='filters_help',
-        help='Get the full help for filters strings',
-    )
-
-    arggroup.add_argument(
-        '--options-help',
-        required=False,
-        action='store_true',
-        default=False,
-        dest='options_help',
-        help='Get the full help for options strings',
-    )
-    group = arggroup.add_mutually_exclusive_group()
-
-    group.add_argument(
-        '--no-results',
-        action='store_false',
-        dest='get_results',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='Do not get the results after asking the quesiton '
-        'action'
-    )
-    group.add_argument(
-        '--results',
-        action='store_true',
-        dest='get_results',
-        default=True,
-        required=False,
-        help='Get the results after asking the quesiton '
-        '(default)',
-    )
-    return parser
-
-
-def add_ask_report_argparser(parser):
-    """Method to extend a :class:`pytan.utils.CustomArgParse` class for command line scripts with arguments for scripts that need to supply export format subparsers for asking questions.
-    """
-    parser = add_report_file_options(parser)
-
-    subparsers = parser.add_subparsers(
-        title='Export Formats',
-        dest='export_format',
-        help='Export Format choices',
-    )
-
-    csv_subparser = subparsers.add_parser(
-        'csv',
-        help='Produce a CSV report, supply "csv -h" to see CSV options',
-        description="CSV Export Options"
-    )
-
-    group = csv_subparser.add_mutually_exclusive_group()
-    group.add_argument(
-        '--sort',
-        default=[],
-        action='append',
-        dest='header_sort',
-        required=False,
-        help='Sort headers by given names'
-    )
-    group.add_argument(
-        '--no-sort',
-        action='store_false',
-        dest='header_sort',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='Do not sort the headers at all'
-    )
-    group.add_argument(
-        '--auto_sort',
-        action='store_true',
-        dest='header_sort',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='Sort the headers with a basic alphanumeric sort (default)'
-    )
-
-    group = csv_subparser.add_mutually_exclusive_group()
-    group.add_argument(
-        '--add-sensor',
-        action='store_true',
-        dest='header_add_sensor',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='Add the sensor names to each header'
-    )
-    group.add_argument(
-        '--no-add-sensor',
-        action='store_false',
-        dest='header_add_sensor',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='Do not add the sensor names to each header (default)'
-    )
-
-    group = csv_subparser.add_mutually_exclusive_group()
-    group.add_argument(
-        '--add-type',
-        action='store_true',
-        dest='header_add_type',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='Add the result type to each header'
-    )
-    group.add_argument(
-        '--no-add-type',
-        action='store_false',
-        dest='header_add_type',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='Do not add the result type to each header (default)'
-    )
-
-    group = csv_subparser.add_mutually_exclusive_group()
-    group.add_argument(
-        '--expand-columns',
-        action='store_true',
-        dest='expand_grouped_columns',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='Expand multi-line cells into their own rows that have sensor '
-        'correlated columns in the new rows'
-    )
-    group.add_argument(
-        '--no-columns',
-        action='store_false',
-        dest='expand_grouped_columns',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='Do not add expand multi-line cells into their own rows (default)'
-    )
-
-    subparsers.add_parser(
-        'json',
-        help='Produce a JSON report, supply "json -h" to see JSON options',
-        description="JSON Export Options"
-    )
-
-    return parser
-
-
-def add_report_file_options(parser):
-    """Method to extend a :class:`pytan.utils.CustomArgParse` class for command line scripts with arguments for scripts that need to supply export file and directory options.
-    """
-
-    opt_group = parser.add_argument_group('Report File Options')
-    opt_group.add_argument(
-        '--file',
-        required=False,
-        action='store',
-        default=None,
-        dest='report_file',
-        help='File to save report to (will be automatically generated if not '
-        'supplied)',
-    )
-    opt_group.add_argument(
-        '--dir',
-        required=False,
-        action='store',
-        default=None,
-        dest='report_dir',
-        help='Directory to save report to (current directory will be used if '
-        'not supplied)',
-    )
-    return parser
-
-
-def add_get_object_report_argparser(parser):
-    """Method to extend a :class:`pytan.utils.CustomArgParse` class for command line scripts with arguments for scripts that need to supply export format subparsers for getting objects.
-    """
-    parser = add_report_file_options(parser)
-
-    subparsers = parser.add_subparsers(
-        title='Export Formats',
-        dest='export_format',
-        help='Export Format choices',
-    )
-
-    csv_subparser = subparsers.add_parser(
-        'csv',
-        help='Produce a CSV report, supply "csv -h" to see CSV options',
-        description="CSV Export Options"
-    )
-
-    group = csv_subparser.add_mutually_exclusive_group()
-    group.add_argument(
-        '--sort',
-        default=[],
-        action='append',
-        dest='header_sort',
-        required=False,
-        help='Sort headers by given names'
-    )
-    group.add_argument(
-        '--no-sort',
-        action='store_false',
-        dest='header_sort',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='Do not sort the headers at all'
-    )
-    group.add_argument(
-        '--auto_sort',
-        action='store_true',
-        dest='header_sort',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='Sort the headers with a basic alphanumeric sort (default)'
-    )
-
-    group = csv_subparser.add_mutually_exclusive_group()
-    group.add_argument(
-        '--no-explode-json',
-        action='store_false',
-        dest='explode_json_string_values',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='Do not explode any embedded JSON into their own columns'
-    )
-    group.add_argument(
-        '--explode-json',
-        action='store_true',
-        dest='explode_json_string_values',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='Explode any embedded JSON into their own columns (default)'
-    )
-
-    json_subparser = subparsers.add_parser(
-        'json',
-        help='Produce a JSON report, supply "json -h" to see JSON options',
-        description="JSON Export Options"
-    )
-
-    group = json_subparser.add_mutually_exclusive_group()
-    group.add_argument(
-        '--explode-json',
-        action='store_true',
-        dest='explode_json_string_values',
-        required=False,
-        default=argparse.SUPPRESS,
-        help='Explode any embedded JSON into their own columns'
-    )
-    group.add_argument(
-        '--no-explode-json',
-        action='store_false',
-        dest='explode_json_string_values',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='Do not explode any embedded JSON into their own columns '
-        '(default)'
-    )
-
-    group = json_subparser.add_mutually_exclusive_group()
-    group.add_argument(
-        '--no-include_type',
-        action='store_false',
-        dest='include_type',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='Do not include SOAP type in JSON output'
-    )
-    group.add_argument(
-        '--include_type',
-        action='store_true',
-        dest='include_type',
-        required=False,
-        default=argparse.SUPPRESS,
-        help='Include SOAP type in JSON output (default)'
-    )
-
-    xml_subparser = subparsers.add_parser(
-        'xml',
-        help='Produce a XML report, supply "xml -h" to see XML options',
-        description="XML Export Options"
-    )
-
-    group = xml_subparser.add_mutually_exclusive_group()
-    group.add_argument(
-        '--no-minimal',
-        action='store_false',
-        dest='minimal',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='Produce the full XML representation, including empty attributes'
-    )
-    group.add_argument(
-        '--minimal',
-        action='store_true',
-        dest='minimal',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='Only include attributes that are not empty (default)'
-    )
-
-    return parser
-
-
-def process_create_json_object_args(parser, handler, obj, all_args):
-    """Process command line args supplied by user for create json object
-
-    Parameters
-    ----------
-    parser : :class:`argparse.ArgParse`
-        ArgParse object used to parse `all_args`
-    handler : :class:`pytan.handler.Handler`
-        Instance of Handler created from command line args
-    obj : str
-        Object type for create json object
-    all_args : dict
-        dict of args parsed from `parser`
-
-    Returns
-    -------
-    response : :class:`taniumpy.object_types.base.BaseType`
-        response from :func:`pytan.handler.Handler.create_from_json`
-    """
-    # put our query args into their own dict and remove them from all_args
-    obj_grp_names = [
-        'Create {} from JSON Options'.format(
-            obj.replace('_', ' ').capitalize()
-        )
-    ]
-    obj_grp_opts = get_grp_opts(parser, obj_grp_names)
-    obj_grp_args = {k: all_args.pop(k) for k in obj_grp_opts}
-    try:
-        response = handler.create_from_json(obj, **obj_grp_args)
-    except Exception as e:
-        print e
-        sys.exit(100)
-    for i in response:
-        obj_id = getattr(i, 'id', 'unknown')
-        print "Created item: {}, ID: {}".format(i, obj_id)
-    return response
-
-
-def process_delete_object_args(parser, handler, obj, all_args):
-    """Process command line args supplied by user for delete object
-
-    Parameters
-    ----------
-    parser : :class:`argparse.ArgParse`
-        ArgParse object used to parse `all_args`
-    handler : :class:`pytan.handler.Handler`
-        Instance of Handler created from command line args
-    obj : str
-        Object type for delete object
-    all_args : dict
-        dict of args parsed from `parser`
-
-    Returns
-    -------
-    response : :class:`taniumpy.object_types.base.BaseType`
-        response from :func:`pytan.handler.Handler.delete`
-    """
-    # put our query args into their own dict and remove them from all_args
-    obj_grp_names = [
-        'Delete {} Options'.format(obj.replace('_', ' ').capitalize())
-    ]
-    obj_grp_opts = get_grp_opts(parser, obj_grp_names)
-    obj_grp_args = {k: all_args.pop(k) for k in obj_grp_opts}
-    try:
-        response = handler.delete(obj, **obj_grp_args)
-    except Exception as e:
-        print e
-        sys.exit(100)
-    for i in response:
-        print "Deleted item: ", i
-    return response
-
-
-def process_get_object_args(parser, handler, obj, all_args):
-    """Process command line args supplied by user for get object
-
-    Parameters
-    ----------
-    parser : :class:`argparse.ArgParse`
-        ArgParse object used to parse `all_args`
-    handler : :class:`pytan.handler.Handler`
-        Instance of Handler created from command line args
-    obj : str
-        Object type for get object
-    all_args : dict
-        dict of args parsed from `parser`
-
-    Returns
-    -------
-    response : :class:`taniumpy.object_types.base.BaseType`
-        response from :func:`pytan.handler.Handler.get`
-    """
-    # put our query args into their own dict and remove them from all_args
-    obj_grp_names = [
-        'Get {} Options'.format(obj.replace('_', ' ').capitalize())
-    ]
-    obj_grp_opts = get_grp_opts(parser, obj_grp_names)
-    obj_grp_args = {k: all_args.pop(k) for k in obj_grp_opts}
-    get_all = obj_grp_args.pop('all')
-    if get_all:
-        try:
-            response = handler.get_all(obj)
-        except Exception as e:
-            print e
-            sys.exit(100)
-    else:
-        try:
-            response = handler.get(obj, **obj_grp_args)
-        except Exception as e:
-            print e
-            sys.exit(100)
-
-    print "Found items: ", response
-    return response
-
-
-def get_grp_opts(parser, grp_names):
-    """Used to get arguments in `parser` that match argument group names in `grp_names`
-
-    Parameters
-    ----------
-    parser : :class:`argparse.ArgParse`
-        ArgParse object
-    grp_names : list of str
-        list of str of argument group names to get arguments for
-
-    Returns
-    -------
-    grp_opts : list of str
-        list of arguments gathered from argument group names in `grp_names`
-    """
-    action_grps = [a for a in parser._action_groups if a.title in grp_names]
-    grp_opts = [a.dest for b in action_grps for a in b._group_actions]
-    return grp_opts
-
-
 def is_list(l):
     """returns True if `l` is a list, False if not"""
     return type(l) in [list, tuple]
@@ -1020,49 +93,24 @@ def is_num(l):
     return type(l) in [float, int, long]
 
 
-def version_check(reqver):
-    """Allows scripts using :mod:`pytan` to validate the version of the script
-    aginst the version of :mod:`pytan`
-
-    Parameters
-    ----------
-    reqver : str
-        string containing version number to check against :exc:`Exception`
-
-    Raises
-    ------
-    VersionMismatchError : :exc:`Exception`
-        if :data:`pytan.__version__` is not greater or equal to `reqver`
-    """
-    log_tpl = (
-        "{}: {} version {}, required {}").format
-    if not __version__ >= reqver:
-        s = "Script and API Version mismatch!"
-        raise pytan.exceptions.VersionMismatchError(log_tpl(s, sys.argv[0], __version__, reqver))
-
-    s = "Script and API Version match"
-    mylog.debug(log_tpl(s, sys.argv[0], __version__, reqver))
-    return True
-
-
 def jsonify(v, indent=2, sort_keys=True):
     """Turns python object `v` into a pretty printed JSON string
 
     Parameters
     ----------
     v : object
-        python object to convert to JSON
+        * python object to convert to JSON
 
     indent : int, 2
-        number of spaces to indent JSON string when pretty printing
+        * number of spaces to indent JSON string when pretty printing
 
     sort_keys : bool, True
-        sort keys of JSON string when pretty printing
+        * sort keys of JSON string when pretty printing
 
     Returns
     -------
     str :
-        JSON pretty printed string
+        * JSON pretty printed string
     """
     return json.dumps(v, indent=indent, sort_keys=sort_keys)
 
@@ -1084,14 +132,14 @@ def human_time(t, tformat='%Y_%m_%d-%H_%M_%S-%Z'):
     Parameters
     ----------
     t : int, float, time
-        either a unix epoch or struct_time object to convert to string
+        * either a unix epoch or struct_time object to convert to string
     tformat : str, optional
-        format of string to convert time to
+        * format of string to convert time to
 
     Returns
     -------
     str :
-        `t` converted to str
+        * `t` converted to str
     """
     if is_num(t):
         t = time.localtime(t)
@@ -1104,15 +152,18 @@ def seconds_from_now(secs=0, tz='utc'):
     Parameters
     ----------
     secs : int
-        seconds from now to get time str
+        * seconds from now to get time str
     tz : str, optional
-        time zone to return string in, default is 'utc' - supplying anything else will supply local time
+        * time zone to return string in, default is 'utc' - supplying anything else will supply local time
 
     Returns
     -------
     str :
-        time `secs` from now in Tanium SOAP API format
+        * time `secs` from now in Tanium SOAP API format
     """
+    if secs is None:
+        secs = 0
+
     if tz == 'utc':
         now = datetime.datetime.utcnow()
     else:
@@ -1128,12 +179,12 @@ def timestr_to_datetime(timestr):
     Parameters
     ----------
     timestr : str
-        date & time in taniums format
+        * date & time in taniums format
 
     Returns
     -------
     datetime.datetime
-        the datetime object for the timestr
+        * the datetime object for the timestr
     """
     return datetime.datetime.strptime(timestr, pytan.constants.TIME_FORMAT)
 
@@ -1144,12 +195,12 @@ def datetime_to_timestr(dt):
     Parameters
     ----------
     dt : datetime.datetime
-        datetime object
+        * datetime object
 
     Returns
     -------
     timestr: str
-        the timestr for `dt` in taniums format
+        * the timestr for `dt` in taniums format
     """
     return dt.strftime(pytan.constants.TIME_FORMAT)
 
@@ -1160,16 +211,16 @@ def port_check(address, port, timeout=5):
     Parameters
     ----------
     address : str
-        hostname/ip address to check `port` on
+        * hostname/ip address to check `port` on
     port : int
-        port to check on `address`
+        * port to check on `address`
     timeout : int, optional
-        timeout after N seconds of not being able to connect
+        * timeout after N seconds of not being able to connect
 
     Returns
     -------
     :mod:`socket` or False :
-        if connection succeeds, the socket object is returned, else False is returned
+        * if connection succeeds, the socket object is returned, else False is returned
     """
     try:
         return socket.create_connection((address, port), timeout)
@@ -1183,15 +234,14 @@ def test_app_port(host, port):
     Parameters
     ----------
     host : str
-        hostname/ip address to check `port` on
+        * hostname/ip address to check `port` on
     port : int
-        port to check on `host`
+        * port to check on `host`
 
     Raises
     ------
     pytan.exceptions.HandlerError : :exc:`pytan.exceptions.HandlerError`
-        if `host`:`port` can not be reached
-
+        * if `host`:`port` can not be reached
     """
     chk_tpl = "Port test to {}:{} {}".format
     if port_check(host, port):
@@ -1206,7 +256,7 @@ def spew(t):
     Parameters
     ----------
     t : str
-        string to debug print
+        * string to debug print
     """
     if DEBUG_OUTPUT:
         print "DEBUG::{}".format(t)
@@ -1218,20 +268,20 @@ def remove_logging_handler(name='all'):
     Parameters
     ----------
     name : str
-        name of logging handler to remove. if name == 'all' then all logging handlers are removed
+        * name of logging handler to remove. if name == 'all' then all logging handlers are removed
     """
-    for k, v in sorted(get_all_loggers().iteritems()):
+    for k, v in sorted(get_all_pytan_loggers().iteritems()):
         for handler in v.handlers:
             if name == 'all':
-                spew("Removing handler: {0}/{0.name} due to 'all'".format(handler))
+                spew("Removing logging handler: {0}/{0.name} due to 'all'".format(handler))
                 v.removeHandler(handler)
             elif handler.name == name:
-                spew("Removing handler: {0}/{0.name} due to match".format(handler))
+                spew("Removing logging handler: {0}/{0.name} due to match".format(handler))
                 v.removeHandler(handler)
 
 
 def setup_console_logging(gmt_tz=True):
-    """Creates a console logging handler using :class:`SplitStreamHandler`"""
+    """Creates a console logging handler using logging.StreamHandler(sys.stdout)"""
 
     ch_name = 'console'
     remove_logging_handler('console')
@@ -1241,15 +291,17 @@ def setup_console_logging(gmt_tz=True):
         logging.Formatter.converter = time.gmtime
 
     # add a console handler to all loggers that goes to STDOUT for INFO
-    # and below, but STDERR for WARNING and above
-    ch = SplitStreamHandler()
+    # and below, but STDERR for WARNING and above (old method)
+    # ch = SplitStreamHandler()
+
+    ch = logging.StreamHandler(sys.stdout)
     ch.set_name(ch_name)
     ch.setLevel(logging.DEBUG)
     ch.setFormatter(logging.Formatter(pytan.constants.INFO_FORMAT))
 
-    for k, v in sorted(get_all_loggers().iteritems()):
+    for k, v in sorted(get_all_pytan_loggers().iteritems()):
+        spew("setup_console_logging(): add handler: {0}/{0.name} to logger {1}".format(ch, k))
         v.addHandler(ch)
-        v.setLevel(logging.DEBUG)
 
 
 def change_console_format(debug=False):
@@ -1261,7 +313,7 @@ def change_console_format(debug=False):
         * False : set logging format for console handler to :data:`pytan.constants.INFO_FORMAT`
         * True :  set logging format for console handler to :data:`pytan.constants.DEBUG_FORMAT`
     """
-    for k, v in sorted(get_all_loggers().iteritems()):
+    for k, v in sorted(get_all_pytan_loggers().iteritems()):
         for handler in v.handlers:
             if handler.name == 'console':
                 if debug:
@@ -1276,16 +328,13 @@ def set_log_levels(loglevel=0):
     Parameters
     ----------
     loglevel : int, optional
-        loglevel to match against each item in :data:`pytan.constants.LOG_LEVEL_MAPS` - each item that is greater than or equal to loglevel will have the according loggers set to their respective levels identified there-in.
+        * loglevel to match against each item in :data:`pytan.constants.LOG_LEVEL_MAPS` - each item that is greater than or equal to loglevel will have the according loggers set to their respective levels identified there-in.
     """
     if loglevel >= 20:
         set_all_loglevels('DEBUG')
         return
 
     set_all_loglevels('WARN')
-
-    if loglevel == 0:
-        return
 
     for logmap in pytan.constants.LOG_LEVEL_MAPS:
         if loglevel >= logmap[0]:
@@ -1299,7 +348,7 @@ def print_log_levels():
     for logmap in pytan.constants.LOG_LEVEL_MAPS:
         print "Logging level: {} - Description: {}".format(logmap[0], logmap[2])
         if logmap[0] == 0:
-            for k, v in sorted(get_all_loggers().iteritems()):
+            for k, v in sorted(get_all_pytan_loggers().iteritems()):
                 print "\tLogger {!r} will only show WARNING and above".format(k)
             continue
         for lname, llevel in logmap[1].iteritems():
@@ -1308,42 +357,45 @@ def print_log_levels():
 
 def set_all_loglevels(level='DEBUG'):
     """Sets all loggers that the logging system knows about to a given logger level"""
-    my_loggers = [x[1].keys() for x in pytan.constants.LOG_LEVEL_MAPS if x[1].keys()]
-    my_loggers = sorted(list(set(list(itertools.chain(*my_loggers)))))
 
-    for k, v in sorted(get_all_loggers().iteritems()):
-        if k not in my_loggers:
-            spew("not touching logger: {}".format(k))
-            continue
-        spew("set_all_loglevels(): setting {} to {}".format(k, level))
+    for k, v in sorted(get_all_pytan_loggers().iteritems()):
+        spew("set_all_loglevels(): setting pytan logger '{}' to {}".format(k, level))
         v.setLevel(getattr(logging, level))
         v.propagate = False
 
 
+def get_all_pytan_loggers():
+    """Gets all loggers currently known to pythons logging system that exist in :data:`pytan.constants.LOG_LEVEL_MAPS`
+
+    Creates loggers for any pytan loggers that do not exist yet
+    """
+    pytan_log_strings = [x[1].keys() for x in pytan.constants.LOG_LEVEL_MAPS if x[1].keys()]
+    pytan_log_strings = sorted(list(set(list(itertools.chain(*pytan_log_strings)))))
+
+    pytan_loggers = {x: logging.getLogger(x) for x in pytan_log_strings}
+    return pytan_loggers
+
+
 def get_all_loggers():
+    """Gets all loggers currently known to pythons logging system`"""
     logger_dict = logging.Logger.manager.loggerDict
     all_loggers = {k: v for k, v in logger_dict.iteritems() if isinstance(v, logging.Logger)}
     all_loggers['root'] = logging.getLogger()
-    pytan_loggers = list(set([y for x in pytan.constants.LOG_LEVEL_MAPS for y in x[1].keys()]))
-    for x in pytan_loggers:
-        if x not in all_loggers:
-            all_loggers[x] = logging.getLogger(x)
     return all_loggers
 
 
-# issue #6
 def load_taniumpy_from_json(json_file):
     """Opens a json file and parses it into an taniumpy object
 
     Parameters
     ----------
     json_file : str
-        path to JSON file that describes an API object
+        * path to JSON file that describes an API object
 
     Returns
     -------
     obj : :class:`taniumpy.object_types.base.BaseType`
-        TaniumPy object converted from json file
+        * TaniumPy object converted from json file
     """
     try:
         fh = open(json_file)
@@ -1363,7 +415,6 @@ def load_taniumpy_from_json(json_file):
         m = "Unable to parse json_file {!r}, {}\n{}".format
         raise pytan.exceptions.HandlerError(m(json_file, e, howto_m))
 
-    # issue #6
     try:
         fh.close()
     except:
@@ -1384,9 +435,19 @@ def load_taniumpy_from_json(json_file):
     return obj
 
 
-# issue #6
 def load_param_json_file(parameters_json_file):
-    # issue #6
+    """Opens a json file and sanity checks it for use as a parameters element for a taniumpy object
+
+    Parameters
+    ----------
+    parameters_json_file : str
+        * path to JSON file that describes an API object
+
+    Returns
+    -------
+    obj
+        * contents of parameters_json_file de-serialized
+    """
     try:
         pf = open(parameters_json_file)
     except Exception as e:
@@ -1442,17 +503,17 @@ def dehumanize_sensors(sensors, key='sensors', empty_ok=True):
     Parameters
     ----------
     sensors : str, list of str
-        A str or list of str that describes a sensor(s) and optionally a selector, parameters, filter, and/or options
+        * A str or list of str that describes a sensor(s) and optionally a selector, parameters, filter, and/or options
     key : str, optional
-        Name of key that user should have provided `sensors` as
+        * Name of key that user should have provided `sensors` as
     empty_ok : bool, optional
-        False: `sensors` is not allowed to be empty, throw :exc:`pytan.exceptions.HumanParserError` if it is empty
-        True: `sensors` is allowed to be empty
+        * False: `sensors` is not allowed to be empty, throw :exc:`pytan.exceptions.HumanParserError` if it is empty
+        * True: `sensors` is allowed to be empty
 
     Returns
     -------
     sensor_defs : list of dict
-        list of dict parsed from `sensors`
+        * list of dict parsed from `sensors`
     """
     if not any([is_list(sensors), is_str(sensors)]):
         err = "A string or list of strings must be supplied as '{0}'!".format(key)
@@ -1496,12 +557,12 @@ def dehumanize_package(package):
     Parameters
     ----------
     package : str
-        A str that describes a package and optionally a selector and/or parameters
+        * A str that describes a package and optionally a selector and/or parameters
 
     Returns
     -------
     package_def : dict
-        dict parsed from `sensors`
+        * dict parsed from `sensors`
     """
     if not is_str(package) or not package:
         err = "{!r} must be a string supplied as 'package'".format
@@ -1524,12 +585,12 @@ def dehumanize_question_filters(question_filters):
     Parameters
     ----------
     question_filters : str, list of str
-        A str or list of str that describes a sensor for a question filter(s) and optionally a selector and/or filter
+        * A str or list of str that describes a sensor for a question filter(s) and optionally a selector and/or filter
 
     Returns
     -------
     question_filter_defs : list of dict
-        list of dict parsed from `question_filters`
+        * list of dict parsed from `question_filters`
     """
     if not question_filters:
         return []
@@ -1566,12 +627,12 @@ def dehumanize_question_options(question_options):
     Parameters
     ----------
     question_options : str, list of str
-        A str or list of str that describes question options
+        * A str or list of str that describes question options
 
     Returns
     -------
     question_option_defs : list of dict
-        list of dict parsed from `question_options`
+        * list of dict parsed from `question_options`
     """
     if not question_options:
         return {}
@@ -1596,14 +657,14 @@ def extract_selector(s):
     Parameters
     ----------
     s : str
-        A str that may or may not have a selector in the beginning in the form of id:, name:, or :hash -- if no selector found, name will be assumed as the default selector
+        * A str that may or may not have a selector in the beginning in the form of id:, name:, or :hash -- if no selector found, name will be assumed as the default selector
 
     Returns
     -------
     s : str
-        str `s` without the parsed_selector included
+        * str `s` without the parsed_selector included
     parsed_selector : str
-        selector extracted from `s`, or 'name' if none found
+        * selector extracted from `s`, or 'name' if none found
     """
     parsed_selector = 'name'
     for selector in pytan.constants.SELECTORS:
@@ -1623,14 +684,14 @@ def extract_params(s):
     Parameters
     ----------
     s : str
-        A str that may or may not have parameters identified by {key=value}
+        * A str that may or may not have parameters identified by {key=value}
 
     Returns
     -------
     s : str
-        str `s` without the parsed_params included
+        * str `s` without the parsed_params included
     parsed_params : list
-        parameters extracted from `s` if any found
+        * parameters extracted from `s` if any found
     """
     # extract params from s
 
@@ -1690,14 +751,14 @@ def extract_options(s):
     Parameters
     ----------
     s : str
-        A str that may or may not have options identified by ', opt:name[:value]'
+        * A str that may or may not have options identified by ', opt:name[:value]'
 
     Returns
     -------
     s : str
-        str `s` without the parsed_options included
+        * str `s` without the parsed_options included
     parsed_options : list
-        options extracted from `s` if any found
+        * options extracted from `s` if any found
     """
     # parse options out of s
 
@@ -1732,14 +793,14 @@ def map_options(options, dest):
     Parameters
     ----------
     options : list of str
-        list of str that should be validated
+        * list of str that should be validated
     dest : list of str
-        list of valid destinations (i.e. `filter` or `group`)
+        * list of valid destinations (i.e. `filter` or `group`)
 
     Returns
     -------
     mapped_options : dict
-        dict of all mapped_options
+        * dict of all mapped_options
     """
     mapped_options = {}
     for option in options:
@@ -1759,14 +820,14 @@ def map_option(opt, dest):
     Parameters
     ----------
     opt : str
-        option str that should be validated
+        * option str that should be validated
     dest : list of str
-        list of valid destinations (i.e. `filter` or `group`)
+        * list of valid destinations (i.e. `filter` or `group`)
 
     Returns
     -------
     opt_attrs : dict
-        dict containing mapped option attributes for SOAP API
+        * dict containing mapped option attributes for SOAP API
     """
     opt_attrs = {}
 
@@ -1815,14 +876,14 @@ def extract_filter(s):
     Parameters
     ----------
     s : str
-        A str that may or may not have a filter identified by ', that HUMAN VALUE'
+        * A str that may or may not have a filter identified by ', that HUMAN VALUE'
 
     Returns
     -------
     s : str
-        str `s` without the parsed_filter included
+        * str `s` without the parsed_filter included
     parsed_filter : dict
-        filter attributes mapped from filter from `s` if any found
+        * filter attributes mapped from filter from `s` if any found
     """
     split_filter = re.split(pytan.constants.FILTER_RE, s, re.IGNORECASE)
     # split_filter = ['Folder Name Search with RegEx Match', ' is:.*']
@@ -1857,12 +918,12 @@ def map_filter(filter_str):
     Parameters
     ----------
     filter_str : str
-        filter_str str that should be validated
+        * filter_str str that should be validated
 
     Returns
     -------
     filter_attrs : dict
-        dict containing mapped filter attributes for SOAP API
+        * dict containing mapped filter attributes for SOAP API
     """
     filter_attrs = {}
 
@@ -1909,11 +970,11 @@ def get_kwargs_int(key, default=None, **kwargs):
     Parameters
     ----------
     key : str
-        key to get from kwargs
+        * key to get from kwargs
     default : int, optional
-        default value to use if key not found in kwargs
-    **kwargs : dict
-        kwargs to get key from
+        * default value to use if key not found in kwargs
+    kwargs : dict
+        * kwargs to get key from
 
     Returns
     -------
@@ -1938,11 +999,11 @@ def parse_defs(defname, deftypes, strconv=None, empty_ok=True, defs=None, **kwar
     Parameters
     ----------
     defname : str
-        Name of definition
+        * Name of definition
     deftypes : list of str
-        list of valid types that defs can be
+        * list of valid types that defs can be
     strconv : str
-        if supplied, and defs is a str, turn defs into a dict with key = strconv, value = defs
+        * if supplied, and defs is a str, turn defs into a dict with key = strconv, value = defs
     empty_ok : bool
         * True: defs is allowed to be empty
         * False: defs is not allowed to be empty
@@ -1950,7 +1011,7 @@ def parse_defs(defname, deftypes, strconv=None, empty_ok=True, defs=None, **kwar
     Returns
     -------
     new_defs : list of dict
-        parsed and validated defs
+        * parsed and validated defs
     """
     if defs is None:
         defs = kwargs.get(defname, eval(deftypes[0]))
@@ -2011,7 +1072,7 @@ def val_sensor_defs(sensor_defs):
     Parameters
     ----------
     sensor_defs : list of dict
-        list of sensor definitions
+        * list of sensor definitions
     """
     s_obj_map = pytan.constants.GET_OBJ_MAP['sensor']
     search_keys = s_obj_map['search']
@@ -2042,7 +1103,7 @@ def val_package_def(package_def):
     Parameters
     ----------
     package_def : dict
-        package definition
+        * package definition
     """
     s_obj_map = pytan.constants.GET_OBJ_MAP['package']
     search_keys = s_obj_map['search']
@@ -2073,7 +1134,7 @@ def val_q_filter_defs(q_filter_defs):
     Parameters
     ----------
     q_filter_defs : list of dict
-        list of question filter definitions
+        * list of question filter definitions
     """
     s_obj_map = pytan.constants.GET_OBJ_MAP['sensor']
     search_keys = s_obj_map['search']
@@ -2100,12 +1161,12 @@ def build_selectlist_obj(sensor_defs):
     Parameters
     ----------
     sensor_defs : list of dict
-        List of dict that are sensor definitions
+        * List of dict that are sensor definitions
 
     Returns
     -------
     select_objlist : :class:`taniumpy.object_types.select_list.SelectList`
-        SelectList object with list of :class:`taniumpy.object_types.select.Select` built from `sensor_defs`
+        * SelectList object with list of :class:`taniumpy.object_types.select.Select` built from `sensor_defs`
     """
     select_objlist = taniumpy.SelectList()
 
@@ -2157,14 +1218,14 @@ def build_group_obj(q_filter_defs, q_option_defs):
     Parameters
     ----------
     q_filter_defs : list of dict
-        List of dict that are question filter definitions
+        * List of dict that are question filter definitions
     q_option_defs : dict
-        dict of question filter options
+        * dict of question filter options
 
     Returns
     -------
     group_obj : :class:`taniumpy.object_types.group.Group`
-        Group object with list of :class:`taniumpy.object_types.filter.Filter` built from `q_filter_defs` and `q_option_defs`
+        * Group object with list of :class:`taniumpy.object_types.filter.Filter` built from `q_filter_defs` and `q_option_defs`
     """
     filter_objlist = taniumpy.FilterList()
 
@@ -2189,14 +1250,14 @@ def build_manual_q(selectlist_obj, group_obj):
     Parameters
     ----------
     selectlist_obj : :class:`taniumpy.object_types.select_list.SelectList`
-        SelectList object to add to Question object
+        * SelectList object to add to Question object
     group_obj : :class:`taniumpy.object_types.group.Group`
-        Group object to add to Question object
+        * Group object to add to Question object
 
     Returns
     -------
     add_q_obj : :class:`taniumpy.object_types.question.Question`
-        Question object built from selectlist_obj and group_obj
+        * Question object built from selectlist_obj and group_obj
     """
     add_q_obj = taniumpy.Question()
     add_q_obj.selects = selectlist_obj
@@ -2208,12 +1269,12 @@ def get_obj_params(obj):
     """Get the parameters from a TaniumPy object and JSON load them
 
     obj : :class:`taniumpy.object_types.base.BaseType`
-        TaniumPy object to get parameters from
+        * TaniumPy object to get parameters from
 
     Returns
     -------
     params : dict
-        JSON loaded dict of parameters from `obj`
+        * JSON loaded dict of parameters from `obj`
 
     """
     # get the parameter definitions
@@ -2234,16 +1295,16 @@ def build_param_obj(key, val, delim=''):
     Parameters
     ----------
     key : str
-        key to use for parameter
+        * key to use for parameter
     value : str
-        value to use for parameter
+        * value to use for parameter
     delim : str
-        str to surround key with when adding to parameter object
+        * str to surround key with when adding to parameter object
 
     Returns
     -------
     param_obj : :class:`taniumpy.object_types.parameter.Parameter`
-        Parameter object built from key and val
+        * Parameter object built from key and val
     """
     # create a parameter object
     param_obj = taniumpy.Parameter()
@@ -2258,12 +1319,12 @@ def derive_param_default(obj_param):
     Parameters
     ----------
     obj_param : dict
-        parameter dict from TaniumPy object
+        * parameter dict from TaniumPy object
 
     Returns
     -------
     def_val : str
-        default value derived from obj_param
+        * default value derived from obj_param
     """
     # get the default value for this param if it exists
     def_val = obj_param.get('defaultValue', '')
@@ -2288,11 +1349,11 @@ def build_param_objlist(obj, user_params, delim='', derive_def=False, empty_ok=F
     Parameters
     ----------
     obj : :class:`taniumpy.object_types.base.BaseType`
-        TaniumPy object to verify parameters against
+        * TaniumPy object to verify parameters against
     user_params : dict
-        dict describing key and value of user supplied params
+        * dict describing key and value of user supplied params
     delim : str
-        str to surround key with when adding to parameter object
+        * str to surround key with when adding to parameter object
     derive_def : bool, optional
         * False: Do not derive default values, and throw a :exc:`pytan.exceptions.HandlerError` if user did not supply a value for a given parameter
         * True: Try to derive a default value for each parameter if user did not supply one
@@ -2353,12 +1414,15 @@ def shrink_obj(obj, attrs=None):
     Parameters
     ----------
     obj : :class:`taniumpy.object_types.base.BaseType`
-        Object to shrink
+        * Object to shrink
+    attrs : list of str
+        * default: None
+        * list of attribute str's to copy over to new object, will default to ['name', 'id', 'hash'] if None
 
     Returns
     -------
     new_obj : :class:`taniumpy.object_types.base.BaseType`
-        Shrunken object
+        * Shrunken object
     """
     if attrs is None:
         attrs = ['name', 'id', 'hash']
@@ -2368,18 +1432,79 @@ def shrink_obj(obj, attrs=None):
     return new_obj
 
 
+def copy_obj(obj, skip_attrs=None):
+    """Returns a new class of obj with with out any attributes in skip_attrs specified
+
+    Parameters
+    ----------
+    obj : :class:`taniumpy.object_types.base.BaseType`
+        * Object to copy
+    skip_attrs : list of str
+        * default: None
+        * list of attribute str's to skip copying over to new object, will default to [] if None
+
+    Returns
+    -------
+    new_obj : :class:`taniumpy.object_types.base.BaseType`
+        * Copied object with attributes in skip_attrs skipped
+    """
+    if not skip_attrs:
+        skip_attrs = []
+
+    new_obj = obj.__class__()
+    [
+        setattr(new_obj, a, getattr(obj, a))
+        for a in vars(obj)
+        if getattr(obj, a, None) is not None
+        and a not in skip_attrs
+    ]
+    return new_obj
+
+
+def copy_package_obj_for_action(obj, skip_attrs=None):
+    """Returns a new class of package obj with with out any attributes in skip_attrs specified
+
+    Parameters
+    ----------
+    obj : :class:`taniumpy.object_types.base.BaseType`
+        * Object to copy
+    skip_attrs : list of str
+        * default: None
+        * list of attribute str's to skip copying over to new object, default if None: ['id', 'deleted_flag', 'available_time', 'creation_time', 'modification_time', 'source_id']
+
+    Returns
+    -------
+    new_obj : :class:`taniumpy.object_types.base.BaseType`
+        * Copied object with attributes in skip_attrs skipped
+    """
+    if skip_attrs is None:
+        # names of attributes to skip copying over from source package
+        skip_attrs = [
+            'id',
+            'deleted_flag',
+            'available_time',
+            'creation_time',
+            'modification_time',
+            'source_id',
+            'files',
+        ]
+
+    new_obj = copy_obj(obj, skip_attrs)
+    return new_obj
+
+
 def get_filter_obj(sensor_def):
     """Creates a Filter object from sensor_def
 
     Parameters
     ----------
     sensor_def : dict
-        dict containing sensor definition
+        * dict containing sensor definition
 
     Returns
     -------
     filter_obj : :class:`taniumpy.object_types.filter.Filter`
-        Filter object created from `sensor_def`
+        * Filter object created from `sensor_def`
     """
     sensor_obj = sensor_def['sensor_obj']
 
@@ -2441,16 +1566,16 @@ def apply_options_obj(options, obj, dest):
     Parameters
     ----------
     options : dict
-        dict containing options definition
+        * dict containing options definition
     obj : :class:`taniumpy.object_types.base.BaseType`
-        TaniumPy object to apply `options` to
+        * TaniumPy object to apply `options` to
     dest : list of str
-        list of valid destinations (i.e. `filter` or `group`)
+        * list of valid destinations (i.e. `filter` or `group`)
 
     Returns
     -------
     obj : :class:`taniumpy.object_types.base.BaseType`
-        TaniumPy object updated with attributes from `options`
+        * TaniumPy object updated with attributes from `options`
     """
     # if no user supplied options, return the filter object unchanged
     if not options:
@@ -2538,13 +1663,13 @@ def chk_def_key(def_dict, key, keytypes, keysubtypes=None, req=False):
     Parameters
     ----------
     def_dict : dict
-        Definition dictionary
+        * Definition dictionary
     key : str
-        key to check for in def_dict
+        * key to check for in def_dict
     keytypes : list of str
-        list of str of valid types for key
+        * list of str of valid types for key
     keysubtypes : list of str
-        if key is a dict or list, validate that all values of dict or list are in keysubtypes
+        * if key is a dict or list, validate that all values of dict or list are in keysubtypes
     req : bool
         * False: key does not have to be in def_dict
         * True: key must be in def_dict, throw :exc:`pytan.exceptions.DefinitionParserError` if not
@@ -2585,12 +1710,12 @@ def empty_obj(taniumpy_object):
     Parameters
     ----------
     taniumpy_object : :class:`taniumpy.object_types.base.BaseType`
-        object to check if empty
+        * object to check if empty
 
     Returns
     -------
     bool
-        True if `taniumpy_object` is considered empty, False otherwise
+        * True if `taniumpy_object` is considered empty, False otherwise
     """
     v = [getattr(taniumpy_object, '_list_properties', {}), is_str(taniumpy_object)]
     if any(v) and not taniumpy_object:
@@ -2605,12 +1730,12 @@ def get_q_obj_map(qtype):
     Parameters
     ----------
     qtype : str
-        question type to get object map from in :data:`pytan.constants.Q_OBJ_MAP`
+        * question type to get object map from in :data:`pytan.constants.Q_OBJ_MAP`
 
     Returns
     -------
     obj_map : dict
-        matching object map for `qtype` from :data:`pytan.constants.Q_OBJ_MAP`
+        * matching object map for `qtype` from :data:`pytan.constants.Q_OBJ_MAP`
     """
     try:
         obj_map = pytan.constants.Q_OBJ_MAP[qtype.lower()]
@@ -2626,12 +1751,12 @@ def get_obj_map(objtype):
     Parameters
     ----------
     objtype : str
-        object type to get object map from in :data:`pytan.constants.GET_OBJ_MAP`
+        * object type to get object map from in :data:`pytan.constants.GET_OBJ_MAP`
 
     Returns
     -------
     obj_map : dict
-        matching object map for `objtype` from :data:`pytan.constants.GET_OBJ_MAP`
+        * matching object map for `objtype` from :data:`pytan.constants.GET_OBJ_MAP`
     """
     try:
         obj_map = pytan.constants.GET_OBJ_MAP[objtype.lower()]
@@ -2647,12 +1772,12 @@ def get_taniumpy_obj(obj_map):
     Parameters
     ----------
     obj_map : str
-        str of taniumpy object to fetch
+        * str of taniumpy object to fetch
 
     Returns
     -------
     obj : :class:`taniumpy.object_types.base.BaseType`
-        matching taniumpy object for `obj_map`
+        * matching taniumpy object for `obj_map`
     """
     try:
         obj = getattr(taniumpy, obj_map)
@@ -2669,13 +1794,13 @@ def check_dictkey(d, key, valid_types, valid_list_types):
     Parameters
     ----------
     d : dict
-        dictionary to check for key
+        * dictionary to check for key
     key : str
-        key to check for in d
+        * key to check for in d
     valid_types : list of str
-        list of str of valid types for key
+        * list of str of valid types for key
     valid_list_types : list of str
-        if key is a list, validate that all values of list are in valid_list_types
+        * if key is a list, validate that all values of list are in valid_list_types
     """
     if key in d:
         k_val = d[key]
@@ -2705,22 +1830,35 @@ def func_timing(f):
     return wrap
 
 
-def xml_pretty(x):
+def eval_timing(c):
+    """Yet another method to time things -- c will be evaluated and timing information will be printed out
+    """
+    t_start = datetime.now()
+    r = eval(c)
+    t_end = datetime.now()
+    t_elapsed = t_end - t_start
+
+    m = "Timing info for {} -- START: {}, END: {}, ELAPSED: {}, RESPONSE LEN: {}".format
+    mylog.warn(m(c, t_start, t_end, t_elapsed, len(r)))
+    return (c, r, t_start, t_end, t_elapsed)
+
+
+def xml_pretty(x, pretty=True, indent='  ', **kwargs):
     """Uses :mod:`xmltodict` to pretty print an XML str `x`
 
     Parameters
     ----------
     x : str
-        XML string to pretty print
+        * XML string to pretty print
 
     Returns
     -------
     str :
-        The pretty printed string of `x`
+        * The pretty printed string of `x`
     """
 
     x_parsed = xmltodict.parse(x)
-    x_unparsed = xmltodict.unparse(x_parsed, pretty=True, indent='  ')
+    x_unparsed = xmltodict.unparse(x_parsed, pretty=pretty, indent=indent)
     return x_unparsed
 
 
@@ -2731,19 +1869,23 @@ def log_session_communication(h):
     Parameters
     ----------
     h : Handler object
-        Handler object with session object containing last request and response body
+        * Handler object with session object containing last request and response body
     """
+    response_obj = h.session.LAST_REQUESTS_RESPONSE
+    request_body = response_obj.request.body
+    response_body = response_obj.text
+
     try:
-        req = xml_pretty(h.session.request_body)
+        req = xml_pretty(request_body)
     except Exception as e:
-        req = "Failed to prettify xml: {}, raw xml:\n{}".format(e, h.session.request_body)
+        req = "Failed to prettify xml: {}, raw xml:\n{}".format(e, request_body)
 
     prettylog.debug("Last HTTP request:\n{}".format(req))
 
     try:
-        resp = xml_pretty(h.session.response_body)
+        resp = xml_pretty(response_body)
     except Exception as e:
-        resp = "Failed to prettify xml: {}, raw xml:\n{}".format(e, h.session.response_body)
+        resp = "Failed to prettify xml: {}, raw xml:\n{}".format(e, response_body)
 
     prettylog.debug("Last HTTP response:\n{}".format(xml_pretty(resp)))
 
@@ -2754,12 +1896,12 @@ def xml_pretty_resultxml(x):
     Parameters
     ----------
     x : str
-        XML string to pretty print
+        * XML string to pretty print
 
     Returns
     -------
     str :
-        The pretty printed string of ResultXML in `x`
+        * The pretty printed string of ResultXML in `x`
     """
 
     x_parsed = xmltodict.parse(x)
@@ -2774,12 +1916,12 @@ def xml_pretty_resultobj(x):
     Parameters
     ----------
     x : str
-        XML string to pretty print
+        * XML string to pretty print
 
     Returns
     -------
     str :
-        The pretty printed string of result-object in `x`
+        * The pretty printed string of result-object in `x`
     """
 
     x_parsed = xmltodict.parse(x)
@@ -2795,9 +1937,9 @@ def get_dict_list_len(d, keys=[], negate=False):
     Parameters
     ----------
     d : dict of str : list
-        dict to sums of
+        * dict to sums of
     keys : list of str
-        list of keys to get sums of, if empty gets a sum of all keys
+        * list of keys to get sums of, if empty gets a sum of all keys
     negate : bool
         * only used if keys supplied
         * False : get the sums of `d` that do match keys
@@ -2806,7 +1948,7 @@ def get_dict_list_len(d, keys=[], negate=False):
     Returns
     -------
     list_len : int
-        sum of lists in `d` that match keys
+        * sum of lists in `d` that match keys
     """
     if keys:
         if negate:
@@ -2824,14 +1966,14 @@ def build_metadatalist_obj(properties, nameprefix=""):
     Parameters
     ----------
     properties : list of list of strs
-        list of lists, each list having two strs - str 1: property key, str2: property value
+        * list of lists, each list having two strs - str 1: property key, str2: property value
     nameprefix : str
-        prefix to insert in front of property key when creating MetadataItem
+        * prefix to insert in front of property key when creating MetadataItem
 
     Returns
     -------
     metadatalist_obj : :class:`taniumpy.object_types.metadata_list.MetadataList`
-        MetadataList object with list of :class:`taniumpy.object_types.metadata_item.MetadataItem` built from `properties`
+        * MetadataList object with list of :class:`taniumpy.object_types.metadata_item.MetadataItem` built from `properties`
     """
     metadatalist_obj = taniumpy.MetadataList()
     for prop in properties:
@@ -2849,17 +1991,117 @@ def build_metadatalist_obj(properties, nameprefix=""):
 
 
 def get_percentage(part, whole):
+    """Utility method for getting percentage of part out of whole
+
+    Parameters
+    ----------
+    part: int, float
+    whole: int, float
+
+    Returns
+    -------
+    int : the percentage of part out of whole
+    """
     if 0 in [part, whole]:
         return float(0)
     return 100 * (float(part) / float(whole))
 
 
 def calc_percent(percent, whole):
+    """Utility method for getting percentage of whole
+
+    Parameters
+    ----------
+    percent: int, float
+    whole: int, float
+
+    Returns
+    -------
+    int : the percentage of whole
+    """
     return int((percent * whole) / 100.0)
 
 
 def plugin_zip(p):
-    '''maps columns to values for each row in a plugins sql_response and returns a list of dicts'''
+    """Maps columns to values for each row in a plugins sql_response and returns a list of dicts
+
+    Parameters
+    ----------
+    p : :class:`taniumpy.object_types.plugin.Plugin`
+        * plugin object
+
+    Returns
+    -------
+    dict
+        * the columns and result_rows of the sql_response in Plugin object zipped up into a dictionary
+    """
     return [
         dict(zip(p.sql_response.columns, x)) for x in p.sql_response.result_row
     ]
+
+
+def clean_kwargs(kwargs, keys=None):
+    """Removes each key from kwargs dict if found
+
+    Parameters
+    ----------
+    kwargs : dict
+        * dict of keyword args
+    keys : list of str, optional
+        * default: ['obj', 'pytan_help', 'objtype']
+        * list of strs of keys to remove from kwargs
+
+    Returns
+    -------
+    clean_kwargs : dict
+        * the new dict of kwargs with keys removed
+    """
+    if keys is None:
+        keys = ['obj', 'pytan_help', 'objtype']
+
+    clean_kwargs = dict(kwargs)
+    [clean_kwargs.pop(x) for x in keys if x in kwargs]
+    return clean_kwargs
+
+
+def check_for_help(kwargs):
+    """Utility method to check for any help arguments and raise a PytanHelp exception with the appropriate help
+
+    Parameters
+    ----------
+    kwargs : dict
+        * dict of keyword args
+    """
+    help_keys = [x for x in dir(pytan.help) if x.endswith('_help')]
+    for x in help_keys:
+        if kwargs.get(x, False):
+            help_out = getattr(pytan.help, x)()
+            raise pytan.exceptions.PytanHelp(help_out)
+
+
+def parse_versioning(server_version):
+    """Parses server_version into a dictionary
+
+    Parameters
+    ----------
+    server_version : str
+        * str of server version
+
+    Returns
+    -------
+    dict
+        * dict of parsed tanium server version containing keys: major, minor, revision, and build
+    """
+    v_keys = ['major', 'minor', 'revision', 'build']
+    # fallback_ints = [-1, -1, -1, -1]
+    try:
+        v_parts = server_version.split('.')
+        v_ints = [int(x) for x in v_parts]
+        v_dict = dict(zip(v_keys, v_ints))
+    except:
+        m = (
+            "Unable to parse major, minor, revision, and build from server "
+            "version string: {}"
+        ).format
+        raise pytan.exceptions.VersionParseError(m(server_version))
+    return v_dict

@@ -3,6 +3,8 @@
         "desc": "Have deploy_action() return the help for package",
         "priority": "1",
         "method": "deploy_action",
+        "method_template": "invalid_basic",
+        "response_template": "NONE",
         "args": {
             "package_help": true
         },
@@ -13,6 +15,8 @@
         "desc": "Have deploy_action() return the help for filters",
         "priority": "1",
         "method": "deploy_action",
+        "method_template": "invalid_basic",
+        "response_template": "NONE",
         "args": {
             "filters_help": true
         },
@@ -23,6 +27,8 @@
         "desc": "Have deploy_action() return the help for options",
         "priority": "1",
         "method": "deploy_action",
+        "method_template": "invalid_basic",
+        "response_template": "NONE",
         "args": {
             "options_help": true
         },
@@ -33,6 +39,8 @@
         "desc": "Deploy an action without run=True, which will only run the pre-deploy action question that matches action_filters, export the results to a file, and raise a RunFalse exception",
         "priority": "1",
         "method": "deploy_action",
+        "method_template": "invalid_basic",
+        "response_template": "NONE",
         "args": {
             "package": "Distribute Tanium Standard Utilities"
         },
@@ -43,6 +51,8 @@
         "desc": "Deploy an action using a package that requires parameters but do not supply any parameters.",
         "priority": "1",
         "method": "deploy_action",
+        "method_template": "invalid_basic",
+        "response_template": "NONE",
         "args": {
             "package": "Custom Tagging - Add Tags",
             "run": true
@@ -54,6 +64,8 @@
         "desc": "Deploy an action using an empty package string.",
         "priority": "1",
         "method": "deploy_action",
+        "method_template": "invalid_basic",
+        "response_template": "NONE",
         "args": {
             "package": "",
             "run": true
@@ -65,6 +77,8 @@
         "desc": "Deploy an action using a non-existing package.",
         "priority": "1",
         "method": "deploy_action",
+        "method_template": "invalid_basic",
+        "response_template": "NONE",
         "args": {
             "package": "Invalid Package",
             "run": true
