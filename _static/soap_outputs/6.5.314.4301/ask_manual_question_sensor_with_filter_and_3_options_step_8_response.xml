@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+  <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <t:return>
+      <command>GetResultInfo</command>
+      <session>1-8134-0763b63efb6a4ee3af02a05592e308cb414093d213b1a1405b4f1fe618a622a6004222a63cb352c3f1142b20bb023e311bcb54a44063ab9d0c69b00d845f5d26</session>
+      <ID></ID>
+      <IDType></IDType>
+      <ContextID></ContextID>
+      <server_version>6.5.314.4301</server_version>
+      <object_list>
+        <question>
+          <id>11656</id>
+        </question>
+      </object_list>
+      <options>
+        <suppress_object_list>1</suppress_object_list>
+      </options>
+      <ResultXML>&lt;result_infos&gt;&lt;now&gt;2015/09/05 05:47:23 GMT-0000&lt;/now&gt;
+&lt;max_available_age&gt;0&lt;/max_available_age&gt;
+&lt;result_info&gt;&lt;age&gt;0&lt;/age&gt;
+&lt;id&gt;11656&lt;/id&gt;
+&lt;report_count&gt;2&lt;/report_count&gt;
+&lt;saved_question_id&gt;0&lt;/saved_question_id&gt;
+&lt;question_id&gt;11656&lt;/question_id&gt;
+&lt;archived_question_id&gt;0&lt;/archived_question_id&gt;&lt;seconds_since_issued&gt;0&lt;/seconds_since_issued&gt;&lt;issue_seconds&gt;0&lt;/issue_seconds&gt;&lt;expire_seconds&gt;0&lt;/expire_seconds&gt;&lt;tested&gt;2&lt;/tested&gt;
+&lt;passed&gt;2&lt;/passed&gt;
+&lt;mr_tested&gt;2&lt;/mr_tested&gt;
+&lt;mr_passed&gt;2&lt;/mr_passed&gt;
+&lt;estimated_total&gt;2&lt;/estimated_total&gt;
+&lt;select_count&gt;1&lt;/select_count&gt;
+&lt;row_count&gt;2&lt;/row_count&gt;
+&lt;row_count_machines&gt;2&lt;/row_count_machines&gt;
+&lt;error_count&gt;0&lt;/error_count&gt;
+&lt;no_results_count&gt;1&lt;/no_results_count&gt;
+&lt;row_count_flag&gt;0&lt;/row_count_flag&gt;
+&lt;/result_info&gt;
+&lt;/result_infos&gt;</ResultXML>
+      <result_object></result_object>
+    </t:return>
+  </soap:Body>
+</soap:Envelope>

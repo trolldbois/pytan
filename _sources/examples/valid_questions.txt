@@ -1,6 +1,8 @@
 
-PyTan API Valid Question Examples
+PyTan API Valid Questions Examples
 ========================================================================================
+
+All of the PyTan API examples for Valid Questions
 
 .. toctree::
 
