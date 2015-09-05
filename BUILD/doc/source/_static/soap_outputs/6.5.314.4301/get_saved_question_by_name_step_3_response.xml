@@ -3,7 +3,7 @@
   <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <t:return>
       <command>GetObject</command>
-      <session>1-6969-51a3179a5e2ce7650869dbdf99edb480bd4007f47e90f2714da6a1025a5605bf0944747d50217324588c1ab0ea787ac52113a7764a8c59a269e866aa3c66f1bd</session>
+      <session>1-8102-e962bb3d244963ec0b80c5ac38b641159c7c8468feb923cab5143f3b3abe2a5984e68023a6bf399fa3a3b22f7611ba446bffc8d22c7e6f9a6b515bbd548a5c0c</session>
       <server_version>6.5.314.4301</server_version>
       <ID></ID>
       <IDType></IDType>
@@ -13,10 +13,10 @@
           <id>64</id>
           <name>Installed Applications</name>
           <question>
-            <id>10181</id>
+            <id>11550</id>
             <expire_seconds>0</expire_seconds>
             <skip_lock_flag>0</skip_lock_flag>
-            <expiration>2015-09-04T02:39:31</expiration>
+            <expiration>2015-09-05T04:44:06</expiration>
             <user>
               <id>1</id>
               <name>Administrator</name>
@@ -37,7 +37,7 @@
                   <id>96</id>
                   <name>Installed Applications</name>
                   <hash>1511329504</hash>
-                  <string_count>394</string_count>
+                  <string_count>398</string_count>
                   <category>Applications</category>
                   <description>List of the applications and versions of those applications installed on the client machine.
 Example: Mozilla Firefox | 16.0.1</description>
@@ -582,7 +582,7 @@ echo &amp;quot;N/A on AIX&amp;quot;</script>
           <row_count_flag>0</row_count_flag>
           <keep_seconds>0</keep_seconds>
           <archive_enabled_flag>0</archive_enabled_flag>
-          <most_recent_question_id>10181</most_recent_question_id>
+          <most_recent_question_id>11550</most_recent_question_id>
           <user>
             <id>1</id>
             <name>Administrator</name>

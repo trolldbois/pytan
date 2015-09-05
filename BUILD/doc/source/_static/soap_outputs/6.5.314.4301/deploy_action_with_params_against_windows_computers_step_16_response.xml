@@ -3,30 +3,30 @@
   <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <t:return>
       <command>GetResultInfo</command>
-      <session>1-6927-2aa140382c7dcbeb4eab3476ec0021626f7fa2a6ac87f3ba55e7ab26add2b77a0461b7247e2ae3e0aa1eb77c055272d55ec83f59d07979a093b57326abbdd6ee</session>
+      <session>1-8060-4036783b325b1636e7b576ebbf9c7c6fb32c48c955a7af7af6f2f50b06e514642ba5216bbae7f99f9626b682d4f7cbe6c790bcff1577ec41cfa24d3592ff1de8</session>
       <ID></ID>
       <IDType></IDType>
       <ContextID></ContextID>
       <server_version>6.5.314.4301</server_version>
       <object_list>
         <question>
-          <id>10200</id>
+          <id>11618</id>
         </question>
       </object_list>
       <options>
         <suppress_object_list>1</suppress_object_list>
       </options>
-      <ResultXML>&lt;result_infos&gt;&lt;now&gt;2015/09/04 02:45:54 GMT-0000&lt;/now&gt;
+      <ResultXML>&lt;result_infos&gt;&lt;now&gt;2015/09/05 05:30:00 GMT-0000&lt;/now&gt;
 &lt;max_available_age&gt;0&lt;/max_available_age&gt;
 &lt;result_info&gt;&lt;age&gt;0&lt;/age&gt;
-&lt;id&gt;10200&lt;/id&gt;
-&lt;report_count&gt;1&lt;/report_count&gt;
+&lt;id&gt;11618&lt;/id&gt;
+&lt;report_count&gt;2&lt;/report_count&gt;
 &lt;saved_question_id&gt;0&lt;/saved_question_id&gt;
-&lt;question_id&gt;10200&lt;/question_id&gt;
-&lt;archived_question_id&gt;0&lt;/archived_question_id&gt;&lt;seconds_since_issued&gt;0&lt;/seconds_since_issued&gt;&lt;issue_seconds&gt;0&lt;/issue_seconds&gt;&lt;expire_seconds&gt;0&lt;/expire_seconds&gt;&lt;tested&gt;1&lt;/tested&gt;
+&lt;question_id&gt;11618&lt;/question_id&gt;
+&lt;archived_question_id&gt;0&lt;/archived_question_id&gt;&lt;seconds_since_issued&gt;0&lt;/seconds_since_issued&gt;&lt;issue_seconds&gt;0&lt;/issue_seconds&gt;&lt;expire_seconds&gt;0&lt;/expire_seconds&gt;&lt;tested&gt;2&lt;/tested&gt;
 &lt;passed&gt;1&lt;/passed&gt;
-&lt;mr_tested&gt;1&lt;/mr_tested&gt;
-&lt;mr_passed&gt;1&lt;/mr_passed&gt;
+&lt;mr_tested&gt;2&lt;/mr_tested&gt;
+&lt;mr_passed&gt;2&lt;/mr_passed&gt;
 &lt;estimated_total&gt;2&lt;/estimated_total&gt;
 &lt;select_count&gt;0&lt;/select_count&gt;
 &lt;row_count&gt;0&lt;/row_count&gt;

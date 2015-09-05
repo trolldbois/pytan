@@ -8,11 +8,11 @@
           <hidden_flag>0</hidden_flag>
           <skip_lock_flag>0</skip_lock_flag>
           <query_text>Get number of machines</query_text>
-          <id>10238</id>
+          <id>11660</id>
           <expire_seconds>0</expire_seconds>
           <force_computer_id_flag>0</force_computer_id_flag>
           <action_tracking_flag>0</action_tracking_flag>
-          <expiration>2015-09-04T03:17:10</expiration>
+          <expiration>2015-09-05T05:58:35</expiration>
           <user>
             <name>Administrator</name>
             <id>1</id>

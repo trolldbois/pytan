@@ -3,7 +3,7 @@
   <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <t:return>
       <command>GetObject</command>
-      <session>1-6965-3a521fa0c9310ccd02c32be07145308cf883214615912fe07587f45591f1a674c8e1474f8029d4a1166b407473e117df311ea7ab2e32b90e34498427328e3aa7</session>
+      <session>1-8098-1154ff935c50920397dda4ab9d320d6966f77b3c463e35ea1b0ac91774936d37f18538f176645932c25b61f27fe855e6a6d258568608589e2883aaddadefc1f7</session>
       <server_version>6.5.314.4301</server_version>
       <ID></ID>
       <IDType></IDType>

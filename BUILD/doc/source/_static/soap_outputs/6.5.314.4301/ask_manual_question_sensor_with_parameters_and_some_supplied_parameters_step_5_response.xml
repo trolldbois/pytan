@@ -3,20 +3,20 @@
   <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <t:return>
       <command>GetObject</command>
-      <session>1-6988-05836d41c7be5addca66f76227a78b0d47fead12ac9dd8b6b2af69ce4387d294ba47baf393a4fd0e38e9671d16594fbb57a602d2a6ad39d434965fdc66b845ca</session>
+      <session>1-8126-563dd1d761fe796a020239de6840c93b02ff4de17b29659920b51362681a57629797c26285b7a087d7f4cd977b4e734afb875456b2bf7e8212467223db74f6ae</session>
       <server_version>6.5.314.4301</server_version>
       <ID></ID>
       <IDType></IDType>
       <ContextID></ContextID>
       <result_object>
         <question>
-          <id>10222</id>
+          <id>11646</id>
           <context_group>
             <id>0</id>
           </context_group>
           <expire_seconds>0</expire_seconds>
           <skip_lock_flag>0</skip_lock_flag>
-          <expiration>2015-09-04T03:07:57</expiration>
+          <expiration>2015-09-05T05:52:47</expiration>
           <user>
             <id>1</id>
             <name>Administrator</name>
@@ -34,9 +34,9 @@
           <selects>
             <select>
               <sensor>
-                <id>4294965862</id>
+                <id>4294965367</id>
                 <name>Folder Name Search with RegEx Match[Program Files, , No, No, Microsoft.*]</name>
-                <hash>570405080</hash>
+                <hash>3802353741</hash>
                 <string_count>0</string_count>
                 <category></category>
                 <description></description>
@@ -394,7 +394,7 @@ End Sub &amp;#039;SensorRandomizeEcho
             <not_flag>0</not_flag>
             <sub_groups>
               <group>
-                <id>3060</id>
+                <id>3637</id>
                 <type>0</type>
                 <and_flag>1</and_flag>
                 <not_flag>0</not_flag>

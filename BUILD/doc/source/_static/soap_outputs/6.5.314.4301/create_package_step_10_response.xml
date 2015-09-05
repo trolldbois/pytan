@@ -3,7 +3,7 @@
   <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <t:return>
       <command>DeleteObject</command>
-      <session>1-6913-78f5cc47430b95414a40a8125bc9afeaa40099d283b2a16b9d506393d17bde8bba85219dfd1e37d9994a62d836debd4f53af1cddfe31a1e196180af57d07d90c</session>
+      <session>1-8046-6b725b160da80b1cfc89ec2f5e65ae6a277e6aa151c6b7c23d09a4c28e89fc8a4662e77ece449d4ef30052b20448c4f363556ad7cfa25982afea71cdc2436a5a</session>
       <ID></ID>
       <IDType></IDType>
       <ContextID></ContextID>
@@ -32,7 +32,7 @@
                   <status>0</status>
                 </status>
               </file_status>
-              <id>659</id>
+              <id>680</id>
               <name>testing.vbs</name>
               <size>0</size>
               <source>https://content.tanium.com/files/initialcontent/bundles/2014-10-01_11-32-15-7844/custom_tagging_-_remove_tags_[non-windows]/CustomTagRemove.sh</source>
@@ -40,7 +40,7 @@
             </file>
           </files>
           <hidden_flag>0</hidden_flag>
-          <id>409</id>
+          <id>467</id>
           <last_update>2001-01-01T00:00:00</last_update>
           <modification_time>2001-01-01T00:00:00</modification_time>
           <name>package49</name>
@@ -49,16 +49,16 @@
           <source_id>0</source_id>
           <verify_expire_seconds>3600</verify_expire_seconds>
           <verify_group>
-            <id>3037</id>
+            <id>3612</id>
           </verify_group>
-          <verify_group_id>3037</verify_group_id>
+          <verify_group_id>3612</verify_group_id>
         </package_spec>
       </object_list>
       <options></options>
       <ResultXML></ResultXML>
       <result_object>
         <package_spec>
-          <id>409</id>
+          <id>467</id>
         </package_spec>
       </result_object>
     </t:return>

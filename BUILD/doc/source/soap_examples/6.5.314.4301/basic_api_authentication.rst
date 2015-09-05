@@ -10,9 +10,9 @@ Step 1 - Authenticate to the SOAP API via /auth
 
 * URL: https://10.0.1.240:443/auth
 * HTTP Method: GET
-* Elapsed Time: 0:00:00.005930
-* `Step 1 Request Body <../_static/soap_outputs/basic_api_authentication_step_1_request.txt>`_
-* `Step 1 Response Body <../_static/soap_outputs/basic_api_authentication_step_1_response.txt>`_
+* Elapsed Time: 0:00:00.013222
+* `Step 1 Request Body <../../_static/soap_outputs/6.5.314.4301/basic_api_authentication_step_1_request.txt>`_
+* `Step 1 Response Body <../../_static/soap_outputs/6.5.314.4301/basic_api_authentication_step_1_response.txt>`_
 
 * Request Headers:
 
@@ -24,7 +24,7 @@ Step 1 - Authenticate to the SOAP API via /auth
       "Accept": "*/*", 
       "Accept-Encoding": "gzip, deflate", 
       "Connection": "keep-alive", 
-      "User-Agent": "python-requests/2.6.0 CPython/2.7.10 Darwin/14.5.0", 
+      "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
       "password": "VGFuaXVtMjAxNSE=", 
       "username": "QWRtaW5pc3RyYXRvcg=="
     }
@@ -47,9 +47,9 @@ Step 2 - Get the server version via /info.json
 
 * URL: https://10.0.1.240:443/info.json
 * HTTP Method: GET
-* Elapsed Time: 0:00:00.013502
-* `Step 2 Request Body <../_static/soap_outputs/basic_api_authentication_step_2_request.txt>`_
-* `Step 2 Response Body <../_static/soap_outputs/basic_api_authentication_step_2_response.json>`_
+* Elapsed Time: 0:00:00.017355
+* `Step 2 Request Body <../../_static/soap_outputs/6.5.314.4301/basic_api_authentication_step_2_request.txt>`_
+* `Step 2 Response Body <../../_static/soap_outputs/6.5.314.4301/basic_api_authentication_step_2_response.json>`_
 
 * Request Headers:
 
@@ -61,8 +61,8 @@ Step 2 - Get the server version via /info.json
       "Accept": "*/*", 
       "Accept-Encoding": "gzip, deflate", 
       "Connection": "keep-alive", 
-      "User-Agent": "python-requests/2.6.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-6911-da6e5b707595c7b5e42d4738029d5c97256bb813fc843855cb9c675c54dacb06c8153557fb60ea17bb11354344f58e242fd776fe0a417ba7007d37328f41ba83"
+      "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
+      "session": "1-8044-c4f84734d8b575426ed49f24295f49cbfb3931875676dcc56930fdd30ac64ce3b49ade1431aa711eb7e320749e93d6df9cce3e3e47b15942f763d335654beca9"
     }
 
 * Response Headers:
@@ -73,7 +73,7 @@ Step 2 - Get the server version via /info.json
     
     {
       "connection": "keep-alive", 
-      "content-length": "86180", 
+      "content-length": "112028", 
       "content-type": "application/json"
     }
 

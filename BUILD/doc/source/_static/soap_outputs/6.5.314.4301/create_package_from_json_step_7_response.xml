@@ -3,14 +3,14 @@
   <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <t:return>
       <command>GetObject</command>
-      <session>1-6916-f129723d3fb3582780ccc4638951752cca124ed745d06b4b45e6e4a925fa6be83376f5ba18a4097d374576525260abee020a3387f938175ad53368fc23e03ba7</session>
+      <session>1-8049-d96766cf864b79d184b1c1f78fedcffba134a8c8731c6c7280c163e82d0126b4444995fd27394ab470d3054290a9839e0e19d6d6ef8c6d4d0adef51cebd05efd</session>
       <server_version>6.5.314.4301</server_version>
       <ID></ID>
       <IDType></IDType>
       <ContextID></ContextID>
       <result_object>
         <package_spec>
-          <id>410</id>
+          <id>468</id>
           <name>Disable Java Auto Update API TEST</name>
           <display_name>Disable Java Auto Update</display_name>
           <creation_time>2001-01-01T00:00:00</creation_time>

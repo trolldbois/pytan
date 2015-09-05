@@ -10,9 +10,9 @@ Step 1 - Authenticate to the SOAP API via /auth
 
 * URL: https://10.0.1.240:443/auth
 * HTTP Method: GET
-* Elapsed Time: 0:00:00.008859
-* `Step 1 Request Body <../_static/soap_outputs/create_group_from_json_step_1_request.txt>`_
-* `Step 1 Response Body <../_static/soap_outputs/create_group_from_json_step_1_response.txt>`_
+* Elapsed Time: 0:00:00.015044
+* `Step 1 Request Body <../../_static/soap_outputs/6.5.314.4301/create_group_from_json_step_1_request.txt>`_
+* `Step 1 Response Body <../../_static/soap_outputs/6.5.314.4301/create_group_from_json_step_1_response.txt>`_
 
 * Request Headers:
 
@@ -24,7 +24,7 @@ Step 1 - Authenticate to the SOAP API via /auth
       "Accept": "*/*", 
       "Accept-Encoding": "gzip, deflate", 
       "Connection": "keep-alive", 
-      "User-Agent": "python-requests/2.6.0 CPython/2.7.10 Darwin/14.5.0", 
+      "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
       "password": "VGFuaXVtMjAxNSE=", 
       "username": "QWRtaW5pc3RyYXRvcg=="
     }
@@ -47,9 +47,9 @@ Step 2 - Get the server version via /info.json
 
 * URL: https://10.0.1.240:443/info.json
 * HTTP Method: GET
-* Elapsed Time: 0:00:00.014108
-* `Step 2 Request Body <../_static/soap_outputs/create_group_from_json_step_2_request.txt>`_
-* `Step 2 Response Body <../_static/soap_outputs/create_group_from_json_step_2_response.json>`_
+* Elapsed Time: 0:00:00.015844
+* `Step 2 Request Body <../../_static/soap_outputs/6.5.314.4301/create_group_from_json_step_2_request.txt>`_
+* `Step 2 Response Body <../../_static/soap_outputs/6.5.314.4301/create_group_from_json_step_2_response.json>`_
 
 * Request Headers:
 
@@ -61,8 +61,8 @@ Step 2 - Get the server version via /info.json
       "Accept": "*/*", 
       "Accept-Encoding": "gzip, deflate", 
       "Connection": "keep-alive", 
-      "User-Agent": "python-requests/2.6.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-6923-1b5896b8960f90f883e294e107cd909333673f42fa0e820a1e58cd246a1e64db99db50b01c7aa28a04b509600b3196b17bcc668b8dd4062b8b0a7d8e6d1dd459"
+      "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
+      "session": "1-8056-b3507146e0f82fefee7e2cb66932764480ad99e8934a5fe82392fac29f8e52994f6f9fe2ee7f5287a21be28e12025291a4ed18ccd3412658df1a073b556d96ae"
     }
 
 * Response Headers:
@@ -73,7 +73,7 @@ Step 2 - Get the server version via /info.json
     
     {
       "connection": "keep-alive", 
-      "content-length": "86180", 
+      "content-length": "112030", 
       "content-type": "application/json"
     }
 
@@ -83,9 +83,9 @@ Step 3 - Issue a GetObject to find an object
 
 * URL: https://10.0.1.240:443/soap
 * HTTP Method: POST
-* Elapsed Time: 0:00:00.003172
-* `Step 3 Request Body <../_static/soap_outputs/create_group_from_json_step_3_request.xml>`_
-* `Step 3 Response Body <../_static/soap_outputs/create_group_from_json_step_3_response.xml>`_
+* Elapsed Time: 0:00:00.003972
+* `Step 3 Request Body <../../_static/soap_outputs/6.5.314.4301/create_group_from_json_step_3_request.xml>`_
+* `Step 3 Response Body <../../_static/soap_outputs/6.5.314.4301/create_group_from_json_step_3_response.xml>`_
 
 * Request Headers:
 
@@ -99,8 +99,8 @@ Step 3 - Issue a GetObject to find an object
       "Connection": "keep-alive", 
       "Content-Length": "517", 
       "Content-Type": "text/xml; charset=utf-8", 
-      "User-Agent": "python-requests/2.6.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-6923-1b5896b8960f90f883e294e107cd909333673f42fa0e820a1e58cd246a1e64db99db50b01c7aa28a04b509600b3196b17bcc668b8dd4062b8b0a7d8e6d1dd459"
+      "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
+      "session": "1-8056-b3507146e0f82fefee7e2cb66932764480ad99e8934a5fe82392fac29f8e52994f6f9fe2ee7f5287a21be28e12025291a4ed18ccd3412658df1a073b556d96ae"
     }
 
 * Response Headers:
@@ -121,9 +121,9 @@ Step 4 - Issue a GetObject to find the object to be deleted
 
 * URL: https://10.0.1.240:443/soap
 * HTTP Method: POST
-* Elapsed Time: 0:00:00.001771
-* `Step 4 Request Body <../_static/soap_outputs/create_group_from_json_step_4_request.xml>`_
-* `Step 4 Response Body <../_static/soap_outputs/create_group_from_json_step_4_response.xml>`_
+* Elapsed Time: 0:00:00.003850
+* `Step 4 Request Body <../../_static/soap_outputs/6.5.314.4301/create_group_from_json_step_4_request.xml>`_
+* `Step 4 Response Body <../../_static/soap_outputs/6.5.314.4301/create_group_from_json_step_4_response.xml>`_
 
 * Request Headers:
 
@@ -137,8 +137,8 @@ Step 4 - Issue a GetObject to find the object to be deleted
       "Connection": "keep-alive", 
       "Content-Length": "526", 
       "Content-Type": "text/xml; charset=utf-8", 
-      "User-Agent": "python-requests/2.6.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-6923-1b5896b8960f90f883e294e107cd909333673f42fa0e820a1e58cd246a1e64db99db50b01c7aa28a04b509600b3196b17bcc668b8dd4062b8b0a7d8e6d1dd459"
+      "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
+      "session": "1-8056-b3507146e0f82fefee7e2cb66932764480ad99e8934a5fe82392fac29f8e52994f6f9fe2ee7f5287a21be28e12025291a4ed18ccd3412658df1a073b556d96ae"
     }
 
 * Response Headers:
@@ -159,9 +159,9 @@ Step 5 - Issue a DeleteObject to delete an object
 
 * URL: https://10.0.1.240:443/soap
 * HTTP Method: POST
-* Elapsed Time: 0:00:00.002377
-* `Step 5 Request Body <../_static/soap_outputs/create_group_from_json_step_5_request.xml>`_
-* `Step 5 Response Body <../_static/soap_outputs/create_group_from_json_step_5_response.xml>`_
+* Elapsed Time: 0:00:00.003918
+* `Step 5 Request Body <../../_static/soap_outputs/6.5.314.4301/create_group_from_json_step_5_request.xml>`_
+* `Step 5 Response Body <../../_static/soap_outputs/6.5.314.4301/create_group_from_json_step_5_response.xml>`_
 
 * Request Headers:
 
@@ -175,8 +175,8 @@ Step 5 - Issue a DeleteObject to delete an object
       "Connection": "keep-alive", 
       "Content-Length": "620", 
       "Content-Type": "text/xml; charset=utf-8", 
-      "User-Agent": "python-requests/2.6.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-6923-1b5896b8960f90f883e294e107cd909333673f42fa0e820a1e58cd246a1e64db99db50b01c7aa28a04b509600b3196b17bcc668b8dd4062b8b0a7d8e6d1dd459"
+      "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
+      "session": "1-8056-b3507146e0f82fefee7e2cb66932764480ad99e8934a5fe82392fac29f8e52994f6f9fe2ee7f5287a21be28e12025291a4ed18ccd3412658df1a073b556d96ae"
     }
 
 * Response Headers:
@@ -197,9 +197,9 @@ Step 6 - Issue an AddObject to add an object
 
 * URL: https://10.0.1.240:443/soap
 * HTTP Method: POST
-* Elapsed Time: 0:00:00.003491
-* `Step 6 Request Body <../_static/soap_outputs/create_group_from_json_step_6_request.xml>`_
-* `Step 6 Response Body <../_static/soap_outputs/create_group_from_json_step_6_response.xml>`_
+* Elapsed Time: 0:00:00.004451
+* `Step 6 Request Body <../../_static/soap_outputs/6.5.314.4301/create_group_from_json_step_6_request.xml>`_
+* `Step 6 Response Body <../../_static/soap_outputs/6.5.314.4301/create_group_from_json_step_6_response.xml>`_
 
 * Request Headers:
 
@@ -213,8 +213,8 @@ Step 6 - Issue an AddObject to add an object
       "Connection": "keep-alive", 
       "Content-Length": "658", 
       "Content-Type": "text/xml; charset=utf-8", 
-      "User-Agent": "python-requests/2.6.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-6923-1b5896b8960f90f883e294e107cd909333673f42fa0e820a1e58cd246a1e64db99db50b01c7aa28a04b509600b3196b17bcc668b8dd4062b8b0a7d8e6d1dd459"
+      "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
+      "session": "1-8056-b3507146e0f82fefee7e2cb66932764480ad99e8934a5fe82392fac29f8e52994f6f9fe2ee7f5287a21be28e12025291a4ed18ccd3412658df1a073b556d96ae"
     }
 
 * Response Headers:
@@ -235,9 +235,9 @@ Step 7 - Issue a GetObject on the recently added object in order to get the full
 
 * URL: https://10.0.1.240:443/soap
 * HTTP Method: POST
-* Elapsed Time: 0:00:00.014759
-* `Step 7 Request Body <../_static/soap_outputs/create_group_from_json_step_7_request.xml>`_
-* `Step 7 Response Body <../_static/soap_outputs/create_group_from_json_step_7_response.xml>`_
+* Elapsed Time: 0:00:00.015894
+* `Step 7 Request Body <../../_static/soap_outputs/6.5.314.4301/create_group_from_json_step_7_request.xml>`_
+* `Step 7 Response Body <../../_static/soap_outputs/6.5.314.4301/create_group_from_json_step_7_response.xml>`_
 
 * Request Headers:
 
@@ -251,8 +251,8 @@ Step 7 - Issue a GetObject on the recently added object in order to get the full
       "Connection": "keep-alive", 
       "Content-Length": "487", 
       "Content-Type": "text/xml; charset=utf-8", 
-      "User-Agent": "python-requests/2.6.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-6923-1b5896b8960f90f883e294e107cd909333673f42fa0e820a1e58cd246a1e64db99db50b01c7aa28a04b509600b3196b17bcc668b8dd4062b8b0a7d8e6d1dd459"
+      "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
+      "session": "1-8056-b3507146e0f82fefee7e2cb66932764480ad99e8934a5fe82392fac29f8e52994f6f9fe2ee7f5287a21be28e12025291a4ed18ccd3412658df1a073b556d96ae"
     }
 
 * Response Headers:

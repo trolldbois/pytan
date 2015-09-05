@@ -3,7 +3,7 @@
   <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <t:return>
       <command>GetObject</command>
-      <session>1-6979-a466eac2892421e3ba6fc16249ce7d935b80f2443b7cb85369c9dcfe15a72e87da119c65e762eda43b7ac46206c5061723e9874f24eccf1fd80da774f94838b6</session>
+      <session>1-8112-81cafc5a5511427a44fe2761e41eff7ffa76fed5cb55d9d95962eac0eabcefa94497ce0a469230d447b891630b1a95e4b4cda5737c1a62f12b47971af162b613</session>
       <server_version>6.5.314.4301</server_version>
       <ID></ID>
       <IDType></IDType>
@@ -99,7 +99,7 @@
             <cache_row_id>2</cache_row_id>
           </group>
           <group>
-            <id>3039</id>
+            <id>3614</id>
             <name>All Computers API TEST</name>
             <type>0</type>
             <and_flag>1</and_flag>
@@ -114,11 +114,11 @@
             <cache_row_id>3</cache_row_id>
           </group>
           <cache_info>
-            <cache_id>4076415229</cache_id>
+            <cache_id>3311633894</cache_id>
             <page_row_count>4</page_row_count>
             <filtered_row_count>4</filtered_row_count>
             <cache_row_count>4</cache_row_count>
-            <expiration>2015-09-04T02:56:37</expiration>
+            <expiration>2015-09-05T05:40:52</expiration>
           </cache_info>
         </groups>
       </result_object>

@@ -47,7 +47,7 @@
                 <name>Action Statuses</name>
                 <hidden_flag>0</hidden_flag>
                 <exclude_from_parse_flag>1</exclude_from_parse_flag>
-                <string_count>661</string_count>
+                <string_count>787</string_count>
                 <ignore_case_flag>1</ignore_case_flag>
                 <max_age_seconds>3600</max_age_seconds>
                 <value_type>String</value_type>
