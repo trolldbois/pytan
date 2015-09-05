@@ -75,22 +75,23 @@ print pprint.pformat(response)
 print "...OUTPUT: Equivalent Question if it were to be asked in the Tanium Console: "
 print response['question_object'].query_text
 
-# call the export_obj() method to convert response to CSV and store it in out
-export_kwargs = {}
-export_kwargs['obj'] = response['question_results']
-export_kwargs['export_format'] = 'csv'
+if response['question_results']:
+    # call the export_obj() method to convert response to CSV and store it in out
+    export_kwargs = {}
+    export_kwargs['obj'] = response['question_results']
+    export_kwargs['export_format'] = 'csv'
 
-print "...CALLING: handler.export_obj() with args {}".format(export_kwargs)
-out = handler.export_obj(**export_kwargs)
+    print "...CALLING: handler.export_obj() with args {}".format(export_kwargs)
+    out = handler.export_obj(**export_kwargs)
 
-# trim the output if it is more than 15 lines long
-if len(out.splitlines()) > 15:
-    out = out.splitlines()[0:15]
-    out.append('..trimmed for brevity..')
-    out = '\n'.join(out)
+    # trim the output if it is more than 15 lines long
+    if len(out.splitlines()) > 15:
+        out = out.splitlines()[0:15]
+        out.append('..trimmed for brevity..')
+        out = '\n'.join(out)
 
-print "...OUTPUT: CSV Results of response: "
-print out
+    print "...OUTPUT: CSV Results of response: "
+    print out
 
 '''STDOUT from running this:
 ...CALLING: pytan.handler() with args: {'username': 'Administrator', 'record_all_requests': True, 'loglevel': 1, 'debugformat': False, 'host': '10.0.1.240', 'password': 'Tanium2015!', 'port': '443'}
@@ -100,12 +101,12 @@ print out
 ...OUTPUT: Pretty print of response:
 {'poller_object': None,
  'poller_success': None,
- 'question_object': <taniumpy.object_types.question.Question object at 0x1161ba750>,
- 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x105c28350>,
- 'saved_question_object': <taniumpy.object_types.saved_question.SavedQuestion object at 0x105c28290>}
+ 'question_object': <taniumpy.object_types.question.Question object at 0x112898d90>,
+ 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x102590cd0>,
+ 'saved_question_object': <taniumpy.object_types.saved_question.SavedQuestion object at 0x102590890>}
 ...OUTPUT: Equivalent Question if it were to be asked in the Tanium Console: 
 Get Installed Applications from all machines
-...CALLING: handler.export_obj() with args {'export_format': 'csv', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x105c28350>}
+...CALLING: handler.export_obj() with args {'export_format': 'csv', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x102590cd0>}
 ...OUTPUT: CSV Results of response: 
 Name,Silent Uninstall String,Uninstallable,Version
 Image Capture Extension,nothing,Not Uninstallable,10.2

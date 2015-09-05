@@ -93,7 +93,7 @@ except Exception as e:
 ...CALLING: pytan.handler() with args: {'username': 'Administrator', 'record_all_requests': True, 'loglevel': 1, 'debugformat': False, 'host': '10.0.1.240', 'password': 'Tanium2015!', 'port': '443'}
 ...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ...CALLING: handler.get() with args: {'objtype': 'sensor', 'name': ['Computer Name', 'IP Route Details', 'IP Address', 'Folder Name Search with RegEx Match']}
-...CALLING: handler.export_obj() with args {'export_format': u'csv', 'obj': <taniumpy.object_types.sensor_list.SensorList object at 0x11a64d490>, 'header_sort': u'bad'}
+...CALLING: handler.export_obj() with args {'export_format': u'csv', 'obj': <taniumpy.object_types.sensor_list.SensorList object at 0x10ab93e10>, 'header_sort': u'bad'}
 ...EXCEPTION: 'header_sort' must be one of [<type 'bool'>, <type 'list'>, <type 'tuple'>], you supplied <type 'unicode'>!
 
 '''

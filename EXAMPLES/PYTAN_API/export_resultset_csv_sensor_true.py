@@ -98,24 +98,24 @@ print out
 ...CALLING: pytan.handler() with args: {'username': 'Administrator', 'record_all_requests': True, 'loglevel': 1, 'debugformat': False, 'host': '10.0.1.240', 'password': 'Tanium2015!', 'port': '443'}
 ...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ...CALLING: handler.ask() with args {'sensors': ['Computer Name', 'IP Route Details', 'IP Address', 'Folder Name Search with RegEx Match{dirname=Program Files,regex=.*Shared.*}'], 'qtype': 'manual'}
-2015-09-04 02:56:28,231 INFO     pytan.pollers.QuestionPoller: ID 10216: Reached Threshold of 99% (2 of 2)
-...CALLING: handler.export_obj() with args {'export_format': u'csv', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x105b69610>, 'header_add_sensor': True}
+2015-09-05 05:40:41,153 INFO     pytan.pollers.QuestionPoller: ID 11637: Reached Threshold of 99% (2 of 2)
+...CALLING: handler.export_obj() with args {'export_format': u'csv', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x1106af190>, 'header_add_sensor': True}
 ...OUTPUT: print the export_str returned from export_obj():
 Computer Name: Computer Name,"Folder Name Search with RegEx Match[Program Files, , No, No, .*Shared.*]: Folder Name Search with RegEx Match[Program Files, , No, No, .*Shared.*]",IP Address: IP Address,IP Route Details: Destination,IP Route Details: Flags,IP Route Details: Gateway,IP Route Details: Interface,IP Route Details: Mask,IP Route Details: Metric
-Casus-Belli.local,Windows Only,"2604:2000:1200:60de:6cf3:df91:dd22:1fc7
-2604:2000:1200:60de:2814:96aa:2722:f6ff
-fe80::aa20:66ff:fe06:e0cf
-2604:2000:1200:60de:aa20:66ff:fe06:e0cf
-2604:2000:1200:60de:8da4:770d:64c9:a3d7
-2604:2000:1200:60de:7938:c05c:fe9b:bf75
-10.0.1.15
-2604:2000:1200:60de:99cf:ed93:644d:33ba
+Casus-Belli.local,Windows Only,"2604:2000:1200:60de:dd68:f4b6:d5ee:e562
 172.16.31.1
 fe80::82e6:50ff:fe1d:1dca
-2604:2000:1200:60de:a4b7:83bd:67b5:8243
-2604:2000:1200:60de:6db8:b7ab:44de:bcfc
 172.16.152.1
-2604:2000:1200:60de:1de2:c21a:9840:a192
+10.0.1.8
+2604:2000:1200:60de:82e6:50ff:fe1d:1dca","default
+10.0.1.8/32
+10.0.1/24
+172.16.31/24
+172.16.152/24
+10.0.1.254
+169.254
+10.0.1.1/32","UGSc
+UCS
 ..trimmed for brevity..
 
 '''

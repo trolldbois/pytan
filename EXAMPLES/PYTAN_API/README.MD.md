@@ -24,7 +24,7 @@ also need to update the pytan_loc variable to point to the directory where pytan
   * create_question_from_json.py: Export a question object to a JSON file, then create a new question object from the exported JSON file. Questions can not be deleted, so do not delete it. This will, in effect, 're-ask' a question.
   * create_whitelisted_url_from_json.py: Export a whitelisted url object to a JSON file, adding ' test1' to the url_regex of the whitelisted url before exporting the JSON file and deleting any pre-existing whitelisted url with the same (new) name, then create a new whitelisted url object from the exported JSON file
   * create_group_from_json.py: Export a group object to a JSON file, adding ' API TEST' to the name of the group before exporting the JSON file and deleting any pre-existing group with the same (new) name, then create a new group object from the exported JSON file
-  * deploy_action_simple.py: Deploy an action against all computers using human strings.
+  * deploy_action_simple.py: Deploy an action against all computers using human strings and use Server Side Export when performing a GetResultData
   * deploy_action_simple_without_results.py: Deploy an action against all computers using human strings, but do not get the completed results of the job -- return right away with the deploy action object.
   * deploy_action_simple_against_windows_computers.py: Deploy an action against only windows computers using human strings. This requires passing in an action filter
   * deploy_action_with_params_against_windows_computers.py: Deploy an action with parameters against only windows computers using human strings.  This will use the Package 'Custom Tagging - Add Tags' and supply two parameters. The second parameter will be ignored because the package in question only requires one parameter.
@@ -85,7 +85,12 @@ also need to update the pytan_loc variable to point to the directory where pytan
   * get_all_clients.py: Get all clients
   * get_all_packages.py: Get all packages
   * get_all_actions.py: Get all actions
+  * ask_parsed_question_pick_first_no_results.py: Ask the server to parse the question text 'computer name and ip route details' and choose the first parsed result as the question to run, return right away and do not wait for results to complete/do not get result data at all
+  * ask_parsed_question_pick_first_sse.py: Ask the server to parse the question text 'computer name and ip route details' and choose the first parsed result as the question to run and use server side export when performing a GetResultData
+  * ask_parsed_question_pick_first.py: Ask the server to parse the question text 'computer name and ip route details' and choose the first parsed result as the question to run
+  * ask_manual_question_simple_single_sensor_no_results.py: Ask a manual question using human strings by referencing the name of a single sensor in a string, return right away and do not wait for results to complete/do not get result data at all.  No sensor filters, sensor parameters, sensor filter options, question filters, or question options supplied.
   * ask_manual_question_simple_multiple_sensors.py: Ask a manual question using human strings by referencing the name of multiple sensors in a list.  No sensor filters, sensor parameters, sensor filter options, question filters, or question options supplied.
+  * ask_manual_question_simple_single_sensor_sse.py: Ask a manual question using human strings by referencing the name of a single sensor in a string and use server side export when getting result data.
   * ask_manual_question_simple_single_sensor.py: Ask a manual question using human strings by referencing the name of a single sensor in a string.  No sensor filters, sensor parameters, sensor filter options, question filters, or question options supplied.
   * ask_manual_question_multiple_sensors_identified_by_name.py: Ask a manual question using human strings by referencing the name of multiple sensors and providing a selector that tells pytan explicitly that we are providing a name of a sensor.  No sensor filters, sensor parameters, sensor filter options, question filters, or question options supplied.
   * ask_manual_question_sensor_with_parameters_and_some_supplied_parameters.py: Ask a manual question using human strings by referencing the name of a single sensor that takes parameters, but supplying only two of the four parameters that are used by the sensor (and letting pytan automatically determine the appropriate default value for those parameters which require a value and none was supplied).  No sensor filters, sensor parameters, sensor filter options, question filters, or question options supplied.
@@ -101,6 +106,7 @@ also need to update the pytan_loc variable to point to the directory where pytan
   * ask_manual_question_complex_query2.py: This is another complex query that gets the Computer Name and Last Logged in User and Installed Applications that contains Google Search or Google Chrome and limits the rows that are displayed to computers that contain the Installed Applications of Google Search or Google Chrome
   * _ask_manual_question_sensor_complex.py: This provides an example for asking a manual question without using human strings.  It uses the Computer Name and Folder Name Search with RegEx Match sensors.  The second sensor has a single parameter, dirname, with a value of 'Program Files'.  The second sensor also has 3 sensor filter options that set the max data age to 3600 seconds, does NOT ignore case, and treats all values as string.  There is also a question filter supplied that limits the rows that are displayed to computers that match an Operating System that contains Windows, and has 3 question filter options supplied that set the max data age to 3600 seconds, does NOT ignore case, and uses 'and' to join all question filters.
   * ask_saved_question_refresh_data.py: Ask a saved question and refresh the data for the saved question (asks a new question)
+  * ask_saved_question_by_name_sse.py: Ask a saved question by referencing the name of a saved question in a string and use Server Side Export when performing a GetResultData
   * ask_saved_question_by_name.py: Ask a saved question by referencing the name of a saved question in a string.
   * ask_saved_question_by_name_in_list.py: Ask a saved question by referencing the name of a saved question in a list of strings.
   * invalid_create_sensor.py: Create a sensor (Unsupported!)
@@ -133,6 +139,7 @@ also need to update the pytan_loc variable to point to the directory where pytan
   * invalid_ask_manual_question_filter_help.py: Have ask_manual() return the help for filters
   * invalid_ask_manual_question_option_help.py: Have ask_manual() return the help for options
   * invalid_ask_manual_question_bad_filter.py: Ask a question using an invalid filter.
+  * invalid_ask_parsed_question_no_picker.py: Ask a parsed question without supplying a picker
   * invalid_ask_manual_question_bad_sensorname.py: Ask a question using a sensor that does not exist
   * invalid_ask_manual_question_too_many_parameter_blocks.py: Ask a question that supplies too many parameter blocks ({}).
   * invalid_ask_manual_question_bad_option.py: Ask a question using an invalid option.

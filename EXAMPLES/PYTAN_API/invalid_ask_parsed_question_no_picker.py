@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-Get all actions
+Ask a parsed question without supplying a picker
 """
 # import the basic python packages we need
 import os
@@ -61,58 +61,36 @@ print "...OUTPUT: handler string: {}".format(handler)
 
 # setup the arguments for the handler() class
 kwargs = {}
-kwargs["objtype"] = u'action'
+kwargs["question_text"] = u'Computer Name'
+kwargs["qtype"] = u'parsed'
 
-print "...CALLING: handler.get_all with args: {}".format(kwargs)
-response = handler.get_all(**kwargs)
-
-print "...OUTPUT: Type of response: ", type(response)
-
-print "...OUTPUT: print of response:"
-print response
-
-# call the export_obj() method to convert response to JSON and store it in out
-export_kwargs = {}
-export_kwargs['obj'] = response
-export_kwargs['export_format'] = 'json'
-
-print "...CALLING: handler.export_obj() with args {}".format(export_kwargs)
-out = handler.export_obj(**export_kwargs)
-
-# trim the output if it is more than 15 lines long
-if len(out.splitlines()) > 15:
-    out = out.splitlines()[0:15]
-    out.append('..trimmed for brevity..')
-    out = '\n'.join(out)
-
-print "...OUTPUT: print the objects returned in JSON format:"
-print out
-
+print "...CALLING: handler.ask() with args: {}".format(kwargs)
+try:
+    handler.ask(**kwargs)
+except Exception as e:
+    print "...EXCEPTION: {}".format(e)
+    # this should throw an exception of type: pytan.exceptions.PickerError
+    # uncomment to see full exception
+    # traceback.print_exc(file=sys.stdout)
 '''STDOUT from running this:
 ...CALLING: pytan.handler() with args: {'username': 'Administrator', 'record_all_requests': True, 'loglevel': 1, 'debugformat': False, 'host': '10.0.1.240', 'password': 'Tanium2015!', 'port': '443'}
 ...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-...CALLING: handler.get_all with args: {'objtype': u'action'}
-...OUTPUT: Type of response:  <class 'taniumpy.object_types.action_list.ActionList'>
-...OUTPUT: print of response:
-ActionList, len: 614
-...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.action_list.ActionList object at 0x120545150>}
-...OUTPUT: print the objects returned in JSON format:
-{
-  "_type": "actions", 
-  "action": [
-    {
-      "_type": "action", 
-      "action_group": {
-        "_type": "group", 
-        "id": 0, 
-        "name": "Default"
-      }, 
-      "approver": {
-        "_type": "user", 
-        "id": 1, 
-        "name": "Administrator"
-      }, 
-..trimmed for brevity..
+...CALLING: handler.ask() with args: {'question_text': u'Computer Name', 'qtype': u'parsed'}
+2015-09-05 05:49:44,719 CRITICAL pytan.handler: You must supply an index as picker=$index to choose one of the parse responses -- re-run ask_parsed with picker set to one of these indexes!!
+2015-09-05 05:49:44,719 CRITICAL pytan.handler: Index 1, Score: 5883, Query: 'Get Computer Name from all machines'
+2015-09-05 05:49:44,719 CRITICAL pytan.handler: Index 2, Score: 1040, Query: 'Get Computer ID from all machines'
+2015-09-05 05:49:44,719 CRITICAL pytan.handler: Index 3, Score: 735, Query: 'Get BIOS Name from all machines'
+2015-09-05 05:49:44,719 CRITICAL pytan.handler: Index 4, Score: 520, Query: 'Get Domain Name from all machines'
+2015-09-05 05:49:44,719 CRITICAL pytan.handler: Index 5, Score: 367, Query: 'Get AD Computer Groups from all machines'
+2015-09-05 05:49:44,719 CRITICAL pytan.handler: Index 6, Score: 260, Query: 'Get File Name Search from all machines'
+2015-09-05 05:49:44,719 CRITICAL pytan.handler: Index 7, Score: 218, Query: 'Get Motherboard Name from all machines'
+2015-09-05 05:49:44,719 CRITICAL pytan.handler: Index 8, Score: 183, Query: 'Get Computer Serial Number from all machines'
+2015-09-05 05:49:44,719 CRITICAL pytan.handler: Index 9, Score: 183, Query: 'Get Folder Name Search from all machines'
+2015-09-05 05:49:44,719 CRITICAL pytan.handler: Index 10, Score: 183, Query: 'Get Primary Owner Name from all machines'
+2015-09-05 05:49:44,719 CRITICAL pytan.handler: Index 11, Score: 183, Query: 'Get Tanium Server Name from all machines'
+2015-09-05 05:49:44,719 CRITICAL pytan.handler: Index 12, Score: 130, Query: 'Get Network Adapter Name from all machines'
+2015-09-05 05:49:44,719 CRITICAL pytan.handler: Index 13, Score: 109, Query: 'Get AD Distinguished Name from all machines'
+...EXCEPTION: You must supply an index as picker=$index to choose one of the parse responses -- re-run ask_parsed with picker set to one of these indexes!!
 
 '''
 

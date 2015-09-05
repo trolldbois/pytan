@@ -81,37 +81,38 @@ print pprint.pformat(response)
 print "...OUTPUT: Equivalent Question if it were to be asked in the Tanium Console: "
 print response['question_object'].query_text
 
-# call the export_obj() method to convert response to CSV and store it in out
-export_kwargs = {}
-export_kwargs['obj'] = response['question_results']
-export_kwargs['export_format'] = 'csv'
+if response['question_results']:
+    # call the export_obj() method to convert response to CSV and store it in out
+    export_kwargs = {}
+    export_kwargs['obj'] = response['question_results']
+    export_kwargs['export_format'] = 'csv'
 
-print "...CALLING: handler.export_obj() with args {}".format(export_kwargs)
-out = handler.export_obj(**export_kwargs)
+    print "...CALLING: handler.export_obj() with args {}".format(export_kwargs)
+    out = handler.export_obj(**export_kwargs)
 
-# trim the output if it is more than 15 lines long
-if len(out.splitlines()) > 15:
-    out = out.splitlines()[0:15]
-    out.append('..trimmed for brevity..')
-    out = '\n'.join(out)
+    # trim the output if it is more than 15 lines long
+    if len(out.splitlines()) > 15:
+        out = out.splitlines()[0:15]
+        out.append('..trimmed for brevity..')
+        out = '\n'.join(out)
 
-print "...OUTPUT: CSV Results of response: "
-print out
+    print "...OUTPUT: CSV Results of response: "
+    print out
 
 '''STDOUT from running this:
 ...CALLING: pytan.handler() with args: {'username': 'Administrator', 'record_all_requests': True, 'loglevel': 1, 'debugformat': False, 'host': '10.0.1.240', 'password': 'Tanium2015!', 'port': '443'}
 ...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ...CALLING: handler.ask with args: {'sensors': u'Operating System, that contains:Windows, opt:max_data_age:3600, opt:value_type:string', 'qtype': u'manual'}
-2015-09-04 03:05:32,753 INFO     pytan.pollers.QuestionPoller: ID 10229: Reached Threshold of 99% (2 of 2)
+2015-09-05 05:46:58,186 INFO     pytan.pollers.QuestionPoller: ID 11653: Reached Threshold of 99% (2 of 2)
 ...OUTPUT: Type of response:  <type 'dict'>
 ...OUTPUT: Pretty print of response:
-{'poller_object': <pytan.pollers.QuestionPoller object at 0x1068fc9d0>,
+{'poller_object': <pytan.pollers.QuestionPoller object at 0x10f51c490>,
  'poller_success': True,
- 'question_object': <taniumpy.object_types.question.Question object at 0x1068fc090>,
- 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x10a07be50>}
+ 'question_object': <taniumpy.object_types.question.Question object at 0x10f51cd10>,
+ 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x10f51cc50>}
 ...OUTPUT: Equivalent Question if it were to be asked in the Tanium Console: 
 Get Operating System containing "Windows" from all machines
-...CALLING: handler.export_obj() with args {'export_format': 'csv', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x10a07be50>}
+...CALLING: handler.export_obj() with args {'export_format': 'csv', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x10f51cc50>}
 ...OUTPUT: CSV Results of response: 
 Operating System
 [no results]

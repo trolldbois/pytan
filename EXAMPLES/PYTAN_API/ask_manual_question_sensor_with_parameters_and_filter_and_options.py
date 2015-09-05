@@ -79,37 +79,38 @@ print pprint.pformat(response)
 print "...OUTPUT: Equivalent Question if it were to be asked in the Tanium Console: "
 print response['question_object'].query_text
 
-# call the export_obj() method to convert response to CSV and store it in out
-export_kwargs = {}
-export_kwargs['obj'] = response['question_results']
-export_kwargs['export_format'] = 'csv'
+if response['question_results']:
+    # call the export_obj() method to convert response to CSV and store it in out
+    export_kwargs = {}
+    export_kwargs['obj'] = response['question_results']
+    export_kwargs['export_format'] = 'csv'
 
-print "...CALLING: handler.export_obj() with args {}".format(export_kwargs)
-out = handler.export_obj(**export_kwargs)
+    print "...CALLING: handler.export_obj() with args {}".format(export_kwargs)
+    out = handler.export_obj(**export_kwargs)
 
-# trim the output if it is more than 15 lines long
-if len(out.splitlines()) > 15:
-    out = out.splitlines()[0:15]
-    out.append('..trimmed for brevity..')
-    out = '\n'.join(out)
+    # trim the output if it is more than 15 lines long
+    if len(out.splitlines()) > 15:
+        out = out.splitlines()[0:15]
+        out.append('..trimmed for brevity..')
+        out = '\n'.join(out)
 
-print "...OUTPUT: CSV Results of response: "
-print out
+    print "...OUTPUT: CSV Results of response: "
+    print out
 
 '''STDOUT from running this:
 ...CALLING: pytan.handler() with args: {'username': 'Administrator', 'record_all_requests': True, 'loglevel': 1, 'debugformat': False, 'host': '10.0.1.240', 'password': 'Tanium2015!', 'port': '443'}
 ...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ...CALLING: handler.ask with args: {'sensors': u'Folder Name Search with RegEx Match{dirname=Program Files,regex=Microsoft.*}, that regex match:.*Shared.*, opt:max_data_age:3600', 'qtype': u'manual'}
-2015-09-04 03:06:08,097 INFO     pytan.pollers.QuestionPoller: ID 10231: Reached Threshold of 99% (2 of 2)
+2015-09-05 05:47:33,665 INFO     pytan.pollers.QuestionPoller: ID 11655: Reached Threshold of 99% (2 of 2)
 ...OUTPUT: Type of response:  <type 'dict'>
 ...OUTPUT: Pretty print of response:
-{'poller_object': <pytan.pollers.QuestionPoller object at 0x1085dc890>,
+{'poller_object': <pytan.pollers.QuestionPoller object at 0x10d952e50>,
  'poller_success': True,
- 'question_object': <taniumpy.object_types.question.Question object at 0x1085dcf50>,
- 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x1059595d0>}
+ 'question_object': <taniumpy.object_types.question.Question object at 0x10cff5650>,
+ 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x10f533290>}
 ...OUTPUT: Equivalent Question if it were to be asked in the Tanium Console: 
 Get Folder Name Search with RegEx Match[Program Files, , No, No, Microsoft.*] containing "Shared" from all machines
-...CALLING: handler.export_obj() with args {'export_format': 'csv', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x1059595d0>}
+...CALLING: handler.export_obj() with args {'export_format': 'csv', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x10f533290>}
 ...OUTPUT: CSV Results of response: 
 "Folder Name Search with RegEx Match[Program Files, , No, No, Microsoft.*]"
 [no results]

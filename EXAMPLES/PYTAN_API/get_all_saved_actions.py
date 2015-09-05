@@ -95,15 +95,15 @@ print out
 ...OUTPUT: Type of response:  <class 'taniumpy.object_types.saved_action_list.SavedActionList'>
 ...OUTPUT: print of response:
 SavedActionList, len: 4
-...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.saved_action_list.SavedActionList object at 0x10e493250>}
+...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.saved_action_list.SavedActionList object at 0x10afab410>}
 ...OUTPUT: print the objects returned in JSON format:
 {
   "_type": "saved_actions", 
   "cache_info": {
     "_type": "cache_info", 
-    "cache_id": 3958762880, 
+    "cache_id": 2340784510, 
     "cache_row_count": 4, 
-    "expiration": "2015-09-04T02:56:24", 
+    "expiration": "2015-09-05T05:40:37", 
     "filtered_row_count": 4, 
     "page_row_count": 4
   }, 

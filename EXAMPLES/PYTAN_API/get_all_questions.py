@@ -94,18 +94,18 @@ print out
 ...CALLING: handler.get_all with args: {'objtype': u'question'}
 ...OUTPUT: Type of response:  <class 'taniumpy.object_types.question_list.QuestionList'>
 ...OUTPUT: print of response:
-QuestionList, len: 6727
-...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.question_list.QuestionList object at 0x104d39110>}
+QuestionList, len: 7951
+...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.question_list.QuestionList object at 0x1127403d0>}
 ...OUTPUT: print the objects returned in JSON format:
 {
   "_type": "questions", 
   "cache_info": {
     "_type": "cache_info", 
-    "cache_id": 4064428741, 
-    "cache_row_count": 6727, 
-    "expiration": "2015-09-04T02:56:24", 
-    "filtered_row_count": 6727, 
-    "page_row_count": 6727
+    "cache_id": 3269367064, 
+    "cache_row_count": 7951, 
+    "expiration": "2015-09-05T05:40:37", 
+    "filtered_row_count": 7951, 
+    "page_row_count": 7951
   }, 
   "question": [
     {

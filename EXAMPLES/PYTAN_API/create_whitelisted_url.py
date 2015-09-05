@@ -117,13 +117,13 @@ print delete_response
 ...CALLING: handler.create_whitelisted_url() with args: {'url': u'http://test.com/.*API_Test.*URL', 'regex': True, 'properties': [[u'property1', u'value1']], 'download_seconds': 3600}
 ...OUTPUT: Type of response:  <class 'taniumpy.object_types.white_listed_url.WhiteListedUrl'>
 ...OUTPUT: print of response:
-WhiteListedUrl, id: 33001
-...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.white_listed_url.WhiteListedUrl object at 0x1102a7c50>}
+WhiteListedUrl, id: 33040
+...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.white_listed_url.WhiteListedUrl object at 0x117b58e90>}
 ...OUTPUT: print the objects returned in JSON format:
 {
   "_type": "white_listed_url", 
   "download_seconds": 3600, 
-  "id": 33001, 
+  "id": 33040, 
   "metadata": {
     "_type": "metadata", 
     "item": [
@@ -138,7 +138,7 @@ WhiteListedUrl, id: 33001
 ..trimmed for brevity..
 ...CALLING: handler.delete() with args: {'objtype': u'whitelisted_url', 'url_regex': u'regex:http://test.com/.*API_Test.*URL'}
 ...OUTPUT: print the delete response
-[<taniumpy.object_types.white_listed_url.WhiteListedUrl object at 0x11a871110>]
+[<taniumpy.object_types.white_listed_url.WhiteListedUrl object at 0x11464cbd0>]
 
 '''
 

@@ -95,15 +95,15 @@ print out
 ...OUTPUT: Type of response:  <class 'taniumpy.object_types.package_spec_list.PackageSpecList'>
 ...OUTPUT: print of response:
 PackageSpecList, len: 67
-...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.package_spec_list.PackageSpecList object at 0x10b008190>}
+...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.package_spec_list.PackageSpecList object at 0x10861a510>}
 ...OUTPUT: print the objects returned in JSON format:
 {
   "_type": "package_specs", 
   "cache_info": {
     "_type": "cache_info", 
-    "cache_id": 3097169886, 
+    "cache_id": 2605629776, 
     "cache_row_count": 67, 
-    "expiration": "2015-09-04T02:56:58", 
+    "expiration": "2015-09-05T05:41:17", 
     "filtered_row_count": 67, 
     "page_row_count": 67
   }, 

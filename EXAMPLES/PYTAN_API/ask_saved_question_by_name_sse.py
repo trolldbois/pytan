@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 """
-Ask a manual question using human strings by referencing the name of a single sensor that takes parameters, but supplying only two of the four parameters that are used by the sensor (and letting pytan automatically determine the appropriate default value for those parameters which require a value and none was supplied).
-
-No sensor filters, sensor parameters, sensor filter options, question filters, or question options supplied.
+Ask a saved question by referencing the name of a saved question in a string and use Server Side Export when performing a GetResultData
 """
 # import the basic python packages we need
 import os
@@ -63,8 +61,9 @@ print "...OUTPUT: handler string: {}".format(handler)
 
 # setup the arguments for the handler() class
 kwargs = {}
-kwargs["sensors"] = u'Folder Name Search with RegEx Match{dirname=Program Files,regex=Microsoft.*}'
-kwargs["qtype"] = u'manual'
+kwargs["sse"] = True
+kwargs["qtype"] = u'saved'
+kwargs["name"] = u'Installed Applications'
 
 print "...CALLING: handler.ask with args: {}".format(kwargs)
 response = handler.ask(**kwargs)
@@ -98,33 +97,34 @@ if response['question_results']:
 '''STDOUT from running this:
 ...CALLING: pytan.handler() with args: {'username': 'Administrator', 'record_all_requests': True, 'loglevel': 1, 'debugformat': False, 'host': '10.0.1.240', 'password': 'Tanium2015!', 'port': '443'}
 ...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-...CALLING: handler.ask with args: {'sensors': u'Folder Name Search with RegEx Match{dirname=Program Files,regex=Microsoft.*}', 'qtype': u'manual'}
-2015-09-05 05:44:11,662 INFO     pytan.pollers.QuestionPoller: ID 11646: Reached Threshold of 99% (2 of 2)
+...CALLING: handler.ask with args: {'sse': True, 'qtype': u'saved', 'name': u'Installed Applications'}
+2015-09-05 05:48:47,019 INFO     pytan.pollers.SSEPoller: ID '1/494747304836.xml': Server Side Export Completed: 'Completed. 391 rows written.'
 ...OUTPUT: Type of response:  <type 'dict'>
 ...OUTPUT: Pretty print of response:
-{'poller_object': <pytan.pollers.QuestionPoller object at 0x1179a7ed0>,
- 'poller_success': True,
- 'question_object': <taniumpy.object_types.question.Question object at 0x12f01a890>,
- 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x1179a0fd0>}
+{'poller_object': None,
+ 'poller_success': None,
+ 'question_object': <taniumpy.object_types.question.Question object at 0x10d8fdb10>,
+ 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x116522310>,
+ 'saved_question_object': <taniumpy.object_types.saved_question.SavedQuestion object at 0x112503e50>}
 ...OUTPUT: Equivalent Question if it were to be asked in the Tanium Console: 
-Get Folder Name Search with RegEx Match[Program Files, , No, No, Microsoft.*] from all machines
-...CALLING: handler.export_obj() with args {'export_format': 'csv', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x1179a0fd0>}
+Get Installed Applications from all machines
+...CALLING: handler.export_obj() with args {'export_format': 'csv', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x116522310>}
 ...OUTPUT: CSV Results of response: 
-Count,"Folder Name Search with RegEx Match[Program Files, , No, No, Microsoft.*]"
-119,[too many results]
-1,C:\Program Files\OpenSSH\home\Administrator\Documents\SQL Server Management Studio\Templates\ItemTemplates
-1,C:\Program Files\VMware\VMware Tools\plugins\vmsvc
-1,C:\Program Files\OpenSSH\home\All Users\Microsoft\Windows\Start Menu\Programs\7-Zip
-1,C:\Program Files\Microsoft SQL Server\110\Setup Bootstrap\SQLServer2012\1040_ITA_LP\x64\1040\help
-1,C:\Program Files\Common Files\Microsoft Shared\VS7Debug
-1,C:\Program Files\Tanium\Tanium Server\http\taniumjs\sensor-query\src
-1,C:\Program Files\OpenSSH\home\All Users\Microsoft\Windows\Start Menu\Programs\Microsoft SQL Server 2012\Integration Services
-1,C:\Program Files\Tanium\Tanium Server\http\tux\spin\src
-1,C:\Program Files\OpenSSH\home\Administrator\AppData\Roaming\Macromedia\Flash Player\macromedia.com\support\flashplayer
-1,C:\Program Files\Tanium\Tanium Server\http\taniumjs\archived-question\src
-1,C:\Program Files\Tanium\Tanium Module Server\plugins\content
-1,C:\Program Files\Tanium\Tanium Server\http\libraries\kendoui\styles\Moonlight
-1,C:\Program Files\Common Files\VMware\Drivers\vmci\sockets\include
+Installed Applications,Installed Applications,Installed Applications,Installed Applications
+Image Capture Extension,Image Capture Extension,Image Capture Extension,Image Capture Extension
+Dictation,Dictation,Dictation,Dictation
+Wish,Wish,Wish,Wish
+Uninstall AnyConnect,Uninstall AnyConnect,Uninstall AnyConnect,Uninstall AnyConnect
+Time Machine,Time Machine,Time Machine,Time Machine
+7-Zip 9.20 (x64 edition),7-Zip 9.20 (x64 edition),7-Zip 9.20 (x64 edition),7-Zip 9.20 (x64 edition)
+AppleGraphicsWarning,AppleGraphicsWarning,AppleGraphicsWarning,AppleGraphicsWarning
+soagent,soagent,soagent,soagent
+Feedback Assistant,Feedback Assistant,Feedback Assistant,Feedback Assistant
+AinuIM,AinuIM,AinuIM,AinuIM
+vpndownloader,vpndownloader,vpndownloader,vpndownloader
+Pass Viewer,Pass Viewer,Pass Viewer,Pass Viewer
+ARDAgent,ARDAgent,ARDAgent,ARDAgent
+PressAndHold,PressAndHold,PressAndHold,PressAndHold
 ..trimmed for brevity..
 
 '''

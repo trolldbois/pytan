@@ -96,7 +96,7 @@ print out
 ...OUTPUT: Type of response:  <class 'taniumpy.object_types.white_listed_url_list.WhiteListedUrlList'>
 ...OUTPUT: print of response:
 WhiteListedUrlList, len: 1
-...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.white_listed_url_list.WhiteListedUrlList object at 0x10bc151d0>}
+...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.white_listed_url_list.WhiteListedUrlList object at 0x1112a2190>}
 ...OUTPUT: print the objects returned in JSON format:
 {
   "_type": "white_listed_urls", 

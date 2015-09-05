@@ -94,18 +94,18 @@ print out
 ...CALLING: handler.get_all with args: {'objtype': u'sensor'}
 ...OUTPUT: Type of response:  <class 'taniumpy.object_types.sensor_list.SensorList'>
 ...OUTPUT: print of response:
-SensorList, len: 1763
-...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.sensor_list.SensorList object at 0x104d133d0>}
+SensorList, len: 2258
+...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.sensor_list.SensorList object at 0x11a208710>}
 ...OUTPUT: print the objects returned in JSON format:
 {
   "_type": "sensors", 
   "cache_info": {
     "_type": "cache_info", 
-    "cache_id": 2154588492, 
-    "cache_row_count": 1763, 
-    "expiration": "2015-09-04T02:56:37", 
-    "filtered_row_count": 1763, 
-    "page_row_count": 1763
+    "cache_id": 3231614043, 
+    "cache_row_count": 2258, 
+    "expiration": "2015-09-05T05:40:52", 
+    "filtered_row_count": 2258, 
+    "page_row_count": 2258
   }, 
   "sensor": [
     {

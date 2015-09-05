@@ -116,8 +116,8 @@ print delete_response
 ...CALLING: handler.create_group() with args: {'groupname': u'All Windows Computers API Test', 'filters': [u'Operating System, that contains:Windows'], 'filter_options': [u'and']}
 ...OUTPUT: Type of response:  <class 'taniumpy.object_types.group.Group'>
 ...OUTPUT: print of response:
-Group, name: 'All Windows Computers API Test', id: 3038
-...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.group.Group object at 0x101fa2c10>}
+Group, name: 'All Windows Computers API Test', id: 3613
+...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.group.Group object at 0x10240a850>}
 ...OUTPUT: print the objects returned in JSON format:
 {
   "_type": "group", 
@@ -137,7 +137,7 @@ Group, name: 'All Windows Computers API Test', id: 3038
 ..trimmed for brevity..
 ...CALLING: handler.delete() with args: {'objtype': u'group', 'name': u'All Windows Computers API Test'}
 ...OUTPUT: print the delete response
-[<taniumpy.object_types.group.Group object at 0x101fa2bd0>]
+[<taniumpy.object_types.group.Group object at 0x10240afd0>]
 
 '''
 

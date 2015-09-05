@@ -134,12 +134,12 @@ print out
 ...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ...CALLING: handler.get() with args: {'objtype': u'group', 'name': u'All Computers'}
 ...CALLING: handler.delete() with args: {'objtype': u'group', u'name': u'All Computers API TEST'}
-...CALLING: handler.export_to_report_file() with args: {'report_dir': '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T', 'export_format': 'json', 'obj': <taniumpy.object_types.group_list.GroupList object at 0x10a1e0fd0>}
-...CALLING: handler.create_from_json() with args {'objtype': u'group', 'json_file': '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/GroupList_2015_09_03-22_45_12-EDT.json'}
+...CALLING: handler.export_to_report_file() with args: {'report_dir': '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T', 'export_format': 'json', 'obj': <taniumpy.object_types.group_list.GroupList object at 0x11072d8d0>}
+...CALLING: handler.create_from_json() with args {'objtype': u'group', 'json_file': '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/GroupList_2015_09_05-01_27_39-EDT.json'}
 ...OUTPUT: Type of response:  <class 'taniumpy.object_types.group_list.GroupList'>
 ...OUTPUT: print of response:
 GroupList, len: 1
-...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.group_list.GroupList object at 0x10a1e00d0>}
+...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.group_list.GroupList object at 0x11072d510>}
 ...OUTPUT: print the objects returned in JSON format:
 {
   "_type": "groups", 
@@ -152,7 +152,7 @@ GroupList, len: 1
         "_type": "filters", 
         "filter": []
       }, 
-      "id": 3039, 
+      "id": 3614, 
       "name": "All Computers API TEST", 
       "not_flag": 0, 
       "sub_groups": {

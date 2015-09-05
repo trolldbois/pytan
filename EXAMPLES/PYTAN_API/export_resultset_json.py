@@ -97,8 +97,8 @@ print out
 ...CALLING: pytan.handler() with args: {'username': 'Administrator', 'record_all_requests': True, 'loglevel': 1, 'debugformat': False, 'host': '10.0.1.240', 'password': 'Tanium2015!', 'port': '443'}
 ...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ...CALLING: handler.ask() with args {'sensors': ['Computer Name', 'IP Route Details', 'IP Address', 'Folder Name Search with RegEx Match{dirname=Program Files,regex=.*Shared.*}'], 'qtype': 'manual'}
-2015-09-04 02:49:41,297 INFO     pytan.pollers.QuestionPoller: ID 10206: Reached Threshold of 99% (2 of 2)
-...CALLING: handler.export_obj() with args {'export_format': u'json', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x106922a90>}
+2015-09-05 05:33:58,909 INFO     pytan.pollers.QuestionPoller: ID 11623: Reached Threshold of 99% (2 of 2)
+...CALLING: handler.export_obj() with args {'export_format': u'json', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x10ad7b110>}
 ...OUTPUT: print the export_str returned from export_obj():
 [
   {

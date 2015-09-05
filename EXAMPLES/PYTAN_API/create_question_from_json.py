@@ -111,12 +111,12 @@ print out
 ...CALLING: pytan.handler() with args: {'username': 'Administrator', 'record_all_requests': True, 'loglevel': 1, 'debugformat': False, 'host': '10.0.1.240', 'password': 'Tanium2015!', 'port': '443'}
 ...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ...CALLING: handler.get() with args: {'objtype': u'question', 'id': 1}
-...CALLING: handler.export_to_report_file() with args: {'report_dir': '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T', 'export_format': 'json', 'obj': <taniumpy.object_types.question_list.QuestionList object at 0x10e53d110>}
-...CALLING: handler.create_from_json() with args {'objtype': u'question', 'json_file': '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/QuestionList_2015_09_03-22_44_45-EDT.json'}
+...CALLING: handler.export_to_report_file() with args: {'report_dir': '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T', 'export_format': 'json', 'obj': <taniumpy.object_types.question_list.QuestionList object at 0x1136ba590>}
+...CALLING: handler.create_from_json() with args {'objtype': u'question', 'json_file': '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/QuestionList_2015_09_05-01_27_09-EDT.json'}
 ...OUTPUT: Type of response:  <class 'taniumpy.object_types.question_list.QuestionList'>
 ...OUTPUT: print of response:
 QuestionList, len: 1
-...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.question_list.QuestionList object at 0x10e53d910>}
+...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.question_list.QuestionList object at 0x1136badd0>}
 ...OUTPUT: print the objects returned in JSON format:
 {
   "_type": "questions", 
@@ -128,11 +128,11 @@ QuestionList, len: 1
         "_type": "group", 
         "id": 0
       }, 
-      "expiration": "2015-09-04T02:54:41", 
+      "expiration": "2015-09-05T05:37:05", 
       "expire_seconds": 0, 
       "force_computer_id_flag": 1, 
       "hidden_flag": 0, 
-      "id": 10196, 
+      "id": 11613, 
 ..trimmed for brevity..
 
 '''

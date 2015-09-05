@@ -96,7 +96,7 @@ print out
 ...OUTPUT: Type of response:  <class 'taniumpy.object_types.user_list.UserList'>
 ...OUTPUT: print of response:
 UserList, len: 1
-...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.user_list.UserList object at 0x11630b490>}
+...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.user_list.UserList object at 0x11a256450>}
 ...OUTPUT: print the objects returned in JSON format:
 {
   "_type": "users", 
@@ -106,7 +106,7 @@ UserList, len: 1
       "deleted_flag": 0, 
       "group_id": 0, 
       "id": 1, 
-      "last_login": "2015-09-04T02:56:23", 
+      "last_login": "2015-09-05T05:40:36", 
       "local_admin_flag": 1, 
       "name": "Administrator", 
       "permissions": {

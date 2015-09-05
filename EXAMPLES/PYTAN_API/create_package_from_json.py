@@ -134,12 +134,12 @@ print out
 ...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ...CALLING: handler.get() with args: {'objtype': u'package', 'id': 31}
 ...CALLING: handler.delete() with args: {'objtype': u'package', u'name': u'Disable Java Auto Update API TEST'}
-...CALLING: handler.export_to_report_file() with args: {'report_dir': '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T', 'export_format': 'json', 'obj': <taniumpy.object_types.package_spec_list.PackageSpecList object at 0x10d279090>}
-...CALLING: handler.create_from_json() with args {'objtype': u'package', 'json_file': '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/PackageSpecList_2015_09_03-22_44_44-EDT.json'}
+...CALLING: handler.export_to_report_file() with args: {'report_dir': '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T', 'export_format': 'json', 'obj': <taniumpy.object_types.package_spec_list.PackageSpecList object at 0x104526e10>}
+...CALLING: handler.create_from_json() with args {'objtype': u'package', 'json_file': '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/PackageSpecList_2015_09_05-01_27_08-EDT.json'}
 ...OUTPUT: Type of response:  <class 'taniumpy.object_types.package_spec_list.PackageSpecList'>
 ...OUTPUT: print of response:
 PackageSpecList, len: 1
-...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.package_spec_list.PackageSpecList object at 0x10d279e50>}
+...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.package_spec_list.PackageSpecList object at 0x104526dd0>}
 ...OUTPUT: print the objects returned in JSON format:
 {
   "_type": "package_specs", 

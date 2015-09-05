@@ -116,14 +116,14 @@ print delete_response
 ...CALLING: handler.create_user() with args: {'rolename': u'Administrator', 'name': u'API Test User', 'properties': [[u'property1', u'value1']]}
 ...OUTPUT: Type of response:  <class 'taniumpy.object_types.user.User'>
 ...OUTPUT: print of response:
-User, name: 'API Test User', id: 270
-...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.user.User object at 0x101d3cf50>}
+User, name: 'API Test User', id: 310
+...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.user.User object at 0x10215e890>}
 ...OUTPUT: print the objects returned in JSON format:
 {
   "_type": "user", 
   "deleted_flag": 0, 
   "group_id": 0, 
-  "id": 270, 
+  "id": 310, 
   "last_login": "2001-01-01T00:00:00", 
   "local_admin_flag": 1, 
   "metadata": {
@@ -137,7 +137,7 @@ User, name: 'API Test User', id: 270
 ..trimmed for brevity..
 ...CALLING: handler.delete() with args: {'objtype': u'user', 'name': u'API Test User'}
 ...OUTPUT: print the delete response
-[<taniumpy.object_types.user.User object at 0x102068cd0>]
+[<taniumpy.object_types.user.User object at 0x10215e410>]
 
 '''
 

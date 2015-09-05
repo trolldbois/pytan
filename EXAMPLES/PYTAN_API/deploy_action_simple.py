@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-Deploy an action against all computers using human strings.
+Deploy an action against all computers using human strings and use Server Side Export when performing a GetResultData
 """
 # import the basic python packages we need
 import os
@@ -61,6 +61,7 @@ print "...OUTPUT: handler string: {}".format(handler)
 
 # setup the arguments for the handler() class
 kwargs = {}
+kwargs["sse"] = True
 kwargs["run"] = True
 kwargs["package"] = u'Distribute Tanium Standard Utilities'
 
@@ -96,52 +97,52 @@ if response['action_results']:
 '''STDOUT from running this:
 ...CALLING: pytan.handler() with args: {'username': 'Administrator', 'record_all_requests': True, 'loglevel': 1, 'debugformat': False, 'host': '10.0.1.240', 'password': 'Tanium2015!', 'port': '443'}
 ...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-...CALLING: handler.deploy_action with args: {'run': True, 'package': u'Distribute Tanium Standard Utilities'}
-2015-09-04 02:45:17,936 INFO     pytan.pollers.QuestionPoller: ID 10197: Reached Threshold of 99% (2 of 2)
-2015-09-04 02:45:38,047 INFO     pytan.pollers.ActionPoller: ID 522: Reached Threshold for Seen Count of 100% (2 of 2)
-2015-09-04 02:45:38,065 INFO     pytan.pollers.ActionPoller: ID 522: Reached Threshold for Finished Count of 100% (2 of 2)
+...CALLING: handler.deploy_action with args: {'sse': True, 'run': True, 'package': u'Distribute Tanium Standard Utilities'}
+2015-09-05 05:29:44,576 INFO     pytan.pollers.QuestionPoller: ID 11614: Reached Threshold of 99% (2 of 2)
+2015-09-05 05:29:44,597 INFO     pytan.pollers.ActionPoller: ID 615: Reached Threshold for Seen Count of 100% (2 of 2)
+2015-09-05 05:29:44,619 INFO     pytan.pollers.ActionPoller: ID 615: Reached Threshold for Finished Count of 100% (2 of 2)
 ...OUTPUT: Type of response:  <type 'dict'>
 ...OUTPUT: Pretty print of response:
-{'action_info': <taniumpy.object_types.result_info.ResultInfo object at 0x10c1aa350>,
- 'action_object': <taniumpy.object_types.action.Action object at 0x10e524dd0>,
- 'action_result_map': {'failed': {'522:Expired.': [],
-                                  '522:Failed.': [],
-                                  '522:NotSucceeded.': [],
-                                  '522:Stopped.': [],
+{'action_info': <taniumpy.object_types.result_info.ResultInfo object at 0x11368abd0>,
+ 'action_object': <taniumpy.object_types.action.Action object at 0x113644a90>,
+ 'action_result_map': {'failed': {'615:Expired.': [],
+                                  '615:Failed.': [],
+                                  '615:NotSucceeded.': [],
+                                  '615:Stopped.': [],
                                   'total': 0},
-                       'finished': {'522:Completed.': ['Casus-Belli.local',
+                       'finished': {'615:Completed.': ['Casus-Belli.local',
                                                        'TPT1-0.localdomain'],
-                                    '522:Expired.': [],
-                                    '522:Failed.': [],
-                                    '522:NotSucceeded.': [],
-                                    '522:Stopped.': [],
-                                    '522:Succeeded.': [],
-                                    '522:Verified.': [],
+                                    '615:Expired.': [],
+                                    '615:Failed.': [],
+                                    '615:NotSucceeded.': [],
+                                    '615:Stopped.': [],
+                                    '615:Succeeded.': [],
+                                    '615:Verified.': [],
                                     'total': 2},
-                       'running': {'522:Copying.': [],
-                                   '522:Downloading.': [],
-                                   '522:PendingVerification.': [],
-                                   '522:Running.': [],
-                                   '522:Waiting.': [],
+                       'running': {'615:Copying.': [],
+                                   '615:Downloading.': [],
+                                   '615:PendingVerification.': [],
+                                   '615:Running.': [],
+                                   '615:Waiting.': [],
                                    'total': 0},
-                       'success': {'522:Completed.': ['Casus-Belli.local',
+                       'success': {'615:Completed.': ['Casus-Belli.local',
                                                       'TPT1-0.localdomain'],
-                                   '522:Verified.': [],
+                                   '615:Verified.': [],
                                    'total': 2},
                        'unknown': {'total': 0}},
- 'action_results': <taniumpy.object_types.result_set.ResultSet object at 0x10bc93a50>,
+ 'action_results': <taniumpy.object_types.result_set.ResultSet object at 0x112318d90>,
  'group_object': None,
- 'package_object': <taniumpy.object_types.package_spec.PackageSpec object at 0x10e5b4f10>,
- 'poller_object': <pytan.pollers.ActionPoller object at 0x10c1aa310>,
+ 'package_object': <taniumpy.object_types.package_spec.PackageSpec object at 0x112b4e7d0>,
+ 'poller_object': <pytan.pollers.ActionPoller object at 0x1136449d0>,
  'poller_success': True,
- 'saved_action_object': <taniumpy.object_types.saved_action.SavedAction object at 0x10e5b4810>}
+ 'saved_action_object': <taniumpy.object_types.saved_action.SavedAction object at 0x112b4e090>}
 ...OUTPUT: Print of action object: 
-Action, name: 'API Deploy Distribute Tanium Standard Utilities', id: 522
-...CALLING: handler.export_obj() with args {'export_format': 'csv', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x10bc93a50>}
+Action, name: 'API Deploy Distribute Tanium Standard Utilities', id: 615
+...CALLING: handler.export_obj() with args {'export_format': 'csv', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x112318d90>}
 ...OUTPUT: CSV Results of response: 
 Action Statuses,Computer Name
-522:Completed.,Casus-Belli.local
-522:Completed.,TPT1-0.localdomain
+615:Completed.,Casus-Belli.local
+615:Completed.,TPT1-0.localdomain
 
 
 '''

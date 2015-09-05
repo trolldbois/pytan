@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 """
-Ask a manual question using human strings by referencing the name of a single sensor that takes parameters, but supplying only two of the four parameters that are used by the sensor (and letting pytan automatically determine the appropriate default value for those parameters which require a value and none was supplied).
-
-No sensor filters, sensor parameters, sensor filter options, question filters, or question options supplied.
+Ask the server to parse the question text 'computer name and ip route details' and choose the first parsed result as the question to run and use server side export when performing a GetResultData
 """
 # import the basic python packages we need
 import os
@@ -63,8 +61,10 @@ print "...OUTPUT: handler string: {}".format(handler)
 
 # setup the arguments for the handler() class
 kwargs = {}
-kwargs["sensors"] = u'Folder Name Search with RegEx Match{dirname=Program Files,regex=Microsoft.*}'
-kwargs["qtype"] = u'manual'
+kwargs["picker"] = 1
+kwargs["sse"] = True
+kwargs["question_text"] = u'computer name and ip route details'
+kwargs["qtype"] = u'parsed'
 
 print "...CALLING: handler.ask with args: {}".format(kwargs)
 response = handler.ask(**kwargs)
@@ -98,33 +98,35 @@ if response['question_results']:
 '''STDOUT from running this:
 ...CALLING: pytan.handler() with args: {'username': 'Administrator', 'record_all_requests': True, 'loglevel': 1, 'debugformat': False, 'host': '10.0.1.240', 'password': 'Tanium2015!', 'port': '443'}
 ...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-...CALLING: handler.ask with args: {'sensors': u'Folder Name Search with RegEx Match{dirname=Program Files,regex=Microsoft.*}', 'qtype': u'manual'}
-2015-09-05 05:44:11,662 INFO     pytan.pollers.QuestionPoller: ID 11646: Reached Threshold of 99% (2 of 2)
+...CALLING: handler.ask with args: {'picker': 1, 'sse': True, 'question_text': u'computer name and ip route details', 'qtype': u'parsed'}
+2015-09-05 05:41:45,229 INFO     pytan.pollers.QuestionPoller: ID 11639: Reached Threshold of 99% (2 of 2)
+2015-09-05 05:41:45,238 INFO     pytan.pollers.SSEPoller: ID '1/494746885072.xml': Server Side Export Completed: 'Completed. 2 rows written.'
 ...OUTPUT: Type of response:  <type 'dict'>
 ...OUTPUT: Pretty print of response:
-{'poller_object': <pytan.pollers.QuestionPoller object at 0x1179a7ed0>,
+{'parse_results': <taniumpy.object_types.parse_result_group_list.ParseResultGroupList object at 0x10d0e8c50>,
+ 'poller_object': <pytan.pollers.QuestionPoller object at 0x10ed75a90>,
  'poller_success': True,
- 'question_object': <taniumpy.object_types.question.Question object at 0x12f01a890>,
- 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x1179a0fd0>}
+ 'question_object': <taniumpy.object_types.question.Question object at 0x10ed752d0>,
+ 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x12053bfd0>}
 ...OUTPUT: Equivalent Question if it were to be asked in the Tanium Console: 
-Get Folder Name Search with RegEx Match[Program Files, , No, No, Microsoft.*] from all machines
-...CALLING: handler.export_obj() with args {'export_format': 'csv', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x1179a0fd0>}
+Get Computer Name and IP Route Details from all machines
+...CALLING: handler.export_obj() with args {'export_format': 'csv', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x12053bfd0>}
 ...OUTPUT: CSV Results of response: 
-Count,"Folder Name Search with RegEx Match[Program Files, , No, No, Microsoft.*]"
-119,[too many results]
-1,C:\Program Files\OpenSSH\home\Administrator\Documents\SQL Server Management Studio\Templates\ItemTemplates
-1,C:\Program Files\VMware\VMware Tools\plugins\vmsvc
-1,C:\Program Files\OpenSSH\home\All Users\Microsoft\Windows\Start Menu\Programs\7-Zip
-1,C:\Program Files\Microsoft SQL Server\110\Setup Bootstrap\SQLServer2012\1040_ITA_LP\x64\1040\help
-1,C:\Program Files\Common Files\Microsoft Shared\VS7Debug
-1,C:\Program Files\Tanium\Tanium Server\http\taniumjs\sensor-query\src
-1,C:\Program Files\OpenSSH\home\All Users\Microsoft\Windows\Start Menu\Programs\Microsoft SQL Server 2012\Integration Services
-1,C:\Program Files\Tanium\Tanium Server\http\tux\spin\src
-1,C:\Program Files\OpenSSH\home\Administrator\AppData\Roaming\Macromedia\Flash Player\macromedia.com\support\flashplayer
-1,C:\Program Files\Tanium\Tanium Server\http\taniumjs\archived-question\src
-1,C:\Program Files\Tanium\Tanium Module Server\plugins\content
-1,C:\Program Files\Tanium\Tanium Server\http\libraries\kendoui\styles\Moonlight
-1,C:\Program Files\Common Files\VMware\Drivers\vmci\sockets\include
+Computer Name,IP Route Details,IP Route Details,IP Route Details,IP Route Details,IP Route Details,IP Route Details
+Casus-Belli.local,"default
+10.0.1.8/32
+10.0.1/24
+172.16.31/24
+172.16.152/24
+10.0.1.254
+169.254
+10.0.1.1/32","default
+10.0.1.8/32
+10.0.1/24
+172.16.31/24
+172.16.152/24
+10.0.1.254
+169.254
 ..trimmed for brevity..
 
 '''

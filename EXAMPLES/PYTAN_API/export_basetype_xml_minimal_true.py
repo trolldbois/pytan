@@ -98,7 +98,7 @@ print out
 ...CALLING: pytan.handler() with args: {'username': 'Administrator', 'record_all_requests': True, 'loglevel': 1, 'debugformat': False, 'host': '10.0.1.240', 'password': 'Tanium2015!', 'port': '443'}
 ...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ...CALLING: handler.get() with args: {'objtype': 'sensor', 'name': ['Computer Name', 'IP Route Details', 'IP Address', 'Folder Name Search with RegEx Match']}
-...CALLING: handler.export_obj() with args {'export_format': u'xml', 'obj': <taniumpy.object_types.sensor_list.SensorList object at 0x104f36e90>, 'minimal': True}
+...CALLING: handler.export_obj() with args {'export_format': u'xml', 'obj': <taniumpy.object_types.sensor_list.SensorList object at 0x10d837490>, 'minimal': True}
 ...OUTPUT: print the export_str returned from export_obj():
 <?xml version="1.0" encoding="utf-8"?>
 <sensors>

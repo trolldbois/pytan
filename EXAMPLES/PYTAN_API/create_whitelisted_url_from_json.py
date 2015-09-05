@@ -134,12 +134,12 @@ print out
 ...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ...CALLING: handler.get() with args: {'objtype': u'whitelisted_url', 'url_regex': u'test1'}
 ...CALLING: handler.delete() with args: {'objtype': u'whitelisted_url', u'url_regex': u'test1 API TEST'}
-...CALLING: handler.export_to_report_file() with args: {'report_dir': '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T', 'export_format': 'json', 'obj': <taniumpy.object_types.white_listed_url_list.WhiteListedUrlList object at 0x10e508ad0>}
-...CALLING: handler.create_from_json() with args {'objtype': u'whitelisted_url', 'json_file': '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/WhiteListedUrlList_2015_09_03-22_44_50-EDT.json'}
+...CALLING: handler.export_to_report_file() with args: {'report_dir': '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T', 'export_format': 'json', 'obj': <taniumpy.object_types.white_listed_url_list.WhiteListedUrlList object at 0x1031bf2d0>}
+...CALLING: handler.create_from_json() with args {'objtype': u'whitelisted_url', 'json_file': '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/WhiteListedUrlList_2015_09_05-01_27_15-EDT.json'}
 ...OUTPUT: Type of response:  <class 'taniumpy.object_types.white_listed_url_list.WhiteListedUrlList'>
 ...OUTPUT: print of response:
 WhiteListedUrlList, len: 1
-...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.white_listed_url_list.WhiteListedUrlList object at 0x10e508d90>}
+...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.white_listed_url_list.WhiteListedUrlList object at 0x11072de90>}
 ...OUTPUT: print the objects returned in JSON format:
 {
   "_type": "white_listed_urls", 
@@ -147,7 +147,7 @@ WhiteListedUrlList, len: 1
     {
       "_type": "white_listed_url", 
       "download_seconds": 86400, 
-      "id": 33002, 
+      "id": 33041, 
       "url_regex": "test1 API TEST"
     }
   ]

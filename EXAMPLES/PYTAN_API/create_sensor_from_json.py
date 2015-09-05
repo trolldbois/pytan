@@ -134,12 +134,12 @@ print out
 ...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ...CALLING: handler.get() with args: {'objtype': u'sensor', 'id': 381}
 ...CALLING: handler.delete() with args: {'objtype': u'sensor', u'name': u'Is Mac API TEST'}
-...CALLING: handler.export_to_report_file() with args: {'report_dir': '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T', 'export_format': 'json', 'obj': <taniumpy.object_types.sensor_list.SensorList object at 0x1102be950>}
-...CALLING: handler.create_from_json() with args {'objtype': u'sensor', 'json_file': '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/SensorList_2015_09_03-22_44_44-EDT.json'}
+...CALLING: handler.export_to_report_file() with args: {'report_dir': '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T', 'export_format': 'json', 'obj': <taniumpy.object_types.sensor_list.SensorList object at 0x117b78210>}
+...CALLING: handler.create_from_json() with args {'objtype': u'sensor', 'json_file': '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/SensorList_2015_09_05-01_27_09-EDT.json'}
 ...OUTPUT: Type of response:  <class 'taniumpy.object_types.sensor_list.SensorList'>
 ...OUTPUT: print of response:
 SensorList, len: 1
-...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.sensor_list.SensorList object at 0x10bc93dd0>}
+...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.sensor_list.SensorList object at 0x117b78d50>}
 ...OUTPUT: print the objects returned in JSON format:
 {
   "_type": "sensors", 
@@ -147,13 +147,13 @@ SensorList, len: 1
     {
       "_type": "sensor", 
       "category": "Operating System", 
-      "creation_time": "2015-09-04T02:44:41", 
+      "creation_time": "2015-09-05T05:27:05", 
       "delimiter": ",", 
       "description": "Returns whether the machine is a Mac.  True if so, False if not.\nExample: True", 
       "exclude_from_parse_flag": 0, 
       "hash": 2387245230, 
       "hidden_flag": 0, 
-      "id": 865, 
+      "id": 901, 
       "ignore_case_flag": 1, 
       "last_modified_by": "Administrator", 
 ..trimmed for brevity..

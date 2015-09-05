@@ -96,7 +96,7 @@ print out
 ...OUTPUT: Type of response:  <class 'taniumpy.object_types.system_setting_list.SystemSettingList'>
 ...OUTPUT: print of response:
 SystemSettingList, len: 1
-...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.system_setting_list.SystemSettingList object at 0x10b3fb210>}
+...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.system_setting_list.SystemSettingList object at 0x10aad7f50>}
 ...OUTPUT: print the objects returned in JSON format:
 {
   "_type": "system_settings", 

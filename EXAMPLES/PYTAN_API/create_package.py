@@ -123,8 +123,8 @@ print delete_response
 ...CALLING: handler.create_package() with args: {'expire_seconds': 1500, 'display_name': u'package49 API test', 'name': u'package49', 'parameters_json_file': u'../doc/example_of_all_package_parameters.json', 'verify_expire_seconds': 3600, 'command': u'package49 $1 $2 $3 $4 $5 $6 $7 $8', 'file_urls': [u'3600::testing.vbs||https://content.tanium.com/files/initialcontent/bundles/2014-10-01_11-32-15-7844/custom_tagging_-_remove_tags_[non-windows]/CustomTagRemove.sh'], 'verify_filter_options': [u'and'], 'verify_filters': [u'Custom Tags, that contains:tag'], 'command_timeout_seconds': 9999}
 ...OUTPUT: Type of response:  <class 'taniumpy.object_types.package_spec.PackageSpec'>
 ...OUTPUT: print of response:
-PackageSpec, name: 'package49', id: 409
-...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.package_spec.PackageSpec object at 0x101f896d0>}
+PackageSpec, name: 'package49', id: 467
+...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.package_spec.PackageSpec object at 0x102429210>}
 ...OUTPUT: print the objects returned in JSON format:
 {
   "_type": "package_spec", 
@@ -144,7 +144,7 @@ PackageSpec, name: 'package49', id: 409
 ..trimmed for brevity..
 ...CALLING: handler.delete() with args: {'objtype': u'package', 'name': u'package49'}
 ...OUTPUT: print the delete response
-[<taniumpy.object_types.package_spec.PackageSpec object at 0x101d21f90>]
+[<taniumpy.object_types.package_spec.PackageSpec object at 0x102434f90>]
 
 '''
 

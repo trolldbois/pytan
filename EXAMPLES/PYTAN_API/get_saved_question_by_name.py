@@ -96,7 +96,7 @@ print out
 ...OUTPUT: Type of response:  <class 'taniumpy.object_types.saved_question_list.SavedQuestionList'>
 ...OUTPUT: print of response:
 SavedQuestionList, len: 1
-...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.saved_question_list.SavedQuestionList object at 0x1068c2d90>}
+...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.saved_question_list.SavedQuestionList object at 0x11657ee50>}
 ...OUTPUT: print the objects returned in JSON format:
 {
   "_type": "saved_questions", 

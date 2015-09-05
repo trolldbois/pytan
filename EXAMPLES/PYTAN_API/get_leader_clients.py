@@ -96,7 +96,7 @@ print out
 ...OUTPUT: Type of response:  <class 'taniumpy.object_types.system_status_list.SystemStatusList'>
 ...OUTPUT: print of response:
 SystemStatusList, len: 1
-...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.system_status_list.SystemStatusList object at 0x10bb3c4d0>}
+...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.system_status_list.SystemStatusList object at 0x10d316250>}
 ...OUTPUT: print the objects returned in JSON format:
 {
   "_type": "system_status", 
@@ -104,12 +104,12 @@ SystemStatusList, len: 1
     {
       "_type": "client_status", 
       "cache_row_id": 1, 
-      "computer_id": "1311396924", 
+      "computer_id": "106406531", 
       "full_version": "6.0.314.1195", 
       "host_name": "TPT1-0.localdomain", 
       "ipaddress_client": "10.0.1.240", 
       "ipaddress_server": "10.0.1.240", 
-      "last_registration": "2015-09-04T02:55:59", 
+      "last_registration": "2015-09-05T05:40:07", 
       "port_number": 17473, 
       "protocol_version": 314, 
       "public_key_valid": 1, 

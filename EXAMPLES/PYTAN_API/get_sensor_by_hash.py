@@ -96,7 +96,7 @@ print out
 ...OUTPUT: Type of response:  <class 'taniumpy.object_types.sensor_list.SensorList'>
 ...OUTPUT: print of response:
 SensorList, len: 1
-...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.sensor_list.SensorList object at 0x106bfda50>}
+...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.sensor_list.SensorList object at 0x1106af1d0>}
 ...OUTPUT: print the objects returned in JSON format:
 {
   "_type": "sensors", 

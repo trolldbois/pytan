@@ -61,7 +61,6 @@ print "...OUTPUT: handler string: {}".format(handler)
 
 # setup the arguments for the handler() class
 kwargs = {}
-kwargs["report_dir"] = u'/tmp'
 kwargs["package"] = u'Distribute Tanium Standard Utilities'
 
 print "...CALLING: handler.deploy_action() with args: {}".format(kwargs)
@@ -75,10 +74,10 @@ except Exception as e:
 '''STDOUT from running this:
 ...CALLING: pytan.handler() with args: {'username': 'Administrator', 'record_all_requests': True, 'loglevel': 1, 'debugformat': False, 'host': '10.0.1.240', 'password': 'Tanium2015!', 'port': '443'}
 ...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-...CALLING: handler.deploy_action() with args: {'report_dir': u'/tmp', 'package': u'Distribute Tanium Standard Utilities'}
-2015-09-04 03:07:39,721 INFO     pytan.pollers.QuestionPoller: ID 10239: Reached Threshold of 99% (2 of 2)
+...CALLING: handler.deploy_action() with args: {'package': u'Distribute Tanium Standard Utilities'}
+2015-09-05 05:49:02,945 INFO     pytan.pollers.QuestionPoller: ID 11662: Reached Threshold of 99% (2 of 2)
 ...EXCEPTION: 'Run' is not True!!
-View and verify the contents of /tmp/VERIFY_BEFORE_DEPLOY_ACTION_ResultSet_2015_09_03-23_07_39-EDT.csv (length: 71 bytes)
+View and verify the contents of /Users/jolsen/gh/pytan/BUILD/VERIFY_BEFORE_DEPLOY_ACTION_ResultSet_2015_09_05-01_49_02-EDT.csv (length: 71 bytes)
 Re-run this deploy action with run=True after verifying
 
 '''

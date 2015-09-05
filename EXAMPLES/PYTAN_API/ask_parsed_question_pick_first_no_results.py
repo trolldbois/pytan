@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-Get all actions
+Ask the server to parse the question text 'computer name and ip route details' and choose the first parsed result as the question to run, return right away and do not wait for results to complete/do not get result data at all
 """
 # import the basic python packages we need
 import os
@@ -61,58 +61,53 @@ print "...OUTPUT: handler string: {}".format(handler)
 
 # setup the arguments for the handler() class
 kwargs = {}
-kwargs["objtype"] = u'action'
+kwargs["get_results"] = False
+kwargs["picker"] = 1
+kwargs["question_text"] = u'computer name and ip route details'
+kwargs["qtype"] = u'parsed'
 
-print "...CALLING: handler.get_all with args: {}".format(kwargs)
-response = handler.get_all(**kwargs)
+print "...CALLING: handler.ask with args: {}".format(kwargs)
+response = handler.ask(**kwargs)
 
 print "...OUTPUT: Type of response: ", type(response)
 
-print "...OUTPUT: print of response:"
-print response
+print "...OUTPUT: Pretty print of response:"
+print pprint.pformat(response)
 
-# call the export_obj() method to convert response to JSON and store it in out
-export_kwargs = {}
-export_kwargs['obj'] = response
-export_kwargs['export_format'] = 'json'
+print "...OUTPUT: Equivalent Question if it were to be asked in the Tanium Console: "
+print response['question_object'].query_text
 
-print "...CALLING: handler.export_obj() with args {}".format(export_kwargs)
-out = handler.export_obj(**export_kwargs)
+if response['question_results']:
+    # call the export_obj() method to convert response to CSV and store it in out
+    export_kwargs = {}
+    export_kwargs['obj'] = response['question_results']
+    export_kwargs['export_format'] = 'csv'
 
-# trim the output if it is more than 15 lines long
-if len(out.splitlines()) > 15:
-    out = out.splitlines()[0:15]
-    out.append('..trimmed for brevity..')
-    out = '\n'.join(out)
+    print "...CALLING: handler.export_obj() with args {}".format(export_kwargs)
+    out = handler.export_obj(**export_kwargs)
 
-print "...OUTPUT: print the objects returned in JSON format:"
-print out
+    # trim the output if it is more than 15 lines long
+    if len(out.splitlines()) > 15:
+        out = out.splitlines()[0:15]
+        out.append('..trimmed for brevity..')
+        out = '\n'.join(out)
+
+    print "...OUTPUT: CSV Results of response: "
+    print out
 
 '''STDOUT from running this:
 ...CALLING: pytan.handler() with args: {'username': 'Administrator', 'record_all_requests': True, 'loglevel': 1, 'debugformat': False, 'host': '10.0.1.240', 'password': 'Tanium2015!', 'port': '443'}
 ...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-...CALLING: handler.get_all with args: {'objtype': u'action'}
-...OUTPUT: Type of response:  <class 'taniumpy.object_types.action_list.ActionList'>
-...OUTPUT: print of response:
-ActionList, len: 614
-...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.action_list.ActionList object at 0x120545150>}
-...OUTPUT: print the objects returned in JSON format:
-{
-  "_type": "actions", 
-  "action": [
-    {
-      "_type": "action", 
-      "action_group": {
-        "_type": "group", 
-        "id": 0, 
-        "name": "Default"
-      }, 
-      "approver": {
-        "_type": "user", 
-        "id": 1, 
-        "name": "Administrator"
-      }, 
-..trimmed for brevity..
+...CALLING: handler.ask with args: {'get_results': False, 'picker': 1, 'question_text': u'computer name and ip route details', 'qtype': u'parsed'}
+...OUTPUT: Type of response:  <type 'dict'>
+...OUTPUT: Pretty print of response:
+{'parse_results': <taniumpy.object_types.parse_result_group_list.ParseResultGroupList object at 0x112779d50>,
+ 'poller_object': <pytan.pollers.QuestionPoller object at 0x112779e10>,
+ 'poller_success': None,
+ 'question_object': <taniumpy.object_types.question.Question object at 0x112779ed0>,
+ 'question_results': None}
+...OUTPUT: Equivalent Question if it were to be asked in the Tanium Console: 
+Get Computer Name and IP Route Details from all machines
 
 '''
 

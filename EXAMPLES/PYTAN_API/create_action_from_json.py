@@ -111,12 +111,12 @@ print out
 ...CALLING: pytan.handler() with args: {'username': 'Administrator', 'record_all_requests': True, 'loglevel': 1, 'debugformat': False, 'host': '10.0.1.240', 'password': 'Tanium2015!', 'port': '443'}
 ...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ...CALLING: handler.get() with args: {'objtype': u'action', 'id': 1}
-...CALLING: handler.export_to_report_file() with args: {'report_dir': '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T', 'export_format': 'json', 'obj': <taniumpy.object_types.action_list.ActionList object at 0x1102bebd0>}
-...CALLING: handler.create_from_json() with args {'objtype': u'action', 'json_file': '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/ActionList_2015_09_03-22_44_44-EDT.json'}
+...CALLING: handler.export_to_report_file() with args: {'report_dir': '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T', 'export_format': 'json', 'obj': <taniumpy.object_types.action_list.ActionList object at 0x113709290>}
+...CALLING: handler.create_from_json() with args {'objtype': u'action', 'json_file': '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/ActionList_2015_09_05-01_27_09-EDT.json'}
 ...OUTPUT: Type of response:  <class 'taniumpy.object_types.action_list.ActionList'>
 ...OUTPUT: print of response:
 ActionList, len: 1
-...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.action_list.ActionList object at 0x1102be850>}
+...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.action_list.ActionList object at 0x113709ed0>}
 ...OUTPUT: print the objects returned in JSON format:
 {
   "_type": "actions", 

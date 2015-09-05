@@ -95,7 +95,7 @@ print out
 ...OUTPUT: Type of response:  <class 'taniumpy.object_types.group_list.GroupList'>
 ...OUTPUT: print of response:
 GroupList, len: 4
-...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.group_list.GroupList object at 0x1069a0e90>}
+...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.group_list.GroupList object at 0x106dd1b90>}
 ...OUTPUT: print the objects returned in JSON format:
 {
   "_type": "groups", 

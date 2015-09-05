@@ -95,7 +95,7 @@ print out
 ...OUTPUT: Type of response:  <class 'taniumpy.object_types.system_status_list.SystemStatusList'>
 ...OUTPUT: print of response:
 SystemStatusList, len: 2
-...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.system_status_list.SystemStatusList object at 0x104d13d90>}
+...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.system_status_list.SystemStatusList object at 0x11a208990>}
 ...OUTPUT: print the objects returned in JSON format:
 {
   "_type": "system_status", 

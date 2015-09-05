@@ -95,7 +95,7 @@ print out
 ...OUTPUT: Type of response:  <class 'taniumpy.object_types.user_role_list.UserRoleList'>
 ...OUTPUT: print of response:
 UserRoleList, len: 9
-...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.user_role_list.UserRoleList object at 0x109fd8590>}
+...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.user_role_list.UserRoleList object at 0x110c20f90>}
 ...OUTPUT: print the objects returned in JSON format:
 {
   "_type": "roles", 

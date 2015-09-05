@@ -100,17 +100,17 @@ if response['action_results']:
 ...CALLING: handler.deploy_action with args: {'get_results': False, 'run': True, 'package': u'Distribute Tanium Standard Utilities'}
 ...OUTPUT: Type of response:  <type 'dict'>
 ...OUTPUT: Pretty print of response:
-{'action_info': <taniumpy.object_types.result_info.ResultInfo object at 0x1019c58d0>,
- 'action_object': <taniumpy.object_types.action.Action object at 0x10bc93450>,
+{'action_info': <taniumpy.object_types.result_info.ResultInfo object at 0x112372750>,
+ 'action_object': <taniumpy.object_types.action.Action object at 0x10212ac50>,
  'action_result_map': None,
  'action_results': None,
  'group_object': None,
- 'package_object': <taniumpy.object_types.package_spec.PackageSpec object at 0x10e524a50>,
- 'poller_object': <pytan.pollers.ActionPoller object at 0x1019c5e90>,
+ 'package_object': <taniumpy.object_types.package_spec.PackageSpec object at 0x1136441d0>,
+ 'poller_object': <pytan.pollers.ActionPoller object at 0x112372650>,
  'poller_success': None,
- 'saved_action_object': <taniumpy.object_types.saved_action.SavedAction object at 0x10e5241d0>}
+ 'saved_action_object': <taniumpy.object_types.saved_action.SavedAction object at 0x10465c150>}
 ...OUTPUT: Print of action object: 
-Action, name: 'API Deploy Distribute Tanium Standard Utilities', id: 523
+Action, name: 'API Deploy Distribute Tanium Standard Utilities', id: 616
 
 '''
 
