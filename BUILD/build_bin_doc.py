@@ -33,25 +33,38 @@ import script_examples
 
 pytan.binsupport.version_check(__version__)
 
-recreate_ini_files = False
 verbose = False
+
+main_output_dir = script_definitions.staticdoc_source
+# main_output_dir = '/tmp'
+
+only_run = []
+skips = []
 
 if __name__ == "__main__":
     ini_output_dir = os.path.join('/tmp', 'bin_doc')
-    md_output_dir = os.path.join(my_dir, 'doc', 'source', '_static', 'bin_doc')
+
+    md_output_dir = os.path.join(main_output_dir, 'bin_doc')
 
     if not os.path.isdir(ini_output_dir):
         os.makedirs(ini_output_dir)
 
-    ini_files = buildsupport.get_files(ini_output_dir, '*.ini')
+    buildsupport.clean_up(ini_output_dir, '*')
 
     print "Re-building INI Files"
-    buildsupport.clean_up(ini_output_dir, '*')
 
     section_template = string.Template(script_definitions.bin_doc_ini_section)
     ini_template = string.Template(script_definitions.bin_doc_ini)
 
     for script_name, script_def in script_definitions.scripts.iteritems():
+        if script_name in skips:
+            buildsupport.spew("Skipping examples for {script_name}".format(**script_def), verbose)
+            continue
+
+        if only_run and script_name not in only_run:
+            buildsupport.spew("Skipping examples for {script_name}".format(**script_def), verbose)
+            continue
+
         if script_def['script_name'] in script_examples.example_skips:
             buildsupport.spew("Skipping examples for {script_name}".format(**script_def), verbose)
             continue
