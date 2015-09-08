@@ -3,21 +3,19 @@
 This is a set of packages and scripts that provide a simple way for interfacing with the [Tanium](https://www.tanium.com/) SOAP API using python or the command line.
 
   * Current Stable Version: 
-    * **2.1.0 (Sep 05 2015)** [Release Link](https://github.com/tanium/pytan/releases/tag/2.1.0)
+    * **2.1.1 (Sep 08 2015)** [Release Link](https://github.com/tanium/pytan/releases/tag/2.1.1)
   * Current Development Version:
-    * **2.1.1** [Develop Branch](https://github.com/tanium/pytan/tree/develop)
-  * [PyTan Change Log](CHANGELOG.md)
-  * [PyTan To Do List](TODO.md)
+    * **2.1.2** [Develop Branch](https://github.com/tanium/pytan/tree/develop)
 
 ## Documentation Links
 
-All of the documentation linked below is also available under the doc/ directory.
-
-  * [Full HTML documentation for PyTan](http://tanium.github.io/pytan)
-  * [Full PDF documentation for PyTan](doc/pdf/PyTan-2.1.0.pdf)
-  * [PyTan API Examples](http://tanium.github.io/pytan/examples/pytan_examples.html)
-  * [Command line Documentation for PyTan](http://tanium.github.io/pytan/_static/bin_doc/index.html)
-
+  * [Online HTML documentation for PyTan](http://tanium.github.io/pytan) -- Also available offline at [doc/html/PyTan-2.1.1-HTML_DOC.zip](doc/html/PyTan-2.1.1-HTML_DOC.zip)
+    * [Online HTML documentation for PyTan API Examples](http://tanium.github.io/pytan/examples/pytan_examples.html)
+    * [Online HTML documentation for PyTan Command Line Usage](http://tanium.github.io/pytan/_static/bin_doc/index.html)
+  * [Online PDF documentation for PyTan](http://tanium.github.io/pytan/PyTan-2.1.1.pdf) -- Also available offline at [doc/pdf/PyTan-2.1.1.pdf](doc/pdf/PyTan-2.1.1.pdf)
+  * [PyTan Change Log](CHANGELOG.md)
+  * [PyTan To Do List](TODO.md)
+  
 Please contact Jim Olsen at jim.olsen@tanium.com with any questions or suggestions!
 
 ## Release strategy

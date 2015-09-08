@@ -8,6 +8,8 @@
 
   * Enhancements:
     * added group to pytan.handler.create_user()
+    * HTML docs now zipped up into doc/html/PyTan-$VERSION-HTML_DOC.zip
+    * re-built docs for new create_user option
 
 # 2.1.0
 
