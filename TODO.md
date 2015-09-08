@@ -4,6 +4,7 @@
     * add more examples for sse everywhere
     * go through SOAP doc and verify everything looks sane
     * zip up HTML doc in dev/master repo to save on sync craziness
+    * re-make dev workflow doc
 
   * BUG:
     * work on deploy action & start_seconds_from_now (a new action gets created at actual start time)
