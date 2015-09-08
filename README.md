@@ -9,14 +9,14 @@ This is a set of packages and scripts that provide a simple way for interfacing 
 
 ## Documentation Links
 
-  * [Online HTML documentation for PyTan](http://tanium.github.io/pytan)
-    * [Online HTML documentation for PyTan API Examples](http://tanium.github.io/pytan/examples/pytan_examples.html)
-    * [Online HTML documentation for PyTan Command Line Usage](http://tanium.github.io/pytan/_static/bin_doc/index.html)
-  * [Online PDF documentation for PyTan](http://tanium.github.io/pytan/PyTan-2.1.1.pdf)
-  * [Offline HTML documentation for PyTan](doc/html/PyTan-2.1.1-HTML_DOC.zip)
-  * [Offline PDF documentation for PyTan](doc/pdf/PyTan-2.1.1.pdf)
-  * [PyTan Change Log](CHANGELOG.md)
-  * [PyTan To Do List](TODO.md)
+  * [Online HTML documentation for PyTan 2.1.1](http://tanium.github.io/pytan)
+    * [Online HTML documentation for PyTan 2.1.1 API Examples](http://tanium.github.io/pytan/examples/pytan_examples.html)
+    * [Online HTML documentation for PyTan 2.1.1 Command Line Usage](http://tanium.github.io/pytan/_static/bin_doc/index.html)
+  * [Online PDF documentation for PyTan 2.1.1](http://tanium.github.io/pytan/PyTan-2.1.1.pdf)
+  * [Offline HTML documentation for PyTan 2.1.1](doc/html/PyTan-2.1.1-HTML_DOC.zip)
+  * [Offline PDF documentation for PyTan 2.1.1](doc/pdf/PyTan-2.1.1.pdf)
+  * [Change Log for PyTan](CHANGELOG.md)
+  * [To Do List for PyTan](TODO.md)
   
 Please contact Jim Olsen at jim.olsen@tanium.com with any questions or suggestions!
 
