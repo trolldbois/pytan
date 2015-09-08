@@ -7,10 +7,6 @@ This is a set of packages and scripts that provide a simple way for interfacing 
   * Current Development Version:
     * **2.1.2** [Develop Branch](https://github.com/tanium/pytan/tree/develop)
 
-  * Author and Maintainer: Jim Olsen <jim.olsen@tanium.com>
-  * License: MIT
-  * Copyright: Tanium, Inc. 2015
-
 ## Documentation Links
 
   * Online documentation for PyTan 2.1.1:
@@ -34,3 +30,9 @@ This is a set of packages and scripts that provide a simple way for interfacing 
   * Full regression tests will be performed every major (x.0.0) or minor (0.x.0) release of PyTan
   * All documentation and API examples will be rebuilt every major (x.0.0) or minor (0.x.0) release of PyTan
   * Revision releases (0.0.x) will only be tested against the latest stable release of Tanium for each minor build (6.2.314.xxxx, 6.5.314.xxxx, etc.)
+
+## Package Info
+
+  * Author and Maintainer: Jim Olsen (jim.olsen@tanium.com)
+  * License: MIT
+  * Copyright: Tanium, Inc. 2015
