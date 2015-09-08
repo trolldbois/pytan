@@ -3,13 +3,14 @@
     * examples for tsat.py
     * add more examples for sse everywhere
     * go through SOAP doc and verify everything looks sane
-    * zip up HTML doc in dev/master repo to save on sync craziness
     * re-make dev workflow doc
+    * add timing doc for various GRD methods
 
   * BUG:
     * work on deploy action & start_seconds_from_now (a new action gets created at actual start time)
 
   * GEN:
+    * add group name to create_user output
     * move platform 6.5 checks into GRD_SSE, call normal GRD instead of throwing exception
     * add auto paging/caching to normal GRD
     * rewrite write_csv
