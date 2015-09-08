@@ -7,6 +7,10 @@ This is a set of packages and scripts that provide a simple way for interfacing 
   * Current Development Version:
     * **2.1.2** [Develop Branch](https://github.com/tanium/pytan/tree/develop)
 
+  * Author and Maintainer: Jim Olsen <jim.olsen@tanium.com>
+  * License: MIT
+  * Copyright: Tanium, Inc. 2015
+
 ## Documentation Links
 
   * Online documentation for PyTan 2.1.1:
@@ -22,8 +26,6 @@ This is a set of packages and scripts that provide a simple way for interfacing 
   * Other documentation:
     * [Change Log for PyTan](CHANGELOG.md)
     * [To Do List for PyTan](TODO.md)
-  
-Please contact Jim Olsen at jim.olsen@tanium.com with any questions or suggestions!
 
 ## Release strategy
 
