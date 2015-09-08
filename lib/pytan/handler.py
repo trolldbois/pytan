@@ -1586,7 +1586,7 @@ class Handler(object):
         self.mylog.info(m(group_obj.name, group_obj.id, group_obj.text))
         return group_obj
 
-    def create_user(self, name, rolename=[], roleid=[], properties=[], **kwargs):
+    def create_user(self, name, rolename=[], roleid=[], properties=[], group='', **kwargs):
         """Create a user object
 
         Parameters
@@ -1604,6 +1604,9 @@ class Handler(object):
             * each list must be a 2 item list:
             * list item 1 property name
             * list item 2 property value
+        group: str
+            * default: ''
+            * name of group to assign to user
 
         Returns
         -------
@@ -1612,8 +1615,18 @@ class Handler(object):
         """
         self._debug_locals(sys._getframe().f_code.co_name, locals())
 
+        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs)
+
+        # get the ID for the group if a name was passed in
+        if group:
+            h = "Issue a GetObject to find the ID of a group name"
+            group_id = self.get(objtype='group', name=group, pytan_help=h, **clean_kwargs)[0].id
+        else:
+            group_id = None
+
         if roleid or rolename:
-            rolelist_obj = self.get(objtype='userrole', id=roleid, name=rolename)
+            h = "Issue a GetObject to find a user role"
+            rolelist_obj = self.get(objtype='userrole', id=roleid, name=rolename, pytan_help=h, **clean_kwargs)
         else:
             rolelist_obj = taniumpy.RoleList()
 
@@ -1624,8 +1637,7 @@ class Handler(object):
         add_user_obj.name = name
         add_user_obj.roles = rolelist_obj
         add_user_obj.metadata = metadatalist_obj
-
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs)
+        add_user_obj.group_id = group_id
 
         h = "Issue an AddObject to add a User object"
         user_obj = self._add(obj=add_user_obj, pytan_help=h, **clean_kwargs)

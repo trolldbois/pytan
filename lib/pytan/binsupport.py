@@ -768,6 +768,15 @@ def setup_create_user_argparser(doc):
         default=[],
         help='ID of role to assign to new user',
     )
+    arggroup.add_argument(
+        '-g',
+        '--group',
+        required=False,
+        action='store',
+        dest='group',
+        default='',
+        help='Name of group to assign to user',
+    )
 
     arggroup.add_argument(
         '-prop',
