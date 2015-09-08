@@ -765,6 +765,7 @@ body .task-list{
 <li><a href="#user-content-help-for-create-user">Help for Create User</a></li>
 <li><a href="#user-content-create-a-new-user">Create a new user</a></li>
 <li><a href="#user-content-delete-the-recently-created-user">Delete the recently created user</a></li>
+<li><a href="#user-content-create-a-new-user-with-a-group-specificied">Create a new user with a group specificied</a></li>
 </ul>
 
 <hr>
@@ -784,10 +785,11 @@ body .task-list{
 
 <pre><code>usage: create_user.py [-h] [-u USERNAME] [-p PASSWORD]
                       [--session_id SESSION_ID] [--host HOST] [--port PORT]
-                      [-l LOGLEVEL] [--debugformat] [--record_all_requests]
-                      [--stats_loop_enabled] [--http_auth_retry]
+                      [-l LOGLEVEL] [--debugformat] [--debug_method_locals]
+                      [--record_all_requests] [--stats_loop_enabled]
+                      [--http_auth_retry]
                       [--http_retry_count HTTP_RETRY_COUNT] -n NAME
-                      [-rn ROLENAME] [-ri ROLEID]
+                      [-rn ROLENAME] [-ri ROLEID] [-g GROUP]
                       [-prop PROPERTIES PROPERTIES]
 
 Create a user object from command line arguments
@@ -812,6 +814,9 @@ Handler Options:
                         Logging level to use, increase for more verbosity
                         (default: 0)
   --debugformat         Enable debug format for logging (default: False)
+  --debug_method_locals
+                        Enable debug logging for each methods local variables
+                        (default: False)
   --record_all_requests
                         Record all requests in
                         handler.session.ALL_REQUESTS_RESPONSES (default:
@@ -829,6 +834,8 @@ Create User Options:
                         Name of role to assign to new user (default: [])
   -ri ROLEID, --roleid ROLEID
                         ID of role to assign to new user (default: [])
+  -g GROUP, --group GROUP
+                        Name of group to assign to user (default: )
   -prop PROPERTIES PROPERTIES, --property PROPERTIES PROPERTIES
                         Property name and value to assign to user (default:
                         [])
@@ -868,8 +875,8 @@ Create User Options:
 
 <div class="highlight highlight-bash"><pre>bin/create_user.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>CMDLINE TEST user<span class="pl-pds">"</span></span> --rolename <span class="pl-s"><span class="pl-pds">"</span>Administrator<span class="pl-pds">"</span></span> --property <span class="pl-s"><span class="pl-pds">"</span>property name<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>property value<span class="pl-pds">"</span></span> <span class="pl-k">|</span> tee -a /tmp/create_user.out</pre></div>
 
-<pre><code>PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-New user 'CMDLINE TEST user' created with ID 266, roles: 'Administrator'
+<pre><code>PyTan v2.1.1 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+New user 'CMDLINE TEST user' created with ID 316, roles: 'Administrator'
 </code></pre>
 
 <ul>
@@ -904,8 +911,46 @@ New user 'CMDLINE TEST user' created with ID 266, roles: 'Administrator'
 
 <div class="highlight highlight-bash"><pre>bin/delete_user.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --id <span class="pl-s"><span class="pl-pds">`</span>cat /tmp/create_user.out<span class="pl-k">|</span> grep created <span class="pl-k">|</span> sed <span class="pl-s"><span class="pl-pds">'</span>s/.*ID //<span class="pl-pds">'</span></span> <span class="pl-k">|</span> cut -d, -f1<span class="pl-pds">`</span></span></pre></div>
 
-<pre><code>PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-Deleted item:  User, name: 'CMDLINE TEST user', id: 266
+<pre><code>PyTan v2.1.1 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+Deleted item:  User, name: 'CMDLINE TEST user', id: 316
+</code></pre>
+
+<ul>
+<li>
+<p>Validation Test: exitcode</p>
+
+<ul>
+<li>Valid: <strong>True</strong>
+</li>
+<li>Messages: Exit Code is 0</li>
+</ul>
+</li>
+<li>
+<p>Validation Test: noerror</p>
+
+<ul>
+<li>Valid: <strong>True</strong>
+</li>
+<li>Messages: No error texts found in stderr/stdout</li>
+</ul>
+</li>
+</ul>
+
+<p><a href="#user-content-toc">TOC</a></p>
+
+<h1>
+<a id="user-content-create-a-new-user-with-a-group-specificied" class="anchor" href="#create-a-new-user-with-a-group-specificied" aria-hidden="true"><span class="octicon octicon-link"></span></a>Create a new user with a group specificied</h1>
+
+<ul>
+<li>Create a user named CMDLINE TEST user and allow it only access to users in the "All Computers" group name</li>
+<li>Assign the Administrator role to the new user</li>
+<li>Create a property named property name with the value property value on the new user</li>
+</ul>
+
+<div class="highlight highlight-bash"><pre>bin/create_user.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>CMDLINE TEST user<span class="pl-pds">"</span></span> --rolename <span class="pl-s"><span class="pl-pds">"</span>Administrator<span class="pl-pds">"</span></span> --property <span class="pl-s"><span class="pl-pds">"</span>property name<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>property value<span class="pl-pds">"</span></span> -g <span class="pl-s"><span class="pl-pds">"</span>All Computers<span class="pl-pds">"</span></span> <span class="pl-k">|</span> tee -a /tmp/create_user.out</pre></div>
+
+<pre><code>PyTan v2.1.1 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+New user 'CMDLINE TEST user' created with ID 317, roles: 'Administrator'
 </code></pre>
 
 <ul>
@@ -932,7 +977,7 @@ Deleted item:  User, name: 'CMDLINE TEST user', id: 266
 <p><a href="#user-content-toc">TOC</a></p>
 
 <h6>
-<a id="user-content-generated-by-build_bin_doc-v210-date-thu-sep--3-215025-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v210-date-thu-sep--3-215025-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v2.1.0</code>, date: Thu Sep  3 21:50:25 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
+<a id="user-content-generated-by-build_bin_doc-v210-date-tue-sep--8-123427-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v210-date-tue-sep--8-123427-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v2.1.0</code>, date: Tue Sep  8 12:34:27 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
 </h6>
 
 </body></html>
