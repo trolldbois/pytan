@@ -9,14 +9,19 @@ This is a set of packages and scripts that provide a simple way for interfacing 
 
 ## Documentation Links
 
-  * [Online HTML documentation for PyTan 2.1.1](http://tanium.github.io/pytan)
-    * [Online HTML documentation for PyTan 2.1.1 API Examples](http://tanium.github.io/pytan/examples/pytan_examples.html)
-    * [Online HTML documentation for PyTan 2.1.1 Command Line Usage](http://tanium.github.io/pytan/_static/bin_doc/index.html)
-  * [Online PDF documentation for PyTan 2.1.1](http://tanium.github.io/pytan/PyTan-2.1.1.pdf)
-  * [Offline HTML documentation for PyTan 2.1.1](doc/html/PyTan-2.1.1-HTML_DOC.zip)
-  * [Offline PDF documentation for PyTan 2.1.1](doc/pdf/PyTan-2.1.1.pdf)
-  * [Change Log for PyTan](CHANGELOG.md)
-  * [To Do List for PyTan](TODO.md)
+  * Online documentation for PyTan 2.1.1:
+    * [HTML: Main Index](http://tanium.github.io/pytan)
+    * [HTML: PyTan API Examples](http://tanium.github.io/pytan/examples/pytan_examples.html)
+    * [HTML: PyTan Command Line Usage](http://tanium.github.io/pytan/_static/bin_doc/index.html)
+    * [PDF: Standalone PDF version of HTML](http://tanium.github.io/pytan/PyTan-2.1.1.pdf)
+
+  * Offline documentation for PyTan 2.1.1:
+    * [Zipped HTML documentation for PyTan 2.1.1](doc/html/PyTan-2.1.1-HTML_DOC.zip)
+    * [PDF documentation for PyTan 2.1.1](doc/pdf/PyTan-2.1.1.pdf)
+
+  * Other documentation:
+    * [Change Log for PyTan](CHANGELOG.md)
+    * [To Do List for PyTan](TODO.md)
   
 Please contact Jim Olsen at jim.olsen@tanium.com with any questions or suggestions!
 
