@@ -1,6 +1,15 @@
-# 2.1.1
+# 2.1.2
 
 [Development branch](https://github.com/tanium/pytan/tree/develop) on N/A
+
+# 2.1.1
+
+[Released](https://github.com/tanium/pytan/releases/tag/2.1.1) on Sep 08 2015 
+
+  * Enhancements:
+    * added group to pytan.handler.create_user()
+    * HTML docs now zipped up into doc/html/PyTan-$VERSION-HTML_DOC.zip
+    * re-built docs for new create_user option
 
 # 2.1.0
 

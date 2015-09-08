@@ -1153,7 +1153,7 @@ class SSEPoller(QuestionPoller):
         short_url = 'export/{}.status'.format(export_id)
         full_url = self.handler.session._full_url(url=short_url)
 
-        h = "perform an HTTP get to retrieve the status of a server side export"
+        h = "Perform an HTTP get to retrieve the status of a server side export"
         clean_kwargs['pytan_help'] = clean_kwargs.get('pytan_help', h)
 
         ret = self.handler.session.http_get(url=short_url, **clean_kwargs).strip()
@@ -1179,7 +1179,7 @@ class SSEPoller(QuestionPoller):
         short_url = 'export/{}.gz'.format(export_id)
         full_url = self.handler.session._full_url(url=short_url)
 
-        h = "perform an HTTP get to retrieve the status of a server side export"
+        h = "Perform an HTTP get to retrieve the data of a server side export"
         clean_kwargs['pytan_help'] = clean_kwargs.get('pytan_help', h)
 
         ret = self.handler.session.http_get(url=short_url, **clean_kwargs)

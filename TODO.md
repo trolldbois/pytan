@@ -2,14 +2,16 @@
     * examples for ask_parsed.py
     * examples for tsat.py
     * add more examples for sse everywhere
-    * add validation results of testing against various platform versions for each release
     * go through SOAP doc and verify everything looks sane
-    * add RST output support to mdtester
+    * zip up HTML doc in dev/master repo to save on sync craziness
+    * re-make dev workflow doc
 
   * BUG:
     * work on deploy action & start_seconds_from_now (a new action gets created at actual start time)
 
   * GEN:
+    * move platform 6.5 checks into GRD_SSE, call normal GRD instead of throwing exception
+    * add auto paging/caching to normal GRD
     * rewrite write_csv
     * add secondary loop for if any data == current result unavail/etc (MEDIUM)
     * Add method to get question progress (MEDIUM)
@@ -26,7 +28,7 @@
     * add tests for dashboard stuffs
     * add unit tests for logout()
     * add unit tests for auth with session
-    * rebuild zip_dists, and test on win
+    * rebuild zip_dists, and test on win (or expire ZIP builds for now, no one using?)
     * cache_results test: If you are adding tests for that mechanism you could make tests that verify it returns an error if you specify a cache that has expired and make sure that the results that come back don’t change.
     * test verify checks work against package with verification (unable to do) (UNKNOWN)
     * test against all the different levels of user privs (UNKNOWN)
@@ -36,6 +38,7 @@
     * await update on cs values in SSE XML
 
   * LOW:
+    * bundle workflow capture into handler?
     * fix build bin doc to run on windows (figure out later)
     * write get_session_id.py (later)
     * update EXAMPLES to work with 2.0.0
@@ -44,32 +47,5 @@
     * email out (MEDIUM)
     * add caching (HUGE)
     * figure out cert based auth/plugin based auth? (HUGE)
-    * add os env overrides!
-    ```
-      def __env_overrides(self):
-          """looks for OS environment variables and overrides the corresponding
-          attribute if they exist
-          """
-          or_tpl = "Overriding {!r} with OS environment variable {!r}".format
-
-          for os_env_var, class_var in constants.OS_ENV_MAP.iteritems():
-              if not os_env_var in os.environ.keys():
-                  continue
-
-              if not os.environ[os_env_var]:
-                  continue
-
-              self.DLOG(or_tpl(os.environ[os_env_var], os_env_var))
-              setattr(self, class_var, os.environ[os_env_var])
-
-  # Used by SoapWrap.SoapWrap for environment variable override mappings
-  OS_ENV_MAP = {
-      'SOAP_USERNAME': 'self.__username',
-      'SOAP_PASSWORD': 'self.__password',
-      'SOAP_HOSTNAME': 'self.__host',
-      'SOAP_PORT': 'self.__port',
-      'SOAP_PROTOCOL': 'self.__protocol',
-      'SOAP_PATH': 'self.__soap_path',
-  }
-    ```
-
+    * add RST output support to mdtester?
+    * add os env overrides and/or add profile overrides

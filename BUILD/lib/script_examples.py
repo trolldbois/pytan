@@ -356,6 +356,25 @@ e['notes'] = '''Delete the user by id
 e['tests'] = 'exitcode, noerror'
 examples[sname].append(e)
 
+e = {}
+e['name'] = 'Create a new user with a group specificied'
+e['cmd'] = '''bin/${script_name}.py ${API_INFO} --name "CMDLINE TEST user" --rolename "Administrator" --property "property name" "property value" -g "All Computers" | tee -a ${TMPDIR}/create_user.out'''
+e['notes'] = '''Create a user named CMDLINE TEST user and allow it only access to users in the "All Computers" group name
+Assign the Administrator role to the new user
+Create a property named property name with the value property value on the new user
+'''
+e['precleanup'] = 'rm -f ${TMPDIR}/create_user.out'
+e['tests'] = 'exitcode, noerror'
+examples[sname].append(e)
+
+e = {}
+e['name'] = 'Delete the recently created user'
+e['cmd'] = '''bin/delete_user.py ${API_INFO} --id `cat ${TMPDIR}/create_user.out| grep created | sed 's/.*ID //' | cut -d, -f1`'''
+e['notes'] = '''Delete the user by id
+'''
+e['tests'] = 'exitcode, noerror'
+examples[sname].append(e)
+
 # print_sensors
 sname = 'print_sensors'
 examples[sname] = []

@@ -28,99 +28,48 @@ VERSION         = $(shell cat ../../lib/pytan/__init__.py|grep __version__|cut -
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
 	@echo "  html       to make standalone HTML files"
-	@echo "  dirhtml    to make HTML files named index.html in directories"
-	@echo "  singlehtml to make a single large HTML file"
-	@echo "  pickle     to make pickle files"
-	@echo "  json       to make JSON files"
-	@echo "  htmlhelp   to make HTML files and a HTML help project"
-	@echo "  qthelp     to make HTML files and a qthelp project"
-	@echo "  devhelp    to make HTML files and a Devhelp project"
-	@echo "  epub       to make an epub"
+	@echo "  htmlzip       to make standalone HTML files into a zipped archive"
 	@echo "  latex      to make LaTeX files, you can set PAPER=a4 or PAPER=letter"
 	@echo "  latexpdf   to make LaTeX files and run them through pdflatex"
-	@echo "  latexpdfja to make LaTeX files and run them through platex/dvipdfmx"
-	@echo "  text       to make text files"
-	@echo "  man        to make manual pages"
-	@echo "  texinfo    to make Texinfo files"
-	@echo "  info       to make Texinfo files and run them through makeinfo"
-	@echo "  gettext    to make PO message catalogs"
-	@echo "  changes    to make an overview of all changed/added/deprecated items"
-	@echo "  xml        to make Docutils-native XML files"
-	@echo "  pseudoxml  to make pseudoxml-XML files for display purposes"
 	@echo "  linkcheck  to check all external links for integrity"
-	@echo "  doctest    to run all doctests embedded in the documentation (if enabled)"
 	@echo "  coverage   to run coverage check of the documentation (if enabled)"
-	@echo "  staticdoc  to copy static docs to realbuilddir"
-	@echo "  all        to run clean, html, staticdoc"
+	@echo "  all        to run clean htmlzip coverage latexpdf"
 
 clean:
 	rm -rf $(BUILDDIR)/*
-	rm -rf $(REALBUILDDIR)/*
-	mkdir -p $(BUILDDIR)/
-	mkdir -p $(REALBUILDDIR)/
+	rm -rf $(REALBUILDDIR)/html/*
+	rm -rf $(REALBUILDDIR)/pdf/*
 
 cleanbuild:
 	rm -rf $(BUILDDIR)/*
-	mkdir -p $(BUILDDIR)/
 
 html:
 	mkdir -p $(BUILDDIR)/
-	mkdir -p $(REALBUILDDIR)/
+	mkdir -p $(REALBUILDDIR)/html/PyTan-$(VERSION)-HTML_DOC
+
 	@echo "Re-building source/taniumpy"
 	sphinx-apidoc -f -T -M -o source/taniumpy ../../lib/taniumpy/
 	perl -pi -e "s/taniumpy package/TaniumPy Package/" source/taniumpy/taniumpy.rst
-	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(REALBUILDDIR)/html
-	@echo
-	@echo "Build finished. The HTML pages are in $(REALBUILDDIR)/html."
 
-dirhtml:
-	$(SPHINXBUILD) -b dirhtml $(ALLSPHINXOPTS) $(BUILDDIR)/dirhtml
-	@echo
-	@echo "Build finished. The HTML pages are in $(BUILDDIR)/dirhtml."
+	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(REALBUILDDIR)/html/PyTan-$(VERSION)-HTML_DOC
 
-singlehtml:
-	$(SPHINXBUILD) -b singlehtml $(ALLSPHINXOPTS) $(BUILDDIR)/singlehtml
 	@echo
-	@echo "Build finished. The HTML page is in $(BUILDDIR)/singlehtml."
+	@echo "Build finished. The HTML pages are in $(REALBUILDDIR)/html/PyTan-$(VERSION)-HTML_DOC"
 
-pickle:
-	$(SPHINXBUILD) -b pickle $(ALLSPHINXOPTS) $(BUILDDIR)/pickle
-	@echo
-	@echo "Build finished; now you can process the pickle files."
+htmlzip:
+	mkdir -p $(BUILDDIR)/
+	mkdir -p $(REALBUILDDIR)/html/PyTan-$(VERSION)-HTML_DOC
 
-json:
-	$(SPHINXBUILD) -b json $(ALLSPHINXOPTS) $(BUILDDIR)/json
-	@echo
-	@echo "Build finished; now you can process the JSON files."
+	@echo "Re-building source/taniumpy"
+	sphinx-apidoc -f -T -M -o source/taniumpy ../../lib/taniumpy/
+	perl -pi -e "s/taniumpy package/TaniumPy Package/" source/taniumpy/taniumpy.rst
 
-htmlhelp:
-	$(SPHINXBUILD) -b htmlhelp $(ALLSPHINXOPTS) $(BUILDDIR)/htmlhelp
-	@echo
-	@echo "Build finished; now you can run HTML Help Workshop with the" \
-	      ".hhp project file in $(BUILDDIR)/htmlhelp."
+	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(REALBUILDDIR)/html/PyTan-$(VERSION)-HTML_DOC
 
-qthelp:
-	$(SPHINXBUILD) -b qthelp $(ALLSPHINXOPTS) $(BUILDDIR)/qthelp
-	@echo
-	@echo "Build finished; now you can run "qcollectiongenerator" with the" \
-	      ".qhcp project file in $(BUILDDIR)/qthelp, like this:"
-	@echo "# qcollectiongenerator $(BUILDDIR)/qthelp/PyTan.qhcp"
-	@echo "To view the help file:"
-	@echo "# assistant -collectionFile $(BUILDDIR)/qthelp/PyTan.qhc"
+	cd $(REALBUILDDIR)/html/ ; zip -9rm PyTan-$(VERSION)-HTML_DOC.zip PyTan-$(VERSION)-HTML_DOC/
 
-devhelp:
-	$(SPHINXBUILD) -b devhelp $(ALLSPHINXOPTS) $(BUILDDIR)/devhelp
 	@echo
-	@echo "Build finished."
-	@echo "To view the help file:"
-	@echo "# mkdir -p $$HOME/.local/share/devhelp/PyTan"
-	@echo "# ln -s $(BUILDDIR)/devhelp $$HOME/.local/share/devhelp/PyTan"
-	@echo "# devhelp"
-
-epub:
-	$(SPHINXBUILD) -b epub $(ALLSPHINXOPTS) $(BUILDDIR)/epub
-	@echo
-	@echo "Build finished. The epub file is in $(BUILDDIR)/epub."
+	@echo "Build finished. The HTML pages are in $(REALBUILDDIR)/html/PyTan-$(VERSION)-HTML_DOC.zip"
 
 latex:
 	$(SPHINXBUILD) -b latex $(ALLSPHINXOPTS) $(BUILDDIR)/latex
@@ -130,52 +79,16 @@ latex:
 	      "(use \`make latexpdf' here to do that automatically)."
 
 latexpdf:
+	mkdir -p $(BUILDDIR)/
+	mkdir -p $(REALBUILDDIR)/pdf/
+
 	$(SPHINXBUILD) -b latex $(ALLSPHINXOPTS) $(BUILDDIR)/latex
 	@echo "Running LaTeX files through pdflatex..."
 	$(MAKE) -C $(BUILDDIR)/latex all-pdf
-	mkdir -p $(REALBUILDDIR)/pdf
-	@echo $(VERSION)
+
 	cp $(BUILDDIR)/latex/PyTan.pdf $(REALBUILDDIR)/pdf/PyTan-$(VERSION).pdf
-	@echo "pdflatex finished; the PDF files are in $(BUILDDIR)/latex and $(REALBUILDDIR)/pdf"
-
-latexpdfja:
-	$(SPHINXBUILD) -b latex $(ALLSPHINXOPTS) $(BUILDDIR)/latex
-	@echo "Running LaTeX files through platex and dvipdfmx..."
-	$(MAKE) -C $(BUILDDIR)/latex all-pdf-ja
-	@echo "pdflatex finished; the PDF files are in $(BUILDDIR)/latex."
-
-text:
-	$(SPHINXBUILD) -b text $(ALLSPHINXOPTS) $(BUILDDIR)/text
 	@echo
-	@echo "Build finished. The text files are in $(BUILDDIR)/text."
-
-man:
-	$(SPHINXBUILD) -b man $(ALLSPHINXOPTS) $(BUILDDIR)/man
-	@echo
-	@echo "Build finished. The manual pages are in $(BUILDDIR)/man."
-
-texinfo:
-	$(SPHINXBUILD) -b texinfo $(ALLSPHINXOPTS) $(BUILDDIR)/texinfo
-	@echo
-	@echo "Build finished. The Texinfo files are in $(BUILDDIR)/texinfo."
-	@echo "Run \`make' in that directory to run these through makeinfo" \
-	      "(use \`make info' here to do that automatically)."
-
-info:
-	$(SPHINXBUILD) -b texinfo $(ALLSPHINXOPTS) $(BUILDDIR)/texinfo
-	@echo "Running Texinfo files through makeinfo..."
-	make -C $(BUILDDIR)/texinfo info
-	@echo "makeinfo finished; the Info files are in $(BUILDDIR)/texinfo."
-
-gettext:
-	$(SPHINXBUILD) -b gettext $(I18NSPHINXOPTS) $(BUILDDIR)/locale
-	@echo
-	@echo "Build finished. The message catalogs are in $(BUILDDIR)/locale."
-
-changes:
-	$(SPHINXBUILD) -b changes $(ALLSPHINXOPTS) $(BUILDDIR)/changes
-	@echo
-	@echo "The overview file is in $(BUILDDIR)/changes."
+	@echo "pdflatex finished; the PDF file is in $(REALBUILDDIR)/pdf/PyTan-$(VERSION).pdf"
 
 linkcheck:
 	$(SPHINXBUILD) -b linkcheck $(ALLSPHINXOPTS) $(BUILDDIR)/linkcheck
@@ -183,31 +96,12 @@ linkcheck:
 	@echo "Link check complete; look for any errors in the above output " \
 	      "or in $(BUILDDIR)/linkcheck/output.txt."
 
-doctest:
-	$(SPHINXBUILD) -b doctest $(ALLSPHINXOPTS) $(BUILDDIR)/doctest
-	@echo "Testing of doctests in the sources finished, look at the " \
-	      "results in $(BUILDDIR)/doctest/output.txt."
-
 coverage:
 	$(SPHINXBUILD) -b coverage $(ALLSPHINXOPTS) $(BUILDDIR)/coverage
 	@echo "Testing of coverage in the sources finished, look at the " \
 	      "results in $(BUILDDIR)/coverage/python.txt."
 
-xml:
-	$(SPHINXBUILD) -b xml $(ALLSPHINXOPTS) $(BUILDDIR)/xml
-	@echo
-	@echo "Build finished. The XML files are in $(BUILDDIR)/xml."
 
-pseudoxml:
-	$(SPHINXBUILD) -b pseudoxml $(ALLSPHINXOPTS) $(BUILDDIR)/pseudoxml
-	@echo
-	@echo "Build finished. The pseudo-XML files are in $(BUILDDIR)/pseudoxml."
+all: clean htmlzip coverage latexpdf
 
-staticdoc:
-	cp $(STATIC_DOCDIR)/* $(REALBUILDDIR)/
-	cp $(STATIC_DOCDIR)/* $(REALBUILDDIR)/html
-	@echo "Static docs copied to $(REALBUILDDIR)"
-
-all: clean html staticdoc coverage latexpdf
-
-alldirty: html staticdoc coverage latexpdf
+alldirty: htmlzip coverage latexpdf
