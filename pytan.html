@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>2. PyTan Package &mdash; PyTan v2.1.0 2.1.0 documentation</title>
+  <title>2. PyTan Package &mdash; PyTan v2.1.1 2.1.1 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="PyTan v2.1.0 2.1.0 documentation" href="index.html"/>
+    <link rel="top" title="PyTan v2.1.1 2.1.1 documentation" href="index.html"/>
         <link rel="next" title="3. PyTan Tests" href="pytan_tests.html"/>
         <link rel="prev" title="1. PyTan Introduction" href="introduction.html"/> 
 
@@ -45,7 +45,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-nav-search">
         
-          <a href="index.html" class="fa fa-home"> PyTan v2.1.0</a>
+          <a href="index.html" class="fa fa-home"> PyTan v2.1.1</a>
         
         
 <div role="search">
@@ -150,7 +150,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">PyTan v2.1.0</a>
+        <a href="index.html">PyTan v2.1.1</a>
       </nav>
 
 
@@ -177,7 +177,7 @@
 <p>A python package that makes using the Tanium Server SOAP API easy.</p>
 <dl class="data">
 <dt id="pytan.__version__">
-<code class="descclassname">pytan.</code><code class="descname">__version__</code><em class="property"> = '2.1.0'</em><a class="headerlink" href="#pytan.__version__" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pytan.</code><code class="descname">__version__</code><em class="property"> = '2.1.1'</em><a class="headerlink" href="#pytan.__version__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Version of PyTan</p>
 </dd></dl>
 
@@ -2075,7 +2075,7 @@ Use <a class="reference internal" href="#pytan.handler.Handler.create_from_json"
 
 <dl class="method">
 <dt id="pytan.handler.Handler.create_user">
-<code class="descname">create_user</code><span class="sig-paren">(</span><em>name</em>, <em>rolename=[]</em>, <em>roleid=[]</em>, <em>properties=[]</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.create_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.create_user" title="Permalink to this definition">¶</a></dt>
+<code class="descname">create_user</code><span class="sig-paren">(</span><em>name</em>, <em>rolename=[]</em>, <em>roleid=[]</em>, <em>properties=[]</em>, <em>group=''</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/handler.html#Handler.create_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.handler.Handler.create_user" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a user object</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2108,6 +2108,13 @@ Use <a class="reference internal" href="#pytan.handler.Handler.create_from_json"
 <li>each list must be a 2 item list:</li>
 <li>list item 1 property name</li>
 <li>list item 2 property value</li>
+</ul>
+</div></blockquote>
+<p><strong>group: str</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>default: &#8216;&#8217;</li>
+<li>name of group to assign to user</li>
 </ul>
 </div></blockquote>
 </td>
@@ -9025,7 +9032,7 @@ aginst the version of <a class="reference internal" href="#module-pytan" title="
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Sep 05, 2015.
+      Last updated on Sep 08, 2015.
     </p>
   </div>
 
@@ -9046,7 +9053,7 @@ aginst the version of <a class="reference internal" href="#module-pytan" title="
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'2.1.0',
+            VERSION:'2.1.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
