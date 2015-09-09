@@ -1,6 +1,13 @@
-# 2.1.3
+# 2.1.4
 
 [Development branch](https://github.com/tanium/pytan/tree/develop) on N/A
+
+# 2.1.3
+
+[Released](https://github.com/tanium/pytan/releases/tag/2.1.3) on Sep 09 2015 
+
+  * enhancement:
+    * change ask_saved.py to accept —no-refresh_data and —refresh_data, instead of just —refresh_data (to allow the user to be explicit). The default is still —no-refresh_data
 
 # 2.1.2
 
