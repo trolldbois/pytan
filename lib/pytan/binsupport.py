@@ -849,12 +849,24 @@ def setup_ask_saved_argparser(doc):
 
     arggroup_name = 'Saved Question Selectors'
     arggroup = parser.add_argument_group(arggroup_name)
-    arggroup.add_argument(
-        '--refresh_data',
-        required=False,
-        action='store_true',
-        default=False,
+
+    group = arggroup.add_mutually_exclusive_group()
+
+    group.add_argument(
+        '--no-refresh_data',
+        action='store_false',
         dest='refresh_data',
+        default=argparse.SUPPRESS,
+        required=False,
+        help='Do not refresh the data available for a saved question (default)'
+    )
+
+    group.add_argument(
+        '--refresh_data',
+        action='store_true',
+        dest='refresh_data',
+        default=argparse.SUPPRESS,
+        required=False,
         help='Refresh the data available for a saved question',
     )
 
@@ -2343,7 +2355,7 @@ def process_ask_saved_args(parser, handler, args):
     """
     id_arg = args.id
     name_arg = args.name
-    refresh_arg = args.refresh_data
+    refresh_arg = args.__dict__.get('refresh_data', False)
 
     q_args = {}
 
