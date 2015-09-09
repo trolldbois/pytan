@@ -5,9 +5,12 @@ Create User Readme
 <a name='toc'>Table of contents:</a>
 
   * [Help for Create User](#user-content-help-for-create-user)
-  * [Create a new user](#user-content-create-a-new-user)
-  * [Delete the recently created user](#user-content-delete-the-recently-created-user)
-  * [Create a new user with a group specificied](#user-content-create-a-new-user-with-a-group-specificied)
+  * [Example 1: Delete the user we want to create to ensure it does not pre-exist](#user-content-example-1:-delete-the-user-we-want-to-create-to-ensure-it-does-not-pre-exist)
+  * [Example 1: Create a new user](#user-content-example-1:-create-a-new-user)
+  * [Example 1: Delete the recently created user](#user-content-example-1:-delete-the-recently-created-user)
+  * [Example 2: Delete the user we want to create to ensure it does not pre-exist](#user-content-example-2:-delete-the-user-we-want-to-create-to-ensure-it-does-not-pre-exist)
+  * [Example 2: Create a new user with a group specificied](#user-content-example-2:-create-a-new-user-with-a-group-specificied)
+  * [Example 2: Delete the recently created user](#user-content-example-2:-delete-the-recently-created-user)
 
 ---------------------------
 
@@ -95,19 +98,42 @@ Create User Options:
 [TOC](#user-content-toc)
 
 
-# Create a new user
+# Example 1: Delete the user we want to create to ensure it does not pre-exist
+
+  * Delete the user named "CMDLINE TEST user"
+  * This may or may not fail -- thats fine!
+
+```bash
+bin/delete_user.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --loglevel 1 --name "CMDLINE TEST user"
+```
+
+```
+PyTan v2.1.2 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+Deleted item:  User, name: 'CMDLINE TEST user', id: 329
+```
+
+  * Validation Test: noerror
+    * Valid: **True**
+    * Messages: No error texts found in stderr/stdout
+
+
+
+[TOC](#user-content-toc)
+
+
+# Example 1: Create a new user
 
   * Create a user named CMDLINE TEST user
   * Assign the Administrator role to the new user
   * Create a property named property name with the value property value on the new user
 
 ```bash
-bin/create_user.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --loglevel 1 --name "CMDLINE TEST user" --rolename "Administrator" --property "property name" "property value" | tee -a /tmp/create_user.out
+bin/create_user.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --loglevel 1 --name "CMDLINE TEST user" --rolename "Administrator" --property "property name" "property value"
 ```
 
 ```
-PyTan v2.1.1 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-New user 'CMDLINE TEST user' created with ID 316, roles: 'Administrator'
+PyTan v2.1.2 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+New user 'CMDLINE TEST user' created with ID 330, roles: 'Administrator', group id: 0
 ```
 
   * Validation Test: exitcode
@@ -123,17 +149,17 @@ New user 'CMDLINE TEST user' created with ID 316, roles: 'Administrator'
 [TOC](#user-content-toc)
 
 
-# Delete the recently created user
+# Example 1: Delete the recently created user
 
-  * Delete the user by id
+  * Delete the user by name
 
 ```bash
-bin/delete_user.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --loglevel 1 --id `cat /tmp/create_user.out| grep created | sed 's/.*ID //' | cut -d, -f1`
+bin/delete_user.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --loglevel 1 --name "CMDLINE TEST user"
 ```
 
 ```
-PyTan v2.1.1 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-Deleted item:  User, name: 'CMDLINE TEST user', id: 316
+PyTan v2.1.2 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+Deleted item:  User, name: 'CMDLINE TEST user', id: 330
 ```
 
   * Validation Test: exitcode
@@ -149,19 +175,55 @@ Deleted item:  User, name: 'CMDLINE TEST user', id: 316
 [TOC](#user-content-toc)
 
 
-# Create a new user with a group specificied
+# Example 2: Delete the user we want to create to ensure it does not pre-exist
+
+  * Delete the user named "CMDLINE TEST user"
+  * This may or may not fail -- thats fine!
+
+```bash
+bin/delete_user.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --loglevel 1 --name "CMDLINE TEST user"
+```
+
+```
+PyTan v2.1.2 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+
+
+Error occurred: No results found searching for user with {'id': [], 'name': ['CMDLINE TEST user']}!!
+```
+
+```STDERR
+Traceback (most recent call last):
+  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 1711, in process_delete_object_args
+    response = handler.delete(**obj_grp_args)
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1735, in delete
+    objs_to_del = self.get(objtype=objtype, pytan_help=h, **clean_kwargs)
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 2072, in get
+    raise pytan.exceptions.HandlerError(err(objtype, err_args))
+HandlerError: No results found searching for user with {'id': [], 'name': ['CMDLINE TEST user']}!!
+```
+
+  * Validation Test: noerror
+    * Valid: **True**
+    * Messages: No error texts found in stderr/stdout
+
+
+
+[TOC](#user-content-toc)
+
+
+# Example 2: Create a new user with a group specificied
 
   * Create a user named CMDLINE TEST user and allow it only access to users in the "All Computers" group name
   * Assign the Administrator role to the new user
   * Create a property named property name with the value property value on the new user
 
 ```bash
-bin/create_user.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --loglevel 1 --name "CMDLINE TEST user" --rolename "Administrator" --property "property name" "property value" -g "All Computers" | tee -a /tmp/create_user.out
+bin/create_user.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --loglevel 1 --name "CMDLINE TEST user" --rolename "Administrator" --property "property name" "property value" -g "All Computers"
 ```
 
 ```
-PyTan v2.1.1 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-New user 'CMDLINE TEST user' created with ID 317, roles: 'Administrator'
+PyTan v2.1.2 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+New user 'CMDLINE TEST user' created with ID 331, roles: 'Administrator', group id: 64
 ```
 
   * Validation Test: exitcode
@@ -177,4 +239,30 @@ New user 'CMDLINE TEST user' created with ID 317, roles: 'Administrator'
 [TOC](#user-content-toc)
 
 
-###### generated by: `build_bin_doc v2.1.0`, date: Tue Sep  8 12:34:27 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**
+# Example 2: Delete the recently created user
+
+  * Delete the user by name
+
+```bash
+bin/delete_user.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --loglevel 1 --name "CMDLINE TEST user"
+```
+
+```
+PyTan v2.1.2 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+Deleted item:  User, name: 'CMDLINE TEST user', id: 331
+```
+
+  * Validation Test: exitcode
+    * Valid: **True**
+    * Messages: Exit Code is 0
+
+  * Validation Test: noerror
+    * Valid: **True**
+    * Messages: No error texts found in stderr/stdout
+
+
+
+[TOC](#user-content-toc)
+
+
+###### generated by: `build_bin_doc v2.1.0`, date: Wed Sep  9 11:29:46 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**

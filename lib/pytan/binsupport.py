@@ -22,6 +22,7 @@ import csv
 import io
 import datetime
 import time
+import copy
 from argparse import ArgumentDefaultsHelpFormatter as A1 # noqa
 from argparse import RawDescriptionHelpFormatter as A2 # noqa
 
@@ -383,13 +384,15 @@ def setup_get_object_argparser(obj, doc):
     )
 
     obj_map = pytan.utils.get_obj_map(obj)
-    search_keys = obj_map['search']
+    search_keys = copy.copy(obj_map['search'])
 
     if 'id' not in search_keys:
         search_keys.append('id')
 
     if obj == 'whitelisted_url':
         search_keys.append('url_regex')
+    elif obj == 'user':
+        search_keys.append('name')
 
     for k in search_keys:
         get_object_group.add_argument(
@@ -817,10 +820,12 @@ def setup_delete_object_argparser(obj, doc):
     arggroup = parser.add_argument_group(arggroup_name)
 
     obj_map = pytan.utils.get_obj_map(obj)
-    search_keys = obj_map['search']
+    search_keys = copy.copy(obj_map['search'])
 
     if obj == 'whitelisted_url':
         search_keys.append('url_regex')
+    elif obj == 'user':
+        search_keys.append('name')
 
     for k in search_keys:
         arggroup.add_argument(
@@ -857,7 +862,7 @@ def setup_ask_saved_argparser(doc):
 
     obj = 'saved_question'
     obj_map = pytan.utils.get_obj_map(obj)
-    search_keys = obj_map['search']
+    search_keys = copy.copy(obj_map['search'])
     for k in search_keys:
         group.add_argument(
             '--{}'.format(k),
@@ -1701,8 +1706,9 @@ def process_delete_object_args(parser, handler, obj, args):
     ]
     obj_grp_opts = get_grp_opts(parser=parser, grp_names=obj_grp_names)
     obj_grp_args = {k: getattr(args, k) for k in obj_grp_opts}
+    obj_grp_args['objtype'] = obj
     try:
-        response = handler.delete(obj, **obj_grp_args)
+        response = handler.delete(**obj_grp_args)
     except Exception as e:
         traceback.print_exc()
         print "\n\nError occurred: {}".format(e)
@@ -1843,7 +1849,10 @@ def process_create_user_args(parser, handler, args):
 
     roles_txt = ', '.join([x.name for x in response.roles])
 
-    m = "New user {0.name!r} created with ID {0.id!r}, roles: {1!r}".format
+    m = (
+        "New user {0.name!r} created with ID {0.id!r}, roles: {1!r}, "
+        "group id: {0.group_id!r}"
+    ).format
     print(m(response, roles_txt))
     return response
 
@@ -1975,7 +1984,9 @@ def process_create_group_args(parser, handler, args):
         print "\n\nError occurred: {}".format(e)
         sys.exit(99)
 
-    m = "New group {0.name!r} created with ID {0.id!r}, filter text: {0.text!r}".format
+    m = (
+        "New group {0.name!r} created with ID {0.id!r}, filter text: {0.text!r}"
+    ).format
     print(m(response))
     return response
 
@@ -2099,16 +2110,19 @@ def process_get_object_args(parser, handler, obj, args, report=True):
     obj_grp_opts = get_grp_opts(parser=parser, grp_names=obj_grp_names)
     obj_grp_args = {k: getattr(args, k) for k in obj_grp_opts}
     get_all = obj_grp_args.pop('all')
+    o_dict = {'objtype': obj}
+    obj_grp_args.update(o_dict)
+
     if get_all:
         try:
-            response = handler.get_all(obj)
+            response = handler.get_all(**o_dict)
         except Exception as e:
             traceback.print_exc()
             print "\n\nError occurred: {}".format(e)
             sys.exit(100)
     else:
         try:
-            response = handler.get(obj, **obj_grp_args)
+            response = handler.get(**obj_grp_args)
         except Exception as e:
             traceback.print_exc()
             print "\n\nError occurred: {}".format(e)

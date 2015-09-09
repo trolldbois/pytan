@@ -338,39 +338,57 @@ sname = 'create_user'
 examples[sname] = []
 
 e = {}
-e['name'] = 'Create a new user'
-e['cmd'] = '''bin/${script_name}.py ${API_INFO} --name "CMDLINE TEST user" --rolename "Administrator" --property "property name" "property value" | tee -a ${TMPDIR}/create_user.out'''
+e['name'] = 'Example 1: Delete the user we want to create to ensure it does not pre-exist'
+e['cmd'] = '''bin/delete_user.py ${API_INFO} --name "CMDLINE TEST user"'''
+e['notes'] = '''Delete the user named "CMDLINE TEST user"
+This may or may not fail -- thats fine!
+'''
+e['errormatch'] = 'no_match_test'
+e['tests'] = 'noerror'
+examples[sname].append(e)
+
+e = {}
+e['name'] = 'Example 1: Create a new user'
+e['cmd'] = '''bin/${script_name}.py ${API_INFO} --name "CMDLINE TEST user" --rolename "Administrator" --property "property name" "property value"'''
 e['notes'] = '''Create a user named CMDLINE TEST user
 Assign the Administrator role to the new user
 Create a property named property name with the value property value on the new user
 '''
-e['precleanup'] = 'rm -f ${TMPDIR}/create_user.out'
 e['tests'] = 'exitcode, noerror'
 examples[sname].append(e)
 
 e = {}
-e['name'] = 'Delete the recently created user'
-e['cmd'] = '''bin/delete_user.py ${API_INFO} --id `cat ${TMPDIR}/create_user.out| grep created | sed 's/.*ID //' | cut -d, -f1`'''
-e['notes'] = '''Delete the user by id
+e['name'] = 'Example 1: Delete the recently created user'
+e['cmd'] = '''bin/delete_user.py ${API_INFO} --name "CMDLINE TEST user"'''
+e['notes'] = '''Delete the user by name
 '''
 e['tests'] = 'exitcode, noerror'
 examples[sname].append(e)
 
 e = {}
-e['name'] = 'Create a new user with a group specificied'
-e['cmd'] = '''bin/${script_name}.py ${API_INFO} --name "CMDLINE TEST user" --rolename "Administrator" --property "property name" "property value" -g "All Computers" | tee -a ${TMPDIR}/create_user.out'''
+e['name'] = 'Example 2: Delete the user we want to create to ensure it does not pre-exist'
+e['cmd'] = '''bin/delete_user.py ${API_INFO} --name "CMDLINE TEST user"'''
+e['notes'] = '''Delete the user named "CMDLINE TEST user"
+This may or may not fail -- thats fine!
+'''
+e['errormatch'] = 'no_match_test'
+e['tests'] = 'noerror'
+examples[sname].append(e)
+
+e = {}
+e['name'] = 'Example 2: Create a new user with a group specificied'
+e['cmd'] = '''bin/${script_name}.py ${API_INFO} --name "CMDLINE TEST user" --rolename "Administrator" --property "property name" "property value" -g "All Computers"'''
 e['notes'] = '''Create a user named CMDLINE TEST user and allow it only access to users in the "All Computers" group name
 Assign the Administrator role to the new user
 Create a property named property name with the value property value on the new user
 '''
-e['precleanup'] = 'rm -f ${TMPDIR}/create_user.out'
 e['tests'] = 'exitcode, noerror'
 examples[sname].append(e)
 
 e = {}
-e['name'] = 'Delete the recently created user'
-e['cmd'] = '''bin/delete_user.py ${API_INFO} --id `cat ${TMPDIR}/create_user.out| grep created | sed 's/.*ID //' | cut -d, -f1`'''
-e['notes'] = '''Delete the user by id
+e['name'] = 'Example 2: Delete the recently created user'
+e['cmd'] = '''bin/delete_user.py ${API_INFO} --name "CMDLINE TEST user"'''
+e['notes'] = '''Delete the user by name
 '''
 e['tests'] = 'exitcode, noerror'
 examples[sname].append(e)

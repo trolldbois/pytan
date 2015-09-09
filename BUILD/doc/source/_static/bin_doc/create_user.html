@@ -763,9 +763,12 @@ body .task-list{
 
 <ul>
 <li><a href="#user-content-help-for-create-user">Help for Create User</a></li>
-<li><a href="#user-content-create-a-new-user">Create a new user</a></li>
-<li><a href="#user-content-delete-the-recently-created-user">Delete the recently created user</a></li>
-<li><a href="#user-content-create-a-new-user-with-a-group-specificied">Create a new user with a group specificied</a></li>
+<li>Example 1: Delete the user we want to create to ensure it does not pre-exist</li>
+<li>Example 1: Create a new user</li>
+<li>Example 1: Delete the recently created user</li>
+<li>Example 2: Delete the user we want to create to ensure it does not pre-exist</li>
+<li>Example 2: Create a new user with a group specificied</li>
+<li>Example 2: Delete the recently created user</li>
 </ul>
 
 <hr>
@@ -865,7 +868,34 @@ Create User Options:
 <p><a href="#user-content-toc">TOC</a></p>
 
 <h1>
-<a id="user-content-create-a-new-user" class="anchor" href="#create-a-new-user" aria-hidden="true"><span class="octicon octicon-link"></span></a>Create a new user</h1>
+<a id="user-content-example-1-delete-the-user-we-want-to-create-to-ensure-it-does-not-pre-exist" class="anchor" href="#example-1-delete-the-user-we-want-to-create-to-ensure-it-does-not-pre-exist" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example 1: Delete the user we want to create to ensure it does not pre-exist</h1>
+
+<ul>
+<li>Delete the user named "CMDLINE TEST user"</li>
+<li>This may or may not fail -- thats fine!</li>
+</ul>
+
+<div class="highlight highlight-bash"><pre>bin/delete_user.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>CMDLINE TEST user<span class="pl-pds">"</span></span></pre></div>
+
+<pre><code>PyTan v2.1.2 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+Deleted item:  User, name: 'CMDLINE TEST user', id: 329
+</code></pre>
+
+<ul>
+<li>Validation Test: noerror
+
+<ul>
+<li>Valid: <strong>True</strong>
+</li>
+<li>Messages: No error texts found in stderr/stdout</li>
+</ul>
+</li>
+</ul>
+
+<p><a href="#user-content-toc">TOC</a></p>
+
+<h1>
+<a id="user-content-example-1-create-a-new-user" class="anchor" href="#example-1-create-a-new-user" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example 1: Create a new user</h1>
 
 <ul>
 <li>Create a user named CMDLINE TEST user</li>
@@ -873,10 +903,10 @@ Create User Options:
 <li>Create a property named property name with the value property value on the new user</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>bin/create_user.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>CMDLINE TEST user<span class="pl-pds">"</span></span> --rolename <span class="pl-s"><span class="pl-pds">"</span>Administrator<span class="pl-pds">"</span></span> --property <span class="pl-s"><span class="pl-pds">"</span>property name<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>property value<span class="pl-pds">"</span></span> <span class="pl-k">|</span> tee -a /tmp/create_user.out</pre></div>
+<div class="highlight highlight-bash"><pre>bin/create_user.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>CMDLINE TEST user<span class="pl-pds">"</span></span> --rolename <span class="pl-s"><span class="pl-pds">"</span>Administrator<span class="pl-pds">"</span></span> --property <span class="pl-s"><span class="pl-pds">"</span>property name<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>property value<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.1 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-New user 'CMDLINE TEST user' created with ID 316, roles: 'Administrator'
+<pre><code>PyTan v2.1.2 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+New user 'CMDLINE TEST user' created with ID 330, roles: 'Administrator', group id: 0
 </code></pre>
 
 <ul>
@@ -903,16 +933,16 @@ New user 'CMDLINE TEST user' created with ID 316, roles: 'Administrator'
 <p><a href="#user-content-toc">TOC</a></p>
 
 <h1>
-<a id="user-content-delete-the-recently-created-user" class="anchor" href="#delete-the-recently-created-user" aria-hidden="true"><span class="octicon octicon-link"></span></a>Delete the recently created user</h1>
+<a id="user-content-example-1-delete-the-recently-created-user" class="anchor" href="#example-1-delete-the-recently-created-user" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example 1: Delete the recently created user</h1>
 
 <ul>
-<li>Delete the user by id</li>
+<li>Delete the user by name</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>bin/delete_user.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --id <span class="pl-s"><span class="pl-pds">`</span>cat /tmp/create_user.out<span class="pl-k">|</span> grep created <span class="pl-k">|</span> sed <span class="pl-s"><span class="pl-pds">'</span>s/.*ID //<span class="pl-pds">'</span></span> <span class="pl-k">|</span> cut -d, -f1<span class="pl-pds">`</span></span></pre></div>
+<div class="highlight highlight-bash"><pre>bin/delete_user.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>CMDLINE TEST user<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.1 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-Deleted item:  User, name: 'CMDLINE TEST user', id: 316
+<pre><code>PyTan v2.1.2 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+Deleted item:  User, name: 'CMDLINE TEST user', id: 330
 </code></pre>
 
 <ul>
@@ -939,7 +969,46 @@ Deleted item:  User, name: 'CMDLINE TEST user', id: 316
 <p><a href="#user-content-toc">TOC</a></p>
 
 <h1>
-<a id="user-content-create-a-new-user-with-a-group-specificied" class="anchor" href="#create-a-new-user-with-a-group-specificied" aria-hidden="true"><span class="octicon octicon-link"></span></a>Create a new user with a group specificied</h1>
+<a id="user-content-example-2-delete-the-user-we-want-to-create-to-ensure-it-does-not-pre-exist" class="anchor" href="#example-2-delete-the-user-we-want-to-create-to-ensure-it-does-not-pre-exist" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example 2: Delete the user we want to create to ensure it does not pre-exist</h1>
+
+<ul>
+<li>Delete the user named "CMDLINE TEST user"</li>
+<li>This may or may not fail -- thats fine!</li>
+</ul>
+
+<div class="highlight highlight-bash"><pre>bin/delete_user.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>CMDLINE TEST user<span class="pl-pds">"</span></span></pre></div>
+
+<pre><code>PyTan v2.1.2 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+
+
+Error occurred: No results found searching for user with {'id': [], 'name': ['CMDLINE TEST user']}!!
+</code></pre>
+
+<pre lang="STDERR"><code>Traceback (most recent call last):
+  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 1711, in process_delete_object_args
+    response = handler.delete(**obj_grp_args)
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1735, in delete
+    objs_to_del = self.get(objtype=objtype, pytan_help=h, **clean_kwargs)
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 2072, in get
+    raise pytan.exceptions.HandlerError(err(objtype, err_args))
+HandlerError: No results found searching for user with {'id': [], 'name': ['CMDLINE TEST user']}!!
+</code></pre>
+
+<ul>
+<li>Validation Test: noerror
+
+<ul>
+<li>Valid: <strong>True</strong>
+</li>
+<li>Messages: No error texts found in stderr/stdout</li>
+</ul>
+</li>
+</ul>
+
+<p><a href="#user-content-toc">TOC</a></p>
+
+<h1>
+<a id="user-content-example-2-create-a-new-user-with-a-group-specificied" class="anchor" href="#example-2-create-a-new-user-with-a-group-specificied" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example 2: Create a new user with a group specificied</h1>
 
 <ul>
 <li>Create a user named CMDLINE TEST user and allow it only access to users in the "All Computers" group name</li>
@@ -947,10 +1016,46 @@ Deleted item:  User, name: 'CMDLINE TEST user', id: 316
 <li>Create a property named property name with the value property value on the new user</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>bin/create_user.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>CMDLINE TEST user<span class="pl-pds">"</span></span> --rolename <span class="pl-s"><span class="pl-pds">"</span>Administrator<span class="pl-pds">"</span></span> --property <span class="pl-s"><span class="pl-pds">"</span>property name<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>property value<span class="pl-pds">"</span></span> -g <span class="pl-s"><span class="pl-pds">"</span>All Computers<span class="pl-pds">"</span></span> <span class="pl-k">|</span> tee -a /tmp/create_user.out</pre></div>
+<div class="highlight highlight-bash"><pre>bin/create_user.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>CMDLINE TEST user<span class="pl-pds">"</span></span> --rolename <span class="pl-s"><span class="pl-pds">"</span>Administrator<span class="pl-pds">"</span></span> --property <span class="pl-s"><span class="pl-pds">"</span>property name<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>property value<span class="pl-pds">"</span></span> -g <span class="pl-s"><span class="pl-pds">"</span>All Computers<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.1 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-New user 'CMDLINE TEST user' created with ID 317, roles: 'Administrator'
+<pre><code>PyTan v2.1.2 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+New user 'CMDLINE TEST user' created with ID 331, roles: 'Administrator', group id: 64
+</code></pre>
+
+<ul>
+<li>
+<p>Validation Test: exitcode</p>
+
+<ul>
+<li>Valid: <strong>True</strong>
+</li>
+<li>Messages: Exit Code is 0</li>
+</ul>
+</li>
+<li>
+<p>Validation Test: noerror</p>
+
+<ul>
+<li>Valid: <strong>True</strong>
+</li>
+<li>Messages: No error texts found in stderr/stdout</li>
+</ul>
+</li>
+</ul>
+
+<p><a href="#user-content-toc">TOC</a></p>
+
+<h1>
+<a id="user-content-example-2-delete-the-recently-created-user" class="anchor" href="#example-2-delete-the-recently-created-user" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example 2: Delete the recently created user</h1>
+
+<ul>
+<li>Delete the user by name</li>
+</ul>
+
+<div class="highlight highlight-bash"><pre>bin/delete_user.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>CMDLINE TEST user<span class="pl-pds">"</span></span></pre></div>
+
+<pre><code>PyTan v2.1.2 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+Deleted item:  User, name: 'CMDLINE TEST user', id: 331
 </code></pre>
 
 <ul>
@@ -977,7 +1082,7 @@ New user 'CMDLINE TEST user' created with ID 317, roles: 'Administrator'
 <p><a href="#user-content-toc">TOC</a></p>
 
 <h6>
-<a id="user-content-generated-by-build_bin_doc-v210-date-tue-sep--8-123427-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v210-date-tue-sep--8-123427-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v2.1.0</code>, date: Tue Sep  8 12:34:27 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
+<a id="user-content-generated-by-build_bin_doc-v210-date-wed-sep--9-112946-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v210-date-wed-sep--9-112946-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v2.1.0</code>, date: Wed Sep  9 11:29:46 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
 </h6>
 
 </body></html>
