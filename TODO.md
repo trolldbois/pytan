@@ -10,8 +10,6 @@
     * work on deploy action & start_seconds_from_now (a new action gets created at actual start time)
 
   * GEN:
-    * add group name to create_user output
-    * move platform 6.5 checks into GRD_SSE, call normal GRD instead of throwing exception
     * add auto paging/caching to normal GRD
     * rewrite write_csv
     * add secondary loop for if any data == current result unavail/etc (MEDIUM)
