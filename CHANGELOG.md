@@ -1,6 +1,13 @@
-# 2.1.2
+# 2.1.3
 
 [Development branch](https://github.com/tanium/pytan/tree/develop) on N/A
+
+# 2.1.2
+
+[Released](https://github.com/tanium/pytan/releases/tag/2.1.2) on Sep 09 2015 
+
+  * bug fixes:
+    * make --name work for get_user.py/delete_user.py
 
 # 2.1.1
 
