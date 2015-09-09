@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pytan.binsupport &mdash; PyTan v2.1.2 2.1.2 documentation</title>
+  <title>pytan.binsupport &mdash; PyTan v2.1.3 2.1.3 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="PyTan v2.1.2 2.1.2 documentation" href="../../index.html"/>
+    <link rel="top" title="PyTan v2.1.3 2.1.3 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -44,7 +44,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-nav-search">
         
-          <a href="../../index.html" class="fa fa-home"> PyTan v2.1.2</a>
+          <a href="../../index.html" class="fa fa-home"> PyTan v2.1.3</a>
         
         
 <div role="search">
@@ -149,7 +149,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../../index.html">PyTan v2.1.2</a>
+        <a href="../../index.html">PyTan v2.1.3</a>
       </nav>
 
 
@@ -1023,12 +1023,24 @@
 
     <span class="n">arggroup_name</span> <span class="o">=</span> <span class="s">&#39;Saved Question Selectors&#39;</span>
     <span class="n">arggroup</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_argument_group</span><span class="p">(</span><span class="n">arggroup_name</span><span class="p">)</span>
-    <span class="n">arggroup</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s">&#39;--refresh_data&#39;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_true&#39;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+
+    <span class="n">group</span> <span class="o">=</span> <span class="n">arggroup</span><span class="o">.</span><span class="n">add_mutually_exclusive_group</span><span class="p">()</span>
+
+    <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s">&#39;--no-refresh_data&#39;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_false&#39;</span><span class="p">,</span>
         <span class="n">dest</span><span class="o">=</span><span class="s">&#39;refresh_data&#39;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">SUPPRESS</span><span class="p">,</span>
+        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Do not refresh the data available for a saved question (default)&#39;</span>
+    <span class="p">)</span>
+
+    <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s">&#39;--refresh_data&#39;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_true&#39;</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;refresh_data&#39;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">SUPPRESS</span><span class="p">,</span>
+        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
         <span class="n">help</span><span class="o">=</span><span class="s">&#39;Refresh the data available for a saved question&#39;</span><span class="p">,</span>
     <span class="p">)</span>
 
@@ -2517,7 +2529,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">id_arg</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">id</span>
     <span class="n">name_arg</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">name</span>
-    <span class="n">refresh_arg</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">refresh_data</span>
+    <span class="n">refresh_arg</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;refresh_data&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
 
     <span class="n">q_args</span> <span class="o">=</span> <span class="p">{}</span>
 
@@ -2827,7 +2839,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'2.1.2',
+            VERSION:'2.1.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
