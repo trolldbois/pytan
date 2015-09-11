@@ -53,15 +53,11 @@ class HistoryConsole(code.InteractiveConsole):
 
         self.debug = kwargs.get('debug', False)
 
-        self.readline = None
-        self.atexit = None
-
         import atexit
         self.atexit = atexit
+        self.readline = None
 
-        os_system = platform.system()
-
-        if os_system.lower() == 'windows':
+        if platform.system().lower() == 'windows':
             my_file = os.path.abspath(__file__)
             my_dir = os.path.dirname(my_file)
             parent_dir = os.path.dirname(my_dir)
@@ -74,22 +70,6 @@ class HistoryConsole(code.InteractiveConsole):
         self.setup_autocomplete()
         self.read_history(histfile)
         self.setup_atexit_write_history(histfile)
-
-    def import_pyreadline_win(self):
-        try:
-            import readline
-            self.readline = readline
-            if self.debug:
-                print "imported readline: {}".format(readline.__file__)
-        except Exception as e:
-            print (
-                "Pyreadline module unable to load, auto-completetion will not be enabled! "
-                "Exception: {}"
-            ).format(e)
-        else:
-            import rlcompleter
-            if self.debug:
-                print "imported rlcompleter: {}".format(rlcompleter.__file__)
 
     def import_readline(self):
         try:
