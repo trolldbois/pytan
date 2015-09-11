@@ -11,7 +11,6 @@ sys.dont_write_bytecode = True
 import os
 import logging
 import code
-import atexit
 import traceback
 import pprint
 import argparse
@@ -25,12 +24,6 @@ import time
 import copy
 from argparse import ArgumentDefaultsHelpFormatter as A1 # noqa
 from argparse import RawDescriptionHelpFormatter as A2 # noqa
-
-try:
-    import readline
-    import rlcompleter
-except:
-    pass
 
 my_file = os.path.abspath(__file__)
 my_dir = os.path.dirname(my_file)
@@ -51,41 +44,102 @@ class HistoryConsole(code.InteractiveConsole):
 
     Examples
     --------
-        >>> console = pytan.binsupport.HistoryConsole()
+        >>> HistoryConsole()
     """
     def __init__(self, locals=None, filename="<console>",
-                 histfile=os.path.expanduser("~/.console-history")):
+                 histfile=os.path.expanduser("~/.console-history"), **kwargs):
         code.InteractiveConsole.__init__(self, locals, filename)
-        try:
-            self.rldoc = rlcompleter.__doc__
-        except:
-            pass
-        try:
-            self.init_history(histfile)
-        except:
-            pass
 
-    def init_history(self, histfile):
-        if 'libedit' in readline.__doc__:
-            # osx style readline
+        self.debug = kwargs.get('debug', False)
+
+        self.readline = None
+        self.atexit = None
+
+        try:
+            import readline
+            self.readline = readline
+            if self.debug:
+                print "imported readline: {}".format(readline.__file__)
+        except:
+            print (
+                "No readline support in this Python build, auto-completetion will not be enabled!"
+            )
+        else:
+            import rlcompleter  # noqa
+            if self.debug:
+                print "imported rlcompleter: {}".format(rlcompleter.__file__)
+
+        import atexit
+        self.atexit = atexit
+
+        self.setup_autocomplete()
+        self.read_history(histfile)
+        self.setup_atexit_write_history(histfile)
+
+    def setup_autocomplete(self):
+        readline = self.readline
+
+        rlfile = getattr(readline, '__file__', '') or ''
+        rldoc = getattr(readline, '__doc__', '') or ''
+
+        if 'libedit' in rldoc:
+            if self.debug:
+                print "osx libedit readline style readline"
             readline.parse_and_bind("bind ^I rl_complete")
             readline.parse_and_bind("bind ^R em-inc-search-prev")
-        else:
-            # unix style readline
+        if 'readline.py' in rlfile:
+            if self.debug:
+                print "pyreadline style readline"
             readline.parse_and_bind("tab: complete")
-        if hasattr(readline, "read_history_file"):
+        elif rldoc:
+            if self.debug:
+                print "normal readline style readline"
+            readline.parse_and_bind("tab: complete")
+        elif self.debug:
+            print "readline module {} is unknown, methods: {}".format(
+                readline, dir(readline),
+            )
+
+    def setup_atexit_write_history(self, histfile):
+        readline = self.readline
+        rl_has_history = hasattr(readline, "write_history_file")
+        if rl_has_history:
+            atexit = self.atexit
+            atexit.register(self.write_history, histfile)
+        elif self.debug:
+            print "readline module {} has no write_history_file(), methods: {}".format(
+                readline, dir(readline),
+            )
+
+    def read_history(self, histfile):
+        readline = self.readline
+        rl_has_history = hasattr(readline, "read_history_file")
+        if rl_has_history:
             try:
                 readline.read_history_file(histfile)
             except IOError:
+                # the file doesn't exist/can't be accessed
                 pass
-            atexit.register(self.save_history, histfile)
+            except Exception as e:
+                print "Unable to read history file '{}', exception: '{}'".format(histfile, e)
+        elif self.debug:
+            print "readline module {} has no read_history_file(), methods: {}".format(
+                readline, dir(readline),
+            )
 
-    @staticmethod
-    def save_history(histfile):
-        try:
-            readline.write_history_file(histfile)
-        except:
-            pass
+    def write_history(self, histfile):
+        readline = self.readline
+        rl_has_history = hasattr(readline, "write_history_file")
+
+        if rl_has_history:
+            try:
+                readline.write_history_file(histfile) # noqa
+            except Exception as e:
+                print "Unable to write history file '{}', exception: '{}'".format(histfile, e)
+        elif self.debug:
+            print "readline module {} has no write_history_file(), methods: {}".format(
+                readline, dir(readline),
+            )
 
 
 class CustomArgFormat(A1, A2):
@@ -475,7 +529,7 @@ def setup_print_sensors_argparser(doc):
 def setup_create_sensor_argparser(doc):
     """Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to create a sensor.
     """
-    parser = pytan.binsupport.setup_parser(desc=doc, help=True)
+    parser = setup_parser(desc=doc, help=True)
     arggroup_name = 'Create Sensor Options'
     arggroup = parser.add_argument_group(arggroup_name)
 
@@ -493,7 +547,7 @@ def setup_create_sensor_argparser(doc):
 def setup_create_group_argparser(doc):
     """Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to create a group.
     """
-    parser = pytan.binsupport.setup_parser(desc=doc, help=True)
+    parser = setup_parser(desc=doc, help=True)
     arggroup_name = 'Create Group Options'
     arggroup = parser.add_argument_group(arggroup_name)
 
@@ -600,7 +654,7 @@ def setup_create_whitelisted_url_argparser(doc):
 def setup_create_package_argparser(doc):
     """Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to create a package.
     """
-    parser = pytan.binsupport.setup_parser(desc=doc, help=True)
+    parser = setup_parser(desc=doc, help=True)
     arggroup_name = 'Create Package Options'
     arggroup = parser.add_argument_group(arggroup_name)
 
@@ -730,14 +784,14 @@ def setup_create_package_argparser(doc):
 def setup_pytan_shell_argparser(doc):
     """Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to create a python shell.
     """
-    parser = pytan.binsupport.setup_parser(desc=doc, help=True)
+    parser = setup_parser(desc=doc, help=True)
     return parser
 
 
 def setup_create_user_argparser(doc):
     """Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to create a user.
     """
-    parser = pytan.binsupport.setup_parser(desc=doc, help=True)
+    parser = setup_parser(desc=doc, help=True)
     arggroup_name = 'Create User Options'
     arggroup = parser.add_argument_group(arggroup_name)
 
@@ -885,6 +939,26 @@ def setup_ask_saved_argparser(doc):
         )
 
     parser = add_ask_report_argparser(parser=parser)
+    return parser
+
+
+def setup_approve_saved_action_argparser(doc):
+    """Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to approve saved actions.
+    """
+    parser = setup_parent_parser(doc=doc)
+    arggroup_name = 'Approve Saved Action Options'
+    arggroup = parser.add_argument_group(arggroup_name)
+
+    arggroup.add_argument(
+        '-i',
+        '--id',
+        required=True,
+        type=int,
+        action='store',
+        dest='id',
+        help='ID of Saved Action to approve',
+    )
+
     return parser
 
 
@@ -1475,6 +1549,242 @@ def add_get_object_report_argparser(parser):
     return parser
 
 
+def setup_get_saved_question_history_argparser(doc):
+    """Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to get saved question history.
+    """
+    parser = setup_parent_parser(doc=doc)
+
+    arggroup_name = 'Saved Question Options'
+    arggroup = parser.add_argument_group(arggroup_name)
+
+    group = arggroup.add_mutually_exclusive_group()
+
+    group.add_argument(
+        '--no-empty_results',
+        action='store_false',
+        dest='empty_results',
+        default=argparse.SUPPRESS,
+        required=False,
+        help='Do not include details for questions with no data (default)'
+    )
+
+    group.add_argument(
+        '--empty_results',
+        action='store_true',
+        dest='empty_results',
+        default=argparse.SUPPRESS,
+        required=False,
+        help='Include details for questions with no data ',
+    )
+
+    group = arggroup.add_mutually_exclusive_group()
+
+    group.add_argument(
+        '--no-all_questions',
+        action='store_false',
+        dest='all_questions',
+        default=argparse.SUPPRESS,
+        required=False,
+        help='Do not include details for ALL questions, only the ones associated with a given saved question via --name or --id (default)'
+    )
+
+    group.add_argument(
+        '--all_questions',
+        action='store_true',
+        dest='all_questions',
+        default=argparse.SUPPRESS,
+        required=False,
+        help='Include details for ALL questions',
+    )
+
+    opt_group = parser.add_argument_group('Report File Options')
+    opt_group.add_argument(
+        '--file',
+        required=False,
+        action='store',
+        default='pytan_question_history_{}.csv'.format(pytan.utils.get_now()),
+        dest='report_file',
+        help='File to save report to',
+    )
+    opt_group.add_argument(
+        '--dir',
+        required=False,
+        action='store',
+        default=None,
+        dest='report_dir',
+        help='Directory to save report to (current directory will be used if not supplied)',
+    )
+
+    arggroup_name = 'Saved Question Selectors'
+    arggroup = parser.add_argument_group(arggroup_name)
+
+    group = arggroup.add_mutually_exclusive_group()
+
+    obj = 'saved_question'
+    obj_map = pytan.utils.get_obj_map(obj)
+    search_keys = copy.copy(obj_map['search'])
+    for k in search_keys:
+        group.add_argument(
+            '--{}'.format(k),
+            required=False,
+            action='store',
+            dest=k,
+            help='{} of {} to ask'.format(k, obj),
+        )
+
+    return parser
+
+
+def process_get_saved_question_history_args(parser, handler, args):
+    """Process command line args supplied by user for getting saved question history
+
+    Parameters
+    ----------
+    parser : :class:`argparse.ArgParse`
+        * ArgParse object used to parse `all_args`
+    handler : :class:`pytan.handler.Handler`
+        * Instance of Handler created from command line args
+    args : args object
+        * args parsed from `parser`
+
+    Returns
+    -------
+    response : :class:`taniumpy.object_types.base.BaseType`
+        * response from :func:`pytan.handler.Handler.create_user`
+    """
+
+    all_questions_bool = args.__dict__.get('all_questions', False)
+    empty_results_bool = args.__dict__.get('empty_results', False)
+
+    # if the user didn't specify ALL questions, lets find the saved question object so we can
+    # filter all the questions down to just the ones for this saved question
+    if not all_questions_bool:
+        get_args = {'objtype': 'saved_question'}
+
+        if args.id:
+            get_args['id'] = args.id
+        elif args.name:
+            get_args['name'] = args.name
+        else:
+            parser.error("Must supply --id or --name of saved question if not using --all_questions")
+
+        print "++ Finding saved question: {}".format(pytan.utils.jsonify(get_args))
+
+        try:
+            saved_question = handler.get(**get_args)[0]
+        except Exception as e:
+            traceback.print_exc()
+            print "\n\nError occurred: {}".format(e)
+            sys.exit(99)
+
+        print "Found Saved Question: '{}'".format(saved_question)
+
+    # get all questions
+    try:
+        all_questions = handler.get_all('question', include_hidden_flag=1)
+    except Exception as e:
+        traceback.print_exc()
+        print "\n\nError occurred: {}".format(e)
+        sys.exit(99)
+
+    print "Found {} Total Questions".format(len(all_questions))
+
+    if not all_questions_bool:
+        all_questions = [
+            x for x in all_questions
+            if getattr(x.saved_question, 'id', '') == saved_question.id
+        ]
+
+        print (
+            "Found {} Questions asked for Saved_question '{}'"
+        ).format(len(all_questions), saved_question)
+
+    print "Getting ResultInfo for {} Questions".format(len(all_questions))
+
+    # store the ResultInfo for each question as x.result_info
+    [
+        setattr(x, 'result_info', handler.get_result_info(x))
+        for x in all_questions
+    ]
+
+    if not empty_results_bool:
+        all_questions = [
+            x for x in all_questions
+            if x.result_info.row_count
+        ]
+        print "Found {} Questions that actually have data".format(len(all_questions))
+
+    # flatten out saved_question.id
+    [
+        setattr(x, 'saved_question_id', getattr(x.saved_question, 'id', '???'))
+        for x in all_questions
+    ]
+
+    # derive start time from expiration and expire_seconds
+    [
+        setattr(x, 'start_time', pytan.utils.calculate_question_start_time(x)[0])
+        for x in all_questions
+    ]
+
+    # flatten out result info attributes
+    result_info_attrs = [
+        'row_count',
+        'estimated_total',
+        'mr_tested',
+        'passed',
+    ]
+    [
+        setattr(x, y, getattr(x.result_info, y, '???'))
+        for x in all_questions
+        for y in result_info_attrs
+    ]
+
+    # dictify all questions for use with csv_dictwriter
+    question_attrs = [
+        'id',
+        'query_text',
+        'saved_question_id',
+        'start_time',
+        'expiration',
+        'row_count',
+        'estimated_total',
+        'mr_tested',
+        'passed',
+    ]
+
+    human_map = [
+        'Question ID',
+        'Question Text',
+        'Spawned by Saved Question ID',
+        'Question Started',
+        'Question Expired',
+        'Row Count',
+        'Client Count Right Now',
+        'Client Count that saw this question',
+        'Client Count that passed this questions filters',
+    ]
+
+    all_question_dicts = [
+        {human_map[question_attrs.index(k)]: str(getattr(x, k, '???')) for k in question_attrs}
+        for x in all_questions
+    ]
+
+    # turn the list of dicts into a CSV string
+    all_question_csv = csvdictwriter(
+        rows_list=all_question_dicts,
+        headers=human_map,
+    )
+
+    report_file = handler.create_report_file(
+        contents=all_question_csv,
+        report_file=args.report_file,
+        report_dir=args.report_dir,
+    )
+
+    print "Wrote {} bytes to report file: '{}'".format(len(all_question_csv), report_file)
+    return report_file
+
+
 def process_create_json_object_args(parser, handler, obj, args):
     """Process command line args supplied by user for create json object
 
@@ -1730,8 +2040,8 @@ def process_delete_object_args(parser, handler, obj, args):
     return response
 
 
-def process_stop_action_args(parser, handler, args):
-    """Process command line args supplied by user for getting results
+def process_approve_saved_action_args(parser, handler, args):
+    """Process command line args supplied by user for approving a saved action
 
     Parameters
     ----------
@@ -1744,11 +2054,41 @@ def process_stop_action_args(parser, handler, args):
 
     Returns
     -------
-    report_path, report_contents : tuple
-        * results from :func:`pytan.handler.Handler.export_to_report_file` on the return of :func:`pytan.handler.Handler.get_result_data`
+    approve_action
     """
+    q_args = {'id': args.id}
+
     try:
-        action_stop = handler.stop_action(**args.__dict__)
+        approve_action = handler.approve_saved_action(**q_args)
+    except Exception as e:
+        traceback.print_exc()
+        print "\n\nError occurred: {}".format(e)
+        sys.exit(99)
+
+    print "++ Saved Action ID approved successfully: {0.id!r}".format(approve_action)
+    return approve_action
+
+
+def process_stop_action_args(parser, handler, args):
+    """Process command line args supplied by user for stopping an action
+
+    Parameters
+    ----------
+    parser : :class:`argparse.ArgParse`
+        * ArgParse object used to parse `all_args`
+    handler : :class:`pytan.handler.Handler`
+        * Instance of Handler created from command line args
+    args : args
+        * args object from parsing `parser`
+
+    Returns
+    -------
+    stop_action
+    """
+    q_args = {'id': args.id}
+
+    try:
+        action_stop = handler.stop_action(**q_args)
     except Exception as e:
         traceback.print_exc()
         print "\n\nError occurred: {}".format(e)
@@ -2332,8 +2672,7 @@ def process_pytan_shell_args(parser, handler, args):
     args : args object
         * args parsed from `parser`
     """
-    console = pytan.binsupport.HistoryConsole()
-    return console
+    HistoryConsole()
 
 
 def process_ask_saved_args(parser, handler, args):
