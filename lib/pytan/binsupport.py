@@ -51,7 +51,7 @@ class HistoryConsole(code.InteractiveConsole):
                  histfile=os.path.expanduser("~/.console-history"), **kwargs):
         code.InteractiveConsole.__init__(self, locals, filename)
 
-        self.debug = kwargs.get('debug', True)
+        self.debug = kwargs.get('debug', False)
 
         self.readline = None
         self.atexit = None
