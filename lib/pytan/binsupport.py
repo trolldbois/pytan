@@ -19,6 +19,7 @@ import json
 import string
 import csv
 import io
+import platform
 import datetime
 import time
 import copy
@@ -50,11 +51,47 @@ class HistoryConsole(code.InteractiveConsole):
                  histfile=os.path.expanduser("~/.console-history"), **kwargs):
         code.InteractiveConsole.__init__(self, locals, filename)
 
-        self.debug = kwargs.get('debug', False)
+        self.debug = kwargs.get('debug', True)
 
         self.readline = None
         self.atexit = None
 
+        import atexit
+        self.atexit = atexit
+
+        os_system = platform.system()
+
+        if os_system.lower() == 'windows':
+            my_file = os.path.abspath(__file__)
+            my_dir = os.path.dirname(my_file)
+            parent_dir = os.path.dirname(my_dir)
+            pytan_root = os.path.dirname(parent_dir)
+            winlib_dir = os.path.join(pytan_root, 'winlib')
+            path_adds = [winlib_dir]
+            [sys.path.insert(0, aa) for aa in path_adds if aa not in sys.path]
+
+        self.import_readline()
+        self.setup_autocomplete()
+        self.read_history(histfile)
+        self.setup_atexit_write_history(histfile)
+
+    def import_pyreadline_win(self):
+        try:
+            import readline
+            self.readline = readline
+            if self.debug:
+                print "imported readline: {}".format(readline.__file__)
+        except Exception as e:
+            print (
+                "Pyreadline module unable to load, auto-completetion will not be enabled! "
+                "Exception: {}"
+            ).format(e)
+        else:
+            import rlcompleter
+            if self.debug:
+                print "imported rlcompleter: {}".format(rlcompleter.__file__)
+
+    def import_readline(self):
         try:
             import readline
             self.readline = readline
@@ -68,13 +105,6 @@ class HistoryConsole(code.InteractiveConsole):
             import rlcompleter  # noqa
             if self.debug:
                 print "imported rlcompleter: {}".format(rlcompleter.__file__)
-
-        import atexit
-        self.atexit = atexit
-
-        self.setup_autocomplete()
-        self.read_history(histfile)
-        self.setup_atexit_write_history(histfile)
 
     def setup_autocomplete(self):
         readline = self.readline
