@@ -4,7 +4,7 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 '''Tanium Sensor Analysis Tool: asks a question for every sensor and saves theresults as CSV reports'''
 __author__ = 'Jim Olsen <jim.olsen@tanium.com>'
-__version__ = '2.1.0'
+__version__ = '2.1.4'
 
 import os
 import sys
