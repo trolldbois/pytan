@@ -73,6 +73,14 @@ scripts[sname]['bat_template'] = '${bat_script}'
 # scripts[sname]['py_template'] = '${py_script}'
 # scripts[sname]['bat_template'] = '${bat_script}'
 
+sname = 'get_saved_question_history'
+scripts[sname] = {}
+scripts[sname]['docstring'] = 'Gets the Result Info for all the questions asked for a given saved question, or for all questions asked ever, and exports the question information to a CSV file'
+scripts[sname]['script_name'] = sname
+scripts[sname]['pyopts'] = ''
+scripts[sname]['py_template'] = '${py_script}'
+scripts[sname]['bat_template'] = '${bat_script}'
+
 sname = 'create_user'
 scripts[sname] = {}
 scripts[sname]['docstring'] = 'Create a user object from command line arguments'
@@ -132,6 +140,14 @@ scripts[sname]['bat_template'] = '${bat_script}'
 sname = 'stop_action'
 scripts[sname] = {}
 scripts[sname]['docstring'] = 'Stop an action by ID'
+scripts[sname]['script_name'] = sname
+scripts[sname]['pyopts'] = ''
+scripts[sname]['py_template'] = '${py_script}'
+scripts[sname]['bat_template'] = '${bat_script}'
+
+sname = 'approve_saved_action'
+scripts[sname] = {}
+scripts[sname]['docstring'] = 'Approve a saved action by ID'
 scripts[sname]['script_name'] = sname
 scripts[sname]['pyopts'] = ''
 scripts[sname]['py_template'] = '${py_script}'
