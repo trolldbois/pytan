@@ -2,6 +2,15 @@
 
 [Development branch](https://github.com/tanium/pytan/tree/develop) on N/A
 
+  * enhancement:
+    * added winlib/ directory
+    * added open source package pyreadline to winlib/ directory
+    * re-tooled pytan.binsupport.HistoryConsole to make it more error proof
+    * re-tooled pytan.binsupport.HistoryConsole to import winlib/ if on windows (for access to pyreadline)
+    * pytan_shell.py now has tab completion support on Windows (and a host of  keyboard shortcuts)
+    * new script: get_saved_question_history.py -- provides a method for seeing what questions asked for a saved question have data
+    * new script: approve_saved_question.py -- provides a way to approve an action when Global Setting "require_action_approval" is set to 1
+
 # 2.1.3
 
 [Released](https://github.com/tanium/pytan/releases/tag/2.1.3) on Sep 09 2015 
