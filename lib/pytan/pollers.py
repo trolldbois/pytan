@@ -302,16 +302,15 @@ class QuestionPoller(object):
             if result_info.estimated_total != 0:
                 break
 
+            attempt_text = "attempt {} out of {}".format(current_try, gri_retry_count)
             if current_try >= gri_retry_count:
-                m = "Estimated Total of Clients is 0 -- no clients available?".format
-                raise pytan.exceptions.PollingError(m())
+                m = "Estimated Total of Clients is 0 -- no clients available?, {}".format
+                raise pytan.exceptions.PollingError(m(attempt_text))
             else:
                 current_try += 1
-                h = (
-                    "re-issue a GetResultInfo since the estimated_total came back 0, attempt "
-                    "{} out of {}".format
-                )
-                clean_kwargs['pytan_help'] = h(current_try, gri_retry_count)
+                h = "Re-issuing a GetResultInfo since the estimated_total came back 0, {}".format
+                clean_kwargs['pytan_help'] = h(attempt_text)
+                self.mylog.debug(h)
                 continue
 
         return result_info
