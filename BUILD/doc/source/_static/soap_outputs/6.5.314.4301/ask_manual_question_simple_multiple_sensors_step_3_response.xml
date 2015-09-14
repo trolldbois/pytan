@@ -3,7 +3,7 @@
   <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <t:return>
       <command>GetObject</command>
-      <session>1-8122-d31bc4fc87ed6ee0b284657c5192d239b32c928092bbd3ef34465c577642c60cf874f779d83e3e3dd4e87074b2f329544e0a131bc2a0381f1fd97f9452304cfd</session>
+      <session>1-685-7f6bf3c54ea3f7e1bf73584af90643b6d64168a24f3b57da4e2aaae4980e154ad63fd4a69b5d677d51946da29053221bee206d3e0620288969b817245c908785</session>
       <server_version>6.5.314.4301</server_version>
       <ID></ID>
       <IDType></IDType>
@@ -14,7 +14,7 @@
             <id>3</id>
             <name>Computer Name</name>
             <hash>3409330187</hash>
-            <string_count>3</string_count>
+            <string_count>5</string_count>
             <category>Reserved</category>
             <description>The assigned name of the client machine.
 Example: workstation-1.company.com</description>

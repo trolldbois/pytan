@@ -64,7 +64,7 @@ kwargs["header_sort"] = []
 get_kwargs = {
     'name': [
         "Computer Name", "IP Route Details", "IP Address",
-        'Folder Name Search with RegEx Match',
+        'Folder Contents',
     ],
     'objtype': 'sensor',
 }

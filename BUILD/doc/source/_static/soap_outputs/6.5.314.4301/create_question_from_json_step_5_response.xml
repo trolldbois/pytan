@@ -3,20 +3,20 @@
   <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <t:return>
       <command>GetObject</command>
-      <session>1-8054-bb851398302f645dea9d41745eff0f70d9e033c3baa2958b39ab54d565ebb5df1934215a203caf3b1438dce295e83cc2e38f3c7e3793516e94f7a411e2530b65</session>
+      <session>1-617-7b399a9919f1e20d7e1adae0efad9bea67861ce4cba879745ef64a7a3bc9457e6b7a9a5951d16ca11444c153266296760be6418bd51cd8857b2aea77c51885a7</session>
       <server_version>6.5.314.4301</server_version>
       <ID></ID>
       <IDType></IDType>
       <ContextID></ContextID>
       <result_object>
         <question>
-          <id>11613</id>
+          <id>748</id>
           <context_group>
             <id>0</id>
           </context_group>
           <expire_seconds>0</expire_seconds>
           <skip_lock_flag>0</skip_lock_flag>
-          <expiration>2015-09-05T05:37:05</expiration>
+          <expiration>2015-09-14T20:07:40</expiration>
           <user>
             <id>1</id>
             <name>Administrator</name>
@@ -37,7 +37,7 @@
                 <id>1</id>
                 <name>Action Statuses</name>
                 <hash>1792443391</hash>
-                <string_count>787</string_count>
+                <string_count>110</string_count>
                 <category>Reserved</category>
                 <description>The recorded state of each action a client has taken recently in the form of id:status.
 Example: 1:Completed</description>

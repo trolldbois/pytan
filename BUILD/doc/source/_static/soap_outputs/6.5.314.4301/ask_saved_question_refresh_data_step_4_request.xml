@@ -8,11 +8,11 @@
           <hidden_flag>0</hidden_flag>
           <skip_lock_flag>0</skip_lock_flag>
           <query_text>Get Installed Applications from all machines</query_text>
-          <id>11550</id>
+          <id>770</id>
           <expire_seconds>0</expire_seconds>
           <force_computer_id_flag>0</force_computer_id_flag>
           <action_tracking_flag>0</action_tracking_flag>
-          <expiration>2015-09-05T04:44:06</expiration>
+          <expiration>2015-09-14T20:10:10</expiration>
           <user>
             <name>Administrator</name>
             <id>1</id>
@@ -44,16 +44,16 @@
                 <name>Installed Applications</name>
                 <hidden_flag>0</hidden_flag>
                 <delimiter>|</delimiter>
-                <creation_time>2015-08-26T20:14:28</creation_time>
+                <creation_time>2015-09-14T13:39:11</creation_time>
                 <exclude_from_parse_flag>1</exclude_from_parse_flag>
                 <last_modified_by>Administrator</last_modified_by>
-                <string_count>398</string_count>
-                <modification_time>2015-08-26T20:14:28</modification_time>
+                <string_count>1755</string_count>
+                <modification_time>2015-09-14T13:39:11</modification_time>
                 <ignore_case_flag>1</ignore_case_flag>
                 <max_age_seconds>600</max_age_seconds>
                 <value_type>String</value_type>
                 <source_id>0</source_id>
-                <id>96</id>
+                <id>92</id>
                 <description>List of the applications and versions of those applications installed on the client machine.
 Example: Mozilla Firefox | 16.0.1</description>
                 <subcolumns>
@@ -532,30 +532,25 @@ rm -rf &amp;quot;$ftemp&amp;quot;</script>
                     <platform>Solaris</platform>
                     <script_type>UnixShell</script_type>
                     <script>#!/bin/sh
-
-# THIS IS A STUB - NOT INTENDED AS FUNCTIONAL - NA
-# 
-# 
-
-echo &amp;quot;N/A on Solaris&amp;quot;</script>
+pkginfo -c application | awk &amp;#039;{ print $2 }&amp;#039;</script>
                   </query>
                   <query>
                     <platform>AIX</platform>
                     <script_type>UnixShell</script_type>
                     <script>#!/bin/sh
+#pkg_name|pkg_vers|nothing|Not Uninstallable
 
-# THIS IS A STUB - NOT INTENDED AS FUNCTIONAL - NA
-# 
-# 
-
-echo &amp;quot;N/A on AIX&amp;quot;</script>
+for pkg in `/usr/bin/lslpp -Lcq | awk -F: &amp;#039;{ print $1&amp;quot;|&amp;quot;$2&amp;#039;}`
+do
+ echo &amp;quot;$pkg|nothing|Not Uninstallable&amp;quot;
+done</script>
                   </query>
                 </queries>
               </sensor>
             </select>
           </selects>
           <saved_question>
-            <id>64</id>
+            <id>59</id>
           </saved_question>
         </question>
       </object_list>

@@ -6,7 +6,7 @@
       <object_list>
         <saved_actions>
           <saved_action>
-            <comment>Created by PyTan v2.1.0</comment>
+            <comment>Created by PyTan v2.1.4</comment>
             <status>0</status>
             <expire_seconds>660</expire_seconds>
             <name>API Deploy Custom Tagging - Add Tags</name>
@@ -38,13 +38,12 @@
               <verify_expire_seconds>600</verify_expire_seconds>
               <verify_group_id>0</verify_group_id>
               <skip_lock_flag>0</skip_lock_flag>
-              <last_modified_by>Administrator</last_modified_by>
-              <last_update>2015-08-28T16:17:24</last_update>
-              <source_id>76</source_id>
+              <last_update>2015-09-14T13:39:15</last_update>
+              <source_id>33</source_id>
               <hidden_flag>1</hidden_flag>
               <command>cmd /c cscript //T:60 add-tags.vbs "$1"</command>
               <command_timeout>60</command_timeout>
-              <parameter_definition>{"parameters":[{"helpString":"Enter tags space-delimited.","restrict":null,"maxChars":0,"defaultValue":"","validationExpressions":[{"helpString":"You must enter a value","flags":"","expression":"\\S","model":"com.tanium.models::ValidationExpression","parameterType":"com.tanium.models::ValidationExpression"}],"value":"","key":"$1","label":"Add tags (space-delimited)","promptText":"e.g. PCI DMZ Decomm","model":"com.tanium.components.parameters::TextInputParameter","parameterType":"com.tanium.components.parameters::TextInputParameter"}],"model":"com.tanium.components.parameters::ParametersArray","parameterType":"com.tanium.components.parameters::ParametersArray"}</parameter_definition>
+              <parameter_definition>{"parameters":[{"label":"Add tags (space-delimited)","helpString":"Enter tags space-delimited.","defaultValue":"","promptText":"e.g. PCI DMZ Decomm","maxChars":0,"key":"$1","restrict":null,"validationExpressions":[{"helpString":"You must enter a value","expression":"\\S","flags":"","parameterType":"com.tanium.models::ValidationExpression","model":"com.tanium.models::ValidationExpression"}],"value":"","parameterType":"com.tanium.components.parameters::TextInputParameter","model":"com.tanium.components.parameters::TextInputParameter"}],"parameterType":"com.tanium.components.parameters::ParametersArray","model":"com.tanium.components.parameters::ParametersArray"}</parameter_definition>
               <parameters>
                 <parameter>
                   <value>tag_should_be_added</value>

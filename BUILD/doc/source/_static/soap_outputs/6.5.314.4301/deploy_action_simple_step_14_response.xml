@@ -2,32 +2,61 @@
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
   <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <t:return>
-      <command>GetResultInfo</command>
-      <session>1-8057-59bc034649515aa17d9ed1c3c103ec07819798cb1bcc8ae88cd9a6a3d0dffc02b787d99d650ca72bb228c3581519527e670d6b3245961869ba317c7f897106a9</session>
+      <command>GetObject</command>
+      <session>1-620-b187339c6ad8ecf5280734d6a81af6cba91b4dcc1c1c09d28b2bee3fd05b95bbac3f6a1d14fc32631be6a2e0160694558ac6b18632435251beefbfb3571b9c98</session>
+      <server_version>6.5.314.4301</server_version>
       <ID></ID>
       <IDType></IDType>
       <ContextID></ContextID>
-      <server_version>6.5.314.4301</server_version>
-      <object_list>
-        <question>
-          <id>11614</id>
-        </question>
-      </object_list>
+      <result_object>
+        <action>
+          <id>79</id>
+          <name>API Deploy Distribute Tanium Standard Utilities</name>
+          <comment>Created by PyTan v2.1.4</comment>
+          <target_group>
+            <id>0</id>
+            <name>Default</name>
+          </target_group>
+          <action_group>
+            <id>0</id>
+            <name>Default</name>
+          </action_group>
+          <package_spec>
+            <id>23</id>
+            <name>Distribute Tanium Standard Utilities</name>
+            <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
+          </package_spec>
+          <skip_lock_flag>0</skip_lock_flag>
+          <expire_seconds>3300</expire_seconds>
+          <creation_time>2015-09-14T19:57:41</creation_time>
+          <start_time>2015-09-14T19:57:43</start_time>
+          <expiration_time>2015-09-14T20:52:43</expiration_time>
+          <distribute_seconds>0</distribute_seconds>
+          <status>Open</status>
+          <stopped_flag>0</stopped_flag>
+          <user>
+            <id>1</id>
+            <name>Administrator</name>
+            <domain></domain>
+            <group_id>0</group_id>
+            <last_login>2015-09-14T19:57:41</last_login>
+          </user>
+          <history_saved_question>
+            <id>98</id>
+          </history_saved_question>
+          <saved_action>
+            <id>78</id>
+          </saved_action>
+          <approver>
+            <id>1</id>
+            <name>Administrator</name>
+          </approver>
+        </action>
+      </result_object>
+      <ResultXML></ResultXML>
       <options>
         <suppress_object_list>1</suppress_object_list>
       </options>
-      <ResultXML>&lt;result_infos&gt;&lt;now&gt;2015/09/05 05:27:29 GMT-0000&lt;/now&gt;
-&lt;max_available_age&gt;0&lt;/max_available_age&gt;
-&lt;result_info&gt;&lt;age&gt;0&lt;/age&gt;
-&lt;id&gt;11614&lt;/id&gt;
-&lt;report_count&gt;0&lt;/report_count&gt;
-&lt;saved_question_id&gt;0&lt;/saved_question_id&gt;
-&lt;question_id&gt;11614&lt;/question_id&gt;
-&lt;archived_question_id&gt;0&lt;/archived_question_id&gt;&lt;seconds_since_issued&gt;0&lt;/seconds_since_issued&gt;&lt;issue_seconds&gt;0&lt;/issue_seconds&gt;&lt;expire_seconds&gt;0&lt;/expire_seconds&gt;&lt;tested&gt;0&lt;/tested&gt;&lt;passed&gt;0&lt;/passed&gt;&lt;mr_tested&gt;0&lt;/mr_tested&gt;&lt;mr_passed&gt;0&lt;/mr_passed&gt;&lt;estimated_total&gt;2&lt;/estimated_total&gt;
-&lt;select_count&gt;0&lt;/select_count&gt;
-&lt;row_count&gt;0&lt;/row_count&gt;&lt;error_count&gt;0&lt;/error_count&gt;&lt;no_results_count&gt;0&lt;/no_results_count&gt;&lt;row_count_machines&gt;0&lt;/row_count_machines&gt;&lt;row_count_flag&gt;0&lt;/row_count_flag&gt;&lt;/result_info&gt;
-&lt;/result_infos&gt;</ResultXML>
-      <result_object></result_object>
     </t:return>
   </soap:Body>
 </soap:Envelope>

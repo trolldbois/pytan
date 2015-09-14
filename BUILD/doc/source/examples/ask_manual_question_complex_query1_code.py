@@ -60,7 +60,7 @@ kwargs = {}
 kwargs["question_filters"] = [u'Operating System, that contains:Windows',
  u'Operating System, that does not contain:Windows']
 kwargs["sensors"] = [u'Computer Name',
- u'Folder Name Search with RegEx Match{dirname=Program Files,regex=Microsoft.*, invalidparam=test}, that regex match:.*Shared.*, opt:max_data_age:3600']
+ u'Folder Contents{folderPath=C:\\Program Files, invalidparam=test}, that regex match:.*Shared.*, opt:max_data_age:3600']
 kwargs["question_options"] = [u'ignore_case', u'or']
 kwargs["qtype"] = u'manual'
 
@@ -75,19 +75,20 @@ print pprint.pformat(response)
 print "...OUTPUT: Equivalent Question if it were to be asked in the Tanium Console: "
 print response['question_object'].query_text
 
-# call the export_obj() method to convert response to CSV and store it in out
-export_kwargs = {}
-export_kwargs['obj'] = response['question_results']
-export_kwargs['export_format'] = 'csv'
+if response['question_results']:
+    # call the export_obj() method to convert response to CSV and store it in out
+    export_kwargs = {}
+    export_kwargs['obj'] = response['question_results']
+    export_kwargs['export_format'] = 'csv'
 
-print "...CALLING: handler.export_obj() with args {}".format(export_kwargs)
-out = handler.export_obj(**export_kwargs)
+    print "...CALLING: handler.export_obj() with args {}".format(export_kwargs)
+    out = handler.export_obj(**export_kwargs)
 
-# trim the output if it is more than 15 lines long
-if len(out.splitlines()) > 15:
-    out = out.splitlines()[0:15]
-    out.append('..trimmed for brevity..')
-    out = '\n'.join(out)
+    # trim the output if it is more than 15 lines long
+    if len(out.splitlines()) > 15:
+        out = out.splitlines()[0:15]
+        out.append('..trimmed for brevity..')
+        out = '\n'.join(out)
 
-print "...OUTPUT: CSV Results of response: "
-print out
+    print "...OUTPUT: CSV Results of response: "
+    print out

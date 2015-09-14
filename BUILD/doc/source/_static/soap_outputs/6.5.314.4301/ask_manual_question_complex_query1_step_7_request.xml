@@ -46,32 +46,16 @@
                 <max_age_seconds>3600</max_age_seconds>
                 <operator>RegexMatch</operator>
                 <sensor>
-                  <hash>1374547302</hash>
-                  <id>226</id>
+                  <hash>3881863289</hash>
+                  <id>510</id>
                 </sensor>
               </filter>
               <sensor>
-                <source_id>226</source_id>
+                <source_id>510</source_id>
                 <parameters>
                   <parameter>
-                    <value>Program Files</value>
-                    <key>||dirname||</key>
-                  </parameter>
-                  <parameter>
-                    <value></value>
-                    <key>||regexp||</key>
-                  </parameter>
-                  <parameter>
-                    <value>No</value>
-                    <key>||casesensitive||</key>
-                  </parameter>
-                  <parameter>
-                    <value>No</value>
-                    <key>||global||</key>
-                  </parameter>
-                  <parameter>
-                    <value>Microsoft.*</value>
-                    <key>||regex||</key>
+                    <value>C:\Program Files</value>
+                    <key>||folderPath||</key>
                   </parameter>
                   <parameter>
                     <value>test</value>

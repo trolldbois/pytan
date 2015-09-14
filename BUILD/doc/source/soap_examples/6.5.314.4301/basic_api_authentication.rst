@@ -10,7 +10,7 @@ Step 1 - Authenticate to the SOAP API via /auth
 
 * URL: https://10.0.1.240:443/auth
 * HTTP Method: GET
-* Elapsed Time: 0:00:00.013222
+* Elapsed Time: 0:00:00.268788
 * `Step 1 Request Body <../../_static/soap_outputs/6.5.314.4301/basic_api_authentication_step_1_request.txt>`_
 * `Step 1 Response Body <../../_static/soap_outputs/6.5.314.4301/basic_api_authentication_step_1_response.txt>`_
 
@@ -37,7 +37,7 @@ Step 1 - Authenticate to the SOAP API via /auth
     
     {
       "connection": "keep-alive", 
-      "content-length": "135", 
+      "content-length": "134", 
       "content-type": "text/plain; charset=us-ascii"
     }
 
@@ -47,7 +47,7 @@ Step 2 - Get the server version via /info.json
 
 * URL: https://10.0.1.240:443/info.json
 * HTTP Method: GET
-* Elapsed Time: 0:00:00.017355
+* Elapsed Time: 0:00:00.043694
 * `Step 2 Request Body <../../_static/soap_outputs/6.5.314.4301/basic_api_authentication_step_2_request.txt>`_
 * `Step 2 Response Body <../../_static/soap_outputs/6.5.314.4301/basic_api_authentication_step_2_response.json>`_
 
@@ -62,7 +62,7 @@ Step 2 - Get the server version via /info.json
       "Accept-Encoding": "gzip, deflate", 
       "Connection": "keep-alive", 
       "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-8044-c4f84734d8b575426ed49f24295f49cbfb3931875676dcc56930fdd30ac64ce3b49ade1431aa711eb7e320749e93d6df9cce3e3e47b15942f763d335654beca9"
+      "session": "1-607-4ee03e3500179ebb0e13b0a7fa723076479968c2bdd0556160e8973b1f7836e3fc6904187f022cf0e42591f6694489d48085138a841cb660ecc047bb0551bdfd"
     }
 
 * Response Headers:
@@ -73,7 +73,7 @@ Step 2 - Get the server version via /info.json
     
     {
       "connection": "keep-alive", 
-      "content-length": "112028", 
+      "content-length": "19289", 
       "content-type": "application/json"
     }
 

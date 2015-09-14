@@ -3,20 +3,20 @@
   <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <t:return>
       <command>GetObject</command>
-      <session>1-8059-842a08b556be02d67043c45f690f99dc0678e4dfaf87769cab8eae69235ff73e9bde693c78db5419548054fd93acf0801384acdfbfdfd48a7e626cbbcc85d4df</session>
+      <session>1-622-6eb3cc08a054104d45ce22051218b6125b034ddf0b2ff434de00794bde0e9da84c187596a64635b64fd54cf79b9bc279adfc3e6206a24f7e9a5d6fd86bc6c31a</session>
       <server_version>6.5.314.4301</server_version>
       <ID></ID>
       <IDType></IDType>
       <ContextID></ContextID>
       <result_object>
         <question>
-          <id>11616</id>
+          <id>753</id>
           <context_group>
             <id>0</id>
           </context_group>
           <expire_seconds>0</expire_seconds>
           <skip_lock_flag>0</skip_lock_flag>
-          <expiration>2015-09-05T05:39:41</expiration>
+          <expiration>2015-09-14T20:08:21</expiration>
           <user>
             <id>1</id>
             <name>Administrator</name>
@@ -38,7 +38,7 @@
             <not_flag>0</not_flag>
             <sub_groups>
               <group>
-                <id>3616</id>
+                <id>300</id>
                 <type>0</type>
                 <text>Operating System containing "Windows"</text>
                 <and_flag>1</and_flag>

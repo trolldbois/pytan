@@ -3,7 +3,7 @@
   <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <t:return>
       <command>GetObject</command>
-      <session>1-8108-a0d8bde19de32b27a9a1c65d4272f55fe1785ed488c920762603bf580c1dbfab4c1f19ab7ab1d498e3366f34d633adb2e09df16d6d33bad4e9f5d6f03a5b4ae7</session>
+      <session>1-671-6f687be5b039c71c064270628606bda7e01ccabc4c996b4c09f5abe7269e527f09a750dd422b9b3df09036e0169e650eed9ecabe0790cbedde26f367133be7b1</session>
       <server_version>6.5.314.4301</server_version>
       <ID></ID>
       <IDType></IDType>
@@ -17,8 +17,8 @@
             <default_value>0</default_value>
             <value_type>Numeric</value_type>
             <audit_data>
-              <creation_time>2015-08-26T20:14:48</creation_time>
-              <modification_time>2015-08-26T20:14:48</modification_time>
+              <creation_time>2015-09-14T13:39:29</creation_time>
+              <modification_time>2015-09-14T13:39:29</modification_time>
               <last_modified_by>Administrator</last_modified_by>
             </audit_data>
             <setting_type>Server</setting_type>
@@ -150,7 +150,7 @@
           <system_setting>
             <id>16</id>
             <name>estimated_node_count</name>
-            <value>2</value>
+            <value>3</value>
             <default_value>0</default_value>
             <value_type>Numeric</value_type>
             <setting_type>Server</setting_type>
@@ -1050,11 +1050,11 @@
             <cache_row_id>121</cache_row_id>
           </system_setting>
           <cache_info>
-            <cache_id>832712886</cache_id>
+            <cache_id>1150150415</cache_id>
             <page_row_count>94</page_row_count>
             <filtered_row_count>94</filtered_row_count>
             <cache_row_count>94</cache_row_count>
-            <expiration>2015-09-05T05:40:37</expiration>
+            <expiration>2015-09-14T20:10:16</expiration>
           </cache_info>
         </system_settings>
       </result_object>

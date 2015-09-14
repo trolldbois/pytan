@@ -3,7 +3,7 @@
   <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <t:return>
       <command>GetObject</command>
-      <session>1-8096-6e2c6035bb39c0d7b390351346415f0b2f831e4526e5ae0e16d07367e6856c50ea7841e758cf4148635a3a3eb5d17d5af110bae50cbc8e8a319f5de5867032cd</session>
+      <session>1-659-84c6937246fd3be6a92edd34b2c2747a10f8ddc25b9995e2dca040d54afb1aae10a080015cb57f226cdf6d51774e501dcf2d4f8e2903455b13203a06e1070239</session>
       <server_version>6.5.314.4301</server_version>
       <ID></ID>
       <IDType></IDType>
@@ -14,7 +14,7 @@
             <id>4</id>
             <name>Download Statuses</name>
             <hash>322086833</hash>
-            <string_count>45</string_count>
+            <string_count>43</string_count>
             <category>Reserved</category>
             <description>The recorded state of each download a client has made recently in the form of hash:completion percentage.
 Example: 05839407baccdfccfd8e2c1ffc0ff27541cc053d15b52cfd4ed904510e59b428:100</description>
@@ -38,7 +38,7 @@ Example: 05839407baccdfccfd8e2c1ffc0ff27541cc053d15b52cfd4ed904510e59b428:100</d
             <id>1</id>
             <name>Action Statuses</name>
             <hash>1792443391</hash>
-            <string_count>793</string_count>
+            <string_count>118</string_count>
             <category>Reserved</category>
             <description>The recorded state of each action a client has taken recently in the form of id:status.
 Example: 1:Completed</description>
@@ -62,7 +62,7 @@ Example: 1:Completed</description>
             <id>2</id>
             <name>Computer ID</name>
             <hash>3556221173</hash>
-            <string_count>32</string_count>
+            <string_count>4</string_count>
             <category>Reserved</category>
             <description>A unique identifier of each computer for internal use.
 Example: 4202979704</description>
@@ -86,7 +86,7 @@ Example: 4202979704</description>
             <id>3</id>
             <name>Computer Name</name>
             <hash>3409330187</hash>
-            <string_count>3</string_count>
+            <string_count>5</string_count>
             <category>Reserved</category>
             <description>The assigned name of the client machine.
 Example: workstation-1.company.com</description>

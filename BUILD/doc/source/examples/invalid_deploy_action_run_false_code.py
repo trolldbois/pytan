@@ -57,7 +57,6 @@ print "...OUTPUT: handler string: {}".format(handler)
 
 # setup the arguments for the handler() class
 kwargs = {}
-kwargs["report_dir"] = u'/tmp'
 kwargs["package"] = u'Distribute Tanium Standard Utilities'
 
 print "...CALLING: handler.deploy_action() with args: {}".format(kwargs)

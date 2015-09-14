@@ -5,7 +5,7 @@
       <command>GetResultInfo</command>
       <object_list>
         <action>
-          <id>616</id>
+          <id>80</id>
           <name>API Deploy Distribute Tanium Standard Utilities</name>
         </action>
       </object_list>

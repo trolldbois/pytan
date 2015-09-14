@@ -68,7 +68,7 @@ ask_kwargs = {
     'qtype': 'manual',
     'sensors': [
         "Computer Name", "IP Route Details", "IP Address",
-        'Folder Name Search with RegEx Match{dirname=Program Files,regex=.*Shared.*}',
+        'Folder Contents{folderPath=C:\Program Files}',
     ],
 }
 

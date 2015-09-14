@@ -3,7 +3,7 @@
   <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <t:return>
       <command>GetObject</command>
-      <session>1-8089-c8c235e2a47773cb7cc4115b4c135fcaa8e9b6639cee50880442bfd8d8dee740e56a215863da46d872344952195f6be5f8f19c3fa3a896d33dd1f58bba21d4cc</session>
+      <session>1-652-0b99ab46875ec8bbd7f71eac3c24b6723af0c557ce95750aab9ee072aae447cb6d957dc729d1f0fe3f4679ac5b1e7a53252b742ab83ca41242170002822309a8</session>
       <server_version>6.5.314.4301</server_version>
       <ID></ID>
       <IDType></IDType>
@@ -16,7 +16,7 @@
           </context_group>
           <expire_seconds>0</expire_seconds>
           <skip_lock_flag>0</skip_lock_flag>
-          <expiration>2015-08-26T20:22:58</expiration>
+          <expiration>2015-09-14T13:48:06</expiration>
           <user>
             <id>1</id>
             <name>Administrator</name>
@@ -37,7 +37,7 @@
                 <id>1</id>
                 <name>Action Statuses</name>
                 <hash>1792443391</hash>
-                <string_count>793</string_count>
+                <string_count>118</string_count>
                 <category>Reserved</category>
                 <description>The recorded state of each action a client has taken recently in the form of id:status.
 Example: 1:Completed</description>

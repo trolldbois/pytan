@@ -10,7 +10,7 @@ Step 1 - Authenticate to the SOAP API via /auth
 
 * URL: https://10.0.1.240:443/auth
 * HTTP Method: GET
-* Elapsed Time: 0:00:00.012490
+* Elapsed Time: 0:00:00.110553
 * `Step 1 Request Body <../../_static/soap_outputs/6.5.314.4301/get_sensor_by_hash_step_1_request.txt>`_
 * `Step 1 Response Body <../../_static/soap_outputs/6.5.314.4301/get_sensor_by_hash_step_1_response.txt>`_
 
@@ -37,7 +37,7 @@ Step 1 - Authenticate to the SOAP API via /auth
     
     {
       "connection": "keep-alive", 
-      "content-length": "135", 
+      "content-length": "134", 
       "content-type": "text/plain; charset=us-ascii"
     }
 
@@ -47,7 +47,7 @@ Step 2 - Get the server version via /info.json
 
 * URL: https://10.0.1.240:443/info.json
 * HTTP Method: GET
-* Elapsed Time: 0:00:00.009429
+* Elapsed Time: 0:00:00.015517
 * `Step 2 Request Body <../../_static/soap_outputs/6.5.314.4301/get_sensor_by_hash_step_2_request.txt>`_
 * `Step 2 Response Body <../../_static/soap_outputs/6.5.314.4301/get_sensor_by_hash_step_2_response.json>`_
 
@@ -62,7 +62,7 @@ Step 2 - Get the server version via /info.json
       "Accept-Encoding": "gzip, deflate", 
       "Connection": "keep-alive", 
       "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-8099-18b82ea604d49c9e7e0f20e0794572a9339900638b4f75fefa29684ae68aeb54e976f4f317b6a523cac2b4a11ff5f6bc678906e7070c1978af09fbe418c71833"
+      "session": "1-662-3b1051d7a8b470117ac8471b66d382f9c4331a5add6ae8aea931a159c65803327eceefe7318a50520bd5a90e80ec48666213c67ffe547153ff543db05ac74c3f"
     }
 
 * Response Headers:
@@ -73,7 +73,7 @@ Step 2 - Get the server version via /info.json
     
     {
       "connection": "keep-alive", 
-      "content-length": "113368", 
+      "content-length": "20905", 
       "content-type": "application/json"
     }
 
@@ -83,7 +83,7 @@ Step 3 - Issue a GetObject to find an object
 
 * URL: https://10.0.1.240:443/soap
 * HTTP Method: POST
-* Elapsed Time: 0:00:00.040900
+* Elapsed Time: 0:00:00.056668
 * `Step 3 Request Body <../../_static/soap_outputs/6.5.314.4301/get_sensor_by_hash_step_3_request.xml>`_
 * `Step 3 Response Body <../../_static/soap_outputs/6.5.314.4301/get_sensor_by_hash_step_3_response.xml>`_
 
@@ -100,7 +100,7 @@ Step 3 - Issue a GetObject to find an object
       "Content-Length": "517", 
       "Content-Type": "text/xml; charset=utf-8", 
       "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-8099-18b82ea604d49c9e7e0f20e0794572a9339900638b4f75fefa29684ae68aeb54e976f4f317b6a523cac2b4a11ff5f6bc678906e7070c1978af09fbe418c71833"
+      "session": "1-662-3b1051d7a8b470117ac8471b66d382f9c4331a5add6ae8aea931a159c65803327eceefe7318a50520bd5a90e80ec48666213c67ffe547153ff543db05ac74c3f"
     }
 
 * Response Headers:

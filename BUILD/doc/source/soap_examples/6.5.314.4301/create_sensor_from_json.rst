@@ -10,7 +10,7 @@ Step 1 - Authenticate to the SOAP API via /auth
 
 * URL: https://10.0.1.240:443/auth
 * HTTP Method: GET
-* Elapsed Time: 0:00:00.013980
+* Elapsed Time: 0:00:00.021167
 * `Step 1 Request Body <../../_static/soap_outputs/6.5.314.4301/create_sensor_from_json_step_1_request.txt>`_
 * `Step 1 Response Body <../../_static/soap_outputs/6.5.314.4301/create_sensor_from_json_step_1_response.txt>`_
 
@@ -37,7 +37,7 @@ Step 1 - Authenticate to the SOAP API via /auth
     
     {
       "connection": "keep-alive", 
-      "content-length": "135", 
+      "content-length": "134", 
       "content-type": "text/plain; charset=us-ascii"
     }
 
@@ -47,7 +47,7 @@ Step 2 - Get the server version via /info.json
 
 * URL: https://10.0.1.240:443/info.json
 * HTTP Method: GET
-* Elapsed Time: 0:00:00.016081
+* Elapsed Time: 0:00:00.024954
 * `Step 2 Request Body <../../_static/soap_outputs/6.5.314.4301/create_sensor_from_json_step_2_request.txt>`_
 * `Step 2 Response Body <../../_static/soap_outputs/6.5.314.4301/create_sensor_from_json_step_2_response.json>`_
 
@@ -62,7 +62,7 @@ Step 2 - Get the server version via /info.json
       "Accept-Encoding": "gzip, deflate", 
       "Connection": "keep-alive", 
       "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-8053-b0100f08209ea0b50320a26b5a2ee13598dedb9cd75bbb7c64ff6a8b36d96ef2ccb45477098a4371f6dde1c286cfbc09c0ed4d6c0a8dd95e7393a223166ee6c7"
+      "session": "1-616-2e870e86903255e8cd2e8870adaa1d3c093967722ae49700020aaa6f30576677f269793b7d65b3cdedf6dfa4003e41539ac83c0385c83bf9edef1664194a0117"
     }
 
 * Response Headers:
@@ -73,7 +73,7 @@ Step 2 - Get the server version via /info.json
     
     {
       "connection": "keep-alive", 
-      "content-length": "112031", 
+      "content-length": "19291", 
       "content-type": "application/json"
     }
 
@@ -83,7 +83,7 @@ Step 3 - Issue a GetObject to find an object
 
 * URL: https://10.0.1.240:443/soap
 * HTTP Method: POST
-* Elapsed Time: 0:00:00.002648
+* Elapsed Time: 0:00:00.003914
 * `Step 3 Request Body <../../_static/soap_outputs/6.5.314.4301/create_sensor_from_json_step_3_request.xml>`_
 * `Step 3 Response Body <../../_static/soap_outputs/6.5.314.4301/create_sensor_from_json_step_3_response.xml>`_
 
@@ -100,7 +100,7 @@ Step 3 - Issue a GetObject to find an object
       "Content-Length": "507", 
       "Content-Type": "text/xml; charset=utf-8", 
       "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-8053-b0100f08209ea0b50320a26b5a2ee13598dedb9cd75bbb7c64ff6a8b36d96ef2ccb45477098a4371f6dde1c286cfbc09c0ed4d6c0a8dd95e7393a223166ee6c7"
+      "session": "1-616-2e870e86903255e8cd2e8870adaa1d3c093967722ae49700020aaa6f30576677f269793b7d65b3cdedf6dfa4003e41539ac83c0385c83bf9edef1664194a0117"
     }
 
 * Response Headers:
@@ -122,7 +122,7 @@ Step 4 - Issue a GetObject to find the object to be deleted
 
 * URL: https://10.0.1.240:443/soap
 * HTTP Method: POST
-* Elapsed Time: 0:00:00.003253
+* Elapsed Time: 0:00:00.004953
 * `Step 4 Request Body <../../_static/soap_outputs/6.5.314.4301/create_sensor_from_json_step_4_request.xml>`_
 * `Step 4 Response Body <../../_static/soap_outputs/6.5.314.4301/create_sensor_from_json_step_4_response.xml>`_
 
@@ -139,7 +139,7 @@ Step 4 - Issue a GetObject to find the object to be deleted
       "Content-Length": "523", 
       "Content-Type": "text/xml; charset=utf-8", 
       "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-8053-b0100f08209ea0b50320a26b5a2ee13598dedb9cd75bbb7c64ff6a8b36d96ef2ccb45477098a4371f6dde1c286cfbc09c0ed4d6c0a8dd95e7393a223166ee6c7"
+      "session": "1-616-2e870e86903255e8cd2e8870adaa1d3c093967722ae49700020aaa6f30576677f269793b7d65b3cdedf6dfa4003e41539ac83c0385c83bf9edef1664194a0117"
     }
 
 * Response Headers:
@@ -161,7 +161,7 @@ Step 5 - Issue a DeleteObject to delete an object
 
 * URL: https://10.0.1.240:443/soap
 * HTTP Method: POST
-* Elapsed Time: 0:00:00.008852
+* Elapsed Time: 0:00:00.006953
 * `Step 5 Request Body <../../_static/soap_outputs/6.5.314.4301/create_sensor_from_json_step_5_request.xml>`_
 * `Step 5 Response Body <../../_static/soap_outputs/6.5.314.4301/create_sensor_from_json_step_5_response.xml>`_
 
@@ -175,10 +175,10 @@ Step 5 - Issue a DeleteObject to delete an object
       "Accept": "*/*", 
       "Accept-Encoding": "gzip", 
       "Connection": "keep-alive", 
-      "Content-Length": "1961", 
+      "Content-Length": "1793", 
       "Content-Type": "text/xml; charset=utf-8", 
       "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-8053-b0100f08209ea0b50320a26b5a2ee13598dedb9cd75bbb7c64ff6a8b36d96ef2ccb45477098a4371f6dde1c286cfbc09c0ed4d6c0a8dd95e7393a223166ee6c7"
+      "session": "1-616-2e870e86903255e8cd2e8870adaa1d3c093967722ae49700020aaa6f30576677f269793b7d65b3cdedf6dfa4003e41539ac83c0385c83bf9edef1664194a0117"
     }
 
 * Response Headers:
@@ -200,7 +200,7 @@ Step 6 - Issue an AddObject to add an object
 
 * URL: https://10.0.1.240:443/soap
 * HTTP Method: POST
-* Elapsed Time: 0:00:00.007746
+* Elapsed Time: 0:00:00.019305
 * `Step 6 Request Body <../../_static/soap_outputs/6.5.314.4301/create_sensor_from_json_step_6_request.xml>`_
 * `Step 6 Response Body <../../_static/soap_outputs/6.5.314.4301/create_sensor_from_json_step_6_response.xml>`_
 
@@ -214,10 +214,10 @@ Step 6 - Issue an AddObject to add an object
       "Accept": "*/*", 
       "Accept-Encoding": "gzip", 
       "Connection": "keep-alive", 
-      "Content-Length": "1977", 
+      "Content-Length": "1809", 
       "Content-Type": "text/xml; charset=utf-8", 
       "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-8053-b0100f08209ea0b50320a26b5a2ee13598dedb9cd75bbb7c64ff6a8b36d96ef2ccb45477098a4371f6dde1c286cfbc09c0ed4d6c0a8dd95e7393a223166ee6c7"
+      "session": "1-616-2e870e86903255e8cd2e8870adaa1d3c093967722ae49700020aaa6f30576677f269793b7d65b3cdedf6dfa4003e41539ac83c0385c83bf9edef1664194a0117"
     }
 
 * Response Headers:
@@ -228,7 +228,7 @@ Step 6 - Issue an AddObject to add an object
     
     {
       "connection": "keep-alive", 
-      "content-length": "763", 
+      "content-length": "762", 
       "content-type": "text/xml;charset=UTF-8"
     }
 
@@ -238,7 +238,7 @@ Step 7 - Issue a GetObject on the recently added object in order to get the full
 
 * URL: https://10.0.1.240:443/soap
 * HTTP Method: POST
-* Elapsed Time: 0:00:00.035719
+* Elapsed Time: 0:00:00.056533
 * `Step 7 Request Body <../../_static/soap_outputs/6.5.314.4301/create_sensor_from_json_step_7_request.xml>`_
 * `Step 7 Response Body <../../_static/soap_outputs/6.5.314.4301/create_sensor_from_json_step_7_response.xml>`_
 
@@ -255,7 +255,7 @@ Step 7 - Issue a GetObject on the recently added object in order to get the full
       "Content-Length": "488", 
       "Content-Type": "text/xml; charset=utf-8", 
       "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-8053-b0100f08209ea0b50320a26b5a2ee13598dedb9cd75bbb7c64ff6a8b36d96ef2ccb45477098a4371f6dde1c286cfbc09c0ed4d6c0a8dd95e7393a223166ee6c7"
+      "session": "1-616-2e870e86903255e8cd2e8870adaa1d3c093967722ae49700020aaa6f30576677f269793b7d65b3cdedf6dfa4003e41539ac83c0385c83bf9edef1664194a0117"
     }
 
 * Response Headers:
