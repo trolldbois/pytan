@@ -183,12 +183,12 @@ examples[sname].append(e)
 
 e = {}
 e['name'] = 'Ask a question example 7'
-e['cmd'] = '''bin/${script_name}.py ${API_INFO} -s "Computer Name" -s "Last Logged In User" -s "Installed Applications, that contains:Google Search" -s "Installed Applications, that contains:Google Chrome" -f "Installed Applications, that contains:Google Search" -f "Installed Applications, that contains:Google Chrome" -o "and" -o "ignore_case" --file "${TMPDIR}/out.csv"'''
+e['cmd'] = '''bin/${script_name}.py ${API_INFO} -s "Computer Name" -s "Last Logged In User" -s "Installed Applications, that contains:Google" -f "Installed Applications, that contains:Google" -f "Installed Applications, that contains:Chrome" -o "or" -o "ignore_case" --file "${TMPDIR}/out.csv"'''
 e['notes'] = '''
 Ask a question with 4 sensors
 Use filters on 3rd and 4th sensor to limit the column data to only show certain apps
 Use 2 question filters to limit the row data to only show the same apps used in the sensor filters
-Supply two question options, one to AND the question filters supplied, and another to ignore the case while matching the question filters
+Supply two question options, one to OR the question filters supplied, and another to ignore the case while matching the question filters
 Save the results to a CSV file
 '''
 e['precleanup'] = 'rm -f ${TMPDIR}/out.csv'
