@@ -90,22 +90,22 @@ print out
 
 '''STDOUT from running this:
 ...CALLING: pytan.handler() with args: {'username': 'Administrator', 'record_all_requests': True, 'loglevel': 1, 'debugformat': False, 'host': '10.0.1.240', 'password': 'Tanium2015!', 'port': '443'}
-...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+...OUTPUT: handler string: PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ...CALLING: handler.get_all with args: {'objtype': u'question'}
 ...OUTPUT: Type of response:  <class 'taniumpy.object_types.question_list.QuestionList'>
 ...OUTPUT: print of response:
-QuestionList, len: 7951
-...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.question_list.QuestionList object at 0x1127403d0>}
+QuestionList, len: 628
+...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.question_list.QuestionList object at 0x109cc1550>}
 ...OUTPUT: print the objects returned in JSON format:
 {
   "_type": "questions", 
   "cache_info": {
     "_type": "cache_info", 
-    "cache_id": 3269367064, 
-    "cache_row_count": 7951, 
-    "expiration": "2015-09-05T05:40:37", 
-    "filtered_row_count": 7951, 
-    "page_row_count": 7951
+    "cache_id": 3865655598, 
+    "cache_row_count": 628, 
+    "expiration": "2015-09-14T20:10:17", 
+    "filtered_row_count": 628, 
+    "page_row_count": 628
   }, 
   "question": [
     {

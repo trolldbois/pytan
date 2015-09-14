@@ -68,7 +68,7 @@ ask_kwargs = {
     'qtype': 'manual',
     'sensors': [
         "Computer Name", "IP Route Details", "IP Address",
-        'Folder Name Search with RegEx Match{dirname=Program Files,regex=.*Shared.*}',
+        'Folder Contents{folderPath=C:\Program Files}',
     ],
 }
 
@@ -95,10 +95,10 @@ print out
 
 '''STDOUT from running this:
 ...CALLING: pytan.handler() with args: {'username': 'Administrator', 'record_all_requests': True, 'loglevel': 1, 'debugformat': False, 'host': '10.0.1.240', 'password': 'Tanium2015!', 'port': '443'}
-...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-...CALLING: handler.ask() with args {'sensors': ['Computer Name', 'IP Route Details', 'IP Address', 'Folder Name Search with RegEx Match{dirname=Program Files,regex=.*Shared.*}'], 'qtype': 'manual'}
-2015-09-05 05:33:58,909 INFO     pytan.pollers.QuestionPoller: ID 11623: Reached Threshold of 99% (2 of 2)
-...CALLING: handler.export_obj() with args {'export_format': u'json', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x10ad7b110>}
+...OUTPUT: handler string: PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+...CALLING: handler.ask() with args {'sensors': ['Computer Name', 'IP Route Details', 'IP Address', 'Folder Contents{folderPath=C:\\Program Files}'], 'qtype': 'manual'}
+2015-09-14 20:03:00,368 INFO     pytan.pollers.QuestionPoller: ID 773: Reached Threshold of 99% (3 of 3)
+...CALLING: handler.export_obj() with args {'export_format': u'json', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x106873f50>}
 ...OUTPUT: print the export_str returned from export_obj():
 [
   {
@@ -107,7 +107,7 @@ print out
         "column.display_name": "Computer Name", 
         "column.result_type": "String", 
         "column.values": [
-          "Casus-Belli.local"
+          "c1u14-virtual-machine.(none)"
         ], 
         "column.what_hash": 3409330187
       }, 

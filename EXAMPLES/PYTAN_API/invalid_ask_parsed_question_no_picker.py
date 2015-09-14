@@ -74,22 +74,20 @@ except Exception as e:
     # traceback.print_exc(file=sys.stdout)
 '''STDOUT from running this:
 ...CALLING: pytan.handler() with args: {'username': 'Administrator', 'record_all_requests': True, 'loglevel': 1, 'debugformat': False, 'host': '10.0.1.240', 'password': 'Tanium2015!', 'port': '443'}
-...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+...OUTPUT: handler string: PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ...CALLING: handler.ask() with args: {'question_text': u'Computer Name', 'qtype': u'parsed'}
-2015-09-05 05:49:44,719 CRITICAL pytan.handler: You must supply an index as picker=$index to choose one of the parse responses -- re-run ask_parsed with picker set to one of these indexes!!
-2015-09-05 05:49:44,719 CRITICAL pytan.handler: Index 1, Score: 5883, Query: 'Get Computer Name from all machines'
-2015-09-05 05:49:44,719 CRITICAL pytan.handler: Index 2, Score: 1040, Query: 'Get Computer ID from all machines'
-2015-09-05 05:49:44,719 CRITICAL pytan.handler: Index 3, Score: 735, Query: 'Get BIOS Name from all machines'
-2015-09-05 05:49:44,719 CRITICAL pytan.handler: Index 4, Score: 520, Query: 'Get Domain Name from all machines'
-2015-09-05 05:49:44,719 CRITICAL pytan.handler: Index 5, Score: 367, Query: 'Get AD Computer Groups from all machines'
-2015-09-05 05:49:44,719 CRITICAL pytan.handler: Index 6, Score: 260, Query: 'Get File Name Search from all machines'
-2015-09-05 05:49:44,719 CRITICAL pytan.handler: Index 7, Score: 218, Query: 'Get Motherboard Name from all machines'
-2015-09-05 05:49:44,719 CRITICAL pytan.handler: Index 8, Score: 183, Query: 'Get Computer Serial Number from all machines'
-2015-09-05 05:49:44,719 CRITICAL pytan.handler: Index 9, Score: 183, Query: 'Get Folder Name Search from all machines'
-2015-09-05 05:49:44,719 CRITICAL pytan.handler: Index 10, Score: 183, Query: 'Get Primary Owner Name from all machines'
-2015-09-05 05:49:44,719 CRITICAL pytan.handler: Index 11, Score: 183, Query: 'Get Tanium Server Name from all machines'
-2015-09-05 05:49:44,719 CRITICAL pytan.handler: Index 12, Score: 130, Query: 'Get Network Adapter Name from all machines'
-2015-09-05 05:49:44,719 CRITICAL pytan.handler: Index 13, Score: 109, Query: 'Get AD Distinguished Name from all machines'
+2015-09-14 20:16:26,042 CRITICAL pytan.handler: You must supply an index as picker=$index to choose one of the parse responses -- re-run ask_parsed with picker set to one of these indexes!!
+2015-09-14 20:16:26,043 CRITICAL pytan.handler: Index 1, Score: 6156, Query: 'Get Computer Name from all machines'
+2015-09-14 20:16:26,043 CRITICAL pytan.handler: Index 2, Score: 1088, Query: 'Get Computer ID from all machines'
+2015-09-14 20:16:26,043 CRITICAL pytan.handler: Index 3, Score: 769, Query: 'Get BIOS Name from all machines'
+2015-09-14 20:16:26,043 CRITICAL pytan.handler: Index 4, Score: 544, Query: 'Get Domain Name from all machines'
+2015-09-14 20:16:26,043 CRITICAL pytan.handler: Index 5, Score: 384, Query: 'Get AD Computer Groups from all machines'
+2015-09-14 20:16:26,043 CRITICAL pytan.handler: Index 6, Score: 228, Query: 'Get Motherboard Name from all machines'
+2015-09-14 20:16:26,043 CRITICAL pytan.handler: Index 7, Score: 192, Query: 'Get Computer Serial Number from all machines'
+2015-09-14 20:16:26,043 CRITICAL pytan.handler: Index 8, Score: 192, Query: 'Get Primary Owner Name from all machines'
+2015-09-14 20:16:26,043 CRITICAL pytan.handler: Index 9, Score: 192, Query: 'Get Tanium Server Name from all machines'
+2015-09-14 20:16:26,043 CRITICAL pytan.handler: Index 10, Score: 136, Query: 'Get Network Adapter Name from all machines'
+2015-09-14 20:16:26,043 CRITICAL pytan.handler: Index 11, Score: 114, Query: 'Get AD Distinguished Name from all machines'
 ...EXCEPTION: You must supply an index as picker=$index to choose one of the parse responses -- re-run ask_parsed with picker set to one of these indexes!!
 
 '''

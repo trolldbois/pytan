@@ -91,12 +91,12 @@ print out
 
 '''STDOUT from running this:
 ...CALLING: pytan.handler() with args: {'username': 'Administrator', 'record_all_requests': True, 'loglevel': 1, 'debugformat': False, 'host': '10.0.1.240', 'password': 'Tanium2015!', 'port': '443'}
-...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+...OUTPUT: handler string: PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ...CALLING: handler.get with args: {'objtype': u'user', 'id': 1}
 ...OUTPUT: Type of response:  <class 'taniumpy.object_types.user_list.UserList'>
 ...OUTPUT: print of response:
 UserList, len: 1
-...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.user_list.UserList object at 0x11a256450>}
+...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.user_list.UserList object at 0x109c03410>}
 ...OUTPUT: print the objects returned in JSON format:
 {
   "_type": "users", 
@@ -106,7 +106,7 @@ UserList, len: 1
       "deleted_flag": 0, 
       "group_id": 0, 
       "id": 1, 
-      "last_login": "2015-09-05T05:40:36", 
+      "last_login": "2015-09-14T20:10:14", 
       "local_admin_flag": 1, 
       "name": "Administrator", 
       "permissions": {

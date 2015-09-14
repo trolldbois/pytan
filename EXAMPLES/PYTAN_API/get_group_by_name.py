@@ -91,12 +91,12 @@ print out
 
 '''STDOUT from running this:
 ...CALLING: pytan.handler() with args: {'username': 'Administrator', 'record_all_requests': True, 'loglevel': 1, 'debugformat': False, 'host': '10.0.1.240', 'password': 'Tanium2015!', 'port': '443'}
-...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+...OUTPUT: handler string: PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ...CALLING: handler.get with args: {'objtype': u'group', 'name': u'All Computers'}
 ...OUTPUT: Type of response:  <class 'taniumpy.object_types.group_list.GroupList'>
 ...OUTPUT: print of response:
 GroupList, len: 1
-...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.group_list.GroupList object at 0x1112a2b50>}
+...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.group_list.GroupList object at 0x108f5df50>}
 ...OUTPUT: print the objects returned in JSON format:
 {
   "_type": "groups", 
@@ -109,7 +109,7 @@ GroupList, len: 1
         "_type": "filters", 
         "filter": []
       }, 
-      "id": 64, 
+      "id": 62, 
       "name": "All Computers", 
       "not_flag": 0, 
       "sub_groups": {

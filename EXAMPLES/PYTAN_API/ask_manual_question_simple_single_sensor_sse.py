@@ -96,23 +96,24 @@ if response['question_results']:
 
 '''STDOUT from running this:
 ...CALLING: pytan.handler() with args: {'username': 'Administrator', 'record_all_requests': True, 'loglevel': 1, 'debugformat': False, 'host': '10.0.1.240', 'password': 'Tanium2015!', 'port': '443'}
-...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+...OUTPUT: handler string: PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ...CALLING: handler.ask with args: {'sse': True, 'sensors': u'Computer Name', 'qtype': u'manual'}
-2015-09-05 05:42:31,043 INFO     pytan.pollers.QuestionPoller: ID 11643: Reached Threshold of 99% (2 of 2)
-2015-09-05 05:42:31,051 INFO     pytan.pollers.SSEPoller: ID '1/494746930877.xml': Server Side Export Completed: 'Completed. 2 rows written.'
+2015-09-14 20:11:32,921 INFO     pytan.pollers.QuestionPoller: ID 795: Reached Threshold of 99% (3 of 3)
+2015-09-14 20:11:32,950 INFO     pytan.pollers.SSEPoller: ID '1/495576668976.xml': Server Side Export Completed: 'Completed. 3 rows written.'
 ...OUTPUT: Type of response:  <type 'dict'>
 ...OUTPUT: Pretty print of response:
-{'poller_object': <pytan.pollers.QuestionPoller object at 0x115c16d50>,
+{'poller_object': <pytan.pollers.QuestionPoller object at 0x11b4135d0>,
  'poller_success': True,
- 'question_object': <taniumpy.object_types.question.Question object at 0x115c16e10>,
- 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x10ef4b310>}
+ 'question_object': <taniumpy.object_types.question.Question object at 0x11b413750>,
+ 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x10c480f50>}
 ...OUTPUT: Equivalent Question if it were to be asked in the Tanium Console: 
 Get Computer Name from all machines
-...CALLING: handler.export_obj() with args {'export_format': 'csv', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x10ef4b310>}
+...CALLING: handler.export_obj() with args {'export_format': 'csv', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x10c480f50>}
 ...OUTPUT: CSV Results of response: 
 Computer Name
-Casus-Belli.local
-TPT1-0.localdomain
+c1u14-virtual-machine.(none)
+WIN-6U71ED4M23D
+TPT1.pytanlab.com
 
 
 '''

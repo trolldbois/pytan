@@ -91,12 +91,12 @@ print out
 
 '''STDOUT from running this:
 ...CALLING: pytan.handler() with args: {'username': 'Administrator', 'record_all_requests': True, 'loglevel': 1, 'debugformat': False, 'host': '10.0.1.240', 'password': 'Tanium2015!', 'port': '443'}
-...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+...OUTPUT: handler string: PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ...CALLING: handler.get with args: {'objtype': u'saved_question', 'name': u'Installed Applications'}
 ...OUTPUT: Type of response:  <class 'taniumpy.object_types.saved_question_list.SavedQuestionList'>
 ...OUTPUT: print of response:
 SavedQuestionList, len: 1
-...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.saved_question_list.SavedQuestionList object at 0x11657ee50>}
+...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.saved_question_list.SavedQuestionList object at 0x108fd3610>}
 ...OUTPUT: print the objects returned in JSON format:
 {
   "_type": "saved_questions", 
@@ -110,7 +110,7 @@ SavedQuestionList, len: 1
       }, 
       "expire_seconds": 600, 
       "hidden_flag": 0, 
-      "id": 64, 
+      "id": 59, 
       "issue_seconds": 120, 
       "issue_seconds_never_flag": 0, 
 ..trimmed for brevity..

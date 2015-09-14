@@ -68,7 +68,7 @@ kwargs["include_type"] = False
 get_kwargs = {
     'name': [
         "Computer Name", "IP Route Details", "IP Address",
-        'Folder Name Search with RegEx Match',
+        'Folder Contents',
     ],
     'objtype': 'sensor',
 }
@@ -96,9 +96,9 @@ print out
 
 '''STDOUT from running this:
 ...CALLING: pytan.handler() with args: {'username': 'Administrator', 'record_all_requests': True, 'loglevel': 1, 'debugformat': False, 'host': '10.0.1.240', 'password': 'Tanium2015!', 'port': '443'}
-...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-...CALLING: handler.get() with args: {'objtype': 'sensor', 'name': ['Computer Name', 'IP Route Details', 'IP Address', 'Folder Name Search with RegEx Match']}
-...CALLING: handler.export_obj() with args {'export_format': u'json', 'obj': <taniumpy.object_types.sensor_list.SensorList object at 0x1108d1750>, 'include_type': False}
+...OUTPUT: handler string: PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+...CALLING: handler.get() with args: {'objtype': 'sensor', 'name': ['Computer Name', 'IP Route Details', 'IP Address', 'Folder Contents']}
+...CALLING: handler.export_obj() with args {'export_format': u'json', 'obj': <taniumpy.object_types.sensor_list.SensorList object at 0x1048a0a10>, 'include_type': False}
 ...OUTPUT: print the export_str returned from export_obj():
 {
   "sensor": [

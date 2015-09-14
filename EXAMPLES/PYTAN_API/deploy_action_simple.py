@@ -96,53 +96,56 @@ if response['action_results']:
 
 '''STDOUT from running this:
 ...CALLING: pytan.handler() with args: {'username': 'Administrator', 'record_all_requests': True, 'loglevel': 1, 'debugformat': False, 'host': '10.0.1.240', 'password': 'Tanium2015!', 'port': '443'}
-...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+...OUTPUT: handler string: PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ...CALLING: handler.deploy_action with args: {'sse': True, 'run': True, 'package': u'Distribute Tanium Standard Utilities'}
-2015-09-05 05:29:44,576 INFO     pytan.pollers.QuestionPoller: ID 11614: Reached Threshold of 99% (2 of 2)
-2015-09-05 05:29:44,597 INFO     pytan.pollers.ActionPoller: ID 615: Reached Threshold for Seen Count of 100% (2 of 2)
-2015-09-05 05:29:44,619 INFO     pytan.pollers.ActionPoller: ID 615: Reached Threshold for Finished Count of 100% (2 of 2)
+2015-09-14 19:58:10,951 INFO     pytan.pollers.QuestionPoller: ID 750: Reached Threshold of 99% (3 of 3)
+2015-09-14 19:58:32,077 INFO     pytan.pollers.ActionPoller: ID 79: Reached Threshold for Seen Count of 100% (3 of 3)
+2015-09-14 19:58:43,000 INFO     pytan.pollers.ActionPoller: ID 79: Reached Threshold for Finished Count of 100% (3 of 3)
 ...OUTPUT: Type of response:  <type 'dict'>
 ...OUTPUT: Pretty print of response:
-{'action_info': <taniumpy.object_types.result_info.ResultInfo object at 0x11368abd0>,
- 'action_object': <taniumpy.object_types.action.Action object at 0x113644a90>,
- 'action_result_map': {'failed': {'615:Expired.': [],
-                                  '615:Failed.': [],
-                                  '615:NotSucceeded.': [],
-                                  '615:Stopped.': [],
+{'action_info': <taniumpy.object_types.result_info.ResultInfo object at 0x102fa0e50>,
+ 'action_object': <taniumpy.object_types.action.Action object at 0x102db3c90>,
+ 'action_result_map': {'failed': {'79:Expired.': [],
+                                  '79:Failed.': [],
+                                  '79:NotSucceeded.': [],
+                                  '79:Stopped.': [],
                                   'total': 0},
-                       'finished': {'615:Completed.': ['Casus-Belli.local',
-                                                       'TPT1-0.localdomain'],
-                                    '615:Expired.': [],
-                                    '615:Failed.': [],
-                                    '615:NotSucceeded.': [],
-                                    '615:Stopped.': [],
-                                    '615:Succeeded.': [],
-                                    '615:Verified.': [],
-                                    'total': 2},
-                       'running': {'615:Copying.': [],
-                                   '615:Downloading.': [],
-                                   '615:PendingVerification.': [],
-                                   '615:Running.': [],
-                                   '615:Waiting.': [],
-                                   'total': 0},
-                       'success': {'615:Completed.': ['Casus-Belli.local',
-                                                      'TPT1-0.localdomain'],
-                                   '615:Verified.': [],
-                                   'total': 2},
+                       'finished': {'79:Completed.': ['c1u14-virtual-machine.(none)',
+                                                      'TPT1.pytanlab.com',
+                                                      'WIN-6U71ED4M23D'],
+                                    '79:Expired.': [],
+                                    '79:Failed.': [],
+                                    '79:NotSucceeded.': [],
+                                    '79:Stopped.': [],
+                                    '79:Succeeded.': [],
+                                    '79:Verified.': [],
+                                    'total': 3},
+                       'running': {'79:Copying.': [],
+                                   '79:Downloading.': ['WIN-6U71ED4M23D'],
+                                   '79:PendingVerification.': [],
+                                   '79:Running.': [],
+                                   '79:Waiting.': [],
+                                   'total': 1},
+                       'success': {'79:Completed.': ['c1u14-virtual-machine.(none)',
+                                                     'TPT1.pytanlab.com',
+                                                     'WIN-6U71ED4M23D'],
+                                   '79:Verified.': [],
+                                   'total': 3},
                        'unknown': {'total': 0}},
- 'action_results': <taniumpy.object_types.result_set.ResultSet object at 0x112318d90>,
+ 'action_results': <taniumpy.object_types.result_set.ResultSet object at 0x102d6ea50>,
  'group_object': None,
- 'package_object': <taniumpy.object_types.package_spec.PackageSpec object at 0x112b4e7d0>,
- 'poller_object': <pytan.pollers.ActionPoller object at 0x1136449d0>,
+ 'package_object': <taniumpy.object_types.package_spec.PackageSpec object at 0x102f919d0>,
+ 'poller_object': <pytan.pollers.ActionPoller object at 0x102db3bd0>,
  'poller_success': True,
- 'saved_action_object': <taniumpy.object_types.saved_action.SavedAction object at 0x112b4e090>}
+ 'saved_action_object': <taniumpy.object_types.saved_action.SavedAction object at 0x102f91290>}
 ...OUTPUT: Print of action object: 
-Action, name: 'API Deploy Distribute Tanium Standard Utilities', id: 615
-...CALLING: handler.export_obj() with args {'export_format': 'csv', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x112318d90>}
+Action, name: 'API Deploy Distribute Tanium Standard Utilities', id: 79
+...CALLING: handler.export_obj() with args {'export_format': 'csv', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x102d6ea50>}
 ...OUTPUT: CSV Results of response: 
 Action Statuses,Computer Name
-615:Completed.,Casus-Belli.local
-615:Completed.,TPT1-0.localdomain
+79:Completed.,c1u14-virtual-machine.(none)
+79:Completed.,WIN-6U71ED4M23D
+79:Completed.,TPT1.pytanlab.com
 
 
 '''

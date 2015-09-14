@@ -69,7 +69,7 @@ ask_kwargs = {
     'qtype': 'manual',
     'sensors': [
         "Computer Name", "IP Route Details", "IP Address",
-        'Folder Name Search with RegEx Match{dirname=Program Files,regex=.*Shared.*}',
+        'Folder Contents{folderPath=C:\Program Files}',
     ],
 }
 
@@ -96,26 +96,26 @@ print out
 
 '''STDOUT from running this:
 ...CALLING: pytan.handler() with args: {'username': 'Administrator', 'record_all_requests': True, 'loglevel': 1, 'debugformat': False, 'host': '10.0.1.240', 'password': 'Tanium2015!', 'port': '443'}
-...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-...CALLING: handler.ask() with args {'sensors': ['Computer Name', 'IP Route Details', 'IP Address', 'Folder Name Search with RegEx Match{dirname=Program Files,regex=.*Shared.*}'], 'qtype': 'manual'}
-2015-09-05 05:33:02,991 INFO     pytan.pollers.QuestionPoller: ID 11621: Reached Threshold of 99% (2 of 2)
-...CALLING: handler.export_obj() with args {'export_format': u'csv', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x10aa2a210>, 'expand_grouped_columns': True}
+...OUTPUT: handler string: PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+...CALLING: handler.ask() with args {'sensors': ['Computer Name', 'IP Route Details', 'IP Address', 'Folder Contents{folderPath=C:\\Program Files}'], 'qtype': 'manual'}
+2015-09-14 20:00:45,165 INFO     pytan.pollers.QuestionPoller: ID 769: Reached Threshold of 99% (3 of 3)
+...CALLING: handler.export_obj() with args {'export_format': u'csv', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x10485ef50>, 'expand_grouped_columns': True}
 ...OUTPUT: print the export_str returned from export_obj():
-Computer Name,Destination,Flags,"Folder Name Search with RegEx Match[Program Files, , No, No, .*Shared.*]",Gateway,IP Address,Interface,Mask,Metric
-Casus-Belli.local,default,UGSc,Windows Only,10.0.1.1,UNRELATED TO Destination,en0,None,None
-Casus-Belli.local,10.0.1.8/32,UCS,Windows Only,link#4,UNRELATED TO Destination,en0,None,None
-Casus-Belli.local,10.0.1/24,UCS,Windows Only,link#4,UNRELATED TO Destination,en0,None,None
-Casus-Belli.local,172.16.31/24,UC,Windows Only,link#14,UNRELATED TO Destination,vmnet8,None,None
-Casus-Belli.local,172.16.152/24,UC,Windows Only,link#13,UNRELATED TO Destination,vmnet1,None,None
-Casus-Belli.local,10.0.1.254,UHLWIi,Windows Only,link#4,UNRELATED TO Destination,en0,None,None
-Casus-Belli.local,169.254,UCS,Windows Only,link#4,UNRELATED TO Destination,en0,None,None
-Casus-Belli.local,10.0.1.1/32,UCS,Windows Only,link#4,UNRELATED TO Destination,en0,None,None
-Casus-Belli.local,UNRELATED TO IP Address,UNRELATED TO IP Address,Windows Only,UNRELATED TO IP Address,2604:2000:1200:60de:dd68:f4b6:d5ee:e562,UNRELATED TO IP Address,UNRELATED TO IP Address,UNRELATED TO IP Address
-Casus-Belli.local,UNRELATED TO IP Address,UNRELATED TO IP Address,Windows Only,UNRELATED TO IP Address,172.16.31.1,UNRELATED TO IP Address,UNRELATED TO IP Address,UNRELATED TO IP Address
-Casus-Belli.local,UNRELATED TO IP Address,UNRELATED TO IP Address,Windows Only,UNRELATED TO IP Address,fe80::82e6:50ff:fe1d:1dca,UNRELATED TO IP Address,UNRELATED TO IP Address,UNRELATED TO IP Address
-Casus-Belli.local,UNRELATED TO IP Address,UNRELATED TO IP Address,Windows Only,UNRELATED TO IP Address,172.16.152.1,UNRELATED TO IP Address,UNRELATED TO IP Address,UNRELATED TO IP Address
-Casus-Belli.local,UNRELATED TO IP Address,UNRELATED TO IP Address,Windows Only,UNRELATED TO IP Address,10.0.1.8,UNRELATED TO IP Address,UNRELATED TO IP Address,UNRELATED TO IP Address
-Casus-Belli.local,UNRELATED TO IP Address,UNRELATED TO IP Address,Windows Only,UNRELATED TO IP Address,2604:2000:1200:60de:82e6:50ff:fe1d:1dca,UNRELATED TO IP Address,UNRELATED TO IP Address,UNRELATED TO IP Address
+Computer Name,Destination,Flags,Folder Contents[C:\Program Files],Gateway,IP Address,Interface,Mask,Metric
+c1u14-virtual-machine.(none),0.0.0.0,UG,N/A on Linux,10.0.1.1,10.0.1.12,eth0,0.0.0.0,0
+c1u14-virtual-machine.(none),10.0.1.0,U,N/A on Linux,0.0.0.0,10.0.1.12,eth0,255.255.255.0,1
+TPT1.pytanlab.com,0.0.0.0,-,UNRELATED TO Destination,10.0.1.1,10.0.1.240,-,0.0.0.0,266
+TPT1.pytanlab.com,10.0.1.240,-,UNRELATED TO Destination,0.0.0.0,10.0.1.240,-,255.255.255.255,266
+TPT1.pytanlab.com,127.0.0.1,-,UNRELATED TO Destination,0.0.0.0,10.0.1.240,-,255.255.255.255,306
+TPT1.pytanlab.com,127.0.0.0,-,UNRELATED TO Destination,0.0.0.0,10.0.1.240,-,255.0.0.0,306
+TPT1.pytanlab.com,10.0.1.0,-,UNRELATED TO Destination,0.0.0.0,10.0.1.240,-,255.255.255.0,266
+TPT1.pytanlab.com,UNRELATED TO Folder Contents[C:\Program Files],UNRELATED TO Folder Contents[C:\Program Files],Folder : Microsoft Visual Studio 10.0,UNRELATED TO Folder Contents[C:\Program Files],10.0.1.240,UNRELATED TO Folder Contents[C:\Program Files],UNRELATED TO Folder Contents[C:\Program Files],UNRELATED TO Folder Contents[C:\Program Files]
+TPT1.pytanlab.com,UNRELATED TO Folder Contents[C:\Program Files],UNRELATED TO Folder Contents[C:\Program Files],desktop.ini,UNRELATED TO Folder Contents[C:\Program Files],10.0.1.240,UNRELATED TO Folder Contents[C:\Program Files],UNRELATED TO Folder Contents[C:\Program Files],UNRELATED TO Folder Contents[C:\Program Files]
+TPT1.pytanlab.com,UNRELATED TO Folder Contents[C:\Program Files],UNRELATED TO Folder Contents[C:\Program Files],Folder : Windows NT,UNRELATED TO Folder Contents[C:\Program Files],10.0.1.240,UNRELATED TO Folder Contents[C:\Program Files],UNRELATED TO Folder Contents[C:\Program Files],UNRELATED TO Folder Contents[C:\Program Files]
+TPT1.pytanlab.com,UNRELATED TO Folder Contents[C:\Program Files],UNRELATED TO Folder Contents[C:\Program Files],Folder : Microsoft Help Viewer,UNRELATED TO Folder Contents[C:\Program Files],10.0.1.240,UNRELATED TO Folder Contents[C:\Program Files],UNRELATED TO Folder Contents[C:\Program Files],UNRELATED TO Folder Contents[C:\Program Files]
+TPT1.pytanlab.com,UNRELATED TO Folder Contents[C:\Program Files],UNRELATED TO Folder Contents[C:\Program Files],Folder : Reference Assemblies,UNRELATED TO Folder Contents[C:\Program Files],10.0.1.240,UNRELATED TO Folder Contents[C:\Program Files],UNRELATED TO Folder Contents[C:\Program Files],UNRELATED TO Folder Contents[C:\Program Files]
+TPT1.pytanlab.com,UNRELATED TO Folder Contents[C:\Program Files],UNRELATED TO Folder Contents[C:\Program Files],Folder : Common Files,UNRELATED TO Folder Contents[C:\Program Files],10.0.1.240,UNRELATED TO Folder Contents[C:\Program Files],UNRELATED TO Folder Contents[C:\Program Files],UNRELATED TO Folder Contents[C:\Program Files]
+TPT1.pytanlab.com,UNRELATED TO Folder Contents[C:\Program Files],UNRELATED TO Folder Contents[C:\Program Files],Folder : Tanium,UNRELATED TO Folder Contents[C:\Program Files],10.0.1.240,UNRELATED TO Folder Contents[C:\Program Files],UNRELATED TO Folder Contents[C:\Program Files],UNRELATED TO Folder Contents[C:\Program Files]
 ..trimmed for brevity..
 
 '''

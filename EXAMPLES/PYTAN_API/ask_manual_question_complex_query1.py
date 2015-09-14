@@ -72,7 +72,7 @@ kwargs = {}
 kwargs["question_filters"] = [u'Operating System, that contains:Windows',
  u'Operating System, that does not contain:Windows']
 kwargs["sensors"] = [u'Computer Name',
- u'Folder Name Search with RegEx Match{dirname=Program Files,regex=Microsoft.*, invalidparam=test}, that regex match:.*Shared.*, opt:max_data_age:3600']
+ u'Folder Contents{folderPath=C:\\Program Files, invalidparam=test}, that regex match:.*Shared.*, opt:max_data_age:3600']
 kwargs["question_options"] = [u'ignore_case', u'or']
 kwargs["qtype"] = u'manual'
 
@@ -107,35 +107,24 @@ if response['question_results']:
 
 '''STDOUT from running this:
 ...CALLING: pytan.handler() with args: {'username': 'Administrator', 'record_all_requests': True, 'loglevel': 1, 'debugformat': False, 'host': '10.0.1.240', 'password': 'Tanium2015!', 'port': '443'}
-...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-...CALLING: handler.ask with args: {'question_filters': [u'Operating System, that contains:Windows', u'Operating System, that does not contain:Windows'], 'sensors': [u'Computer Name', u'Folder Name Search with RegEx Match{dirname=Program Files,regex=Microsoft.*, invalidparam=test}, that regex match:.*Shared.*, opt:max_data_age:3600'], 'question_options': [u'ignore_case', u'or'], 'qtype': u'manual'}
-2015-09-05 05:48:09,160 INFO     pytan.pollers.QuestionPoller: ID 11657: Reached Threshold of 99% (2 of 2)
+...OUTPUT: handler string: PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+...CALLING: handler.ask with args: {'question_filters': [u'Operating System, that contains:Windows', u'Operating System, that does not contain:Windows'], 'sensors': [u'Computer Name', u'Folder Contents{folderPath=C:\\Program Files, invalidparam=test}, that regex match:.*Shared.*, opt:max_data_age:3600'], 'question_options': [u'ignore_case', u'or'], 'qtype': u'manual'}
+2015-09-14 20:14:17,578 INFO     pytan.pollers.QuestionPoller: ID 809: Reached Threshold of 99% (3 of 3)
 ...OUTPUT: Type of response:  <type 'dict'>
 ...OUTPUT: Pretty print of response:
-{'poller_object': <pytan.pollers.QuestionPoller object at 0x10ef50290>,
+{'poller_object': <pytan.pollers.QuestionPoller object at 0x11b347e90>,
  'poller_success': True,
- 'question_object': <taniumpy.object_types.question.Question object at 0x10ef507d0>,
- 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x106dbf710>}
+ 'question_object': <taniumpy.object_types.question.Question object at 0x11b34d590>,
+ 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x11b34ddd0>}
 ...OUTPUT: Equivalent Question if it were to be asked in the Tanium Console: 
-Get Computer Name and Folder Name Search with RegEx Match[Program Files, , No, No, Microsoft.*, test] containing "Shared" from all machines with ( Operating System containing "Windows" or any Operating System not containing "Windows" )
-...CALLING: handler.export_obj() with args {'export_format': 'csv', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x106dbf710>}
+Get Computer Name and Folder Contents[C:\Program Files, test] containing "Shared" from all machines with ( Operating System containing "Windows" or any Operating System not containing "Windows" )
+...CALLING: handler.export_obj() with args {'export_format': 'csv', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x11b34ddd0>}
 ...OUTPUT: CSV Results of response: 
-Computer Name,"Folder Name Search with RegEx Match[Program Files, , No, No, Microsoft.*, test]"
-Casus-Belli.local,[no results]
-TPT1-0.localdomain,"C:\Program Files\Common Files\Microsoft Shared\VS7Debug
-C:\Program Files\Common Files\Microsoft Shared\ink\ar-SA
-C:\Program Files\Common Files\Microsoft Shared\ink\ru-RU
-C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\keypad
-C:\Program Files\Common Files\Microsoft Shared\ink
-C:\Program Files\Common Files\Microsoft Shared\ink\sv-SE
-C:\Program Files\Common Files\Microsoft Shared\ink\uk-UA
-C:\Program Files\Common Files\Microsoft Shared\ink\sl-SI
-C:\Program Files\Common Files\Microsoft Shared\ink\hu-HU
-C:\Program Files\Common Files\Microsoft Shared\ink\zh-TW
-C:\Program Files\Common Files\Microsoft Shared\ink\zh-CN
-C:\Program Files\Common Files\Microsoft Shared\ink\fi-FI
-C:\Program Files\Common Files\Microsoft Shared
-..trimmed for brevity..
+Computer Name,"Folder Contents[C:\Program Files, test]"
+c1u14-virtual-machine.(none),[current result unavailable]
+WIN-6U71ED4M23D,[current result unavailable]
+TPT1.pytanlab.com,[current result unavailable]
+
 
 '''
 
