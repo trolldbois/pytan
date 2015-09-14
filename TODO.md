@@ -1,5 +1,4 @@
   * DOC:
-    * examples for ask_parsed.py
     * examples for tsat.py
     * add more examples for sse everywhere
     * go through SOAP doc and verify everything looks sane
@@ -10,6 +9,8 @@
     * work on deploy action & start_seconds_from_now (a new action gets created at actual start time)
 
   * GEN:
+    * add profile storage with encrypted password and os variable overrides 
+    * re-figure out py2exe
     * add auto paging/caching to normal GRD
     * rewrite write_csv
     * add secondary loop for if any data == current result unavail/etc (MEDIUM)

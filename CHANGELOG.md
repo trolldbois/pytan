@@ -20,6 +20,12 @@
     * examples added for approve_saved_question.py
     * examples updated for stop_action.py
     * updated docstrings for Handler for deploy_action, ask_saved, ask_parsed, ask_manual to include Poller passthroughs
+    * fixed broken console.wsdl link
+    * added Command Line Help to left hand side bar
+    * added better descriptions for the SOAP examples, PyTan Command Line Help, and PyTan API Validation test sections
+
+  * test:
+    * updating sensors used in tests due to change in Initial Content (sensor “Folder Name Search with RegEx Match” no longer available, switched to use “Folder Contents”)
 
 # 2.1.3
 
