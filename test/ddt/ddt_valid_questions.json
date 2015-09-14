@@ -181,7 +181,7 @@
             "qtype": "manual",
             "sensors": [
                 "Computer Name",
-                "Folder Folder Contents{folderPath=C:\\Program Files, invalidparam=test}, that regex match:.*Shared.*, opt:max_data_age:3600"
+                "Folder Contents{folderPath=C:\\Program Files, invalidparam=test}, that regex match:.*Shared.*, opt:max_data_age:3600"
             ],
             "question_filters": [
                 "Operating System, that contains:Windows",
@@ -192,7 +192,7 @@
     },
     "ask_manual_question_complex_query2": {
         "desc": "This is another complex query that gets the Computer Name and Last Logged in User and Installed Applications that contains Google Search or Google Chrome and limits the rows that are displayed to computers that contain the Installed Applications of Google Search or Google Chrome",
-        "xml_desc" : "Ask the question 'Get Computer Name and Last Logged In User and Installed Applications containing \"Google (Search|Chrome)\" from all machines with Installed Applications containing \"Google (Search|Chrome)\"' and set ignore_case_flag to 1 and or_flag to 1 on the Installed Applications sensors on the right hand side of the question, then wait for result data to be complete, and get result data",
+        "xml_desc" : "Ask the question 'Get Computer Name and Last Logged In User and Installed Applications containing \"Google\" from all machines with Installed Applications containing \"Google\"' and set ignore_case_flag to 1 and or_flag to 1 on the Installed Applications sensors on the right hand side of the question, then wait for result data to be complete, and get result data",
         "priority": "7",
         "method": "ask",
         "method_template": "valid_response",
@@ -202,10 +202,10 @@
             "sensors": [
                 "Computer Name",
                 "Last Logged In User",
-                "Installed Applications, that regex match:.*Google (Search|Chrome).*"
+                "Installed Applications, that regex match:.*Google.*"
             ],
             "question_filters": [
-                "Installed Applications, that regex match:.*Google (Search|Chrome).*"
+                "Installed Applications, that regex match:.*Google.*"
             ],
             "question_options": ["ignore_case", "or"]
         }
