@@ -781,12 +781,13 @@ body .task-list{
 <li>If running this script on Windows, use the batch script in the winbin/create_saved_question_from_json.bat so that python is called correctly.</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>create_saved_question_from_json.py -h</pre></div>
+<div class="highlight highlight-source-shell"><pre>create_saved_question_from_json.py -h</pre></div>
 
 <pre><code>usage: create_saved_question_from_json.py [-h] [-u USERNAME] [-p PASSWORD]
                                           [--session_id SESSION_ID]
                                           [--host HOST] [--port PORT]
                                           [-l LOGLEVEL] [--debugformat]
+                                          [--debug_method_locals]
                                           [--record_all_requests]
                                           [--stats_loop_enabled]
                                           [--http_auth_retry]
@@ -815,6 +816,9 @@ Handler Options:
                         Logging level to use, increase for more verbosity
                         (default: 0)
   --debugformat         Enable debug format for logging (default: False)
+  --debug_method_locals
+                        Enable debug logging for each methods local variables
+                        (default: False)
   --record_all_requests
                         Record all requests in
                         handler.session.ALL_REQUESTS_RESPONSES (default:
@@ -862,11 +866,11 @@ Create Saved question from JSON Options:
 <li>Save the results to a JSON file</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>bin/get_saved_question.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --id 1 --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.json<span class="pl-pds">"</span></span> --export_format json</pre></div>
+<div class="highlight highlight-source-shell"><pre>bin/get_saved_question.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --id 1 --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.json<span class="pl-pds">"</span></span> --export_format json</pre></div>
 
-<pre><code>PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 Found items:  SavedQuestionList, len: 1
-Report file '/tmp/out.json' written with 11907 bytes
+Report file '/tmp/out.json' written with 11882 bytes
 </code></pre>
 
 <ul>
@@ -923,7 +927,7 @@ Report file '/tmp/out.json' written with 11907 bytes
 <li>Add CMDLINE TEST to name or url_regex in the JSON file</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>perl -p -i -e <span class="pl-s"><span class="pl-pds">'</span>s/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 8199"/gm<span class="pl-pds">'</span></span> /tmp/out.json <span class="pl-k">&amp;&amp;</span> cat /tmp/out.json</pre></div>
+<div class="highlight highlight-source-shell"><pre>perl -p -i -e <span class="pl-s"><span class="pl-pds">'</span>s/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 7902"/gm<span class="pl-pds">'</span></span> /tmp/out.json <span class="pl-k">&amp;&amp;</span> cat /tmp/out.json</pre></div>
 
 <pre><code>{
   "_type": "saved_questions", 
@@ -941,19 +945,19 @@ Report file '/tmp/out.json' written with 11907 bytes
       "issue_seconds": 120, 
       "issue_seconds_never_flag": 0, 
       "keep_seconds": 0, 
-      "mod_time": "2015-08-26T20:14:35", 
+      "mod_time": "2015-09-14T13:39:17", 
       "mod_user": {
         "_type": "user", 
         "name": "Administrator"
       }, 
-      "most_recent_question_id": 9964, 
-      "name": "Has Tanium Standard Utilities CMDLINE TEST 8199", 
+      "most_recent_question_id": 689, 
+      "name": "Has Tanium Standard Utilities CMDLINE TEST 7902", 
       "packages": {
         "_type": "package_specs", 
         "package_spec": [
           {
             "_type": "package_spec", 
-            "id": 20, 
+            "id": 23, 
             "name": "Distribute Tanium Standard Utilities"
           }
         ]
@@ -963,11 +967,11 @@ Report file '/tmp/out.json' written with 11907 bytes
       "question": {
         "_type": "question", 
         "action_tracking_flag": 0, 
-        "expiration": "2015-09-03T23:28:22", 
+        "expiration": "2015-09-14T19:49:33", 
         "expire_seconds": 0, 
         "force_computer_id_flag": 0, 
         "hidden_flag": 0, 
-        "id": 9964, 
+        "id": 689, 
         "management_rights_group": {
           "_type": "group", 
           "id": 0
@@ -1002,17 +1006,17 @@ Report file '/tmp/out.json' written with 11907 bytes
               "sensor": {
                 "_type": "sensor", 
                 "category": "Tanium", 
-                "creation_time": "2015-08-26T20:14:29", 
+                "creation_time": "2015-09-14T13:39:11", 
                 "delimiter": ",", 
                 "description": "Returns whether a machine has the Tanium Standard Utilities\nExample: Yes", 
                 "exclude_from_parse_flag": 1, 
                 "hash": 1782389954, 
                 "hidden_flag": 0, 
-                "id": 194, 
+                "id": 190, 
                 "ignore_case_flag": 1, 
                 "last_modified_by": "Administrator", 
                 "max_age_seconds": 900, 
-                "modification_time": "2015-08-26T20:14:29", 
+                "modification_time": "2015-09-14T13:39:11", 
                 "name": "Has Tanium Standard Utilities", 
                 "queries": {
                   "_type": "queries", 
@@ -1020,7 +1024,7 @@ Report file '/tmp/out.json' written with 11907 bytes
                     {
                       "_type": "query", 
                       "platform": "Windows", 
-                      "script": "&amp;#039;========================================\n&amp;#039; Has Tanium Standard Utilities\n&amp;#039;========================================\n\n&amp;#039; this action will look to see if the client has\n&amp;#039; all necessary standard utilities files\n\nOption Explicit\n&amp;#039;--------------------\n&amp;#039; Set These Variables\nDim strDesiredVersion,strDesiredFCIVVersion,strDesiredGrepBinaryVersion\nDim strDesiredGrepDepVersion,strGrepDepFileVersion,strGrepBinaryFileVersion\n\n&amp;#039; a string value which is a version like\n&amp;#039; 4.2.314.7111\n&amp;#039; which is used to determine whether the bundle has the correct version\n&amp;#039; updating the content will cause the bundle number to change and all files will\n&amp;#039; be sent to the endpoint again. This is to handle the case where\n&amp;#039; binary files are not versioned, such as with Yara\n\n&amp;#039; The top line of the version file\n&amp;#039;Tanium File Version: &amp;lt;version string below&amp;gt;\nstrDesiredVersion = &amp;quot;6.5.1.0011&amp;quot;\n\n&amp;#039; -------------------\n&amp;#039; Binaries we can version\nstrDesiredGrepBinaryVersion = &amp;quot;2.5.4.3331&amp;quot;\nstrDesiredGrepDepVersion = &amp;quot;1.12.2872.39125&amp;quot;\n\nDim objFSO\nDim strDirToCheck,objTextFile\nDim bHasAllLatestFiles,arrTextFilesToCheck,strFile,strVersionLine,strFileVersion\nDim strFCIVFile,strFCIVFileVersion,strGrepBinary,strGrepDep,strHandleTool,strListDLLs2\nDim strListDLLs,strStreamsTool,strAutorunsTool\nDim strYara,strYarac\n\nSet objFSO = CreateObject(&amp;quot;Scripting.FileSystemObject&amp;quot;)\n\nstrDirToCheck = GetTaniumDir(&amp;quot;Tools\\StdUtils&amp;quot;)\n\narrTextFilesToCheck = Array(&amp;quot;copy-to-tanium-dir-predist.vbs&amp;quot;,&amp;quot;runas-allusers-wrapper.vbs&amp;quot;,&amp;quot;ver\\bundle.cfg&amp;quot;)\n\n&amp;#039; Grep is required\nstrGrepBinary=strDirToCheck&amp;amp;&amp;quot;grep\\bin\\grep.exe&amp;quot;\nstrGrepDep=strDirToCheck&amp;amp;&amp;quot;grep\\bin\\libiconv2.dll&amp;quot;\n\n&amp;#039;Yara binaries are required\nstrYara=strDirToCheck&amp;amp;&amp;quot;yara\\yara&amp;quot;&amp;amp;GetBitness&amp;amp;&amp;quot;.exe&amp;quot;\nstrYarac=strDirToCheck&amp;amp;&amp;quot;yara\\yarac&amp;quot;&amp;amp;GetBitness&amp;amp;&amp;quot;.exe&amp;quot;\n\nbHasAllLatestFiles = True\nFor Each strFile In arrTextFilesToCheck\n\tIf Not objFSO.FileExists(strDirToCheck&amp;amp;strFile) Then\n\t\tWScript.Echo &amp;quot;Missing &amp;quot; &amp;amp; strFile\n\t\tbHasAllLatestFiles = False\n\tEnd If\n\tIf objFSO.FileExists(strDirToCheck&amp;amp;strFile) Then\n\t\tSet objTextFile = objFSO.OpenTextFile(strDirToCheck&amp;amp;strFile)\n\t\tstrVersionLine = LCase(objTextFile.ReadLine()) &amp;#039; version is at top of line\n\t\tIf Not InStr(strVersionLine,&amp;quot;tanium file version:&amp;quot;) &amp;gt; 0 Then &amp;#039; must have a version number in top line\n\t\t\tWScript.Echo strFile&amp;amp;&amp;quot; is not versioned on line 1&amp;quot;\n\t\t\tbHasAllLatestFiles = False\n\t\tElse &amp;#039; we have a version number, not split to check\n\t\t\tstrFileVersion = Split(strVersionLine,&amp;quot;tanium file version:&amp;quot;)(1)\n\t\t\tIf Trim(strFileVersion) &amp;lt;&amp;gt; Trim(strDesiredVersion) Then\n\t\t\t\tWScript.Echo strFile&amp;amp;&amp;quot; version: &amp;quot;&amp;amp;strFileVersion&amp;amp;&amp;quot;, needs: &amp;quot;&amp;amp;strDesiredVersion\n\t\t\t\tbHasAllLatestFiles = False\n\t\t\tEnd If\n\t\tEnd If\n\t\tobjTextFile.Close\n\tEnd If\nNext\n\n&amp;#039; check a Grep dependency\nIf Not objFSO.FileExists(strGrepDep) Then\n\tWScript.Echo &amp;quot;Missing &amp;quot; &amp;amp; strGrepDep\n\tbHasAllLatestFiles = False\nEnd If\nIf objFSO.FileExists(strGrepDep) Then\n\n\tstrGrepDepFileVersion = objFSO.GetFileVersion(strGrepDep)\n\tIf Not strGrepDepFileVersion = strDesiredGrepDepVersion Then\n\t\tbHasAllLatestFiles = False\n\t\tWScript.Echo strGrepDep &amp;amp;&amp;quot; version: &amp;quot;&amp;amp;strGrepDepFileVersion&amp;amp;&amp;quot;, needs: &amp;quot;&amp;amp;strDesiredGrepDepVersion\n\tEnd If\nEnd If\n\n\n&amp;#039; check Grep binary\nIf Not objFSO.FileExists(strGrepBinary) Then\n\tWScript.Echo &amp;quot;Missing &amp;quot; &amp;amp; strGrepBinary\n\tbHasAllLatestFiles = False\nEnd If\nIf objFSO.FileExists(strGrepBinary) Then\n\tstrGrepBinaryFileVersion = GetFileVersion(strGrepBinary)\n\tIf Not strGrepBinaryFileVersion = strDesiredGrepBinaryVersion Then\n\t\tbHasAllLatestFiles = False\n\t\tWScript.Echo strGrepBinary &amp;amp;&amp;quot; version: &amp;quot;&amp;amp;strGrepBinaryFileVersion&amp;amp;&amp;quot;, needs: &amp;quot;&amp;amp;strDesiredGrepBinaryVersion\n\tEnd If\nEnd If\n\nIf Not objFSO.FileExists(strYara) Then\n\tbHasAllLatestFiles = False\n\tWScript.Echo &amp;quot;Missing &amp;quot; &amp;amp; strYara\nEnd If\n\nIf Not objFSO.FileExists(strYarac) Then\n\tbHasAllLatestFiles = False\n\tWScript.Echo &amp;quot;Missing &amp;quot; &amp;amp; strYarac\nEnd If\n\nIf bHasAllLatestFiles Then\n\tWScript.Echo &amp;quot;Yes&amp;quot;\nElse\n\tWScript.Echo &amp;quot;No&amp;quot;\nEnd If\n\nFunction GetFileVersion(strPath)\n\tDim objFSO\n\tSet objFSO = CreateObject(&amp;quot;Scripting.FileSystemObject&amp;quot;)\n\tIf objFSO.FileExists(strPath) Then\n\t\tGetFileVersion = objFSO.GetFileVersion(strPath)\n\tElse\n\t\tGetFileVerison = -1\n\tEnd If\nEnd Function &amp;#039;GetFileVersion\n\nFunction GetTaniumDir(strSubDir)\n\tDim strComputer, key32path, key64path, keyPath, reg\n\tDim strPath\n\tstrComputer = &amp;quot;.&amp;quot;\n\tConst HKLM = &amp;amp;h80000002\n    \n\tkey32Path = &amp;quot;Software\\Tanium\\Tanium Client&amp;quot;\n\tkey64Path = &amp;quot;Software\\Wow6432Node\\Tanium\\Tanium Client&amp;quot;\n    \n\tSet reg=GetObject(&amp;quot;winmgmts:{impersonationLevel=impersonate}!\\\\&amp;quot; &amp;amp; strComputer &amp;amp; &amp;quot;\\root\\default:StdRegProv&amp;quot;)\n    \n\tIf RegKeyExists(reg, HKLM, key64Path) Then\n\t\tkeyPath = key64Path\n\tElseIf RegKeyExists(reg, HKLM, key32Path) Then\n\t\tkeyPath = key32Path\n\tEnd If\n    \n\treg.GetStringValue HKLM,keyPath,&amp;quot;Path&amp;quot;, strPath\n\n\tIf strSubDir &amp;lt;&amp;gt; &amp;quot;&amp;quot; Then\n\t\tstrSubDir = &amp;quot;\\&amp;quot; &amp;amp; strSubDir\n\tEnd If\t\n\n\tDim fso\n\tSet fso = WScript.CreateObject(&amp;quot;Scripting.FileSystemObject&amp;quot;)\n\tIf fso.FolderExists(strPath) Then\n\t\tIf Not fso.FolderExists(strPath &amp;amp; strSubDir) Then\n\t\t\tfso.CreateFolder(strPath &amp;amp; strSubDir)\n\t\tEnd If\n\t\tGetTaniumDir = strPath &amp;amp; strSubDir &amp;amp; &amp;quot;\\&amp;quot;\n\tEnd If\nEnd Function\n\nFunction RegKeyExists(objRegistry, sHive, sRegKey)\n\tDim aValueNames, aValueTypes\n\tIf objRegistry.EnumValues(sHive, sRegKey, aValueNames, aValueTypes) = 0 Then\n\t\tRegKeyExists = True\n\tElse\n\t\tRegKeyExists = False\n\tEnd If\nEnd Function\n\n\nFunction GetBitness\n\tIf Not Is64 Then\n\t\tGetBitness = &amp;quot;32&amp;quot;\n\tElse\n\t\tGetBitness = &amp;quot;64&amp;quot;\n\tEnd If\nEnd Function &amp;#039;GetBitness\n\nFunction Is64 \n\tDim objWMIService, colItems, objItem\n\tSet objWMIService = GetObject(&amp;quot;winmgmts:\\\\.\\root\\CIMV2&amp;quot;)\n\tSet colItems = objWMIService.ExecQuery(&amp;quot;Select SystemType from Win32_ComputerSystem&amp;quot;)    \n\tFor Each objItem In colItems\n\t\tIf InStr(LCase(objItem.SystemType), &amp;quot;x64&amp;quot;) &amp;gt; 0 Then\n\t\t\tIs64 = True\n\t\tElse\n\t\t\tIs64 = False\n\t\tEnd If\n\tNext\nEnd Function &amp;#039; Is64", 
+                      "script": "&amp;#039;========================================\n&amp;#039; Has Tanium Standard Utilities\n&amp;#039;========================================\n\n&amp;#039; this action will look to see if the client has\n&amp;#039; all necessary standard utilities files\n\nOption Explicit\n&amp;#039;--------------------\n&amp;#039; Set These Variables\nDim strDesiredVersion,strDesiredFCIVVersion,strDesiredGrepBinaryVersion\nDim strDesiredGrepDepVersion,strGrepDepFileVersion,strGrepBinaryFileVersion\n\n&amp;#039; a string value which is a version like\n&amp;#039; 4.2.314.7111\n&amp;#039; which is used to determine whether the bundle has the correct version\n&amp;#039; updating the content will cause the bundle number to change and all files will\n&amp;#039; be sent to the endpoint again. This is to handle the case where\n&amp;#039; binary files are not versioned, such as with Yara\n\n&amp;#039; The top line of the version file\n&amp;#039;Tanium File Version: &amp;lt;version string below&amp;gt;\nstrDesiredVersion = &amp;quot;6.5.2.0164&amp;quot;\n\n&amp;#039; -------------------\n&amp;#039; Binaries we can version\nstrDesiredGrepBinaryVersion = &amp;quot;2.5.4.3331&amp;quot;\nstrDesiredGrepDepVersion = &amp;quot;1.12.2872.39125&amp;quot;\n\nDim objFSO\nDim strDirToCheck,objTextFile\nDim bHasAllLatestFiles,arrTextFilesToCheck,strFile,strVersionLine,strFileVersion\nDim strFCIVFile,strFCIVFileVersion,strGrepBinary,strGrepDep,strHandleTool,strListDLLs2\nDim strListDLLs,strStreamsTool,strAutorunsTool\nDim strYara,strYarac\n\nSet objFSO = CreateObject(&amp;quot;Scripting.FileSystemObject&amp;quot;)\n\nstrDirToCheck = GetTaniumDir(&amp;quot;Tools\\StdUtils&amp;quot;)\n\narrTextFilesToCheck = Array(&amp;quot;copy-to-tanium-dir-predist.vbs&amp;quot;,&amp;quot;runas-allusers-wrapper.vbs&amp;quot;,&amp;quot;ver\\bundle.cfg&amp;quot;)\n\n&amp;#039; Grep is required\nstrGrepBinary=strDirToCheck&amp;amp;&amp;quot;grep\\bin\\grep.exe&amp;quot;\nstrGrepDep=strDirToCheck&amp;amp;&amp;quot;grep\\bin\\libiconv2.dll&amp;quot;\n\n&amp;#039;Yara binaries are required\nstrYara=strDirToCheck&amp;amp;&amp;quot;yara\\yara&amp;quot;&amp;amp;GetBitness&amp;amp;&amp;quot;.exe&amp;quot;\nstrYarac=strDirToCheck&amp;amp;&amp;quot;yara\\yarac&amp;quot;&amp;amp;GetBitness&amp;amp;&amp;quot;.exe&amp;quot;\n\nbHasAllLatestFiles = True\nFor Each strFile In arrTextFilesToCheck\n\tIf Not objFSO.FileExists(strDirToCheck&amp;amp;strFile) Then\n\t\tWScript.Echo &amp;quot;Missing &amp;quot; &amp;amp; strFile\n\t\tbHasAllLatestFiles = False\n\tEnd If\n\tIf objFSO.FileExists(strDirToCheck&amp;amp;strFile) Then\n\t\tSet objTextFile = objFSO.OpenTextFile(strDirToCheck&amp;amp;strFile)\n\t\tstrVersionLine = LCase(objTextFile.ReadLine()) &amp;#039; version is at top of line\n\t\tIf Not InStr(strVersionLine,&amp;quot;tanium file version:&amp;quot;) &amp;gt; 0 Then &amp;#039; must have a version number in top line\n\t\t\tWScript.Echo strFile&amp;amp;&amp;quot; is not versioned on line 1&amp;quot;\n\t\t\tbHasAllLatestFiles = False\n\t\tElse &amp;#039; we have a version number, not split to check\n\t\t\tstrFileVersion = Split(strVersionLine,&amp;quot;tanium file version:&amp;quot;)(1)\n\t\t\tIf Trim(strFileVersion) &amp;lt;&amp;gt; Trim(strDesiredVersion) Then\n\t\t\t\tWScript.Echo strFile&amp;amp;&amp;quot; version: &amp;quot;&amp;amp;strFileVersion&amp;amp;&amp;quot;, needs: &amp;quot;&amp;amp;strDesiredVersion\n\t\t\t\tbHasAllLatestFiles = False\n\t\t\tEnd If\n\t\tEnd If\n\t\tobjTextFile.Close\n\tEnd If\nNext\n\n&amp;#039; check a Grep dependency\nIf Not objFSO.FileExists(strGrepDep) Then\n\tWScript.Echo &amp;quot;Missing &amp;quot; &amp;amp; strGrepDep\n\tbHasAllLatestFiles = False\nEnd If\nIf objFSO.FileExists(strGrepDep) Then\n\n\tstrGrepDepFileVersion = objFSO.GetFileVersion(strGrepDep)\n\tIf Not strGrepDepFileVersion = strDesiredGrepDepVersion Then\n\t\tbHasAllLatestFiles = False\n\t\tWScript.Echo strGrepDep &amp;amp;&amp;quot; version: &amp;quot;&amp;amp;strGrepDepFileVersion&amp;amp;&amp;quot;, needs: &amp;quot;&amp;amp;strDesiredGrepDepVersion\n\tEnd If\nEnd If\n\n\n&amp;#039; check Grep binary\nIf Not objFSO.FileExists(strGrepBinary) Then\n\tWScript.Echo &amp;quot;Missing &amp;quot; &amp;amp; strGrepBinary\n\tbHasAllLatestFiles = False\nEnd If\nIf objFSO.FileExists(strGrepBinary) Then\n\tstrGrepBinaryFileVersion = GetFileVersion(strGrepBinary)\n\tIf Not strGrepBinaryFileVersion = strDesiredGrepBinaryVersion Then\n\t\tbHasAllLatestFiles = False\n\t\tWScript.Echo strGrepBinary &amp;amp;&amp;quot; version: &amp;quot;&amp;amp;strGrepBinaryFileVersion&amp;amp;&amp;quot;, needs: &amp;quot;&amp;amp;strDesiredGrepBinaryVersion\n\tEnd If\nEnd If\n\nIf Not objFSO.FileExists(strYara) Then\n\tbHasAllLatestFiles = False\n\tWScript.Echo &amp;quot;Missing &amp;quot; &amp;amp; strYara\nEnd If\n\nIf Not objFSO.FileExists(strYarac) Then\n\tbHasAllLatestFiles = False\n\tWScript.Echo &amp;quot;Missing &amp;quot; &amp;amp; strYarac\nEnd If\n\nIf bHasAllLatestFiles Then\n\tWScript.Echo &amp;quot;Yes&amp;quot;\nElse\n\tWScript.Echo &amp;quot;No&amp;quot;\nEnd If\n\nFunction GetFileVersion(strPath)\n\tDim objFSO\n\tSet objFSO = CreateObject(&amp;quot;Scripting.FileSystemObject&amp;quot;)\n\tIf objFSO.FileExists(strPath) Then\n\t\tGetFileVersion = objFSO.GetFileVersion(strPath)\n\tElse\n\t\tGetFileVersion = -1\n\tEnd If\nEnd Function &amp;#039;GetFileVersion\n\nFunction GetTaniumDir(strSubDir)\n\tDim strComputer, key32path, key64path, keyPath, reg\n\tDim strPath\n\tstrComputer = &amp;quot;.&amp;quot;\n\tConst HKLM = &amp;amp;h80000002\n\n\tkey32Path = &amp;quot;Software\\Tanium\\Tanium Client&amp;quot;\n\tkey64Path = &amp;quot;Software\\Wow6432Node\\Tanium\\Tanium Client&amp;quot;\n\n\tSet reg=GetObject(&amp;quot;winmgmts:{impersonationLevel=impersonate}!\\\\&amp;quot; &amp;amp; strComputer &amp;amp; &amp;quot;\\root\\default:StdRegProv&amp;quot;)\n\n\tIf RegKeyExists(reg, HKLM, key64Path) Then\n\t\tkeyPath = key64Path\n\tElseIf RegKeyExists(reg, HKLM, key32Path) Then\n\t\tkeyPath = key32Path\n\tEnd If\n\n\treg.GetStringValue HKLM,keyPath,&amp;quot;Path&amp;quot;, strPath\n\n\tIf strSubDir &amp;lt;&amp;gt; &amp;quot;&amp;quot; Then\n\t\tstrSubDir = &amp;quot;\\&amp;quot; &amp;amp; strSubDir\n\tEnd If\n\n\tDim fso\n\tSet fso = WScript.CreateObject(&amp;quot;Scripting.FileSystemObject&amp;quot;)\n\tIf fso.FolderExists(strPath) Then\n\t\tIf Not fso.FolderExists(strPath &amp;amp; strSubDir) Then\n\t\t\tfso.CreateFolder(strPath &amp;amp; strSubDir)\n\t\tEnd If\n\t\tGetTaniumDir = strPath &amp;amp; strSubDir &amp;amp; &amp;quot;\\&amp;quot;\n\tEnd If\nEnd Function\n\nFunction RegKeyExists(objRegistry, sHive, sRegKey)\n\tDim aValueNames, aValueTypes\n\tIf objRegistry.EnumValues(sHive, sRegKey, aValueNames, aValueTypes) = 0 Then\n\t\tRegKeyExists = True\n\tElse\n\t\tRegKeyExists = False\n\tEnd If\nEnd Function\n\n\nFunction GetBitness\n\tIf Not Is64 Then\n\t\tGetBitness = &amp;quot;32&amp;quot;\n\tElse\n\t\tGetBitness = &amp;quot;64&amp;quot;\n\tEnd If\nEnd Function &amp;#039;GetBitness\n\nFunction Is64\n\tDim objWMIService, colItems, objItem\n\tSet objWMIService = GetObject(&amp;quot;winmgmts:\\\\.\\root\\CIMV2&amp;quot;)\n\tSet colItems = objWMIService.ExecQuery(&amp;quot;Select SystemType from Win32_ComputerSystem&amp;quot;)\n\tFor Each objItem In colItems\n\t\tIf InStr(LCase(objItem.SystemType), &amp;quot;x64&amp;quot;) &amp;gt; 0 Then\n\t\t\tIs64 = True\n\t\tElse\n\t\t\tIs64 = False\n\t\tEnd If\n\tNext\nEnd Function &amp;#039; Is64", 
                       "script_type": "VBScript"
                     }, 
                     {
@@ -1050,7 +1054,7 @@ Report file '/tmp/out.json' written with 11907 bytes
                   ]
                 }, 
                 "source_id": 0, 
-                "string_count": 4, 
+                "string_count": 5, 
                 "value_type": "String"
               }
             }
@@ -1110,10 +1114,10 @@ Report file '/tmp/out.json' written with 11907 bytes
 <h1>
 <a id="user-content-create-a-new-saved_question-from-the-modified-json-file" class="anchor" href="#create-a-new-saved_question-from-the-modified-json-file" aria-hidden="true"><span class="octicon octicon-link"></span></a>Create a new saved_question from the modified JSON file</h1>
 
-<div class="highlight highlight-bash"><pre>bin/create_saved_question_from_json.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 -j <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.json<span class="pl-pds">"</span></span></pre></div>
+<div class="highlight highlight-source-shell"><pre>bin/create_saved_question_from_json.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 -j <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.json<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-Created item: SavedQuestion, name: 'Has Tanium Standard Utilities CMDLINE TEST 8199', id: 233, ID: 233
+<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+Created item: SavedQuestion, name: 'Has Tanium Standard Utilities CMDLINE TEST 7902', id: 112, ID: 112
 </code></pre>
 
 <ul>
@@ -1140,7 +1144,7 @@ Created item: SavedQuestion, name: 'Has Tanium Standard Utilities CMDLINE TEST 8
 <p><a href="#user-content-toc">TOC</a></p>
 
 <h6>
-<a id="user-content-generated-by-build_bin_doc-v210-date-thu-sep--3-215023-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v210-date-thu-sep--3-215023-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v2.1.0</code>, date: Thu Sep  3 21:50:23 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
+<a id="user-content-generated-by-build_bin_doc-v210-date-mon-sep-14-155053-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v210-date-mon-sep-14-155053-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v2.1.0</code>, date: Mon Sep 14 15:50:53 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
 </h6>
 
 </body></html>

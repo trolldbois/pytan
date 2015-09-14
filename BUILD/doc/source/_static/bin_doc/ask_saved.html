@@ -780,15 +780,16 @@ body .task-list{
 <li>If running this script on Windows, use the batch script in the winbin/ask_saved.bat so that python is called correctly.</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>ask_saved.py -h</pre></div>
+<div class="highlight highlight-source-shell"><pre>ask_saved.py -h</pre></div>
 
 <pre><code>usage: ask_saved.py [-h] [-u USERNAME] [-p PASSWORD] [--session_id SESSION_ID]
                     [--host HOST] [--port PORT] [-l LOGLEVEL] [--debugformat]
-                    [--record_all_requests] [--stats_loop_enabled]
-                    [--http_auth_retry] [--http_retry_count HTTP_RETRY_COUNT]
-                    [--refresh_data] [--id ID | --name NAME]
-                    [--file REPORT_FILE] [--dir REPORT_DIR]
-                    [--enable_sse | --disable_sse]
+                    [--debug_method_locals] [--record_all_requests]
+                    [--stats_loop_enabled] [--http_auth_retry]
+                    [--http_retry_count HTTP_RETRY_COUNT]
+                    [--no-refresh_data | --refresh_data]
+                    [--id ID | --name NAME] [--file REPORT_FILE]
+                    [--dir REPORT_DIR] [--enable_sse | --disable_sse]
                     [--sse_format {csv,xml,xml_obj,cef}] [--leading LEADING]
                     [--trailing TRAILING] [--export_format {csv,xml,json}]
                     [--sort HEADER_SORT | --no-sort | --auto_sort]
@@ -818,6 +819,9 @@ Handler Options:
                         Logging level to use, increase for more verbosity
                         (default: 0)
   --debugformat         Enable debug format for logging (default: False)
+  --debug_method_locals
+                        Enable debug logging for each methods local variables
+                        (default: False)
   --record_all_requests
                         Record all requests in
                         handler.session.ALL_REQUESTS_RESPONSES (default:
@@ -830,8 +834,9 @@ Handler Options:
                         (default: 5)
 
 Saved Question Selectors:
+  --no-refresh_data     Do not refresh the data available for a saved question
+                        (default)
   --refresh_data        Refresh the data available for a saved question
-                        (default: False)
   --id ID               id of saved_question to ask (default: None)
   --name NAME           name of saved_question to ask (default: None)
 
@@ -902,15 +907,15 @@ Export Options:
 <h1>
 <a id="user-content-ask-a-saved-question" class="anchor" href="#ask-a-saved-question" aria-hidden="true"><span class="octicon octicon-link"></span></a>Ask a saved question</h1>
 
-<div class="highlight highlight-bash"><pre>bin/ask_saved.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>Installed Applications<span class="pl-pds">"</span></span> --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.csv<span class="pl-pds">"</span></span></pre></div>
+<div class="highlight highlight-source-shell"><pre>bin/ask_saved.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>Installed Applications<span class="pl-pds">"</span></span> --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.csv<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Asking saved question: {
   "name": "Installed Applications", 
   "refresh_data": false
 }
-++ Saved Question 'Get Installed Applications from all machines' ID: 10099
-Report file '/tmp/out.csv' written with 21639 bytes
+++ Saved Question 'Get Installed Applications from all machines' ID: 676
+Report file '/tmp/out.csv' written with 68087 bytes
 </code></pre>
 
 <ul>
@@ -934,16 +939,16 @@ Report file '/tmp/out.csv' written with 21639 bytes
 </li>
 </ul>
 
-<pre><code>Name,Silent Uninstall String,Uninstallable,Version
-Image Capture Extension,nothing,Not Uninstallable,10.2
-Dictation,nothing,Not Uninstallable,1.6.1
-Wish,nothing,Not Uninstallable,8.5.9
-Uninstall AnyConnect,nothing,Not Uninstallable,3.1.08009
-Time Machine,nothing,Not Uninstallable,1.3
-7-Zip 9.20 (x64 edition),MsiExec.exe /X{23170F69-40C1-2702-0920-000001000000} /qn /noreboot,Is Uninstallable,9.20.00.0
-AppleGraphicsWarning,nothing,Not Uninstallable,2.3.0
-soagent,nothing,Not Uninstallable,7.0
-Feedback Assistant,nothing,Not Uninstallable,4.1.3
+<pre><code>Count,Name,Silent Uninstall String,Uninstallable,Version
+725,[too many results],[too many results],[too many results],[too many results]
+1,libminiupnpc8,nothing,Not Uninstallable,1.6-3ubuntu2.14.04.1
+1,iso-codes,nothing,Not Uninstallable,3.52-1
+1,libexttextcat-2.0-0,nothing,Not Uninstallable,3.4.3-1ubuntu1
+1,growisofs,nothing,Not Uninstallable,7.1-10build1
+1,libxml2:i386,nothing,Not Uninstallable,2.9.1+dfsg1-3ubuntu4.4
+1,libsm6:i386,nothing,Not Uninstallable,2:1.2.1-2
+1,findutils,nothing,Not Uninstallable,4.4.2-7
+1,libgcr-base-3-1:i386,nothing,Not Uninstallable,3.10.1-1
 ...trimmed for brevity...
 </code></pre>
 
@@ -963,16 +968,16 @@ Feedback Assistant,nothing,Not Uninstallable,4.1.3
 <h1>
 <a id="user-content-ask-a-saved-question-and-refresh-the-data-available-before-fetching-the-data" class="anchor" href="#ask-a-saved-question-and-refresh-the-data-available-before-fetching-the-data" aria-hidden="true"><span class="octicon octicon-link"></span></a>Ask a saved question and refresh the data available before fetching the data</h1>
 
-<div class="highlight highlight-bash"><pre>bin/ask_saved.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>Installed Applications<span class="pl-pds">"</span></span> --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.csv<span class="pl-pds">"</span></span> --refresh_data</pre></div>
+<div class="highlight highlight-source-shell"><pre>bin/ask_saved.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>Installed Applications<span class="pl-pds">"</span></span> --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.csv<span class="pl-pds">"</span></span> --refresh_data</pre></div>
 
-<pre><code>PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Asking saved question: {
   "name": "Installed Applications", 
   "refresh_data": true
 }
-2015-09-04 01:50:16,067 INFO     pytan.pollers.QuestionPoller: ID 10120: Reached Threshold of 99% (2 of 2)
-++ Saved Question 'Get number of machines' ID: 10120
-Report file '/tmp/out.csv' written with 21639 bytes
+2015-09-14 19:50:28,614 INFO     pytan.pollers.QuestionPoller: ID 718: Reached Threshold of 99% (3 of 3)
+++ Saved Question 'Get number of machines' ID: 718
+Report file '/tmp/out.csv' written with 63722 bytes
 </code></pre>
 
 <ul>
@@ -996,16 +1001,16 @@ Report file '/tmp/out.csv' written with 21639 bytes
 </li>
 </ul>
 
-<pre><code>Name,Silent Uninstall String,Uninstallable,Version
-Image Capture Extension,nothing,Not Uninstallable,10.2
-Dictation,nothing,Not Uninstallable,1.6.1
-Wish,nothing,Not Uninstallable,8.5.9
-Uninstall AnyConnect,nothing,Not Uninstallable,3.1.08009
-Time Machine,nothing,Not Uninstallable,1.3
-7-Zip 9.20 (x64 edition),MsiExec.exe /X{23170F69-40C1-2702-0920-000001000000} /qn /noreboot,Is Uninstallable,9.20.00.0
-AppleGraphicsWarning,nothing,Not Uninstallable,2.3.0
-soagent,nothing,Not Uninstallable,7.0
-Feedback Assistant,nothing,Not Uninstallable,4.1.3
+<pre><code>Count,Name,Silent Uninstall String,Uninstallable,Version
+755,[too many results],[too many results],[too many results],[too many results]
+1,libminiupnpc8,nothing,Not Uninstallable,1.6-3ubuntu2.14.04.1
+1,iso-codes,nothing,Not Uninstallable,3.52-1
+1,libexttextcat-2.0-0,nothing,Not Uninstallable,3.4.3-1ubuntu1
+1,growisofs,nothing,Not Uninstallable,7.1-10build1
+1,libxml2:i386,nothing,Not Uninstallable,2.9.1+dfsg1-3ubuntu4.4
+1,libsm6:i386,nothing,Not Uninstallable,2:1.2.1-2
+1,findutils,nothing,Not Uninstallable,4.4.2-7
+1,libgcr-base-3-1:i386,nothing,Not Uninstallable,3.10.1-1
 ...trimmed for brevity...
 </code></pre>
 
@@ -1023,7 +1028,7 @@ Feedback Assistant,nothing,Not Uninstallable,4.1.3
 <p><a href="#user-content-toc">TOC</a></p>
 
 <h6>
-<a id="user-content-generated-by-build_bin_doc-v210-date-thu-sep--3-215016-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v210-date-thu-sep--3-215016-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v2.1.0</code>, date: Thu Sep  3 21:50:16 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
+<a id="user-content-generated-by-build_bin_doc-v210-date-mon-sep-14-155029-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v210-date-mon-sep-14-155029-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v2.1.0</code>, date: Mon Sep 14 15:50:29 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
 </h6>
 
 </body></html>

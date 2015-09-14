@@ -788,14 +788,14 @@ body .task-list{
 <li>If running this script on Windows, use the batch script in the winbin/ask_manual.bat so that python is called correctly.</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>ask_manual.py -h</pre></div>
+<div class="highlight highlight-source-shell"><pre>ask_manual.py -h</pre></div>
 
 <pre><code>usage: ask_manual.py [-h] [-u USERNAME] [-p PASSWORD]
                      [--session_id SESSION_ID] [--host HOST] [--port PORT]
-                     [-l LOGLEVEL] [--debugformat] [--record_all_requests]
-                     [--stats_loop_enabled] [--http_auth_retry]
-                     [--http_retry_count HTTP_RETRY_COUNT] [-s SENSORS]
-                     [-f QUESTION_FILTERS] [-o QUESTION_OPTIONS]
+                     [-l LOGLEVEL] [--debugformat] [--debug_method_locals]
+                     [--record_all_requests] [--stats_loop_enabled]
+                     [--http_auth_retry] [--http_retry_count HTTP_RETRY_COUNT]
+                     [-s SENSORS] [-f QUESTION_FILTERS] [-o QUESTION_OPTIONS]
                      [--sensors-help] [--filters-help] [--options-help]
                      [--no-results | --results] [--file REPORT_FILE]
                      [--dir REPORT_DIR] [--enable_sse | --disable_sse]
@@ -828,6 +828,9 @@ Handler Options:
                         Logging level to use, increase for more verbosity
                         (default: 0)
   --debugformat         Enable debug format for logging (default: False)
+  --debug_method_locals
+                        Enable debug logging for each methods local variables
+                        (default: False)
   --record_all_requests
                         Record all requests in
                         handler.session.ALL_REQUESTS_RESPONSES (default:
@@ -930,9 +933,9 @@ Export Options:
 <li>Save the results to a CSV file</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>bin/ask_manual.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --sensor <span class="pl-s"><span class="pl-pds">"</span>Computer Name<span class="pl-pds">"</span></span> --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.csv<span class="pl-pds">"</span></span></pre></div>
+<div class="highlight highlight-source-shell"><pre>bin/ask_manual.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --sensor <span class="pl-s"><span class="pl-pds">"</span>Computer Name<span class="pl-pds">"</span></span> --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.csv<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Asking manual question:
 {
   "filters_help": false, 
@@ -945,9 +948,9 @@ Export Options:
   ], 
   "sensors_help": false
 }
-2015-09-04 01:48:36,700 INFO     pytan.pollers.QuestionPoller: ID 10111: Reached Threshold of 99% (2 of 2)
-++ Asked Question 'Get Computer Name from all machines' ID: 10111
-++ Report file '/tmp/out.csv' written with 54 bytes
+2015-09-14 19:48:24,592 INFO     pytan.pollers.QuestionPoller: ID 705: Reached Threshold of 99% (3 of 3)
+++ Asked Question 'Get Computer Name from all machines' ID: 705
+++ Report file '/tmp/out.csv' written with 81 bytes
 </code></pre>
 
 <ul>
@@ -972,8 +975,9 @@ Export Options:
 </ul>
 
 <pre><code>Computer Name
-Casus-Belli.local
-TPT1-0.localdomain
+c1u14-virtual-machine.(none)
+WIN-6U71ED4M23D
+TPT1.pytanlab.com
 </code></pre>
 
 <ul>
@@ -997,9 +1001,9 @@ TPT1-0.localdomain
 <li>Save the results to a CSV file</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>bin/ask_manual.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --sensor <span class="pl-s"><span class="pl-pds">"</span>id:1<span class="pl-pds">"</span></span> --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.csv<span class="pl-pds">"</span></span></pre></div>
+<div class="highlight highlight-source-shell"><pre>bin/ask_manual.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --sensor <span class="pl-s"><span class="pl-pds">"</span>id:1<span class="pl-pds">"</span></span> --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.csv<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Asking manual question:
 {
   "filters_help": false, 
@@ -1012,9 +1016,9 @@ TPT1-0.localdomain
   ], 
   "sensors_help": false
 }
-2015-09-04 01:48:47,006 INFO     pytan.pollers.QuestionPoller: ID 10113: Reached Threshold of 99% (2 of 2)
-++ Asked Question 'Get Action Statuses from all machines' ID: 10113
-++ Report file '/tmp/out.csv' written with 6598 bytes
+2015-09-14 19:48:30,636 INFO     pytan.pollers.QuestionPoller: ID 706: Reached Threshold of 99% (3 of 3)
+++ Asked Question 'Get Action Statuses from all machines' ID: 706
+++ Report file '/tmp/out.csv' written with 834 bytes
 </code></pre>
 
 <ul>
@@ -1039,15 +1043,15 @@ TPT1-0.localdomain
 </ul>
 
 <pre><code>Action Statuses,Count
-260:Completed.,1
-121:Completed.,2
-232:Completed.,1
-482:Completed.,2
-265:Completed.,1
-496:Completed.,1
-54:Completed.,1
+54:Completed.,3
 64:Completed.,2
-322:Completed.,1
+6:Completed.,3
+58:Completed.,2
+41:Completed.,3
+5:Completed.,2
+40:Completed.,2
+53:Completed.,2
+32:Completed.,3
 ...trimmed for brevity...
 </code></pre>
 
@@ -1072,9 +1076,9 @@ TPT1-0.localdomain
 <li>Save the results to a CSV file</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>bin/ask_manual.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --sensor <span class="pl-s"><span class="pl-pds">"</span>Computer Name<span class="pl-pds">"</span></span> --sensor <span class="pl-s"><span class="pl-pds">"</span>Installed Applications<span class="pl-pds">"</span></span> --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.csv<span class="pl-pds">"</span></span></pre></div>
+<div class="highlight highlight-source-shell"><pre>bin/ask_manual.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --sensor <span class="pl-s"><span class="pl-pds">"</span>Computer Name<span class="pl-pds">"</span></span> --sensor <span class="pl-s"><span class="pl-pds">"</span>Installed Applications<span class="pl-pds">"</span></span> --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.csv<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Asking manual question:
 {
   "filters_help": false, 
@@ -1088,9 +1092,9 @@ TPT1-0.localdomain
   ], 
   "sensors_help": false
 }
-2015-09-04 01:48:57,340 INFO     pytan.pollers.QuestionPoller: ID 10114: Reached Threshold of 99% (2 of 2)
-++ Asked Question 'Get Computer Name and Installed Applications from all machines' ID: 10114
-++ Report file '/tmp/out.csv' written with 22858 bytes
+2015-09-14 19:48:36,901 INFO     pytan.pollers.QuestionPoller: ID 707: Reached Threshold of 99% (3 of 3)
+++ Asked Question 'Get Computer Name and Installed Applications from all machines' ID: 707
+++ Report file '/tmp/out.csv' written with 116648 bytes
 </code></pre>
 
 <ul>
@@ -1115,15 +1119,15 @@ TPT1-0.localdomain
 </ul>
 
 <pre><code>Computer Name,Name,Silent Uninstall String,Uninstallable,Version
-Casus-Belli.local,"Image Capture Extension
-Dictation
-Wish
-Uninstall AnyConnect
-Time Machine
-AppleGraphicsWarning
-soagent
-Feedback Assistant
-GitHub Desktop
+c1u14-virtual-machine.(none),"libminiupnpc8
+iso-codes
+libexttextcat-2.0-0
+growisofs
+libxml2:i386
+libsm6:i386
+findutils
+libgcr-base-3-1:i386
+thunderbird-locale-en
 ...trimmed for brevity...
 </code></pre>
 
@@ -1148,9 +1152,9 @@ GitHub Desktop
 <li>Save the results to a CSV file</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>bin/ask_manual.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --sensor <span class="pl-s"><span class="pl-pds">"</span>Folder Name Search with RegEx Match{dirname=Program Files,regex=Microsoft.*}<span class="pl-pds">"</span></span> --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.csv<span class="pl-pds">"</span></span></pre></div>
+<div class="highlight highlight-source-shell"><pre>bin/ask_manual.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --sensor <span class="pl-s"><span class="pl-pds">"</span>Folder Contents{folderPath=C:\Program Files}<span class="pl-pds">"</span></span> --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.csv<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Asking manual question:
 {
   "filters_help": false, 
@@ -1159,13 +1163,13 @@ GitHub Desktop
   "question_filters": [], 
   "question_options": [], 
   "sensors": [
-    "Folder Name Search with RegEx Match{dirname=Program Files,regex=Microsoft.*}"
+    "Folder Contents{folderPath=C:\\Program Files}"
   ], 
   "sensors_help": false
 }
-2015-09-04 01:49:27,726 INFO     pytan.pollers.QuestionPoller: ID 10116: Reached Threshold of 99% (2 of 2)
-++ Asked Question 'Get Folder Name Search with RegEx Match[Program Files, , No, No, Microsoft.*] from all machines' ID: 10116
-++ Report file '/tmp/out.csv' written with 75528 bytes
+2015-09-14 19:48:48,461 INFO     pytan.pollers.QuestionPoller: ID 708: Reached Threshold of 99% (3 of 3)
+++ Asked Question 'Get Folder Contents[C:\\Program Files] from all machines' ID: 708
+++ Report file '/tmp/out.csv' written with 502 bytes
 </code></pre>
 
 <ul>
@@ -1189,16 +1193,16 @@ GitHub Desktop
 </li>
 </ul>
 
-<pre><code>Count,"Folder Name Search with RegEx Match[Program Files, , No, No, Microsoft.*]"
-118,[too many results]
-1,C:\Program Files\OpenSSH\home\Administrator\Documents\SQL Server Management Studio\Templates\ItemTemplates
-1,C:\Program Files\VMware\VMware Tools\plugins\vmsvc
-1,C:\Program Files\OpenSSH\home\All Users\Microsoft\Windows\Start Menu\Programs\7-Zip
-1,C:\Program Files\Microsoft SQL Server\110\Setup Bootstrap\SQLServer2012\1040_ITA_LP\x64\1040\help
-1,C:\Program Files\Common Files\Microsoft Shared\VS7Debug
-1,C:\Program Files\Tanium\Tanium Server\http\taniumjs\sensor-query\src
-1,C:\Program Files\OpenSSH\home\All Users\Microsoft\Windows\Start Menu\Programs\Microsoft SQL Server 2012\Integration Services
-1,C:\Program Files\Tanium\Tanium Server\http\tux\spin\src
+<pre><code>Count,Folder Contents[C:\Program Files]
+1,Folder : Microsoft Visual Studio 10.0
+2,desktop.ini
+1,Folder : Windows NT
+1,Folder : Microsoft Help Viewer
+1,Folder : Reference Assemblies
+1,Folder : WindowsPowerShell
+2,Folder : Common Files
+1,Folder : Tanium
+1,Folder : Microsoft.NET
 ...trimmed for brevity...
 </code></pre>
 
@@ -1226,9 +1230,9 @@ GitHub Desktop
 <li>Save the results to a CSV file</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>bin/ask_manual.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --sensor <span class="pl-s"><span class="pl-pds">"</span>Operating System, that contains:Windows, opt:ignore_case, opt:max_data_age:60<span class="pl-pds">"</span></span> --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.csv<span class="pl-pds">"</span></span></pre></div>
+<div class="highlight highlight-source-shell"><pre>bin/ask_manual.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --sensor <span class="pl-s"><span class="pl-pds">"</span>Operating System, that contains:Windows, opt:ignore_case, opt:max_data_age:60<span class="pl-pds">"</span></span> --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.csv<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Asking manual question:
 {
   "filters_help": false, 
@@ -1241,9 +1245,9 @@ GitHub Desktop
   ], 
   "sensors_help": false
 }
-2015-09-04 01:49:38,085 INFO     pytan.pollers.QuestionPoller: ID 10117: Reached Threshold of 99% (2 of 2)
-++ Asked Question 'Get Operating System containing "Windows" from all machines' ID: 10117
-++ Report file '/tmp/out.csv' written with 65 bytes
+2015-09-14 19:48:59,704 INFO     pytan.pollers.QuestionPoller: ID 710: Reached Threshold of 99% (3 of 3)
+++ Asked Question 'Get Operating System containing "Windows" from all machines' ID: 710
+++ Report file '/tmp/out.csv' written with 98 bytes
 </code></pre>
 
 <ul>
@@ -1270,6 +1274,7 @@ GitHub Desktop
 <pre><code>Operating System
 [no results]
 Windows Server 2008 R2 Standard
+Windows Server 2012 R2 Standard
 </code></pre>
 
 <ul>
@@ -1301,9 +1306,9 @@ Windows Server 2008 R2 Standard
 <li>Save the results to a CSV file</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>bin/ask_manual.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 -s <span class="pl-s"><span class="pl-pds">"</span>Computer Name<span class="pl-pds">"</span></span> -s <span class="pl-s"><span class="pl-pds">"</span>Folder Name Search with RegEx Match{dirname=Program Files,regex=Microsoft.*, invalidparam=test}, that regex match:.*Shared.*, opt:max_data_age:3600<span class="pl-pds">"</span></span> -f <span class="pl-s"><span class="pl-pds">"</span>Operating System, that contains:Windows<span class="pl-pds">"</span></span> -f <span class="pl-s"><span class="pl-pds">"</span>IP Address, that not equals:10.10.10.10<span class="pl-pds">"</span></span> -o <span class="pl-s"><span class="pl-pds">"</span>or<span class="pl-pds">"</span></span> -o <span class="pl-s"><span class="pl-pds">"</span>ignore_case<span class="pl-pds">"</span></span> --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.csv<span class="pl-pds">"</span></span></pre></div>
+<div class="highlight highlight-source-shell"><pre>bin/ask_manual.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 -s <span class="pl-s"><span class="pl-pds">"</span>Computer Name<span class="pl-pds">"</span></span> -s <span class="pl-s"><span class="pl-pds">"</span>Folder Contents{folderPath=C:\Program Files, invalidparam=test}, that regex match:.*Shared.*, opt:max_data_age:3600<span class="pl-pds">"</span></span> -f <span class="pl-s"><span class="pl-pds">"</span>Operating System, that contains:Windows<span class="pl-pds">"</span></span> -f <span class="pl-s"><span class="pl-pds">"</span>IP Address, that not equals:10.10.10.10<span class="pl-pds">"</span></span> -o <span class="pl-s"><span class="pl-pds">"</span>or<span class="pl-pds">"</span></span> -o <span class="pl-s"><span class="pl-pds">"</span>ignore_case<span class="pl-pds">"</span></span> --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.csv<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Asking manual question:
 {
   "filters_help": false, 
@@ -1319,13 +1324,13 @@ Windows Server 2008 R2 Standard
   ], 
   "sensors": [
     "Computer Name", 
-    "Folder Name Search with RegEx Match{dirname=Program Files,regex=Microsoft.*, invalidparam=test}, that regex match:.*Shared.*, opt:max_data_age:3600"
+    "Folder Contents{folderPath=C:\\Program Files, invalidparam=test}, that regex match:.*Shared.*, opt:max_data_age:3600"
   ], 
   "sensors_help": false
 }
-2015-09-04 01:49:58,464 INFO     pytan.pollers.QuestionPoller: ID 10118: Reached Threshold of 99% (2 of 2)
-++ Asked Question 'Get Computer Name and Folder Name Search with RegEx Match[Program Files, , No, No, Microsoft.*, test] containing "Shared" from all machines with ( Operating System containing "Windows" or any IP Address != "10.10.10.10" )' ID: 10118
-++ Report file '/tmp/out.csv' written with 5324 bytes
+2015-09-14 19:49:36,637 INFO     pytan.pollers.QuestionPoller: ID 711: Reached Threshold of 99% (3 of 3)
+++ Asked Question 'Get Computer Name and Folder Contents[C:\\Program Files, test] containing "Shared" from all machines with ( Operating System containing "Windows" or any IP Address != "10.10.10.10" )' ID: 711
+++ Report file '/tmp/out.csv' written with 210 bytes
 </code></pre>
 
 <ul>
@@ -1349,17 +1354,10 @@ Windows Server 2008 R2 Standard
 </li>
 </ul>
 
-<pre><code>Computer Name,"Folder Name Search with RegEx Match[Program Files, , No, No, Microsoft.*, test]"
-Casus-Belli.local,[no results]
-TPT1-0.localdomain,"C:\Program Files\Common Files\Microsoft Shared\VS7Debug
-C:\Program Files\Common Files\Microsoft Shared\ink\ar-SA
-C:\Program Files\Common Files\Microsoft Shared\ink\ru-RU
-C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\keypad
-C:\Program Files\Common Files\Microsoft Shared\ink
-C:\Program Files\Common Files\Microsoft Shared\ink\sv-SE
-C:\Program Files\Common Files\Microsoft Shared\ink\uk-UA
-C:\Program Files\Common Files\Microsoft Shared\ink\sl-SI
-...trimmed for brevity...
+<pre><code>Computer Name,"Folder Contents[C:\Program Files, test]"
+c1u14-virtual-machine.(none),[current result unavailable]
+WIN-6U71ED4M23D,[current result unavailable]
+TPT1.pytanlab.com,[current result unavailable]
 </code></pre>
 
 <ul>
@@ -1382,37 +1380,36 @@ C:\Program Files\Common Files\Microsoft Shared\ink\sl-SI
 <li>Ask a question with 4 sensors</li>
 <li>Use filters on 3rd and 4th sensor to limit the column data to only show certain apps</li>
 <li>Use 2 question filters to limit the row data to only show the same apps used in the sensor filters</li>
-<li>Supply two question options, one to AND the question filters supplied, and another to ignore the case while matching the question filters</li>
+<li>Supply two question options, one to OR the question filters supplied, and another to ignore the case while matching the question filters</li>
 <li>Save the results to a CSV file</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>bin/ask_manual.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 -s <span class="pl-s"><span class="pl-pds">"</span>Computer Name<span class="pl-pds">"</span></span> -s <span class="pl-s"><span class="pl-pds">"</span>Last Logged In User<span class="pl-pds">"</span></span> -s <span class="pl-s"><span class="pl-pds">"</span>Installed Applications, that contains:Google Search<span class="pl-pds">"</span></span> -s <span class="pl-s"><span class="pl-pds">"</span>Installed Applications, that contains:Google Chrome<span class="pl-pds">"</span></span> -f <span class="pl-s"><span class="pl-pds">"</span>Installed Applications, that contains:Google Search<span class="pl-pds">"</span></span> -f <span class="pl-s"><span class="pl-pds">"</span>Installed Applications, that contains:Google Chrome<span class="pl-pds">"</span></span> -o <span class="pl-s"><span class="pl-pds">"</span>and<span class="pl-pds">"</span></span> -o <span class="pl-s"><span class="pl-pds">"</span>ignore_case<span class="pl-pds">"</span></span> --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.csv<span class="pl-pds">"</span></span></pre></div>
+<div class="highlight highlight-source-shell"><pre>bin/ask_manual.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 -s <span class="pl-s"><span class="pl-pds">"</span>Computer Name<span class="pl-pds">"</span></span> -s <span class="pl-s"><span class="pl-pds">"</span>Last Logged In User<span class="pl-pds">"</span></span> -s <span class="pl-s"><span class="pl-pds">"</span>Installed Applications, that contains:Google<span class="pl-pds">"</span></span> -f <span class="pl-s"><span class="pl-pds">"</span>Installed Applications, that contains:Google<span class="pl-pds">"</span></span> -f <span class="pl-s"><span class="pl-pds">"</span>Installed Applications, that contains:Chrome<span class="pl-pds">"</span></span> -o <span class="pl-s"><span class="pl-pds">"</span>or<span class="pl-pds">"</span></span> -o <span class="pl-s"><span class="pl-pds">"</span>ignore_case<span class="pl-pds">"</span></span> --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.csv<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Asking manual question:
 {
   "filters_help": false, 
   "get_results": true, 
   "options_help": false, 
   "question_filters": [
-    "Installed Applications, that contains:Google Search", 
-    "Installed Applications, that contains:Google Chrome"
+    "Installed Applications, that contains:Google", 
+    "Installed Applications, that contains:Chrome"
   ], 
   "question_options": [
-    "and", 
+    "or", 
     "ignore_case"
   ], 
   "sensors": [
     "Computer Name", 
     "Last Logged In User", 
-    "Installed Applications, that contains:Google Search", 
-    "Installed Applications, that contains:Google Chrome"
+    "Installed Applications, that contains:Google"
   ], 
   "sensors_help": false
 }
-2015-09-04 01:50:03,792 INFO     pytan.pollers.QuestionPoller: ID 10119: Reached Threshold of 99% (2 of 2)
-++ Asked Question 'Get Computer Name and Last Logged In User and Installed Applications containing "Google Search" and Installed Applications containing "Google Chrome" from all machines with ( Installed Applications containing "Google Search" and Installed Applications containing "Google Chrome" )' ID: 10119
-++ Report file '/tmp/out.csv' written with 401 bytes
+2015-09-14 19:49:42,942 INFO     pytan.pollers.QuestionPoller: ID 712: Reached Threshold of 99% (3 of 3)
+++ Asked Question 'Get Computer Name and Last Logged In User and Installed Applications containing "Google" from all machines with ( Installed Applications containing "Google" or Installed Applications containing "Chrome" )' ID: 712
+++ Report file '/tmp/out.csv' written with 552 bytes
 </code></pre>
 
 <ul>
@@ -1436,16 +1433,13 @@ C:\Program Files\Common Files\Microsoft Shared\ink\sl-SI
 </li>
 </ul>
 
-<pre><code>Computer Name,Last Logged In User,Name,Name,Silent Uninstall String,Silent Uninstall String,Uninstallable,Uninstallable,Version,Version
-Casus-Belli.local,jolsen,"Google Search
-Google Search","Google Search
-Google Search","nothing
-nothing","nothing
+<pre><code>Computer Name,Last Logged In User,Name,Silent Uninstall String,Uninstallable,Version
+TPT1.pytanlab.com,Uninitialized - waiting for login,Google Chrome,"""C:\Program Files (x86)\Google\Chrome\Application\45.0.2454.85\Installer\setup.exe"" --uninstall --multi-install --chrome --system-level --verbose-logging",Not Uninstallable,45.0.2454.85
+c1u14-virtual-machine.(none),tanium,"libaccount-plugin-google
+account-plugin-google","nothing
 nothing","Not Uninstallable
-Not Uninstallable","Not Uninstallable
-Not Uninstallable","42.0.2311.90
-41.0.2272.104","42.0.2311.90
-41.0.2272.104"
+Not Uninstallable","0.11+14.04.20140409.1-0ubuntu2
+0.11+14.04.20140409.1-0ubuntu2"
 </code></pre>
 
 <ul>
@@ -1464,9 +1458,9 @@ Not Uninstallable","42.0.2311.90
 <h1>
 <a id="user-content-print-the-help-for-sensors" class="anchor" href="#print-the-help-for-sensors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Print the help for sensors</h1>
 
-<div class="highlight highlight-bash"><pre>bin/ask_manual.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --sensors-help</pre></div>
+<div class="highlight highlight-source-shell"><pre>bin/ask_manual.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --sensors-help</pre></div>
 
-<pre><code>PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Asking manual question:
 {
   "filters_help": false, 
@@ -1629,13 +1623,13 @@ the default type for most sensors), re-fetch data older than
 </code></pre>
 
 <pre lang="STDERR"><code>Traceback (most recent call last):
-  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2187, in process_ask_manual_args
+  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2580, in process_ask_manual_args
     response = handler.ask(qtype='manual', **obj_grp_args)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 238, in ask
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 249, in ask
     result = method(**clean_kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 493, in ask_manual
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 530, in ask_manual
     pytan.utils.check_for_help(kwargs=kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2077, in check_for_help
+  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2079, in check_for_help
     raise pytan.exceptions.PytanHelp(help_out)
 PytanHelp: 
 Sensors Help
@@ -1802,9 +1796,9 @@ the default type for most sensors), re-fetch data older than
 <h1>
 <a id="user-content-print-the-help-for-filters" class="anchor" href="#print-the-help-for-filters" aria-hidden="true"><span class="octicon octicon-link"></span></a>Print the help for filters</h1>
 
-<div class="highlight highlight-bash"><pre>bin/ask_manual.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --filters-help</pre></div>
+<div class="highlight highlight-source-shell"><pre>bin/ask_manual.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --filters-help</pre></div>
 
-<pre><code>PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Asking manual question:
 {
   "filters_help": true, 
@@ -2109,13 +2103,13 @@ Valid Filters
 </code></pre>
 
 <pre lang="STDERR"><code>Traceback (most recent call last):
-  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2187, in process_ask_manual_args
+  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2580, in process_ask_manual_args
     response = handler.ask(qtype='manual', **obj_grp_args)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 238, in ask
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 249, in ask
     result = method(**clean_kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 493, in ask_manual
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 530, in ask_manual
     pytan.utils.check_for_help(kwargs=kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2077, in check_for_help
+  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2079, in check_for_help
     raise pytan.exceptions.PytanHelp(help_out)
 PytanHelp: 
 Filters Help
@@ -2424,9 +2418,9 @@ Valid Filters
 <h1>
 <a id="user-content-print-the-help-for-options" class="anchor" href="#print-the-help-for-options" aria-hidden="true"><span class="octicon octicon-link"></span></a>Print the help for options</h1>
 
-<div class="highlight highlight-bash"><pre>bin/ask_manual.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --options-help</pre></div>
+<div class="highlight highlight-source-shell"><pre>bin/ask_manual.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --options-help</pre></div>
 
-<pre><code>PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Asking manual question:
 {
   "filters_help": false, 
@@ -2516,13 +2510,13 @@ Valid Options
 </code></pre>
 
 <pre lang="STDERR"><code>Traceback (most recent call last):
-  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2187, in process_ask_manual_args
+  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2580, in process_ask_manual_args
     response = handler.ask(qtype='manual', **obj_grp_args)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 238, in ask
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 249, in ask
     result = method(**clean_kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 493, in ask_manual
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 530, in ask_manual
     pytan.utils.check_for_help(kwargs=kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2077, in check_for_help
+  File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2079, in check_for_help
     raise pytan.exceptions.PytanHelp(help_out)
 PytanHelp: 
 Options Help
@@ -2614,7 +2608,7 @@ Valid Options
 <p><a href="#user-content-toc">TOC</a></p>
 
 <h6>
-<a id="user-content-generated-by-build_bin_doc-v210-date-thu-sep--3-215004-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v210-date-thu-sep--3-215004-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v2.1.0</code>, date: Thu Sep  3 21:50:04 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
+<a id="user-content-generated-by-build_bin_doc-v210-date-mon-sep-14-154944-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v210-date-mon-sep-14-154944-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v2.1.0</code>, date: Mon Sep 14 15:49:44 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
 </h6>
 
 </body></html>

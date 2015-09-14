@@ -7,6 +7,7 @@ When running these scripts from OS X or Linux, you will want to run the .py scri
 
 When running these scripts from Windows, you will want to run the .bat scripts from the winbin/ directory. The .bat files in the winbin/ directory handle calling the python binary appropriately. Also, when running these scripts on Windows, ensure arguments that need to be quoted are enclosed in double quotes in order for Windows to properly parse your command line.
 
+  * **[approve_saved_action](approve_saved_action.html)**: Approve a saved action by ID
   * **[ask_manual](ask_manual.html)**: Ask a manual question and save the results as a report format
   * **[ask_parsed](ask_parsed.html)**: Ask a parsed question and save the results as a report format
   * **[ask_saved](ask_saved.html)**: Ask a saved question and save the results as a report format
@@ -37,6 +38,7 @@ When running these scripts from Windows, you will want to run the .bat scripts f
   * **[get_results](get_results.html)**: Get results from a deploy action, saved question, or question
   * **[get_saved_action](get_saved_action.html)**: Get an object of type: saved_action and save the object to a report file
   * **[get_saved_question](get_saved_question.html)**: Get an object of type: saved_question and save the object to a report file
+  * **[get_saved_question_history](get_saved_question_history.html)**: Gets the Result Info for all the questions asked for a given saved question, or for all questions asked ever, and exports the question information to a CSV file
   * **[get_sensor](get_sensor.html)**: Get an object of type: sensor and save the object to a report file
   * **[get_setting](get_setting.html)**: Get an object of type: setting and save the object to a report file
   * **[get_user](get_user.html)**: Get an object of type: user and save the object to a report file

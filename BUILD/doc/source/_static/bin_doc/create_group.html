@@ -783,12 +783,13 @@ body .task-list{
 <li>If running this script on Windows, use the batch script in the winbin/create_group.bat so that python is called correctly.</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>create_group.py -h</pre></div>
+<div class="highlight highlight-source-shell"><pre>create_group.py -h</pre></div>
 
 <pre><code>usage: create_group.py [-h] [-u USERNAME] [-p PASSWORD]
                        [--session_id SESSION_ID] [--host HOST] [--port PORT]
-                       [-l LOGLEVEL] [--debugformat] [--record_all_requests]
-                       [--stats_loop_enabled] [--http_auth_retry]
+                       [-l LOGLEVEL] [--debugformat] [--debug_method_locals]
+                       [--record_all_requests] [--stats_loop_enabled]
+                       [--http_auth_retry]
                        [--http_retry_count HTTP_RETRY_COUNT] -n GROUPNAME
                        [-f FILTERS] [-o FILTER_OPTIONS] [--filters-help]
                        [--options-help]
@@ -815,6 +816,9 @@ Handler Options:
                         Logging level to use, increase for more verbosity
                         (default: 0)
   --debugformat         Enable debug format for logging (default: False)
+  --debug_method_locals
+                        Enable debug logging for each methods local variables
+                        (default: False)
   --record_all_requests
                         Record all requests in
                         handler.session.ALL_REQUESTS_RESPONSES (default:
@@ -870,24 +874,24 @@ Create Group Options:
 <li>This may or may not fail -- thats fine!</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>bin/delete_group.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>All Windows Computers CMDLINE TEST GROUP<span class="pl-pds">"</span></span></pre></div>
+<div class="highlight highlight-source-shell"><pre>bin/delete_group.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>All Windows Computers CMDLINE TEST GROUP<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 
 
 Error occurred: No results found searching for Group, name: 'All Windows Computers CMDLINE TEST GROUP' (error: Response command GroupNotFound does not match request command GetObject)!!
 </code></pre>
 
 <pre lang="STDERR"><code>Traceback (most recent call last):
-  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 1688, in process_delete_object_args
-    response = handler.delete(obj, **obj_grp_args)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1662, in delete
+  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2043, in process_delete_object_args
+    response = handler.delete(**obj_grp_args)
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1775, in delete
     objs_to_del = self.get(objtype=objtype, pytan_help=h, **clean_kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 2004, in get
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 2129, in get
     return self._get_multi(obj_map=obj_map, **clean_kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 2180, in _get_multi
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 2313, in _get_multi
     found = self._find(obj=api_obj_multi, **clean_kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 2127, in _find
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 2258, in _find
     raise pytan.exceptions.HandlerError(err(search_str, e))
 HandlerError: No results found searching for Group, name: 'All Windows Computers CMDLINE TEST GROUP' (error: Response command GroupNotFound does not match request command GetObject)!!
 </code></pre>
@@ -915,10 +919,10 @@ HandlerError: No results found searching for Group, name: 'All Windows Computers
 <li>Supply two options, one to AND the filters supplied, and another to ignore the case while matching the filters</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>bin/create_group.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>All Windows Computers CMDLINE TEST GROUP<span class="pl-pds">"</span></span> -f <span class="pl-s"><span class="pl-pds">"</span>Operating System, that contains:Windows<span class="pl-pds">"</span></span> -f <span class="pl-s"><span class="pl-pds">"</span>IP Address, that not equals:10.10.10.10<span class="pl-pds">"</span></span> -o <span class="pl-s"><span class="pl-pds">"</span>and<span class="pl-pds">"</span></span> -o <span class="pl-s"><span class="pl-pds">"</span>ignore_case<span class="pl-pds">"</span></span></pre></div>
+<div class="highlight highlight-source-shell"><pre>bin/create_group.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>All Windows Computers CMDLINE TEST GROUP<span class="pl-pds">"</span></span> -f <span class="pl-s"><span class="pl-pds">"</span>Operating System, that contains:Windows<span class="pl-pds">"</span></span> -f <span class="pl-s"><span class="pl-pds">"</span>IP Address, that not equals:10.10.10.10<span class="pl-pds">"</span></span> -o <span class="pl-s"><span class="pl-pds">"</span>and<span class="pl-pds">"</span></span> -o <span class="pl-s"><span class="pl-pds">"</span>ignore_case<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-New group 'All Windows Computers CMDLINE TEST GROUP' created with ID 2989, filter text: ' ( Operating System containing "Windows" and any IP Address != "10.10.10.10" )'
+<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+New group 'All Windows Computers CMDLINE TEST GROUP' created with ID 264, filter text: ' ( Operating System containing "Windows" and any IP Address != "10.10.10.10" )'
 </code></pre>
 
 <ul>
@@ -951,10 +955,10 @@ New group 'All Windows Computers CMDLINE TEST GROUP' created with ID 2989, filte
 <li>Delete the group named All Windows Computers CMDLINE TEST GROUP</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>bin/delete_group.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>All Windows Computers CMDLINE TEST GROUP<span class="pl-pds">"</span></span></pre></div>
+<div class="highlight highlight-source-shell"><pre>bin/delete_group.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>All Windows Computers CMDLINE TEST GROUP<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-Deleted item:  Group, id: 2989
+<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+Deleted item:  Group, id: 264
 </code></pre>
 
 <ul>
@@ -983,12 +987,13 @@ Deleted item:  Group, id: 2989
 <h1>
 <a id="user-content-print-the-help-for-filters" class="anchor" href="#print-the-help-for-filters" aria-hidden="true"><span class="octicon octicon-link"></span></a>Print the help for filters</h1>
 
-<div class="highlight highlight-bash"><pre>bin/create_group.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --filters-help</pre></div>
+<div class="highlight highlight-source-shell"><pre>bin/create_group.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --filters-help</pre></div>
 
 <pre><code>usage: create_group.py [-h] [-u USERNAME] [-p PASSWORD]
                        [--session_id SESSION_ID] [--host HOST] [--port PORT]
-                       [-l LOGLEVEL] [--debugformat] [--record_all_requests]
-                       [--stats_loop_enabled] [--http_auth_retry]
+                       [-l LOGLEVEL] [--debugformat] [--debug_method_locals]
+                       [--record_all_requests] [--stats_loop_enabled]
+                       [--http_auth_retry]
                        [--http_retry_count HTTP_RETRY_COUNT] -n GROUPNAME
                        [-f FILTERS] [-o FILTER_OPTIONS] [--filters-help]
                        [--options-help]
@@ -1015,6 +1020,9 @@ Handler Options:
                         Logging level to use, increase for more verbosity
                         (default: 0)
   --debugformat         Enable debug format for logging (default: False)
+  --debug_method_locals
+                        Enable debug logging for each methods local variables
+                        (default: False)
   --record_all_requests
                         Record all requests in
                         handler.session.ALL_REQUESTS_RESPONSES (default:
@@ -1056,12 +1064,13 @@ ERROR:create_group:argument -n/--name is required
 <h1>
 <a id="user-content-print-the-help-for-options" class="anchor" href="#print-the-help-for-options" aria-hidden="true"><span class="octicon octicon-link"></span></a>Print the help for options</h1>
 
-<div class="highlight highlight-bash"><pre>bin/create_group.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --options-help</pre></div>
+<div class="highlight highlight-source-shell"><pre>bin/create_group.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --options-help</pre></div>
 
 <pre><code>usage: create_group.py [-h] [-u USERNAME] [-p PASSWORD]
                        [--session_id SESSION_ID] [--host HOST] [--port PORT]
-                       [-l LOGLEVEL] [--debugformat] [--record_all_requests]
-                       [--stats_loop_enabled] [--http_auth_retry]
+                       [-l LOGLEVEL] [--debugformat] [--debug_method_locals]
+                       [--record_all_requests] [--stats_loop_enabled]
+                       [--http_auth_retry]
                        [--http_retry_count HTTP_RETRY_COUNT] -n GROUPNAME
                        [-f FILTERS] [-o FILTER_OPTIONS] [--filters-help]
                        [--options-help]
@@ -1088,6 +1097,9 @@ Handler Options:
                         Logging level to use, increase for more verbosity
                         (default: 0)
   --debugformat         Enable debug format for logging (default: False)
+  --debug_method_locals
+                        Enable debug logging for each methods local variables
+                        (default: False)
   --record_all_requests
                         Record all requests in
                         handler.session.ALL_REQUESTS_RESPONSES (default:
@@ -1127,7 +1139,7 @@ ERROR:create_group:argument -n/--name is required
 <p><a href="#user-content-toc">TOC</a></p>
 
 <h6>
-<a id="user-content-generated-by-build_bin_doc-v210-date-thu-sep--3-215018-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v210-date-thu-sep--3-215018-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v2.1.0</code>, date: Thu Sep  3 21:50:18 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
+<a id="user-content-generated-by-build_bin_doc-v210-date-mon-sep-14-155036-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v210-date-mon-sep-14-155036-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v2.1.0</code>, date: Mon Sep 14 15:50:36 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
 </h6>
 
 </body></html>

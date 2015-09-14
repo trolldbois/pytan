@@ -782,12 +782,13 @@ body .task-list{
 <li>If running this script on Windows, use the batch script in the winbin/get_results.bat so that python is called correctly.</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>get_results.py -h</pre></div>
+<div class="highlight highlight-source-shell"><pre>get_results.py -h</pre></div>
 
 <pre><code>usage: get_results.py [-h] [-u USERNAME] [-p PASSWORD]
                       [--session_id SESSION_ID] [--host HOST] [--port PORT]
-                      [-l LOGLEVEL] [--debugformat] [--record_all_requests]
-                      [--stats_loop_enabled] [--http_auth_retry]
+                      [-l LOGLEVEL] [--debugformat] [--debug_method_locals]
+                      [--record_all_requests] [--stats_loop_enabled]
+                      [--http_auth_retry]
                       [--http_retry_count HTTP_RETRY_COUNT]
                       [-o {saved_question,question,action}] [-i ID] [-n NAME]
                       [--file REPORT_FILE] [--dir REPORT_DIR]
@@ -821,6 +822,9 @@ Handler Options:
                         Logging level to use, increase for more verbosity
                         (default: 0)
   --debugformat         Enable debug format for logging (default: False)
+  --debug_method_locals
+                        Enable debug logging for each methods local variables
+                        (default: False)
   --record_all_requests
                         Record all requests in
                         handler.session.ALL_REQUESTS_RESPONSES (default:
@@ -909,9 +913,9 @@ Export Options:
 <li>Ask a question without getting the results, save stdout to ask.out</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>bin/ask_manual.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --no-results --sensor <span class="pl-s"><span class="pl-pds">"</span>Computer Name<span class="pl-pds">"</span></span> <span class="pl-k">|</span> tee /tmp/ask.out</pre></div>
+<div class="highlight highlight-source-shell"><pre>bin/ask_manual.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --no-results --sensor <span class="pl-s"><span class="pl-pds">"</span>Computer Name<span class="pl-pds">"</span></span> <span class="pl-k">|</span> tee /tmp/ask.out</pre></div>
 
-<pre><code>PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Asking manual question:
 {
   "filters_help": false, 
@@ -924,7 +928,7 @@ Export Options:
   ], 
   "sensors_help": false
 }
-++ Asked Question 'Get Computer Name from all machines' ID: 10131
+++ Asked Question 'Get Computer Name from all machines' ID: 726
 ++ No action results returned, run get_results.py to get the results
 </code></pre>
 
@@ -949,7 +953,7 @@ Export Options:
 </li>
 </ul>
 
-<pre><code>PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Asking manual question:
 {
   "filters_help": false, 
@@ -982,7 +986,7 @@ Export Options:
 <li>Wait 30 seconds for data for the previously asked question to be available</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>sleep 15</pre></div>
+<div class="highlight highlight-source-shell"><pre>sleep 15</pre></div>
 
 <ul>
 <li>
@@ -1015,13 +1019,13 @@ Export Options:
 <li>Save the results to a CSV file</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>bin/get_results.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 -o <span class="pl-s"><span class="pl-pds">"</span>question<span class="pl-pds">"</span></span> --id <span class="pl-s"><span class="pl-pds">`</span>cat /tmp/ask.out <span class="pl-k">|</span> grep ID<span class="pl-k">|</span> cut -d: -f2 <span class="pl-k">|</span> tr -d <span class="pl-s"><span class="pl-pds">"</span> <span class="pl-pds">"</span></span><span class="pl-pds">`</span></span> --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.csv<span class="pl-pds">"</span></span></pre></div>
+<div class="highlight highlight-source-shell"><pre>bin/get_results.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 -o <span class="pl-s"><span class="pl-pds">"</span>question<span class="pl-pds">"</span></span> --id <span class="pl-s"><span class="pl-pds">`</span>cat /tmp/ask.out <span class="pl-k">|</span> grep ID<span class="pl-k">|</span> cut -d: -f2 <span class="pl-k">|</span> tr -d <span class="pl-s"><span class="pl-pds">"</span> <span class="pl-pds">"</span></span><span class="pl-pds">`</span></span> --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.csv<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-++ Found object: Question, id: 10131
-2015-09-04 02:03:27,724 INFO     pytan.pollers.SSEPoller: ID '1/494647388287.xml': Server Side Export Completed: 'Completed. 2 rows written.'
-++ Found results for object: ResultSet for ID None, Columns: 2, Total Rows: None, Current Rows: 2, EstTotal: None, Passed: None, MrPassed: None, Tested: None, MrTested: None
-++ Report file '/tmp/out.csv' written with 54 bytes
+<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+++ Found object: Question, id: 726
+2015-09-14 19:52:59,782 INFO     pytan.pollers.SSEPoller: ID '1/495575555817.xml': Server Side Export Completed: 'Completed. 3 rows written.'
+++ Found results for object: ResultSet for ID None, Columns: 2, Total Rows: None, Current Rows: 3, EstTotal: None, Passed: None, MrPassed: None, Tested: None, MrTested: None
+++ Report file '/tmp/out.csv' written with 81 bytes
 </code></pre>
 
 <ul>
@@ -1046,8 +1050,9 @@ Export Options:
 </ul>
 
 <pre><code>Computer Name
-Casus-Belli.local
-TPT1-0.localdomain
+c1u14-virtual-machine.(none)
+WIN-6U71ED4M23D
+TPT1.pytanlab.com
 </code></pre>
 
 <ul>
@@ -1071,13 +1076,13 @@ TPT1-0.localdomain
 <li>Save the results to a CSV file</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>bin/get_results.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 -o <span class="pl-s"><span class="pl-pds">"</span>question<span class="pl-pds">"</span></span> --id <span class="pl-s"><span class="pl-pds">`</span>cat /tmp/ask.out <span class="pl-k">|</span> grep ID<span class="pl-k">|</span> cut -d: -f2 <span class="pl-k">|</span> tr -d <span class="pl-s"><span class="pl-pds">"</span> <span class="pl-pds">"</span></span><span class="pl-pds">`</span></span> --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.csv<span class="pl-pds">"</span></span> --enable_sse</pre></div>
+<div class="highlight highlight-source-shell"><pre>bin/get_results.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 -o <span class="pl-s"><span class="pl-pds">"</span>question<span class="pl-pds">"</span></span> --id <span class="pl-s"><span class="pl-pds">`</span>cat /tmp/ask.out <span class="pl-k">|</span> grep ID<span class="pl-k">|</span> cut -d: -f2 <span class="pl-k">|</span> tr -d <span class="pl-s"><span class="pl-pds">"</span> <span class="pl-pds">"</span></span><span class="pl-pds">`</span></span> --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.csv<span class="pl-pds">"</span></span> --enable_sse</pre></div>
 
-<pre><code>PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-++ Found object: Question, id: 10131
-2015-09-04 02:03:27,972 INFO     pytan.pollers.SSEPoller: ID '1/494647388536.xml': Server Side Export Completed: 'Completed. 2 rows written.'
-++ Found results for object: ResultSet for ID None, Columns: 2, Total Rows: None, Current Rows: 2, EstTotal: None, Passed: None, MrPassed: None, Tested: None, MrTested: None
-++ Report file '/tmp/out.csv' written with 54 bytes
+<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+++ Found object: Question, id: 726
+2015-09-14 19:53:00,611 INFO     pytan.pollers.SSEPoller: ID '1/495575556644.xml': Server Side Export Completed: 'Completed. 3 rows written.'
+++ Found results for object: ResultSet for ID None, Columns: 2, Total Rows: None, Current Rows: 3, EstTotal: None, Passed: None, MrPassed: None, Tested: None, MrTested: None
+++ Report file '/tmp/out.csv' written with 81 bytes
 </code></pre>
 
 <ul>
@@ -1102,8 +1107,9 @@ TPT1-0.localdomain
 </ul>
 
 <pre><code>Computer Name
-Casus-Belli.local
-TPT1-0.localdomain
+c1u14-virtual-machine.(none)
+WIN-6U71ED4M23D
+TPT1.pytanlab.com
 </code></pre>
 
 <ul>
@@ -1120,7 +1126,7 @@ TPT1-0.localdomain
 <p><a href="#user-content-toc">TOC</a></p>
 
 <h6>
-<a id="user-content-generated-by-build_bin_doc-v210-date-thu-sep--3-220327-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v210-date-thu-sep--3-220327-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v2.1.0</code>, date: Thu Sep  3 22:03:27 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
+<a id="user-content-generated-by-build_bin_doc-v210-date-mon-sep-14-155300-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v210-date-mon-sep-14-155300-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v2.1.0</code>, date: Mon Sep 14 15:53:00 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
 </h6>
 
 </body></html>
