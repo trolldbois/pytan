@@ -10,6 +10,16 @@
     * pytan_shell.py now has tab completion support on Windows (and a host of  keyboard shortcuts)
     * new script: get_saved_question_history.py -- provides a method for seeing what questions asked for a saved question have data
     * new script: approve_saved_question.py -- provides a way to approve an action when Global Setting "require_action_approval" is set to 1
+    * pollers.QuestionPoller(): added a retry to GetResultInfo calls in pollers if estimated_total == 0 in order to overcome internal bug #5193 (random estimated_total == 0 returns from GRI, unable to reproduce on demand)
+    * pollers.QuestionPoller(): added override_estimated_total parameter
+    * pollers.ActionPoller(): added override_passed_count parameter
+
+  * doc:
+    * examples added for ask_parsed.py
+    * examples added for get_saved_question_history.py
+    * examples added for approve_saved_question.py
+    * examples updated for stop_action.py
+    * updated docstrings for Handler for deploy_action, ask_saved, ask_parsed, ask_manual to include Poller passthroughs
 
 # 2.1.3
 
