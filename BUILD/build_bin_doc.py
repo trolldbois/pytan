@@ -37,6 +37,7 @@ verbose = False
 
 main_output_dir = script_definitions.staticdoc_source
 # main_output_dir = '/tmp'
+print "Output dir is: {}".format(main_output_dir)
 
 only_run = []
 skips = []

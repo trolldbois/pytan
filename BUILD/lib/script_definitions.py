@@ -23,8 +23,7 @@ path_adds = [my_dir, pytan_lib_dir, test_dir]
 import pytan
 import API_INFO
 
-
-doc_source = os.path.join(parent_dir, 'BUILD', 'doc', 'source')
+doc_source = os.path.join(parent_dir, 'doc', 'source')
 staticdoc_source = os.path.join(doc_source, '_static')
 
 scripts = {}
@@ -554,7 +553,7 @@ ask_kwargs = {{
     'qtype': 'manual',
     'sensors': [
         "Computer Name", "IP Route Details", "IP Address",
-        'Folder Name Search with RegEx Match{{dirname=Program Files,regex=.*Shared.*}}',
+        'Folder Contents{{folderPath=C:\\Program Files}}',
     ],
 }}
 
@@ -601,7 +600,7 @@ METHOD_TEMPLATES['export_basetype'] = """
 get_kwargs = {{
     'name': [
         "Computer Name", "IP Route Details", "IP Address",
-        'Folder Name Search with RegEx Match',
+        'Folder Contents',
     ],
     'objtype': 'sensor',
 }}
@@ -623,7 +622,7 @@ METHOD_TEMPLATES['invalid_export_basetype'] = """
 get_kwargs = {{
     'name': [
         "Computer Name", "IP Route Details", "IP Address",
-        'Folder Name Search with RegEx Match',
+        'Folder Contents',
     ],
     'objtype': 'sensor',
 }}
