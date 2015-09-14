@@ -285,12 +285,32 @@ class QuestionPoller(object):
         """
         self._debug_locals(sys._getframe().f_code.co_name, locals())
 
-        clean_keys = ['obj']
+        # add a retry to re-fetch result info if estimated_total == 0
+        gri_retry_count = kwargs.get('gri_retry_count', 2)
+
+        clean_keys = ['obj', 'gri_retry_count']
         clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
-        result_info = self.handler.get_result_info(obj=self.obj, **clean_kwargs)
-        if result_info.estimated_total == 0:
-            m = "Estimated Total of Clients is 0 -- no clients available?".format
-            raise pytan.exceptions.PollingError(m())
+
+        current_try = 1
+
+        while True:
+            result_info = self.handler.get_result_info(obj=self.obj, **clean_kwargs)
+
+            if result_info.estimated_total != 0:
+                break
+
+            if current_try >= gri_retry_count:
+                m = "Estimated Total of Clients is 0 -- no clients available?".format
+                raise pytan.exceptions.PollingError(m())
+            else:
+                current_try += 1
+                h = (
+                    "re-issue a GetResultInfo since the estimated_total came back 0, attempt "
+                    "{} out of {}".format
+                )
+                clean_kwargs['pytan_help'] = h(current_try, gri_retry_count)
+                continue
+
         return result_info
 
     def get_result_data(self, **kwargs):
