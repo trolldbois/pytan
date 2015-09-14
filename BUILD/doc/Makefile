@@ -52,6 +52,7 @@ html:
 	perl -pi -e "s/taniumpy package/TaniumPy Package/" source/taniumpy/taniumpy.rst
 
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(REALBUILDDIR)/html/PyTan-$(VERSION)-HTML_DOC
+	cp $(REALBUILDDIR)/console.wsdl $(REALBUILDDIR)/html/PyTan-$(VERSION)-HTML_DOC/console.wsdl
 
 	@echo
 	@echo "Build finished. The HTML pages are in $(REALBUILDDIR)/html/PyTan-$(VERSION)-HTML_DOC"
@@ -67,6 +68,7 @@ htmlzip:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(REALBUILDDIR)/html/PyTan-$(VERSION)-HTML_DOC
 
 	cd $(REALBUILDDIR)/html/ ; zip -9rm PyTan-$(VERSION)-HTML_DOC.zip PyTan-$(VERSION)-HTML_DOC/
+	cp $(REALBUILDDIR)/console.wsdl $(REALBUILDDIR)/html/PyTan-$(VERSION)-HTML_DOC/console.wsdl
 
 	@echo
 	@echo "Build finished. The HTML pages are in $(REALBUILDDIR)/html/PyTan-$(VERSION)-HTML_DOC.zip"
