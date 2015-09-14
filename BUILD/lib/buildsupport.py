@@ -4,7 +4,7 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 '''Functions for use by BUILD scripts'''
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
-__version__ = '2.1.0'
+__version__ = '2.1.4'
 
 import sys
 sys.dont_write_bytecode = True
