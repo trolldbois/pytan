@@ -2,6 +2,8 @@
 
 [Development branch](https://github.com/tanium/pytan/tree/develop) on N/A
 
+  * bug fix:
+    * check for str version of found objects attribute in manual override/non api search
   * enhancement:
     * added winlib/ directory
     * added open source package pyreadline to winlib/ directory

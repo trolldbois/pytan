@@ -2098,12 +2098,16 @@ class Handler(object):
             return_objs = getattr(taniumpy, all_objs.__class__.__name__)()
 
             for k, v in kwargs.iteritems():
+                if not v:
+                    continue
                 if not hasattr(all_objs[0], k):
                     continue
                 if not pytan.utils.is_list(v):
                     v = [v]
                 for aobj in all_objs:
-                    if not getattr(aobj, k) in v:
+                    aobj_val = getattr(aobj, k)
+                    aobj_val_str = str(aobj_val)
+                    if aobj_val not in v and aobj_val_str not in v:
                         continue
                     return_objs.append(aobj)
 
