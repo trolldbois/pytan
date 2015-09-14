@@ -89,10 +89,10 @@ except Exception as e:
     # traceback.print_exc(file=sys.stdout)
 '''STDOUT from running this:
 ...CALLING: pytan.handler() with args: {'username': 'Administrator', 'record_all_requests': True, 'loglevel': 1, 'debugformat': False, 'host': '10.0.1.240', 'password': 'Tanium2015!', 'port': '443'}
-...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+...OUTPUT: handler string: PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ...CALLING: handler.ask() with args {'sensors': ['Computer Name'], 'qtype': 'manual'}
-2015-09-05 05:49:44,304 INFO     pytan.pollers.QuestionPoller: ID 11667: Reached Threshold of 99% (2 of 2)
-...CALLING: handler.export_obj() with args {'export_format': u'bad', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x10f3b1950>}
+2015-09-14 20:16:23,941 INFO     pytan.pollers.QuestionPoller: ID 821: Reached Threshold of 99% (3 of 3)
+...CALLING: handler.export_obj() with args {'export_format': u'bad', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x11d869090>}
 ...EXCEPTION: u'bad' not a supported export format for ResultSet, must be one of: xml, json, csv
 
 '''

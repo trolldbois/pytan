@@ -2,13 +2,14 @@
 <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SOAP-ENV:Body>
     <typens:tanium_soap_request xmlns:typens="urn:TaniumSOAP">
-      <command>GetResultInfo</command>
+      <command>GetResultData</command>
       <object_list>
         <question>
-          <id>11653</id>
+          <id>804</id>
         </question>
       </object_list>
       <options>
+        <export_flag>0</export_flag>
         <suppress_object_list>1</suppress_object_list>
       </options>
     </typens:tanium_soap_request>

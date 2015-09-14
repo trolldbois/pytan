@@ -104,12 +104,25 @@ Create User Options:
   * This may or may not fail -- thats fine!
 
 ```bash
-bin/delete_user.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --loglevel 1 --name "CMDLINE TEST user"
+bin/delete_user.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 443 --loglevel 1 --name "CMDLINE TEST user"
 ```
 
 ```
-PyTan v2.1.2 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-Deleted item:  User, name: 'CMDLINE TEST user', id: 329
+PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+
+
+Error occurred: No results found searching for user with {'id': [], 'name': ['CMDLINE TEST user']}!!
+```
+
+```STDERR
+Traceback (most recent call last):
+  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2043, in process_delete_object_args
+    response = handler.delete(**obj_grp_args)
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1775, in delete
+    objs_to_del = self.get(objtype=objtype, pytan_help=h, **clean_kwargs)
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 2116, in get
+    raise pytan.exceptions.HandlerError(err(objtype, err_args))
+HandlerError: No results found searching for user with {'id': [], 'name': ['CMDLINE TEST user']}!!
 ```
 
   * Validation Test: noerror
@@ -128,12 +141,12 @@ Deleted item:  User, name: 'CMDLINE TEST user', id: 329
   * Create a property named property name with the value property value on the new user
 
 ```bash
-bin/create_user.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --loglevel 1 --name "CMDLINE TEST user" --rolename "Administrator" --property "property name" "property value"
+bin/create_user.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 443 --loglevel 1 --name "CMDLINE TEST user" --rolename "Administrator" --property "property name" "property value"
 ```
 
 ```
-PyTan v2.1.2 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-New user 'CMDLINE TEST user' created with ID 330, roles: 'Administrator', group id: 0
+PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+New user 'CMDLINE TEST user' created with ID 28, roles: 'Administrator', group id: 0
 ```
 
   * Validation Test: exitcode
@@ -154,12 +167,12 @@ New user 'CMDLINE TEST user' created with ID 330, roles: 'Administrator', group 
   * Delete the user by name
 
 ```bash
-bin/delete_user.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --loglevel 1 --name "CMDLINE TEST user"
+bin/delete_user.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 443 --loglevel 1 --name "CMDLINE TEST user"
 ```
 
 ```
-PyTan v2.1.2 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-Deleted item:  User, name: 'CMDLINE TEST user', id: 330
+PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+Deleted item:  User, name: 'CMDLINE TEST user', id: 28
 ```
 
   * Validation Test: exitcode
@@ -181,11 +194,11 @@ Deleted item:  User, name: 'CMDLINE TEST user', id: 330
   * This may or may not fail -- thats fine!
 
 ```bash
-bin/delete_user.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --loglevel 1 --name "CMDLINE TEST user"
+bin/delete_user.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 443 --loglevel 1 --name "CMDLINE TEST user"
 ```
 
 ```
-PyTan v2.1.2 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 
 
 Error occurred: No results found searching for user with {'id': [], 'name': ['CMDLINE TEST user']}!!
@@ -193,11 +206,11 @@ Error occurred: No results found searching for user with {'id': [], 'name': ['CM
 
 ```STDERR
 Traceback (most recent call last):
-  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 1711, in process_delete_object_args
+  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2043, in process_delete_object_args
     response = handler.delete(**obj_grp_args)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1735, in delete
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1775, in delete
     objs_to_del = self.get(objtype=objtype, pytan_help=h, **clean_kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 2072, in get
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 2116, in get
     raise pytan.exceptions.HandlerError(err(objtype, err_args))
 HandlerError: No results found searching for user with {'id': [], 'name': ['CMDLINE TEST user']}!!
 ```
@@ -218,12 +231,12 @@ HandlerError: No results found searching for user with {'id': [], 'name': ['CMDL
   * Create a property named property name with the value property value on the new user
 
 ```bash
-bin/create_user.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --loglevel 1 --name "CMDLINE TEST user" --rolename "Administrator" --property "property name" "property value" -g "All Computers"
+bin/create_user.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 443 --loglevel 1 --name "CMDLINE TEST user" --rolename "Administrator" --property "property name" "property value" -g "All Computers"
 ```
 
 ```
-PyTan v2.1.2 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-New user 'CMDLINE TEST user' created with ID 331, roles: 'Administrator', group id: 64
+PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+New user 'CMDLINE TEST user' created with ID 29, roles: 'Administrator', group id: 62
 ```
 
   * Validation Test: exitcode
@@ -244,12 +257,12 @@ New user 'CMDLINE TEST user' created with ID 331, roles: 'Administrator', group 
   * Delete the user by name
 
 ```bash
-bin/delete_user.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --loglevel 1 --name "CMDLINE TEST user"
+bin/delete_user.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 443 --loglevel 1 --name "CMDLINE TEST user"
 ```
 
 ```
-PyTan v2.1.2 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-Deleted item:  User, name: 'CMDLINE TEST user', id: 331
+PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+Deleted item:  User, name: 'CMDLINE TEST user', id: 29
 ```
 
   * Validation Test: exitcode
@@ -265,4 +278,4 @@ Deleted item:  User, name: 'CMDLINE TEST user', id: 331
 [TOC](#user-content-toc)
 
 
-###### generated by: `build_bin_doc v2.1.0`, date: Wed Sep  9 11:29:46 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**
+###### generated by: `build_bin_doc v2.1.0`, date: Mon Sep 14 15:51:03 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**

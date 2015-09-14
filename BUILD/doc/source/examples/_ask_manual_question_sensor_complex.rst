@@ -4,9 +4,9 @@ Ask Manual Question Sensor Complex
 
 This provides an example for asking a manual question without using human strings.
 
-It uses the Computer Name and Folder Name Search with RegEx Match sensors.
+It uses the Computer Name and Folder Contents sensors.
 
-The second sensor has a single parameter, dirname, with a value of 'Program Files'.
+The second sensor has a single parameter, folderPath, with a value of 'c:\Program Files'.
 
 The second sensor also has 3 sensor filter options that set the max data age to 3600 seconds, does NOT ignore case, and treats all values as string.
 

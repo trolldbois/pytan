@@ -2,61 +2,25 @@
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
   <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <t:return>
-      <command>GetObject</command>
-      <session>1-8060-4036783b325b1636e7b576ebbf9c7c6fb32c48c955a7af7af6f2f50b06e514642ba5216bbae7f99f9626b682d4f7cbe6c790bcff1577ec41cfa24d3592ff1de8</session>
-      <server_version>6.5.314.4301</server_version>
+      <command>GetResultInfo</command>
+      <session>1-623-bd9f4ea333ba6f18289ee21afe20dd92e3b59f007651dbdc059dee4599af628861263483bcdd59c33e507e1f5f251bfe85446828e44154a85f11b9090ba3fa25</session>
       <ID></ID>
       <IDType></IDType>
       <ContextID></ContextID>
-      <result_object>
+      <server_version>6.5.314.4301</server_version>
+      <object_list>
         <action>
-          <id>618</id>
+          <id>82</id>
           <name>API Deploy Custom Tagging - Add Tags</name>
-          <comment>Created by PyTan v2.1.0</comment>
-          <target_group>
-            <id>3617</id>
-            <name>Default</name>
-          </target_group>
-          <action_group>
-            <id>0</id>
-            <name>Default</name>
-          </action_group>
-          <package_spec>
-            <id>469</id>
-            <name>Custom Tagging - Add Tags</name>
-            <command>cmd /c cscript //T:60 add-tags.vbs "tag%5fshould%5fbe%5fadded"</command>
-          </package_spec>
-          <skip_lock_flag>0</skip_lock_flag>
-          <expire_seconds>660</expire_seconds>
-          <creation_time>2015-09-05T05:30:06</creation_time>
-          <start_time>2015-09-05T05:30:08</start_time>
-          <expiration_time>2015-09-05T05:41:08</expiration_time>
-          <distribute_seconds>0</distribute_seconds>
-          <status>Open</status>
-          <stopped_flag>0</stopped_flag>
-          <user>
-            <id>1</id>
-            <name>Administrator</name>
-            <domain></domain>
-            <group_id>0</group_id>
-            <last_login>2015-09-05T05:29:50</last_login>
-          </user>
-          <history_saved_question>
-            <id>252</id>
-          </history_saved_question>
-          <saved_action>
-            <id>591</id>
-          </saved_action>
-          <approver>
-            <id>1</id>
-            <name>Administrator</name>
-          </approver>
         </action>
-      </result_object>
-      <ResultXML></ResultXML>
+      </object_list>
       <options>
         <suppress_object_list>1</suppress_object_list>
       </options>
+      <ResultXML>&lt;result_infos&gt;&lt;now&gt;2015/09/14 19:58:48 GMT-0000&lt;/now&gt;
+&lt;max_available_age&gt;0&lt;/max_available_age&gt;
+&lt;result_info&gt;&lt;age&gt;0&lt;/age&gt;&lt;id&gt;98&lt;/id&gt;&lt;report_count&gt;29&lt;/report_count&gt;&lt;saved_question_id&gt;98&lt;/saved_question_id&gt;&lt;question_id&gt;694&lt;/question_id&gt;&lt;archived_question_id&gt;0&lt;/archived_question_id&gt;&lt;seconds_since_issued&gt;1008&lt;/seconds_since_issued&gt;&lt;issue_seconds&gt;0&lt;/issue_seconds&gt;&lt;expire_seconds&gt;3660&lt;/expire_seconds&gt;&lt;tested&gt;3&lt;/tested&gt;&lt;passed&gt;3&lt;/passed&gt;&lt;mr_tested&gt;3&lt;/mr_tested&gt;&lt;mr_passed&gt;3&lt;/mr_passed&gt;&lt;estimated_total&gt;3&lt;/estimated_total&gt;&lt;select_count&gt;2&lt;/select_count&gt;&lt;row_count&gt;3&lt;/row_count&gt;&lt;row_count_machines&gt;3&lt;/row_count_machines&gt;&lt;error_count&gt;0&lt;/error_count&gt;&lt;no_results_count&gt;0&lt;/no_results_count&gt;&lt;row_count_flag&gt;0&lt;/row_count_flag&gt;&lt;/result_info&gt;&lt;/result_infos&gt;</ResultXML>
+      <result_object></result_object>
     </t:return>
   </soap:Body>
 </soap:Envelope>

@@ -131,15 +131,15 @@ print out
 
 '''STDOUT from running this:
 ...CALLING: pytan.handler() with args: {'username': 'Administrator', 'record_all_requests': True, 'loglevel': 1, 'debugformat': False, 'host': '10.0.1.240', 'password': 'Tanium2015!', 'port': '443'}
-...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+...OUTPUT: handler string: PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ...CALLING: handler.get() with args: {'objtype': u'user', 'id': 1}
 ...CALLING: handler.delete() with args: {'objtype': u'user', u'name': u'Administrator API TEST'}
-...CALLING: handler.export_to_report_file() with args: {'report_dir': '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T', 'export_format': 'json', 'obj': <taniumpy.object_types.user_list.UserList object at 0x12360ed50>}
-...CALLING: handler.create_from_json() with args {'objtype': u'user', 'json_file': '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/UserList_2015_09_05-01_27_08-EDT.json'}
+...CALLING: handler.export_to_report_file() with args: {'report_dir': '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T', 'export_format': 'json', 'obj': <taniumpy.object_types.user_list.UserList object at 0x101778410>}
+...CALLING: handler.create_from_json() with args {'objtype': u'user', 'json_file': '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/UserList_2015_09_14-15_58_01-EDT.json'}
 ...OUTPUT: Type of response:  <class 'taniumpy.object_types.user_list.UserList'>
 ...OUTPUT: print of response:
 UserList, len: 1
-...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.user_list.UserList object at 0x104562fd0>}
+...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.user_list.UserList object at 0x1017ac850>}
 ...OUTPUT: print the objects returned in JSON format:
 {
   "_type": "users", 
@@ -148,7 +148,7 @@ UserList, len: 1
       "_type": "user", 
       "deleted_flag": 0, 
       "group_id": 0, 
-      "id": 311, 
+      "id": 36, 
       "last_login": "2001-01-01T00:00:00", 
       "local_admin_flag": 1, 
       "name": "Administrator API TEST", 

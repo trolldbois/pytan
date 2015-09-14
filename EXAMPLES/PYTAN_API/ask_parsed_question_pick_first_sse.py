@@ -97,36 +97,36 @@ if response['question_results']:
 
 '''STDOUT from running this:
 ...CALLING: pytan.handler() with args: {'username': 'Administrator', 'record_all_requests': True, 'loglevel': 1, 'debugformat': False, 'host': '10.0.1.240', 'password': 'Tanium2015!', 'port': '443'}
-...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+...OUTPUT: handler string: PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ...CALLING: handler.ask with args: {'picker': 1, 'sse': True, 'question_text': u'computer name and ip route details', 'qtype': u'parsed'}
-2015-09-05 05:41:45,229 INFO     pytan.pollers.QuestionPoller: ID 11639: Reached Threshold of 99% (2 of 2)
-2015-09-05 05:41:45,238 INFO     pytan.pollers.SSEPoller: ID '1/494746885072.xml': Server Side Export Completed: 'Completed. 2 rows written.'
+2015-09-14 20:11:05,190 INFO     pytan.pollers.QuestionPoller: ID 791: Reached Threshold of 99% (3 of 3)
+2015-09-14 20:11:05,220 INFO     pytan.pollers.SSEPoller: ID '1/495576641239.xml': Server Side Export Completed: 'Completed. 3 rows written.'
 ...OUTPUT: Type of response:  <type 'dict'>
 ...OUTPUT: Pretty print of response:
-{'parse_results': <taniumpy.object_types.parse_result_group_list.ParseResultGroupList object at 0x10d0e8c50>,
- 'poller_object': <pytan.pollers.QuestionPoller object at 0x10ed75a90>,
+{'parse_results': <taniumpy.object_types.parse_result_group_list.ParseResultGroupList object at 0x109e3c290>,
+ 'poller_object': <pytan.pollers.QuestionPoller object at 0x109e3c050>,
  'poller_success': True,
- 'question_object': <taniumpy.object_types.question.Question object at 0x10ed752d0>,
- 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x12053bfd0>}
+ 'question_object': <taniumpy.object_types.question.Question object at 0x109e3c190>,
+ 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x10c729550>}
 ...OUTPUT: Equivalent Question if it were to be asked in the Tanium Console: 
 Get Computer Name and IP Route Details from all machines
-...CALLING: handler.export_obj() with args {'export_format': 'csv', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x12053bfd0>}
+...CALLING: handler.export_obj() with args {'export_format': 'csv', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x10c729550>}
 ...OUTPUT: CSV Results of response: 
 Computer Name,IP Route Details,IP Route Details,IP Route Details,IP Route Details,IP Route Details,IP Route Details
-Casus-Belli.local,"default
-10.0.1.8/32
-10.0.1/24
-172.16.31/24
-172.16.152/24
-10.0.1.254
-169.254
-10.0.1.1/32","default
-10.0.1.8/32
-10.0.1/24
-172.16.31/24
-172.16.152/24
-10.0.1.254
-169.254
+c1u14-virtual-machine.(none),"0.0.0.0
+10.0.1.0","0.0.0.0
+10.0.1.0","0.0.0.0
+10.0.1.0","0.0.0.0
+10.0.1.0","0.0.0.0
+10.0.1.0","0.0.0.0
+10.0.1.0"
+WIN-6U71ED4M23D,"10.0.1.11
+127.0.0.1
+0.0.0.0
+127.0.0.0
+10.0.1.0","10.0.1.11
+127.0.0.1
+0.0.0.0
 ..trimmed for brevity..
 
 '''

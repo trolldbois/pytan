@@ -25,11 +25,12 @@ ask_saved.py -h
 ```
 usage: ask_saved.py [-h] [-u USERNAME] [-p PASSWORD] [--session_id SESSION_ID]
                     [--host HOST] [--port PORT] [-l LOGLEVEL] [--debugformat]
-                    [--record_all_requests] [--stats_loop_enabled]
-                    [--http_auth_retry] [--http_retry_count HTTP_RETRY_COUNT]
-                    [--refresh_data] [--id ID | --name NAME]
-                    [--file REPORT_FILE] [--dir REPORT_DIR]
-                    [--enable_sse | --disable_sse]
+                    [--debug_method_locals] [--record_all_requests]
+                    [--stats_loop_enabled] [--http_auth_retry]
+                    [--http_retry_count HTTP_RETRY_COUNT]
+                    [--no-refresh_data | --refresh_data]
+                    [--id ID | --name NAME] [--file REPORT_FILE]
+                    [--dir REPORT_DIR] [--enable_sse | --disable_sse]
                     [--sse_format {csv,xml,xml_obj,cef}] [--leading LEADING]
                     [--trailing TRAILING] [--export_format {csv,xml,json}]
                     [--sort HEADER_SORT | --no-sort | --auto_sort]
@@ -59,6 +60,9 @@ Handler Options:
                         Logging level to use, increase for more verbosity
                         (default: 0)
   --debugformat         Enable debug format for logging (default: False)
+  --debug_method_locals
+                        Enable debug logging for each methods local variables
+                        (default: False)
   --record_all_requests
                         Record all requests in
                         handler.session.ALL_REQUESTS_RESPONSES (default:
@@ -71,8 +75,9 @@ Handler Options:
                         (default: 5)
 
 Saved Question Selectors:
+  --no-refresh_data     Do not refresh the data available for a saved question
+                        (default)
   --refresh_data        Refresh the data available for a saved question
-                        (default: False)
   --id ID               id of saved_question to ask (default: None)
   --name NAME           name of saved_question to ask (default: None)
 
@@ -133,17 +138,17 @@ Export Options:
 # Ask a saved question
 
 ```bash
-bin/ask_saved.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --loglevel 1 --name "Installed Applications" --file "/tmp/out.csv"
+bin/ask_saved.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 443 --loglevel 1 --name "Installed Applications" --file "/tmp/out.csv"
 ```
 
 ```
-PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Asking saved question: {
   "name": "Installed Applications", 
   "refresh_data": false
 }
-++ Saved Question 'Get Installed Applications from all machines' ID: 10099
-Report file '/tmp/out.csv' written with 21639 bytes
+++ Saved Question 'Get Installed Applications from all machines' ID: 676
+Report file '/tmp/out.csv' written with 68087 bytes
 ```
 
   * Validation Test: exitcode
@@ -155,16 +160,16 @@ Report file '/tmp/out.csv' written with 21639 bytes
     * Messages: File /tmp/out.csv exists, content:
 
 ```
-Name,Silent Uninstall String,Uninstallable,Version
-Image Capture Extension,nothing,Not Uninstallable,10.2
-Dictation,nothing,Not Uninstallable,1.6.1
-Wish,nothing,Not Uninstallable,8.5.9
-Uninstall AnyConnect,nothing,Not Uninstallable,3.1.08009
-Time Machine,nothing,Not Uninstallable,1.3
-7-Zip 9.20 (x64 edition),MsiExec.exe /X{23170F69-40C1-2702-0920-000001000000} /qn /noreboot,Is Uninstallable,9.20.00.0
-AppleGraphicsWarning,nothing,Not Uninstallable,2.3.0
-soagent,nothing,Not Uninstallable,7.0
-Feedback Assistant,nothing,Not Uninstallable,4.1.3
+Count,Name,Silent Uninstall String,Uninstallable,Version
+725,[too many results],[too many results],[too many results],[too many results]
+1,libminiupnpc8,nothing,Not Uninstallable,1.6-3ubuntu2.14.04.1
+1,iso-codes,nothing,Not Uninstallable,3.52-1
+1,libexttextcat-2.0-0,nothing,Not Uninstallable,3.4.3-1ubuntu1
+1,growisofs,nothing,Not Uninstallable,7.1-10build1
+1,libxml2:i386,nothing,Not Uninstallable,2.9.1+dfsg1-3ubuntu4.4
+1,libsm6:i386,nothing,Not Uninstallable,2:1.2.1-2
+1,findutils,nothing,Not Uninstallable,4.4.2-7
+1,libgcr-base-3-1:i386,nothing,Not Uninstallable,3.10.1-1
 ...trimmed for brevity...
 ```
 
@@ -180,18 +185,18 @@ Feedback Assistant,nothing,Not Uninstallable,4.1.3
 # Ask a saved question and refresh the data available before fetching the data
 
 ```bash
-bin/ask_saved.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --loglevel 1 --name "Installed Applications" --file "/tmp/out.csv" --refresh_data
+bin/ask_saved.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 443 --loglevel 1 --name "Installed Applications" --file "/tmp/out.csv" --refresh_data
 ```
 
 ```
-PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Asking saved question: {
   "name": "Installed Applications", 
   "refresh_data": true
 }
-2015-09-04 01:50:16,067 INFO     pytan.pollers.QuestionPoller: ID 10120: Reached Threshold of 99% (2 of 2)
-++ Saved Question 'Get number of machines' ID: 10120
-Report file '/tmp/out.csv' written with 21639 bytes
+2015-09-14 19:50:28,614 INFO     pytan.pollers.QuestionPoller: ID 718: Reached Threshold of 99% (3 of 3)
+++ Saved Question 'Get number of machines' ID: 718
+Report file '/tmp/out.csv' written with 63722 bytes
 ```
 
   * Validation Test: exitcode
@@ -203,16 +208,16 @@ Report file '/tmp/out.csv' written with 21639 bytes
     * Messages: File /tmp/out.csv exists, content:
 
 ```
-Name,Silent Uninstall String,Uninstallable,Version
-Image Capture Extension,nothing,Not Uninstallable,10.2
-Dictation,nothing,Not Uninstallable,1.6.1
-Wish,nothing,Not Uninstallable,8.5.9
-Uninstall AnyConnect,nothing,Not Uninstallable,3.1.08009
-Time Machine,nothing,Not Uninstallable,1.3
-7-Zip 9.20 (x64 edition),MsiExec.exe /X{23170F69-40C1-2702-0920-000001000000} /qn /noreboot,Is Uninstallable,9.20.00.0
-AppleGraphicsWarning,nothing,Not Uninstallable,2.3.0
-soagent,nothing,Not Uninstallable,7.0
-Feedback Assistant,nothing,Not Uninstallable,4.1.3
+Count,Name,Silent Uninstall String,Uninstallable,Version
+755,[too many results],[too many results],[too many results],[too many results]
+1,libminiupnpc8,nothing,Not Uninstallable,1.6-3ubuntu2.14.04.1
+1,iso-codes,nothing,Not Uninstallable,3.52-1
+1,libexttextcat-2.0-0,nothing,Not Uninstallable,3.4.3-1ubuntu1
+1,growisofs,nothing,Not Uninstallable,7.1-10build1
+1,libxml2:i386,nothing,Not Uninstallable,2.9.1+dfsg1-3ubuntu4.4
+1,libsm6:i386,nothing,Not Uninstallable,2:1.2.1-2
+1,findutils,nothing,Not Uninstallable,4.4.2-7
+1,libgcr-base-3-1:i386,nothing,Not Uninstallable,3.10.1-1
 ...trimmed for brevity...
 ```
 
@@ -225,4 +230,4 @@ Feedback Assistant,nothing,Not Uninstallable,4.1.3
 [TOC](#user-content-toc)
 
 
-###### generated by: `build_bin_doc v2.1.0`, date: Thu Sep  3 21:50:16 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**
+###### generated by: `build_bin_doc v2.1.0`, date: Mon Sep 14 15:50:29 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**

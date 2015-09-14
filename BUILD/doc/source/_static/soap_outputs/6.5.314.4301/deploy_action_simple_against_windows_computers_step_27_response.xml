@@ -2,25 +2,24 @@
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
   <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <t:return>
-      <command>GetResultData</command>
-      <session>1-8059-842a08b556be02d67043c45f690f99dc0678e4dfaf87769cab8eae69235ff73e9bde693c78db5419548054fd93acf0801384acdfbfdfd48a7e626cbbcc85d4df</session>
+      <command>GetResultInfo</command>
+      <session>1-622-6eb3cc08a054104d45ce22051218b6125b034ddf0b2ff434de00794bde0e9da84c187596a64635b64fd54cf79b9bc279adfc3e6206a24f7e9a5d6fd86bc6c31a</session>
       <ID></ID>
       <IDType></IDType>
       <ContextID></ContextID>
       <server_version>6.5.314.4301</server_version>
       <object_list>
         <action>
-          <id>617</id>
+          <id>81</id>
           <name>API Deploy Distribute Tanium Standard Utilities</name>
         </action>
       </object_list>
       <options>
-        <export_flag>0</export_flag>
-        <row_counts_only_flag>1</row_counts_only_flag>
         <suppress_object_list>1</suppress_object_list>
       </options>
-      <ResultXML>&lt;result_sets&gt;&lt;now&gt;2015/09/05 05:29:45 GMT-0000&lt;/now&gt;
-&lt;result_set&gt;&lt;age&gt;0&lt;/age&gt;&lt;archived_question_id&gt;0&lt;/archived_question_id&gt;&lt;saved_question_id&gt;252&lt;/saved_question_id&gt;&lt;question_id&gt;11604&lt;/question_id&gt;&lt;report_count&gt;5&lt;/report_count&gt;&lt;seconds_since_issued&gt;849&lt;/seconds_since_issued&gt;&lt;issue_seconds&gt;0&lt;/issue_seconds&gt;&lt;expire_seconds&gt;3660&lt;/expire_seconds&gt;&lt;tested&gt;2&lt;/tested&gt;&lt;passed&gt;2&lt;/passed&gt;&lt;mr_tested&gt;2&lt;/mr_tested&gt;&lt;mr_passed&gt;2&lt;/mr_passed&gt;&lt;estimated_total&gt;2&lt;/estimated_total&gt;&lt;select_count&gt;2&lt;/select_count&gt;&lt;cs&gt;&lt;c&gt;&lt;wh&gt;1792443391&lt;/wh&gt;&lt;dn&gt;Action Statuses&lt;/dn&gt;&lt;rt&gt;1&lt;/rt&gt;&lt;/c&gt;&lt;c&gt;&lt;wh&gt;0&lt;/wh&gt;&lt;dn&gt;Count&lt;/dn&gt;&lt;rt&gt;3&lt;/rt&gt;&lt;/c&gt;&lt;/cs&gt;&lt;filtered_row_count&gt;1&lt;/filtered_row_count&gt;&lt;filtered_row_count_machines&gt;1&lt;/filtered_row_count_machines&gt;&lt;row_count&gt;1&lt;/row_count&gt;&lt;row_count_machines&gt;1&lt;/row_count_machines&gt;&lt;item_count&gt;1&lt;/item_count&gt;&lt;rs&gt;&lt;r&gt;&lt;id&gt;1579954254&lt;/id&gt;&lt;cid&gt;106406531&lt;/cid&gt;&lt;c&gt;&lt;v&gt;617:Downloading.&lt;/v&gt;&lt;/c&gt;&lt;c&gt;&lt;v&gt;1&lt;/v&gt;&lt;/c&gt;&lt;/r&gt;&lt;/rs&gt;&lt;/result_set&gt;&lt;/result_sets&gt;</ResultXML>
+      <ResultXML>&lt;result_infos&gt;&lt;now&gt;2015/09/14 19:58:42 GMT-0000&lt;/now&gt;
+&lt;max_available_age&gt;0&lt;/max_available_age&gt;
+&lt;result_info&gt;&lt;age&gt;0&lt;/age&gt;&lt;id&gt;98&lt;/id&gt;&lt;report_count&gt;29&lt;/report_count&gt;&lt;saved_question_id&gt;98&lt;/saved_question_id&gt;&lt;question_id&gt;694&lt;/question_id&gt;&lt;archived_question_id&gt;0&lt;/archived_question_id&gt;&lt;seconds_since_issued&gt;998&lt;/seconds_since_issued&gt;&lt;issue_seconds&gt;0&lt;/issue_seconds&gt;&lt;expire_seconds&gt;3660&lt;/expire_seconds&gt;&lt;tested&gt;3&lt;/tested&gt;&lt;passed&gt;3&lt;/passed&gt;&lt;mr_tested&gt;3&lt;/mr_tested&gt;&lt;mr_passed&gt;3&lt;/mr_passed&gt;&lt;estimated_total&gt;3&lt;/estimated_total&gt;&lt;select_count&gt;2&lt;/select_count&gt;&lt;row_count&gt;3&lt;/row_count&gt;&lt;row_count_machines&gt;3&lt;/row_count_machines&gt;&lt;error_count&gt;0&lt;/error_count&gt;&lt;no_results_count&gt;0&lt;/no_results_count&gt;&lt;row_count_flag&gt;0&lt;/row_count_flag&gt;&lt;/result_info&gt;&lt;/result_infos&gt;</ResultXML>
       <result_object></result_object>
     </t:return>
   </soap:Body>

@@ -781,11 +781,12 @@ body .task-list{
 <li>If running this script on Windows, use the batch script in the winbin/create_group_from_json.bat so that python is called correctly.</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>create_group_from_json.py -h</pre></div>
+<div class="highlight highlight-source-shell"><pre>create_group_from_json.py -h</pre></div>
 
 <pre><code>usage: create_group_from_json.py [-h] [-u USERNAME] [-p PASSWORD]
                                  [--session_id SESSION_ID] [--host HOST]
                                  [--port PORT] [-l LOGLEVEL] [--debugformat]
+                                 [--debug_method_locals]
                                  [--record_all_requests]
                                  [--stats_loop_enabled] [--http_auth_retry]
                                  [--http_retry_count HTTP_RETRY_COUNT] -j
@@ -813,6 +814,9 @@ Handler Options:
                         Logging level to use, increase for more verbosity
                         (default: 0)
   --debugformat         Enable debug format for logging (default: False)
+  --debug_method_locals
+                        Enable debug logging for each methods local variables
+                        (default: False)
   --record_all_requests
                         Record all requests in
                         handler.session.ALL_REQUESTS_RESPONSES (default:
@@ -860,11 +864,11 @@ Create Group from JSON Options:
 <li>Save the results to a JSON file</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>bin/get_group.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --id 1 --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.json<span class="pl-pds">"</span></span> --export_format json</pre></div>
+<div class="highlight highlight-source-shell"><pre>bin/get_group.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --id 1 --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.json<span class="pl-pds">"</span></span> --export_format json</pre></div>
 
-<pre><code>PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 Found items:  GroupList, len: 1
-Report file '/tmp/out.json' written with 1026 bytes
+Report file '/tmp/out.json' written with 1017 bytes
 </code></pre>
 
 <ul>
@@ -921,7 +925,7 @@ Report file '/tmp/out.json' written with 1026 bytes
 <li>Add CMDLINE TEST to name or url_regex in the JSON file</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>perl -p -i -e <span class="pl-s"><span class="pl-pds">'</span>s/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 6808"/gm<span class="pl-pds">'</span></span> /tmp/out.json <span class="pl-k">&amp;&amp;</span> cat /tmp/out.json</pre></div>
+<div class="highlight highlight-source-shell"><pre>perl -p -i -e <span class="pl-s"><span class="pl-pds">'</span>s/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 9741"/gm<span class="pl-pds">'</span></span> /tmp/out.json <span class="pl-k">&amp;&amp;</span> cat /tmp/out.json</pre></div>
 
 <pre><code>{
   "_type": "groups", 
@@ -944,13 +948,13 @@ Report file '/tmp/out.json' written with 1026 bytes
             "operator": "RegexMatch", 
             "sensor": {
               "_type": "sensor", 
-              "hash": 1569955801
+              "hash": 45421433
             }, 
             "substring_flag": 0, 
             "substring_length": 0, 
             "substring_start": 0, 
             "utf8_flag": 0, 
-            "value": ".*open.*", 
+            "value": ".*windows.*", 
             "value_type": "String"
           }
         ]
@@ -961,7 +965,7 @@ Report file '/tmp/out.json' written with 1026 bytes
         "_type": "groups", 
         "group": []
       }, 
-      "text": " Unencrypted Wireless Networks containing \"open\"", 
+      "text": " Operating System containing \"windows\"", 
       "type": 0
     }
   ]
@@ -1003,10 +1007,10 @@ Report file '/tmp/out.json' written with 1026 bytes
 <h1>
 <a id="user-content-create-a-new-group-from-the-modified-json-file" class="anchor" href="#create-a-new-group-from-the-modified-json-file" aria-hidden="true"><span class="octicon octicon-link"></span></a>Create a new group from the modified JSON file</h1>
 
-<div class="highlight highlight-bash"><pre>bin/create_group_from_json.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 -j <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.json<span class="pl-pds">"</span></span></pre></div>
+<div class="highlight highlight-source-shell"><pre>bin/create_group_from_json.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 -j <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.json<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-Created item: Group, id: 2990, ID: 2990
+<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+Created item: Group, id: 265, ID: 265
 </code></pre>
 
 <ul>
@@ -1033,7 +1037,7 @@ Created item: Group, id: 2990, ID: 2990
 <p><a href="#user-content-toc">TOC</a></p>
 
 <h6>
-<a id="user-content-generated-by-build_bin_doc-v210-date-thu-sep--3-215019-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v210-date-thu-sep--3-215019-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v2.1.0</code>, date: Thu Sep  3 21:50:19 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
+<a id="user-content-generated-by-build_bin_doc-v210-date-mon-sep-14-155039-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v210-date-mon-sep-14-155039-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v2.1.0</code>, date: Mon Sep 14 15:50:39 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
 </h6>
 
 </body></html>

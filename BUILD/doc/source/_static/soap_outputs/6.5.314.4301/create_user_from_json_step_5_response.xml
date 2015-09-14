@@ -3,7 +3,7 @@
   <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <t:return>
       <command>DeleteObject</command>
-      <session>1-8050-0cefa2c32ae1e51a27a0b7d743b2016125752f7c02821def34976c189f764dbf51f04802b787b8fcc6c96255bf02fcae57d8ca9584ea93900723d70981f4ee2a</session>
+      <session>1-613-6752ac971c0b9286acdb297f4f8ba7e537cc970d5042fddcc5e1eaa32134d7e95588980d0dc72fbecb1784c462c55f45f60dd1a3ef1fd1c88112e88c7552e8be</session>
       <ID></ID>
       <IDType></IDType>
       <ContextID></ContextID>
@@ -12,7 +12,7 @@
         <user>
           <deleted_flag>0</deleted_flag>
           <group_id>0</group_id>
-          <id>309</id>
+          <id>34</id>
           <last_login>2001-01-01T00:00:00</last_login>
           <local_admin_flag>1</local_admin_flag>
           <name>Administrator API TEST</name>
@@ -81,7 +81,7 @@
       <ResultXML></ResultXML>
       <result_object>
         <user>
-          <id>309</id>
+          <id>34</id>
           <name>Administrator API TEST</name>
           <domain></domain>
           <group_id>0</group_id>

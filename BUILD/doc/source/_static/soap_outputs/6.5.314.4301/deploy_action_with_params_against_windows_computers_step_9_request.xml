@@ -5,7 +5,7 @@
       <command>GetResultInfo</command>
       <object_list>
         <action>
-          <id>618</id>
+          <id>82</id>
           <name>API Deploy Custom Tagging - Add Tags</name>
         </action>
       </object_list>

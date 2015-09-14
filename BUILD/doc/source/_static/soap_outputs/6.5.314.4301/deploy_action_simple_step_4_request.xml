@@ -6,7 +6,7 @@
       <object_list>
         <saved_actions>
           <saved_action>
-            <comment>Created by PyTan v2.1.0</comment>
+            <comment>Created by PyTan v2.1.4</comment>
             <status>0</status>
             <expire_seconds>3300</expire_seconds>
             <name>API Deploy Distribute Tanium Standard Utilities</name>
@@ -26,12 +26,11 @@
               <verify_expire_seconds>600</verify_expire_seconds>
               <verify_group_id>0</verify_group_id>
               <skip_lock_flag>0</skip_lock_flag>
-              <last_modified_by>Administrator</last_modified_by>
-              <last_update>2015-08-26T20:14:33</last_update>
+              <last_update>2015-09-14T13:39:15</last_update>
               <hidden_flag>1</hidden_flag>
               <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
               <command_timeout>2700</command_timeout>
-              <id>20</id>
+              <id>23</id>
               <verify_group>
                 <id>0</id>
               </verify_group>

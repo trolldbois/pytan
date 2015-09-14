@@ -28,8 +28,9 @@ create_group.py -h
 ```
 usage: create_group.py [-h] [-u USERNAME] [-p PASSWORD]
                        [--session_id SESSION_ID] [--host HOST] [--port PORT]
-                       [-l LOGLEVEL] [--debugformat] [--record_all_requests]
-                       [--stats_loop_enabled] [--http_auth_retry]
+                       [-l LOGLEVEL] [--debugformat] [--debug_method_locals]
+                       [--record_all_requests] [--stats_loop_enabled]
+                       [--http_auth_retry]
                        [--http_retry_count HTTP_RETRY_COUNT] -n GROUPNAME
                        [-f FILTERS] [-o FILTER_OPTIONS] [--filters-help]
                        [--options-help]
@@ -56,6 +57,9 @@ Handler Options:
                         Logging level to use, increase for more verbosity
                         (default: 0)
   --debugformat         Enable debug format for logging (default: False)
+  --debug_method_locals
+                        Enable debug logging for each methods local variables
+                        (default: False)
   --record_all_requests
                         Record all requests in
                         handler.session.ALL_REQUESTS_RESPONSES (default:
@@ -99,11 +103,11 @@ Create Group Options:
   * This may or may not fail -- thats fine!
 
 ```bash
-bin/delete_group.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --loglevel 1 --name "All Windows Computers CMDLINE TEST GROUP"
+bin/delete_group.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 443 --loglevel 1 --name "All Windows Computers CMDLINE TEST GROUP"
 ```
 
 ```
-PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 
 
 Error occurred: No results found searching for Group, name: 'All Windows Computers CMDLINE TEST GROUP' (error: Response command GroupNotFound does not match request command GetObject)!!
@@ -111,15 +115,15 @@ Error occurred: No results found searching for Group, name: 'All Windows Compute
 
 ```STDERR
 Traceback (most recent call last):
-  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 1688, in process_delete_object_args
-    response = handler.delete(obj, **obj_grp_args)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1662, in delete
+  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2043, in process_delete_object_args
+    response = handler.delete(**obj_grp_args)
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1775, in delete
     objs_to_del = self.get(objtype=objtype, pytan_help=h, **clean_kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 2004, in get
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 2129, in get
     return self._get_multi(obj_map=obj_map, **clean_kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 2180, in _get_multi
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 2313, in _get_multi
     found = self._find(obj=api_obj_multi, **clean_kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 2127, in _find
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 2258, in _find
     raise pytan.exceptions.HandlerError(err(search_str, e))
 HandlerError: No results found searching for Group, name: 'All Windows Computers CMDLINE TEST GROUP' (error: Response command GroupNotFound does not match request command GetObject)!!
 ```
@@ -141,12 +145,12 @@ HandlerError: No results found searching for Group, name: 'All Windows Computers
   * Supply two options, one to AND the filters supplied, and another to ignore the case while matching the filters
 
 ```bash
-bin/create_group.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --loglevel 1 --name "All Windows Computers CMDLINE TEST GROUP" -f "Operating System, that contains:Windows" -f "IP Address, that not equals:10.10.10.10" -o "and" -o "ignore_case"
+bin/create_group.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 443 --loglevel 1 --name "All Windows Computers CMDLINE TEST GROUP" -f "Operating System, that contains:Windows" -f "IP Address, that not equals:10.10.10.10" -o "and" -o "ignore_case"
 ```
 
 ```
-PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-New group 'All Windows Computers CMDLINE TEST GROUP' created with ID 2989, filter text: ' ( Operating System containing "Windows" and any IP Address != "10.10.10.10" )'
+PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+New group 'All Windows Computers CMDLINE TEST GROUP' created with ID 264, filter text: ' ( Operating System containing "Windows" and any IP Address != "10.10.10.10" )'
 ```
 
   * Validation Test: exitcode
@@ -167,12 +171,12 @@ New group 'All Windows Computers CMDLINE TEST GROUP' created with ID 2989, filte
   * Delete the group named All Windows Computers CMDLINE TEST GROUP
 
 ```bash
-bin/delete_group.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --loglevel 1 --name "All Windows Computers CMDLINE TEST GROUP"
+bin/delete_group.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 443 --loglevel 1 --name "All Windows Computers CMDLINE TEST GROUP"
 ```
 
 ```
-PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-Deleted item:  Group, id: 2989
+PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+Deleted item:  Group, id: 264
 ```
 
   * Validation Test: exitcode
@@ -191,14 +195,15 @@ Deleted item:  Group, id: 2989
 # Print the help for filters
 
 ```bash
-bin/create_group.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --loglevel 1 --filters-help
+bin/create_group.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 443 --loglevel 1 --filters-help
 ```
 
 ```
 usage: create_group.py [-h] [-u USERNAME] [-p PASSWORD]
                        [--session_id SESSION_ID] [--host HOST] [--port PORT]
-                       [-l LOGLEVEL] [--debugformat] [--record_all_requests]
-                       [--stats_loop_enabled] [--http_auth_retry]
+                       [-l LOGLEVEL] [--debugformat] [--debug_method_locals]
+                       [--record_all_requests] [--stats_loop_enabled]
+                       [--http_auth_retry]
                        [--http_retry_count HTTP_RETRY_COUNT] -n GROUPNAME
                        [-f FILTERS] [-o FILTER_OPTIONS] [--filters-help]
                        [--options-help]
@@ -225,6 +230,9 @@ Handler Options:
                         Logging level to use, increase for more verbosity
                         (default: 0)
   --debugformat         Enable debug format for logging (default: False)
+  --debug_method_locals
+                        Enable debug logging for each methods local variables
+                        (default: False)
   --record_all_requests
                         Record all requests in
                         handler.session.ALL_REQUESTS_RESPONSES (default:
@@ -262,14 +270,15 @@ ERROR:create_group:argument -n/--name is required
 # Print the help for options
 
 ```bash
-bin/create_group.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --loglevel 1 --options-help
+bin/create_group.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 443 --loglevel 1 --options-help
 ```
 
 ```
 usage: create_group.py [-h] [-u USERNAME] [-p PASSWORD]
                        [--session_id SESSION_ID] [--host HOST] [--port PORT]
-                       [-l LOGLEVEL] [--debugformat] [--record_all_requests]
-                       [--stats_loop_enabled] [--http_auth_retry]
+                       [-l LOGLEVEL] [--debugformat] [--debug_method_locals]
+                       [--record_all_requests] [--stats_loop_enabled]
+                       [--http_auth_retry]
                        [--http_retry_count HTTP_RETRY_COUNT] -n GROUPNAME
                        [-f FILTERS] [-o FILTER_OPTIONS] [--filters-help]
                        [--options-help]
@@ -296,6 +305,9 @@ Handler Options:
                         Logging level to use, increase for more verbosity
                         (default: 0)
   --debugformat         Enable debug format for logging (default: False)
+  --debug_method_locals
+                        Enable debug logging for each methods local variables
+                        (default: False)
   --record_all_requests
                         Record all requests in
                         handler.session.ALL_REQUESTS_RESPONSES (default:
@@ -330,4 +342,4 @@ ERROR:create_group:argument -n/--name is required
 [TOC](#user-content-toc)
 
 
-###### generated by: `build_bin_doc v2.1.0`, date: Thu Sep  3 21:50:18 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**
+###### generated by: `build_bin_doc v2.1.0`, date: Mon Sep 14 15:50:36 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**

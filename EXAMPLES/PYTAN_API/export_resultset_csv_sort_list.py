@@ -69,7 +69,7 @@ ask_kwargs = {
     'qtype': 'manual',
     'sensors': [
         "Computer Name", "IP Route Details", "IP Address",
-        'Folder Name Search with RegEx Match{dirname=Program Files,regex=.*Shared.*}',
+        'Folder Contents{folderPath=C:\Program Files}',
     ],
 }
 
@@ -96,26 +96,26 @@ print out
 
 '''STDOUT from running this:
 ...CALLING: pytan.handler() with args: {'username': 'Administrator', 'record_all_requests': True, 'loglevel': 1, 'debugformat': False, 'host': '10.0.1.240', 'password': 'Tanium2015!', 'port': '443'}
-...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-...CALLING: handler.ask() with args {'sensors': ['Computer Name', 'IP Route Details', 'IP Address', 'Folder Name Search with RegEx Match{dirname=Program Files,regex=.*Shared.*}'], 'qtype': 'manual'}
-2015-09-05 05:36:49,955 INFO     pytan.pollers.QuestionPoller: ID 11630: Reached Threshold of 99% (2 of 2)
-...CALLING: handler.export_obj() with args {'export_format': u'csv', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x1127121d0>, 'header_sort': [u'Computer Name', u'IP Address']}
+...OUTPUT: handler string: PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+...CALLING: handler.ask() with args {'sensors': ['Computer Name', 'IP Route Details', 'IP Address', 'Folder Contents{folderPath=C:\\Program Files}'], 'qtype': 'manual'}
+2015-09-14 20:06:04,372 INFO     pytan.pollers.QuestionPoller: ID 779: Reached Threshold of 99% (3 of 3)
+...CALLING: handler.export_obj() with args {'export_format': u'csv', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x106ad4c10>, 'header_sort': [u'Computer Name', u'IP Address']}
 ...OUTPUT: print the export_str returned from export_obj():
-Computer Name,IP Address,Destination,Flags,"Folder Name Search with RegEx Match[Program Files, , No, No, .*Shared.*]",Gateway,Interface,Mask,Metric
-Casus-Belli.local,"2604:2000:1200:60de:dd68:f4b6:d5ee:e562
-172.16.31.1
-fe80::82e6:50ff:fe1d:1dca
-172.16.152.1
-10.0.1.8
-2604:2000:1200:60de:82e6:50ff:fe1d:1dca","default
-10.0.1.8/32
-10.0.1/24
-172.16.31/24
-172.16.152/24
-10.0.1.254
-169.254
-10.0.1.1/32","UGSc
-UCS
+Computer Name,IP Address,Destination,Flags,Folder Contents[C:\Program Files],Gateway,Interface,Mask,Metric
+c1u14-virtual-machine.(none),10.0.1.12,"0.0.0.0
+10.0.1.0","UG
+U",N/A on Linux,"10.0.1.1
+0.0.0.0","eth0
+eth0","0.0.0.0
+255.255.255.0","0
+1"
+TPT1.pytanlab.com,10.0.1.240,"0.0.0.0
+10.0.1.240
+127.0.0.1
+127.0.0.0
+10.0.1.0","-
+-
+-
 ..trimmed for brevity..
 
 '''

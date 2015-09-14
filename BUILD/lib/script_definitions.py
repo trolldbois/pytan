@@ -4,24 +4,26 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 '''All the variables/templates/etc for the build scripts'''
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
-__version__ = '2.1.0'
+__version__ = '2.1.4'
 
 import sys
 sys.dont_write_bytecode = True
 import os
 
-my_file = os.path.abspath(sys.argv[0])
+my_file = os.path.abspath(__file__)
 my_dir = os.path.dirname(my_file)
 parent_dir = os.path.dirname(my_dir)
 pytan_root = os.path.dirname(parent_dir)
 pytan_lib_dir = os.path.join(pytan_root, 'lib')
-path_adds = [my_dir, pytan_lib_dir]
+test_dir = os.path.join(pytan_root, 'test')
+path_adds = [my_dir, pytan_lib_dir, test_dir]
 
 [sys.path.append(aa) for aa in path_adds if aa not in sys.path]
 
 import pytan
+import API_INFO
 
-doc_source = os.path.join(parent_dir, 'BUILD', 'doc', 'source')
+doc_source = os.path.join(parent_dir, 'doc', 'source')
 staticdoc_source = os.path.join(doc_source, '_static')
 
 scripts = {}
@@ -72,6 +74,14 @@ scripts[sname]['bat_template'] = '${bat_script}'
 # scripts[sname]['pyopts'] = ''
 # scripts[sname]['py_template'] = '${py_script}'
 # scripts[sname]['bat_template'] = '${bat_script}'
+
+sname = 'get_saved_question_history'
+scripts[sname] = {}
+scripts[sname]['docstring'] = 'Gets the Result Info for all the questions asked for a given saved question, or for all questions asked ever, and exports the question information to a CSV file'
+scripts[sname]['script_name'] = sname
+scripts[sname]['pyopts'] = ''
+scripts[sname]['py_template'] = '${py_script}'
+scripts[sname]['bat_template'] = '${bat_script}'
 
 sname = 'create_user'
 scripts[sname] = {}
@@ -132,6 +142,14 @@ scripts[sname]['bat_template'] = '${bat_script}'
 sname = 'stop_action'
 scripts[sname] = {}
 scripts[sname]['docstring'] = 'Stop an action by ID'
+scripts[sname]['script_name'] = sname
+scripts[sname]['pyopts'] = ''
+scripts[sname]['py_template'] = '${py_script}'
+scripts[sname]['bat_template'] = '${bat_script}'
+
+sname = 'approve_saved_action'
+scripts[sname] = {}
+scripts[sname]['docstring'] = 'Approve a saved action by ID'
 scripts[sname]['script_name'] = sname
 scripts[sname]['pyopts'] = ''
 scripts[sname]['py_template'] = '${py_script}'
@@ -535,7 +553,7 @@ ask_kwargs = {{
     'qtype': 'manual',
     'sensors': [
         "Computer Name", "IP Route Details", "IP Address",
-        'Folder Name Search with RegEx Match{{dirname=Program Files,regex=.*Shared.*}}',
+        'Folder Contents{{folderPath=C:\\Program Files}}',
     ],
 }}
 
@@ -582,7 +600,7 @@ METHOD_TEMPLATES['export_basetype'] = """
 get_kwargs = {{
     'name': [
         "Computer Name", "IP Route Details", "IP Address",
-        'Folder Name Search with RegEx Match',
+        'Folder Contents',
     ],
     'objtype': 'sensor',
 }}
@@ -604,7 +622,7 @@ METHOD_TEMPLATES['invalid_export_basetype'] = """
 get_kwargs = {{
     'name': [
         "Computer Name", "IP Route Details", "IP Address",
-        'Folder Name Search with RegEx Match',
+        'Folder Contents',
     ],
     'objtype': 'sensor',
 }}
@@ -825,7 +843,9 @@ Response Body: {0.text}
 """
 
 general_subs = {}
-general_subs["API_INFO"] = '''-u Administrator -p 'Tanium2015!' --host 10.0.1.240 --loglevel 1'''
+general_subs["API_INFO"] = (
+    '''-u {username} -p '{password}' --host {host} --port {port} --loglevel {loglevel}'''
+).format(**API_INFO.SERVER_INFO)
 general_subs["TMPDIR"] = '/tmp'
 general_subs['AUTHOR'] = pytan.__author__
 general_subs['VERSION'] = pytan.__version__

@@ -98,50 +98,53 @@ if response['action_results']:
 
 '''STDOUT from running this:
 ...CALLING: pytan.handler() with args: {'username': 'Administrator', 'record_all_requests': True, 'loglevel': 1, 'debugformat': False, 'host': '10.0.1.240', 'password': 'Tanium2015!', 'port': '443'}
-...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+...OUTPUT: handler string: PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ...CALLING: handler.deploy_action with args: {'action_filters': u'Operating System, that contains:Windows', 'run': True, 'package': u'Custom Tagging - Add Tags{$1=tag_should_be_added,$2=tag_should_be_ignore}'}
-2015-09-05 05:30:20,930 INFO     pytan.pollers.QuestionPoller: ID 11618: Reached Threshold of 99% (2 of 2)
-2015-09-05 05:30:36,027 INFO     pytan.pollers.ActionPoller: ID 618: Reached Threshold for Seen Count of 100% (1 of 1)
-2015-09-05 05:30:36,047 INFO     pytan.pollers.ActionPoller: ID 618: Reached Threshold for Finished Count of 100% (1 of 1)
+2015-09-14 19:59:12,302 INFO     pytan.pollers.QuestionPoller: ID 756: Reached Threshold of 99% (3 of 3)
+2015-09-14 19:59:28,069 INFO     pytan.pollers.ActionPoller: ID 82: Reached Threshold for Seen Count of 100% (2 of 2)
+2015-09-14 19:59:28,090 INFO     pytan.pollers.ActionPoller: ID 82: Reached Threshold for Finished Count of 100% (2 of 2)
 ...OUTPUT: Type of response:  <type 'dict'>
 ...OUTPUT: Pretty print of response:
-{'action_info': <taniumpy.object_types.result_info.ResultInfo object at 0x124e00fd0>,
- 'action_object': <taniumpy.object_types.action.Action object at 0x112215c90>,
- 'action_result_map': {'failed': {'618:Expired.': [],
-                                  '618:Failed.': [],
-                                  '618:NotSucceeded.': [],
-                                  '618:Stopped.': [],
+{'action_info': <taniumpy.object_types.result_info.ResultInfo object at 0x102fa0510>,
+ 'action_object': <taniumpy.object_types.action.Action object at 0x1068fda90>,
+ 'action_result_map': {'failed': {'82:Expired.': [],
+                                  '82:Failed.': [],
+                                  '82:NotSucceeded.': [],
+                                  '82:Stopped.': [],
                                   'total': 0},
-                       'finished': {'618:Completed.': ['TPT1-0.localdomain'],
-                                    '618:Expired.': [],
-                                    '618:Failed.': [],
-                                    '618:NotSucceeded.': [],
-                                    '618:Stopped.': [],
-                                    '618:Succeeded.': [],
-                                    '618:Verified.': [],
-                                    'total': 1},
-                       'running': {'618:Copying.': [],
-                                   '618:Downloading.': [],
-                                   '618:PendingVerification.': [],
-                                   '618:Running.': [],
-                                   '618:Waiting.': [],
+                       'finished': {'82:Completed.': ['WIN-6U71ED4M23D',
+                                                      'TPT1.pytanlab.com'],
+                                    '82:Expired.': [],
+                                    '82:Failed.': [],
+                                    '82:NotSucceeded.': [],
+                                    '82:Stopped.': [],
+                                    '82:Succeeded.': [],
+                                    '82:Verified.': [],
+                                    'total': 2},
+                       'running': {'82:Copying.': [],
+                                   '82:Downloading.': [],
+                                   '82:PendingVerification.': [],
+                                   '82:Running.': [],
+                                   '82:Waiting.': [],
                                    'total': 0},
-                       'success': {'618:Completed.': ['TPT1-0.localdomain'],
-                                   '618:Verified.': [],
-                                   'total': 1},
+                       'success': {'82:Completed.': ['WIN-6U71ED4M23D',
+                                                     'TPT1.pytanlab.com'],
+                                   '82:Verified.': [],
+                                   'total': 2},
                        'unknown': {'total': 0}},
- 'action_results': <taniumpy.object_types.result_set.ResultSet object at 0x1108b05d0>,
- 'group_object': <taniumpy.object_types.group.Group object at 0x10af75890>,
- 'package_object': <taniumpy.object_types.package_spec.PackageSpec object at 0x112215290>,
- 'poller_object': <pytan.pollers.ActionPoller object at 0x1108eea10>,
+ 'action_results': <taniumpy.object_types.result_set.ResultSet object at 0x1069c2890>,
+ 'group_object': <taniumpy.object_types.group.Group object at 0x106921390>,
+ 'package_object': <taniumpy.object_types.package_spec.PackageSpec object at 0x1068fda10>,
+ 'poller_object': <pytan.pollers.ActionPoller object at 0x102fa0490>,
  'poller_success': True,
- 'saved_action_object': <taniumpy.object_types.saved_action.SavedAction object at 0x112215fd0>}
+ 'saved_action_object': <taniumpy.object_types.saved_action.SavedAction object at 0x102d42190>}
 ...OUTPUT: Print of action object: 
-Action, name: 'API Deploy Custom Tagging - Add Tags', id: 618
-...CALLING: handler.export_obj() with args {'export_format': 'csv', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x1108b05d0>}
+Action, name: 'API Deploy Custom Tagging - Add Tags', id: 82
+...CALLING: handler.export_obj() with args {'export_format': 'csv', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x1069c2890>}
 ...OUTPUT: CSV Results of response: 
 Action Statuses,Computer Name
-618:Completed.,TPT1-0.localdomain
+82:Completed.,WIN-6U71ED4M23D
+82:Completed.,TPT1.pytanlab.com
 
 
 '''

@@ -3,20 +3,20 @@
   <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <t:return>
       <command>GetObject</command>
-      <session>1-8136-54a1afc9ed6ac993ae083ab40f5ed49e22213f3d300004d89c9659ef320466610ff19e140ed7f5f37bb79e88e9e7351acc0c45d2efaeffa8ce8f82a99793f951</session>
+      <session>1-698-457dcc4ba72ab687aa4f742e528b30f1aa521a9579572ecfcc7812b22edf5aac5fcbaa37a1e5d2054f1960d1bf19d2c5a7ced1afa6fd53d829387ea3197ebfe8</session>
       <server_version>6.5.314.4301</server_version>
       <ID></ID>
       <IDType></IDType>
       <ContextID></ContextID>
       <result_object>
         <question>
-          <id>11658</id>
+          <id>811</id>
           <context_group>
             <id>0</id>
           </context_group>
           <expire_seconds>0</expire_seconds>
           <skip_lock_flag>0</skip_lock_flag>
-          <expiration>2015-09-05T05:58:05</expiration>
+          <expiration>2015-09-14T20:23:54</expiration>
           <user>
             <id>1</id>
             <name>Administrator</name>
@@ -28,7 +28,7 @@
             <id>0</id>
           </saved_question>
           <name></name>
-          <query_text>Get Computer Name and Last Logged In User and Installed Applications containing "Google (Search|Chrome)" from all machines with Installed Applications containing "Google (Search|Chrome)"</query_text>
+          <query_text>Get Computer Name and Last Logged In User and Installed Applications containing "Google" from all machines with Installed Applications containing "Google"</query_text>
           <hidden_flag>0</hidden_flag>
           <action_tracking_flag>0</action_tracking_flag>
           <selects>
@@ -37,7 +37,7 @@
                 <id>3</id>
                 <name>Computer Name</name>
                 <hash>3409330187</hash>
-                <string_count>3</string_count>
+                <string_count>5</string_count>
                 <category>Reserved</category>
                 <description>The assigned name of the client machine.
 Example: workstation-1.company.com</description>
@@ -79,15 +79,15 @@ Example: workstation-1.company.com</description>
             </select>
             <select>
               <sensor>
-                <id>46</id>
+                <id>136</id>
                 <name>Last Logged In User</name>
                 <hash>7318847</hash>
-                <string_count>3</string_count>
+                <string_count>5</string_count>
                 <category>User</category>
                 <description>If no user is logged in, returns the last user to log in is reported.  If a user is currently logged in, that user is returned.
 Example: DOMAIN\Jane.Doe</description>
-                <creation_time>2015-08-26T20:14:28</creation_time>
-                <modification_time>2015-08-26T20:14:28</modification_time>
+                <creation_time>2015-09-14T13:39:11</creation_time>
+                <modification_time>2015-09-14T13:39:11</modification_time>
                 <last_modified_by>Administrator</last_modified_by>
                 <queries>
                   <query>
@@ -279,12 +279,8 @@ echo &amp;quot;N/A on Solaris&amp;quot;</script>
                   <query>
                     <platform>AIX</platform>
                     <script>#!/bin/sh
-
-# THIS IS A STUB - NOT INTENDED AS FUNCTIONAL - NA
-# 
-# 
-
-echo &amp;quot;N/A on AIX&amp;quot;</script>
+# Get last logged in user
+last | head -1 | cut -d &amp;#039; &amp;#039; -f1</script>
                     <script_type>UnixShell</script_type>
                   </query>
                 </queries>
@@ -326,15 +322,15 @@ echo &amp;quot;N/A on AIX&amp;quot;</script>
             </select>
             <select>
               <sensor>
-                <id>96</id>
+                <id>92</id>
                 <name>Installed Applications</name>
                 <hash>1511329504</hash>
-                <string_count>398</string_count>
+                <string_count>1755</string_count>
                 <category>Applications</category>
                 <description>List of the applications and versions of those applications installed on the client machine.
 Example: Mozilla Firefox | 16.0.1</description>
-                <creation_time>2015-08-26T20:14:28</creation_time>
-                <modification_time>2015-08-26T20:14:28</modification_time>
+                <creation_time>2015-09-14T13:39:11</creation_time>
+                <modification_time>2015-09-14T13:39:11</modification_time>
                 <last_modified_by>Administrator</last_modified_by>
                 <queries>
                   <query>
@@ -774,23 +770,18 @@ rm -rf &amp;quot;$ftemp&amp;quot;</script>
                   <query>
                     <platform>Solaris</platform>
                     <script>#!/bin/sh
-
-# THIS IS A STUB - NOT INTENDED AS FUNCTIONAL - NA
-# 
-# 
-
-echo &amp;quot;N/A on Solaris&amp;quot;</script>
+pkginfo -c application | awk &amp;#039;{ print $2 }&amp;#039;</script>
                     <script_type>UnixShell</script_type>
                   </query>
                   <query>
                     <platform>AIX</platform>
                     <script>#!/bin/sh
+#pkg_name|pkg_vers|nothing|Not Uninstallable
 
-# THIS IS A STUB - NOT INTENDED AS FUNCTIONAL - NA
-# 
-# 
-
-echo &amp;quot;N/A on AIX&amp;quot;</script>
+for pkg in `/usr/bin/lslpp -Lcq | awk -F: &amp;#039;{ print $1&amp;quot;|&amp;quot;$2&amp;#039;}`
+do
+ echo &amp;quot;$pkg|nothing|Not Uninstallable&amp;quot;
+done</script>
                     <script_type>UnixShell</script_type>
                   </query>
                 </queries>
@@ -843,7 +834,7 @@ echo &amp;quot;N/A on AIX&amp;quot;</script>
               <filter>
                 <operator>RegexMatch</operator>
                 <value_type>String</value_type>
-                <value>.*Google (Search|Chrome).*</value>
+                <value>.*Google.*</value>
                 <not_flag>0</not_flag>
                 <max_age_seconds>0</max_age_seconds>
                 <ignore_case_flag>1</ignore_case_flag>
@@ -867,9 +858,9 @@ echo &amp;quot;N/A on AIX&amp;quot;</script>
             <not_flag>0</not_flag>
             <sub_groups>
               <group>
-                <id>3647</id>
+                <id>337</id>
                 <type>0</type>
-                <text>Installed Applications containing "Google (Search|Chrome)"</text>
+                <text>Installed Applications containing "Google"</text>
                 <and_flag>0</and_flag>
                 <not_flag>0</not_flag>
                 <filters>
@@ -879,7 +870,7 @@ echo &amp;quot;N/A on AIX&amp;quot;</script>
                     </sensor>
                     <operator>RegexMatch</operator>
                     <value_type>String</value_type>
-                    <value>.*Google (Search|Chrome).*</value>
+                    <value>.*Google.*</value>
                     <not_flag>0</not_flag>
                     <max_age_seconds>0</max_age_seconds>
                     <ignore_case_flag>1</ignore_case_flag>

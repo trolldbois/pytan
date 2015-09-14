@@ -10,7 +10,7 @@ Step 1 - Authenticate to the SOAP API via /auth
 
 * URL: https://10.0.1.240:443/auth
 * HTTP Method: GET
-* Elapsed Time: 0:00:00.016509
+* Elapsed Time: 0:00:00.062078
 * `Step 1 Request Body <../../_static/soap_outputs/6.5.314.4301/get_all_whitelisted_urls_step_1_request.txt>`_
 * `Step 1 Response Body <../../_static/soap_outputs/6.5.314.4301/get_all_whitelisted_urls_step_1_response.txt>`_
 
@@ -37,7 +37,7 @@ Step 1 - Authenticate to the SOAP API via /auth
     
     {
       "connection": "keep-alive", 
-      "content-length": "135", 
+      "content-length": "134", 
       "content-type": "text/plain; charset=us-ascii"
     }
 
@@ -47,7 +47,7 @@ Step 2 - Get the server version via /info.json
 
 * URL: https://10.0.1.240:443/info.json
 * HTTP Method: GET
-* Elapsed Time: 0:00:00.016056
+* Elapsed Time: 0:00:00.013262
 * `Step 2 Request Body <../../_static/soap_outputs/6.5.314.4301/get_all_whitelisted_urls_step_2_request.txt>`_
 * `Step 2 Response Body <../../_static/soap_outputs/6.5.314.4301/get_all_whitelisted_urls_step_2_response.json>`_
 
@@ -62,7 +62,7 @@ Step 2 - Get the server version via /info.json
       "Accept-Encoding": "gzip, deflate", 
       "Connection": "keep-alive", 
       "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-8114-32cd2d87fdc0962bf2761f8ed08fc7097d207f74c17cbbb6935b5a9bcd28c0de0708adf031c72d218355a93abb500e7acac1025b62c2cd8066541bac8b7a74c2"
+      "session": "1-677-1db55844c235daeb10b56dd650c56ab94d490a3c2bd6033f67504294887a54e38b6d1916dc8cc10f96019b2ef905bc1c7e1ef7006ee3db33d92702d0fbab12ec"
     }
 
 * Response Headers:
@@ -73,7 +73,7 @@ Step 2 - Get the server version via /info.json
     
     {
       "connection": "keep-alive", 
-      "content-length": "113370", 
+      "content-length": "20906", 
       "content-type": "application/json"
     }
 
@@ -83,7 +83,7 @@ Step 3 - Issue a GetObject to find an object
 
 * URL: https://10.0.1.240:443/soap
 * HTTP Method: POST
-* Elapsed Time: 0:00:00.275150
+* Elapsed Time: 0:00:00.004804
 * `Step 3 Request Body <../../_static/soap_outputs/6.5.314.4301/get_all_whitelisted_urls_step_3_request.xml>`_
 * `Step 3 Response Body <../../_static/soap_outputs/6.5.314.4301/get_all_whitelisted_urls_step_3_response.xml>`_
 
@@ -100,7 +100,7 @@ Step 3 - Issue a GetObject to find an object
       "Content-Length": "480", 
       "Content-Type": "text/xml; charset=utf-8", 
       "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-8114-32cd2d87fdc0962bf2761f8ed08fc7097d207f74c17cbbb6935b5a9bcd28c0de0708adf031c72d218355a93abb500e7acac1025b62c2cd8066541bac8b7a74c2"
+      "session": "1-677-1db55844c235daeb10b56dd650c56ab94d490a3c2bd6033f67504294887a54e38b6d1916dc8cc10f96019b2ef905bc1c7e1ef7006ee3db33d92702d0fbab12ec"
     }
 
 * Response Headers:

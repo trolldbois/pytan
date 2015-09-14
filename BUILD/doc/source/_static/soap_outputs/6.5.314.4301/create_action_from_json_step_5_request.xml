@@ -7,11 +7,11 @@
         <action>
           <comment>Distribute Tanium Standard Utilities</comment>
           <status>Closed</status>
-          <distribute_seconds>3200</distribute_seconds>
-          <creation_time>2015-09-05T05:27:05</creation_time>
+          <distribute_seconds>3600</distribute_seconds>
+          <creation_time>2015-09-14T19:57:38</creation_time>
           <skip_lock_flag>0</skip_lock_flag>
-          <id>614</id>
-          <expire_seconds>3300</expire_seconds>
+          <id>78</id>
+          <expire_seconds>3900</expire_seconds>
           <name>Distribute Tanium Standard Utilities</name>
           <stopped_flag>0</stopped_flag>
           <approver>
@@ -21,17 +21,17 @@
           <package_spec>
             <name>Distribute Tanium Standard Utilities</name>
             <command>cmd /c cscript install-standard-utils.vbs "Tools\StdUtils"</command>
-            <id>20</id>
+            <id>23</id>
           </package_spec>
           <saved_action>
-            <id>587</id>
+            <id>77</id>
           </saved_action>
           <history_saved_question>
             <id>0</id>
           </history_saved_question>
           <target_group>
             <name>Default</name>
-            <id>37</id>
+            <id>35</id>
           </target_group>
           <action_group>
             <name>Default</name>
@@ -39,7 +39,7 @@
           </action_group>
           <user>
             <name>Administrator</name>
-            <last_login>2015-09-05T05:26:49</last_login>
+            <last_login>2015-09-14T19:57:38</last_login>
             <group_id>0</group_id>
             <id>1</id>
           </user>

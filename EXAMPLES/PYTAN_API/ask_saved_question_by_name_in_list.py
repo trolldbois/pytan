@@ -95,34 +95,34 @@ if response['question_results']:
 
 '''STDOUT from running this:
 ...CALLING: pytan.handler() with args: {'username': 'Administrator', 'record_all_requests': True, 'loglevel': 1, 'debugformat': False, 'host': '10.0.1.240', 'password': 'Tanium2015!', 'port': '443'}
-...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+...OUTPUT: handler string: PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ...CALLING: handler.ask with args: {'qtype': u'saved', 'name': [u'Installed Applications']}
 ...OUTPUT: Type of response:  <type 'dict'>
 ...OUTPUT: Pretty print of response:
 {'poller_object': None,
  'poller_success': None,
- 'question_object': <taniumpy.object_types.question.Question object at 0x112898d90>,
- 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x102590cd0>,
- 'saved_question_object': <taniumpy.object_types.saved_question.SavedQuestion object at 0x102590890>}
+ 'question_object': <taniumpy.object_types.question.Question object at 0x109e04b90>,
+ 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x10c7b0f90>,
+ 'saved_question_object': <taniumpy.object_types.saved_question.SavedQuestion object at 0x109e04690>}
 ...OUTPUT: Equivalent Question if it were to be asked in the Tanium Console: 
 Get Installed Applications from all machines
-...CALLING: handler.export_obj() with args {'export_format': 'csv', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x102590cd0>}
+...CALLING: handler.export_obj() with args {'export_format': 'csv', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x10c7b0f90>}
 ...OUTPUT: CSV Results of response: 
-Name,Silent Uninstall String,Uninstallable,Version
-Image Capture Extension,nothing,Not Uninstallable,10.2
-Dictation,nothing,Not Uninstallable,1.6.1
-Wish,nothing,Not Uninstallable,8.5.9
-Uninstall AnyConnect,nothing,Not Uninstallable,3.1.08009
-Time Machine,nothing,Not Uninstallable,1.3
-7-Zip 9.20 (x64 edition),MsiExec.exe /X{23170F69-40C1-2702-0920-000001000000} /qn /noreboot,Is Uninstallable,9.20.00.0
-AppleGraphicsWarning,nothing,Not Uninstallable,2.3.0
-soagent,nothing,Not Uninstallable,7.0
-Feedback Assistant,nothing,Not Uninstallable,4.1.3
-AinuIM,nothing,Not Uninstallable,1.0
-vpndownloader,nothing,Not Uninstallable,3.1.08009
-Pass Viewer,nothing,Not Uninstallable,1.0
-ARDAgent,nothing,Not Uninstallable,3.8.4
-PressAndHold,nothing,Not Uninstallable,1.2
+Count,Name,Silent Uninstall String,Uninstallable,Version
+755,[too many results],[too many results],[too many results],[too many results]
+1,libminiupnpc8,nothing,Not Uninstallable,1.6-3ubuntu2.14.04.1
+1,iso-codes,nothing,Not Uninstallable,3.52-1
+1,libexttextcat-2.0-0,nothing,Not Uninstallable,3.4.3-1ubuntu1
+1,growisofs,nothing,Not Uninstallable,7.1-10build1
+1,libxml2:i386,nothing,Not Uninstallable,2.9.1+dfsg1-3ubuntu4.4
+1,libsm6:i386,nothing,Not Uninstallable,2:1.2.1-2
+1,findutils,nothing,Not Uninstallable,4.4.2-7
+1,libgcr-base-3-1:i386,nothing,Not Uninstallable,3.10.1-1
+1,thunderbird-locale-en,nothing,Not Uninstallable,1:38.2.0+build1-0ubuntu0.14.04.1
+1,usb-modeswitch,nothing,Not Uninstallable,2.1.1+repack0-1ubuntu1
+1,gstreamer1.0-alsa:i386,nothing,Not Uninstallable,1.2.4-1~ubuntu1
+1,libcomerr2:i386,nothing,Not Uninstallable,1.42.9-3ubuntu1.2
+1,libqt5sensors5:i386,nothing,Not Uninstallable,5.2.1+dfsg-2ubuntu2
 ..trimmed for brevity..
 
 '''

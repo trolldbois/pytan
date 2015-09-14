@@ -90,20 +90,20 @@ print out
 
 '''STDOUT from running this:
 ...CALLING: pytan.handler() with args: {'username': 'Administrator', 'record_all_requests': True, 'loglevel': 1, 'debugformat': False, 'host': '10.0.1.240', 'password': 'Tanium2015!', 'port': '443'}
-...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+...OUTPUT: handler string: PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ...CALLING: handler.get_all with args: {'objtype': u'setting'}
 ...OUTPUT: Type of response:  <class 'taniumpy.object_types.system_setting_list.SystemSettingList'>
 ...OUTPUT: print of response:
 SystemSettingList, len: 94
-...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.system_setting_list.SystemSettingList object at 0x110e22790>}
+...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.system_setting_list.SystemSettingList object at 0x109c8b7d0>}
 ...OUTPUT: print the objects returned in JSON format:
 {
   "_type": "system_settings", 
   "cache_info": {
     "_type": "cache_info", 
-    "cache_id": 832712886, 
+    "cache_id": 1150150415, 
     "cache_row_count": 94, 
-    "expiration": "2015-09-05T05:40:37", 
+    "expiration": "2015-09-14T20:10:16", 
     "filtered_row_count": 94, 
     "page_row_count": 94
   }, 

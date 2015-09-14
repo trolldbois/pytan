@@ -3,7 +3,7 @@
   <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <t:return>
       <command>GetObject</command>
-      <session>1-8051-5dda5c3a7dea3e2bce6bc98a98262489d911d6be2824a3259bf0869a56a3a152ce6d53608f53315152fa90b7395e398380c07e0ce26a6e39be63e8dd20ad2d2d</session>
+      <session>1-614-48eb82387220130c7c27652700900120850043c88b3968975115cdbd53ed3716e09a5ac3b16fa16200196f19a6c3722a360bd4bda3663c5a6ce2b91a1dd571ca</session>
       <server_version>6.5.314.4301</server_version>
       <ID></ID>
       <IDType></IDType>
@@ -13,10 +13,10 @@
           <id>1</id>
           <name>Has Tanium Standard Utilities</name>
           <question>
-            <id>11608</id>
+            <id>689</id>
             <expire_seconds>0</expire_seconds>
             <skip_lock_flag>0</skip_lock_flag>
-            <expiration>2015-09-05T05:29:27</expiration>
+            <expiration>2015-09-14T19:49:33</expiration>
             <user>
               <id>1</id>
               <name>Administrator</name>
@@ -34,15 +34,15 @@
             <selects>
               <select>
                 <sensor>
-                  <id>194</id>
+                  <id>190</id>
                   <name>Has Tanium Standard Utilities</name>
                   <hash>1782389954</hash>
-                  <string_count>4</string_count>
+                  <string_count>5</string_count>
                   <category>Tanium</category>
                   <description>Returns whether a machine has the Tanium Standard Utilities
 Example: Yes</description>
-                  <creation_time>2015-08-26T20:14:29</creation_time>
-                  <modification_time>2015-08-26T20:14:29</modification_time>
+                  <creation_time>2015-09-14T13:39:11</creation_time>
+                  <modification_time>2015-09-14T13:39:11</modification_time>
                   <last_modified_by>Administrator</last_modified_by>
                   <queries>
                     <query>
@@ -69,7 +69,7 @@ Dim strDesiredGrepDepVersion,strGrepDepFileVersion,strGrepBinaryFileVersion
 
 &amp;#039; The top line of the version file
 &amp;#039;Tanium File Version: &amp;lt;version string below&amp;gt;
-strDesiredVersion = &amp;quot;6.5.1.0011&amp;quot;
+strDesiredVersion = &amp;quot;6.5.2.0164&amp;quot;
 
 &amp;#039; -------------------
 &amp;#039; Binaries we can version
@@ -170,7 +170,7 @@ Function GetFileVersion(strPath)
 	If objFSO.FileExists(strPath) Then
 		GetFileVersion = objFSO.GetFileVersion(strPath)
 	Else
-		GetFileVerison = -1
+		GetFileVersion = -1
 	End If
 End Function &amp;#039;GetFileVersion
 
@@ -179,23 +179,23 @@ Function GetTaniumDir(strSubDir)
 	Dim strPath
 	strComputer = &amp;quot;.&amp;quot;
 	Const HKLM = &amp;amp;h80000002
-    
+
 	key32Path = &amp;quot;Software\Tanium\Tanium Client&amp;quot;
 	key64Path = &amp;quot;Software\Wow6432Node\Tanium\Tanium Client&amp;quot;
-    
+
 	Set reg=GetObject(&amp;quot;winmgmts:{impersonationLevel=impersonate}!\\&amp;quot; &amp;amp; strComputer &amp;amp; &amp;quot;\root\default:StdRegProv&amp;quot;)
-    
+
 	If RegKeyExists(reg, HKLM, key64Path) Then
 		keyPath = key64Path
 	ElseIf RegKeyExists(reg, HKLM, key32Path) Then
 		keyPath = key32Path
 	End If
-    
+
 	reg.GetStringValue HKLM,keyPath,&amp;quot;Path&amp;quot;, strPath
 
 	If strSubDir &amp;lt;&amp;gt; &amp;quot;&amp;quot; Then
 		strSubDir = &amp;quot;\&amp;quot; &amp;amp; strSubDir
-	End If	
+	End If
 
 	Dim fso
 	Set fso = WScript.CreateObject(&amp;quot;Scripting.FileSystemObject&amp;quot;)
@@ -225,10 +225,10 @@ Function GetBitness
 	End If
 End Function &amp;#039;GetBitness
 
-Function Is64 
+Function Is64
 	Dim objWMIService, colItems, objItem
 	Set objWMIService = GetObject(&amp;quot;winmgmts:\\.\root\CIMV2&amp;quot;)
-	Set colItems = objWMIService.ExecQuery(&amp;quot;Select SystemType from Win32_ComputerSystem&amp;quot;)    
+	Set colItems = objWMIService.ExecQuery(&amp;quot;Select SystemType from Win32_ComputerSystem&amp;quot;)
 	For Each objItem In colItems
 		If InStr(LCase(objItem.SystemType), &amp;quot;x64&amp;quot;) &amp;gt; 0 Then
 			Is64 = True
@@ -325,20 +325,20 @@ echo &amp;quot;N/A on AIX&amp;quot;</script>
           <query_text>Get Has Tanium Standard Utilities from all machines</query_text>
           <packages>
             <package_spec>
-              <id>20</id>
+              <id>23</id>
               <name>Distribute Tanium Standard Utilities</name>
             </package_spec>
           </packages>
           <row_count_flag>0</row_count_flag>
           <keep_seconds>0</keep_seconds>
           <archive_enabled_flag>0</archive_enabled_flag>
-          <most_recent_question_id>11608</most_recent_question_id>
+          <most_recent_question_id>689</most_recent_question_id>
           <user>
             <id>1</id>
             <name>Administrator</name>
           </user>
           <archive_owner></archive_owner>
-          <mod_time>2015-08-26T20:14:35</mod_time>
+          <mod_time>2015-09-14T13:39:17</mod_time>
           <mod_user>
             <name>Administrator</name>
           </mod_user>

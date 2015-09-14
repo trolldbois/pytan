@@ -50,6 +50,8 @@ class QuestionPoller(object):
     override_timeout_secs : int, optional
         * default: 0
         * If supplied and not 0, timeout in seconds instead of when object expires
+    override_estimated_total : int, optional
+        * instead of getting number of systems that should see this question from result_info.estimated_total, use this number
     """
 
     OBJECT_TYPE = taniumpy.object_types.question.Question
@@ -141,6 +143,7 @@ class QuestionPoller(object):
         """Post init class setup"""
         self._debug_locals(sys._getframe().f_code.co_name, locals())
 
+        self.override_estimated_total = kwargs.get('override_estimated_total', 0)
         self._derive_expiration(**kwargs)
         self._derive_object_info(**kwargs)
 
@@ -285,12 +288,31 @@ class QuestionPoller(object):
         """
         self._debug_locals(sys._getframe().f_code.co_name, locals())
 
-        clean_keys = ['obj']
+        # add a retry to re-fetch result info if estimated_total == 0
+        gri_retry_count = kwargs.get('gri_retry_count', 2)
+
+        clean_keys = ['obj', 'gri_retry_count']
         clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
-        result_info = self.handler.get_result_info(obj=self.obj, **clean_kwargs)
-        if result_info.estimated_total == 0:
-            m = "Estimated Total of Clients is 0 -- no clients available?".format
-            raise pytan.exceptions.PollingError(m())
+
+        current_try = 1
+
+        while True:
+            result_info = self.handler.get_result_info(obj=self.obj, **clean_kwargs)
+
+            if result_info.estimated_total != 0:
+                break
+
+            attempt_text = "attempt {} out of {}".format(current_try, gri_retry_count)
+            if current_try >= gri_retry_count:
+                m = "Estimated Total of Clients is 0 -- no clients available?, {}".format
+                raise pytan.exceptions.PollingError(m(attempt_text))
+            else:
+                current_try += 1
+                h = "Re-issuing a GetResultInfo since the estimated_total came back 0, {}".format
+                clean_kwargs['pytan_help'] = h(attempt_text)
+                self.mylog.debug(h)
+                continue
+
         return result_info
 
     def get_result_data(self, **kwargs):
@@ -370,7 +392,7 @@ class QuestionPoller(object):
             # estimated_total = rough estimate of total number of systems
             # passed = number of systems that have passed any filters for the question
             tested = self.result_info.mr_tested
-            est_total = self.result_info.estimated_total
+            est_total = self.override_estimated_total or self.result_info.estimated_total
 
             new_pct = pytan.utils.get_percentage(part=tested, whole=est_total)
             new_pct_str = "{0:.0f}%".format(new_pct)
@@ -380,8 +402,8 @@ class QuestionPoller(object):
             self.progress_str = (
                 "Progress: Tested: {0.tested}, Passed: {0.passed}, "
                 "MR Tested: {0.mr_tested}, MR Passed: {0.mr_passed}, "
-                "Est Total: {0.estimated_total}, Row Count: {0.row_count}"
-            ).format(self.result_info)
+                "Est Total: {0.estimated_total}, Row Count: {0.row_count}, Override Est Total: {1}"
+            ).format(self.result_info, self.override_estimated_total)
             self.progresslog.debug("{}{}".format(self.id_str, self.progress_str))
 
             # print a timing debug string
@@ -493,10 +515,12 @@ class ActionPoller(QuestionPoller):
         * Number of seconds to wait in between GetResultInfo loops
     complete_pct : int/float, optional
         * default: 100
-        * Percentage of mr_tested out of estimated_total to consider the question "done"
+        * Percentage of passed_count out of successfully run actions to consider the action "done"
     override_timeout_secs : int, optional
         * default: 0
         * If supplied and not 0, timeout in seconds instead of when object expires
+    override_passed_count : int, optional
+        * instead of getting number of systems that should run this action by asking a question, use this number
     """
 
     OBJECT_TYPE = taniumpy.object_types.action.Action
@@ -518,6 +542,7 @@ class ActionPoller(QuestionPoller):
         """Post init class setup"""
         self._debug_locals(sys._getframe().f_code.co_name, locals())
 
+        self.override_passed_count = kwargs.get('override_passed_count', 0)
         self._derive_package_spec(**kwargs)
         self._derive_target_group(**kwargs)
         self._derive_verify_enabled(**kwargs)
@@ -719,33 +744,38 @@ class ActionPoller(QuestionPoller):
         else:
             self.override_timeout = None
 
-        m = (
-            "{}Issuing an AddObject of a Question object with no Selects and the same Group used "
-            " by the Action object. The number of systems that should successfully run the "
-            "Action will be taken from result_info.passed_count for the Question asked when "
-            "all answers for the question have reported in."
-        ).format
-        self.mylog.debug(m(self.id_str, self.obj))
-
         clean_keys = ['callbacks', 'obj', 'pytan_help', 'handler']
         clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
-        self.pre_question = taniumpy.Question()
-        self.pre_question.group = self.target_group
-        self.pre_question = self.handler._add(
-            obj=self.pre_question, pytan_help=m(self.id_str, self.obj), **clean_kwargs
-        )
+        if self.override_passed_count:
+            self.passed_count = self.override_passed_count
+            m = "{}passed_count resolved override of {}".format
+            self.mylog.debug(m(self.id_str, self.override_passed_count))
+        else:
+            m = (
+                "{}Issuing an AddObject of a Question object with no Selects and the same Group "
+                "used by the Action object. The number of systems that should successfully run "
+                "the Action will be taken from result_info.passed_count for the Question asked "
+                "when all answers for the question have reported in."
+            ).format
+            self.mylog.debug(m(self.id_str, self.obj))
 
-        self.pre_question_poller = pytan.pollers.QuestionPoller(
-            handler=self.handler, obj=self.pre_question, **clean_kwargs
-        )
+            self.pre_question = taniumpy.Question()
+            self.pre_question.group = self.target_group
+            self.pre_question = self.handler._add(
+                obj=self.pre_question, pytan_help=m(self.id_str, self.obj), **clean_kwargs
+            )
 
-        self.pre_question_poller.run(callbacks=callbacks, **clean_kwargs)
+            self.pre_question_poller = pytan.pollers.QuestionPoller(
+                handler=self.handler, obj=self.pre_question, **clean_kwargs
+            )
 
-        self.passed_count = self.pre_question_poller.result_info.passed
+            self.pre_question_poller.run(callbacks=callbacks, **clean_kwargs)
 
-        m = "{}Passed Count resolved to {}".format
-        self.resolverlog.debug(m(self.id_str, self.passed_count))
+            self.passed_count = self.pre_question_poller.result_info.passed
+
+            m = "{}passed_count resolved to {}".format
+            self.mylog.debug(m(self.id_str, self.passed_count))
 
         self.seen_eq_passed = self.seen_eq_passed_loop(callbacks=callbacks, **clean_kwargs)
         self.finished_eq_passed = self.finished_eq_passed_loop(callbacks=callbacks, **clean_kwargs)

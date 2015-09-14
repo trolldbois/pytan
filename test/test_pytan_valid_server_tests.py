@@ -72,7 +72,7 @@ class ValidServerTests(unittest.TestCase):
             kwargs = {
                 'name': [
                     "Computer Name", "IP Route Details", "IP Address",
-                    'Folder Name Search with RegEx Match',
+                    'Folder Contents',
                 ],
                 'objtype': 'sensor',
             }
@@ -95,7 +95,7 @@ class ValidServerTests(unittest.TestCase):
                 'qtype': 'manual',
                 'sensors': [
                     "Computer Name", "IP Route Details", "IP Address",
-                    'Folder Name Search with RegEx Match{dirname=Program Files,regex=.*Shared.*}',
+                    'Folder Contents{folderPath=C:\\Program Files}',
                 ],
             }
             spew("TESTSETUP: Asking a question for export tests of ResultSet")

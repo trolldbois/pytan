@@ -6,7 +6,7 @@
       <object_list>
         <white_listed_url>
           <url_regex>test1 API TEST</url_regex>
-          <id>33039</id>
+          <id>28</id>
           <download_seconds>86400</download_seconds>
         </white_listed_url>
       </object_list>

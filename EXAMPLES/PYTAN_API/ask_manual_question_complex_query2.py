@@ -61,10 +61,10 @@ print "...OUTPUT: handler string: {}".format(handler)
 
 # setup the arguments for the handler() class
 kwargs = {}
-kwargs["question_filters"] = [u'Installed Applications, that regex match:.*Google (Search|Chrome).*']
+kwargs["question_filters"] = [u'Installed Applications, that regex match:.*Google.*']
 kwargs["sensors"] = [u'Computer Name',
  u'Last Logged In User',
- u'Installed Applications, that regex match:.*Google (Search|Chrome).*']
+ u'Installed Applications, that regex match:.*Google.*']
 kwargs["question_options"] = [u'ignore_case', u'or']
 kwargs["qtype"] = u'manual'
 
@@ -99,29 +99,26 @@ if response['question_results']:
 
 '''STDOUT from running this:
 ...CALLING: pytan.handler() with args: {'username': 'Administrator', 'record_all_requests': True, 'loglevel': 1, 'debugformat': False, 'host': '10.0.1.240', 'password': 'Tanium2015!', 'port': '443'}
-...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-...CALLING: handler.ask with args: {'question_filters': [u'Installed Applications, that regex match:.*Google (Search|Chrome).*'], 'sensors': [u'Computer Name', u'Last Logged In User', u'Installed Applications, that regex match:.*Google (Search|Chrome).*'], 'question_options': [u'ignore_case', u'or'], 'qtype': u'manual'}
-2015-09-05 05:48:19,375 INFO     pytan.pollers.QuestionPoller: ID 11658: Reached Threshold of 99% (2 of 2)
+...OUTPUT: handler string: PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+...CALLING: handler.ask with args: {'question_filters': [u'Installed Applications, that regex match:.*Google.*'], 'sensors': [u'Computer Name', u'Last Logged In User', u'Installed Applications, that regex match:.*Google.*'], 'question_options': [u'ignore_case', u'or'], 'qtype': u'manual'}
+2015-09-14 20:14:24,358 INFO     pytan.pollers.QuestionPoller: ID 811: Reached Threshold of 99% (3 of 3)
 ...OUTPUT: Type of response:  <type 'dict'>
 ...OUTPUT: Pretty print of response:
-{'poller_object': <pytan.pollers.QuestionPoller object at 0x10cfd4b10>,
+{'poller_object': <pytan.pollers.QuestionPoller object at 0x10c44b3d0>,
  'poller_success': True,
- 'question_object': <taniumpy.object_types.question.Question object at 0x10d38a690>,
- 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x112627450>}
+ 'question_object': <taniumpy.object_types.question.Question object at 0x10c443610>,
+ 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x10c4377d0>}
 ...OUTPUT: Equivalent Question if it were to be asked in the Tanium Console: 
-Get Computer Name and Last Logged In User and Installed Applications containing "Google (Search|Chrome)" from all machines with Installed Applications containing "Google (Search|Chrome)"
-...CALLING: handler.export_obj() with args {'export_format': 'csv', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x112627450>}
+Get Computer Name and Last Logged In User and Installed Applications containing "Google" from all machines with Installed Applications containing "Google"
+...CALLING: handler.export_obj() with args {'export_format': 'csv', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x10c4377d0>}
 ...OUTPUT: CSV Results of response: 
 Computer Name,Last Logged In User,Name,Silent Uninstall String,Uninstallable,Version
-Casus-Belli.local,jolsen,"Google Chrome
-Google Search
-Google Search","nothing
-nothing
+TPT1.pytanlab.com,Uninitialized - waiting for login,Google Chrome,"""C:\Program Files (x86)\Google\Chrome\Application\45.0.2454.85\Installer\setup.exe"" --uninstall --multi-install --chrome --system-level --verbose-logging",Not Uninstallable,45.0.2454.85
+c1u14-virtual-machine.(none),tanium,"libaccount-plugin-google
+account-plugin-google","nothing
 nothing","Not Uninstallable
-Not Uninstallable
-Not Uninstallable","45.0.2454.85
-42.0.2311.90
-41.0.2272.104"
+Not Uninstallable","0.11+14.04.20140409.1-0ubuntu2
+0.11+14.04.20140409.1-0ubuntu2"
 
 
 '''

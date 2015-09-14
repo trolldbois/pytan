@@ -2,7 +2,7 @@
 Deploy Action Simple
 ========================================================================================
 
-Deploy an action against all computers using human strings.
+Deploy an action against all computers using human strings and use Server Side Export when performing a GetResultData
 
 
 * `STDOUT from Example Python Code <../_static/pytan_outputs/deploy_action_simple_stdout.txt>`_

@@ -3,7 +3,7 @@
   <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <t:return>
       <command>DeleteObject</command>
-      <session>1-8053-b0100f08209ea0b50320a26b5a2ee13598dedb9cd75bbb7c64ff6a8b36d96ef2ccb45477098a4371f6dde1c286cfbc09c0ed4d6c0a8dd95e7393a223166ee6c7</session>
+      <session>1-616-2e870e86903255e8cd2e8870adaa1d3c093967722ae49700020aaa6f30576677f269793b7d65b3cdedf6dfa4003e41539ac83c0385c83bf9edef1664194a0117</session>
       <ID></ID>
       <IDType></IDType>
       <ContextID></ContextID>
@@ -11,18 +11,18 @@
       <object_list>
         <sensor>
           <category>Operating System</category>
-          <creation_time>2015-09-05T04:41:10</creation_time>
+          <creation_time>2015-09-14T19:52:47</creation_time>
           <delimiter>,</delimiter>
           <description>Returns whether the machine is a Mac.  True if so, False if not.
 Example: True</description>
           <exclude_from_parse_flag>0</exclude_from_parse_flag>
           <hash>2387245230</hash>
           <hidden_flag>0</hidden_flag>
-          <id>899</id>
+          <id>668</id>
           <ignore_case_flag>1</ignore_case_flag>
           <last_modified_by>Administrator</last_modified_by>
           <max_age_seconds>86400</max_age_seconds>
-          <modification_time>2015-09-05T04:41:10</modification_time>
+          <modification_time>2015-09-14T19:52:47</modification_time>
           <name>Is Mac API TEST</name>
           <queries>
             <query>
@@ -48,24 +48,14 @@ echo True</script>
             </query>
             <query>
               <platform>Solaris</platform>
-              <script>#!/bin/sh
-
-# THIS IS A STUB - NOT INTENDED AS FUNCTIONAL - NA
-# 
-# 
-
-echo "N/A on Solaris"</script>
+              <script>#!/bin/bash
+echo False</script>
               <script_type>UnixShell</script_type>
             </query>
             <query>
               <platform>AIX</platform>
-              <script>#!/bin/sh
-
-# THIS IS A STUB - NOT INTENDED AS FUNCTIONAL - NA
-# 
-# 
-
-echo "N/A on AIX"</script>
+              <script>#!/bin/bash
+echo False</script>
               <script_type>UnixShell</script_type>
             </query>
           </queries>
@@ -78,7 +68,7 @@ echo "N/A on AIX"</script>
       <ResultXML></ResultXML>
       <result_object>
         <sensor>
-          <id>899</id>
+          <id>668</id>
         </sensor>
       </result_object>
     </t:return>

@@ -6,7 +6,7 @@
       <object_list>
         <sensors>
           <sensor>
-            <name>Folder Name Search with RegEx Match</name>
+            <name>Folder Contents</name>
           </sensor>
         </sensors>
       </object_list>

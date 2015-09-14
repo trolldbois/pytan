@@ -1,6 +1,38 @@
-# 2.1.4
+# 2.1.5
 
 [Development branch](https://github.com/tanium/pytan/tree/develop) on N/A
+
+# 2.1.4
+
+[Released](https://github.com/tanium/pytan/releases/tag/2.1.4) on Sep 14 2015 
+
+  * bug fix:
+    * handler.Handler(): check for str version of found objects attribute in manual override/non api search
+    * pollers.QuestionPoller(): added a retry to GetResultInfo calls in pollers if estimated_total == 0 in order to overcome internal bug #5193 (random estimated_total == 0 returns from GRI, unable to reproduce on demand)
+
+  * enhancement:
+    * added winlib/ directory
+    * added open source package pyreadline to winlib/ directory
+    * re-tooled pytan.binsupport.HistoryConsole to make it more error proof
+    * re-tooled pytan.binsupport.HistoryConsole to import winlib/ if on windows (for access to pyreadline)
+    * pytan_shell.py now has tab completion support on Windows (and a host of  keyboard shortcuts)
+    * new script: get_saved_question_history.py -- provides a method for seeing what questions asked for a saved question have data
+    * new script: approve_saved_question.py -- provides a way to approve an action when Global Setting "require_action_approval" is set to 1
+    * pollers.QuestionPoller(): added override_estimated_total parameter
+    * pollers.ActionPoller(): added override_passed_count parameter
+
+  * doc:
+    * examples added for ask_parsed.py
+    * examples added for get_saved_question_history.py
+    * examples added for approve_saved_question.py
+    * examples updated for stop_action.py
+    * updated docstrings for Handler for deploy_action, ask_saved, ask_parsed, ask_manual to include Poller passthroughs
+    * fixed broken console.wsdl link
+    * added Command Line Help to left hand side bar
+    * added better descriptions for the SOAP examples, PyTan Command Line Help, and PyTan API Validation test sections
+
+  * test:
+    * updating sensors used in tests due to change in Initial Content (sensor “Folder Name Search with RegEx Match” no longer available, switched to use “Folder Contents”)
 
 # 2.1.3
 

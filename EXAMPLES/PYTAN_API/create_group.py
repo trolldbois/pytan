@@ -110,14 +110,14 @@ print delete_response
 
 '''STDOUT from running this:
 ...CALLING: pytan.handler() with args: {'username': 'Administrator', 'record_all_requests': True, 'loglevel': 1, 'debugformat': False, 'host': '10.0.1.240', 'password': 'Tanium2015!', 'port': '443'}
-...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+...OUTPUT: handler string: PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ...CALLING: handler.delete() with args: {'objtype': u'group', 'name': u'All Windows Computers API Test'}
 ...EXCEPTION: No results found searching for Group, name: u'All Windows Computers API Test' (error: Response command GroupNotFound does not match request command GetObject)!!
 ...CALLING: handler.create_group() with args: {'groupname': u'All Windows Computers API Test', 'filters': [u'Operating System, that contains:Windows'], 'filter_options': [u'and']}
 ...OUTPUT: Type of response:  <class 'taniumpy.object_types.group.Group'>
 ...OUTPUT: print of response:
-Group, name: 'All Windows Computers API Test', id: 3613
-...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.group.Group object at 0x10240a850>}
+Group, name: 'All Windows Computers API Test', id: 294
+...CALLING: handler.export_obj() with args {'export_format': 'json', 'obj': <taniumpy.object_types.group.Group object at 0x102d05f10>}
 ...OUTPUT: print the objects returned in JSON format:
 {
   "_type": "group", 
@@ -137,7 +137,7 @@ Group, name: 'All Windows Computers API Test', id: 3613
 ..trimmed for brevity..
 ...CALLING: handler.delete() with args: {'objtype': u'group', 'name': u'All Windows Computers API Test'}
 ...OUTPUT: print the delete response
-[<taniumpy.object_types.group.Group object at 0x10240afd0>]
+[<taniumpy.object_types.group.Group object at 0x102d05f90>]
 
 '''
 

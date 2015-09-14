@@ -4,13 +4,104 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 '''All the examples for the bin scripts'''
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
-__version__ = '2.1.0'
+__version__ = '2.1.4'
 
 example_skips = [
     'CONFIG',
 ]
 
 examples = {}
+
+# get_saved_question_history
+sname = 'get_saved_question_history'
+examples[sname] = []
+
+e = {}
+e['name'] = 'Get the details about all questions that have data that have been asked because of the Saved Question named "Installed Applications"'
+e['cmd'] = '''bin/${script_name}.py ${API_INFO} --name "Installed Applications" --file "${TMPDIR}/out.csv"'''
+e['notes'] = '''Will produce a CSV file with the details for each question that has data asked because of the Saved Question named "Installed Applications"
+'''
+e['precleanup'] = 'rm -f ${TMPDIR}/out.csv'
+e['file_exist'] = '${TMPDIR}/out.csv'
+e['tests'] = 'exitcode, file_exist_contents, noerror'
+examples[sname].append(e)
+
+e = {}
+e['name'] = 'Get the details about all questions, whether they have data or not, that have been asked because of the Saved Question named "Installed Applications"'
+e['cmd'] = '''bin/${script_name}.py ${API_INFO} --name "Installed Applications" --empty_results --file "${TMPDIR}/out.csv"'''
+e['notes'] = '''Will produce a CSV file with the details for each question asked because of the Saved Question named "Installed Applications"
+'''
+e['precleanup'] = 'rm -f ${TMPDIR}/out.csv'
+e['file_exist'] = '${TMPDIR}/out.csv'
+e['tests'] = 'exitcode, file_exist_contents, noerror'
+examples[sname].append(e)
+
+e = {}
+e['name'] = 'Get the details about all questions that have data'
+e['cmd'] = '''bin/${script_name}.py ${API_INFO} --all_questions --file "${TMPDIR}/out.csv"'''
+e['notes'] = '''Will produce a CSV file with the details for each question with data
+'''
+e['precleanup'] = 'rm -f ${TMPDIR}/out.csv'
+e['file_exist'] = '${TMPDIR}/out.csv'
+e['tests'] = 'exitcode, file_exist_contents, noerror'
+examples[sname].append(e)
+
+e = {}
+e['name'] = 'Get the details about all questions, whether they have data or not'
+e['cmd'] = '''bin/${script_name}.py ${API_INFO} --all_questions --empty_results --file "${TMPDIR}/out.csv"'''
+e['notes'] = '''Will produce a CSV file with the details for each question
+'''
+e['precleanup'] = 'rm -f ${TMPDIR}/out.csv'
+e['file_exist'] = '${TMPDIR}/out.csv'
+e['tests'] = 'exitcode, file_exist_contents, noerror'
+examples[sname].append(e)
+
+# ask_parsed
+sname = 'ask_parsed'
+examples[sname] = []
+
+e = {}
+e['name'] = 'Ask a parsed question example 1'
+e['cmd'] = '''bin/${script_name}.py ${API_INFO} -q "get computer name"'''
+e['notes'] = '''Ask a simple question in english with just one sensor
+Since --picker is not provided, this will exit with an error and print all of the results that the english form was parsed into, prepended with an index. This should be re-run with --picker INDEX_NUMBER, as seen in the rest of these examples.
+'''
+e['tests'] = 'notexitcode'
+examples[sname].append(e)
+
+e = {}
+e['name'] = 'Ask a parsed question example 2'
+e['cmd'] = '''bin/${script_name}.py ${API_INFO} -q "get computer name" --picker 1 --file "${TMPDIR}/out.csv"'''
+e['notes'] = '''Ask a simple question in english with just one sensor
+Pick the first match that the english form gets parsed into
+Save the results to a CSV file
+'''
+e['precleanup'] = 'rm -f ${TMPDIR}/out.csv'
+e['file_exist'] = '${TMPDIR}/out.csv'
+e['tests'] = 'exitcode, file_exist_contents, noerror'
+examples[sname].append(e)
+
+e = {}
+e['name'] = 'Ask a parsed question example 3'
+e['cmd'] = '''bin/${script_name}.py ${API_INFO} -q "get computer name and ip route details" --picker 1 --file "${TMPDIR}/out.csv"'''
+e['notes'] = '''Ask a more complex question in english with two sensors
+Pick the first match that the english form gets parsed into
+Save the results to a CSV file
+'''
+e['precleanup'] = 'rm -f ${TMPDIR}/out.csv'
+e['file_exist'] = '${TMPDIR}/out.csv'
+e['tests'] = 'exitcode, file_exist_contents, noerror'
+examples[sname].append(e)
+
+e = {}
+e['name'] = 'Ask a parsed question example 4'
+e['cmd'] = '''bin/${script_name}.py ${API_INFO} -q "get computer name and ip route details" --picker 1 --no-results'''
+e['notes'] = '''Ask a more complex question in english with two sensors
+Pick the first match that the english form gets parsed into
+Do not wait for results, just ask the question and return right away. In this use case, you would want to use get_results.py to get the results for this question later.
+'''
+e['tests'] = 'exitcode, noerror'
+examples[sname].append(e)
 
 sname = 'ask_manual'
 examples[sname] = []
@@ -50,7 +141,7 @@ examples[sname].append(e)
 
 e = {}
 e['name'] = 'Ask a question example 4'
-e['cmd'] = '''bin/${script_name}.py ${API_INFO} --sensor "Folder Name Search with RegEx Match{dirname=Program Files,regex=Microsoft.*}" --file "${TMPDIR}/out.csv"'''
+e['cmd'] = '''bin/${script_name}.py ${API_INFO} --sensor "Folder Contents{folderPath=C:\Program Files}" --file "${TMPDIR}/out.csv"'''
 e['notes'] = '''Ask a question with a sensor that requires parameters
 Save the results to a CSV file
 '''
@@ -75,7 +166,7 @@ examples[sname].append(e)
 
 e = {}
 e['name'] = 'Ask a question example 6'
-e['cmd'] = '''bin/${script_name}.py ${API_INFO} -s "Computer Name" -s "Folder Name Search with RegEx Match{dirname=Program Files,regex=Microsoft.*, invalidparam=test}, that regex match:.*Shared.*, opt:max_data_age:3600" -f "Operating System, that contains:Windows" -f "IP Address, that not equals:10.10.10.10" -o "or" -o "ignore_case" --file "${TMPDIR}/out.csv"'''
+e['cmd'] = '''bin/${script_name}.py ${API_INFO} -s "Computer Name" -s "Folder Contents{folderPath=C:\Program Files, invalidparam=test}, that regex match:.*Shared.*, opt:max_data_age:3600" -f "Operating System, that contains:Windows" -f "IP Address, that not equals:10.10.10.10" -o "or" -o "ignore_case" --file "${TMPDIR}/out.csv"'''
 e['notes'] = '''Ask a question with two sensors
 Supply parameters to the 2nd sensor
 Supply a filter in the 2nd sensor that limits the column data to .*Shared.*
@@ -92,12 +183,12 @@ examples[sname].append(e)
 
 e = {}
 e['name'] = 'Ask a question example 7'
-e['cmd'] = '''bin/${script_name}.py ${API_INFO} -s "Computer Name" -s "Last Logged In User" -s "Installed Applications, that contains:Google Search" -s "Installed Applications, that contains:Google Chrome" -f "Installed Applications, that contains:Google Search" -f "Installed Applications, that contains:Google Chrome" -o "and" -o "ignore_case" --file "${TMPDIR}/out.csv"'''
+e['cmd'] = '''bin/${script_name}.py ${API_INFO} -s "Computer Name" -s "Last Logged In User" -s "Installed Applications, that contains:Google" -f "Installed Applications, that contains:Google" -f "Installed Applications, that contains:Chrome" -o "or" -o "ignore_case" --file "${TMPDIR}/out.csv"'''
 e['notes'] = '''
 Ask a question with 4 sensors
 Use filters on 3rd and 4th sensor to limit the column data to only show certain apps
 Use 2 question filters to limit the row data to only show the same apps used in the sensor filters
-Supply two question options, one to AND the question filters supplied, and another to ignore the case while matching the question filters
+Supply two question options, one to OR the question filters supplied, and another to ignore the case while matching the question filters
 Save the results to a CSV file
 '''
 e['precleanup'] = 'rm -f ${TMPDIR}/out.csv'
@@ -437,11 +528,24 @@ examples[sname] = []
 
 e = {}
 e['name'] = 'Stop a deploy action'
-e['cmd'] = '''bin/${script_name}.py ${API_INFO} --id 123456'''
-e['notes'] = '''This example does not actually run
+e['cmd'] = '''bin/${script_name}.py ${API_INFO} --id 1'''
+e['notes'] = '''This will stop the action ID 1
+This is essentially a no-op if the action has already expired/finished
 '''
-e['norun'] = 'true'
-e['tests'] = ''
+e['tests'] = 'exitcode, noerror'
+examples[sname].append(e)
+
+# approve_saved_action
+sname = 'approve_saved_action'
+examples[sname] = []
+
+e = {}
+e['name'] = 'Approve a saved action '
+e['cmd'] = '''bin/${script_name}.py ${API_INFO} --id 1'''
+e['notes'] = '''This will approve the saved action ID 1
+This is essentially a no-op if the Global Setting "require_action_approval" is not set to 1 or if the saved action is already approved
+'''
+e['tests'] = 'exitcode, noerror'
 examples[sname].append(e)
 
 # # create_sensor

@@ -63,7 +63,7 @@ print "...OUTPUT: handler string: {}".format(handler)
 
 # setup the arguments for the handler() class
 kwargs = {}
-kwargs["sensors"] = u'Folder Name Search with RegEx Match{dirname=Program Files,regex=Microsoft.*}'
+kwargs["sensors"] = u'Folder Contents{folderPath=C:\\Program Files}'
 kwargs["qtype"] = u'manual'
 
 print "...CALLING: handler.ask with args: {}".format(kwargs)
@@ -97,34 +97,34 @@ if response['question_results']:
 
 '''STDOUT from running this:
 ...CALLING: pytan.handler() with args: {'username': 'Administrator', 'record_all_requests': True, 'loglevel': 1, 'debugformat': False, 'host': '10.0.1.240', 'password': 'Tanium2015!', 'port': '443'}
-...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-...CALLING: handler.ask with args: {'sensors': u'Folder Name Search with RegEx Match{dirname=Program Files,regex=Microsoft.*}', 'qtype': u'manual'}
-2015-09-05 05:44:11,662 INFO     pytan.pollers.QuestionPoller: ID 11646: Reached Threshold of 99% (2 of 2)
+...OUTPUT: handler string: PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+...CALLING: handler.ask with args: {'sensors': u'Folder Contents{folderPath=C:\\Program Files}', 'qtype': u'manual'}
+2015-09-14 20:12:16,437 INFO     pytan.pollers.QuestionPoller: ID 800: Reached Threshold of 99% (3 of 3)
 ...OUTPUT: Type of response:  <type 'dict'>
 ...OUTPUT: Pretty print of response:
-{'poller_object': <pytan.pollers.QuestionPoller object at 0x1179a7ed0>,
+{'poller_object': <pytan.pollers.QuestionPoller object at 0x11b400390>,
  'poller_success': True,
- 'question_object': <taniumpy.object_types.question.Question object at 0x12f01a890>,
- 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x1179a0fd0>}
+ 'question_object': <taniumpy.object_types.question.Question object at 0x11b400210>,
+ 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x10c73ad90>}
 ...OUTPUT: Equivalent Question if it were to be asked in the Tanium Console: 
-Get Folder Name Search with RegEx Match[Program Files, , No, No, Microsoft.*] from all machines
-...CALLING: handler.export_obj() with args {'export_format': 'csv', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x1179a0fd0>}
+Get Folder Contents[C:\Program Files] from all machines
+...CALLING: handler.export_obj() with args {'export_format': 'csv', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x10c73ad90>}
 ...OUTPUT: CSV Results of response: 
-Count,"Folder Name Search with RegEx Match[Program Files, , No, No, Microsoft.*]"
-119,[too many results]
-1,C:\Program Files\OpenSSH\home\Administrator\Documents\SQL Server Management Studio\Templates\ItemTemplates
-1,C:\Program Files\VMware\VMware Tools\plugins\vmsvc
-1,C:\Program Files\OpenSSH\home\All Users\Microsoft\Windows\Start Menu\Programs\7-Zip
-1,C:\Program Files\Microsoft SQL Server\110\Setup Bootstrap\SQLServer2012\1040_ITA_LP\x64\1040\help
-1,C:\Program Files\Common Files\Microsoft Shared\VS7Debug
-1,C:\Program Files\Tanium\Tanium Server\http\taniumjs\sensor-query\src
-1,C:\Program Files\OpenSSH\home\All Users\Microsoft\Windows\Start Menu\Programs\Microsoft SQL Server 2012\Integration Services
-1,C:\Program Files\Tanium\Tanium Server\http\tux\spin\src
-1,C:\Program Files\OpenSSH\home\Administrator\AppData\Roaming\Macromedia\Flash Player\macromedia.com\support\flashplayer
-1,C:\Program Files\Tanium\Tanium Server\http\taniumjs\archived-question\src
-1,C:\Program Files\Tanium\Tanium Module Server\plugins\content
-1,C:\Program Files\Tanium\Tanium Server\http\libraries\kendoui\styles\Moonlight
-1,C:\Program Files\Common Files\VMware\Drivers\vmci\sockets\include
+Count,Folder Contents[C:\Program Files]
+1,Folder : Microsoft Visual Studio 10.0
+2,desktop.ini
+1,Folder : Windows NT
+1,Folder : Microsoft Help Viewer
+1,Folder : Reference Assemblies
+1,Folder : WindowsPowerShell
+2,Folder : Common Files
+1,Folder : Tanium
+1,Folder : Microsoft.NET
+1,Folder : OpenSSH
+1,N/A on Linux
+2,Folder : VMware
+2,Folder : Internet Explorer
+2,Folder : Uninstall Information
 ..trimmed for brevity..
 
 '''

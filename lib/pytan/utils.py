@@ -2105,3 +2105,23 @@ def parse_versioning(server_version):
         ).format
         raise pytan.exceptions.VersionParseError(m(server_version))
     return v_dict
+
+
+def calculate_question_start_time(q):
+    """Caclulates the start time of a question by doing q.expiration - q.expire_seconds
+
+    Parameters
+    ----------
+    q : :class:`taniumpy.object_types.question.Question`
+        * Question object to calculate start time for
+
+    Returns
+    -------
+    tuple : str, datetime
+        * a tuple containing the start time first in str format for Tanium Server API, second in datetime object format
+    """
+    expire_dt = pytan.utils.timestr_to_datetime(q.expiration)
+    expire_seconds_delta = datetime.timedelta(seconds=q.expire_seconds)
+    start_time_dt = expire_dt - expire_seconds_delta
+    start_time = pytan.utils.datetime_to_timestr(start_time_dt)
+    return start_time, start_time_dt

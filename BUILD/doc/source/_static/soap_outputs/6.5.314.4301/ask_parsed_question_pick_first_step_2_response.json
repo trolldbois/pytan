@@ -3,20 +3,20 @@
     {
       "Action History Cache": [
         {
-          "Action Stop Count": 2
+          "Action Stop Count": 1
         }, 
         {
-          "Actions": 618
+          "Actions": 82
         }
       ]
     }, 
     {
       "Active Question Cache": [
         {
-          "Active Client Estimate": 2
+          "Active Client Estimate": 3
         }, 
         {
-          "Active Question Estimate": 35
+          "Active Question Estimate": 97
         }
       ]
     }, 
@@ -26,17 +26,17 @@
           "ActiveSessions": 1
         }, 
         {
-          "TotalSessions": 7079
+          "TotalSessions": 683
         }
       ]
     }, 
     {
       "Client Pump": [
         {
-          "Connections Active": 2
+          "Connections Active": 0
         }, 
         {
-          "Connections Inactive": 1
+          "Connections Inactive": 3
         }, 
         {
           "Connections Stopped": 97
@@ -46,7 +46,7 @@
     {
       "Data Interface": [
         {
-          "Estimated Node Count": 2
+          "Estimated Node Count": 3
         }, 
         {
           "License Seat Cap": 60
@@ -58,7 +58,7 @@
           "Reg Connection Limit": 1000
         }, 
         {
-          "Report Cache Count": 43
+          "Report Cache Count": 64
         }, 
         {
           "Sensor Bytes Per Second Limit": 5242880
@@ -99,10 +99,10 @@
           "ComputerSpecsGroups": 0
         }, 
         {
-          "FilterSpecCount": 1078
+          "FilterSpecCount": 186
         }, 
         {
-          "GroupCount": 2633
+          "GroupCount": 322
         }, 
         {
           "GroupsActionGroupSpecs": 0
@@ -111,35 +111,35 @@
           "GroupsComputerSpecs": 0
         }, 
         {
-          "GroupsTempSensors": 282
+          "GroupsTempSensors": 28
         }, 
         {
-          "QuestionFilterSpecs": 95
+          "QuestionFilterSpecs": 7
         }, 
         {
-          "QuestionSelectSpecs": 9291
+          "QuestionSelectSpecs": 749
         }, 
         {
-          "QuestionSubGroups": 3524
+          "QuestionSubGroups": 280
         }, 
         {
           "QuestionTextCount": 0
         }, 
         {
-          "SavedQuestionTextCount": 253
+          "SavedQuestionTextCount": 115
         }, 
         {
-          "SelectSpecCount": 6585
+          "SelectSpecCount": 1175
         }
       ]
     }, 
     {
       "HTTP File Cache": [
         {
-          "Cached File Count": 107
+          "Cached File Count": 108
         }, 
         {
-          "File Cache Size": 7964971
+          "File Cache Size": 7966121
         }
       ]
     }, 
@@ -156,7 +156,7 @@
     {
       "Network": [
         {
-          "Allocated SendOp Count": 133
+          "Allocated SendOp Count": 201
         }, 
         {
           "Allocated SendOp Limit": 0
@@ -165,16 +165,16 @@
           "Concurrency": 32
         }, 
         {
-          "Concurrency Threads": 40
+          "Concurrency Threads": 32
         }, 
         {
-          "Idle Threads": 40
+          "Idle Threads": 32
         }, 
         {
           "Max Concurrency Threads": 64
         }, 
         {
-          "Min Available Threads": 37
+          "Min Available Threads": 28
         }, 
         {
           "Pending SendOp Count": 0
@@ -183,29 +183,29 @@
           "Queue Completion Timeout": 1000
         }, 
         {
-          "Running Threads": 40
+          "Running Threads": 32
         }, 
         {
           "SendOpReady FreeCount": 0
         }, 
         {
-          "SendOpReady HeadCount": 133
+          "SendOpReady HeadCount": 201
         }, 
         {
           "Threads Reset Interval": 0
         }, 
         {
-          "Unpaused Threads": 40
+          "Unpaused Threads": 32
         }
       ]
     }, 
     {
       "Package Cache": [
         {
-          "Package Count": 451
+          "Package Count": 97
         }, 
         {
-          "Package File Count": 675
+          "Package File Count": 300
         }
       ]
     }, 
@@ -215,20 +215,20 @@
           "History Limit Days": 7
         }, 
         {
-          "Last Question ID": 11637
+          "Last Question ID": 791
         }, 
         {
-          "Last Saved Question ID": 255
+          "Last Saved Question ID": 115
         }, 
         {
-          "Question Count": 9534
+          "Question Count": 691
         }
       ]
     }, 
     {
       "SOAP Network": [
         {
-          "Allocated SendOp Count": 289
+          "Allocated SendOp Count": 292
         }, 
         {
           "Allocated SendOp Limit": 0
@@ -237,16 +237,16 @@
           "Concurrency": 32
         }, 
         {
-          "Concurrency Threads": 40
+          "Concurrency Threads": 32
         }, 
         {
-          "Idle Threads": 39
+          "Idle Threads": 31
         }, 
         {
           "Max Concurrency Threads": 64
         }, 
         {
-          "Min Available Threads": 37
+          "Min Available Threads": 24
         }, 
         {
           "Pending SendOp Count": 0
@@ -255,48 +255,48 @@
           "Queue Completion Timeout": 1000
         }, 
         {
-          "Running Threads": 40
+          "Running Threads": 32
         }, 
         {
           "SendOpReady FreeCount": 0
         }, 
         {
-          "SendOpReady HeadCount": 289
+          "SendOpReady HeadCount": 292
         }, 
         {
           "Threads Reset Interval": 14400
         }, 
         {
-          "Unpaused Threads": 40
+          "Unpaused Threads": 32
         }
       ]
     }, 
     {
       "SOAP Pump": [
         {
-          "Connections Active": 24
+          "Connections Active": 44
         }, 
         {
-          "Connections Inactive": 18
+          "Connections Inactive": 0
         }, 
         {
-          "Connections Stopped": 58
+          "Connections Stopped": 56
         }
       ]
     }, 
     {
       "SOAP Server": [
         {
-          "Connections": 42
+          "Connections": 44
         }, 
         {
-          "Last Reset": "2015-09-05 05:00:00 +0000"
+          "Last Reset": "2015-09-14 13:37:36 +0000"
         }, 
         {
-          "SOAP Busy Handlers": 67
+          "SOAP Busy Handlers": 71
         }, 
         {
-          "SOAP Handlers": 0
+          "SOAP Handlers": 38
         }, 
         {
           "Use Compression": "true"
@@ -322,70 +322,73 @@
     {
       "SOAP Timing": [
         {
-          "Timing: action": "Average 1ms, Count: 2245, Last: 0ms"
+          "Timing: action": "Average 1ms, Count: 3107, Last: 0ms"
         }, 
         {
-          "Timing: actions": "Average 10ms, Count: 80, Last: 16ms"
+          "Timing: actions": "Average 0ms, Count: 23, Last: 0ms"
         }, 
         {
-          "Timing: client_count": "Average 0ms, Count: 5, Last: 0ms"
+          "Timing: client_count": "Average 0ms, Count: 3, Last: 0ms"
         }, 
         {
-          "Timing: client_status": "Average 0ms, Count: 170, Last: 0ms"
+          "Timing: client_status": "Average 0ms, Count: 39, Last: 0ms"
         }, 
         {
-          "Timing: group": "Average 8ms, Count: 645, Last: 0ms"
+          "Timing: group": "Average 8ms, Count: 79, Last: 15ms"
         }, 
         {
-          "Timing: groups": "Average 0ms, Count: 545, Last: 0ms"
+          "Timing: groups": "Average 3ms, Count: 82, Last: 0ms"
         }, 
         {
-          "Timing: package_spec": "Average 0ms, Count: 2221, Last: 14ms"
+          "Timing: package_spec": "Average 1ms, Count: 312, Last: 0ms"
         }, 
         {
-          "Timing: plugins": "Average 8ms, Count: 5, Last: 0ms"
+          "Timing: plugins": "Average 5ms, Count: 3, Last: 15ms"
         }, 
         {
-          "Timing: question": "Average 16ms, Count: 2659, Last: 16ms"
+          "Timing: question": "Average 9ms, Count: 324, Last: 15ms"
         }, 
         {
-          "Timing: questions": "Average 127ms, Count: 79, Last: 156ms"
+          "Timing: questions": "Average 9ms, Count: 43, Last: 15ms"
         }, 
         {
-          "Timing: roles": "Average 0ms, Count: 338, Last: 0ms"
+          "Timing: roles": "Average 0ms, Count: 61, Last: 0ms"
         }, 
         {
-          "Timing: saved_actions": "Average 3ms, Count: 592, Last: 14ms"
+          "Timing: saved_actions": "Average 3ms, Count: 112, Last: 0ms"
         }, 
         {
-          "Timing: saved_question": "Average 6ms, Count: 852, Last: 14ms"
+          "Timing: saved_question": "Average 81ms, Count: 200, Last: 16ms"
         }, 
         {
-          "Timing: saved_questions": "Average 65ms, Count: 83, Last: 78ms"
+          "Timing: saved_questions": "Average 22ms, Count: 27, Last: 16ms"
         }, 
         {
-          "Timing: sensor": "Average 20ms, Count: 139, Last: 30ms"
+          "Timing: sensor": "Average 8ms, Count: 17, Last: 0ms"
         }, 
         {
-          "Timing: sensors": "Average 7ms, Count: 6229, Last: 358ms"
+          "Timing: sensors": "Average 5ms, Count: 539, Last: 30ms"
         }, 
         {
-          "Timing: system_setting": "Average 6ms, Count: 85, Last: 0ms"
+          "Timing: system_setting": "Average 5ms, Count: 103, Last: 0ms"
         }, 
         {
-          "Timing: system_settings": "Average 2ms, Count: 175, Last: 0ms"
+          "Timing: system_settings": "Average 3ms, Count: 42, Last: 0ms"
         }, 
         {
-          "Timing: user": "Average 0ms, Count: 508, Last: 0ms"
+          "Timing: system_status": "Average 0ms, Count: 133, Last: 0ms"
         }, 
         {
-          "Timing: users": "Average 0ms, Count: 562, Last: 0ms"
+          "Timing: user": "Average 0ms, Count: 65, Last: 0ms"
         }, 
         {
-          "Timing: white_listed_url": "Average 2ms, Count: 33030, Last: 0ms"
+          "Timing: users": "Average 0ms, Count: 84, Last: 0ms"
         }, 
         {
-          "Timing: white_listed_urls": "Average 54ms, Count: 670, Last: 264ms"
+          "Timing: white_listed_url": "Average 0ms, Count: 30, Last: 0ms"
+        }, 
+        {
+          "Timing: white_listed_urls": "Average 0ms, Count: 90, Last: 0ms"
         }
       ]
     }, 
@@ -401,7 +404,7 @@
           "Preview Sensor Count": 0
         }, 
         {
-          "Sensor Count": 2259
+          "Sensor Count": 477
         }, 
         {
           "Waiting Preview Sensor Count": 0
@@ -411,2936 +414,227 @@
     {
       "String Cache": [
         {
-          "NameData": 645
-        }, 
-        {
-          "Sensor 1140552555 Refresh Time/String Count": "1 / 3"
-        }, 
-        {
-          "Sensor 1155294592 Refresh Time/String Count": "1 / 3"
+          "NameData": 652
         }, 
         {
           "Sensor 131549066 Refresh Time/String Count": "1 / 2"
         }, 
         {
-          "Sensor 1489886768 Refresh Time/String Count": "1 / 1121"
+          "Sensor 1487792243 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 1489887638 Refresh Time/String Count": "1 / 1121"
+          "Sensor 1487793983 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 1489888508 Refresh Time/String Count": "1 / 1121"
+          "Sensor 1487795723 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 1489889378 Refresh Time/String Count": "1 / 1121"
+          "Sensor 1487993648 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 1489890248 Refresh Time/String Count": "1 / 1121"
+          "Sensor 1487994518 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 1497251383 Refresh Time/String Count": "1 / 56"
+          "Sensor 1487995388 Refresh Time/String Count": "1 / 3"
         }, 
         {
-          "Sensor 1511329504 Refresh Time/String Count": "1 / 398"
+          "Sensor 1488397328 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 1559751995 Refresh Time/String Count": "1 / 17"
+          "Sensor 1488545663 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 157896320 Refresh Time/String Count": "1 / 1119"
+          "Sensor 1488547403 Refresh Time/String Count": "1 / 3"
         }, 
         {
-          "Sensor 157897190 Refresh Time/String Count": "1 / 1119"
+          "Sensor 1488548273 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 157898060 Refresh Time/String Count": "1 / 1119"
+          "Sensor 1488549143 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 157898930 Refresh Time/String Count": "1 / 1119"
+          "Sensor 1488747938 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 157899800 Refresh Time/String Count": "1 / 1119"
+          "Sensor 1488748808 Refresh Time/String Count": "1 / 3"
         }, 
         {
-          "Sensor 158098595 Refresh Time/String Count": "1 / 1119"
+          "Sensor 1488749678 Refresh Time/String Count": "1 / 18"
         }, 
         {
-          "Sensor 158099465 Refresh Time/String Count": "1 / 1119"
+          "Sensor 1488750548 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 158100335 Refresh Time/String Count": "1 / 1119"
+          "Sensor 1488751418 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 158101205 Refresh Time/String Count": "1 / 1119"
+          "Sensor 1488940643 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 158102945 Refresh Time/String Count": "1 / 1119"
+          "Sensor 1488941513 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 159448400 Refresh Time/String Count": "1 / 1119"
+          "Sensor 1488942383 Refresh Time/String Count": "1 / 3"
         }, 
         {
-          "Sensor 159451880 Refresh Time/String Count": "1 / 1119"
+          "Sensor 1488943253 Refresh Time/String Count": "1 / 18"
         }, 
         {
-          "Sensor 159452750 Refresh Time/String Count": "1 / 1119"
+          "Sensor 1489142048 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 159453620 Refresh Time/String Count": "1 / 1119"
+          "Sensor 1489142918 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 159454490 Refresh Time/String Count": "1 / 1119"
+          "Sensor 1489143788 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 159595865 Refresh Time/String Count": "1 / 1119"
+          "Sensor 1489144658 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 159598475 Refresh Time/String Count": "1 / 1119"
+          "Sensor 1489694498 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 159599345 Refresh Time/String Count": "1 / 1119"
+          "Sensor 1489695803 Refresh Time/String Count": "1 / 3"
         }, 
         {
-          "Sensor 159600215 Refresh Time/String Count": "1 / 1119"
+          "Sensor 1489696673 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 159601085 Refresh Time/String Count": "1 / 1119"
+          "Sensor 1489698413 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 159799445 Refresh Time/String Count": "1 / 1119"
+          "Sensor 1489887203 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 159800315 Refresh Time/String Count": "1 / 1119"
+          "Sensor 1489888943 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 159801185 Refresh Time/String Count": "1 / 1119"
+          "Sensor 1511329504 Refresh Time/String Count": "1 / 1755"
         }, 
         {
-          "Sensor 159801620 Refresh Time/String Count": "1 / 2"
+          "Sensor 1559751995 Refresh Time/String Count": "1 / 25"
         }, 
         {
-          "Sensor 159802055 Refresh Time/String Count": "1 / 42115"
+          "Sensor 1688928675 Refresh Time/String Count": "1 / 8"
         }, 
         {
-          "Sensor 159802490 Refresh Time/String Count": "1 / 1119"
+          "Sensor 1782389954 Refresh Time/String Count": "1 / 5"
         }, 
         {
-          "Sensor 159991280 Refresh Time/String Count": "1 / 1118"
+          "Sensor 1792443391 Refresh Time/String Count": "1 / 118"
         }, 
         {
-          "Sensor 159992150 Refresh Time/String Count": "1 / 1119"
+          "Sensor 2581054686 Refresh Time/String Count": "1 / 4"
         }, 
         {
-          "Sensor 159993020 Refresh Time/String Count": "1 / 1119"
+          "Sensor 2634431519 Refresh Time/String Count": "1 / 4"
         }, 
         {
-          "Sensor 159993890 Refresh Time/String Count": "1 / 1119"
+          "Sensor 3005061811 Refresh Time/String Count": "1 / 2"
         }, 
         {
-          "Sensor 159994760 Refresh Time/String Count": "1 / 1119"
+          "Sensor 3209138996 Refresh Time/String Count": "1 / 6"
         }, 
         {
-          "Sensor 160193555 Refresh Time/String Count": "1 / 1119"
+          "Sensor 3209246640 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 160194425 Refresh Time/String Count": "1 / 1119"
+          "Sensor 3209252730 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 160195295 Refresh Time/String Count": "1 / 1119"
+          "Sensor 3209449785 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 160196165 Refresh Time/String Count": "1 / 1119"
+          "Sensor 3209452395 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 160198775 Refresh Time/String Count": "1 / 1119"
+          "Sensor 3209453265 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 160394960 Refresh Time/String Count": "1 / 1119"
+          "Sensor 3209454135 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 160395830 Refresh Time/String Count": "1 / 1119"
+          "Sensor 3209653365 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 160396700 Refresh Time/String Count": "1 / 1119"
+          "Sensor 3209654235 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 160397570 Refresh Time/String Count": "1 / 1119"
+          "Sensor 3209655105 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 160401050 Refresh Time/String Count": "1 / 1119"
+          "Sensor 3209655975 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 160541990 Refresh Time/String Count": "1 / 1119"
+          "Sensor 3209656845 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 160545035 Refresh Time/String Count": "1 / 2"
+          "Sensor 3209845635 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 160545905 Refresh Time/String Count": "1 / 1119"
+          "Sensor 3209846070 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 160546340 Refresh Time/String Count": "1 / 1119"
+          "Sensor 3209846505 Refresh Time/String Count": "1 / 3"
         }, 
         {
-          "Sensor 160547210 Refresh Time/String Count": "1 / 42331"
+          "Sensor 3209846940 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 160745135 Refresh Time/String Count": "1 / 1119"
+          "Sensor 3209847810 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 160746875 Refresh Time/String Count": "1 / 1119"
+          "Sensor 3209848680 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 160747745 Refresh Time/String Count": "1 / 1119"
+          "Sensor 3210194070 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 160748615 Refresh Time/String Count": "1 / 1119"
+          "Sensor 3210194940 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 160749485 Refresh Time/String Count": "1 / 1119"
+          "Sensor 3210195810 Refresh Time/String Count": "1 / 19"
         }, 
         {
-          "Sensor 1688928675 Refresh Time/String Count": "1 / 7"
+          "Sensor 322086833 Refresh Time/String Count": "1 / 43"
         }, 
         {
-          "Sensor 1782389954 Refresh Time/String Count": "1 / 4"
+          "Sensor 3409330187 Refresh Time/String Count": "1 / 5"
         }, 
         {
-          "Sensor 1792443391 Refresh Time/String Count": "1 / 793"
+          "Sensor 3556221173 Refresh Time/String Count": "1 / 4"
         }, 
         {
-          "Sensor 2177412849 Refresh Time/String Count": "1 / 3"
+          "Sensor 435227963 Refresh Time/String Count": "1 / 10"
         }, 
         {
-          "Sensor 21983240 Refresh Time/String Count": "1 / 3"
-        }, 
-        {
-          "Sensor 2322714946 Refresh Time/String Count": "1 / 3"
-        }, 
-        {
-          "Sensor 246114320 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 246115190 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 246116060 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 246116930 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 246120410 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 246260915 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 246263960 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 246265265 Refresh Time/String Count": "14 / 41805"
-        }, 
-        {
-          "Sensor 246266135 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 246267005 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 247207475 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 247210955 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 247211825 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 247212695 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 247213565 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 247409750 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 247412795 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 247413665 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 247414100 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 247414970 Refresh Time/String Count": "14 / 41185"
-        }, 
-        {
-          "Sensor 247415405 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 247613330 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 247614200 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 247615070 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 247615940 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 247616810 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 247806035 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 247806905 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 247807775 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 247808645 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 247809515 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 248007875 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 248008745 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 248009615 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 248010485 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 248013095 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 248153600 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 248154470 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 248155340 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 248156210 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 248159690 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 248356745 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 248359355 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 248360225 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 248361095 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 248361965 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 248559020 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 248560760 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 248561630 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 248562500 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 248563370 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 2513829483 Refresh Time/String Count": "1 / 3"
-        }, 
-        {
-          "Sensor 2581054686 Refresh Time/String Count": "1 / 5"
-        }, 
-        {
-          "Sensor 2634431519 Refresh Time/String Count": "1 / 16"
-        }, 
-        {
-          "Sensor 2721439124 Refresh Time/String Count": "1 / 3"
-        }, 
-        {
-          "Sensor 2944363395 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2944364265 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2944365135 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2944366005 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2944366875 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2944509120 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2944509990 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2944510860 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2944511730 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2944513470 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2944711395 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2944712265 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2944713135 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2944714005 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2944717485 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2944913235 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2944916280 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2944917150 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2944918020 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 2944919325 Refresh Time/String Count": "1 / 26100"
-        }, 
-        {
-          "Sensor 2945116380 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2945118120 Refresh Time/String Count": "1 / 1120"
-        }, 
-        {
-          "Sensor 2945118990 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2945119860 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2945120730 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2945263845 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2945264715 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2945265585 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2945266455 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2945267325 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2945455680 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2945456550 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2945457420 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2945458290 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2945460030 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2945657955 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2945658390 Refresh Time/String Count": "1 / 26410"
-        }, 
-        {
-          "Sensor 2945658825 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 2945659695 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2945660565 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2945662740 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2945859795 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2945863275 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2945864145 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2945865015 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2945865885 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2946062070 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2946064680 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2946065550 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2946066420 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 2946067290 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3005061811 Refresh Time/String Count": "1 / 6"
-        }, 
-        {
-          "Sensor 3032122035 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3032122905 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3032123775 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3032124645 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3032125515 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 3032323440 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3032324310 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3032325180 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3032326050 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3032327790 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3032525715 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3032526585 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3032527455 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3032528325 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3032531805 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3032727120 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3032730600 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3032731470 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3032732340 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3032733210 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3032875455 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3032877195 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3032878065 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3032878935 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3032879805 Refresh Time/String Count": "16 / 24635"
-        }, 
-        {
-          "Sensor 3033077730 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3033078165 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 3033079035 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3033079905 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3033080775 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3033081645 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3033270000 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3033270870 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3033271740 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3033272610 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3033274350 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3033472275 Refresh Time/String Count": "1 / 26102"
-        }, 
-        {
-          "Sensor 3033473145 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3033474015 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3033474885 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3033477495 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3034024725 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3034025595 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3034026465 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3034027335 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3034028205 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3034216560 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3034217430 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3034218300 Refresh Time/String Count": "15 / 1121"
-        }, 
-        {
-          "Sensor 3034219170 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3034220040 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3207750675 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3207751545 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3207752415 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3207753285 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3207754155 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3207952080 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3207952950 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3207953820 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3207954690 Refresh Time/String Count": "1 / 1120"
-        }, 
-        {
-          "Sensor 3207956430 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3209138996 Refresh Time/String Count": "1 / 35"
-        }, 
-        {
-          "Sensor 3209247075 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3209250120 Refresh Time/String Count": "14 / 25471"
-        }, 
-        {
-          "Sensor 3209250990 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3209251860 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3209252730 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 3209253165 Refresh Time/String Count": "1 / 25471"
-        }, 
-        {
-          "Sensor 3209449785 Refresh Time/String Count": "1 / 1120"
-        }, 
-        {
-          "Sensor 3209451960 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3209452830 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3209454135 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3209454570 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 3209652930 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3209653800 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3209654670 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3209655540 Refresh Time/String Count": "1 / 25471"
-        }, 
-        {
-          "Sensor 3209656845 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 3209845200 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3209846070 Refresh Time/String Count": "16 / 1121"
-        }, 
-        {
-          "Sensor 3209846940 Refresh Time/String Count": "1 / 1120"
-        }, 
-        {
-          "Sensor 3209847810 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3209848680 Refresh Time/String Count": "16 / 1121"
-        }, 
-        {
-          "Sensor 3209991795 Refresh Time/String Count": "1 / 1120"
-        }, 
-        {
-          "Sensor 3209992665 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3209993535 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3209994405 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3209997015 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3210193200 Refresh Time/String Count": "1 / 25576"
-        }, 
-        {
-          "Sensor 3210193635 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 3210194505 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3210195375 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3210196245 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3210199290 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3210396345 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3210398520 Refresh Time/String Count": "15 / 1121"
-        }, 
-        {
-          "Sensor 3210399390 Refresh Time/String Count": "1 / 1120"
-        }, 
-        {
-          "Sensor 3210400260 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 3210400695 Refresh Time/String Count": "14 / 25480"
-        }, 
-        {
-          "Sensor 3210401130 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3210599055 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3210600795 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3210601665 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3210602100 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 3210603405 Refresh Time/String Count": "31 / 25480"
-        }, 
-        {
-          "Sensor 322086833 Refresh Time/String Count": "1 / 45"
-        }, 
-        {
-          "Sensor 3272097180 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3272098920 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3272099790 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3272100660 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3272101530 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3272244645 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3272245515 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3272246385 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3272247255 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3272248125 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3272840595 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 3272844075 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3272844945 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3272845815 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3272846685 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3273043305 Refresh Time/String Count": "1 / 1118"
-        }, 
-        {
-          "Sensor 3273045915 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3273046785 Refresh Time/String Count": "1 / 35220"
-        }, 
-        {
-          "Sensor 3273047655 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3273048525 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3273190770 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3273191640 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3273192510 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3273193380 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3273194250 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3273383475 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3273384345 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3273385215 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3273386085 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3273386955 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3273585315 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3273586185 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3273586620 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3273587490 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 3273587925 Refresh Time/String Count": "31 / 35250"
-        }, 
-        {
-          "Sensor 3273590535 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3273786720 Refresh Time/String Count": "15 / 1119"
-        }, 
-        {
-          "Sensor 3273787590 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3273788460 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3273789330 Refresh Time/String Count": "1 / 1120"
-        }, 
-        {
-          "Sensor 3273792810 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3273989865 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3273992475 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3273993345 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3273994215 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3273995085 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3274136460 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3274138200 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3274139070 Refresh Time/String Count": "15 / 1119"
-        }, 
-        {
-          "Sensor 3274139940 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3274140810 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 334673795 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 334674665 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 334675535 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 334676405 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 334678145 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 334819520 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 334820390 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 334821260 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 334822130 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 334825175 Refresh Time/String Count": "1 / 31342"
-        }, 
-        {
-          "Sensor 335021795 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 335025275 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 335026145 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 335027015 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 335027885 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 335224070 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 335226680 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 335227550 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 335228420 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 335229290 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 335428085 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 335428955 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 335429825 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 335430695 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 335431565 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 335619920 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 335620790 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 335621660 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 335622530 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 335623400 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 335766515 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 335767385 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 335768255 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 335769125 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 335771735 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 335967920 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 335968790 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 335969660 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 335970530 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 335974010 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3360251235 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3360252105 Refresh Time/String Count": "14 / 1119"
-        }, 
-        {
-          "Sensor 3360252975 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3360253845 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3360255585 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3360452640 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3360453510 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3360454380 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3360455250 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3360457860 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3360654915 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3360658395 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3360659265 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3360660135 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3360661005 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3360801510 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3360804120 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3360804990 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3360805860 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3360806730 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3361005525 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3361006395 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3361007265 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3361008135 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3361009005 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3361197360 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3361198230 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3361199100 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3361199970 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3361200840 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3361399635 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3361400505 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3361401375 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3361402245 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3361404855 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3361601040 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3361601910 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3361602780 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3361603650 Refresh Time/String Count": "15 / 37800"
-        }, 
-        {
-          "Sensor 3361604085 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 3361607130 Refresh Time/String Count": "1 / 1118"
-        }, 
-        {
-          "Sensor 336171065 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 336173675 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 336174545 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3361748070 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3361750680 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3361751550 Refresh Time/String Count": "15 / 1119"
-        }, 
-        {
-          "Sensor 3361752420 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3361753290 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 336175415 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 336176285 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3361951215 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3361952955 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3361953825 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3361954695 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3361955565 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 336373340 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 336375080 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 336375950 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 336376820 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 336377690 Refresh Time/String Count": "1 / 54"
-        }, 
-        {
-          "Sensor 3409330187 Refresh Time/String Count": "1 / 3"
-        }, 
-        {
-          "Sensor 3443875635 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3443876505 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3443877375 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3443878245 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3443879115 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3444077040 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3444077910 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3444078780 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3444079650 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3444081390 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3444279315 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3444280185 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3444281055 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3444281925 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3444285405 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3444480720 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3444484200 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3444485070 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3444485940 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3444486810 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3444629055 Refresh Time/String Count": "14 / 1121"
-        }, 
-        {
-          "Sensor 3444630795 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3444631665 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3444632535 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3444633405 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3444831330 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3444832200 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3444833070 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3444833940 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3444834810 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3445024035 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3445024905 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3445025775 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3445026645 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3445028385 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3445225440 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3445226310 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3445227180 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3445228050 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3445230660 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3445778325 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3445779195 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3445780065 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3445780935 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3445781805 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3445970160 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3445971030 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3445971900 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3445972770 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3445973640 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3531689955 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3531690825 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3531691695 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3531692565 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3531693435 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3531891360 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3531892230 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3531893100 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3531893970 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3531895710 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3532093200 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3532094070 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3532094940 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3532095810 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3532099290 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3532239795 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3532242840 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 3532244145 Refresh Time/String Count": "15 / 34940"
-        }, 
-        {
-          "Sensor 3532245015 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3532245885 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3532442940 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3532444680 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3532445550 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3532446420 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3532447290 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3532646085 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3532646955 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3532647825 Refresh Time/String Count": "14 / 34320"
-        }, 
-        {
-          "Sensor 3532648260 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 3532649130 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3532838355 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3532839225 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3532840095 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3532840965 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3532842705 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3533039760 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3533040195 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 3533040630 Refresh Time/String Count": "15 / 1120"
-        }, 
-        {
-          "Sensor 3533041935 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3533042805 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3533044980 Refresh Time/String Count": "16 / 34630"
-        }, 
-        {
-          "Sensor 3533986320 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3533987190 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3533988060 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3533988930 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3533991540 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3534132915 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3534133785 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3534134655 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3534135525 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3534139005 Refresh Time/String Count": "1 / 1121"
-        }, 
-        {
-          "Sensor 3556221173 Refresh Time/String Count": "1 / 32"
-        }, 
-        {
-          "Sensor 3772004835 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3772005705 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3772006575 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3772007445 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3772009185 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3772206240 Refresh Time/String Count": "16 / 1119"
-        }, 
-        {
-          "Sensor 3772207110 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3772207980 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3772208850 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3772211460 Refresh Time/String Count": "16 / 1119"
-        }, 
-        {
-          "Sensor 3772408515 Refresh Time/String Count": "1 / 1118"
-        }, 
-        {
-          "Sensor 3772411560 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 3772411995 Refresh Time/String Count": "31 / 40984"
-        }, 
-        {
-          "Sensor 3772412865 Refresh Time/String Count": "15 / 1119"
-        }, 
-        {
-          "Sensor 3772413735 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3772414605 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3772555110 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3772557720 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3772558590 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3772559460 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3772560330 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3772758690 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3772759560 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3772760430 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3772761300 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3772762170 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3772951395 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3772952265 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3772953135 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3772954005 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3772954875 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3773152800 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3773153670 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3773154540 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3773155410 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3773158020 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3773355075 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3773355945 Refresh Time/String Count": "9 / 1119"
-        }, 
-        {
-          "Sensor 3773356815 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3773357685 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3773361165 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3773502105 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3773504715 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3773505585 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3773506455 Refresh Time/String Count": "15 / 1119"
-        }, 
-        {
-          "Sensor 3773507325 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3773704815 Refresh Time/String Count": "14 / 40795"
-        }, 
-        {
-          "Sensor 3773706120 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3773706990 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 3773707860 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3773708730 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3801943971 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3801944841 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3801945711 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3801946581 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3801947451 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3802145376 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3802146246 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3802147116 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3802147986 Refresh Time/String Count": "14 / 1119"
-        }, 
-        {
-          "Sensor 3802149726 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3802347651 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3802348521 Refresh Time/String Count": "16 / 1119"
-        }, 
-        {
-          "Sensor 3802349391 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3802350261 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3855628800 Refresh Time/String Count": "1 / 1118"
-        }, 
-        {
-          "Sensor 3855629670 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3855630540 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3855631410 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3855632280 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3855831075 Refresh Time/String Count": "15 / 41294"
-        }, 
-        {
-          "Sensor 3855831510 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 3855832815 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3855833685 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3855835425 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3856032480 Refresh Time/String Count": "16 / 1119"
-        }, 
-        {
-          "Sensor 3856033350 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3856034220 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3856035090 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3856038570 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3856234755 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3856238235 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3856239105 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3856239975 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3856240845 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3856382655 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3856384395 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3856385265 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3856386135 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3856387005 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3856584930 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3856585800 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3856586670 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3856587540 Refresh Time/String Count": "15 / 40565"
-        }, 
-        {
-          "Sensor 3856587975 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 3856588845 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3856777635 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3856778505 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3856779375 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3856780245 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3856781985 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3856979040 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3856979910 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3856980780 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3856981650 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3856984260 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3857180880 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3857184360 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3857185230 Refresh Time/String Count": "1 / 1118"
-        }, 
-        {
-          "Sensor 3857186100 Refresh Time/String Count": "15 / 1119"
-        }, 
-        {
-          "Sensor 3857186970 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3857328345 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3857330520 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 3857331390 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3857332695 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3857333565 Refresh Time/String Count": "1 / 40978"
-        }, 
-        {
-          "Sensor 3889757856 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3889758726 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3889759596 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3889760466 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3889761336 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3889960131 Refresh Time/String Count": "15 / 1119"
-        }, 
-        {
-          "Sensor 3889961001 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3889961871 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3889962741 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3889964481 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3890105856 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3890106726 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3890107596 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3890108466 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3890111946 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3890308131 Refresh Time/String Count": "1 / 1118"
-        }, 
-        {
-          "Sensor 3890311611 Refresh Time/String Count": "1 / 30209"
-        }, 
-        {
-          "Sensor 3890312481 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3890313351 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3890314221 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3890511276 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3890513016 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3890513886 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3890514756 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3890515626 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3890714421 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3890715291 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3890715726 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 3890716596 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3890717466 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3890906691 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3890907561 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3890908431 Refresh Time/String Count": "14 / 1119"
-        }, 
-        {
-          "Sensor 3890909301 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3890911041 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3891052851 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3891053286 Refresh Time/String Count": "1 / 29900"
-        }, 
-        {
-          "Sensor 3891053721 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 3891054591 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3891055461 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3891057636 Refresh Time/String Count": "1 / 29900"
-        }, 
-        {
-          "Sensor 3891660546 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 3891660981 Refresh Time/String Count": "1 / 30210"
-        }, 
-        {
-          "Sensor 3891661416 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3891662286 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3891663156 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3891664026 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3891853251 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3891854121 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3891854991 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3891855861 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 3891856731 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 4142232197 Refresh Time/String Count": "1 / 261"
-        }, 
-        {
-          "Sensor 4165545489 Refresh Time/String Count": "1 / 3"
-        }, 
-        {
-          "Sensor 418298195 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 418299065 Refresh Time/String Count": "15 / 1118"
-        }, 
-        {
-          "Sensor 418299935 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 418300805 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 418301675 Refresh Time/String Count": "15 / 1119"
-        }, 
-        {
-          "Sensor 418500035 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 418500905 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 418501340 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 418502210 Refresh Time/String Count": "15 / 42744"
-        }, 
-        {
-          "Sensor 418502645 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 418503950 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 418646195 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 418647065 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 418647935 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 418648805 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 418652285 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 418847600 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 418851080 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 418851950 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 418852820 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 418853690 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 419051180 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 419052920 Refresh Time/String Count": "1 / 1118"
-        }, 
-        {
-          "Sensor 419053790 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 419054660 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 419055530 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 419254325 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 419255195 Refresh Time/String Count": "14 / 42930"
-        }, 
-        {
-          "Sensor 419255630 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 419256500 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 419257370 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 419446160 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 419447030 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 419447900 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 419448770 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 419450510 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 419592755 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 419593625 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 419594495 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 419595365 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 419597975 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 419794595 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 419798075 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 419798945 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 419799815 Refresh Time/String Count": "1 / 1118"
-        }, 
-        {
-          "Sensor 419800685 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 419996870 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 419999915 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 420000785 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 420001220 Refresh Time/String Count": "1 / 43240"
-        }, 
-        {
-          "Sensor 420001655 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 420002525 Refresh Time/String Count": "15 / 1119"
-        }, 
-        {
-          "Sensor 4264207873 Refresh Time/String Count": "1 / 3"
-        }, 
-        {
-          "Sensor 435227963 Refresh Time/String Count": "1 / 50"
-        }, 
-        {
-          "Sensor 45421433 Refresh Time/String Count": "1 / 3"
-        }, 
-        {
-          "Sensor 462732724 Refresh Time/String Count": "1 / 3"
-        }, 
-        {
-          "Sensor 481891280 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 481892150 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 481892585 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 481893455 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 481894325 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 481895195 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 482037440 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 482038310 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 482039180 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 482040050 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 482041790 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 482239715 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 482240585 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 482241455 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 482242325 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 482245805 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 482441120 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 482444600 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 482445470 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 482446340 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 482447210 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 482645135 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 482646875 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 482647745 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 482648180 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 482649050 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 482649485 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 482791730 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 482792600 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 482793470 Refresh Time/String Count": "16 / 29187"
-        }, 
-        {
-          "Sensor 482794340 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 482795210 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 482984435 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 482985305 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 482985740 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 482987045 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 482988350 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 483186275 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 483187145 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 483188015 Refresh Time/String Count": "1 / 1118"
-        }, 
-        {
-          "Sensor 483188885 Refresh Time/String Count": "1 / 29497"
-        }, 
-        {
-          "Sensor 483191495 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 484132835 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 484133705 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 484134575 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 484135445 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 484138055 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 484334240 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 484335110 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 484335980 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 484336850 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 484340330 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 525163843 Refresh Time/String Count": "1 / 3"
-        }, 
-        {
-          "Sensor 569649920 Refresh Time/String Count": "1 / 1118"
-        }, 
-        {
-          "Sensor 569650790 Refresh Time/String Count": "15 / 28588"
-        }, 
-        {
-          "Sensor 569651660 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 569652530 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 569653400 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 569852195 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 569853065 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 569853935 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 569854805 Refresh Time/String Count": "16 / 28289"
-        }, 
-        {
-          "Sensor 569856545 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 570054035 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 570054905 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 570055775 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 570056645 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 570060125 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 570255440 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 570258920 Refresh Time/String Count": "16 / 1119"
-        }, 
-        {
-          "Sensor 570259790 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 570260660 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 570261530 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 570403340 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 570403775 Refresh Time/String Count": "1 / 31652"
-        }, 
-        {
-          "Sensor 570405080 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 570405950 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 570406820 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 570407690 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 570606485 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 570607355 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 570608225 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 570609095 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 570609965 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 570798320 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 570799190 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 570800060 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 570800930 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 570802670 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 571000595 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 571001465 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 571002335 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 571003205 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 571005815 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 572295590 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 572298200 Refresh Time/String Count": "1 / 28877"
-        }, 
-        {
-          "Sensor 572299070 Refresh Time/String Count": "1 / 1118"
-        }, 
-        {
-          "Sensor 572299940 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 572300810 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 572498735 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 572500475 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 572501345 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 572502215 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 572503085 Refresh Time/String Count": "1 / 1119"
+          "Sensor 45421433 Refresh Time/String Count": "1 / 4"
         }, 
         {
           "Sensor 607666494 Refresh Time/String Count": "1 / 3"
         }, 
         {
-          "Sensor 657868355 Refresh Time/String Count": "1 / 1119"
+          "Sensor 7318847 Refresh Time/String Count": "1 / 5"
         }, 
         {
-          "Sensor 657869225 Refresh Time/String Count": "1 / 1119"
+          "Sensor 889071797 Refresh Time/String Count": "1 / 8"
         }, 
         {
-          "Sensor 657870095 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 657870965 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 657874445 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 658014080 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 658017560 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 658018430 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 658019300 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 658020170 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 658961075 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 658964555 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 658965425 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 658966295 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 658967165 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 659163350 Refresh Time/String Count": "1 / 29899"
-        }, 
-        {
-          "Sensor 659165960 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 659166830 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 659167700 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 659168570 Refresh Time/String Count": "16 / 1118"
-        }, 
-        {
-          "Sensor 659366930 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 659367800 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 659368670 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 659369540 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 659370410 Refresh Time/String Count": "1 / 29279"
-        }, 
-        {
-          "Sensor 659559200 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 659559635 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 659560070 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 659560940 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 659561810 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 659562680 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 659761040 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 659761910 Refresh Time/String Count": "1 / 1118"
-        }, 
-        {
-          "Sensor 659762780 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 659763650 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 659766260 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 659766695 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 659907200 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 659908070 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 659908940 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 659909810 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 659913290 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 660110345 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 660112955 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 660113825 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 660114695 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 660115565 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 660313055 Refresh Time/String Count": "15 / 29899"
-        }, 
-        {
-          "Sensor 660314360 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 660315230 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 660316970 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 7318847 Refresh Time/String Count": "1 / 3"
-        }, 
-        {
-          "Sensor 745447734 Refresh Time/String Count": "1 / 3"
-        }, 
-        {
-          "Sensor 746031980 Refresh Time/String Count": "1 / 1118"
-        }, 
-        {
-          "Sensor 746033720 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 746034590 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 746035460 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 746036330 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 746235125 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 746235995 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 746236865 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 746237735 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 746238605 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 746774960 Refresh Time/String Count": "14 / 28662"
-        }, 
-        {
-          "Sensor 746778875 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 746779745 Refresh Time/String Count": "15 / 1119"
-        }, 
-        {
-          "Sensor 746780615 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 746781485 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 746977670 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 746980280 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 746981150 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 746982020 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 746982890 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 747181250 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 747182120 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 747182990 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 747183860 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 747184730 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 747373955 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 747374825 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 747375695 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 747376565 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 747377435 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 747519680 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 747520550 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 747521420 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 747522290 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 747524900 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 747721955 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 747722825 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 747723695 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 747724565 Refresh Time/String Count": "15 / 28042"
-        }, 
-        {
-          "Sensor 747728045 Refresh Time/String Count": "1 / 1118"
-        }, 
-        {
-          "Sensor 747924665 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 747926840 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 747927710 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 747928580 Refresh Time/String Count": "1 / 2"
-        }, 
-        {
-          "Sensor 747929015 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 747929450 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 748127375 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 748129115 Refresh Time/String Count": "1 / 1118"
-        }, 
-        {
-          "Sensor 748129985 Refresh Time/String Count": "15 / 28662"
-        }, 
-        {
-          "Sensor 748131725 Refresh Time/String Count": "1 / 1119"
-        }, 
-        {
-          "Sensor 889071797 Refresh Time/String Count": "1 / 5"
-        }, 
-        {
-          "Total String Count": 2423823
+          "Total String Count": 2863
         }
       ]
     }, 
     {
       "System Status Cache": [
         {
-          "System Count": 2
+          "System Count": 3
         }, 
         {
           "blocked_count": 0
         }, 
         {
-          "leader_count": 2
+          "leader_count": 3
         }, 
         {
           "normal_count": 0
@@ -3352,7 +646,7 @@
           "receive_forward_count": 0
         }, 
         {
-          "receive_none_count": 0
+          "receive_none_count": 1
         }, 
         {
           "receive_ok_count": 1
@@ -3361,7 +655,7 @@
           "send_backward_count": 1
         }, 
         {
-          "send_forward_count": 1
+          "send_forward_count": 2
         }, 
         {
           "send_none_count": 0
@@ -3370,13 +664,16 @@
           "send_ok_count": 0
         }, 
         {
-          "slowlink_count": 1
+          "slowlink_count": 0
         }, 
         {
-          "version_details_5.1.314.7724": "count: 1 filtered: 1"
+          "version_details_5.1.314.7724": "count: 1 filtered: 0"
         }, 
         {
-          "version_details_6.0.314.1195": "count: 1 filtered: 1"
+          "version_details_6.0.314.1195": "count: 2 filtered: 2"
+        }, 
+        {
+          "version_details_6.0.314.1321": "count: 1 filtered: 1"
         }
       ]
     }, 
@@ -3386,16 +683,16 @@
           "AllowOldSessionID": "false"
         }, 
         {
-          "Client Count": "2"
+          "Client Count": "4"
         }, 
         {
           "PreFetchRows": "1000"
         }, 
         {
-          "Server Start Time": "2015-08-28 21:59:37 +0000"
+          "Server Start Time": "2015-09-14 13:37:35 +0000"
         }, 
         {
-          "Server Up-Time": "10541 minutes"
+          "Server Up-Time": "393 minutes"
         }, 
         {
           "ServerName": "0.0.0.0"
@@ -3432,28 +729,28 @@
           "NonTBBFreeCount": "0"
         }, 
         {
-          "PageFaultCount": "38282226"
+          "PageFaultCount": "2561448"
         }, 
         {
-          "PagefileUsage": "4023984128"
+          "PagefileUsage": "1632489472"
         }, 
         {
-          "PeakPagefileUsage": "4120989696"
+          "PeakPagefileUsage": "2148749312"
         }, 
         {
-          "PeakWorkingSetSize": "1.78 GB"
+          "PeakWorkingSetSize": "1.74 GB"
         }, 
         {
-          "QuotaPagedPoolUsage": "1323248"
+          "QuotaPagedPoolUsage": "691656"
         }, 
         {
-          "QuotaPeakNonPagedPoolUsage": "3161696"
+          "QuotaPeakNonPagedPoolUsage": "4257020"
         }, 
         {
-          "QuotaPeakPagedPoolUsage": "1323440"
+          "QuotaPeakPagedPoolUsage": "691848"
         }, 
         {
-          "WorkingSetSize": "517.80 MB"
+          "WorkingSetSize": "214.34 MB"
         }
       ]
     }, 
@@ -3463,40 +760,40 @@
           "CommitLimit": "4193616"
         }, 
         {
-          "CommitPeak": "1463340"
+          "CommitPeak": "1104707"
         }, 
         {
-          "CommitTotal": "1439812"
+          "CommitTotal": "836698"
         }, 
         {
-          "HandleCount": "73023"
+          "HandleCount": "36760"
         }, 
         {
-          "KernelNonpaged": "18983"
+          "KernelNonpaged": "13378"
         }, 
         {
-          "KernelPaged": "57041"
+          "KernelPaged": "44986"
         }, 
         {
-          "KernelTotal": "76024"
+          "KernelTotal": "58364"
         }, 
         {
           "PageSize": "4096"
         }, 
         {
-          "PhysicalAvailable": "1482206"
+          "PhysicalAvailable": "1546763"
         }, 
         {
           "PhysicalTotal": "2097038"
         }, 
         {
-          "ProcessCount": "41"
+          "ProcessCount": "52"
         }, 
         {
-          "ProcessThreadCount": "651"
+          "ProcessThreadCount": "732"
         }, 
         {
-          "SystemCache": "569775"
+          "SystemCache": "546782"
         }
       ]
     }

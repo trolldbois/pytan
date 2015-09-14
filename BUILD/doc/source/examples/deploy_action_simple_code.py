@@ -57,6 +57,7 @@ print "...OUTPUT: handler string: {}".format(handler)
 
 # setup the arguments for the handler() class
 kwargs = {}
+kwargs["sse"] = True
 kwargs["run"] = True
 kwargs["package"] = u'Distribute Tanium Standard Utilities'
 

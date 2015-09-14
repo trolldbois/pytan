@@ -65,7 +65,7 @@ print "...OUTPUT: handler string: {}".format(handler)
 
 # setup the arguments for the handler() class
 kwargs = {}
-kwargs["sensors"] = u'Folder Name Search with RegEx Match{dirname=Program Files,regex=Microsoft.*}, that regex match:.*Shared.*'
+kwargs["sensors"] = u'Folder Contents{folderPath=C:\\Program Files}, that regex match:.*Shared.*'
 kwargs["qtype"] = u'manual'
 
 print "...CALLING: handler.ask with args: {}".format(kwargs)
@@ -99,35 +99,22 @@ if response['question_results']:
 
 '''STDOUT from running this:
 ...CALLING: pytan.handler() with args: {'username': 'Administrator', 'record_all_requests': True, 'loglevel': 1, 'debugformat': False, 'host': '10.0.1.240', 'password': 'Tanium2015!', 'port': '443'}
-...OUTPUT: handler string: PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-...CALLING: handler.ask with args: {'sensors': u'Folder Name Search with RegEx Match{dirname=Program Files,regex=Microsoft.*}, that regex match:.*Shared.*', 'qtype': u'manual'}
-2015-09-05 05:46:42,966 INFO     pytan.pollers.QuestionPoller: ID 11651: Reached Threshold of 99% (2 of 2)
+...OUTPUT: handler string: PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+...CALLING: handler.ask with args: {'sensors': u'Folder Contents{folderPath=C:\\Program Files}, that regex match:.*Shared.*', 'qtype': u'manual'}
+2015-09-14 20:12:54,724 INFO     pytan.pollers.QuestionPoller: ID 803: Reached Threshold of 99% (3 of 3)
 ...OUTPUT: Type of response:  <type 'dict'>
 ...OUTPUT: Pretty print of response:
-{'poller_object': <pytan.pollers.QuestionPoller object at 0x10d5cc4d0>,
+{'poller_object': <pytan.pollers.QuestionPoller object at 0x11b411fd0>,
  'poller_success': True,
- 'question_object': <taniumpy.object_types.question.Question object at 0x10d5c5650>,
- 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x10d5c5ad0>}
+ 'question_object': <taniumpy.object_types.question.Question object at 0x11b404710>,
+ 'question_results': <taniumpy.object_types.result_set.ResultSet object at 0x109d81210>}
 ...OUTPUT: Equivalent Question if it were to be asked in the Tanium Console: 
-Get Folder Name Search with RegEx Match[Program Files, , No, No, Microsoft.*] containing "Shared" from all machines
-...CALLING: handler.export_obj() with args {'export_format': 'csv', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x10d5c5ad0>}
+Get Folder Contents[C:\Program Files] containing "Shared" from all machines
+...CALLING: handler.export_obj() with args {'export_format': 'csv', 'obj': <taniumpy.object_types.result_set.ResultSet object at 0x109d81210>}
 ...OUTPUT: CSV Results of response: 
-"Folder Name Search with RegEx Match[Program Files, , No, No, Microsoft.*]"
-[no results]
-C:\Program Files\Common Files\Microsoft Shared\VS7Debug
-C:\Program Files\Common Files\Microsoft Shared\ink\ar-SA
-C:\Program Files\Common Files\Microsoft Shared\ink\ru-RU
-C:\Program Files\Common Files\Microsoft Shared\ink\fsdefinitions\keypad
-C:\Program Files\Common Files\Microsoft Shared\ink
-C:\Program Files\Common Files\Microsoft Shared\ink\sv-SE
-C:\Program Files\Common Files\Microsoft Shared\ink\uk-UA
-C:\Program Files\Common Files\Microsoft Shared\ink\sl-SI
-C:\Program Files\Common Files\Microsoft Shared\ink\hu-HU
-C:\Program Files\Common Files\Microsoft Shared\ink\zh-TW
-C:\Program Files\Common Files\Microsoft Shared\ink\zh-CN
-C:\Program Files\Common Files\Microsoft Shared\ink\fi-FI
-C:\Program Files\Common Files\Microsoft Shared
-..trimmed for brevity..
+Count,Folder Contents[C:\Program Files]
+3,[no results]
+
 
 '''
 

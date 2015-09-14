@@ -10,7 +10,7 @@ Step 1 - Authenticate to the SOAP API via /auth
 
 * URL: https://10.0.1.240:443/auth
 * HTTP Method: GET
-* Elapsed Time: 0:00:00.012819
+* Elapsed Time: 0:00:00.019314
 * `Step 1 Request Body <../../_static/soap_outputs/6.5.314.4301/ask_saved_question_refresh_data_step_1_request.txt>`_
 * `Step 1 Response Body <../../_static/soap_outputs/6.5.314.4301/ask_saved_question_refresh_data_step_1_response.txt>`_
 
@@ -37,7 +37,7 @@ Step 1 - Authenticate to the SOAP API via /auth
     
     {
       "connection": "keep-alive", 
-      "content-length": "135", 
+      "content-length": "134", 
       "content-type": "text/plain; charset=us-ascii"
     }
 
@@ -47,7 +47,7 @@ Step 2 - Get the server version via /info.json
 
 * URL: https://10.0.1.240:443/info.json
 * HTTP Method: GET
-* Elapsed Time: 0:00:00.016034
+* Elapsed Time: 0:00:00.041418
 * `Step 2 Request Body <../../_static/soap_outputs/6.5.314.4301/ask_saved_question_refresh_data_step_2_request.txt>`_
 * `Step 2 Response Body <../../_static/soap_outputs/6.5.314.4301/ask_saved_question_refresh_data_step_2_response.json>`_
 
@@ -62,7 +62,7 @@ Step 2 - Get the server version via /info.json
       "Accept-Encoding": "gzip, deflate", 
       "Connection": "keep-alive", 
       "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-8138-766d21987f76c53e7304aa6dd0de1dee6e8a71207329f7b63f5fa722b22784071ea43e91f4c37d5c426213a63187d880250d040211f9c213a5a90c749bcedc7b"
+      "session": "1-700-6994c0aafc5acfe93d8e0597690acddb0b9aa30f1c467bda22e98ef8201f85870f813597f07d5aebd273f2d1905b902718e2e6552a509912de2fca2d90e38914"
     }
 
 * Response Headers:
@@ -73,7 +73,7 @@ Step 2 - Get the server version via /info.json
     
     {
       "connection": "keep-alive", 
-      "content-length": "114194", 
+      "content-length": "21410", 
       "content-type": "application/json"
     }
 
@@ -83,7 +83,7 @@ Step 3 - Issue a GetObject to find saved question objects
 
 * URL: https://10.0.1.240:443/soap
 * HTTP Method: POST
-* Elapsed Time: 0:00:00.021143
+* Elapsed Time: 0:00:00.037435
 * `Step 3 Request Body <../../_static/soap_outputs/6.5.314.4301/ask_saved_question_refresh_data_step_3_request.xml>`_
 * `Step 3 Response Body <../../_static/soap_outputs/6.5.314.4301/ask_saved_question_refresh_data_step_3_response.xml>`_
 
@@ -100,7 +100,7 @@ Step 3 - Issue a GetObject to find saved question objects
       "Content-Length": "527", 
       "Content-Type": "text/xml; charset=utf-8", 
       "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-8138-766d21987f76c53e7304aa6dd0de1dee6e8a71207329f7b63f5fa722b22784071ea43e91f4c37d5c426213a63187d880250d040211f9c213a5a90c749bcedc7b"
+      "session": "1-700-6994c0aafc5acfe93d8e0597690acddb0b9aa30f1c467bda22e98ef8201f85870f813597f07d5aebd273f2d1905b902718e2e6552a509912de2fca2d90e38914"
     }
 
 * Response Headers:
@@ -122,7 +122,7 @@ Step 4 - Issue a GetObject to get the full object of the last question asked by 
 
 * URL: https://10.0.1.240:443/soap
 * HTTP Method: POST
-* Elapsed Time: 0:00:00.007632
+* Elapsed Time: 0:00:00.010466
 * `Step 4 Request Body <../../_static/soap_outputs/6.5.314.4301/ask_saved_question_refresh_data_step_4_request.xml>`_
 * `Step 4 Response Body <../../_static/soap_outputs/6.5.314.4301/ask_saved_question_refresh_data_step_4_response.xml>`_
 
@@ -136,10 +136,10 @@ Step 4 - Issue a GetObject to get the full object of the last question asked by 
       "Accept": "*/*", 
       "Accept-Encoding": "gzip", 
       "Connection": "keep-alive", 
-      "Content-Length": "21616", 
+      "Content-Length": "21692", 
       "Content-Type": "text/xml; charset=utf-8", 
       "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-8138-766d21987f76c53e7304aa6dd0de1dee6e8a71207329f7b63f5fa722b22784071ea43e91f4c37d5c426213a63187d880250d040211f9c213a5a90c749bcedc7b"
+      "session": "1-700-6994c0aafc5acfe93d8e0597690acddb0b9aa30f1c467bda22e98ef8201f85870f813597f07d5aebd273f2d1905b902718e2e6552a509912de2fca2d90e38914"
     }
 
 * Response Headers:
@@ -161,7 +161,7 @@ Step 5 - Issue a GetResultInfo for a saved question in order to issue a new ques
 
 * URL: https://10.0.1.240:443/soap
 * HTTP Method: POST
-* Elapsed Time: 0:00:00.007646
+* Elapsed Time: 0:00:00.042549
 * `Step 5 Request Body <../../_static/soap_outputs/6.5.314.4301/ask_saved_question_refresh_data_step_5_request.xml>`_
 * `Step 5 Response Body <../../_static/soap_outputs/6.5.314.4301/ask_saved_question_refresh_data_step_5_response.xml>`_
 
@@ -178,7 +178,7 @@ Step 5 - Issue a GetResultInfo for a saved question in order to issue a new ques
       "Content-Length": "542", 
       "Content-Type": "text/xml; charset=utf-8", 
       "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-8138-766d21987f76c53e7304aa6dd0de1dee6e8a71207329f7b63f5fa722b22784071ea43e91f4c37d5c426213a63187d880250d040211f9c213a5a90c749bcedc7b"
+      "session": "1-700-6994c0aafc5acfe93d8e0597690acddb0b9aa30f1c467bda22e98ef8201f85870f813597f07d5aebd273f2d1905b902718e2e6552a509912de2fca2d90e38914"
     }
 
 * Response Headers:
@@ -200,7 +200,7 @@ Step 6 - Issue a GetObject for the saved question in order get the ID of the new
 
 * URL: https://10.0.1.240:443/soap
 * HTTP Method: POST
-* Elapsed Time: 0:00:00.005829
+* Elapsed Time: 0:00:00.017623
 * `Step 6 Request Body <../../_static/soap_outputs/6.5.314.4301/ask_saved_question_refresh_data_step_6_request.xml>`_
 * `Step 6 Response Body <../../_static/soap_outputs/6.5.314.4301/ask_saved_question_refresh_data_step_6_response.xml>`_
 
@@ -217,7 +217,7 @@ Step 6 - Issue a GetObject for the saved question in order get the ID of the new
       "Content-Length": "538", 
       "Content-Type": "text/xml; charset=utf-8", 
       "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-8138-766d21987f76c53e7304aa6dd0de1dee6e8a71207329f7b63f5fa722b22784071ea43e91f4c37d5c426213a63187d880250d040211f9c213a5a90c749bcedc7b"
+      "session": "1-700-6994c0aafc5acfe93d8e0597690acddb0b9aa30f1c467bda22e98ef8201f85870f813597f07d5aebd273f2d1905b902718e2e6552a509912de2fca2d90e38914"
     }
 
 * Response Headers:
@@ -239,7 +239,7 @@ Step 7 - Issue a GetObject to get the full object of the last question asked by 
 
 * URL: https://10.0.1.240:443/soap
 * HTTP Method: POST
-* Elapsed Time: 0:00:00.003816
+* Elapsed Time: 0:00:00.030393
 * `Step 7 Request Body <../../_static/soap_outputs/6.5.314.4301/ask_saved_question_refresh_data_step_7_request.xml>`_
 * `Step 7 Response Body <../../_static/soap_outputs/6.5.314.4301/ask_saved_question_refresh_data_step_7_response.xml>`_
 
@@ -253,10 +253,10 @@ Step 7 - Issue a GetObject to get the full object of the last question asked by 
       "Accept": "*/*", 
       "Accept-Encoding": "gzip", 
       "Connection": "keep-alive", 
-      "Content-Length": "942", 
+      "Content-Length": "940", 
       "Content-Type": "text/xml; charset=utf-8", 
       "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-8138-766d21987f76c53e7304aa6dd0de1dee6e8a71207329f7b63f5fa722b22784071ea43e91f4c37d5c426213a63187d880250d040211f9c213a5a90c749bcedc7b"
+      "session": "1-700-6994c0aafc5acfe93d8e0597690acddb0b9aa30f1c467bda22e98ef8201f85870f813597f07d5aebd273f2d1905b902718e2e6552a509912de2fca2d90e38914"
     }
 
 * Response Headers:
@@ -278,7 +278,7 @@ Step 8 - Issue a GetResultInfo for a Question to check the current progress of a
 
 * URL: https://10.0.1.240:443/soap
 * HTTP Method: POST
-* Elapsed Time: 0:00:00.003201
+* Elapsed Time: 0:00:00.011412
 * `Step 8 Request Body <../../_static/soap_outputs/6.5.314.4301/ask_saved_question_refresh_data_step_8_request.xml>`_
 * `Step 8 Response Body <../../_static/soap_outputs/6.5.314.4301/ask_saved_question_refresh_data_step_8_response.xml>`_
 
@@ -292,10 +292,10 @@ Step 8 - Issue a GetResultInfo for a Question to check the current progress of a
       "Accept": "*/*", 
       "Accept-Encoding": "gzip", 
       "Connection": "keep-alive", 
-      "Content-Length": "498", 
+      "Content-Length": "496", 
       "Content-Type": "text/xml; charset=utf-8", 
       "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-8138-766d21987f76c53e7304aa6dd0de1dee6e8a71207329f7b63f5fa722b22784071ea43e91f4c37d5c426213a63187d880250d040211f9c213a5a90c749bcedc7b"
+      "session": "1-700-6994c0aafc5acfe93d8e0597690acddb0b9aa30f1c467bda22e98ef8201f85870f813597f07d5aebd273f2d1905b902718e2e6552a509912de2fca2d90e38914"
     }
 
 * Response Headers:
@@ -317,7 +317,7 @@ Step 9 - Issue a GetResultInfo for a Question to check the current progress of a
 
 * URL: https://10.0.1.240:443/soap
 * HTTP Method: POST
-* Elapsed Time: 0:00:00.004870
+* Elapsed Time: 0:00:00.012419
 * `Step 9 Request Body <../../_static/soap_outputs/6.5.314.4301/ask_saved_question_refresh_data_step_9_request.xml>`_
 * `Step 9 Response Body <../../_static/soap_outputs/6.5.314.4301/ask_saved_question_refresh_data_step_9_response.xml>`_
 
@@ -331,10 +331,10 @@ Step 9 - Issue a GetResultInfo for a Question to check the current progress of a
       "Accept": "*/*", 
       "Accept-Encoding": "gzip", 
       "Connection": "keep-alive", 
-      "Content-Length": "498", 
+      "Content-Length": "496", 
       "Content-Type": "text/xml; charset=utf-8", 
       "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-8138-766d21987f76c53e7304aa6dd0de1dee6e8a71207329f7b63f5fa722b22784071ea43e91f4c37d5c426213a63187d880250d040211f9c213a5a90c749bcedc7b"
+      "session": "1-700-6994c0aafc5acfe93d8e0597690acddb0b9aa30f1c467bda22e98ef8201f85870f813597f07d5aebd273f2d1905b902718e2e6552a509912de2fca2d90e38914"
     }
 
 * Response Headers:
@@ -356,7 +356,7 @@ Step 10 - Issue a GetResultData to get the answers for the last asked question o
 
 * URL: https://10.0.1.240:443/soap
 * HTTP Method: POST
-* Elapsed Time: 0:00:00.004484
+* Elapsed Time: 0:00:00.011922
 * `Step 10 Request Body <../../_static/soap_outputs/6.5.314.4301/ask_saved_question_refresh_data_step_10_request.xml>`_
 * `Step 10 Response Body <../../_static/soap_outputs/6.5.314.4301/ask_saved_question_refresh_data_step_10_response.xml>`_
 
@@ -370,10 +370,10 @@ Step 10 - Issue a GetResultData to get the answers for the last asked question o
       "Accept": "*/*", 
       "Accept-Encoding": "gzip", 
       "Connection": "keep-alive", 
-      "Content-Length": "526", 
+      "Content-Length": "524", 
       "Content-Type": "text/xml; charset=utf-8", 
       "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-8138-766d21987f76c53e7304aa6dd0de1dee6e8a71207329f7b63f5fa722b22784071ea43e91f4c37d5c426213a63187d880250d040211f9c213a5a90c749bcedc7b"
+      "session": "1-700-6994c0aafc5acfe93d8e0597690acddb0b9aa30f1c467bda22e98ef8201f85870f813597f07d5aebd273f2d1905b902718e2e6552a509912de2fca2d90e38914"
     }
 
 * Response Headers:
