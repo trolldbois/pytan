@@ -48,5 +48,5 @@ PyTan uses ddt for creating automatically generating test cases from JSON files 
 pyreadline Package
 ------------------
 
-PyTan uses pyreadline for providing tab completion within pytan_shell.py/.bat on Windows (see: :class:`pytan.binsupport.HistoryConsole`). pyreadline is an open source package maintained at: https://pypi.python.org/pypi/pyreadline/2.0
+PyTan uses pyreadline for providing tab completion within pytan_shell.py/.bat on Windows (see: :class:`pytan.binsupport.HistoryConsole`). pyreadline is stored in winlb/ instead of lib/ since it should only be imported on Windows. pyreadline is an open source package maintained at: https://pypi.python.org/pypi/pyreadline/2.0
 
