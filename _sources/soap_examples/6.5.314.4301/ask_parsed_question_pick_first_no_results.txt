@@ -10,7 +10,7 @@ Step 1 - Authenticate to the SOAP API via /auth
 
 * URL: https://10.0.1.240:443/auth
 * HTTP Method: GET
-* Elapsed Time: 0:00:00.015212
+* Elapsed Time: 0:00:00.051992
 * `Step 1 Request Body <../../_static/soap_outputs/6.5.314.4301/ask_parsed_question_pick_first_no_results_step_1_request.txt>`_
 * `Step 1 Response Body <../../_static/soap_outputs/6.5.314.4301/ask_parsed_question_pick_first_no_results_step_1_response.txt>`_
 
@@ -37,7 +37,7 @@ Step 1 - Authenticate to the SOAP API via /auth
     
     {
       "connection": "keep-alive", 
-      "content-length": "135", 
+      "content-length": "134", 
       "content-type": "text/plain; charset=us-ascii"
     }
 
@@ -47,7 +47,7 @@ Step 2 - Get the server version via /info.json
 
 * URL: https://10.0.1.240:443/info.json
 * HTTP Method: GET
-* Elapsed Time: 0:00:00.016173
+* Elapsed Time: 0:00:00.012421
 * `Step 2 Request Body <../../_static/soap_outputs/6.5.314.4301/ask_parsed_question_pick_first_no_results_step_2_request.txt>`_
 * `Step 2 Response Body <../../_static/soap_outputs/6.5.314.4301/ask_parsed_question_pick_first_no_results_step_2_response.json>`_
 
@@ -62,7 +62,7 @@ Step 2 - Get the server version via /info.json
       "Accept-Encoding": "gzip, deflate", 
       "Connection": "keep-alive", 
       "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-8118-b23a0e470110f2964bdcb3adf91dbf4d84ea31c89f119aa9e9b5c4480353b4d81f4342811eadfd92488a3dfbb96712a18376cfcec0a53034477af5bb05cfb309"
+      "session": "1-681-6cd9aebd109c6af36faa009d4636e38b90926c64690cf812bcfc3957b591da119a94af41ae11599279f4170f21d8f4de06587e4f865221c701e968a3259a774f"
     }
 
 * Response Headers:
@@ -73,7 +73,7 @@ Step 2 - Get the server version via /info.json
     
     {
       "connection": "keep-alive", 
-      "content-length": "113371", 
+      "content-length": "20906", 
       "content-type": "application/json"
     }
 
@@ -83,7 +83,7 @@ Step 3 - Issue an AddObject to add a ParseJob for question_text and get back Par
 
 * URL: https://10.0.1.240:443/soap
 * HTTP Method: POST
-* Elapsed Time: 0:00:00.046141
+* Elapsed Time: 0:00:00.120114
 * `Step 3 Request Body <../../_static/soap_outputs/6.5.314.4301/ask_parsed_question_pick_first_no_results_step_3_request.xml>`_
 * `Step 3 Response Body <../../_static/soap_outputs/6.5.314.4301/ask_parsed_question_pick_first_no_results_step_3_response.xml>`_
 
@@ -100,7 +100,7 @@ Step 3 - Issue an AddObject to add a ParseJob for question_text and get back Par
       "Content-Length": "527", 
       "Content-Type": "text/xml; charset=utf-8", 
       "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-8118-b23a0e470110f2964bdcb3adf91dbf4d84ea31c89f119aa9e9b5c4480353b4d81f4342811eadfd92488a3dfbb96712a18376cfcec0a53034477af5bb05cfb309"
+      "session": "1-681-6cd9aebd109c6af36faa009d4636e38b90926c64690cf812bcfc3957b591da119a94af41ae11599279f4170f21d8f4de06587e4f865221c701e968a3259a774f"
     }
 
 * Response Headers:
@@ -122,7 +122,7 @@ Step 4 - Issue an AddObject to add the Question object from the chosen ParseResu
 
 * URL: https://10.0.1.240:443/soap
 * HTTP Method: POST
-* Elapsed Time: 0:00:00.008473
+* Elapsed Time: 0:00:00.225482
 * `Step 4 Request Body <../../_static/soap_outputs/6.5.314.4301/ask_parsed_question_pick_first_no_results_step_4_request.xml>`_
 * `Step 4 Response Body <../../_static/soap_outputs/6.5.314.4301/ask_parsed_question_pick_first_no_results_step_4_response.xml>`_
 
@@ -139,7 +139,7 @@ Step 4 - Issue an AddObject to add the Question object from the chosen ParseResu
       "Content-Length": "713", 
       "Content-Type": "text/xml; charset=utf-8", 
       "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-8118-b23a0e470110f2964bdcb3adf91dbf4d84ea31c89f119aa9e9b5c4480353b4d81f4342811eadfd92488a3dfbb96712a18376cfcec0a53034477af5bb05cfb309"
+      "session": "1-681-6cd9aebd109c6af36faa009d4636e38b90926c64690cf812bcfc3957b591da119a94af41ae11599279f4170f21d8f4de06587e4f865221c701e968a3259a774f"
     }
 
 * Response Headers:
@@ -150,7 +150,7 @@ Step 4 - Issue an AddObject to add the Question object from the chosen ParseResu
     
     {
       "connection": "keep-alive", 
-      "content-length": "769", 
+      "content-length": "766", 
       "content-type": "text/xml;charset=UTF-8"
     }
 
@@ -160,7 +160,7 @@ Step 5 - Issue a GetObject on the recently added object in order to get the full
 
 * URL: https://10.0.1.240:443/soap
 * HTTP Method: POST
-* Elapsed Time: 0:00:00.012604
+* Elapsed Time: 0:00:00.015624
 * `Step 5 Request Body <../../_static/soap_outputs/6.5.314.4301/ask_parsed_question_pick_first_no_results_step_5_request.xml>`_
 * `Step 5 Response Body <../../_static/soap_outputs/6.5.314.4301/ask_parsed_question_pick_first_no_results_step_5_response.xml>`_
 
@@ -174,10 +174,10 @@ Step 5 - Issue a GetObject on the recently added object in order to get the full
       "Accept": "*/*", 
       "Accept-Encoding": "gzip", 
       "Connection": "keep-alive", 
-      "Content-Length": "494", 
+      "Content-Length": "492", 
       "Content-Type": "text/xml; charset=utf-8", 
       "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-8118-b23a0e470110f2964bdcb3adf91dbf4d84ea31c89f119aa9e9b5c4480353b4d81f4342811eadfd92488a3dfbb96712a18376cfcec0a53034477af5bb05cfb309"
+      "session": "1-681-6cd9aebd109c6af36faa009d4636e38b90926c64690cf812bcfc3957b591da119a94af41ae11599279f4170f21d8f4de06587e4f865221c701e968a3259a774f"
     }
 
 * Response Headers:

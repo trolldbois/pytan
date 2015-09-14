@@ -3,7 +3,7 @@
   <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <t:return>
       <command>GetObject</command>
-      <session>1-8059-842a08b556be02d67043c45f690f99dc0678e4dfaf87769cab8eae69235ff73e9bde693c78db5419548054fd93acf0801384acdfbfdfd48a7e626cbbcc85d4df</session>
+      <session>1-622-6eb3cc08a054104d45ce22051218b6125b034ddf0b2ff434de00794bde0e9da84c187596a64635b64fd54cf79b9bc279adfc3e6206a24f7e9a5d6fd86bc6c31a</session>
       <server_version>6.5.314.4301</server_version>
       <ID></ID>
       <IDType></IDType>
@@ -14,12 +14,12 @@
             <id>14</id>
             <name>Operating System</name>
             <hash>45421433</hash>
-            <string_count>3</string_count>
+            <string_count>4</string_count>
             <category>Operating System</category>
             <description>Returns the name of the Operating System from all machines.  This name may be localized.
 Example: Windows Server 2008 R2 Enterprise</description>
-            <creation_time>2015-08-26T20:14:28</creation_time>
-            <modification_time>2015-08-26T20:14:28</modification_time>
+            <creation_time>2015-09-14T13:39:10</creation_time>
+            <modification_time>2015-09-14T13:39:10</modification_time>
             <last_modified_by>Administrator</last_modified_by>
             <queries>
               <query>
@@ -107,24 +107,19 @@ echo $name \($version\)</script>
               </query>
               <query>
                 <platform>Solaris</platform>
-                <script>#!/bin/sh
-
-# THIS IS A STUB - NOT INTENDED AS FUNCTIONAL - NA
-# 
-# 
-
-echo &amp;quot;N/A on Solaris&amp;quot;</script>
+                <script>#!/usr/xpg4/bin/sh
+# get OS release
+OS=$(uname)
+REL=$(uname -r)
+echo &amp;quot;$OS $REL&amp;quot;</script>
                 <script_type>UnixShell</script_type>
               </query>
               <query>
                 <platform>AIX</platform>
                 <script>#!/bin/sh
-
-# THIS IS A STUB - NOT INTENDED AS FUNCTIONAL - NA
-# 
-# 
-
-echo &amp;quot;N/A on AIX&amp;quot;</script>
+OS=$(uname)
+VER=$(oslevel)
+echo &amp;quot;$OS $VER&amp;quot;</script>
                 <script_type>UnixShell</script_type>
               </query>
             </queries>

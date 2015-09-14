@@ -27,8 +27,9 @@ get_results.py -h
 ```
 usage: get_results.py [-h] [-u USERNAME] [-p PASSWORD]
                       [--session_id SESSION_ID] [--host HOST] [--port PORT]
-                      [-l LOGLEVEL] [--debugformat] [--record_all_requests]
-                      [--stats_loop_enabled] [--http_auth_retry]
+                      [-l LOGLEVEL] [--debugformat] [--debug_method_locals]
+                      [--record_all_requests] [--stats_loop_enabled]
+                      [--http_auth_retry]
                       [--http_retry_count HTTP_RETRY_COUNT]
                       [-o {saved_question,question,action}] [-i ID] [-n NAME]
                       [--file REPORT_FILE] [--dir REPORT_DIR]
@@ -62,6 +63,9 @@ Handler Options:
                         Logging level to use, increase for more verbosity
                         (default: 0)
   --debugformat         Enable debug format for logging (default: False)
+  --debug_method_locals
+                        Enable debug logging for each methods local variables
+                        (default: False)
   --record_all_requests
                         Record all requests in
                         handler.session.ALL_REQUESTS_RESPONSES (default:
@@ -138,11 +142,11 @@ Export Options:
   * Ask a question without getting the results, save stdout to ask.out
 
 ```bash
-bin/ask_manual.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --loglevel 1 --no-results --sensor "Computer Name" | tee /tmp/ask.out
+bin/ask_manual.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 443 --loglevel 1 --no-results --sensor "Computer Name" | tee /tmp/ask.out
 ```
 
 ```
-PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Asking manual question:
 {
   "filters_help": false, 
@@ -155,7 +159,7 @@ PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platfor
   ], 
   "sensors_help": false
 }
-++ Asked Question 'Get Computer Name from all machines' ID: 10131
+++ Asked Question 'Get Computer Name from all machines' ID: 726
 ++ No action results returned, run get_results.py to get the results
 ```
 
@@ -168,7 +172,7 @@ PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platfor
     * Messages: File /tmp/ask.out exists, content:
 
 ```
-PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Asking manual question:
 {
   "filters_help": false, 
@@ -217,15 +221,15 @@ sleep 15
   * Save the results to a CSV file
 
 ```bash
-bin/get_results.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --loglevel 1 -o "question" --id `cat /tmp/ask.out | grep ID| cut -d: -f2 | tr -d " "` --file "/tmp/out.csv"
+bin/get_results.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 443 --loglevel 1 -o "question" --id `cat /tmp/ask.out | grep ID| cut -d: -f2 | tr -d " "` --file "/tmp/out.csv"
 ```
 
 ```
-PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-++ Found object: Question, id: 10131
-2015-09-04 02:03:27,724 INFO     pytan.pollers.SSEPoller: ID '1/494647388287.xml': Server Side Export Completed: 'Completed. 2 rows written.'
-++ Found results for object: ResultSet for ID None, Columns: 2, Total Rows: None, Current Rows: 2, EstTotal: None, Passed: None, MrPassed: None, Tested: None, MrTested: None
-++ Report file '/tmp/out.csv' written with 54 bytes
+PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+++ Found object: Question, id: 726
+2015-09-14 19:52:59,782 INFO     pytan.pollers.SSEPoller: ID '1/495575555817.xml': Server Side Export Completed: 'Completed. 3 rows written.'
+++ Found results for object: ResultSet for ID None, Columns: 2, Total Rows: None, Current Rows: 3, EstTotal: None, Passed: None, MrPassed: None, Tested: None, MrTested: None
+++ Report file '/tmp/out.csv' written with 81 bytes
 ```
 
   * Validation Test: exitcode
@@ -238,8 +242,9 @@ PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platfor
 
 ```
 Computer Name
-Casus-Belli.local
-TPT1-0.localdomain
+c1u14-virtual-machine.(none)
+WIN-6U71ED4M23D
+TPT1.pytanlab.com
 ```
 
   * Validation Test: noerror
@@ -257,15 +262,15 @@ TPT1-0.localdomain
   * Save the results to a CSV file
 
 ```bash
-bin/get_results.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --loglevel 1 -o "question" --id `cat /tmp/ask.out | grep ID| cut -d: -f2 | tr -d " "` --file "/tmp/out.csv" --enable_sse
+bin/get_results.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 443 --loglevel 1 -o "question" --id `cat /tmp/ask.out | grep ID| cut -d: -f2 | tr -d " "` --file "/tmp/out.csv" --enable_sse
 ```
 
 ```
-PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-++ Found object: Question, id: 10131
-2015-09-04 02:03:27,972 INFO     pytan.pollers.SSEPoller: ID '1/494647388536.xml': Server Side Export Completed: 'Completed. 2 rows written.'
-++ Found results for object: ResultSet for ID None, Columns: 2, Total Rows: None, Current Rows: 2, EstTotal: None, Passed: None, MrPassed: None, Tested: None, MrTested: None
-++ Report file '/tmp/out.csv' written with 54 bytes
+PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+++ Found object: Question, id: 726
+2015-09-14 19:53:00,611 INFO     pytan.pollers.SSEPoller: ID '1/495575556644.xml': Server Side Export Completed: 'Completed. 3 rows written.'
+++ Found results for object: ResultSet for ID None, Columns: 2, Total Rows: None, Current Rows: 3, EstTotal: None, Passed: None, MrPassed: None, Tested: None, MrTested: None
+++ Report file '/tmp/out.csv' written with 81 bytes
 ```
 
   * Validation Test: exitcode
@@ -278,8 +283,9 @@ PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platfor
 
 ```
 Computer Name
-Casus-Belli.local
-TPT1-0.localdomain
+c1u14-virtual-machine.(none)
+WIN-6U71ED4M23D
+TPT1.pytanlab.com
 ```
 
   * Validation Test: noerror
@@ -291,4 +297,4 @@ TPT1-0.localdomain
 [TOC](#user-content-toc)
 
 
-###### generated by: `build_bin_doc v2.1.0`, date: Thu Sep  3 22:03:27 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**
+###### generated by: `build_bin_doc v2.1.0`, date: Mon Sep 14 15:53:00 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**

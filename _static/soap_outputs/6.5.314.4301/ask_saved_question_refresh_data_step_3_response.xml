@@ -3,20 +3,20 @@
   <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <t:return>
       <command>GetObject</command>
-      <session>1-8138-766d21987f76c53e7304aa6dd0de1dee6e8a71207329f7b63f5fa722b22784071ea43e91f4c37d5c426213a63187d880250d040211f9c213a5a90c749bcedc7b</session>
+      <session>1-700-6994c0aafc5acfe93d8e0597690acddb0b9aa30f1c467bda22e98ef8201f85870f813597f07d5aebd273f2d1905b902718e2e6552a509912de2fca2d90e38914</session>
       <server_version>6.5.314.4301</server_version>
       <ID></ID>
       <IDType></IDType>
       <ContextID></ContextID>
       <result_object>
         <saved_question>
-          <id>64</id>
+          <id>59</id>
           <name>Installed Applications</name>
           <question>
-            <id>11550</id>
+            <id>770</id>
             <expire_seconds>0</expire_seconds>
             <skip_lock_flag>0</skip_lock_flag>
-            <expiration>2015-09-05T04:44:06</expiration>
+            <expiration>2015-09-14T20:10:10</expiration>
             <user>
               <id>1</id>
               <name>Administrator</name>
@@ -25,7 +25,7 @@
               <id>0</id>
             </management_rights_group>
             <saved_question>
-              <id>64</id>
+              <id>59</id>
             </saved_question>
             <name></name>
             <query_text>Get Installed Applications from all machines</query_text>
@@ -34,15 +34,15 @@
             <selects>
               <select>
                 <sensor>
-                  <id>96</id>
+                  <id>92</id>
                   <name>Installed Applications</name>
                   <hash>1511329504</hash>
-                  <string_count>398</string_count>
+                  <string_count>1755</string_count>
                   <category>Applications</category>
                   <description>List of the applications and versions of those applications installed on the client machine.
 Example: Mozilla Firefox | 16.0.1</description>
-                  <creation_time>2015-08-26T20:14:28</creation_time>
-                  <modification_time>2015-08-26T20:14:28</modification_time>
+                  <creation_time>2015-09-14T13:39:11</creation_time>
+                  <modification_time>2015-09-14T13:39:11</modification_time>
                   <last_modified_by>Administrator</last_modified_by>
                   <queries>
                     <query>
@@ -482,23 +482,18 @@ rm -rf &amp;quot;$ftemp&amp;quot;</script>
                     <query>
                       <platform>Solaris</platform>
                       <script>#!/bin/sh
-
-# THIS IS A STUB - NOT INTENDED AS FUNCTIONAL - NA
-# 
-# 
-
-echo &amp;quot;N/A on Solaris&amp;quot;</script>
+pkginfo -c application | awk &amp;#039;{ print $2 }&amp;#039;</script>
                       <script_type>UnixShell</script_type>
                     </query>
                     <query>
                       <platform>AIX</platform>
                       <script>#!/bin/sh
+#pkg_name|pkg_vers|nothing|Not Uninstallable
 
-# THIS IS A STUB - NOT INTENDED AS FUNCTIONAL - NA
-# 
-# 
-
-echo &amp;quot;N/A on AIX&amp;quot;</script>
+for pkg in `/usr/bin/lslpp -Lcq | awk -F: &amp;#039;{ print $1&amp;quot;|&amp;quot;$2&amp;#039;}`
+do
+ echo &amp;quot;$pkg|nothing|Not Uninstallable&amp;quot;
+done</script>
                       <script_type>UnixShell</script_type>
                     </query>
                   </queries>
@@ -582,13 +577,13 @@ echo &amp;quot;N/A on AIX&amp;quot;</script>
           <row_count_flag>0</row_count_flag>
           <keep_seconds>0</keep_seconds>
           <archive_enabled_flag>0</archive_enabled_flag>
-          <most_recent_question_id>11550</most_recent_question_id>
+          <most_recent_question_id>770</most_recent_question_id>
           <user>
             <id>1</id>
             <name>Administrator</name>
           </user>
           <archive_owner></archive_owner>
-          <mod_time>2015-08-26T20:14:36</mod_time>
+          <mod_time>2015-09-14T13:39:18</mod_time>
           <mod_user>
             <name>Administrator</name>
           </mod_user>

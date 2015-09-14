@@ -781,11 +781,12 @@ body .task-list{
 <li>If running this script on Windows, use the batch script in the winbin/create_package_from_json.bat so that python is called correctly.</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>create_package_from_json.py -h</pre></div>
+<div class="highlight highlight-source-shell"><pre>create_package_from_json.py -h</pre></div>
 
 <pre><code>usage: create_package_from_json.py [-h] [-u USERNAME] [-p PASSWORD]
                                    [--session_id SESSION_ID] [--host HOST]
                                    [--port PORT] [-l LOGLEVEL] [--debugformat]
+                                   [--debug_method_locals]
                                    [--record_all_requests]
                                    [--stats_loop_enabled] [--http_auth_retry]
                                    [--http_retry_count HTTP_RETRY_COUNT] -j
@@ -813,6 +814,9 @@ Handler Options:
                         Logging level to use, increase for more verbosity
                         (default: 0)
   --debugformat         Enable debug format for logging (default: False)
+  --debug_method_locals
+                        Enable debug logging for each methods local variables
+                        (default: False)
   --record_all_requests
                         Record all requests in
                         handler.session.ALL_REQUESTS_RESPONSES (default:
@@ -860,11 +864,11 @@ Create Package from JSON Options:
 <li>Save the results to a JSON file</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>bin/get_package.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --id 1 --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.json<span class="pl-pds">"</span></span> --export_format json</pre></div>
+<div class="highlight highlight-source-shell"><pre>bin/get_package.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --id 1 --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.json<span class="pl-pds">"</span></span> --export_format json</pre></div>
 
-<pre><code>PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 Found items:  PackageSpecList, len: 1
-Report file '/tmp/out.json' written with 2688 bytes
+Report file '/tmp/out.json' written with 2645 bytes
 </code></pre>
 
 <ul>
@@ -893,10 +897,10 @@ Report file '/tmp/out.json' written with 2688 bytes
   "package_spec": [
     {
       "_type": "package_spec", 
-      "available_time": "2015-08-26T20:15:17", 
+      "available_time": "2015-09-14T13:39:40", 
       "command": "cmd /c cscript //T:900 java-installer.vbs /KillAppsUsingJava:Yes /RebootIfNeeded:Yes /MaxWaitTimeInSeconds:300", 
       "command_timeout": 900, 
-      "creation_time": "2015-08-26T20:14:33", 
+      "creation_time": "2001-01-01T00:00:00", 
       "deleted_flag": 0, 
 ...trimmed for brevity...
 </code></pre>
@@ -921,17 +925,17 @@ Report file '/tmp/out.json' written with 2688 bytes
 <li>Add CMDLINE TEST to name or url_regex in the JSON file</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>perl -p -i -e <span class="pl-s"><span class="pl-pds">'</span>s/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 3179"/gm<span class="pl-pds">'</span></span> /tmp/out.json <span class="pl-k">&amp;&amp;</span> cat /tmp/out.json</pre></div>
+<div class="highlight highlight-source-shell"><pre>perl -p -i -e <span class="pl-s"><span class="pl-pds">'</span>s/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 8779"/gm<span class="pl-pds">'</span></span> /tmp/out.json <span class="pl-k">&amp;&amp;</span> cat /tmp/out.json</pre></div>
 
 <pre><code>{
   "_type": "package_specs", 
   "package_spec": [
     {
       "_type": "package_spec", 
-      "available_time": "2015-08-26T20:15:17", 
+      "available_time": "2015-09-14T13:39:40", 
       "command": "cmd /c cscript //T:900 java-installer.vbs /KillAppsUsingJava:Yes /RebootIfNeeded:Yes /MaxWaitTimeInSeconds:300", 
       "command_timeout": 900, 
-      "creation_time": "2015-08-26T20:14:33", 
+      "creation_time": "2001-01-01T00:00:00", 
       "deleted_flag": 0, 
       "display_name": "Update Java 64-bit - Kill / Reboot", 
       "expire_seconds": 1500, 
@@ -944,7 +948,7 @@ Report file '/tmp/out.json' written with 2688 bytes
             "bytes_total": 22900, 
             "cache_status": "Cached", 
             "download_seconds": 0, 
-            "download_start_time": "2015-08-26T20:14:56", 
+            "download_start_time": "2015-09-14T13:39:30", 
             "file_status": {
               "_type": "file_status", 
               "status": [
@@ -953,28 +957,27 @@ Report file '/tmp/out.json' written with 2688 bytes
                   "bytes_downloaded": 22900, 
                   "bytes_total": 22900, 
                   "cache_status": "Cached", 
-                  "download_start_time": "2015-08-26T20:14:56", 
-                  "last_download_progress_time": "2015-08-26T20:15:28", 
+                  "download_start_time": "2015-09-14T13:39:30", 
+                  "last_download_progress_time": "2015-09-14T13:39:41", 
                   "server_id": 1, 
-                  "server_name": "TPT1-0.localdomain:17472", 
-                  "status": 52
+                  "server_name": "TPT1.pytanlab.com:17472", 
+                  "status": 200
                 }
               ]
             }, 
-            "hash": "19930421efb5b9ed3725aabcf1580eb04d1c3c355ac0e05123f5b162f29928f7", 
+            "hash": "8ea3087b6079288ce0dba7afa91710803354abb03201f51a634188cb4813fd42", 
             "id": 1, 
-            "last_download_progress_time": "2015-08-26T20:15:28", 
+            "last_download_progress_time": "2015-09-14T13:39:41", 
             "name": "java-installer.vbs", 
             "size": 22900, 
-            "source": "https://content.tanium.com/files/published/InitialContent/2015-06-04_18-59-45_6.5.1.0011-ga516c3c/update_java_64-bit_-_kill_-_reboot/java-installer.vbs", 
-            "status": 52
+            "source": "https://content.tanium.com/files/published/InitialContent/2015-08-31_16-49-58_6.5.2.0164-ga25a6e1/update_java_64-bit_-_kill_-_reboot/java-installer.vbs", 
+            "status": 200
           }
         ]
       }, 
       "hidden_flag": 0, 
       "id": 1, 
-      "last_modified_by": "Administrator", 
-      "last_update": "2015-08-26T20:14:33", 
+      "last_update": "2015-09-14T13:39:15", 
       "metadata": {
         "_type": "metadata", 
         "item": [
@@ -992,8 +995,8 @@ Report file '/tmp/out.json' written with 2688 bytes
           }
         ]
       }, 
-      "modification_time": "2015-08-26T20:14:33", 
-      "name": "Update Java 64-bit - Kill / Reboot CMDLINE TEST 3179", 
+      "modification_time": "2001-01-01T00:00:00", 
+      "name": "Update Java 64-bit - Kill / Reboot CMDLINE TEST 8779", 
       "skip_lock_flag": 0, 
       "source_id": 0, 
       "verify_expire_seconds": 600, 
@@ -1042,10 +1045,10 @@ Report file '/tmp/out.json' written with 2688 bytes
 <h1>
 <a id="user-content-create-a-new-package-from-the-modified-json-file" class="anchor" href="#create-a-new-package-from-the-modified-json-file" aria-hidden="true"><span class="octicon octicon-link"></span></a>Create a new package from the modified JSON file</h1>
 
-<div class="highlight highlight-bash"><pre>bin/create_package_from_json.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 -j <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.json<span class="pl-pds">"</span></span></pre></div>
+<div class="highlight highlight-source-shell"><pre>bin/create_package_from_json.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 -j <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.json<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-Created item: PackageSpec, name: 'Update Java 64-bit - Kill / Reboot CMDLINE TEST 3179', id: 404, ID: 404
+<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+Created item: PackageSpec, name: 'Update Java 64-bit - Kill / Reboot CMDLINE TEST 8779', id: 87, ID: 87
 </code></pre>
 
 <ul>
@@ -1072,7 +1075,7 @@ Created item: PackageSpec, name: 'Update Java 64-bit - Kill / Reboot CMDLINE TES
 <p><a href="#user-content-toc">TOC</a></p>
 
 <h6>
-<a id="user-content-generated-by-build_bin_doc-v210-date-thu-sep--3-215021-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v210-date-thu-sep--3-215021-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v2.1.0</code>, date: Thu Sep  3 21:50:21 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
+<a id="user-content-generated-by-build_bin_doc-v210-date-mon-sep-14-155047-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v210-date-mon-sep-14-155047-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v2.1.0</code>, date: Mon Sep 14 15:50:47 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
 </h6>
 
 </body></html>

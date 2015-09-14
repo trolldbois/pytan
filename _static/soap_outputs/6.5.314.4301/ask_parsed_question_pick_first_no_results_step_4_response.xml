@@ -3,7 +3,7 @@
   <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <t:return>
       <command>AddObject</command>
-      <session>1-8118-b23a0e470110f2964bdcb3adf91dbf4d84ea31c89f119aa9e9b5c4480353b4d81f4342811eadfd92488a3dfbb96712a18376cfcec0a53034477af5bb05cfb309</session>
+      <session>1-681-6cd9aebd109c6af36faa009d4636e38b90926c64690cf812bcfc3957b591da119a94af41ae11599279f4170f21d8f4de06587e4f865221c701e968a3259a774f</session>
       <ID></ID>
       <IDType></IDType>
       <ContextID></ContextID>
@@ -15,7 +15,7 @@
       <ResultXML></ResultXML>
       <result_object>
         <question>
-          <id>11638</id>
+          <id>790</id>
         </question>
       </result_object>
     </t:return>

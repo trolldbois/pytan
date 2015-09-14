@@ -61,7 +61,6 @@ Each of these sections contains examples that show the HTTP request and response
    ask_manual_question_simple_single_sensor
    ask_manual_question_sensor_with_parameters_and_some_supplied_parameters
    ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters
-   ask_manual_question_sensor_with_parameters_and_no_supplied_parameters
    ask_manual_question_sensor_with_parameters_and_filter
    ask_manual_question_sensor_with_filter_and_2_options
    ask_manual_question_sensor_with_filter

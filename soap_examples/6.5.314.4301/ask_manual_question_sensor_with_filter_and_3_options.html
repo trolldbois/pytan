@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>8.2.61. Ask Manual Question Sensor With Filter And 3 Options &mdash; PyTan v2.1.3 2.1.3 documentation</title>
+  <title>9.2.60. Ask Manual Question Sensor With Filter And 3 Options &mdash; PyTan v2.1.4 2.1.4 documentation</title>
   
 
   
@@ -28,10 +28,10 @@
   
 
   
-    <link rel="top" title="PyTan v2.1.3 2.1.3 documentation" href="../../index.html"/>
-        <link rel="up" title="8.2. SOAP API Examples for Platform Version 6.5.314.4301" href="soap_examples_6.5.314.4301.html"/>
-        <link rel="next" title="8.2.62. Ask Manual Question Complex Query1" href="ask_manual_question_complex_query1.html"/>
-        <link rel="prev" title="8.2.60. Ask Manual Question Sensor With Parameters And Filter And Options" href="ask_manual_question_sensor_with_parameters_and_filter_and_options.html"/> 
+    <link rel="top" title="PyTan v2.1.4 2.1.4 documentation" href="../../index.html"/>
+        <link rel="up" title="9.2. SOAP API Examples for Platform Version 6.5.314.4301" href="soap_examples_6.5.314.4301.html"/>
+        <link rel="next" title="9.2.61. Ask Manual Question Complex Query1" href="ask_manual_question_complex_query1.html"/>
+        <link rel="prev" title="9.2.59. Ask Manual Question Sensor With Parameters And Filter And Options" href="ask_manual_question_sensor_with_parameters_and_filter_and_options.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -46,7 +46,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-nav-search">
         
-          <a href="../../index.html" class="fa fa-home"> PyTan v2.1.3</a>
+          <a href="../../index.html" class="fa fa-home"> PyTan v2.1.4</a>
         
         
 <div role="search">
@@ -100,6 +100,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../other_packages.html#threaded-http-package">5.2. threaded_http Package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../other_packages.html#xmltodict-package">5.3. xmltodict Package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../other_packages.html#ddt-package">5.4. ddt Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../other_packages.html#pyreadline-package">5.5. pyreadline Package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../pytan_validation_index.html">6. PyTan API Validation Tests</a><ul>
@@ -114,28 +115,29 @@
 <li class="toctree-l2"><a class="reference internal" href="../../valid_pytan_tests/pytan_validation_test-6.5.314.4301-Windows_2008ServerR2_SP1-2.7.9.html">6.9. Tanium: 6.5.314.4301, OS: Windows 2008ServerR2 SP1, Python: 2.7.9</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/pytan_examples.html">7. PyTan API Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../examples/pytan_api_basic_handler_example.html">7.1. PyTan API Basic Handler Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../examples/valid_create_object.html">7.2. PyTan API Valid Create Object Examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../examples/valid_create_object_from_json.html">7.3. PyTan API Valid Create Object From JSON Examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../examples/valid_deploy_action.html">7.4. PyTan API Valid Deploy Action Examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../examples/valid_export_basetype.html">7.5. PyTan API Valid Export Basetype Examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../examples/valid_export_resultset.html">7.6. PyTan API Valid Export ResultSet Examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../examples/valid_get_object.html">7.7. PyTan API Valid Get Object Examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../examples/valid_questions.html">7.8. PyTan API Valid Questions Examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../examples/valid_saved_questions.html">7.9. PyTan API Valid Saved Questions Examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../examples/invalid_create_object.html">7.10. PyTan API Invalid Create Object Examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../examples/invalid_create_object_from_json.html">7.11. PyTan API Invalid Create Object From JSON Examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../examples/invalid_deploy_action.html">7.12. PyTan API Invalid Deploy Action Examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../examples/invalid_export_basetype.html">7.13. PyTan API Invalid Export Basetype Examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../examples/invalid_export_resultset.html">7.14. PyTan API Invalid Export ResultSet Examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../examples/invalid_get_object.html">7.15. PyTan API Invalid Get Object Examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../examples/invalid_questions.html">7.16. PyTan API Invalid Questions Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pytan_command_line.html">7. PyTan Command Line Help</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/pytan_examples.html">8. PyTan API Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/pytan_api_basic_handler_example.html">8.1. PyTan API Basic Handler Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/valid_create_object.html">8.2. PyTan API Valid Create Object Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/valid_create_object_from_json.html">8.3. PyTan API Valid Create Object From JSON Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/valid_deploy_action.html">8.4. PyTan API Valid Deploy Action Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/valid_export_basetype.html">8.5. PyTan API Valid Export Basetype Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/valid_export_resultset.html">8.6. PyTan API Valid Export ResultSet Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/valid_get_object.html">8.7. PyTan API Valid Get Object Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/valid_questions.html">8.8. PyTan API Valid Questions Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/valid_saved_questions.html">8.9. PyTan API Valid Saved Questions Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/invalid_create_object.html">8.10. PyTan API Invalid Create Object Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/invalid_create_object_from_json.html">8.11. PyTan API Invalid Create Object From JSON Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/invalid_deploy_action.html">8.12. PyTan API Invalid Deploy Action Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/invalid_export_basetype.html">8.13. PyTan API Invalid Export Basetype Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/invalid_export_resultset.html">8.14. PyTan API Invalid Export ResultSet Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/invalid_get_object.html">8.15. PyTan API Invalid Get Object Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/invalid_questions.html">8.16. PyTan API Invalid Questions Examples</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="reference internal" href="../../soap_examples_index.html">8. SOAP API Examples</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../6.2.314.3321/soap_examples_6.2.314.3321.html">8.1. SOAP API Examples for Platform Version 6.2.314.3321</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="soap_examples_6.5.314.4301.html">8.2. SOAP API Examples for Platform Version 6.5.314.4301</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../soap_examples_index.html">9. SOAP API Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../6.2.314.3321/soap_examples_6.2.314.3321.html">9.1. SOAP API Examples for Platform Version 6.2.314.3321</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="soap_examples_6.5.314.4301.html">9.2. SOAP API Examples for Platform Version 6.5.314.4301</a></li>
 </ul>
 </li>
 </ul>
@@ -151,7 +153,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../../index.html">PyTan v2.1.3</a>
+        <a href="../../index.html">PyTan v2.1.4</a>
       </nav>
 
 
@@ -162,11 +164,11 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../../index.html">Docs</a> &raquo;</li>
       
-          <li><a href="../../soap_examples_index.html">8. SOAP API Examples</a> &raquo;</li>
+          <li><a href="../../soap_examples_index.html">9. SOAP API Examples</a> &raquo;</li>
       
-          <li><a href="soap_examples_6.5.314.4301.html">8.2. SOAP API Examples for Platform Version 6.5.314.4301</a> &raquo;</li>
+          <li><a href="soap_examples_6.5.314.4301.html">9.2. SOAP API Examples for Platform Version 6.5.314.4301</a> &raquo;</li>
       
-    <li>8.2.61. Ask Manual Question Sensor With Filter And 3 Options</li>
+    <li>9.2.60. Ask Manual Question Sensor With Filter And 3 Options</li>
       <li class="wy-breadcrumbs-aside">
         
           <a href="../../_sources/soap_examples/6.5.314.4301/ask_manual_question_sensor_with_filter_and_3_options.txt" rel="nofollow"> View page source</a>
@@ -178,14 +180,14 @@
           <div role="main" class="document">
             
   <div class="section" id="ask-manual-question-sensor-with-filter-and-3-options">
-<h1>8.2.61. Ask Manual Question Sensor With Filter And 3 Options<a class="headerlink" href="#ask-manual-question-sensor-with-filter-and-3-options" title="Permalink to this headline">¶</a></h1>
+<h1>9.2.60. Ask Manual Question Sensor With Filter And 3 Options<a class="headerlink" href="#ask-manual-question-sensor-with-filter-and-3-options" title="Permalink to this headline">¶</a></h1>
 <p>Ask the question &#8216;Get Operating System containing &#8220;Windows&#8221; from all machines&#8217; and set max_age_seconds to 3600, all_values_flag to 1, and ignore_case_flag to 1 on the Operating System sensor, then wait for result data to be complete, and get result data</p>
 <div class="section" id="step-1-authenticate-to-the-soap-api-via-auth">
-<h2>8.2.61.1. Step 1 - Authenticate to the SOAP API via /auth<a class="headerlink" href="#step-1-authenticate-to-the-soap-api-via-auth" title="Permalink to this headline">¶</a></h2>
+<h2>9.2.60.1. Step 1 - Authenticate to the SOAP API via /auth<a class="headerlink" href="#step-1-authenticate-to-the-soap-api-via-auth" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>URL: <a class="reference external" href="https://10.0.1.240:443/auth">https://10.0.1.240:443/auth</a></li>
 <li>HTTP Method: GET</li>
-<li>Elapsed Time: 0:00:00.013945</li>
+<li>Elapsed Time: 0:00:00.015359</li>
 <li><a class="reference external" href="../../_static/soap_outputs/6.5.314.4301/ask_manual_question_sensor_with_filter_and_3_options_step_1_request.txt">Step 1 Request Body</a></li>
 <li><a class="reference external" href="../../_static/soap_outputs/6.5.314.4301/ask_manual_question_sensor_with_filter_and_3_options_step_1_response.txt">Step 1 Response Body</a></li>
 <li>Request Headers:</li>
@@ -216,18 +218,18 @@
 4
 5</pre></div></td><td class="code"><div class="highlight"><pre><span class="p">{</span>
   <span class="nt">&quot;connection&quot;</span><span class="p">:</span> <span class="s2">&quot;keep-alive&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;content-length&quot;</span><span class="p">:</span> <span class="s2">&quot;135&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;content-length&quot;</span><span class="p">:</span> <span class="s2">&quot;134&quot;</span><span class="p">,</span>
   <span class="nt">&quot;content-type&quot;</span><span class="p">:</span> <span class="s2">&quot;text/plain; charset=us-ascii&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </td></tr></table></div>
 </div>
 <div class="section" id="step-2-get-the-server-version-via-info-json">
-<h2>8.2.61.2. Step 2 - Get the server version via /info.json<a class="headerlink" href="#step-2-get-the-server-version-via-info-json" title="Permalink to this headline">¶</a></h2>
+<h2>9.2.60.2. Step 2 - Get the server version via /info.json<a class="headerlink" href="#step-2-get-the-server-version-via-info-json" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>URL: <a class="reference external" href="https://10.0.1.240:443/info.json">https://10.0.1.240:443/info.json</a></li>
 <li>HTTP Method: GET</li>
-<li>Elapsed Time: 0:00:00.015949</li>
+<li>Elapsed Time: 0:00:00.012821</li>
 <li><a class="reference external" href="../../_static/soap_outputs/6.5.314.4301/ask_manual_question_sensor_with_filter_and_3_options_step_2_request.txt">Step 2 Request Body</a></li>
 <li><a class="reference external" href="../../_static/soap_outputs/6.5.314.4301/ask_manual_question_sensor_with_filter_and_3_options_step_2_response.json">Step 2 Response Body</a></li>
 <li>Request Headers:</li>
@@ -243,7 +245,7 @@
   <span class="nt">&quot;Accept-Encoding&quot;</span><span class="p">:</span> <span class="s2">&quot;gzip, deflate&quot;</span><span class="p">,</span>
   <span class="nt">&quot;Connection&quot;</span><span class="p">:</span> <span class="s2">&quot;keep-alive&quot;</span><span class="p">,</span>
   <span class="nt">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="s2">&quot;python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;session&quot;</span><span class="p">:</span> <span class="s2">&quot;1-8134-0763b63efb6a4ee3af02a05592e308cb414093d213b1a1405b4f1fe618a622a6004222a63cb352c3f1142b20bb023e311bcb54a44063ab9d0c69b00d845f5d26&quot;</span>
+  <span class="nt">&quot;session&quot;</span><span class="p">:</span> <span class="s2">&quot;1-696-558c4caa82406b81f9e1358af1173f779441ce0ad59ec6f7f628c7bd85a6b5f6c19c45514a2ee398ca60c20fc0e45af69c478269cf77d3467fb007d9bc891e84&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </td></tr></table></div>
@@ -256,18 +258,18 @@
 4
 5</pre></div></td><td class="code"><div class="highlight"><pre><span class="p">{</span>
   <span class="nt">&quot;connection&quot;</span><span class="p">:</span> <span class="s2">&quot;keep-alive&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;content-length&quot;</span><span class="p">:</span> <span class="s2">&quot;113989&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;content-length&quot;</span><span class="p">:</span> <span class="s2">&quot;21411&quot;</span><span class="p">,</span>
   <span class="nt">&quot;content-type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </td></tr></table></div>
 </div>
 <div class="section" id="step-3-issue-a-getobject-to-get-the-full-object-of-a-sensor-for-inclusion-in-a-select-for-a-question">
-<h2>8.2.61.3. Step 3 - Issue a GetObject to get the full object of a sensor for inclusion in a Select for a Question<a class="headerlink" href="#step-3-issue-a-getobject-to-get-the-full-object-of-a-sensor-for-inclusion-in-a-select-for-a-question" title="Permalink to this headline">¶</a></h2>
+<h2>9.2.60.3. Step 3 - Issue a GetObject to get the full object of a sensor for inclusion in a Select for a Question<a class="headerlink" href="#step-3-issue-a-getobject-to-get-the-full-object-of-a-sensor-for-inclusion-in-a-select-for-a-question" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>URL: <a class="reference external" href="https://10.0.1.240:443/soap">https://10.0.1.240:443/soap</a></li>
 <li>HTTP Method: POST</li>
-<li>Elapsed Time: 0:00:00.003036</li>
+<li>Elapsed Time: 0:00:00.004289</li>
 <li><a class="reference external" href="../../_static/soap_outputs/6.5.314.4301/ask_manual_question_sensor_with_filter_and_3_options_step_3_request.xml">Step 3 Request Body</a></li>
 <li><a class="reference external" href="../../_static/soap_outputs/6.5.314.4301/ask_manual_question_sensor_with_filter_and_3_options_step_3_response.xml">Step 3 Response Body</a></li>
 <li>Request Headers:</li>
@@ -287,7 +289,7 @@
   <span class="nt">&quot;Content-Length&quot;</span><span class="p">:</span> <span class="s2">&quot;568&quot;</span><span class="p">,</span>
   <span class="nt">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;text/xml; charset=utf-8&quot;</span><span class="p">,</span>
   <span class="nt">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="s2">&quot;python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;session&quot;</span><span class="p">:</span> <span class="s2">&quot;1-8134-0763b63efb6a4ee3af02a05592e308cb414093d213b1a1405b4f1fe618a622a6004222a63cb352c3f1142b20bb023e311bcb54a44063ab9d0c69b00d845f5d26&quot;</span>
+  <span class="nt">&quot;session&quot;</span><span class="p">:</span> <span class="s2">&quot;1-696-558c4caa82406b81f9e1358af1173f779441ce0ad59ec6f7f628c7bd85a6b5f6c19c45514a2ee398ca60c20fc0e45af69c478269cf77d3467fb007d9bc891e84&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </td></tr></table></div>
@@ -309,11 +311,11 @@
 </td></tr></table></div>
 </div>
 <div class="section" id="step-4-issue-an-addobject-to-add-a-question-object">
-<h2>8.2.61.4. Step 4 - Issue an AddObject to add a Question object<a class="headerlink" href="#step-4-issue-an-addobject-to-add-a-question-object" title="Permalink to this headline">¶</a></h2>
+<h2>9.2.60.4. Step 4 - Issue an AddObject to add a Question object<a class="headerlink" href="#step-4-issue-an-addobject-to-add-a-question-object" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>URL: <a class="reference external" href="https://10.0.1.240:443/soap">https://10.0.1.240:443/soap</a></li>
 <li>HTTP Method: POST</li>
-<li>Elapsed Time: 0:00:00.009217</li>
+<li>Elapsed Time: 0:00:00.012568</li>
 <li><a class="reference external" href="../../_static/soap_outputs/6.5.314.4301/ask_manual_question_sensor_with_filter_and_3_options_step_4_request.xml">Step 4 Request Body</a></li>
 <li><a class="reference external" href="../../_static/soap_outputs/6.5.314.4301/ask_manual_question_sensor_with_filter_and_3_options_step_4_response.xml">Step 4 Response Body</a></li>
 <li>Request Headers:</li>
@@ -333,7 +335,7 @@
   <span class="nt">&quot;Content-Length&quot;</span><span class="p">:</span> <span class="s2">&quot;861&quot;</span><span class="p">,</span>
   <span class="nt">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;text/xml; charset=utf-8&quot;</span><span class="p">,</span>
   <span class="nt">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="s2">&quot;python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;session&quot;</span><span class="p">:</span> <span class="s2">&quot;1-8134-0763b63efb6a4ee3af02a05592e308cb414093d213b1a1405b4f1fe618a622a6004222a63cb352c3f1142b20bb023e311bcb54a44063ab9d0c69b00d845f5d26&quot;</span>
+  <span class="nt">&quot;session&quot;</span><span class="p">:</span> <span class="s2">&quot;1-696-558c4caa82406b81f9e1358af1173f779441ce0ad59ec6f7f628c7bd85a6b5f6c19c45514a2ee398ca60c20fc0e45af69c478269cf77d3467fb007d9bc891e84&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </td></tr></table></div>
@@ -346,18 +348,18 @@
 4
 5</pre></div></td><td class="code"><div class="highlight"><pre><span class="p">{</span>
   <span class="nt">&quot;connection&quot;</span><span class="p">:</span> <span class="s2">&quot;keep-alive&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;content-length&quot;</span><span class="p">:</span> <span class="s2">&quot;769&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;content-length&quot;</span><span class="p">:</span> <span class="s2">&quot;766&quot;</span><span class="p">,</span>
   <span class="nt">&quot;content-type&quot;</span><span class="p">:</span> <span class="s2">&quot;text/xml;charset=UTF-8&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </td></tr></table></div>
 </div>
 <div class="section" id="step-5-issue-a-getobject-on-the-recently-added-object-in-order-to-get-the-full-object">
-<h2>8.2.61.5. Step 5 - Issue a GetObject on the recently added object in order to get the full object<a class="headerlink" href="#step-5-issue-a-getobject-on-the-recently-added-object-in-order-to-get-the-full-object" title="Permalink to this headline">¶</a></h2>
+<h2>9.2.60.5. Step 5 - Issue a GetObject on the recently added object in order to get the full object<a class="headerlink" href="#step-5-issue-a-getobject-on-the-recently-added-object-in-order-to-get-the-full-object" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>URL: <a class="reference external" href="https://10.0.1.240:443/soap">https://10.0.1.240:443/soap</a></li>
 <li>HTTP Method: POST</li>
-<li>Elapsed Time: 0:00:00.015876</li>
+<li>Elapsed Time: 0:00:00.091672</li>
 <li><a class="reference external" href="../../_static/soap_outputs/6.5.314.4301/ask_manual_question_sensor_with_filter_and_3_options_step_5_request.xml">Step 5 Request Body</a></li>
 <li><a class="reference external" href="../../_static/soap_outputs/6.5.314.4301/ask_manual_question_sensor_with_filter_and_3_options_step_5_response.xml">Step 5 Response Body</a></li>
 <li>Request Headers:</li>
@@ -374,10 +376,10 @@
   <span class="nt">&quot;Accept&quot;</span><span class="p">:</span> <span class="s2">&quot;*/*&quot;</span><span class="p">,</span>
   <span class="nt">&quot;Accept-Encoding&quot;</span><span class="p">:</span> <span class="s2">&quot;gzip&quot;</span><span class="p">,</span>
   <span class="nt">&quot;Connection&quot;</span><span class="p">:</span> <span class="s2">&quot;keep-alive&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;Content-Length&quot;</span><span class="p">:</span> <span class="s2">&quot;494&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;Content-Length&quot;</span><span class="p">:</span> <span class="s2">&quot;492&quot;</span><span class="p">,</span>
   <span class="nt">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;text/xml; charset=utf-8&quot;</span><span class="p">,</span>
   <span class="nt">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="s2">&quot;python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;session&quot;</span><span class="p">:</span> <span class="s2">&quot;1-8134-0763b63efb6a4ee3af02a05592e308cb414093d213b1a1405b4f1fe618a622a6004222a63cb352c3f1142b20bb023e311bcb54a44063ab9d0c69b00d845f5d26&quot;</span>
+  <span class="nt">&quot;session&quot;</span><span class="p">:</span> <span class="s2">&quot;1-696-558c4caa82406b81f9e1358af1173f779441ce0ad59ec6f7f628c7bd85a6b5f6c19c45514a2ee398ca60c20fc0e45af69c478269cf77d3467fb007d9bc891e84&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </td></tr></table></div>
@@ -399,11 +401,11 @@
 </td></tr></table></div>
 </div>
 <div class="section" id="step-6-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">
-<h2>8.2.61.6. Step 6 - Issue a GetResultInfo for a Question to check the current progress of answers<a class="headerlink" href="#step-6-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers" title="Permalink to this headline">¶</a></h2>
+<h2>9.2.60.6. Step 6 - Issue a GetResultInfo for a Question to check the current progress of answers<a class="headerlink" href="#step-6-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>URL: <a class="reference external" href="https://10.0.1.240:443/soap">https://10.0.1.240:443/soap</a></li>
 <li>HTTP Method: POST</li>
-<li>Elapsed Time: 0:00:00.003040</li>
+<li>Elapsed Time: 0:00:00.004804</li>
 <li><a class="reference external" href="../../_static/soap_outputs/6.5.314.4301/ask_manual_question_sensor_with_filter_and_3_options_step_6_request.xml">Step 6 Request Body</a></li>
 <li><a class="reference external" href="../../_static/soap_outputs/6.5.314.4301/ask_manual_question_sensor_with_filter_and_3_options_step_6_response.xml">Step 6 Response Body</a></li>
 <li>Request Headers:</li>
@@ -420,10 +422,10 @@
   <span class="nt">&quot;Accept&quot;</span><span class="p">:</span> <span class="s2">&quot;*/*&quot;</span><span class="p">,</span>
   <span class="nt">&quot;Accept-Encoding&quot;</span><span class="p">:</span> <span class="s2">&quot;gzip&quot;</span><span class="p">,</span>
   <span class="nt">&quot;Connection&quot;</span><span class="p">:</span> <span class="s2">&quot;keep-alive&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;Content-Length&quot;</span><span class="p">:</span> <span class="s2">&quot;498&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;Content-Length&quot;</span><span class="p">:</span> <span class="s2">&quot;496&quot;</span><span class="p">,</span>
   <span class="nt">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;text/xml; charset=utf-8&quot;</span><span class="p">,</span>
   <span class="nt">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="s2">&quot;python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;session&quot;</span><span class="p">:</span> <span class="s2">&quot;1-8134-0763b63efb6a4ee3af02a05592e308cb414093d213b1a1405b4f1fe618a622a6004222a63cb352c3f1142b20bb023e311bcb54a44063ab9d0c69b00d845f5d26&quot;</span>
+  <span class="nt">&quot;session&quot;</span><span class="p">:</span> <span class="s2">&quot;1-696-558c4caa82406b81f9e1358af1173f779441ce0ad59ec6f7f628c7bd85a6b5f6c19c45514a2ee398ca60c20fc0e45af69c478269cf77d3467fb007d9bc891e84&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </td></tr></table></div>
@@ -445,11 +447,11 @@
 </td></tr></table></div>
 </div>
 <div class="section" id="step-7-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">
-<h2>8.2.61.7. Step 7 - Issue a GetResultInfo for a Question to check the current progress of answers<a class="headerlink" href="#step-7-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers" title="Permalink to this headline">¶</a></h2>
+<h2>9.2.60.7. Step 7 - Issue a GetResultInfo for a Question to check the current progress of answers<a class="headerlink" href="#step-7-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>URL: <a class="reference external" href="https://10.0.1.240:443/soap">https://10.0.1.240:443/soap</a></li>
 <li>HTTP Method: POST</li>
-<li>Elapsed Time: 0:00:00.004392</li>
+<li>Elapsed Time: 0:00:00.519997</li>
 <li><a class="reference external" href="../../_static/soap_outputs/6.5.314.4301/ask_manual_question_sensor_with_filter_and_3_options_step_7_request.xml">Step 7 Request Body</a></li>
 <li><a class="reference external" href="../../_static/soap_outputs/6.5.314.4301/ask_manual_question_sensor_with_filter_and_3_options_step_7_response.xml">Step 7 Response Body</a></li>
 <li>Request Headers:</li>
@@ -466,10 +468,10 @@
   <span class="nt">&quot;Accept&quot;</span><span class="p">:</span> <span class="s2">&quot;*/*&quot;</span><span class="p">,</span>
   <span class="nt">&quot;Accept-Encoding&quot;</span><span class="p">:</span> <span class="s2">&quot;gzip&quot;</span><span class="p">,</span>
   <span class="nt">&quot;Connection&quot;</span><span class="p">:</span> <span class="s2">&quot;keep-alive&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;Content-Length&quot;</span><span class="p">:</span> <span class="s2">&quot;498&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;Content-Length&quot;</span><span class="p">:</span> <span class="s2">&quot;496&quot;</span><span class="p">,</span>
   <span class="nt">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;text/xml; charset=utf-8&quot;</span><span class="p">,</span>
   <span class="nt">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="s2">&quot;python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;session&quot;</span><span class="p">:</span> <span class="s2">&quot;1-8134-0763b63efb6a4ee3af02a05592e308cb414093d213b1a1405b4f1fe618a622a6004222a63cb352c3f1142b20bb023e311bcb54a44063ab9d0c69b00d845f5d26&quot;</span>
+  <span class="nt">&quot;session&quot;</span><span class="p">:</span> <span class="s2">&quot;1-696-558c4caa82406b81f9e1358af1173f779441ce0ad59ec6f7f628c7bd85a6b5f6c19c45514a2ee398ca60c20fc0e45af69c478269cf77d3467fb007d9bc891e84&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </td></tr></table></div>
@@ -490,12 +492,12 @@
 </pre></div>
 </td></tr></table></div>
 </div>
-<div class="section" id="step-8-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers">
-<h2>8.2.61.8. Step 8 - Issue a GetResultInfo for a Question to check the current progress of answers<a class="headerlink" href="#step-8-issue-a-getresultinfo-for-a-question-to-check-the-current-progress-of-answers" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="step-8-issue-a-getresultdata-to-get-answers-for-a-question">
+<h2>9.2.60.8. Step 8 - Issue a GetResultData to get answers for a question<a class="headerlink" href="#step-8-issue-a-getresultdata-to-get-answers-for-a-question" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>URL: <a class="reference external" href="https://10.0.1.240:443/soap">https://10.0.1.240:443/soap</a></li>
 <li>HTTP Method: POST</li>
-<li>Elapsed Time: 0:00:00.004059</li>
+<li>Elapsed Time: 0:00:00.030119</li>
 <li><a class="reference external" href="../../_static/soap_outputs/6.5.314.4301/ask_manual_question_sensor_with_filter_and_3_options_step_8_request.xml">Step 8 Request Body</a></li>
 <li><a class="reference external" href="../../_static/soap_outputs/6.5.314.4301/ask_manual_question_sensor_with_filter_and_3_options_step_8_response.xml">Step 8 Response Body</a></li>
 <li>Request Headers:</li>
@@ -512,56 +514,10 @@
   <span class="nt">&quot;Accept&quot;</span><span class="p">:</span> <span class="s2">&quot;*/*&quot;</span><span class="p">,</span>
   <span class="nt">&quot;Accept-Encoding&quot;</span><span class="p">:</span> <span class="s2">&quot;gzip&quot;</span><span class="p">,</span>
   <span class="nt">&quot;Connection&quot;</span><span class="p">:</span> <span class="s2">&quot;keep-alive&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;Content-Length&quot;</span><span class="p">:</span> <span class="s2">&quot;498&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;Content-Length&quot;</span><span class="p">:</span> <span class="s2">&quot;524&quot;</span><span class="p">,</span>
   <span class="nt">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;text/xml; charset=utf-8&quot;</span><span class="p">,</span>
   <span class="nt">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="s2">&quot;python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;session&quot;</span><span class="p">:</span> <span class="s2">&quot;1-8134-0763b63efb6a4ee3af02a05592e308cb414093d213b1a1405b4f1fe618a622a6004222a63cb352c3f1142b20bb023e311bcb54a44063ab9d0c69b00d845f5d26&quot;</span>
-<span class="p">}</span>
-</pre></div>
-</td></tr></table></div>
-<ul class="simple">
-<li>Response Headers:</li>
-</ul>
-<div class="highlight-json"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6</pre></div></td><td class="code"><div class="highlight"><pre><span class="p">{</span>
-  <span class="nt">&quot;connection&quot;</span><span class="p">:</span> <span class="s2">&quot;keep-alive&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;content-encoding&quot;</span><span class="p">:</span> <span class="s2">&quot;gzip&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;content-type&quot;</span><span class="p">:</span> <span class="s2">&quot;text/xml;charset=UTF-8&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;transfer-encoding&quot;</span><span class="p">:</span> <span class="s2">&quot;chunked&quot;</span>
-<span class="p">}</span>
-</pre></div>
-</td></tr></table></div>
-</div>
-<div class="section" id="step-9-issue-a-getresultdata-to-get-answers-for-a-question">
-<h2>8.2.61.9. Step 9 - Issue a GetResultData to get answers for a question<a class="headerlink" href="#step-9-issue-a-getresultdata-to-get-answers-for-a-question" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>URL: <a class="reference external" href="https://10.0.1.240:443/soap">https://10.0.1.240:443/soap</a></li>
-<li>HTTP Method: POST</li>
-<li>Elapsed Time: 0:00:00.003295</li>
-<li><a class="reference external" href="../../_static/soap_outputs/6.5.314.4301/ask_manual_question_sensor_with_filter_and_3_options_step_9_request.xml">Step 9 Request Body</a></li>
-<li><a class="reference external" href="../../_static/soap_outputs/6.5.314.4301/ask_manual_question_sensor_with_filter_and_3_options_step_9_response.xml">Step 9 Response Body</a></li>
-<li>Request Headers:</li>
-</ul>
-<div class="highlight-json"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9</pre></div></td><td class="code"><div class="highlight"><pre><span class="p">{</span>
-  <span class="nt">&quot;Accept&quot;</span><span class="p">:</span> <span class="s2">&quot;*/*&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;Accept-Encoding&quot;</span><span class="p">:</span> <span class="s2">&quot;gzip&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;Connection&quot;</span><span class="p">:</span> <span class="s2">&quot;keep-alive&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;Content-Length&quot;</span><span class="p">:</span> <span class="s2">&quot;526&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;text/xml; charset=utf-8&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="s2">&quot;python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;session&quot;</span><span class="p">:</span> <span class="s2">&quot;1-8134-0763b63efb6a4ee3af02a05592e308cb414093d213b1a1405b4f1fe618a622a6004222a63cb352c3f1142b20bb023e311bcb54a44063ab9d0c69b00d845f5d26&quot;</span>
+  <span class="nt">&quot;session&quot;</span><span class="p">:</span> <span class="s2">&quot;1-696-558c4caa82406b81f9e1358af1173f779441ce0ad59ec6f7f628c7bd85a6b5f6c19c45514a2ee398ca60c20fc0e45af69c478269cf77d3467fb007d9bc891e84&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </td></tr></table></div>
@@ -597,10 +553,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="ask_manual_question_complex_query1.html" class="btn btn-neutral float-right" title="8.2.62. Ask Manual Question Complex Query1">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="ask_manual_question_complex_query1.html" class="btn btn-neutral float-right" title="9.2.61. Ask Manual Question Complex Query1">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="ask_manual_question_sensor_with_parameters_and_filter_and_options.html" class="btn btn-neutral" title="8.2.60. Ask Manual Question Sensor With Parameters And Filter And Options"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="ask_manual_question_sensor_with_parameters_and_filter_and_options.html" class="btn btn-neutral" title="9.2.59. Ask Manual Question Sensor With Parameters And Filter And Options"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -610,7 +566,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Sep 09, 2015.
+      Last updated on Sep 14, 2015.
     </p>
   </div>
 
@@ -631,7 +587,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'2.1.3',
+            VERSION:'2.1.4',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -3,7 +3,7 @@
   <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <t:return>
       <command>AddObject</command>
-      <session>1-8118-b23a0e470110f2964bdcb3adf91dbf4d84ea31c89f119aa9e9b5c4480353b4d81f4342811eadfd92488a3dfbb96712a18376cfcec0a53034477af5bb05cfb309</session>
+      <session>1-681-6cd9aebd109c6af36faa009d4636e38b90926c64690cf812bcfc3957b591da119a94af41ae11599279f4170f21d8f4de06587e4f865221c701e968a3259a774f</session>
       <ID></ID>
       <IDType></IDType>
       <ContextID></ContextID>
@@ -19,7 +19,7 @@
       <result_object>
         <parse_result_groups>
           <parse_result_group>
-            <score>6429</score>
+            <score>6705</score>
             <question_text>Get Computer Name and IP Route Details from all machines</question_text>
             <question>
               <selects>
@@ -36,7 +36,7 @@
                   <sensor>
                     <name>IP Route Details</name>
                     <hash>435227963</hash>
-                    <id>552</id>
+                    <id>568</id>
                     <parameter_definition></parameter_definition>
                     <delimiter>|</delimiter>
                   </sensor>
@@ -45,7 +45,7 @@
             </question>
           </parse_result_group>
           <parse_result_group>
-            <score>861</score>
+            <score>898</score>
             <question_text>Get BIOS Name and IP Route Details from all machines</question_text>
             <question>
               <selects>
@@ -53,7 +53,7 @@
                   <sensor>
                     <name>BIOS Name</name>
                     <hash>367063513</hash>
-                    <id>90</id>
+                    <id>166</id>
                     <parameter_definition></parameter_definition>
                     <delimiter>,</delimiter>
                   </sensor>
@@ -62,7 +62,7 @@
                   <sensor>
                     <name>IP Route Details</name>
                     <hash>435227963</hash>
-                    <id>552</id>
+                    <id>568</id>
                     <parameter_definition></parameter_definition>
                     <delimiter>|</delimiter>
                   </sensor>
@@ -71,7 +71,7 @@
             </question>
           </parse_result_group>
           <parse_result_group>
-            <score>609</score>
+            <score>635</score>
             <question_text>Get Domain Name and IP Route Details from all machines</question_text>
             <question>
               <selects>
@@ -79,7 +79,7 @@
                   <sensor>
                     <name>Domain Name</name>
                     <hash>794103688</hash>
-                    <id>54</id>
+                    <id>140</id>
                     <parameter_definition></parameter_definition>
                     <delimiter>,</delimiter>
                   </sensor>
@@ -88,7 +88,7 @@
                   <sensor>
                     <name>IP Route Details</name>
                     <hash>435227963</hash>
-                    <id>552</id>
+                    <id>568</id>
                     <parameter_definition></parameter_definition>
                     <delimiter>|</delimiter>
                   </sensor>
@@ -97,7 +97,7 @@
             </question>
           </parse_result_group>
           <parse_result_group>
-            <score>360</score>
+            <score>376</score>
             <question_text>Get Computer Name and IP Routes from all machines</question_text>
             <question>
               <selects>
@@ -114,7 +114,7 @@
                   <sensor>
                     <name>IP Routes</name>
                     <hash>487354270</hash>
-                    <id>556</id>
+                    <id>572</id>
                     <parameter_definition></parameter_definition>
                     <delimiter>|</delimiter>
                   </sensor>
@@ -123,33 +123,7 @@
             </question>
           </parse_result_group>
           <parse_result_group>
-            <score>304</score>
-            <question_text>Get File Name Search and IP Route Details from all machines</question_text>
-            <question>
-              <selects>
-                <select>
-                  <sensor>
-                    <name>File Name Search</name>
-                    <hash>2054092310</hash>
-                    <id>300</id>
-                    <parameter_definition>{"parameters":[{"label":"File name to search for","helpString":"Enter the file name only to search for.","defaultValue":"","promptText":"e.g. test.txt","maxChars":0,"key":"filename","restrict":null,"validationExpressions":[{"helpString":"Value must be at least 3 characters","expression":"\\S{3}","flags":"","parameterType":"com.tanium.models::ValidationExpression","model":"com.tanium.models::ValidationExpression"}],"value":"","parameterType":"com.tanium.components.parameters::TextInputParameter","model":"com.tanium.components.parameters::TextInputParameter"}],"parameterType":"com.tanium.components.parameters::ParametersArray","model":"com.tanium.components.parameters::ParametersArray"}</parameter_definition>
-                    <delimiter>,</delimiter>
-                  </sensor>
-                </select>
-                <select>
-                  <sensor>
-                    <name>IP Route Details</name>
-                    <hash>435227963</hash>
-                    <id>552</id>
-                    <parameter_definition></parameter_definition>
-                    <delimiter>|</delimiter>
-                  </sensor>
-                </select>
-              </selects>
-            </question>
-          </parse_result_group>
-          <parse_result_group>
-            <score>256</score>
+            <score>267</score>
             <question_text>Get Motherboard Name and IP Route Details from all machines</question_text>
             <question>
               <selects>
@@ -166,7 +140,7 @@
                   <sensor>
                     <name>IP Route Details</name>
                     <hash>435227963</hash>
-                    <id>552</id>
+                    <id>568</id>
                     <parameter_definition></parameter_definition>
                     <delimiter>|</delimiter>
                   </sensor>
@@ -175,33 +149,7 @@
             </question>
           </parse_result_group>
           <parse_result_group>
-            <score>215</score>
-            <question_text>Get Folder Name Search and IP Route Details from all machines</question_text>
-            <question>
-              <selects>
-                <select>
-                  <sensor>
-                    <name>Folder Name Search</name>
-                    <hash>214691664</hash>
-                    <id>314</id>
-                    <parameter_definition>{"parameters":[{"label":"Folder name to search for","helpString":"Enter the folder name only to search for.","defaultValue":"","promptText":"e.g. Program Files","maxChars":0,"key":"dirname","restrict":null,"validationExpressions":[{"helpString":"Value must be at least 3 characters","expression":"\\S{3}","flags":"","parameterType":"com.tanium.models::ValidationExpression","model":"com.tanium.models::ValidationExpression"}],"value":"","parameterType":"com.tanium.components.parameters::TextInputParameter","model":"com.tanium.components.parameters::TextInputParameter"}],"parameterType":"com.tanium.components.parameters::ParametersArray","model":"com.tanium.components.parameters::ParametersArray"}</parameter_definition>
-                    <delimiter>,</delimiter>
-                  </sensor>
-                </select>
-                <select>
-                  <sensor>
-                    <name>IP Route Details</name>
-                    <hash>435227963</hash>
-                    <id>552</id>
-                    <parameter_definition></parameter_definition>
-                    <delimiter>|</delimiter>
-                  </sensor>
-                </select>
-              </selects>
-            </question>
-          </parse_result_group>
-          <parse_result_group>
-            <score>215</score>
+            <score>224</score>
             <question_text>Get Primary Owner Name and IP Route Details from all machines</question_text>
             <question>
               <selects>
@@ -218,7 +166,7 @@
                   <sensor>
                     <name>IP Route Details</name>
                     <hash>435227963</hash>
-                    <id>552</id>
+                    <id>568</id>
                     <parameter_definition></parameter_definition>
                     <delimiter>|</delimiter>
                   </sensor>
@@ -227,7 +175,7 @@
             </question>
           </parse_result_group>
           <parse_result_group>
-            <score>215</score>
+            <score>224</score>
             <question_text>Get Tanium Server Name and IP Route Details from all machines</question_text>
             <question>
               <selects>
@@ -235,7 +183,7 @@
                   <sensor>
                     <name>Tanium Server Name</name>
                     <hash>4076878703</hash>
-                    <id>518</id>
+                    <id>532</id>
                     <parameter_definition></parameter_definition>
                     <delimiter>,</delimiter>
                   </sensor>
@@ -244,7 +192,7 @@
                   <sensor>
                     <name>IP Route Details</name>
                     <hash>435227963</hash>
-                    <id>552</id>
+                    <id>568</id>
                     <parameter_definition></parameter_definition>
                     <delimiter>|</delimiter>
                   </sensor>
@@ -253,7 +201,7 @@
             </question>
           </parse_result_group>
           <parse_result_group>
-            <score>152</score>
+            <score>158</score>
             <question_text>Get Network Adapter Name and IP Route Details from all machines</question_text>
             <question>
               <selects>
@@ -270,7 +218,7 @@
                   <sensor>
                     <name>IP Route Details</name>
                     <hash>435227963</hash>
-                    <id>552</id>
+                    <id>568</id>
                     <parameter_definition></parameter_definition>
                     <delimiter>|</delimiter>
                   </sensor>
@@ -279,7 +227,7 @@
             </question>
           </parse_result_group>
           <parse_result_group>
-            <score>137</score>
+            <score>143</score>
             <question_text>Get Computer Name and IP Address from all machines</question_text>
             <question>
               <selects>
@@ -296,7 +244,7 @@
                   <sensor>
                     <name>IP Address</name>
                     <hash>3209138996</hash>
-                    <id>36</id>
+                    <id>32</id>
                     <parameter_definition></parameter_definition>
                     <delimiter>,</delimiter>
                   </sensor>
@@ -305,7 +253,7 @@
             </question>
           </parse_result_group>
           <parse_result_group>
-            <score>128</score>
+            <score>133</score>
             <question_text>Get AD Distinguished Name and IP Route Details from all machines</question_text>
             <question>
               <selects>
@@ -322,7 +270,7 @@
                   <sensor>
                     <name>IP Route Details</name>
                     <hash>435227963</hash>
-                    <id>552</id>
+                    <id>568</id>
                     <parameter_definition></parameter_definition>
                     <delimiter>|</delimiter>
                   </sensor>
@@ -331,7 +279,7 @@
             </question>
           </parse_result_group>
           <parse_result_group>
-            <score>115</score>
+            <score>120</score>
             <question_text>Get IP Route Details from all machines</question_text>
             <question>
               <selects>
@@ -339,7 +287,33 @@
                   <sensor>
                     <name>IP Route Details</name>
                     <hash>435227963</hash>
-                    <id>552</id>
+                    <id>568</id>
+                    <parameter_definition></parameter_definition>
+                    <delimiter>|</delimiter>
+                  </sensor>
+                </select>
+              </selects>
+            </question>
+          </parse_result_group>
+          <parse_result_group>
+            <score>112</score>
+            <question_text>Get Tanium Server Name List and IP Route Details from all machines</question_text>
+            <question>
+              <selects>
+                <select>
+                  <sensor>
+                    <name>Tanium Server Name List</name>
+                    <hash>1865193433</hash>
+                    <id>282</id>
+                    <parameter_definition></parameter_definition>
+                    <delimiter>,</delimiter>
+                  </sensor>
+                </select>
+                <select>
+                  <sensor>
+                    <name>IP Route Details</name>
+                    <hash>435227963</hash>
+                    <id>568</id>
                     <parameter_definition></parameter_definition>
                     <delimiter>|</delimiter>
                   </sensor>

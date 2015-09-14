@@ -781,11 +781,12 @@ body .task-list{
 <li>If running this script on Windows, use the batch script in the winbin/create_user_from_json.bat so that python is called correctly.</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>create_user_from_json.py -h</pre></div>
+<div class="highlight highlight-source-shell"><pre>create_user_from_json.py -h</pre></div>
 
 <pre><code>usage: create_user_from_json.py [-h] [-u USERNAME] [-p PASSWORD]
                                 [--session_id SESSION_ID] [--host HOST]
                                 [--port PORT] [-l LOGLEVEL] [--debugformat]
+                                [--debug_method_locals]
                                 [--record_all_requests] [--stats_loop_enabled]
                                 [--http_auth_retry]
                                 [--http_retry_count HTTP_RETRY_COUNT] -j
@@ -813,6 +814,9 @@ Handler Options:
                         Logging level to use, increase for more verbosity
                         (default: 0)
   --debugformat         Enable debug format for logging (default: False)
+  --debug_method_locals
+                        Enable debug logging for each methods local variables
+                        (default: False)
   --record_all_requests
                         Record all requests in
                         handler.session.ALL_REQUESTS_RESPONSES (default:
@@ -860,9 +864,9 @@ Create User from JSON Options:
 <li>Save the results to a JSON file</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>bin/get_user.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --id 1 --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.json<span class="pl-pds">"</span></span> --export_format json</pre></div>
+<div class="highlight highlight-source-shell"><pre>bin/get_user.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --id 1 --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.json<span class="pl-pds">"</span></span> --export_format json</pre></div>
 
-<pre><code>PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 Found items:  UserList, len: 1
 Report file '/tmp/out.json' written with 1604 bytes
 </code></pre>
@@ -896,7 +900,7 @@ Report file '/tmp/out.json' written with 1604 bytes
       "deleted_flag": 0, 
       "group_id": 0, 
       "id": 1, 
-      "last_login": "2015-09-04T01:50:06", 
+      "last_login": "2015-09-14T19:50:40", 
       "local_admin_flag": 1, 
 ...trimmed for brevity...
 </code></pre>
@@ -921,7 +925,7 @@ Report file '/tmp/out.json' written with 1604 bytes
 <li>Add CMDLINE TEST to name or url_regex in the JSON file</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>perl -p -i -e <span class="pl-s"><span class="pl-pds">'</span>s/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 481"/gm<span class="pl-pds">'</span></span> /tmp/out.json <span class="pl-k">&amp;&amp;</span> cat /tmp/out.json</pre></div>
+<div class="highlight highlight-source-shell"><pre>perl -p -i -e <span class="pl-s"><span class="pl-pds">'</span>s/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 9554"/gm<span class="pl-pds">'</span></span> /tmp/out.json <span class="pl-k">&amp;&amp;</span> cat /tmp/out.json</pre></div>
 
 <pre><code>{
   "_type": "users", 
@@ -931,9 +935,9 @@ Report file '/tmp/out.json' written with 1604 bytes
       "deleted_flag": 0, 
       "group_id": 0, 
       "id": 1, 
-      "last_login": "2015-09-04T01:50:06", 
+      "last_login": "2015-09-14T19:50:40", 
       "local_admin_flag": 1, 
-      "name": "Administrator CMDLINE TEST 481", 
+      "name": "Administrator CMDLINE TEST 9554", 
       "permissions": {
         "_type": "permissions", 
         "permission": [
@@ -1019,10 +1023,10 @@ Report file '/tmp/out.json' written with 1604 bytes
 <h1>
 <a id="user-content-create-a-new-user-from-the-modified-json-file" class="anchor" href="#create-a-new-user-from-the-modified-json-file" aria-hidden="true"><span class="octicon octicon-link"></span></a>Create a new user from the modified JSON file</h1>
 
-<div class="highlight highlight-bash"><pre>bin/create_user_from_json.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 -j <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.json<span class="pl-pds">"</span></span></pre></div>
+<div class="highlight highlight-source-shell"><pre>bin/create_user_from_json.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 -j <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.json<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-Created item: User, name: 'Administrator CMDLINE TEST 481', id: 267, ID: 267
+<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+Created item: User, name: 'Administrator CMDLINE TEST 9554', id: 30, ID: 30
 </code></pre>
 
 <ul>
@@ -1049,7 +1053,7 @@ Created item: User, name: 'Administrator CMDLINE TEST 481', id: 267, ID: 267
 <p><a href="#user-content-toc">TOC</a></p>
 
 <h6>
-<a id="user-content-generated-by-build_bin_doc-v210-date-thu-sep--3-215026-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v210-date-thu-sep--3-215026-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v2.1.0</code>, date: Thu Sep  3 21:50:26 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
+<a id="user-content-generated-by-build_bin_doc-v210-date-mon-sep-14-155107-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v210-date-mon-sep-14-155107-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v2.1.0</code>, date: Mon Sep 14 15:51:07 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
 </h6>
 
 </body></html>

@@ -3,20 +3,20 @@
   <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <t:return>
       <command>GetObject</command>
-      <session>1-8124-2e4dcdceff93cc65664578ec898fa7190fc0b05a844f54c98147bd3293f7247d868d00509b3faea024c0951d1da52cded99709795ce30114a47ed39966b18c44</session>
+      <session>1-687-994742215820b4a8d4a6d90dc1d0bbea6ab30fda6b1acf7f6e18fd6c00b0e7c6d48041d004e69fa26c5a9a5fc573845f06f5da16ea91e398128ab2a7be635bc8</session>
       <server_version>6.5.314.4301</server_version>
       <ID></ID>
       <IDType></IDType>
       <ContextID></ContextID>
       <result_object>
         <question>
-          <id>11644</id>
+          <id>797</id>
           <context_group>
             <id>0</id>
           </context_group>
           <expire_seconds>0</expire_seconds>
           <skip_lock_flag>0</skip_lock_flag>
-          <expiration>2015-09-05T05:52:27</expiration>
+          <expiration>2015-09-14T20:21:09</expiration>
           <user>
             <id>1</id>
             <name>Administrator</name>
@@ -37,7 +37,7 @@
                 <id>3</id>
                 <name>Computer Name</name>
                 <hash>3409330187</hash>
-                <string_count>3</string_count>
+                <string_count>5</string_count>
                 <category>Reserved</category>
                 <description>The assigned name of the client machine.
 Example: workstation-1.company.com</description>
@@ -84,7 +84,7 @@ Example: workstation-1.company.com</description>
             <not_flag>0</not_flag>
             <sub_groups>
               <group>
-                <id>3635</id>
+                <id>326</id>
                 <type>0</type>
                 <and_flag>1</and_flag>
                 <not_flag>0</not_flag>

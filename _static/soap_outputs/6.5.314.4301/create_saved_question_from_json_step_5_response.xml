@@ -3,7 +3,7 @@
   <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <t:return>
       <command>DeleteObject</command>
-      <session>1-8051-5dda5c3a7dea3e2bce6bc98a98262489d911d6be2824a3259bf0869a56a3a152ce6d53608f53315152fa90b7395e398380c07e0ce26a6e39be63e8dd20ad2d2d</session>
+      <session>1-614-48eb82387220130c7c27652700900120850043c88b3968975115cdbd53ed3716e09a5ac3b16fa16200196f19a6c3722a360bd4bda3663c5a6ce2b91a1dd571ca</session>
       <ID></ID>
       <IDType></IDType>
       <ContextID></ContextID>
@@ -15,19 +15,19 @@
           <archive_owner></archive_owner>
           <expire_seconds>600</expire_seconds>
           <hidden_flag>0</hidden_flag>
-          <id>254</id>
+          <id>114</id>
           <issue_seconds>120</issue_seconds>
           <issue_seconds_never_flag>0</issue_seconds_never_flag>
           <keep_seconds>0</keep_seconds>
-          <mod_time>2015-09-05T04:41:10</mod_time>
+          <mod_time>2015-09-14T19:52:45</mod_time>
           <mod_user>
             <name>Administrator</name>
           </mod_user>
-          <most_recent_question_id>11255</most_recent_question_id>
+          <most_recent_question_id>689</most_recent_question_id>
           <name>Has Tanium Standard Utilities API TEST</name>
           <packages>
             <package_spec>
-              <id>20</id>
+              <id>23</id>
               <name>Distribute Tanium Standard Utilities</name>
             </package_spec>
           </packages>
@@ -35,11 +35,11 @@
           <query_text>Get Has Tanium Standard Utilities from all machines</query_text>
           <question>
             <action_tracking_flag>0</action_tracking_flag>
-            <expiration>2015-09-05T02:29:18</expiration>
+            <expiration>2015-09-14T19:49:33</expiration>
             <expire_seconds>0</expire_seconds>
             <force_computer_id_flag>0</force_computer_id_flag>
             <hidden_flag>0</hidden_flag>
-            <id>11255</id>
+            <id>689</id>
             <management_rights_group>
               <id>0</id>
             </management_rights_group>
@@ -67,18 +67,18 @@
                 </filter>
                 <sensor>
                   <category>Tanium</category>
-                  <creation_time>2015-08-26T20:14:29</creation_time>
+                  <creation_time>2015-09-14T13:39:11</creation_time>
                   <delimiter>,</delimiter>
                   <description>Returns whether a machine has the Tanium Standard Utilities
 Example: Yes</description>
                   <exclude_from_parse_flag>1</exclude_from_parse_flag>
                   <hash>1782389954</hash>
                   <hidden_flag>0</hidden_flag>
-                  <id>194</id>
+                  <id>190</id>
                   <ignore_case_flag>1</ignore_case_flag>
                   <last_modified_by>Administrator</last_modified_by>
                   <max_age_seconds>900</max_age_seconds>
-                  <modification_time>2015-08-26T20:14:29</modification_time>
+                  <modification_time>2015-09-14T13:39:11</modification_time>
                   <name>Has Tanium Standard Utilities</name>
                   <queries>
                     <query>
@@ -105,7 +105,7 @@ Dim strDesiredGrepDepVersion,strGrepDepFileVersion,strGrepBinaryFileVersion
 
 ' The top line of the version file
 'Tanium File Version: &lt;version string below&gt;
-strDesiredVersion = "6.5.1.0011"
+strDesiredVersion = "6.5.2.0164"
 
 ' -------------------
 ' Binaries we can version
@@ -206,7 +206,7 @@ Function GetFileVersion(strPath)
 	If objFSO.FileExists(strPath) Then
 		GetFileVersion = objFSO.GetFileVersion(strPath)
 	Else
-		GetFileVerison = -1
+		GetFileVersion = -1
 	End If
 End Function 'GetFileVersion
 
@@ -215,23 +215,23 @@ Function GetTaniumDir(strSubDir)
 	Dim strPath
 	strComputer = "."
 	Const HKLM = &amp;h80000002
-    
+
 	key32Path = "Software\Tanium\Tanium Client"
 	key64Path = "Software\Wow6432Node\Tanium\Tanium Client"
-    
+
 	Set reg=GetObject("winmgmts:{impersonationLevel=impersonate}!\\" &amp; strComputer &amp; "\root\default:StdRegProv")
-    
+
 	If RegKeyExists(reg, HKLM, key64Path) Then
 		keyPath = key64Path
 	ElseIf RegKeyExists(reg, HKLM, key32Path) Then
 		keyPath = key32Path
 	End If
-    
+
 	reg.GetStringValue HKLM,keyPath,"Path", strPath
 
 	If strSubDir &lt;&gt; "" Then
 		strSubDir = "\" &amp; strSubDir
-	End If	
+	End If
 
 	Dim fso
 	Set fso = WScript.CreateObject("Scripting.FileSystemObject")
@@ -261,10 +261,10 @@ Function GetBitness
 	End If
 End Function 'GetBitness
 
-Function Is64 
+Function Is64
 	Dim objWMIService, colItems, objItem
 	Set objWMIService = GetObject("winmgmts:\\.\root\CIMV2")
-	Set colItems = objWMIService.ExecQuery("Select SystemType from Win32_ComputerSystem")    
+	Set colItems = objWMIService.ExecQuery("Select SystemType from Win32_ComputerSystem")
 	For Each objItem In colItems
 		If InStr(LCase(objItem.SystemType), "x64") &gt; 0 Then
 			Is64 = True
@@ -321,7 +321,7 @@ echo "N/A on AIX"</script>
                     </query>
                   </queries>
                   <source_id>0</source_id>
-                  <string_count>4</string_count>
+                  <string_count>5</string_count>
                   <value_type>String</value_type>
                 </sensor>
               </select>
@@ -344,7 +344,7 @@ echo "N/A on AIX"</script>
       <ResultXML></ResultXML>
       <result_object>
         <saved_question>
-          <id>254</id>
+          <id>114</id>
         </saved_question>
       </result_object>
     </t:return>

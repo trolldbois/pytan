@@ -10,7 +10,7 @@ Step 1 - Authenticate to the SOAP API via /auth
 
 * URL: https://10.0.1.240:443/auth
 * HTTP Method: GET
-* Elapsed Time: 0:00:00.010000
+* Elapsed Time: 0:00:00.012725
 * `Step 1 Request Body <../../_static/soap_outputs/6.5.314.4301/create_user_step_1_request.txt>`_
 * `Step 1 Response Body <../../_static/soap_outputs/6.5.314.4301/create_user_step_1_response.txt>`_
 
@@ -37,7 +37,7 @@ Step 1 - Authenticate to the SOAP API via /auth
     
     {
       "connection": "keep-alive", 
-      "content-length": "135", 
+      "content-length": "134", 
       "content-type": "text/plain; charset=us-ascii"
     }
 
@@ -47,7 +47,7 @@ Step 2 - Get the server version via /info.json
 
 * URL: https://10.0.1.240:443/info.json
 * HTTP Method: GET
-* Elapsed Time: 0:00:00.009611
+* Elapsed Time: 0:00:00.040827
 * `Step 2 Request Body <../../_static/soap_outputs/6.5.314.4301/create_user_step_2_request.txt>`_
 * `Step 2 Response Body <../../_static/soap_outputs/6.5.314.4301/create_user_step_2_response.json>`_
 
@@ -62,7 +62,7 @@ Step 2 - Get the server version via /info.json
       "Accept-Encoding": "gzip, deflate", 
       "Connection": "keep-alive", 
       "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-8045-527f9a2be1d144f83ffd0019e66b9ec6fc575e8314baa3427edea45e2925d0a4246050a6675426c4064492efa11d82f6583f3a44e27d632ed82aeaedcb01bc42"
+      "session": "1-608-bf782776cd0ff216acd619ea90ea7616a5faa8c11066cb99a239638d716e70d6fcd1f9fd271c903fbd3c5ad0f7175a6cdee1e0cd1828d798d35f6aa197bba0e2"
     }
 
 * Response Headers:
@@ -73,7 +73,7 @@ Step 2 - Get the server version via /info.json
     
     {
       "connection": "keep-alive", 
-      "content-length": "112028", 
+      "content-length": "19289", 
       "content-type": "application/json"
     }
 
@@ -83,7 +83,7 @@ Step 3 - Issue a GetObject to find the object to be deleted
 
 * URL: https://10.0.1.240:443/soap
 * HTTP Method: POST
-* Elapsed Time: 0:00:00.004036
+* Elapsed Time: 0:00:00.003331
 * `Step 3 Request Body <../../_static/soap_outputs/6.5.314.4301/create_user_step_3_request.xml>`_
 * `Step 3 Response Body <../../_static/soap_outputs/6.5.314.4301/create_user_step_3_response.xml>`_
 
@@ -100,7 +100,7 @@ Step 3 - Issue a GetObject to find the object to be deleted
       "Content-Length": "468", 
       "Content-Type": "text/xml; charset=utf-8", 
       "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-8045-527f9a2be1d144f83ffd0019e66b9ec6fc575e8314baa3427edea45e2925d0a4246050a6675426c4064492efa11d82f6583f3a44e27d632ed82aeaedcb01bc42"
+      "session": "1-608-bf782776cd0ff216acd619ea90ea7616a5faa8c11066cb99a239638d716e70d6fcd1f9fd271c903fbd3c5ad0f7175a6cdee1e0cd1828d798d35f6aa197bba0e2"
     }
 
 * Response Headers:
@@ -117,12 +117,12 @@ Step 3 - Issue a GetObject to find the object to be deleted
     }
 
 
-Step 4 - Issue a GetObject to find an object
+Step 4 - Issue a GetObject to find a user role
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 * URL: https://10.0.1.240:443/soap
 * HTTP Method: POST
-* Elapsed Time: 0:00:00.003715
+* Elapsed Time: 0:00:00.030474
 * `Step 4 Request Body <../../_static/soap_outputs/6.5.314.4301/create_user_step_4_request.xml>`_
 * `Step 4 Response Body <../../_static/soap_outputs/6.5.314.4301/create_user_step_4_response.xml>`_
 
@@ -139,7 +139,7 @@ Step 4 - Issue a GetObject to find an object
       "Content-Length": "468", 
       "Content-Type": "text/xml; charset=utf-8", 
       "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-8045-527f9a2be1d144f83ffd0019e66b9ec6fc575e8314baa3427edea45e2925d0a4246050a6675426c4064492efa11d82f6583f3a44e27d632ed82aeaedcb01bc42"
+      "session": "1-608-bf782776cd0ff216acd619ea90ea7616a5faa8c11066cb99a239638d716e70d6fcd1f9fd271c903fbd3c5ad0f7175a6cdee1e0cd1828d798d35f6aa197bba0e2"
     }
 
 * Response Headers:
@@ -161,7 +161,7 @@ Step 5 - Issue an AddObject to add a User object
 
 * URL: https://10.0.1.240:443/soap
 * HTTP Method: POST
-* Elapsed Time: 0:00:00.007147
+* Elapsed Time: 0:00:00.039295
 * `Step 5 Request Body <../../_static/soap_outputs/6.5.314.4301/create_user_step_5_request.xml>`_
 * `Step 5 Response Body <../../_static/soap_outputs/6.5.314.4301/create_user_step_5_response.xml>`_
 
@@ -178,7 +178,7 @@ Step 5 - Issue an AddObject to add a User object
       "Content-Length": "1792", 
       "Content-Type": "text/xml; charset=utf-8", 
       "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-8045-527f9a2be1d144f83ffd0019e66b9ec6fc575e8314baa3427edea45e2925d0a4246050a6675426c4064492efa11d82f6583f3a44e27d632ed82aeaedcb01bc42"
+      "session": "1-608-bf782776cd0ff216acd619ea90ea7616a5faa8c11066cb99a239638d716e70d6fcd1f9fd271c903fbd3c5ad0f7175a6cdee1e0cd1828d798d35f6aa197bba0e2"
     }
 
 * Response Headers:
@@ -200,7 +200,7 @@ Step 6 - Issue a GetObject on the recently added object in order to get the full
 
 * URL: https://10.0.1.240:443/soap
 * HTTP Method: POST
-* Elapsed Time: 0:00:00.003219
+* Elapsed Time: 0:00:00.254671
 * `Step 6 Request Body <../../_static/soap_outputs/6.5.314.4301/create_user_step_6_request.xml>`_
 * `Step 6 Response Body <../../_static/soap_outputs/6.5.314.4301/create_user_step_6_response.xml>`_
 
@@ -214,10 +214,10 @@ Step 6 - Issue a GetObject on the recently added object in order to get the full
       "Accept": "*/*", 
       "Accept-Encoding": "gzip", 
       "Connection": "keep-alive", 
-      "Content-Length": "2897", 
+      "Content-Length": "2896", 
       "Content-Type": "text/xml; charset=utf-8", 
       "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-8045-527f9a2be1d144f83ffd0019e66b9ec6fc575e8314baa3427edea45e2925d0a4246050a6675426c4064492efa11d82f6583f3a44e27d632ed82aeaedcb01bc42"
+      "session": "1-608-bf782776cd0ff216acd619ea90ea7616a5faa8c11066cb99a239638d716e70d6fcd1f9fd271c903fbd3c5ad0f7175a6cdee1e0cd1828d798d35f6aa197bba0e2"
     }
 
 * Response Headers:
@@ -239,7 +239,7 @@ Step 7 - Issue a GetObject to find the object to be deleted
 
 * URL: https://10.0.1.240:443/soap
 * HTTP Method: POST
-* Elapsed Time: 0:00:00.003458
+* Elapsed Time: 0:00:00.004353
 * `Step 7 Request Body <../../_static/soap_outputs/6.5.314.4301/create_user_step_7_request.xml>`_
 * `Step 7 Response Body <../../_static/soap_outputs/6.5.314.4301/create_user_step_7_response.xml>`_
 
@@ -256,7 +256,7 @@ Step 7 - Issue a GetObject to find the object to be deleted
       "Content-Length": "468", 
       "Content-Type": "text/xml; charset=utf-8", 
       "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-8045-527f9a2be1d144f83ffd0019e66b9ec6fc575e8314baa3427edea45e2925d0a4246050a6675426c4064492efa11d82f6583f3a44e27d632ed82aeaedcb01bc42"
+      "session": "1-608-bf782776cd0ff216acd619ea90ea7616a5faa8c11066cb99a239638d716e70d6fcd1f9fd271c903fbd3c5ad0f7175a6cdee1e0cd1828d798d35f6aa197bba0e2"
     }
 
 * Response Headers:
@@ -278,7 +278,7 @@ Step 8 - Issue a DeleteObject to delete an object
 
 * URL: https://10.0.1.240:443/soap
 * HTTP Method: POST
-* Elapsed Time: 0:00:00.007342
+* Elapsed Time: 0:00:00.009112
 * `Step 8 Request Body <../../_static/soap_outputs/6.5.314.4301/create_user_step_8_request.xml>`_
 * `Step 8 Response Body <../../_static/soap_outputs/6.5.314.4301/create_user_step_8_response.xml>`_
 
@@ -292,10 +292,10 @@ Step 8 - Issue a DeleteObject to delete an object
       "Accept": "*/*", 
       "Accept-Encoding": "gzip", 
       "Connection": "keep-alive", 
-      "Content-Length": "2846", 
+      "Content-Length": "2845", 
       "Content-Type": "text/xml; charset=utf-8", 
       "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-8045-527f9a2be1d144f83ffd0019e66b9ec6fc575e8314baa3427edea45e2925d0a4246050a6675426c4064492efa11d82f6583f3a44e27d632ed82aeaedcb01bc42"
+      "session": "1-608-bf782776cd0ff216acd619ea90ea7616a5faa8c11066cb99a239638d716e70d6fcd1f9fd271c903fbd3c5ad0f7175a6cdee1e0cd1828d798d35f6aa197bba0e2"
     }
 
 * Response Headers:

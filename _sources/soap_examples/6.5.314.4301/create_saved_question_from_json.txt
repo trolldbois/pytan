@@ -10,7 +10,7 @@ Step 1 - Authenticate to the SOAP API via /auth
 
 * URL: https://10.0.1.240:443/auth
 * HTTP Method: GET
-* Elapsed Time: 0:00:00.011258
+* Elapsed Time: 0:00:00.062562
 * `Step 1 Request Body <../../_static/soap_outputs/6.5.314.4301/create_saved_question_from_json_step_1_request.txt>`_
 * `Step 1 Response Body <../../_static/soap_outputs/6.5.314.4301/create_saved_question_from_json_step_1_response.txt>`_
 
@@ -37,7 +37,7 @@ Step 1 - Authenticate to the SOAP API via /auth
     
     {
       "connection": "keep-alive", 
-      "content-length": "135", 
+      "content-length": "134", 
       "content-type": "text/plain; charset=us-ascii"
     }
 
@@ -47,7 +47,7 @@ Step 2 - Get the server version via /info.json
 
 * URL: https://10.0.1.240:443/info.json
 * HTTP Method: GET
-* Elapsed Time: 0:00:00.015689
+* Elapsed Time: 0:00:00.013690
 * `Step 2 Request Body <../../_static/soap_outputs/6.5.314.4301/create_saved_question_from_json_step_2_request.txt>`_
 * `Step 2 Response Body <../../_static/soap_outputs/6.5.314.4301/create_saved_question_from_json_step_2_response.json>`_
 
@@ -62,7 +62,7 @@ Step 2 - Get the server version via /info.json
       "Accept-Encoding": "gzip, deflate", 
       "Connection": "keep-alive", 
       "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-8051-5dda5c3a7dea3e2bce6bc98a98262489d911d6be2824a3259bf0869a56a3a152ce6d53608f53315152fa90b7395e398380c07e0ce26a6e39be63e8dd20ad2d2d"
+      "session": "1-614-48eb82387220130c7c27652700900120850043c88b3968975115cdbd53ed3716e09a5ac3b16fa16200196f19a6c3722a360bd4bda3663c5a6ce2b91a1dd571ca"
     }
 
 * Response Headers:
@@ -73,7 +73,7 @@ Step 2 - Get the server version via /info.json
     
     {
       "connection": "keep-alive", 
-      "content-length": "112028", 
+      "content-length": "19291", 
       "content-type": "application/json"
     }
 
@@ -83,7 +83,7 @@ Step 3 - Issue a GetObject to find an object
 
 * URL: https://10.0.1.240:443/soap
 * HTTP Method: POST
-* Elapsed Time: 0:00:00.013993
+* Elapsed Time: 0:00:00.010951
 * `Step 3 Request Body <../../_static/soap_outputs/6.5.314.4301/create_saved_question_from_json_step_3_request.xml>`_
 * `Step 3 Response Body <../../_static/soap_outputs/6.5.314.4301/create_saved_question_from_json_step_3_response.xml>`_
 
@@ -100,7 +100,7 @@ Step 3 - Issue a GetObject to find an object
       "Content-Length": "502", 
       "Content-Type": "text/xml; charset=utf-8", 
       "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-8051-5dda5c3a7dea3e2bce6bc98a98262489d911d6be2824a3259bf0869a56a3a152ce6d53608f53315152fa90b7395e398380c07e0ce26a6e39be63e8dd20ad2d2d"
+      "session": "1-614-48eb82387220130c7c27652700900120850043c88b3968975115cdbd53ed3716e09a5ac3b16fa16200196f19a6c3722a360bd4bda3663c5a6ce2b91a1dd571ca"
     }
 
 * Response Headers:
@@ -122,7 +122,7 @@ Step 4 - Issue a GetObject to find the object to be deleted
 
 * URL: https://10.0.1.240:443/soap
 * HTTP Method: POST
-* Elapsed Time: 0:00:00.006665
+* Elapsed Time: 0:00:00.049034
 * `Step 4 Request Body <../../_static/soap_outputs/6.5.314.4301/create_saved_question_from_json_step_4_request.xml>`_
 * `Step 4 Response Body <../../_static/soap_outputs/6.5.314.4301/create_saved_question_from_json_step_4_response.xml>`_
 
@@ -139,7 +139,7 @@ Step 4 - Issue a GetObject to find the object to be deleted
       "Content-Length": "543", 
       "Content-Type": "text/xml; charset=utf-8", 
       "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-8051-5dda5c3a7dea3e2bce6bc98a98262489d911d6be2824a3259bf0869a56a3a152ce6d53608f53315152fa90b7395e398380c07e0ce26a6e39be63e8dd20ad2d2d"
+      "session": "1-614-48eb82387220130c7c27652700900120850043c88b3968975115cdbd53ed3716e09a5ac3b16fa16200196f19a6c3722a360bd4bda3663c5a6ce2b91a1dd571ca"
     }
 
 * Response Headers:
@@ -161,7 +161,7 @@ Step 5 - Issue a DeleteObject to delete an object
 
 * URL: https://10.0.1.240:443/soap
 * HTTP Method: POST
-* Elapsed Time: 0:00:00.004861
+* Elapsed Time: 0:00:00.037303
 * `Step 5 Request Body <../../_static/soap_outputs/6.5.314.4301/create_saved_question_from_json_step_5_request.xml>`_
 * `Step 5 Response Body <../../_static/soap_outputs/6.5.314.4301/create_saved_question_from_json_step_5_response.xml>`_
 
@@ -175,10 +175,10 @@ Step 5 - Issue a DeleteObject to delete an object
       "Accept": "*/*", 
       "Accept-Encoding": "gzip", 
       "Connection": "keep-alive", 
-      "Content-Length": "11008", 
+      "Content-Length": "10982", 
       "Content-Type": "text/xml; charset=utf-8", 
       "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-8051-5dda5c3a7dea3e2bce6bc98a98262489d911d6be2824a3259bf0869a56a3a152ce6d53608f53315152fa90b7395e398380c07e0ce26a6e39be63e8dd20ad2d2d"
+      "session": "1-614-48eb82387220130c7c27652700900120850043c88b3968975115cdbd53ed3716e09a5ac3b16fa16200196f19a6c3722a360bd4bda3663c5a6ce2b91a1dd571ca"
     }
 
 * Response Headers:
@@ -200,7 +200,7 @@ Step 6 - Issue an AddObject to add an object
 
 * URL: https://10.0.1.240:443/soap
 * HTTP Method: POST
-* Elapsed Time: 0:00:00.006915
+* Elapsed Time: 0:00:00.008286
 * `Step 6 Request Body <../../_static/soap_outputs/6.5.314.4301/create_saved_question_from_json_step_6_request.xml>`_
 * `Step 6 Response Body <../../_static/soap_outputs/6.5.314.4301/create_saved_question_from_json_step_6_response.xml>`_
 
@@ -214,10 +214,10 @@ Step 6 - Issue an AddObject to add an object
       "Accept": "*/*", 
       "Accept-Encoding": "gzip", 
       "Connection": "keep-alive", 
-      "Content-Length": "11047", 
+      "Content-Length": "11021", 
       "Content-Type": "text/xml; charset=utf-8", 
       "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-8051-5dda5c3a7dea3e2bce6bc98a98262489d911d6be2824a3259bf0869a56a3a152ce6d53608f53315152fa90b7395e398380c07e0ce26a6e39be63e8dd20ad2d2d"
+      "session": "1-614-48eb82387220130c7c27652700900120850043c88b3968975115cdbd53ed3716e09a5ac3b16fa16200196f19a6c3722a360bd4bda3663c5a6ce2b91a1dd571ca"
     }
 
 * Response Headers:
@@ -228,7 +228,7 @@ Step 6 - Issue an AddObject to add an object
     
     {
       "connection": "keep-alive", 
-      "content-length": "831", 
+      "content-length": "830", 
       "content-type": "text/xml;charset=UTF-8"
     }
 
@@ -238,7 +238,7 @@ Step 7 - Issue a GetObject on the recently added object in order to get the full
 
 * URL: https://10.0.1.240:443/soap
 * HTTP Method: POST
-* Elapsed Time: 0:00:00.007447
+* Elapsed Time: 0:00:00.268103
 * `Step 7 Request Body <../../_static/soap_outputs/6.5.314.4301/create_saved_question_from_json_step_7_request.xml>`_
 * `Step 7 Response Body <../../_static/soap_outputs/6.5.314.4301/create_saved_question_from_json_step_7_response.xml>`_
 
@@ -255,7 +255,7 @@ Step 7 - Issue a GetObject on the recently added object in order to get the full
       "Content-Length": "555", 
       "Content-Type": "text/xml; charset=utf-8", 
       "User-Agent": "python-requests/2.7.0 CPython/2.7.10 Darwin/14.5.0", 
-      "session": "1-8051-5dda5c3a7dea3e2bce6bc98a98262489d911d6be2824a3259bf0869a56a3a152ce6d53608f53315152fa90b7395e398380c07e0ce26a6e39be63e8dd20ad2d2d"
+      "session": "1-614-48eb82387220130c7c27652700900120850043c88b3968975115cdbd53ed3716e09a5ac3b16fa16200196f19a6c3722a360bd4bda3663c5a6ce2b91a1dd571ca"
     }
 
 * Response Headers:

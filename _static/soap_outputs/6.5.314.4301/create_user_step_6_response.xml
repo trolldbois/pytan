@@ -3,14 +3,14 @@
   <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <t:return>
       <command>GetObject</command>
-      <session>1-8045-527f9a2be1d144f83ffd0019e66b9ec6fc575e8314baa3427edea45e2925d0a4246050a6675426c4064492efa11d82f6583f3a44e27d632ed82aeaedcb01bc42</session>
+      <session>1-608-bf782776cd0ff216acd619ea90ea7616a5faa8c11066cb99a239638d716e70d6fcd1f9fd271c903fbd3c5ad0f7175a6cdee1e0cd1828d798d35f6aa197bba0e2</session>
       <server_version>6.5.314.4301</server_version>
       <ID></ID>
       <IDType></IDType>
       <ContextID></ContextID>
       <result_object>
         <user>
-          <id>310</id>
+          <id>35</id>
           <name>API Test User</name>
           <domain></domain>
           <group_id>0</group_id>

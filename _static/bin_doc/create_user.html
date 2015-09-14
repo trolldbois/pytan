@@ -784,7 +784,7 @@ body .task-list{
 <li>If running this script on Windows, use the batch script in the winbin/create_user.bat so that python is called correctly.</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>create_user.py -h</pre></div>
+<div class="highlight highlight-source-shell"><pre>create_user.py -h</pre></div>
 
 <pre><code>usage: create_user.py [-h] [-u USERNAME] [-p PASSWORD]
                       [--session_id SESSION_ID] [--host HOST] [--port PORT]
@@ -875,10 +875,22 @@ Create User Options:
 <li>This may or may not fail -- thats fine!</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>bin/delete_user.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>CMDLINE TEST user<span class="pl-pds">"</span></span></pre></div>
+<div class="highlight highlight-source-shell"><pre>bin/delete_user.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>CMDLINE TEST user<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.2 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-Deleted item:  User, name: 'CMDLINE TEST user', id: 329
+<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+
+
+Error occurred: No results found searching for user with {'id': [], 'name': ['CMDLINE TEST user']}!!
+</code></pre>
+
+<pre lang="STDERR"><code>Traceback (most recent call last):
+  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2043, in process_delete_object_args
+    response = handler.delete(**obj_grp_args)
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1775, in delete
+    objs_to_del = self.get(objtype=objtype, pytan_help=h, **clean_kwargs)
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 2116, in get
+    raise pytan.exceptions.HandlerError(err(objtype, err_args))
+HandlerError: No results found searching for user with {'id': [], 'name': ['CMDLINE TEST user']}!!
 </code></pre>
 
 <ul>
@@ -903,10 +915,10 @@ Deleted item:  User, name: 'CMDLINE TEST user', id: 329
 <li>Create a property named property name with the value property value on the new user</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>bin/create_user.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>CMDLINE TEST user<span class="pl-pds">"</span></span> --rolename <span class="pl-s"><span class="pl-pds">"</span>Administrator<span class="pl-pds">"</span></span> --property <span class="pl-s"><span class="pl-pds">"</span>property name<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>property value<span class="pl-pds">"</span></span></pre></div>
+<div class="highlight highlight-source-shell"><pre>bin/create_user.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>CMDLINE TEST user<span class="pl-pds">"</span></span> --rolename <span class="pl-s"><span class="pl-pds">"</span>Administrator<span class="pl-pds">"</span></span> --property <span class="pl-s"><span class="pl-pds">"</span>property name<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>property value<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.2 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-New user 'CMDLINE TEST user' created with ID 330, roles: 'Administrator', group id: 0
+<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+New user 'CMDLINE TEST user' created with ID 28, roles: 'Administrator', group id: 0
 </code></pre>
 
 <ul>
@@ -939,10 +951,10 @@ New user 'CMDLINE TEST user' created with ID 330, roles: 'Administrator', group 
 <li>Delete the user by name</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>bin/delete_user.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>CMDLINE TEST user<span class="pl-pds">"</span></span></pre></div>
+<div class="highlight highlight-source-shell"><pre>bin/delete_user.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>CMDLINE TEST user<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.2 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-Deleted item:  User, name: 'CMDLINE TEST user', id: 330
+<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+Deleted item:  User, name: 'CMDLINE TEST user', id: 28
 </code></pre>
 
 <ul>
@@ -976,20 +988,20 @@ Deleted item:  User, name: 'CMDLINE TEST user', id: 330
 <li>This may or may not fail -- thats fine!</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>bin/delete_user.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>CMDLINE TEST user<span class="pl-pds">"</span></span></pre></div>
+<div class="highlight highlight-source-shell"><pre>bin/delete_user.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>CMDLINE TEST user<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.2 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 
 
 Error occurred: No results found searching for user with {'id': [], 'name': ['CMDLINE TEST user']}!!
 </code></pre>
 
 <pre lang="STDERR"><code>Traceback (most recent call last):
-  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 1711, in process_delete_object_args
+  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2043, in process_delete_object_args
     response = handler.delete(**obj_grp_args)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1735, in delete
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1775, in delete
     objs_to_del = self.get(objtype=objtype, pytan_help=h, **clean_kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 2072, in get
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 2116, in get
     raise pytan.exceptions.HandlerError(err(objtype, err_args))
 HandlerError: No results found searching for user with {'id': [], 'name': ['CMDLINE TEST user']}!!
 </code></pre>
@@ -1016,10 +1028,10 @@ HandlerError: No results found searching for user with {'id': [], 'name': ['CMDL
 <li>Create a property named property name with the value property value on the new user</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>bin/create_user.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>CMDLINE TEST user<span class="pl-pds">"</span></span> --rolename <span class="pl-s"><span class="pl-pds">"</span>Administrator<span class="pl-pds">"</span></span> --property <span class="pl-s"><span class="pl-pds">"</span>property name<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>property value<span class="pl-pds">"</span></span> -g <span class="pl-s"><span class="pl-pds">"</span>All Computers<span class="pl-pds">"</span></span></pre></div>
+<div class="highlight highlight-source-shell"><pre>bin/create_user.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>CMDLINE TEST user<span class="pl-pds">"</span></span> --rolename <span class="pl-s"><span class="pl-pds">"</span>Administrator<span class="pl-pds">"</span></span> --property <span class="pl-s"><span class="pl-pds">"</span>property name<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>property value<span class="pl-pds">"</span></span> -g <span class="pl-s"><span class="pl-pds">"</span>All Computers<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.2 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-New user 'CMDLINE TEST user' created with ID 331, roles: 'Administrator', group id: 64
+<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+New user 'CMDLINE TEST user' created with ID 29, roles: 'Administrator', group id: 62
 </code></pre>
 
 <ul>
@@ -1052,10 +1064,10 @@ New user 'CMDLINE TEST user' created with ID 331, roles: 'Administrator', group 
 <li>Delete the user by name</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>bin/delete_user.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>CMDLINE TEST user<span class="pl-pds">"</span></span></pre></div>
+<div class="highlight highlight-source-shell"><pre>bin/delete_user.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>CMDLINE TEST user<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.2 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-Deleted item:  User, name: 'CMDLINE TEST user', id: 331
+<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+Deleted item:  User, name: 'CMDLINE TEST user', id: 29
 </code></pre>
 
 <ul>
@@ -1082,7 +1094,7 @@ Deleted item:  User, name: 'CMDLINE TEST user', id: 331
 <p><a href="#user-content-toc">TOC</a></p>
 
 <h6>
-<a id="user-content-generated-by-build_bin_doc-v210-date-wed-sep--9-112946-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v210-date-wed-sep--9-112946-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v2.1.0</code>, date: Wed Sep  9 11:29:46 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
+<a id="user-content-generated-by-build_bin_doc-v210-date-mon-sep-14-155103-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v210-date-mon-sep-14-155103-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v2.1.0</code>, date: Mon Sep 14 15:51:03 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
 </h6>
 
 </body></html>

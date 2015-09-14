@@ -10,7 +10,7 @@
             <filters>
               <filter>
                 <not_flag>0</not_flag>
-                <value>.*Google (Search|Chrome).*</value>
+                <value>.*Google.*</value>
                 <ignore_case_flag>1</ignore_case_flag>
                 <operator>RegexMatch</operator>
                 <sensor>
@@ -43,7 +43,7 @@
             <select>
               <filter>
                 <not_flag>0</not_flag>
-                <value>.*Google (Search|Chrome).*</value>
+                <value>.*Google.*</value>
                 <operator>RegexMatch</operator>
                 <sensor>
                   <hash>1511329504</hash>

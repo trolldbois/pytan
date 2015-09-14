@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>7.8.4. Ask Manual Question Sensor With Parameters And Some Supplied Parameters &mdash; PyTan v2.1.3 2.1.3 documentation</title>
+  <title>8.8.9. Ask Manual Question Sensor With Parameters And Some Supplied Parameters &mdash; PyTan v2.1.4 2.1.4 documentation</title>
   
 
   
@@ -28,10 +28,10 @@
   
 
   
-    <link rel="top" title="PyTan v2.1.3 2.1.3 documentation" href="../index.html"/>
-        <link rel="up" title="7.8. PyTan API Valid Questions Examples" href="valid_questions.html"/>
-        <link rel="next" title="7.8.5. Ask Manual Question Multiple Sensors With Parameters And Some Supplied Parameters" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html"/>
-        <link rel="prev" title="7.8.3. Ask Manual Question Multiple Sensors Identified By Name" href="ask_manual_question_multiple_sensors_identified_by_name.html"/> 
+    <link rel="top" title="PyTan v2.1.4 2.1.4 documentation" href="../index.html"/>
+        <link rel="up" title="8.8. PyTan API Valid Questions Examples" href="valid_questions.html"/>
+        <link rel="next" title="8.8.10. Ask Manual Question Multiple Sensors With Parameters And Some Supplied Parameters" href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html"/>
+        <link rel="prev" title="8.8.8. Ask Manual Question Multiple Sensors Identified By Name" href="ask_manual_question_multiple_sensors_identified_by_name.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -46,7 +46,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-nav-search">
         
-          <a href="../index.html" class="fa fa-home"> PyTan v2.1.3</a>
+          <a href="../index.html" class="fa fa-home"> PyTan v2.1.4</a>
         
         
 <div role="search">
@@ -100,6 +100,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../other_packages.html#threaded-http-package">5.2. threaded_http Package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../other_packages.html#xmltodict-package">5.3. xmltodict Package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../other_packages.html#ddt-package">5.4. ddt Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../other_packages.html#pyreadline-package">5.5. pyreadline Package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../pytan_validation_index.html">6. PyTan API Validation Tests</a><ul>
@@ -114,28 +115,29 @@
 <li class="toctree-l2"><a class="reference internal" href="../valid_pytan_tests/pytan_validation_test-6.5.314.4301-Windows_2008ServerR2_SP1-2.7.9.html">6.9. Tanium: 6.5.314.4301, OS: Windows 2008ServerR2 SP1, Python: 2.7.9</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="reference internal" href="pytan_examples.html">7. PyTan API Examples</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="pytan_api_basic_handler_example.html">7.1. PyTan API Basic Handler Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="valid_create_object.html">7.2. PyTan API Valid Create Object Examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="valid_create_object_from_json.html">7.3. PyTan API Valid Create Object From JSON Examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="valid_deploy_action.html">7.4. PyTan API Valid Deploy Action Examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="valid_export_basetype.html">7.5. PyTan API Valid Export Basetype Examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="valid_export_resultset.html">7.6. PyTan API Valid Export ResultSet Examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="valid_get_object.html">7.7. PyTan API Valid Get Object Examples</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="valid_questions.html">7.8. PyTan API Valid Questions Examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="valid_saved_questions.html">7.9. PyTan API Valid Saved Questions Examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="invalid_create_object.html">7.10. PyTan API Invalid Create Object Examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="invalid_create_object_from_json.html">7.11. PyTan API Invalid Create Object From JSON Examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="invalid_deploy_action.html">7.12. PyTan API Invalid Deploy Action Examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="invalid_export_basetype.html">7.13. PyTan API Invalid Export Basetype Examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="invalid_export_resultset.html">7.14. PyTan API Invalid Export ResultSet Examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="invalid_get_object.html">7.15. PyTan API Invalid Get Object Examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="invalid_questions.html">7.16. PyTan API Invalid Questions Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pytan_command_line.html">7. PyTan Command Line Help</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="pytan_examples.html">8. PyTan API Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pytan_api_basic_handler_example.html">8.1. PyTan API Basic Handler Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="valid_create_object.html">8.2. PyTan API Valid Create Object Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="valid_create_object_from_json.html">8.3. PyTan API Valid Create Object From JSON Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="valid_deploy_action.html">8.4. PyTan API Valid Deploy Action Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="valid_export_basetype.html">8.5. PyTan API Valid Export Basetype Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="valid_export_resultset.html">8.6. PyTan API Valid Export ResultSet Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="valid_get_object.html">8.7. PyTan API Valid Get Object Examples</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="valid_questions.html">8.8. PyTan API Valid Questions Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="valid_saved_questions.html">8.9. PyTan API Valid Saved Questions Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="invalid_create_object.html">8.10. PyTan API Invalid Create Object Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="invalid_create_object_from_json.html">8.11. PyTan API Invalid Create Object From JSON Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="invalid_deploy_action.html">8.12. PyTan API Invalid Deploy Action Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="invalid_export_basetype.html">8.13. PyTan API Invalid Export Basetype Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="invalid_export_resultset.html">8.14. PyTan API Invalid Export ResultSet Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="invalid_get_object.html">8.15. PyTan API Invalid Get Object Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="invalid_questions.html">8.16. PyTan API Invalid Questions Examples</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../soap_examples_index.html">8. SOAP API Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../soap_examples/6.2.314.3321/soap_examples_6.2.314.3321.html">8.1. SOAP API Examples for Platform Version 6.2.314.3321</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../soap_examples/6.5.314.4301/soap_examples_6.5.314.4301.html">8.2. SOAP API Examples for Platform Version 6.5.314.4301</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../soap_examples_index.html">9. SOAP API Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../soap_examples/6.2.314.3321/soap_examples_6.2.314.3321.html">9.1. SOAP API Examples for Platform Version 6.2.314.3321</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../soap_examples/6.5.314.4301/soap_examples_6.5.314.4301.html">9.2. SOAP API Examples for Platform Version 6.5.314.4301</a></li>
 </ul>
 </li>
 </ul>
@@ -151,7 +153,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../index.html">PyTan v2.1.3</a>
+        <a href="../index.html">PyTan v2.1.4</a>
       </nav>
 
 
@@ -162,11 +164,11 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../index.html">Docs</a> &raquo;</li>
       
-          <li><a href="pytan_examples.html">7. PyTan API Examples</a> &raquo;</li>
+          <li><a href="pytan_examples.html">8. PyTan API Examples</a> &raquo;</li>
       
-          <li><a href="valid_questions.html">7.8. PyTan API Valid Questions Examples</a> &raquo;</li>
+          <li><a href="valid_questions.html">8.8. PyTan API Valid Questions Examples</a> &raquo;</li>
       
-    <li>7.8.4. Ask Manual Question Sensor With Parameters And Some Supplied Parameters</li>
+    <li>8.8.9. Ask Manual Question Sensor With Parameters And Some Supplied Parameters</li>
       <li class="wy-breadcrumbs-aside">
         
           <a href="../_sources/examples/ask_manual_question_sensor_with_parameters_and_some_supplied_parameters.txt" rel="nofollow"> View page source</a>
@@ -178,7 +180,7 @@
           <div role="main" class="document">
             
   <div class="section" id="ask-manual-question-sensor-with-parameters-and-some-supplied-parameters">
-<h1>7.8.4. Ask Manual Question Sensor With Parameters And Some Supplied Parameters<a class="headerlink" href="#ask-manual-question-sensor-with-parameters-and-some-supplied-parameters" title="Permalink to this headline">¶</a></h1>
+<h1>8.8.9. Ask Manual Question Sensor With Parameters And Some Supplied Parameters<a class="headerlink" href="#ask-manual-question-sensor-with-parameters-and-some-supplied-parameters" title="Permalink to this headline">¶</a></h1>
 <p>Ask a manual question using human strings by referencing the name of a single sensor that takes parameters, but supplying only two of the four parameters that are used by the sensor (and letting pytan automatically determine the appropriate default value for those parameters which require a value and none was supplied).</p>
 <p>No sensor filters, sensor parameters, sensor filter options, question filters, or question options supplied.</p>
 <ul class="simple">
@@ -274,7 +276,8 @@
 86
 87
 88
-89</pre></div></td><td class="code"><div class="highlight"><pre><span class="c"># import the basic python packages we need</span>
+89
+90</pre></div></td><td class="code"><div class="highlight"><pre><span class="c"># import the basic python packages we need</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">tempfile</span>
@@ -333,7 +336,7 @@
 
 <span class="c"># setup the arguments for the handler() class</span>
 <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="n">kwargs</span><span class="p">[</span><span class="s">&quot;sensors&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;Folder Name Search with RegEx Match{dirname=Program Files,regex=Microsoft.*}&#39;</span>
+<span class="n">kwargs</span><span class="p">[</span><span class="s">&quot;sensors&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;Folder Contents{folderPath=C:</span><span class="se">\\</span><span class="s">Program Files}&#39;</span>
 <span class="n">kwargs</span><span class="p">[</span><span class="s">&quot;qtype&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&#39;manual&#39;</span>
 
 <span class="k">print</span> <span class="s">&quot;...CALLING: handler.ask with args: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
@@ -347,22 +350,23 @@
 <span class="k">print</span> <span class="s">&quot;...OUTPUT: Equivalent Question if it were to be asked in the Tanium Console: &quot;</span>
 <span class="k">print</span> <span class="n">response</span><span class="p">[</span><span class="s">&#39;question_object&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">query_text</span>
 
-<span class="c"># call the export_obj() method to convert response to CSV and store it in out</span>
-<span class="n">export_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="n">export_kwargs</span><span class="p">[</span><span class="s">&#39;obj&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s">&#39;question_results&#39;</span><span class="p">]</span>
-<span class="n">export_kwargs</span><span class="p">[</span><span class="s">&#39;export_format&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;csv&#39;</span>
+<span class="k">if</span> <span class="n">response</span><span class="p">[</span><span class="s">&#39;question_results&#39;</span><span class="p">]:</span>
+    <span class="c"># call the export_obj() method to convert response to CSV and store it in out</span>
+    <span class="n">export_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">export_kwargs</span><span class="p">[</span><span class="s">&#39;obj&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s">&#39;question_results&#39;</span><span class="p">]</span>
+    <span class="n">export_kwargs</span><span class="p">[</span><span class="s">&#39;export_format&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;csv&#39;</span>
 
-<span class="k">print</span> <span class="s">&quot;...CALLING: handler.export_obj() with args {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">export_kwargs</span><span class="p">)</span>
-<span class="n">out</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">export_obj</span><span class="p">(</span><span class="o">**</span><span class="n">export_kwargs</span><span class="p">)</span>
+    <span class="k">print</span> <span class="s">&quot;...CALLING: handler.export_obj() with args {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">export_kwargs</span><span class="p">)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">export_obj</span><span class="p">(</span><span class="o">**</span><span class="n">export_kwargs</span><span class="p">)</span>
 
-<span class="c"># trim the output if it is more than 15 lines long</span>
-<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">splitlines</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">15</span><span class="p">:</span>
-    <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[</span><span class="mi">0</span><span class="p">:</span><span class="mi">15</span><span class="p">]</span>
-    <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;..trimmed for brevity..&#39;</span><span class="p">)</span>
-    <span class="n">out</span> <span class="o">=</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+    <span class="c"># trim the output if it is more than 15 lines long</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">splitlines</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">15</span><span class="p">:</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[</span><span class="mi">0</span><span class="p">:</span><span class="mi">15</span><span class="p">]</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;..trimmed for brevity..&#39;</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
 
-<span class="k">print</span> <span class="s">&quot;...OUTPUT: CSV Results of response: &quot;</span>
-<span class="k">print</span> <span class="n">out</span>
+    <span class="k">print</span> <span class="s">&quot;...OUTPUT: CSV Results of response: &quot;</span>
+    <span class="k">print</span> <span class="n">out</span>
 </pre></div>
 </td></tr></table></div>
 <p class="rubric">Footnotes</p>
@@ -380,10 +384,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html" class="btn btn-neutral float-right" title="7.8.5. Ask Manual Question Multiple Sensors With Parameters And Some Supplied Parameters">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="ask_manual_question_multiple_sensors_with_parameters_and_some_supplied_parameters.html" class="btn btn-neutral float-right" title="8.8.10. Ask Manual Question Multiple Sensors With Parameters And Some Supplied Parameters">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="ask_manual_question_multiple_sensors_identified_by_name.html" class="btn btn-neutral" title="7.8.3. Ask Manual Question Multiple Sensors Identified By Name"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="ask_manual_question_multiple_sensors_identified_by_name.html" class="btn btn-neutral" title="8.8.8. Ask Manual Question Multiple Sensors Identified By Name"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -393,7 +397,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Sep 09, 2015.
+      Last updated on Sep 14, 2015.
     </p>
   </div>
 
@@ -414,7 +418,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'2.1.3',
+            VERSION:'2.1.4',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

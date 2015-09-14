@@ -5,7 +5,7 @@
       <command>DeleteObject</command>
       <object_list>
         <saved_question>
-          <mod_time>2015-09-05T04:41:10</mod_time>
+          <mod_time>2015-09-14T19:52:45</mod_time>
           <expire_seconds>600</expire_seconds>
           <row_count_flag>0</row_count_flag>
           <name>Has Tanium Standard Utilities API TEST</name>
@@ -18,8 +18,8 @@
           <keep_seconds>0</keep_seconds>
           <issue_seconds_never_flag>0</issue_seconds_never_flag>
           <query_text>Get Has Tanium Standard Utilities from all machines</query_text>
-          <id>254</id>
-          <most_recent_question_id>11255</most_recent_question_id>
+          <id>114</id>
+          <most_recent_question_id>689</most_recent_question_id>
           <mod_user>
             <name>Administrator</name>
           </mod_user>
@@ -27,11 +27,11 @@
             <hidden_flag>0</hidden_flag>
             <skip_lock_flag>0</skip_lock_flag>
             <query_text>Get Has Tanium Standard Utilities from all machines</query_text>
-            <id>11255</id>
+            <id>689</id>
             <expire_seconds>0</expire_seconds>
             <force_computer_id_flag>0</force_computer_id_flag>
             <action_tracking_flag>0</action_tracking_flag>
-            <expiration>2015-09-05T02:29:18</expiration>
+            <expiration>2015-09-14T19:49:33</expiration>
             <user>
               <name>Administrator</name>
               <id>1</id>
@@ -63,16 +63,16 @@
                   <name>Has Tanium Standard Utilities</name>
                   <hidden_flag>0</hidden_flag>
                   <delimiter>,</delimiter>
-                  <creation_time>2015-08-26T20:14:29</creation_time>
+                  <creation_time>2015-09-14T13:39:11</creation_time>
                   <exclude_from_parse_flag>1</exclude_from_parse_flag>
                   <last_modified_by>Administrator</last_modified_by>
-                  <string_count>4</string_count>
-                  <modification_time>2015-08-26T20:14:29</modification_time>
+                  <string_count>5</string_count>
+                  <modification_time>2015-09-14T13:39:11</modification_time>
                   <ignore_case_flag>1</ignore_case_flag>
                   <max_age_seconds>900</max_age_seconds>
                   <value_type>String</value_type>
                   <source_id>0</source_id>
-                  <id>194</id>
+                  <id>190</id>
                   <description>Returns whether a machine has the Tanium Standard Utilities
 Example: Yes</description>
                   <queries>
@@ -101,7 +101,7 @@ Dim strDesiredGrepDepVersion,strGrepDepFileVersion,strGrepBinaryFileVersion
 
 &amp;#039; The top line of the version file
 &amp;#039;Tanium File Version: &amp;lt;version string below&amp;gt;
-strDesiredVersion = &amp;quot;6.5.1.0011&amp;quot;
+strDesiredVersion = &amp;quot;6.5.2.0164&amp;quot;
 
 &amp;#039; -------------------
 &amp;#039; Binaries we can version
@@ -202,7 +202,7 @@ Function GetFileVersion(strPath)
 	If objFSO.FileExists(strPath) Then
 		GetFileVersion = objFSO.GetFileVersion(strPath)
 	Else
-		GetFileVerison = -1
+		GetFileVersion = -1
 	End If
 End Function &amp;#039;GetFileVersion
 
@@ -211,23 +211,23 @@ Function GetTaniumDir(strSubDir)
 	Dim strPath
 	strComputer = &amp;quot;.&amp;quot;
 	Const HKLM = &amp;amp;h80000002
-    
+
 	key32Path = &amp;quot;Software\Tanium\Tanium Client&amp;quot;
 	key64Path = &amp;quot;Software\Wow6432Node\Tanium\Tanium Client&amp;quot;
-    
+
 	Set reg=GetObject(&amp;quot;winmgmts:{impersonationLevel=impersonate}!\\&amp;quot; &amp;amp; strComputer &amp;amp; &amp;quot;\root\default:StdRegProv&amp;quot;)
-    
+
 	If RegKeyExists(reg, HKLM, key64Path) Then
 		keyPath = key64Path
 	ElseIf RegKeyExists(reg, HKLM, key32Path) Then
 		keyPath = key32Path
 	End If
-    
+
 	reg.GetStringValue HKLM,keyPath,&amp;quot;Path&amp;quot;, strPath
 
 	If strSubDir &amp;lt;&amp;gt; &amp;quot;&amp;quot; Then
 		strSubDir = &amp;quot;\&amp;quot; &amp;amp; strSubDir
-	End If	
+	End If
 
 	Dim fso
 	Set fso = WScript.CreateObject(&amp;quot;Scripting.FileSystemObject&amp;quot;)
@@ -257,10 +257,10 @@ Function GetBitness
 	End If
 End Function &amp;#039;GetBitness
 
-Function Is64 
+Function Is64
 	Dim objWMIService, colItems, objItem
 	Set objWMIService = GetObject(&amp;quot;winmgmts:\\.\root\CIMV2&amp;quot;)
-	Set colItems = objWMIService.ExecQuery(&amp;quot;Select SystemType from Win32_ComputerSystem&amp;quot;)    
+	Set colItems = objWMIService.ExecQuery(&amp;quot;Select SystemType from Win32_ComputerSystem&amp;quot;)
 	For Each objItem In colItems
 		If InStr(LCase(objItem.SystemType), &amp;quot;x64&amp;quot;) &amp;gt; 0 Then
 			Is64 = True
@@ -330,7 +330,7 @@ echo &amp;quot;N/A on AIX&amp;quot;</script>
           <packages>
             <package_spec>
               <name>Distribute Tanium Standard Utilities</name>
-              <id>20</id>
+              <id>23</id>
             </package_spec>
           </packages>
         </saved_question>

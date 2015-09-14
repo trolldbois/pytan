@@ -781,11 +781,12 @@ body .task-list{
 <li>If running this script on Windows, use the batch script in the winbin/create_sensor_from_json.bat so that python is called correctly.</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>create_sensor_from_json.py -h</pre></div>
+<div class="highlight highlight-source-shell"><pre>create_sensor_from_json.py -h</pre></div>
 
 <pre><code>usage: create_sensor_from_json.py [-h] [-u USERNAME] [-p PASSWORD]
                                   [--session_id SESSION_ID] [--host HOST]
                                   [--port PORT] [-l LOGLEVEL] [--debugformat]
+                                  [--debug_method_locals]
                                   [--record_all_requests]
                                   [--stats_loop_enabled] [--http_auth_retry]
                                   [--http_retry_count HTTP_RETRY_COUNT] -j
@@ -813,6 +814,9 @@ Handler Options:
                         Logging level to use, increase for more verbosity
                         (default: 0)
   --debugformat         Enable debug format for logging (default: False)
+  --debug_method_locals
+                        Enable debug logging for each methods local variables
+                        (default: False)
   --record_all_requests
                         Record all requests in
                         handler.session.ALL_REQUESTS_RESPONSES (default:
@@ -860,11 +864,11 @@ Create Sensor from JSON Options:
 <li>Save the results to a JSON file</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>bin/get_sensor.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 --id 1 --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.json<span class="pl-pds">"</span></span> --export_format json</pre></div>
+<div class="highlight highlight-source-shell"><pre>bin/get_sensor.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --id 1 --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.json<span class="pl-pds">"</span></span> --export_format json</pre></div>
 
-<pre><code>PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 Found items:  SensorList, len: 1
-Report file '/tmp/out.json' written with 780 bytes
+Report file '/tmp/out.json' written with 779 bytes
 </code></pre>
 
 <ul>
@@ -921,7 +925,7 @@ Report file '/tmp/out.json' written with 780 bytes
 <li>Add CMDLINE TEST to name or url_regex in the JSON file</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>perl -p -i -e <span class="pl-s"><span class="pl-pds">'</span>s/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 6716"/gm<span class="pl-pds">'</span></span> /tmp/out.json <span class="pl-k">&amp;&amp;</span> cat /tmp/out.json</pre></div>
+<div class="highlight highlight-source-shell"><pre>perl -p -i -e <span class="pl-s"><span class="pl-pds">'</span>s/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 6173"/gm<span class="pl-pds">'</span></span> /tmp/out.json <span class="pl-k">&amp;&amp;</span> cat /tmp/out.json</pre></div>
 
 <pre><code>{
   "_type": "sensors", 
@@ -936,7 +940,7 @@ Report file '/tmp/out.json' written with 780 bytes
       "id": 1, 
       "ignore_case_flag": 1, 
       "max_age_seconds": 3600, 
-      "name": "Action Statuses CMDLINE TEST 6716", 
+      "name": "Action Statuses CMDLINE TEST 6173", 
       "queries": {
         "_type": "queries", 
         "query": [
@@ -949,7 +953,7 @@ Report file '/tmp/out.json' written with 780 bytes
         ]
       }, 
       "source_id": 0, 
-      "string_count": 652, 
+      "string_count": 90, 
       "value_type": "String"
     }
   ]
@@ -991,10 +995,10 @@ Report file '/tmp/out.json' written with 780 bytes
 <h1>
 <a id="user-content-create-a-new-sensor-from-the-modified-json-file" class="anchor" href="#create-a-new-sensor-from-the-modified-json-file" aria-hidden="true"><span class="octicon octicon-link"></span></a>Create a new sensor from the modified JSON file</h1>
 
-<div class="highlight highlight-bash"><pre>bin/create_sensor_from_json.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --loglevel 1 -j <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.json<span class="pl-pds">"</span></span></pre></div>
+<div class="highlight highlight-source-shell"><pre>bin/create_sensor_from_json.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 -j <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.json<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.0 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-Created item: Sensor, name: 'Action Statuses CMDLINE TEST 6716', id: 861, ID: 861
+<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+Created item: Sensor, name: 'Action Statuses CMDLINE TEST 6173', id: 664, ID: 664
 </code></pre>
 
 <ul>
@@ -1021,7 +1025,7 @@ Created item: Sensor, name: 'Action Statuses CMDLINE TEST 6716', id: 861, ID: 86
 <p><a href="#user-content-toc">TOC</a></p>
 
 <h6>
-<a id="user-content-generated-by-build_bin_doc-v210-date-thu-sep--3-215024-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v210-date-thu-sep--3-215024-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v2.1.0</code>, date: Thu Sep  3 21:50:24 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
+<a id="user-content-generated-by-build_bin_doc-v210-date-mon-sep-14-155056-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v210-date-mon-sep-14-155056-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v2.1.0</code>, date: Mon Sep 14 15:50:56 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
 </h6>
 
 </body></html>

@@ -5,7 +5,7 @@
       <command>GetObject</command>
       <object_list>
         <package_spec>
-          <name>Disable Java Auto Update API TEST</name>
+          <name>Custom Tagging - Remove Tags API TEST</name>
         </package_spec>
       </object_list>
       <options>

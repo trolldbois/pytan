@@ -3,20 +3,20 @@
   <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <t:return>
       <command>GetObject</command>
-      <session>1-8118-b23a0e470110f2964bdcb3adf91dbf4d84ea31c89f119aa9e9b5c4480353b4d81f4342811eadfd92488a3dfbb96712a18376cfcec0a53034477af5bb05cfb309</session>
+      <session>1-681-6cd9aebd109c6af36faa009d4636e38b90926c64690cf812bcfc3957b591da119a94af41ae11599279f4170f21d8f4de06587e4f865221c701e968a3259a774f</session>
       <server_version>6.5.314.4301</server_version>
       <ID></ID>
       <IDType></IDType>
       <ContextID></ContextID>
       <result_object>
         <question>
-          <id>11638</id>
+          <id>790</id>
           <context_group>
             <id>0</id>
           </context_group>
           <expire_seconds>0</expire_seconds>
           <skip_lock_flag>0</skip_lock_flag>
-          <expiration>2015-09-05T05:51:36</expiration>
+          <expiration>2015-09-14T20:20:29</expiration>
           <user>
             <id>1</id>
             <name>Administrator</name>
@@ -37,7 +37,7 @@
                 <id>3</id>
                 <name>Computer Name</name>
                 <hash>3409330187</hash>
-                <string_count>3</string_count>
+                <string_count>5</string_count>
                 <category>Reserved</category>
                 <description>The assigned name of the client machine.
 Example: workstation-1.company.com</description>
@@ -79,15 +79,15 @@ Example: workstation-1.company.com</description>
             </select>
             <select>
               <sensor>
-                <id>552</id>
+                <id>568</id>
                 <name>IP Route Details</name>
                 <hash>435227963</hash>
-                <string_count>50</string_count>
+                <string_count>10</string_count>
                 <category>Network</category>
                 <description>Returns IPv4 network routes, filtered to exclude noise. With Flags, Metric, Interface columns.
 Example:  172.16.0.0|192.168.1.1|255.255.0.0|UG|100|eth0</description>
-                <creation_time>2015-08-26T20:14:30</creation_time>
-                <modification_time>2015-08-26T20:14:30</modification_time>
+                <creation_time>2015-09-14T13:39:12</creation_time>
+                <modification_time>2015-09-14T13:39:12</modification_time>
                 <last_modified_by>Administrator</last_modified_by>
                 <queries>
                   <query>
@@ -147,12 +147,7 @@ Next</script>
                   <query>
                     <platform>Solaris</platform>
                     <script>#!/bin/sh
-
-# THIS IS A STUB - NOT INTENDED AS FUNCTIONAL - NA
-# 
-# 
-
-echo &amp;quot;N/A on Solaris&amp;quot;</script>
+netstat -nr | egrep -v &amp;#039;Routing|Destination|---|^$|::&amp;#039; | awk &amp;#039;{ print $1&amp;quot;,&amp;quot;$2&amp;quot;,,&amp;quot;$3&amp;quot;,,&amp;quot;$5 }&amp;#039;</script>
                     <script_type>UnixShell</script_type>
                   </query>
                   <query>
