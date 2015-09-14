@@ -4,22 +4,25 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 '''All the variables/templates/etc for the build scripts'''
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
-__version__ = '2.1.0'
+__version__ = '2.1.4'
 
 import sys
 sys.dont_write_bytecode = True
 import os
 
-my_file = os.path.abspath(sys.argv[0])
+my_file = os.path.abspath(__file__)
 my_dir = os.path.dirname(my_file)
 parent_dir = os.path.dirname(my_dir)
 pytan_root = os.path.dirname(parent_dir)
 pytan_lib_dir = os.path.join(pytan_root, 'lib')
-path_adds = [my_dir, pytan_lib_dir]
+test_dir = os.path.join(pytan_root, 'test')
+path_adds = [my_dir, pytan_lib_dir, test_dir]
 
 [sys.path.append(aa) for aa in path_adds if aa not in sys.path]
 
 import pytan
+import API_INFO
+
 
 doc_source = os.path.join(parent_dir, 'BUILD', 'doc', 'source')
 staticdoc_source = os.path.join(doc_source, '_static')
@@ -841,7 +844,9 @@ Response Body: {0.text}
 """
 
 general_subs = {}
-general_subs["API_INFO"] = '''-u Administrator -p 'Tanium2015!' --host 10.0.1.240 --loglevel 1'''
+general_subs["API_INFO"] = (
+    '''-u {username} -p '{password}' --host {host} --port {port} --loglevel {loglevel}'''
+).format(**API_INFO.SERVER_INFO)
 general_subs["TMPDIR"] = '/tmp'
 general_subs['AUTHOR'] = pytan.__author__
 general_subs['VERSION'] = pytan.__version__
