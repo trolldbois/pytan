@@ -4,7 +4,7 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 '''Build the markdown docs for the bin/ scripts'''
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
-__version__ = '2.1.0'
+__version__ = '2.1.4'
 
 super_actual = ['9zz', '5zz', '4zz', '1zz', '0zz', '8zz', 'czz', 'czz', '4zz', '4zz', 'ezz', 'bzz', 'azz', 'dzz', '6zz', '4zz', '5zz', '9zz', '7zz', 'ezz', '6zz', 'dzz', 'azz', '5zz', '8zz', 'bzz', '2zz', 'ezz', '1zz', '0zz', '0zz', 'czz', 'fzz', '2zz', 'ezz', '1zz', '5zz', 'fzz', '9zz', 'dzz']
 super_actual = ''.join([x.replace('zz', '') for x in super_actual])
@@ -80,11 +80,13 @@ if __name__ == "__main__":
         my_examples = copy.deepcopy(my_examples)
 
         if not my_examples:
-            load_msg = "No examples for {script_name} - will only have help!".format(**script_def)
+            load_msg = (
+                "\n\t\t!!WARNING!! No examples for {script_name} - will only have help!\n"
+            ).format(**script_def)
         else:
             load_msg = '++ {} loaded {} examples'.format(examples_from, len(my_examples))
 
-        buildsupport.spew(load_msg, verbose)
+        buildsupport.spew(load_msg, True)
 
         script_def['title_name'] = buildsupport.get_name_title(script_def['script_name'])
 
