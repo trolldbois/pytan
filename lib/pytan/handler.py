@@ -276,6 +276,25 @@ class Handler(object):
         trailing : str, optional
             * default: ''
             * used for sse_format 'cef' only, the string to append to each row
+        polling_secs : int, optional
+            * default: 5
+            * Number of seconds to wait in between GetResultInfo loops
+            * This is passed through to :class:`pytan.pollers.QuestionPoller`
+        complete_pct : int/float, optional
+            * default: 99
+            * Percentage of mr_tested out of estimated_total to consider the question "done"
+            * This is passed through to :class:`pytan.pollers.QuestionPoller`
+        override_timeout_secs : int, optional
+            * default: 0
+            * If supplied and not 0, timeout in seconds instead of when object expires
+            * This is passed through to :class:`pytan.pollers.QuestionPoller`
+        callbacks : dict, optional
+            * default: {}
+            * can be a dict of functions to be run with the key names being the various state changes: 'ProgressChanged', 'AnswersChanged', 'AnswersComplete'
+            * This is passed through to :func:`pytan.pollers.QuestionPoller.run`
+        override_estimated_total : int, optional
+            * instead of getting number of systems that should see this question from result_info.estimated_total, use this number
+            * This is passed through to :func:`pytan.pollers.QuestionPoller`
 
         Returns
         -------
@@ -427,6 +446,9 @@ class Handler(object):
             * default: {}
             * can be a dict of functions to be run with the key names being the various state changes: 'ProgressChanged', 'AnswersChanged', 'AnswersComplete'
             * This is passed through to :func:`pytan.pollers.QuestionPoller.run`
+        override_estimated_total : int, optional
+            * instead of getting number of systems that should see this question from result_info.estimated_total, use this number
+            * This is passed through to :func:`pytan.pollers.QuestionPoller`
 
         Returns
         -------
@@ -599,6 +621,9 @@ class Handler(object):
             * default: {}
             * can be a dict of functions to be run with the key names being the various state changes: 'ProgressChanged', 'AnswersChanged', 'AnswersComplete'
             * This is passed through to :func:`pytan.pollers.QuestionPoller.run`
+        override_estimated_total : int, optional
+            * instead of getting number of systems that should see this question from result_info.estimated_total, use this number
+            * This is passed through to :func:`pytan.pollers.QuestionPoller`
 
         Returns
         -------
@@ -723,6 +748,12 @@ class Handler(object):
         start_seconds_from_now : int, optional
             * default: 0
             * start action N seconds from now
+        distribute_seconds : int, optional
+            * default: 0
+            * distribute action evenly over clients over N seconds
+        issue_seconds : int, optional
+            * default: 0
+            * have the server re-ask the action status question if performing a GetResultData over N seconds ago
         expire_seconds : int, optional
             * default: package.expire_seconds
             * expire action N seconds from now, will be derived from package if not supplied
@@ -734,18 +765,27 @@ class Handler(object):
             * default: True
             * True: wait for result completion after deploying action
             * False: just deploy the action and return the object in `ret`
-        package_help : bool, optional
-            * default: False
-            * False: do not print the help string for package
-            * True: print the help string for package and exit
-        filters_help : bool, optional
-            * default: False
-            * False: do not print the help string for filters
-            * True: print the help string for filters and exit
-        options_help : bool, optional
-            * default: False
-            * False: do not print the help string for options
-            * True: print the help string for options and exit
+        action_name : str, optional
+            * default: prepend package name with "API Deploy "
+            * custom name for action
+        action_comment : str, optional
+            * default:
+            * custom comment for action
+        polling_secs : int, optional
+            * default: 5
+            * Number of seconds to wait in between GetResultInfo loops
+            * This is passed through to :class:`pytan.pollers.ActionPoller`
+        complete_pct : int/float, optional
+            * default: 100
+            * Percentage of passed_count out of successfully run actions to consider the action "done"
+            * This is passed through to :class:`pytan.pollers.ActionPoller`
+        override_timeout_secs : int, optional
+            * default: 0
+            * If supplied and not 0, timeout in seconds instead of when object expires
+            * This is passed through to :class:`pytan.pollers.ActionPoller`
+        override_passed_count : int, optional
+            * instead of getting number of systems that should run this action by asking a question, use this number
+            * This is passed through to :class:`pytan.pollers.ActionPoller`
 
         Returns
         -------
@@ -2618,6 +2658,12 @@ class Handler(object):
         start_seconds_from_now : int, optional
             * default: 0
             * start action N seconds from now
+        distribute_seconds : int, optional
+            * default: 0
+            * distribute action evenly over clients over N seconds
+        issue_seconds : int, optional
+            * default: 0
+            * have the server re-ask the action status question if performing a GetResultData over N seconds ago
         expire_seconds : int, optional
             * default: package.expire_seconds
             * expire action N seconds from now, will be derived from package if not supplied
@@ -2635,6 +2681,21 @@ class Handler(object):
         action_comment : str, optional
             * default:
             * custom comment for action
+        polling_secs : int, optional
+            * default: 5
+            * Number of seconds to wait in between GetResultInfo loops
+            * This is passed through to :class:`pytan.pollers.ActionPoller`
+        complete_pct : int/float, optional
+            * default: 100
+            * Percentage of passed_count out of successfully run actions to consider the action "done"
+            * This is passed through to :class:`pytan.pollers.ActionPoller`
+        override_timeout_secs : int, optional
+            * default: 0
+            * If supplied and not 0, timeout in seconds instead of when object expires
+            * This is passed through to :class:`pytan.pollers.ActionPoller`
+        override_passed_count : int, optional
+            * instead of getting number of systems that should run this action by asking a question, use this number
+            * This is passed through to :class:`pytan.pollers.ActionPoller`
 
         Returns
         -------
@@ -3009,6 +3070,9 @@ class Handler(object):
             * default: {}
             * can be a dict of functions to be run with the key names being the various state changes: 'ProgressChanged', 'AnswersChanged', 'AnswersComplete'
             * This is passed through to :func:`pytan.pollers.QuestionPoller.run`
+        override_estimated_total : int, optional
+            * instead of getting number of systems that should see this question from result_info.estimated_total, use this number
+            * This is passed through to :func:`pytan.pollers.QuestionPoller`
 
         Returns
         -------
