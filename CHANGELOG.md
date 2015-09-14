@@ -1,6 +1,10 @@
-# 2.1.4
+# 2.1.5
 
 [Development branch](https://github.com/tanium/pytan/tree/develop) on N/A
+
+# 2.1.4
+
+[Released](https://github.com/tanium/pytan/releases/tag/2.1.4) on Sep 14 2015 
 
   * bug fix:
     * handler.Handler(): check for str version of found objects attribute in manual override/non api search
