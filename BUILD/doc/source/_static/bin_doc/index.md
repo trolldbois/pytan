@@ -49,3 +49,4 @@ When running these scripts from Windows, you will want to run the .bat scripts f
   * **[pytan_shell](pytan_shell.html)**: Provides an interactive console with pytan available as handler
   * **[stop_action](stop_action.html)**: Stop an action by ID
   * **[tsat](tsat.html)**: Tanium Sensor Analysis Tool: asks a question for every sensor and saves theresults as CSV reports
+  * **[write_pytan_user_config](write_pytan_user_config.html)**: Creates a PyTan User Config based on the current parameters
