@@ -4,13 +4,15 @@
     * go through SOAP doc and verify everything looks sane
     * re-make dev workflow doc
     * add timing doc for various GRD methods
-    * change build_api_examples temp=False
 
   * BUG:
     * work on deploy action & start_seconds_from_now (a new action gets created at actual start time)
 
   * GEN:
-    * add profile storage with encrypted password and os variable overrides 
+    * pytan_user_config now needs additions to bin scripts
+    * add write_user_config
+    * add base64 enc/dec for password in PUC
+    * add changed poller code from /tmp/debug
     * re-figure out py2exe
     * add auto paging/caching to normal GRD
     * rewrite write_csv

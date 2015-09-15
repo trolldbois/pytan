@@ -2,6 +2,15 @@
 
 [Development branch](https://github.com/tanium/pytan/tree/develop) on N/A
 
+  * bug fix:
+    * pollers.QuestionPoller(): increase number of get_result_info retries from 2 to 10 and add one second delay between each retry in get_result_info(), add gri_retry_count to parameter docs everywhere
+    * sessions.Session(): missing statslog in setup_logging
+  * enhancement:
+    * Added support for PyTan User Config for storing Handler arguments in JSON format
+    * handler.Handler(): add pytan_user_config and pytan_user_config_debug parameters to init, add support for overriding init parameters with values from PyTan User Config as json file
+    * constants: add PYTAN_USER_CONFIG for default location of PyTan User Config as ~/.pytan_config.json
+    * binsupport.input_prompts(): no longer prompt for missing inputs if PyTan User Config is valid and has the inputs
+
 # 2.1.4
 
 [Released](https://github.com/tanium/pytan/releases/tag/2.1.4) on Sep 14 2015 

@@ -2850,15 +2850,29 @@ def introspect(obj, depth=0):
 
 def input_prompts(args):
     """Utility function to prompt for username, password, and host if empty"""
-    if not args.username and not args.session_id:
-        username = raw_input('Tanium Username: ')
-        args.username = username.strip()
+    puc_default = os.path.expanduser(pytan.constants.PYTAN_USER_CONFIG)
+    puc_kwarg = args.__dict__.get('pytan_user_config', '')
+    puc = puc_kwarg or puc_default
+    puc_dict = {}
 
-    if not args.password and not args.session_id:
-        password = getpass.getpass('Tanium Password: ')
-        args.password = password.strip()
+    if os.path.isfile(puc):
+        try:
+            with open(puc) as fh:
+                puc_dict = json.load(fh)
+        except Exception as e:
+            m = "PyTan User Config file exists at '{}' but is not valid, Exception: {}".format
+            print m(puc, e)
 
-    if not args.host:
+    if not args.session_id:
+        if not args.username and not puc_dict.get('username', ''):
+            username = raw_input('Tanium Username: ')
+            args.username = username.strip()
+
+        if not args.password and not puc_dict.get('password', ''):
+            password = getpass.getpass('Tanium Password: ')
+            args.password = password.strip()
+
+    if not args.host and not puc_dict.get('host', ''):
         host = raw_input('Tanium Host: ')
         args.host = host.strip()
     return args

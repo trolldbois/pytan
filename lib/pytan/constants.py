@@ -712,3 +712,8 @@ SSE_CRASH_MAP = ['6.5.314.4300']
 """
 Mapping of versions to watch out for crashes/handle bugs for server side export
 """
+
+PYTAN_USER_CONFIG = "~/.pytan_config.json"
+"""
+Default path to file to use for Handler parameter overrides
+"""
