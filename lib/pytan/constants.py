@@ -717,3 +717,8 @@ PYTAN_USER_CONFIG = "~/.pytan_config.json"
 """
 Default path to file to use for Handler parameter overrides
 """
+
+PYTAN_KEY = "mT1er@iUa1kP9pelSW"
+"""
+Key used for obfuscation/de-obfsucation
+"""

@@ -59,10 +59,6 @@ class Handler(object):
     pytan_user_config : str, optional
         * default: pytan.constants.PYTAN_USER_CONFIG
         * JSON file containing key/value pairs to override class variables
-    pytan_user_config_debug : bool, optional
-        * default: False
-        * False: Do not print out messages regarding pytan_user_config processing
-        * True: Do print out messages regarding pytan_user_config processing
 
     Other Parameters
     ----------------
@@ -168,49 +164,6 @@ class Handler(object):
                 continue
             setattr(self, k, v)
 
-        # get the default pytan user config file
-        puc_default = os.path.expanduser(pytan.constants.PYTAN_USER_CONFIG)
-
-        # get the debug switch for pytan user config file processing
-        puc_debug = kwargs.get('pytan_user_config_debug', False)
-
-        # see if the pytan_user_config file location was overridden
-        puc_kwarg = kwargs.get('pytan_user_config', '')
-
-        puc = puc_kwarg or puc_default
-
-        if os.path.isfile(puc):
-            try:
-                with open(puc) as fh:
-                    puc_dict = json.load(fh)
-                    m = "PyTan User config file successfully loaded: {} ".format
-                    if puc_debug:
-                        print m(puc)
-            except Exception as e:
-                m = "PyTan User config file at: {} is invalid, exception: {}".format
-                print m(puc, e)
-            else:
-                for k, v in puc_dict.iteritems():
-                    if k in ['self', 'kwargs', 'k', 'v']:
-                        m = "Skipping variable {} from: {}".format
-                        if puc_debug:
-                            print m(k, puc)
-                        continue
-                    if k in locals():
-                        setattr(self, k, v)
-                        m = "Overriding class variable {} with value from: {}".format
-                        if puc_debug:
-                            print m(k, puc)
-                    else:
-                        kwargs[k] = v
-                        m = "Overriding kwargs variable {} with value from: {}".format
-                        if puc_debug:
-                            print m(k, puc)
-        else:
-            m = "Unable to find PyTan User config file at: {}".format
-            if puc_debug:
-                print m(puc)
-
         # setup the console logging handler
         pytan.utils.setup_console_logging(gmt_tz=self.gmt_log)
 
@@ -220,7 +173,57 @@ class Handler(object):
         # change the format of console logging handler if need be
         pytan.utils.change_console_format(debug=self.debugformat)
 
-        self.DEBUG_METHOD_LOCALS = kwargs.get('debug_method_locals', False)
+        # get the default pytan user config file
+        puc_default = os.path.expanduser(pytan.constants.PYTAN_USER_CONFIG)
+
+        # see if the pytan_user_config file location was overridden
+        puc_kwarg = kwargs.get('pytan_user_config', '')
+
+        self.puc = puc_kwarg or puc_default
+
+        if os.path.isfile(self.puc):
+            try:
+                with open(self.puc) as fh:
+                    puc_dict = json.load(fh)
+            except Exception as e:
+                m = "PyTan User config file at: {} is invalid, exception: {}".format
+                self.mylog.error(m(self.puc, e))
+            else:
+                m = "PyTan User config file successfully loaded: {} ".format
+                self.mylog.info(m(self.puc))
+
+                for k, v in puc_dict.iteritems():
+                    if k in ['self', 'kwargs', 'k', 'v']:
+                        m = "Skipping variable {} from: {}".format
+                        self.mylog.debug(m(k, self.puc))
+                        continue
+
+                    if k in locals():
+                        if locals()[k] != v:
+                            setattr(self, k, v)
+                            m = "Overriding class variable {} with value from: {}".format
+                            self.mylog.debug(m(k, self.puc))
+                    else:
+                        if kwargs.get(k, '') != v:
+                            kwargs[k] = v
+                            m = "Overriding kwargs variable {} with value from: {}".format
+                            self.mylog.debug(m(k, self.puc))
+        else:
+            m = "Unable to find PyTan User config file at: {}".format
+            self.mylog.debug(m(self.puc))
+
+        self.password = pytan.utils.vig_decode(pytan.constants.PYTAN_KEY, self.password)
+
+        if gmt_log != self.gmt_log:
+            pytan.utils.setup_console_logging(gmt_tz=self.gmt_log)
+
+        if loglevel != self.loglevel:
+            pytan.utils.set_log_levels(loglevel=self.loglevel)
+
+        if debugformat != self.debugformat:
+            pytan.utils.change_console_format(debug=self.debugformat)
+
+        self.debug_method_locals = kwargs.get('debug_method_locals', False)
 
         self._debug_locals(sys._getframe().f_code.co_name, locals())
 
@@ -259,6 +262,44 @@ class Handler(object):
         str_tpl = "PyTan v{} Handler for {}".format
         ret = str_tpl(pytan.__version__, self.session)
         return ret
+
+    def write_pytan_user_config(self, **kwargs):
+        """Write a PyTan User Config with the current class variables for use with pytan_user_config in instantiating Handler()
+
+        Parameters
+        ----------
+        pytan_user_config : str, optional
+            * default: self.puc
+            * JSON file to wite with current class variables
+        """
+        puc_kwarg = kwargs.get('pytan_user_config', '')
+        puc = puc_kwarg or self.puc
+        puc = os.path.expanduser(puc)
+
+        puc_dict = {}
+
+        for k, v in vars(self).iteritems():
+            if k in ['mylog', 'methodlog', 'session', 'puc']:
+                m = "Skipping class variable {} from inclusion in: {}".format
+                self.mylog.debug(m(k, puc))
+                continue
+
+            m = "Including class variable {} in: {}".format
+            self.mylog.debug(m(k, puc))
+            puc_dict[k] = v
+
+        # obfuscate the password
+        puc_dict['password'] = pytan.utils.vig_encode(pytan.constants.PYTAN_KEY, self.password)
+
+        try:
+            with open(puc, 'w+') as fh:
+                json.dump(puc_dict, fh, skipkeys=True, indent=2)
+        except Exception as e:
+            m = "Failed to write PyTan User config: '{}', exception: {}".format
+            self.mylog.error(m(puc, e))
+        else:
+            m = "PyTan User config file successfully written: {} ".format
+            self.mylog.info(m(puc))
 
     def get_server_version(self, **kwargs):
         """Uses :func:`taniumpy.session.Session.get_server_version` to get the version of the Tanium Server
@@ -3459,7 +3500,7 @@ class Handler(object):
                 raise pytan.exceptions.ServerSideExportError(m(ri))
 
     def _debug_locals(self, fname, flocals):
-        """Method to print out locals for a function if self.DEBUG_METHOD_LOCALS is True"""
-        if getattr(self, 'DEBUG_METHOD_LOCALS', False):
+        """Method to print out locals for a function if self.debug_method_locals is True"""
+        if getattr(self, 'debug_method_locals', False):
             m = "Local variables for {}.{}:\n{}".format
             self.methodlog.debug(m(self.__class__.__name__, fname, pprint.pformat(flocals)))

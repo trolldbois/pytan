@@ -7,9 +7,12 @@
     * sessions.Session(): missing statslog in setup_logging
   * enhancement:
     * Added support for PyTan User Config for storing Handler arguments in JSON format
-    * handler.Handler(): add pytan_user_config and pytan_user_config_debug parameters to init, add support for overriding init parameters with values from PyTan User Config as json file
+    * handler.Handler(): add pytan_user_config parameter to init, add support for overriding init parameters with values from PyTan User Config as json file
     * constants: add PYTAN_USER_CONFIG for default location of PyTan User Config as ~/.pytan_config.json
-    * binsupport.input_prompts(): no longer prompt for missing inputs if PyTan User Config is valid and has the inputs
+    * binsupport.input_prompts(): no longer prompt for missing inputs if PyTan User Config is valid and has the parameters
+    * adding --pytan_user_config to all bin/ scripts for Handler Options
+    * handler.Handler(): added write_pytan_user_config()
+    * added password obfuscation/de-obfuscation, write_pytan_user_config() will now obfsucate the password, init() will now always try to de-obfuscate the password if the password starts and ends with ::
 
 # 2.1.4
 

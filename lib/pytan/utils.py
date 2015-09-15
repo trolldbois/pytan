@@ -16,6 +16,7 @@ import json
 import datetime
 import re
 import itertools
+import base64
 from collections import OrderedDict
 
 my_file = os.path.abspath(__file__)
@@ -289,6 +290,8 @@ def setup_console_logging(gmt_tz=True):
     if gmt_tz:
         # change the default time zone to GM time
         logging.Formatter.converter = time.gmtime
+    else:
+        logging.Formatter.converter = time.localtime
 
     # add a console handler to all loggers that goes to STDOUT for INFO
     # and below, but STDERR for WARNING and above (old method)
@@ -2125,3 +2128,69 @@ def calculate_question_start_time(q):
     start_time_dt = expire_dt - expire_seconds_delta
     start_time = pytan.utils.datetime_to_timestr(start_time_dt)
     return start_time, start_time_dt
+
+
+def vig_encode(key, string):
+    """Obfuscates a string with a key using Vigenere cipher.
+
+    Only useful for obfuscation, not real security!!
+
+    Parameters
+    ----------
+    key : str
+        * key to scrambled string with
+    string : str
+        * string to scramble with key
+
+    Returns
+    -------
+    encoded_string : str
+        * encoded string
+    """
+    string = str(string)
+    encoded_chars = []
+    for i in xrange(len(string)):
+        key_c = key[i % len(key)]
+        encoded_c = chr(ord(string[i]) + ord(key_c) % 256)
+        encoded_chars.append(encoded_c)
+    v_string = "".join(encoded_chars)
+    encoded_string = base64.urlsafe_b64encode(v_string)
+    encoded_string = '::{}::'.format(encoded_string)
+    return encoded_string
+
+
+def vig_decode(key, string):
+    """De-obfuscates a string with a key using Vigenere cipher.
+
+    Only useful for obfuscation, not real security!!
+
+    Notes
+    -----
+    This will only work with strings that have been encoded with vig_encode(). "normal" strings will be returned as-is.
+
+    Parameters
+    ----------
+    key : str
+        * key that string is scrambled with
+    string : str
+        * string to unscramble with key
+
+    Returns
+    -------
+    decoded_string : str
+        * decoded string
+    """
+    if string.startswith('::') and string.endswith('::'):
+        string = str(string[2:-2])
+    else:
+        return string
+
+    v_string = base64.urlsafe_b64decode(string)
+
+    decoded_chars = []
+    for i in xrange(len(v_string)):
+        key_c = key[i % len(key)]
+        encoded_c = chr(abs(ord(v_string[i]) - ord(key_c) % 256))
+        decoded_chars.append(encoded_c)
+    decoded_string = "".join(decoded_chars)
+    return decoded_string
