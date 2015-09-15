@@ -722,3 +722,17 @@ PYTAN_KEY = "mT1er@iUa1kP9pelSW"
 """
 Key used for obfuscation/de-obfsucation
 """
+
+HANDLER_ARG_DEFAULTS = {
+    'username': None,
+    'password': None,
+    'session_id': None,
+    'host': None,
+    'port': 443,
+    'loglevel': 0,
+    'debugformat': False,
+    'gmt_log': False,
+}
+"""
+Map of handler arguments and their defaults
+"""
