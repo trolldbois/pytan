@@ -180,37 +180,7 @@ class Handler(object):
         puc_kwarg = kwargs.get('pytan_user_config', '')
 
         self.puc = puc_kwarg or puc_default
-
-        if os.path.isfile(self.puc):
-            try:
-                with open(self.puc) as fh:
-                    puc_dict = json.load(fh)
-            except Exception as e:
-                m = "PyTan User config file at: {} is invalid, exception: {}".format
-                self.mylog.error(m(self.puc, e))
-            else:
-                m = "PyTan User config file successfully loaded: {} ".format
-                self.mylog.info(m(self.puc))
-
-                for k, v in puc_dict.iteritems():
-                    if k in ['self', 'kwargs', 'k', 'v']:
-                        m = "Skipping variable {} from: {}".format
-                        self.mylog.debug(m(k, self.puc))
-                        continue
-
-                    if k in locals():
-                        if locals()[k] != v:
-                            setattr(self, k, v)
-                            m = "Overriding class variable {} with value from: {}".format
-                            self.mylog.debug(m(k, self.puc))
-                    else:
-                        if kwargs.get(k, '') != v:
-                            kwargs[k] = v
-                            m = "Overriding kwargs variable {} with value from: {}".format
-                            self.mylog.debug(m(k, self.puc))
-        else:
-            m = "Unable to find PyTan User config file at: {}".format
-            self.mylog.debug(m(self.puc))
+        kwargs = self.read_pytan_user_config(kwargs)
 
         self.password = pytan.utils.vig_decode(pytan.constants.PYTAN_KEY, self.password)
 
@@ -263,6 +233,65 @@ class Handler(object):
         ret = str_tpl(pytan.__version__, self.session)
         return ret
 
+    def read_pytan_user_config(self, kwargs):
+        """Read a PyTan User Config and update the current class variables
+
+        Returns
+        -------
+        kwargs : dict
+            * kwargs with updated variables from PyTan User Config (if any)
+        """
+        if not os.path.isfile(self.puc):
+            m = "Unable to find PyTan User config file at: {}".format
+            self.mylog.debug(m(self.puc))
+            return kwargs
+
+        try:
+            with open(self.puc) as fh:
+                puc_dict = json.load(fh)
+        except Exception as e:
+            m = "PyTan User config file at: {} is invalid, exception: {}".format
+            self.mylog.error(m(self.puc, e))
+        else:
+            m = "PyTan User config file successfully loaded: {} ".format
+            self.mylog.info(m(self.puc))
+
+            # handle class params
+            for h_arg, arg_default in pytan.constants.HANDLER_ARG_DEFAULTS.iteritems():
+                if h_arg not in puc_dict:
+                    continue
+
+                if h_arg == 'password':
+                    puc_dict['password'] = pytan.utils.vig_decode(
+                        pytan.constants.PYTAN_KEY, puc_dict['password'],
+                    )
+
+                class_val = getattr(self, h_arg, None)
+                puc_val = puc_dict[h_arg]
+
+                if class_val != arg_default:
+                    m = "User supplied argument for {}, ignoring value from: {}".format
+                    self.mylog.debug(m(h_arg, self.puc))
+                    continue
+
+                if arg_default is None or puc_val != class_val:
+                    m = "Setting class variable {} with value from: {}".format
+                    self.mylog.debug(m(h_arg, self.puc))
+                    setattr(self, h_arg, puc_val)
+
+            # handle kwargs params
+            for k, v in puc_dict.iteritems():
+                if k in ['self', 'kwargs', 'k', 'v']:
+                    m = "Skipping kwargs variable {} from: {}".format
+                    self.mylog.debug(m(k, self.puc))
+                    continue
+
+                if not hasattr(self, k) and k not in kwargs:
+                    m = "Setting kwargs variable {} with value from: {}".format
+                    self.mylog.debug(m(k, self.puc))
+                    kwargs[k] = v
+        return kwargs
+
     def write_pytan_user_config(self, **kwargs):
         """Write a PyTan User Config with the current class variables for use with pytan_user_config in instantiating Handler()
 
@@ -271,6 +300,11 @@ class Handler(object):
         pytan_user_config : str, optional
             * default: self.puc
             * JSON file to wite with current class variables
+
+        Returns
+        -------
+        puc : str
+            * filename of PyTan User Config that was written to
         """
         puc_kwarg = kwargs.get('pytan_user_config', '')
         puc = puc_kwarg or self.puc
@@ -296,10 +330,11 @@ class Handler(object):
                 json.dump(puc_dict, fh, skipkeys=True, indent=2)
         except Exception as e:
             m = "Failed to write PyTan User config: '{}', exception: {}".format
-            self.mylog.error(m(puc, e))
+            raise pytan.exceptions.HandlerError(m(puc, e))
         else:
             m = "PyTan User config file successfully written: {} ".format
             self.mylog.info(m(puc))
+        return puc
 
     def get_server_version(self, **kwargs):
         """Uses :func:`taniumpy.session.Session.get_server_version` to get the version of the Tanium Server
