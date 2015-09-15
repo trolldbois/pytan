@@ -333,6 +333,25 @@ def setup_parent_parser(doc):
     return parser
 
 
+def setup_write_pytan_user_config_argparser(doc):
+    """Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to write a pytan user config file.
+    """
+    parser = setup_parent_parser(doc=doc)
+    output_group = parser.add_argument_group('Write PyTan User Config Options')
+
+    output_group.add_argument(
+        '--file',
+        required=False,
+        default='',
+        action='store',
+        dest='file',
+        help=(
+            "PyTan User Config file to write for PyTan arguments (defaults to: {})"
+        ).format(pytan.constants.PYTAN_USER_CONFIG),
+    )
+    return parser
+
+
 def setup_tsat_argparser(doc):
     """Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to get objects.
     """
@@ -2360,6 +2379,23 @@ def process_create_group_args(parser, handler, args):
     ).format
     print(m(response))
     return response
+
+
+def process_write_pytan_user_config_args(parser, handler, args):
+    """Process command line args supplied by user for writing pytan user config
+
+    Parameters
+    ----------
+    parser : :class:`argparse.ArgParse`
+        * ArgParse object used to parse `all_args`
+    handler : :class:`pytan.handler.Handler`
+        * Instance of Handler created from command line args
+    args : args object
+        * args parsed from `parser`
+    """
+    puc = handler.write_pytan_user_config(pytan_user_config=args.file)
+    m = "PyTan User config file successfully written: {} ".format
+    print m(puc)
 
 
 def process_print_server_info_args(parser, handler, args):
