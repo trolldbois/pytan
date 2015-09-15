@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pytan.binsupport &mdash; PyTan v2.1.4 2.1.4 documentation</title>
+  <title>pytan.binsupport &mdash; PyTan v2.1.5 2.1.5 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="PyTan v2.1.4 2.1.4 documentation" href="../../index.html"/>
+    <link rel="top" title="PyTan v2.1.5 2.1.5 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -44,7 +44,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-nav-search">
         
-          <a href="../../index.html" class="fa fa-home"> PyTan v2.1.4</a>
+          <a href="../../index.html" class="fa fa-home"> PyTan v2.1.5</a>
         
         
 <div role="search">
@@ -151,7 +151,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../../index.html">PyTan v2.1.4</a>
+        <a href="../../index.html">PyTan v2.1.5</a>
       </nav>
 
 
@@ -488,7 +488,16 @@
         <span class="n">dest</span><span class="o">=</span><span class="s">&#39;http_retry_count&#39;</span><span class="p">,</span>
         <span class="n">help</span><span class="o">=</span><span class="s">&quot;Retry count for HTTP failures/invalid responses&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-
+    <span class="n">opt_group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s">&#39;--pytan_user_config&#39;</span><span class="p">,</span>
+        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store&#39;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;pytan_user_config&#39;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="p">(</span>
+            <span class="s">&quot;PyTan User Config file to use for PyTan arguments (defaults to: {})&quot;</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pytan</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">PYTAN_USER_CONFIG</span><span class="p">),</span>
+    <span class="p">)</span>
     <span class="k">return</span> <span class="n">parser</span></div>
 
 
@@ -497,6 +506,25 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">parent_parser</span> <span class="o">=</span> <span class="n">setup_parser</span><span class="p">(</span><span class="n">desc</span><span class="o">=</span><span class="n">doc</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">CustomArgParse</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">doc</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="p">[</span><span class="n">parent_parser</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">parser</span></div>
+
+
+<div class="viewcode-block" id="setup_write_pytan_user_config_argparser"><a class="viewcode-back" href="../../pytan.html#pytan.binsupport.setup_write_pytan_user_config_argparser">[docs]</a><span class="k">def</span> <span class="nf">setup_write_pytan_user_config_argparser</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to write a pytan user config file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">setup_parent_parser</span><span class="p">(</span><span class="n">doc</span><span class="o">=</span><span class="n">doc</span><span class="p">)</span>
+    <span class="n">output_group</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_argument_group</span><span class="p">(</span><span class="s">&#39;Write PyTan User Config Options&#39;</span><span class="p">)</span>
+
+    <span class="n">output_group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s">&#39;--file&#39;</span><span class="p">,</span>
+        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store&#39;</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;file&#39;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="p">(</span>
+            <span class="s">&quot;PyTan User Config file to write for PyTan arguments (defaults to: {})&quot;</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pytan</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">PYTAN_USER_CONFIG</span><span class="p">),</span>
+    <span class="p">)</span>
     <span class="k">return</span> <span class="n">parser</span></div>
 
 
@@ -2529,6 +2557,23 @@
     <span class="k">return</span> <span class="n">response</span></div>
 
 
+<div class="viewcode-block" id="process_write_pytan_user_config_args"><a class="viewcode-back" href="../../pytan.html#pytan.binsupport.process_write_pytan_user_config_args">[docs]</a><span class="k">def</span> <span class="nf">process_write_pytan_user_config_args</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Process command line args supplied by user for writing pytan user config</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parser : :class:`argparse.ArgParse`</span>
+<span class="sd">        * ArgParse object used to parse `all_args`</span>
+<span class="sd">    handler : :class:`pytan.handler.Handler`</span>
+<span class="sd">        * Instance of Handler created from command line args</span>
+<span class="sd">    args : args object</span>
+<span class="sd">        * args parsed from `parser`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">puc</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">write_pytan_user_config</span><span class="p">(</span><span class="n">pytan_user_config</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">file</span><span class="p">)</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;PyTan User config file successfully written: {} &quot;</span><span class="o">.</span><span class="n">format</span>
+    <span class="k">print</span> <span class="n">m</span><span class="p">(</span><span class="n">puc</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="process_print_server_info_args"><a class="viewcode-back" href="../../pytan.html#pytan.binsupport.process_print_server_info_args">[docs]</a><span class="k">def</span> <span class="nf">process_print_server_info_args</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Process command line args supplied by user for printing server info</span>
 
@@ -3026,15 +3071,29 @@
 
 <div class="viewcode-block" id="input_prompts"><a class="viewcode-back" href="../../pytan.html#pytan.binsupport.input_prompts">[docs]</a><span class="k">def</span> <span class="nf">input_prompts</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Utility function to prompt for username, password, and host if empty&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">username</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">session_id</span><span class="p">:</span>
-        <span class="n">username</span> <span class="o">=</span> <span class="nb">raw_input</span><span class="p">(</span><span class="s">&#39;Tanium Username: &#39;</span><span class="p">)</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">username</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">puc_default</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">pytan</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">PYTAN_USER_CONFIG</span><span class="p">)</span>
+    <span class="n">puc_kwarg</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;pytan_user_config&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">puc</span> <span class="o">=</span> <span class="n">puc_kwarg</span> <span class="ow">or</span> <span class="n">puc_default</span>
+    <span class="n">puc_dict</span> <span class="o">=</span> <span class="p">{}</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">password</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">session_id</span><span class="p">:</span>
-        <span class="n">password</span> <span class="o">=</span> <span class="n">getpass</span><span class="o">.</span><span class="n">getpass</span><span class="p">(</span><span class="s">&#39;Tanium Password: &#39;</span><span class="p">)</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">password</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">puc</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">puc</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+                <span class="n">puc_dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;PyTan User Config file exists at &#39;{}&#39; but is not valid, Exception: {}&quot;</span><span class="o">.</span><span class="n">format</span>
+            <span class="k">print</span> <span class="n">m</span><span class="p">(</span><span class="n">puc</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">host</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">session_id</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">username</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">puc_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;username&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">):</span>
+            <span class="n">username</span> <span class="o">=</span> <span class="nb">raw_input</span><span class="p">(</span><span class="s">&#39;Tanium Username: &#39;</span><span class="p">)</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">username</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">password</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">puc_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;password&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">):</span>
+            <span class="n">password</span> <span class="o">=</span> <span class="n">getpass</span><span class="o">.</span><span class="n">getpass</span><span class="p">(</span><span class="s">&#39;Tanium Password: &#39;</span><span class="p">)</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">password</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">host</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">puc_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;host&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">):</span>
         <span class="n">host</span> <span class="o">=</span> <span class="nb">raw_input</span><span class="p">(</span><span class="s">&#39;Tanium Host: &#39;</span><span class="p">)</span>
         <span class="n">args</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="n">host</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">args</span></div>
@@ -3169,7 +3228,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Sep 14, 2015.
+      Last updated on Sep 15, 2015.
     </p>
   </div>
 
@@ -3190,7 +3249,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'2.1.4',
+            VERSION:'2.1.5',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pytan.utils &mdash; PyTan v2.1.4 2.1.4 documentation</title>
+  <title>pytan.utils &mdash; PyTan v2.1.5 2.1.5 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="PyTan v2.1.4 2.1.4 documentation" href="../../index.html"/>
+    <link rel="top" title="PyTan v2.1.5 2.1.5 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -44,7 +44,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-nav-search">
         
-          <a href="../../index.html" class="fa fa-home"> PyTan v2.1.4</a>
+          <a href="../../index.html" class="fa fa-home"> PyTan v2.1.5</a>
         
         
 <div role="search">
@@ -151,7 +151,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../../index.html">PyTan v2.1.4</a>
+        <a href="../../index.html">PyTan v2.1.5</a>
       </nav>
 
 
@@ -192,6 +192,7 @@
 <span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">base64</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
 
 <span class="n">my_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
@@ -465,6 +466,8 @@
     <span class="k">if</span> <span class="n">gmt_tz</span><span class="p">:</span>
         <span class="c"># change the default time zone to GM time</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="o">.</span><span class="n">converter</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">gmtime</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="o">.</span><span class="n">converter</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">localtime</span>
 
     <span class="c"># add a console handler to all loggers that goes to STDOUT for INFO</span>
     <span class="c"># and below, but STDERR for WARNING and above (old method)</span>
@@ -2301,6 +2304,72 @@
     <span class="n">start_time_dt</span> <span class="o">=</span> <span class="n">expire_dt</span> <span class="o">-</span> <span class="n">expire_seconds_delta</span>
     <span class="n">start_time</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">datetime_to_timestr</span><span class="p">(</span><span class="n">start_time_dt</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">start_time_dt</span></div>
+
+
+<div class="viewcode-block" id="vig_encode"><a class="viewcode-back" href="../../pytan.html#pytan.utils.vig_encode">[docs]</a><span class="k">def</span> <span class="nf">vig_encode</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Obfuscates a string with a key using Vigenere cipher.</span>
+
+<span class="sd">    Only useful for obfuscation, not real security!!</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    key : str</span>
+<span class="sd">        * key to scrambled string with</span>
+<span class="sd">    string : str</span>
+<span class="sd">        * string to scramble with key</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    encoded_string : str</span>
+<span class="sd">        * encoded string</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">string</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+    <span class="n">encoded_chars</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">string</span><span class="p">)):</span>
+        <span class="n">key_c</span> <span class="o">=</span> <span class="n">key</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span>
+        <span class="n">encoded_c</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">string</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">+</span> <span class="nb">ord</span><span class="p">(</span><span class="n">key_c</span><span class="p">)</span> <span class="o">%</span> <span class="mi">256</span><span class="p">)</span>
+        <span class="n">encoded_chars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">encoded_c</span><span class="p">)</span>
+    <span class="n">v_string</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">encoded_chars</span><span class="p">)</span>
+    <span class="n">encoded_string</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">urlsafe_b64encode</span><span class="p">(</span><span class="n">v_string</span><span class="p">)</span>
+    <span class="n">encoded_string</span> <span class="o">=</span> <span class="s">&#39;::{}::&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">encoded_string</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">encoded_string</span></div>
+
+
+<div class="viewcode-block" id="vig_decode"><a class="viewcode-back" href="../../pytan.html#pytan.utils.vig_decode">[docs]</a><span class="k">def</span> <span class="nf">vig_decode</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;De-obfuscates a string with a key using Vigenere cipher.</span>
+
+<span class="sd">    Only useful for obfuscation, not real security!!</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This will only work with strings that have been encoded with vig_encode(). &quot;normal&quot; strings will be returned as-is.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    key : str</span>
+<span class="sd">        * key that string is scrambled with</span>
+<span class="sd">    string : str</span>
+<span class="sd">        * string to unscramble with key</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    decoded_string : str</span>
+<span class="sd">        * decoded string</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">string</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;::&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">string</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;::&#39;</span><span class="p">):</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">string</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">string</span>
+
+    <span class="n">v_string</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">urlsafe_b64decode</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+
+    <span class="n">decoded_chars</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">v_string</span><span class="p">)):</span>
+        <span class="n">key_c</span> <span class="o">=</span> <span class="n">key</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span>
+        <span class="n">encoded_c</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">v_string</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">-</span> <span class="nb">ord</span><span class="p">(</span><span class="n">key_c</span><span class="p">)</span> <span class="o">%</span> <span class="mi">256</span><span class="p">))</span>
+        <span class="n">decoded_chars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">encoded_c</span><span class="p">)</span>
+    <span class="n">decoded_string</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">decoded_chars</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">decoded_string</span></div>
 </pre></div>
 
           </div>
@@ -2312,7 +2381,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Sep 14, 2015.
+      Last updated on Sep 15, 2015.
     </p>
   </div>
 
@@ -2333,7 +2402,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'2.1.4',
+            VERSION:'2.1.5',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

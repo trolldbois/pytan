@@ -30,9 +30,10 @@ usage: ask_parsed.py [-h] [-u USERNAME] [-p PASSWORD]
                      [-l LOGLEVEL] [--debugformat] [--debug_method_locals]
                      [--record_all_requests] [--stats_loop_enabled]
                      [--http_auth_retry] [--http_retry_count HTTP_RETRY_COUNT]
-                     -q QUESTION_TEXT [--picker PICKER]
-                     [--no-results | --results] [--file REPORT_FILE]
-                     [--dir REPORT_DIR] [--enable_sse | --disable_sse]
+                     [--pytan_user_config PYTAN_USER_CONFIG] -q QUESTION_TEXT
+                     [--picker PICKER] [--no-results | --results]
+                     [--file REPORT_FILE] [--dir REPORT_DIR]
+                     [--enable_sse | --disable_sse]
                      [--sse_format {csv,xml,xml_obj,cef}] [--leading LEADING]
                      [--trailing TRAILING] [--export_format {csv,xml,json}]
                      [--sort HEADER_SORT | --no-sort | --auto_sort]
@@ -75,6 +76,9 @@ Handler Options:
   --http_retry_count HTTP_RETRY_COUNT
                         Retry count for HTTP failures/invalid responses
                         (default: 5)
+  --pytan_user_config PYTAN_USER_CONFIG
+                        PyTan User Config file to use for PyTan arguments
+                        (defaults to: ~/.pytan_config.json) (default: )
 
 Parsed Question Options:
   -q QUESTION_TEXT, --question_text QUESTION_TEXT
@@ -153,21 +157,21 @@ bin/ask_parsed.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 443
 ```
 
 ```
-PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Asking parsed question:
 {
   "get_results": true, 
   "picker": null, 
   "question_text": "get computer name"
 }
-2015-09-14 19:49:47,683 CRITICAL pytan.handler: You must supply an index as picker=$index to choose one of the parse responses -- re-run ask_parsed with picker set to one of these indexes!!
-2015-09-14 19:49:47,683 CRITICAL pytan.handler: Index 1, Score: 6823, Query: 'Get Computer Name from all machines'
-2015-09-14 19:49:47,684 CRITICAL pytan.handler: Index 2, Score: 1292, Query: 'Get Computer ID from all machines'
-2015-09-14 19:49:47,684 CRITICAL pytan.handler: Index 3, Score: 646, Query: 'Get Computer ID containing "name" from all machines'
-2015-09-14 19:49:47,684 CRITICAL pytan.handler: Index 4, Score: 457, Query: 'Get AD Computer Groups from all machines'
-2015-09-14 19:49:47,684 CRITICAL pytan.handler: Index 5, Score: 323, Query: 'Get BIOS Name from all machines'
-2015-09-14 19:49:47,684 CRITICAL pytan.handler: Index 6, Score: 228, Query: 'Get Computer Serial Number from all machines'
-2015-09-14 19:49:47,684 CRITICAL pytan.handler: Index 7, Score: 228, Query: 'Get Domain Name from all machines'
+2015-09-15 22:22:52,640 CRITICAL pytan.handler: You must supply an index as picker=$index to choose one of the parse responses -- re-run ask_parsed with picker set to one of these indexes!!
+2015-09-15 22:22:52,640 CRITICAL pytan.handler: Index 1, Score: 6823, Query: 'Get Computer Name from all machines'
+2015-09-15 22:22:52,640 CRITICAL pytan.handler: Index 2, Score: 1292, Query: 'Get Computer ID from all machines'
+2015-09-15 22:22:52,640 CRITICAL pytan.handler: Index 3, Score: 646, Query: 'Get Computer ID containing "name" from all machines'
+2015-09-15 22:22:52,640 CRITICAL pytan.handler: Index 4, Score: 457, Query: 'Get AD Computer Groups from all machines'
+2015-09-15 22:22:52,640 CRITICAL pytan.handler: Index 5, Score: 323, Query: 'Get BIOS Name from all machines'
+2015-09-15 22:22:52,640 CRITICAL pytan.handler: Index 6, Score: 228, Query: 'Get Computer Serial Number from all machines'
+2015-09-15 22:22:52,641 CRITICAL pytan.handler: Index 7, Score: 228, Query: 'Get Domain Name from all machines'
 
 
 Error occurred: You must supply an index as picker=$index to choose one of the parse responses -- re-run ask_parsed with picker set to one of these indexes!!
@@ -175,11 +179,11 @@ Error occurred: You must supply an index as picker=$index to choose one of the p
 
 ```STDERR
 Traceback (most recent call last):
-  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2529, in process_ask_parsed_args
+  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2574, in process_ask_parsed_args
     response = handler.ask(qtype='parsed', **obj_grp_args)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 249, in ask
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 385, in ask
     result = method(**clean_kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 680, in ask_parsed
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 816, in ask_parsed
     raise pytan.exceptions.PickerError(pw())
 PickerError: You must supply an index as picker=$index to choose one of the parse responses -- re-run ask_parsed with picker set to one of these indexes!!
 ```
@@ -204,15 +208,15 @@ bin/ask_parsed.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 443
 ```
 
 ```
-PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Asking parsed question:
 {
   "get_results": true, 
   "picker": 1, 
   "question_text": "get computer name"
 }
-2015-09-14 19:49:59,181 INFO     pytan.pollers.QuestionPoller: ID 715: Reached Threshold of 99% (3 of 3)
-++ Asked Question 'Get Computer Name from all machines' ID: 715
+2015-09-15 22:22:58,108 INFO     pytan.pollers.QuestionPoller: ID 2447: Reached Threshold of 99% (3 of 3)
+++ Asked Question 'Get Computer Name from all machines' ID: 2447
 ++ Report file '/tmp/out.csv' written with 81 bytes
 ```
 
@@ -251,15 +255,15 @@ bin/ask_parsed.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 443
 ```
 
 ```
-PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Asking parsed question:
 {
   "get_results": true, 
   "picker": 1, 
   "question_text": "get computer name and ip route details"
 }
-2015-09-14 19:50:11,263 INFO     pytan.pollers.QuestionPoller: ID 716: Reached Threshold of 99% (3 of 3)
-++ Asked Question 'Get Computer Name and IP Route Details from all machines' ID: 716
+2015-09-15 22:23:03,654 INFO     pytan.pollers.QuestionPoller: ID 2449: Reached Threshold of 99% (3 of 3)
+++ Asked Question 'Get Computer Name and IP Route Details from all machines' ID: 2449
 ++ Report file '/tmp/out.csv' written with 678 bytes
 ```
 
@@ -305,14 +309,14 @@ bin/ask_parsed.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 443
 ```
 
 ```
-PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Asking parsed question:
 {
   "get_results": false, 
   "picker": 1, 
   "question_text": "get computer name and ip route details"
 }
-++ Asked Question 'Get Computer Name and IP Route Details from all machines' ID: 717
+++ Asked Question 'Get Computer Name and IP Route Details from all machines' ID: 2450
 ++ No action results returned, run get_results.py to get the results
 ```
 
@@ -329,4 +333,4 @@ PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platfor
 [TOC](#user-content-toc)
 
 
-###### generated by: `build_bin_doc v2.1.0`, date: Mon Sep 14 15:50:12 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**
+###### generated by: `build_bin_doc v2.1.0`, date: Tue Sep 15 18:23:04 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**

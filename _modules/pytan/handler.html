@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pytan.handler &mdash; PyTan v2.1.4 2.1.4 documentation</title>
+  <title>pytan.handler &mdash; PyTan v2.1.5 2.1.5 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="PyTan v2.1.4 2.1.4 documentation" href="../../index.html"/>
+    <link rel="top" title="PyTan v2.1.5 2.1.5 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -44,7 +44,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-nav-search">
         
-          <a href="../../index.html" class="fa fa-home"> PyTan v2.1.4</a>
+          <a href="../../index.html" class="fa fa-home"> PyTan v2.1.5</a>
         
         
 <div role="search">
@@ -151,7 +151,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../../index.html">PyTan v2.1.4</a>
+        <a href="../../index.html">PyTan v2.1.5</a>
       </nav>
 
 
@@ -188,6 +188,7 @@
 <span class="kn">import</span> <span class="nn">io</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">pprint</span>
+<span class="kn">import</span> <span class="nn">json</span>
 
 <span class="n">my_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
 <span class="n">my_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">my_file</span><span class="p">)</span>
@@ -231,6 +232,9 @@
 <span class="sd">    session_id : str, optional</span>
 <span class="sd">        * default: None</span>
 <span class="sd">        * session_id to use while authenticating instead of username/password</span>
+<span class="sd">    pytan_user_config : str, optional</span>
+<span class="sd">        * default: pytan.constants.PYTAN_USER_CONFIG</span>
+<span class="sd">        * JSON file containing key/value pairs to override class variables</span>
 
 <span class="sd">    Other Parameters</span>
 <span class="sd">    ----------------</span>
@@ -330,43 +334,72 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;pytan.handler&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">methodlog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;method_debug&quot;</span><span class="p">)</span>
 
+        <span class="c"># update self with all local variables that are not self/kwargs/k/v</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">()</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;self&#39;</span><span class="p">,</span> <span class="s">&#39;kwargs&#39;</span><span class="p">,</span> <span class="s">&#39;k&#39;</span><span class="p">,</span> <span class="s">&#39;v&#39;</span><span class="p">]:</span>
+                <span class="k">continue</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+
         <span class="c"># setup the console logging handler</span>
-        <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">setup_console_logging</span><span class="p">(</span><span class="n">gmt_tz</span><span class="o">=</span><span class="n">gmt_log</span><span class="p">)</span>
+        <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">setup_console_logging</span><span class="p">(</span><span class="n">gmt_tz</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gmt_log</span><span class="p">)</span>
 
         <span class="c"># create all the loggers and set their levels based on loglevel</span>
-        <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">set_log_levels</span><span class="p">(</span><span class="n">loglevel</span><span class="o">=</span><span class="n">loglevel</span><span class="p">)</span>
+        <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">set_log_levels</span><span class="p">(</span><span class="n">loglevel</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">loglevel</span><span class="p">)</span>
 
         <span class="c"># change the format of console logging handler if need be</span>
-        <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">change_console_format</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="n">debugformat</span><span class="p">)</span>
+        <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">change_console_format</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">debugformat</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">DEBUG_METHOD_LOCALS</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;debug_method_locals&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+        <span class="c"># get the default pytan user config file</span>
+        <span class="n">puc_default</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">pytan</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">PYTAN_USER_CONFIG</span><span class="p">)</span>
+
+        <span class="c"># see if the pytan_user_config file location was overridden</span>
+        <span class="n">puc_kwarg</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;pytan_user_config&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">puc</span> <span class="o">=</span> <span class="n">puc_kwarg</span> <span class="ow">or</span> <span class="n">puc_default</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_pytan_user_config</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">vig_decode</span><span class="p">(</span><span class="n">pytan</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">PYTAN_KEY</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">gmt_log</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gmt_log</span><span class="p">:</span>
+            <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">setup_console_logging</span><span class="p">(</span><span class="n">gmt_tz</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gmt_log</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">loglevel</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loglevel</span><span class="p">:</span>
+            <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">set_log_levels</span><span class="p">(</span><span class="n">loglevel</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">loglevel</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">debugformat</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">debugformat</span><span class="p">:</span>
+            <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">change_console_format</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">debugformat</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">debug_method_locals</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;debug_method_locals&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_debug_locals</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_name</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">loglevel</span> <span class="o">=</span> <span class="n">loglevel</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">session_id</span><span class="p">:</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">username</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">session_id</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HandlerError</span><span class="p">(</span><span class="s">&quot;Must supply username!&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">password</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">session_id</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HandlerError</span><span class="p">(</span><span class="s">&quot;Must supply password!&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">host</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">username</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HandlerError</span><span class="p">(</span><span class="s">&quot;Must supply username!&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HandlerError</span><span class="p">(</span><span class="s">&quot;Must supply password!&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HandlerError</span><span class="p">(</span><span class="s">&quot;Must supply host!&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">port</span><span class="p">:</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HandlerError</span><span class="p">(</span><span class="s">&quot;Must supply port!&quot;</span><span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">port</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">port</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HandlerError</span><span class="p">(</span><span class="s">&quot;port must be an integer!&quot;</span><span class="p">)</span>
 
-        <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">test_app_port</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">)</span>
+        <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">test_app_port</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">)</span>
 
         <span class="c"># establish our Session class</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">sessions</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">sessions</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="c"># authenticate using the Session class</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">authenticate</span><span class="p">(</span>
-            <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">,</span> <span class="n">session_id</span><span class="o">=</span><span class="n">session_id</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+            <span class="n">username</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="p">,</span> <span class="n">session_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">session_id</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -375,6 +408,109 @@
         <span class="n">str_tpl</span> <span class="o">=</span> <span class="s">&quot;PyTan v{} Handler for {}&quot;</span><span class="o">.</span><span class="n">format</span>
         <span class="n">ret</span> <span class="o">=</span> <span class="n">str_tpl</span><span class="p">(</span><span class="n">pytan</span><span class="o">.</span><span class="n">__version__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ret</span>
+
+<div class="viewcode-block" id="Handler.read_pytan_user_config"><a class="viewcode-back" href="../../pytan.html#pytan.handler.Handler.read_pytan_user_config">[docs]</a>    <span class="k">def</span> <span class="nf">read_pytan_user_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Read a PyTan User Config and update the current class variables</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            * kwargs with updated variables from PyTan User Config (if any)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">puc</span><span class="p">):</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Unable to find PyTan User config file at: {}&quot;</span><span class="o">.</span><span class="n">format</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">puc</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">kwargs</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">puc</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+                <span class="n">puc_dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;PyTan User config file at: {} is invalid, exception: {}&quot;</span><span class="o">.</span><span class="n">format</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">puc</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;PyTan User config file successfully loaded: {} &quot;</span><span class="o">.</span><span class="n">format</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">puc</span><span class="p">))</span>
+
+            <span class="c"># handle class params</span>
+            <span class="k">for</span> <span class="n">h_arg</span><span class="p">,</span> <span class="n">arg_default</span> <span class="ow">in</span> <span class="n">pytan</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">HANDLER_ARG_DEFAULTS</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">h_arg</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">puc_dict</span><span class="p">:</span>
+                    <span class="k">continue</span>
+
+                <span class="k">if</span> <span class="n">h_arg</span> <span class="o">==</span> <span class="s">&#39;password&#39;</span><span class="p">:</span>
+                    <span class="n">puc_dict</span><span class="p">[</span><span class="s">&#39;password&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">vig_decode</span><span class="p">(</span>
+                        <span class="n">pytan</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">PYTAN_KEY</span><span class="p">,</span> <span class="n">puc_dict</span><span class="p">[</span><span class="s">&#39;password&#39;</span><span class="p">],</span>
+                    <span class="p">)</span>
+
+                <span class="n">class_val</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h_arg</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+                <span class="n">puc_val</span> <span class="o">=</span> <span class="n">puc_dict</span><span class="p">[</span><span class="n">h_arg</span><span class="p">]</span>
+
+                <span class="k">if</span> <span class="n">class_val</span> <span class="o">!=</span> <span class="n">arg_default</span><span class="p">:</span>
+                    <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;User supplied argument for {}, ignoring value from: {}&quot;</span><span class="o">.</span><span class="n">format</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">h_arg</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">puc</span><span class="p">))</span>
+                    <span class="k">continue</span>
+
+                <span class="k">if</span> <span class="n">arg_default</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">puc_val</span> <span class="o">!=</span> <span class="n">class_val</span><span class="p">:</span>
+                    <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Setting class variable {} with value from: {}&quot;</span><span class="o">.</span><span class="n">format</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">h_arg</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">puc</span><span class="p">))</span>
+                    <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h_arg</span><span class="p">,</span> <span class="n">puc_val</span><span class="p">)</span>
+
+            <span class="c"># handle kwargs params</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">puc_dict</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;self&#39;</span><span class="p">,</span> <span class="s">&#39;kwargs&#39;</span><span class="p">,</span> <span class="s">&#39;k&#39;</span><span class="p">,</span> <span class="s">&#39;v&#39;</span><span class="p">]:</span>
+                    <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Skipping kwargs variable {} from: {}&quot;</span><span class="o">.</span><span class="n">format</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">puc</span><span class="p">))</span>
+                    <span class="k">continue</span>
+
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="ow">and</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                    <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Setting kwargs variable {} with value from: {}&quot;</span><span class="o">.</span><span class="n">format</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">puc</span><span class="p">))</span>
+                    <span class="n">kwargs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="k">return</span> <span class="n">kwargs</span></div>
+
+<div class="viewcode-block" id="Handler.write_pytan_user_config"><a class="viewcode-back" href="../../pytan.html#pytan.handler.Handler.write_pytan_user_config">[docs]</a>    <span class="k">def</span> <span class="nf">write_pytan_user_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Write a PyTan User Config with the current class variables for use with pytan_user_config in instantiating Handler()</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        pytan_user_config : str, optional</span>
+<span class="sd">            * default: self.puc</span>
+<span class="sd">            * JSON file to wite with current class variables</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        puc : str</span>
+<span class="sd">            * filename of PyTan User Config that was written to</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">puc_kwarg</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;pytan_user_config&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">puc</span> <span class="o">=</span> <span class="n">puc_kwarg</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">puc</span>
+        <span class="n">puc</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">puc</span><span class="p">)</span>
+
+        <span class="n">puc_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;mylog&#39;</span><span class="p">,</span> <span class="s">&#39;methodlog&#39;</span><span class="p">,</span> <span class="s">&#39;session&#39;</span><span class="p">,</span> <span class="s">&#39;puc&#39;</span><span class="p">]:</span>
+                <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Skipping class variable {} from inclusion in: {}&quot;</span><span class="o">.</span><span class="n">format</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">puc</span><span class="p">))</span>
+                <span class="k">continue</span>
+
+            <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Including class variable {} in: {}&quot;</span><span class="o">.</span><span class="n">format</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">puc</span><span class="p">))</span>
+            <span class="n">puc_dict</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+
+        <span class="c"># obfuscate the password</span>
+        <span class="n">puc_dict</span><span class="p">[</span><span class="s">&#39;password&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">vig_encode</span><span class="p">(</span><span class="n">pytan</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">PYTAN_KEY</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">puc</span><span class="p">,</span> <span class="s">&#39;w+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+                <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">puc_dict</span><span class="p">,</span> <span class="n">fh</span><span class="p">,</span> <span class="n">skipkeys</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Failed to write PyTan User config: &#39;{}&#39;, exception: {}&quot;</span><span class="o">.</span><span class="n">format</span>
+            <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HandlerError</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">puc</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;PyTan User config file successfully written: {} &quot;</span><span class="o">.</span><span class="n">format</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">puc</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">puc</span></div>
 
 <div class="viewcode-block" id="Handler.get_server_version"><a class="viewcode-back" href="../../pytan.html#pytan.handler.Handler.get_server_version">[docs]</a>    <span class="k">def</span> <span class="nf">get_server_version</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Uses :func:`taniumpy.session.Session.get_server_version` to get the version of the Tanium Server</span>
@@ -1294,7 +1430,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        ri : :class:`taniumpy.object_types.result_info.ResultInfo`</span>
-<span class="sd">            * The return of GetResultData for `obj`</span>
+<span class="sd">            * The return of GetResultInfo for `obj`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_debug_locals</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_name</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
 
@@ -3575,8 +3711,8 @@
                 <span class="k">raise</span> <span class="n">pytan</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ServerSideExportError</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="n">ri</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="Handler._debug_locals"><a class="viewcode-back" href="../../pytan.html#pytan.handler.Handler._debug_locals">[docs]</a>    <span class="k">def</span> <span class="nf">_debug_locals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fname</span><span class="p">,</span> <span class="n">flocals</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method to print out locals for a function if self.DEBUG_METHOD_LOCALS is True&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;DEBUG_METHOD_LOCALS&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to print out locals for a function if self.debug_method_locals is True&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;debug_method_locals&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
             <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;Local variables for {}.{}:</span><span class="se">\n</span><span class="s">{}&quot;</span><span class="o">.</span><span class="n">format</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">methodlog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">fname</span><span class="p">,</span> <span class="n">pprint</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="n">flocals</span><span class="p">)))</span></div></div>
 </pre></div>
@@ -3590,7 +3726,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Sep 14, 2015.
+      Last updated on Sep 15, 2015.
     </p>
   </div>
 
@@ -3611,7 +3747,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'2.1.4',
+            VERSION:'2.1.5',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pytan.pollers &mdash; PyTan v2.1.4 2.1.4 documentation</title>
+  <title>pytan.pollers &mdash; PyTan v2.1.5 2.1.5 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="PyTan v2.1.4 2.1.4 documentation" href="../../index.html"/>
+    <link rel="top" title="PyTan v2.1.5 2.1.5 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -44,7 +44,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-nav-search">
         
-          <a href="../../index.html" class="fa fa-home"> PyTan v2.1.4</a>
+          <a href="../../index.html" class="fa fa-home"> PyTan v2.1.5</a>
         
         
 <div role="search">
@@ -151,7 +151,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../../index.html">PyTan v2.1.4</a>
+        <a href="../../index.html">PyTan v2.1.5</a>
       </nav>
 
 
@@ -461,11 +461,21 @@
 
 <div class="viewcode-block" id="QuestionPoller.get_result_info"><a class="viewcode-back" href="../../pytan.html#pytan.pollers.QuestionPoller.get_result_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_result_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Simple utility wrapper around :func:`pytan.handler.Handler.get_result_info`</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        gri_retry_count : int, optional</span>
+<span class="sd">            * default: 10</span>
+<span class="sd">            * Number of times to re-try GetResultInfo when estimated_total comes back as 0</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        result_info : :class:`taniumpy.object_types.result_info.ResultInfo`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_debug_locals</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_name</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
 
         <span class="c"># add a retry to re-fetch result info if estimated_total == 0</span>
-        <span class="n">gri_retry_count</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;gri_retry_count&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">gri_retry_count</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;gri_retry_count&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 
         <span class="n">clean_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;obj&#39;</span><span class="p">,</span> <span class="s">&#39;gri_retry_count&#39;</span><span class="p">]</span>
         <span class="n">clean_kwargs</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">clean_kwargs</span><span class="p">(</span><span class="n">kwargs</span><span class="o">=</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="n">clean_keys</span><span class="p">)</span>
@@ -486,13 +496,18 @@
                 <span class="n">current_try</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="n">h</span> <span class="o">=</span> <span class="s">&quot;Re-issuing a GetResultInfo since the estimated_total came back 0, {}&quot;</span><span class="o">.</span><span class="n">format</span>
                 <span class="n">clean_kwargs</span><span class="p">[</span><span class="s">&#39;pytan_help&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span><span class="p">(</span><span class="n">attempt_text</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">h</span><span class="p">(</span><span class="n">attempt_text</span><span class="p">))</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
                 <span class="k">continue</span>
 
         <span class="k">return</span> <span class="n">result_info</span></div>
 
 <div class="viewcode-block" id="QuestionPoller.get_result_data"><a class="viewcode-back" href="../../pytan.html#pytan.pollers.QuestionPoller.get_result_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_result_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Simple utility wrapper around :func:`pytan.handler.Handler.get_result_data`</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        result_data : :class:`taniumpy.object_types.result_set.ResultSet`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_debug_locals</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_name</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
 
@@ -516,6 +531,9 @@
 <span class="sd">                * &#39;poller&#39;: a poller instance</span>
 <span class="sd">                * &#39;pct&#39;: a percent complete</span>
 <span class="sd">                * &#39;kwargs&#39;: a dict of other args</span>
+<span class="sd">        gri_retry_count : int, optional</span>
+<span class="sd">            * default: 10</span>
+<span class="sd">            * Number of times to re-try GetResultInfo when estimated_total comes back as 0</span>
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
@@ -1491,7 +1509,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Sep 14, 2015.
+      Last updated on Sep 15, 2015.
     </p>
   </div>
 
@@ -1512,7 +1530,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'2.1.4',
+            VERSION:'2.1.5',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
