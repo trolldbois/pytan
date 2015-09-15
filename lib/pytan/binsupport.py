@@ -312,7 +312,16 @@ def setup_parser(desc, help=False):
         dest='http_retry_count',
         help="Retry count for HTTP failures/invalid responses",
     )
-
+    opt_group.add_argument(
+        '--pytan_user_config',
+        required=False,
+        action='store',
+        default='',
+        dest='pytan_user_config',
+        help=(
+            "PyTan User Config file to use for PyTan arguments (defaults to: {})"
+        ).format(pytan.constants.PYTAN_USER_CONFIG),
+    )
     return parser
 
 
