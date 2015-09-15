@@ -791,7 +791,8 @@ body .task-list{
                       [-l LOGLEVEL] [--debugformat] [--debug_method_locals]
                       [--record_all_requests] [--stats_loop_enabled]
                       [--http_auth_retry]
-                      [--http_retry_count HTTP_RETRY_COUNT] -n NAME
+                      [--http_retry_count HTTP_RETRY_COUNT]
+                      [--pytan_user_config PYTAN_USER_CONFIG] -n NAME
                       [-rn ROLENAME] [-ri ROLEID] [-g GROUP]
                       [-prop PROPERTIES PROPERTIES]
 
@@ -830,6 +831,9 @@ Handler Options:
   --http_retry_count HTTP_RETRY_COUNT
                         Retry count for HTTP failures/invalid responses
                         (default: 5)
+  --pytan_user_config PYTAN_USER_CONFIG
+                        PyTan User Config file to use for PyTan arguments
+                        (defaults to: ~/.pytan_config.json) (default: )
 
 Create User Options:
   -n NAME, --name NAME  Name of user to create (default: None)
@@ -877,18 +881,18 @@ Create User Options:
 
 <div class="highlight highlight-source-shell"><pre>bin/delete_user.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>CMDLINE TEST user<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+<pre><code>PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 
 
 Error occurred: No results found searching for user with {'id': [], 'name': ['CMDLINE TEST user']}!!
 </code></pre>
 
 <pre lang="STDERR"><code>Traceback (most recent call last):
-  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2043, in process_delete_object_args
+  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2071, in process_delete_object_args
     response = handler.delete(**obj_grp_args)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1775, in delete
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1911, in delete
     objs_to_del = self.get(objtype=objtype, pytan_help=h, **clean_kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 2116, in get
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 2252, in get
     raise pytan.exceptions.HandlerError(err(objtype, err_args))
 HandlerError: No results found searching for user with {'id': [], 'name': ['CMDLINE TEST user']}!!
 </code></pre>
@@ -917,8 +921,8 @@ HandlerError: No results found searching for user with {'id': [], 'name': ['CMDL
 
 <div class="highlight highlight-source-shell"><pre>bin/create_user.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>CMDLINE TEST user<span class="pl-pds">"</span></span> --rolename <span class="pl-s"><span class="pl-pds">"</span>Administrator<span class="pl-pds">"</span></span> --property <span class="pl-s"><span class="pl-pds">"</span>property name<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>property value<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-New user 'CMDLINE TEST user' created with ID 28, roles: 'Administrator', group id: 0
+<pre><code>PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+New user 'CMDLINE TEST user' created with ID 40, roles: 'Administrator', group id: 0
 </code></pre>
 
 <ul>
@@ -953,8 +957,8 @@ New user 'CMDLINE TEST user' created with ID 28, roles: 'Administrator', group i
 
 <div class="highlight highlight-source-shell"><pre>bin/delete_user.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>CMDLINE TEST user<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-Deleted item:  User, name: 'CMDLINE TEST user', id: 28
+<pre><code>PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+Deleted item:  User, name: 'CMDLINE TEST user', id: 40
 </code></pre>
 
 <ul>
@@ -990,18 +994,18 @@ Deleted item:  User, name: 'CMDLINE TEST user', id: 28
 
 <div class="highlight highlight-source-shell"><pre>bin/delete_user.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>CMDLINE TEST user<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+<pre><code>PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 
 
 Error occurred: No results found searching for user with {'id': [], 'name': ['CMDLINE TEST user']}!!
 </code></pre>
 
 <pre lang="STDERR"><code>Traceback (most recent call last):
-  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2043, in process_delete_object_args
+  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2071, in process_delete_object_args
     response = handler.delete(**obj_grp_args)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1775, in delete
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1911, in delete
     objs_to_del = self.get(objtype=objtype, pytan_help=h, **clean_kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 2116, in get
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 2252, in get
     raise pytan.exceptions.HandlerError(err(objtype, err_args))
 HandlerError: No results found searching for user with {'id': [], 'name': ['CMDLINE TEST user']}!!
 </code></pre>
@@ -1030,8 +1034,8 @@ HandlerError: No results found searching for user with {'id': [], 'name': ['CMDL
 
 <div class="highlight highlight-source-shell"><pre>bin/create_user.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>CMDLINE TEST user<span class="pl-pds">"</span></span> --rolename <span class="pl-s"><span class="pl-pds">"</span>Administrator<span class="pl-pds">"</span></span> --property <span class="pl-s"><span class="pl-pds">"</span>property name<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>property value<span class="pl-pds">"</span></span> -g <span class="pl-s"><span class="pl-pds">"</span>All Computers<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-New user 'CMDLINE TEST user' created with ID 29, roles: 'Administrator', group id: 62
+<pre><code>PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+New user 'CMDLINE TEST user' created with ID 41, roles: 'Administrator', group id: 62
 </code></pre>
 
 <ul>
@@ -1066,8 +1070,8 @@ New user 'CMDLINE TEST user' created with ID 29, roles: 'Administrator', group i
 
 <div class="highlight highlight-source-shell"><pre>bin/delete_user.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>CMDLINE TEST user<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.4 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-Deleted item:  User, name: 'CMDLINE TEST user', id: 29
+<pre><code>PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+Deleted item:  User, name: 'CMDLINE TEST user', id: 41
 </code></pre>
 
 <ul>
@@ -1094,7 +1098,7 @@ Deleted item:  User, name: 'CMDLINE TEST user', id: 29
 <p><a href="#user-content-toc">TOC</a></p>
 
 <h6>
-<a id="user-content-generated-by-build_bin_doc-v210-date-mon-sep-14-155103-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v210-date-mon-sep-14-155103-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v2.1.0</code>, date: Mon Sep 14 15:51:03 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
+<a id="user-content-generated-by-build_bin_doc-v210-date-tue-sep-15-182326-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v210-date-tue-sep-15-182326-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v2.1.0</code>, date: Tue Sep 15 18:23:26 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
 </h6>
 
 </body></html>

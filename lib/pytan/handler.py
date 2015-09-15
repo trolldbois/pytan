@@ -12,6 +12,7 @@ import logging
 import io
 import datetime
 import pprint
+import json
 
 my_file = os.path.abspath(__file__)
 my_dir = os.path.dirname(my_file)
@@ -55,6 +56,9 @@ class Handler(object):
     session_id : str, optional
         * default: None
         * session_id to use while authenticating instead of username/password
+    pytan_user_config : str, optional
+        * default: pytan.constants.PYTAN_USER_CONFIG
+        * JSON file containing key/value pairs to override class variables
 
     Other Parameters
     ----------------
@@ -154,43 +158,72 @@ class Handler(object):
         self.mylog = logging.getLogger("pytan.handler")
         self.methodlog = logging.getLogger("method_debug")
 
+        # update self with all local variables that are not self/kwargs/k/v
+        for k, v in locals().iteritems():
+            if k in ['self', 'kwargs', 'k', 'v']:
+                continue
+            setattr(self, k, v)
+
         # setup the console logging handler
-        pytan.utils.setup_console_logging(gmt_tz=gmt_log)
+        pytan.utils.setup_console_logging(gmt_tz=self.gmt_log)
 
         # create all the loggers and set their levels based on loglevel
-        pytan.utils.set_log_levels(loglevel=loglevel)
+        pytan.utils.set_log_levels(loglevel=self.loglevel)
 
         # change the format of console logging handler if need be
-        pytan.utils.change_console_format(debug=debugformat)
+        pytan.utils.change_console_format(debug=self.debugformat)
 
-        self.DEBUG_METHOD_LOCALS = kwargs.get('debug_method_locals', False)
+        # get the default pytan user config file
+        puc_default = os.path.expanduser(pytan.constants.PYTAN_USER_CONFIG)
+
+        # see if the pytan_user_config file location was overridden
+        puc_kwarg = kwargs.get('pytan_user_config', '')
+
+        self.puc = puc_kwarg or puc_default
+        kwargs = self.read_pytan_user_config(kwargs)
+
+        self.password = pytan.utils.vig_decode(pytan.constants.PYTAN_KEY, self.password)
+
+        if gmt_log != self.gmt_log:
+            pytan.utils.setup_console_logging(gmt_tz=self.gmt_log)
+
+        if loglevel != self.loglevel:
+            pytan.utils.set_log_levels(loglevel=self.loglevel)
+
+        if debugformat != self.debugformat:
+            pytan.utils.change_console_format(debug=self.debugformat)
+
+        self.debug_method_locals = kwargs.get('debug_method_locals', False)
 
         self._debug_locals(sys._getframe().f_code.co_name, locals())
 
-        self.loglevel = loglevel
+        if not self.session_id:
 
-        if not username and not session_id:
-            raise pytan.exceptions.HandlerError("Must supply username!")
-        if not password and not session_id:
-            raise pytan.exceptions.HandlerError("Must supply password!")
-        if not host:
+            if not self.username:
+                raise pytan.exceptions.HandlerError("Must supply username!")
+
+            if not self.password:
+                raise pytan.exceptions.HandlerError("Must supply password!")
+
+        if not self.host:
             raise pytan.exceptions.HandlerError("Must supply host!")
-        if not port:
+
+        if not self.port:
             raise pytan.exceptions.HandlerError("Must supply port!")
 
         try:
-            port = int(port)
+            self.port = int(self.port)
         except ValueError:
             raise pytan.exceptions.HandlerError("port must be an integer!")
 
-        pytan.utils.test_app_port(host=host, port=port)
+        pytan.utils.test_app_port(host=self.host, port=self.port)
 
         # establish our Session class
-        self.session = pytan.sessions.Session(host=host, port=port, **kwargs)
+        self.session = pytan.sessions.Session(host=self.host, port=self.port, **kwargs)
 
         # authenticate using the Session class
         self.session.authenticate(
-            username=username, password=password, session_id=session_id, **kwargs
+            username=self.username, password=self.password, session_id=self.session_id, **kwargs
         )
 
     def __str__(self):
@@ -199,6 +232,109 @@ class Handler(object):
         str_tpl = "PyTan v{} Handler for {}".format
         ret = str_tpl(pytan.__version__, self.session)
         return ret
+
+    def read_pytan_user_config(self, kwargs):
+        """Read a PyTan User Config and update the current class variables
+
+        Returns
+        -------
+        kwargs : dict
+            * kwargs with updated variables from PyTan User Config (if any)
+        """
+        if not os.path.isfile(self.puc):
+            m = "Unable to find PyTan User config file at: {}".format
+            self.mylog.debug(m(self.puc))
+            return kwargs
+
+        try:
+            with open(self.puc) as fh:
+                puc_dict = json.load(fh)
+        except Exception as e:
+            m = "PyTan User config file at: {} is invalid, exception: {}".format
+            self.mylog.error(m(self.puc, e))
+        else:
+            m = "PyTan User config file successfully loaded: {} ".format
+            self.mylog.info(m(self.puc))
+
+            # handle class params
+            for h_arg, arg_default in pytan.constants.HANDLER_ARG_DEFAULTS.iteritems():
+                if h_arg not in puc_dict:
+                    continue
+
+                if h_arg == 'password':
+                    puc_dict['password'] = pytan.utils.vig_decode(
+                        pytan.constants.PYTAN_KEY, puc_dict['password'],
+                    )
+
+                class_val = getattr(self, h_arg, None)
+                puc_val = puc_dict[h_arg]
+
+                if class_val != arg_default:
+                    m = "User supplied argument for {}, ignoring value from: {}".format
+                    self.mylog.debug(m(h_arg, self.puc))
+                    continue
+
+                if arg_default is None or puc_val != class_val:
+                    m = "Setting class variable {} with value from: {}".format
+                    self.mylog.debug(m(h_arg, self.puc))
+                    setattr(self, h_arg, puc_val)
+
+            # handle kwargs params
+            for k, v in puc_dict.iteritems():
+                if k in ['self', 'kwargs', 'k', 'v']:
+                    m = "Skipping kwargs variable {} from: {}".format
+                    self.mylog.debug(m(k, self.puc))
+                    continue
+
+                if not hasattr(self, k) and k not in kwargs:
+                    m = "Setting kwargs variable {} with value from: {}".format
+                    self.mylog.debug(m(k, self.puc))
+                    kwargs[k] = v
+        return kwargs
+
+    def write_pytan_user_config(self, **kwargs):
+        """Write a PyTan User Config with the current class variables for use with pytan_user_config in instantiating Handler()
+
+        Parameters
+        ----------
+        pytan_user_config : str, optional
+            * default: self.puc
+            * JSON file to wite with current class variables
+
+        Returns
+        -------
+        puc : str
+            * filename of PyTan User Config that was written to
+        """
+        puc_kwarg = kwargs.get('pytan_user_config', '')
+        puc = puc_kwarg or self.puc
+        puc = os.path.expanduser(puc)
+
+        puc_dict = {}
+
+        for k, v in vars(self).iteritems():
+            if k in ['mylog', 'methodlog', 'session', 'puc']:
+                m = "Skipping class variable {} from inclusion in: {}".format
+                self.mylog.debug(m(k, puc))
+                continue
+
+            m = "Including class variable {} in: {}".format
+            self.mylog.debug(m(k, puc))
+            puc_dict[k] = v
+
+        # obfuscate the password
+        puc_dict['password'] = pytan.utils.vig_encode(pytan.constants.PYTAN_KEY, self.password)
+
+        try:
+            with open(puc, 'w+') as fh:
+                json.dump(puc_dict, fh, skipkeys=True, indent=2)
+        except Exception as e:
+            m = "Failed to write PyTan User config: '{}', exception: {}".format
+            raise pytan.exceptions.HandlerError(m(puc, e))
+        else:
+            m = "PyTan User config file successfully written: {} ".format
+            self.mylog.info(m(puc))
+        return puc
 
     def get_server_version(self, **kwargs):
         """Uses :func:`taniumpy.session.Session.get_server_version` to get the version of the Tanium Server
@@ -1118,7 +1254,7 @@ class Handler(object):
         Returns
         -------
         ri : :class:`taniumpy.object_types.result_info.ResultInfo`
-            * The return of GetResultData for `obj`
+            * The return of GetResultInfo for `obj`
         """
         self._debug_locals(sys._getframe().f_code.co_name, locals())
 
@@ -3399,7 +3535,7 @@ class Handler(object):
                 raise pytan.exceptions.ServerSideExportError(m(ri))
 
     def _debug_locals(self, fname, flocals):
-        """Method to print out locals for a function if self.DEBUG_METHOD_LOCALS is True"""
-        if getattr(self, 'DEBUG_METHOD_LOCALS', False):
+        """Method to print out locals for a function if self.debug_method_locals is True"""
+        if getattr(self, 'debug_method_locals', False):
             m = "Local variables for {}.{}:\n{}".format
             self.methodlog.debug(m(self.__class__.__name__, fname, pprint.pformat(flocals)))

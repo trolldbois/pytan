@@ -428,6 +428,6 @@ class ExampleProcesser(object):
 if __name__ == '__main__':
     skip_files = ['ddt_invalid_connects.json']
 
-    ep = ExampleProcesser(verbose=False, tempdir=True)
+    ep = ExampleProcesser(verbose=False, tempdir=False)
     ep.main(skip_files=skip_files, clean=True)
     console = pytan.binsupport.HistoryConsole()

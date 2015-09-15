@@ -712,3 +712,27 @@ SSE_CRASH_MAP = ['6.5.314.4300']
 """
 Mapping of versions to watch out for crashes/handle bugs for server side export
 """
+
+PYTAN_USER_CONFIG = "~/.pytan_config.json"
+"""
+Default path to file to use for Handler parameter overrides
+"""
+
+PYTAN_KEY = "mT1er@iUa1kP9pelSW"
+"""
+Key used for obfuscation/de-obfsucation
+"""
+
+HANDLER_ARG_DEFAULTS = {
+    'username': None,
+    'password': None,
+    'session_id': None,
+    'host': None,
+    'port': 443,
+    'loglevel': 0,
+    'debugformat': False,
+    'gmt_log': False,
+}
+"""
+Map of handler arguments and their defaults
+"""

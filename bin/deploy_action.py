@@ -4,7 +4,7 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 '''Deploy an action and save the results as a report format'''
 __author__ = 'Jim Olsen <jim.olsen@tanium.com>'
-__version__ = '2.1.4'
+__version__ = '2.1.5'
 
 import os
 import sys

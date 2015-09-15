@@ -4,7 +4,7 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 '''Gets the Result Info for all the questions asked for a given saved question, or for all questions asked ever, and exports the question information to a CSV file'''
 __author__ = 'Jim Olsen <jim.olsen@tanium.com>'
-__version__ = '2.1.4'
+__version__ = '2.1.5'
 
 import os
 import sys

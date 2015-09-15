@@ -241,6 +241,7 @@ class Session(object):
         self.authlog = logging.getLogger(self.qualname + ".auth")
         self.httplog = logging.getLogger(self.qualname + ".http")
         self.bodyhttplog = logging.getLogger(self.qualname + ".http.body")
+        self.statslog = logging.getLogger("stats")
 
     def __str__(self):
         class_name = self.__class__.__name__

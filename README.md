@@ -3,20 +3,20 @@
 This is a set of packages and scripts that provide a simple way for interfacing with the [Tanium](https://www.tanium.com/) SOAP API using python or the command line.
 
   * Current Stable Version: 
-    * **2.1.4 (Sep 14 2015)** [Release Link](https://github.com/tanium/pytan/releases/tag/2.1.4)
+    * **2.1.5 (Sep 15 2015)** [Release Link](https://github.com/tanium/pytan/releases/tag/2.1.5)
   * Current Development Version:
-    * **2.1.5** [Develop Branch](https://github.com/tanium/pytan/tree/develop)
+    * **2.1.6** [Develop Branch](https://github.com/tanium/pytan/tree/develop)
 
 ## Documentation Links
 
-  * Online documentation for PyTan 2.1.4:
+  * Online documentation for PyTan 2.1.5:
     * [HTML: Main Index](http://tanium.github.io/pytan)
     * [HTML: PyTan API Examples](http://tanium.github.io/pytan/examples/pytan_examples.html)
     * [HTML: PyTan Command Line Usage](http://tanium.github.io/pytan/_static/bin_doc/index.html)
-    * [PDF: Standalone PDF version of HTML](http://tanium.github.io/pytan/PyTan-2.1.4.pdf)
-  * Offline documentation for PyTan 2.1.4:
-    * [Zipped HTML documentation for PyTan 2.1.4](doc/html/PyTan-2.1.4-HTML_DOC.zip)
-    * [PDF documentation for PyTan 2.1.4](doc/pdf/PyTan-2.1.4.pdf)
+    * [PDF: Standalone PDF version of HTML](http://tanium.github.io/pytan/PyTan-2.1.5.pdf)
+  * Offline documentation for PyTan 2.1.5:
+    * [Zipped HTML documentation for PyTan 2.1.5](doc/html/PyTan-2.1.5-HTML_DOC.zip)
+    * [PDF documentation for PyTan 2.1.5](doc/pdf/PyTan-2.1.5.pdf)
   * Other documentation:
     * [Change Log for PyTan](CHANGELOG.md)
     * [To Do List for PyTan](TODO.md)

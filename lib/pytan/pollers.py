@@ -285,11 +285,21 @@ class QuestionPoller(object):
 
     def get_result_info(self, **kwargs):
         """Simple utility wrapper around :func:`pytan.handler.Handler.get_result_info`
+
+        Parameters
+        ----------
+        gri_retry_count : int, optional
+            * default: 10
+            * Number of times to re-try GetResultInfo when estimated_total comes back as 0
+
+        Returns
+        -------
+        result_info : :class:`taniumpy.object_types.result_info.ResultInfo`
         """
         self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         # add a retry to re-fetch result info if estimated_total == 0
-        gri_retry_count = kwargs.get('gri_retry_count', 2)
+        gri_retry_count = kwargs.get('gri_retry_count', 10)
 
         clean_keys = ['obj', 'gri_retry_count']
         clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
@@ -310,13 +320,18 @@ class QuestionPoller(object):
                 current_try += 1
                 h = "Re-issuing a GetResultInfo since the estimated_total came back 0, {}".format
                 clean_kwargs['pytan_help'] = h(attempt_text)
-                self.mylog.debug(h)
+                self.mylog.debug(h(attempt_text))
+                time.sleep(1)
                 continue
 
         return result_info
 
     def get_result_data(self, **kwargs):
         """Simple utility wrapper around :func:`pytan.handler.Handler.get_result_data`
+
+        Returns
+        -------
+        result_data : :class:`taniumpy.object_types.result_set.ResultSet`
         """
         self._debug_locals(sys._getframe().f_code.co_name, locals())
 
@@ -340,6 +355,9 @@ class QuestionPoller(object):
                 * 'poller': a poller instance
                 * 'pct': a percent complete
                 * 'kwargs': a dict of other args
+        gri_retry_count : int, optional
+            * default: 10
+            * Number of times to re-try GetResultInfo when estimated_total comes back as 0
 
         Notes
         -----

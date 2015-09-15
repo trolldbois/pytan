@@ -4,7 +4,7 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 '''All the variables/templates/etc for the build scripts'''
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
-__version__ = '2.1.4'
+__version__ = '2.1.5'
 
 import sys
 sys.dont_write_bytecode = True
@@ -27,6 +27,14 @@ doc_source = os.path.join(parent_dir, 'doc', 'source')
 staticdoc_source = os.path.join(doc_source, '_static')
 
 scripts = {}
+sname = 'write_pytan_user_config'
+scripts[sname] = {}
+scripts[sname]['docstring'] = 'Creates a PyTan User Config based on the current parameters'
+scripts[sname]['script_name'] = sname
+scripts[sname]['pyopts'] = ''
+scripts[sname]['py_template'] = '${py_script}'
+scripts[sname]['bat_template'] = '${bat_script}'
+
 sname = 'ask_manual'
 scripts[sname] = {}
 scripts[sname]['docstring'] = 'Ask a manual question and save the results as a report format'
@@ -846,6 +854,9 @@ general_subs = {}
 general_subs["API_INFO"] = (
     '''-u {username} -p '{password}' --host {host} --port {port} --loglevel {loglevel}'''
 ).format(**API_INFO.SERVER_INFO)
+general_subs["TANIUM_HOST"] = API_INFO.SERVER_INFO['host']
+general_subs["TANIUM_USERNAME"] = API_INFO.SERVER_INFO['username']
+general_subs["TANIUM_PASSWORD"] = API_INFO.SERVER_INFO['password']
 general_subs["TMPDIR"] = '/tmp'
 general_subs['AUTHOR'] = pytan.__author__
 general_subs['VERSION'] = pytan.__version__

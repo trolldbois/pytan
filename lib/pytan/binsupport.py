@@ -312,7 +312,16 @@ def setup_parser(desc, help=False):
         dest='http_retry_count',
         help="Retry count for HTTP failures/invalid responses",
     )
-
+    opt_group.add_argument(
+        '--pytan_user_config',
+        required=False,
+        action='store',
+        default='',
+        dest='pytan_user_config',
+        help=(
+            "PyTan User Config file to use for PyTan arguments (defaults to: {})"
+        ).format(pytan.constants.PYTAN_USER_CONFIG),
+    )
     return parser
 
 
@@ -321,6 +330,25 @@ def setup_parent_parser(doc):
     """
     parent_parser = setup_parser(desc=doc, help=False)
     parser = CustomArgParse(description=doc, parents=[parent_parser])
+    return parser
+
+
+def setup_write_pytan_user_config_argparser(doc):
+    """Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to write a pytan user config file.
+    """
+    parser = setup_parent_parser(doc=doc)
+    output_group = parser.add_argument_group('Write PyTan User Config Options')
+
+    output_group.add_argument(
+        '--file',
+        required=False,
+        default='',
+        action='store',
+        dest='file',
+        help=(
+            "PyTan User Config file to write for PyTan arguments (defaults to: {})"
+        ).format(pytan.constants.PYTAN_USER_CONFIG),
+    )
     return parser
 
 
@@ -2353,6 +2381,23 @@ def process_create_group_args(parser, handler, args):
     return response
 
 
+def process_write_pytan_user_config_args(parser, handler, args):
+    """Process command line args supplied by user for writing pytan user config
+
+    Parameters
+    ----------
+    parser : :class:`argparse.ArgParse`
+        * ArgParse object used to parse `all_args`
+    handler : :class:`pytan.handler.Handler`
+        * Instance of Handler created from command line args
+    args : args object
+        * args parsed from `parser`
+    """
+    puc = handler.write_pytan_user_config(pytan_user_config=args.file)
+    m = "PyTan User config file successfully written: {} ".format
+    print m(puc)
+
+
 def process_print_server_info_args(parser, handler, args):
     """Process command line args supplied by user for printing server info
 
@@ -2850,15 +2895,29 @@ def introspect(obj, depth=0):
 
 def input_prompts(args):
     """Utility function to prompt for username, password, and host if empty"""
-    if not args.username and not args.session_id:
-        username = raw_input('Tanium Username: ')
-        args.username = username.strip()
+    puc_default = os.path.expanduser(pytan.constants.PYTAN_USER_CONFIG)
+    puc_kwarg = args.__dict__.get('pytan_user_config', '')
+    puc = puc_kwarg or puc_default
+    puc_dict = {}
 
-    if not args.password and not args.session_id:
-        password = getpass.getpass('Tanium Password: ')
-        args.password = password.strip()
+    if os.path.isfile(puc):
+        try:
+            with open(puc) as fh:
+                puc_dict = json.load(fh)
+        except Exception as e:
+            m = "PyTan User Config file exists at '{}' but is not valid, Exception: {}".format
+            print m(puc, e)
 
-    if not args.host:
+    if not args.session_id:
+        if not args.username and not puc_dict.get('username', ''):
+            username = raw_input('Tanium Username: ')
+            args.username = username.strip()
+
+        if not args.password and not puc_dict.get('password', ''):
+            password = getpass.getpass('Tanium Password: ')
+            args.password = password.strip()
+
+    if not args.host and not puc_dict.get('host', ''):
         host = raw_input('Tanium Host: ')
         args.host = host.strip()
     return args
