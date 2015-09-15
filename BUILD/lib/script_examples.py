@@ -4,13 +4,77 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 '''All the examples for the bin scripts'''
 __author__ = 'Jim Olsen (jim.olsen@tanium.com)'
-__version__ = '2.1.4'
+__version__ = '2.1.5'
 
 example_skips = [
     'CONFIG',
 ]
 
+import os
+
+pytan_user_config_default = os.path.expanduser("~/.pytan_config.json")
 examples = {}
+
+# write_pytan_user_config
+sname = 'write_pytan_user_config'
+examples[sname] = []
+
+e = {}
+e['name'] = 'Create a PyTan User Config file at the default location'
+e['cmd'] = '''bin/${script_name}.py ${API_INFO}'''
+e['notes'] = '''This will take the command line arguments and authenticate with them.
+Upon successful authentication, a PyTan User Config file will be written in JSON format to ~/.pytan_config.json
+'''
+e['precleanup'] = "rm -f {}".format(pytan_user_config_default)
+e['file_exist'] = pytan_user_config_default
+e['tests'] = 'exitcode, file_exist_contents, noerror'
+examples[sname].append(e)
+
+e = {}
+e['name'] = 'Test that the PyTan User Config file that was created above at the default location works for another script without having to supply any credentials on the command line'
+e['cmd'] = '''print_sensors.py --name "Installed Applications"'''
+e['notes'] = '''The print_sensors script should now successfully authenticate based on the parameters defined in the default location for the PyTan User Config file, and we no longer need to supply the parameters on the command line
+'''
+e['tests'] = 'exitcode, noerror'
+examples[sname].append(e)
+
+e = {}
+e['name'] = 'Create a PyTan User Config file at a custom location'
+e['cmd'] = '''bin/${script_name}.py ${API_INFO} --file ${TMPDIR}/custom.json'''
+e['notes'] = '''This will take the command line arguments and authenticate with them.
+Upon successful authentication, a PyTan User Config file will be written in JSON format to ${TMPDIR}/custom.sjon
+'''
+e['precleanup'] = "rm -f ${TMPDIR}/custom.json"
+e['file_exist'] = '${TMPDIR}/custom.json'
+e['tests'] = 'exitcode, file_exist_contents, noerror'
+examples[sname].append(e)
+
+e = {}
+e['name'] = 'Test that the PyTan User Config file that was created above at the custom location works for another script without having to supply any credentials on the command line'
+e['cmd'] = '''print_sensors.py --name "Installed Applications" --pytan_user_config ${TMPDIR}/custom.json'''
+e['notes'] = '''The print_sensors script should now successfully authenticate based on the parameters defined in the custom location for the PyTan User Config
+'''
+e['tests'] = 'exitcode, noerror'
+examples[sname].append(e)
+
+e = {}
+e['name'] = 'Manually create a PyTan User Config file in JSON format with only two parameters'
+e['cmd'] = '''print_sensors.py --name "Installed Applications" --pytan_user_config ${TMPDIR}/manualcustom.json --host ${TANIUM_HOST}'''
+e['notes'] = '''First we create ${TMPDIR}/manualcustom.json with just username and password
+Next we run print_sensors script and supply host on the command line.
+Note: Command line supplied arguments will always over ride arguments supplied in the PyTan User Config file
+'''
+e['contentfilename1'] = '${TMPDIR}/manualcustom.json'
+e['contenttype1'] = 'json'
+e['contenttext1'] = '''{
+      "username": "${TANIUM_USERNAME}",
+      "password": "${TANIUM_PASSWORD}"
+    }
+'''
+e['precleanup'] = "rm -f ${TMPDIR}/manualcustom.json"
+e['tests'] = 'exitcode, noerror'
+examples[sname].append(e)
+
 
 # get_saved_question_history
 sname = 'get_saved_question_history'
