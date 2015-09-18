@@ -762,9 +762,7 @@ body .task-list{
 <p><a name="user-content-toc">Table of contents:</a></p>
 
 <ul>
-<li><a href="#user-content-create-package-help">Create Package Help</a></li>
-<li><a href="#user-content-print-the-help-for-filters">Print the help for filters</a></li>
-<li><a href="#user-content-print-the-help-for-options">Print the help for options</a></li>
+<li><a href="#user-content-help-for-create-package">Help for Create Package</a></li>
 <li><a href="#user-content-create-a-new-package">Create a new package</a></li>
 <li><a href="#user-content-delete-the-recently-created-package">Delete the recently created package</a></li>
 </ul>
@@ -772,17 +770,26 @@ body .task-list{
 <hr>
 
 <h1>
-<a id="user-content-create-package-help" class="anchor" href="#create-package-help" aria-hidden="true"><span class="octicon octicon-link"></span></a>Create Package Help</h1>
+<a id="user-content-help-for-create-package" class="anchor" href="#help-for-create-package" aria-hidden="true"><span class="octicon octicon-link"></span></a>Help for Create Package</h1>
 
 <ul>
-<li>Create a package object from command line arguments</li>
+<li>Print the help for create_package.py</li>
+<li>All scripts in bin/ will supply help if -h is on the command line</li>
+<li>If passing in a parameter with a space or a special character, you need to surround it with quotes properly. On Windows this means double quotes. On Linux/Mac, this means single or double quotes, depending on what kind of character escaping you need.</li>
+<li>If running this script on Linux or Mac, use the python scripts directly as the bin/create_package.py</li>
+<li>If running this script on Windows, use the batch script in the winbin/create_package.bat so that python is called correctly.</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>create_package.py -h</pre></div>
+<div class="highlight highlight-source-shell"><pre>create_package.py -h</pre></div>
 
-<pre><code>usage: create_package.py [-h] [-u USERNAME] [-p PASSWORD] [--host HOST]
-                         [--port PORT] [-l LOGLEVEL] -n NAME -c COMMAND
-                         [-d DISPLAY_NAME]
+<pre><code>usage: create_package.py [-h] [-u USERNAME] [-p PASSWORD]
+                         [--session_id SESSION_ID] [--host HOST] [--port PORT]
+                         [-l LOGLEVEL] [--debugformat] [--debug_method_locals]
+                         [--record_all_requests] [--stats_loop_enabled]
+                         [--http_auth_retry]
+                         [--http_retry_count HTTP_RETRY_COUNT]
+                         [--pytan_user_config PYTAN_USER_CONFIG] -n NAME -c
+                         COMMAND [-d DISPLAY_NAME]
                          [--command-timeout COMMAND_TIMEOUT_SECONDS]
                          [--expire-seconds EXPIRE_SECONDS] [-f FILE_URLS]
                          [--parameters-file PARAMETERS_JSON_FILE]
@@ -800,6 +807,9 @@ Handler Authentication:
                         Name of user (default: None)
   -p PASSWORD, --password PASSWORD
                         Password of user (default: None)
+  --session_id SESSION_ID
+                        Session ID to authenticate with instead of
+                        username/password (default: None)
   --host HOST           Hostname/ip of SOAP Server (default: None)
   --port PORT           Port to use when connecting to SOAP Server (default:
                         443)
@@ -808,6 +818,23 @@ Handler Options:
   -l LOGLEVEL, --loglevel LOGLEVEL
                         Logging level to use, increase for more verbosity
                         (default: 0)
+  --debugformat         Enable debug format for logging (default: False)
+  --debug_method_locals
+                        Enable debug logging for each methods local variables
+                        (default: False)
+  --record_all_requests
+                        Record all requests in
+                        handler.session.ALL_REQUESTS_RESPONSES (default:
+                        False)
+  --stats_loop_enabled  Enable the statistics loop (default: False)
+  --http_auth_retry     Disable retry on HTTP authentication failures
+                        (default: True)
+  --http_retry_count HTTP_RETRY_COUNT
+                        Retry count for HTTP failures/invalid responses
+                        (default: 5)
+  --pytan_user_config PYTAN_USER_CONFIG
+                        PyTan User Config file to use for PyTan arguments
+                        (defaults to: ~/.pytan_config.json) (default: )
 
 Create Package Options:
   -n NAME, --name NAME  Name of package to create (default: None)
@@ -845,7 +872,8 @@ Create Package Options:
 </code></pre>
 
 <ul>
-<li>Validation Test: exitcode
+<li>
+<p>Validation Test: exitcode</p>
 
 <ul>
 <li>Valid: <strong>True</strong>
@@ -853,170 +881,13 @@ Create Package Options:
 <li>Messages: Exit Code is 0</li>
 </ul>
 </li>
-</ul>
-
-<p><a href="#user-content-toc">TOC</a></p>
-
-<h1>
-<a id="user-content-print-the-help-for-filters" class="anchor" href="#print-the-help-for-filters" aria-hidden="true"><span class="octicon octicon-link"></span></a>Print the help for filters</h1>
-
-<div class="highlight highlight-bash"><pre>create_package.py -u <span class="pl-s"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 --filters-help</pre></div>
-
-<pre><code>usage: create_package.py [-h] [-u USERNAME] [-p PASSWORD] [--host HOST]
-                         [--port PORT] [-l LOGLEVEL] -n NAME -c COMMAND
-                         [-d DISPLAY_NAME]
-                         [--command-timeout COMMAND_TIMEOUT_SECONDS]
-                         [--expire-seconds EXPIRE_SECONDS] [-f FILE_URLS]
-                         [--parameters-file PARAMETERS_JSON_FILE]
-                         [-vf VERIFY_FILTERS] [-vo VERIFY_FILTER_OPTIONS]
-                         [--filters-help] [--options-help]
-                         [--verify-expire-seconds VERIFY_EXPIRE_SECONDS]
-
-Create a package object from command line arguments
-
-optional arguments:
-  -h, --help            show this help message and exit
-
-Handler Authentication:
-  -u USERNAME, --username USERNAME
-                        Name of user (default: None)
-  -p PASSWORD, --password PASSWORD
-                        Password of user (default: None)
-  --host HOST           Hostname/ip of SOAP Server (default: None)
-  --port PORT           Port to use when connecting to SOAP Server (default:
-                        443)
-
-Handler Options:
-  -l LOGLEVEL, --loglevel LOGLEVEL
-                        Logging level to use, increase for more verbosity
-                        (default: 0)
-
-Create Package Options:
-  -n NAME, --name NAME  Name of package to create (default: None)
-  -c COMMAND, --command COMMAND
-                        Command to execute with package (default: )
-  -d DISPLAY_NAME, --display-name DISPLAY_NAME
-                        Display name of package (default: )
-  --command-timeout COMMAND_TIMEOUT_SECONDS
-                        Command for this package timeout in N seconds
-                        (default: 600)
-  --expire-seconds EXPIRE_SECONDS
-                        Expire actions created for this package in N seconds
-                        (default: 600)
-  -f FILE_URLS, --file-url FILE_URLS
-                        URL of file to include with package, can specify any
-                        of the following: "$url", or
-                        "$download_seconds::$url", or "$filename||$url", or
-                        "$filename||$download_seconds::$url" (default: [])
-  --parameters-file PARAMETERS_JSON_FILE
-                        JSON file describing parameters for this package, see
-                        doc/example_of_all_package_parameters.json for an
-                        example (default: )
-  -vf VERIFY_FILTERS, --verify-filter VERIFY_FILTERS
-                        Filters to use for verifying the package after it is
-                        deployed, , supply --filters-help to see filter help
-                        (default: [])
-  -vo VERIFY_FILTER_OPTIONS, --verify-option VERIFY_FILTER_OPTIONS
-                        Options to use for the verify filters, supply
-                        --options-help to see options help (default: [])
-  --filters-help        Get the full help for filters strings (default: False)
-  --options-help        Get the full help for options strings (default: False)
-  --verify-expire-seconds VERIFY_EXPIRE_SECONDS
-                        Expire the verify filters used by this package in N
-                        seconds (default: 600)
-ERROR:create_package:argument -n/--name is required
-</code></pre>
-
-<ul>
-<li>Validation Test: notexitcode
+<li>
+<p>Validation Test: noerror</p>
 
 <ul>
 <li>Valid: <strong>True</strong>
 </li>
-<li>Messages: Exit Code is not 0</li>
-</ul>
-</li>
-</ul>
-
-<p><a href="#user-content-toc">TOC</a></p>
-
-<h1>
-<a id="user-content-print-the-help-for-options" class="anchor" href="#print-the-help-for-options" aria-hidden="true"><span class="octicon octicon-link"></span></a>Print the help for options</h1>
-
-<div class="highlight highlight-bash"><pre>create_package.py -u <span class="pl-s"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 --options-help</pre></div>
-
-<pre><code>usage: create_package.py [-h] [-u USERNAME] [-p PASSWORD] [--host HOST]
-                         [--port PORT] [-l LOGLEVEL] -n NAME -c COMMAND
-                         [-d DISPLAY_NAME]
-                         [--command-timeout COMMAND_TIMEOUT_SECONDS]
-                         [--expire-seconds EXPIRE_SECONDS] [-f FILE_URLS]
-                         [--parameters-file PARAMETERS_JSON_FILE]
-                         [-vf VERIFY_FILTERS] [-vo VERIFY_FILTER_OPTIONS]
-                         [--filters-help] [--options-help]
-                         [--verify-expire-seconds VERIFY_EXPIRE_SECONDS]
-
-Create a package object from command line arguments
-
-optional arguments:
-  -h, --help            show this help message and exit
-
-Handler Authentication:
-  -u USERNAME, --username USERNAME
-                        Name of user (default: None)
-  -p PASSWORD, --password PASSWORD
-                        Password of user (default: None)
-  --host HOST           Hostname/ip of SOAP Server (default: None)
-  --port PORT           Port to use when connecting to SOAP Server (default:
-                        443)
-
-Handler Options:
-  -l LOGLEVEL, --loglevel LOGLEVEL
-                        Logging level to use, increase for more verbosity
-                        (default: 0)
-
-Create Package Options:
-  -n NAME, --name NAME  Name of package to create (default: None)
-  -c COMMAND, --command COMMAND
-                        Command to execute with package (default: )
-  -d DISPLAY_NAME, --display-name DISPLAY_NAME
-                        Display name of package (default: )
-  --command-timeout COMMAND_TIMEOUT_SECONDS
-                        Command for this package timeout in N seconds
-                        (default: 600)
-  --expire-seconds EXPIRE_SECONDS
-                        Expire actions created for this package in N seconds
-                        (default: 600)
-  -f FILE_URLS, --file-url FILE_URLS
-                        URL of file to include with package, can specify any
-                        of the following: "$url", or
-                        "$download_seconds::$url", or "$filename||$url", or
-                        "$filename||$download_seconds::$url" (default: [])
-  --parameters-file PARAMETERS_JSON_FILE
-                        JSON file describing parameters for this package, see
-                        doc/example_of_all_package_parameters.json for an
-                        example (default: )
-  -vf VERIFY_FILTERS, --verify-filter VERIFY_FILTERS
-                        Filters to use for verifying the package after it is
-                        deployed, , supply --filters-help to see filter help
-                        (default: [])
-  -vo VERIFY_FILTER_OPTIONS, --verify-option VERIFY_FILTER_OPTIONS
-                        Options to use for the verify filters, supply
-                        --options-help to see options help (default: [])
-  --filters-help        Get the full help for filters strings (default: False)
-  --options-help        Get the full help for options strings (default: False)
-  --verify-expire-seconds VERIFY_EXPIRE_SECONDS
-                        Expire the verify filters used by this package in N
-                        seconds (default: 600)
-ERROR:create_package:argument -n/--name is required
-</code></pre>
-
-<ul>
-<li>Validation Test: notexitcode
-
-<ul>
-<li>Valid: <strong>True</strong>
-</li>
-<li>Messages: Exit Code is not 0</li>
+<li>Messages: No error texts found in stderr/stdout</li>
 </ul>
 </li>
 </ul>
@@ -1044,19 +915,29 @@ ERROR:create_package:argument -n/--name is required
 <li>Supply a verification filter that will be used when this package is deployed as part of an action</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>create_package.py -u <span class="pl-s"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>1234 CMDLINE TEST package<span class="pl-pds">"</span></span> --display-name <span class="pl-s"><span class="pl-pds">"</span>1234 CMDLINE TEST package display name<span class="pl-pds">"</span></span> --command <span class="pl-s"><span class="pl-pds">"</span>testing.vbs <span class="pl-cce">\$</span>1 <span class="pl-cce">\$</span>2 <span class="pl-cce">\$</span>3 <span class="pl-cce">\$</span>4 <span class="pl-cce">\$</span>5 <span class="pl-cce">\$</span>6 <span class="pl-cce">\$</span>7 <span class="pl-cce">\$</span>8<span class="pl-pds">"</span></span> --expire-seconds 1500 --file-url <span class="pl-s"><span class="pl-pds">"</span>3600::testing.vbs||https://testing.com/testing.vbs<span class="pl-pds">"</span></span> --file-url <span class="pl-s"><span class="pl-pds">"</span>https://testing.com/another_testing.vbs<span class="pl-pds">"</span></span> --parameters-file <span class="pl-s"><span class="pl-pds">"</span>/Users/jolsen/gh/pytan/doc/example_of_all_package_parameters.json<span class="pl-pds">"</span></span> --verify-expire-seconds 3600 --verify-filter <span class="pl-s"><span class="pl-pds">"</span>Custom Tags, that contains:tag<span class="pl-pds">"</span></span> --verify-option <span class="pl-s"><span class="pl-pds">"</span>ignore_case<span class="pl-pds">"</span></span> --command-timeout 600</pre></div>
+<div class="highlight highlight-source-shell"><pre>bin/create_package.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>1234 CMDLINE TEST package<span class="pl-pds">"</span></span> --display-name <span class="pl-s"><span class="pl-pds">"</span>1234 CMDLINE TEST package display name<span class="pl-pds">"</span></span> --command <span class="pl-s"><span class="pl-pds">"</span>testing.vbs <span class="pl-cce">\$</span>1 <span class="pl-cce">\$</span>2 <span class="pl-cce">\$</span>3 <span class="pl-cce">\$</span>4 <span class="pl-cce">\$</span>5 <span class="pl-cce">\$</span>6 <span class="pl-cce">\$</span>7 <span class="pl-cce">\$</span>8<span class="pl-pds">"</span></span> --expire-seconds 1500 --file-url <span class="pl-s"><span class="pl-pds">"</span>3600::testing.vbs||https://testing.com/testing.vbs<span class="pl-pds">"</span></span> --file-url <span class="pl-s"><span class="pl-pds">"</span>https://testing.com/another_testing.vbs<span class="pl-pds">"</span></span> --parameters-file <span class="pl-s"><span class="pl-pds">"</span>doc/example_of_all_package_parameters.json<span class="pl-pds">"</span></span> --verify-expire-seconds 3600 --verify-filter <span class="pl-s"><span class="pl-pds">"</span>Custom Tags, that contains:tag<span class="pl-pds">"</span></span> --verify-option <span class="pl-s"><span class="pl-pds">"</span>ignore_case<span class="pl-pds">"</span></span> --command-timeout 600</pre></div>
 
-<pre><code>Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
-New package '1234 CMDLINE TEST package' created with ID 78, command: 'testing.vbs $1 $2 $3 $4 $5 $6 $7 $8'
+<pre><code>PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+New package '1234 CMDLINE TEST package' created with ID 101, command: 'testing.vbs $1 $2 $3 $4 $5 $6 $7 $8'
 </code></pre>
 
 <ul>
-<li>Validation Test: exitcode
+<li>
+<p>Validation Test: exitcode</p>
 
 <ul>
 <li>Valid: <strong>True</strong>
 </li>
 <li>Messages: Exit Code is 0</li>
+</ul>
+</li>
+<li>
+<p>Validation Test: noerror</p>
+
+<ul>
+<li>Valid: <strong>True</strong>
+</li>
+<li>Messages: No error texts found in stderr/stdout</li>
 </ul>
 </li>
 </ul>
@@ -1070,14 +951,15 @@ New package '1234 CMDLINE TEST package' created with ID 78, command: 'testing.vb
 <li>Delete the package named 1234 CMDLINE TEST package</li>
 </ul>
 
-<div class="highlight highlight-bash"><pre>delete_package.py -u <span class="pl-s"><span class="pl-pds">'</span>Tanium User<span class="pl-pds">'</span></span> -p <span class="pl-s"><span class="pl-pds">'</span>T@n!um<span class="pl-pds">'</span></span> --host <span class="pl-s"><span class="pl-pds">'</span>172.16.31.128<span class="pl-pds">'</span></span> --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>1234 CMDLINE TEST package<span class="pl-pds">"</span></span></pre></div>
+<div class="highlight highlight-source-shell"><pre>bin/delete_package.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --name <span class="pl-s"><span class="pl-pds">"</span>1234 CMDLINE TEST package<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
-Deleted item:  PackageSpec, id: 78
+<pre><code>PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+Deleted item:  PackageSpec, id: 101
 </code></pre>
 
 <ul>
-<li>Validation Test: exitcode
+<li>
+<p>Validation Test: exitcode</p>
 
 <ul>
 <li>Valid: <strong>True</strong>
@@ -1085,12 +967,21 @@ Deleted item:  PackageSpec, id: 78
 <li>Messages: Exit Code is 0</li>
 </ul>
 </li>
+<li>
+<p>Validation Test: noerror</p>
+
+<ul>
+<li>Valid: <strong>True</strong>
+</li>
+<li>Messages: No error texts found in stderr/stdout</li>
+</ul>
+</li>
 </ul>
 
 <p><a href="#user-content-toc">TOC</a></p>
 
 <h6>
-<a id="user-content-generated-by-build_bin_doc-v145-date-fri-aug--7-152736-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v145-date-fri-aug--7-152736-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v1.4.5</code>, date: Fri Aug  7 15:27:36 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
+<a id="user-content-generated-by-build_bin_doc-v210-date-tue-sep-15-182318-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v210-date-tue-sep-15-182318-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v2.1.0</code>, date: Tue Sep 15 18:23:18 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
 </h6>
 
 </body></html>

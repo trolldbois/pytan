@@ -1,8 +1,0 @@
-
-PyTan API Invalid Get Object Examples
-========================================================================================
-
-.. toctree::
-
-   invalid_get_action_single_by_name.rst
-   invalid_get_question_by_name.rst

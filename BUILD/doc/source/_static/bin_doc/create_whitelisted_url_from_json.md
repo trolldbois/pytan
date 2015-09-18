@@ -1,19 +1,23 @@
-Create Whitelisted Url From Json Readme
+Create Whitelisted Url From JSON Readme
 ===========================
 
 ---------------------------
 <a name='toc'>Table of contents:</a>
 
-  * [Create Whitelisted Url From Json Help](#user-content-create-whitelisted-url-from-json-help)
+  * [Help for Create Whitelisted Url From JSON](#user-content-help-for-create-whitelisted-url-from-json)
   * [Export whitelisted_url id 1 as JSON](#user-content-export-whitelisted_url-id-1-as-json)
   * [Change name or url_regex in the JSON](#user-content-change-name-or-url_regex-in-the-json)
   * [Create a new whitelisted_url from the modified JSON file](#user-content-create-a-new-whitelisted_url-from-the-modified-json-file)
 
 ---------------------------
 
-# Create Whitelisted Url From Json Help
+# Help for Create Whitelisted Url From JSON
 
-  * Create a whitelisted_url object from a json file
+  * Print the help for create_whitelisted_url_from_json.py
+  * All scripts in bin/ will supply help if -h is on the command line
+  * If passing in a parameter with a space or a special character, you need to surround it with quotes properly. On Windows this means double quotes. On Linux/Mac, this means single or double quotes, depending on what kind of character escaping you need.
+  * If running this script on Linux or Mac, use the python scripts directly as the bin/create_whitelisted_url_from_json.py
+  * If running this script on Windows, use the batch script in the winbin/create_whitelisted_url_from_json.bat so that python is called correctly.
 
 ```bash
 create_whitelisted_url_from_json.py -h
@@ -21,10 +25,18 @@ create_whitelisted_url_from_json.py -h
 
 ```
 usage: create_whitelisted_url_from_json.py [-h] [-u USERNAME] [-p PASSWORD]
+                                           [--session_id SESSION_ID]
                                            [--host HOST] [--port PORT]
-                                           [-l LOGLEVEL] -j JSON_FILE
+                                           [-l LOGLEVEL] [--debugformat]
+                                           [--debug_method_locals]
+                                           [--record_all_requests]
+                                           [--stats_loop_enabled]
+                                           [--http_auth_retry]
+                                           [--http_retry_count HTTP_RETRY_COUNT]
+                                           [--pytan_user_config PYTAN_USER_CONFIG]
+                                           -j JSON_FILE
 
-Create a whitelisted_url object from a json file
+Create an object of type: whitelisted_url from a JSON file
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -34,6 +46,9 @@ Handler Authentication:
                         Name of user (default: None)
   -p PASSWORD, --password PASSWORD
                         Password of user (default: None)
+  --session_id SESSION_ID
+                        Session ID to authenticate with instead of
+                        username/password (default: None)
   --host HOST           Hostname/ip of SOAP Server (default: None)
   --port PORT           Port to use when connecting to SOAP Server (default:
                         443)
@@ -42,6 +57,23 @@ Handler Options:
   -l LOGLEVEL, --loglevel LOGLEVEL
                         Logging level to use, increase for more verbosity
                         (default: 0)
+  --debugformat         Enable debug format for logging (default: False)
+  --debug_method_locals
+                        Enable debug logging for each methods local variables
+                        (default: False)
+  --record_all_requests
+                        Record all requests in
+                        handler.session.ALL_REQUESTS_RESPONSES (default:
+                        False)
+  --stats_loop_enabled  Enable the statistics loop (default: False)
+  --http_auth_retry     Disable retry on HTTP authentication failures
+                        (default: True)
+  --http_retry_count HTTP_RETRY_COUNT
+                        Retry count for HTTP failures/invalid responses
+                        (default: 5)
+  --pytan_user_config PYTAN_USER_CONFIG
+                        PyTan User Config file to use for PyTan arguments
+                        (defaults to: ~/.pytan_config.json) (default: )
 
 Create Whitelisted url from JSON Options:
   -j JSON_FILE, --json JSON_FILE
@@ -51,6 +83,10 @@ Create Whitelisted url from JSON Options:
   * Validation Test: exitcode
     * Valid: **True**
     * Messages: Exit Code is 0
+
+  * Validation Test: noerror
+    * Valid: **True**
+    * Messages: No error texts found in stderr/stdout
 
 
 
@@ -63,13 +99,13 @@ Create Whitelisted url from JSON Options:
   * Save the results to a JSON file
 
 ```bash
-get_whitelisted_url.py -u 'Tanium User' -p 'T@n!um' --host '172.16.31.128' --loglevel 1 --id 1 --file "/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json" json
+bin/get_whitelisted_url.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 443 --loglevel 1 --id 1 --file "/tmp/out.json" --export_format json
 ```
 
 ```
-Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
-Found items:  WhiteListedUrlList, len: 23
-Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written with 5483 bytes
+PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+Found items:  WhiteListedUrlList, len: 1
+Report file '/tmp/out.json' written with 485 bytes
 ```
 
   * Validation Test: exitcode
@@ -78,7 +114,7 @@ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written 
 
   * Validation Test: file_exist_contents
     * Valid: **True**
-    * Messages: File /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json exists, content:
+    * Messages: File /tmp/out.json exists, content:
 
 ```
 {
@@ -86,13 +122,17 @@ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written 
   "white_listed_url": [
     {
       "_type": "white_listed_url", 
-      "download_seconds": 86400, 
+      "download_seconds": 3600, 
       "id": 1, 
-      "url_regex": "test1"
-    }, 
-    {
+      "metadata": {
+        "_type": "metadata", 
+        "item": [
 ...trimmed for brevity...
 ```
+
+  * Validation Test: noerror
+    * Valid: **True**
+    * Messages: No error texts found in stderr/stdout
 
 
 
@@ -104,7 +144,7 @@ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written 
   * Add CMDLINE TEST to name or url_regex in the JSON file
 
 ```bash
-perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 3862"/gm' /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json && cat /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json
+perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 1898"/gm' /tmp/out.json && cat /tmp/out.json
 ```
 
 ```
@@ -113,26 +153,8 @@ perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 3862"/gm' /va
   "white_listed_url": [
     {
       "_type": "white_listed_url", 
-      "download_seconds": 86400, 
+      "download_seconds": 3600, 
       "id": 1, 
-      "url_regex": "test1 CMDLINE TEST 3862"
-    }, 
-    {
-      "_type": "white_listed_url", 
-      "download_seconds": 86400, 
-      "id": 2, 
-      "url_regex": "test2 CMDLINE TEST 3862"
-    }, 
-    {
-      "_type": "white_listed_url", 
-      "download_seconds": 86400, 
-      "id": 3, 
-      "url_regex": "test3 CMDLINE TEST 3862"
-    }, 
-    {
-      "_type": "white_listed_url", 
-      "download_seconds": 3600, 
-      "id": 6, 
       "metadata": {
         "_type": "metadata", 
         "item": [
@@ -144,187 +166,7 @@ perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 3862"/gm' /va
           }
         ]
       }, 
-      "url_regex": "regex:https://testing.com/3694 CMDLINE TEST 3862"
-    }, 
-    {
-      "_type": "white_listed_url", 
-      "download_seconds": 86400, 
-      "id": 7, 
-      "url_regex": "test1 CMDLINE TEST 1873 CMDLINE TEST 3862"
-    }, 
-    {
-      "_type": "white_listed_url", 
-      "download_seconds": 86400, 
-      "id": 8, 
-      "url_regex": "test2 CMDLINE TEST 1873 CMDLINE TEST 3862"
-    }, 
-    {
-      "_type": "white_listed_url", 
-      "download_seconds": 86400, 
-      "id": 9, 
-      "url_regex": "test3 CMDLINE TEST 1873 CMDLINE TEST 3862"
-    }, 
-    {
-      "_type": "white_listed_url", 
-      "download_seconds": 86400, 
-      "id": 10, 
-      "url_regex": "test1 API TEST CMDLINE TEST 1873 CMDLINE TEST 3862"
-    }, 
-    {
-      "_type": "white_listed_url", 
-      "download_seconds": 3600, 
-      "id": 11, 
-      "metadata": {
-        "_type": "metadata", 
-        "item": [
-          {
-            "_type": "item", 
-            "admin_flag": 0, 
-            "name": "TConsole.WhitelistedURL.property name", 
-            "value": "property value"
-          }
-        ]
-      }, 
-      "url_regex": "regex:https://testing.com/3694 CMDLINE TEST 1873 CMDLINE TEST 3862"
-    }, 
-    {
-      "_type": "white_listed_url", 
-      "download_seconds": 3600, 
-      "id": 12, 
-      "metadata": {
-        "_type": "metadata", 
-        "item": [
-          {
-            "_type": "item", 
-            "admin_flag": 0, 
-            "name": "TConsole.WhitelistedURL.property name", 
-            "value": "property value"
-          }
-        ]
-      }, 
-      "url_regex": "regex:https://testing.com/980 CMDLINE TEST 3862"
-    }, 
-    {
-      "_type": "white_listed_url", 
-      "download_seconds": 86400, 
-      "id": 13, 
-      "url_regex": "test1 CMDLINE TEST 6552 CMDLINE TEST 3862"
-    }, 
-    {
-      "_type": "white_listed_url", 
-      "download_seconds": 86400, 
-      "id": 14, 
-      "url_regex": "test2 CMDLINE TEST 6552 CMDLINE TEST 3862"
-    }, 
-    {
-      "_type": "white_listed_url", 
-      "download_seconds": 86400, 
-      "id": 15, 
-      "url_regex": "test3 CMDLINE TEST 6552 CMDLINE TEST 3862"
-    }, 
-    {
-      "_type": "white_listed_url", 
-      "download_seconds": 86400, 
-      "id": 16, 
-      "url_regex": "test1 API TEST CMDLINE TEST 6552 CMDLINE TEST 3862"
-    }, 
-    {
-      "_type": "white_listed_url", 
-      "download_seconds": 3600, 
-      "id": 17, 
-      "metadata": {
-        "_type": "metadata", 
-        "item": [
-          {
-            "_type": "item", 
-            "admin_flag": 0, 
-            "name": "TConsole.WhitelistedURL.property name", 
-            "value": "property value"
-          }
-        ]
-      }, 
-      "url_regex": "regex:https://testing.com/3694 CMDLINE TEST 6552 CMDLINE TEST 3862"
-    }, 
-    {
-      "_type": "white_listed_url", 
-      "download_seconds": 86400, 
-      "id": 18, 
-      "url_regex": "test1 CMDLINE TEST 1873 CMDLINE TEST 6552 CMDLINE TEST 3862"
-    }, 
-    {
-      "_type": "white_listed_url", 
-      "download_seconds": 86400, 
-      "id": 19, 
-      "url_regex": "test2 CMDLINE TEST 1873 CMDLINE TEST 6552 CMDLINE TEST 3862"
-    }, 
-    {
-      "_type": "white_listed_url", 
-      "download_seconds": 86400, 
-      "id": 20, 
-      "url_regex": "test3 CMDLINE TEST 1873 CMDLINE TEST 6552 CMDLINE TEST 3862"
-    }, 
-    {
-      "_type": "white_listed_url", 
-      "download_seconds": 86400, 
-      "id": 21, 
-      "url_regex": "test1 API TEST CMDLINE TEST 1873 CMDLINE TEST 6552 CMDLINE TEST 3862"
-    }, 
-    {
-      "_type": "white_listed_url", 
-      "download_seconds": 3600, 
-      "id": 22, 
-      "metadata": {
-        "_type": "metadata", 
-        "item": [
-          {
-            "_type": "item", 
-            "admin_flag": 0, 
-            "name": "TConsole.WhitelistedURL.property name", 
-            "value": "property value"
-          }
-        ]
-      }, 
-      "url_regex": "regex:https://testing.com/3694 CMDLINE TEST 1873 CMDLINE TEST 6552 CMDLINE TEST 3862"
-    }, 
-    {
-      "_type": "white_listed_url", 
-      "download_seconds": 3600, 
-      "id": 23, 
-      "metadata": {
-        "_type": "metadata", 
-        "item": [
-          {
-            "_type": "item", 
-            "admin_flag": 0, 
-            "name": "TConsole.WhitelistedURL.property name", 
-            "value": "property value"
-          }
-        ]
-      }, 
-      "url_regex": "regex:https://testing.com/980 CMDLINE TEST 6552 CMDLINE TEST 3862"
-    }, 
-    {
-      "_type": "white_listed_url", 
-      "download_seconds": 86400, 
-      "id": 27, 
-      "url_regex": "test1 API TEST CMDLINE TEST 3862"
-    }, 
-    {
-      "_type": "white_listed_url", 
-      "download_seconds": 3600, 
-      "id": 28, 
-      "metadata": {
-        "_type": "metadata", 
-        "item": [
-          {
-            "_type": "item", 
-            "admin_flag": 0, 
-            "name": "TConsole.WhitelistedURL.property name", 
-            "value": "property value"
-          }
-        ]
-      }, 
-      "url_regex": "regex:https://testing.com/1833 CMDLINE TEST 3862"
+      "url_regex": "regex:https://testing.com/4077 CMDLINE TEST 1898"
     }
   ]
 }
@@ -336,7 +178,11 @@ perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 3862"/gm' /va
 
   * Validation Test: file_exist
     * Valid: **True**
-    * Messages: File /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json exists
+    * Messages: File /tmp/out.json exists
+
+  * Validation Test: noerror
+    * Valid: **True**
+    * Messages: No error texts found in stderr/stdout
 
 
 
@@ -346,43 +192,25 @@ perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 3862"/gm' /va
 # Create a new whitelisted_url from the modified JSON file
 
 ```bash
-create_whitelisted_url_from_json.py -u 'Tanium User' -p 'T@n!um' --host '172.16.31.128' --loglevel 1 -j "/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json"
+bin/create_whitelisted_url_from_json.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 443 --loglevel 1 -j "/tmp/out.json"
 ```
 
 ```
-Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
-Created item: WhiteListedUrl, id: 29, ID: 29
-Created item: WhiteListedUrl, id: 30, ID: 30
-Created item: WhiteListedUrl, id: 31, ID: 31
-Created item: WhiteListedUrl, id: 32, ID: 32
-Created item: WhiteListedUrl, id: 33, ID: 33
+PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 Created item: WhiteListedUrl, id: 34, ID: 34
-Created item: WhiteListedUrl, id: 35, ID: 35
-Created item: WhiteListedUrl, id: 36, ID: 36
-Created item: WhiteListedUrl, id: 37, ID: 37
-Created item: WhiteListedUrl, id: 38, ID: 38
-Created item: WhiteListedUrl, id: 39, ID: 39
-Created item: WhiteListedUrl, id: 40, ID: 40
-Created item: WhiteListedUrl, id: 41, ID: 41
-Created item: WhiteListedUrl, id: 42, ID: 42
-Created item: WhiteListedUrl, id: 43, ID: 43
-Created item: WhiteListedUrl, id: 44, ID: 44
-Created item: WhiteListedUrl, id: 45, ID: 45
-Created item: WhiteListedUrl, id: 46, ID: 46
-Created item: WhiteListedUrl, id: 47, ID: 47
-Created item: WhiteListedUrl, id: 48, ID: 48
-Created item: WhiteListedUrl, id: 49, ID: 49
-Created item: WhiteListedUrl, id: 50, ID: 50
-Created item: WhiteListedUrl, id: 51, ID: 51
 ```
 
   * Validation Test: exitcode
     * Valid: **True**
     * Messages: Exit Code is 0
 
+  * Validation Test: noerror
+    * Valid: **True**
+    * Messages: No error texts found in stderr/stdout
+
 
 
 [TOC](#user-content-toc)
 
 
-###### generated by: `build_bin_doc v1.4.5`, date: Fri Aug  7 15:27:43 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**
+###### generated by: `build_bin_doc v2.1.0`, date: Tue Sep 15 18:23:30 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**

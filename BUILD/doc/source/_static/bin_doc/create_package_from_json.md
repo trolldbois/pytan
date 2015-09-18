@@ -1,19 +1,23 @@
-Create Package From Json Readme
+Create Package From JSON Readme
 ===========================
 
 ---------------------------
 <a name='toc'>Table of contents:</a>
 
-  * [Create Package From Json Help](#user-content-create-package-from-json-help)
+  * [Help for Create Package From JSON](#user-content-help-for-create-package-from-json)
   * [Export package id 1 as JSON](#user-content-export-package-id-1-as-json)
   * [Change name or url_regex in the JSON](#user-content-change-name-or-url_regex-in-the-json)
   * [Create a new package from the modified JSON file](#user-content-create-a-new-package-from-the-modified-json-file)
 
 ---------------------------
 
-# Create Package From Json Help
+# Help for Create Package From JSON
 
-  * Create a package object from a json file
+  * Print the help for create_package_from_json.py
+  * All scripts in bin/ will supply help if -h is on the command line
+  * If passing in a parameter with a space or a special character, you need to surround it with quotes properly. On Windows this means double quotes. On Linux/Mac, this means single or double quotes, depending on what kind of character escaping you need.
+  * If running this script on Linux or Mac, use the python scripts directly as the bin/create_package_from_json.py
+  * If running this script on Windows, use the batch script in the winbin/create_package_from_json.bat so that python is called correctly.
 
 ```bash
 create_package_from_json.py -h
@@ -21,10 +25,16 @@ create_package_from_json.py -h
 
 ```
 usage: create_package_from_json.py [-h] [-u USERNAME] [-p PASSWORD]
-                                   [--host HOST] [--port PORT] [-l LOGLEVEL]
-                                   -j JSON_FILE
+                                   [--session_id SESSION_ID] [--host HOST]
+                                   [--port PORT] [-l LOGLEVEL] [--debugformat]
+                                   [--debug_method_locals]
+                                   [--record_all_requests]
+                                   [--stats_loop_enabled] [--http_auth_retry]
+                                   [--http_retry_count HTTP_RETRY_COUNT]
+                                   [--pytan_user_config PYTAN_USER_CONFIG] -j
+                                   JSON_FILE
 
-Create a package object from a json file
+Create an object of type: package from a JSON file
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -34,6 +44,9 @@ Handler Authentication:
                         Name of user (default: None)
   -p PASSWORD, --password PASSWORD
                         Password of user (default: None)
+  --session_id SESSION_ID
+                        Session ID to authenticate with instead of
+                        username/password (default: None)
   --host HOST           Hostname/ip of SOAP Server (default: None)
   --port PORT           Port to use when connecting to SOAP Server (default:
                         443)
@@ -42,6 +55,23 @@ Handler Options:
   -l LOGLEVEL, --loglevel LOGLEVEL
                         Logging level to use, increase for more verbosity
                         (default: 0)
+  --debugformat         Enable debug format for logging (default: False)
+  --debug_method_locals
+                        Enable debug logging for each methods local variables
+                        (default: False)
+  --record_all_requests
+                        Record all requests in
+                        handler.session.ALL_REQUESTS_RESPONSES (default:
+                        False)
+  --stats_loop_enabled  Enable the statistics loop (default: False)
+  --http_auth_retry     Disable retry on HTTP authentication failures
+                        (default: True)
+  --http_retry_count HTTP_RETRY_COUNT
+                        Retry count for HTTP failures/invalid responses
+                        (default: 5)
+  --pytan_user_config PYTAN_USER_CONFIG
+                        PyTan User Config file to use for PyTan arguments
+                        (defaults to: ~/.pytan_config.json) (default: )
 
 Create Package from JSON Options:
   -j JSON_FILE, --json JSON_FILE
@@ -51,6 +81,10 @@ Create Package from JSON Options:
   * Validation Test: exitcode
     * Valid: **True**
     * Messages: Exit Code is 0
+
+  * Validation Test: noerror
+    * Valid: **True**
+    * Messages: No error texts found in stderr/stdout
 
 
 
@@ -63,13 +97,13 @@ Create Package from JSON Options:
   * Save the results to a JSON file
 
 ```bash
-get_package.py -u 'Tanium User' -p 'T@n!um' --host '172.16.31.128' --loglevel 1 --id 1 --file "/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json" json
+bin/get_package.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 443 --loglevel 1 --id 1 --file "/tmp/out.json" --export_format json
 ```
 
 ```
-Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
+PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 Found items:  PackageSpecList, len: 1
-Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written with 2688 bytes
+Report file '/tmp/out.json' written with 2645 bytes
 ```
 
   * Validation Test: exitcode
@@ -78,7 +112,7 @@ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written 
 
   * Validation Test: file_exist_contents
     * Valid: **True**
-    * Messages: File /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json exists, content:
+    * Messages: File /tmp/out.json exists, content:
 
 ```
 {
@@ -86,13 +120,17 @@ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written 
   "package_spec": [
     {
       "_type": "package_spec", 
-      "available_time": "2015-08-07T13:22:50", 
+      "available_time": "2015-09-14T13:39:40", 
       "command": "cmd /c cscript //T:900 java-installer.vbs /KillAppsUsingJava:Yes /RebootIfNeeded:Yes /MaxWaitTimeInSeconds:300", 
       "command_timeout": 900, 
-      "creation_time": "2015-08-07T13:22:16", 
+      "creation_time": "2001-01-01T00:00:00", 
       "deleted_flag": 0, 
 ...trimmed for brevity...
 ```
+
+  * Validation Test: noerror
+    * Valid: **True**
+    * Messages: No error texts found in stderr/stdout
 
 
 
@@ -104,7 +142,7 @@ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written 
   * Add CMDLINE TEST to name or url_regex in the JSON file
 
 ```bash
-perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 553"/gm' /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json && cat /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json
+perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 46"/gm' /tmp/out.json && cat /tmp/out.json
 ```
 
 ```
@@ -113,10 +151,10 @@ perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 553"/gm' /var
   "package_spec": [
     {
       "_type": "package_spec", 
-      "available_time": "2015-08-07T13:22:50", 
+      "available_time": "2015-09-14T13:39:40", 
       "command": "cmd /c cscript //T:900 java-installer.vbs /KillAppsUsingJava:Yes /RebootIfNeeded:Yes /MaxWaitTimeInSeconds:300", 
       "command_timeout": 900, 
-      "creation_time": "2015-08-07T13:22:16", 
+      "creation_time": "2001-01-01T00:00:00", 
       "deleted_flag": 0, 
       "display_name": "Update Java 64-bit - Kill / Reboot", 
       "expire_seconds": 1500, 
@@ -127,9 +165,9 @@ perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 553"/gm' /var
             "_type": "file", 
             "bytes_downloaded": 22900, 
             "bytes_total": 22900, 
-            "cache_status": "CACHED", 
+            "cache_status": "Cached", 
             "download_seconds": 0, 
-            "download_start_time": "2015-08-07T13:22:40", 
+            "download_start_time": "2015-09-14T13:39:30", 
             "file_status": {
               "_type": "file_status", 
               "status": [
@@ -138,28 +176,27 @@ perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 553"/gm' /var
                   "bytes_downloaded": 22900, 
                   "bytes_total": 22900, 
                   "cache_status": "Cached", 
-                  "download_start_time": "2015-08-07T13:22:40", 
-                  "last_download_progress_time": "2015-08-07T13:22:51", 
+                  "download_start_time": "2015-09-14T13:39:30", 
+                  "last_download_progress_time": "2015-09-14T13:39:41", 
                   "server_id": 1, 
-                  "server_name": "JTANIUM1.localdomain:17472", 
+                  "server_name": "TPT1.pytanlab.com:17472", 
                   "status": 200
                 }
               ]
             }, 
-            "hash": "19930421efb5b9ed3725aabcf1580eb04d1c3c355ac0e05123f5b162f29928f7", 
+            "hash": "8ea3087b6079288ce0dba7afa91710803354abb03201f51a634188cb4813fd42", 
             "id": 1, 
-            "last_download_progress_time": "2015-08-07T13:22:51", 
+            "last_download_progress_time": "2015-09-14T13:39:41", 
             "name": "java-installer.vbs", 
             "size": 22900, 
-            "source": "https://content.tanium.com/files/published/InitialContent/2015-06-04_18-59-45_6.5.1.0011-ga516c3c/update_java_64-bit_-_kill_-_reboot/java-installer.vbs", 
+            "source": "https://content.tanium.com/files/published/InitialContent/2015-08-31_16-49-58_6.5.2.0164-ga25a6e1/update_java_64-bit_-_kill_-_reboot/java-installer.vbs", 
             "status": 200
           }
         ]
       }, 
       "hidden_flag": 0, 
       "id": 1, 
-      "last_modified_by": "Jim Olsen", 
-      "last_update": "2015-08-07T13:22:16", 
+      "last_update": "2015-09-14T13:39:15", 
       "metadata": {
         "_type": "metadata", 
         "item": [
@@ -177,8 +214,8 @@ perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 553"/gm' /var
           }
         ]
       }, 
-      "modification_time": "2015-08-07T13:22:16", 
-      "name": "Update Java 64-bit - Kill / Reboot CMDLINE TEST 553", 
+      "modification_time": "2001-01-01T00:00:00", 
+      "name": "Update Java 64-bit - Kill / Reboot CMDLINE TEST 46", 
       "skip_lock_flag": 0, 
       "source_id": 0, 
       "verify_expire_seconds": 600, 
@@ -198,7 +235,11 @@ perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 553"/gm' /var
 
   * Validation Test: file_exist
     * Valid: **True**
-    * Messages: File /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json exists
+    * Messages: File /tmp/out.json exists
+
+  * Validation Test: noerror
+    * Valid: **True**
+    * Messages: No error texts found in stderr/stdout
 
 
 
@@ -208,21 +249,25 @@ perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 553"/gm' /var
 # Create a new package from the modified JSON file
 
 ```bash
-create_package_from_json.py -u 'Tanium User' -p 'T@n!um' --host '172.16.31.128' --loglevel 1 -j "/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json"
+bin/create_package_from_json.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 443 --loglevel 1 -j "/tmp/out.json"
 ```
 
 ```
-Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
-Created item: PackageSpec, name: 'Update Java 64-bit - Kill / Reboot CMDLINE TEST 553', id: 79, ID: 79
+PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+Created item: PackageSpec, name: 'Update Java 64-bit - Kill / Reboot CMDLINE TEST 46', id: 102, ID: 102
 ```
 
   * Validation Test: exitcode
     * Valid: **True**
     * Messages: Exit Code is 0
 
+  * Validation Test: noerror
+    * Valid: **True**
+    * Messages: No error texts found in stderr/stdout
+
 
 
 [TOC](#user-content-toc)
 
 
-###### generated by: `build_bin_doc v1.4.5`, date: Fri Aug  7 15:27:37 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**
+###### generated by: `build_bin_doc v2.1.0`, date: Tue Sep 15 18:23:19 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**

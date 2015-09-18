@@ -32,17 +32,19 @@ Logging format for debugformat=False
 LOG_LEVEL_MAPS = [
     (
         0,
-        {},
-        'Sets all loggers to only output at WARNING or above.',
+        {
+            'stats': 'DEBUG',
+            'method_debug': 'DEBUG',
+        },
+        'Sets all loggers to only output at WARNING or above except for stats & method_debug',
     ),
     (
         1,
         {
             'pytan': 'INFO',
-            'pytan.handler.QuestionPoller': 'INFO',
-            'pytan.handler.QuestionPoller.progress': 'INFO',
-            'pytan.handler.ActionPoller': 'INFO',
-            'pytan.handler.ActionPoller.progress': 'INFO',
+            'pytan.pollers.QuestionPoller': 'INFO',
+            'pytan.pollers.ActionPoller': 'INFO',
+            'pytan.pollers.SSEPoller': 'INFO',
         },
         'Pytan poller loggers show output at INFO or above',
     ),
@@ -51,27 +53,37 @@ LOG_LEVEL_MAPS = [
         {
             'pytan': 'DEBUG',
             'pytan.handler': 'INFO',
-            'pytan.handler.QuestionPoller': 'DEBUG',
-            'pytan.handler.QuestionPoller.progress': 'DEBUG',
-            'pytan.handler.ActionPoller': 'DEBUG',
-            'pytan.handler.ActionPoller.progress': 'DEBUG',
+            'pytan.pollers.QuestionPoller.progress': 'INFO',
+            'pytan.pollers.ActionPoller.progress': 'INFO',
+            'pytan.pollers.SSEPoller.progress': 'INFO',
+            'pytan.pollers.QuestionPoller': 'DEBUG',
+            'pytan.pollers.ActionPoller': 'DEBUG',
+            'pytan.pollers.SSEPoller': 'DEBUG',
         },
-        'Pytan handler logger show output at INFO or above and poller logs at DEBUG or above',
+        'Pytan handler logger show output at INFO or above, poller logs at DEBUG or above, and poller progress logs at INFO or above',
     ),
     (
         3,
         {
             'pytan.handler': 'DEBUG',
-            'XMLCleaner': 'DEBUG',
+            'pytan.pollers.QuestionPoller.progress': 'DEBUG',
+            'pytan.pollers.ActionPoller.progress': 'DEBUG',
+            'pytan.pollers.SSEPoller.progress': 'DEBUG',
+            'pytan.pollers.QuestionPoller.resolver': 'INFO',
+            'pytan.pollers.ActionPoller.resolver': 'INFO',
+            'pytan.pollers.SSEPoller.resolver': 'INFO',
         },
-        'Pytan handler logger and XMLCleaner show output at DEBUG or above',
+        'Pytan handler logger show output at DEBUG or above, poller progress at DEBUG or above, and poller resolver at INFO or above',
     ),
     (
         4,
         {
             'pytan.handler.ask_manual': 'DEBUG',
+            'pytan.pollers.QuestionPoller.resolver': 'DEBUG',
+            'pytan.pollers.ActionPoller.resolver': 'DEBUG',
+            'pytan.pollers.SSEPoller.resolver': 'DEBUG',
         },
-        'Pytan ask manual logger show output at DEBUG or above',
+        'Pytan ask manual logger show output at DEBUG or above and poller resolver at DEBUG or above',
     ),
     (
         5,
@@ -84,8 +96,9 @@ LOG_LEVEL_MAPS = [
         6,
         {
             'pytan.handler.timing': 'DEBUG',
+            'XMLCleaner': 'DEBUG',
         },
-        'Pytan timing logger show output at DEBUG or above',
+        'Pytan timing and XMLCleaner loggers show output at DEBUG or above',
     ),
     (
         7,
@@ -302,6 +315,9 @@ Q_OBJ_MAP = {
     },
     '_manual': {
         'handler': '_ask_manual',
+    },
+    'parsed': {
+        'handler': 'ask_parsed',
     },
 }
 """
@@ -625,6 +641,7 @@ EXPORT_MAPS = {
             },
         ],
         'json': [],
+        'xml': [],
     },
     'BaseType': {
         'csv': [
@@ -671,4 +688,51 @@ Maps a given TaniumPy object to the list of supported export formats for each ob
 TIME_FORMAT = '%Y-%m-%dT%H:%M:%S'
 """
 Tanium's format for date time strings
+"""
+
+SSE_FORMAT_MAP = [
+    ('csv', '0', 0),
+    ('xml', '1', 1),
+    ('xml_obj', '1', 1),
+    ('cef', '2', 2),
+]
+"""
+Mapping of human friendly strings to API integers for server side export
+"""
+
+SSE_RESTRICT_MAP = {
+    1: ['6.5.314.4300'],
+    2: ['6.5.314.4300'],
+}
+"""
+Mapping of API integers for server side export format to version support
+"""
+
+SSE_CRASH_MAP = ['6.5.314.4300']
+"""
+Mapping of versions to watch out for crashes/handle bugs for server side export
+"""
+
+PYTAN_USER_CONFIG = "~/.pytan_config.json"
+"""
+Default path to file to use for Handler parameter overrides
+"""
+
+PYTAN_KEY = "mT1er@iUa1kP9pelSW"
+"""
+Key used for obfuscation/de-obfsucation
+"""
+
+HANDLER_ARG_DEFAULTS = {
+    'username': None,
+    'password': None,
+    'session_id': None,
+    'host': None,
+    'port': 443,
+    'loglevel': 0,
+    'debugformat': False,
+    'gmt_log': False,
+}
+"""
+Map of handler arguments and their defaults
 """

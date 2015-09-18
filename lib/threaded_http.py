@@ -4,6 +4,8 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 """Simple HTTP server for testing purposes"""
 
+from __future__ import print_function
+
 import sys
 import cgi
 from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
@@ -14,7 +16,8 @@ import threading
 sys.dont_write_bytecode = True
 
 
-class Handler(BaseHTTPRequestHandler):
+class CustomHTTPHandler(BaseHTTPRequestHandler):
+    ENABLE_LOGGING = True
 
     def do_GET(self):  # noqa
         self.send_response(200)
@@ -29,9 +32,11 @@ class Handler(BaseHTTPRequestHandler):
         form = cgi.FieldStorage(
             fp=self.rfile,
             headers=self.headers,
-            environ={'REQUEST_METHOD': 'POST',
-                     'CONTENT_TYPE': self.headers['Content-Type'],
-                     })
+            environ={
+                'REQUEST_METHOD': 'POST',
+                'CONTENT_TYPE': self.headers['Content-Type'],
+            }
+        )
 
         # Begin the response
         self.send_response(200)
@@ -60,7 +65,10 @@ class Handler(BaseHTTPRequestHandler):
     # turn off logging messages so we don't see the get requests in console
     # during unittests
     def log_message(self, format, *args):
-        pass
+        if self.ENABLE_LOGGING:
+            BaseHTTPRequestHandler.log_message(self, format, *args)
+        else:
+            pass
 
 
 class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
@@ -69,10 +77,17 @@ class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
 
 def threaded_http(host='localhost', port=4443, verbosity=2):
     '''establishes an HTTP server on host:port in a thread'''
-    server = ThreadedHTTPServer((host, port), Handler)
+    server = ThreadedHTTPServer((host, port), CustomHTTPHandler)
+
+    if verbosity >= 3:
+        server.RequestHandlerClass.ENABLE_LOGGING = True
+    else:
+        server.RequestHandlerClass.ENABLE_LOGGING = False
+
     t = threading.Thread(target=server.serve_forever)
     t.setDaemon(True)
     t.start()
-    if verbosity == 2:
-        print ('Threaded HTTP server started on {}:{}').format(host, port)
+    if verbosity >= 2:
+        m = 'Threaded HTTP server started on {}:{}'.format(host, port)
+        print(m, file=sys.stderr)
     return server

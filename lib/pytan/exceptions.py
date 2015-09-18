@@ -9,7 +9,7 @@ sys.dont_write_bytecode = True
 
 
 class HandlerError(Exception):
-    """Exception thrown for most errors in :mod:`pytan.handler`"""
+    """Exception thrown for errors in :mod:`pytan.handler`"""
     pass
 
 
@@ -34,7 +34,7 @@ class PytanHelp(Exception):
 
 
 class PollingError(Exception):
-    """Exception thrown for most errors in :mod:`pytan.polling`"""
+    """Exception thrown for errors in :mod:`pytan.polling`"""
     pass
 
 
@@ -68,6 +68,26 @@ class VersionMismatchError(Exception):
     pass
 
 
-class RunPluginError(Exception):
-    """Exception thrown for run_plugin in :mod:`pytan.sessions`"""
+class UnsupportedVersionError(Exception):
+    """Exception thrown for version checks in :mod:`pytan.handler`"""
+    pass
+
+
+class ServerSideExportError(Exception):
+    """Exception thrown for server side export errors in :mod:`pytan.handler`"""
+    pass
+
+
+class VersionParseError(Exception):
+    """Exception thrown for server version parsing errors in :mod:`pytan.handler`"""
+    pass
+
+
+class ServerParseError(Exception):
+    """Exception thrown for server parsing errors in :mod:`pytan.handler`"""
+    pass
+
+
+class PickerError(Exception):
+    """Exception thrown for picker errors in :mod:`pytan.handler`"""
     pass

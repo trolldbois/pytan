@@ -1,10 +1,10 @@
 # -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
-'''A python package that makes using (:mod:`taniumpy`) more human friendly.'''
+'''A python package that makes using the Tanium Server SOAP API easy.'''
 
 __title__ = 'PyTan'
-__version__ = '2.0.1'
+__version__ = '2.1.5'
 """
 Version of PyTan
 """
@@ -34,10 +34,7 @@ my_file = os.path.abspath(__file__)
 my_dir = os.path.dirname(my_file)
 parent_dir = os.path.dirname(my_dir)
 path_adds = [parent_dir]
-
-for aa in path_adds:
-    if aa not in sys.path:
-        sys.path.append(aa)
+[sys.path.insert(0, aa) for aa in path_adds]
 
 import taniumpy  # noqa
 

@@ -4,28 +4,40 @@ Get Group Readme
 ---------------------------
 <a name='toc'>Table of contents:</a>
 
-  * [Get Group Help](#user-content-get-group-help)
-  * [Export all group as JSON](#user-content-export-all-group-as-json)
-  * [Export all group as CSV](#user-content-export-all-group-as-csv)
-  * [Export all group as xml](#user-content-export-all-group-as-xml)
+  * [Help for Get Group](#user-content-help-for-get-group)
+  * [Export all group objects as JSON](#user-content-export-all-group-objects-as-json)
+  * [Export all group objects as CSV](#user-content-export-all-group-objects-as-csv)
+  * [Export all group objects as xml](#user-content-export-all-group-objects-as-xml)
 
 ---------------------------
 
-# Get Group Help
+# Help for Get Group
 
-  * Get group and save as report format
+  * Print the help for get_group.py
+  * All scripts in bin/ will supply help if -h is on the command line
+  * If passing in a parameter with a space or a special character, you need to surround it with quotes properly. On Windows this means double quotes. On Linux/Mac, this means single or double quotes, depending on what kind of character escaping you need.
+  * If running this script on Linux or Mac, use the python scripts directly as the bin/get_group.py
+  * If running this script on Windows, use the batch script in the winbin/get_group.bat so that python is called correctly.
 
 ```bash
 get_group.py -h
 ```
 
 ```
-usage: get_group.py [-h] [-u USERNAME] [-p PASSWORD] [--host HOST]
-                    [--port PORT] [-l LOGLEVEL] [--all] [--id ID]
+usage: get_group.py [-h] [-u USERNAME] [-p PASSWORD] [--session_id SESSION_ID]
+                    [--host HOST] [--port PORT] [-l LOGLEVEL] [--debugformat]
+                    [--debug_method_locals] [--record_all_requests]
+                    [--stats_loop_enabled] [--http_auth_retry]
+                    [--http_retry_count HTTP_RETRY_COUNT]
+                    [--pytan_user_config PYTAN_USER_CONFIG] [--all] [--id ID]
                     [--name NAME] [--file REPORT_FILE] [--dir REPORT_DIR]
-                    {csv,json,xml} ...
+                    [--export_format {csv,xml,json}]
+                    [--sort HEADER_SORT | --no-sort | --auto_sort]
+                    [--no-explode-json | --explode-json]
+                    [--no-include_type | --include_type]
+                    [--no-minimal | --minimal]
 
-Get group and save as report format
+Get an object of type: group and save the object to a report file
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -35,6 +47,9 @@ Handler Authentication:
                         Name of user (default: None)
   -p PASSWORD, --password PASSWORD
                         Password of user (default: None)
+  --session_id SESSION_ID
+                        Session ID to authenticate with instead of
+                        username/password (default: None)
   --host HOST           Hostname/ip of SOAP Server (default: None)
   --port PORT           Port to use when connecting to SOAP Server (default:
                         443)
@@ -43,6 +58,23 @@ Handler Options:
   -l LOGLEVEL, --loglevel LOGLEVEL
                         Logging level to use, increase for more verbosity
                         (default: 0)
+  --debugformat         Enable debug format for logging (default: False)
+  --debug_method_locals
+                        Enable debug logging for each methods local variables
+                        (default: False)
+  --record_all_requests
+                        Record all requests in
+                        handler.session.ALL_REQUESTS_RESPONSES (default:
+                        False)
+  --stats_loop_enabled  Enable the statistics loop (default: False)
+  --http_auth_retry     Disable retry on HTTP authentication failures
+                        (default: True)
+  --http_retry_count HTTP_RETRY_COUNT
+                        Retry count for HTTP failures/invalid responses
+                        (default: 5)
+  --pytan_user_config PYTAN_USER_CONFIG
+                        PyTan User Config file to use for PyTan arguments
+                        (defaults to: ~/.pytan_config.json) (default: )
 
 Get Group Options:
   --all                 Get all groups (default: False)
@@ -55,76 +87,57 @@ Report File Options:
   --dir REPORT_DIR      Directory to save report to (current directory will be
                         used if not supplied) (default: None)
 
-Export Formats:
-  {csv,json,xml}        Export Format choices
-    csv                 Produce a CSV report, supply "csv -h" to see CSV
-                        options
-    json                Produce a JSON report, supply "json -h" to see JSON
-                        options
-    xml                 Produce a XML report, supply "xml -h" to see XML
-                        options
-
-usage: get_group.py csv [-h] [--sort HEADER_SORT | --no-sort | --auto_sort]
-                        [--no-explode-json | --explode-json]
-
-CSV Export Options
-
-optional arguments:
-  -h, --help          show this help message and exit
-  --sort HEADER_SORT  Sort headers by given names (default: [])
-  --no-sort           Do not sort the headers at all
-  --auto_sort         Sort the headers with a basic alphanumeric sort
-                      (default)
-  --no-explode-json   Do not explode any embedded JSON into their own columns
-  --explode-json      Explode any embedded JSON into their own columns
-                      (default)
-
-usage: get_group.py json [-h] [--explode-json | --no-explode-json]
-                         [--no-include_type | --include_type]
-
-JSON Export Options
-
-optional arguments:
-  -h, --help         show this help message and exit
-  --explode-json     Explode any embedded JSON into their own columns
-  --no-explode-json  Do not explode any embedded JSON into their own columns
-                     (default)
-  --no-include_type  Do not include SOAP type in JSON output
-  --include_type     Include SOAP type in JSON output (default)
-
-usage: get_group.py xml [-h] [--no-minimal | --minimal]
-
-XML Export Options
-
-optional arguments:
-  -h, --help    show this help message and exit
-  --no-minimal  Produce the full XML representation, including empty
-                attributes
-  --minimal     Only include attributes that are not empty (default)
+Export Options:
+  --export_format {csv,xml,json}
+                        Export Format to create report file in, only used if
+                        sse = False (default: csv)
+  --sort HEADER_SORT    Only for export_format csv, Sort headers by given
+                        names (default: [])
+  --no-sort             Only for export_format csv, Do not sort the headers at
+                        all
+  --auto_sort           Only for export_format csv, Sort the headers with a
+                        basic alphanumeric sort (default)
+  --no-explode-json     Only for export_format csv or json, Do not explode any
+                        embedded JSON into their own columns
+  --explode-json        Only for export_format csv or json, Only for
+                        export_format csv, Explode any embedded JSON into
+                        their own columns (default)
+  --no-include_type     Only for export_format json, Do not include SOAP type
+                        in JSON output
+  --include_type        Only for export_format json, Include SOAP type in JSON
+                        output (default)
+  --no-minimal          Only for export_format xml, Produce the full XML
+                        representation, including empty attributes
+  --minimal             Only for export_format xml, Only include attributes
+                        that are not empty (default)
 ```
 
   * Validation Test: exitcode
     * Valid: **True**
     * Messages: Exit Code is 0
 
+  * Validation Test: noerror
+    * Valid: **True**
+    * Messages: No error texts found in stderr/stdout
+
 
 
 [TOC](#user-content-toc)
 
 
-# Export all group as JSON
+# Export all group objects as JSON
 
   * Get all group objects
   * Save the results to a JSON file
 
 ```bash
-get_group.py -u 'Tanium User' -p 'T@n!um' --host '172.16.31.128' --loglevel 1 --all --file "/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json" json
+bin/get_group.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 443 --loglevel 1 --all --file "/tmp/out.json" --export_format json
 ```
 
 ```
-Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
-Found items:  GroupList, len: 2
-Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written with 716 bytes
+PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+Found items:  GroupList, len: 3
+Report file '/tmp/out.json' written with 1884 bytes
 ```
 
   * Validation Test: exitcode
@@ -133,26 +146,30 @@ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json' written 
 
   * Validation Test: file_exist
     * Valid: **True**
-    * Messages: File /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.json exists
+    * Messages: File /tmp/out.json exists
+
+  * Validation Test: noerror
+    * Valid: **True**
+    * Messages: No error texts found in stderr/stdout
 
 
 
 [TOC](#user-content-toc)
 
 
-# Export all group as CSV
+# Export all group objects as CSV
 
   * Get all group objects
   * Save the results to a csv file
 
 ```bash
-get_group.py -u 'Tanium User' -p 'T@n!um' --host '172.16.31.128' --loglevel 1 --all --file "/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv" csv
+bin/get_group.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 443 --loglevel 1 --all --file "/tmp/out.csv"
 ```
 
 ```
-Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
-Found items:  GroupList, len: 2
-Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written with 107 bytes
+PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+Found items:  GroupList, len: 3
+Report file '/tmp/out.csv' written with 710 bytes
 ```
 
   * Validation Test: exitcode
@@ -161,26 +178,30 @@ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv' written w
 
   * Validation Test: file_exist
     * Valid: **True**
-    * Messages: File /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.csv exists
+    * Messages: File /tmp/out.csv exists
+
+  * Validation Test: noerror
+    * Valid: **True**
+    * Messages: No error texts found in stderr/stdout
 
 
 
 [TOC](#user-content-toc)
 
 
-# Export all group as xml
+# Export all group objects as xml
 
   * Get all group objects
   * Save the results to a xml file
 
 ```bash
-get_group.py -u 'Tanium User' -p 'T@n!um' --host '172.16.31.128' --loglevel 1 --all --file "/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.xml" xml
+bin/get_group.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 443 --loglevel 1 --all --file "/tmp/out.xml"
 ```
 
 ```
-Handler for Session to 172.16.31.128:443, Authenticated: True, Version: Not yet determined!
-Found items:  GroupList, len: 2
-Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.xml' written with 427 bytes
+PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+Found items:  GroupList, len: 3
+Report file '/tmp/out.xml' written with 710 bytes
 ```
 
   * Validation Test: exitcode
@@ -189,11 +210,15 @@ Report file '/var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.xml' written w
 
   * Validation Test: file_exist
     * Valid: **True**
-    * Messages: File /var/folders/dk/vjr1r_c53yx6k6gzp2bbt_c40000gn/T/out.xml exists
+    * Messages: File /tmp/out.xml exists
+
+  * Validation Test: noerror
+    * Valid: **True**
+    * Messages: No error texts found in stderr/stdout
 
 
 
 [TOC](#user-content-toc)
 
 
-###### generated by: `build_bin_doc v1.4.5`, date: Fri Aug  7 15:34:01 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**
+###### generated by: `build_bin_doc v2.1.0`, date: Tue Sep 15 18:24:37 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**
