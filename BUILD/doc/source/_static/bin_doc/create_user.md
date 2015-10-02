@@ -33,7 +33,8 @@ usage: create_user.py [-h] [-u USERNAME] [-p PASSWORD]
                       [--record_all_requests] [--stats_loop_enabled]
                       [--http_auth_retry]
                       [--http_retry_count HTTP_RETRY_COUNT]
-                      [--pytan_user_config PYTAN_USER_CONFIG] -n NAME
+                      [--pytan_user_config PYTAN_USER_CONFIG]
+                      [--force_server_version FORCE_SERVER_VERSION] -n NAME
                       [-rn ROLENAME] [-ri ROLEID] [-g GROUP]
                       [-prop PROPERTIES PROPERTIES]
 
@@ -75,6 +76,10 @@ Handler Options:
   --pytan_user_config PYTAN_USER_CONFIG
                         PyTan User Config file to use for PyTan arguments
                         (defaults to: ~/.pytan_config.json) (default: )
+  --force_server_version FORCE_SERVER_VERSION
+                        Force PyTan to consider the server version as this,
+                        instead of relying on the server version derived from
+                        the server info page. (default: )
 
 Create User Options:
   -n NAME, --name NAME  Name of user to create (default: None)
@@ -112,7 +117,7 @@ bin/delete_user.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 44
 ```
 
 ```
-PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 
 
 Error occurred: No results found searching for user with {'id': [], 'name': ['CMDLINE TEST user']}!!
@@ -120,11 +125,11 @@ Error occurred: No results found searching for user with {'id': [], 'name': ['CM
 
 ```STDERR
 Traceback (most recent call last):
-  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2071, in process_delete_object_args
+  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2082, in process_delete_object_args
     response = handler.delete(**obj_grp_args)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1911, in delete
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1923, in delete
     objs_to_del = self.get(objtype=objtype, pytan_help=h, **clean_kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 2252, in get
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 2264, in get
     raise pytan.exceptions.HandlerError(err(objtype, err_args))
 HandlerError: No results found searching for user with {'id': [], 'name': ['CMDLINE TEST user']}!!
 ```
@@ -149,8 +154,8 @@ bin/create_user.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 44
 ```
 
 ```
-PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-New user 'CMDLINE TEST user' created with ID 40, roles: 'Administrator', group id: 0
+PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+New user 'CMDLINE TEST user' created with ID 57, roles: 'Administrator', group id: 0
 ```
 
   * Validation Test: exitcode
@@ -175,8 +180,8 @@ bin/delete_user.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 44
 ```
 
 ```
-PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-Deleted item:  User, name: 'CMDLINE TEST user', id: 40
+PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+Deleted item:  User, name: 'CMDLINE TEST user', id: 57
 ```
 
   * Validation Test: exitcode
@@ -202,7 +207,7 @@ bin/delete_user.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 44
 ```
 
 ```
-PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 
 
 Error occurred: No results found searching for user with {'id': [], 'name': ['CMDLINE TEST user']}!!
@@ -210,11 +215,11 @@ Error occurred: No results found searching for user with {'id': [], 'name': ['CM
 
 ```STDERR
 Traceback (most recent call last):
-  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2071, in process_delete_object_args
+  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2082, in process_delete_object_args
     response = handler.delete(**obj_grp_args)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1911, in delete
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1923, in delete
     objs_to_del = self.get(objtype=objtype, pytan_help=h, **clean_kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 2252, in get
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 2264, in get
     raise pytan.exceptions.HandlerError(err(objtype, err_args))
 HandlerError: No results found searching for user with {'id': [], 'name': ['CMDLINE TEST user']}!!
 ```
@@ -239,8 +244,8 @@ bin/create_user.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 44
 ```
 
 ```
-PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-New user 'CMDLINE TEST user' created with ID 41, roles: 'Administrator', group id: 62
+PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+New user 'CMDLINE TEST user' created with ID 58, roles: 'Administrator', group id: 62
 ```
 
   * Validation Test: exitcode
@@ -265,8 +270,8 @@ bin/delete_user.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 44
 ```
 
 ```
-PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-Deleted item:  User, name: 'CMDLINE TEST user', id: 41
+PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+Deleted item:  User, name: 'CMDLINE TEST user', id: 58
 ```
 
   * Validation Test: exitcode
@@ -282,4 +287,4 @@ Deleted item:  User, name: 'CMDLINE TEST user', id: 41
 [TOC](#user-content-toc)
 
 
-###### generated by: `build_bin_doc v2.1.0`, date: Tue Sep 15 18:23:26 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**
+###### generated by: `build_bin_doc v2.1.0`, date: Fri Oct  2 16:06:28 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**

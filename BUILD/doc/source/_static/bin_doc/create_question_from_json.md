@@ -31,8 +31,9 @@ usage: create_question_from_json.py [-h] [-u USERNAME] [-p PASSWORD]
                                     [--record_all_requests]
                                     [--stats_loop_enabled] [--http_auth_retry]
                                     [--http_retry_count HTTP_RETRY_COUNT]
-                                    [--pytan_user_config PYTAN_USER_CONFIG] -j
-                                    JSON_FILE
+                                    [--pytan_user_config PYTAN_USER_CONFIG]
+                                    [--force_server_version FORCE_SERVER_VERSION]
+                                    -j JSON_FILE
 
 Create an object of type: question from a JSON file
 
@@ -72,6 +73,10 @@ Handler Options:
   --pytan_user_config PYTAN_USER_CONFIG
                         PyTan User Config file to use for PyTan arguments
                         (defaults to: ~/.pytan_config.json) (default: )
+  --force_server_version FORCE_SERVER_VERSION
+                        Force PyTan to consider the server version as this,
+                        instead of relying on the server version derived from
+                        the server info page. (default: )
 
 Create Question from JSON Options:
   -j JSON_FILE, --json JSON_FILE
@@ -101,9 +106,9 @@ bin/get_question.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 4
 ```
 
 ```
-PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 Found items:  QuestionList, len: 1
-Report file '/tmp/out.json' written with 2472 bytes
+Report file '/tmp/out.json' written with 779 bytes
 ```
 
   * Validation Test: exitcode
@@ -142,7 +147,7 @@ Report file '/tmp/out.json' written with 2472 bytes
   * Add CMDLINE TEST to name or url_regex in the JSON file
 
 ```bash
-perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 8224"/gm' /tmp/out.json && cat /tmp/out.json
+perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 3074"/gm' /tmp/out.json && cat /tmp/out.json
 ```
 
 ```
@@ -158,69 +163,21 @@ perl -p -i -e 's/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 8224"/gm' /tm
       }, 
       "expiration": "2015-09-14T13:48:06", 
       "expire_seconds": 0, 
-      "force_computer_id_flag": 1, 
+      "force_computer_id_flag": 0, 
       "hidden_flag": 0, 
       "id": 1, 
       "management_rights_group": {
         "_type": "group", 
         "id": 0
       }, 
-      "query_text": "Get Action Statuses matching \"Nil\" from all machines", 
+      "query_text": "Get number of machines", 
       "saved_question": {
         "_type": "saved_question", 
         "id": 0
       }, 
       "selects": {
         "_type": "selects", 
-        "select": [
-          {
-            "_type": "select", 
-            "filter": {
-              "_type": "filter", 
-              "all_times_flag": 0, 
-              "all_values_flag": 1, 
-              "delimiter_index": 0, 
-              "end_time": "2001-01-01T00:00:00", 
-              "ignore_case_flag": 1, 
-              "max_age_seconds": 0, 
-              "not_flag": 0, 
-              "operator": "RegexMatch", 
-              "start_time": "2001-01-01T00:00:00", 
-              "substring_flag": 0, 
-              "substring_length": 0, 
-              "substring_start": 0, 
-              "utf8_flag": 0, 
-              "value": "Nil", 
-              "value_type": "String"
-            }, 
-            "sensor": {
-              "_type": "sensor", 
-              "category": "Reserved", 
-              "description": "The recorded state of each action a client has taken recently in the form of id:status.\nExample: 1:Completed", 
-              "exclude_from_parse_flag": 1, 
-              "hash": 1792443391, 
-              "hidden_flag": 0, 
-              "id": 1, 
-              "ignore_case_flag": 1, 
-              "max_age_seconds": 3600, 
-              "name": "Action Statuses", 
-              "queries": {
-                "_type": "queries", 
-                "query": [
-                  {
-                    "_type": "query", 
-                    "platform": "Windows", 
-                    "script": "Reserved", 
-                    "script_type": "WMIQuery"
-                  }
-                ]
-              }, 
-              "source_id": 0, 
-              "string_count": 135, 
-              "value_type": "String"
-            }
-          }
-        ]
+        "select": []
       }, 
       "skip_lock_flag": 0, 
       "user": {
@@ -257,8 +214,8 @@ bin/create_question_from_json.py -u Administrator -p 'Tanium2015!' --host 10.0.1
 ```
 
 ```
-PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-Created item: Question, id: 2452, ID: 2452
+PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+Created item: Question, id: 16107, ID: 16107
 ```
 
   * Validation Test: exitcode
@@ -274,4 +231,4 @@ Created item: Question, id: 2452, ID: 2452
 [TOC](#user-content-toc)
 
 
-###### generated by: `build_bin_doc v2.1.0`, date: Tue Sep 15 18:23:20 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**
+###### generated by: `build_bin_doc v2.1.0`, date: Fri Oct  2 16:06:22 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**

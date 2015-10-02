@@ -32,9 +32,10 @@ usage: create_group.py [-h] [-u USERNAME] [-p PASSWORD]
                        [--record_all_requests] [--stats_loop_enabled]
                        [--http_auth_retry]
                        [--http_retry_count HTTP_RETRY_COUNT]
-                       [--pytan_user_config PYTAN_USER_CONFIG] -n GROUPNAME
-                       [-f FILTERS] [-o FILTER_OPTIONS] [--filters-help]
-                       [--options-help]
+                       [--pytan_user_config PYTAN_USER_CONFIG]
+                       [--force_server_version FORCE_SERVER_VERSION] -n
+                       GROUPNAME [-f FILTERS] [-o FILTER_OPTIONS]
+                       [--filters-help] [--options-help]
 
 Create a group object from command line arguments
 
@@ -74,6 +75,10 @@ Handler Options:
   --pytan_user_config PYTAN_USER_CONFIG
                         PyTan User Config file to use for PyTan arguments
                         (defaults to: ~/.pytan_config.json) (default: )
+  --force_server_version FORCE_SERVER_VERSION
+                        Force PyTan to consider the server version as this,
+                        instead of relying on the server version derived from
+                        the server info page. (default: )
 
 Create Group Options:
   -n GROUPNAME, --name GROUPNAME
@@ -111,7 +116,7 @@ bin/delete_group.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 4
 ```
 
 ```
-PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 
 
 Error occurred: No results found searching for Group, name: 'All Windows Computers CMDLINE TEST GROUP' (error: Response command GroupNotFound does not match request command GetObject)!!
@@ -119,15 +124,15 @@ Error occurred: No results found searching for Group, name: 'All Windows Compute
 
 ```STDERR
 Traceback (most recent call last):
-  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2071, in process_delete_object_args
+  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2082, in process_delete_object_args
     response = handler.delete(**obj_grp_args)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1911, in delete
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 1923, in delete
     objs_to_del = self.get(objtype=objtype, pytan_help=h, **clean_kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 2265, in get
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 2277, in get
     return self._get_multi(obj_map=obj_map, **clean_kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 2449, in _get_multi
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 2461, in _get_multi
     found = self._find(obj=api_obj_multi, **clean_kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 2394, in _find
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 2406, in _find
     raise pytan.exceptions.HandlerError(err(search_str, e))
 HandlerError: No results found searching for Group, name: 'All Windows Computers CMDLINE TEST GROUP' (error: Response command GroupNotFound does not match request command GetObject)!!
 ```
@@ -153,8 +158,8 @@ bin/create_group.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 4
 ```
 
 ```
-PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-New group 'All Windows Computers CMDLINE TEST GROUP' created with ID 361, filter text: ' ( Operating System containing "Windows" and any IP Address != "10.10.10.10" )'
+PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+New group 'All Windows Computers CMDLINE TEST GROUP' created with ID 502, filter text: ' ( Operating System containing "Windows" and any IP Address != "10.10.10.10" )'
 ```
 
   * Validation Test: exitcode
@@ -179,8 +184,8 @@ bin/delete_group.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 4
 ```
 
 ```
-PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-Deleted item:  Group, id: 361
+PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+Deleted item:  Group, id: 502
 ```
 
   * Validation Test: exitcode
@@ -209,9 +214,10 @@ usage: create_group.py [-h] [-u USERNAME] [-p PASSWORD]
                        [--record_all_requests] [--stats_loop_enabled]
                        [--http_auth_retry]
                        [--http_retry_count HTTP_RETRY_COUNT]
-                       [--pytan_user_config PYTAN_USER_CONFIG] -n GROUPNAME
-                       [-f FILTERS] [-o FILTER_OPTIONS] [--filters-help]
-                       [--options-help]
+                       [--pytan_user_config PYTAN_USER_CONFIG]
+                       [--force_server_version FORCE_SERVER_VERSION] -n
+                       GROUPNAME [-f FILTERS] [-o FILTER_OPTIONS]
+                       [--filters-help] [--options-help]
 
 Create a group object from command line arguments
 
@@ -251,6 +257,10 @@ Handler Options:
   --pytan_user_config PYTAN_USER_CONFIG
                         PyTan User Config file to use for PyTan arguments
                         (defaults to: ~/.pytan_config.json) (default: )
+  --force_server_version FORCE_SERVER_VERSION
+                        Force PyTan to consider the server version as this,
+                        instead of relying on the server version derived from
+                        the server info page. (default: )
 
 Create Group Options:
   -n GROUPNAME, --name GROUPNAME
@@ -288,9 +298,10 @@ usage: create_group.py [-h] [-u USERNAME] [-p PASSWORD]
                        [--record_all_requests] [--stats_loop_enabled]
                        [--http_auth_retry]
                        [--http_retry_count HTTP_RETRY_COUNT]
-                       [--pytan_user_config PYTAN_USER_CONFIG] -n GROUPNAME
-                       [-f FILTERS] [-o FILTER_OPTIONS] [--filters-help]
-                       [--options-help]
+                       [--pytan_user_config PYTAN_USER_CONFIG]
+                       [--force_server_version FORCE_SERVER_VERSION] -n
+                       GROUPNAME [-f FILTERS] [-o FILTER_OPTIONS]
+                       [--filters-help] [--options-help]
 
 Create a group object from command line arguments
 
@@ -330,6 +341,10 @@ Handler Options:
   --pytan_user_config PYTAN_USER_CONFIG
                         PyTan User Config file to use for PyTan arguments
                         (defaults to: ~/.pytan_config.json) (default: )
+  --force_server_version FORCE_SERVER_VERSION
+                        Force PyTan to consider the server version as this,
+                        instead of relying on the server version derived from
+                        the server info page. (default: )
 
 Create Group Options:
   -n GROUPNAME, --name GROUPNAME
@@ -354,4 +369,4 @@ ERROR:create_group:argument -n/--name is required
 [TOC](#user-content-toc)
 
 
-###### generated by: `build_bin_doc v2.1.0`, date: Tue Sep 15 18:23:14 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**
+###### generated by: `build_bin_doc v2.1.0`, date: Fri Oct  2 16:06:16 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**
