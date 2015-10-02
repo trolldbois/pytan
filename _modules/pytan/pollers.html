@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pytan.pollers &mdash; PyTan v2.1.5 2.1.5 documentation</title>
+  <title>pytan.pollers &mdash; PyTan v2.1.6 2.1.6 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="PyTan v2.1.5 2.1.5 documentation" href="../../index.html"/>
+    <link rel="top" title="PyTan v2.1.6 2.1.6 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -44,7 +44,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-nav-search">
         
-          <a href="../../index.html" class="fa fa-home"> PyTan v2.1.5</a>
+          <a href="../../index.html" class="fa fa-home"> PyTan v2.1.6</a>
         
         
 <div role="search">
@@ -151,7 +151,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../../index.html">PyTan v2.1.5</a>
+        <a href="../../index.html">PyTan v2.1.6</a>
       </nav>
 
 
@@ -228,6 +228,8 @@
 <span class="sd">        * If supplied and not 0, timeout in seconds instead of when object expires</span>
 <span class="sd">    override_estimated_total : int, optional</span>
 <span class="sd">        * instead of getting number of systems that should see this question from result_info.estimated_total, use this number</span>
+<span class="sd">    force_passed_done_count : int, optional</span>
+<span class="sd">        * when this number of systems have passed the right hand side of the question, consider the question complete</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">OBJECT_TYPE</span> <span class="o">=</span> <span class="n">taniumpy</span><span class="o">.</span><span class="n">object_types</span><span class="o">.</span><span class="n">question</span><span class="o">.</span><span class="n">Question</span>
@@ -292,6 +294,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">override_timeout_secs</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
             <span class="s">&#39;override_timeout_secs&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">OVERRIDE_TIMEOUT_SECS_DEFAULT</span><span class="p">,</span>
         <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">force_passed_done_count</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;force_passed_done_count&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">id_str</span> <span class="o">=</span> <span class="s">&quot;ID {}: &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">,</span> <span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="s">&#39;-1&#39;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">obj_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_derive_attribute</span><span class="p">(</span><span class="n">attr</span><span class="o">=</span><span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="n">fallback</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">id_str</span> <span class="o">=</span> <span class="s">&quot;ID {}: &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obj_id</span><span class="p">)</span>
@@ -587,6 +591,7 @@
             <span class="c"># passed = number of systems that have passed any filters for the question</span>
             <span class="n">tested</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result_info</span><span class="o">.</span><span class="n">mr_tested</span>
             <span class="n">est_total</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">override_estimated_total</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">result_info</span><span class="o">.</span><span class="n">estimated_total</span>
+            <span class="n">passed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result_info</span><span class="o">.</span><span class="n">passed</span>
 
             <span class="n">new_pct</span> <span class="o">=</span> <span class="n">pytan</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">get_percentage</span><span class="p">(</span><span class="n">part</span><span class="o">=</span><span class="n">tested</span><span class="p">,</span> <span class="n">whole</span><span class="o">=</span><span class="n">est_total</span><span class="p">)</span>
             <span class="n">new_pct_str</span> <span class="o">=</span> <span class="s">&quot;{0:.0f}%&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">new_pct</span><span class="p">)</span>
@@ -649,6 +654,13 @@
             <span class="k">if</span> <span class="n">new_pct</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">complete_pct</span><span class="p">:</span>
                 <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}Reached Threshold of {} ({} of {})&quot;</span><span class="o">.</span><span class="n">format</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="n">complete_pct_str</span><span class="p">,</span> <span class="n">tested</span><span class="p">,</span> <span class="n">est_total</span><span class="p">))</span>
+                <span class="n">cb</span> <span class="o">=</span> <span class="s">&#39;AnswersComplete&#39;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">run_callback</span><span class="p">(</span><span class="n">callbacks</span><span class="o">=</span><span class="n">callbacks</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">cb</span><span class="p">,</span> <span class="n">pct</span><span class="o">=</span><span class="n">new_pct</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">True</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">force_passed_done_count</span> <span class="ow">and</span> <span class="n">passed</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">force_passed_done_count</span><span class="p">:</span>
+                <span class="n">m</span> <span class="o">=</span> <span class="s">&quot;{}Reached forced passed done count of {} ({} of {})&quot;</span><span class="o">.</span><span class="n">format</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mylog</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">m</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">force_passed_done_count</span><span class="p">,</span> <span class="n">tested</span><span class="p">,</span> <span class="n">est_total</span><span class="p">))</span>
                 <span class="n">cb</span> <span class="o">=</span> <span class="s">&#39;AnswersComplete&#39;</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">run_callback</span><span class="p">(</span><span class="n">callbacks</span><span class="o">=</span><span class="n">callbacks</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">cb</span><span class="p">,</span> <span class="n">pct</span><span class="o">=</span><span class="n">new_pct</span><span class="p">,</span> <span class="o">**</span><span class="n">clean_kwargs</span><span class="p">)</span>
                 <span class="k">return</span> <span class="bp">True</span>
@@ -1509,7 +1521,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Sep 15, 2015.
+      Last updated on Oct 02, 2015.
     </p>
   </div>
 
@@ -1530,7 +1542,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'2.1.5',
+            VERSION:'2.1.6',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

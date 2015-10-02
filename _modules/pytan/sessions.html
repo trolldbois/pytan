@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pytan.sessions &mdash; PyTan v2.1.5 2.1.5 documentation</title>
+  <title>pytan.sessions &mdash; PyTan v2.1.6 2.1.6 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="PyTan v2.1.5 2.1.5 documentation" href="../../index.html"/>
+    <link rel="top" title="PyTan v2.1.6 2.1.6 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -44,7 +44,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-nav-search">
         
-          <a href="../../index.html" class="fa fa-home"> PyTan v2.1.5</a>
+          <a href="../../index.html" class="fa fa-home"> PyTan v2.1.6</a>
         
         
 <div role="search">
@@ -151,7 +151,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../../index.html">PyTan v2.1.5</a>
+        <a href="../../index.html">PyTan v2.1.6</a>
       </nav>
 
 
@@ -354,6 +354,9 @@
     <span class="n">server_version</span> <span class="o">=</span> <span class="s">&quot;Not yet determined&quot;</span>
     <span class="sd">&quot;&quot;&quot;version string of server, will be updated when get_server_version() is called&quot;&quot;&quot;</span>
 
+    <span class="n">force_server_version</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot;In the case where the user wants to have pytan act as if the server is a specific version, regardless of what server_version is.&quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">443</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">methodlog</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;method_debug&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">DEBUG_METHOD_LOCALS</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;debug_method_locals&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
@@ -408,6 +411,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">LAST_RESPONSE_INFO</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">LAST_REQUESTS_RESPONSE</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">server_version</span> <span class="o">=</span> <span class="s">&quot;Not yet determined&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">force_server_version</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;force_server_version&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">force_server_version</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Session.setup_logging"><a class="viewcode-back" href="../../pytan.html#pytan.sessions.Session.setup_logging">[docs]</a>    <span class="k">def</span> <span class="nf">setup_logging</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_debug_locals</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_name</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
@@ -1565,10 +1570,17 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        is6_5 : bool</span>
+<span class="sd">            * True if self.force_server_version is greater than or equal to 6.5</span>
 <span class="sd">            * True if self.server_version is greater than or equal to 6.5</span>
 <span class="sd">            * False if self.server_version is less than 6.5</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_debug_locals</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_name</span><span class="p">,</span> <span class="nb">locals</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">force_server_version</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">force_server_version</span> <span class="o">&gt;=</span> <span class="s">&#39;6.5&#39;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">False</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invalid_server_version</span><span class="p">():</span>
             <span class="c"># server version is not valid, force a refresh right now</span>
@@ -2142,7 +2154,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Sep 15, 2015.
+      Last updated on Oct 02, 2015.
     </p>
   </div>
 
@@ -2163,7 +2175,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'2.1.5',
+            VERSION:'2.1.6',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

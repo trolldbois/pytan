@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>2. PyTan Package &mdash; PyTan v2.1.5 2.1.5 documentation</title>
+  <title>2. PyTan Package &mdash; PyTan v2.1.6 2.1.6 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="PyTan v2.1.5 2.1.5 documentation" href="index.html"/>
+    <link rel="top" title="PyTan v2.1.6 2.1.6 documentation" href="index.html"/>
         <link rel="next" title="3. PyTan Tests" href="pytan_tests.html"/>
         <link rel="prev" title="1. PyTan Introduction" href="introduction.html"/> 
 
@@ -45,7 +45,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-nav-search">
         
-          <a href="index.html" class="fa fa-home"> PyTan v2.1.5</a>
+          <a href="index.html" class="fa fa-home"> PyTan v2.1.6</a>
         
         
 <div role="search">
@@ -152,7 +152,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">PyTan v2.1.5</a>
+        <a href="index.html">PyTan v2.1.6</a>
       </nav>
 
 
@@ -179,7 +179,7 @@
 <p>A python package that makes using the Tanium Server SOAP API easy.</p>
 <dl class="data">
 <dt id="pytan.__version__">
-<code class="descclassname">pytan.</code><code class="descname">__version__</code><em class="property"> = '2.1.5'</em><a class="headerlink" href="#pytan.__version__" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pytan.</code><code class="descname">__version__</code><em class="property"> = '2.1.6'</em><a class="headerlink" href="#pytan.__version__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Version of PyTan</p>
 </dd></dl>
 
@@ -399,12 +399,19 @@
 </ul>
 </div></blockquote>
 <p><strong>persistent: bool, optional</strong></p>
-<blockquote class="last">
+<blockquote>
 <div><ul class="simple">
 <li>default: False</li>
 <li>False: do not request a persistent session</li>
 <li>True: do request a persistent</li>
 <li>This is passed through to <a class="reference internal" href="#pytan.sessions.Session.authenticate" title="pytan.sessions.Session.authenticate"><code class="xref py py-func docutils literal"><span class="pre">pytan.sessions.Session.authenticate()</span></code></a></li>
+</ul>
+</div></blockquote>
+<p><strong>force_server_version: str, optional</strong></p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>default: &#8216;&#8217;</li>
+<li>use this to override the server_version detection</li>
 </ul>
 </div></blockquote>
 </td>
@@ -572,6 +579,13 @@ and as such is not meant for human consumption. Use <a class="reference internal
 <blockquote>
 <div><ul class="simple">
 <li>instead of getting number of systems that should see this question from result_info.estimated_total, use this number</li>
+<li>This is passed through to <a class="reference internal" href="#pytan.pollers.QuestionPoller" title="pytan.pollers.QuestionPoller"><code class="xref py py-func docutils literal"><span class="pre">pytan.pollers.QuestionPoller()</span></code></a></li>
+</ul>
+</div></blockquote>
+<p><strong>force_passed_done_count</strong> : int, optional</p>
+<blockquote>
+<div><ul class="simple">
+<li>when this number of systems have passed the right hand side of the question, consider the question complete</li>
 <li>This is passed through to <a class="reference internal" href="#pytan.pollers.QuestionPoller" title="pytan.pollers.QuestionPoller"><code class="xref py py-func docutils literal"><span class="pre">pytan.pollers.QuestionPoller()</span></code></a></li>
 </ul>
 </div></blockquote>
@@ -1490,6 +1504,13 @@ their corresponding definitions needed by <a class="reference internal" href="#p
 <li>This is passed through to <a class="reference internal" href="#pytan.pollers.QuestionPoller" title="pytan.pollers.QuestionPoller"><code class="xref py py-func docutils literal"><span class="pre">pytan.pollers.QuestionPoller()</span></code></a></li>
 </ul>
 </div></blockquote>
+<p><strong>force_passed_done_count</strong> : int, optional</p>
+<blockquote>
+<div><ul class="simple">
+<li>when this number of systems have passed the right hand side of the question, consider the question complete</li>
+<li>This is passed through to <a class="reference internal" href="#pytan.pollers.QuestionPoller" title="pytan.pollers.QuestionPoller"><code class="xref py py-func docutils literal"><span class="pre">pytan.pollers.QuestionPoller()</span></code></a></li>
+</ul>
+</div></blockquote>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>result</strong> : dict, containing:</p>
@@ -1679,6 +1700,13 @@ their corresponding definitions needed by <a class="reference internal" href="#p
 <li>This is passed through to <a class="reference internal" href="#pytan.pollers.QuestionPoller" title="pytan.pollers.QuestionPoller"><code class="xref py py-func docutils literal"><span class="pre">pytan.pollers.QuestionPoller()</span></code></a></li>
 </ul>
 </div></blockquote>
+<p><strong>force_passed_done_count</strong> : int, optional</p>
+<blockquote>
+<div><ul class="simple">
+<li>when this number of systems have passed the right hand side of the question, consider the question complete</li>
+<li>This is passed through to <a class="reference internal" href="#pytan.pollers.QuestionPoller" title="pytan.pollers.QuestionPoller"><code class="xref py py-func docutils literal"><span class="pre">pytan.pollers.QuestionPoller()</span></code></a></li>
+</ul>
+</div></blockquote>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>ret</strong> : dict, containing:</p>
@@ -1804,6 +1832,13 @@ their corresponding definitions needed by <a class="reference internal" href="#p
 <blockquote>
 <div><ul class="simple">
 <li>instead of getting number of systems that should see this question from result_info.estimated_total, use this number</li>
+<li>This is passed through to <a class="reference internal" href="#pytan.pollers.QuestionPoller" title="pytan.pollers.QuestionPoller"><code class="xref py py-func docutils literal"><span class="pre">pytan.pollers.QuestionPoller()</span></code></a></li>
+</ul>
+</div></blockquote>
+<p><strong>force_passed_done_count</strong> : int, optional</p>
+<blockquote>
+<div><ul class="simple">
+<li>when this number of systems have passed the right hand side of the question, consider the question complete</li>
 <li>This is passed through to <a class="reference internal" href="#pytan.pollers.QuestionPoller" title="pytan.pollers.QuestionPoller"><code class="xref py py-func docutils literal"><span class="pre">pytan.pollers.QuestionPoller()</span></code></a></li>
 </ul>
 </div></blockquote>
@@ -4534,6 +4569,12 @@ session is generated.</p>
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="pytan.sessions.Session.force_server_version">
+<code class="descname">force_server_version</code><em class="property"> = ''</em><a class="headerlink" href="#pytan.sessions.Session.force_server_version" title="Permalink to this definition">¶</a></dt>
+<dd><p>In the case where the user wants to have pytan act as if the server is a specific version, regardless of what server_version is.</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pytan.sessions.Session.get_result_data">
 <code class="descname">get_result_data</code><span class="sig-paren">(</span><em>obj</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pytan/sessions.html#Session.get_result_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pytan.sessions.Session.get_result_data" title="Permalink to this definition">¶</a></dt>
@@ -4991,6 +5032,7 @@ session is generated.</p>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>is6_5</strong> : bool</p>
 <blockquote class="last">
 <div><ul class="simple">
+<li>True if self.force_server_version is greater than or equal to 6.5</li>
 <li>True if self.server_version is greater than or equal to 6.5</li>
 <li>False if self.server_version is less than 6.5</li>
 </ul>
@@ -5365,9 +5407,15 @@ at package creation/update</p>
 </ul>
 </div></blockquote>
 <p><strong>override_estimated_total</strong> : int, optional</p>
-<blockquote class="last">
+<blockquote>
 <div><ul class="simple">
 <li>instead of getting number of systems that should see this question from result_info.estimated_total, use this number</li>
+</ul>
+</div></blockquote>
+<p><strong>force_passed_done_count</strong> : int, optional</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>when this number of systems have passed the right hand side of the question, consider the question complete</li>
 </ul>
 </div></blockquote>
 </td>
@@ -9528,7 +9576,7 @@ aginst the version of <a class="reference internal" href="#module-pytan" title="
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Sep 15, 2015.
+      Last updated on Oct 02, 2015.
     </p>
   </div>
 
@@ -9549,7 +9597,7 @@ aginst the version of <a class="reference internal" href="#module-pytan" title="
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'2.1.5',
+            VERSION:'2.1.6',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

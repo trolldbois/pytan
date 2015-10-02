@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pytan.binsupport &mdash; PyTan v2.1.5 2.1.5 documentation</title>
+  <title>pytan.binsupport &mdash; PyTan v2.1.6 2.1.6 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="PyTan v2.1.5 2.1.5 documentation" href="../../index.html"/>
+    <link rel="top" title="PyTan v2.1.6 2.1.6 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -44,7 +44,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-nav-search">
         
-          <a href="../../index.html" class="fa fa-home"> PyTan v2.1.5</a>
+          <a href="../../index.html" class="fa fa-home"> PyTan v2.1.6</a>
         
         
 <div role="search">
@@ -151,7 +151,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../../index.html">PyTan v2.1.5</a>
+        <a href="../../index.html">PyTan v2.1.6</a>
       </nav>
 
 
@@ -497,6 +497,17 @@
         <span class="n">help</span><span class="o">=</span><span class="p">(</span>
             <span class="s">&quot;PyTan User Config file to use for PyTan arguments (defaults to: {})&quot;</span>
         <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pytan</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">PYTAN_USER_CONFIG</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">opt_group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s">&#39;--force_server_version&#39;</span><span class="p">,</span>
+        <span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store&#39;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s">&#39;force_server_version&#39;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="p">(</span>
+            <span class="s">&quot;Force PyTan to consider the server version as this, instead of relying on the &quot;</span>
+            <span class="s">&quot;server version derived from the server info page.&quot;</span>
+        <span class="p">),</span>
     <span class="p">)</span>
     <span class="k">return</span> <span class="n">parser</span></div>
 
@@ -3228,7 +3239,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Sep 15, 2015.
+      Last updated on Oct 02, 2015.
     </p>
   </div>
 
@@ -3249,7 +3260,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'2.1.5',
+            VERSION:'2.1.6',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

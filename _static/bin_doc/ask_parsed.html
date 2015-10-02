@@ -789,10 +789,11 @@ body .task-list{
                      [-l LOGLEVEL] [--debugformat] [--debug_method_locals]
                      [--record_all_requests] [--stats_loop_enabled]
                      [--http_auth_retry] [--http_retry_count HTTP_RETRY_COUNT]
-                     [--pytan_user_config PYTAN_USER_CONFIG] -q QUESTION_TEXT
-                     [--picker PICKER] [--no-results | --results]
-                     [--file REPORT_FILE] [--dir REPORT_DIR]
-                     [--enable_sse | --disable_sse]
+                     [--pytan_user_config PYTAN_USER_CONFIG]
+                     [--force_server_version FORCE_SERVER_VERSION] -q
+                     QUESTION_TEXT [--picker PICKER]
+                     [--no-results | --results] [--file REPORT_FILE]
+                     [--dir REPORT_DIR] [--enable_sse | --disable_sse]
                      [--sse_format {csv,xml,xml_obj,cef}] [--leading LEADING]
                      [--trailing TRAILING] [--export_format {csv,xml,json}]
                      [--sort HEADER_SORT | --no-sort | --auto_sort]
@@ -838,6 +839,10 @@ Handler Options:
   --pytan_user_config PYTAN_USER_CONFIG
                         PyTan User Config file to use for PyTan arguments
                         (defaults to: ~/.pytan_config.json) (default: )
+  --force_server_version FORCE_SERVER_VERSION
+                        Force PyTan to consider the server version as this,
+                        instead of relying on the server version derived from
+                        the server info page. (default: )
 
 Parsed Question Options:
   -q QUESTION_TEXT, --question_text QUESTION_TEXT
@@ -926,32 +931,32 @@ Export Options:
 
 <div class="highlight highlight-source-shell"><pre>bin/ask_parsed.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 -q <span class="pl-s"><span class="pl-pds">"</span>get computer name<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+<pre><code>PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Asking parsed question:
 {
   "get_results": true, 
   "picker": null, 
   "question_text": "get computer name"
 }
-2015-09-15 22:22:52,640 CRITICAL pytan.handler: You must supply an index as picker=$index to choose one of the parse responses -- re-run ask_parsed with picker set to one of these indexes!!
-2015-09-15 22:22:52,640 CRITICAL pytan.handler: Index 1, Score: 6823, Query: 'Get Computer Name from all machines'
-2015-09-15 22:22:52,640 CRITICAL pytan.handler: Index 2, Score: 1292, Query: 'Get Computer ID from all machines'
-2015-09-15 22:22:52,640 CRITICAL pytan.handler: Index 3, Score: 646, Query: 'Get Computer ID containing "name" from all machines'
-2015-09-15 22:22:52,640 CRITICAL pytan.handler: Index 4, Score: 457, Query: 'Get AD Computer Groups from all machines'
-2015-09-15 22:22:52,640 CRITICAL pytan.handler: Index 5, Score: 323, Query: 'Get BIOS Name from all machines'
-2015-09-15 22:22:52,640 CRITICAL pytan.handler: Index 6, Score: 228, Query: 'Get Computer Serial Number from all machines'
-2015-09-15 22:22:52,641 CRITICAL pytan.handler: Index 7, Score: 228, Query: 'Get Domain Name from all machines'
+2015-10-02 20:05:49,235 CRITICAL pytan.handler: You must supply an index as picker=$index to choose one of the parse responses -- re-run ask_parsed with picker set to one of these indexes!!
+2015-10-02 20:05:49,235 CRITICAL pytan.handler: Index 1, Score: 6823, Query: 'Get Computer Name from all machines'
+2015-10-02 20:05:49,235 CRITICAL pytan.handler: Index 2, Score: 1292, Query: 'Get Computer ID from all machines'
+2015-10-02 20:05:49,235 CRITICAL pytan.handler: Index 3, Score: 646, Query: 'Get Computer ID containing "name" from all machines'
+2015-10-02 20:05:49,235 CRITICAL pytan.handler: Index 4, Score: 457, Query: 'Get AD Computer Groups from all machines'
+2015-10-02 20:05:49,235 CRITICAL pytan.handler: Index 5, Score: 323, Query: 'Get BIOS Name from all machines'
+2015-10-02 20:05:49,235 CRITICAL pytan.handler: Index 6, Score: 228, Query: 'Get Computer Serial Number from all machines'
+2015-10-02 20:05:49,235 CRITICAL pytan.handler: Index 7, Score: 228, Query: 'Get Domain Name from all machines'
 
 
 Error occurred: You must supply an index as picker=$index to choose one of the parse responses -- re-run ask_parsed with picker set to one of these indexes!!
 </code></pre>
 
 <pre lang="STDERR"><code>Traceback (most recent call last):
-  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2574, in process_ask_parsed_args
+  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2585, in process_ask_parsed_args
     response = handler.ask(qtype='parsed', **obj_grp_args)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 385, in ask
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 388, in ask
     result = method(**clean_kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 816, in ask_parsed
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 828, in ask_parsed
     raise pytan.exceptions.PickerError(pw())
 PickerError: You must supply an index as picker=$index to choose one of the parse responses -- re-run ask_parsed with picker set to one of these indexes!!
 </code></pre>
@@ -980,15 +985,15 @@ PickerError: You must supply an index as picker=$index to choose one of the pars
 
 <div class="highlight highlight-source-shell"><pre>bin/ask_parsed.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 -q <span class="pl-s"><span class="pl-pds">"</span>get computer name<span class="pl-pds">"</span></span> --picker 1 --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.csv<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+<pre><code>PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Asking parsed question:
 {
   "get_results": true, 
   "picker": 1, 
   "question_text": "get computer name"
 }
-2015-09-15 22:22:58,108 INFO     pytan.pollers.QuestionPoller: ID 2447: Reached Threshold of 99% (3 of 3)
-++ Asked Question 'Get Computer Name from all machines' ID: 2447
+2015-10-02 20:05:54,708 INFO     pytan.pollers.QuestionPoller: ID 16103: Reached Threshold of 99% (3 of 3)
+++ Asked Question 'Get Computer Name from all machines' ID: 16103
 ++ Report file '/tmp/out.csv' written with 81 bytes
 </code></pre>
 
@@ -1043,15 +1048,15 @@ TPT1.pytanlab.com
 
 <div class="highlight highlight-source-shell"><pre>bin/ask_parsed.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 -q <span class="pl-s"><span class="pl-pds">"</span>get computer name and ip route details<span class="pl-pds">"</span></span> --picker 1 --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.csv<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+<pre><code>PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Asking parsed question:
 {
   "get_results": true, 
   "picker": 1, 
   "question_text": "get computer name and ip route details"
 }
-2015-09-15 22:23:03,654 INFO     pytan.pollers.QuestionPoller: ID 2449: Reached Threshold of 99% (3 of 3)
-++ Asked Question 'Get Computer Name and IP Route Details from all machines' ID: 2449
+2015-10-02 20:06:00,223 INFO     pytan.pollers.QuestionPoller: ID 16104: Reached Threshold of 99% (3 of 3)
+++ Asked Question 'Get Computer Name and IP Route Details from all machines' ID: 16104
 ++ Report file '/tmp/out.csv' written with 678 bytes
 </code></pre>
 
@@ -1113,14 +1118,14 @@ WIN-6U71ED4M23D,"10.0.1.11
 
 <div class="highlight highlight-source-shell"><pre>bin/ask_parsed.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 -q <span class="pl-s"><span class="pl-pds">"</span>get computer name and ip route details<span class="pl-pds">"</span></span> --picker 1 --no-results</pre></div>
 
-<pre><code>PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+<pre><code>PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Asking parsed question:
 {
   "get_results": false, 
   "picker": 1, 
   "question_text": "get computer name and ip route details"
 }
-++ Asked Question 'Get Computer Name and IP Route Details from all machines' ID: 2450
+++ Asked Question 'Get Computer Name and IP Route Details from all machines' ID: 16105
 ++ No action results returned, run get_results.py to get the results
 </code></pre>
 
@@ -1148,7 +1153,7 @@ WIN-6U71ED4M23D,"10.0.1.11
 <p><a href="#user-content-toc">TOC</a></p>
 
 <h6>
-<a id="user-content-generated-by-build_bin_doc-v210-date-tue-sep-15-182304-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v210-date-tue-sep-15-182304-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v2.1.0</code>, date: Tue Sep 15 18:23:04 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
+<a id="user-content-generated-by-build_bin_doc-v210-date-fri-oct--2-160600-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v210-date-fri-oct--2-160600-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v2.1.0</code>, date: Fri Oct  2 16:06:00 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
 </h6>
 
 </body></html>

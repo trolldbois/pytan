@@ -36,8 +36,9 @@ usage: ask_manual.py [-h] [-u USERNAME] [-p PASSWORD]
                      [-l LOGLEVEL] [--debugformat] [--debug_method_locals]
                      [--record_all_requests] [--stats_loop_enabled]
                      [--http_auth_retry] [--http_retry_count HTTP_RETRY_COUNT]
-                     [--pytan_user_config PYTAN_USER_CONFIG] [-s SENSORS]
-                     [-f QUESTION_FILTERS] [-o QUESTION_OPTIONS]
+                     [--pytan_user_config PYTAN_USER_CONFIG]
+                     [--force_server_version FORCE_SERVER_VERSION]
+                     [-s SENSORS] [-f QUESTION_FILTERS] [-o QUESTION_OPTIONS]
                      [--sensors-help] [--filters-help] [--options-help]
                      [--no-results | --results] [--file REPORT_FILE]
                      [--dir REPORT_DIR] [--enable_sse | --disable_sse]
@@ -86,6 +87,10 @@ Handler Options:
   --pytan_user_config PYTAN_USER_CONFIG
                         PyTan User Config file to use for PyTan arguments
                         (defaults to: ~/.pytan_config.json) (default: )
+  --force_server_version FORCE_SERVER_VERSION
+                        Force PyTan to consider the server version as this,
+                        instead of relying on the server version derived from
+                        the server info page. (default: )
 
 Manual Question Options:
   -s SENSORS, --sensor SENSORS
@@ -170,7 +175,7 @@ bin/ask_manual.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 443
 ```
 
 ```
-PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Asking manual question:
 {
   "filters_help": false, 
@@ -183,8 +188,8 @@ PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platfor
   ], 
   "sensors_help": false
 }
-2015-09-15 22:20:16,847 INFO     pytan.pollers.QuestionPoller: ID 2432: Reached Threshold of 99% (3 of 3)
-++ Asked Question 'Get Computer Name from all machines' ID: 2432
+2015-10-02 20:03:18,450 INFO     pytan.pollers.QuestionPoller: ID 16095: Reached Threshold of 99% (3 of 3)
+++ Asked Question 'Get Computer Name from all machines' ID: 16095
 ++ Report file '/tmp/out.csv' written with 81 bytes
 ```
 
@@ -222,7 +227,7 @@ bin/ask_manual.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 443
 ```
 
 ```
-PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Asking manual question:
 {
   "filters_help": false, 
@@ -235,9 +240,9 @@ PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platfor
   ], 
   "sensors_help": false
 }
-2015-09-15 22:20:27,334 INFO     pytan.pollers.QuestionPoller: ID 2433: Reached Threshold of 99% (3 of 3)
-++ Asked Question 'Get Action Statuses from all machines' ID: 2433
-++ Report file '/tmp/out.csv' written with 1174 bytes
+2015-10-02 20:03:23,919 INFO     pytan.pollers.QuestionPoller: ID 16096: Reached Threshold of 99% (3 of 3)
+++ Asked Question 'Get Action Statuses from all machines' ID: 16096
+++ Report file '/tmp/out.csv' written with 311 bytes
 ```
 
   * Validation Test: exitcode
@@ -250,15 +255,15 @@ PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platfor
 
 ```
 Action Statuses,Count
-54:Completed.,3
-64:Completed.,2
-71:Completed.,3
-80:Completed.,3
-6:Completed.,3
-58:Completed.,2
-41:Completed.,3
-5:Completed.,2
-76:Completed.,3
+121:Completed.,2
+134:Completed.,3
+123:Completed.,2
+136:Completed.,2
+137:Completed.,3
+132:Completed.,3
+138:Completed.,2
+128:Completed.,2
+139:Completed.,3
 ...trimmed for brevity...
 ```
 
@@ -281,7 +286,7 @@ bin/ask_manual.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 443
 ```
 
 ```
-PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Asking manual question:
 {
   "filters_help": false, 
@@ -295,9 +300,9 @@ PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platfor
   ], 
   "sensors_help": false
 }
-2015-09-15 22:20:42,833 INFO     pytan.pollers.QuestionPoller: ID 2435: Reached Threshold of 99% (3 of 3)
-++ Asked Question 'Get Computer Name and Installed Applications from all machines' ID: 2435
-++ Report file '/tmp/out.csv' written with 116648 bytes
+2015-10-02 20:03:34,389 INFO     pytan.pollers.QuestionPoller: ID 16097: Reached Threshold of 99% (3 of 3)
+++ Asked Question 'Get Computer Name and Installed Applications from all machines' ID: 16097
+++ Report file '/tmp/out.csv' written with 116744 bytes
 ```
 
   * Validation Test: exitcode
@@ -341,7 +346,7 @@ bin/ask_manual.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 443
 ```
 
 ```
-PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Asking manual question:
 {
   "filters_help": false, 
@@ -354,8 +359,8 @@ PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platfor
   ], 
   "sensors_help": false
 }
-2015-09-15 22:21:43,567 INFO     pytan.pollers.QuestionPoller: ID 2437: Reached Threshold of 99% (3 of 3)
-++ Asked Question 'Get Folder Contents[C:\\Program Files] from all machines' ID: 2437
+2015-10-02 20:04:50,047 INFO     pytan.pollers.QuestionPoller: ID 16098: Reached Threshold of 99% (3 of 3)
+++ Asked Question 'Get Folder Contents[C:\\Program Files] from all machines' ID: 16098
 ++ Report file '/tmp/out.csv' written with 502 bytes
 ```
 
@@ -403,7 +408,7 @@ bin/ask_manual.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 443
 ```
 
 ```
-PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Asking manual question:
 {
   "filters_help": false, 
@@ -416,8 +421,8 @@ PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platfor
   ], 
   "sensors_help": false
 }
-2015-09-15 22:21:54,064 INFO     pytan.pollers.QuestionPoller: ID 2440: Reached Threshold of 99% (3 of 3)
-++ Asked Question 'Get Operating System containing "Windows" from all machines' ID: 2440
+2015-10-02 20:05:00,548 INFO     pytan.pollers.QuestionPoller: ID 16100: Reached Threshold of 99% (3 of 3)
+++ Asked Question 'Get Operating System containing "Windows" from all machines' ID: 16100
 ++ Report file '/tmp/out.csv' written with 98 bytes
 ```
 
@@ -461,7 +466,7 @@ bin/ask_manual.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 443
 ```
 
 ```
-PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Asking manual question:
 {
   "filters_help": false, 
@@ -481,9 +486,9 @@ PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platfor
   ], 
   "sensors_help": false
 }
-2015-09-15 22:22:34,680 INFO     pytan.pollers.QuestionPoller: ID 2442: Reached Threshold of 99% (3 of 3)
-++ Asked Question 'Get Computer Name and Folder Contents[C:\\Program Files, test] containing "Shared" from all machines with ( Operating System containing "Windows" or any IP Address != "10.10.10.10" )' ID: 2442
-++ Report file '/tmp/out.csv' written with 210 bytes
+2015-10-02 20:05:41,139 INFO     pytan.pollers.QuestionPoller: ID 16101: Reached Threshold of 99% (3 of 3)
+++ Asked Question 'Get Computer Name and Folder Contents[C:\\Program Files, test] containing "Shared" from all machines with ( Operating System containing "Windows" or any IP Address != "10.10.10.10" )' ID: 16101
+++ Report file '/tmp/out.csv' written with 178 bytes
 ```
 
   * Validation Test: exitcode
@@ -496,9 +501,9 @@ PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platfor
 
 ```
 Computer Name,"Folder Contents[C:\Program Files, test]"
-c1u14-virtual-machine.(none),[current result unavailable]
+c1u14-virtual-machine.(none),[no results]
 WIN-6U71ED4M23D,[current result unavailable]
-TPT1.pytanlab.com,[current result unavailable]
+TPT1.pytanlab.com,[no results]
 ```
 
   * Validation Test: noerror
@@ -523,7 +528,7 @@ bin/ask_manual.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 443
 ```
 
 ```
-PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Asking manual question:
 {
   "filters_help": false, 
@@ -544,9 +549,9 @@ PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platfor
   ], 
   "sensors_help": false
 }
-2015-09-15 22:22:50,244 INFO     pytan.pollers.QuestionPoller: ID 2446: Reached Threshold of 99% (3 of 3)
-++ Asked Question 'Get Computer Name and Last Logged In User and Installed Applications containing "Google" from all machines with ( Installed Applications containing "Google" or Installed Applications containing "Chrome" )' ID: 2446
-++ Report file '/tmp/out.csv' written with 552 bytes
+2015-10-02 20:05:46,653 INFO     pytan.pollers.QuestionPoller: ID 16102: Reached Threshold of 99% (3 of 3)
+++ Asked Question 'Get Computer Name and Last Logged In User and Installed Applications containing "Google" from all machines with ( Installed Applications containing "Google" or Installed Applications containing "Chrome" )' ID: 16102
+++ Report file '/tmp/out.csv' written with 521 bytes
 ```
 
   * Validation Test: exitcode
@@ -559,7 +564,7 @@ PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platfor
 
 ```
 Computer Name,Last Logged In User,Name,Silent Uninstall String,Uninstallable,Version
-TPT1.pytanlab.com,Uninitialized - waiting for login,Google Chrome,"""C:\Program Files (x86)\Google\Chrome\Application\45.0.2454.85\Installer\setup.exe"" --uninstall --multi-install --chrome --system-level --verbose-logging",Not Uninstallable,45.0.2454.85
+TPT1.pytanlab.com,TPT1\Administrator,Google Chrome,"""C:\Program Files (x86)\Google\Chrome\Application\45.0.2454.101\Installer\setup.exe"" --uninstall --multi-install --chrome --system-level",Not Uninstallable,45.0.2454.101
 c1u14-virtual-machine.(none),tanium,"libaccount-plugin-google
 account-plugin-google","nothing
 nothing","Not Uninstallable
@@ -583,7 +588,7 @@ bin/ask_manual.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 443
 ```
 
 ```
-PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Asking manual question:
 {
   "filters_help": false, 
@@ -747,11 +752,11 @@ the default type for most sensors), re-fetch data older than
 
 ```STDERR
 Traceback (most recent call last):
-  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2625, in process_ask_manual_args
+  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2636, in process_ask_manual_args
     response = handler.ask(qtype='manual', **obj_grp_args)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 385, in ask
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 388, in ask
     result = method(**clean_kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 666, in ask_manual
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 675, in ask_manual
     pytan.utils.check_for_help(kwargs=kwargs)
   File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2082, in check_for_help
     raise pytan.exceptions.PytanHelp(help_out)
@@ -920,7 +925,7 @@ bin/ask_manual.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 443
 ```
 
 ```
-PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Asking manual question:
 {
   "filters_help": true, 
@@ -1226,11 +1231,11 @@ Valid Filters
 
 ```STDERR
 Traceback (most recent call last):
-  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2625, in process_ask_manual_args
+  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2636, in process_ask_manual_args
     response = handler.ask(qtype='manual', **obj_grp_args)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 385, in ask
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 388, in ask
     result = method(**clean_kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 666, in ask_manual
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 675, in ask_manual
     pytan.utils.check_for_help(kwargs=kwargs)
   File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2082, in check_for_help
     raise pytan.exceptions.PytanHelp(help_out)
@@ -1541,7 +1546,7 @@ bin/ask_manual.py -u Administrator -p 'Tanium2015!' --host 10.0.1.240 --port 443
 ```
 
 ```
-PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Asking manual question:
 {
   "filters_help": false, 
@@ -1632,11 +1637,11 @@ Valid Options
 
 ```STDERR
 Traceback (most recent call last):
-  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2625, in process_ask_manual_args
+  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2636, in process_ask_manual_args
     response = handler.ask(qtype='manual', **obj_grp_args)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 385, in ask
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 388, in ask
     result = method(**clean_kwargs)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 666, in ask_manual
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 675, in ask_manual
     pytan.utils.check_for_help(kwargs=kwargs)
   File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2082, in check_for_help
     raise pytan.exceptions.PytanHelp(help_out)
@@ -1725,4 +1730,4 @@ Valid Options
 [TOC](#user-content-toc)
 
 
-###### generated by: `build_bin_doc v2.1.0`, date: Tue Sep 15 18:22:51 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**
+###### generated by: `build_bin_doc v2.1.0`, date: Fri Oct  2 16:05:47 2015 EDT, Contact info: **Jim Olsen <jim.olsen@tanium.com>**

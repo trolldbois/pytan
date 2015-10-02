@@ -792,7 +792,8 @@ body .task-list{
                         [--record_all_requests] [--stats_loop_enabled]
                         [--http_auth_retry]
                         [--http_retry_count HTTP_RETRY_COUNT]
-                        [--pytan_user_config PYTAN_USER_CONFIG] [--run]
+                        [--pytan_user_config PYTAN_USER_CONFIG]
+                        [--force_server_version FORCE_SERVER_VERSION] [--run]
                         [--no-results | --results] [-k PACKAGE]
                         [-f ACTION_FILTERS] [-o ACTION_OPTIONS]
                         [--start_seconds_from_now START_SECONDS_FROM_NOW]
@@ -838,6 +839,10 @@ Handler Options:
   --pytan_user_config PYTAN_USER_CONFIG
                         PyTan User Config file to use for PyTan arguments
                         (defaults to: ~/.pytan_config.json) (default: )
+  --force_server_version FORCE_SERVER_VERSION
+                        Force PyTan to consider the server version as this,
+                        instead of relying on the server version derived from
+                        the server info page. (default: )
 
 Deploy Action Options:
   --run                 Run the deploy action, if not supplied the deploy
@@ -903,7 +908,7 @@ Report File Options:
 
 <div class="highlight highlight-source-shell"><pre>bin/deploy_action.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --package-help</pre></div>
 
-<pre><code>PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+<pre><code>PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Deploying action:
 {
   "action_filters": [], 
@@ -982,9 +987,9 @@ Supplying a package with two parameters, '$1' and '$2':
 </code></pre>
 
 <pre lang="STDERR"><code>Traceback (most recent call last):
-  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2676, in process_deploy_action_args
+  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2687, in process_deploy_action_args
     response = handler.deploy_action(**obj_grp_args)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 960, in deploy_action
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 972, in deploy_action
     pytan.utils.check_for_help(kwargs=kwargs)
   File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2082, in check_for_help
     raise pytan.exceptions.PytanHelp(help_out)
@@ -1066,7 +1071,7 @@ Supplying a package with two parameters, '$1' and '$2':
 
 <div class="highlight highlight-source-shell"><pre>bin/deploy_action.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --filters-help</pre></div>
 
-<pre><code>PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+<pre><code>PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Deploying action:
 {
   "action_filters": [], 
@@ -1376,9 +1381,9 @@ Valid Filters
 </code></pre>
 
 <pre lang="STDERR"><code>Traceback (most recent call last):
-  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2676, in process_deploy_action_args
+  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2687, in process_deploy_action_args
     response = handler.deploy_action(**obj_grp_args)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 960, in deploy_action
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 972, in deploy_action
     pytan.utils.check_for_help(kwargs=kwargs)
   File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2082, in check_for_help
     raise pytan.exceptions.PytanHelp(help_out)
@@ -1691,7 +1696,7 @@ Valid Filters
 
 <div class="highlight highlight-source-shell"><pre>bin/deploy_action.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --options-help</pre></div>
 
-<pre><code>PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+<pre><code>PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Deploying action:
 {
   "action_filters": [], 
@@ -1786,9 +1791,9 @@ Valid Options
 </code></pre>
 
 <pre lang="STDERR"><code>Traceback (most recent call last):
-  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2676, in process_deploy_action_args
+  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2687, in process_deploy_action_args
     response = handler.deploy_action(**obj_grp_args)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 960, in deploy_action
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 972, in deploy_action
     pytan.utils.check_for_help(kwargs=kwargs)
   File "/Users/jolsen/gh/pytan/lib/pytan/utils.py", line 2082, in check_for_help
     raise pytan.exceptions.PytanHelp(help_out)
@@ -1891,7 +1896,7 @@ Valid Options
 
 <div class="highlight highlight-source-shell"><pre>bin/deploy_action.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --package <span class="pl-s"><span class="pl-pds">"</span>Distribute Tanium Standard Utilities<span class="pl-pds">"</span></span> --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.csv<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+<pre><code>PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Deploying action:
 {
   "action_filters": [], 
@@ -1907,7 +1912,7 @@ Valid Options
   "run": false, 
   "start_seconds_from_now": null
 }
-2015-09-15 22:23:39,853 INFO     pytan.pollers.QuestionPoller: ID 2453: Reached Threshold of 99% (3 of 3)
+2015-10-02 20:06:52,525 INFO     pytan.pollers.QuestionPoller: ID 16108: Reached Threshold of 99% (3 of 3)
 
 
 Error occurred: 'Run' is not True!!
@@ -1916,11 +1921,11 @@ Re-run this deploy action with run=True after verifying
 </code></pre>
 
 <pre lang="STDERR"><code>Traceback (most recent call last):
-  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2676, in process_deploy_action_args
+  File "/Users/jolsen/gh/pytan/lib/pytan/binsupport.py", line 2687, in process_deploy_action_args
     response = handler.deploy_action(**obj_grp_args)
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 984, in deploy_action
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 996, in deploy_action
     **clean_kwargs
-  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 3040, in _deploy_action
+  File "/Users/jolsen/gh/pytan/lib/pytan/handler.py", line 3052, in _deploy_action
     raise pytan.exceptions.RunFalse(m(report_path, len(result)))
 RunFalse: 'Run' is not True!!
 View and verify the contents of /tmp/VERIFY_BEFORE_DEPLOY_ACTION_out.csv (length: 103 bytes)
@@ -1966,7 +1971,7 @@ TPT1.pytanlab.com,True
 
 <div class="highlight highlight-source-shell"><pre>bin/deploy_action.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --package <span class="pl-s"><span class="pl-pds">"</span>Distribute Tanium Standard Utilities<span class="pl-pds">"</span></span> --run --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.csv<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+<pre><code>PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Deploying action:
 {
   "action_filters": [], 
@@ -1982,10 +1987,10 @@ TPT1.pytanlab.com,True
   "run": true, 
   "start_seconds_from_now": null
 }
-2015-09-15 22:23:55,388 INFO     pytan.pollers.QuestionPoller: ID 2456: Reached Threshold of 99% (3 of 3)
-2015-09-15 22:24:10,486 INFO     pytan.pollers.ActionPoller: ID 95: Reached Threshold for Seen Count of 100% (3 of 3)
-2015-09-15 22:24:10,508 INFO     pytan.pollers.ActionPoller: ID 95: Reached Threshold for Finished Count of 100% (3 of 3)
-++ Deployed Action 'API Deploy Distribute Tanium Standard Utilities' ID: 95
+2015-10-02 20:06:58,046 INFO     pytan.pollers.QuestionPoller: ID 16109: Reached Threshold of 99% (3 of 3)
+2015-10-02 20:07:28,252 INFO     pytan.pollers.ActionPoller: ID 141: Reached Threshold for Seen Count of 100% (3 of 3)
+2015-10-02 20:07:28,273 INFO     pytan.pollers.ActionPoller: ID 141: Reached Threshold for Finished Count of 100% (3 of 3)
+++ Deployed Action 'API Deploy Distribute Tanium Standard Utilities' ID: 141
 ++ Command used in Action: 'cmd /c cscript install-standard-utils.vbs "Tools\\StdUtils"'
 ++ Deploy action progress results:
 Total failed: 0
@@ -1993,7 +1998,7 @@ Total finished: 3
 Total running: 0
 Total success: 3
 Total unknown: 0
-++ Deploy results written to '/tmp/out.csv' with 139 bytes
+++ Deploy results written to '/tmp/out.csv' with 142 bytes
 </code></pre>
 
 <ul>
@@ -2018,9 +2023,9 @@ Total unknown: 0
 </ul>
 
 <pre><code>Action Statuses,Computer Name
-95:Completed.,c1u14-virtual-machine.(none)
-95:Completed.,WIN-6U71ED4M23D
-95:Completed.,TPT1.pytanlab.com
+141:Completed.,c1u14-virtual-machine.(none)
+141:Completed.,WIN-6U71ED4M23D
+141:Completed.,TPT1.pytanlab.com
 </code></pre>
 
 <ul>
@@ -2046,7 +2051,7 @@ Total unknown: 0
 
 <div class="highlight highlight-source-shell"><pre>bin/deploy_action.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --package <span class="pl-s"><span class="pl-pds">"</span>Custom Tagging - Add Tags{<span class="pl-cce">\$</span>1=new_tag}<span class="pl-pds">"</span></span> --filter <span class="pl-s"><span class="pl-pds">"</span>Operating System, that contains:Windows<span class="pl-pds">"</span></span> --run --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.csv<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+<pre><code>PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Deploying action:
 {
   "action_filters": [
@@ -2064,10 +2069,10 @@ Total unknown: 0
   "run": true, 
   "start_seconds_from_now": null
 }
-2015-09-15 22:24:21,097 INFO     pytan.pollers.QuestionPoller: ID 2461: Reached Threshold of 99% (3 of 3)
-2015-09-15 22:24:31,172 INFO     pytan.pollers.ActionPoller: ID 96: Reached Threshold for Seen Count of 100% (2 of 2)
-2015-09-15 22:24:31,193 INFO     pytan.pollers.ActionPoller: ID 96: Reached Threshold for Finished Count of 100% (2 of 2)
-++ Deployed Action 'API Deploy Custom Tagging - Add Tags' ID: 96
+2015-10-02 20:07:33,809 INFO     pytan.pollers.QuestionPoller: ID 16111: Reached Threshold of 99% (3 of 3)
+2015-10-02 20:07:53,938 INFO     pytan.pollers.ActionPoller: ID 142: Reached Threshold for Seen Count of 100% (2 of 2)
+2015-10-02 20:07:53,960 INFO     pytan.pollers.ActionPoller: ID 142: Reached Threshold for Finished Count of 100% (2 of 2)
+++ Deployed Action 'API Deploy Custom Tagging - Add Tags' ID: 142
 ++ Command used in Action: 'cmd /c cscript //T:60 add-tags.vbs "new%5ftag"'
 ++ Deploy action progress results:
 Total failed: 0
@@ -2075,7 +2080,7 @@ Total finished: 2
 Total running: 0
 Total success: 2
 Total unknown: 0
-++ Deploy results written to '/tmp/out.csv' with 95 bytes
+++ Deploy results written to '/tmp/out.csv' with 97 bytes
 </code></pre>
 
 <ul>
@@ -2100,8 +2105,8 @@ Total unknown: 0
 </ul>
 
 <pre><code>Action Statuses,Computer Name
-96:Completed.,WIN-6U71ED4M23D
-96:Completed.,TPT1.pytanlab.com
+142:Completed.,WIN-6U71ED4M23D
+142:Completed.,TPT1.pytanlab.com
 </code></pre>
 
 <ul>
@@ -2118,7 +2123,7 @@ Total unknown: 0
 <p><a href="#user-content-toc">TOC</a></p>
 
 <h6>
-<a id="user-content-generated-by-build_bin_doc-v210-date-tue-sep-15-182431-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v210-date-tue-sep-15-182431-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v2.1.0</code>, date: Tue Sep 15 18:24:31 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
+<a id="user-content-generated-by-build_bin_doc-v210-date-fri-oct--2-160753-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v210-date-fri-oct--2-160753-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v2.1.0</code>, date: Fri Oct  2 16:07:53 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
 </h6>
 
 </body></html>

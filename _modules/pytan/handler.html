@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pytan.handler &mdash; PyTan v2.1.5 2.1.5 documentation</title>
+  <title>pytan.handler &mdash; PyTan v2.1.6 2.1.6 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="PyTan v2.1.5 2.1.5 documentation" href="../../index.html"/>
+    <link rel="top" title="PyTan v2.1.6 2.1.6 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -44,7 +44,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-nav-search">
         
-          <a href="../../index.html" class="fa fa-home"> PyTan v2.1.5</a>
+          <a href="../../index.html" class="fa fa-home"> PyTan v2.1.6</a>
         
         
 <div role="search">
@@ -151,7 +151,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../../index.html">PyTan v2.1.5</a>
+        <a href="../../index.html">PyTan v2.1.6</a>
       </nav>
 
 
@@ -303,6 +303,9 @@
 <span class="sd">        * False: do not request a persistent session</span>
 <span class="sd">        * True: do request a persistent</span>
 <span class="sd">        * This is passed through to :func:`pytan.sessions.Session.authenticate`</span>
+<span class="sd">    force_server_version: str, optional</span>
+<span class="sd">        * default: &#39;&#39;</span>
+<span class="sd">        * use this to override the server_version detection</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -607,6 +610,9 @@
 <span class="sd">        override_estimated_total : int, optional</span>
 <span class="sd">            * instead of getting number of systems that should see this question from result_info.estimated_total, use this number</span>
 <span class="sd">            * This is passed through to :func:`pytan.pollers.QuestionPoller`</span>
+<span class="sd">        force_passed_done_count : int, optional</span>
+<span class="sd">            * when this number of systems have passed the right hand side of the question, consider the question complete</span>
+<span class="sd">            * This is passed through to :func:`pytan.pollers.QuestionPoller`</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -760,6 +766,9 @@
 <span class="sd">            * This is passed through to :func:`pytan.pollers.QuestionPoller.run`</span>
 <span class="sd">        override_estimated_total : int, optional</span>
 <span class="sd">            * instead of getting number of systems that should see this question from result_info.estimated_total, use this number</span>
+<span class="sd">            * This is passed through to :func:`pytan.pollers.QuestionPoller`</span>
+<span class="sd">        force_passed_done_count : int, optional</span>
+<span class="sd">            * when this number of systems have passed the right hand side of the question, consider the question complete</span>
 <span class="sd">            * This is passed through to :func:`pytan.pollers.QuestionPoller`</span>
 
 <span class="sd">        Returns</span>
@@ -935,6 +944,9 @@
 <span class="sd">            * This is passed through to :func:`pytan.pollers.QuestionPoller.run`</span>
 <span class="sd">        override_estimated_total : int, optional</span>
 <span class="sd">            * instead of getting number of systems that should see this question from result_info.estimated_total, use this number</span>
+<span class="sd">            * This is passed through to :func:`pytan.pollers.QuestionPoller`</span>
+<span class="sd">        force_passed_done_count : int, optional</span>
+<span class="sd">            * when this number of systems have passed the right hand side of the question, consider the question complete</span>
 <span class="sd">            * This is passed through to :func:`pytan.pollers.QuestionPoller`</span>
 
 <span class="sd">        Returns</span>
@@ -3389,6 +3401,9 @@
 <span class="sd">        override_estimated_total : int, optional</span>
 <span class="sd">            * instead of getting number of systems that should see this question from result_info.estimated_total, use this number</span>
 <span class="sd">            * This is passed through to :func:`pytan.pollers.QuestionPoller`</span>
+<span class="sd">        force_passed_done_count : int, optional</span>
+<span class="sd">            * when this number of systems have passed the right hand side of the question, consider the question complete</span>
+<span class="sd">            * This is passed through to :func:`pytan.pollers.QuestionPoller`</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -3726,7 +3741,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015, Tanium.
-      Last updated on Sep 15, 2015.
+      Last updated on Oct 02, 2015.
     </p>
   </div>
 
@@ -3747,7 +3762,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'2.1.5',
+            VERSION:'2.1.6',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
