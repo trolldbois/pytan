@@ -127,6 +127,9 @@ class Handler(object):
         * False: do not request a persistent session
         * True: do request a persistent
         * This is passed through to :func:`pytan.sessions.Session.authenticate`
+    force_server_version: str, optional
+        * default: ''
+        * use this to override the server_version detection
 
     Notes
     -----

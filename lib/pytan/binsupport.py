@@ -322,6 +322,17 @@ def setup_parser(desc, help=False):
             "PyTan User Config file to use for PyTan arguments (defaults to: {})"
         ).format(pytan.constants.PYTAN_USER_CONFIG),
     )
+    opt_group.add_argument(
+        '--force_server_version',
+        required=False,
+        action='store',
+        default='',
+        dest='force_server_version',
+        help=(
+            "Force PyTan to consider the server version as this, instead of relying on the "
+            "server version derived from the server info page."
+        ),
+    )
     return parser
 
 
