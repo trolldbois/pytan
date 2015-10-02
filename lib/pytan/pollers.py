@@ -52,6 +52,8 @@ class QuestionPoller(object):
         * If supplied and not 0, timeout in seconds instead of when object expires
     override_estimated_total : int, optional
         * instead of getting number of systems that should see this question from result_info.estimated_total, use this number
+    force_passed_done_count : int, optional
+        * when this number of systems have passed the right hand side of the question, consider the question complete
     """
 
     OBJECT_TYPE = taniumpy.object_types.question.Question
@@ -116,6 +118,8 @@ class QuestionPoller(object):
         self.override_timeout_secs = kwargs.get(
             'override_timeout_secs', self.OVERRIDE_TIMEOUT_SECS_DEFAULT,
         )
+        self.force_passed_done_count = kwargs.get('force_passed_done_count', 0)
+
         self.id_str = "ID {}: ".format(getattr(self.obj, 'id', '-1'))
         self.obj_id = self._derive_attribute(attr='id', fallback=None)
         self.id_str = "ID {}: ".format(self.obj_id)
@@ -411,6 +415,7 @@ class QuestionPoller(object):
             # passed = number of systems that have passed any filters for the question
             tested = self.result_info.mr_tested
             est_total = self.override_estimated_total or self.result_info.estimated_total
+            passed = self.result_info.passed
 
             new_pct = pytan.utils.get_percentage(part=tested, whole=est_total)
             new_pct_str = "{0:.0f}%".format(new_pct)
@@ -473,6 +478,13 @@ class QuestionPoller(object):
             if new_pct >= self.complete_pct:
                 m = "{}Reached Threshold of {} ({} of {})".format
                 self.mylog.info(m(self.id_str, complete_pct_str, tested, est_total))
+                cb = 'AnswersComplete'
+                self.run_callback(callbacks=callbacks, callback=cb, pct=new_pct, **clean_kwargs)
+                return True
+
+            if self.force_passed_done_count and passed >= self.force_passed_done_count:
+                m = "{}Reached forced passed done count of {} ({} of {})".format
+                self.mylog.info(m(self.id_str, self.force_passed_done_count, tested, est_total))
                 cb = 'AnswersComplete'
                 self.run_callback(callbacks=callbacks, callback=cb, pct=new_pct, **clean_kwargs)
                 return True
