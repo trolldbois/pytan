@@ -9,12 +9,11 @@
     * add documentation note about PyTan only being fully tested with Administrator role 
 
   * BUG:
-    * 2.1.6: add 6.5 override as parameter to Handler
     * work on deploy action & start_seconds_from_now (a new action gets created at actual start time)
     * on 6.2, block info.json (block 444), fix _regex_for_body_element when _get_response tries to parse for server_version but it doesn't exist
 
   * GEN:
-    * 2.1.6: ask_saved: 
+    * 2.1.7: ask_saved: 
         * add log for get_result_info in refresh_data path
         * add check to see if question for re-fetched sq is not different from old sq, if so throw warning. 
     * re-figure out py2exe
