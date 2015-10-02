@@ -1,6 +1,14 @@
-# 2.1.6
+# 2.1.7
 
 [Development branch](https://github.com/tanium/pytan/tree/develop) on N/A
+
+# 2.1.6
+
+[Released](https://github.com/tanium/pytan/releases/tag/2.1.6) on Oct 2 2015 
+
+  * enhancement:
+    * adding force_server_version as a parameter to Handler & Session
+    * adding force_passed_done_count as a parameter to QuestionPoller
 
 # 2.1.5
 

@@ -790,7 +790,8 @@ body .task-list{
                         [--record_all_requests] [--stats_loop_enabled]
                         [--http_auth_retry]
                         [--http_retry_count HTTP_RETRY_COUNT]
-                        [--pytan_user_config PYTAN_USER_CONFIG] [--all]
+                        [--pytan_user_config PYTAN_USER_CONFIG]
+                        [--force_server_version FORCE_SERVER_VERSION] [--all]
                         [--id ID] [--name NAME] [--hash HASH]
                         [--category CATEGORIES] [--platform PLATFORMS]
                         [--hide_params] [--params_only] [--json]
@@ -833,6 +834,10 @@ Handler Options:
   --pytan_user_config PYTAN_USER_CONFIG
                         PyTan User Config file to use for PyTan arguments
                         (defaults to: ~/.pytan_config.json) (default: )
+  --force_server_version FORCE_SERVER_VERSION
+                        Force PyTan to consider the server version as this,
+                        instead of relying on the server version derived from
+                        the server info page. (default: )
 
 Get Sensor Options:
   --all                 Get all sensors (default: False)
@@ -878,10 +883,10 @@ Output Options:
 
 <div class="highlight highlight-source-shell"><pre>bin/print_sensors.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --all</pre></div>
 
-<pre><code>PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-Found items:  SensorList, len: 504
-Filtered out sourced sensors: 331
-Filtered out sensors based on user filters: 331
+<pre><code>PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+Found items:  SensorList, len: 567
+Filtered out sourced sensors: 332
+Filtered out sensors based on user filters: 332
 
   * Sensor Name: 'AD Organizational Unit', Platforms: Windows, Category: Active Directory
   * Description: The Active Directory organizational unit (OU) where the machine is located. Example: CN=Computers,DC=corp,DC=com
@@ -1785,6 +1790,9 @@ Filtered out sensors based on user filters: 331
   * Sensor Name: 'Action Statuses CMDLINE TEST 7043', Platforms: Windows, Category: Reserved
   * Description: The recorded state of each action a client has taken recently in the form of id:status. Example: 1:Completed
 
+  * Sensor Name: 'Action Statuses CMDLINE TEST 6698', Platforms: Windows, Category: Reserved
+  * Description: The recorded state of each action a client has taken recently in the form of id:status. Example: 1:Completed
+
   * Sensor Name: 'SQL Database Count', Platforms: Windows, Category: SQL
   * Description: The number of databases in SQL Server on the client machine. Example: 4
 
@@ -2062,9 +2070,9 @@ Filtered out sensors based on user filters: 331
 
 <div class="highlight highlight-source-shell"><pre>bin/print_sensors.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --all --platform Linux</pre></div>
 
-<pre><code>PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-Found items:  SensorList, len: 504
-Filtered out sourced sensors: 331
+<pre><code>PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+Found items:  SensorList, len: 567
+Filtered out sourced sensors: 332
 Filtered out sensors based on user filters: 119
 
   * Sensor Name: 'Installed Applications', Platforms: Windows, Linux, Mac, Solaris, AIX, Category: Applications
@@ -2493,9 +2501,9 @@ Filtered out sensors based on user filters: 119
 
 <div class="highlight highlight-source-shell"><pre>bin/print_sensors.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --all --platform Linux --category <span class="pl-s"><span class="pl-pds">"</span>Operating System<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-Found items:  SensorList, len: 504
-Filtered out sourced sensors: 331
+<pre><code>PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+Found items:  SensorList, len: 567
+Filtered out sourced sensors: 332
 Filtered out sensors based on user filters: 25
 
   * Sensor Name: 'Operating System', Platforms: Windows, Linux, Mac, Solaris, AIX, Category: Operating System
@@ -2602,9 +2610,9 @@ Filtered out sensors based on user filters: 25
 
 <div class="highlight highlight-source-shell"><pre>bin/print_sensors.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --all --platform Mac --platform Windows --category <span class="pl-s"><span class="pl-pds">"</span>User<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-Found items:  SensorList, len: 504
-Filtered out sourced sensors: 331
+<pre><code>PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+Found items:  SensorList, len: 567
+Filtered out sourced sensors: 332
 Filtered out sensors based on user filters: 10
 
   * Sensor Name: 'Last Date of Local Administrator Login', Platforms: Windows, Mac, Category: User
@@ -2662,7 +2670,7 @@ Filtered out sensors based on user filters: 10
 <p><a href="#user-content-toc">TOC</a></p>
 
 <h6>
-<a id="user-content-generated-by-build_bin_doc-v210-date-tue-sep-15-182552-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v210-date-tue-sep-15-182552-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v2.1.0</code>, date: Tue Sep 15 18:25:52 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
+<a id="user-content-generated-by-build_bin_doc-v210-date-fri-oct--2-160936-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v210-date-fri-oct--2-160936-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v2.1.0</code>, date: Fri Oct  2 16:09:36 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
 </h6>
 
 </body></html>

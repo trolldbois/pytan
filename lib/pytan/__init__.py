@@ -4,7 +4,7 @@
 '''A python package that makes using the Tanium Server SOAP API easy.'''
 
 __title__ = 'PyTan'
-__version__ = '2.1.5'
+__version__ = '2.1.6'
 """
 Version of PyTan
 """

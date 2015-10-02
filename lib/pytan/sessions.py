@@ -178,6 +178,9 @@ class Session(object):
     server_version = "Not yet determined"
     """version string of server, will be updated when get_server_version() is called"""
 
+    force_server_version = ''
+    """In the case where the user wants to have pytan act as if the server is a specific version, regardless of what server_version is."""
+
     def __init__(self, host, port=443, **kwargs):
         self.methodlog = logging.getLogger("method_debug")
         self.DEBUG_METHOD_LOCALS = kwargs.get('debug_method_locals', False)
@@ -232,6 +235,8 @@ class Session(object):
         self.LAST_RESPONSE_INFO = {}
         self.LAST_REQUESTS_RESPONSE = None
         self.server_version = "Not yet determined"
+
+        self.force_server_version = kwargs.get('force_server_version', self.force_server_version)
 
     def setup_logging(self):
         self._debug_locals(sys._getframe().f_code.co_name, locals())
@@ -1389,10 +1394,17 @@ class Session(object):
         Returns
         -------
         is6_5 : bool
+            * True if self.force_server_version is greater than or equal to 6.5
             * True if self.server_version is greater than or equal to 6.5
             * False if self.server_version is less than 6.5
         """
         self._debug_locals(sys._getframe().f_code.co_name, locals())
+
+        if self.force_server_version:
+            if self.force_server_version >= '6.5':
+                return True
+            else:
+                return False
 
         if self._invalid_server_version():
             # server version is not valid, force a refresh right now

@@ -127,6 +127,9 @@ class Handler(object):
         * False: do not request a persistent session
         * True: do request a persistent
         * This is passed through to :func:`pytan.sessions.Session.authenticate`
+    force_server_version: str, optional
+        * default: ''
+        * use this to override the server_version detection
 
     Notes
     -----
@@ -431,6 +434,9 @@ class Handler(object):
         override_estimated_total : int, optional
             * instead of getting number of systems that should see this question from result_info.estimated_total, use this number
             * This is passed through to :func:`pytan.pollers.QuestionPoller`
+        force_passed_done_count : int, optional
+            * when this number of systems have passed the right hand side of the question, consider the question complete
+            * This is passed through to :func:`pytan.pollers.QuestionPoller`
 
         Returns
         -------
@@ -584,6 +590,9 @@ class Handler(object):
             * This is passed through to :func:`pytan.pollers.QuestionPoller.run`
         override_estimated_total : int, optional
             * instead of getting number of systems that should see this question from result_info.estimated_total, use this number
+            * This is passed through to :func:`pytan.pollers.QuestionPoller`
+        force_passed_done_count : int, optional
+            * when this number of systems have passed the right hand side of the question, consider the question complete
             * This is passed through to :func:`pytan.pollers.QuestionPoller`
 
         Returns
@@ -759,6 +768,9 @@ class Handler(object):
             * This is passed through to :func:`pytan.pollers.QuestionPoller.run`
         override_estimated_total : int, optional
             * instead of getting number of systems that should see this question from result_info.estimated_total, use this number
+            * This is passed through to :func:`pytan.pollers.QuestionPoller`
+        force_passed_done_count : int, optional
+            * when this number of systems have passed the right hand side of the question, consider the question complete
             * This is passed through to :func:`pytan.pollers.QuestionPoller`
 
         Returns
@@ -3212,6 +3224,9 @@ class Handler(object):
             * This is passed through to :func:`pytan.pollers.QuestionPoller.run`
         override_estimated_total : int, optional
             * instead of getting number of systems that should see this question from result_info.estimated_total, use this number
+            * This is passed through to :func:`pytan.pollers.QuestionPoller`
+        force_passed_done_count : int, optional
+            * when this number of systems have passed the right hand side of the question, consider the question complete
             * This is passed through to :func:`pytan.pollers.QuestionPoller`
 
         Returns

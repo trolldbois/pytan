@@ -790,8 +790,9 @@ body .task-list{
                                    [--record_all_requests]
                                    [--stats_loop_enabled] [--http_auth_retry]
                                    [--http_retry_count HTTP_RETRY_COUNT]
-                                   [--pytan_user_config PYTAN_USER_CONFIG] -j
-                                   JSON_FILE
+                                   [--pytan_user_config PYTAN_USER_CONFIG]
+                                   [--force_server_version FORCE_SERVER_VERSION]
+                                   -j JSON_FILE
 
 Create an object of type: package from a JSON file
 
@@ -831,6 +832,10 @@ Handler Options:
   --pytan_user_config PYTAN_USER_CONFIG
                         PyTan User Config file to use for PyTan arguments
                         (defaults to: ~/.pytan_config.json) (default: )
+  --force_server_version FORCE_SERVER_VERSION
+                        Force PyTan to consider the server version as this,
+                        instead of relying on the server version derived from
+                        the server info page. (default: )
 
 Create Package from JSON Options:
   -j JSON_FILE, --json JSON_FILE
@@ -870,9 +875,9 @@ Create Package from JSON Options:
 
 <div class="highlight highlight-source-shell"><pre>bin/get_package.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --id 1 --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.json<span class="pl-pds">"</span></span> --export_format json</pre></div>
 
-<pre><code>PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+<pre><code>PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 Found items:  PackageSpecList, len: 1
-Report file '/tmp/out.json' written with 2645 bytes
+Report file '/tmp/out.json' written with 2689 bytes
 </code></pre>
 
 <ul>
@@ -904,7 +909,7 @@ Report file '/tmp/out.json' written with 2645 bytes
       "available_time": "2015-09-14T13:39:40", 
       "command": "cmd /c cscript //T:900 java-installer.vbs /KillAppsUsingJava:Yes /RebootIfNeeded:Yes /MaxWaitTimeInSeconds:300", 
       "command_timeout": 900, 
-      "creation_time": "2001-01-01T00:00:00", 
+      "creation_time": "2015-09-14T13:39:15", 
       "deleted_flag": 0, 
 ...trimmed for brevity...
 </code></pre>
@@ -929,7 +934,7 @@ Report file '/tmp/out.json' written with 2645 bytes
 <li>Add CMDLINE TEST to name or url_regex in the JSON file</li>
 </ul>
 
-<div class="highlight highlight-source-shell"><pre>perl -p -i -e <span class="pl-s"><span class="pl-pds">'</span>s/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 46"/gm<span class="pl-pds">'</span></span> /tmp/out.json <span class="pl-k">&amp;&amp;</span> cat /tmp/out.json</pre></div>
+<div class="highlight highlight-source-shell"><pre>perl -p -i -e <span class="pl-s"><span class="pl-pds">'</span>s/^(      "(name|url_regex)": ".*)"/$1 CMDLINE TEST 1240"/gm<span class="pl-pds">'</span></span> /tmp/out.json <span class="pl-k">&amp;&amp;</span> cat /tmp/out.json</pre></div>
 
 <pre><code>{
   "_type": "package_specs", 
@@ -939,7 +944,7 @@ Report file '/tmp/out.json' written with 2645 bytes
       "available_time": "2015-09-14T13:39:40", 
       "command": "cmd /c cscript //T:900 java-installer.vbs /KillAppsUsingJava:Yes /RebootIfNeeded:Yes /MaxWaitTimeInSeconds:300", 
       "command_timeout": 900, 
-      "creation_time": "2001-01-01T00:00:00", 
+      "creation_time": "2015-09-14T13:39:15", 
       "deleted_flag": 0, 
       "display_name": "Update Java 64-bit - Kill / Reboot", 
       "expire_seconds": 1500, 
@@ -981,6 +986,7 @@ Report file '/tmp/out.json' written with 2645 bytes
       }, 
       "hidden_flag": 0, 
       "id": 1, 
+      "last_modified_by": "Administrator", 
       "last_update": "2015-09-14T13:39:15", 
       "metadata": {
         "_type": "metadata", 
@@ -999,8 +1005,8 @@ Report file '/tmp/out.json' written with 2645 bytes
           }
         ]
       }, 
-      "modification_time": "2001-01-01T00:00:00", 
-      "name": "Update Java 64-bit - Kill / Reboot CMDLINE TEST 46", 
+      "modification_time": "2015-09-14T13:39:15", 
+      "name": "Update Java 64-bit - Kill / Reboot CMDLINE TEST 1240", 
       "skip_lock_flag": 0, 
       "source_id": 0, 
       "verify_expire_seconds": 600, 
@@ -1051,8 +1057,8 @@ Report file '/tmp/out.json' written with 2645 bytes
 
 <div class="highlight highlight-source-shell"><pre>bin/create_package_from_json.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 -j <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.json<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-Created item: PackageSpec, name: 'Update Java 64-bit - Kill / Reboot CMDLINE TEST 46', id: 102, ID: 102
+<pre><code>PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+Created item: PackageSpec, name: 'Update Java 64-bit - Kill / Reboot CMDLINE TEST 1240', id: 126, ID: 126
 </code></pre>
 
 <ul>
@@ -1079,7 +1085,7 @@ Created item: PackageSpec, name: 'Update Java 64-bit - Kill / Reboot CMDLINE TES
 <p><a href="#user-content-toc">TOC</a></p>
 
 <h6>
-<a id="user-content-generated-by-build_bin_doc-v210-date-tue-sep-15-182319-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v210-date-tue-sep-15-182319-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v2.1.0</code>, date: Tue Sep 15 18:23:19 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
+<a id="user-content-generated-by-build_bin_doc-v210-date-fri-oct--2-160621-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v210-date-fri-oct--2-160621-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v2.1.0</code>, date: Fri Oct  2 16:06:21 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
 </h6>
 
 </body></html>

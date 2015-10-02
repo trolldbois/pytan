@@ -791,6 +791,7 @@ body .task-list{
                       [--http_auth_retry]
                       [--http_retry_count HTTP_RETRY_COUNT]
                       [--pytan_user_config PYTAN_USER_CONFIG]
+                      [--force_server_version FORCE_SERVER_VERSION]
                       [-o {saved_question,question,action}] [-i ID] [-n NAME]
                       [--file REPORT_FILE] [--dir REPORT_DIR]
                       [--enable_sse | --disable_sse]
@@ -839,6 +840,10 @@ Handler Options:
   --pytan_user_config PYTAN_USER_CONFIG
                         PyTan User Config file to use for PyTan arguments
                         (defaults to: ~/.pytan_config.json) (default: )
+  --force_server_version FORCE_SERVER_VERSION
+                        Force PyTan to consider the server version as this,
+                        instead of relying on the server version derived from
+                        the server info page. (default: )
 
 Get Result Options:
   -o {saved_question,question,action}, --object {saved_question,question,action}
@@ -919,7 +924,7 @@ Export Options:
 
 <div class="highlight highlight-source-shell"><pre>bin/ask_manual.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 --no-results --sensor <span class="pl-s"><span class="pl-pds">"</span>Computer Name<span class="pl-pds">"</span></span> <span class="pl-k">|</span> tee /tmp/ask.out</pre></div>
 
-<pre><code>PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+<pre><code>PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Asking manual question:
 {
   "filters_help": false, 
@@ -932,7 +937,7 @@ Export Options:
   ], 
   "sensors_help": false
 }
-++ Asked Question 'Get Computer Name from all machines' ID: 2465
+++ Asked Question 'Get Computer Name from all machines' ID: 16112
 ++ No action results returned, run get_results.py to get the results
 </code></pre>
 
@@ -957,7 +962,7 @@ Export Options:
 </li>
 </ul>
 
-<pre><code>PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+<pre><code>PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
 ++ Asking manual question:
 {
   "filters_help": false, 
@@ -1025,9 +1030,9 @@ Export Options:
 
 <div class="highlight highlight-source-shell"><pre>bin/get_results.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 -o <span class="pl-s"><span class="pl-pds">"</span>question<span class="pl-pds">"</span></span> --id <span class="pl-s"><span class="pl-pds">`</span>cat /tmp/ask.out <span class="pl-k">|</span> grep ID<span class="pl-k">|</span> cut -d: -f2 <span class="pl-k">|</span> tr -d <span class="pl-s"><span class="pl-pds">"</span> <span class="pl-pds">"</span></span><span class="pl-pds">`</span></span> --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.csv<span class="pl-pds">"</span></span></pre></div>
 
-<pre><code>PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-++ Found object: Question, id: 2465
-2015-09-15 22:25:01,025 INFO     pytan.pollers.SSEPoller: ID '1/495671076210.xml': Server Side Export Completed: 'Completed. 3 rows written.'
+<pre><code>PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+++ Found object: Question, id: 16112
+2015-10-02 20:08:25,761 INFO     pytan.pollers.SSEPoller: ID '1/497131669533.xml': Server Side Export Completed: 'Completed. 3 rows written.'
 ++ Found results for object: ResultSet for ID None, Columns: 2, Total Rows: None, Current Rows: 3, EstTotal: None, Passed: None, MrPassed: None, Tested: None, MrTested: None
 ++ Report file '/tmp/out.csv' written with 81 bytes
 </code></pre>
@@ -1082,9 +1087,9 @@ TPT1.pytanlab.com
 
 <div class="highlight highlight-source-shell"><pre>bin/get_results.py -u Administrator -p <span class="pl-s"><span class="pl-pds">'</span>Tanium2015!<span class="pl-pds">'</span></span> --host 10.0.1.240 --port 443 --loglevel 1 -o <span class="pl-s"><span class="pl-pds">"</span>question<span class="pl-pds">"</span></span> --id <span class="pl-s"><span class="pl-pds">`</span>cat /tmp/ask.out <span class="pl-k">|</span> grep ID<span class="pl-k">|</span> cut -d: -f2 <span class="pl-k">|</span> tr -d <span class="pl-s"><span class="pl-pds">"</span> <span class="pl-pds">"</span></span><span class="pl-pds">`</span></span> --file <span class="pl-s"><span class="pl-pds">"</span>/tmp/out.csv<span class="pl-pds">"</span></span> --enable_sse</pre></div>
 
-<pre><code>PyTan v2.1.5 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
-++ Found object: Question, id: 2465
-2015-09-15 22:25:01,478 INFO     pytan.pollers.SSEPoller: ID '1/495671076662.xml': Server Side Export Completed: 'Completed. 3 rows written.'
+<pre><code>PyTan v2.1.6 Handler for Session to 10.0.1.240:443, Authenticated: True, Platform Version: 6.5.314.4301
+++ Found object: Question, id: 16112
+2015-10-02 20:08:26,194 INFO     pytan.pollers.SSEPoller: ID '1/497131669970.xml': Server Side Export Completed: 'Completed. 3 rows written.'
 ++ Found results for object: ResultSet for ID None, Columns: 2, Total Rows: None, Current Rows: 3, EstTotal: None, Passed: None, MrPassed: None, Tested: None, MrTested: None
 ++ Report file '/tmp/out.csv' written with 81 bytes
 </code></pre>
@@ -1130,7 +1135,7 @@ TPT1.pytanlab.com
 <p><a href="#user-content-toc">TOC</a></p>
 
 <h6>
-<a id="user-content-generated-by-build_bin_doc-v210-date-tue-sep-15-182501-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v210-date-tue-sep-15-182501-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v2.1.0</code>, date: Tue Sep 15 18:25:01 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
+<a id="user-content-generated-by-build_bin_doc-v210-date-fri-oct--2-160826-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" class="anchor" href="#generated-by-build_bin_doc-v210-date-fri-oct--2-160826-2015-edt-contact-info-jim-olsen-jimolsentaniumcom" aria-hidden="true"><span class="octicon octicon-link"></span></a>generated by: <code>build_bin_doc v2.1.0</code>, date: Fri Oct  2 16:08:26 2015 EDT, Contact info: <strong>Jim Olsen <a href="mailto:jim.olsen@tanium.com">jim.olsen@tanium.com</a></strong>
 </h6>
 
 </body></html>

@@ -4,11 +4,18 @@
     * go through SOAP doc and verify everything looks sane
     * re-make dev workflow doc
     * add timing doc for various GRD methods
+    * fix mddoctest for http://tanium.github.io/pytan/_static/bin_doc/write_pytan_user_config.html
+    * add note to pytan_test_steps about Administrator user having to exist
+    * add documentation note about PyTan only being fully tested with Administrator role 
 
   * BUG:
     * work on deploy action & start_seconds_from_now (a new action gets created at actual start time)
+    * on 6.2, block info.json (block 444), fix _regex_for_body_element when _get_response tries to parse for server_version but it doesn't exist
 
   * GEN:
+    * 2.1.7: ask_saved: 
+        * add log for get_result_info in refresh_data path
+        * add check to see if question for re-fetched sq is not different from old sq, if so throw warning. 
     * re-figure out py2exe
     * add auto paging/caching to normal GRD
     * rewrite write_csv
