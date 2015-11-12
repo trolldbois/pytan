@@ -21,6 +21,43 @@ This is a set of packages and scripts that provide a simple way for interfacing 
     * [Change Log for PyTan](CHANGELOG.md)
     * [To Do List for PyTan](TODO.md)
 
+## Basic Install Instructions 
+
+  * **Mac OSX**
+    * Open Termnial (cmd + spacebar, the type Terminal)
+    * Optional:  Create a new directory for PyTan
+    * `mkdir ~/tanium && cd ~/tanium`
+    * **Download PyTan**
+      * `curl -LO https://github.com/tanium/pytan/archive/master.zip`
+      * `unzip python-master.zip`
+    * __Install Python 2.7.x__
+      * Most versions of OSX will already have Python installed 
+      * `python -V`
+    * Additional information on installation can be found in the [documentation](http://tanium.github.io/pytan/introduction.html#os-x-installation)  
+
+  * **Linux** 
+    * Optional: Create a new directory for PyTan
+    * `mkdir ~/tanium && cd ~/tanium`
+    *  **Download PyTan**
+      * `wget https://github.com/tanium/pytan/archive/master.tar.gz`
+      * ` tar -xvzf master.tar.gz`
+    * __Install Python 2.7.x__
+       * Most distros will already have Python installed. Confirm 2.7.x   
+       * `python -V`
+       * Optional: If you have multiple version of Python installed you may need to confirm which version is in your $PATH
+       * `python -c “import sys; print sys.path”`
+    * Additional information on installation can be found in the [documentation](http://tanium.github.io/pytan/introduction.html#linux-installation)  
+
+  * **Windows**
+    *  **Download PyTan**
+      * (https://github.com/tanium/pytan/archive/master.zip)
+      * Unzip pytan-master.zip wherever you like, C:\Tanium is a reasonable choice
+    * __Install Python 2.7.x__
+      * (https://www.python.org/downloads/release/python-2710/)
+      * Optional: On the __Customize Python__ section of the installer select, 
+'Add Python.exe to Path' to allow you to run Python from cmd shells without absolute path
+    * Additional information on installation can be found in the [documentation](http://tanium.github.io/pytan/introduction.html#windows-installation)  
+   
 ## Release strategy
 
   * The current stable version will always be maintained in the master branch. 
