@@ -24,38 +24,49 @@ This is a set of packages and scripts that provide a simple way for interfacing 
 ## Basic Install Instructions 
 
   * **Mac OSX**
-    * Open Termnial (cmd + spacebar, the type Terminal)
-    * Optional:  Create a new directory for PyTan
-    * `mkdir ~/tanium && cd ~/tanium`
+    * Create a new directory for PyTan
+    ```
+    mkdir ~/tanium && cd ~/tanium
+    ```
     * **Download PyTan**
-      * `curl -LO https://github.com/tanium/pytan/archive/master.zip`
-      * `unzip python-master.zip`
+      * Use curl (or your browser) to download the PyTan package:
+      https://github.com/tanium/pytan/releases/latest
+      ```
+      curl -LO https://github.com/tanium/pytan/archive/2.1.6.zip
+      unzip 2.1.6.zip
+      ```
     * __Install Python 2.7.x__
-      * Most versions of OSX will already have Python installed 
+      * Most versions of OSX will already have Python 2.7 installed 
       * `python -V`
     * Additional information on installation can be found in the [documentation](http://tanium.github.io/pytan/introduction.html#os-x-installation)  
 
   * **Linux** 
-    * Optional: Create a new directory for PyTan
-    * `mkdir ~/tanium && cd ~/tanium`
+    * Create a new directory for PyTan
+    ```
+    mkdir ~/tanium && cd ~/tanium
+    ```
     *  **Download PyTan**
-      * `wget https://github.com/tanium/pytan/archive/master.tar.gz`
-      * ` tar -xvzf master.tar.gz`
+      * Locate the latest release: https://github.com/tanium/pytan/releases/latest
+      ``` 
+      wget https://github.com/tanium/pytan/archive/2.1.6.zip
+      tar -xvzf master.tar.gz
+      ```
     * __Install Python 2.7.x__
-       * Most distros will already have Python installed. Confirm 2.7.x   
-       * `python -V`
-       * Optional: If you have multiple version of Python installed you may need to confirm which version is in your $PATH
-       * `python -c “import sys; print sys.path”`
+       * Most linux distributions will already have Python installed. Confirm version 2.7.x and that your path points to 2.7.x:
+       ```
+       python -V
+       python -c “import sys; print sys.path”
+       ```
     * Additional information on installation can be found in the [documentation](http://tanium.github.io/pytan/introduction.html#linux-installation)  
 
   * **Windows**
-    *  **Download PyTan**
-      * (https://github.com/tanium/pytan/archive/master.zip)
-      * Unzip pytan-master.zip wherever you like, C:\Tanium is a reasonable choice
+    *  **Download PyTan:**
+      * https://github.com/tanium/pytan/releases/latest
+      * Unzip wherever you like. C:\Tanium is a reasonable choice
     * __Install Python 2.7.x__
-      * (https://www.python.org/downloads/release/python-2710/)
-      * Optional: On the __Customize Python__ section of the installer select, 
-'Add Python.exe to Path' to allow you to run Python from cmd shells without absolute path
+      * https://www.python.org/downloads/release/python-2710/
+      * On the __Customize Python__ section of the installer select, 
+'Add Python.exe to Path' to allow you to run Python from cmd shell without absolute path
     * Additional information on installation can be found in the [documentation](http://tanium.github.io/pytan/introduction.html#windows-installation)  
    
 ## Release strategy
