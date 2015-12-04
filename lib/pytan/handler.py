@@ -185,8 +185,6 @@ class Handler(object):
         self.puc = puc_kwarg or puc_default
         kwargs = self.read_pytan_user_config(kwargs)
 
-        self.password = pytan.utils.vig_decode(pytan.constants.PYTAN_KEY, self.password)
-
         if gmt_log != self.gmt_log:
             pytan.utils.setup_console_logging(gmt_tz=self.gmt_log)
 
@@ -207,6 +205,9 @@ class Handler(object):
 
             if not self.password:
                 raise pytan.exceptions.HandlerError("Must supply password!")
+
+        if self.password:
+            self.password = pytan.utils.vig_decode(pytan.constants.PYTAN_KEY, self.password)
 
         if not self.host:
             raise pytan.exceptions.HandlerError("Must supply host!")
