@@ -1970,16 +1970,16 @@ def process_tsat_args(parser, handler, args):
                 question_options=args.question_options,
             )
         # TODO: NO MORE EXCEPTION, ITS POLLER.STATUS
-        except taniumpy.question_asker.QuestionTimeoutException:
-            m = "!! Question failed to complete due to timeout (timeout is {} seconds)".format(
-                args.timeout
-            )
-            report_info['msg'] = m
-            reports_run.append(report_info)
-            mylog.error(m)
-            remove_file_log(logfile_path)
-            time.sleep(args.sleep)
-            continue
+        #except taniumpy.question_asker.QuestionTimeoutException:
+        #    m = "!! Question failed to complete due to timeout (timeout is {} seconds)".format(
+        #        args.timeout
+        #    )
+        #    report_info['msg'] = m
+        #    reports_run.append(report_info)
+        #    mylog.error(m)
+        #    remove_file_log(logfile_path)
+        #    time.sleep(args.sleep)
+        #    continue
         except Exception as e:
             m = "!! Question failed to complete: {}".format(e)
             report_info['msg'] = m
@@ -1989,16 +1989,16 @@ def process_tsat_args(parser, handler, args):
             time.sleep(args.sleep)
             continue
 
-        end_time = datetime.datetime.now()
-        elapsed_time = end_time - start_time
-        m = "++ Asked Question {!r} ID: {!r} in {} seconds".format(
-            ret['question_object'].query_text, ret['question_object'].id, elapsed_time.seconds
-        )
-        report_info['question'] = ret['question_object'].query_text
-        report_info['question_id'] = ret['question_object'].id
-        report_info['elapsed_seconds'] = elapsed_time.seconds
-        report_info['msg'] = m
-        mylog.info(m)
+        #end_time = datetime.datetime.now()
+        #elapsed_time = end_time - start_time
+        #m = "++ Asked Question {!r} ID: {!r} in {} seconds".format(
+        #    ret['question_object'].query_text, ret['question_object'].id, elapsed_time.seconds
+        #)
+        #report_info['question'] = ret['question_object'].query_text
+        #report_info['question_id'] = ret['question_object'].id
+        #report_info['elapsed_seconds'] = elapsed_time.seconds
+        #report_info['msg'] = m
+        #mylog.info(m)
 
         if not ret['question_results']:
             m = "Unable to export question results to report file, no ResultSet returned!"
