@@ -836,6 +836,43 @@ def setup_pytan_shell_argparser(doc):
     parser = setup_parser(desc=doc, help=True)
     return parser
 
+def setup_get_session_argparser(doc):
+    """Method to setup the base :clas:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`,then add specific
+        arguments for scripts that use :mod:`pytan` to create a tanium session.
+    """
+    parser = setup_parser(desc=doc, help=True)
+    arggroup_name = 'Get Session Options'
+    arggroup = parser.add_argument_group(arggroup_name)
+
+    arggroup.add_argument(
+        '--persistent',
+        required=False,
+        action='store_true',
+        dest='persistent',
+        default=argparse.SUPPRESS,
+        help='Persist session for 1 week after last use.',
+    )
+
+    return parser
+
+def setup_close_session_argparser(doc):
+    """Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`,then add specific
+        arguments for scripts that use :mod:`pytan` to close open tanium sessions.
+    """
+    parser = setup_parser(desc=doc, help=True)
+    arggroup_name = 'Close Session Optipons'
+    arggroup = parser.add_argument_group(arggroup_name)
+
+    arggroup.add_argument(
+        '--all_session_ids',
+        required=False,
+        action='store_true',
+        dest='all_session_ids',
+        default=argparse.SUPPRESS,
+        help='Closes all open tanium sessions.'
+    )
+
+    return parser
 
 def setup_create_user_argparser(doc):
     """Method to setup the base :class:`pytan.utils.CustomArgParse` class for command line scripts using :func:`pytan.utils.setup_parser`, then add specific arguments for scripts that use :mod:`pytan` to create a user.
@@ -1989,6 +2026,7 @@ def process_tsat_args(parser, handler, args):
             time.sleep(args.sleep)
             continue
 
+        #TODO: RE-WRITTEN FOR POLLER.STATUS
         #end_time = datetime.datetime.now()
         #elapsed_time = end_time - start_time
         #m = "++ Asked Question {!r} ID: {!r} in {} seconds".format(
@@ -2740,6 +2778,34 @@ def process_pytan_shell_args(parser, handler, args):
     """
     HistoryConsole()
 
+def process_get_session_args(parser, handler, args):
+    """Process command line args supplied by user for getting a session
+
+    Parameters
+    ----------
+    parser : :class:`argparse.ArgParse`
+        * ArgParse object used to parse `all_args`
+    handler : :class:`pytan.handler.Handler`
+        * Instance of handler created from command line args
+    args : args object
+        * args parsed from `parser`
+    """
+    print handler.session._session_id
+
+def process_close_session_args(parser, handler, args):
+    """Process command line args supplied by user for getting a session
+    
+    Parameters
+    ----------
+    Parser : :class:`argparse.ArgParse`
+        * ArgParse object used to parse `all_args`
+    handler : :class:`pytan.handler.Handler`
+        * Instance of handler created for command line args
+    args : args object
+        * args parsed from `parser`
+    """
+    #handler.session.
+    handler.session.logout(args)
 
 def process_ask_saved_args(parser, handler, args):
     """Process command line args supplied by user for ask saved
@@ -2905,7 +2971,7 @@ def introspect(obj, depth=0):
 
 
 def input_prompts(args):
-    """Utility function to prompt for username, password, and host if empty"""
+    """Utility function to prompt for username, `, and host if empty"""
     puc_default = os.path.expanduser(pytan.constants.PYTAN_USER_CONFIG)
     puc_kwarg = args.__dict__.get('pytan_user_config', '')
     puc = puc_kwarg or puc_default
