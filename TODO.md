@@ -7,10 +7,12 @@
     * fix mddoctest for http://tanium.github.io/pytan/_static/bin_doc/write_pytan_user_config.html
     * add note to pytan_test_steps about Administrator user having to exist
     * add documentation note about PyTan only being fully tested with Administrator role 
+    * add windows install doc tip re: 2.7 only
 
   * BUG:
     * work on deploy action & start_seconds_from_now (a new action gets created at actual start time)
     * on 6.2, block info.json (block 444), fix _regex_for_body_element when _get_response tries to parse for server_version but it doesn't exist
+    * param with \ at end breaks parameter parser regex
 
   * GEN:
     * 2.1.7: ask_saved: 
