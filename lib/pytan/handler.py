@@ -1122,15 +1122,15 @@ class Handler(object):
         kwargs['pytan_help'] = kwargs.get('pytan_help', h)
         kwargs['suppress_object_list'] = kwargs.get('suppress_object_list', 1)
 
-        # do a getresultdata
         if aggregate:
-            clean_keys = ['obj', 'row_counts_only_flag']
-            clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
-            rd = grd(obj=shrunk_obj, row_counts_only_flag=1, **clean_kwargs)
-        else:
-            clean_keys = ['obj']
-            clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
-            rd = grd(obj=shrunk_obj, **clean_kwargs)
+            kwargs['row_counts_only_flag'] = 1
+
+        clean_keys = ['obj']
+        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+
+        # do a getresultdata
+        rd = grd(obj=shrunk_obj, **clean_kwargs)
+
         return rd
 
     def get_result_data_sse(self, obj, **kwargs):
