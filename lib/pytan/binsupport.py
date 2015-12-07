@@ -2612,10 +2612,11 @@ def process_ask_parsed_args(parser, handler, args):
     response
         * response from :func:`pytan.handler.Handler.ask_parsed`
     """
+    # TODO: SSE FORMAT NOT BEING RECOGNIZED?
     # put our query args into their own dict and remove them from all_args
-    obj_grp_names = ['Parsed Question Options']
+    obj_grp_names = ['Parsed Question Options', 'Export Options']
     obj_grp_opts = get_grp_opts(parser=parser, grp_names=obj_grp_names)
-    obj_grp_args = {k: getattr(args, k) for k in obj_grp_opts}
+    obj_grp_args = {k: getattr(args, k) for k in obj_grp_opts if getattr(args, k, None)}
 
     print "++ Asking parsed question:\n{}".format(pytan.utils.jsonify(obj_grp_args))
 
@@ -2632,7 +2633,9 @@ def process_ask_parsed_args(parser, handler, args):
 
     if results:
         try:
-            report_file, report_contents = handler.export_to_report_file(obj=results, **args.__dict__)
+            report_file, report_contents = handler.export_to_report_file(
+                obj=results, **args.__dict__
+            )
         except Exception as e:
             print "\n\nError occurred: {}".format(e)
             sys.exit(99)
@@ -2794,7 +2797,7 @@ def process_get_session_args(parser, handler, args):
 
 def process_close_session_args(parser, handler, args):
     """Process command line args supplied by user for getting a session
-    
+
     Parameters
     ----------
     Parser : :class:`argparse.ArgParse`
