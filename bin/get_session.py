@@ -9,7 +9,7 @@ __version__ = '2.1.5'
 import os
 import sys
 import argparse
-import getpass
+
 sys.dont_write_bytecode = True
 
 my_file = os.path.abspath(sys.argv[0])
