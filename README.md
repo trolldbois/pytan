@@ -19,20 +19,20 @@ This is a set of packages and scripts that provide a simple way for interfacing 
 ## Versions
 
 * Current Stable Version: 
-  * **2.1.6 (Sep 15 2015)** [Release Link](https://github.com/tanium/pytan/releases/tag/2.1.6)
+  * **2.1.7 (Dec 08 2015)** [Release Link](https://github.com/tanium/pytan/releases/tag/2.1.7)
 * Current Development Version:
-  * **2.1.7** [Develop Branch](https://github.com/tanium/pytan/tree/develop)
+  * **2.1.8** [Develop Branch](https://github.com/tanium/pytan/tree/develop)
 
 ## Documentation Links
 
-* Online documentation for PyTan 2.1.6:
+* Online documentation for PyTan 2.1.7:
   * [HTML: Main Index](http://tanium.github.io/pytan)
   * [HTML: PyTan API Examples](http://tanium.github.io/pytan/examples/pytan_examples.html)
   * [HTML: PyTan Command Line Usage](http://tanium.github.io/pytan/_static/bin_doc/index.html)
-  * [PDF: Standalone PDF version of HTML](http://tanium.github.io/pytan/PyTan-2.1.6.pdf)
-* Offline documentation for PyTan 2.1.6:
-  * [Zipped HTML documentation for PyTan 2.1.6](doc/html/PyTan-2.1.6-HTML_DOC.zip)
-  * [PDF documentation for PyTan 2.1.6](doc/pdf/PyTan-2.1.6.pdf)
+  * [PDF: Standalone PDF version of HTML](http://tanium.github.io/pytan/PyTan-2.1.7.pdf)
+* Offline documentation for PyTan 2.1.7:
+  * [Zipped HTML documentation for PyTan 2.1.7](doc/html/PyTan-2.1.7-HTML_DOC.zip)
+  * [PDF documentation for PyTan 2.1.7](doc/pdf/PyTan-2.1.7.pdf)
 * Other documentation:
   * [Change Log for PyTan](CHANGELOG.md)
   * [To Do List for PyTan](TODO.md)
@@ -51,7 +51,7 @@ mkdir ~/tanium
 * Extract the PyTan ZIP file you downloaded to ~/tanium:
 ```
 cd ~/tanium
-unzip pytan-2.1.6.zip
+unzip pytan-2.1.7.zip
 ```
 * Verify that your OSX install has Python 2.7.x installed and that your PYTHONPATH points to 2.7.x:
 ```
@@ -68,7 +68,7 @@ mkdir ~/tanium
 * Extract the PyTan ZIP file you downloaded to ~/tanium:
 ```
 cd ~/tanium
-unzip pytan-2.1.6.zip
+unzip pytan-2.1.7.zip
 ```
 * Verify that your linux distribution has Python 2.7.x installed and that your PYTHONPATH points to 2.7.x:
 ```
