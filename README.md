@@ -25,14 +25,14 @@ This is a set of packages and scripts that provide a simple way for interfacing 
 
 ## Documentation Links
 
-* Online documentation for PyTan 2.1.7:
+* Online documentation for PyTan 2.1.6:
   * [HTML: Main Index](http://tanium.github.io/pytan)
   * [HTML: PyTan API Examples](http://tanium.github.io/pytan/examples/pytan_examples.html)
   * [HTML: PyTan Command Line Usage](http://tanium.github.io/pytan/_static/bin_doc/index.html)
-  * [PDF: Standalone PDF version of HTML](http://tanium.github.io/pytan/PyTan-2.1.7.pdf)
-* Offline documentation for PyTan 2.1.7:
-  * [Zipped HTML documentation for PyTan 2.1.7](doc/html/PyTan-2.1.7-HTML_DOC.zip)
-  * [PDF documentation for PyTan 2.1.7](doc/pdf/PyTan-2.1.7.pdf)
+  * [PDF: Standalone PDF version of HTML](http://tanium.github.io/pytan/PyTan-2.1.6.pdf)
+* Offline documentation for PyTan 2.1.6:
+  * [Zipped HTML documentation for PyTan 2.1.6](doc/html/PyTan-2.1.6-HTML_DOC.zip)
+  * [PDF documentation for PyTan 2.1.6](doc/pdf/PyTan-2.1.6.pdf)
 * Other documentation:
   * [Change Log for PyTan](CHANGELOG.md)
   * [To Do List for PyTan](TODO.md)
