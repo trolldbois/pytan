@@ -24,6 +24,7 @@
 * work on deploy action & start_seconds_from_now (a new action gets created at actual start time)
 * on 6.2, block info.json (block 444), fix _regex_for_body_element when _get_response tries to parse for server_version but it doesn't exist
 * param with \ at end breaks parameter parser regex
+* ~~ Will store value as global in TSAT
 
 ## GEN
 * TSAT re-vival
