@@ -179,8 +179,8 @@
         }
     },
     "ask_manual_question_complex_query2": {
-        "desc": "This is another complex query that gets the Computer Name and Last Logged in User and Installed Applications that contains Google Search or Google Chrome and limits the rows that are displayed to computers that contain the Installed Applications of Google Search or Google Chrome",
-        "xml_desc" : "Ask the question 'Get Computer Name and Last Logged In User and Installed Applications containing \"Google\" from all machines with Installed Applications containing \"Google\"' and set ignore_case_flag to 1 and or_flag to 1 on the Installed Applications sensors on the right hand side of the question, then wait for result data to be complete, and get result data",
+        "desc": "This is another complex query that gets the Computer Name and Last Logged in User and Installed Applications that contains something from Microsoft and limits the rows that are displayed to computers that contain the Installed Applications of Microsoft",
+        "xml_desc" : "Ask the question 'Get Computer Name and Last Logged In User and Installed Applications containing \"Microsoft\" from all machines with Installed Applications containing \"Microsoft\"' and set ignore_case_flag to 1 and or_flag to 1 on the Installed Applications sensors on the right hand side of the question, then wait for result data to be complete, and get result data",
         "priority": "7",
         "method": "ask",
         "method_template": "valid_response",
@@ -190,10 +190,10 @@
             "sensors": [
                 "Computer Name",
                 "Last Logged In User",
-                "Installed Applications, that regex match:.*Google.*"
+                "Installed Applications, that regex match:.*Microsoft.*"
             ],
             "question_filters": [
-                "Installed Applications, that regex match:.*Google.*"
+                "Installed Applications, that regex match:.*Microsoft.*"
             ],
             "question_options": ["ignore_case", "or"]
         }
