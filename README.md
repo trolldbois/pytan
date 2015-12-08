@@ -102,4 +102,4 @@ mkdir c:\tanium
 
 * Author and Maintainer: Jim Olsen (jim.olsen@tanium.com)
 * License: MIT
-* Copyright: Tanium, Inc. 2015
+* Copyright: Tanium Inc. 2015
