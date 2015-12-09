@@ -1,20 +1,11 @@
 # -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
-"""Provides exceptions for the :mod:`pytan` module."""
-import sys
-
-# disable python from creating .pyc files everywhere
-sys.dont_write_bytecode = True
+"""Exceptions package for :mod:`pytan`"""
 
 
 class HandlerError(Exception):
     """Exception thrown for errors in :mod:`pytan.handler`"""
-    pass
-
-
-class HumanParserError(Exception):
-    """Exception thrown for errors while parsing human strings from :mod:`pytan.handler`"""
     pass
 
 
