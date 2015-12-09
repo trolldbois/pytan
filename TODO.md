@@ -27,7 +27,7 @@
 * ~~ Will store value as global in TSAT
 
 ## GEN
-* TSAT re-vival
+* fix filename of datetime stamp in win
 * bring new session scripts into build system
 * 2.1.7: ask_saved: 
   * add log for get_result_info in refresh_data path
@@ -44,6 +44,7 @@
 * question filters get params too?? (UNKNOWN)
 * add json source for parameters in TSAT
 * add export_obj option for csv to split columns longer than 32k
+* refactor utils/binsupport (3.x)
 
 ## TEST
 * add approve action to pytan (need doc update and test update)
@@ -62,12 +63,9 @@
 ## LOW
 * bundle workflow capture into handler?
 * fix build bin doc to run on windows (figure out later)
-* write get_session_id.py (later)
-* update EXAMPLES to work with 2.0.0
 * look into update object methods (UNKNOWN)
 * logfile support (MEDIUM)
 * email out (MEDIUM)
 * add caching (HUGE)
 * figure out cert based auth/plugin based auth? (HUGE)
 * add RST output support to mdtester?
-* add os env overrides and/or add profile overrides
