@@ -71,34 +71,34 @@ def build_selectlist_obj(sensor_defs):
     return select_objlist
 
 
-def build_group_obj(q_filter_defs, q_option_defs):
-    """Creates a Group object from q_filter_defs and q_option_defs
+def build_group_obj(filter_defs, option_defs):
+    """Creates a Group object from filter_defs and option_defs
 
     Parameters
     ----------
-    q_filter_defs : list of dict
+    filter_defs : list of dict
         * List of dict that are question filter definitions
-    q_option_defs : dict
+    option_defs : dict
         * dict of question filter options
 
     Returns
     -------
     group_obj : :class:`taniumpy.object_types.group.Group`
-        * Group object with list of :class:`taniumpy.object_types.filter.Filter` built from `q_filter_defs` and `q_option_defs`
+        * Group object with list of :class:`taniumpy.object_types.filter.Filter` built from `filter_defs` and `option_defs`
     """
     filter_objlist = taniumpy.FilterList()
 
-    for d in q_filter_defs:
+    for d in filter_defs:
         # validate/map question filter into a Filter()
         filter_obj = get_filter_obj(d)
 
         # update filter_obj with any options
-        filter_obj = apply_options_obj(q_option_defs, filter_obj, 'filter')
+        filter_obj = apply_options_obj(option_defs, filter_obj, 'filter')
         filter_objlist.filter.append(filter_obj)
 
     group_obj = taniumpy.Group()
     group_obj.filters = filter_objlist
-    group_obj = apply_options_obj(q_option_defs, group_obj, 'group')
+    group_obj = apply_options_obj(option_defs, group_obj, 'group')
 
     return group_obj
 

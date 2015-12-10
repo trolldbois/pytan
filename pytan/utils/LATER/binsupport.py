@@ -18,7 +18,6 @@ import getpass
 import json
 import string
 import csv
-import io
 import platform
 import datetime
 import time
@@ -2364,6 +2363,7 @@ class TsatWorker(object):
         except:
             pass
 
+    # TODO WRAP ME AROUND THE log.py funcs!
     def add_file_log(self, logfile):
         """Utility to add a log file from python's logging module"""
         self.remove_file_log(logfile)
@@ -3886,40 +3886,6 @@ def filter_filename(filename):
     return filename
 
 
-def remove_file_log(logfile):
-    """Utility to remove a log file from python's logging module"""
-    basename = os.path.basename(logfile)
-    root_logger = logging.getLogger()
-    try:
-        for x in root_logger.handlers:
-            if x.name == basename:
-                mylog.info(('Stopped file logging to: {}').format(logfile))
-                root_logger.removeHandler(x)
-    except:
-        pass
-
-
-def add_file_log(logfile, debug=False):
-    """Utility to add a log file from python's logging module"""
-    remove_file_log(logfile)
-    root_logger = logging.getLogger()
-    basename = os.path.basename(logfile)
-    try:
-        file_handler = logging.FileHandler(logfile)
-        file_handler.set_name(basename)
-        if debug:
-            file_handler.setLevel(logging.DEBUG)
-            file_handler.setFormatter(logging.Formatter(pytan.constants.DEBUG_FORMAT))
-        else:
-            file_handler.setLevel(logging.INFO)
-            file_handler.setFormatter(logging.Formatter(pytan.constants.INFO_FORMAT))
-        root_logger.addHandler(file_handler)
-        mylog.info(('Added file logging to: {}').format(logfile))
-    except Exception as e:
-        mylog.error((
-            'Problem setting up file logging to {}: {}'
-        ).format(logfile, e))
-
 
 def parse_sensor_platforms(sensor):
     """Utility to create a list of platforms for a given sensor"""
@@ -3967,26 +3933,3 @@ def filter_sensors(sensors, filter_platforms=[], filter_categories=[]):
 
     return new_sensors
 
-
-def get_all_headers(rows_list):
-    """Utility to get all the keys for a list of dicts"""
-    headers = []
-    for row_dict in rows_list:
-        [headers.append(h) for h in row_dict.keys() if h not in headers]
-    return headers
-
-
-def csvdictwriter(rows_list, **kwargs):
-    """returns the rows_list (list of dicts) as a CSV string"""
-    csv_io = io.BytesIO()
-    headers = kwargs.get('headers', []) or get_all_headers(rows_list)
-    writer = csv.DictWriter(
-        csv_io,
-        fieldnames=headers,
-        quoting=csv.QUOTE_NONNUMERIC,
-        extrasaction='ignore',
-    )
-    writer.writerow(dict((h, h) for h in headers))
-    writer.writerows(rows_list)
-    csv_str = csv_io.getvalue()
-    return csv_str

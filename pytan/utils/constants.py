@@ -476,3 +476,42 @@ HANDLER_ARG_DEFAULTS = {
 """
 Map of handler arguments and their defaults
 """
+
+Q_COMPLETE_PCT_DEFAULT = 99
+Q_POLLING_SECS_DEFAULT = 5
+Q_OVERRIDE_TIMEOUT_SECS_DEFAULT = 0
+Q_EXPIRATION_ATTR = 'expiration'
+Q_EXPIRY_FALLBACK_SECS = 600
+Q_STR_ATTRS = [
+    'object_info',
+    'polling_secs',
+    'override_timeout_secs',
+    'complete_pct',
+    'expiration',
+]
+
+S_STR_ATTRS = [
+    'export_id',
+    'polling_secs',
+    'timeout_secs',
+    'sse_status',
+]
+"""Class attributes to include in __str__ output"""
+
+S_POLLING_SECS_DEFAULT = 2
+"""default value for self.polling_secs"""
+
+S_TIMEOUT_SECS_DEFAULT = 600
+"""default value for self.timeout_secs"""
+
+A_COMPLETE_PCT_DEFAULT = 100
+"""default value for self.complete_pct"""
+
+A_ACTION_DONE_KEY = 'success'
+"""key in action_result_map that maps to an action being done"""
+
+A_RUNNING_STATUSES = ["active", "open"]
+"""values for status attribute of action object that mean the action is running"""
+
+A_EXPIRATION_ATTR = 'expiration_time'
+"""attribute of self.obj that contains the expiration for this object"""

@@ -4,10 +4,6 @@ This contains unit tests for pytan.
 
 These unit tests do not require a connection to a Tanium server in order to run.
 """
-import sys
-
-# disable python from creating .pyc files everywhere
-sys.dont_write_bytecode = True
 
 import os
 import unittest

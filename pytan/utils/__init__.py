@@ -20,15 +20,15 @@ logging.getLogger().addHandler(NullHandler())
 
 from . import constants
 from . import exceptions
-from . import crypt
+from . import coder
 from . import helpers
 from . import log
-from . import math
+from . import calc
 from . import network
 from . import pretty
 from . import tanium_obj
-from . import time
 from . import parsers
+from . import validate
 from .external import taniumpy
 from .external import xmltodict
 from .external import requests
@@ -37,17 +37,17 @@ from .xml_clean import xml_cleaner
 __all__ = [
     'constants',
     'exceptions',
-    'crypt',
+    'coder',
     'helpers',
     'log',
-    'math',
+    'calc',
     'network',
     'pretty',
     'tanium_obj',
-    'time',
     'xml_cleaner',
     'parsers',
     'taniumpy',
     'xmltodict',
     'requests',
+    'validate',
 ]

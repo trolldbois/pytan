@@ -6,6 +6,7 @@
 
 DEBUG_OUTPUT = False
 
+import os
 import sys
 import logging
 import itertools
@@ -181,3 +182,31 @@ def change_console_format(debug=False):
                     handler.setFormatter(logging.Formatter(constants.DEBUG_FORMAT))
                 else:
                     handler.setFormatter(logging.Formatter(constants.INFO_FORMAT))
+
+
+def remove_file_log(logfile):
+    """Utility to remove a log file from python's logging module"""
+    basename = os.path.basename(logfile)
+    root_logger = logging.getLogger()
+    try:
+        for x in root_logger.handlers:
+            if x.name == basename:
+                root_logger.removeHandler(x)
+    except:
+        pass
+
+
+def add_file_log(logfile, debug=False):
+    """Utility to add a log file from python's logging module"""
+    remove_file_log(logfile)
+    root_logger = logging.getLogger()
+    basename = os.path.basename(logfile)
+    file_handler = logging.FileHandler(logfile)
+    file_handler.set_name(basename)
+    if debug:
+        file_handler.setLevel(logging.DEBUG)
+        file_handler.setFormatter(logging.Formatter(constants.DEBUG_FORMAT))
+    else:
+        file_handler.setLevel(logging.INFO)
+        file_handler.setFormatter(logging.Formatter(constants.INFO_FORMAT))
+    root_logger.addHandler(file_handler)

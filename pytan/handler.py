@@ -2,13 +2,11 @@
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
 """The main :mod:`pytan` module that provides first level entities for programmatic use."""
-import sys
 
 import os
 import logging
 import io
 import datetime
-import pprint
 import json
 
 try:
@@ -17,31 +15,8 @@ except:
     import xml.etree.ElementTree as ET
 
 from . import __version__
-from . import Session
-from . import QuestionPoller
-from . import SSEPoller
-from . import ActionPoller
-from .utils import log
-from .utils import crypt
-from .utils import network
-from .utils import validate
-from .utils import helpers
-from .utils import tanium_obj
-from .utils import pretty
-from .utils import taniumpy
-from .utils import constants
-from .utils import time
-from .utils.parsers import parse_sensors
-from .utils.parsers import parse_filters
-from .utils.parsers import parse_options
-from .utils.parsers import parse_package
-from .utils.exceptions import PytanError
-from .utils.exceptions import UnsupportedVersionError
-from .utils.exceptions import ServerSideExportError
-from .utils.exceptions import PickerError
-from .utils.exceptions import ServerParseError
-from .utils.exceptions import NotFoundError
-from .utils.exceptions import RunError
+from . import utils
+from . import session
 
 
 class Handler(object):
@@ -77,7 +52,7 @@ class Handler(object):
         * default: None
         * session_id to use while authenticating instead of username/password
     pytan_user_config : str, optional
-        * default: constants.PYTAN_USER_CONFIG
+        * default: utils.constants.PYTAN_USER_CONFIG
         * JSON file containing key/value pairs to override class variables
 
     Other Parameters
@@ -86,67 +61,67 @@ class Handler(object):
         * default: False
         * False: do not print requests package debug
         * True: do print requests package debug
-        * This is passed through to :class:`pytan.sessions.Session`
+        * This is passed through to :class:`session.Sessions`
     http_auth_retry: bool, optional
         * default: True
         * True: retry HTTP GET/POST's
         * False: do not retry HTTP GET/POST's
-        * This is passed through to :class:`pytan.sessions.Session`
+        * This is passed through to :class:`session.Sessions`
     http_retry_count: int, optional
         * default: 5
         * number of times to retry HTTP GET/POST's if the connection times out/fails
-        * This is passed through to :class:`pytan.sessions.Session`
+        * This is passed through to :class:`session.Sessions`
     soap_request_headers : dict, optional
         * default: {'Content-Type': 'text/xml; charset=utf-8', 'Accept-Encoding': 'gzip'}
         * dictionary of headers to add to every HTTP GET/POST
-        * This is passed through to :class:`pytan.sessions.Session`
+        * This is passed through to :class:`session.Sessions`
     auth_connect_timeout_sec : int, optional
         * default: 5
         * number of seconds before timing out for a connection while authenticating
-        * This is passed through to :class:`pytan.sessions.Session`
+        * This is passed through to :class:`session.Sessions`
     auth_response_timeout_sec : int, optional
         * default: 15
         * number of seconds before timing out for a response while authenticating
-        * This is passed through to :class:`pytan.sessions.Session`
+        * This is passed through to :class:`session.Sessions`
     info_connect_timeout_sec : int, optional
         * default: 5
         * number of seconds before timing out for a connection while getting /info.json
-        * This is passed through to :class:`pytan.sessions.Session`
+        * This is passed through to :class:`session.Sessions`
     info_response_timeout_sec : int, optional
         * default: 15
         * number of seconds before timing out for a response while getting /info.json
-        * This is passed through to :class:`pytan.sessions.Session`
+        * This is passed through to :class:`session.Sessions`
     soap_connect_timeout_sec : int, optional
         * default: 15
         * number of seconds before timing out for a connection for a SOAP request
-        * This is passed through to :class:`pytan.sessions.Session`
+        * This is passed through to :class:`session.Sessions`
     soap_response_timeout_sec : int, optional
         * default: 540
         * number of seconds before timing out for a response for a SOAP request
-        * This is passed through to :class:`pytan.sessions.Session`
+        * This is passed through to :class:`session.Sessions`
     stats_loop_enabled : bool, optional
         * default: False
         * False: do not enable the statistics loop thread
         * True: enable the statistics loop thread
-        * This is passed through to :class:`pytan.sessions.Session`
+        * This is passed through to :class:`session.Sessions`
     stats_loop_sleep_sec : int, optional
         * default: 5
         * number of seconds to sleep in between printing the statistics when stats_loop_enabled is True
-        * This is passed through to :class:`pytan.sessions.Session`
+        * This is passed through to :class:`session.Sessions`
     record_all_requests: bool, optional
         * default: False
         * False: do not add each requests response object to session.ALL_REQUESTS_RESPONSES
         * True: add each requests response object to session.ALL_REQUESTS_RESPONSES
-        * This is passed through to :class:`pytan.sessions.Session`
+        * This is passed through to :class:`session.Sessions`
     stats_loop_targets : list of dict, optional
         * default: [{'Version': 'Settings/Version'}, {'Active Questions': 'Active Question Cache/Active Question Estimate'}, {'Clients': 'Active Question Cache/Active Client Estimate'}, {'Strings': 'String Cache/Total String Count'}, {'Handles': 'System Performance Info/HandleCount'}, {'Processes': 'System Performance Info/ProcessCount'}, {'Memory Available': 'percentage(System Performance Info/PhysicalAvailable,System Performance Info/PhysicalTotal)'}]
         * list of dictionaries with the key being the section of info.json to print info from, and the value being the item with in that section to print the value
-        * This is passed through to :class:`pytan.sessions.Session`
+        * This is passed through to :class:`session.Sessions`
     persistent: bool, optional
         * default: False
         * False: do not request a persistent session
         * True: do request a persistent
-        * This is passed through to :func:`pytan.sessions.Session.authenticate`
+        * This is passed through to :func:`session.Sessions.authenticate`
     force_server_version: str, optional
         * default: ''
         * use this to override the server_version detection
@@ -160,10 +135,10 @@ class Handler(object):
 
     See Also
     --------
-    :data:`constants.LOG_LEVEL_MAPS` : maps a given `loglevel` to respective logger names and their logger levels
-    :data:`constants.INFO_FORMAT` : debugformat=False
-    :data:`constants.DEBUG_FORMAT` : debugformat=True
-    :class:`taniumpy.session.Session` : Session object used by Handler
+    :data:`utils.constants.LOG_LEVEL_MAPS` : maps a given `loglevel` to respective logger names and their logger levels
+    :data:`utils.constants.INFO_FORMAT` : debugformat=False
+    :data:`utils.constants.DEBUG_FORMAT` : debugformat=True
+    :class:`session.Session` : Session object used by Handler
 
     Examples
     --------
@@ -179,7 +154,9 @@ class Handler(object):
                  loglevel=0, debugformat=False, gmt_log=True, session_id=None, **kwargs):
         super(Handler, self).__init__()
         self.mylog = logging.getLogger(__name__)
-        self.methodlog = logging.getLogger("method_debug")
+
+        from . import pollers
+        self.pollers = pollers
 
         # update self with all local variables that are not self/kwargs/k/v
         for k, v in locals().iteritems():
@@ -188,16 +165,16 @@ class Handler(object):
             setattr(self, k, v)
 
         # setup the console logging handler
-        log.setup_console_logging(gmt_tz=self.gmt_log)
+        utils.log.setup_console_logging(gmt_tz=self.gmt_log)
 
         # create all the loggers and set their levels based on loglevel
-        log.set_log_levels(loglevel=self.loglevel)
+        utils.log.set_log_levels(loglevel=self.loglevel)
 
         # change the format of console logging handler if need be
-        log.change_console_format(debug=self.debugformat)
+        utils.log.change_console_format(debug=self.debugformat)
 
         # get the default pytan user config file
-        puc_default = os.path.expanduser(constants.PYTAN_USER_CONFIG)
+        puc_default = os.path.expanduser(utils.constants.PYTAN_USER_CONFIG)
 
         # see if the pytan_user_config file location was overridden
         puc_kwarg = kwargs.get('pytan_user_config', '')
@@ -206,44 +183,40 @@ class Handler(object):
         kwargs = self.read_pytan_user_config(kwargs)
 
         if gmt_log != self.gmt_log:
-            log.setup_console_logging(gmt_tz=self.gmt_log)
+            utils.log.setup_console_logging(gmt_tz=self.gmt_log)
 
         if loglevel != self.loglevel:
-            log.set_log_levels(loglevel=self.loglevel)
+            utils.log.set_log_levels(loglevel=self.loglevel)
 
         if debugformat != self.debugformat:
-            log.change_console_format(debug=self.debugformat)
-
-        self.debug_method_locals = kwargs.get('debug_method_locals', False)
-
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
+            utils.log.change_console_format(debug=self.debugformat)
 
         if not self.session_id:
 
             if not self.username:
-                raise PytanError("Must supply username!")
+                raise utils.exceptions.PytanError("Must supply username!")
 
             if not self.password:
-                raise PytanError("Must supply password!")
+                raise utils.exceptions.PytanError("Must supply password!")
 
         if self.password:
-            self.password = crypt.vig_decode(constants.PYTAN_KEY, self.password)
+            self.password = utils.coder.vig_decode(utils.constants.PYTAN_KEY, self.password)
 
         if not self.host:
-            raise PytanError("Must supply host!")
+            raise utils.exceptions.PytanError("Must supply host!")
 
         if not self.port:
-            raise PytanError("Must supply port!")
+            raise utils.exceptions.PytanError("Must supply port!")
 
         try:
             self.port = int(self.port)
         except ValueError:
-            raise PytanError("port must be an integer!")
+            raise utils.exceptions.PytanError("port must be an integer!")
 
-        network.test_app_port(host=self.host, port=self.port)
+        utils.network.test_app_port(host=self.host, port=self.port)
 
         # establish our Session class
-        self.session = Session(host=self.host, port=self.port, **kwargs)
+        self.session = session.Session(host=self.host, port=self.port, **kwargs)
 
         # authenticate using the Session class
         self.session.authenticate(
@@ -254,7 +227,6 @@ class Handler(object):
         )
 
     def __str__(self):
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         str_tpl = "PyTan v{} Handler for {}".format
         ret = str_tpl(__version__, self.session)
@@ -278,19 +250,19 @@ class Handler(object):
                 puc_dict = json.load(fh)
         except Exception as e:
             m = "PyTan User config file at: {} is invalid, exception: {}".format
-            self.mylog.error(m(self.puc, e))
+            self.utils.exceptions.mylog.error(m(self.puc, e))
         else:
             m = "PyTan User config file successfully loaded: {} ".format
             self.mylog.info(m(self.puc))
 
             # handle class params
-            for h_arg, arg_default in constants.HANDLER_ARG_DEFAULTS.iteritems():
+            for h_arg, arg_default in utils.constants.HANDLER_ARG_DEFAULTS.iteritems():
                 if h_arg not in puc_dict:
                     continue
 
                 if h_arg == 'password':
-                    puc_dict['password'] = crypt.vig_decode(
-                        constants.PYTAN_KEY, puc_dict['password'],
+                    puc_dict['password'] = utils.coder.vig_decode(
+                        utils.constants.PYTAN_KEY, puc_dict['password'],
                     )
 
                 class_val = getattr(self, h_arg, None)
@@ -340,7 +312,7 @@ class Handler(object):
         puc_dict = {}
 
         for k, v in vars(self).iteritems():
-            if k in ['mylog', 'methodlog', 'session', 'puc']:
+            if k in ['mylog', 'session', 'puc']:
                 m = "Skipping class variable {} from inclusion in: {}".format
                 self.mylog.debug(m(k, puc))
                 continue
@@ -350,28 +322,27 @@ class Handler(object):
             puc_dict[k] = v
 
         # obfuscate the password
-        puc_dict['password'] = crypt.vig_encode(constants.PYTAN_KEY, self.password)
+        puc_dict['password'] = utils.coder.vig_encode(utils.constants.PYTAN_KEY, self.password)
 
         try:
             with open(puc, 'w+') as fh:
                 json.dump(puc_dict, fh, skipkeys=True, indent=2)
         except Exception as e:
             m = "Failed to write PyTan User config: '{}', exception: {}".format
-            raise PytanError(m(puc, e))
+            raise utils.exceptions.PytanError(m(puc, e))
         else:
             m = "PyTan User config file successfully written: {} ".format
             self.mylog.info(m(puc))
         return puc
 
     def get_server_version(self, **kwargs):
-        """Uses :func:`taniumpy.session.Session.get_server_version` to get the version of the Tanium Server
+        """Uses :func:`session.Session.get_server_version` to get the version of the Tanium Server
 
         Returns
         -------
         server_version: str
             * Version of Tanium Server in string format
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         server_version = self.session.get_server_version(**kwargs)
         return server_version
@@ -389,24 +360,23 @@ class Handler(object):
         Returns
         -------
         result : dict, containing:
-            * `question_object` : one of the following depending on `qtype`: :class:`taniumpy.object_types.question.Question` or :class:`taniumpy.object_types.saved_question.SavedQuestion`
-            * `question_results` : :class:`taniumpy.object_types.result_set.ResultSet`
+            * `question_object` : one of the following depending on `qtype`: :class:`utils.taniumpy.object_types.question.Question` or :class:`utils.taniumpy.object_types.saved_question.SavedQuestion`
+            * `question_results` : :class:`utils.taniumpy.object_types.result_set.ResultSet`
 
         See Also
         --------
-        :data:`constants.Q_OBJ_MAP` : maps qtype to a method in Handler()
+        :data:`utils.constants.Q_OBJ_MAP` : maps qtype to a method in Handler()
         :func:`pytan.handler.Handler.ask_saved` : method used when qtype == 'saved'
         :func:`pytan.handler.Handler.ask_manual` : method used when qtype == 'manual'
         :func:`pytan.handler.Handler._ask_manual` : method used when qtype == '_manual'
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         qtype = kwargs.get('qtype', 'manual')
 
         clean_keys = ['qtype']
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
-        q_obj_map = validate.get_q_obj_map(qtype=qtype)
+        q_obj_map = utils.validate.get_q_obj_map(qtype=qtype)
 
         method = getattr(self, q_obj_map['handler'])
         result = method(**clean_kwargs)
@@ -465,9 +435,9 @@ class Handler(object):
         Returns
         -------
         ret : dict, containing
-            * `question_object` : :class:`taniumpy.object_types.saved_question.SavedQuestion`, the saved question object
-            * `question_object` : :class:`taniumpy.object_types.question.Question`, the question asked by `saved_question_object`
-            * `question_results` : :class:`taniumpy.object_types.result_set.ResultSet`, the results for `question_object`
+            * `question_object` : :class:`utils.taniumpy.object_types.saved_question.SavedQuestion`, the saved question object
+            * `question_object` : :class:`utils.taniumpy.object_types.question.Question`, the question asked by `saved_question_object`
+            * `question_results` : :class:`utils.taniumpy.object_types.result_set.ResultSet`, the results for `question_object`
             * `poller_object` : None if `refresh_data` == False, elsewise :class:`QuestionPoller`, poller object used to wait until all results are in before getting `question_results`,
             * `poller_success` : None if `refresh_data` == False, elsewise True or False
 
@@ -475,9 +445,8 @@ class Handler(object):
         -----
         id or name must be supplied
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs)
         sse = kwargs.get('sse', False)
         clean_kwargs['sse_format'] = clean_kwargs.get('sse_format', 'xml_obj')
 
@@ -491,7 +460,7 @@ class Handler(object):
                 "saved question!\nArgs: {}\nReturned saved questions:\n\t{}"
             ).format
             sq_obj_str = '\n\t'.join([str(x) for x in sq_objs])
-            raise PytanError(err(kwargs, sq_obj_str))
+            raise utils.exceptions.PytanError(err(kwargs, sq_obj_str))
 
         sq_obj = sq_objs[0]
 
@@ -518,7 +487,7 @@ class Handler(object):
                 "Issue a GetObject for the saved question in order get the ID of the newly "
                 "asked question"
             )
-            shrunk_obj = tanium_obj.shrink_obj(obj=sq_obj)
+            shrunk_obj = utils.tanium_obj.shrink_obj(obj=sq_obj)
             sq_obj = self._find(obj=shrunk_obj, pytan_help=h, **clean_kwargs)
 
             h = (
@@ -531,7 +500,7 @@ class Handler(object):
             self.mylog.debug(m(q_obj.id, q_obj.query_text, q_obj.expiration))
 
             # poll the new question for this saved question to wait for results
-            poller = QuestionPoller(handler=self, obj=q_obj, **clean_kwargs)
+            poller = self.pollers.QuestionPoller(handler=self, obj=q_obj, **clean_kwargs)
             poller_success = poller.run(**clean_kwargs)
 
         # get the results
@@ -549,7 +518,7 @@ class Handler(object):
             )
             rd = self.get_result_data(obj=q_obj, pytan_help=h, **clean_kwargs)
 
-        if isinstance(rd, taniumpy.object_types.result_set.ResultSet):
+        if isinstance(rd, utils.taniumpy.object_types.result_set.ResultSet):
             # add the sensors from this question to the ResultSet object for reporting
             rd.sensors = [x.sensor for x in q_obj.selects]
 
@@ -574,10 +543,10 @@ class Handler(object):
         sensors : str, list of str
             * default: []
             * sensors (columns) to include in question
-        question_filters : str, list of str, optional
+        filters : str, list of str, optional
             * default: []
             * filters that apply to the whole question
-        question_options : str, list of str, optional
+        options : str, list of str, optional
             * default: []
             * options that apply to the whole question
         get_results : bool, optional
@@ -622,8 +591,8 @@ class Handler(object):
         Returns
         -------
         result : dict, containing:
-            * `question_object` : :class:`taniumpy.object_types.question.Question`, the actual question created and added by PyTan
-            * `question_results` : :class:`taniumpy.object_types.result_set.ResultSet`, the Result Set for `question_object` if `get_results` == True
+            * `question_object` : :class:`utils.taniumpy.object_types.question.Question`, the actual question created and added by PyTan
+            * `question_results` : :class:`utils.taniumpy.object_types.result_set.ResultSet`, the Result Set for `question_object` if `get_results` == True
             * `poller_object` : :class:`QuestionPoller`, poller object used to wait until all results are in before getting `question_results`
             * `poller_success` : None if `get_results` == True, elsewise True or False
 
@@ -644,11 +613,11 @@ class Handler(object):
         ...     'opt:ignore_case, opt:max_data_age:60'
         ... )
 
-        >>> # example of str for question_filters
-        >>> question_filters = 'Sensor2, that contains:example test'
+        >>> # example of str for filters
+        >>> filters = 'Sensor2, that contains:example test'
 
-        >>> # example of list of str for question_options
-        >>> question_options = ['max_data_age:3600', 'and']
+        >>> # example of list of str for options
+        >>> options = ['max_data_age:3600', 'and']
 
         Notes
         -----
@@ -659,7 +628,7 @@ class Handler(object):
 
         Asking the same question in PyTan has some similarities:
 
-            >>> r = handler.ask_manual(sensors=['Computer Name', 'IP Route Details'], question_filters=['Is Windows, that contains:True'])
+            >>> r = handler.ask_manual(sensors=['Computer Name', 'IP Route Details'], filters=['Is Windows, that contains:True'])
 
         There are two sensors in this question, after the "Get" and before the "from all machines": "Computer Name" and "IP Route Details". The sensors after the "Get" and before the "from all machines" can be referred to as any number of things:
 
@@ -675,7 +644,7 @@ class Handler(object):
 
         And in PyTan:
 
-             >>> r = handler.ask_manual(sensors=['Computer Name, that starts with:finance', 'IP Route Details'], question_filters=['Is Windows, that contains:True'])
+             >>> r = handler.ask_manual(sensors=['Computer Name, that starts with:finance', 'IP Route Details'], filters=['Is Windows, that contains:True'])
 
         This will cause the results to have the same number of columns, but for any machine that returns results that do not match the filter specified for a given sensor, the row for that column will contain "[no results]".
 
@@ -690,29 +659,28 @@ class Handler(object):
 
         See Also
         --------
-        :data:`constants.FILTER_MAPS` : valid filter dictionaries for filters
-        :data:`constants.OPTION_MAPS` : valid option dictionaries for options
+        :data:`utils.constants.FILTER_MAPS` : valid filter dictionaries for filters
+        :data:`utils.constants.OPTION_MAPS` : valid option dictionaries for options
         :func:`pytan.handler.Handler._ask_manual` : private method with the actual workflow used to create and add the question object
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
-        helpers.check_for_help(kwargs=kwargs)
+        utils.helpers.check_for_help(kwargs=kwargs)
 
         sensors = kwargs.get('sensors', [])
-        q_filters = kwargs.get('question_filters', [])
-        q_options = kwargs.get('question_options', [])
+        filters = kwargs.get('filters', [])
+        options = kwargs.get('options', [])
 
-        sensor_defs = parse_sensors(sensors=sensors)
-        q_filter_defs = parse_filters(question_filters=q_filters)
-        q_option_defs = parse_options(question_options=q_options)
+        sensor_defs = utils.parsers.parse_sensors(sensors=sensors)
+        filter_defs = utils.parsers.parse_filters(filters=filters)
+        option_defs = utils.parsers.parse_options(options=options)
 
-        clean_keys = ['sensor_defs', 'question_filter_defs', 'question_option_defs']
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_keys = ['sensor_defs', 'filter_defs', 'option_defs']
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         result = self._ask_manual(
             sensor_defs=sensor_defs,
-            question_filter_defs=q_filter_defs,
-            question_option_defs=q_option_defs,
+            filter_defs=filter_defs,
+            option_defs=option_defs,
             **clean_kwargs
         )
         return result
@@ -727,21 +695,20 @@ class Handler(object):
 
         Returns
         -------
-        parse_job_results : :class:`taniumpy.object_types.parse_result_group.ParseResultGroup`
+        parse_job_results : :class:`utils.taniumpy.object_types.parse_result_group.ParseResultGroup`
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         if not self.session.platform_is_6_5(**kwargs):
             m = "ParseJob not supported in version: {}".format
             m = m(self.session.server_version)
-            raise UnsupportedVersionError(m)
+            raise utils.exceptions.UnsupportedVersionError(m)
 
-        parse_job = taniumpy.ParseJob()
+        parse_job = utils.taniumpy.ParseJob()
         parse_job.question_text = question_text
         parse_job.parser_version = 2
 
         clean_keys = ['obj']
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         parse_job_results = self.session.add(obj=parse_job, **clean_kwargs)
         return parse_job_results
@@ -800,11 +767,11 @@ class Handler(object):
         Returns
         -------
         ret : dict, containing:
-            * `question_object` : :class:`taniumpy.object_types.question.Question`, the actual question added by PyTan
-            * `question_results` : :class:`taniumpy.object_types.result_set.ResultSet`, the Result Set for `question_object` if `get_results` == True
+            * `question_object` : :class:`utils.taniumpy.object_types.question.Question`, the actual question added by PyTan
+            * `question_results` : :class:`utils.taniumpy.object_types.result_set.ResultSet`, the Result Set for `question_object` if `get_results` == True
             * `poller_object` : :class:`QuestionPoller`, poller object used to wait until all results are in before getting `question_results`
             * `poller_success` : None if `get_results` == True, elsewise True or False
-            * `parse_results` : :class:`taniumpy.object_types.parse_result_group_list.ParseResultGroupList`, the parse result group returned from Tanium after parsing `question_text`
+            * `parse_results` : :class:`utils.taniumpy.object_types.parse_result_group_list.ParseResultGroupList`, the parse result group returned from Tanium after parsing `question_text`
 
         Examples
         --------
@@ -815,15 +782,14 @@ class Handler(object):
         Ask the server to parse 'computer name' and pick index 1 as the question you want to run:
             >>> v = handler.ask_parsed('computer name', picker=1)
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         if not self.session.platform_is_6_5(**kwargs):
             m = "ParseJob not supported in version: {}".format
             m = m(self.session.server_version)
-            raise UnsupportedVersionError(m)
+            raise utils.exceptions.UnsupportedVersionError(m)
 
         clean_keys = ['obj', 'question_text', 'handler']
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         sse = kwargs.get('sse', False)
         clean_kwargs['sse_format'] = clean_kwargs.get('sse_format', 'xml_obj')
@@ -837,7 +803,7 @@ class Handler(object):
             m = (
                 "Question Text '{}' was unable to be parsed into a valid query text by the server"
             ).format
-            raise ServerParseError(m())
+            raise utils.exceptions.ServerParseError(m())
 
         pi = "Index {0}, Score: {1.score}, Query: {1.question_text!r}".format
         pw = (
@@ -849,7 +815,7 @@ class Handler(object):
             self.mylog.critical(pw())
             for idx, x in enumerate(parse_job_results):
                 self.mylog.critical(pi(idx + 1, x))
-            raise PickerError(pw())
+            raise utils.exceptions.PickerError(pw())
 
         try:
             picked_parse_job = parse_job_results[picker - 1]
@@ -862,7 +828,7 @@ class Handler(object):
             pi = "Index {0}, Score: {1.score}, Query: {1.question_text!r}"
             for idx, x in enumerate(parse_job_results):
                 self.mylog.critical(pi(idx + 1, x))
-            raise PickerError(pw())
+            raise utils.exceptions.PickerError(pw())
 
         add_obj = picked_parse_job.question
 
@@ -873,7 +839,7 @@ class Handler(object):
         m = "Question Added, ID: {}, query text: {!r}, expires: {}".format
         self.mylog.debug(m(added_obj.id, added_obj.query_text, added_obj.expiration))
 
-        poller = QuestionPoller(handler=self, obj=added_obj, **clean_kwargs)
+        poller = self.pollers.QuestionPoller(handler=self, obj=added_obj, **clean_kwargs)
 
         ret = {
             'question_object': added_obj,
@@ -893,7 +859,7 @@ class Handler(object):
             else:
                 rd = self.get_result_data(obj=added_obj, **clean_kwargs)
 
-            if isinstance(rd, taniumpy.object_types.result_set.ResultSet):
+            if isinstance(rd, utils.taniumpy.object_types.result_set.ResultSet):
                 # add the sensors from this question to the ResultSet object for reporting
                 rd.sensors = rd.sensors = [x.sensor for x in added_obj.selects]
 
@@ -911,12 +877,12 @@ class Handler(object):
         ----------
         package : str
             * package to deploy with this action
-        action_filters : str, list of str, optional
+        filters : str, list of str, optional
             * default: []
             * each string must describe a sensor and a filter which limits which computers the action will deploy `package` to
-        action_options : str, list of str, optional
+        options : str, list of str, optional
             * default: []
-            * options to apply to `action_filters`
+            * options to apply to `filters`
         start_seconds_from_now : int, optional
             * default: 0
             * start action N seconds from now
@@ -962,13 +928,13 @@ class Handler(object):
         Returns
         -------
         ret : dict, containing:
-            * `saved_action_object` : :class:`taniumpy.object_types.saved_action.SavedAction`, the saved_action added for this action (None if 6.2)
-            * `action_object` : :class:`taniumpy.object_types.action.Action`, the action object that tanium created for `saved_action`
-            * `package_object` : :class:`taniumpy.object_types.package_spec.PackageSPec`, the package object used in `saved_action`
-            * `action_info` : :class:`taniumpy.object_types.result_info.ResultInfo`, the initial GetResultInfo call done before getting results
+            * `saved_action_object` : :class:`utils.taniumpy.object_types.saved_action.SavedAction`, the saved_action added for this action (None if 6.2)
+            * `action_object` : :class:`utils.taniumpy.object_types.action.Action`, the action object that tanium created for `saved_action`
+            * `package_object` : :class:`utils.taniumpy.object_types.package_spec.PackageSPec`, the package object used in `saved_action`
+            * `action_info` : :class:`utils.taniumpy.object_types.result_info.ResultInfo`, the initial GetResultInfo call done before getting results
             * `poller_object` : :class:`pytan.pollers.ActionPoller`, poller object used to wait until all results are in before getting `action_results`
             * `poller_success` : None if `get_results` == False, elsewise True or False
-            * `action_results` : None if `get_results` == False, elsewise :class:`taniumpy.object_types.result_set.ResultSet`, the results for `action_object`
+            * `action_results` : None if `get_results` == False, elsewise :class:`utils.taniumpy.object_types.result_set.ResultSet`, the results for `action_object`
             * `action_result_map` : None if `get_results` == False, elsewise progress map for `action_object` in dictionary form
 
         Examples
@@ -979,43 +945,42 @@ class Handler(object):
         >>> # example of str for `package` with params
         >>> package = 'Package1{key:value}'
 
-        >>> # example of str for `action_filters` with params and filter for sensors
-        >>> action_filters = 'Sensor1{key:value}, that contains:example text'
+        >>> # example of str for `filters` with params and filter for sensors
+        >>> filters = 'Sensor1{key:value}, that contains:example text'
 
-        >>> # example of list of str for `action_options`
-        >>> action_options = ['max_data_age:3600', 'and']
+        >>> # example of list of str for `options`
+        >>> options = ['max_data_age:3600', 'and']
 
         See Also
         --------
-        :data:`constants.FILTER_MAPS` : valid filter dictionaries for filters
-        :data:`constants.OPTION_MAPS` : valid option dictionaries for options
+        :data:`utils.constants.FILTER_MAPS` : valid filter dictionaries for filters
+        :data:`utils.constants.OPTION_MAPS` : valid option dictionaries for options
         :func:`pytan.handler.Handler._deploy_action` : private method with the actual workflow used to create and add the action object
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
-        helpers.check_for_help(kwargs=kwargs)
+        utils.helpers.check_for_help(kwargs=kwargs)
 
         # the human string describing the sensors/filter that user wants
         # to deploy the action against
-        action_filters = kwargs.get('action_filters', [])
+        filters = kwargs.get('filters', [])
 
         # the question options to use on the pre-action question and on the
         # group for the action filters
-        action_options = kwargs.get('action_options', [])
+        options = kwargs.get('options', [])
 
         # name of package to deploy with params as {key=value1,key2=value2}
         package = kwargs.get('package', '')
 
-        action_filter_defs = parse_sensors(action_filters, 'action_filters', True)
-        action_option_defs = parse_options(action_options)
-        package_def = parse_package(package)
+        filter_defs = utils.parsers.parse_sensors(filters, 'filters', True)
+        option_defs = utils.parsers.parse_options(options)
+        package_def = utils.parsers.parse_package(package)
 
-        clean_keys = ['package_def', 'action_filter_defs', 'action_option_defs']
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_keys = ['package_def', 'filter_defs', 'option_defs']
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         deploy_result = self._deploy_action(
-            action_filter_defs=action_filter_defs,
-            action_option_defs=action_option_defs,
+            filter_defs=filter_defs,
+            option_defs=option_defs,
             package_def=package_def,
             **clean_kwargs
         )
@@ -1031,18 +996,17 @@ class Handler(object):
 
         Returns
         -------
-        saved_action_approve_obj : :class:`taniumpy.object_types.saved_action_approval.SavedActionApproval`
+        saved_action_approve_obj : :class:`utils.taniumpy.object_types.saved_action_approval.SavedActionApproval`
             * The object containing the return from SavedActionApproval
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['pytan_help', 'objtype', 'id', 'obj']
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         h = "Issue a GetObject to find saved action objects"
         saved_action_obj = self.get(objtype='saved_action', id=id, pytan_help=h, **clean_kwargs)[0]
 
-        add_sap_obj = taniumpy.SavedActionApproval()
+        add_sap_obj = utils.taniumpy.SavedActionApproval()
         add_sap_obj.id = saved_action_obj.id
         add_sap_obj.approved_flag = 1
 
@@ -1065,18 +1029,17 @@ class Handler(object):
 
         Returns
         -------
-        action_stop_obj : :class:`taniumpy.object_types.action_stop.ActionStop`
+        action_stop_obj : :class:`utils.taniumpy.object_types.action_stop.ActionStop`
             The object containing the ID of the action stop job
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['pytan_help', 'objtype', 'id', 'obj']
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         h = "Issue a GetObject to find the action object we want to stop"
         action_obj = self.get(objtype='action', id=id, pytan_help=h, **clean_kwargs)[0]
 
-        add_action_stop_obj = taniumpy.ActionStop()
+        add_action_stop_obj = utils.taniumpy.ActionStop()
         add_action_stop_obj.action = action_obj
 
         h = "Issue an AddObject to add a StopAction"
@@ -1092,7 +1055,7 @@ class Handler(object):
             m = (
                 "Action not stopped successfully, json of action after issuing StopAction: {}"
             ).format
-            raise PytanError(m(self.export_obj(after_action_obj, 'json')))
+            raise utils.exceptions.PytanError(m(self.export_obj(after_action_obj, 'json')))
 
         return action_stop_obj
 
@@ -1104,7 +1067,7 @@ class Handler(object):
 
         Parameters
         ----------
-        obj : :class:`taniumpy.object_types.base.BaseType`
+        obj : :class:`utils.taniumpy.object_types.base.BaseType`
             * object to get result data for
         aggregate : bool, optional
             * default: False
@@ -1117,7 +1080,7 @@ class Handler(object):
 
         Returns
         -------
-        rd : :class:`taniumpy.object_types.result_set.ResultSet`
+        rd : :class:`utils.taniumpy.object_types.result_set.ResultSet`
             The return of GetResultData for `obj`
         """
 
@@ -1127,14 +1090,13 @@ class Handler(object):
         note #2 from jwk:
         To get the aggregate data (without computer names), set row_counts_only_flag = 1. To get the computer names, use row_counts_only_flag = 0 (default).
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         if shrink:
-            shrunk_obj = tanium_obj.shrink_obj(obj=obj)
+            shrunk_obj = utils.tanium_obj.shrink_obj(obj=obj)
         else:
             shrunk_obj = obj
 
-        kwargs['export_flag'] = validate.get_kwargs_int(key='export_flag', default=0, **kwargs)
+        kwargs['export_flag'] = utils.validate.get_kwargs_int(key='export_flag', default=0, **kwargs)
 
         if kwargs['export_flag']:
             grd = self.session.get_result_data_sse
@@ -1149,7 +1111,7 @@ class Handler(object):
             kwargs['row_counts_only_flag'] = 1
 
         clean_keys = ['obj']
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         # do a getresultdata
         rd = grd(obj=shrunk_obj, **clean_kwargs)
@@ -1175,7 +1137,7 @@ class Handler(object):
 
         Parameters
         ----------
-        obj : :class:`taniumpy.object_types.base.BaseType`
+        obj : :class:`utils.taniumpy.object_types.base.BaseType`
             * object to get result data for
         sse_format : str, optional
             * default: 'csv'
@@ -1189,17 +1151,16 @@ class Handler(object):
 
         See Also
         --------
-        :data:`constants.SSE_FORMAT_MAP` : maps `sse_format` to an integer for use by the SOAP API
-        :data:`constants.SSE_RESTRICT_MAP` : maps sse_format integers to supported platform versions
-        :data:`constants.SSE_CRASH_MAP` : maps platform versions that can cause issues in various scenarios
+        :data:`utils.constants.SSE_FORMAT_MAP` : maps `sse_format` to an integer for use by the SOAP API
+        :data:`utils.constants.SSE_RESTRICT_MAP` : maps sse_format integers to supported platform versions
+        :data:`utils.constants.SSE_CRASH_MAP` : maps platform versions that can cause issues in various scenarios
 
         Returns
         -------
-        export_data : either `str` or :class:`taniumpy.object_types.result_set.ResultSet`
+        export_data : either `str` or :class:`utils.taniumpy.object_types.result_set.ResultSet`
             * If sse_format is one of csv, xml, or cef, export_data will be a `str` containing the contents of the ResultSet in said format
-            * If sse_format is xml_obj, export_data will be a :class:`taniumpy.object_types.result_set.ResultSet`
+            * If sse_format is xml_obj, export_data will be a :class:`utils.taniumpy.object_types.result_set.ResultSet`
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         self._check_sse_version()
         self._check_sse_crash_prevention(obj=obj)
@@ -1226,7 +1187,7 @@ class Handler(object):
         clean_keys = [
             'obj', 'pytan_help', 'handler', 'export_id', 'leading', 'trailing', 'sse_format',
         ]
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         h = "Issue a GetResultData to start a Server Side Export and get an export_id"
         export_id = self.get_result_data(obj=obj, pytan_help=h, **clean_kwargs)
@@ -1234,7 +1195,7 @@ class Handler(object):
         m = "Server Side Export Started, id: '{}'".format
         self.mylog.debug(m(export_id))
 
-        poller = SSEPoller(handler=self, export_id=export_id, **clean_kwargs)
+        poller = self.pollers.SSEPoller(handler=self, export_id=export_id, **clean_kwargs)
         poller_success = poller.run(**clean_kwargs)
 
         if not poller_success:
@@ -1242,7 +1203,7 @@ class Handler(object):
                 "Server Side Export Poller failed while waiting for completion, last status: {}"
             ).format
             sse_status = getattr(poller, 'sse_status', 'Unknown')
-            raise ServerSideExportError(m(sse_status))
+            raise utils.exceptions.ServerSideExportError(m(sse_status))
 
         export_data = poller.get_sse_data(**clean_kwargs)
 
@@ -1261,15 +1222,14 @@ class Handler(object):
 
         Returns
         -------
-        rs : :class:`taniumpy.object_types.result_set.ResultSet`
+        rs : :class:`utils.taniumpy.object_types.result_set.ResultSet`
             * x converted into a ResultSet object
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         rs_xml = '<result_sets><result_set>{}</result_set></result_sets>'.format
         rs_xml = rs_xml(x)
         rs_tree = ET.fromstring(rs_xml)
-        rs = taniumpy.ResultSet.fromSOAPElement(rs_tree)
+        rs = utils.taniumpy.ResultSet.fromSOAPElement(rs_tree)
         rs._RAW_XML = rs_xml
         return rs
 
@@ -1280,7 +1240,7 @@ class Handler(object):
 
         Parameters
         ----------
-        obj : :class:`taniumpy.object_types.base.BaseType`
+        obj : :class:`utils.taniumpy.object_types.base.BaseType`
             * object to get result data for
         shrink : bool, optional
             * default: True
@@ -1289,13 +1249,12 @@ class Handler(object):
 
         Returns
         -------
-        ri : :class:`taniumpy.object_types.result_info.ResultInfo`
+        ri : :class:`utils.taniumpy.object_types.result_info.ResultInfo`
             * The return of GetResultInfo for `obj`
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         if shrink:
-            shrunk_obj = tanium_obj.shrink_obj(obj=obj)
+            shrunk_obj = utils.tanium_obj.shrink_obj(obj=obj)
         else:
             shrunk_obj = obj
 
@@ -1304,7 +1263,7 @@ class Handler(object):
         kwargs['suppress_object_list'] = kwargs.get('suppress_object_list', 1)
 
         clean_keys = ['obj']
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         ri = self.session.get_result_info(obj=shrunk_obj, **clean_kwargs)
         return ri
@@ -1322,27 +1281,26 @@ class Handler(object):
 
         Returns
         -------
-        ret : :class:`taniumpy.object_types.base.BaseType`
+        ret : :class:`utils.taniumpy.object_types.base.BaseType`
             * TaniumPy object added to Tanium SOAP Server
 
         See Also
         --------
-        :data:`constants.GET_OBJ_MAP` : maps objtype to supported 'create_json' types
+        :data:`utils.constants.GET_OBJ_MAP` : maps objtype to supported 'create_json' types
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
-        obj_map = tanium_obj.get_obj_map(objtype=objtype)
+        obj_map = utils.tanium_obj.get_obj_map(objtype=objtype)
 
         create_json_ok = obj_map['create_json']
 
         if not create_json_ok:
             json_createable = ', '.join([
-                x for x, y in constants.GET_OBJ_MAP.items() if y['create_json']
+                x for x, y in utils.constants.GET_OBJ_MAP.items() if y['create_json']
             ])
             m = "{} is not a json createable object! Supported objects: {}".format
-            raise PytanError(m(objtype, json_createable))
+            raise utils.exceptions.PytanError(m(objtype, json_createable))
 
-        add_obj = tanium_obj.load_taniumpy_from_json(json_file=json_file)
+        add_obj = utils.tanium_obj.load_taniumpy_from_json(json_file=json_file)
 
         if getattr(add_obj, '_list_properties', ''):
             obj_list = [x for x in add_obj]
@@ -1361,13 +1319,13 @@ class Handler(object):
         else:
             all_type = obj_map['all']
 
-        ret = tanium_obj.get_taniumpy_obj(obj_map=all_type)()
+        ret = utils.tanium_obj.get_taniumpy_obj(obj_map=all_type)()
 
         h = "Issue an AddObject to add an object"
         kwargs['pytan_help'] = kwargs.get('pytan_help', h)
 
         clean_keys = ['obj']
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         for x in obj_list:
             try:
@@ -1376,7 +1334,7 @@ class Handler(object):
                 m = (
                     "Failure while importing {}: {}\nJSON Dump of object: {}"
                 ).format
-                raise PytanError(m(x, e, x.to_json(x)))
+                raise utils.exceptions.PytanError(m(x, e, x.to_json(x)))
 
             m = "New {} (ID: {}) created successfully!".format
             self.mylog.info(m(list_obj, getattr(list_obj, 'id', 'Unknown')))
@@ -1389,7 +1347,7 @@ class Handler(object):
 
         Parameters
         ----------
-        obj : :class:`taniumpy.object_types.plugin.Plugin`
+        obj : :class:`utils.taniumpy.object_types.plugin.Plugin`
             * Plugin object to run
 
         Returns
@@ -1398,19 +1356,18 @@ class Handler(object):
             * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server
             * sql_zipped will be a dict with the SQL results embedded in the SOAP response
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         # run the plugin
         h = "Issue a RunPlugin run a plugin and get results back"
         kwargs['pytan_help'] = kwargs.get('pytan_help', h)
 
         clean_keys = ['obj', 'p']
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         plugin_result = self.session.run_plugin(obj=obj, **clean_kwargs)
 
         # zip up the sql results into a list of python dictionaries
-        sql_zipped = tanium_obj.plugin_zip(p=plugin_result)
+        sql_zipped = utils.tanium_obj.plugin_zip(p=plugin_result)
 
         # return the plugin result and the python dictionary of results
         return plugin_result, sql_zipped
@@ -1439,9 +1396,8 @@ class Handler(object):
             * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server
             * sql_zipped will be a dict with the SQL results embedded in the SOAP response
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs)
 
         # get the ID for the group if a name was passed in
         if group:
@@ -1456,38 +1412,38 @@ class Handler(object):
             public_flag = 0
 
         # create the plugin parent
-        plugin = taniumpy.Plugin()
+        plugin = utils.taniumpy.Plugin()
         plugin.name = 'CreateDashboard'
         plugin.bundle = 'Dashboards'
 
         # create the plugin arguments
-        plugin.arguments = taniumpy.PluginArgumentList()
+        plugin.arguments = utils.taniumpy.PluginArgumentList()
 
-        arg1 = taniumpy.PluginArgument()
+        arg1 = utils.taniumpy.PluginArgument()
         arg1.name = 'dash_name'
         arg1.type = 'String'
         arg1.value = name
         plugin.arguments.append(arg1)
 
-        arg2 = taniumpy.PluginArgument()
+        arg2 = utils.taniumpy.PluginArgument()
         arg2.name = 'dash_text'
         arg2.type = 'String'
         arg2.value = text
         plugin.arguments.append(arg2)
 
-        arg3 = taniumpy.PluginArgument()
+        arg3 = utils.taniumpy.PluginArgument()
         arg3.name = 'group_id'
         arg3.type = 'Number'
         arg3.value = group_id
         plugin.arguments.append(arg3)
 
-        arg4 = taniumpy.PluginArgument()
+        arg4 = utils.taniumpy.PluginArgument()
         arg4.name = 'public_flag'
         arg4.type = 'Number'
         arg4.value = public_flag
         plugin.arguments.append(arg4)
 
-        arg5 = taniumpy.PluginArgument()
+        arg5 = utils.taniumpy.PluginArgument()
         arg5.name = 'sqid_xml'
         arg5.type = 'String'
         arg5.value = ''
@@ -1514,22 +1470,21 @@ class Handler(object):
             * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server
             * sql_zipped will be a dict with the SQL results embedded in the SOAP response
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['obj', 'name', 'pytan_help']
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         dashboards_to_del = self.get_dashboards(name=name, **clean_kwargs)[1]
 
         # create the plugin parent
-        plugin = taniumpy.Plugin()
+        plugin = utils.taniumpy.Plugin()
         plugin.name = 'DeleteDashboards'
         plugin.bundle = 'Dashboards'
 
         # create the plugin arguments
-        plugin.arguments = taniumpy.PluginArgumentList()
+        plugin.arguments = utils.taniumpy.PluginArgumentList()
 
-        arg1 = taniumpy.PluginArgument()
+        arg1 = utils.taniumpy.PluginArgument()
         arg1.name = 'dashboard_ids'
         arg1.type = 'Number_Set'
         arg1.value = ','.join([x['id'] for x in dashboards_to_del])
@@ -1557,13 +1512,12 @@ class Handler(object):
             * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server
             * sql_zipped will be a dict with the SQL results embedded in the SOAP response
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['obj', 'name', 'pytan_help']
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         # create the plugin parent
-        plugin = taniumpy.Plugin()
+        plugin = utils.taniumpy.Plugin()
         plugin.name = 'GetDashboards'
         plugin.bundle = 'Dashboards'
 
@@ -1576,7 +1530,7 @@ class Handler(object):
             sql_zipped = [x for x in sql_zipped if x['name'] == name]
             if not sql_zipped:
                 m = "No dashboards found that match name: {!r}".format
-                raise NotFoundError(m(name))
+                raise utils.exceptions.NotFoundError(m(name))
 
         # return the plugin result and the python dictionary of results
         return plugin_result, sql_zipped
@@ -1593,13 +1547,12 @@ class Handler(object):
         ------
         PytanError : :exc:`pytan.utils.PytanError`
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         m = (
             "Sensor creation not supported via PyTan as of yet, too complex\n"
             "Use create_sensor_from_json() instead!"
         )
-        raise PytanError(m)
+        raise utils.exceptions.PytanError(m)
 
     def create_package(self, name, command, display_name='', file_urls=[],
                        command_timeout_seconds=600, expire_seconds=600, parameters_json_file='',
@@ -1656,26 +1609,25 @@ class Handler(object):
 
         Returns
         -------
-        package_obj : :class:`taniumpy.object_types.package_spec.PackageSpec`
+        package_obj : :class:`utils.taniumpy.object_types.package_spec.PackageSpec`
             * TaniumPy object added to Tanium SOAP Server
 
         See Also
         --------
-        :data:`constants.FILTER_MAPS` : valid filters for verify_filters
-        :data:`constants.OPTION_MAPS` : valid options for verify_filter_options
+        :data:`utils.constants.FILTER_MAPS` : valid filters for verify_filters
+        :data:`utils.constants.OPTION_MAPS` : valid options for verify_filter_options
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
-        helpers.check_for_help(kwargs=kwargs)
+        utils.helpers.check_for_help(kwargs=kwargs)
 
         clean_keys = ['obj', 'pytan_help', 'defs']
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         metadata = kwargs.get('metadata', [])
-        metadatalist_obj = tanium_obj.build_metadatalist_obj(properties=metadata)
+        metadatalist_obj = utils.tanium_obj.build_metadatalist_obj(properties=metadata)
 
         # bare minimum arguments for new package: name, command
-        add_package_obj = taniumpy.PackageSpec()
+        add_package_obj = utils.taniumpy.PackageSpec()
         add_package_obj.name = name
         if display_name:
             add_package_obj.display_name = display_name
@@ -1686,15 +1638,12 @@ class Handler(object):
 
         # VERIFY FILTERS
         if verify_filters:
-            verify_filter_defs = parse_filters(
-                question_filters=verify_filters
-            )
-            verify_option_defs = parse_options(
-                question_options=verify_filter_options
-            )
-            verify_filter_defs = self._get_sensor_defs(defs=verify_filter_defs, **clean_kwargs)
-            add_verify_group = tanium_obj.build_group_obj(
-                q_filter_defs=verify_filter_defs, q_option_defs=verify_option_defs
+            v_filter_defs = utils.parsers.parse_filters(filters=verify_filters)
+            v_option_defs = utils.parsers.parse_options(options=verify_filter_options)
+            v_filter_defs = self._get_sensor_defs(defs=v_filter_defs, **clean_kwargs)
+            add_verify_group = utils.tanium_obj.build_group_obj(
+                filter_defs=v_filter_defs,
+                option_defs=v_option_defs,
             )
             h = "Issue an AddObject to add a Group object for this package"
             verify_group = self._add(obj=add_verify_group, pytan_help=h, **clean_kwargs)
@@ -1706,13 +1655,13 @@ class Handler(object):
 
         # PARAMETERS
         if parameters_json_file:
-            add_package_obj.parameter_definition = tanium_obj.load_param_json_file(
+            add_package_obj.parameter_definition = utils.tanium_obj.load_param_json_file(
                 parameters_json_file=parameters_json_file
             )
 
         # FILES
         if file_urls:
-            filelist_obj = taniumpy.PackageFileList()
+            filelist_obj = utils.taniumpy.PackageFileList()
             for file_url in file_urls:
                 # if :: is in file_url, split on it and use 0 as
                 # download_seconds
@@ -1726,7 +1675,7 @@ class Handler(object):
                     filename, file_url = file_url.split('||')
                 else:
                     filename = os.path.basename(file_url)
-                file_obj = taniumpy.PackageFile()
+                file_obj = utils.taniumpy.PackageFile()
                 file_obj.name = filename
                 file_obj.source = file_url
                 file_obj.download_seconds = download_seconds
@@ -1764,21 +1713,20 @@ class Handler(object):
 
         Returns
         -------
-        group_obj : :class:`taniumpy.object_types.group.Group`
+        group_obj : :class:`utils.taniumpy.object_types.group.Group`
             * TaniumPy object added to Tanium SOAP Server
 
         See Also
         --------
-        :data:`constants.FILTER_MAPS` : valid filters for filters
-        :data:`constants.OPTION_MAPS` : valid options for filter_options
+        :data:`utils.constants.FILTER_MAPS` : valid filters for filters
+        :data:`utils.constants.OPTION_MAPS` : valid options for filter_options
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
-        helpers.check_for_help(kwargs=kwargs)
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs)
+        utils.helpers.check_for_help(kwargs=kwargs)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs)
 
-        filter_defs = parse_filters(question_filters=filters)
-        option_defs = parse_options(question_options=filter_options)
+        filter_defs = utils.parsers.parse_filters(filters=filters)
+        option_defs = utils.parsers.parse_options(options=filter_options)
 
         h = (
             "Issue a GetObject to get the full object of specified sensors for inclusion in a "
@@ -1786,8 +1734,8 @@ class Handler(object):
         )
         filter_defs = self._get_sensor_defs(defs=filter_defs, pytan_help=h, **clean_kwargs)
 
-        add_group_obj = tanium_obj.build_group_obj(
-            q_filter_defs=filter_defs, q_option_defs=option_defs,
+        add_group_obj = utils.tanium_obj.build_group_obj(
+            filter_defs=filter_defs, option_defs=option_defs,
         )
         add_group_obj.name = groupname
 
@@ -1822,12 +1770,11 @@ class Handler(object):
 
         Returns
         -------
-        user_obj : :class:`taniumpy.object_types.user.User`
+        user_obj : :class:`utils.taniumpy.object_types.user.User`
             * TaniumPy object added to Tanium SOAP Server
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs)
 
         # get the ID for the group if a name was passed in
         if group:
@@ -1840,12 +1787,12 @@ class Handler(object):
             h = "Issue a GetObject to find a user role"
             rolelist_obj = self.get(objtype='userrole', id=roleid, name=rolename, pytan_help=h, **clean_kwargs)
         else:
-            rolelist_obj = taniumpy.RoleList()
+            rolelist_obj = utils.taniumpy.RoleList()
 
-        metadatalist_obj = tanium_obj.build_metadatalist_obj(
+        metadatalist_obj = utils.tanium_obj.build_metadatalist_obj(
             properties=properties, nameprefix='TConsole.User.Property',
         )
-        add_user_obj = taniumpy.User()
+        add_user_obj = utils.taniumpy.User()
         add_user_obj.name = name
         add_user_obj.roles = rolelist_obj
         add_user_obj.metadata = metadatalist_obj
@@ -1883,24 +1830,23 @@ class Handler(object):
 
         Returns
         -------
-        url_obj : :class:`taniumpy.object_types.white_listed_url.WhiteListedUrl`
+        url_obj : :class:`utils.taniumpy.object_types.white_listed_url.WhiteListedUrl`
             * TaniumPy object added to Tanium SOAP Server
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         if regex:
             url = 'regex:' + url
 
-        metadatalist_obj = tanium_obj.build_metadatalist_obj(
+        metadatalist_obj = utils.tanium_obj.build_metadatalist_obj(
             properties=properties, nameprefix='TConsole.WhitelistedURL',
         )
 
-        add_url_obj = taniumpy.WhiteListedUrl()
+        add_url_obj = utils.taniumpy.WhiteListedUrl()
         add_url_obj.url_regex = url
         add_url_obj.download_seconds = download_seconds
         add_url_obj.metadata = metadatalist_obj
 
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs)
 
         h = "Issue an AddObject to add a WhitelistedURL object"
         url_obj = self._add(obj=add_url_obj, pytan_help=h, **clean_kwargs)
@@ -1926,22 +1872,21 @@ class Handler(object):
 
         See Also
         --------
-        :data:`constants.GET_OBJ_MAP` : maps objtype to supported 'search' keys
+        :data:`utils.constants.GET_OBJ_MAP` : maps objtype to supported 'search' keys
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
-        obj_map = tanium_obj.get_obj_map(objtype=objtype)
+        obj_map = utils.tanium_obj.get_obj_map(objtype=objtype)
 
         delete_ok = obj_map['delete']
 
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs)
 
         if not delete_ok:
             deletable = ', '.join([
-                x for x, y in constants.GET_OBJ_MAP.items() if y['delete']
+                x for x, y in utils.constants.GET_OBJ_MAP.items() if y['delete']
             ])
             m = "{} is not a deletable object! Deletable objects: {}".format
-            raise PytanError(m(objtype, deletable))
+            raise utils.exceptions.PytanError(m(objtype, deletable))
 
         h = "Issue a GetObject to find the object to be deleted"
         objs_to_del = self.get(objtype=objtype, pytan_help=h, **clean_kwargs)
@@ -1963,40 +1908,40 @@ class Handler(object):
 
         Parameters
         ----------
-        obj : :class:`taniumpy.object_types.base.BaseType` or :class:`taniumpy.object_types.result_set.ResultSet`
+        obj : :class:`utils.taniumpy.object_types.base.BaseType` or :class:`utils.taniumpy.object_types.result_set.ResultSet`
             * TaniumPy object to export
         export_format : str, optional
             * default: 'csv'
             * the format to export `obj` to, one of: {'csv', 'xml', 'json'}
         header_sort : list of str, bool, optional
             * default: True
-            * for `export_format` csv and `obj` types :class:`taniumpy.object_types.base.BaseType` or :class:`taniumpy.object_types.result_set.ResultSet`
+            * for `export_format` csv and `obj` types :class:`utils.taniumpy.object_types.base.BaseType` or :class:`utils.taniumpy.object_types.result_set.ResultSet`
             * True: sort the headers automatically
             * False: do not sort the headers at all
             * list of str: sort the headers returned by priority based on provided list
         header_add_sensor : bool, optional
             * default: False
-            * for `export_format` csv and `obj` type :class:`taniumpy.object_types.result_set.ResultSet`
+            * for `export_format` csv and `obj` type :class:`utils.taniumpy.object_types.result_set.ResultSet`
             * False: do not prefix the headers with the associated sensor name for each column
             * True: prefix the headers with the associated sensor name for each column
         header_add_type : bool, optional
             * default: False
-            * for `export_format` csv and `obj` type :class:`taniumpy.object_types.result_set.ResultSet`
+            * for `export_format` csv and `obj` type :class:`utils.taniumpy.object_types.result_set.ResultSet`
             * False: do not postfix the headers with the result type for each column
             * True: postfix the headers with the result type for each column
         expand_grouped_columns : bool, optional
             * default: False
-            * for `export_format` csv and `obj` type :class:`taniumpy.object_types.result_set.ResultSet`
+            * for `export_format` csv and `obj` type :class:`utils.taniumpy.object_types.result_set.ResultSet`
             * False: do not expand multiline row entries into their own rows
             * True: expand multiline row entries into their own rows
         explode_json_string_values : bool, optional
             * default: False
-            * for `export_format` json or csv and `obj` type :class:`taniumpy.object_types.base.BaseType`
+            * for `export_format` json or csv and `obj` type :class:`utils.taniumpy.object_types.base.BaseType`
             * False: do not explode JSON strings in object attributes into their own object attributes
             * True: explode JSON strings in object attributes into their own object attributes
         minimal : bool, optional
             * default: False
-            * for `export_format` xml and `obj` type :class:`taniumpy.object_types.base.BaseType`
+            * for `export_format` xml and `obj` type :class:`utils.taniumpy.object_types.base.BaseType`
             * False: include empty attributes in XML output
             * True: do not include empty attributes in XML output
 
@@ -2011,9 +1956,8 @@ class Handler(object):
 
         See Also
         --------
-        :data:`constants.EXPORT_MAPS` : maps the type `obj` to `export_format` and the optional args supported for each
+        :data:`utils.constants.EXPORT_MAPS` : maps the type `obj` to `export_format` and the optional args supported for each
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         objtype = type(obj)
         try:
@@ -2023,7 +1967,7 @@ class Handler(object):
 
         # see if supplied obj is a supported object type
         type_match = [
-            x for x in constants.EXPORT_MAPS if isinstance(obj, getattr(taniumpy, x))
+            x for x in utils.constants.EXPORT_MAPS if isinstance(obj, getattr(utils.taniumpy, x))
         ]
 
         if not type_match:
@@ -2032,24 +1976,24 @@ class Handler(object):
             ).format
 
             # build a list of supported object types
-            supp_types = ', '.join(constants.EXPORT_MAPS.keys())
-            raise PytanError(err(objtype, supp_types))
+            supp_types = ', '.join(utils.constants.EXPORT_MAPS.keys())
+            raise utils.exceptions.PytanError(err(objtype, supp_types))
 
         # get the export formats for this obj type
-        export_formats = constants.EXPORT_MAPS.get(type_match[0], '')
+        export_formats = utils.constants.EXPORT_MAPS.get(type_match[0], '')
 
         if export_format not in export_formats:
             err = (
                 "{!r} not a supported export format for {}, must be one of: {}"
             ).format(export_format, objclassname, ', '.join(export_formats))
-            raise PytanError(err)
+            raise utils.exceptions.PytanError(err)
 
         # perform validation on optional kwargs, if they exist
         opt_keys = export_formats.get(export_format, [])
 
         for opt_key in opt_keys:
             check_args = dict(opt_key.items() + {'d': kwargs}.items())
-            validate.check_dictkey(**check_args)
+            utils.validate.check_dictkey(**check_args)
 
         # filter out the kwargs that are specific to this obj type and format type
         format_kwargs = {
@@ -2065,7 +2009,7 @@ class Handler(object):
             result = class_handler(obj=obj, export_format=export_format, **format_kwargs)
         else:
             err = "{!r} not supported by Handler!".format
-            raise PytanError(err(objclassname))
+            raise utils.exceptions.PytanError(err(objclassname))
 
         return result
 
@@ -2093,10 +2037,9 @@ class Handler(object):
         report_path : str
             * the full path to the file created with `contents`
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         if report_file is None:
-            report_file = 'pytan_report_{}.txt'.format(time.get_now())
+            report_file = 'pytan_report_{}.txt'.format(utils.calc.get_now())
 
         # try to get report_dir from the report_file
         report_dir = os.path.dirname(report_file)
@@ -2137,40 +2080,40 @@ class Handler(object):
 
         Parameters
         ----------
-        obj : :class:`taniumpy.object_types.base.BaseType` or :class:`taniumpy.object_types.result_set.ResultSet`
+        obj : :class:`utils.taniumpy.object_types.base.BaseType` or :class:`utils.taniumpy.object_types.result_set.ResultSet`
             * TaniumPy object to export
         export_format : str, optional
             * default: 'csv'
             * the format to export `obj` to, one of: {'csv', 'xml', 'json'}
         header_sort : list of str, bool, optional
             * default: True
-            * for `export_format` csv and `obj` types :class:`taniumpy.object_types.base.BaseType` or :class:`taniumpy.object_types.result_set.ResultSet`
+            * for `export_format` csv and `obj` types :class:`utils.taniumpy.object_types.base.BaseType` or :class:`utils.taniumpy.object_types.result_set.ResultSet`
             * True: sort the headers automatically
             * False: do not sort the headers at all
             * list of str: sort the headers returned by priority based on provided list
         header_add_sensor : bool, optional
             * default: False
-            * for `export_format` csv and `obj` type :class:`taniumpy.object_types.result_set.ResultSet`
+            * for `export_format` csv and `obj` type :class:`utils.taniumpy.object_types.result_set.ResultSet`
             * False: do not prefix the headers with the associated sensor name for each column
             * True: prefix the headers with the associated sensor name for each column
         header_add_type : bool, optional
             * default: False
-            * for `export_format` csv and `obj` type :class:`taniumpy.object_types.result_set.ResultSet`
+            * for `export_format` csv and `obj` type :class:`utils.taniumpy.object_types.result_set.ResultSet`
             * False: do not postfix the headers with the result type for each column
             * True: postfix the headers with the result type for each column
         expand_grouped_columns : bool, optional
             * default: False
-            * for `export_format` csv and `obj` type :class:`taniumpy.object_types.result_set.ResultSet`
+            * for `export_format` csv and `obj` type :class:`utils.taniumpy.object_types.result_set.ResultSet`
             * False: do not expand multiline row entries into their own rows
             * True: expand multiline row entries into their own rows
         explode_json_string_values : bool, optional
             * default: False
-            * for `export_format` json or csv and `obj` type :class:`taniumpy.object_types.base.BaseType`
+            * for `export_format` json or csv and `obj` type :class:`utils.taniumpy.object_types.base.BaseType`
             * False: do not explode JSON strings in object attributes into their own object attributes
             * True: explode JSON strings in object attributes into their own object attributes
         minimal : bool, optional
             * default: False
-            * for `export_format` xml and `obj` type :class:`taniumpy.object_types.base.BaseType`
+            * for `export_format` xml and `obj` type :class:`utils.taniumpy.object_types.base.BaseType`
             * False: include empty attributes in XML output
             * True: do not include empty attributes in XML output
         report_file: str, optional
@@ -2201,19 +2144,18 @@ class Handler(object):
         -----
         When performing a CSV export and importing that CSV into excel, keep in mind that Excel has a per cell character limit of 32,000. Any cell larger than that will be broken up into a whole new row, which can wreak havoc with data in Excel.
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         report_file = kwargs.get('report_file', None)
 
         if not report_file:
             report_file = "{}_{}.{}".format(
-                type(obj).__name__, time.get_now(), export_format,
+                type(obj).__name__, utils.calc.get_now(), export_format,
             )
             m = "No report file name supplied, generated name: {!r}".format
             self.mylog.debug(m(report_file))
 
         clean_keys = ['obj', 'export_format', 'contents', 'report_file']
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         # get the results of exporting the object
         contents = self.export_obj(obj=obj, export_format=export_format, **clean_kwargs)
@@ -2234,27 +2176,26 @@ class Handler(object):
 
         Returns
         -------
-        obj_list : :class:`taniumpy.object_types.base.BaseType`
+        obj_list : :class:`utils.taniumpy.object_types.base.BaseType`
             * The object list of items found for `objtype`
 
         See Also
         --------
-        :data:`constants.GET_OBJ_MAP` : maps objtype to supported 'search' keys
+        :data:`utils.constants.GET_OBJ_MAP` : maps objtype to supported 'search' keys
         :func:`pytan.handler.Handler._get_multi` : private method used to get multiple items
         :func:`pytan.handler.Handler._get_single` : private method used to get singular items
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         h = "Issue a GetObject to find an object"
         kwargs['pytan_help'] = kwargs.get('pytan_help', h)
 
         clean_keys = ['obj', 'objtype', 'obj_map']
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         err_keys = ['pytan_help']
-        err_args = validate.clean_kwargs(kwargs=kwargs, keys=err_keys)
+        err_args = utils.validate.clean_kwargs(kwargs=kwargs, keys=err_keys)
 
-        obj_map = tanium_obj.get_obj_map(objtype=objtype)
+        obj_map = utils.tanium_obj.get_obj_map(objtype=objtype)
 
         manual_search = obj_map['manual']
         api_attrs = obj_map['search']
@@ -2267,7 +2208,7 @@ class Handler(object):
         if not api_attrs or (not any(api_kwattrs) and manual_search):
             all_objs = self.get_all(objtype=objtype, **clean_kwargs)
 
-            return_objs = getattr(taniumpy, all_objs.__class__.__name__)()
+            return_objs = getattr(utils.taniumpy, all_objs.__class__.__name__)()
 
             for k, v in kwargs.iteritems():
                 if not v:
@@ -2285,7 +2226,7 @@ class Handler(object):
 
             if not return_objs:
                 err = "No results found searching for {} with {}!!".format
-                raise PytanError(err(objtype, err_args))
+                raise utils.exceptions.PytanError(err(objtype, err_args))
 
             return return_objs
 
@@ -2293,10 +2234,10 @@ class Handler(object):
         # but no filters supplied in kwargs, raise
         if not any(api_kwattrs):
             err = "Getting a {} requires at least one filter: {}".format
-            raise PytanError(err(objtype, api_attrs))
+            raise utils.exceptions.PytanError(err(objtype, api_attrs))
 
         # if there is a multi in obj_map, that means we can pass a list
-        # type to the taniumpy. the list will have an entry for each api_kw
+        # type to the utils.taniumpy. the list will have an entry for each api_kw
         if obj_map['multi']:
             return self._get_multi(obj_map=obj_map, **clean_kwargs)
 
@@ -2306,7 +2247,7 @@ class Handler(object):
             return self._get_single(obj_map=obj_map, **clean_kwargs)
 
         err = "No single or multi search defined for {}".format
-        raise PytanError(err(objtype))
+        raise utils.exceptions.PytanError(err(objtype))
 
     def get_all(self, objtype, **kwargs):
         """Get all objects of a type
@@ -2318,45 +2259,43 @@ class Handler(object):
 
         Returns
         -------
-        obj_list : :class:`taniumpy.object_types.base.BaseType`
+        obj_list : :class:`utils.taniumpy.object_types.base.BaseType`
             * The object list of items found for `objtype`
 
         See Also
         --------
-        :data:`constants.GET_OBJ_MAP` : maps objtype to supported 'search' keys
+        :data:`utils.constants.GET_OBJ_MAP` : maps objtype to supported 'search' keys
         :func:`pytan.handler.Handler._find` : private method used to find items
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         h = "Issue a GetObject to find an object"
         kwargs['pytan_help'] = kwargs.get('pytan_help', h)
 
         clean_keys = ['obj', 'objtype', 'obj_map']
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
-        obj_map = tanium_obj.get_obj_map(objtype=objtype)
+        obj_map = utils.tanium_obj.get_obj_map(objtype=objtype)
 
         all_type = obj_map['all']
-        api_obj_all = tanium_obj.get_taniumpy_obj(obj_map=all_type)()
+        api_obj_all = utils.tanium_obj.get_taniumpy_obj(obj_map=all_type)()
 
         found = self._find(obj=api_obj_all, **clean_kwargs)
         return found
 
     # BEGIN PRIVATE METHODS
     def _add(self, obj, **kwargs):
-        """Wrapper for interfacing with :func:`taniumpy.session.Session.add`
+        """Wrapper for interfacing with :func:`utils.taniumpy.session.Session.add`
 
         Parameters
         ----------
-        obj : :class:`taniumpy.object_types.base.BaseType`
+        obj : :class:`utils.taniumpy.object_types.base.BaseType`
             * object to add
 
         Returns
         -------
-        added_obj : :class:`taniumpy.object_types.base.BaseType`
+        added_obj : :class:`utils.taniumpy.object_types.base.BaseType`
            * full object that was added
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         try:
             search_str = '; '.join([str(x) for x in obj])
@@ -2368,7 +2307,7 @@ class Handler(object):
         kwargs['suppress_object_list'] = kwargs.get('suppress_object_list', 1)
 
         clean_keys = ['obj', 'objtype', 'obj_map']
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         h = "Issue an AddObject to add an object"
         clean_kwargs['pytan_help'] = clean_kwargs.get('pytan_help', h)
@@ -2377,7 +2316,7 @@ class Handler(object):
             added_obj = self.session.add(obj=obj, **clean_kwargs)
         except Exception as e:
             err = "Error while trying to add object '{}': {}!!".format
-            raise PytanError(err(search_str, e))
+            raise utils.exceptions.PytanError(err(search_str, e))
 
         h = "Issue a GetObject on the recently added object in order to get the full object"
         clean_kwargs['pytan_help'] = h
@@ -2385,27 +2324,26 @@ class Handler(object):
         try:
             added_obj = self._find(obj=added_obj, **clean_kwargs)
         except Exception as e:
-            self.mylog.error(e)
+            self.utils.exceptions.mylog.error(e)
             err = "Error while trying to find recently added object {}!!".format
-            raise PytanError(err(search_str))
+            raise utils.exceptions.PytanError(err(search_str))
 
         self.mylog.debug("Added object {}".format(added_obj))
         return added_obj
 
     def _find(self, obj, **kwargs):
-        """Wrapper for interfacing with :func:`taniumpy.session.Session.find`
+        """Wrapper for interfacing with :func:`utils.taniumpy.session.Session.find`
 
         Parameters
         ----------
-        obj : :class:`taniumpy.object_types.base.BaseType`
+        obj : :class:`utils.taniumpy.object_types.base.BaseType`
             * object to find
 
         Returns
         -------
-        found : :class:`taniumpy.object_types.base.BaseType`
+        found : :class:`utils.taniumpy.object_types.base.BaseType`
            * full object that was found
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         try:
             search_str = '; '.join([str(x) for x in obj])
@@ -2417,7 +2355,7 @@ class Handler(object):
         kwargs['suppress_object_list'] = kwargs.get('suppress_object_list', 1)
 
         clean_keys = ['obj', 'objtype', 'obj_map']
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         h = "Issue a GetObject to find an object"
         clean_kwargs['pytan_help'] = clean_kwargs.get('pytan_help', h)
@@ -2427,11 +2365,11 @@ class Handler(object):
         except Exception as e:
             self.mylog.debug(e)
             err = "No results found searching for {} (error: {})!!".format
-            raise PytanError(err(search_str, e))
+            raise utils.exceptions.PytanError(err(search_str, e))
 
-        if tanium_obj.empty_obj(found):
+        if utils.tanium_obj.empty_obj(found):
             err = "No results found searching for {}!!".format
-            raise PytanError(err(search_str))
+            raise utils.exceptions.PytanError(err(search_str))
 
         self.mylog.debug("Found {}".format(found))
         return found
@@ -2446,10 +2384,9 @@ class Handler(object):
 
         Returns
         -------
-        found : :class:`taniumpy.object_types.base.BaseType`
+        found : :class:`utils.taniumpy.object_types.base.BaseType`
            * full object that was found
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         api_attrs = obj_map['search']
         api_kwattrs = [kwargs.get(x, '') for x in api_attrs]
@@ -2459,7 +2396,7 @@ class Handler(object):
         single_type = obj_map['single']
 
         # create a list object to append our searches to
-        api_obj_multi = tanium_obj.get_taniumpy_obj(obj_map=multi_type)()
+        api_obj_multi = utils.tanium_obj.get_taniumpy_obj(obj_map=multi_type)()
 
         for k, v in api_kw.iteritems():
             if v and k not in obj_map['search']:
@@ -2470,16 +2407,16 @@ class Handler(object):
 
             if isinstance(v, (list, tuple)):
                 for i in v:
-                    api_obj_single = tanium_obj.get_taniumpy_obj(obj_map=single_type)()
+                    api_obj_single = utils.tanium_obj.get_taniumpy_obj(obj_map=single_type)()
                     setattr(api_obj_single, k, i)
                     api_obj_multi.append(api_obj_single)
             else:
-                api_obj_single = tanium_obj.get_taniumpy_obj(obj_map=single_type)()
+                api_obj_single = utils.tanium_obj.get_taniumpy_obj(obj_map=single_type)()
                 setattr(api_obj_single, k, v)
                 api_obj_multi.append(api_obj_single)
 
         clean_keys = ['obj']
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         # find the multi list object
         found = self._find(obj=api_obj_multi, **clean_kwargs)
@@ -2495,10 +2432,9 @@ class Handler(object):
 
         Returns
         -------
-        found : :class:`taniumpy.object_types.base.BaseType`
+        found : :class:`utils.taniumpy.object_types.base.BaseType`
            * full object that was found
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         api_attrs = obj_map['search']
         api_kwattrs = [kwargs.get(x, '') for x in api_attrs]
@@ -2510,10 +2446,10 @@ class Handler(object):
         else:
             all_type = obj_map['all']
 
-        found = tanium_obj.get_taniumpy_obj(obj_map=all_type)()
+        found = utils.tanium_obj.get_taniumpy_obj(obj_map=all_type)()
 
         clean_keys = ['obj_map', 'k', 'v']
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         for k, v in api_kw.iteritems():
             if v and k not in obj_map['search']:
@@ -2533,7 +2469,7 @@ class Handler(object):
         return found
 
     def _single_find(self, obj_map, k, v, **kwargs):
-        """Wrapper for single item searches interfacing with :func:`taniumpy.session.Session.find`
+        """Wrapper for single item searches interfacing with :func:`utils.taniumpy.session.Session.find`
 
         Parameters
         ----------
@@ -2546,20 +2482,19 @@ class Handler(object):
 
         Returns
         -------
-        found : :class:`taniumpy.object_types.base.BaseType`
+        found : :class:`utils.taniumpy.object_types.base.BaseType`
            * full object that was found
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         found = []
 
         single_type = obj_map['single']
-        api_obj_single = tanium_obj.get_taniumpy_obj(obj_map=single_type)()
+        api_obj_single = utils.tanium_obj.get_taniumpy_obj(obj_map=single_type)()
 
         setattr(api_obj_single, k, v)
 
         clean_keys = ['obj']
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         obj_ret = self._find(obj=api_obj_single, **clean_kwargs)
 
@@ -2584,15 +2519,14 @@ class Handler(object):
         defs : list of dict
            * list of dicts containing sensor definitions with sensor object in 'sensor_obj'
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
-        s_obj_map = constants.GET_OBJ_MAP['sensor']
+        s_obj_map = utils.constants.GET_OBJ_MAP['sensor']
         search_keys = s_obj_map['search']
 
         kwargs['include_hidden_flag'] = kwargs.get('include_hidden_flag', 0)
 
         clean_keys = ['objtype']
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         for d in defs:
             def_search = {s: d.get(s, '') for s in search_keys if d.get(s, '')}
@@ -2621,15 +2555,14 @@ class Handler(object):
         d : dict
            * dict containing package definitions with package object in 'package_obj'
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
-        s_obj_map = constants.GET_OBJ_MAP['package']
+        s_obj_map = utils.constants.GET_OBJ_MAP['package']
         search_keys = s_obj_map['search']
 
         kwargs['include_hidden_flag'] = kwargs.get('include_hidden_flag', 0)
 
         clean_keys = ['objtype']
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         def_search = {s: d.get(s, '') for s in search_keys if d.get(s, '')}
         def_search.update(clean_kwargs)
@@ -2645,11 +2578,11 @@ class Handler(object):
         return d
 
     def _export_class_BaseType(self, obj, export_format, **kwargs): # noqa
-        """Handles exporting :class:`taniumpy.object_types.base.BaseType`
+        """Handles exporting :class:`utils.taniumpy.object_types.base.BaseType`
 
         Parameters
         ----------
-        obj : :class:`taniumpy.object_types.base.BaseType`
+        obj : :class:`utils.taniumpy.object_types.base.BaseType`
             * taniumpy object to export
         export_format : str
             * str of format to perform export in
@@ -2659,29 +2592,28 @@ class Handler(object):
         result : str
            * results of exporting `obj` into format `export_format`
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         # run the handler that is specific to this export_format, if it exists
         format_method_str = '_export_format_' + export_format
         format_handler = getattr(self, format_method_str, '')
 
         clean_keys = ['obj']
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         if format_handler:
             result = format_handler(obj=obj, **clean_kwargs)
         else:
             err = "{!r} not coded for in Handler!".format
-            raise PytanError(err(export_format))
+            raise utils.exceptions.PytanError(err(export_format))
 
         return result
 
     def _export_class_ResultSet(self, obj, export_format, **kwargs): # noqa
-        """Handles exporting :class:`taniumpy.object_types.result_set.ResultSet`
+        """Handles exporting :class:`utils.taniumpy.object_types.result_set.ResultSet`
 
         Parameters
         ----------
-        obj : :class:`taniumpy.object_types.result_set.ResultSet`
+        obj : :class:`utils.taniumpy.object_types.result_set.ResultSet`
             * taniumpy object to export
         export_format : str
             * str of format to perform export in
@@ -2697,13 +2629,12 @@ class Handler(object):
         to the what_hash of each column, but only if header_add_sensor=True
         needed for: ResultSet.write_csv(header_add_sensor=True)
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         header_add_sensor = kwargs.get('header_add_sensor', False)
         sensors = kwargs.get('sensors', []) or getattr(obj, 'sensors', [])
 
         clean_keys = ['objtype', 'hash', 'obj']
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         if header_add_sensor and export_format == 'csv':
             clean_kwargs['sensors'] = sensors
@@ -2724,7 +2655,7 @@ class Handler(object):
             result = format_handler(obj=obj, **clean_kwargs)
         else:
             err = "{!r} not coded for in Handler!".format
-            raise PytanError(err(export_format))
+            raise utils.exceptions.PytanError(err(export_format))
 
         return result
 
@@ -2733,7 +2664,7 @@ class Handler(object):
 
         Parameters
         ----------
-        obj : :class:`taniumpy.object_types.result_set.ResultSet` or :class:`taniumpy.object_types.base.BaseType`
+        obj : :class:`utils.taniumpy.object_types.result_set.ResultSet` or :class:`utils.taniumpy.object_types.base.BaseType`
             * taniumpy object to export
 
         Returns
@@ -2741,16 +2672,15 @@ class Handler(object):
         result : str
            * results of exporting `obj` into csv format
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         if not hasattr(obj, 'write_csv'):
             err = "{!r} has no write_csv() method!".format
-            raise PytanError(err(obj))
+            raise utils.exceptions.PytanError(err(obj))
 
         out = io.BytesIO()
 
         clean_keys = ['fd', 'val']
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         if getattr(obj, '_list_properties', ''):
             result = obj.write_csv(fd=out, val=list(obj), **clean_kwargs)
@@ -2765,7 +2695,7 @@ class Handler(object):
 
         Parameters
         ----------
-        obj : :class:`taniumpy.object_types.result_set.ResultSet` or :class:`taniumpy.object_types.base.BaseType`
+        obj : :class:`utils.taniumpy.object_types.result_set.ResultSet` or :class:`utils.taniumpy.object_types.base.BaseType`
             * taniumpy object to export
 
         Returns
@@ -2773,14 +2703,13 @@ class Handler(object):
         result : str
            * results of exporting `obj` into json format
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         if not hasattr(obj, 'to_json'):
             err = "{!r} has no to_json() method!".format
-            raise PytanError(err(obj))
+            raise utils.exceptions.PytanError(err(obj))
 
         clean_keys = ['jsonable']
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         result = obj.to_json(jsonable=obj, **clean_kwargs)
         return result
@@ -2790,7 +2719,7 @@ class Handler(object):
 
         Parameters
         ----------
-        obj : :class:`taniumpy.object_types.result_set.ResultSet` or :class:`taniumpy.object_types.base.BaseType`
+        obj : :class:`utils.taniumpy.object_types.result_set.ResultSet` or :class:`utils.taniumpy.object_types.base.BaseType`
             * taniumpy object to export
 
         Returns
@@ -2798,7 +2727,6 @@ class Handler(object):
         result : str
            * results of exporting `obj` into XML format
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         result = None
 
@@ -2808,12 +2736,12 @@ class Handler(object):
             raw_xml = obj._RAW_XML
         else:
             err = "{!r} has no toSOAPBody() method or _RAW_XML attribute!".format
-            raise PytanError(err(obj))
+            raise utils.exceptions.PytanError(err(obj))
 
         clean_keys = ['x']
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
-        result = pretty.xml_pretty(x=raw_xml, **clean_kwargs)
+        result = utils.pretty.xml_pretty(x=raw_xml, **clean_kwargs)
         return result
 
     def _deploy_action(self, run=False, get_results=True, **kwargs):
@@ -2825,10 +2753,10 @@ class Handler(object):
         ----------
         package_def : dict
             * definition that describes a package
-        action_filter_defs : str, dict, list of str or dict, optional
+        filter_defs : str, dict, list of str or dict, optional
             * default: []
             * action filter definitions
-        action_option_defs : dict, list of dict, optional
+        option_defs : dict, list of dict, optional
             * default: []
             * action filter option definitions
         start_seconds_from_now : int, optional
@@ -2876,13 +2804,13 @@ class Handler(object):
         Returns
         -------
         ret : dict, containing:
-            * `saved_action_object` : :class:`taniumpy.object_types.saved_action.SavedAction`, the saved_action added for this action (None if 6.2)
-            * `action_object` : :class:`taniumpy.object_types.action.Action`, the action object that tanium created for `saved_action`
-            * `package_object` : :class:`taniumpy.object_types.package_spec.PackageSPec`, the package object used in `saved_action`
-            * `action_info` : :class:`taniumpy.object_types.result_info.ResultInfo`, the initial GetResultInfo call done before getting results
+            * `saved_action_object` : :class:`utils.taniumpy.object_types.saved_action.SavedAction`, the saved_action added for this action (None if 6.2)
+            * `action_object` : :class:`utils.taniumpy.object_types.action.Action`, the action object that tanium created for `saved_action`
+            * `package_object` : :class:`utils.taniumpy.object_types.package_spec.PackageSPec`, the package object used in `saved_action`
+            * `action_info` : :class:`utils.taniumpy.object_types.result_info.ResultInfo`, the initial GetResultInfo call done before getting results
             * `poller_object` : :class:`pytan.pollers.ActionPoller`, poller object used to wait until all results are in before getting `action_results`
             * `poller_success` : None if `get_results` == False, elsewise True or False
-            * `action_results` : None if `get_results` == False, elsewise :class:`taniumpy.object_types.result_set.ResultSet`, the results for `action_object`
+            * `action_results` : None if `get_results` == False, elsewise :class:`utils.taniumpy.object_types.result_set.ResultSet`, the results for `action_object`
             * `action_result_map` : None if `get_results` == False, elsewise progress map for `action_object` in dictionary form
 
         Examples
@@ -2890,11 +2818,11 @@ class Handler(object):
         >>> # example of dict for `package_def`
         >>> package_def = {'name': 'PackageName1', 'params':{'param1': 'value1'}}
 
-        >>> # example of str for `action_filter_defs`
-        >>> action_filter_defs = 'Sensor1'
+        >>> # example of str for `filter_defs`
+        >>> filter_defs = 'Sensor1'
 
-        >>> # example of dict for `action_filter_defs`
-        >>> action_filter_defs = {
+        >>> # example of dict for `filter_defs`
+        >>> filter_defs = {
         ... 'name': 'Sensor1',
         ...     'filter': {
         ...         'operator': 'RegexMatch',
@@ -2906,8 +2834,8 @@ class Handler(object):
 
         See Also
         --------
-        :data:`constants.FILTER_MAPS` : valid filter dictionaries for filters
-        :data:`constants.OPTION_MAPS` : valid option dictionaries for options
+        :data:`utils.constants.FILTER_MAPS` : valid filter dictionaries for filters
+        :data:`utils.constants.OPTION_MAPS` : valid option dictionaries for options
 
         Notes
         -----
@@ -2921,9 +2849,8 @@ class Handler(object):
                 * To emulate what the console does, the SavedAction should be in a SavedActionList
                 * Action.start_time does not need to be specified
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
-        helpers.check_for_help(kwargs=kwargs)
+        utils.helpers.check_for_help(kwargs=kwargs)
 
         clean_keys = [
             'defs',
@@ -2940,54 +2867,58 @@ class Handler(object):
             'handler',
         ]
 
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         if not self.session.platform_is_6_5(**kwargs):
-            objtype = taniumpy.Action
+            objtype = utils.taniumpy.Action
             objlisttype = None
             force_start_time = True
         else:
-            objtype = taniumpy.SavedAction
-            objlisttype = taniumpy.SavedActionList
+            objtype = utils.taniumpy.SavedAction
+            objlisttype = utils.taniumpy.SavedActionList
             force_start_time = False
 
-        package_def = validate.defs(
+        package_def = utils.validate.defs_gen(
             defname='package_def',
             deftypes=['dict()'],
             empty_ok=False,
             **clean_kwargs
         )
-        action_filter_defs = validate.defs(
-            defname='action_filter_defs',
+        filter_defs = utils.validate.defs_gen(
+            defname='filter_defs',
             deftypes=['list()', 'str()', 'dict()'],
             strconv='name',
             empty_ok=True,
             **clean_kwargs
         )
-        action_option_defs = validate.defs(
-            defname='action_option_defs',
+        option_defs = utils.validate.defs_gen(
+            defname='option_defs',
             deftypes=['dict()'],
             empty_ok=True,
             **clean_kwargs
         )
 
-        validate.val_package_def(package_def=package_def)
-        validate.val_sensor_defs(sensor_defs=action_filter_defs)
+        utils.validate.def_package(package_def=package_def)
+        utils.validate.def_sensors(sensor_defs=filter_defs)
 
         package_def = self._get_package_def(d=package_def, **clean_kwargs)
         h = (
             "Issue a GetObject to get the full object of a sensor for inclusion in a "
             "Group for an Action"
         )
-        action_filter_defs = self._get_sensor_defs(
-            defs=action_filter_defs, pytan_help=h, **clean_kwargs
+        filter_defs = self._get_sensor_defs(
+            defs=filter_defs,
+            pytan_help=h,
+            **clean_kwargs
         )
 
-        start_seconds_from_now = validate.get_kwargs_int(
-            key='start_seconds_from_now', default=0, **clean_kwargs
+        start_seconds_from_now = utils.validate.get_kwargs_int(
+            key='start_seconds_from_now',
+            default=0,
+            **clean_kwargs
         )
 
-        expire_seconds = validate.get_kwargs_int(key='expire_seconds', **clean_kwargs)
+        expire_seconds = utils.validate.get_kwargs_int(key='expire_seconds', **clean_kwargs)
 
         action_name_default = "API Deploy {0.name}".format(package_def['package_obj'])
         action_name = kwargs.get('action_name', action_name_default)
@@ -3019,26 +2950,26 @@ class Handler(object):
         therefore the number that should take the action
         """
         if not run:
-            pre_action_sensors = ['Computer Name', 'Online, that =:True']
-            pre_action_sensor_defs = parse_sensors(sensors=pre_action_sensors)
+            pa_sensors = ['Computer Name', 'Online, that =:True']
+            pa_sensor_defs = utils.parsers.parse_sensors(sensors=pa_sensors)
 
             q_clean_keys = [
                 'sensor_defs',
-                'question_filter_defs',
-                'question_option_defs',
+                'filter_defs',
+                'option_defs',
                 'hide_no_results_flag',
                 'pytan_help',
                 'get_results',
             ]
-            q_clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=q_clean_keys)
+            q_clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=q_clean_keys)
 
             h = (
                 "Ask a question to determine the number of systems this action would affect if it "
                 "was actually run"
             )
-            q_clean_kwargs['sensor_defs'] = pre_action_sensor_defs
-            q_clean_kwargs['question_filter_defs'] = action_filter_defs
-            q_clean_kwargs['question_option_defs'] = action_option_defs
+            q_clean_kwargs['sensor_defs'] = pa_sensor_defs
+            q_clean_kwargs['filter_defs'] = filter_defs
+            q_clean_kwargs['option_defs'] = option_defs
             q_clean_kwargs['hide_no_results_flag'] = 1
 
             pre_action_question = self._ask_manual(pytan_help=h, **q_clean_kwargs)
@@ -3049,7 +2980,7 @@ class Handler(object):
 
             if passed_count == 0:
                 m = "Number of systems that match the action filters provided is zero!"
-                raise PytanError(m)
+                raise utils.exceptions.PytanError(m)
 
             default_format = 'csv'
             export_format = kwargs.get('export_format', default_format)
@@ -3062,7 +2993,7 @@ class Handler(object):
                 'export_format',
                 'prefix',
             ]
-            e_clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=e_clean_keys)
+            e_clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=e_clean_keys)
             e_clean_kwargs['obj'] = pre_action_question['question_results']
             e_clean_kwargs['export_format'] = export_format
             e_clean_kwargs['prefix'] = export_prefix
@@ -3073,17 +3004,17 @@ class Handler(object):
                 "View and verify the contents of {} (length: {} bytes)\n"
                 "Re-run this deploy action with run=True after verifying"
             ).format
-            raise RunError(m(report_path, len(result)))
+            raise utils.exceptions.RunError(m(report_path, len(result)))
 
         # BUILD THE PACKAGE OBJECT TO BE ADDED TO THE ACTION
-        add_package_obj = tanium_obj.copy_package_obj_for_action(obj=package_def['package_obj'])
+        add_package_obj = utils.tanium_obj.copy_package_obj_for_action(obj=package_def['package_obj'])
 
         # if source_id is specified, a new package will be created with the parameters
         # for this action embedded into it - specifying hidden = 1 will ensure the new package
         # is hidden
         add_package_obj.hidden_flag = 1
 
-        param_objlist = tanium_obj.build_param_objlist(
+        param_objlist = utils.tanium_obj.build_param_objlist(
             obj=package_def['package_obj'],
             user_params=package_def['params'],
             delim='',
@@ -3118,21 +3049,21 @@ class Handler(object):
         add_obj.approved_flag = 0
         add_obj.issue_count = 0
 
-        if action_filter_defs or action_option_defs:
-            targetgroup_obj = tanium_obj.build_group_obj(
-                q_filter_defs=action_filter_defs, q_option_defs=action_option_defs,
+        if filter_defs or option_defs:
+            targetgroup_obj = utils.tanium_obj.build_group_obj(
+                filter_defs=filter_defs, option_defs=option_defs,
             )
             add_obj.target_group = targetgroup_obj
         else:
             targetgroup_obj = None
 
         if start_seconds_from_now:
-            add_obj.start_time = time.seconds_from_now(secs=start_seconds_from_now)
+            add_obj.start_time = utils.calc.seconds_from_now(secs=start_seconds_from_now)
 
         if force_start_time and not add_obj.start_time:
             if not start_seconds_from_now:
                 start_seconds_from_now = 1
-            add_obj.start_time = time.seconds_from_now(secs=start_seconds_from_now)
+            add_obj.start_time = utils.calc.seconds_from_now(secs=start_seconds_from_now)
 
         if package_def['package_obj'].expire_seconds:
             add_obj.expire_seconds = package_def['package_obj'].expire_seconds
@@ -3175,7 +3106,7 @@ class Handler(object):
         m = "DEPLOY_ACTION ADDED: Question for Action Results, ID: {}".format
         self.mylog.debug(m(action_info.question_id))
 
-        poller = ActionPoller(handler=self, obj=action_obj, **clean_kwargs)
+        poller = self.pollers.ActionPoller(handler=self, obj=action_obj, **clean_kwargs)
         ret = {
             'saved_action_object': added_obj,
             'action_object': action_obj,
@@ -3206,10 +3137,10 @@ class Handler(object):
         sensor_defs : str, dict, list of str or dict
             * default: []
             * sensor definitions
-        question_filter_defs : dict, list of dict, optional
+        filter_defs : dict, list of dict, optional
             * default: []
             * question filter definitions
-        question_option_defs : dict, list of dict, optional
+        option_defs : dict, list of dict, optional
             * default: []
             * question option definitions
         get_results : bool, optional
@@ -3256,8 +3187,8 @@ class Handler(object):
         Returns
         -------
         ret : dict, containing:
-            * `question_object` : :class:`taniumpy.object_types.question.Question`, the actual question created and added by PyTan
-            * `question_results` : :class:`taniumpy.object_types.result_set.ResultSet`, the Result Set for `question_object` if `get_results` == True
+            * `question_object` : :class:`utils.taniumpy.object_types.question.Question`, the actual question created and added by PyTan
+            * `question_results` : :class:`utils.taniumpy.object_types.result_set.ResultSet`, the Result Set for `question_object` if `get_results` == True
             * `poller_object` : :class:`QuestionPoller`, poller object used to wait until all results are in before getting `question_results`
             * `poller_success` : None if `get_results` == True, elsewise True or False
 
@@ -3278,8 +3209,8 @@ class Handler(object):
         ...     'options': {'and_flag': 1}
         ... }
 
-        >>> # example of dict for question_filter_defs
-        >>> question_filter_defs = {
+        >>> # example of dict for filter_defs
+        >>> filter_defs = {
         ...     'operator': 'RegexMatch',
         ...     'not_flag': 0,
         ...     'value': '.*'
@@ -3287,12 +3218,11 @@ class Handler(object):
 
         See Also
         --------
-        :data:`constants.FILTER_MAPS` : valid filter dictionaries for filters
-        :data:`constants.OPTION_MAPS` : valid option dictionaries for options
+        :data:`utils.constants.FILTER_MAPS` : valid filter dictionaries for filters
+        :data:`utils.constants.OPTION_MAPS` : valid option dictionaries for options
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
-        helpers.check_for_help(kwargs=kwargs)
+        utils.helpers.check_for_help(kwargs=kwargs)
 
         clean_keys = [
             'defs',
@@ -3309,10 +3239,10 @@ class Handler(object):
             'handler',
             'sse',
         ]
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         # get our defs from kwargs and churn them into what we want
-        sensor_defs = validate.defs(
+        sensor_defs = utils.validate.defs_gen(
             defname='sensor_defs',
             deftypes=['list()', 'str()', 'dict()'],
             strconv='name',
@@ -3320,15 +3250,15 @@ class Handler(object):
             **clean_kwargs
         )
 
-        q_filter_defs = validate.defs(
-            defname='question_filter_defs',
+        filter_defs = utils.validate.defs_gen(
+            defname='filter_defs',
             deftypes=['list()', 'dict()'],
             empty_ok=True,
             **clean_kwargs
         )
 
-        q_option_defs = validate.defs(
-            defname='question_option_defs',
+        option_defs = utils.validate.defs_gen(
+            defname='option_defs',
             deftypes=['dict()'],
             empty_ok=True,
             **clean_kwargs
@@ -3337,13 +3267,15 @@ class Handler(object):
         sse = kwargs.get('sse', False)
         clean_kwargs['sse_format'] = clean_kwargs.get('sse_format', 'xml_obj')
 
-        max_age_seconds = validate.get_kwargs_int(
-            key='max_age_seconds', default=600, **clean_kwargs
+        max_age_seconds = utils.validate.get_kwargs_int(
+            key='max_age_seconds',
+            default=600,
+            **clean_kwargs
         )
 
         # do basic validation of our defs
-        validate.val_sensor_defs(sensor_defs=sensor_defs)
-        validate.val_q_filter_defs(q_filter_defs=q_filter_defs)
+        utils.validate.defs_sensors(sensor_defs=sensor_defs)
+        utils.validate.defs_filters(filter_defs=filter_defs)
 
         # get the sensor objects that are in our defs and add them as d['sensor_obj']
         h = (
@@ -3355,18 +3287,18 @@ class Handler(object):
             "Issue a GetObject to get the full object of a sensor for inclusion in a "
             "Group for a Question"
         )
-        q_filter_defs = self._get_sensor_defs(defs=q_filter_defs, pytan_help=h, **clean_kwargs)
+        filter_defs = self._get_sensor_defs(defs=filter_defs, pytan_help=h, **clean_kwargs)
 
         # build a SelectList object from our sensor_defs
-        selectlist_obj = tanium_obj.build_selectlist_obj(sensor_defs=sensor_defs)
+        selectlist_obj = utils.tanium_obj.build_selectlist_obj(sensor_defs=sensor_defs)
 
         # build a Group object from our question filters/options
-        group_obj = tanium_obj.build_group_obj(
-            q_filter_defs=q_filter_defs, q_option_defs=q_option_defs,
+        group_obj = utils.tanium_obj.build_group_obj(
+            filter_defs=filter_defs, option_defs=option_defs,
         )
 
         # build a Question object from selectlist_obj and group_obj
-        add_obj = tanium_obj.build_manual_q(selectlist_obj=selectlist_obj, group_obj=group_obj)
+        add_obj = utils.tanium_obj.build_manual_q(selectlist_obj=selectlist_obj, group_obj=group_obj)
 
         add_obj.max_age_seconds = max_age_seconds
 
@@ -3377,7 +3309,7 @@ class Handler(object):
         m = "Question Added, ID: {}, query text: {!r}, expires: {}".format
         self.mylog.debug(m(added_obj.id, added_obj.query_text, added_obj.expiration))
 
-        poller = QuestionPoller(handler=self, obj=added_obj, **clean_kwargs)
+        poller = self.pollers.QuestionPoller(handler=self, obj=added_obj, **clean_kwargs)
 
         ret = {
             'question_object': added_obj,
@@ -3396,7 +3328,7 @@ class Handler(object):
             else:
                 rd = self.get_result_data(obj=added_obj, **clean_kwargs)
 
-            if isinstance(rd, taniumpy.object_types.result_set.ResultSet):
+            if isinstance(rd, utils.taniumpy.object_types.result_set.ResultSet):
                 # add the sensors from this question to the ResultSet object for reporting
                 rd.sensors = [x['sensor_obj'] for x in sensor_defs]
 
@@ -3422,7 +3354,6 @@ class Handler(object):
             * True if all values in all v_maps are greater than or equal to self.session.server_version
             * False otherwise
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         if self.session._invalid_server_version():
             # server version is not valid, force a refresh right now
@@ -3447,12 +3378,11 @@ class Handler(object):
         sse_format_int : int
             * `sse_format` parsed into an int
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
-        if sse_format_int not in constants.SSE_RESTRICT_MAP:
+        if sse_format_int not in utils.constants.SSE_RESTRICT_MAP:
             return
 
-        restrict_maps = constants.SSE_RESTRICT_MAP[sse_format_int]
+        restrict_maps = utils.constants.SSE_RESTRICT_MAP[sse_format_int]
 
         if not self._version_support_check(v_maps=restrict_maps, **kwargs):
             restrict_maps_txt = '\n'.join([str(x) for x in restrict_maps])
@@ -3464,7 +3394,7 @@ class Handler(object):
 
             m = m(self.session.server_version, sse_format, restrict_maps_txt)
 
-            raise UnsupportedVersionError(m)
+            raise utils.exceptions.UnsupportedVersionError(m)
 
     def _resolve_sse_format(self, sse_format, **kwargs):
         """Resolves the server side export format the user supplied to an integer for the API
@@ -3479,16 +3409,15 @@ class Handler(object):
         sse_format_int : int
             * `sse_format` parsed into an int
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
-        sse_format_int = [x[-1] for x in constants.SSE_FORMAT_MAP if sse_format.lower() in x]
+        sse_format_int = [x[-1] for x in utils.constants.SSE_FORMAT_MAP if sse_format.lower() in x]
 
         if not sse_format_int:
             m = "Unsupport export format {!r}, must be one of:\n{}".format
             ef_map_txt = '\n'.join(
-                [', '.join(['{!r}'.format(x) for x in y]) for y in constants.SSE_FORMAT_MAP]
+                [', '.join(['{!r}'.format(x) for x in y]) for y in utils.constants.SSE_FORMAT_MAP]
             )
-            raise PytanError(m(sse_format, ef_map_txt))
+            raise utils.exceptions.PytanError(m(sse_format, ef_map_txt))
 
         sse_format_int = sse_format_int[0]
 
@@ -3503,27 +3432,25 @@ class Handler(object):
 
     def _check_sse_version(self, **kwargs):
         """Validates that the server version supports server side export"""
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         if not self.session.platform_is_6_5(**kwargs):
             m = "Server side export not supported in version: {}".format
             m = m(self.session.server_version)
-            raise UnsupportedVersionError(m)
+            raise utils.exceptions.UnsupportedVersionError(m)
 
     def _check_sse_crash_prevention(self, obj, **kwargs):
         """Runs a number of methods used to prevent crashing the platform server when performing server side exports
 
         Parameters
         ----------
-        obj : :class:`taniumpy.object_types.base.BaseType`
+        obj : :class:`utils.taniumpy.object_types.base.BaseType`
             * object to pass to self._check_sse_empty_rs
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['obj', 'v_maps', 'ok_version']
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
-        restrict_maps = constants.SSE_CRASH_MAP
+        restrict_maps = utils.constants.SSE_CRASH_MAP
 
         ok_version = self._version_support_check(v_maps=restrict_maps, **clean_kwargs)
 
@@ -3531,14 +3458,13 @@ class Handler(object):
         self._check_sse_empty_rs(obj=obj, ok_version=ok_version, **clean_kwargs)
 
     def _check_sse_timing(self, ok_version, **kwargs):
-        """Checks that the last server side export was at least 1 second ago if server version is less than any versions in constants.SSE_CRASH_MAP
+        """Checks that the last server side export was at least 1 second ago if server version is less than any versions in utils.constants.SSE_CRASH_MAP
 
         Parameters
         ----------
         ok_version : bool
             * if the version currently running is an "ok" version
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         last_get_rd_sse = getattr(self, 'last_get_rd_sse', None)
 
@@ -3546,24 +3472,23 @@ class Handler(object):
             last_elapsed = datetime.datetime.utcnow() - last_get_rd_sse
             if last_elapsed.seconds == 0 and not ok_version:
                 m = "You must wait at least one second between server side export requests!".format
-                raise ServerSideExportError(m())
+                raise utils.exceptions.ServerSideExportError(m())
 
         self.last_get_rd_sse = datetime.datetime.utcnow()
 
     def _check_sse_empty_rs(self, obj, ok_version, **kwargs):
-        """Checks if the server version is less than any versions in constants.SSE_CRASH_MAP, if so verifies that the result set is not empty
+        """Checks if the server version is less than any versions in utils.constants.SSE_CRASH_MAP, if so verifies that the result set is not empty
 
         Parameters
         ----------
-        obj : :class:`taniumpy.object_types.base.BaseType`
+        obj : :class:`utils.taniumpy.object_types.base.BaseType`
             * object to get result info for to ensure non-empty answers
         ok_version : bool
             * if the version currently running is an "ok" version
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['obj']
-        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         if not ok_version:
             ri = self.get_result_info(obj=obj, **clean_kwargs)
@@ -3571,10 +3496,4 @@ class Handler(object):
                 m = (
                     "No rows available to perform a server side export with, result info: {}"
                 ).format
-                raise ServerSideExportError(m(ri))
-
-    def _debug_locals(self, fname, flocals):
-        """Method to print out locals for a function if self.debug_method_locals is True"""
-        if getattr(self, 'debug_method_locals', False):
-            m = "Local variables for {}.{}:\n{}".format
-            self.methodlog.debug(m(self.__class__.__name__, fname, pprint.pformat(flocals)))
+                raise utils.exceptions.ServerSideExportError(m(ri))

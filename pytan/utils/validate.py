@@ -7,7 +7,7 @@ from .exceptions import ValidationError
 from . import constants
 
 
-def defs(defname, deftypes, strconv=None, empty_ok=True, defs=None, **kwargs):
+def defs_gen(defname, deftypes, strconv=None, empty_ok=True, defs=None, **kwargs):
     """Parses and validates defs into new_defs
 
     Parameters
@@ -67,7 +67,7 @@ def defs(defname, deftypes, strconv=None, empty_ok=True, defs=None, **kwargs):
     elif isinstance(defs, (list, tuple)):
         if 'list()' in deftypes:
             for k in defs:
-                new_defs += defs(defname, deftypes, strconv, empty_ok, k, **kwargs)
+                new_defs += defs_gen(defname, deftypes, strconv, empty_ok, k, **kwargs)
         else:
             raise ValidationError(err)
     else:
@@ -76,7 +76,7 @@ def defs(defname, deftypes, strconv=None, empty_ok=True, defs=None, **kwargs):
     return new_defs
 
 
-def sensor_defs(sensor_defs):
+def defs_sensors(sensor_defs):
     """Validates sensor definitions
 
     Ensures each sensor definition has a selector, and if a sensor definition has a params, options, or filter key, that each key is valid
@@ -107,7 +107,7 @@ def sensor_defs(sensor_defs):
         chk_def_key(d, 'filter', [dict])
 
 
-def package_def(package_def):
+def def_package(package_def):
     """Validates package definitions
 
     Ensures package definition has a selector, and if a package definition has a params key, that key is valid
@@ -138,20 +138,20 @@ def package_def(package_def):
     chk_def_key(package_def, 'params', [dict])
 
 
-def filter_defs(q_filter_defs):
+def defs_filters(filter_defs):
     """Validates question filter definitions
 
     Ensures each question filter definition has a selector, and if a question filter definition has a filter key, that key is valid
 
     Parameters
     ----------
-    q_filter_defs : list of dict
+    filter_defs : list of dict
         * list of question filter definitions
     """
     s_obj_map = constants.GET_OBJ_MAP['sensor']
     search_keys = s_obj_map['search']
 
-    for d in q_filter_defs:
+    for d in filter_defs:
         # value checking for required keys
         def_search = {s: d.get(s, '') for s in search_keys if d.get(s, '')}
 

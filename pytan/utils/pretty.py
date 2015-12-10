@@ -6,6 +6,8 @@
 
 import logging
 import json
+import io
+import csv
 from .external import xmltodict
 
 mylog = logging.getLogger(__name__)
@@ -119,3 +121,25 @@ def xml_pretty_resultobj(x):
     x_find = x_parsed["result-object"]
     x_unparsed = xmltodict.unparse(x_find, pretty=True, indent='  ')
     return x_unparsed
+
+
+def csvdictwriter(rows_list, **kwargs):
+    """returns the rows_list (list of dicts) as a CSV string"""
+    def get_all_headers(rows_list):
+        """Utility to get all the keys for a list of dicts"""
+        headers = []
+        [headers.append(h) for x in rows_list for h in x.keys() if h not in headers]
+        return headers
+
+    csv_io = io.BytesIO()
+    headers = kwargs.get('headers', []) or get_all_headers(rows_list)
+    writer = csv.DictWriter(
+        csv_io,
+        fieldnames=headers,
+        quoting=csv.QUOTE_NONNUMERIC,
+        extrasaction='ignore',
+    )
+    writer.writerow(dict((h, h) for h in headers))
+    writer.writerows(rows_list)
+    csv_str = csv_io.getvalue()
+    return csv_str

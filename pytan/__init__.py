@@ -13,17 +13,22 @@ from .version import __url__  # noqa
 from .version import __title__  # noqa
 
 from . import utils
+from .utils import exceptions
+from .utils import taniumpy
+from .handler import Handler
+from .session import Session
 from .pollers import QuestionPoller
 from .pollers import ActionPoller
 from .pollers import SSEPoller
-from .handler import Handler
-from .session import Session
+
 
 __all__ = [
-    utils,
-    Handler,
-    Session,
-    QuestionPoller,
-    ActionPoller,
-    SSEPoller,
+    'utils',
+    'exceptions',
+    'taniumpy',
+    'Handler',
+    'Session',
+    'QuestionPoller',
+    'ActionPoller',
+    'SSEPoller',
 ]

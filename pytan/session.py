@@ -3,11 +3,9 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 """Session classes for the :mod:`pytan` module."""
 import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
-# disable python from creating .pyc files everywhere
-sys.dont_write_bytecode = True
-
-import os
 import string
 import logging
 import json
@@ -15,7 +13,6 @@ import re
 import threading
 import time
 import pprint
-
 from datetime import datetime
 from base64 import b64encode
 
@@ -24,21 +21,9 @@ try:
 except:
     import xml.etree.ElementTree as ET
 
-my_file = os.path.abspath(__file__)
-my_dir = os.path.dirname(my_file)
-parent_dir = os.path.dirname(my_dir)
-path_adds = [parent_dir]
-[sys.path.insert(0, aa) for aa in path_adds if aa not in sys.path]
+from . import utils
 
-import pytan
-from pytan.xml_clean import xml_cleaner
-import requests
-import taniumpy
-requests.packages.urllib3.disable_warnings()
-
-import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
+utils.requests.packages.urllib3.disable_warnings()
 
 
 class Session(object):
@@ -189,7 +174,7 @@ class Session(object):
 
         self.setup_logging()
 
-        self.REQUESTS_SESSION = requests.Session()
+        self.REQUESTS_SESSION = utils.requests.Session()
         """
         The Requests session allows you to persist certain parameters across requests. It also
         persists cookies across all requests made from the Session instance. Any requests that you
@@ -241,7 +226,8 @@ class Session(object):
     def setup_logging(self):
         self._debug_locals(sys._getframe().f_code.co_name, locals())
 
-        self.qualname = "pytan.sessions.{}".format(self.__class__.__name__)
+        self.qualname = __name__
+        # "pytan.sessions.{}".format(self.__class__.__name__)
         self.mylog = logging.getLogger(self.qualname)
         self.authlog = logging.getLogger(self.qualname + ".auth")
         self.httplog = logging.getLogger(self.qualname + ".http")
@@ -412,7 +398,7 @@ class Session(object):
                 m = (
                     "Unable to establish a persistent session when authenticating with a session!"
                 ).format
-                raise pytan.exceptions.AuthorizationError(m())
+                raise utils.exceptions.AuthorizationError(m())
             self._session_id = session_id
         else:
             auth_type = 'username/password'
@@ -423,10 +409,10 @@ class Session(object):
 
         if not session_id:
             if not self._username:
-                raise pytan.exceptions.AuthorizationError("Must supply username")
+                raise utils.exceptions.AuthorizationError("Must supply username")
 
             if not self._password:
-                raise pytan.exceptions.AuthorizationError("Must supply password")
+                raise utils.exceptions.AuthorizationError("Must supply password")
 
         auth_headers = {}
 
@@ -450,7 +436,7 @@ class Session(object):
             body = self.http_get(**req_args)
         except Exception as e:
             m = "Error while trying to authenticate: {}".format
-            raise pytan.exceptions.AuthorizationError(m(e))
+            raise utils.exceptions.AuthorizationError(m(e))
 
         self.session_id = body
         if persistent:
@@ -474,22 +460,22 @@ class Session(object):
 
         Parameters
         ----------
-        obj : :class:`taniumpy.object_types.base.BaseType`
+        obj : :class:`utils.taniumpy.object_types.base.BaseType`
             * object to find
 
         Returns
         -------
-        obj : :class:`taniumpy.object_types.base.BaseType`
+        obj : :class:`utils.taniumpy.object_types.base.BaseType`
             * found objects
         """
         self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['obj', 'request_body']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         request_body = self._create_get_object_body(obj=obj, **clean_kwargs)
         response_body = self._get_response(request_body=request_body, **clean_kwargs)
-        obj = taniumpy.BaseType.fromSOAPBody(body=response_body)
+        obj = utils.taniumpy.BaseType.fromSOAPBody(body=response_body)
         return obj
 
     def save(self, obj, **kwargs):
@@ -497,22 +483,22 @@ class Session(object):
 
         Parameters
         ----------
-        obj : :class:`taniumpy.object_types.base.BaseType`
+        obj : :class:`utils.taniumpy.object_types.base.BaseType`
             * object to save
 
         Returns
         -------
-        obj : :class:`taniumpy.object_types.base.BaseType`
+        obj : :class:`utils.taniumpy.object_types.base.BaseType`
             * saved object
         """
         self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['obj', 'request_body']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         request_body = self._create_update_object_body(obj=obj, **clean_kwargs)
         response_body = self._get_response(request_body=request_body, **clean_kwargs)
-        obj = taniumpy.BaseType.fromSOAPBody(body=response_body)
+        obj = utils.taniumpy.BaseType.fromSOAPBody(body=response_body)
         return obj
 
     def add(self, obj, **kwargs):
@@ -520,22 +506,22 @@ class Session(object):
 
         Parameters
         ----------
-        obj : :class:`taniumpy.object_types.base.BaseType`
+        obj : :class:`utils.taniumpy.object_types.base.BaseType`
             * object to add
 
         Returns
         -------
-        obj : :class:`taniumpy.object_types.base.BaseType`
+        obj : :class:`utils.taniumpy.object_types.base.BaseType`
             * added object
         """
         self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['obj', 'request_body']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         request_body = self._create_add_object_body(obj=obj, **clean_kwargs)
         response_body = self._get_response(request_body=request_body, **clean_kwargs)
-        obj = taniumpy.BaseType.fromSOAPBody(body=response_body)
+        obj = utils.taniumpy.BaseType.fromSOAPBody(body=response_body)
         return obj
 
     def delete(self, obj, **kwargs):
@@ -543,22 +529,22 @@ class Session(object):
 
         Parameters
         ----------
-        obj : :class:`taniumpy.object_types.base.BaseType`
+        obj : :class:`utils.taniumpy.object_types.base.BaseType`
             * object to delete
 
         Returns
         -------
-        obj : :class:`taniumpy.object_types.base.BaseType`
+        obj : :class:`utils.taniumpy.object_types.base.BaseType`
             * deleted object
         """
         self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['obj', 'request_body']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         request_body = self._create_delete_object_body(obj=obj, **clean_kwargs)
         response_body = self._get_response(request_body=request_body, **clean_kwargs)
-        obj = taniumpy.BaseType.fromSOAPBody(body=response_body)
+        obj = utils.taniumpy.BaseType.fromSOAPBody(body=response_body)
         return obj
 
     def run_plugin(self, obj, **kwargs):
@@ -566,22 +552,22 @@ class Session(object):
 
         Parameters
         ----------
-        obj : :class:`taniumpy.object_types.base.BaseType`
+        obj : :class:`utils.taniumpy.object_types.base.BaseType`
             * object to run
 
         Returns
         -------
-        obj : :class:`taniumpy.object_types.base.BaseType`
+        obj : :class:`utils.taniumpy.object_types.base.BaseType`
             * results from running object
         """
         self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['obj', 'request_body']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         request_body = self._create_run_plugin_object_body(obj=obj, **clean_kwargs)
         response_body = self._get_response(request_body=request_body, **clean_kwargs)
-        obj = taniumpy.BaseType.fromSOAPBody(body=response_body)
+        obj = utils.taniumpy.BaseType.fromSOAPBody(body=response_body)
         return obj
 
     def get_result_info(self, obj, **kwargs):
@@ -589,18 +575,18 @@ class Session(object):
 
         Parameters
         ----------
-        obj : :class:`taniumpy.object_types.base.BaseType`
+        obj : :class:`utils.taniumpy.object_types.base.BaseType`
             * object to get result info for
 
         Returns
         -------
-        obj : :class:`taniumpy.object_types.result_info.ResultInfo`
+        obj : :class:`utils.taniumpy.object_types.result_info.ResultInfo`
             * ResultInfo for `obj`
         """
         self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['obj', 'request_body']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         request_body = self._create_get_result_info_body(obj=obj, **clean_kwargs)
         response_body = self._get_response(request_body=request_body, **clean_kwargs)
@@ -609,7 +595,7 @@ class Session(object):
         resultxml_text = self._extract_resultxml(response_body=response_body)
 
         cdata_el = ET.fromstring(resultxml_text)
-        obj = taniumpy.ResultInfo.fromSOAPElement(cdata_el)
+        obj = utils.taniumpy.ResultInfo.fromSOAPElement(cdata_el)
         obj._RAW_XML = resultxml_text
         return obj
 
@@ -618,18 +604,18 @@ class Session(object):
 
         Parameters
         ----------
-        obj : :class:`taniumpy.object_types.base.BaseType`
+        obj : :class:`utils.taniumpy.object_types.base.BaseType`
             * object to get result set for
 
         Returns
         -------
-        obj : :class:`taniumpy.object_types.result_set.ResultSet`
+        obj : :class:`utils.taniumpy.object_types.result_set.ResultSet`
             * otherwise, `obj` will be the ResultSet for `obj`
         """
         self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['obj', 'request_body']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         request_body = self._create_get_result_data_body(obj=obj, **clean_kwargs)
         response_body = self._get_response(request_body=request_body, **clean_kwargs)
@@ -638,7 +624,7 @@ class Session(object):
         resultxml_text = self._extract_resultxml(response_body=response_body)
 
         cdata_el = ET.fromstring(resultxml_text)
-        obj = taniumpy.ResultSet.fromSOAPElement(cdata_el)
+        obj = utils.taniumpy.ResultSet.fromSOAPElement(cdata_el)
         obj._RAW_XML = resultxml_text
         return obj
 
@@ -647,7 +633,7 @@ class Session(object):
 
         Parameters
         ----------
-        obj : :class:`taniumpy.object_types.base.BaseType`
+        obj : :class:`utils.taniumpy.object_types.base.BaseType`
             * object to start server side export
 
         Returns
@@ -658,7 +644,7 @@ class Session(object):
         self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['obj', 'request_body']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         request_body = self._create_get_result_data_body(obj=obj, **clean_kwargs)
         response_body = self._get_response(request_body=request_body, **clean_kwargs)
@@ -944,7 +930,7 @@ class Session(object):
             try:
                 body = self._http_get(**req_args)
                 break
-            except pytan.exceptions.AuthorizationError:
+            except utils.exceptions.AuthorizationError:
                 if self._session_id and auth_retry:
                     self._session_id = ''
                     self.authenticate(**kwargs)
@@ -1045,7 +1031,7 @@ class Session(object):
             try:
                 body = self._http_post(**req_args)
                 break
-            except pytan.exceptions.AuthorizationError:
+            except utils.exceptions.AuthorizationError:
                 if self._session_id and auth_retry:
                     self._session_id = ''
                     self.authenticate()
@@ -1131,7 +1117,7 @@ class Session(object):
             response.pytan_help = pytan_help
         except Exception as e:
             m = "HTTP response: GET request to {!r} failed: {}".format
-            raise pytan.exceptions.HttpError(m(full_url, e))
+            raise utils.exceptions.HttpError(m(full_url, e))
 
         self.LAST_REQUESTS_RESPONSE = response
         if self.RECORD_ALL_REQUESTS:
@@ -1147,7 +1133,7 @@ class Session(object):
             xml_clean_args['clean_restricted'] = kwargs.get('clean_restricted', True)
             xml_clean_args['log_clean_messages'] = kwargs.get('log_clean_messages', True)
             xml_clean_args['log_bad_characters'] = kwargs.get('log_bad_characters', False)
-            response_body = xml_cleaner(**xml_clean_args)
+            response_body = utils.xml_cleaner(**xml_clean_args)
 
         m = "HTTP response: from {!r} len:{}, status:{} {}, body type: {}".format
 
@@ -1163,12 +1149,12 @@ class Session(object):
 
         if response.status_code in self.AUTH_FAIL_CODES:
             m = "HTTP response: GET request to {!r} returned code: {}, body: {}".format
-            raise pytan.exceptions.AuthorizationError(m(
+            raise utils.exceptions.AuthorizationError(m(
                 full_url, response.status_code, response_body))
 
         if not response.ok:
             m = "HTTP response: GET request to {!r} returned code: {}, body: {}".format
-            raise pytan.exceptions.HttpError(m(full_url, response.status_code, response_body))
+            raise utils.exceptions.HttpError(m(full_url, response.status_code, response_body))
 
         self.bodyhttplog.debug("HTTP response: body:\n{}".format(response_body))
 
@@ -1254,7 +1240,7 @@ class Session(object):
             response.pytan_help = pytan_help
         except Exception as e:
             m = "HTTP response: POST request to {!r} failed: {}".format
-            raise pytan.exceptions.HttpError(m(full_url, e))
+            raise utils.exceptions.HttpError(m(full_url, e))
 
         self.LAST_REQUESTS_RESPONSE = response
         if self.RECORD_ALL_REQUESTS:
@@ -1270,7 +1256,7 @@ class Session(object):
             xml_clean_args['clean_restricted'] = kwargs.get('clean_restricted', True)
             xml_clean_args['log_clean_messages'] = kwargs.get('log_clean_messages', True)
             xml_clean_args['log_bad_characters'] = kwargs.get('log_bad_characters', False)
-            response_body = xml_cleaner(**xml_clean_args)
+            response_body = utils.xml_cleaner(**xml_clean_args)
 
         m = "HTTP response: from {!r} len:{}, status:{} {}, body type: {}".format
         self.httplog.debug(m(
@@ -1286,15 +1272,15 @@ class Session(object):
         if response.status_code in self.AUTH_FAIL_CODES:
             m = "HTTP response: POST request to {!r} returned code: {}, body: {}".format
             m = m(full_url, response.status_code, response_body)
-            raise pytan.exceptions.AuthorizationError(m)
+            raise utils.exceptions.AuthorizationError(m)
 
         if not response_body:
             m = "HTTP response: POST request to {!r} returned empty body".format
-            raise pytan.exceptions.HttpError(m(full_url))
+            raise utils.exceptions.HttpError(m(full_url))
 
         if not response.ok:
             m = "HTTP response: POST request to {!r} returned code: {}, body: {}".format
-            raise pytan.exceptions.HttpError(m(full_url, response.status_code, response_body))
+            raise utils.exceptions.HttpError(m(full_url, response.status_code, response_body))
 
         self.bodyhttplog.debug("HTTP response: body:\n{}".format(response_body))
 
@@ -1453,23 +1439,6 @@ class Session(object):
                 [flattened.update(self._flatten_server_info(structure=i)) for i in structure]
         return flattened
 
-    def _get_percentage(self, part, whole):
-        """Utility method for getting percentage of part out of whole
-
-        Parameters
-        ----------
-        part: int, float
-        whole: int, float
-
-        Returns
-        -------
-        str : the percentage of part out of whole in 2 decimal places
-        """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
-        f = 100 * float(part) / float(whole)
-        return "{0:.2f}%".format(f)
-
     def _find_stat_target(self, target, diags):
         """Utility method for finding a target in info.json and returning the value, optionally performing a percentage calculation on two values if the target[0] starts with percentage(
 
@@ -1502,7 +1471,7 @@ class Session(object):
                 self._resolve_stat_target(search_path=p, diags=diags) for p in points.split(',')
             ]
             try:
-                result = self._get_percentage(part=points[0], whole=points[1])
+                result = utils.calc.get_percent(base=points[0], amount=points[1], text=True)
             except:
                 result = ', '.join(points)
         else:
@@ -1543,7 +1512,7 @@ class Session(object):
         object_list : str
             * XML string to use in object list node when building template
         kwargs : dict, optional
-            * any number of attributes that can be set via :class:`taniumpy.object_types.options.Options` that control the servers response.
+            * any number of attributes that can be set via :class:`utils.taniumpy.object_types.options.Options` that control the servers response.
         log_options : bool, optional
             * default: False
             * False: Do not print messages setting attributes in Options from keys in kwargs
@@ -1556,7 +1525,7 @@ class Session(object):
         """
         self._debug_locals(sys._getframe().f_code.co_name, locals())
 
-        options_obj = taniumpy.Options()
+        options_obj = utils.taniumpy.Options()
 
         for k, v in kwargs.iteritems():
             if hasattr(options_obj, k):
@@ -1579,10 +1548,10 @@ class Session(object):
 
         Parameters
         ----------
-        obj : :class:`taniumpy.object_types.base.BaseType`
+        obj : :class:`utils.taniumpy.object_types.base.BaseType`
             * object to convert into XML
         kwargs : dict, optional
-            * any number of attributes that can be set via :class:`taniumpy.object_types.options.Options` that control the servers response.
+            * any number of attributes that can be set via :class:`utils.taniumpy.object_types.options.Options` that control the servers response.
 
         Returns
         -------
@@ -1592,7 +1561,7 @@ class Session(object):
         self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['command', 'object_list']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         object_list = obj.toSOAPBody(minimal=True)
         cmd = 'RunPlugin'
@@ -1604,10 +1573,10 @@ class Session(object):
 
         Parameters
         ----------
-        obj : :class:`taniumpy.object_types.base.BaseType`
+        obj : :class:`utils.taniumpy.object_types.base.BaseType`
             * object to convert into XML
         kwargs : dict, optional
-            * any number of attributes that can be set via :class:`taniumpy.object_types.options.Options` that control the servers response.
+            * any number of attributes that can be set via :class:`utils.taniumpy.object_types.options.Options` that control the servers response.
 
         Returns
         -------
@@ -1617,7 +1586,7 @@ class Session(object):
         self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['command', 'object_list']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         object_list = obj.toSOAPBody(minimal=True)
         cmd = 'AddObject'
@@ -1629,10 +1598,10 @@ class Session(object):
 
         Parameters
         ----------
-        obj : :class:`taniumpy.object_types.base.BaseType`
+        obj : :class:`utils.taniumpy.object_types.base.BaseType`
             * object to convert into XML
         kwargs : dict, optional
-            * any number of attributes that can be set via :class:`taniumpy.object_types.options.Options` that control the servers response.
+            * any number of attributes that can be set via :class:`utils.taniumpy.object_types.options.Options` that control the servers response.
 
         Returns
         -------
@@ -1642,7 +1611,7 @@ class Session(object):
         self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['command', 'object_list']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         object_list = obj.toSOAPBody(minimal=True)
         cmd = 'DeleteObject'
@@ -1654,10 +1623,10 @@ class Session(object):
 
         Parameters
         ----------
-        obj : :class:`taniumpy.object_types.base.BaseType`
+        obj : :class:`utils.taniumpy.object_types.base.BaseType`
             * object to convert into XML
         kwargs : dict, optional
-            * any number of attributes that can be set via :class:`taniumpy.object_types.options.Options` that control the servers response.
+            * any number of attributes that can be set via :class:`utils.taniumpy.object_types.options.Options` that control the servers response.
 
         Returns
         -------
@@ -1667,7 +1636,7 @@ class Session(object):
         self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['command', 'object_list']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         object_list = obj.toSOAPBody(minimal=True)
         cmd = 'GetResultInfo'
@@ -1679,10 +1648,10 @@ class Session(object):
 
         Parameters
         ----------
-        obj : :class:`taniumpy.object_types.base.BaseType`
+        obj : :class:`utils.taniumpy.object_types.base.BaseType`
             * object to convert into XML
         kwargs : dict, optional
-            * any number of attributes that can be set via :class:`taniumpy.object_types.options.Options` that control the servers response.
+            * any number of attributes that can be set via :class:`utils.taniumpy.object_types.options.Options` that control the servers response.
 
         Returns
         -------
@@ -1692,7 +1661,7 @@ class Session(object):
         self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['command', 'object_list']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         object_list = obj.toSOAPBody(minimal=True)
         cmd = 'GetResultData'
@@ -1704,10 +1673,10 @@ class Session(object):
 
         Parameters
         ----------
-        obj : :class:`taniumpy.object_types.base.BaseType`
+        obj : :class:`utils.taniumpy.object_types.base.BaseType`
             * object to convert into XML
         kwargs : dict, optional
-            * any number of attributes that can be set via :class:`taniumpy.object_types.options.Options` that control the servers response.
+            * any number of attributes that can be set via :class:`utils.taniumpy.object_types.options.Options` that control the servers response.
 
         Returns
         -------
@@ -1717,9 +1686,9 @@ class Session(object):
         self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['command', 'object_list']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
-        if isinstance(obj, taniumpy.BaseType):
+        if isinstance(obj, utils.taniumpy.BaseType):
             object_list = obj.toSOAPBody(minimal=True)
         else:
             object_list = '<{}/>'.format(obj._soap_tag)
@@ -1733,10 +1702,10 @@ class Session(object):
 
         Parameters
         ----------
-        obj : :class:`taniumpy.object_types.base.BaseType`
+        obj : :class:`utils.taniumpy.object_types.base.BaseType`
             * object to convert into XML
         kwargs : dict, optional
-            * any number of attributes that can be set via :class:`taniumpy.object_types.options.Options` that control the servers response.
+            * any number of attributes that can be set via :class:`utils.taniumpy.object_types.options.Options` that control the servers response.
 
         Returns
         -------
@@ -1746,7 +1715,7 @@ class Session(object):
         self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['command', 'object_list']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         object_list = obj.toSOAPBody(minimal=True)
         cmd = 'UpdateObject'
@@ -1760,7 +1729,7 @@ class Session(object):
         if not self.is_auth:
             class_name = self.__class__.__name__
             err = "Not yet authenticated, use {}.authenticate()!".format
-            raise pytan.exceptions.AuthorizationError(err(class_name))
+            raise utils.exceptions.AuthorizationError(err(class_name))
 
     def _regex_body_for_element(self, body, element, fail=True):
         """Utility method to use a regex to get an element from an XML body
@@ -1824,13 +1793,13 @@ class Session(object):
 
         if resultxml_el is None:
             m = "Unable to find ResultXML element in XML response: {}".format
-            raise pytan.exceptions.AuthorizationError(m(response_body))
+            raise utils.exceptions.AuthorizationError(m(response_body))
 
         resultxml_text = resultxml_el.text
 
         if not resultxml_text:
             m = "Empty ResultXML element in XML response: {}".format
-            raise pytan.exceptions.AuthorizationError(m(response_body))
+            raise utils.exceptions.AuthorizationError(m(response_body))
 
         return resultxml_text
 
@@ -1930,13 +1899,13 @@ class Session(object):
                 response_body = self._get_response(request_body=request_body, **kwargs)
             else:
                 m = "Access denied after re-authenticating! Server response: {}".format
-                raise pytan.exceptions.AuthorizationError(m(response_command))
+                raise utils.exceptions.AuthorizationError(m(response_command))
 
         elif response_command != request_command:
             for p in self.BAD_RESPONSE_CMD_PRUNES:
                 response_command = response_command.replace(p, '').strip()
             m = "Response command {} does not match request command {}".format
-            raise pytan.exceptions.BadResponseError(m(response_command, request_command))
+            raise utils.exceptions.BadResponseError(m(response_command, request_command))
 
         # update session_id, in case new one issued
         self.session_id = self._regex_body_for_element(
