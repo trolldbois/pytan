@@ -430,6 +430,7 @@ class GetBase(Base):
     OBJECT_TYPE = ''
     NAME_TEMP = 'Get {} Options'
     DESC_TEMP = 'Get an object of type "{}" and export it to a file'
+    ACTION = 'get'
 
     def pre_init(self):
         self.OBJECT_STR = self.OBJECT_TYPE.replace('_', ' ').capitalize()
@@ -438,12 +439,6 @@ class GetBase(Base):
 
     def add_get_opts(self):
         self.grp = self.parser.add_argument_group(self.GROUP_NAME)
-        self.grp.add_argument(
-            '--all',
-            required=False, default=False, action='store_true', dest='all',
-            help='Get all objects of type {}'.format(self.OBJECT_STR),
-        )
-
         obj_map = tanium_obj.get_obj_map(self.OBJECT_TYPE)
         search_keys = copy.copy(obj_map['search'])
 
@@ -459,14 +454,18 @@ class GetBase(Base):
             self.grp.add_argument(
                 '--{}'.format(k),
                 required=False, action='append', default=[], dest=k,
-                help='{} of {} to get'.format(k, self.OBJECT_STR),
+                help='{} of {} to {}'.format(k, self.OBJECT_STR, self.ACTION),
             )
-
-        self.add_export_object_opts()
-        self.add_report_opts()
 
     def setup(self):
         self.add_get_opts()
+        self.grp.add_argument(
+            '--all',
+            required=False, default=False, action='store_true', dest='all',
+            help='Get all objects of type {}'.format(self.OBJECT_STR),
+        )
+        self.add_export_object_opts()
+        self.add_report_opts()
 
     def get_kwargs(self):
         grps = [self.GROUP_NAME]
@@ -532,5 +531,24 @@ class CreateJsonBase(GetBase):
         return response
 
 
-class DeleteBase(Base):
-    pass
+class DeleteBase(GetBase):
+    NAME_TEMP = 'Delete {} Options'
+    DESC_TEMP = 'Delete an object of type "{}"'
+    ACTION = 'delete'
+
+    def setup(self):
+        self.add_get_opts()
+
+    def get_response(self, kwargs):
+        o_dict = {'objtype': self.OBJECT_TYPE}
+        kwargs.update(o_dict)
+
+        response = self.handler.delete(self.OBJECT_TYPE, **kwargs)
+        for i in response:
+            print "Deleted item: {}".format(i)
+        return response
+
+    def get_result(self):
+        kwargs = self.get_kwargs()
+        response = self.get_response(kwargs)
+        return response
