@@ -3,7 +3,7 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 """Help module for for :mod:`pytan`"""
 
-from . import constants
+from .parsers import constants
 from . import exceptions
 
 

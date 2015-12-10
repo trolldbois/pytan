@@ -3,7 +3,6 @@
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
 """Constants for :mod:`pytan`"""
-
 DEBUG_FORMAT = (
     '[%(lineno)-5d - %(filename)20s:%(funcName)s()] %(asctime)s\n'
     '%(levelname)-8s %(name)s %(message)s'

@@ -1,5 +1,5 @@
-from . import cmdparse
+from . import pytan_shell
 
 __all__ = [
-    'cmdparse',
+    'pytan_shell',
 ]

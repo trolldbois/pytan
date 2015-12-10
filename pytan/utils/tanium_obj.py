@@ -759,3 +759,50 @@ def load_param_json_file(parameters_json_file):
             raise PytanError(m(parameters_json_file, pd_param))
 
     return json.dumps(pd)
+
+
+def parse_sensor_platforms(sensor):
+    """Utility to create a list of platforms for a given sensor"""
+    platforms = [
+        q.platform for q in sensor.queries
+        if q.script
+        and 'THIS IS A STUB' not in q.script
+        and 'echo Windows Only' not in q.script
+        and 'Not a Windows Sensor' not in q.script
+    ]
+    return platforms
+
+
+def filter_sourced_sensors(sensors):
+    """Utility to filter out all sensors that have a source_id specified (i.e. they are temp sensors created by the API)"""
+    sensors = [x for x in sensors if not x.source_id]
+    return sensors
+
+
+def filter_sensors(sensors, filter_platforms=[], filter_categories=[]):
+    """Utility to filter a list of sensors for specific platforms and/or categories"""
+    if not filter_platforms and not filter_categories:
+        return sorted(sensors, key=lambda x: x.category)
+
+    new_sensors = []
+    for x in sorted(sensors, key=lambda x: x.category):
+        if filter_categories:
+            # print "Filter cats: ", [y.lower() for y in filter_categories]
+            # print "Sensor cat: ", str(x.category).lower()
+            if str(x.category).lower() not in [y.lower() for y in filter_categories]:
+                # print "no cat match!"
+                continue
+
+        platforms = parse_sensor_platforms(x)
+        if filter_platforms:
+            match = [
+                p for p in platforms
+                if p.lower() in [y.lower() for y in filter_platforms]
+            ]
+            if not match:
+                # print "no platform match!"
+                continue
+
+        new_sensors.append(x)
+
+    return new_sensors

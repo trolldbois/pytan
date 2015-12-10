@@ -1,0 +1,439 @@
+import os
+import sys
+import json
+import getpass
+import traceback
+import argparse
+from argparse import ArgumentDefaultsHelpFormatter as A1 # noqa
+from argparse import RawDescriptionHelpFormatter as A2 # noqa
+from .. import constants
+from .. import exceptions
+from ...version import __version__
+
+
+class CustomArgFormat(A1, A2):
+    """Multiple inheritance Formatter class for :class:`argparse.ArgumentParser`.
+
+    If a :class:`argparse.ArgumentParser` class uses this as it's Formatter class, it will show the defaults for each argument in the `help` output
+    """
+    pass
+
+
+class CustomArgParse(argparse.ArgumentParser):
+    """Custom :class:`argparse.ArgumentParser` class which does a number of things:
+
+        * Uses :class:`pytan.utils.CustomArgFormat` as it's Formatter class, if none was passed in
+        * Prints help if there is an error
+        * Prints the help for any subparsers that exist
+    """
+    def __init__(self, *args, **kwargs):
+        self.my_file = __name__
+
+        if 'my_file' in kwargs:
+            self.my_file = kwargs.pop('my_file')
+
+        if 'formatter_class' not in kwargs:
+            kwargs['formatter_class'] = CustomArgFormat
+
+        # print kwargs
+        argparse.ArgumentParser.__init__(self, *args, **kwargs)
+
+    def error(self, message):
+        self.print_help()
+        print('\n!! Argument Parsing Error in "{}": {}\n'.format(self.my_file, message))
+        sys.exit(2)
+
+    def print_help(self, **kwargs):
+        super(CustomArgParse, self).print_help(**kwargs)
+        subparsers_actions = [
+            action for action in self._actions
+            if isinstance(action, argparse._SubParsersAction)
+        ]
+        for subparsers_action in subparsers_actions:
+            print ""
+            # get all subparsers and print help
+            for choice, subparser in subparsers_action.choices.items():
+                # print subparser
+                # print(" ** {} '{}':".format(
+                    # subparsers_action.dest, choice))
+                print(subparser.format_help())
+
+
+class Base(object):
+
+    DESCRIPTION = ""
+    INTERACTIVE = False
+
+    def __init__(self, **kwargs):
+        from ... import handler
+        self.handler_module = handler
+        self.kwargs = kwargs
+        self.my_filepath = os.path.abspath(sys.argv[0])
+        self.my_file = os.path.basename(self.my_filepath)
+        self.my_name = os.path.splitext(self.my_file)[0]
+        self.constants = constants
+        self.CustomArgFormat = CustomArgFormat
+        self.CustomArgParse = CustomArgParse
+        self.set_base()
+        self.set_parser()
+
+    def set_base(self):
+        self.base = self.CustomArgParse(
+            my_file=self.my_file,
+            description=self.DESCRIPTION,
+            add_help=False,
+        )
+        self.add_handler_auth()
+        self.add_handler_opts()
+
+    def set_parser(self):
+        self.parser = self.CustomArgParse(
+            my_file=self.my_file,
+            description=self.DESCRIPTION,
+            parents=[self.base]
+        )
+
+    def add_handler_auth(self):
+        name = 'Handler Authentication'
+        self.grp = self.base.add_argument_group(name)
+        self.grp.add_argument(
+            '-u', '--username',
+            required=False, action='store', dest='username', default=None,
+            help='Name of user',
+        )
+        self.grp.add_argument(
+            '-p', '--password',
+            required=False, action='store', default=None, dest='password',
+            help='Password of user',
+        )
+        self.grp.add_argument(
+            '--session_id',
+            required=False, action='store', default=None, dest='session_id',
+            help='Session ID to authenticate with instead of username/password',
+        )
+        self.grp.add_argument(
+            '--host',
+            required=False, action='store', default=None, dest='host',
+            help='Hostname/ip of SOAP Server',
+        )
+        self.grp.add_argument(
+            '--port',
+            required=False, action='store', default="443", dest='port',
+            help='Port to use when connecting to SOAP Server',
+        )
+
+    def add_handler_opts(self):
+        name = 'Handler Options'
+        self.grp = self.base.add_argument_group(name)
+        self.grp.add_argument(
+            '-l', '--loglevel',
+            required=False, action='store', type=int, default=0, dest='loglevel',
+            help='Logging level to use, increase for more verbosity',
+        )
+        self.grp.add_argument(
+            '--debugformat',
+            required=False, action='store_true', default=False, dest='debugformat',
+            help="Enable debug format for logging",
+        )
+        self.grp.add_argument(
+            '--record_all_requests',
+            required=False, action='store_true', default=False, dest='record_all_requests',
+            help="Record all requests in handler.session.ALL_REQUESTS_RESPONSES",
+        )
+        self.grp.add_argument(
+            '--stats_loop_enabled',
+            required=False, action='store_true', default=False, dest='stats_loop_enabled',
+            help="Enable the statistics loop",
+        )
+        self.grp.add_argument(
+            '--http_auth_retry',
+            required=False, action='store_false', default=True, dest='http_auth_retry',
+            help="Disable retry on HTTP authentication failures",
+        )
+        self.grp.add_argument(
+            '--http_retry_count',
+            required=False, action='store', type=int, default=5, dest='http_retry_count',
+            help="Retry count for HTTP failures/invalid responses",
+        )
+
+        puc_h = "PyTan User Config file to use for PyTan arguments (defaults to: {})"
+        puc_h = puc_h.format(constants.PYTAN_USER_CONFIG)
+        self.grp.add_argument(
+            '--pytan_user_config',
+            required=False, action='store', default='', dest='pytan_user_config',
+            help=puc_h
+        )
+        self.grp.add_argument(
+            '--force_server_version',
+            required=False, action='store', default='', dest='force_server_version',
+            help="Force PyTan to consider the server version as this"
+        )
+
+    def add_report_opts(self):
+        name = 'Report File Options'
+        self.grp = self.parser.add_argument_group(name)
+        self.grp.add_argument(
+            '--file',
+            required=False, action='store', default=None, dest='report_file',
+            help='File to save report to (if not supplied, will be generated)',
+        )
+        self.grp.add_argument(
+            '--dir',
+            required=False, action='store', default=None, dest='report_dir',
+            help='Directory to save report to (if not supplied, use current directory)',
+        )
+
+    def grp_choice_sse(self):
+        choice = self.grp.add_mutually_exclusive_group()
+        choice.add_argument(
+            '--enable_sse',
+            required=False, action='store_true', dest='sse', default=True,
+            help='Perform a server side export when getting data'
+        )
+        choice.add_argument(
+            '--disable_sse',
+            required=False, action='store_false', dest='sse', default=True,
+            help='Perform a normal get result data export when getting data'
+        )
+
+    def grp_sse_opts(self):
+        self.grp.add_argument(
+            '--sse_format',
+            required=False, action='store', default='xml_obj', dest='sse_format',
+            choices=['csv', 'xml', 'xml_obj', 'cef'],
+            help='If sse = True, perform server side export in this format',
+        )
+        self.grp.add_argument(
+            '--leading',
+            required=False, action='store', default='', dest='leading',
+            help='If sse = True, and sse_format = "cef", prepend each row with this text',
+        )
+        self.grp.add_argument(
+            '--trailing',
+            required=False, action='store', default='', dest='trailing',
+            help='If sse = True, and sse_format = "cef", append each row with this text',
+        )
+
+    def grp_format(self):
+        self.grp.add_argument(
+            '--export_format',
+            required=False, action='store', default='csv', dest='export_format',
+            choices=['csv', 'xml', 'json'],
+            help='Export Format to create report file in, only used if sse = False',
+        )
+
+    def grp_choice_csv_sort(self):
+        choice = self.grp.add_mutually_exclusive_group()
+        choice.add_argument(
+            '--sort',
+            required=False, action='append', default=[], dest='header_sort',
+            help='For export_format: csv, Sort headers by given names'
+        )
+        choice.add_argument(
+            '--no-sort',
+            required=False, action='store_false', default=argparse.SUPPRESS, dest='header_sort',
+            help='For export_format: csv, Do not sort the headers at all'
+        )
+        choice.add_argument(
+            '--auto_sort',
+            required=False, action='store_true', default=argparse.SUPPRESS, dest='header_sort',
+            help='For export_format: csv, Sort the headers with a basic alphanumeric sort'
+        )
+
+    def grp_choice_csv_sensor(self):
+        choice = self.grp.add_mutually_exclusive_group()
+        choice.add_argument(
+            '--add-sensor',
+            required=False, action='store_true', default=argparse.SUPPRESS,
+            dest='header_add_sensor',
+            help='For export_format: csv, Add the sensor names to each header'
+        )
+        choice.add_argument(
+            '--no-add-sensor',
+            required=False, action='store_false', default=False, dest='header_add_sensor',
+            help='For export_format: csv, Do not add the sensor names to each header'
+        )
+
+    def grp_choice_csv_type(self):
+        choice = self.grp.add_mutually_exclusive_group()
+        choice.add_argument(
+            '--add-type',
+            required=False, action='store_true', default=argparse.SUPPRESS,
+            dest='header_add_type',
+            help='For export_format: csv, Add the result type to each header'
+        )
+        choice.add_argument(
+            '--no-add-type',
+            required=False, action='store_false', default=False, dest='header_add_type',
+            help='For export_format: csv, Do not add the result type to each header'
+        )
+
+    def grp_choice_csv_expand(self):
+        choice = self.grp.add_mutually_exclusive_group()
+        choice.add_argument(
+            '--expand-columns',
+            required=False, action='store_true', default=argparse.SUPPRESS,
+            dest='expand_grouped_columns',
+            help='For export_format: csv, Expand multi-line cells into their own rows'
+        )
+        choice.add_argument(
+            '--no-columns',
+            required=False, action='store_false', default=False, dest='expand_grouped_columns',
+            help='For export_format: csv, Do not add expand multi-line cells into their own rows'
+        )
+
+    def grp_choice_explode(self):
+        choice = self.grp.add_mutually_exclusive_group()
+        choice.add_argument(
+            '--no-explode-json',
+            required=False, action='store_false', default=False, dest='explode_json_string_values',
+            help='Do not explode any embedded JSON into their own columns'
+        )
+        choice.add_argument(
+            '--explode-json',
+            required=False, action='store_true', default=argparse.SUPPRESS,
+            dest='explode_json_string_values',
+            help='Explode any embedded JSON into their own columns'
+        )
+
+    def grp_choice_include_type(self):
+        choice = self.grp.add_mutually_exclusive_group()
+        choice.add_argument(
+            '--no-include_type',
+            required=False, action='store_false', default=argparse.SUPPRESS, dest='include_type',
+            help='Only for export_format json, Do not include SOAP type in JSON output'
+        )
+        choice.add_argument(
+            '--include_type',
+            required=False, action='store_true', default=True, dest='include_type',
+            help='Only for export_format json, Include SOAP type in JSON output'
+        )
+
+    def grp_choice_minimal(self):
+        choice = self.grp.add_mutually_exclusive_group()
+        choice.add_argument(
+            '--no-minimal',
+            required=False, action='store_false', dest='minimal', default=argparse.SUPPRESS,
+            help='Only for export_format xml, include empty attributes'
+        )
+        choice.add_argument(
+            '--minimal',
+            required=False, action='store_true', dest='minimal', default=True,
+            help='Only for export_format xml, Only include attributes that are not empty'
+        )
+
+    def add_export_results_opts(self):
+        name = 'Export Results Options'
+        self.grp = self.parser.add_argument_group(name)
+        self.grp_choice_sse()
+        self.grp_sse_opts()
+        self.grp_format()
+        self.grp_choice_csv_sort()
+        self.grp_choice_csv_sensor()
+        self.grp_choice_csv_type()
+        self.grp_choice_csv_expand()
+
+    def add_export_object_opts(self):
+        name = 'Export Object Options'
+        self.grp = self.parser.add_argument_group(name)
+        self.grp_format()
+        self.grp_choice_csv_sort()
+        self.grp_choice_explode()
+        self.grp_choice_include_type()
+        self.grp_choice_minimal()
+
+    def _input_prompts(self):
+        """Utility function to prompt for username, `, and host if empty"""
+        puc_default = os.path.expanduser(self.constants.PYTAN_USER_CONFIG)
+        puc_kwarg = self.args.__dict__.get('pytan_user_config', '')
+        puc = puc_kwarg or puc_default
+        puc_dict = {}
+
+        if os.path.isfile(puc):
+            try:
+                with open(puc) as fh:
+                    puc_dict = json.load(fh)
+            except Exception as e:
+                m = "PyTan User Config file exists at '{}' but is not valid, Exception: {}".format
+                print m(puc, e)
+
+        if not self.args.session_id:
+            if not self.args.username and not puc_dict.get('username', ''):
+                username = raw_input('Tanium Username: ')
+                self.args.username = username.strip()
+
+            if not self.args.password and not puc_dict.get('password', ''):
+                password = getpass.getpass('Tanium Password: ')
+                self.args.password = password.strip()
+
+        if not self.args.host and not puc_dict.get('host', ''):
+            host = raw_input('Tanium Host: ')
+            self.args.host = host.strip()
+
+        return self.args
+
+    def _get_grp_opts(self, grps):
+        action_grps = [a for a in self.parser._action_groups if a.title in grps]
+        opts = [a.dest for b in action_grps for a in b._group_actions]
+        return opts
+
+    def version_check(self, version):
+        log_tpl = "PyTan v{} is not greater than {} v{}".format
+        if not __version__ >= version:
+            raise exceptions.VersionMismatchError(log_tpl(__version__, self.my_name, version))
+        return True
+
+    def interactive_check(self):
+        self.console = None
+        if self.INTERACTIVE:
+            from .. import historyconsole
+            self.historyconsole = historyconsole
+            self.console = self.historyconsole.HistoryConsole()
+        return self.console
+
+    def get_parser_args(self, grps):
+        parser_opts = self._get_grp_opts(grps=grps)
+        p_args = {k: getattr(self.args, k) for k in parser_opts}
+        return p_args
+
+    def check(self):
+        return
+
+    def setup(self):
+        return
+
+    def parse_args(self):
+        self.args = self.parser.parse_args()
+        return self.args
+
+    def get_handler(self):
+        self._input_prompts()
+        grps = ['Handler Authentication', 'Handler Options']
+        handler_args = self.get_parser_args(grps)
+
+        try:
+            self.handler = self.handler_module.Handler(**handler_args)
+        except Exception as e:
+            traceback.print_exc()
+            print "\n\nError occurred: {}".format(e)
+            sys.exit(99)
+        return self.handler
+
+    def get_result(self):
+        return
+
+    def get_exec(self):
+        s = 'exec_result = None'
+        return s
+
+
+class GetBase(Base):
+    pass
+
+
+class CreateJsonBase(Base):
+    pass
+
+
+class DeleteBase(Base):
+    pass

@@ -29,6 +29,8 @@ from . import pretty
 from . import tanium_obj
 from . import parsers
 from . import validate
+from . import debug
+from . import files
 from .external import taniumpy
 from .external import xmltodict
 from .external import requests
@@ -50,4 +52,6 @@ __all__ = [
     'xmltodict',
     'requests',
     'validate',
+    'debug',
+    'files',
 ]
