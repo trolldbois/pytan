@@ -13,7 +13,7 @@ from . import mappers
 mylog = logging.getLogger(__name__)
 
 
-def sensors(sensors, key='sensors', empty_ok=True):
+def parse_sensors(sensors, key='sensors', empty_ok=True):
     """Turns a sensors str or list of str into a sensor definition
 
     Parameters
@@ -67,7 +67,7 @@ def sensors(sensors, key='sensors', empty_ok=True):
     return sensor_defs
 
 
-def options(options):
+def parse_options(options):
     """Turns a options str or list of str into a question option definition
 
     Parameters
@@ -94,7 +94,7 @@ def options(options):
     return option_defs
 
 
-def filters(filters):
+def parse_filters(filters):
     """Turns a filters str or list of str into a question filter definition
 
     Parameters
@@ -134,7 +134,7 @@ def filters(filters):
     return filter_defs
 
 
-def package(package):
+def parse_package(package):
     """Turns a package str into a package definition
 
     Parameters

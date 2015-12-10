@@ -2,15 +2,8 @@
 # -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
-"""PyTan Constants
+"""Constants for :mod:`pytan`"""
 
-This contains a number of constants that drive PyTan.
-"""
-# disable python from creating .pyc files everywhere
-import sys
-sys.dont_write_bytecode = True
-
-# debug log format
 DEBUG_FORMAT = (
     '[%(lineno)-5d - %(filename)20s:%(funcName)s()] %(asctime)s\n'
     '%(levelname)-8s %(name)s %(message)s'
@@ -19,15 +12,11 @@ DEBUG_FORMAT = (
 Logging format for debugformat=True
 """
 
-# info log format
-INFO_FORMAT = (
-    '%(asctime)s %(levelname)-8s %(name)s: %(message)s'
-)
+INFO_FORMAT = '%(asctime)s %(levelname)-8s %(name)s: %(message)s'
 """
 Logging format for debugformat=False
 """
 
-# log levels to turn on extra loggers (higher the level the more verbose)
 LOG_LEVEL_MAPS = [
     (
         0,
@@ -361,8 +350,6 @@ REQ_KWARGS = [
 """
 A list of arguments that will be pulled from any respective kwargs for most calls to :class:`taniumpy.session.Session`
 """
-
-
 
 EXPORT_MAPS = {
     'ResultSet': {

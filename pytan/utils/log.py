@@ -10,27 +10,7 @@ import sys
 import logging
 import itertools
 import time
-from .. import constants
-
-try:
-    from logging import NullHandler
-except ImportError:  # NullHandler not present in Python < 2.7
-    from logging import Handler
-
-    class NullHandler(Handler):
-        def handle(self, record):
-            pass
-
-        def emit(self, record):
-            pass
-
-        def createLock(self):  # noqa
-            self.lock = None
-
-
-# Set default logging handler to avoid "No handler found" warnings.
-logger = logging.getLogger(__name__)
-logger.addHandler(NullHandler())
+from . import constants
 
 
 class SplitStreamHandler(logging.Handler):

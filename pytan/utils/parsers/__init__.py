@@ -5,14 +5,14 @@
 """
 # TODO: DOC FIX
 
-from .parsers import sensors
-from .parsers import options
-from .parsers import filters
-from .parsers import package
+from .parsers import parse_sensors
+from .parsers import parse_options
+from .parsers import parse_filters
+from .parsers import parse_package
 
 __all__ = [
-    'sensors',
-    'options',
-    'filters',
-    'package',
+    'parse_sensors',
+    'parse_options',
+    'parse_filters',
+    'parse_package',
 ]

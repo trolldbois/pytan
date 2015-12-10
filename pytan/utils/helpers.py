@@ -1,25 +1,29 @@
 # -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
-"""Provides methods for the :mod:`pytan` module to print help."""
-import sys
+"""Help module for for :mod:`pytan`"""
 
-# disable python from creating .pyc files everywhere
-sys.dont_write_bytecode = True
+from . import constants
+from . import exceptions
 
-import os
 
-my_file = os.path.abspath(__file__)
-my_dir = os.path.dirname(my_file)
-parent_dir = os.path.dirname(my_dir)
-path_adds = [parent_dir]
-[sys.path.insert(0, aa) for aa in path_adds if aa not in sys.path]
+def check_for_help(kwargs):
+    """Utility method to check for any help arguments and raise a PytanHelp exception with the appropriate help
 
-import pytan
+    Parameters
+    ----------
+    kwargs : dict
+        * dict of keyword args
+    """
+    help_keys = [x for x in dict(locals()) if x.endswith('_help')]
+    for x in help_keys:
+        if kwargs.get(x, False):
+            help_out = locals()[x]()
+            raise exceptions.PytanHelp(help_out)
 
 
 def passmein(func):
-    """Decorator method to pass the function to a function that uses this decorator"""
+    """Decorator method to pass the function name to a function that uses this decorator"""
     def wrapper(*args, **kwargs):
         return func(func, *args, **kwargs)
     return wrapper
@@ -179,7 +183,7 @@ the default type for most sensors), re-fetch data older than
 
 
 @passmein
-def package_help(me):
+def package(me):
     """
 Package Help
 ============
@@ -243,7 +247,7 @@ Supplying a package with two parameters, '$1' and '$2':
 
 
 @passmein
-def filters_help(me):
+def filters(me):
     """
 Filters Help
 ============
@@ -263,7 +267,7 @@ Valid Filters
 -------------
 
 """
-    for x in pytan.constants.FILTER_MAPS:
+    for x in constants.FILTER_MAPS:
         for y in x['human']:
             me.__doc__ += '    {!r:<25}\n'.format(y)
             me.__doc__ += '        Help: {}\n'.format(x['help'])
@@ -272,7 +276,7 @@ Valid Filters
 
 
 @passmein
-def options_help(me):
+def options(me):
     """
 Options Help
 ============
@@ -299,7 +303,7 @@ Valid Options
 -------------
 
 """
-    for x in pytan.constants.OPTION_MAPS:
+    for x in constants.OPTION_MAPS:
         me.__doc__ += '    {!r:<25}\n'.format(x['human'])
         me.__doc__ += '        Help: {}\n'.format(x['help'])
 

@@ -6,8 +6,10 @@
 
 import time
 import datetime
-from .. import constants
-from . import types
+import logging
+from . import constants
+
+mylog = logging.getLogger(__name__)
 
 
 def get_now():
@@ -36,7 +38,7 @@ def human_time(t, tformat='%Y_%m_%d-%H_%M_%S-%Z'):
     str :
         * `t` converted to str
     """
-    if types.is_num(t):
+    if isinstance(t, (int, float)):
         t = time.localtime(t)
     return time.strftime(tformat, t)
 
@@ -98,3 +100,49 @@ def datetime_to_timestr(dt):
         * the timestr for `dt` in taniums format
     """
     return dt.strftime(constants.TIME_FORMAT)
+
+
+def calculate_question_start_time(q):
+    """Caclulates the start time of a question by doing q.expiration - q.expire_seconds
+
+    Parameters
+    ----------
+    q : :class:`taniumpy.object_types.question.Question`
+        * Question object to calculate start time for
+
+    Returns
+    -------
+    tuple : str, datetime
+        * a tuple containing the start time first in str format for Tanium Server API, second in datetime object format
+    """
+    expire_dt = timestr_to_datetime(q.expiration)
+    expire_seconds_delta = datetime.timedelta(seconds=q.expire_seconds)
+    start_time_dt = expire_dt - expire_seconds_delta
+    start_time = datetime_to_timestr(start_time_dt)
+    return start_time, start_time_dt
+
+
+def eval_timing(c):
+    """Yet another method to time things -- c will be evaluated and timing information will be printed out
+    """
+    t_start = datetime.now()
+    r = eval(c)
+    t_end = datetime.now()
+    t_elapsed = t_end - t_start
+
+    m = "Timing info for {} -- START: {}, END: {}, ELAPSED: {}, RESPONSE LEN: {}".format
+    mylog.warn(m(c, t_start, t_end, t_elapsed, len(r)))
+    return (c, r, t_start, t_end, t_elapsed)
+
+
+def func_timing(f):
+    """Decorator to add timing information around a function """
+    def wrap(*args, **kwargs):
+        time1 = datetime.datetime.utcnow()
+        ret = f(*args, **kwargs)
+        time2 = datetime.datetime.utcnow()
+        elapsed = time2 - time1
+        m = '{}() TIMING start: {}, end: {}, elapsed: {}'.format
+        mylog.debug(m(f.func_name, time1, time2, elapsed))
+        return ret
+    return wrap
