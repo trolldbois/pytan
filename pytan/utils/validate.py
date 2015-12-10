@@ -3,8 +3,9 @@
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
 """Definition Validation module for :mod:`pytan`"""
-from .exceptions import ValidationError
 from . import constants
+from .external import taniumpy  # noqa
+from .exceptions import ValidationError
 
 
 def defs_gen(defname, deftypes, strconv=None, empty_ok=True, defs=None, **kwargs):

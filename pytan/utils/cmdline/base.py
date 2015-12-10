@@ -102,7 +102,7 @@ class Base(object):
         )
 
     def add_handler_auth(self):
-        name = 'Handler Authentication'
+        name = 'PyTan Authentication'
         self.grp = self.base.add_argument_group(name)
         self.grp.add_argument(
             '-u', '--username',
@@ -131,7 +131,7 @@ class Base(object):
         )
 
     def add_handler_opts(self):
-        name = 'Handler Options'
+        name = 'PyTan Options'
         self.grp = self.base.add_argument_group(name)
         self.grp.add_argument(
             '-l', '--loglevel',
@@ -177,6 +177,25 @@ class Base(object):
             help="Force PyTan to consider the server version as this"
         )
 
+    def add_help_opts(self):
+        name = 'PyTan Help Options'
+        self.grp = self.parser.add_argument_group(name)
+        self.grp.add_argument(
+            '--sensors-help',
+            required=False, action='store_true', default=False, dest='sensors_help',
+            help='Get the full help for sensor strings and exit',
+        )
+        self.grp.add_argument(
+            '--filters-help',
+            required=False, action='store_true', default=False, dest='filters_help',
+            help='Get the full help for filters strings and exit',
+        )
+        self.grp.add_argument(
+            '--options-help',
+            required=False, action='store_true', default=False, dest='options_help',
+            help='Get the full help for options strings and exit',
+        )
+
     def add_report_opts(self):
         name = 'Report File Options'
         self.grp = self.parser.add_argument_group(name)
@@ -189,6 +208,19 @@ class Base(object):
             '--dir',
             required=False, action='store', default=None, dest='report_dir',
             help='Directory to save report to (if not supplied, use current directory)',
+        )
+
+    def grp_choice_results(self):
+        choice = self.grp.add_mutually_exclusive_group()
+        choice.add_argument(
+            '--no-results',
+            action='store_false', dest='get_results', default=argparse.SUPPRESS, required=False,
+            help='Do not get the results, just add the object and return right away'
+        )
+        choice.add_argument(
+            '--results',
+            action='store_true', dest='get_results', default=True, required=False,
+            help='Wait until all results are in before returning'
         )
 
     def grp_choice_sse(self):
@@ -333,8 +365,8 @@ class Base(object):
     def add_export_results_opts(self):
         name = 'Export Results Options'
         self.grp = self.parser.add_argument_group(name)
-        self.grp_choice_sse()
-        self.grp_sse_opts()
+        # self.grp_choice_sse()
+        # self.grp_sse_opts()
         self.grp_format()
         self.grp_choice_csv_sort()
         self.grp_choice_csv_sensor()
@@ -401,6 +433,10 @@ class Base(object):
         p_args = {k: getattr(self.args, k) for k in parser_opts}
         return p_args
 
+    def get_other_args(self, kwargs):
+        other_args = {a: b for a, b in self.args.__dict__.iteritems() if a not in kwargs}
+        return other_args
+
     def check(self):
         return
 
@@ -413,7 +449,7 @@ class Base(object):
 
     def get_handler(self):
         self._input_prompts()
-        grps = ['Handler Authentication', 'Handler Options']
+        grps = ['PyTan Authentication', 'PyTan Options']
         kwargs = self.get_parser_args(grps)
         self.handler = self.handler_module.Handler(**kwargs)
         return self.handler
