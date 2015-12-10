@@ -6,9 +6,9 @@ import getpass
 import argparse
 from argparse import ArgumentDefaultsHelpFormatter as A1 # noqa
 from argparse import RawDescriptionHelpFormatter as A2 # noqa
+from .. import files
 from .. import constants
 from .. import tanium_obj
-from .. import files
 
 
 class CustomArgFormat(A1, A2):
@@ -67,13 +67,17 @@ class Base(object):
     def __init__(self, **kwargs):
         from ... import handler
         self.handler_module = handler
+        self.tanium_obj = tanium_obj
+        self.constants = constants
+        self.files = files
+        self.CustomArgFormat = CustomArgFormat
+        self.CustomArgParse = CustomArgParse
+        self.SUPPRESS = argparse.SUPPRESS
+
         self.kwargs = kwargs
         self.my_filepath = os.path.abspath(sys.argv[0])
         self.my_file = os.path.basename(self.my_filepath)
         self.my_name = os.path.splitext(self.my_file)[0]
-        self.constants = constants
-        self.CustomArgFormat = CustomArgFormat
-        self.CustomArgParse = CustomArgParse
         self.pre_init()
         self.set_base()
         self.set_parser()
@@ -165,7 +169,7 @@ class Base(object):
         )
 
         puc_h = "PyTan User Config file to use for PyTan arguments (defaults to: {})"
-        puc_h = puc_h.format(constants.PYTAN_USER_CONFIG)
+        puc_h = puc_h.format(self.constants.PYTAN_USER_CONFIG)
         self.grp.add_argument(
             '--pytan_user_config',
             required=False, action='store', default='', dest='pytan_user_config',
@@ -214,7 +218,7 @@ class Base(object):
         choice = self.grp.add_mutually_exclusive_group()
         choice.add_argument(
             '--no-results',
-            action='store_false', dest='get_results', default=argparse.SUPPRESS, required=False,
+            action='store_false', dest='get_results', default=self.SUPPRESS, required=False,
             help='Do not get the results, just add the object and return right away'
         )
         choice.add_argument(
@@ -271,12 +275,12 @@ class Base(object):
         )
         choice.add_argument(
             '--no-sort',
-            required=False, action='store_false', default=argparse.SUPPRESS, dest='header_sort',
+            required=False, action='store_false', default=self.SUPPRESS, dest='header_sort',
             help='For export_format: csv, Do not sort the headers at all'
         )
         choice.add_argument(
             '--auto_sort',
-            required=False, action='store_true', default=argparse.SUPPRESS, dest='header_sort',
+            required=False, action='store_true', default=self.SUPPRESS, dest='header_sort',
             help='For export_format: csv, Sort the headers with a basic alphanumeric sort'
         )
 
@@ -284,7 +288,7 @@ class Base(object):
         choice = self.grp.add_mutually_exclusive_group()
         choice.add_argument(
             '--add-sensor',
-            required=False, action='store_true', default=argparse.SUPPRESS,
+            required=False, action='store_true', default=self.SUPPRESS,
             dest='header_add_sensor',
             help='For export_format: csv, Add the sensor names to each header'
         )
@@ -298,7 +302,7 @@ class Base(object):
         choice = self.grp.add_mutually_exclusive_group()
         choice.add_argument(
             '--add-type',
-            required=False, action='store_true', default=argparse.SUPPRESS,
+            required=False, action='store_true', default=self.SUPPRESS,
             dest='header_add_type',
             help='For export_format: csv, Add the result type to each header'
         )
@@ -312,7 +316,7 @@ class Base(object):
         choice = self.grp.add_mutually_exclusive_group()
         choice.add_argument(
             '--expand-columns',
-            required=False, action='store_true', default=argparse.SUPPRESS,
+            required=False, action='store_true', default=self.SUPPRESS,
             dest='expand_grouped_columns',
             help='For export_format: csv, Expand multi-line cells into their own rows'
         )
@@ -331,7 +335,7 @@ class Base(object):
         )
         choice.add_argument(
             '--explode-json',
-            required=False, action='store_true', default=argparse.SUPPRESS,
+            required=False, action='store_true', default=self.SUPPRESS,
             dest='explode_json_string_values',
             help='Explode any embedded JSON into their own columns'
         )
@@ -340,7 +344,7 @@ class Base(object):
         choice = self.grp.add_mutually_exclusive_group()
         choice.add_argument(
             '--no-include_type',
-            required=False, action='store_false', default=argparse.SUPPRESS, dest='include_type',
+            required=False, action='store_false', default=self.SUPPRESS, dest='include_type',
             help='Only for export_format json, Do not include SOAP type in JSON output'
         )
         choice.add_argument(
@@ -353,7 +357,7 @@ class Base(object):
         choice = self.grp.add_mutually_exclusive_group()
         choice.add_argument(
             '--no-minimal',
-            required=False, action='store_false', dest='minimal', default=argparse.SUPPRESS,
+            required=False, action='store_false', dest='minimal', default=self.SUPPRESS,
             help='Only for export_format xml, include empty attributes'
         )
         choice.add_argument(
@@ -414,7 +418,7 @@ class Base(object):
 
     def _get_grp_opts(self, grps):
         action_grps = [a for a in self.parser._action_groups if a.title in grps]
-        opts = [a.dest for b in action_grps for a in b._group_actions]
+        opts = list(set([a.dest for b in action_grps for a in b._group_actions]))
         return opts
 
     def version_check(self, version):
@@ -430,7 +434,11 @@ class Base(object):
 
     def get_parser_args(self, grps):
         parser_opts = self._get_grp_opts(grps=grps)
-        p_args = {k: getattr(self.args, k) for k in parser_opts}
+        p_args = {
+            k: getattr(self.args, k)
+            for k in parser_opts
+            if getattr(self.args, k, None) is not None
+        }
         return p_args
 
     def get_other_args(self, kwargs):
@@ -475,7 +483,7 @@ class GetBase(Base):
 
     def add_get_opts(self):
         self.grp = self.parser.add_argument_group(self.GROUP_NAME)
-        obj_map = tanium_obj.get_obj_map(self.OBJECT_TYPE)
+        obj_map = self.tanium_obj.get_obj_map(self.OBJECT_TYPE)
         search_keys = copy.copy(obj_map['search'])
 
         if 'id' not in search_keys:

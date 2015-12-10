@@ -376,9 +376,9 @@ class Handler(object):
         clean_keys = ['qtype']
         clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
-        q_obj_map = utils.validate.get_q_obj_map(qtype=qtype)
+        obj_map = utils.tanium_obj.get_q_obj_map(qtype=qtype)
 
-        method = getattr(self, q_obj_map['handler'])
+        method = getattr(self, obj_map['handler'])
         result = method(**clean_kwargs)
         return result
 
