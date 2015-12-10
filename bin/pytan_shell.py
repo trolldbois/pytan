@@ -14,18 +14,18 @@ my_file = os.path.abspath(sys.argv[0])
 my_name = os.path.splitext(os.path.basename(my_file))[0]
 my_dir = os.path.dirname(my_file)
 parent_dir = os.path.dirname(my_dir)
-lib_dir = os.path.join(parent_dir, 'pytan')
-path_adds = [lib_dir]
+path_adds = [parent_dir]
 [sys.path.insert(0, aa) for aa in path_adds if aa not in sys.path]
 
-import pytan
-import pytan.utils.cmdline
+import pytan  # noqa
+i = "pytan.utils.cmdline.{}".format(my_name)
+__import__(i)
+module = eval(i)
 
 if __name__ == "__main__":
-    module = getattr(pytan.utils.cmdline, my_name)
     worker = module.Worker()
     version_check = worker.version_check(__version__)
-    cons = worker.interactive_check()
+    console = worker.interactive_check()
     check = worker.check()
     setup = worker.setup()
     args = worker.parse_args()

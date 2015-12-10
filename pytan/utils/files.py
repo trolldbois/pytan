@@ -3,6 +3,8 @@ import glob
 import string
 import json
 import platform
+from ..version import __version__
+from . import exceptions
 
 
 def filter_filename(filename):
@@ -81,3 +83,10 @@ def determine_os_ver():
     else:
         raise Exception("OS System not coded for: {}".format(os_system))
     return os_version
+
+
+def version_check(my_name, version):
+    m = "PyTan v{} is not greater than {} v{}".format
+    if not __version__ >= version:
+        raise exceptions.VersionMismatchError(m(__version__, my_name, version))
+    return True

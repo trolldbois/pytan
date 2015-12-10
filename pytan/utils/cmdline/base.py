@@ -1,14 +1,14 @@
 import os
 import sys
 import json
+import copy
 import getpass
-import traceback
 import argparse
 from argparse import ArgumentDefaultsHelpFormatter as A1 # noqa
 from argparse import RawDescriptionHelpFormatter as A2 # noqa
 from .. import constants
-from .. import exceptions
-from ...version import __version__
+from .. import tanium_obj
+from .. import files
 
 
 class CustomArgFormat(A1, A2):
@@ -74,8 +74,16 @@ class Base(object):
         self.constants = constants
         self.CustomArgFormat = CustomArgFormat
         self.CustomArgParse = CustomArgParse
+        self.pre_init()
         self.set_base()
         self.set_parser()
+        self.post_init()
+
+    def pre_init(self):
+        pass
+
+    def post_init(self):
+        pass
 
     def set_base(self):
         self.base = self.CustomArgParse(
@@ -378,10 +386,7 @@ class Base(object):
         return opts
 
     def version_check(self, version):
-        log_tpl = "PyTan v{} is not greater than {} v{}".format
-        if not __version__ >= version:
-            raise exceptions.VersionMismatchError(log_tpl(__version__, self.my_name, version))
-        return True
+        return files.version_check(self.my_name, version)
 
     def interactive_check(self):
         self.console = None
@@ -409,14 +414,8 @@ class Base(object):
     def get_handler(self):
         self._input_prompts()
         grps = ['Handler Authentication', 'Handler Options']
-        handler_args = self.get_parser_args(grps)
-
-        try:
-            self.handler = self.handler_module.Handler(**handler_args)
-        except Exception as e:
-            traceback.print_exc()
-            print "\n\nError occurred: {}".format(e)
-            sys.exit(99)
+        kwargs = self.get_parser_args(grps)
+        self.handler = self.handler_module.Handler(**kwargs)
         return self.handler
 
     def get_result(self):
@@ -428,11 +427,109 @@ class Base(object):
 
 
 class GetBase(Base):
-    pass
+    OBJECT_TYPE = ''
+    NAME_TEMP = 'Get {} Options'
+    DESC_TEMP = 'Get an object of type "{}" and export it to a file'
+
+    def pre_init(self):
+        self.OBJECT_STR = self.OBJECT_TYPE.replace('_', ' ').capitalize()
+        self.GROUP_NAME = self.NAME_TEMP.format(self.OBJECT_STR)
+        self.DESCRIPTION = self.DESC_TEMP.format(self.OBJECT_STR)
+
+    def add_get_opts(self):
+        self.grp = self.parser.add_argument_group(self.GROUP_NAME)
+        self.grp.add_argument(
+            '--all',
+            required=False, default=False, action='store_true', dest='all',
+            help='Get all objects of type {}'.format(self.OBJECT_STR),
+        )
+
+        obj_map = tanium_obj.get_obj_map(self.OBJECT_TYPE)
+        search_keys = copy.copy(obj_map['search'])
+
+        if 'id' not in search_keys:
+            search_keys.append('id')
+
+        if self.OBJECT_TYPE == 'whitelisted_url':
+            search_keys.append('url_regex')
+        elif self.OBJECT_TYPE == 'user':
+            search_keys.append('name')
+
+        for k in search_keys:
+            self.grp.add_argument(
+                '--{}'.format(k),
+                required=False, action='append', default=[], dest=k,
+                help='{} of {} to get'.format(k, self.OBJECT_STR),
+            )
+
+        self.add_export_object_opts()
+        self.add_report_opts()
+
+    def setup(self):
+        self.add_get_opts()
+
+    def get_kwargs(self):
+        grps = [self.GROUP_NAME]
+        kwargs = self.get_parser_args(grps)
+        return kwargs
+
+    def get_response(self, kwargs):
+        get_all = kwargs.pop('all')
+
+        o_dict = {'objtype': self.OBJECT_TYPE}
+        kwargs.update(o_dict)
+
+        if get_all:
+            response = self.handler.get_all(**o_dict)
+        else:
+            response = self.handler.get(**kwargs)
+
+        print "Found items: {}".format(response)
+        return response
+
+    def export_response(self, response):
+        report_file, result = self.handler.export_to_report_file(
+            obj=response,
+            **self.args.__dict__
+        )
+
+        m = "Report file {!r} written with {} bytes".format
+        print(m(report_file, len(result)))
+        return report_file, result
+
+    def get_result(self):
+        kwargs = self.get_kwargs()
+        response = self.get_response(kwargs)
+        report_file, result = self.export_response(response)
+        return response, report_file, result
 
 
-class CreateJsonBase(Base):
-    pass
+class CreateJsonBase(GetBase):
+    NAME_TEMP = 'Create {} from JSON Options'
+    DESC_TEMP = 'Create an object of type "{}" from a JSON file'
+
+    def add_create_opts(self):
+        self.grp = self.parser.add_argument_group(self.GROUP_NAME)
+        self.grp.add_argument(
+            '-j', '--json',
+            required=True, action='store', default='', dest='json_file',
+            help='JSON file to use for creating the object',
+        )
+
+    def setup(self):
+        self.add_create_opts()
+
+    def get_response(self, kwargs):
+        response = self.handler.create_from_json(self.OBJECT_TYPE, **kwargs)
+        for i in response:
+            obj_id = getattr(i, 'id', 'unknown')
+            print "Created item: {}, ID: {}".format(i, obj_id)
+        return response
+
+    def get_result(self):
+        kwargs = self.get_kwargs()
+        response = self.get_response(kwargs)
+        return response
 
 
 class DeleteBase(Base):
