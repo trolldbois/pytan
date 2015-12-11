@@ -296,7 +296,7 @@ class Handler(object):
 
         Parameters
         ----------
-        pytan_user_config : str, optional
+        new_config : str, optional
             * default: self.puc
             * JSON file to wite with current class variables
 
@@ -305,17 +305,19 @@ class Handler(object):
         puc : str
             * filename of PyTan User Config that was written to
         """
-        puc_kwarg = kwargs.get('pytan_user_config', '')
+        puc_kwarg = kwargs.get('new_config', '')
         puc = puc_kwarg or self.puc
         puc = os.path.expanduser(puc)
 
         puc_dict = {}
 
+        skips = ['mylog', 'session', 'puc', 'pollers']
         for k, v in vars(self).iteritems():
-            if k in ['mylog', 'session', 'puc']:
+            if k in skips:
                 m = "Skipping class variable {} from inclusion in: {}".format
                 self.mylog.debug(m(k, puc))
                 continue
+            print k, v
 
             m = "Including class variable {} in: {}".format
             self.mylog.debug(m(k, puc))

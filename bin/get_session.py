@@ -8,10 +8,10 @@ __version__ = '3.0.0'
 import os
 import sys
 sys.dont_write_bytecode = True
-
-my_file = os.path.abspath(sys.argv[0])
-my_name = os.path.splitext(os.path.basename(my_file))[0]
-my_dir = os.path.dirname(my_file)
+my_filepath = os.path.abspath(sys.argv[0])
+my_file = os.path.basename(my_filepath)
+my_name = os.path.splitext(my_file)[0]
+my_dir = os.path.dirname(my_filepath)
 parent_dir = os.path.dirname(my_dir)
 path_adds = [parent_dir]
 [sys.path.insert(0, aa) for aa in path_adds if aa not in sys.path]

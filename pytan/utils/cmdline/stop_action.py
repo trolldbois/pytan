@@ -17,7 +17,7 @@ class Worker(base.Base):
         m = "++ Stopping action with arguments:\n{}"
         print m.format(self.pf(kwargs))
         response = self.handler.stop_action(**kwargs)
-        m = "++ Action ID stopped successfully: {0.id!r}"
+        m = "++ Action ID stopped successfully: {}"
         print m.format(response)
         return response
 

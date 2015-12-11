@@ -140,7 +140,7 @@ def datetime_to_timestr(dt):
     return dt.strftime(constants.TIME_FORMAT)
 
 
-def calculate_question_start_time(q):
+def question_start_time(q):
     """Caclulates the start time of a question by doing q.expiration - q.expire_seconds
 
     Parameters

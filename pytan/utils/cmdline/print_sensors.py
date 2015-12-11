@@ -1,49 +1,67 @@
+# DO TSAT FIRST
+from . import base
+from .. import pretty
+
+
+class Worker(base.Base):
+    DESCRIPTION = 'Get sensors based on options and print their information out'
+    GROUP_NAME = 'Print Sensors Options'
+
+    def setup(self):
+        self.grp = self.parser.add_argument_group(self.GROUP_NAME)
+        self.grp.add_argument(
+            '--json',
+            required=False, default=False, action='store_true', dest='json',
+            help='Just print the raw JSON, instead of pretty printing the elements',
+        )
+        self.grp.add_argument(
+            '--hide_params',
+            required=False, default=False, action='store_true', dest='hide_params',
+            help='Do not show parameters in output',
+        )
+
+        self.grp = self.parser.add_argument_group('Filtering Options')
+        self.grp.add_argument(
+            '--category',
+            required=False, default=[], action='append', dest='categories',
+            help='Only show sensors in given category',
+        )
+        self.grp.add_argument(
+            '--platform',
+            required=False, default=[], action='append', dest='platforms',
+            help='Only show sensors for given platform',
+        )
+        self.grp.add_argument(
+            '--params_only',
+            required=False, default=False, action='store_true', dest='params_only',
+            help='Only show sensors with parameters',
+        )
+
+    def get_response(self, kwargs):
+        m = "++ Getting server info"
+        print m.format()
+        response = self.handler.session.get_server_info()
+        m = "++ Server info fetched successfully for {} sections"
+        print m.format(len(response['diags_flat']))
+
+        if kwargs['json']:
+            result = pretty.jsonify(response['diags_flat'])
+        else:
+            result = pretty.pretty_dict(response['diags_flat'])
+        print result
+
+        return response
+
+    def get_result(self):
+        grps = [self.GROUP_NAME]
+        kwargs = self.get_parser_args(grps)
+        response = self.get_response(kwargs)
+        return response
+
 
 def print_sensors(doc):
     """Method to setup the base :class:`CustomArgParse` class for command line scripts using :func:`base_parser`, then add specific arguments for scripts that use :mod:`pytan` to print server info.
     """
-    parser = get_object(obj='sensor', doc=__doc__)
-    output_group = parser.add_argument_group('Output Options')
-    output_group.add_argument(
-        '--category',
-        required=False,
-        default=[],
-        action='append',
-        dest='categories',
-        help='Only show sensors in given category',
-    )
-    output_group.add_argument(
-        '--platform',
-        required=False,
-        default=[],
-        action='append',
-        dest='platforms',
-        help='Only show sensors for given platform',
-    )
-    output_group.add_argument(
-        '--hide_params',
-        required=False,
-        default=False,
-        action='store_true',
-        dest='hide_params',
-        help='Do not show parameters in output',
-    )
-    output_group.add_argument(
-        '--params_only',
-        required=False,
-        default=False,
-        action='store_true',
-        dest='params_only',
-        help='Only show sensors with parameters',
-    )
-    output_group.add_argument(
-        '--json',
-        required=False,
-        default=False,
-        action='store_true',
-        dest='json',
-        help='Show a json dump of the server information',
-    )
     return parser
 
 

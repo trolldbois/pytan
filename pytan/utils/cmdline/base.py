@@ -36,7 +36,6 @@ class CustomArgParse(argparse.ArgumentParser):
         if 'formatter_class' not in kwargs:
             kwargs['formatter_class'] = CustomArgFormat
 
-        # print kwargs
         argparse.ArgumentParser.__init__(self, *args, **kwargs)
 
     def error(self, message):
@@ -52,11 +51,7 @@ class CustomArgParse(argparse.ArgumentParser):
         ]
         for subparsers_action in subparsers_actions:
             print ""
-            # get all subparsers and print help
             for choice, subparser in subparsers_action.choices.items():
-                # print subparser
-                # print(" ** {} '{}':".format(
-                    # subparsers_action.dest, choice))
                 print(subparser.format_help())
 
 
@@ -174,12 +169,12 @@ class Base(object):
         puc_h = puc_h.format(self.constants.PYTAN_USER_CONFIG)
         self.grp.add_argument(
             '--pytan_user_config',
-            required=False, action='store', default='', dest='pytan_user_config',
+            required=False, action='store', default=self.SUPPRESS, dest='pytan_user_config',
             help=puc_h
         )
         self.grp.add_argument(
             '--force_server_version',
-            required=False, action='store', default='', dest='force_server_version',
+            required=False, action='store', default=self.SUPPRESS, dest='force_server_version',
             help="Force PyTan to consider the server version as this"
         )
 
@@ -438,7 +433,7 @@ class Base(object):
             if 'report_file' not in kwargs and getattr(self, 'FILE_PREFIX', ''):
                 kwargs['prefix'] = '{}'.format(self.FILE_PREFIX)
 
-            m = "++ Exporting {} with arguments:\n{}"
+            m = "-- Exporting {} with arguments:\n{}"
             print m.format(results, self.pf(kwargs))
             report_file, report_result = self.handler.export_to_report_file(**kwargs)
 
@@ -446,7 +441,7 @@ class Base(object):
             print(m.format(report_file, len(report_result)))
         else:
             report_file, report_result = None, None
-            m = "++ No results returned, run get_results_{}.py to get the results"
+            m = "!! No results returned, run get_results_{}.py to get the results"
             print m.format(self.ACTION)
         return report_file, report_result
 
@@ -550,15 +545,15 @@ class GetBase(Base):
         kwargs.update(o_dict)
 
         if get_all:
-            m = "++ Getting all objects with arguments:\n{}"
-            print m.format(self.pf(o_dict))
+            m = "-- Getting all {} objects with arguments:\n{}"
+            print m.format(self.OBJECT_STR, self.pf(o_dict))
             response = self.handler.get_all(**o_dict)
         else:
-            m = "++ Getting objects with arguments:\n{}"
-            print m.format(self.pf(kwargs))
+            m = "-- Getting {} objects with arguments:\n{}"
+            print m.format(self.OBJECT_STR, self.pf(kwargs))
             response = self.handler.get(**kwargs)
 
-        print "++ Found items: {}".format(response)
+        print "++ Successfully found: {}".format(response)
         return response
 
     def get_result(self):
@@ -587,12 +582,12 @@ class CreateJsonBase(GetBase):
         o_dict = {'objtype': self.OBJECT_TYPE}
         kwargs.update(o_dict)
 
-        m = "++ Creating object from JSON with arguments:\n{}"
-        print m.format(self.pf(kwargs))
+        m = "-- Creating {} object from JSON with arguments:\n{}"
+        print m.format(self.OBJECT_TYPE, self.pf(kwargs))
         response = self.handler.create_from_json(**kwargs)
 
         for i in response:
-            print "++ Created item: {}, ID: {}".format(i, getattr(i, 'id', 'unknown'))
+            print "++ Successfully created: {}, ID: {}".format(i, getattr(i, 'id', 'unknown'))
         return response
 
     def get_result(self):
@@ -613,12 +608,12 @@ class DeleteBase(GetBase):
         o_dict = {'objtype': self.OBJECT_TYPE}
         kwargs.update(o_dict)
 
-        m = "++ Deleting object arguments:\n{}"
-        print m.format(self.pf(kwargs))
+        m = "-- Deleting {} object with arguments:\n{}"
+        print m.format(self.OBJECT_TYPE, self.pf(kwargs))
         response = self.handler.delete(**kwargs)
 
         for i in response:
-            print "++ Deleted item: {}".format(i)
+            print "++ Successfully deleted: {}".format(i)
         return response
 
     def get_result(self):
@@ -643,7 +638,7 @@ class GetResultsBase(GetBase):
         grps = ['Export Results Options', 'Export Object Options', 'Get Results Options']
         kwargs = self.get_parser_args(grps)
         kwargs['obj'] = obj
-        m = "++ Getting result data with arguments:\n{}"
+        m = "-- Getting result data with arguments:\n{}"
         print m.format(self.pf(kwargs))
         result_data = self.handler.get_result_data(**kwargs)
         print "++ Result data received: {}".format(result_data)
