@@ -1,4 +1,3 @@
-import pprint
 from . import base
 
 
@@ -65,7 +64,7 @@ class Worker(base.Base):
 
     def get_response(self, kwargs):
         m = "++ Creating package with arguments:\n{}"
-        print m.format(pprint.pformat(kwargs))
+        print m.format(self.pf(kwargs))
         response = self.handler.create_package(**kwargs)
         m = "++ Package created successfully: {0.name!r}, ID: {0.id!r}, command: {0.command!r}"
         print m.format(response)

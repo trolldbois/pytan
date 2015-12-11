@@ -1,4 +1,3 @@
-import pprint
 from . import base
 
 
@@ -16,7 +15,7 @@ class Worker(base.Base):
 
     def get_response(self, kwargs):
         m = "++ Calling handler.session.logout with arguments:\n{}"
-        print m.format(pprint.pformat(kwargs))
+        print m.format(self.pf(kwargs))
         response = self.handler.session.logout(**kwargs)
         print "++ Logout finished successfully: {!r}".format(response)
         return response

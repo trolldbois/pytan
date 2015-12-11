@@ -1,4 +1,3 @@
-import pprint
 from . import base
 
 
@@ -36,7 +35,7 @@ class Worker(base.Base):
             grps = ['Export Results Options']
             kwargs = self.get_parser_args(grps)
             m = "++ Exporting {} with arguments:\n{}"
-            print m.format(results, pprint.pformat(kwargs))
+            print m.format(results, self.pf(kwargs))
             report_file, result = self.handler.export_to_report_file(obj=results, **kwargs)
             m = "++ Report file {!r} written with {} bytes"
             print(m.format(report_file, len(result)))
@@ -50,7 +49,7 @@ class Worker(base.Base):
         grps = [self.GROUP_NAME]
         kwargs = self.get_parser_args(grps)
         m = "++ Asking {} question with arguments:\n{}"
-        print m.format(self.QTYPE, pprint.pformat(kwargs))
+        print m.format(self.QTYPE, self.pf(kwargs))
         response = self.handler.ask(qtype=self.QTYPE, **kwargs)
         m = "++ Asked Question {question_object.query_text!r} ID: {question_results.id!r}"
         print m.format(**response)

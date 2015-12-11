@@ -4,6 +4,7 @@ import json
 import copy
 import getpass
 import argparse
+import pprint
 from argparse import ArgumentDefaultsHelpFormatter as A1 # noqa
 from argparse import RawDescriptionHelpFormatter as A2 # noqa
 from .. import files
@@ -73,6 +74,7 @@ class Base(object):
         self.CustomArgFormat = CustomArgFormat
         self.CustomArgParse = CustomArgParse
         self.SUPPRESS = argparse.SUPPRESS
+        self.pf = pprint.pformat
 
         self.kwargs = kwargs
         self.my_filepath = os.path.abspath(sys.argv[0])
@@ -192,12 +194,17 @@ class Base(object):
         self.grp.add_argument(
             '--filters-help',
             required=False, action='store_true', default=False, dest='filters_help',
-            help='Get the full help for filters strings and exit',
+            help='Get the full help for filter strings and exit',
         )
         self.grp.add_argument(
             '--options-help',
             required=False, action='store_true', default=False, dest='options_help',
-            help='Get the full help for options strings and exit',
+            help='Get the full help for option strings and exit',
+        )
+        self.grp.add_argument(
+            '--package-help',
+            required=False, action='store_true', default=False, dest='package_help',
+            help='Get the full help for package strings and exit',
         )
 
     def add_report_opts(self):
@@ -523,8 +530,12 @@ class GetBase(Base):
         kwargs.update(o_dict)
 
         if get_all:
+            m = "++ Getting all objects with arguments:\n{}"
+            print m.format(self.pf(o_dict))
             response = self.handler.get_all(**o_dict)
         else:
+            m = "++ Getting objects with arguments:\n{}"
+            print m.format(self.pf(kwargs))
             response = self.handler.get(**kwargs)
 
         print "Found items: {}".format(response)
@@ -563,10 +574,15 @@ class CreateJsonBase(GetBase):
         self.add_create_opts()
 
     def get_response(self, kwargs):
-        response = self.handler.create_from_json(self.OBJECT_TYPE, **kwargs)
+        o_dict = {'objtype': self.OBJECT_TYPE}
+        kwargs.update(o_dict)
+
+        m = "++ Creating object from JSON with arguments:\n{}"
+        print m.format(self.pf(kwargs))
+        response = self.handler.create_from_json(**kwargs)
+
         for i in response:
-            obj_id = getattr(i, 'id', 'unknown')
-            print "Created item: {}, ID: {}".format(i, obj_id)
+            print "Created item: {}, ID: {}".format(i, getattr(i, 'id', 'unknown'))
         return response
 
     def get_result(self):
@@ -587,7 +603,10 @@ class DeleteBase(GetBase):
         o_dict = {'objtype': self.OBJECT_TYPE}
         kwargs.update(o_dict)
 
-        response = self.handler.delete(self.OBJECT_TYPE, **kwargs)
+        m = "++ Deleting object arguments:\n{}"
+        print m.format(self.pf(kwargs))
+        response = self.handler.delete(**kwargs)
+
         for i in response:
             print "Deleted item: {}".format(i)
         return response

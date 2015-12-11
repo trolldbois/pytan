@@ -26,17 +26,3 @@ def introspect(obj, depth=0):
         if isinstance(subobj, types.InstanceType) and dir(subobj) != []:
             introspect(subobj, depth=depth + 1)
             print
-
-
-def print_obj(d, indent=0):
-    """Pretty print a dictionary"""
-    for k, v in d.iteritems():
-        if isinstance(v, (dict)):
-            print "{}{}: \n".format('  ' * indent, k),
-            print_obj(v, indent + 1)
-        elif isinstance(v, (list, tuple)):
-            print "{}{}: ".format('  ' * indent, k)
-            for a in v:
-                print_obj(a, indent + 1)
-        else:
-            print "{}{}: {}".format('  ' * indent, k, v)

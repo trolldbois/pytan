@@ -1,4 +1,3 @@
-import pprint
 from . import base
 
 
@@ -27,7 +26,7 @@ class Worker(base.Base):
 
     def get_response(self, kwargs):
         m = "++ Creating group with arguments:\n{}"
-        print m.format(pprint.pformat(kwargs))
+        print m.format(self.pf(kwargs))
         response = self.handler.create_group(**kwargs)
         m = "++ Group created successfully: {0.name!r}, ID: {0.id!r}, filter: {0.text!r}"
         print m.format(response)

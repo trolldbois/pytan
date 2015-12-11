@@ -1,4 +1,3 @@
-import pprint
 from . import base
 
 
@@ -36,7 +35,7 @@ class Worker(base.Base):
 
     def get_response(self, kwargs):
         m = "++ Creating user with arguments:\n{}"
-        print m.format(pprint.pformat(kwargs))
+        print m.format(self.pf(kwargs))
         response = self.handler.create_package(**kwargs)
         roles_txt = ', '.join([x.name for x in response.roles])
         m = (

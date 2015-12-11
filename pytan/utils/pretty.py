@@ -143,3 +143,24 @@ def csvdictwriter(rows_list, **kwargs):
     writer.writerows(rows_list)
     csv_str = csv_io.getvalue()
     return csv_str
+
+
+def pretty_dict(d, indent=0, parent=True):
+    """Pretty print a dictionary"""
+    strs = []
+    for k, v in d.iteritems():
+        ktxt = "{}{}: ".format('  ' * indent, k)
+        new_indent = indent + 1
+        if isinstance(v, (dict)):
+            strs.append(ktxt)
+            strs += pretty_dict(v, new_indent, False)
+        elif isinstance(v, (list, tuple)):
+            strs.append(ktxt)
+            new_strs = [pretty_dict(a, new_indent, False) for a in v]
+            for a in new_strs:
+                strs += a
+        else:
+            strs.append("{}{}".format(ktxt, v))
+    if parent:
+        strs = '\n'.join(strs)
+    return strs
