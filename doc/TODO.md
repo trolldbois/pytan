@@ -27,8 +27,8 @@
 * ~~ Will store value as global in TSAT
 
 ## GEN
-* do what was done in ask_manual for print kwargs
 * fix sse
+* backport taniumpy changes
 * fix filename of datetime stamp in win
 * bring new session scripts into build system
 * 2.1.7: ask_saved: 

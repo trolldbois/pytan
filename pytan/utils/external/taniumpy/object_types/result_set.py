@@ -58,6 +58,11 @@ class ResultSet(object):
                       mr_passed, tested, mr_tested)
         return ret
 
+    def __len__(self):
+        """Allow len() for rows"""
+        rows = getattr(self, 'rows', []) or []
+        return len(rows)
+
     @classmethod
     def fromSOAPElement(cls, el):  # noqa
         """Deserialize a ResultSet from a result_set SOAPElement"""

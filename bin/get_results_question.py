@@ -20,9 +20,9 @@ import pytan  # noqa
 i = "pytan.utils.cmdline.{}".format(my_name)
 __import__(i)
 module = eval(i)
-worker = module.Worker()
 
 if __name__ == "__main__":
+    worker = module.Worker()
     version_check = worker.version_check(__version__)
     console = worker.interactive_check()
     check = worker.check()

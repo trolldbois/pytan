@@ -376,6 +376,7 @@ class Base(object):
     def add_export_results_opts(self):
         name = 'Export Results Options'
         self.grp = self.parser.add_argument_group(name)
+        # TODO: figure out SSE (this branches in the doer method, not in export!)
         # self.grp_choice_sse()
         # self.grp_sse_opts()
         self.grp_format()
@@ -428,6 +429,27 @@ class Base(object):
         opts = list(set([a.dest for b in action_grps for a in b._group_actions]))
         return opts
 
+    def export_results(self, results):
+        if results:
+            grps = ['Export Results Options', 'Export Object Options']
+            kwargs = self.get_parser_args(grps)
+            kwargs['obj'] = results
+
+            if 'report_file' not in kwargs and getattr(self, 'FILE_PREFIX', ''):
+                kwargs['prefix'] = '{}'.format(self.FILE_PREFIX)
+
+            m = "++ Exporting {} with arguments:\n{}"
+            print m.format(results, self.pf(kwargs))
+            report_file, report_result = self.handler.export_to_report_file(**kwargs)
+
+            m = "++ Report file {!r} written with {} bytes"
+            print(m.format(report_file, len(report_result)))
+        else:
+            report_file, report_result = None, None
+            m = "++ No results returned, run get_results_{}.py to get the results"
+            print m.format(self.ACTION)
+        return report_file, report_result
+
     def version_check(self, version):
         return files.version_check(self.my_name, version)
 
@@ -441,11 +463,7 @@ class Base(object):
 
     def get_parser_args(self, grps):
         parser_opts = self._get_grp_opts(grps=grps)
-        p_args = {
-            k: getattr(self.args, k)
-            for k in parser_opts
-            if getattr(self.args, k, None) is not None
-        }
+        p_args = {k: getattr(self.args, k) for k in parser_opts if hasattr(self.args, k)}
         return p_args
 
     def get_other_args(self, kwargs):
@@ -524,7 +542,9 @@ class GetBase(Base):
         return kwargs
 
     def get_response(self, kwargs):
-        get_all = kwargs.pop('all')
+        get_all = False
+        if 'all' in kwargs:
+            get_all = kwargs.pop('all')
 
         o_dict = {'objtype': self.OBJECT_TYPE}
         kwargs.update(o_dict)
@@ -538,23 +558,13 @@ class GetBase(Base):
             print m.format(self.pf(kwargs))
             response = self.handler.get(**kwargs)
 
-        print "Found items: {}".format(response)
+        print "++ Found items: {}".format(response)
         return response
-
-    def export_response(self, response):
-        report_file, result = self.handler.export_to_report_file(
-            obj=response,
-            **self.args.__dict__
-        )
-
-        m = "Report file {!r} written with {} bytes".format
-        print(m(report_file, len(result)))
-        return report_file, result
 
     def get_result(self):
         kwargs = self.get_kwargs()
         response = self.get_response(kwargs)
-        report_file, result = self.export_response(response)
+        report_file, result = self.export_results(response)
         return response, report_file, result
 
 
@@ -582,7 +592,7 @@ class CreateJsonBase(GetBase):
         response = self.handler.create_from_json(**kwargs)
 
         for i in response:
-            print "Created item: {}, ID: {}".format(i, getattr(i, 'id', 'unknown'))
+            print "++ Created item: {}, ID: {}".format(i, getattr(i, 'id', 'unknown'))
         return response
 
     def get_result(self):
@@ -608,10 +618,47 @@ class DeleteBase(GetBase):
         response = self.handler.delete(**kwargs)
 
         for i in response:
-            print "Deleted item: {}".format(i)
+            print "++ Deleted item: {}".format(i)
         return response
 
     def get_result(self):
         kwargs = self.get_kwargs()
         response = self.get_response(kwargs)
         return response
+
+
+class GetResultsBase(GetBase):
+    OBJECT_TYPE = ''
+    NAME_TEMP = 'Get {} Results Options'
+    DESC_TEMP = 'Get the results of an object of type "{}" and export it to a file'
+    ACTION = 'export results'
+    FILE_PREFIX = ''
+
+    def setup(self):
+        self.add_get_opts()
+        self.add_export_object_opts()
+        self.add_report_opts()
+
+    def get_result_data(self, obj):
+        grps = ['Export Results Options', 'Export Object Options', 'Get Results Options']
+        kwargs = self.get_parser_args(grps)
+        kwargs['obj'] = obj
+        m = "++ Getting result data with arguments:\n{}"
+        print m.format(self.pf(kwargs))
+        result_data = self.handler.get_result_data(**kwargs)
+        print "++ Result data received: {}".format(result_data)
+        return result_data
+
+    def get_result(self):
+        kwargs = self.get_kwargs()
+        response = self.get_response(kwargs)
+        responses = []
+        for r in response:
+            d = {'response': r}
+            if self.OBJECT_TYPE == 'saved_question':
+                r = r.question
+            d['resultdata'] = self.get_result_data(r)
+            d['report_file'], d['report_result'] = self.export_results(d['resultdata'])
+            responses.append(d)
+
+        return responses

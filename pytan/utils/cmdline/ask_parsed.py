@@ -6,6 +6,7 @@ class Worker(ask_manual.Worker):
     GROUP_NAME = 'Parsed Question Options'
     ACTION = 'question'
     QTYPE = 'parsed'
+    PREFIX = 'ask_parsed'
 
     def setup(self):
         self.add_export_results_opts()

@@ -4,6 +4,8 @@ from . import base
 class Worker(base.Base):
     DESCRIPTION = 'Deploy an action and export the results to a file'
     GROUP_NAME = 'Deploy Action Options'
+    PREFIX = 'deploy_action'
+    ACTION = 'action'
 
     def setup(self):
         self.add_help_opts()
@@ -42,26 +44,6 @@ class Worker(base.Base):
         )
         self.grp_choice_results()
 
-    def export_question_results(self, results):
-        if results:
-            grps = ['Export Results Options']
-            kwargs = self.get_parser_args(grps)
-            if 'report_file' not in kwargs:
-                kwargs['prefix'] = 'deploy_action_'
-
-            kwargs['obj'] = results
-            m = "++ Exporting {} with arguments:\n{}"
-            print m.format(results, self.pf(kwargs))
-
-            report_file, result = self.handler.export_to_report_file(**kwargs)
-            m = "++ Report file {!r} written with {} bytes"
-            print(m.format(report_file, len(result)))
-        else:
-            report_file, result = None, None
-            m = "++ No results returned, run get_action_results.py to get the results"
-            print m.format()
-        return report_file, result
-
     def get_action_response(self):
         grps = [self.GROUP_NAME]
         kwargs = self.get_parser_args(grps)
@@ -84,5 +66,5 @@ class Worker(base.Base):
 
     def get_result(self):
         response = self.get_action_response()
-        report_file, result = self.export_question_results(response['action_results'])
+        report_file, result = self.export_results(response['action_results'])
         return response, report_file, result

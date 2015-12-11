@@ -7,6 +7,7 @@ class Worker(ask_manual.Worker):
     GROUP_NAME = 'Saved Question Options'
     ACTION = 'question'
     QTYPE = 'saved'
+    PREFIX = 'ask_saved'
 
     def setup(self):
         self.add_export_results_opts()

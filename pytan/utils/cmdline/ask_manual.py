@@ -6,6 +6,7 @@ class Worker(base.Base):
     GROUP_NAME = 'Manual Question Options'
     ACTION = 'question'
     QTYPE = 'manual'
+    PREFIX = 'ask_manual'
 
     def setup(self):
         self.add_help_opts()
@@ -30,21 +31,6 @@ class Worker(base.Base):
         )
         self.grp_choice_results()
 
-    def export_question_results(self, results):
-        if results:
-            grps = ['Export Results Options']
-            kwargs = self.get_parser_args(grps)
-            m = "++ Exporting {} with arguments:\n{}"
-            print m.format(results, self.pf(kwargs))
-            report_file, result = self.handler.export_to_report_file(obj=results, **kwargs)
-            m = "++ Report file {!r} written with {} bytes"
-            print(m.format(report_file, len(result)))
-        else:
-            report_file, result = None, None
-            m = "++ No results returned, run get_{}_results.py to get the results"
-            print m.format(self.ACTION)
-        return report_file, result
-
     def get_question_response(self):
         grps = [self.GROUP_NAME]
         kwargs = self.get_parser_args(grps)
@@ -57,5 +43,5 @@ class Worker(base.Base):
 
     def get_result(self):
         response = self.get_question_response()
-        report_file, result = self.export_question_results(response['question_results'])
+        report_file, result = self.export_results(response['question_results'])
         return response, report_file, result

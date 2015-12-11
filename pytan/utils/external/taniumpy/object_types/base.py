@@ -43,21 +43,18 @@ class BaseType(object):
         if len(self._list_properties) == 1:
             return getattr(self, self._list_properties.items()[0][0])[n]
         else:
-            raise Exception(
-                'Not simply a list type, __getitem__ not supported'
-            )
+            raise Exception('Not simply a list type, __getitem__ not supported')
 
     def __len__(self):
-        """Allow len() for lists.
-
-        Only supported on types that have a single property
-        that is in list_properties
-
-        """
+        """Allow len() for lists and str"""
+        ret = 0
         if len(self._list_properties) == 1:
-            return len(getattr(self, self._list_properties.items()[0][0]))
-        else:
-            raise Exception('Not simply a list type, len() not supported')
+            ret = len(getattr(self, self._list_properties.items()[0][0]))
+        elif getattr(self, 'name', ''):
+            ret = len(str(self.name))
+        elif getattr(self, 'id', ''):
+            ret = len(str(self.id))
+        return ret
 
     def __str__(self):
         class_name = self.__class__.__name__
