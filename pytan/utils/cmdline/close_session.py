@@ -1,35 +1,28 @@
-
-def close_session(doc):
-    """Method to setup the base :class:`CustomArgParse` class for command line scripts using :func:`base_parser`,then add specific
-        arguments for scripts that use :mod:`pytan` to close open tanium sessions.
-    """
-    parser = base_parser(desc=doc, help=True)
-    arggroup_name = 'Close Session Optipons'
-    arggroup = parser.add_argument_group(arggroup_name)
-
-    arggroup.add_argument(
-        '--all_session_ids',
-        required=False,
-        action='store_true',
-        dest='all_session_ids',
-        default=argparse.SUPPRESS,
-        help='Closes all open tanium sessions.'
-    )
-
-    return parser
+import pprint
+from . import base
 
 
-def process_close_session_args(parser, handler, args):
-    """Process command line args supplied by user for getting a session
+class Worker(base.Base):
+    DESCRIPTION = 'Closes targeted session ID, or all open sessions'
+    GROUP_NAME = 'Close Session Options'
 
-    Parameters
-    ----------
-    Parser : :class:`argparse.ArgParse`
-        * ArgParse object used to parse `all_args`
-    handler : :class:`pytan.handler.Handler`
-        * Instance of handler created for command line args
-    args : args object
-        * args parsed from `parser`
-    """
-    handler.session.logout(args)
+    def setup(self):
+        self.grp = self.parser.add_argument_group(self.GROUP_NAME)
+        self.grp.add_argument(
+            '--all_session_ids',
+            required=False, action='store_true', dest='all_session_ids', default=False,
+            help='Close all open tanium sessions, instead of just the one supplied'
+        )
 
+    def get_response(self, kwargs):
+        m = "++ Calling handler.session.logout with arguments:\n{}"
+        print m.format(pprint.pformat(kwargs))
+        response = self.handler.session.logout(**kwargs)
+        print "++ Logout finished successfully: {!r}".format(response)
+        return response
+
+    def get_result(self):
+        grps = [self.GROUP_NAME]
+        kwargs = self.get_parser_args(grps)
+        response = self.get_response(kwargs)
+        return response
