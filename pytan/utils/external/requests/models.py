@@ -81,7 +81,7 @@ class RequestEncodingMixin(object):
         """
 
         if isinstance(data, (str, bytes)):
-            return data
+            return to_native_string(data)
         elif hasattr(data, 'read'):
             return data
         elif hasattr(data, '__iter__'):
@@ -192,7 +192,7 @@ class Request(RequestHooksMixin):
     :param headers: dictionary of headers to send.
     :param files: dictionary of {filename: fileobject} files to multipart upload.
     :param data: the body to attach to the request. If a dictionary is provided, form-encoding will take place.
-    :param json: json for the body to attach to the request (if data is not specified).
+    :param json: json for the body to attach to the request (if files or data is not specified).
     :param params: dictionary of URL parameters to append to the URL.
     :param auth: Auth handler or (user, pass) tuple.
     :param cookies: dictionary or CookieJar of cookies to attach to this request.
@@ -319,12 +319,12 @@ class PreparedRequest(RequestEncodingMixin, RequestHooksMixin):
         """Prepares the given HTTP method."""
         self.method = method
         if self.method is not None:
-            self.method = self.method.upper()
+            self.method = to_native_string(self.method.upper())
 
     def prepare_url(self, url, params):
         """Prepares the given HTTP URL."""
         #: Accept objects that have string representations.
-        #: We're unable to blindy call unicode/str functions
+        #: We're unable to blindly call unicode/str functions
         #: as this will include the bytestring indicator (b'')
         #: on python 3.x.
         #: https://github.com/kennethreitz/requests/pull/2238
@@ -414,7 +414,7 @@ class PreparedRequest(RequestEncodingMixin, RequestHooksMixin):
         content_type = None
         length = None
 
-        if json is not None:
+        if not data and json is not None:
             content_type = 'application/json'
             body = complexjson.dumps(json)
 
@@ -434,7 +434,7 @@ class PreparedRequest(RequestEncodingMixin, RequestHooksMixin):
             if files:
                 raise NotImplementedError('Streamed bodies and files are mutually exclusive.')
 
-            if length is not None:
+            if length:
                 self.headers['Content-Length'] = builtin_str(length)
             else:
                 self.headers['Transfer-Encoding'] = 'chunked'
@@ -443,7 +443,7 @@ class PreparedRequest(RequestEncodingMixin, RequestHooksMixin):
             if files:
                 (body, content_type) = self._encode_files(files, data)
             else:
-                if data and json is None:
+                if data:
                     body = self._encode_params(data)
                     if isinstance(data, basestring) or hasattr(data, 'read'):
                         content_type = None
@@ -631,7 +631,7 @@ class Response(object):
 
     @property
     def is_permanent_redirect(self):
-        """True if this Response one of the permanant versions of redirect"""
+        """True if this Response one of the permanent versions of redirect"""
         return ('location' in self.headers and self.status_code in (codes.moved_permanently, codes.permanent_redirect))
 
     @property
