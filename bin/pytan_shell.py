@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python -i
 # -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
@@ -17,7 +17,7 @@ path_adds = [parent_dir]
 [sys.path.insert(0, aa) for aa in path_adds if aa not in sys.path]
 
 import pytan  # noqa
-i = "pytan.utils.cmdline.{}".format(my_name)
+i = "pytan.shell.{}".format(my_name)
 __import__(i)
 module = eval(i)
 worker = module.Worker()

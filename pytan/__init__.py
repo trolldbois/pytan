@@ -3,6 +3,23 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 '''A python package that makes using the Tanium Server SOAP API easy.'''
 
+import logging
+
+try:
+    from logging import NullHandler
+except ImportError:  # NullHandler not present in Python < 2.7
+    from logging import Handler
+
+    class NullHandler(Handler):
+        def emit(self, record):
+            pass
+
+
+# Set default logging handler to avoid "No handler found" warnings.
+root_logger = logging.getLogger()
+if not root_logger.handlers:
+    root_logger.addHandler(NullHandler())
+
 from .version import __author__  # noqa
 from .version import __version__  # noqa
 from .version import __email__  # noqa

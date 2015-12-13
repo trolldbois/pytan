@@ -1,412 +1,127 @@
+import os
+from . import base
+from .. import calc
 
-def tsat(doc):
-    """Method to setup the base :class:`CustomArgParse` class for command line scripts using :func:`base_parser`, then add specific arguments for scripts that use :mod:`pytan` to get objects.
-    """
-    parser = parent_parser(doc=doc)
 
-    output_dir = os.path.join(os.getcwd(), 'TSAT_OUTPUT', calc.get_now())
+class Worker(base.Base):
+    OUTPUT_DIR = os.path.join(os.getcwd(), 'TSAT_OUTPUT', calc.get_now())
+    DESCRIPTION = 'Tanium Sensor Analysis Tool: asks a question for every sensor and exports the results'
 
-    arggroup = parser.add_argument_group('TSAT General Options')
-    arggroup.add_argument(
-        '--platform',
-        required=False,
-        default=[],
-        action='append',
-        dest='platforms',
-        help='Only ask questions for sensors on a given platform',
-    )
-    arggroup.add_argument(
-        '--category',
-        required=False,
-        default=[],
-        action='append',
-        dest='categories',
-        help='Only ask questions for sensors in a given category',
-    )
-    arggroup.add_argument(
-        '--sensor',
-        required=False,
-        default=[],
-        action='append',
-        dest='sensors',
-        help='Only run sensors that match these supplied names',
-    )
-    arggroup.add_argument(
-        '--add_sensor',
-        required=False,
-        action='append',
-        default=[],
-        dest='add_sensor',
-        help='Add sensor to every question that gets asked (i.e. "Computer Name")',
-    )
+    def setup(self):
+        self.add_help_opts()
+        self.add_export_results_opts()
+        self.add_polling_opts()
 
-    arggroup.add_argument(
-        '--output_dir',
-        required=False,
-        action='store',
-        default=output_dir,
-        dest='report_dir',
-        help='Directory to save output to',
-    )
-    arggroup.add_argument(
-        '--sleep',
-        required=False,
-        type=int,
-        action='store',
-        default=1,
-        dest='sleep',
-        help='Number of seconds to wait between asking questions',
-    )
-    arggroup.add_argument(
-        '--tsatdebug',
-        required=False,
-        action='store_true',
-        default=False,
-        dest='tsatdebug',
-        help='Enable debug messages for just TSAT (not all of PyTan)',
-    )
+        self.grp = self.parser.add_argument_group('Question Asking Options')
+        self.grp.add_argument(
+            '--add_sensor',
+            required=False, action='append', default=[], dest='sensors',
+            help='Add sensor to every question that gets asked (i.e. "Computer Name")',
+        )
+        self.grp.add_argument(
+            '-f', '--filter',
+            required=False, action='append', default=[], dest='filters',
+            help='Whole question filter; pass --filters-help to get a full description',
+        )
+        self.grp.add_argument(
+            '-o', '--option',
+            required=False, action='append', default=[], dest='options',
+            help='Whole question option; pass --options-help to get a full description',
+        )
 
-    group = arggroup.add_mutually_exclusive_group()
-    group.add_argument(
-        '--prompt_missing_params',
-        action='store_true',
-        dest='param_prompt',
-        default=True,
-        required=False,
-        help='If a sensor has parameters and none are supplied, prompt for the value (default)'
-    )
-    group.add_argument(
-        '--no_missing_params',
-        action='store_false',
-        dest='param_prompt',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='If a sensor has parameters and none are supplied, error out.'
-    )
-    group.add_argument(
-        '--skip_missing_params',
-        action='store_const',
-        const=None,
-        dest='param_prompt',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='If a sensor has parameters and none are supplied, skip it',
-    )
+        self.grp = self.parser.add_argument_group('TSAT General Options')
+        self.grp.add_argument(
+            '--platform',
+            required=False, default=[], action='append', dest='platforms',
+            help='Only ask questions for sensors on a given platform',
+        )
+        self.grp.add_argument(
+            '--category',
+            required=False, default=[], action='append', dest='categories',
+            help='Only ask questions for sensors in a given category',
+        )
+        self.grp.add_argument(
+            '--sensor',
+            required=False, default=[], action='append', dest='sensors',
+            help='Only run sensors that match these supplied names',
+        )
+        self.grp.add_argument(
+            '--output_dir',
+            required=False, action='store', default=self.OUTPUT_DIR, dest='report_dir',
+            help='Directory to save TSAT output to',
+        )
+        self.grp.add_argument(
+            '--sleep',
+            required=False, type=int, action='store', default=1, dest='sleep',
+            help='Number of seconds to wait between asking questions',
+        )
+        self.grp.add_argument(
+            '--verbose',
+            action='store_true', dest='verbose', default=False, required=False,
+            help='Print out verbose messages',
+        )
 
-    arggroup.add_argument(
-        '--build_config_file',
-        required=False,
-        action='store',
-        default=None,
-        dest='build_config_file',
-        help='Build a configuration file by finding all sensors that have parameters and prompting for the values, then saving the key/value pairs as a JSON file that can be used by --config_file',
-    )
-    arggroup.add_argument(
-        '--config_file',
-        required=False,
-        action='store',
-        default=None,
-        dest='config_file',
-        help='Use a parameter configuration file built by --build_config_file for sensor parameters'
-    )
-    arggroup.add_argument(
-        '-gp',
-        '--globalparam',
-        required=False,
-        action='append',
-        nargs=2,
-        dest='globalparams',
-        default=[],
-        help='Global parameters in the format of "KEY" "VALUE" -- if any sensor uses "KEY" as a parameter name, then "VALUE" will be used for that sensors parameter',
-    )
+        self.grp = self.parser.add_argument_group('TSAT Parameter Options')
+        choice = self.grp.add_mutually_exclusive_group()
+        choice.add_argument(
+            '--prompt_missing_params',
+            action='store_true', dest='param_prompt', default=True, required=False,
+            help='If a sensor has parameters and none are supplied, prompt for the value'
+        )
+        choice.add_argument(
+            '--no_missing_params',
+            action='store_false', dest='param_prompt', default=self.SUPPRESS, required=False,
+            help='If a sensor has parameters and none are supplied, error out.'
+        )
+        choice.add_argument(
+            '--skip_missing_params',
+            action='store_const', const=None, dest='param_prompt', default=self.SUPPRESS,
+            required=False,
+            help='If a sensor has parameters and none are supplied, skip it',
+        )
+        self.grp.add_argument(
+            '--build_config_file',
+            required=False, action='store', default=None, dest='build_config_file',
+            help='Build a configuration file by finding all sensors that have parameters and prompting for the values, then saving the key/value pairs as a JSON file that can be used by --config_file',
+        )
+        self.grp.add_argument(
+            '--config_file',
+            required=False, action='store', default=None, dest='config_file',
+            help='Use a parameter configuration file built by --build_config_file for sensor parameters'
+        )
+        self.grp.add_argument(
+            '-gp', '--globalparam',
+            required=False, action='append', nargs=2, dest='globalparams', default=[],
+            help='Global parameters in the format of "KEY" "VALUE" -- if any sensor uses "KEY" as a parameter name, then "VALUE" will be used for that sensors parameter',
+        )
 
-    arggroup = parser.add_argument_group('Question Asking Options')
-
-    arggroup.add_argument(
-        '-f',
-        '--filter',
-        required=False,
-        action='append',
-        default=[],
-        dest='question_filters',
-        help='Whole question filter; pass --filters-help to get a full description',
-    )
-    arggroup.add_argument(
-        '-o',
-        '--option',
-        required=False,
-        action='append',
-        default=[],
-        dest='question_options',
-        help='Whole question option; pass --options-help to get a full description',
-    )
-
-    arggroup = parser.add_argument_group('Answer Polling Options')
-
-    arggroup.add_argument(
-        '--complete_pct',
-        required=False,
-        type=float,
-        action='store',
-        default=constants.Q_COMPLETE_PCT_DEFAULT,
-        dest='complete_pct',
-        help='Percent to consider questions complete',
-    )
-    arggroup.add_argument(
-        '--override_timeout_secs',
-        required=False,
-        type=int,
-        action='store',
-        default=0,
-        dest='override_timeout_secs',
-        help='If supplied and not 0, instead of using the question expiration timestamp as the timeout, timeout after N seconds',
-    )
-    arggroup.add_argument(
-        '--polling_secs',
-        required=False,
-        type=int,
-        action='store',
-        default=constants.Q_POLLING_SECS_DEFAULT,
-        dest='polling_secs',
-        help='Number of seconds to wait in between GetResultInfo loops while polling for each question',
-    )
-    arggroup.add_argument(
-        '--override_estimated_total',
-        required=False,
-        type=int,
-        action='store',
-        default=0,
-        dest='override_estimated_total',
-        help='If supplied and not 0, use this as the estimated total number of systems instead of what Tanium Platform reports',
-    )
-    arggroup.add_argument(
-        '--force_passed_done_count',
-        required=False,
-        type=int,
-        action='store',
-        default=0,
-        dest='force_passed_done_count',
-        help='If supplied and not 0, when this number of systems have passed the right hand side of the question (the question filter), consider the question complete instead of relying the estimated total that Tanium Platform reports',
-    )
-
-    # TODO: LATER, flush out SSE OPTIONS
-
-    # arggroup_name = 'Server Side Export Options'
-    # arggroup = parser.add_argument_group(arggroup_name)
-
-    # arggroup.add_argument(
-    #     '--sse',
-    #     action='store_true',
-    #     dest='sse',
-    #     default=False,
-    #     required=False,
-    #     help='Perform a server side export when getting data'
-    # )
-
-    # arggroup.add_argument(
-    #     '--sse_format',
-    #     required=False,
-    #     action='store',
-    #     default='csv',
-    #     choices=['csv', 'xml', 'cef'],
-    #     dest='sse_format',
-    #     help='If --sse, perform server side export in this format',
-    # )
-
-    # arggroup.add_argument(
-    #     '--leading',
-    #     required=False,
-    #     action='store',
-    #     default='',
-    #     dest='leading',
-    #     help='If --sse, and --sse_format = "cef", prepend each row with this text',
-    # )
-    # arggroup.add_argument(
-    #     '--trailing',
-    #     required=False,
-    #     action='store',
-    #     default='',
-    #     dest='trailing',
-    #     help='If --sse, and --sse_format = "cef", append each row with this text',
-    # )
-
-    arggroup_name = 'Answer Export Options'
-    arggroup = parser.add_argument_group(arggroup_name)
-
-    arggroup.add_argument(
-        '--export_format',
-        action='store',
-        default='csv',
-        choices=['csv', 'xml', 'json'],
-        dest='export_format',
-        help='If --no_sse, export Format to create report file in',
-    )
-
-    group = arggroup.add_mutually_exclusive_group()
-    group.add_argument(
-        '--sort',
-        default=[],
-        action='append',
-        dest='header_sort',
-        required=False,
-        help='If --no_sse and --export_format = csv, Sort headers by given names and then sort the rest alphabetically'
-    )
-    group.add_argument(
-        '--no-sort',
-        action='store_false',
-        dest='header_sort',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='If --no_sse and --export_format = csv, Do not sort the headers at all'
-    )
-    group.add_argument(
-        '--auto_sort',
-        action='store_true',
-        dest='header_sort',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='If --no_sse and --export_format = csv, Sort the headers with a basic alphanumeric sort'
-    )
-
-    group = arggroup.add_mutually_exclusive_group()
-    group.add_argument(
-        '--add-sensor',
-        action='store_true',
-        dest='header_add_sensor',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='If --no_sse and --export_format = csv, Add the sensor names to each header'
-    )
-    group.add_argument(
-        '--no-add-sensor',
-        action='store_false',
-        dest='header_add_sensor',
-        default=False,
-        required=False,
-        help='If --no_sse and --export_format = csv, Do not add the sensor names to each header'
-    )
-
-    group = arggroup.add_mutually_exclusive_group()
-    group.add_argument(
-        '--add-type',
-        action='store_true',
-        dest='header_add_type',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='If --no_sse and --export_format = csv, Add the result type to each header'
-    )
-    group.add_argument(
-        '--no-add-type',
-        action='store_false',
-        dest='header_add_type',
-        default=False,
-        required=False,
-        help='If --no_sse and --export_format = csv, Do not add the result type to each header'
-    )
-
-    group = arggroup.add_mutually_exclusive_group()
-    group.add_argument(
-        '--expand-columns',
-        action='store_true',
-        dest='expand_grouped_columns',
-        default=argparse.SUPPRESS,
-        required=False,
-        help='If --no_sse and --export_format = csv, Expand multi-line cells into their own rows that have sensor correlated columns in the new rows'
-    )
-    group.add_argument(
-        '--no-columns',
-        action='store_false',
-        dest='expand_grouped_columns',
-        default=False,
-        required=False,
-        help='If --no_sse and --export_format = csv, Do not add expand multi-line cells into their own rows'
-    )
-
-    arggroup = parser.add_argument_group('PyTan Help Options')
-    arggroup.add_argument(
-        '--sensors-help',
-        required=False,
-        action='store_true',
-        default=False,
-        dest='sensors_help',
-        help='Get the full help for sensor strings and exit',
-    )
-    arggroup.add_argument(
-        '--filters-help',
-        required=False,
-        action='store_true',
-        default=False,
-        dest='filters_help',
-        help='Get the full help for filters strings and exit',
-    )
-    arggroup.add_argument(
-        '--options-help',
-        required=False,
-        action='store_true',
-        default=False,
-        dest='options_help',
-        help='Get the full help for options strings and exit',
-    )
-
-    arggroup = parser.add_argument_group('TSAT Show Options')
-    arggroup.add_argument(
-        '--show_platforms',
-        required=False,
-        action='store_true',
-        default=False,
-        dest='show_platforms',
-        help='Print a list of all valid platforms (does not run sensors)',
-    )
-    arggroup.add_argument(
-        '--show_categories',
-        required=False,
-        action='store_true',
-        default=False,
-        dest='show_categories',
-        help='Print a list of all valid categories (does not run sensors)',
-    )
-    arggroup.add_argument(
-        '--show_sensors',
-        required=False,
-        action='store_true',
-        default=False,
-        dest='show_sensors',
-        help='Print a list of all valid sensor names, their categories, their platforms, and their parameters (does not run sensors)',
-    )
-    return parser
+        self.grp = self.parser.add_argument_group('TSAT Show Options')
+        self.grp.add_argument(
+            '--show_platforms',
+            required=False, action='store_true', default=False, dest='show_platforms',
+            help='Print a list of all valid platforms (does not run sensors)',
+        )
+        self.grp.add_argument(
+            '--show_categories',
+            required=False, action='store_true', default=False, dest='show_categories',
+            help='Print a list of all valid categories (does not run sensors)',
+        )
+        self.grp.add_argument(
+            '--show_sensors',
+            required=False, action='store_true', default=False, dest='show_sensors',
+            help='Print a list of all valid sensor names, their categories, their platforms, and their parameters (does not run sensors)',
+        )
 
 
 class TsatWorker(object):
-    '''no doc as of yet, push to re-write
 
-    relies on functions in binsupport:
-        * filter_filename
-        * csvdictwriter
-        * filter_sourced_sensors
-        * filter_sensors
-
-    '''
     DEBUG_FORMAT = (
         '[%(lineno)-5d - %(filename)20s:%(funcName)s()] %(asctime)s\n'
         '%(levelname)-8s %(name)s %(message)s'
     )
-    """
+    '''
     Logging format for debugformat=True
-    """
-
-    CON_INFO_FORMAT = (
-        '%(levelname)-8s %(message)s'
-    )
-    """
-    Console Logging format for debugformat=False
-    """
-
-    FILE_INFO_FORMAT = (
-        '%(asctime)s %(levelname)-8s %(message)s'
-    )
-    """
-    Console Logging format for debugformat=False
-    """
+    '''
 
     LOG_LEVEL = logging.DEBUG
     MY_NAME = "tsat"
@@ -546,7 +261,7 @@ class TsatWorker(object):
         self.LOG_LEVEL = log_level
 
     def remove_file_log(self, logfile):
-        """Utility to remove a log file from python's logging module"""
+        '''Utility to remove a log file from python's logging module'''
         basename = os.path.basename(logfile)
         root_logger = logging.getLogger()
         try:
@@ -559,7 +274,7 @@ class TsatWorker(object):
 
     # TODO WRAP ME AROUND THE log.py funcs!
     def add_file_log(self, logfile):
-        """Utility to add a log file from python's logging module"""
+        '''Utility to add a log file from python's logging module'''
         self.remove_file_log(logfile)
         root_logger = logging.getLogger()
         basename = os.path.basename(logfile)
@@ -1124,17 +839,6 @@ class TsatWorker(object):
 
 
 def process_tsat_args(parser, handler, args):
-    """Process command line args supplied by user for tsat
-
-    Parameters
-    ----------
-    parser : :class:`argparse.ArgParse`
-        * ArgParse object used to parse `all_args`
-    handler : :class:`pytan.handler.Handler`
-        * Instance of Handler created from command line args
-    args : args object
-        * args parsed from `parser`
-    """
     try:
         tsatworker = TsatWorker(parser=parser, handler=handler, args=args)
         tsatworker.start()
@@ -1142,3 +846,5 @@ def process_tsat_args(parser, handler, args):
         traceback.print_exc()
         print "\nError occurred: {}".format(e)
         sys.exit(100)
+
+"""

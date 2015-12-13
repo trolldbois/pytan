@@ -7,9 +7,9 @@ import argparse
 import pprint
 from argparse import ArgumentDefaultsHelpFormatter as A1 # noqa
 from argparse import RawDescriptionHelpFormatter as A2 # noqa
-from .. import files
-from .. import constants
-from .. import tanium_obj
+from ..utils import files
+from ..utils import constants
+from ..utils import tanium_obj
 
 
 class CustomArgFormat(A1, A2):
@@ -61,7 +61,7 @@ class Base(object):
     INTERACTIVE = False
 
     def __init__(self, **kwargs):
-        from ... import handler
+        from .. import handler
         self.handler_module = handler
         self.tanium_obj = tanium_obj
         self.constants = constants
@@ -92,8 +92,10 @@ class Base(object):
             description=self.DESCRIPTION,
             add_help=False,
         )
+        self.add_handler_conn()
         self.add_handler_auth()
         self.add_handler_opts()
+        self.add_session_opts()
 
     def set_parser(self):
         self.parser = self.CustomArgParse(
@@ -103,74 +105,102 @@ class Base(object):
         )
 
     def add_handler_auth(self):
-        name = 'PyTan Authentication'
+        name = 'PyTan Authentication Options'
         self.grp = self.base.add_argument_group(name)
         self.grp.add_argument(
             '-u', '--username',
-            required=False, action='store', dest='username', default=None,
+            required=False, action='store', dest='username', default=self.SUPPRESS,
             help='Name of user',
         )
         self.grp.add_argument(
             '-p', '--password',
-            required=False, action='store', default=None, dest='password',
+            required=False, action='store', default=self.SUPPRESS, dest='password',
             help='Password of user',
         )
         self.grp.add_argument(
             '--session_id',
-            required=False, action='store', default=None, dest='session_id',
+            required=False, action='store', default=self.SUPPRESS, dest='session_id',
             help='Session ID to authenticate with instead of username/password',
         )
+
+    def add_handler_conn(self):
+        name = 'PyTan Connection Options'
+        self.grp = self.base.add_argument_group(name)
         self.grp.add_argument(
             '--host',
-            required=False, action='store', default=None, dest='host',
+            required=False, action='store', default=self.SUPPRESS, dest='host',
             help='Hostname/ip of SOAP Server',
         )
+        port_h = "Port to use when connecting to SOAP Server (default: {})"
+        port_h = port_h.format(self.constants.DEFAULTS['port'])
         self.grp.add_argument(
             '--port',
-            required=False, action='store', default="443", dest='port',
-            help='Port to use when connecting to SOAP Server',
+            required=False, action='store', default=self.SUPPRESS, type=int, dest='port',
+            help=port_h,
         )
 
     def add_handler_opts(self):
-        name = 'PyTan Options'
+        name = 'PyTan Handler Options'
         self.grp = self.base.add_argument_group(name)
         self.grp.add_argument(
             '-l', '--loglevel',
-            required=False, action='store', type=int, default=0, dest='loglevel',
-            help='Logging level to use, increase for more verbosity',
+            required=False, action='store', type=int, default=self.SUPPRESS, dest='loglevel',
+            help='Logging level to use, increase for more verbosity (default: 0)',
+        )
+        fl_h = "Log file to write to if --enable_file_log (default: {})"
+        fl_h = fl_h.format(self.constants.DEFAULTS['logfile_output'])
+        self.grp.add_argument(
+            '--file_log',
+            required=False, action='store', default=self.SUPPRESS, dest='logfile_output',
+            help=fl_h
+        )
+        puc_h = "PyTan User Config file to use for PyTan arguments (default: {})"
+        puc_h = puc_h.format(self.constants.DEFAULTS['config_file'])
+        self.grp.add_argument(
+            '--config_file',
+            required=False, action='store', default=self.SUPPRESS, dest='config_file',
+            help=puc_h
         )
         self.grp.add_argument(
-            '--debugformat',
-            required=False, action='store_true', default=False, dest='debugformat',
-            help="Enable debug format for logging",
+            '--localtime',
+            required=False, action='store_false', default=self.SUPPRESS, dest='loggmt',
+            help="Use local time instead of GMT for logging",
         )
+        self.grp.add_argument(
+            '--disable_con_log',
+            required=False, action='store_false', default=self.SUPPRESS, dest='logconsole_enable',
+            help="Disable console log",
+        )
+        self.grp.add_argument(
+            '--enable_file_log',
+            required=False, action='store_true', default=self.SUPPRESS, dest='logfile_enable',
+            help="Enable file log",
+        )
+
+    def add_session_opts(self):
+        name = 'PyTan Session Options'
+        self.grp = self.base.add_argument_group(name)
+
         self.grp.add_argument(
             '--record_all_requests',
-            required=False, action='store_true', default=False, dest='record_all_requests',
+            required=False, action='store_true', default=self.SUPPRESS, dest='record_all_requests',
             help="Record all requests in handler.session.ALL_REQUESTS_RESPONSES",
         )
         self.grp.add_argument(
-            '--stats_loop_enabled',
-            required=False, action='store_true', default=False, dest='stats_loop_enabled',
+            '--enable_stats_loop',
+            required=False, action='store_true', default=self.SUPPRESS, dest='stats_loop_enabled',
             help="Enable the statistics loop",
         )
         self.grp.add_argument(
-            '--http_auth_retry',
-            required=False, action='store_false', default=True, dest='http_auth_retry',
-            help="Disable retry on HTTP authentication failures",
+            '--disable_auth_retry',
+            required=False, action='store_true', default=self.SUPPRESS, dest='http_auth_retry',
+            help="Disable re-auth with username/password if session_id fails",
         )
         self.grp.add_argument(
             '--http_retry_count',
-            required=False, action='store', type=int, default=5, dest='http_retry_count',
+            required=False, action='store', type=int, default=self.SUPPRESS,
+            dest='http_retry_count',
             help="Retry count for HTTP failures/invalid responses",
-        )
-
-        puc_h = "PyTan User Config file to use for PyTan arguments (defaults to: {})"
-        puc_h = puc_h.format(self.constants.PYTAN_USER_CONFIG)
-        self.grp.add_argument(
-            '--pytan_user_config',
-            required=False, action='store', default=self.SUPPRESS, dest='pytan_user_config',
-            help=puc_h
         )
         self.grp.add_argument(
             '--force_server_version',
@@ -207,12 +237,12 @@ class Base(object):
         self.grp = self.parser.add_argument_group(name)
         self.grp.add_argument(
             '--file',
-            required=False, action='store', default=None, dest='report_file',
+            required=False, action='store', default=self.SUPPRESS, dest='report_file',
             help='File to save report to (if not supplied, will be generated)',
         )
         self.grp.add_argument(
             '--dir',
-            required=False, action='store', default=None, dest='report_dir',
+            required=False, action='store', default=self.SUPPRESS, dest='report_dir',
             help='Directory to save report to (if not supplied, use current directory)',
         )
 
@@ -225,8 +255,8 @@ class Base(object):
         )
         choice.add_argument(
             '--results',
-            action='store_true', dest='get_results', default=True, required=False,
-            help='Wait until all results are in before returning'
+            action='store_true', dest='get_results', default=self.SUPPRESS, required=False,
+            help='Wait until all results are in before returning (default)'
         )
 
     def grp_choice_sse(self):
@@ -368,6 +398,38 @@ class Base(object):
             help='Only for export_format xml, Only include attributes that are not empty'
         )
 
+    def add_polling_opts(self):
+        self.grp = self.parser.add_argument_group('Question Polling Options')
+        self.grp.add_argument(
+            '--complete_pct',
+            required=False, type=float, action='store', dest='complete_pct',
+            default=self.constants.Q_COMPLETE_PCT_DEFAULT,
+            help='Percent to consider questions complete',
+        )
+        self.grp.add_argument(
+            '--override_timeout_secs',
+            required=False, type=int, action='store', default=0, dest='override_timeout_secs',
+            help='If supplied and not 0, instead of using the question expiration timestamp as the timeout, timeout after N seconds',
+        )
+        self.grp.add_argument(
+            '--polling_secs',
+            required=False, type=int, action='store', dest='polling_secs',
+            default=self.constants.Q_POLLING_SECS_DEFAULT,
+            help='Number of seconds to wait in between GetResultInfo loops while polling for each question',
+        )
+        self.grp.add_argument(
+            '--override_estimated_total',
+            required=False, type=int, action='store', dest='override_estimated_total',
+            default=0,
+            help='If supplied and not 0, use this as the estimated total number of systems instead of what Tanium Platform reports',
+        )
+        self.grp.add_argument(
+            '--force_passed_done_count',
+            required=False, type=int, action='store', dest='force_passed_done_count',
+            default=0,
+            help='If supplied and not 0, when this number of systems have passed the right hand side of the question (the question filter), consider the question complete instead of relying the estimated total that Tanium Platform reports',
+        )
+
     def add_export_results_opts(self):
         name = 'Export Results Options'
         self.grp = self.parser.add_argument_group(name)
@@ -391,9 +453,10 @@ class Base(object):
 
     def _input_prompts(self):
         """Utility function to prompt for username, `, and host if empty"""
-        puc_default = os.path.expanduser(self.constants.PYTAN_USER_CONFIG)
-        puc_kwarg = self.args.__dict__.get('pytan_user_config', '')
-        puc = puc_kwarg or puc_default
+        puc_kwarg = self.args.__dict__.get('config_file', '')
+        puc = puc_kwarg or self.constants.DEFAULTS['config_file']
+        puc = os.path.expanduser(puc)
+
         puc_dict = {}
 
         if os.path.isfile(puc):
@@ -404,16 +467,36 @@ class Base(object):
                 m = "PyTan User Config file exists at '{}' but is not valid, Exception: {}".format
                 print m(puc, e)
 
-        if not self.args.session_id:
-            if not self.args.username and not puc_dict.get('username', ''):
+        username_arg = self.args.__dict__.get('username', '')
+        username_env = os.environ.get('username', '')
+        username_puc = puc_dict.get('username', '')
+        username = username_arg or username_env or username_puc
+
+        session_id_arg = self.args.__dict__.get('session_id', '')
+        session_id_env = os.environ.get('session_id', '')
+        session_id_puc = puc_dict.get('session_id', '')
+        session_id = session_id_arg or session_id_env or session_id_puc
+
+        password_arg = self.args.__dict__.get('password', '')
+        password_env = os.environ.get('password', '')
+        password_puc = puc_dict.get('password', '')
+        password = password_arg or password_env or password_puc
+
+        host_arg = self.args.__dict__.get('host', '')
+        host_env = os.environ.get('host', '')
+        host_puc = puc_dict.get('host', '')
+        host = host_arg or host_env or host_puc
+
+        if not session_id:
+            if not username:
                 username = raw_input('Tanium Username: ')
                 self.args.username = username.strip()
 
-            if not self.args.password and not puc_dict.get('password', ''):
+            if not password:
                 password = getpass.getpass('Tanium Password: ')
                 self.args.password = password.strip()
 
-        if not self.args.host and not puc_dict.get('host', ''):
+        if not host:
             host = raw_input('Tanium Host: ')
             self.args.host = host.strip()
 
@@ -451,7 +534,7 @@ class Base(object):
     def interactive_check(self):
         self.console = None
         if self.INTERACTIVE:
-            from .. import historyconsole
+            from ..utils import historyconsole
             self.historyconsole = historyconsole
             self.console = self.historyconsole.HistoryConsole()
         return self.console
@@ -477,7 +560,12 @@ class Base(object):
 
     def get_handler(self):
         self._input_prompts()
-        grps = ['PyTan Authentication', 'PyTan Options']
+        grps = [
+            'PyTan Authentication Options',
+            'PyTan Connection Options',
+            'PyTan Handler Options',
+            'PyTan Session Options',
+        ]
         kwargs = self.get_parser_args(grps)
         self.handler = self.handler_module.Handler(**kwargs)
         return self.handler

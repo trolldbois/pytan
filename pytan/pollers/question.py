@@ -4,14 +4,16 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 """Collection of classes and methods for polling of actions/questions in :mod:`pytan`"""
 
-import sys
 import logging
 import time
-import pprint
 from datetime import datetime
 from datetime import timedelta
 
 from .. import utils
+
+mylog = logging.getLogger(__name__)
+progresslog = logging.getLogger(__name__ + ".progress")
+resolverlog = logging.getLogger(__name__ + ".resolver")
 
 
 class QuestionPoller(object):
@@ -79,11 +81,6 @@ class QuestionPoller(object):
 
     def __init__(self, handler, obj, **kwargs):
         from ..handler import Handler as BaseHandler
-        self.methodlog = logging.getLogger("method_debug")
-        self.DEBUG_METHOD_LOCALS = kwargs.get('debug_method_locals', False)
-
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         self.setup_logging()
 
         if not isinstance(handler, BaseHandler):
@@ -109,26 +106,20 @@ class QuestionPoller(object):
         self.poller_result = None
         self._post_init(**kwargs)
 
-    def setup_logging(self):
-        """Setup loggers for this object"""
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
-        self.qualname = "pytan.pollers.{}".format(self.__class__.__name__)
-        self.mylog = logging.getLogger(self.qualname)
-        self.progresslog = logging.getLogger(self.qualname + ".progress")
-        self.resolverlog = logging.getLogger(self.qualname + ".resolver")
-
     def __str__(self):
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         class_name = self.__class__.__name__
         attrs = ", ".join(['{0}: "{1}"'.format(x, getattr(self, x, None)) for x in self.STR_ATTRS])
         ret = "{} {}".format(class_name, attrs)
         return ret
 
+    def setup_logging(self):
+        """Setup loggers for this object"""
+        self.mylog = mylog
+        self.progresslog = progresslog
+        self.resolverlog = resolverlog
+
     def _post_init(self, **kwargs):
         """Post init class setup"""
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         self.override_estimated_total = kwargs.get('override_estimated_total', 0)
         self._derive_expiration(**kwargs)
@@ -140,7 +131,6 @@ class QuestionPoller(object):
         This is used in the case that the obj supplied does not have all the metadata
         available
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['obj']
         clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
@@ -172,7 +162,6 @@ class QuestionPoller(object):
             The value of the attr from self.obj
 
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['obj', 'pytan_help']
         clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
@@ -206,7 +195,6 @@ class QuestionPoller(object):
 
     def _derive_object_info(self, **kwargs):
         """Derive self.object_info from self.obj"""
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['attr', 'fallback']
         clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
@@ -230,7 +218,6 @@ class QuestionPoller(object):
 
         Will generate a datetime string from self.EXPIRY_FALLBACK_SECS if unable to get the expiration from the object (self.obj) itself.
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['attr', 'fallback']
         clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
@@ -242,7 +229,6 @@ class QuestionPoller(object):
     def run_callback(self, callbacks, callback, pct, **kwargs):
         """Utility method to find a callback in callbacks dict and run it
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         if not callbacks.get(callback, ''):
             return
@@ -266,7 +252,6 @@ class QuestionPoller(object):
         val : int/float
             float value representing the new percentage to consider self.obj complete
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         self.complete_pct = val
 
@@ -283,7 +268,6 @@ class QuestionPoller(object):
         -------
         result_info : :class:`utils.taniumpy.object_types.result_info.ResultInfo`
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         # add a retry to re-fetch result info if estimated_total == 0
         gri_retry_count = kwargs.get('gri_retry_count', 10)
@@ -320,7 +304,6 @@ class QuestionPoller(object):
         -------
         result_data : :class:`utils.taniumpy.object_types.result_set.ResultSet`
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['obj']
         clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
@@ -353,7 +336,6 @@ class QuestionPoller(object):
             * Polling will be stopped only when one of the callbacks calls the stop() method or the answers are complete.
             * Any callback can call setPercentCompleteThreshold to change what "done" means on the fly
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         self.start = datetime.utcnow()
         self.expiration_timeout = utils.calc.timestr_to_datetime(timestr=self.expiration)
@@ -374,7 +356,6 @@ class QuestionPoller(object):
     def passed_eq_est_total_loop(self, callbacks={}, **kwargs):
         """Method to poll Result Info for self.obj until the percentage of 'passed' out of 'estimated_total' is greater than or equal to self.complete_pct
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         # current percentage tracker
         self.pct = None
@@ -500,9 +481,3 @@ class QuestionPoller(object):
 
     def stop(self):
         self._stop = True
-
-    def _debug_locals(self, fname, flocals):
-        """Method to print out locals for a function if self.DEBUG_METHOD_LOCALS is True"""
-        if getattr(self, 'DEBUG_METHOD_LOCALS', False):
-            m = "Local variables for {}.{}:\n{}".format
-            self.methodlog.debug(m(self.__class__.__name__, fname, pprint.pformat(flocals)))

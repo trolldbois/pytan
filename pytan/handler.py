@@ -18,6 +18,8 @@ from . import __version__
 from . import utils
 from . import session
 
+mylog = logging.getLogger(__name__)
+
 
 class Handler(object):
     """Creates a connection to a Tanium SOAP Server on host:port
@@ -40,10 +42,6 @@ class Handler(object):
         * default: 0
         * 0 do not print anything except warnings/errors
         * 1 and higher will print more
-    debugformat : bool, optional
-        * default: False
-        * False: use one line logformat
-        * True: use two lines
     gmt_log : bool, optional
         * default: True
         * True: use GMT timezone for log output
@@ -136,8 +134,6 @@ class Handler(object):
     See Also
     --------
     :data:`utils.constants.LOG_LEVEL_MAPS` : maps a given `loglevel` to respective logger names and their logger levels
-    :data:`utils.constants.INFO_FORMAT` : debugformat=False
-    :data:`utils.constants.DEBUG_FORMAT` : debugformat=True
     :class:`session.Session` : Session object used by Handler
 
     Examples
@@ -150,146 +146,167 @@ class Handler(object):
         >>> handler = pytan.Handler('username', 'password', 'host')
     """
 
-    def __init__(self, username=None, password=None, host=None, port=443,
-                 loglevel=0, debugformat=False, gmt_log=True, session_id=None, **kwargs):
+    def __init__(self, **kwargs):
         super(Handler, self).__init__()
-        self.mylog = logging.getLogger(__name__)
-
         from . import pollers
         self.pollers = pollers
+        self.mylog = mylog
 
-        # update self with all local variables that are not self/kwargs/k/v
-        for k, v in locals().iteritems():
-            if k in ['self', 'kwargs', 'k', 'v']:
-                continue
-            setattr(self, k, v)
+        self.parse_args(kwargs)
+        self.validate_args()
+        utils.log.setup(**self.args_db['parsed_args'])
+        self.log_args()
 
-        # setup the console logging handler
-        utils.log.setup_console_logging(gmt_tz=self.gmt_log)
+        # test our connectivity to the Tanium server
+        # TODO: MOVE TO SESSION
+        utils.network.test_app_port(**self.args_db['parsed_args'])
 
-        # create all the loggers and set their levels based on loglevel
-        utils.log.set_log_levels(loglevel=self.loglevel)
+        # establish our Session to the Tanium server
+        self.session = session.Session(**self.args_db['parsed_args'])
 
-        # change the format of console logging handler if need be
-        utils.log.change_console_format(debug=self.debugformat)
-
-        # get the default pytan user config file
-        puc_default = os.path.expanduser(utils.constants.PYTAN_USER_CONFIG)
-
-        # see if the pytan_user_config file location was overridden
-        puc_kwarg = kwargs.get('pytan_user_config', '')
-
-        self.puc = puc_kwarg or puc_default
-        kwargs = self.read_pytan_user_config(kwargs)
-
-        if gmt_log != self.gmt_log:
-            utils.log.setup_console_logging(gmt_tz=self.gmt_log)
-
-        if loglevel != self.loglevel:
-            utils.log.set_log_levels(loglevel=self.loglevel)
-
-        if debugformat != self.debugformat:
-            utils.log.change_console_format(debug=self.debugformat)
-
-        if not self.session_id:
-
-            if not self.username:
-                raise utils.exceptions.PytanError("Must supply username!")
-
-            if not self.password:
-                raise utils.exceptions.PytanError("Must supply password!")
-
-        if self.password:
-            self.password = utils.coder.vig_decode(utils.constants.PYTAN_KEY, self.password)
-
-        if not self.host:
-            raise utils.exceptions.PytanError("Must supply host!")
-
-        if not self.port:
-            raise utils.exceptions.PytanError("Must supply port!")
-
-        try:
-            self.port = int(self.port)
-        except ValueError:
-            raise utils.exceptions.PytanError("port must be an integer!")
-
-        utils.network.test_app_port(host=self.host, port=self.port)
-
-        # establish our Session class
-        self.session = session.Session(host=self.host, port=self.port, **kwargs)
-
-        # authenticate using the Session class
-        self.session.authenticate(
-            username=self.username,
-            password=self.password,
-            session_id=self.session_id,
-            **kwargs
-        )
+        # authenticate to the Tanium server using the Session class
+        self.session.authenticate(**self.args_db['parsed_args'])
 
     def __str__(self):
-
         str_tpl = "PyTan v{} Handler for {}".format
         ret = str_tpl(__version__, self.session)
         return ret
 
-    def read_pytan_user_config(self, kwargs):
-        """Read a PyTan User Config and update the current class variables
+    def parse_args(self, kwargs):
+        self.args_db = {}
+        self.args_db['original_args'] = kwargs
+        self.args_db['handler_args'] = self.get_src_args(kwargs)
+        self.args_db['default_args'] = self.get_src_args(utils.constants.DEFAULTS)
+        self.args_db['env_args'] = {
+            k.lower().replace('pytan_', ''): v
+            for k, v in os.environ.iteritems()
+            if k.lower().startswith('pytan_')
+        }
+        self.args_db['env_args'] = self.get_src_args(self.args_db['env_args'])
+        self.args_db['puc_dict'] = self.read_pytan_user_config()
+        self.args_db['config_args'] = self.get_src_args(self.args_db['puc_dict'])
+        self.args_db['parsed_args_source'] = {}
+        self.args_db['parsed_args'] = {}
 
-        Returns
-        -------
-        kwargs : dict
-            * kwargs with updated variables from PyTan User Config (if any)
-        """
-        if not os.path.isfile(self.puc):
+        args_order = ['config_args', 'env_args', 'handler_args', 'default_args']
+        for k in utils.constants.HANDLER_ARGS:
+            src = None
+            def_val = self.args_db['default_args'].get(k, None)
+            for args in args_order:
+                if src is not None:
+                    break
+                args_dict = self.args_db[args]
+                if k in args_dict and args_dict[k] != def_val:
+                    val = args_dict[k]
+                    src = args
+
+            if src is None and def_val is not None:
+                src = 'default_args'
+                val = def_val
+            if src is None and def_val is None:
+                continue
+
+            self.args_db['parsed_args'][k] = val
+            self.args_db['parsed_args_source'][k] = src
+            self.mylog.debug("k = {}, val = {}, src = {}".format(k, val, src))
+
+        if self.args_db['parsed_args']['password']:
+            self.args_db['parsed_args']['password'] = utils.coder.vig_decode(
+                key=utils.constants.PYTAN_KEY,
+                string=self.args_db['parsed_args']['password'],
+            )
+
+    def validate_args(self):
+        m = "Argument {!r} must be {}, {} supplied via {}".format
+        pa = self.args_db['parsed_args']
+        pas = self.args_db['parsed_args_source']
+        for k, v in utils.constants.HANDLER_ARGS.iteritems():
+            if k not in pa:
+                continue
+            if v == str:
+                try:
+                    pa[k] = str(pa[k])
+                except:
+                    m = m(k, str, type(pa[k]), pas[k])
+                    raise utils.exceptions.PytanError(m)
+            elif v == bool:
+                if isinstance(pa[k], basestring):
+                    if pa[k].capitalize() in ["True", "False"]:
+                        pa[k] = eval(pa[k])
+                    else:
+                        m = m(k, bool, type(pa[k]), pas[k])
+                        raise utils.exceptions.PytanError(m)
+                else:
+                    try:
+                        pa[k] = bool(pa[k])
+                    except:
+                        m = m(k, bool, type(pa[k]), pas[k])
+                        raise utils.exceptions.PytanError(m)
+            elif v == int:
+                try:
+                    pa[k] = int(pa[k])
+                except:
+                    m = m(k, int, type(pa[k]), pas[k])
+                    raise utils.exceptions.PytanError(m)
+            elif v == dict:
+                if isinstance(pa[k], basestring):
+                    try:
+                        pa[k] = eval(pa[k])
+                    except:
+                        m = m(k, dict, type(pa[k]), pas[k])
+                        raise utils.exceptions.PytanError(m)
+                else:
+                    try:
+                        pa[k] = dict(pa[k])
+                    except:
+                        m = m(k, dict, type(pa[k]), pas[k])
+                        raise utils.exceptions.PytanError(m)
+
+        if not pa['host']:
+            raise utils.exceptions.PytanError("Must supply host!")
+
+        if not pa['port']:
+            raise utils.exceptions.PytanError("Must supply port!")
+
+        if not pa['session_id']:
+            if not pa['username']:
+                raise utils.exceptions.PytanError("Must supply username if no session_id!")
+
+            if not pa['password']:
+                raise utils.exceptions.PytanError("Must supply password if no session_id!")
+
+    def log_args(self):
+        m = "Argument {!r} supplied by {} {}".format
+        for k, v in self.args_db['parsed_args'].iteritems():
+            self.mylog.debug(m(k, self.args_db['parsed_args_source'][k], type(v)))
+
+    def get_src_args(self, kwargs):
+        src_args = {k: kwargs[k] for k in utils.constants.HANDLER_ARGS if k in kwargs}
+        return src_args
+
+    def read_pytan_user_config(self):
+        """Read a PyTan User Config and update the current class variables"""
+        puc_env = self.args_db['env_args'].get('config_file', '')
+        puc_kwarg = self.args_db['original_args'].get('config_file', '')
+        puc_def = self.args_db['default_args']['config_file']
+        puc = puc_env or puc_kwarg or puc_def
+        puc = os.path.expanduser(puc)
+        puc_dict = {}
+
+        if not os.path.isfile(puc):
             m = "Unable to find PyTan User config file at: {}".format
-            self.mylog.debug(m(self.puc))
-            return kwargs
+            self.mylog.debug(m(puc))
+            return puc_dict
 
         try:
-            with open(self.puc) as fh:
+            with open(puc) as fh:
                 puc_dict = json.load(fh)
+            m = "PyTan User config file successfully loaded: {} ".format
+            self.mylog.debug(m(puc))
         except Exception as e:
             m = "PyTan User config file at: {} is invalid, exception: {}".format
-            self.utils.exceptions.mylog.error(m(self.puc, e))
-        else:
-            m = "PyTan User config file successfully loaded: {} ".format
-            self.mylog.info(m(self.puc))
-
-            # handle class params
-            for h_arg, arg_default in utils.constants.HANDLER_ARG_DEFAULTS.iteritems():
-                if h_arg not in puc_dict:
-                    continue
-
-                if h_arg == 'password':
-                    puc_dict['password'] = utils.coder.vig_decode(
-                        utils.constants.PYTAN_KEY, puc_dict['password'],
-                    )
-
-                class_val = getattr(self, h_arg, None)
-                puc_val = puc_dict[h_arg]
-
-                if class_val != arg_default:
-                    m = "User supplied argument for {}, ignoring value from: {}".format
-                    self.mylog.debug(m(h_arg, self.puc))
-                    continue
-
-                if arg_default is None or puc_val != class_val:
-                    m = "Setting class variable {} with value from: {}".format
-                    self.mylog.debug(m(h_arg, self.puc))
-                    setattr(self, h_arg, puc_val)
-
-            # handle kwargs params
-            for k, v in puc_dict.iteritems():
-                if k in ['self', 'kwargs', 'k', 'v']:
-                    m = "Skipping kwargs variable {} from: {}".format
-                    self.mylog.debug(m(k, self.puc))
-                    continue
-
-                if not hasattr(self, k) and k not in kwargs:
-                    m = "Setting kwargs variable {} with value from: {}".format
-                    self.mylog.debug(m(k, self.puc))
-                    kwargs[k] = v
-        return kwargs
+            raise utils.exceptions.PytanError(m(puc, e))
+        return puc_dict
 
     def write_pytan_user_config(self, **kwargs):
         """Write a PyTan User Config with the current class variables for use with pytan_user_config in instantiating Handler()
@@ -297,7 +314,7 @@ class Handler(object):
         Parameters
         ----------
         new_config : str, optional
-            * default: self.puc
+            * default: self.pytan_user_config
             * JSON file to wite with current class variables
 
         Returns
@@ -305,26 +322,16 @@ class Handler(object):
         puc : str
             * filename of PyTan User Config that was written to
         """
-        puc_kwarg = kwargs.get('new_config', '')
-        puc = puc_kwarg or self.puc
-        puc = os.path.expanduser(puc)
+        puc = os.path.expanduser(self.kwargs['pytan_user_config'])
 
-        puc_dict = {}
-
-        skips = ['mylog', 'session', 'puc', 'pollers']
-        for k, v in vars(self).iteritems():
-            if k in skips:
-                m = "Skipping class variable {} from inclusion in: {}".format
-                self.mylog.debug(m(k, puc))
-                continue
-            print k, v
-
-            m = "Including class variable {} in: {}".format
-            self.mylog.debug(m(k, puc))
-            puc_dict[k] = v
+        puc_dict = {self.kwargs}
 
         # obfuscate the password
-        puc_dict['password'] = utils.coder.vig_encode(utils.constants.PYTAN_KEY, self.password)
+        if puc_dict['password']:
+            puc_dict['password'] = utils.coder.vig_decode(
+                key=utils.constants.PYTAN_KEY,
+                string=puc_dict['password'],
+            )
 
         try:
             with open(puc, 'w+') as fh:

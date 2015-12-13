@@ -30,7 +30,7 @@ class Worker(base.GetBase):
         self.grp.add_argument(
             '--verbose',
             action='store_true', dest='verbose', default=False, required=False,
-            help='Print out verbose information about question data/filtering',
+            help='Print out verbose messages',
         )
 
     def verbose(self, t):

@@ -12,7 +12,6 @@ import json
 import re
 import threading
 import time
-import pprint
 from datetime import datetime
 from base64 import b64encode
 
@@ -25,9 +24,17 @@ from . import utils
 
 utils.requests.packages.urllib3.disable_warnings()
 
+mylog = logging.getLogger(__name__)
+authlog = logging.getLogger(__name__ + ".auth")
+httplog = logging.getLogger(__name__ + ".http")
+bodylog = logging.getLogger(__name__ + ".body")
+statslog = logging.getLogger(__name__ + ".stats")
+
 
 class Session(object):
-    """
+
+    """Provide connection layer to Tanium Server.
+
     This session object uses the :mod:`requests` package instead of the built in httplib library.
 
     This provides support for keep alive, gzip, cookies, forwarding, and a host of other features
@@ -49,6 +56,7 @@ class Session(object):
 
         >>> session.authenticate('username', 'password')
     """
+
     XMLNS = {
         'SOAP-ENV': 'xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"',
         'xsd': 'xmlns:xsd="http://www.w3.org/2001/XMLSchema"',
@@ -114,7 +122,8 @@ class Session(object):
     """enable the statistics loop thread or not"""
 
     STATS_LOOP_SLEEP_SEC = 5
-    """number of seconds to sleep in between printing the statistics when stats_loop_enabled is True"""
+    """seconds to sleep in between printing the statistics when stats_loop_enabled is True
+    """
 
     STATS_LOOP_TARGETS = [
         {'Version': 'Settings/Version'},
@@ -123,12 +132,20 @@ class Session(object):
         {'Strings': 'String Cache/Total String Count'},
         {'Handles': 'System Performance Info/HandleCount'},
         {'Processes': 'System Performance Info/ProcessCount'},
-        {'Memory Available': 'percentage(System Performance Info/PhysicalAvailable,System Performance Info/PhysicalTotal)'},
+        {'Memory Available': (
+            'percentage(System Performance Info/PhysicalAvailable,System Performance Info/'
+            'PhysicalTotal)'
+        )
+        },
     ]
-    """list of dictionaries with the key being the section of info.json to print info from, and the value being the item with in that section to print the value"""
+    """list of dictionaries with the key being the section of info.json to print info from, and
+    the value being the item with in that section to print the value
+    """
 
     RECORD_ALL_REQUESTS = False
-    """Controls whether each requests response object is appended to the self.ALL_REQUESTS_RESPONSES list"""
+    """Controls whether each requests response object is appended to the
+    self.ALL_REQUESTS_RESPONSES list
+    """
 
     BAD_RESPONSE_CMD_PRUNES = [
         '\n',
@@ -136,7 +153,9 @@ class Session(object):
         'SOAPProcessing Exception: class ',
         'ERROR: 400 Bad Request'
     ]
-    """List of strings to remove from commands in responses that do not match the response in the request"""
+    """List of strings to remove from commands in responses that do not match the response in the
+    request
+    """
 
     AUTH_FAIL_CODES = [401, 403]
     """List of HTTP response codes that equate to authorization failures"""
@@ -144,15 +163,14 @@ class Session(object):
     BAD_SERVER_VERSIONS = [None, '', 'Unable to determine', 'Not yet determined']
     """List of server versions that are not valid"""
 
-    # TRACKING VARIABLES -- THESE GET UPDATED BY SESSION
     ALL_REQUESTS_RESPONSES = []
-    """This list will be updated with each requests response object that was received"""
+    """Holds ALL of the requests response object that was received"""
 
     LAST_REQUESTS_RESPONSE = None
-    """This variable will be updated with the last requests response object that was received"""
+    """Holds the last requests response object that was received"""
 
     LAST_RESPONSE_INFO = {}
-    """This variable will be updated with the information from the most recent call to _get_response()"""
+    """Holds the information about the last response received by _get_response()"""
 
     host = None
     """host to connect to"""
@@ -164,15 +182,17 @@ class Session(object):
     """version string of server, will be updated when get_server_version() is called"""
 
     force_server_version = ''
-    """In the case where the user wants to have pytan act as if the server is a specific version, regardless of what server_version is."""
+    """In the case where the user wants to have pytan act as if the server is a specific version,
+    regardless of what server_version is.
+    """
 
     def __init__(self, host, port=443, **kwargs):
-        self.methodlog = logging.getLogger("method_debug")
-        self.DEBUG_METHOD_LOCALS = kwargs.get('debug_method_locals', False)
 
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
-        self.setup_logging()
+        self.mylog = mylog
+        self.authlog = authlog
+        self.httplog = httplog
+        self.bodylog = bodylog
+        self.statslog = statslog
 
         self.REQUESTS_SESSION = utils.requests.Session()
         """
@@ -222,17 +242,6 @@ class Session(object):
         self.server_version = "Not yet determined"
 
         self.force_server_version = kwargs.get('force_server_version', self.force_server_version)
-
-    def setup_logging(self):
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
-        self.qualname = __name__
-        # "pytan.sessions.{}".format(self.__class__.__name__)
-        self.mylog = logging.getLogger(self.qualname)
-        self.authlog = logging.getLogger(self.qualname + ".auth")
-        self.httplog = logging.getLogger(self.qualname + ".http")
-        self.bodyhttplog = logging.getLogger(self.qualname + ".http.body")
-        self.statslog = logging.getLogger("stats")
 
     def __str__(self):
         class_name = self.__class__.__name__
@@ -289,7 +298,6 @@ class Session(object):
             * help string to add to self.LAST_REQUESTS_RESPONSE.pytan_help
 
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         self._check_auth()
 
@@ -387,7 +395,6 @@ class Session(object):
         NTLM is enabled by default in 6.3 or greater and requires a persistent connection until a
         session is generated.
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         persistent = kwargs.get('persistent', False)
         auth_type = 'unknown'
@@ -468,7 +475,6 @@ class Session(object):
         obj : :class:`utils.taniumpy.object_types.base.BaseType`
             * found objects
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['obj', 'request_body']
         clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
@@ -491,7 +497,6 @@ class Session(object):
         obj : :class:`utils.taniumpy.object_types.base.BaseType`
             * saved object
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['obj', 'request_body']
         clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
@@ -514,7 +519,6 @@ class Session(object):
         obj : :class:`utils.taniumpy.object_types.base.BaseType`
             * added object
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['obj', 'request_body']
         clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
@@ -537,7 +541,6 @@ class Session(object):
         obj : :class:`utils.taniumpy.object_types.base.BaseType`
             * deleted object
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['obj', 'request_body']
         clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
@@ -560,7 +563,6 @@ class Session(object):
         obj : :class:`utils.taniumpy.object_types.base.BaseType`
             * results from running object
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['obj', 'request_body']
         clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
@@ -583,7 +585,6 @@ class Session(object):
         obj : :class:`utils.taniumpy.object_types.result_info.ResultInfo`
             * ResultInfo for `obj`
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['obj', 'request_body']
         clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
@@ -612,7 +613,6 @@ class Session(object):
         obj : :class:`utils.taniumpy.object_types.result_set.ResultSet`
             * otherwise, `obj` will be the ResultSet for `obj`
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['obj', 'request_body']
         clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
@@ -641,7 +641,6 @@ class Session(object):
         export_id : str
             * value of export_id element found in response
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['obj', 'request_body']
         clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
@@ -684,7 +683,6 @@ class Session(object):
             * 6.2 /info.json is only available on soap port (default port: 444)
             * 6.5 /info.json is only available on server port (default port: 443)
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         self._check_auth()
 
@@ -751,7 +749,6 @@ class Session(object):
         str
             * str containing server version from /info.json
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         if not self._invalid_server_version():
             return self.server_version
@@ -798,7 +795,6 @@ class Session(object):
         --------
         :data:`pytan.sessions.Session.STATS_LOOP_TARGETS` : list of dict containing stat keys to pull from /info.json
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         try:
             self._check_auth()
@@ -829,7 +825,6 @@ class Session(object):
         --------
         :func:`pytan.sessions.Session._stats_loop` : method started as a thread which checks self.STATS_LOOP_ENABLED before running :func:`pytan.sessions.Session.get_server_stats`
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         self.STATS_LOOP_ENABLED = True
         if isinstance(sleep, int):
@@ -847,7 +842,6 @@ class Session(object):
         --------
         :func:`pytan.sessions.Session._stats_loop` : method started as a thread which checks self.STATS_LOOP_ENABLED before running :func:`pytan.sessions.Session.get_server_stats`
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         self.STATS_LOOP_ENABLED = False
         if isinstance(sleep, int):
@@ -899,7 +893,6 @@ class Session(object):
         --------
         :func:`pytan.sessions.Session._http_get` : private method used to perform the actual HTTP GET
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         self._check_auth()
 
@@ -999,7 +992,6 @@ class Session(object):
         --------
         :func:`pytan.sessions.Session._http_post` : private method used to perform the actual HTTP POST
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         self._check_auth()
 
@@ -1100,7 +1092,6 @@ class Session(object):
         body : str
             * str containing body of response from server
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         full_url = self._full_url(host=host, port=port, url=url)
         cleaned_headers = self._clean_headers(headers=headers)
@@ -1156,7 +1147,7 @@ class Session(object):
             m = "HTTP response: GET request to {!r} returned code: {}, body: {}".format
             raise utils.exceptions.HttpError(m(full_url, response.status_code, response_body))
 
-        self.bodyhttplog.debug("HTTP response: body:\n{}".format(response_body))
+        self.bodylog.debug("HTTP response: body:\n{}".format(response_body))
 
         return response_body
 
@@ -1217,7 +1208,6 @@ class Session(object):
         --------
         :func:`pytan.xml_clean.xml_cleaner` : function to remove invalid/bad characters from XML responses
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         full_url = self._full_url(host=host, port=port, url=url)
         cleaned_headers = self._clean_headers(headers=headers)
@@ -1228,7 +1218,7 @@ class Session(object):
             print_body = ''
         else:
             print_body = '\n{}'.format(body)
-        self.bodyhttplog.debug("HTTP request: body:{}".format(print_body))
+        self.bodylog.debug("HTTP request: body:{}".format(print_body))
 
         req_args = {}
         req_args['headers'] = headers
@@ -1282,7 +1272,7 @@ class Session(object):
             m = "HTTP response: POST request to {!r} returned code: {}, body: {}".format
             raise utils.exceptions.HttpError(m(full_url, response.status_code, response_body))
 
-        self.bodyhttplog.debug("HTTP response: body:\n{}".format(response_body))
+        self.bodylog.debug("HTTP response: body:\n{}".format(response_body))
 
         return response_body
 
@@ -1299,7 +1289,6 @@ class Session(object):
         headers : dict
             * dict of key/value pairs for a set of headers for a given request
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         for k in dict(headers):
             if k in ['username', 'password', 'session']:
@@ -1335,7 +1324,6 @@ class Session(object):
         full_url : str
             * full url in the form of https://$host:$port/$url
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         host = kwargs.get('host', self.host)
         port = kwargs.get('port', self.port)
@@ -1355,7 +1343,6 @@ class Session(object):
         headers : dict
             * dict of key/value pairs for a set of cleaned headers for a given request
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_headers = dict(headers or {})
         return_headers = {}
@@ -1368,7 +1355,6 @@ class Session(object):
 
     def _start_stats_thread(self, **kwargs):
         """Utility method starting the :func:`pytan.sessions.Session._stats_loop` method in a threaded daemon"""
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         stats_thread = threading.Thread(target=self._stats_loop, args=(), kwargs=kwargs)
         stats_thread.daemon = True
@@ -1384,7 +1370,6 @@ class Session(object):
             * True if self.server_version is greater than or equal to 6.5
             * False if self.server_version is less than 6.5
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         if self.force_server_version:
             if self.force_server_version >= '6.5':
@@ -1406,7 +1391,6 @@ class Session(object):
 
     def _stats_loop(self, **kwargs):
         """Utility method for logging server stats via :func:`pytan.sessions.Session.get_server_stats` every self.STATS_LOOP_SLEEP_SEC"""
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         while True:
             if self.STATS_LOOP_ENABLED:
@@ -1427,7 +1411,6 @@ class Session(object):
         flattened
             * the dict/tuple/list flattened out
         """
-        # self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         flattened = structure
         if isinstance(structure, dict):
@@ -1456,7 +1439,6 @@ class Session(object):
             * label : same as provided in `target` index0 (label)
             * result : value resolved from :func:`pytan.sessions.Session._resolve_stat_target` for `target` index1 (search_path)
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         try:
             label, search_path = target.items()[0]
@@ -1493,7 +1475,6 @@ class Session(object):
         str
             * value resolved from `diags` for `search_path`
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         try:
             for i in search_path.split('/'):
@@ -1523,7 +1504,6 @@ class Session(object):
         body : str
             * The XML request body created from the string.template self.REQUEST_BODY_TEMPLATE
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         options_obj = utils.taniumpy.Options()
 
@@ -1558,7 +1538,6 @@ class Session(object):
         obj_body : str
             * The XML request body created from :func:`pytan.sessions.Session._build_body`
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['command', 'object_list']
         clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
@@ -1583,7 +1562,6 @@ class Session(object):
         obj_body : str
             * The XML request body created from :func:`pytan.sessions.Session._build_body`
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['command', 'object_list']
         clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
@@ -1608,7 +1586,6 @@ class Session(object):
         obj_body : str
             * The XML request body created from :func:`pytan.sessions.Session._build_body`
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['command', 'object_list']
         clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
@@ -1633,7 +1610,6 @@ class Session(object):
         obj_body : str
             * The XML request body created from :func:`pytan.sessions.Session._build_body`
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['command', 'object_list']
         clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
@@ -1658,7 +1634,6 @@ class Session(object):
         obj_body : str
             * The XML request body created from :func:`pytan.sessions.Session._build_body`
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['command', 'object_list']
         clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
@@ -1683,7 +1658,6 @@ class Session(object):
         obj_body : str
             * The XML request body created from :func:`pytan.sessions.Session._build_body`
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['command', 'object_list']
         clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
@@ -1712,7 +1686,6 @@ class Session(object):
         obj_body : str
             * The XML request body created from :func:`pytan.sessions.Session._build_body`
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         clean_keys = ['command', 'object_list']
         clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
@@ -1724,7 +1697,6 @@ class Session(object):
 
     def _check_auth(self):
         """Utility method to check if authentication has been done yet, and throw an exception if not """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         if not self.is_auth:
             class_name = self.__class__.__name__
@@ -1754,7 +1726,6 @@ class Session(object):
         -----
             * Using regex is WAY faster than ElementTree chewing the body in and out, this matters a LOT on LARGE return bodies
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         regex_txt = self.ELEMENT_RE_TXT.format(element)
         regex = re.compile(regex_txt, re.IGNORECASE | re.DOTALL)
@@ -1784,7 +1755,6 @@ class Session(object):
         ret : str of ResultXML element
             * str if 'export_id' element found in XML
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         el = ET.fromstring(response_body)
 
@@ -1837,7 +1807,6 @@ class Session(object):
         --------
         :func:`pytan.sessions.Session.http_post` : wrapper method used to perform the HTTP POST
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         retry_auth = kwargs.get('retry_auth', True)
 
@@ -1924,15 +1893,8 @@ class Session(object):
 
     def _invalid_server_version(self):
         """Utility method to find out if self.server_version is valid or not"""
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         current_server_version = getattr(self, 'server_version', '')
         if current_server_version in self.BAD_SERVER_VERSIONS:
             return True
         return False
-
-    def _debug_locals(self, fname, flocals):
-        """Method to print out locals for a function if self.DEBUG_METHOD_LOCALS is True"""
-        if getattr(self, 'DEBUG_METHOD_LOCALS', False):
-            m = "Local variables for {}.{}:\n{}".format
-            self.methodlog.debug(m(self.__class__.__name__, fname, pprint.pformat(flocals)))

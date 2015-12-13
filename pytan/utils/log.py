@@ -2,211 +2,255 @@
 # -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
-"""Logging module for :mod:`pytan`"""
+"""Logging module for :mod:`pytan`."""
 
-DEBUG_OUTPUT = False
-
+import re
 import os
-import sys
 import logging
-import itertools
 import time
 from . import constants
 
-
-class SplitStreamHandler(logging.Handler):
-    """Custom :class:`logging.Handler` class that sends all messages that are logging.INFO and below to STDOUT, and all messages that are logging.WARNING and above to STDERR
-    """
-
-    def __init__(self):
-        logging.Handler.__init__(self)
-
-    def emit(self, record):
-        try:
-            msg = self.format(record)
-            if record.levelno < logging.WARNING:
-                stream = sys.stdout
-            else:
-                stream = sys.stderr
-            fs = "%s\n"
-            try:
-                is_unicode = isinstance(msg, unicode)
-                if is_unicode and getattr(stream, 'encoding', None):
-                    ufs = u'%s\n'
-                    try:
-                        stream.write(ufs % msg)
-                    except UnicodeEncodeError:
-                        stream.write((ufs % msg).encode(stream.encoding))
-                else:
-                    stream.write(fs % msg)
-            except UnicodeError:
-                stream.write(fs % msg.encode("UTF-8"))
-            self.flush()
-        except (KeyboardInterrupt, SystemExit):
-            raise
-        except:
-            self.handleError(record)
+mylog = logging.getLogger(__name__)
+mylog.setLevel(logging.WARN)
 
 
-def spew(t):
-    """Prints a string based on DEBUG_OUTPUT bool
+def setup(**kwargs):
+    """Setup logging for PyTan."""
+    loglevel = int(kwargs.get('loglevel', 0))
 
-    Parameters
-    ----------
-    t : str
-        * string to debug print
-    """
-    if DEBUG_OUTPUT:
-        print "DEBUG::{}".format(t)
+    mylog_debug = any([
+        loglevel >= constants.OVERRIDE_PYTAN_LEVEL,
+        loglevel >= constants.LOG_LEVEL_MAPS[mylog.name] + 10,
+    ])
+
+    if mylog_debug:
+        mylog.setLevel(logging.DEBUG)
+
+    install_console(**kwargs)
+
+    argmap = ['loggmt']
+    args = get_args("", kwargs, argmap)
+
+    if args['loggmt']:
+        logging.Formatter.converter = time.gmtime
+        m = "Using GMT time zone for logging"
+    else:
+        logging.Formatter.converter = time.localtime
+        m = "Using local time zone for logging"
+
+    mylog.debug(m.format())
+
+    if loglevel >= constants.OVERRIDE_PYTAN_LEVEL:
+        m = 'loglevel is over {}, setting all loggers to DEBUG'
+        mylog.debug(m.format(constants.OVERRIDE_PYTAN_LEVEL))
+        set_all_levels()
+    else:
+        set_levels(**kwargs)
+
+    install_file(**kwargs)
 
 
-def set_log_levels(loglevel=0):
-    """Enables loggers based on loglevel and :data:`constants.LOG_LEVEL_MAPS`
+def install_file(**kwargs):
+    """Utility to add a file log to python's logging module."""
+    argmap = ['enable', 'formatter', 'output', 'handler', 'level']
+    create_args = get_args("logfile_", kwargs, argmap)
+    create_args['output'] = os.path.expanduser(create_args['output'])
+    create_args['name'] = os.path.basename(create_args['output'])
 
-    Parameters
-    ----------
-    loglevel : int, optional
-        * loglevel to match against each item in :data:`constants.LOG_LEVEL_MAPS` - each item that is greater than or equal to loglevel will have the according loggers set to their respective levels identified there-in.
-    """
-    if loglevel >= 20:
-        set_all_loglevels('DEBUG')
+    if not create_args['enable']:
+        mylog.debug("logfile_enable = False, disabling file log")
+        uninstall_file(**create_args)
         return
 
-    set_all_loglevels('WARN')
-
-    for logmap in constants.LOG_LEVEL_MAPS:
-        if loglevel >= logmap[0]:
-            for lname, llevel in logmap[1].iteritems():
-                spew('set_log_levels(): setting %s to %s' % (lname, llevel))
-                logging.getLogger(lname).setLevel(getattr(logging, llevel))
+    # mylog.debug("install_file create_handler args: {}".format(create_args))
+    loghandler = create_handler(**create_args)
+    add_handler(loghandler=loghandler, **kwargs)
+    mylog.debug("added file log name: '{name}', output: '{output}'".format(**create_args))
 
 
-def print_log_levels():
-    """Prints info about each loglevel from :data:`constants.LOG_LEVEL_MAPS`"""
-    for logmap in constants.LOG_LEVEL_MAPS:
-        print "Logging level: {} - Description: {}".format(logmap[0], logmap[2])
-        if logmap[0] == 0:
-            for k, v in sorted(get_all_pytan_loggers().iteritems()):
-                print "\tLogger {!r} will only show WARNING and above".format(k)
-            continue
-        for lname, llevel in logmap[1].iteritems():
-            print "\tLogger {!r} will show {} and above".format(lname, llevel)
+def install_console(**kwargs):
+    """Utility to add a console log to python's logging module."""
+    argmap = ['enable', 'formatter', 'output', 'handler', 'level', 'name']
+    create_args = get_args("logconsole_", kwargs, argmap)
+
+    if not create_args['enable']:
+        mylog.debug("logconsole_enable = False, disabling console log")
+        uninstall_console(**create_args)
+        return
+
+    # mylog.debug("install_console create_handler args: {}".format(create_args))
+    loghandler = create_handler(**create_args)
+    add_handler(loghandler=loghandler, **kwargs)
+    mylog.debug("added console log name: '{name}', output: '{output}'".format(**create_args))
 
 
-def set_all_loglevels(level='DEBUG'):
-    """Sets all loggers that the logging system knows about to a given logger level"""
-
-    for k, v in sorted(get_all_pytan_loggers().iteritems()):
-        spew("set_all_loglevels(): setting pytan logger '{}' to {}".format(k, level))
-        v.setLevel(getattr(logging, level))
-        v.propagate = False
-
-
-def get_all_pytan_loggers():
-    """Gets all loggers currently known to pythons logging system that exist in :data:`constants.LOG_LEVEL_MAPS`
-
-    Creates loggers for any pytan loggers that do not exist yet
-    """
-    pytan_log_strings = [x[1].keys() for x in constants.LOG_LEVEL_MAPS if x[1].keys()]
-    pytan_log_strings = sorted(list(set(list(itertools.chain(*pytan_log_strings)))))
-
-    pytan_loggers = {x: logging.getLogger(x) for x in pytan_log_strings}
-    return pytan_loggers
+def get_args(prefix, kwargs, argmap):
+    """Get arguments from kwargs using argmap."""
+    args = {}
+    for k in argmap:
+        nk = "{}{}".format(prefix, k)
+        args[k] = constants.DEFAULTS[nk]
+        if nk in kwargs:
+            args[k] = kwargs.get(nk)
+    return args
 
 
-def get_all_loggers():
-    """Gets all loggers currently known to pythons logging system`"""
+def uninstall_file(**kwargs):
+    """Utility to remove a log file from python's logging module."""
+    argmap = ["output"]
+    remove_args = get_args("logfile_", kwargs, argmap)
+    loghandler_name = os.path.basename(remove_args['output'])
+    remove_handler(loghandler_name=loghandler_name)
+
+
+def uninstall_console(**kwargs):
+    """Utility to remove a console log from python's logging module."""
+    argmap = ["name"]
+    remove_args = get_args("logconsole_", kwargs, argmap)
+    remove_handler(loghandler_name=remove_args['output'])
+
+
+def create_handler(handler, output, name, level, formatter, **kwargs):
+    """Utility to create a logging handler."""
+    loghandler = getattr(logging, handler)(output)
+    loghandler.set_name(name)
+    loghandler.setLevel(getattr(logging, level))
+    loghandler.setFormatter(logging.Formatter(formatter))
+    return loghandler
+
+
+def add_handler(loghandler, **kwargs):
+    """Utility to add a logging handler to all loggers."""
+    loggers = get_loggers(**kwargs)
+    for pytanlog in sorted(constants.LOG_LEVEL_MAPS):
+        if loghandler.name not in [h.name for h in loggers[pytanlog].handlers]:
+            # mylog.debug("add_handler: {0.name} to logger {1}".format(loghandler, pytanlog))
+            loggers[pytanlog].addHandler(loghandler)
+
+
+def remove_handler(**kwargs):
+    """Utility to remove a logging handler from all loggers."""
+    loggers = get_loggers(**kwargs)
+    loghandler_name = kwargs.get('loghandler_name', None)
+    for pytanlog in sorted(constants.LOG_LEVEL_MAPS):
+        if pytanlog not in loggers:
+            m = "pytan logger {} does not exist in logging system!!"
+            raise Exception(m.format(pytanlog))
+
+        for handler in loggers[pytanlog].handlers:
+            if loghandler_name is None:
+                # m = "remove_handler: {} from {} due to None"
+                # mylog.debug(m.format(handler.name, pytanlog))
+                loggers[pytanlog].removeHandler(handler)
+            elif handler.name == loghandler_name:
+                # m = "remove_handler: {} from {} due to match"
+                # mylog.debug(m.format(handler.name, pytanlog))
+                loggers[pytanlog].removeHandler(handler)
+
+
+def get_loggers(**kwargs):
+    """Get all loggers currently known to pythons logging system`."""
     logger_dict = logging.Logger.manager.loggerDict
     all_loggers = {k: v for k, v in logger_dict.iteritems() if isinstance(v, logging.Logger)}
     all_loggers['root'] = logging.getLogger()
     return all_loggers
 
 
-def remove_logging_handler(name='all'):
-    """Removes a logging handler
+def set_levels(**kwargs):
+    """Enable loggers based on loglevel and :data:`constants.LOG_LEVEL_MAPS`.
 
     Parameters
     ----------
-    name : str
-        * name of logging handler to remove. if name == 'all' then all logging handlers are removed
+    loglevel : int, optional
+        * loglevel to match against each item in :data:`constants.LOG_LEVEL_MAPS` -
+          each item that is greater than or equal to loglevel will have the
+          according loggers set to their respective levels identified there-in.
     """
-    for k, v in sorted(get_all_pytan_loggers().iteritems()):
-        for handler in v.handlers:
-            if name == 'all':
-                spew("Removing logging handler: {0}/{0.name} due to 'all'".format(handler))
-                v.removeHandler(handler)
-            elif handler.name == name:
-                spew("Removing logging handler: {0}/{0.name} due to match".format(handler))
-                v.removeHandler(handler)
+    loglevel = int(kwargs.get('loglevel', 0))
+    loggers = get_loggers()
+    loggers_done = []
+    for pytanlog, infolvl in sorted(constants.LOG_LEVEL_MAPS.iteritems()):
+        if pytanlog not in loggers:
+            m = "pytan logger {} does not exist in logging system!!"
+            raise Exception(m.format(pytanlog))
+
+        if pytanlog in loggers_done:
+            m = "pytan logger {} already processed!!"
+            raise Exception(m.format(pytanlog))
+
+        dbglvl = infolvl + 10
+        if infolvl == 0 or loglevel >= dbglvl:
+            m = "{} set from {} to {} (DEBUG)"
+            newlvl = logging.DEBUG
+        elif loglevel >= infolvl:
+            m = "{} set from {} to {} (INFO)"
+            newlvl = logging.INFO
+        else:
+            m = "{} set from {} to {} ({})"
+            newlvl = getattr(logging, constants.DEFAULT_LOGGER_LEVEL)
+
+        oldlvl = loggers[pytanlog].level
+        loggers[pytanlog].setLevel(newlvl)
+        loggers[pytanlog].propagate = False
+        loggers_done.append(pytanlog)
+        mylog.debug(m.format(pytanlog, oldlvl, newlvl, constants.DEFAULT_LOGGER_LEVEL))
+
+    loggers_not_done = [x for x in loggers if x not in loggers_done]
+    if loggers_not_done:
+        mylog.debug('non pytan loggers: {}'.format(', '.join(loggers_not_done)))
 
 
-def setup_console_logging(gmt_tz=True):
-    """Creates a console logging handler using logging.StreamHandler(sys.stdout)"""
-
-    ch_name = 'console'
-    remove_logging_handler('console')
-
-    if gmt_tz:
-        # change the default time zone to GM time
-        logging.Formatter.converter = time.gmtime
-    else:
-        logging.Formatter.converter = time.localtime
-
-    # add a console handler to all loggers that goes to STDOUT for INFO
-    # and below, but STDERR for WARNING and above (old method)
-    # ch = SplitStreamHandler()
-
-    ch = logging.StreamHandler(sys.stdout)
-    ch.set_name(ch_name)
-    ch.setLevel(logging.DEBUG)
-    ch.setFormatter(logging.Formatter(constants.INFO_FORMAT))
-
-    for k, v in sorted(get_all_pytan_loggers().iteritems()):
-        spew("setup_console_logging(): add handler: {0}/{0.name} to logger {1}".format(ch, k))
-        v.addHandler(ch)
+def set_all_levels(**kwargs):
+    """Set all loggers that the logging system knows about to a given logger level."""
+    logger_level = kwargs.get('logger_level', 'DEBUG')
+    loggers = get_loggers()
+    mylog.setLevel(getattr(logging, logger_level))
+    for lname, llogger in sorted(loggers.iteritems()):
+        # mylog.debug("setting logger '{}' to {}".format(lname, logger_level))
+        llogger.setLevel(getattr(logging, logger_level))
+        if lname in constants.LOG_LEVEL_MAPS:
+            llogger.propagate = False
 
 
-def change_console_format(debug=False):
-    """Changes the logging format for console handler to :data:`constants.DEBUG_FORMAT` or :data:`constants.INFO_FORMAT`
+def print_levels(**kwargs):
+    """Utility to print info about each logger."""
+    loggers = get_loggers()
+    loggers_done = []
+    deflvl = constants.DEFAULT_LOGGER_LEVEL
 
-    Parameters
-    ----------
-    debug : bool, optional
-        * False : set logging format for console handler to :data:`constants.INFO_FORMAT`
-        * True :  set logging format for console handler to :data:`constants.DEBUG_FORMAT`
-    """
-    for k, v in sorted(get_all_pytan_loggers().iteritems()):
-        for handler in v.handlers:
-            if handler.name == 'console':
-                if debug:
-                    handler.setFormatter(logging.Formatter(constants.DEBUG_FORMAT))
-                else:
-                    handler.setFormatter(logging.Formatter(constants.INFO_FORMAT))
+    m = "{} logger {!r} {} and above messages shown at pytan loglevel {} and above"
+    t = "pytan"
+    for pytanlog, infolvl in sorted(constants.LOG_LEVEL_MAPS.iteritems()):
+        loggers_done.append(pytanlog)
+        dbglvl = infolvl + 10
+        if infolvl == 0:
+            print m.format(t, pytanlog, 'DEBUG', 0)
+        else:
+            print m.format(t, pytanlog, deflvl, 0)
+            print m.format(t, pytanlog, 'INFO', infolvl)
+            print m.format(t, pytanlog, 'DEBUG', dbglvl)
 
-
-def remove_file_log(logfile):
-    """Utility to remove a log file from python's logging module"""
-    basename = os.path.basename(logfile)
-    root_logger = logging.getLogger()
-    try:
-        for x in root_logger.handlers:
-            if x.name == basename:
-                root_logger.removeHandler(x)
-    except:
-        pass
+    loggers_not_done = [x for x in loggers if x not in loggers_done]
+    t = "NON-pytan"
+    for logger in loggers_not_done:
+        print m.format(t, logger, 'DEBUG', constants.OVERRIDE_PYTAN_LEVEL)
 
 
-def add_file_log(logfile, debug=False):
-    """Utility to add a log file from python's logging module"""
-    remove_file_log(logfile)
-    root_logger = logging.getLogger()
-    basename = os.path.basename(logfile)
-    file_handler = logging.FileHandler(logfile)
-    file_handler.set_name(basename)
-    if debug:
-        file_handler.setLevel(logging.DEBUG)
-        file_handler.setFormatter(logging.Formatter(constants.DEBUG_FORMAT))
-    else:
-        file_handler.setLevel(logging.INFO)
-        file_handler.setFormatter(logging.Formatter(constants.INFO_FORMAT))
-    root_logger.addHandler(file_handler)
+def enable_logs(regex, level='DEBUG'):
+    """Utility to enable loggers based on regex."""
+    regex = re.compile(regex)
+    loggers = get_loggers()
+    for lname, llogger in sorted(loggers.iteritems()):
+        if not regex.search(lname):
+            continue
+        llogger.setLevel(getattr(logging, level))
+
+
+def disable_logs(regex, level='WARN'):
+    """Utility to disable loggers based on regex."""
+    regex = re.compile(regex)
+    loggers = get_loggers()
+    for lname, llogger in sorted(loggers.iteritems()):
+        if not regex.search(lname):
+            continue
+        llogger.setLevel(getattr(logging, level))

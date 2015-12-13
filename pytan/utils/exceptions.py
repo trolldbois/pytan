@@ -19,6 +19,11 @@ class PytanError(Exception):
     pass
 
 
+class NetworkError(Exception):
+    """Exception thrown for errors in :mod:`pytan`"""
+    pass
+
+
 class UnsupportedVersionError(Exception):
     """Exception thrown for version checks in :mod:`pytan.handler`"""
     pass

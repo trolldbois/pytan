@@ -2,145 +2,117 @@
 # -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
-"""Constants for :mod:`pytan`"""
-DEBUG_FORMAT = (
-    '[%(lineno)-5d - %(filename)20s:%(funcName)s()] %(asctime)s\n'
-    '%(levelname)-8s %(name)s %(message)s'
-)
+"""Constants for :mod:`pytan`."""
+
+import sys
+
+DEFAULTS = {
+    'logfile_enable': False,
+    'logfile_output': "~/pytan.log",
+    'logfile_handler': "FileHandler",
+    'logfile_level': "NOTSET",
+    'logfile_formatter': '%(asctime)s %(levelname)-8s [%(name)s] %(message)s',
+    'logconsole_enable': True,
+    'logconsole_output': sys.stdout,
+    'logconsole_handler': "StreamHandler",
+    'logconsole_name': "pytan_console",
+    'logconsole_level': "NOTSET",
+    'logconsole_formatter': '%(levelname)-8s [%(name)s] %(message)s',
+    'loglevel': 0,
+    'loggmt': True,
+    'username': '',
+    'password': '',
+    'session_id': '',
+    'host': '',
+    'port': 443,
+    'config_file': "~/.pytan_config.json",
+}
+
+HANDLER_ARGS = {
+    'username': str,
+    'password': str,
+    'session_id': str,
+    'host': str,
+    'port': int,
+    'loglevel': int,
+    'loggmt': bool,
+    'logconsole_enable': bool,
+    'logconsole_formatter': str,
+    'logfile_enable': bool,
+    'logfile_output': str,
+    'logfile_formatter': str,
+    'config_file': str,
+    'soap_request_headers': dict,
+    'http_debug': bool,
+    'http_auth_retry': bool,
+    'http_retry_count': int,
+    'auth_connect_timeout_sec': int,
+    'auth_response_timeout_sec': int,
+    'info_connect_timeout_sec': int,
+    'info_response_timeout_sec': int,
+    'soap_connect_timeout_sec': int,
+    'soap_response_timeout_sec': int,
+    'stats_loop_enabled': bool,
+    'stats_loop_sleep_sec': int,
+    'stats_loop_targets': dict,
+    'record_all_requests': bool,
+}
 """
-Logging format for debugformat=True
+List of handler args that map to DEFAULTS['$ARG'] in constants
 """
 
-INFO_FORMAT = '%(asctime)s %(levelname)-8s %(name)s: %(message)s'
+LOG_LEVEL_MAPS = {
+    'pytan.session.stats': 0,
+    'pytan.handler': 1,
+    'pytan.utils.historyconsole': 1,
+    'pytan.utils.calc': 1,
+    'pytan.utils.tanium_obj': 1,
+    'pytan.pollers.action': 2,
+    'pytan.pollers.question': 2,
+    'pytan.pollers.sse': 2,
+    'pytan.pollers.action.progress': 3,
+    'pytan.pollers.question.progress': 3,
+    'pytan.pollers.sse.progress': 3,
+    'pytan.pollers.action.resolver': 4,
+    'pytan.pollers.question.resolver': 4,
+    'pytan.pollers.sse.resolver': 4,
+    'pytan.utils.parsers.extractors': 5,
+    'pytan.utils.parsers.mappers': 5,
+    'pytan.utils.parsers.parsers': 5,
+    'pytan.session': 6,
+    'pytan.utils.network': 7,
+    'pytan.session.http': 7,
+    'pytan.session.auth': 8,
+    'pytan.session.body': 9,
+    'pytan.utils.pretty': 9,
+    'pytan.utils.xml_clean': 9,
+    'pytan.utils.log': 10,
+    'pytan.utils.external.requests': 11,
+    'pytan.utils.external.requests.packages.urllib3': 11,
+    'pytan.utils.external.requests.packages.urllib3.connectionpool': 11,
+    'pytan.utils.external.requests.packages.urllib3.poolmanager': 11,
+    'pytan.utils.external.requests.packages.urllib3.util.retry': 11,
+}
 """
-Logging format for debugformat=False
+Map for pytan loggers into python loggings system.
+
+Format is::
+
+    {
+        'logger name': int,
+    }
+
+Where:
+
+    * logger_name: name of pytan logger in python logging system
+    * int: loglevel for INFO messages from this logger, int+10 = loglevel for DEBUG messages
 """
 
-LOG_LEVEL_MAPS = [
-    (
-        0,
-        {
-            'stats': 'DEBUG',
-            'method_debug': 'DEBUG',
-        },
-        'Sets all loggers to only output at WARNING or above except for stats & method_debug',
-    ),
-    (
-        1,
-        {
-            'pytan': 'INFO',
-            'pytan.pollers.QuestionPoller': 'INFO',
-            'pytan.pollers.ActionPoller': 'INFO',
-            'pytan.pollers.SSEPoller': 'INFO',
-        },
-        'Pytan poller loggers show output at INFO or above',
-    ),
-    (
-        2,
-        {
-            'pytan': 'DEBUG',
-            'pytan.handler': 'INFO',
-            'pytan.pollers.QuestionPoller.progress': 'INFO',
-            'pytan.pollers.ActionPoller.progress': 'INFO',
-            'pytan.pollers.SSEPoller.progress': 'INFO',
-            'pytan.pollers.QuestionPoller': 'DEBUG',
-            'pytan.pollers.ActionPoller': 'DEBUG',
-            'pytan.pollers.SSEPoller': 'DEBUG',
-        },
-        'Pytan handler logger show output at INFO or above, poller logs at DEBUG or above, and poller progress logs at INFO or above',
-    ),
-    (
-        3,
-        {
-            'pytan.handler': 'DEBUG',
-            'pytan.pollers.QuestionPoller.progress': 'DEBUG',
-            'pytan.pollers.ActionPoller.progress': 'DEBUG',
-            'pytan.pollers.SSEPoller.progress': 'DEBUG',
-            'pytan.pollers.QuestionPoller.resolver': 'INFO',
-            'pytan.pollers.ActionPoller.resolver': 'INFO',
-            'pytan.pollers.SSEPoller.resolver': 'INFO',
-        },
-        'Pytan handler logger show output at DEBUG or above, poller progress at DEBUG or above, and poller resolver at INFO or above',
-    ),
-    (
-        4,
-        {
-            'pytan.handler.ask_manual': 'DEBUG',
-            'pytan.pollers.QuestionPoller.resolver': 'DEBUG',
-            'pytan.pollers.ActionPoller.resolver': 'DEBUG',
-            'pytan.pollers.SSEPoller.resolver': 'DEBUG',
-        },
-        'Pytan ask manual logger show output at DEBUG or above and poller resolver at DEBUG or above',
-    ),
-    (
-        5,
-        {
-            'pytan.handler.ask_manual_human': 'DEBUG',
-        },
-        'Pytan ask manual human logger show output at DEBUG or above',
-    ),
-    (
-        6,
-        {
-            'pytan.handler.timing': 'DEBUG',
-            'XMLCleaner': 'DEBUG',
-        },
-        'Pytan timing and XMLCleaner loggers show output at DEBUG or above',
-    ),
-    (
-        7,
-        {
-            'pytan.sessions.Session': 'DEBUG',
-        },
-        'Taniumpy session loggers show output at DEBUG or above',
-    ),
-    (
-        8,
-        {
-            'pytan.sessions.Session.auth': 'DEBUG',
-        },
-        'PyTan session authentication loggers show output at DEBUG or above',
-    ),
-    (
-        9,
-        {
-            'pytan.sessions.Session.http': 'DEBUG',
-        },
-        'PyTan session http loggers show output at DEBUG or above',
-    ),
-    (
-        10,
-        {
-            'pytan.handler.prettybody': 'DEBUG',
-        },
-        'Pytan handler pretty XML body loggers show output at DEBUG or above',
-    ),
-    (
-        11,
-        {
-            'pytan.sessions.Session.http.body': 'DEBUG',
-        },
-        'PyTan session raw XML body loggers show output at DEBUG or above',
-    ),
-    (
-        12,
-        {
-            'requests': 'DEBUG',
-            'requests.packages.urllib3': 'DEBUG',
-            'requests.packages.urllib3.connectionpool': 'DEBUG',
-            'requests.packages.urllib3.poolmanager': 'DEBUG',
-            'requests.packages.urllib3.util.retry': 'DEBUG',
-        },
-        'Requests package show logging at DEBUG or above',
-    ),
+DEFAULT_LOGGER_LEVEL = "WARN"
+"""Set all pytan loggers in LOG_LEVEL_MAPS to this level before setting them to INFO or DEBUG"""
 
-]
-"""
-Map for loglevel(int) -> logger -> logger level(logging.INFO|WARN|DEBUG|...). Higher loglevels will include all levels up to and including that level. Contains a list of tuples, each tuple consisting of:
-    * int, loglevel
-    * dict, `{{logger_name: logger_level}}` for this loglevel
-    * str, description of this loglevel
-"""
+OVERRIDE_PYTAN_LEVEL = 30
+"""If loglevel supplied is >= to this level, then set ALL loggers (pytan or not) to DEBUG"""
 
 SENSOR_TYPE_MAP = {
     0: 'Hash',
@@ -288,7 +260,9 @@ Maps an object type from a human friendly string into various aspects:
     * multi: The :mod:`TaniumPy` object used to find multiple instances of this object type
     * all: The :mod:`TaniumPy` object used to find all instances of this object type
     * search: The list of attributes that can be used with the Tanium SOAP API for searches
-    * manual: Whether or not this object type is allowed to do a manual search, that is -- allow the user to specify an attribute that is not in search, which will get ALL objects of that type then search for a match based on attribute values for EVERY key/value pair supplied
+    * manual: Whether or not this object type is allowed to do a manual search, that is -- allow
+      the user to specify an attribute that is not in search, which will get ALL objects of that
+      type then search for a match based on attribute values for EVERY key/value pair supplied
     * delete: Whether or not this object type can be deleted
     * create_json: Whether or not this object type can be created by importing from JSON
 """
@@ -347,7 +321,8 @@ REQ_KWARGS = [
     'cache_filters',
 ]
 """
-A list of arguments that will be pulled from any respective kwargs for most calls to :class:`taniumpy.session.Session`
+A list of arguments that will be pulled from any respective kwargs for most calls to
+:class:`taniumpy.session.Session`
 """
 
 EXPORT_MAPS = {
@@ -418,10 +393,12 @@ EXPORT_MAPS = {
 
 }
 """
-Maps a given TaniumPy object to the list of supported export formats for each object type, and the valid optional arguments for each export format. Optional arguments construct:
+Maps a given TaniumPy object to the list of supported export formats for each object type, and the
+valid optional arguments for each export format. Optional arguments construct:
     * key: the optional argument name itself
     * valid_types: the valid python types that are allowed to be passed as a value to `key`
-    * valid_list_types: the valid python types in str format that are allowed to be passed in a list, if list is one of the `valid_types`
+    * valid_list_types: the valid python types in str format that are allowed to be passed in a
+      list, if list is one of the `valid_types`
 """
 
 TIME_FORMAT = '%Y-%m-%dT%H:%M:%S'
@@ -452,28 +429,9 @@ SSE_CRASH_MAP = ['6.5.314.4300']
 Mapping of versions to watch out for crashes/handle bugs for server side export
 """
 
-PYTAN_USER_CONFIG = "~/.pytan_config.json"
-"""
-Default path to file to use for Handler parameter overrides
-"""
-
 PYTAN_KEY = "mT1er@iUa1kP9pelSW"
 """
 Key used for obfuscation/de-obfsucation
-"""
-
-HANDLER_ARG_DEFAULTS = {
-    'username': None,
-    'password': None,
-    'session_id': None,
-    'host': None,
-    'port': 443,
-    'loglevel': 0,
-    'debugformat': False,
-    'gmt_log': False,
-}
-"""
-Map of handler arguments and their defaults
 """
 
 Q_COMPLETE_PCT_DEFAULT = 99

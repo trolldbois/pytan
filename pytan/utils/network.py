@@ -34,7 +34,7 @@ def port_check(address, port, timeout=5):
         return False
 
 
-def test_app_port(host, port):
+def test_app_port(host, port, **kwargs):
     """Validates that `host`:`port` can be reached using :func:`port_check`
 
     Parameters

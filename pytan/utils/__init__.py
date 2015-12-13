@@ -16,7 +16,9 @@ except ImportError:  # NullHandler not present in Python < 2.7
 
 
 # Set default logging handler to avoid "No handler found" warnings.
-logging.getLogger().addHandler(NullHandler())
+root_logger = logging.getLogger()
+if not root_logger.handlers:
+    root_logger.addHandler(NullHandler())
 
 from . import constants
 from . import exceptions

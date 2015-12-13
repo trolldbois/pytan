@@ -3,8 +3,6 @@
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
 """Server Side Export Poller for :mod:`pytan`"""
-
-import sys
 import logging
 import time
 from datetime import datetime
@@ -12,6 +10,10 @@ from datetime import timedelta
 
 from . import question
 from .. import utils
+
+mylog = logging.getLogger(__name__)
+progresslog = logging.getLogger(__name__ + ".progress")
+resolverlog = logging.getLogger(__name__ + ".resolver")
 
 
 class SSEPoller(question.QuestionPoller):
@@ -46,12 +48,10 @@ class SSEPoller(question.QuestionPoller):
 
     def __init__(self, handler, export_id, **kwargs):
         from ..handler import Handler as BaseHandler
-        self.methodlog = logging.getLogger("method_debug")
-        self.DEBUG_METHOD_LOCALS = kwargs.get('debug_method_locals', False)
 
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
-        self.setup_logging()
+        self.mylog = mylog
+        self.progresslog = progresslog
+        self.resolverlog = resolverlog
 
         if not isinstance(handler, BaseHandler):
             m = "{} is not a valid handler instance! Must be a: {!r}".format
@@ -67,10 +67,14 @@ class SSEPoller(question.QuestionPoller):
         self.sse_status = "Not yet run"
         self._post_init(**kwargs)
 
+    def setup_logging(self):
+        """Setup loggers for this object"""
+        self.mylog = mylog
+        self.progresslog = progresslog
+        self.resolverlog = resolverlog
+
     def _post_init(self, **kwargs):
         """Post init class setup"""
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         pass
 
     def get_sse_status(self, **kwargs):
@@ -78,8 +82,6 @@ class SSEPoller(question.QuestionPoller):
 
         Constructs a URL via: export/${export_id}.status and performs an authenticated HTTP get
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         clean_keys = ['url']
         clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
@@ -104,8 +106,6 @@ class SSEPoller(question.QuestionPoller):
 
         Constructs a URL via: export/${export_id}.gz and performs an authenticated HTTP get
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         clean_keys = ['url']
         clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
@@ -127,8 +127,6 @@ class SSEPoller(question.QuestionPoller):
 
     def run(self, **kwargs):
         """Poll for server side export status"""
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         self.start = datetime.utcnow()
 
         if self.timeout_secs:
@@ -143,8 +141,6 @@ class SSEPoller(question.QuestionPoller):
 
     def sse_status_has_completed_loop(self, **kwargs):
         """Method to poll the status file for a server side export until it contains 'Completed'"""
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         # loop counter
         self.loop_count = 1
         # establish a previous result_info that's empty

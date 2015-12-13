@@ -4,13 +4,17 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 """Action Poller for :mod:`pytan`"""
 
-import sys
+import logging
 import time
 from datetime import datetime
 from datetime import timedelta
 
 from . import question
 from .. import utils
+
+mylog = logging.getLogger(__name__)
+progresslog = logging.getLogger(__name__ + ".progress")
+resolverlog = logging.getLogger(__name__ + ".resolver")
 
 
 class ActionPoller(question.QuestionPoller):
@@ -56,10 +60,14 @@ class ActionPoller(question.QuestionPoller):
     EXPIRATION_ATTR = utils.constants.A_EXPIRATION_ATTR
     """attribute of self.obj that contains the expiration for this object"""
 
+    def setup_logging(self):
+        """Setup loggers for this object"""
+        self.mylog = mylog
+        self.progresslog = progresslog
+        self.resolverlog = resolverlog
+
     def _post_init(self, **kwargs):
         """Post init class setup"""
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         self.override_passed_count = kwargs.get('override_passed_count', 0)
         self._derive_package_spec(**kwargs)
         self._derive_target_group(**kwargs)
@@ -72,8 +80,6 @@ class ActionPoller(question.QuestionPoller):
 
     def _derive_status(self, **kwargs):
         """Get the status attribute for self.obj"""
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         clean_keys = ['attr', 'fallback']
         clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
@@ -83,8 +89,6 @@ class ActionPoller(question.QuestionPoller):
 
     def _derive_stopped_flag(self, **kwargs):
         """Get the stopped_flag attribute for self.obj"""
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         clean_keys = ['attr', 'fallback']
         clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
@@ -96,8 +100,6 @@ class ActionPoller(question.QuestionPoller):
 
     def _derive_package_spec(self, **kwargs):
         """Get the package_spec attribute for self.obj, then fetch the full package_spec object"""
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         clean_keys = ['attr', 'fallback', 'obj']
         clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
@@ -112,8 +114,6 @@ class ActionPoller(question.QuestionPoller):
 
     def _derive_target_group(self, **kwargs):
         """Get the target_group attribute for self.obj, then fetch the full group object"""
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         clean_keys = ['attr', 'fallback', 'obj']
         clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
@@ -139,8 +139,6 @@ class ActionPoller(question.QuestionPoller):
 
     def _fix_group(self, g, **kwargs):
         """Sets ID to null on a group object and all of it's sub_groups, needed for 6.5"""
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         g.id = None
         if g.sub_groups:
             for x in g.sub_groups:
@@ -148,8 +146,6 @@ class ActionPoller(question.QuestionPoller):
 
     def _derive_verify_enabled(self, **kwargs):
         """Determine if this action has verification enabled"""
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         self.verify_enabled = False
         package_spec = getattr(self, 'package_spec', None)
         ps_verify_group_id = getattr(package_spec, 'verify_group_id', None)
@@ -167,8 +163,6 @@ class ActionPoller(question.QuestionPoller):
 
         If verify_enable is True, then the various result states for an action change
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         if self.verify_enabled:
             finished = [
                 'Verified.', 'Succeeded.', 'Expired.', 'Stopped.', 'NotSucceeded.', 'Failed.',
@@ -213,8 +207,6 @@ class ActionPoller(question.QuestionPoller):
 
     def _derive_object_info(self, **kwargs):
         """Derive self.object_info from self.obj"""
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         m = "{}Package: '{}', Target: '{}', Verify: {}, Stopped: {}, Status: {}".format
 
         object_info = m(
@@ -251,8 +243,6 @@ class ActionPoller(question.QuestionPoller):
             * Polling will be stopped only when one of the callbacks calls the :func:`pytan.poller.QuestionPoller.stop` method or the answers are complete.
             * Any callbacks can call :func:`pytan.poller.QuestionPoller.setPercentCompleteThreshold` to change what "done" means on the fly
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         self.start = datetime.utcnow()
         self.expiration_timeout = utils.calc.timestr_to_datetime(timestr=self.expiration)
 
@@ -306,8 +296,6 @@ class ActionPoller(question.QuestionPoller):
         * seen_count is calculated from an aggregate GetResultData
         * self.passed_count is calculated by the question asked before this method is called. that question has no selects, but has a group that is the same group as the action for this object
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         # number of systems that have SEEN the action
         self.seen_count = None
         # current percentage tracker
@@ -456,8 +444,6 @@ class ActionPoller(question.QuestionPoller):
         * finished_count is calculated from a full GetResultData call that is parsed into self.action_result_map
         * self.passed_count is calculated by the question asked before this method is called. that question has no selects, but has a group that is the same group as the action for this object
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         # number of systems that have FINISHED the action
         self.finished_count = None
         # current percentage tracker
