@@ -27,6 +27,10 @@
 * ~~ Will store value as global in TSAT
 
 ## GEN
+* bring csv/json stuffs from taniumpy into handler
+* refetch all externals
+* rebuild taniumpy with latest wsdl
+* fix ALL PEP
 * fix sse
 * backport taniumpy changes
 * fix filename of datetime stamp in win
@@ -66,7 +70,6 @@
 * bundle workflow capture into handler?
 * fix build bin doc to run on windows (figure out later)
 * look into update object methods (UNKNOWN)
-* logfile support (MEDIUM)
 * email out (MEDIUM)
 * add caching (HUGE)
 * figure out cert based auth/plugin based auth? (HUGE)

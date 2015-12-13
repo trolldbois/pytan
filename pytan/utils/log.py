@@ -107,7 +107,7 @@ def uninstall_console(**kwargs):
     """Utility to remove a console log from python's logging module."""
     argmap = ["name"]
     remove_args = get_args("logconsole_", kwargs, argmap)
-    remove_handler(loghandler_name=remove_args['output'])
+    remove_handler(loghandler_name=remove_args['name'])
 
 
 def create_handler(handler, output, name, level, formatter, **kwargs):

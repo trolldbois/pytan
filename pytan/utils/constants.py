@@ -29,6 +29,7 @@ DEFAULTS = {
 }
 
 HANDLER_ARGS = {
+    # pytan.handler.Handler args:
     'username': str,
     'password': str,
     'session_id': str,
@@ -42,6 +43,7 @@ HANDLER_ARGS = {
     'logfile_output': str,
     'logfile_formatter': str,
     'config_file': str,
+    # pytan.session.Session args:
     'soap_request_headers': dict,
     'http_debug': bool,
     'http_auth_retry': bool,
@@ -256,6 +258,7 @@ GET_OBJ_MAP = {
 }
 """
 Maps an object type from a human friendly string into various aspects:
+
     * single: The :mod:`TaniumPy` object used to find singular instances of this object type
     * multi: The :mod:`TaniumPy` object used to find multiple instances of this object type
     * all: The :mod:`TaniumPy` object used to find all instances of this object type
@@ -283,46 +286,6 @@ Q_OBJ_MAP = {
 }
 """
 Maps a question type from a human friendly string into the handler method that supports each type
-"""
-
-REQ_KWARGS = [
-    'hide_errors_flag',
-    'include_answer_times_flag',
-    'row_counts_only_flag',
-    'aggregate_over_time_flag',
-    'most_recent_flag',
-    'include_hashes_flag',
-    'hide_no_results_flag',
-    'use_user_context_flag',
-    'script_data',
-    'return_lists_flag',
-    'return_cdata_flag',
-    'pct_done_limit',
-    'context_id',
-    'sample_frequency',
-    'sample_start',
-    'sample_count',
-    'suppress_scripts',
-    'suppress_object_list',
-    'row_start',
-    'row_count',
-    'sort_order',
-    'filter_string',
-    'filter_not_flag',
-    'recent_result_buckets',
-    'cache_id',
-    'cache_expiration',
-    'cache_sort_fields',
-    'include_user_details',
-    'include_hidden_flag',
-    'use_error_objects',
-    'use_json',
-    'json_pretty_print',
-    'cache_filters',
-]
-"""
-A list of arguments that will be pulled from any respective kwargs for most calls to
-:class:`taniumpy.session.Session`
 """
 
 EXPORT_MAPS = {
