@@ -267,24 +267,6 @@ Maps an object type from a human friendly string into various aspects:
     * create_json: Whether or not this object type can be created by importing from JSON
 """
 
-Q_OBJ_MAP = {
-    'saved': {
-        'handler': 'ask_saved',
-    },
-    'manual': {
-        'handler': 'ask_manual',
-    },
-    '_manual': {
-        'handler': '_ask_manual',
-    },
-    'parsed': {
-        'handler': 'ask_parsed',
-    },
-}
-"""
-Maps a question type from a human friendly string into the handler method that supports each type
-"""
-
 EXPORT_MAPS = {
     'ResultSet': {
         'csv': [
@@ -611,3 +593,18 @@ FIELD_TYPES = {
     'datasize': TMAP['DS'],
     'numericinteger': TMAP['NI'],
 }
+
+HELP_GET = "Use GetObject to find {} objects with cache filters to limit the results"
+HELP_SQ_GETQ = "Use GetObject to get the last question asked by a saved question"
+HELP_SQ_RD = (
+    "Use GetResultInfo on a saved question in order to issue a new question, "
+    "which refreshes the data for that saved question"
+)
+HELP_SQ_RESQ = (
+    "Use GetObject to re-fetch the saved question in order get the ID of the newly asked question"
+)
+
+HELP_PJ = "Use AddObject to add a ParseJob for question_text and get back ParseResultGroups"
+HELP_PJ_ADD = "Use AddObject to add the Question object from the chosen ParseResultGroup"
+HELP_GRD = "Use GetResultData to get answers for an object"
+HELP_GRD_SSE = "Issue a GetResultData to start a Server Side Export and get an export_id"

@@ -32,113 +32,136 @@ if __name__ == "__main__":
     result = worker.get_result()
     exec(worker.get_exec())
 
+from pytan.utils import taniumpy  # noqa
+from pytan.utils import constants  # noqa
+from pytan import utils  # noqa
+self = handler  # noqa
 
-# from pytan.utils import taniumpy
-# from pytan.utils import constants
-# from pytan import utils  # noqa
 
+def ask_manual(**kwargs):
+    """pass."""
 
-"""
+    """
+    sensors = kwargs.get('sensors', [])
+    filters = kwargs.get('filters', [])
+    options = kwargs.get('options', [])
+    sensor_specs = kwargs.get('sensor_specs', [])
+    filter_specs = kwargs.get('filter_specs', [])
+    option_specs = kwargs.get('option_specs', [])
 
-s1 = "Computer Name"
-s2 = "Action Statuses"
+    sensor_defs = utils.parsers.parse_sensors(sensors=sensors)
+    filter_defs = utils.parsers.parse_filters(filters=filters)
+    option_defs = utils.parsers.parse_options(options=options)
+    """
+    utils.helpers.check_for_help(kwargs=kwargs)
 
-result = get_sensors()
-assert(len(result) == 530)
+    clean_keys = [
+        'defs',
+        'd',
+        'obj',
+        'objtype',
+        'key',
+        'default',
+        'defname',
+        'deftypes',
+        'empty_ok',
+        'id',
+        'pytan_help',
+        'handler',
+        'sse',
+    ]
+    clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
-search = [{'value': s1, 'field': "name"}, {'value': s2, 'field': "name"}]
-result = get_sensors(search=search)
-assert(len(result) == 2)
+    # get our defs from kwargs and churn them into what we want
+    sensor_defs = utils.validate.defs_gen(
+        defname='sensor_defs',
+        deftypes=['list()', 'str()', 'dict()'],
+        strconv='name',
+        empty_ok=True,
+        **clean_kwargs
+    )
 
-search = s1
-result = get_sensors(search=search)
-assert(len(result) == 1)
+    filter_defs = utils.validate.defs_gen(
+        defname='filter_defs',
+        deftypes=['list()', 'dict()'],
+        empty_ok=True,
+        **clean_kwargs
+    )
 
-search = [s1, s2]
-result = get_sensors(search=search)
-assert(len(result) == 2)
+    option_defs = utils.validate.defs_gen(
+        defname='option_defs',
+        deftypes=['dict()'],
+        empty_ok=True,
+        **clean_kwargs
+    )
 
-search = {"value": s1}
-result = get_sensors(search=search)
-assert(len(result) == 1)
+    sse = kwargs.get('sse', False)
+    clean_kwargs['sse_format'] = clean_kwargs.get('sse_format', 'xml_obj')
 
-search = {"value": s1, "operator": "EQUALS"}
-result = get_sensors(search=search)
-assert(len(result) == 1)
+    max_age_seconds = utils.validate.get_kwargs_int(
+        key='max_age_seconds',
+        default=600,
+        **clean_kwargs
+    )
 
-search = {"value": s1, "operator": "EQUAL"}
-result = get_sensors(search=search)
-assert(len(result) == 1)
+    # do basic validation of our defs
+    utils.validate.defs_sensors(sensor_defs=sensor_defs)
+    utils.validate.defs_filters(filter_defs=filter_defs)
 
-search = {"value": "Name", "operator": "in"}
-result = get_sensors(search=search)
-assert(len(result) == 18)
+    # get the sensor objects that are in our defs and add them as d['sensor_obj']
+    h = (
+        "Issue a GetObject to get the full object of a sensor for inclusion in a "
+        "Select for a Question"
+    )
+    sensor_defs = self._get_sensor_defs(defs=sensor_defs, pytan_help=h, **clean_kwargs)
+    h = (
+        "Issue a GetObject to get the full object of a sensor for inclusion in a "
+        "Group for a Question"
+    )
+    filter_defs = self._get_sensor_defs(defs=filter_defs, pytan_help=h, **clean_kwargs)
 
-search = {"value": ".*Name.*", "operator": "re"}
-result = get_sensors(search=search)
-assert(len(result) == 18)
+    # build a SelectList object from our sensor_defs
+    selectlist_obj = utils.tanium_obj.build_selectlist_obj(sensor_defs=sensor_defs)
 
-search = 'x'
-result = get_sensors(search=search)
-assert(len(result) == 0)
+    # build a Group object from our question filters/options
+    group_obj = utils.tanium_obj.build_group_obj(
+        filter_defs=filter_defs, option_defs=option_defs,
+    )
 
-search = [['x']]
-try:
-    result = get_sensors(search=search)
-except Exception as e:
-    print "this should fail: ", e
+    # build a Question object from selectlist_obj and group_obj
+    add_obj = utils.tanium_obj.build_manual_q(selectlist_obj=selectlist_obj, group_obj=group_obj)
 
-search = {"dievalue": s1}
-try:
-    result = get_sensors(search=search)
-except Exception as e:
-    print "this should fail: ", e
+    add_obj.max_age_seconds = max_age_seconds
 
-search = {"value": s1, 'field': 'die'}
-try:
-    result = get_sensors(search=search)
-except Exception as e:
-    print "this should fail: ", e
+    # add our Question and get a Question ID back
+    h = "Issue an AddObject to add a Question object"
+    added_obj = self._add(obj=add_obj, pytan_help=h, **clean_kwargs)
 
-search = {"value": s1, "field": "name", "operator": "die"}
-try:
-    result = get_sensors(search=search)
-except Exception as e:
-    print "this should fail: ", e
+    m = "Question Added, ID: {}, query text: {!r}, expires: {}".format
+    self.mylog.debug(m(added_obj.id, added_obj.query_text, added_obj.expiration))
 
-search = {"value": s1, "field": "name", "not_flag": "die"}
-try:
-    result = get_sensors(search=search)
-except Exception as e:
-    print "this should fail: ", e
+    poller = self.pollers.QuestionPoller(handler=self, obj=added_obj, **clean_kwargs)
 
-search = {"value": s1, "field": "name", "field_type": "die"}
-try:
-    result = get_sensors(search=search)
-except Exception as e:
-    print "this should fail: ", e
+    ret = {
+        'question_object': added_obj,
+        'poller_object': poller,
+        'question_results': None,
+        'poller_success': None,
+    }
 
-search = {"value": True}
-try:
-    result = get_sensors(search=search)
-except Exception as e:
-    print "this should fail: ", e
+    if kwargs.get('get_results', True):
+        # poll the Question ID returned above to wait for results
+        ret['poller_success'] = ret['poller_object'].run(**clean_kwargs)
 
-result = get_actions()
-assert(len(result) == 6)
+        # get the results
+        if sse and self.session.platform_is_6_5(**clean_kwargs):
+            rd = self.get_result_data_sse(obj=added_obj, **clean_kwargs)
+        else:
+            rd = self.get_result_data(obj=added_obj, **clean_kwargs)
 
-result = get_actions(search='6')
-assert(len(result) == 1)
+        if isinstance(rd, utils.taniumpy.object_types.result_set.ResultSet):
+            # add the sensors from this question to the ResultSet object for reporting
+            rd.sensors = [x['sensor_obj'] for x in sensor_defs]
 
-result = get_actions(search='Distribute Application Management Tools')
-assert(len(result) == 2)
-
-result = get_packages()
-assert(len(result) == 50)
-
-result = get_packages(search='1')
-assert(len(result) == 1)
-
-result = get_packages(search=['Update Java 64-bit - Kill / Reboot', '2'])
-assert(len(result) == 2)
-"""
+        ret['question_results'] = rd
+    return ret

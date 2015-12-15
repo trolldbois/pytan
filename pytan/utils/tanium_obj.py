@@ -11,6 +11,11 @@ from .exceptions import ValidationError
 from .exceptions import PytanError
 from . import constants
 
+try:
+    import xml.etree.cElementTree as ET
+except:
+    import xml.etree.ElementTree as ET
+
 mylog = logging.getLogger(__name__)
 
 
@@ -833,3 +838,24 @@ def create_cf_obj(field, value, operator='Equal', field_type='String', not_flag=
     result.type = field_type
     result.not_flag = not_flag
     return result
+
+
+def xml_to_result_set_obj(x):
+    """Wraps a Result Set XML from a server side export in the appropriate tags and returns a ResultSet object
+
+    Parameters
+    ----------
+    x : str
+        * str of XML to convert to a ResultSet object
+
+    Returns
+    -------
+    rs : :class:`utils.taniumpy.object_types.result_set.ResultSet`
+        * x converted into a ResultSet object
+    """
+    rs_xml = '<result_sets><result_set>{}</result_set></result_sets>'.format
+    rs_xml = rs_xml(x)
+    rs_tree = ET.fromstring(rs_xml)
+    rs = taniumpy.ResultSet.fromSOAPElement(rs_tree)
+    rs._RAW_XML = rs_xml
+    return rs

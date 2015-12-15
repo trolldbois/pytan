@@ -26,9 +26,9 @@ def chk_type(v, types, src, k=''):
 
 def search_spec(**kwargs):
     """pass."""
-    me = __name__ + "search_spec()"
+    me = __name__ + ".search_spec()"
     search_spec = kwargs.get('search_spec')
-    chk_type(v=search_spec, types=(basestring, dict,), src=me)
+    chk_type(v=search_spec, types=(basestring, dict, int,), src=me)
 
     all_class = kwargs.get('all_class')
     single_class = tanium_obj.get_single_class(all_class)
@@ -37,7 +37,7 @@ def search_spec(**kwargs):
 
     # if search_spec is a string, assume it is a value
     # "Computer Name"
-    if isinstance(search_spec, (basestring,)):
+    if isinstance(search_spec, (basestring, int,)):
         result = {'value': search_spec}
     else:
         result = dict(search_spec)
@@ -49,7 +49,7 @@ def search_spec(**kwargs):
         err = err.format(me, search_spec)
         raise exceptions.PytanError(err)
 
-    chk_type(k='value', v=result['value'], types=(basestring,), src=me)
+    chk_type(k='value', v=result['value'], types=(basestring, int,), src=me)
 
     if 'field' not in result:
         # if field not specified, and it can be int'd, assume field is id
