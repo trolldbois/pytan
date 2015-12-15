@@ -204,9 +204,7 @@ class Session(object):
         # disable SSL cert verification for all requests made in this session
         self.REQUESTS_SESSION.verify = False
 
-        server = kwargs.get('server', '')
-        self.host = server or host
-        self.server = self.host
+        self.host = host
         self.port = port
         self._session_id = ''
         self._username = ''
@@ -242,6 +240,9 @@ class Session(object):
         self.server_version = "Not yet determined"
 
         self.force_server_version = kwargs.get('force_server_version', self.force_server_version)
+
+        # test our connectivity to the Tanium server
+        utils.network.test_app_port(self.host, self.port)
 
     def __str__(self):
         class_name = self.__class__.__name__

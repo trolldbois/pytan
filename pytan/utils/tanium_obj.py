@@ -806,3 +806,30 @@ def filter_sensors(sensors, filter_platforms=[], filter_categories=[]):
         new_sensors.append(x)
 
     return new_sensors
+
+
+def get_single_class(all_class):
+    """pass."""
+    single_class = all_class()._list_properties.values()[0]
+    return single_class
+
+
+def create_cf_listobj(search):
+    """pass."""
+    result = taniumpy.CacheFilterList()
+    if not isinstance(search, (list, tuple)):
+        search = [search]
+    for spec in search:
+        result.append(create_cf_obj(**spec))
+    return result
+
+
+def create_cf_obj(field, value, operator='Equal', field_type='String', not_flag=False, **kwargs):
+    """pass."""
+    result = taniumpy.CacheFilter()
+    result.field = field
+    result.value = value
+    result.operator = operator
+    result.type = field_type
+    result.not_flag = not_flag
+    return result

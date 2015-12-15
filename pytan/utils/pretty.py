@@ -4,13 +4,10 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 """Prettifying module for :mod:`pytan`"""
 
-import logging
 import json
 import io
 import csv
 from .external import xmltodict
-
-mylog = logging.getLogger(__name__)
 
 
 def jsonify(v, indent=2, sort_keys=True):
@@ -35,7 +32,7 @@ def jsonify(v, indent=2, sort_keys=True):
     return json.dumps(v, indent=indent, sort_keys=sort_keys)
 
 
-def log_session(h):
+def last_bodies(h):
     """Uses :func:`xml_pretty` to pretty print the last request and response bodies from the
     session object in h to the logging system
 
@@ -53,14 +50,11 @@ def log_session(h):
     except Exception as e:
         req = "Failed to prettify xml: {}, raw xml:\n{}".format(e, request_body)
 
-    mylog.debug("Last HTTP request:\n{}".format(req))
-
     try:
         resp = xml_pretty(response_body)
     except Exception as e:
         resp = "Failed to prettify xml: {}, raw xml:\n{}".format(e, response_body)
-
-    mylog.debug("Last HTTP response:\n{}".format(xml_pretty(resp)))
+    return req, resp
 
 
 def xml_pretty(x, pretty=True, indent='  ', **kwargs):

@@ -157,10 +157,6 @@ class Handler(object):
         utils.log.setup(**self.args_db['parsed_args'])
         self.log_args()
 
-        # test our connectivity to the Tanium server
-        # TODO: MOVE TO SESSION
-        utils.network.test_app_port(**self.args_db['parsed_args'])
-
         # establish our Session to the Tanium server
         self.session = session.Session(**self.args_db['parsed_args'])
 
@@ -2173,123 +2169,117 @@ class Handler(object):
         )
         return report_path, contents
 
-    def get(self, objtype, **kwargs):
-        """Get an object type
+    def get_sensors(self, **kwargs):
+        """pass."""
+        kwargs['all_class'] = utils.taniumpy.SensorList
+        result = self._get(**kwargs)
+        return result
 
-        Parameters
-        ----------
-        objtype : string
-            * type of object to get
-        id/name/hash : int or string, list of int or string
-            * search attributes of object to get, must supply at least one valid search attr
+    def get_packages(self, **kwargs):
+        """pass."""
+        kwargs['all_class'] = utils.taniumpy.PackageSpecList
+        result = self._get(**kwargs)
+        return result
 
-        Returns
-        -------
-        obj_list : :class:`utils.taniumpy.object_types.base.BaseType`
-            * The object list of items found for `objtype`
+    def get_actions(self, **kwargs):
+        """pass."""
+        kwargs['all_class'] = utils.taniumpy.ActionList
+        result = self._get(**kwargs)
+        return result
 
-        See Also
-        --------
-        :data:`utils.constants.GET_OBJ_MAP` : maps objtype to supported 'search' keys
-        :func:`pytan.handler.Handler._get_multi` : private method used to get multiple items
-        :func:`pytan.handler.Handler._get_single` : private method used to get singular items
+    def get_clients(self, **kwargs):
+        """pass."""
+        kwargs['all_class'] = utils.taniumpy.SystemStatusList
+        result = self._get(**kwargs)
+        return result
+
+    def get_groups(self, **kwargs):
+        """pass."""
+        kwargs['all_class'] = utils.taniumpy.GroupList
+        result = self._get(**kwargs)
+        return result
+
+    def get_questions(self, **kwargs):
+        """pass."""
+        kwargs['all_class'] = utils.taniumpy.QuestionList
+        result = self._get(**kwargs)
+        return result
+
+    def get_savedactions(self, **kwargs):
+        """pass."""
+        kwargs['all_class'] = utils.taniumpy.SavedActionList
+        result = self._get(**kwargs)
+        return result
+
+    def get_savedquestions(self, **kwargs):
+        """pass."""
+        kwargs['all_class'] = utils.taniumpy.SavedQuestionList
+        result = self._get(**kwargs)
+        return result
+
+    def get_settings(self, **kwargs):
+        """pass."""
+        kwargs['all_class'] = utils.taniumpy.SystemSettingList
+        result = self._get(**kwargs)
+        return result
+
+    def get_users(self, **kwargs):
+        """pass."""
+        kwargs['all_class'] = utils.taniumpy.UserList
+        result = self._get(**kwargs)
+        return result
+
+    def get_userroles(self, **kwargs):
+        """pass."""
+        kwargs['all_class'] = utils.taniumpy.UserRoleList
+        result = self._get(**kwargs)
+        return result
+
+    def get_whitelistedurls(self, **kwargs):
+        """pass."""
+        kwargs['all_class'] = utils.taniumpy.WhiteListedUrlList
+        result = self._get(**kwargs)
+        return result
+
+    def _get(self, **kwargs):
+        """pass.
+        all_class
+        search opt
         """
+        all_class = kwargs.get('all_class')
 
-        h = "Issue a GetObject to find an object"
-        kwargs['pytan_help'] = kwargs.get('pytan_help', h)
+        if all_class.__name__ in utils.constants.SINGLE_FIX:
+            kwargs['obj'] = utils.tanium_obj.get_single_class(all_class)()
+        else:
+            kwargs['obj'] = all_class()
 
-        clean_keys = ['obj', 'objtype', 'obj_map']
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        kwargs['include_hidden_flag'] = kwargs.get('include_hidden_flag', 0)
 
-        err_keys = ['pytan_help']
-        err_args = utils.validate.clean_kwargs(kwargs=kwargs, keys=err_keys)
+        if 'search' in kwargs:
+            result = self._find_filter(**kwargs)
+        else:
+            result = self.session.find(**kwargs)
+        return result
 
-        obj_map = utils.tanium_obj.get_obj_map(objtype=objtype)
-
-        manual_search = obj_map['manual']
-        api_attrs = obj_map['search']
-
-        api_kwattrs = [kwargs.get(x, '') for x in api_attrs]
-
-        # if the api doesn't support filtering for this object,
-        # or if the user didn't supply any api_kwattrs and manual_search
-        # is true, get all objects of this type and manually filter
-        if not api_attrs or (not any(api_kwattrs) and manual_search):
-            all_objs = self.get_all(objtype=objtype, **clean_kwargs)
-
-            return_objs = getattr(utils.taniumpy, all_objs.__class__.__name__)()
-
-            for k, v in kwargs.iteritems():
-                if not v:
-                    continue
-                if not hasattr(all_objs[0], k):
-                    continue
-                if not isinstance(v, (list, tuple)):
-                    v = [v]
-                for aobj in all_objs:
-                    aobj_val = getattr(aobj, k)
-                    aobj_val_str = str(aobj_val)
-                    if aobj_val not in v and aobj_val_str not in v:
-                        continue
-                    return_objs.append(aobj)
-
-            if not return_objs:
-                err = "No results found searching for {} with {}!!".format
-                raise utils.exceptions.PytanError(err(objtype, err_args))
-
-            return return_objs
-
-        # if api supports filtering for this object,
-        # but no filters supplied in kwargs, raise
-        if not any(api_kwattrs):
-            err = "Getting a {} requires at least one filter: {}".format
-            raise utils.exceptions.PytanError(err(objtype, api_attrs))
-
-        # if there is a multi in obj_map, that means we can pass a list
-        # type to the utils.taniumpy. the list will have an entry for each api_kw
-        if obj_map['multi']:
-            return self._get_multi(obj_map=obj_map, **clean_kwargs)
-
-        # if there is a single in obj_map but not multi, that means
-        # we have to find each object individually
-        elif obj_map['single']:
-            return self._get_single(obj_map=obj_map, **clean_kwargs)
-
-        err = "No single or multi search defined for {}".format
-        raise utils.exceptions.PytanError(err(objtype))
-
-    def get_all(self, objtype, **kwargs):
-        """Get all objects of a type
-
-        Parameters
-        ----------
-        objtype : string
-            * type of object to get
-
-        Returns
-        -------
-        obj_list : :class:`utils.taniumpy.object_types.base.BaseType`
-            * The object list of items found for `objtype`
-
-        See Also
-        --------
-        :data:`utils.constants.GET_OBJ_MAP` : maps objtype to supported 'search' keys
-        :func:`pytan.handler.Handler._find` : private method used to find items
+    def _find_filter(self, **kwargs):
+        """pass.
+        all_class
+        search
         """
+        search = kwargs.get('search')
+        all_class = kwargs.get('all_class')
+        result = all_class()
 
-        h = "Issue a GetObject to find an object"
-        kwargs['pytan_help'] = kwargs.get('pytan_help', h)
+        if not isinstance(search, (list, tuple)):
+            search = [search]
 
-        clean_keys = ['obj', 'objtype', 'obj_map']
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
-
-        obj_map = utils.tanium_obj.get_obj_map(objtype=objtype)
-
-        all_type = obj_map['all']
-        api_obj_all = utils.tanium_obj.get_taniumpy_obj(obj_map=all_type)()
-
-        found = self._find(obj=api_obj_all, **clean_kwargs)
-        return found
+        for search_spec in search:
+            parsed_spec = utils.parsers.search_spec(search_spec=search_spec, **kwargs)
+            cf_listobj = utils.tanium_obj.create_cf_listobj(search=[parsed_spec])
+            kwargs['cache_filters'] = cf_listobj
+            cf_result = self.session.find(**kwargs)
+            [result.append(r) for r in cf_result]
+        return result
 
     # BEGIN PRIVATE METHODS
     def _add(self, obj, **kwargs):
@@ -2339,181 +2329,6 @@ class Handler(object):
 
         self.mylog.debug("Added object {}".format(added_obj))
         return added_obj
-
-    def _find(self, obj, **kwargs):
-        """Wrapper for interfacing with :func:`utils.taniumpy.session.Session.find`
-
-        Parameters
-        ----------
-        obj : :class:`utils.taniumpy.object_types.base.BaseType`
-            * object to find
-
-        Returns
-        -------
-        found : :class:`utils.taniumpy.object_types.base.BaseType`
-           * full object that was found
-        """
-
-        try:
-            search_str = '; '.join([str(x) for x in obj])
-        except:
-            search_str = obj
-
-        self.mylog.debug("Searching for {}".format(search_str))
-
-        kwargs['suppress_object_list'] = kwargs.get('suppress_object_list', 1)
-
-        clean_keys = ['obj', 'objtype', 'obj_map']
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
-
-        h = "Issue a GetObject to find an object"
-        clean_kwargs['pytan_help'] = clean_kwargs.get('pytan_help', h)
-
-        try:
-            found = self.session.find(obj=obj, **clean_kwargs)
-        except Exception as e:
-            self.mylog.debug(e)
-            err = "No results found searching for {} (error: {})!!".format
-            raise utils.exceptions.PytanError(err(search_str, e))
-
-        if utils.tanium_obj.empty_obj(found):
-            err = "No results found searching for {}!!".format
-            raise utils.exceptions.PytanError(err(search_str))
-
-        self.mylog.debug("Found {}".format(found))
-        return found
-
-    def _get_multi(self, obj_map, **kwargs):
-        """Find multiple item wrapper using :func:`_find`
-
-        Parameters
-        ----------
-        obj_map : dict
-            * dict containing the map for a given object type
-
-        Returns
-        -------
-        found : :class:`utils.taniumpy.object_types.base.BaseType`
-           * full object that was found
-        """
-
-        api_attrs = obj_map['search']
-        api_kwattrs = [kwargs.get(x, '') for x in api_attrs]
-        api_kw = {k: v for k, v in zip(api_attrs, api_kwattrs)}
-
-        multi_type = obj_map['multi']
-        single_type = obj_map['single']
-
-        # create a list object to append our searches to
-        api_obj_multi = utils.tanium_obj.get_taniumpy_obj(obj_map=multi_type)()
-
-        for k, v in api_kw.iteritems():
-            if v and k not in obj_map['search']:
-                continue  # if we can't search for k, skip
-
-            if not v:
-                continue  # if v empty, skip
-
-            if isinstance(v, (list, tuple)):
-                for i in v:
-                    api_obj_single = utils.tanium_obj.get_taniumpy_obj(obj_map=single_type)()
-                    setattr(api_obj_single, k, i)
-                    api_obj_multi.append(api_obj_single)
-            else:
-                api_obj_single = utils.tanium_obj.get_taniumpy_obj(obj_map=single_type)()
-                setattr(api_obj_single, k, v)
-                api_obj_multi.append(api_obj_single)
-
-        clean_keys = ['obj']
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
-
-        # find the multi list object
-        found = self._find(obj=api_obj_multi, **clean_kwargs)
-        return found
-
-    def _get_single(self, obj_map, **kwargs):
-        """Find single item wrapper using :func:`_find`
-
-        Parameters
-        ----------
-        obj_map : dict
-            * dict containing the map for a given object type
-
-        Returns
-        -------
-        found : :class:`utils.taniumpy.object_types.base.BaseType`
-           * full object that was found
-        """
-
-        api_attrs = obj_map['search']
-        api_kwattrs = [kwargs.get(x, '') for x in api_attrs]
-        api_kw = {k: v for k, v in zip(api_attrs, api_kwattrs)}
-
-        # we create a list object to append our single item searches to
-        if obj_map.get('allfix', ''):
-            all_type = obj_map['allfix']
-        else:
-            all_type = obj_map['all']
-
-        found = utils.tanium_obj.get_taniumpy_obj(obj_map=all_type)()
-
-        clean_keys = ['obj_map', 'k', 'v']
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
-
-        for k, v in api_kw.iteritems():
-            if v and k not in obj_map['search']:
-                continue  # if we can't search for k, skip
-
-            if not v:
-                continue  # if v empty, skip
-
-            if isinstance(v, (list, tuple)):
-                for i in v:
-                    for x in self._single_find(obj_map=obj_map, k=k, v=i, **clean_kwargs):
-                        found.append(x)
-            else:
-                for x in self._single_find(obj_map=obj_map, k=k, v=v, **clean_kwargs):
-                    found.append(x)
-
-        return found
-
-    def _single_find(self, obj_map, k, v, **kwargs):
-        """Wrapper for single item searches interfacing with :func:`utils.taniumpy.session.Session.find`
-
-        Parameters
-        ----------
-        obj_map : dict
-            * dict containing the map for a given object type
-        k : str
-            * attribute name to set to `v`
-        v : str
-            * attribute value to set on `k`
-
-        Returns
-        -------
-        found : :class:`utils.taniumpy.object_types.base.BaseType`
-           * full object that was found
-        """
-
-        found = []
-
-        single_type = obj_map['single']
-        api_obj_single = utils.tanium_obj.get_taniumpy_obj(obj_map=single_type)()
-
-        setattr(api_obj_single, k, v)
-
-        clean_keys = ['obj']
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
-
-        obj_ret = self._find(obj=api_obj_single, **clean_kwargs)
-
-        if getattr(obj_ret, '_list_properties', ''):
-            for i in obj_ret:
-                found.append(i)
-        else:
-            found.append(obj_ret)
-
-        return found
 
     def _get_sensor_defs(self, defs, **kwargs):
         """Uses :func:`get` to update a definition with a sensor object

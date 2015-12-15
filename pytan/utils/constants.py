@@ -78,15 +78,12 @@ LOG_LEVEL_MAPS = {
     'pytan.pollers.action.resolver': 4,
     'pytan.pollers.question.resolver': 4,
     'pytan.pollers.sse.resolver': 4,
-    'pytan.utils.parsers.extractors': 5,
-    'pytan.utils.parsers.mappers': 5,
-    'pytan.utils.parsers.parsers': 5,
+    'pytan.utils.parsers': 0,
     'pytan.session': 6,
     'pytan.utils.network': 7,
     'pytan.session.http': 7,
     'pytan.session.auth': 8,
     'pytan.session.body': 9,
-    'pytan.utils.pretty': 9,
     'pytan.utils.xml_clean': 9,
     'pytan.utils.log': 10,
     'pytan.utils.external.requests': 11,
@@ -435,3 +432,182 @@ A_RUNNING_STATUSES = ["active", "open"]
 
 A_EXPIRATION_ATTR = 'expiration_time'
 """attribute of self.obj that contains the expiration for this object"""
+
+EMAP = {}
+EMAP['L'] = {}
+EMAP['L']['operator'] = 'Less'
+EMAP['L']['not_flag'] = 0
+EMAP['L']['help'] = "less than 'VALUE'"
+EMAP['NL'] = {}
+EMAP['NL']['operator'] = 'Less'
+EMAP['NL']['not_flag'] = 1
+EMAP['NL']['help'] = "not less than 'VALUE'"
+EMAP['LE'] = {}
+EMAP['LE']['operator'] = 'LessEqual'
+EMAP['LE']['not_flag'] = 0
+EMAP['LE']['help'] = "less than or equal to 'VALUE'"
+EMAP['NLE'] = {}
+EMAP['NLE']['operator'] = 'LessEqual'
+EMAP['NLE']['not_flag'] = 1
+EMAP['NLE']['help'] = "not less than or equal to 'VALUE'"
+EMAP['G'] = {}
+EMAP['G']['operator'] = 'Greater'
+EMAP['G']['not_flag'] = 0
+EMAP['G']['help'] = "greater than 'VALUE'"
+EMAP['NG'] = {}
+EMAP['NG']['operator'] = 'Greater'
+EMAP['NG']['not_flag'] = 1
+EMAP['NG']['help'] = "not greater than 'VALUE'"
+EMAP['GE'] = {}
+EMAP['GE']['operator'] = 'GreaterEqual'
+EMAP['GE']['not_flag'] = 0
+EMAP['GE']['help'] = "greater than or equal to 'VALUE'"
+EMAP['NGE'] = {}
+EMAP['NGE']['operator'] = 'GreaterEqual'
+EMAP['NGE']['not_flag'] = 1
+EMAP['NGE']['help'] = "not greater than or equal to 'VALUE'"
+EMAP['E'] = {}
+EMAP['E']['operator'] = 'Equal'
+EMAP['E']['not_flag'] = 0
+EMAP['E']['help'] = "equal to 'VALUE'"
+EMAP['NE'] = {}
+EMAP['NE']['operator'] = 'Equal'
+EMAP['NE']['not_flag'] = 1
+EMAP['NE']['help'] = "not equal to 'VALUE'"
+EMAP['C'] = {}
+EMAP['C']['operator'] = 'RegexMatch'
+EMAP['C']['not_flag'] = 0
+EMAP['C']['pre_value'] = '.*'
+EMAP['C']['post_value'] = '.*'
+EMAP['C']['help'] = "matches regex '.*VALUE.*'"
+EMAP['NC'] = {}
+EMAP['NC']['operator'] = 'RegexMatch'
+EMAP['NC']['not_flag'] = 1
+EMAP['NC']['pre_value'] = '.*'
+EMAP['NC']['post_value'] = '.*'
+EMAP['NC']['help'] = "does not match regex '.*VALUE.*'"
+EMAP['SW'] = {}
+EMAP['SW']['operator'] = 'RegexMatch'
+EMAP['SW']['not_flag'] = 0
+EMAP['SW']['pre_value'] = '.*'
+EMAP['SW']['help'] = "matches regex '.*VALUE'"
+EMAP['NSW'] = {}
+EMAP['NSW']['operator'] = 'RegexMatch'
+EMAP['NSW']['not_flag'] = 1
+EMAP['NSW']['pre_value'] = '.*'
+EMAP['NSW']['help'] = "does not match regex '.*VALUE'"
+EMAP['EW'] = {}
+EMAP['EW']['operator'] = 'RegexMatch'
+EMAP['EW']['not_flag'] = 0
+EMAP['EW']['pre_value'] = '.*'
+EMAP['EW']['help'] = "matches regex 'VALUE.*'"
+EMAP['NEW'] = {}
+EMAP['NEW']['operator'] = 'RegexMatch'
+EMAP['NEW']['not_flag'] = 1
+EMAP['NEW']['pre_value'] = '.*'
+EMAP['NEW']['help'] = "does not match regex 'VALUE.*'"
+EMAP['R'] = {}
+EMAP['R']['operator'] = 'RegexMatch'
+EMAP['R']['not_flag'] = 0
+EMAP['R']['help'] = "matches regex 'VALUE'"
+EMAP['NR'] = {}
+EMAP['NR']['operator'] = 'RegexMatch'
+EMAP['NR']['not_flag'] = 1
+EMAP['NR']['help'] = "does not match regex 'VALUE'"
+
+OPERATORS_EXTENDED = {
+    '<': EMAP['L'],
+    'less': EMAP['L'],
+    'l': EMAP['L'],
+    '!<': EMAP['NL'],
+    'not less': EMAP['NL'],
+    'notless': EMAP['NL'],
+    'nl': EMAP['NL'],
+    '<=': EMAP['LE'],
+    'less equal': EMAP['LE'],
+    'lessequal': EMAP['LE'],
+    'le': EMAP['LE'],
+    '!<=': EMAP['NLE'],
+    'not less equal': EMAP['NLE'],
+    'notlessequal': EMAP['NLE'],
+    'nle': EMAP['NLE'],
+    '>': EMAP['G'],
+    'greater': EMAP['G'],
+    'g': EMAP['G'],
+    '!>': EMAP['NG'],
+    'not greater': EMAP['NG'],
+    'notgreater': EMAP['NG'],
+    'ng': EMAP['NG'],
+    '=>': EMAP['GE'],
+    'greater equal': EMAP['GE'],
+    'greaterequal': EMAP['GE'],
+    'ge': EMAP['GE'],
+    '!=>': EMAP['NGE'],
+    'not greater equal': EMAP['NGE'],
+    'notgreaterequal': EMAP['NGE'],
+    'nge': EMAP['NGE'],
+    '=': EMAP['E'],
+    'equal': EMAP['E'],
+    'equals': EMAP['E'],
+    'eq': EMAP['E'],
+    'e': EMAP['E'],
+    '!=': EMAP['NE'],
+    'not equal': EMAP['NE'],
+    'notequal': EMAP['NE'],
+    'not equals': EMAP['NE'],
+    'notequals': EMAP['NE'],
+    'neq': EMAP['NE'],
+    'ne': EMAP['NE'],
+    "~=": EMAP['C'],
+    "contains": EMAP['C'],
+    "in": EMAP['C'],
+    "!~=": EMAP['NC'],
+    "not contains": EMAP['NC'],
+    "not in": EMAP['NC'],
+    "starts": EMAP['SW'],
+    "starts with": EMAP['SW'],
+    "sw": EMAP['NSW'],
+    "not starts": EMAP['NSW'],
+    "not starts with": EMAP['NSW'],
+    "nsw": EMAP['NSW'],
+    "ends": EMAP['EW'],
+    "ends with": EMAP['EW'],
+    "ew": EMAP['NEW'],
+    "not ends": EMAP['NEW'],
+    "not ends with": EMAP['NEW'],
+    "new": EMAP['NEW'],
+    "is": EMAP['R'],
+    "regex": EMAP['R'],
+    "regex match": EMAP['R'],
+    "re": EMAP['R'],
+    "is not": EMAP['NR'],
+    "not regex": EMAP['NR'],
+    "not regex match": EMAP['NR'],
+    "nre": EMAP['NR'],
+}
+
+OPERATORS = ['Equal', 'Greater', 'GreaterEqual', 'Less', 'LessEqual', 'RegexMatch']
+SINGLE_FIX = ['PackageSpecList']
+SPEC_FIELD_FALLBACKS = ['name', 'url_regx', 'id']
+
+TRUE_TYPES = [1, True, "1", "True"]
+FALSE_TYPES = [0, False, "0", "False"]
+
+TMAP = {}
+TMAP['S'] = {'t': 'String', 'h': 'standard lexicographical comparison (the default)'}
+TMAP['V'] = {'t': 'Version', 'h': 'version strings, e.g. 9.4.2 is less than 10.1.3'}
+TMAP['N'] = {'t': 'Numeric', 'h': 'numeric, decimal, floating point, and scientific notation'}
+TMAP['I'] = {'t': 'IPAddress', 'h': 'IP addresses'}
+TMAP['D'] = {'t': 'Date', 'h': 'a date in the format YYYY-MM-DD HH:MM:SS'}
+TMAP['DS'] = {'t': 'DataSize', 'h': 'data size, e.g. 125MB, 23K, 34.2 Gig (int + B|K|M|G|T)'}
+TMAP['NI'] = {'t': 'NumericInteger', 'h': 'be integer numeric values'}
+
+FIELD_TYPES = {
+    'string': TMAP['S'],
+    'version': TMAP['V'],
+    'numeric': TMAP['N'],
+    'ipaddress': TMAP['I'],
+    'date': TMAP['D'],
+    'datasize': TMAP['DS'],
+    'numericinteger': TMAP['NI'],
+}

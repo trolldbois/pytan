@@ -31,3 +31,114 @@ if __name__ == "__main__":
     handler = worker.get_handler()
     result = worker.get_result()
     exec(worker.get_exec())
+
+
+# from pytan.utils import taniumpy
+# from pytan.utils import constants
+# from pytan import utils  # noqa
+
+
+"""
+
+s1 = "Computer Name"
+s2 = "Action Statuses"
+
+result = get_sensors()
+assert(len(result) == 530)
+
+search = [{'value': s1, 'field': "name"}, {'value': s2, 'field': "name"}]
+result = get_sensors(search=search)
+assert(len(result) == 2)
+
+search = s1
+result = get_sensors(search=search)
+assert(len(result) == 1)
+
+search = [s1, s2]
+result = get_sensors(search=search)
+assert(len(result) == 2)
+
+search = {"value": s1}
+result = get_sensors(search=search)
+assert(len(result) == 1)
+
+search = {"value": s1, "operator": "EQUALS"}
+result = get_sensors(search=search)
+assert(len(result) == 1)
+
+search = {"value": s1, "operator": "EQUAL"}
+result = get_sensors(search=search)
+assert(len(result) == 1)
+
+search = {"value": "Name", "operator": "in"}
+result = get_sensors(search=search)
+assert(len(result) == 18)
+
+search = {"value": ".*Name.*", "operator": "re"}
+result = get_sensors(search=search)
+assert(len(result) == 18)
+
+search = 'x'
+result = get_sensors(search=search)
+assert(len(result) == 0)
+
+search = [['x']]
+try:
+    result = get_sensors(search=search)
+except Exception as e:
+    print "this should fail: ", e
+
+search = {"dievalue": s1}
+try:
+    result = get_sensors(search=search)
+except Exception as e:
+    print "this should fail: ", e
+
+search = {"value": s1, 'field': 'die'}
+try:
+    result = get_sensors(search=search)
+except Exception as e:
+    print "this should fail: ", e
+
+search = {"value": s1, "field": "name", "operator": "die"}
+try:
+    result = get_sensors(search=search)
+except Exception as e:
+    print "this should fail: ", e
+
+search = {"value": s1, "field": "name", "not_flag": "die"}
+try:
+    result = get_sensors(search=search)
+except Exception as e:
+    print "this should fail: ", e
+
+search = {"value": s1, "field": "name", "field_type": "die"}
+try:
+    result = get_sensors(search=search)
+except Exception as e:
+    print "this should fail: ", e
+
+search = {"value": True}
+try:
+    result = get_sensors(search=search)
+except Exception as e:
+    print "this should fail: ", e
+
+result = get_actions()
+assert(len(result) == 6)
+
+result = get_actions(search='6')
+assert(len(result) == 1)
+
+result = get_actions(search='Distribute Application Management Tools')
+assert(len(result) == 2)
+
+result = get_packages()
+assert(len(result) == 50)
+
+result = get_packages(search='1')
+assert(len(result) == 1)
+
+result = get_packages(search=['Update Java 64-bit - Kill / Reboot', '2'])
+assert(len(result) == 2)
+"""

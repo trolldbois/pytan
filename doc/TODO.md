@@ -28,13 +28,12 @@
 
 ## GEN
 * bring csv/json stuffs from taniumpy into handler
-* refetch all externals
 * rebuild taniumpy with latest wsdl
+* backport taniumpy changes
+* verify resultset len
 * fix ALL PEP
 * fix sse
-* backport taniumpy changes
 * fix filename of datetime stamp in win
-* bring new session scripts into build system
 * 2.1.7: ask_saved: 
   * add log for get_result_info in refresh_data path
   * add check to see if question for re-fetched sq is not different from old sq, if so throw warning. 
