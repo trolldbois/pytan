@@ -29,6 +29,7 @@ authlog = logging.getLogger(__name__ + ".auth")
 httplog = logging.getLogger(__name__ + ".http")
 bodylog = logging.getLogger(__name__ + ".body")
 statslog = logging.getLogger(__name__ + ".stats")
+helplog = logging.getLogger(__name__ + ".help")
 
 
 class Session(object):
@@ -193,6 +194,7 @@ class Session(object):
         self.httplog = httplog
         self.bodylog = bodylog
         self.statslog = statslog
+        self.helplog = helplog
 
         self.REQUESTS_SESSION = utils.requests.Session()
         """
@@ -1829,6 +1831,7 @@ class Session(object):
             'response_timeout', self.SOAP_RESPONSE_TIMEOUT_SEC
         )
         req_args['pytan_help'] = kwargs.get('pytan_help', '')
+        self.helplog.info(req_args['pytan_help'])
 
         if 'retry_count' in kwargs:
             req_args['retry_count'] = kwargs['retry_count']

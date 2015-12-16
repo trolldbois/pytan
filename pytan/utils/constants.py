@@ -79,6 +79,7 @@ LOG_LEVEL_MAPS = {
     'pytan.pollers.question.resolver': 4,
     'pytan.pollers.sse.resolver': 4,
     'pytan.utils.parsers': 0,
+    'pytan.session.help': 5,
     'pytan.session': 6,
     'pytan.utils.network': 7,
     'pytan.session.http': 7,
@@ -415,196 +416,201 @@ A_RUNNING_STATUSES = ["active", "open"]
 A_EXPIRATION_ATTR = 'expiration_time'
 """attribute of self.obj that contains the expiration for this object"""
 
-EMAP = {}
-EMAP['L'] = {}
-EMAP['L']['operator'] = 'Less'
-EMAP['L']['not_flag'] = 0
-EMAP['L']['help'] = "less than 'VALUE'"
-EMAP['NL'] = {}
-EMAP['NL']['operator'] = 'Less'
-EMAP['NL']['not_flag'] = 1
-EMAP['NL']['help'] = "not less than 'VALUE'"
-EMAP['LE'] = {}
-EMAP['LE']['operator'] = 'LessEqual'
-EMAP['LE']['not_flag'] = 0
-EMAP['LE']['help'] = "less than or equal to 'VALUE'"
-EMAP['NLE'] = {}
-EMAP['NLE']['operator'] = 'LessEqual'
-EMAP['NLE']['not_flag'] = 1
-EMAP['NLE']['help'] = "not less than or equal to 'VALUE'"
-EMAP['G'] = {}
-EMAP['G']['operator'] = 'Greater'
-EMAP['G']['not_flag'] = 0
-EMAP['G']['help'] = "greater than 'VALUE'"
-EMAP['NG'] = {}
-EMAP['NG']['operator'] = 'Greater'
-EMAP['NG']['not_flag'] = 1
-EMAP['NG']['help'] = "not greater than 'VALUE'"
-EMAP['GE'] = {}
-EMAP['GE']['operator'] = 'GreaterEqual'
-EMAP['GE']['not_flag'] = 0
-EMAP['GE']['help'] = "greater than or equal to 'VALUE'"
-EMAP['NGE'] = {}
-EMAP['NGE']['operator'] = 'GreaterEqual'
-EMAP['NGE']['not_flag'] = 1
-EMAP['NGE']['help'] = "not greater than or equal to 'VALUE'"
-EMAP['E'] = {}
-EMAP['E']['operator'] = 'Equal'
-EMAP['E']['not_flag'] = 0
-EMAP['E']['help'] = "equal to 'VALUE'"
-EMAP['NE'] = {}
-EMAP['NE']['operator'] = 'Equal'
-EMAP['NE']['not_flag'] = 1
-EMAP['NE']['help'] = "not equal to 'VALUE'"
-EMAP['C'] = {}
-EMAP['C']['operator'] = 'RegexMatch'
-EMAP['C']['not_flag'] = 0
-EMAP['C']['pre_value'] = '.*'
-EMAP['C']['post_value'] = '.*'
-EMAP['C']['help'] = "matches regex '.*VALUE.*'"
-EMAP['NC'] = {}
-EMAP['NC']['operator'] = 'RegexMatch'
-EMAP['NC']['not_flag'] = 1
-EMAP['NC']['pre_value'] = '.*'
-EMAP['NC']['post_value'] = '.*'
-EMAP['NC']['help'] = "does not match regex '.*VALUE.*'"
-EMAP['SW'] = {}
-EMAP['SW']['operator'] = 'RegexMatch'
-EMAP['SW']['not_flag'] = 0
-EMAP['SW']['pre_value'] = '.*'
-EMAP['SW']['help'] = "matches regex '.*VALUE'"
-EMAP['NSW'] = {}
-EMAP['NSW']['operator'] = 'RegexMatch'
-EMAP['NSW']['not_flag'] = 1
-EMAP['NSW']['pre_value'] = '.*'
-EMAP['NSW']['help'] = "does not match regex '.*VALUE'"
-EMAP['EW'] = {}
-EMAP['EW']['operator'] = 'RegexMatch'
-EMAP['EW']['not_flag'] = 0
-EMAP['EW']['pre_value'] = '.*'
-EMAP['EW']['help'] = "matches regex 'VALUE.*'"
-EMAP['NEW'] = {}
-EMAP['NEW']['operator'] = 'RegexMatch'
-EMAP['NEW']['not_flag'] = 1
-EMAP['NEW']['pre_value'] = '.*'
-EMAP['NEW']['help'] = "does not match regex 'VALUE.*'"
-EMAP['R'] = {}
-EMAP['R']['operator'] = 'RegexMatch'
-EMAP['R']['not_flag'] = 0
-EMAP['R']['help'] = "matches regex 'VALUE'"
-EMAP['NR'] = {}
-EMAP['NR']['operator'] = 'RegexMatch'
-EMAP['NR']['not_flag'] = 1
-EMAP['NR']['help'] = "does not match regex 'VALUE'"
-
-OPERATORS_EXTENDED = {
-    '<': EMAP['L'],
-    'less': EMAP['L'],
-    'l': EMAP['L'],
-    '!<': EMAP['NL'],
-    'not less': EMAP['NL'],
-    'notless': EMAP['NL'],
-    'nl': EMAP['NL'],
-    '<=': EMAP['LE'],
-    'less equal': EMAP['LE'],
-    'lessequal': EMAP['LE'],
-    'le': EMAP['LE'],
-    '!<=': EMAP['NLE'],
-    'not less equal': EMAP['NLE'],
-    'notlessequal': EMAP['NLE'],
-    'nle': EMAP['NLE'],
-    '>': EMAP['G'],
-    'greater': EMAP['G'],
-    'g': EMAP['G'],
-    '!>': EMAP['NG'],
-    'not greater': EMAP['NG'],
-    'notgreater': EMAP['NG'],
-    'ng': EMAP['NG'],
-    '=>': EMAP['GE'],
-    'greater equal': EMAP['GE'],
-    'greaterequal': EMAP['GE'],
-    'ge': EMAP['GE'],
-    '!=>': EMAP['NGE'],
-    'not greater equal': EMAP['NGE'],
-    'notgreaterequal': EMAP['NGE'],
-    'nge': EMAP['NGE'],
-    '=': EMAP['E'],
-    'equal': EMAP['E'],
-    'equals': EMAP['E'],
-    'eq': EMAP['E'],
-    'e': EMAP['E'],
-    '!=': EMAP['NE'],
-    'not equal': EMAP['NE'],
-    'notequal': EMAP['NE'],
-    'not equals': EMAP['NE'],
-    'notequals': EMAP['NE'],
-    'neq': EMAP['NE'],
-    'ne': EMAP['NE'],
-    "~=": EMAP['C'],
-    "contains": EMAP['C'],
-    "in": EMAP['C'],
-    "!~=": EMAP['NC'],
-    "not contains": EMAP['NC'],
-    "not in": EMAP['NC'],
-    "starts": EMAP['SW'],
-    "starts with": EMAP['SW'],
-    "sw": EMAP['NSW'],
-    "not starts": EMAP['NSW'],
-    "not starts with": EMAP['NSW'],
-    "nsw": EMAP['NSW'],
-    "ends": EMAP['EW'],
-    "ends with": EMAP['EW'],
-    "ew": EMAP['NEW'],
-    "not ends": EMAP['NEW'],
-    "not ends with": EMAP['NEW'],
-    "new": EMAP['NEW'],
-    "is": EMAP['R'],
-    "regex": EMAP['R'],
-    "regex match": EMAP['R'],
-    "re": EMAP['R'],
-    "is not": EMAP['NR'],
-    "not regex": EMAP['NR'],
-    "not regex match": EMAP['NR'],
-    "nre": EMAP['NR'],
+OPERATORS_PYTAN_MAPS = {
+    'L': {
+        'operator': 'Less',
+        'not_flag': 0,
+        'help': "less than 'VALUE'",
+    },
+    'NL': {
+        'operator': 'Less',
+        'not_flag': 1,
+        'help': "not less than 'VALUE'",
+    },
+    'LE': {
+        'operator': 'LessEqual',
+        'not_flag': 0,
+        'help': "less than or equal to 'VALUE'",
+    },
+    'NLE': {
+        'operator': 'LessEqual',
+        'not_flag': 1,
+        'help': "not less than or equal to 'VALUE'",
+    },
+    'G': {
+        'operator': 'Greater',
+        'not_flag': 0,
+        'help': "greater than 'VALUE'",
+    },
+    'NG': {
+        'operator': 'Greater',
+        'not_flag': 1,
+        'help': "not greater than 'VALUE'",
+    },
+    'GE': {
+        'operator': 'GreaterEqual',
+        'not_flag': 0,
+        'help': "greater than or equal to 'VALUE'",
+    },
+    'NGE': {
+        'operator': 'GreaterEqual',
+        'not_flag': 1,
+        'help': "not greater than or equal to 'VALUE'",
+    },
+    'E': {
+        'operator': 'Equal',
+        'not_flag': 0,
+        'help': "equal to 'VALUE'",
+    },
+    'NE': {
+        'operator': 'Equal',
+        'not_flag': 1,
+        'help': "not equal to 'VALUE'",
+    },
+    'C': {
+        'operator': 'RegexMatch',
+        'not_flag': 0,
+        'pre_value': '.*',
+        'post_value': '.*',
+        'help': "matches regex '.*VALUE.*'",
+    },
+    'NC': {
+        'operator': 'RegexMatch',
+        'not_flag': 1,
+        'pre_value': '.*',
+        'post_value': '.*',
+        'help': "does not match regex '.*VALUE.*'",
+    },
+    'SW': {
+        'operator': 'RegexMatch',
+        'not_flag': 0,
+        'pre_value': '.*',
+        'help': "matches regex '.*VALUE'",
+    },
+    'NSW': {
+        'operator': 'RegexMatch',
+        'not_flag': 1,
+        'pre_value': '.*',
+        'help': "does not match regex '.*VALUE'",
+    },
+    'EW': {
+        'operator': 'RegexMatch',
+        'not_flag': 0,
+        'pre_value': '.*',
+        'help': "matches regex 'VALUE.*'",
+    },
+    'NEW': {
+        'operator': 'RegexMatch',
+        'not_flag': 1,
+        'pre_value': '.*',
+        'help': "does not match regex 'VALUE.*'",
+    },
+    'R': {
+        'operator': 'RegexMatch',
+        'not_flag': 0,
+        'help': "matches regex 'VALUE'",
+    },
+    'NR': {
+        'operator': 'RegexMatch',
+        'not_flag': 1,
+        'help': "does not match regex 'VALUE'",
+    },
 }
 
-OPERATORS = ['Equal', 'Greater', 'GreaterEqual', 'Less', 'LessEqual', 'RegexMatch']
-SINGLE_FIX = ['PackageSpecList']
+OPERATORS_PYTAN = {
+    '<': OPERATORS_PYTAN_MAPS['L'],
+    'less': OPERATORS_PYTAN_MAPS['L'],
+    'l': OPERATORS_PYTAN_MAPS['L'],
+    '!<': OPERATORS_PYTAN_MAPS['NL'],
+    'not less': OPERATORS_PYTAN_MAPS['NL'],
+    'notless': OPERATORS_PYTAN_MAPS['NL'],
+    'nl': OPERATORS_PYTAN_MAPS['NL'],
+    '<=': OPERATORS_PYTAN_MAPS['LE'],
+    'less equal': OPERATORS_PYTAN_MAPS['LE'],
+    'lessequal': OPERATORS_PYTAN_MAPS['LE'],
+    'le': OPERATORS_PYTAN_MAPS['LE'],
+    '!<=': OPERATORS_PYTAN_MAPS['NLE'],
+    'not less equal': OPERATORS_PYTAN_MAPS['NLE'],
+    'notlessequal': OPERATORS_PYTAN_MAPS['NLE'],
+    'nle': OPERATORS_PYTAN_MAPS['NLE'],
+    '>': OPERATORS_PYTAN_MAPS['G'],
+    'greater': OPERATORS_PYTAN_MAPS['G'],
+    'g': OPERATORS_PYTAN_MAPS['G'],
+    '!>': OPERATORS_PYTAN_MAPS['NG'],
+    'not greater': OPERATORS_PYTAN_MAPS['NG'],
+    'notgreater': OPERATORS_PYTAN_MAPS['NG'],
+    'ng': OPERATORS_PYTAN_MAPS['NG'],
+    '=>': OPERATORS_PYTAN_MAPS['GE'],
+    'greater equal': OPERATORS_PYTAN_MAPS['GE'],
+    'greaterequal': OPERATORS_PYTAN_MAPS['GE'],
+    'ge': OPERATORS_PYTAN_MAPS['GE'],
+    '!=>': OPERATORS_PYTAN_MAPS['NGE'],
+    'not greater equal': OPERATORS_PYTAN_MAPS['NGE'],
+    'notgreaterequal': OPERATORS_PYTAN_MAPS['NGE'],
+    'nge': OPERATORS_PYTAN_MAPS['NGE'],
+    '=': OPERATORS_PYTAN_MAPS['E'],
+    'equal': OPERATORS_PYTAN_MAPS['E'],
+    'equals': OPERATORS_PYTAN_MAPS['E'],
+    'eq': OPERATORS_PYTAN_MAPS['E'],
+    'e': OPERATORS_PYTAN_MAPS['E'],
+    '!=': OPERATORS_PYTAN_MAPS['NE'],
+    'not equal': OPERATORS_PYTAN_MAPS['NE'],
+    'notequal': OPERATORS_PYTAN_MAPS['NE'],
+    'not equals': OPERATORS_PYTAN_MAPS['NE'],
+    'notequals': OPERATORS_PYTAN_MAPS['NE'],
+    'neq': OPERATORS_PYTAN_MAPS['NE'],
+    'ne': OPERATORS_PYTAN_MAPS['NE'],
+    "~=": OPERATORS_PYTAN_MAPS['C'],
+    "contains": OPERATORS_PYTAN_MAPS['C'],
+    "in": OPERATORS_PYTAN_MAPS['C'],
+    "!~=": OPERATORS_PYTAN_MAPS['NC'],
+    "not contains": OPERATORS_PYTAN_MAPS['NC'],
+    "not in": OPERATORS_PYTAN_MAPS['NC'],
+    "starts": OPERATORS_PYTAN_MAPS['SW'],
+    "starts with": OPERATORS_PYTAN_MAPS['SW'],
+    "sw": OPERATORS_PYTAN_MAPS['NSW'],
+    "not starts": OPERATORS_PYTAN_MAPS['NSW'],
+    "not starts with": OPERATORS_PYTAN_MAPS['NSW'],
+    "nsw": OPERATORS_PYTAN_MAPS['NSW'],
+    "ends": OPERATORS_PYTAN_MAPS['EW'],
+    "ends with": OPERATORS_PYTAN_MAPS['EW'],
+    "ew": OPERATORS_PYTAN_MAPS['NEW'],
+    "not ends": OPERATORS_PYTAN_MAPS['NEW'],
+    "not ends with": OPERATORS_PYTAN_MAPS['NEW'],
+    "new": OPERATORS_PYTAN_MAPS['NEW'],
+    "is": OPERATORS_PYTAN_MAPS['R'],
+    "regex": OPERATORS_PYTAN_MAPS['R'],
+    "regex match": OPERATORS_PYTAN_MAPS['R'],
+    "re": OPERATORS_PYTAN_MAPS['R'],
+    "is not": OPERATORS_PYTAN_MAPS['NR'],
+    "not regex": OPERATORS_PYTAN_MAPS['NR'],
+    "not regex match": OPERATORS_PYTAN_MAPS['NR'],
+    "nre": OPERATORS_PYTAN_MAPS['NR'],
+}
+
+OPERATORS_TANIUM = ['Equal', 'Greater', 'GreaterEqual', 'Less', 'LessEqual', 'RegexMatch']
+
 SPEC_FIELD_FALLBACKS = ['name', 'url_regx', 'id']
 
 TRUE_TYPES = [1, True, "1", "True"]
 FALSE_TYPES = [0, False, "0", "False"]
 
-TMAP = {}
-TMAP['S'] = {'t': 'String', 'h': 'standard lexicographical comparison (the default)'}
-TMAP['V'] = {'t': 'Version', 'h': 'version strings, e.g. 9.4.2 is less than 10.1.3'}
-TMAP['N'] = {'t': 'Numeric', 'h': 'numeric, decimal, floating point, and scientific notation'}
-TMAP['I'] = {'t': 'IPAddress', 'h': 'IP addresses'}
-TMAP['D'] = {'t': 'Date', 'h': 'a date in the format YYYY-MM-DD HH:MM:SS'}
-TMAP['DS'] = {'t': 'DataSize', 'h': 'data size, e.g. 125MB, 23K, 34.2 Gig (int + B|K|M|G|T)'}
-TMAP['NI'] = {'t': 'NumericInteger', 'h': 'be integer numeric values'}
-
-FIELD_TYPES = {
-    'string': TMAP['S'],
-    'version': TMAP['V'],
-    'numeric': TMAP['N'],
-    'ipaddress': TMAP['I'],
-    'date': TMAP['D'],
-    'datasize': TMAP['DS'],
-    'numericinteger': TMAP['NI'],
+FIELD_TYPES_MAP = {
+    'S': {'t': 'String', 'h': 'standard lexicographical comparison (the default)'},
+    'V': {'t': 'Version', 'h': 'version strings, e.g. 9.4.2 is less than 10.1.3'},
+    'N': {'t': 'Numeric', 'h': 'numeric, decimal, floating point, and scientific notation'},
+    'I': {'t': 'IPAddress', 'h': 'IP addresses'},
+    'D': {'t': 'Date', 'h': 'a date in the format YYYY-MM-DD HH:MM:SS'},
+    'DS': {'t': 'DataSize', 'h': 'data size, e.g. 125MB, 23K, 34.2 Gig (int + B|K|M|G|T)'},
+    'NI': {'t': 'NumericInteger', 'h': 'be integer numeric values'},
 }
 
-HELP_GET = "Use GetObject to find {} objects with cache filters to limit the results"
-HELP_SQ_GETQ = "Use GetObject to get the last question asked by a saved question"
-HELP_SQ_RD = (
-    "Use GetResultInfo on a saved question in order to issue a new question, "
-    "which refreshes the data for that saved question"
-)
-HELP_SQ_RESQ = (
-    "Use GetObject to re-fetch the saved question in order get the ID of the newly asked question"
-)
-
-HELP_PJ = "Use AddObject to add a ParseJob for question_text and get back ParseResultGroups"
-HELP_PJ_ADD = "Use AddObject to add the Question object from the chosen ParseResultGroup"
-HELP_GRD = "Use GetResultData to get answers for an object"
-HELP_GRD_SSE = "Issue a GetResultData to start a Server Side Export and get an export_id"
+FIELD_TYPES = {
+    'string': FIELD_TYPES_MAP['S'],
+    'version': FIELD_TYPES_MAP['V'],
+    'numeric': FIELD_TYPES_MAP['N'],
+    'ipaddress': FIELD_TYPES_MAP['I'],
+    'date': FIELD_TYPES_MAP['D'],
+    'datasize': FIELD_TYPES_MAP['DS'],
+    'numericinteger': FIELD_TYPES_MAP['NI'],
+}

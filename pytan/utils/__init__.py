@@ -24,6 +24,7 @@ from . import constants
 from . import exceptions
 from . import coder
 from . import helpers
+from . import helpstr
 from . import log
 from . import calc
 from . import network
@@ -43,6 +44,7 @@ __all__ = [
     'exceptions',
     'coder',
     'helpers',
+    'helpstr',
     'log',
     'calc',
     'network',
