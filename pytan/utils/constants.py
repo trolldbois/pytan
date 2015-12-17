@@ -78,7 +78,7 @@ LOG_LEVEL_MAPS = {
     'pytan.pollers.action.resolver': 4,
     'pytan.pollers.question.resolver': 4,
     'pytan.pollers.sse.resolver': 4,
-    'pytan.utils.parsers': 0,
+    'pytan.utils.parsers': 5,
     'pytan.session.help': 5,
     'pytan.session': 6,
     'pytan.utils.network': 7,

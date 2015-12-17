@@ -231,11 +231,11 @@ class GetObject(Spec):
         if self.original_spec != self.parsed_spec:
             m = "{} parsed from {!r} into {!r}"
             m = m.format(self.me, self.original_spec, self.parsed_spec)
-            mylog.debug(m)
+            mylog.info(m)
         else:
             m = "{} parsed without change {!r}"
             m = m.format(self.me, self.parsed_spec)
-            mylog.debug(m)
+            mylog.info(m)
 
 
 class FilterObject(Spec):
@@ -278,11 +278,11 @@ class FilterObject(Spec):
         if self.original_spec != self.parsed_spec:
             m = "{} parsed from {!r} into {!r}"
             m = m.format(self.me, self.original_spec, self.parsed_spec)
-            mylog.debug(m)
+            mylog.info(m)
         else:
             m = "{} parsed without change {!r}"
             m = m.format(self.me, self.parsed_spec)
-            mylog.debug(m)
+            mylog.info(m)
 
 
 class LeftSide(Spec):

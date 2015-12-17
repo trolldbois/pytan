@@ -18,3 +18,5 @@ ADDGET = "Issue a GetObject on the recently added {} object in order to get the 
 SAA = "Issue an AddObject to add a SavedActionApproval"
 STOPA = "Issue an AddObject to add a StopAction"
 STOPAR = "Re-issue a GetObject to ensure the actions stopped_flag is 1"
+AUTH = "Authenticate to the SOAP API via /auth"
+SERVINFO = "Get the server version via /info.json"

@@ -27,6 +27,7 @@
 * ~~ Will store value as global in TSAT
 
 ## GEN
+* i plan to extend that signature to add “domain” and “secondary” as part of my current pytan refactor, in order to support all 4 fields the /auth api supports
 * bring csv/json stuffs from taniumpy into handler
 * rebuild taniumpy with latest wsdl
 * backport taniumpy changes

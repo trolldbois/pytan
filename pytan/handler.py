@@ -141,7 +141,7 @@ class Handler(object):
 
         # obfuscate the password
         if puc_dict['password']:
-            puc_dict['password'] = utils.coder.vig_decode(
+            puc_dict['password'] = utils.tools.obfuscate(
                 key=utils.constants.PYTAN_KEY,
                 string=puc_dict['password'],
             )
@@ -170,8 +170,13 @@ class Handler(object):
         result = self.session.get_server_version(**kwargs)
         return result
 
-    def ask_manual(self, left=[], right=[], **kwargs):
+    def ask_manual(self, **kwargs):
         """pass."""
+        left = kwargs.get('left', [])
+        right = kwargs.get('right', [])
+        max_age_seconds = kwargs.get('max_age_seconds', 0)
+        get_results = kwargs.get('get_results', True)
+
         utils.helpers.check_for_help(kwargs)
 
         # parser = utils.parsers.LeftSide(left)
@@ -182,8 +187,8 @@ class Handler(object):
 
         kwargs['obj'] = utils.tanium_obj.create_question_obj(left=left, right=right)
 
-        if 'max_age_seconds' in kwargs:
-            kwargs['obj'].max_age_seconds = int(kwargs['max_age_seconds'])
+        if max_age_seconds:
+            kwargs['obj'].max_age_seconds = int(max_age_seconds)
 
         m = "Question Built: {}"
         m = m.format(kwargs['obj'].to_json(kwargs['obj']))
@@ -193,7 +198,7 @@ class Handler(object):
 
         m = "Question Added, ID: {0.id}, query text: {0.query_text!r}, expires: {0.expiration}"
         m = m.format(kwargs['obj'])
-        self.mylog.debug(m)
+        self.mylog.info(m)
 
         result = utils.store.Result()
         result.question_object = kwargs['obj']
@@ -201,7 +206,7 @@ class Handler(object):
         result.question_results = None
         result.poller_success = None
 
-        if kwargs.get('get_results', True):
+        if get_results:
             # poll the Question ID returned above to wait for results
             result.poller_success = result.poller_object.run(**kwargs)
 
@@ -237,10 +242,14 @@ class Handler(object):
             * ``poller_success`` : None if ``refresh`` == False, elsewise True or False
         """
         kwargs['specs'] = kwargs.get('specs', []) or list(args)
+        refresh = kwargs.get('refresh', False)
+        get_results = kwargs.get('get_results', True)
+
         if not kwargs['specs']:
             err = "Must supply arg 'specs' for identifying the saved question to ask"
             raise utils.exceptions.PytanError(err)
 
+        # create our Result() object for storing the results
         result = utils.store.Result()
         result.poller_object = None
         result.poller_success = None
@@ -254,7 +263,7 @@ class Handler(object):
         kwargs['obj'] = result['saved_question_object'].question
         result.question_object = self.session.find(**kwargs)
 
-        if kwargs.get('refresh', False):
+        if refresh:
             # if GetResultInfo is issued on a saved question, Tanium will issue a new question
             # to fetch new/updated results
             kwargs['pytan_help'] = utils.helpstr.SQ_RI
@@ -273,7 +282,7 @@ class Handler(object):
 
             m = "Question Added, ID: {0.id}, query text: {0.query_text!r}, expires: {0.expiration}"
             m = m.format(kwargs['obj'])
-            self.mylog.debug(m)
+            self.mylog.info(m)
 
             # setup a poller for the last question for this saved question
             poll_args = {}
@@ -282,7 +291,7 @@ class Handler(object):
             poll_args['handler'] = self
             result.poller_object = pollers.QuestionPoller(**poll_args)
 
-        if kwargs.get('get_results', True):
+        if get_results:
             # run the poller if one exists to wait for answers to complete
             if result.poller_object is not None:
                 result.poller_success = result.poller_object.run(**kwargs)
@@ -302,33 +311,37 @@ class Handler(object):
 
         Returns
         -------
-        parse_job_results : :class:`utils.taniumpy.object_types.parse_result_group.ParseResultGroup`
+        result : :class:`utils.taniumpy.object_types.parse_result_group.ParseResultGroup`
         """
         if not self.session.platform_is_6_5(**kwargs):
             m = "ParseJob not supported in version: {}"
             m = m.format(self.session.server_version)
             raise utils.exceptions.UnsupportedVersionError(m)
 
-        parse_job = utils.taniumpy.ParseJob()
-        parse_job.question_text = question_text
-        parse_job.parser_version = 2
+        obj = utils.taniumpy.ParseJob()
+        obj.question_text = question_text
+        obj.parser_version = 2
+
+        m = "ParseJob Built: {}"
+        m = m.format(obj.to_json(obj))
+        self.mylog.debug(m)
 
         pq_args = {}
         pq_args.update(kwargs)
-        pq_args['obj'] = parse_job
+        pq_args['obj'] = obj
 
-        parse_job_results = self.session.add(**pq_args)
-        return parse_job_results
+        result = self.session.add(**pq_args)
+        return result
 
-    def ask_parsed(self, question_text, picker=None, **kwargs):
+    def ask_parsed(self, question_text, **kwargs):
         """Ask a parsed question as `question_text` and use the index of the parsed results from `picker`
 
         Parameters
         ----------
         question_text : str
             * The question text you want the server to parse into a list of parsed results
-        picker : int
-            * default: None
+        picker : int, optional
+            * default: 0
             * The index number of the parsed results that correlates to the actual question you wish to run
         get_results : bool, optional
             * default: True
@@ -353,6 +366,9 @@ class Handler(object):
         Ask the server to parse 'computer name' and pick index 1 as the question you want to run:
             >>> v = handler.ask_parsed('computer name', picker=1)
         """
+        picker = kwargs.get('picker', 0)
+        get_results = kwargs.get('get_results', True)
+
         if not self.session.platform_is_6_5(**kwargs):
             m = "ParseJob not supported in version: {}"
             m = m.format(self.session.server_version)
@@ -374,7 +390,7 @@ class Handler(object):
             "responses -- re-run ask_parsed with picker set to one of these indexes!!"
         )
 
-        if picker is None:
+        if picker is 0:
             self.mylog.critical(pw)
             for idx, x in enumerate(parse_job_results):
                 self.mylog.critical(pi.format(idx + 1, x))
@@ -395,7 +411,7 @@ class Handler(object):
         kwargs['obj'] = picked_parse_job.question
 
         m = "Question Picked: {}"
-        m = m.format(kwargs['obj'])
+        m = m.format(kwargs['obj'].to_json(kwargs['obj']))
         self.mylog.debug(m)
 
         kwargs['pytan_help'] = utils.helpstr.PJ_ADD
@@ -403,7 +419,7 @@ class Handler(object):
 
         m = "Question Added, ID: {0.id}, query text: {0.query_text!r}, expires: {0.expiration}"
         m = m.format(kwargs['obj'])
-        self.mylog.debug(m)
+        self.mylog.info(m)
 
         result = utils.store.Result()
         result.parse_results = parse_job_results
@@ -416,7 +432,7 @@ class Handler(object):
         poll_args['handler'] = self
         result.poller_object = pollers.QuestionPoller(**poll_args)
 
-        if kwargs.get('get_results', True):
+        if get_results:
             # poll the Question ID returned above to wait for results
             result.poller_success = result.poller_object.run(**kwargs)
             result.question_results = self.get_result_data(**kwargs)
@@ -541,6 +557,7 @@ class Handler(object):
             * The object containing the return from SavedActionApproval
         """
         kwargs['specs'] = kwargs.get('specs', []) or list(args)
+
         if not kwargs['specs']:
             err = "Must supply arg 'specs' for identifying the saved action to approve"
             raise utils.exceptions.PytanError(err)
@@ -576,6 +593,7 @@ class Handler(object):
             The object containing the ID of the action stop job
         """
         kwargs['specs'] = kwargs.get('specs', []) or list(args)
+
         if not kwargs['specs']:
             err = "Must supply arg 'specs' for identifying the saved action to approve"
             raise utils.exceptions.PytanError(err)
@@ -676,18 +694,25 @@ class Handler(object):
         note #2 from jwk:
         To get the aggregate data (without computer names), set row_counts_only_flag = 1. To get the computer names, use row_counts_only_flag = 0 (default).
         """
+        shrink = kwargs.get('shrink', True)
+        aggregate = kwargs.get('aggregate', False)
+        sse = kwargs.get('sse', True)
+        export_flag = kwargs.get('export_flag', 0)
+        sse_format = kwargs.get('sse_format', 'xml_obj')
+        sse_leading = kwargs.get('sse_leading', '')
+        sse_trailing = kwargs.get('trailing', '')
+
         kwargs['suppress_object_list'] = kwargs.get('suppress_object_list', 1)
 
-        if kwargs.get('shrink', True):
+        if shrink:
             kwargs['obj'] = utils.tanium_obj.shrink_obj(obj=obj)
 
-        if kwargs.get('aggregate', False):
+        if aggregate:
             kwargs['row_counts_only_flag'] = 1
 
-        if kwargs.get('sse', True) or kwargs.get('export_flag', 0):
+        if sse or export_flag:
             self._check_sse_version()
             self._check_sse_crash_prevention(obj=obj)
-            sse_format = kwargs.get('sse_format', 'xml_obj')
 
             grd_args = {}
             grd_args.update(kwargs)
@@ -697,11 +722,11 @@ class Handler(object):
             # add the export_format to the kwargs for inclusion in options node
             grd_args['export_format'] = self._resolve_sse_format(sse_format)
             # add the export_leading_text to the kwargs for inclusion in options node
-            if kwargs.get('leading', ''):
-                grd_args['export_leading_text'] = kwargs.get('leading', '')
+            if sse_leading:
+                grd_args['export_leading_text'] = sse_leading
             # add the export_trailing_text to the kwargs for inclusion in options node
-            if kwargs.get('trailing', ''):
-                grd_args['export_trailing_text'] = kwargs.get('trailing', '')
+            if sse_trailing:
+                grd_args['export_trailing_text'] = sse_trailing
 
             # do a getresultdata to start the SSE and get
             export_id = self.session.get_result_data_sse(**grd_args)
@@ -753,9 +778,10 @@ class Handler(object):
         ri : :class:`utils.taniumpy.object_types.result_info.ResultInfo`
             * The return of GetResultInfo for `obj`
         """
+        shrink = kwargs.get('shrink', True)
         kwargs['suppress_object_list'] = kwargs.get('suppress_object_list', 1)
         kwargs['pytan_help'] = kwargs.get('pytan_help', utils.helpstr.GRI)
-        if kwargs.get('shrink', True):
+        if shrink:
             kwargs['obj'] = utils.tanium_obj.shrink_obj(obj=obj)
         ri = self.session.get_result_info(**kwargs)
         return ri
@@ -1729,18 +1755,19 @@ class Handler(object):
 
     def get_object(self, all_class, **kwargs):
         """pass."""
-        kwargs['all_class'] = all_class
-        # don't include hidden objects by default
-        kwargs['include_hidden_flag'] = kwargs.get('include_hidden_flag', 0)
+        limit = kwargs.get('limit', None)
+        hide_sourced_sensors = kwargs.get('hide_sourced_sensors', False)
         # get specs from kwargs or from args (assuming calling method put them in specs_from_args)
         kwargs['specs'] = kwargs.get('specs', []) or kwargs.get('specs_from_args', [])
+        # don't include hidden objects by default
+        kwargs['include_hidden_flag'] = kwargs.get('include_hidden_flag', 0)
+        kwargs['all_class'] = all_class
         kwargs['obj'] = self._fixit_single(**kwargs)
 
         use_filters = False
-        limit = kwargs.get('limit', None)
 
         # if specs or hide_sourced_sensors, build cache filters and find results
-        if kwargs['specs'] or kwargs.get('hide_sourced_sensors', False):
+        if kwargs['specs'] or hide_sourced_sensors:
             use_filters = True
 
         if use_filters:
@@ -1781,8 +1808,9 @@ class Handler(object):
     def _fixit_single(self, **kwargs):
         """pass."""
         # FIXIT_SINGLE: GetObject in list form fails, so we need to use the singular form
+        fixit = kwargs.get('FIXIT_SINGLE', False)
         result = kwargs['all_class']()
-        if kwargs.get('FIXIT_SINGLE', False):
+        if fixit:
             single_class = kwargs['all_class']()._list_properties.values()[0]
             result = single_class()
             m = "FIXIT_SINGLE: changed class from {} to {}"
@@ -1793,8 +1821,9 @@ class Handler(object):
     def _fixit_group_id(self, specs, **kwargs):
         """pass."""
         # FIXIT_GROUP_ID: unnamed groups have to be searched for manually, cache filters dont work
+        fixit = kwargs.get('FIXIT_GROUP_ID', False)
         result = kwargs['obj']
-        if kwargs.get('FIXIT_GROUP_ID', False):
+        if fixit:
             for spec in specs:
                 if spec['field'] == 'id':
                     result = utils.taniumpy.Group()
@@ -1806,8 +1835,9 @@ class Handler(object):
 
     def _fixit_broken_filter(self, result, specs, **kwargs):
         """pass."""
+        fixit = kwargs.get('FIXIT_BROKEN_FILTER', False)
         # FIXIT_BROKEN_FILTER: the API returns all objects even if using a cache filter
-        if kwargs.get('FIXIT_BROKEN_FILTER', False):
+        if fixit:
             # create a new result of the same class to store matching objects in
             m = "FIXIT_BROKEN_FILTER: Match {}: '{}' using specs: {}".format
             new_result = result.__class__()
@@ -1835,6 +1865,7 @@ class Handler(object):
         """pass."""
         limit = kwargs.get('limit', None)
         specs = kwargs.get('specs', [])
+
         # limit is not supplied
         if limit is None:
             return
@@ -1868,12 +1899,13 @@ class Handler(object):
 
     def _find_filter(self, all_class, specs, **kwargs):
         """pass."""
+        hide_sourced_sensors = kwargs.get('hide_sourced_sensors', False)
+
         # create a base instance of all_class which all results will be added to
         result = all_class()
 
         hide_spec = {'value': 0, 'field': 'source_id'}
 
-        hide_sourced_sensors = kwargs.get('hide_sourced_sensors', False)
         if hide_sourced_sensors and not specs:
             specs = hide_spec
 
@@ -1881,15 +1913,13 @@ class Handler(object):
             specs = [specs]
 
         all_parsed_specs = []
-        print specs
+
         for spec in specs:
             # TODO: AWAITING MANUAL PARSER
             # validate & parse a string into a spec
             # if not isinstance(spec, (dict,)):
             #     spec = utils.parsers.get_str(spec)
 
-            parsed_specs = []
-            print spec
             # validate & parse the specs
             if isinstance(spec, (list, tuple)):
                 parsed_specs = [utils.parsers.GetObject(all_class, x).parsed_spec for x in spec]
@@ -1940,6 +1970,8 @@ class Handler(object):
         added_obj : :class:`utils.taniumpy.object_types.base.BaseType`
            * full object that was added
         """
+        kwargs['suppress_object_list'] = kwargs.get('suppress_object_list', 1)
+
         try:
             search_str = '; '.join([str(x) for x in obj])
         except:
@@ -1949,7 +1981,6 @@ class Handler(object):
         m = m.format(search_str)
         self.mylog.debug(m)
 
-        kwargs['suppress_object_list'] = kwargs.get('suppress_object_list', 1)
         kwargs['pytan_help'] = utils.helpstr.ADD.format(obj.__class__.__name__)
         kwargs['obj'] = obj
 
@@ -2031,7 +2062,6 @@ class Handler(object):
         to the what_hash of each column, but only if header_add_sensor=True
         needed for: ResultSet.write_csv(header_add_sensor=True)
         """
-
         header_add_sensor = kwargs.get('header_add_sensor', False)
         sensors = kwargs.get('sensors', []) or getattr(obj, 'sensors', [])
 
@@ -2739,7 +2769,7 @@ class Handler(object):
             self.mylog.debug(m)
 
         if self.args_db['parsed_args']['password']:
-            self.args_db['parsed_args']['password'] = utils.coder.vig_decode(
+            self.args_db['parsed_args']['password'] = utils.tools.deobfuscate(
                 key=utils.constants.PYTAN_KEY,
                 string=self.args_db['parsed_args']['password'],
             )
@@ -2799,8 +2829,8 @@ class Handler(object):
         """pass."""
         m = "Argument {!r} supplied by {!r} type {!r}"
         for k, v in self.args_db['parsed_args'].iteritems():
-            m = m.format(k, self.args_db['parsed_args_source'][k], type(v).__name__)
-            self.mylog.debug(m)
+            mm = m.format(k, self.args_db['parsed_args_source'][k], type(v).__name__)
+            self.mylog.debug(mm)
 
     def _get_src_args(self, kwargs):
         """pass."""

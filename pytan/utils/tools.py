@@ -3,6 +3,7 @@ import glob
 import string
 import json
 import platform
+import base64
 from ..version import __version__
 from . import exceptions
 
@@ -90,3 +91,69 @@ def version_check(my_name, version):
     if not __version__ >= version:
         raise exceptions.VersionMismatchError(m(__version__, my_name, version))
     return True
+
+
+def obfuscate(key, string):
+    """Obfuscates a string with a key using Vigenere cipher.
+
+    Only useful for obfuscation, not real security!!
+
+    Parameters
+    ----------
+    key : str
+        * key to scrambled string with
+    string : str
+        * string to scramble with key
+
+    Returns
+    -------
+    encoded_string : str
+        * encoded string
+    """
+    string = str(string)
+    encoded_chars = []
+    for i in xrange(len(string)):
+        key_c = key[i % len(key)]
+        encoded_c = chr(ord(string[i]) + ord(key_c) % 256)
+        encoded_chars.append(encoded_c)
+    v_string = "".join(encoded_chars)
+    encoded_string = base64.urlsafe_b64encode(v_string)
+    encoded_string = '::{}::'.format(encoded_string)
+    return encoded_string
+
+
+def deobfuscate(key, string):
+    """De-obfuscates a string with a key using Vigenere cipher.
+
+    Only useful for obfuscation, not real security!!
+
+    Notes
+    -----
+    This will only work with strings that have been encoded with obfuscate(). "normal" strings will be returned as-is.
+
+    Parameters
+    ----------
+    key : str
+        * key that string is scrambled with
+    string : str
+        * string to unscramble with key
+
+    Returns
+    -------
+    decoded_string : str
+        * decoded string
+    """
+    if string.startswith('::') and string.endswith('::'):
+        string = str(string[2:-2])
+    else:
+        return string
+
+    v_string = base64.urlsafe_b64decode(string)
+
+    decoded_chars = []
+    for i in xrange(len(v_string)):
+        key_c = key[i % len(key)]
+        encoded_c = chr(abs(ord(v_string[i]) - ord(key_c) % 256))
+        decoded_chars.append(encoded_c)
+    decoded_string = "".join(decoded_chars)
+    return decoded_string

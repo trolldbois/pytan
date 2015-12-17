@@ -6,5 +6,5 @@ class Worker(base.Base):
     INTERACTIVE = True
 
     def get_exec(self):
-        s = 'from pytan.utils.debug import *'
+        s = 'from pytan.utils.pretty import *'
         return s

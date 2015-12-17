@@ -7,9 +7,7 @@ import argparse
 import pprint
 from argparse import ArgumentDefaultsHelpFormatter as A1 # noqa
 from argparse import RawDescriptionHelpFormatter as A2 # noqa
-from ..utils import files
-from ..utils import constants
-from ..utils import tanium_obj
+from .. import utils
 
 
 class CustomArgFormat(A1, A2):
@@ -63,9 +61,9 @@ class Base(object):
     def __init__(self, **kwargs):
         from .. import handler
         self.handler_module = handler
-        self.tanium_obj = tanium_obj
-        self.constants = constants
-        self.files = files
+        self.tanium_obj = utils.tanium_obj
+        self.constants = utils.constants
+        self.utils = utils
         self.CustomArgFormat = CustomArgFormat
         self.CustomArgParse = CustomArgParse
         self.SUPPRESS = argparse.SUPPRESS
@@ -529,7 +527,7 @@ class Base(object):
         return report_file, report_result
 
     def version_check(self, version):
-        return files.version_check(self.my_name, version)
+        return utils.tools.version_check(self.my_name, version)
 
     def interactive_check(self):
         self.console = None
