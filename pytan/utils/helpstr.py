@@ -1,7 +1,7 @@
 GETF = "Use GetObject to find {} objects with cache filters to limit the results"
 GET = "Use GetObject to find all {} objects"
 SQ_GETQ = "Use GetObject to get the last question asked by a saved question"
-SQ_RD = (
+SQ_RI = (
     "Use GetResultInfo on a saved question in order to issue a new question, "
     "which refreshes the data for that saved question"
 )
@@ -15,3 +15,6 @@ GRD_SSE = "Issue a GetResultData to start a Server Side Export and get an export
 GRI = "Issue a GetResultData to get answers for a question"
 ADD = "Issue an AddObject to add a {} object"
 ADDGET = "Issue a GetObject on the recently added {} object in order to get the full object"
+SAA = "Issue an AddObject to add a SavedActionApproval"
+STOPA = "Issue an AddObject to add a StopAction"
+STOPAR = "Re-issue a GetObject to ensure the actions stopped_flag is 1"

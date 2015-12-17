@@ -215,35 +215,6 @@ def chk_def_key(def_dict, key, keytypes, keysubtypes=None, req=False):
         raise ValidationError(err(key, keytypes, keysubtypes, subtypes))
 
 
-def get_kwargs_int(key, default=None, **kwargs):
-    """Gets key from kwargs and validates it is an int
-
-    Parameters
-    ----------
-    key : str
-        * key to get from kwargs
-    default : int, optional
-        * default value to use if key not found in kwargs
-    kwargs : dict
-        * kwargs to get key from
-
-    Returns
-    -------
-    val : int
-        value from key, or default if supplied
-    """
-
-    val = kwargs.get(key, default)
-    if val is None:
-        return val
-    try:
-        val = int(val)
-    except ValueError:
-        err = "'{}' must be an int, you supplied: {}"
-        raise ValidationError(err(key, val))
-    return val
-
-
 def check_dictkey(d, key, valid_types, valid_list_types):
     """Yet another method to check a dictionary for a key
 

@@ -34,6 +34,7 @@ from . import parsers
 from . import validate
 from . import debug
 from . import files
+from . import store
 from .external import taniumpy
 from .external import xmltodict
 from .external import requests
@@ -58,4 +59,5 @@ __all__ = [
     'validate',
     'debug',
     'files',
+    'store',
 ]

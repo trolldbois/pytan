@@ -18,7 +18,7 @@ mylog = logging.getLogger(__name__)
 
 
 class Handler(object):
-    """Creates a connection to a Tanium SOAP Server on host:port
+    """Creates a connection to a Tanium SOAP Server on host:port.
 
     Parameters
     ----------
@@ -48,77 +48,6 @@ class Handler(object):
     pytan_user_config : str, optional
         * default: utils.constants.PYTAN_USER_CONFIG
         * JSON file containing key/value pairs to override class variables
-
-    Other Parameters
-    ----------------
-    http_debug : bool, optional
-        * default: False
-        * False: do not print requests package debug
-        * True: do print requests package debug
-        * This is passed through to :class:`session.Sessions`
-    http_auth_retry: bool, optional
-        * default: True
-        * True: retry HTTP GET/POST's
-        * False: do not retry HTTP GET/POST's
-        * This is passed through to :class:`session.Sessions`
-    http_retry_count: int, optional
-        * default: 5
-        * number of times to retry HTTP GET/POST's if the connection times out/fails
-        * This is passed through to :class:`session.Sessions`
-    soap_request_headers : dict, optional
-        * default: {'Content-Type': 'text/xml; charset=utf-8', 'Accept-Encoding': 'gzip'}
-        * dictionary of headers to add to every HTTP GET/POST
-        * This is passed through to :class:`session.Sessions`
-    auth_connect_timeout_sec : int, optional
-        * default: 5
-        * number of seconds before timing out for a connection while authenticating
-        * This is passed through to :class:`session.Sessions`
-    auth_response_timeout_sec : int, optional
-        * default: 15
-        * number of seconds before timing out for a response while authenticating
-        * This is passed through to :class:`session.Sessions`
-    info_connect_timeout_sec : int, optional
-        * default: 5
-        * number of seconds before timing out for a connection while getting /info.json
-        * This is passed through to :class:`session.Sessions`
-    info_response_timeout_sec : int, optional
-        * default: 15
-        * number of seconds before timing out for a response while getting /info.json
-        * This is passed through to :class:`session.Sessions`
-    soap_connect_timeout_sec : int, optional
-        * default: 15
-        * number of seconds before timing out for a connection for a SOAP request
-        * This is passed through to :class:`session.Sessions`
-    soap_response_timeout_sec : int, optional
-        * default: 540
-        * number of seconds before timing out for a response for a SOAP request
-        * This is passed through to :class:`session.Sessions`
-    stats_loop_enabled : bool, optional
-        * default: False
-        * False: do not enable the statistics loop thread
-        * True: enable the statistics loop thread
-        * This is passed through to :class:`session.Sessions`
-    stats_loop_sleep_sec : int, optional
-        * default: 5
-        * number of seconds to sleep in between printing the statistics when stats_loop_enabled is True
-        * This is passed through to :class:`session.Sessions`
-    record_all_requests: bool, optional
-        * default: False
-        * False: do not add each requests response object to session.ALL_REQUESTS_RESPONSES
-        * True: add each requests response object to session.ALL_REQUESTS_RESPONSES
-        * This is passed through to :class:`session.Sessions`
-    stats_loop_targets : list of dict, optional
-        * default: [{'Version': 'Settings/Version'}, {'Active Questions': 'Active Question Cache/Active Question Estimate'}, {'Clients': 'Active Question Cache/Active Client Estimate'}, {'Strings': 'String Cache/Total String Count'}, {'Handles': 'System Performance Info/HandleCount'}, {'Processes': 'System Performance Info/ProcessCount'}, {'Memory Available': 'percentage(System Performance Info/PhysicalAvailable,System Performance Info/PhysicalTotal)'}]
-        * list of dictionaries with the key being the section of info.json to print info from, and the value being the item with in that section to print the value
-        * This is passed through to :class:`session.Sessions`
-    persistent: bool, optional
-        * default: False
-        * False: do not request a persistent session
-        * True: do request a persistent
-        * This is passed through to :func:`session.Sessions.authenticate`
-    force_server_version: str, optional
-        * default: ''
-        * use this to override the server_version detection
 
     Notes
     -----
@@ -196,17 +125,17 @@ class Handler(object):
 
         Parameters
         ----------
-        new_config : str, optional
+        config_file : str, optional
             * default: self.pytan_user_config
             * JSON file to wite with current class variables
 
         Returns
         -------
-        puc : str
+        result : str
             * filename of PyTan User Config that was written to
         """
-        puc = kwargs.get('new_config', '') or self.args_db['parsed_args']['config_file']
-        puc = os.path.expanduser(puc)
+        result = kwargs.get('config_file', '') or self.args_db['parsed_args']['config_file']
+        result = os.path.expanduser(result)
 
         puc_dict = dict(self.args_db['parsed_args'])
 
@@ -218,36 +147,32 @@ class Handler(object):
             )
 
         try:
-            with open(puc, 'w+') as fh:
+            with open(result, 'w+') as fh:
                 json.dump(puc_dict, fh, skipkeys=True, indent=2)
         except Exception as e:
             err = "Failed to write PyTan User config: '{}', exception: {}"
-            err = err.format(puc, e)
+            err = err.format(result, e)
             raise utils.exceptions.PytanError(err)
         else:
             m = "PyTan User config file successfully written: {} "
-            m = m.format(puc)
+            m = m.format(result)
             self.mylog.info(m)
-        return puc
+        return result
 
     def get_server_version(self, **kwargs):
         """Uses :func:`session.Session.get_server_version` to get the version of the Tanium Server
 
         Returns
         -------
-        server_version: str
+        result: str
             * Version of Tanium Server in string format
         """
+        result = self.session.get_server_version(**kwargs)
+        return result
 
-        server_version = self.session.get_server_version(**kwargs)
-        return server_version
-
-    def ask_manual(self, **kwargs):
+    def ask_manual(self, left=[], right=[], **kwargs):
         """pass."""
-        utils.helpers.check_for_help(kwargs=kwargs)
-        left = kwargs.get('left', [])
-        right = kwargs.get('right', [])
-        # max_age_seconds = utils.validate.get_kwargs_int(key='max_age_seconds', default=600, **kwargs)
+        utils.helpers.check_for_help(kwargs)
 
         # parser = utils.parsers.LeftSide(left)
         # print parser.parsed_specs
@@ -256,7 +181,9 @@ class Handler(object):
         right = self._get_spec_objects(right)
 
         kwargs['obj'] = utils.tanium_obj.create_question_obj(left=left, right=right)
-        # kwargs['obj'].max_age_seconds = max_age_seconds
+
+        if 'max_age_seconds' in kwargs:
+            kwargs['obj'].max_age_seconds = int(kwargs['max_age_seconds'])
 
         m = "Question Built: {}"
         m = m.format(kwargs['obj'].to_json(kwargs['obj']))
@@ -268,21 +195,21 @@ class Handler(object):
         m = m.format(kwargs['obj'])
         self.mylog.debug(m)
 
-        ret = {
-            'question_object': kwargs['obj'],
-            'poller_object': pollers.QuestionPoller(handler=self, **kwargs),
-            'question_results': None,
-            'poller_success': None,
-        }
+        result = utils.store.Result()
+        result.question_object = kwargs['obj']
+        result.poller_object = pollers.QuestionPoller(handler=self, **kwargs)
+        result.question_results = None
+        result.poller_success = None
 
         if kwargs.get('get_results', True):
             # poll the Question ID returned above to wait for results
-            ret['poller_success'] = ret['poller_object'].run(**kwargs)
-            kwargs['sse_format'] = kwargs.get('sse_format', 'xml_obj')
-            ret['question_results'] = self.get_result_data(**kwargs)
-        return ret
+            result.poller_success = result.poller_object.run(**kwargs)
 
-    def ask_saved(self, **kwargs):
+            # get the answers for this question
+            result.question_results = self.get_result_data(**kwargs)
+        return result
+
+    def ask_saved(self, *args, **kwargs):
         """Ask a saved question and get the results back
 
         Parameters
@@ -293,125 +220,77 @@ class Handler(object):
             * name of saved question
         refresh: bool, optional
             * default False
-            * False: do not perform a getResultInfo before issuing a getResultData
-            * True: perform a getResultInfo before issuing a getResultData
-        sse : bool, optional
-            * default: False
-            * True: perform a server side export when getting result data
-            * False: perform a normal get result data (default for 6.2)
-            * Keeping False by default for now until the columnset's are properly identified in the server export
-        sse_format : str, optional
-            * default: 'xml_obj'
-            * format to have server side export report in, one of: {'csv', 'xml', 'xml_obj', 'cef', 0, 1, 2}
-        leading : str, optional
-            * default: ''
-            * used for sse_format 'cef' only, the string to prepend to each row
-        trailing : str, optional
-            * default: ''
-            * used for sse_format 'cef' only, the string to append to each row
-        polling_secs : int, optional
-            * default: 5
-            * Number of seconds to wait in between GetResultInfo loops
-            * This is passed through to :class:`QuestionPoller`
-        complete_pct : int/float, optional
-            * default: 99
-            * Percentage of mr_tested out of estimated_total to consider the question "done"
-            * This is passed through to :class:`QuestionPoller`
-        override_timeout_secs : int, optional
-            * default: 0
-            * If supplied and not 0, timeout in seconds instead of when object expires
-            * This is passed through to :class:`QuestionPoller`
-        callbacks : dict, optional
-            * default: {}
-            * can be a dict of functions to be run with the key names being the various state changes: 'ProgressChanged', 'AnswersChanged', 'AnswersComplete'
-            * This is passed through to :func:`QuestionPoller.run`
-        override_estimated_total : int, optional
-            * instead of getting number of systems that should see this question from result_info.estimated_total, use this number
-            * This is passed through to :func:`QuestionPoller`
-        force_passed_done_count : int, optional
-            * when this number of systems have passed the right hand side of the question, consider the question complete
-            * This is passed through to :func:`QuestionPoller`
+            * False: Get the answers that are currently available for this saved question
+            * True: Ask a new question to gather new answers for this saved question
+        get_results : bool, optional
+            * default: True
+            * True: wait for result completion after asking question
+            * False: just ask the question and return it in `ret`
 
         Returns
         -------
-        ret : dict, containing
+        result : dict, containing
             * `question_object` : :class:`utils.taniumpy.object_types.saved_question.SavedQuestion`, the saved question object
             * `question_object` : :class:`utils.taniumpy.object_types.question.Question`, the question asked by `saved_question_object`
-            * `question_results` : :class:`utils.taniumpy.object_types.result_set.ResultSet`, the results for `question_object`
-            * `poller_object` : None if `refresh` == False, elsewise :class:`QuestionPoller`, poller object used to wait until all results are in before getting `question_results`,
-            * `poller_success` : None if `refresh` == False, elsewise True or False
-
-        Notes
-        -----
-        id or name must be supplied
+            * ``question_results`` : :class:`utils.taniumpy.object_types.result_set.ResultSet`, the results for `question_object`
+            * ``poller_object`` : None if `refresh` == False, elsewise :class:`QuestionPoller`, poller object used to wait until all results are in before getting `question_results`,
+            * ``poller_success`` : None if ``refresh`` == False, elsewise True or False
         """
-        specs = kwargs.get('specs', [])
-        if not specs:
+        kwargs['specs'] = kwargs.get('specs', []) or list(args)
+        if not kwargs['specs']:
             err = "Must supply arg 'specs' for identifying the saved question to ask"
             raise utils.exceptions.PytanError(err)
 
+        result = utils.store.Result()
+        result.poller_object = None
+        result.poller_success = None
+        result.question_results = None
+
         # get the saved_question object the user passed in
-        sq_obj = self.get_saved_questions(limit=1, **kwargs)
+        result.saved_question_object = self.get_saved_questions(limit=1, **kwargs)
 
-        find_args = {}
-        find_args.update(kwargs)
-        find_args['pytan_help'] = utils.helpstr.SQ_GETQ
-        find_args['obj'] = sq_obj.question
-        q_obj = self.session.find(**find_args)
+        # get the last asked question for this saved question
+        kwargs['pytan_help'] = utils.helpstr.SQ_GETQ
+        kwargs['obj'] = result['saved_question_object'].question
+        result.question_object = self.session.find(**kwargs)
 
-        poller = None
-
-        refresh = kwargs.get('refresh', False)
-        if refresh:
+        if kwargs.get('refresh', False):
             # if GetResultInfo is issued on a saved question, Tanium will issue a new question
             # to fetch new/updated results
-            gri_args = {}
-            gri_args.update(kwargs)
-            gri_args['pytan_help'] = utils.helpstr.SQ_RD
-            gri_args['obj'] = sq_obj
-            self.get_result_info(**gri_args)
+            kwargs['pytan_help'] = utils.helpstr.SQ_RI
+            kwargs['obj'] = result.saved_question_object
+            self.get_result_info(**kwargs)
 
             # re-fetch the saved question object to get the newly asked question info
-            find_args = {}
-            find_args.update(kwargs)
-            find_args['pytan_help'] = utils.helpstr.SQ_RESQ
-            find_args['obj'] = utils.tanium_obj.shrink_obj(obj=sq_obj)
-            sq_obj = self.session.find(**find_args)
+            kwargs['pytan_help'] = utils.helpstr.SQ_RESQ
+            kwargs['obj'] = utils.tanium_obj.shrink_obj(obj=result.saved_question_object)
+            result.saved_question_object = self.session.find(**kwargs)
 
-            find_args = {}
-            find_args.update(kwargs)
-            find_args['pytan_help'] = utils.helpstr.SQ_GETQ
-            find_args['obj'] = sq_obj.question
-            q_obj = self.session.find(**find_args)
+            # get the last asked question for this saved question
+            kwargs['pytan_help'] = utils.helpstr.SQ_GETQ
+            kwargs['obj'] = result.saved_question_object.question
+            result.question_object = self.session.find(**kwargs)
 
-            m = "Question Added, ID: {}, query text: {!r}, expires: {}"
-            m = m.format(q_obj.id, q_obj.query_text, q_obj.expiration)
+            m = "Question Added, ID: {0.id}, query text: {0.query_text!r}, expires: {0.expiration}"
+            m = m.format(kwargs['obj'])
             self.mylog.debug(m)
 
-            # poll the new question for this saved question to wait for results
+            # setup a poller for the last question for this saved question
             poll_args = {}
             poll_args.update(kwargs)
-            poll_args['obj'] = q_obj
+            poll_args['obj'] = result.question_object
             poll_args['handler'] = self
-            poller = pollers.QuestionPoller(**poll_args)
-
-        ret = {
-            'saved_question_object': sq_obj,
-            'poller_object': poller,
-            'poller_success': None,
-            'question_object': q_obj,
-            'question_results': None,
-        }
+            result.poller_object = pollers.QuestionPoller(**poll_args)
 
         if kwargs.get('get_results', True):
-            if ret['poller_object']:
-                ret['poller_success'] = ret['poller_object'].run(**kwargs)
-            grd_args = {}
-            grd_args.update(kwargs)
-            grd_args['obj'] = q_obj
-            grd_args['sse_format'] = kwargs.get('sse_format', 'xml_obj')
-            ret['question_results'] = self.get_result_data(**grd_args)
-        return ret
+            # run the poller if one exists to wait for answers to complete
+            if result.poller_object is not None:
+                result.poller_success = result.poller_object.run(**kwargs)
+
+            # get the answers for the last asked question for this saved question
+            kwargs['obj'] = result.question_object
+            result.question_results = self.get_result_data(**kwargs)
+        return result
 
     def parse_query(self, question_text, **kwargs):
         """Ask a parsed question as `question_text` and get a list of parsed results back
@@ -455,46 +334,10 @@ class Handler(object):
             * default: True
             * True: wait for result completion after asking question
             * False: just ask the question and return it in `ret`
-        sse : bool, optional
-            * default: False
-            * True: perform a server side export when getting result data
-            * False: perform a normal get result data (default for 6.2)
-            * Keeping False by default for now until the columnset's are properly identified in the server export
-        sse_format : str, optional
-            * default: 'xml_obj'
-            * format to have server side export report in, one of: {'csv', 'xml', 'xml_obj', 'cef', 0, 1, 2}
-        leading : str, optional
-            * default: ''
-            * used for sse_format 'cef' only, the string to prepend to each row
-        trailing : str, optional
-            * default: ''
-            * used for sse_format 'cef' only, the string to append to each row
-        polling_secs : int, optional
-            * default: 5
-            * Number of seconds to wait in between GetResultInfo loops
-            * This is passed through to :class:`QuestionPoller`
-        complete_pct : int/float, optional
-            * default: 99
-            * Percentage of mr_tested out of estimated_total to consider the question "done"
-            * This is passed through to :class:`QuestionPoller`
-        override_timeout_secs : int, optional
-            * default: 0
-            * If supplied and not 0, timeout in seconds instead of when object expires
-            * This is passed through to :class:`QuestionPoller`
-        callbacks : dict, optional
-            * default: {}
-            * can be a dict of functions to be run with the key names being the various state changes: 'ProgressChanged', 'AnswersChanged', 'AnswersComplete'
-            * This is passed through to :func:`QuestionPoller.run`
-        override_estimated_total : int, optional
-            * instead of getting number of systems that should see this question from result_info.estimated_total, use this number
-            * This is passed through to :func:`QuestionPoller`
-        force_passed_done_count : int, optional
-            * when this number of systems have passed the right hand side of the question, consider the question complete
-            * This is passed through to :func:`QuestionPoller`
 
         Returns
         -------
-        ret : dict, containing:
+        result : dict, containing:
             * `question_object` : :class:`utils.taniumpy.object_types.question.Question`, the actual question added by PyTan
             * `question_results` : :class:`utils.taniumpy.object_types.result_set.ResultSet`, the Result Set for `question_object` if `get_results` == True
             * `poller_object` : :class:`QuestionPoller`, poller object used to wait until all results are in before getting `question_results`
@@ -548,45 +391,36 @@ class Handler(object):
                 self.mylog.critical(pi.format(idx + 1, x))
             raise utils.exceptions.PickerError(pw)
 
-        add_obj = picked_parse_job.question
-
         # add our Question and get a Question ID back
-        add_args = {}
-        add_args.update(kwargs)
-        add_args['obj'] = add_obj
-        add_args['pytan_help'] = utils.helpstr.PJ_ADD
-        q_obj = self._add(**add_args)
+        kwargs['obj'] = picked_parse_job.question
 
-        m = "Question Added, ID: {}, query text: {!r}, expires: {}"
-        m = m.format(q_obj.id, q_obj.query_text, q_obj.expiration)
+        m = "Question Picked: {}"
+        m = m.format(kwargs['obj'])
         self.mylog.debug(m)
+
+        kwargs['pytan_help'] = utils.helpstr.PJ_ADD
+        kwargs['obj'] = self._add(**kwargs)
+
+        m = "Question Added, ID: {0.id}, query text: {0.query_text!r}, expires: {0.expiration}"
+        m = m.format(kwargs['obj'])
+        self.mylog.debug(m)
+
+        result = utils.store.Result()
+        result.parse_results = parse_job_results
+        result.question_object = kwargs['obj']
+        result.question_results = None
+        result.poller_success = None
 
         poll_args = {}
         poll_args.update(kwargs)
         poll_args['handler'] = self
-        poll_args['obj'] = q_obj
-        poller = pollers.QuestionPoller(**poll_args)
+        result.poller_object = pollers.QuestionPoller(**poll_args)
 
-        ret = {
-            'question_object': q_obj,
-            'poller_object': poller,
-            'question_results': None,
-            'poller_success': None,
-            'parse_results': parse_job_results,
-        }
-
-        get_results = kwargs.get('get_results', True)
-        if get_results:
+        if kwargs.get('get_results', True):
             # poll the Question ID returned above to wait for results
-            ret['poller_success'] = ret['poller_object'].run(**kwargs)
-
-            grd_args = {}
-            grd_args.update(kwargs)
-            grd_args['obj'] = q_obj
-            grd_args['sse_format'] = kwargs.get('sse_format', 'xml_obj')
-            ret['question_results'] = self.get_result_data(**grd_args)
-
-        return ret
+            result.poller_success = result.poller_object.run(**kwargs)
+            result.question_results = self.get_result_data(**kwargs)
+        return result
 
     # Actions
     def deploy_action(self, **kwargs):
@@ -631,21 +465,6 @@ class Handler(object):
         action_comment : str, optional
             * default:
             * custom comment for action
-        polling_secs : int, optional
-            * default: 5
-            * Number of seconds to wait in between GetResultInfo loops
-            * This is passed through to :class:`pytan.pollers.ActionPoller`
-        complete_pct : int/float, optional
-            * default: 100
-            * Percentage of passed_count out of successfully run actions to consider the action "done"
-            * This is passed through to :class:`pytan.pollers.ActionPoller`
-        override_timeout_secs : int, optional
-            * default: 0
-            * If supplied and not 0, timeout in seconds instead of when object expires
-            * This is passed through to :class:`pytan.pollers.ActionPoller`
-        override_passed_count : int, optional
-            * instead of getting number of systems that should run this action by asking a question, use this number
-            * This is passed through to :class:`pytan.pollers.ActionPoller`
 
         Returns
         -------
@@ -708,7 +527,7 @@ class Handler(object):
         )
         return deploy_result
 
-    def approve_saved_action(self, id, **kwargs):
+    def approve_saved_action(self, *args, **kwargs):
         """Approve a saved action
 
         Parameters
@@ -718,30 +537,32 @@ class Handler(object):
 
         Returns
         -------
-        saved_action_approve_obj : :class:`utils.taniumpy.object_types.saved_action_approval.SavedActionApproval`
+        result : :class:`utils.taniumpy.object_types.saved_action_approval.SavedActionApproval`
             * The object containing the return from SavedActionApproval
         """
+        kwargs['specs'] = kwargs.get('specs', []) or list(args)
+        if not kwargs['specs']:
+            err = "Must supply arg 'specs' for identifying the saved action to approve"
+            raise utils.exceptions.PytanError(err)
 
-        clean_keys = ['pytan_help', 'objtype', 'id', 'obj']
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        # get the saved_question object the user passed in
+        sa_obj = self.get_saved_actions(limit=1, **kwargs)
 
-        h = "Issue a GetObject to find saved action objects"
-        saved_action_obj = self.get(objtype='saved_action', id=id, pytan_help=h, **clean_kwargs)[0]
-
-        add_sap_obj = utils.taniumpy.SavedActionApproval()
-        add_sap_obj.id = saved_action_obj.id
-        add_sap_obj.approved_flag = 1
+        result = utils.taniumpy.SavedActionApproval()
+        result.id = sa_obj.id
+        result.approved_flag = 1
 
         # we dont want to re-fetch the object, so use sessions add instead of handlers add
-        h = "Issue an AddObject to add a SavedActionApproval"
-        sap_obj = self.session.add(obj=add_sap_obj, pytan_help=h, **clean_kwargs)
+        kwargs['pytan_help'] = utils.helpstr.SAA
+        kwargs['obj'] = result
+        result = self.session.add(**kwargs)
 
-        m = 'Action approved successfully, ID of saved action : {}'.format
-        self.mylog.debug(m(sap_obj.id))
+        m = 'Action approved successfully: {}'
+        m = m.format(result)
+        self.mylog.debug(m)
+        return result
 
-        return sap_obj
-
-    def stop_action(self, id, **kwargs):
+    def stop_action(self, *args, **kwargs):
         """Stop an action
 
         Parameters
@@ -754,32 +575,34 @@ class Handler(object):
         action_stop_obj : :class:`utils.taniumpy.object_types.action_stop.ActionStop`
             The object containing the ID of the action stop job
         """
+        kwargs['specs'] = kwargs.get('specs', []) or list(args)
+        if not kwargs['specs']:
+            err = "Must supply arg 'specs' for identifying the saved action to approve"
+            raise utils.exceptions.PytanError(err)
 
-        clean_keys = ['pytan_help', 'objtype', 'id', 'obj']
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        # get the action object the user passed in
+        a_obj_before = self.get_actions(limit=1, **kwargs)
 
-        h = "Issue a GetObject to find the action object we want to stop"
-        action_obj = self.get(objtype='action', id=id, pytan_help=h, **clean_kwargs)[0]
+        result = utils.taniumpy.ActionStop()
+        result.action = a_obj_before
 
-        add_action_stop_obj = utils.taniumpy.ActionStop()
-        add_action_stop_obj.action = action_obj
+        kwargs['pytan_help'] = utils.helpstr.STOPA
+        kwargs['obj'] = result
+        result = self.session.add(**kwargs)
 
-        h = "Issue an AddObject to add a StopAction"
-        action_stop_obj = self.session.add(obj=add_action_stop_obj, pytan_help=h, **clean_kwargs)
+        kwargs['pytan_help'] = utils.helpstr.STOPAR
+        kwargs['obj'] = a_obj_before
+        a_obj_after = self.session.find(**kwargs)
 
-        h = "Re-issue a GetObject to ensure the stopped_flag is 1"
-        after_action_obj = self.get(objtype='action', id=id, pytan_help=h, **clean_kwargs)[0]
-
-        if after_action_obj.stopped_flag:
-            m = 'Action stopped successfully, ID of action stop: {}'.format
-            self.mylog.debug(m(action_stop_obj.id))
+        if a_obj_after.stopped_flag:
+            m = 'Action stopped successfully, ID of action stop: {0.id}'
+            m = m.format(result)
+            self.mylog.debug(m)
         else:
-            m = (
-                "Action not stopped successfully, json of action after issuing StopAction: {}"
-            ).format
-            raise utils.exceptions.PytanError(m(self.export_obj(after_action_obj, 'json')))
-
-        return action_stop_obj
+            m = "Action not stopped successfully, json of action after issuing StopAction: {}"
+            m = m.format(self.export_obj(a_obj_after, 'json'))
+            raise utils.exceptions.PytanError(m)
+        return result
 
     # Result Data / Result Info
     def get_result_data(self, obj, **kwargs):
@@ -861,19 +684,18 @@ class Handler(object):
         if kwargs.get('aggregate', False):
             kwargs['row_counts_only_flag'] = 1
 
-        if kwargs.get('sse', True):
+        if kwargs.get('sse', True) or kwargs.get('export_flag', 0):
             self._check_sse_version()
             self._check_sse_crash_prevention(obj=obj)
-            sse_format = kwargs.get('sse_format', 'csv')
-            sse_format_int = self._resolve_sse_format(sse_format=sse_format)
+            sse_format = kwargs.get('sse_format', 'xml_obj')
 
             grd_args = {}
             grd_args.update(kwargs)
-            grd_args['pytan_help'] = kwargs.get('pytan_help', utils.helpstr.GRD_SSE)
+            grd_args['pytan_help'] = utils.helpstr.GRD_SSE
             # add the export_flag = 1 to the kwargs for inclusion in options node
             grd_args['export_flag'] = 1
             # add the export_format to the kwargs for inclusion in options node
-            grd_args['export_format'] = sse_format_int
+            grd_args['export_format'] = self._resolve_sse_format(sse_format)
             # add the export_leading_text to the kwargs for inclusion in options node
             if kwargs.get('leading', ''):
                 grd_args['export_leading_text'] = kwargs.get('leading', '')
@@ -901,18 +723,16 @@ class Handler(object):
                 m = m.format(getattr(poller, 'sse_status', 'Unknown'))
                 raise utils.exceptions.ServerSideExportError(m)
 
-            rd = poller.get_sse_data(**kwargs)
+            result = poller.get_sse_data(**kwargs)
 
             if sse_format.lower() == 'xml_obj':
-                rd = utils.tanium_obj.xml_to_result_set_obj(x=rd)
+                result = utils.tanium_obj.xml_to_result_set_obj(result)
         else:
             # do a normal getresultdata
-            grd_args = {}
-            grd_args.update(kwargs)
-            grd_args['pytan_help'] = utils.helpstr.GRD
-            rd = self.session.get_result_data(**grd_args)
+            kwargs['pytan_help'] = utils.helpstr.Gresult
+            result = self.session.get_result_data(**kwargs)
 
-        return rd
+        return result
 
     def get_result_info(self, obj, **kwargs):
         """Get the result info for a python API object
@@ -1822,130 +1642,131 @@ class Handler(object):
         kwargs['all_class'] = utils.taniumpy.SensorList
         kwargs['specs_from_args'] = args
         kwargs['hide_sourced_sensors'] = kwargs.get('hide_sourced_sensors', True)
-        result = self._get(**kwargs)
+        result = self.get_object(**kwargs)
         return result
 
     def get_packages(self, *args, **kwargs):
         """pass. cache_filters need single fix"""
         kwargs['all_class'] = utils.taniumpy.PackageSpecList
         kwargs['specs_from_args'] = args
-        result = self._get(**kwargs)
+        kwargs['FIXIT_SINGLE'] = True
+        result = self.get_object(**kwargs)
         return result
 
     def get_actions(self, *args, **kwargs):
         """pass."""
         kwargs['all_class'] = utils.taniumpy.ActionList
         kwargs['specs_from_args'] = args
-        result = self._get(**kwargs)
+        result = self.get_object(**kwargs)
         return result
 
     def get_clients(self, *args, **kwargs):
         """pass."""
         kwargs['all_class'] = utils.taniumpy.SystemStatusList
         kwargs['specs_from_args'] = args
-        result = self._get(**kwargs)
+        result = self.get_object(**kwargs)
         return result
 
     def get_groups(self, *args, **kwargs):
-        """pass."""
+        """pass. cant find unnamed groups by id using cache filters"""
         kwargs['all_class'] = utils.taniumpy.GroupList
         kwargs['specs_from_args'] = args
-        result = self._get(**kwargs)
+        kwargs['FIXIT_GROUP_ID'] = True
+        result = self.get_object(**kwargs)
         return result
 
     def get_questions(self, *args, **kwargs):
         """pass."""
         kwargs['all_class'] = utils.taniumpy.QuestionList
         kwargs['specs_from_args'] = args
-        result = self._get(**kwargs)
+        result = self.get_object(**kwargs)
         return result
 
     def get_saved_actions(self, *args, **kwargs):
         """pass."""
         kwargs['all_class'] = utils.taniumpy.SavedActionList
         kwargs['specs_from_args'] = args
-        result = self._get(**kwargs)
+        result = self.get_object(**kwargs)
         return result
 
     def get_saved_questions(self, *args, **kwargs):
         """pass."""
         kwargs['all_class'] = utils.taniumpy.SavedQuestionList
         kwargs['specs_from_args'] = args
-        result = self._get(**kwargs)
+        result = self.get_object(**kwargs)
         return result
 
     def get_settings(self, *args, **kwargs):
         """pass."""
         kwargs['all_class'] = utils.taniumpy.SystemSettingList
         kwargs['specs_from_args'] = args
-        result = self._get(**kwargs)
+        result = self.get_object(**kwargs)
         return result
 
     def get_users(self, *args, **kwargs):
         """pass. cache_filters fail"""
         kwargs['all_class'] = utils.taniumpy.UserList
         kwargs['specs_from_args'] = args
-        result = self._get(**kwargs)
+        kwargs['FIXIT_BROKEN_FILTER'] = True
+        result = self.get_object(**kwargs)
         return result
 
     def get_user_roles(self, *args, **kwargs):
         """pass. cache_filters fail"""
         kwargs['all_class'] = utils.taniumpy.UserRoleList
         kwargs['specs_from_args'] = args
-        result = self._get(**kwargs)
+        kwargs['FIXIT_BROKEN_FILTER'] = True
+        result = self.get_object(**kwargs)
         return result
 
     def get_whitelisted_urls(self, *args, **kwargs):
         """pass. cache_filters fail"""
         kwargs['all_class'] = utils.taniumpy.WhiteListedUrlList
         kwargs['specs_from_args'] = args
-        result = self._get(**kwargs)
+        kwargs['FIXIT_BROKEN_FILTER'] = True
+        result = self.get_object(**kwargs)
         return result
 
-    # BEGIN PRIVATE METHODS
-    def _get(self, all_class, **kwargs):
+    def get_object(self, all_class, **kwargs):
         """pass."""
-        hide_sourced_sensors = kwargs.get('hide_sourced_sensors', False)
-        limit = kwargs.get('limit', None)
-
+        kwargs['all_class'] = all_class
         # don't include hidden objects by default
         kwargs['include_hidden_flag'] = kwargs.get('include_hidden_flag', 0)
-        kwargs['all_class'] = all_class
+        # get specs from kwargs or from args (assuming calling method put them in specs_from_args)
         kwargs['specs'] = kwargs.get('specs', []) or kwargs.get('specs_from_args', [])
+        kwargs['obj'] = self._fixit_single(**kwargs)
 
-        # packagespec doesnt work with GetObject in List form, so we need to use the singular form
-        if all_class.__name__ == 'PackageSpecList':
-            kwargs['obj'] = all_class()._list_properties.values()[0]()
-        else:
-            kwargs['obj'] = all_class()
+        use_filters = False
+        limit = kwargs.get('limit', None)
 
-        if kwargs['specs'] or hide_sourced_sensors:
+        # if specs or hide_sourced_sensors, build cache filters and find results
+        if kwargs['specs'] or kwargs.get('hide_sourced_sensors', False):
+            use_filters = True
+
+        if use_filters:
             # get objects using cache filter
-            myhelp = utils.helpstr.GETF.format(all_class.__name__)
-            kwargs['pytan_help'] = kwargs.get('pytan_help', '') or myhelp
+            kwargs['pytan_help'] = utils.helpstr.GETF.format(all_class.__name__)
             result = self._find_filter(**kwargs)
         else:
             # get all objects
-            myhelp = utils.helpstr.GET.format(all_class.__name__)
-            kwargs['pytan_help'] = kwargs.get('pytan_help', '') or myhelp
+            kwargs['pytan_help'] = utils.helpstr.GET.format(all_class.__name__)
             result = self.session.find(**kwargs)
+            self._check_limit(result=result, **kwargs)
 
-        if limit is not None:
-            if len(result) != int(limit):
-                txt = '\n\t'.join([str(x) for x in result])
-                err = "{} {} found, specs {!r} must return {}, returned items:\n\t{}"
-                err = err.format(len(result), all_class.__name__, kwargs['specs'], limit, txt)
-                raise utils.exceptions.PytanError(err)
-
-            # if just one item returned, return it as a single item
-            if len(result) == 1:
+        # if just one item returned and limit == 1, return result as a single item
+        # if result is a list
+        if len(result) == 1 and limit == 1:
+            try:
                 result = result[0]
+            except:
+                pass
 
-        m = "{} found, specs {!r}"
-        m = m.format(result, kwargs['specs'])
-        self.mylog.debug(m)
+        m = "GetObject found '{}' (using filters: {})"
+        m = m.format(result, use_filters)
+        self.mylog.info(m)
         return result
 
+    # BEGIN PRIVATE METHODS
     def _get_spec_objects(self, specs):
         """pass."""
         for spec in specs:
@@ -1957,11 +1778,91 @@ class Handler(object):
                 spec['package_object'] = self.get_packages(limit=1, specs=spec['package'])
         return specs
 
+    def _fixit_single(self, **kwargs):
+        """pass."""
+        # FIXIT_SINGLE: GetObject in list form fails, so we need to use the singular form
+        result = kwargs['all_class']()
+        if kwargs.get('FIXIT_SINGLE', False):
+            single_class = kwargs['all_class']()._list_properties.values()[0]
+            result = single_class()
+            m = "FIXIT_SINGLE: changed class from {} to {}"
+            m = m.format(kwargs['all_class'].__name__, single_class.__name__)
+            self.mylog.info(m)  # TODO
+        return result
+
+    def _fixit_group_id(self, specs, **kwargs):
+        """pass."""
+        # FIXIT_GROUP_ID: unnamed groups have to be searched for manually, cache filters dont work
+        result = kwargs['obj']
+        if kwargs.get('FIXIT_GROUP_ID', False):
+            for spec in specs:
+                if spec['field'] == 'id':
+                    result = utils.taniumpy.Group()
+                    setattr(kwargs['obj'], spec['field'], spec['value'])
+                    m = "FIXIT_GROUP_ID: changed class to 'Group' and set {field!r} to {value!r}"
+                    m = m.format(**spec)
+                    self.mylog.info(m)  # TODO
+        return result
+
+    def _fixit_broken_filter(self, result, specs, **kwargs):
+        """pass."""
+        # FIXIT_BROKEN_FILTER: the API returns all objects even if using a cache filter
+        if kwargs.get('FIXIT_BROKEN_FILTER', False):
+            # create a new result of the same class to store matching objects in
+            new_result = result.__class__()
+            for spec in specs:
+                for subspec in spec:
+                    for r in result:
+                        m = "FIXIT_BROKEN_FILTER: Match {}: '{}' {!r} == {!r}".format
+                        if getattr(r, subspec['field']) == subspec['value']:
+                            self.mylog.info(m('found', r, subspec['field'], subspec['value']))
+                            new_result.append(r)
+                        else:
+                            self.mylog.info(m('not found', r, subspec['field'], subspec['value']))
+
+            m = "FIXIT_BROKEN_FILTER: original result '{}', new result '{}'"
+            m = m.format(result, new_result)
+            self.mylog.info(m)
+            result = new_result
+        return result
+
+    def _check_limit(self, result, **kwargs):
+        """pass."""
+        limit = kwargs.get('limit', None)
+        specs = kwargs.get('specs', [])
+        # limit is not supplied
+        if limit is None:
+            return
+
+        # coerce single items into a list
+        try:
+            result[0]
+        except:
+            result = [result]
+
+        # limit is supplied and matches length of result
+        if len(result) == int(limit):
+            return
+
+        # limit is supplied and does not match length of result
+
+        # get the str of each result for printing in exception
+        resulttxt = '\n\t'.join([str(x) for x in result])
+
+        # get the class name of the first result
+        classtxt = result[0].__class__.__name__
+
+        # get the specs txt if any specs
+        specstxt = ""
+        if specs:
+            specstxt = " specs: " + ", ".join([str(x) for x in specs])
+
+        err = "{} {} found,{} must return {}, returned items:\n\t{}"
+        err = err.format(len(result), classtxt, specstxt, limit, resulttxt)
+        raise utils.exceptions.PytanError(err)
+
     def _find_filter(self, all_class, specs, **kwargs):
-        """pass.
-        all_class
-        specs
-        """
+        """pass."""
         # create a base instance of all_class which all results will be added to
         result = all_class()
 
@@ -1974,36 +1875,51 @@ class Handler(object):
         if not isinstance(specs, (list, tuple)):
             specs = [specs]
 
+        all_parsed_specs = []
+
         for spec in specs:
             # TODO: AWAITING MANUAL PARSER
             # validate & parse a string into a spec
-            if not isinstance(spec, (dict,)):
-                spec = utils.parsers.get_str(spec)
+            # if not isinstance(spec, (dict,)):
+            #     spec = utils.parsers.get_str(spec)
 
-            # validate & parse the spec
-            parsed_spec = utils.parsers.GetObject(all_class, spec).parsed_spec
+            parsed_specs = []
 
-            # groups have to be searched for using non cache filters!
-            if all_class.__name__ in ['GroupList']:
-                kwargs['obj'] = utils.taniumpy.Group()
-                setattr(kwargs['obj'], parsed_spec['field'], parsed_spec['value'])
+            # validate & parse the specs
+            if isinstance(spec, (list, tuple)):
+                parsed_specs = [utils.parsers.GetObject(all_class, x).parsed_spec for x in spec]
+            else:
+                parsed_specs = [utils.parsers.GetObject(all_class, spec).parsed_spec]
 
-            parsed_specs = [parsed_spec]
+            # if we want to hide sourced sensors, add hide_spec
             if hide_sourced_sensors:
                 parsed_specs.append(hide_spec)
 
-            # create a cache filter list object using the parsed_spec
+            kwargs['obj'] = self._fixit_group_id(specs=parsed_specs, **kwargs)
+
+            # create a cache filter list object using the parsed_specs
             kwargs['cache_filters'] = utils.tanium_obj.create_cf_listobj(parsed_specs)
 
             # use getobject to find the results using the cache_filters to limit the returns
             cf_result = self.session.find(**kwargs)
 
-            # groups only return a single item!
-            if all_class.__name__ in ['GroupList']:
-                result.append(cf_result)
-            else:
-                # add each result to the base instance
+            m = "{} found using parsed specs: {!r}"
+            m = m.format(cf_result, parsed_specs)
+            self.mylog.info(m)  # TODO
+
+            # if cf_result is a list, append each item to result
+            try:
+                cf_result[0]
                 [result.append(r) for r in cf_result]
+            # otherwise just append cf_result directly to result
+            except:
+                result.append(cf_result)
+
+            all_parsed_specs.append(parsed_specs)
+
+        result = self._fixit_broken_filter(specs=all_parsed_specs, result=result, **kwargs)
+
+        self._check_limit(result=result, specs=all_parsed_specs, **kwargs)
         return result
 
     def _add(self, obj, **kwargs):
@@ -2024,7 +1940,9 @@ class Handler(object):
         except:
             search_str = obj
 
-        self.mylog.debug("Adding object {}".format(search_str))
+        m = "Adding object {}"
+        m = m.format(search_str)
+        self.mylog.debug(m)
 
         kwargs['suppress_object_list'] = kwargs.get('suppress_object_list', 1)
         kwargs['pytan_help'] = utils.helpstr.ADD.format(obj.__class__.__name__)
@@ -2033,22 +1951,29 @@ class Handler(object):
         try:
             added_obj = self.session.add(**kwargs)
         except Exception as e:
-            err = "Error while trying to add object '{}': {}!!".format
-            raise utils.exceptions.PytanError(err(search_str, e))
+            err = "Error while trying to add object '{}': {}!!"
+            err = err.format(search_str, e)
+            raise utils.exceptions.PytanError(err)
+
+        m = "Added Object: {}"
+        m = m.format(added_obj)
+        self.mylog.debug(m)
 
         kwargs['pytan_help'] = utils.helpstr.ADDGET.format(obj.__class__.__name__)
         kwargs['obj'] = added_obj
 
         try:
-            found_obj = self.session.find(**kwargs)
+            result = self.session.find(**kwargs)
         except Exception as e:
             self.utils.exceptions.mylog.error(e)
             err = "Error while trying to find recently added object {}!!"
             err = err.format(search_str)
             raise utils.exceptions.PytanError(err)
 
-        self.mylog.debug("Added object {}".format(found_obj))
-        return found_obj
+        m = "Successfully added and fetched full object: {}"
+        m = m.format(result)
+        self.mylog.debug(m)
+        return result
 
     def _export_class_BaseType(self, obj, export_format, **kwargs): # noqa
         """Handles exporting :class:`utils.taniumpy.object_types.base.BaseType`
@@ -2065,7 +1990,6 @@ class Handler(object):
         result : str
            * results of exporting `obj` into format `export_format`
         """
-
         # run the handler that is specific to this export_format, if it exists
         format_method_str = '_export_format_' + export_format
         format_handler = getattr(self, format_method_str, '')
@@ -2763,6 +2687,7 @@ class Handler(object):
                 raise utils.exceptions.ServerSideExportError(m(ri))
 
     def _parse_args(self, kwargs):
+        """pass."""
         self.args_db = {}
         self.args_db['original_args'] = kwargs
         self.args_db['handler_args'] = self._get_src_args(kwargs)
@@ -2815,6 +2740,7 @@ class Handler(object):
             )
 
     def _validate_args(self):
+        """pass."""
         pa = self.args_db['parsed_args']
         pas = self.args_db['parsed_args_source']
         for arg, argtype in utils.constants.HANDLER_ARGS.iteritems():
@@ -2822,8 +2748,8 @@ class Handler(object):
                 continue
 
             pa_type = type(pa[arg]).__name__
-            err = "Argument {!r} must be type {!r}, supplied type {!r} via {!r}".format
-            err = err(arg, argtype.__name__, pa_type, pas[arg])
+            err = "Argument {!r} must be type {!r}, supplied type {!r} via {!r}"
+            err = err.format(arg, argtype.__name__, pa_type, pas[arg])
 
             # handle string types that actually should be other types
             if isinstance(pa[arg], basestring):
@@ -2837,7 +2763,8 @@ class Handler(object):
                     try:
                         pa[arg] = dict(eval(pa[arg]))
                     except Exception as e:
-                        err = "{} exception: {}".format(err, e)
+                        err = "{} exception: {}"
+                        err = err.format(err, e)
                         raise utils.exceptions.PytanError(err)
 
             try:
@@ -2847,23 +2774,30 @@ class Handler(object):
                 raise utils.exceptions.PytanError(err)
 
         if not pa['host']:
-            raise utils.exceptions.PytanError("Must supply host!")
+            err = "Must supply host!"
+            raise utils.exceptions.PytanError(err)
 
         if not pa['port']:
-            raise utils.exceptions.PytanError("Must supply port!")
+            err = "Must supply port!"
+            raise utils.exceptions.PytanError(err)
 
         if not pa['session_id']:
             if not pa['username']:
-                raise utils.exceptions.PytanError("Must supply username if no session_id!")
+                err = "Must supply username if no session_id!"
+                raise utils.exceptions.PytanError(err)
 
             if not pa['password']:
-                raise utils.exceptions.PytanError("Must supply password if no session_id!")
+                err = "Must supply password if no session_id!"
+                raise utils.exceptions.PytanError(err)
 
     def _log_args(self):
-        m = "Argument {!r} supplied by {!r} type {!r}".format
+        """pass."""
+        m = "Argument {!r} supplied by {!r} type {!r}"
         for k, v in self.args_db['parsed_args'].iteritems():
-            self.mylog.debug(m(k, self.args_db['parsed_args_source'][k], type(v).__name__))
+            m = m.format(k, self.args_db['parsed_args_source'][k], type(v).__name__)
+            self.mylog.debug(m)
 
     def _get_src_args(self, kwargs):
+        """pass."""
         src_args = {k: kwargs[k] for k in utils.constants.HANDLER_ARGS if k in kwargs}
         return src_args
