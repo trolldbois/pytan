@@ -80,25 +80,30 @@ class QuestionPoller(object):
     """Controls whether a run() loop should stop or not"""
 
     def __init__(self, handler, obj, **kwargs):
+        polling_secs = kwargs.get('polling_secs', self.POLLING_SECS_DEFAULT)
+        complete_pct = kwargs.get('complete_pct', self.COMPLETE_PCT_DEFAULT)
+        override_timeout = kwargs.get('override_timeout_secs', self.OVERRIDE_TIMEOUT_SECS_DEFAULT)
+        forced_passed_done_count = kwargs.get('force_passed_done_count', 0)
+
         from ..handler import Handler as BaseHandler
         self.setup_logging()
 
         if not isinstance(handler, BaseHandler):
-            m = "{} is not a valid handler instance! Must be a: {!r}".format
-            raise utils.exceptions.PollingError(m(type(handler), BaseHandler))
+            err = "{} is not a valid handler instance! Must be a: {!r}"
+            err = err.format(type(handler), BaseHandler)
+            raise utils.exceptions.PollingError(err)
 
         if not isinstance(obj, self.OBJECT_TYPE):
-            m = "{} is not a valid object type! Must be a: {}".format
-            raise utils.exceptions.PollingError(m(type(obj), self.OBJECT_TYPE))
+            err = "{} is not a valid object type! Must be a: {}"
+            err = err.format(type(obj), self.OBJECT_TYPE)
+            raise utils.exceptions.PollingError(err)
 
         self.handler = handler
         self.obj = obj
-        self.polling_secs = kwargs.get('polling_secs', self.POLLING_SECS_DEFAULT)
-        self.complete_pct = kwargs.get('complete_pct', self.COMPLETE_PCT_DEFAULT)
-        self.override_timeout_secs = kwargs.get(
-            'override_timeout_secs', self.OVERRIDE_TIMEOUT_SECS_DEFAULT,
-        )
-        self.force_passed_done_count = kwargs.get('force_passed_done_count', 0)
+        self.polling_secs = polling_secs
+        self.complete_pct = complete_pct
+        self.override_timeout_secs = override_timeout
+        self.force_passed_done_count = forced_passed_done_count
 
         self.id_str = "ID {}: ".format(getattr(self.obj, 'id', '-1'))
         self.obj_id = self._derive_attribute(attr='id', fallback=None)
@@ -109,8 +114,9 @@ class QuestionPoller(object):
     def __str__(self):
         class_name = self.__class__.__name__
         attrs = ", ".join(['{0}: "{1}"'.format(x, getattr(self, x, None)) for x in self.STR_ATTRS])
-        ret = "{} {}".format(class_name, attrs)
-        return ret
+        result = "{} {}"
+        result = result.format(class_name, attrs)
+        return result
 
     def setup_logging(self):
         """Setup loggers for this object"""
@@ -120,7 +126,6 @@ class QuestionPoller(object):
 
     def _post_init(self, **kwargs):
         """Post init class setup"""
-
         self.override_estimated_total = kwargs.get('override_estimated_total', 0)
         self._derive_expiration(**kwargs)
         self._derive_object_info(**kwargs)
@@ -131,19 +136,17 @@ class QuestionPoller(object):
         This is used in the case that the obj supplied does not have all the metadata
         available
         """
+        kwargs['obj'] = self.obj
+        obj = self.handler._find(kwargs)
 
-        clean_keys = ['obj']
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
-
-        obj = self.handler._find(obj=self.obj, **clean_kwargs)
-
-        if utils.tanium_obj(obj):
-            m = "Unable to find object: {}".format
-            raise utils.exceptions.PollingError(m(self.obj))
+        if not obj:
+            err = "Unable to find object: {}"
+            err = err.format(self.obj)
+            raise utils.exceptions.PollingError(err)
 
         self.obj = obj
 
-    def _derive_attribute(self, attr, fallback='', **kwargs):
+    def _derive_attribute(self, attr, **kwargs):
         """Derive an attributes value from self.obj
 
         Will re-fetch self.obj if the attribute is not set
@@ -162,55 +165,52 @@ class QuestionPoller(object):
             The value of the attr from self.obj
 
         """
+        fallback = kwargs.get('fallback', '')
 
-        clean_keys = ['obj', 'pytan_help']
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
-
-        val = getattr(self.obj, attr, None)
+        result = getattr(self.obj, attr, None)
 
         # if attr isn't available on the object, maybe it's only a partial object
         # let's use the handler to re-fetch it
-        if val is None:
-            m = "{}attribute {!r} is not set, issuing GetObject to get the full object".format
-            m = m(self.id_str, attr)
+        if result is None:
+            m = "{}attribute {!r} is not set, issuing GetObject to get the full object"
+            m = m.format(self.id_str, attr)
             self.resolverlog.debug(m)
-            self._refetch_obj(pytan_help=m, **clean_kwargs)
+            kwargs['pytan_help'] = m
+            self._refetch_obj(**kwargs)
 
-        val = getattr(self.obj, attr, '')
-        if val is None:
+        result = getattr(self.obj, attr, '')
+        if result is None:
             if fallback is None:
-                m = "{}{!r} is None, even after re-fetching object".format
-                raise utils.exceptions.PollingError(m(self.id_str, attr))
+                err = "{}{!r} is None, even after re-fetching object"
+                err = err.format(self.id_str, attr)
+                raise utils.exceptions.PollingError(err)
 
-            m = (
-                "{}attribute {!r} is not set after re-fetching object - using fallback of {}"
-            ).format
+            m = "{}attribute {!r} is not set after re-fetching object - using fallback of {}"
+            m = m.format(self.id_str, attr, fallback)
+            self.resolverlog.debug(m)
+            result = fallback
 
-            self.resolverlog.debug(m(self.id_str, attr, fallback))
-            val = fallback
-
-        m = "{}attribute '{}' resolved to '{}'".format
-        self.mylog.debug(m(self.id_str, attr, val))
-        return val
+        m = "{}attribute '{}' resolved to '{}'"
+        m = m.format(self.id_str, attr, result)
+        self.mylog.debug(m)
+        return result
 
     def _derive_object_info(self, **kwargs):
         """Derive self.object_info from self.obj"""
+        kwargs['attr'] = 'query_text'
+        kwargs['fallback'] = 'Unable to fetch question text'
+        question_text = self._derive_attribute(**kwargs)
 
-        clean_keys = ['attr', 'fallback']
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        kwargs['attr'] = 'id'
+        kwargs['fallback'] = -1
+        question_id = self._derive_attribute(**kwargs)
 
-        attr_name = 'query_text'
-        fb = 'Unable to fetch question text'
-        question_text = self._derive_attribute(attr=attr_name, fallback=fb, **clean_kwargs)
+        object_info = "Question ID: {}, Query: {}"
+        object_info = object_info.format(question_id, question_text)
 
-        attr_name = 'id'
-        fb = -1
-        question_id = self._derive_attribute(attr=attr_name, fallback=fb, **clean_kwargs)
-
-        object_info = "Question ID: {}, Query: {}".format(question_id, question_text)
-
-        m = "{}'object_info' resolved to '{}'".format
-        self.resolverlog.debug(m(self.id_str, object_info))
+        m = "{}'object_info' resolved to '{}'"
+        m = m.format(self.id_str, object_info)
+        self.resolverlog.debug(m)
         self.object_info = object_info
 
     def _derive_expiration(self, **kwargs):
@@ -218,31 +218,29 @@ class QuestionPoller(object):
 
         Will generate a datetime string from self.EXPIRY_FALLBACK_SECS if unable to get the expiration from the object (self.obj) itself.
         """
+        kwargs['attr'] = self.EXPIRATION_ATTR
+        kwargs['fallback'] = utils.calc.seconds_from_now(secs=self.EXPIRY_FALLBACK_SECS)
+        self.expiration = self._derive_attribute(**kwargs)
 
-        clean_keys = ['attr', 'fallback']
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
-
-        attr_name = self.EXPIRATION_ATTR
-        fb = utils.calc.seconds_from_now(secs=self.EXPIRY_FALLBACK_SECS)
-        self.expiration = self._derive_attribute(attr=attr_name, fallback=fb, **clean_kwargs)
-
-    def run_callback(self, callbacks, callback, pct, **kwargs):
-        """Utility method to find a callback in callbacks dict and run it
-        """
-
+    def run_callback(self, callback, pct, **kwargs):
+        """Utility method to find a callback in callbacks dict and run it"""
+        callbacks = kwargs.get('callbacks', {})
         if not callbacks.get(callback, ''):
             return
 
-        cb_clean_keys = ['poller', 'pct']
-        cb_clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=cb_clean_keys)
+        kwargs['poller'] = self
+        kwargs['pct'] = pct
+
+        m = "Running callback: {} with args: {}"
+        m = m.format(callback, kwargs)
+        self.mylog.debug(m)
 
         try:
-            m = "Running callback: {}".format
-            self.mylog.debug(m(callback))
-            callbacks[callback](poller=self, pct=pct, **cb_clean_kwargs)
+            callbacks[callback](**kwargs)
         except Exception as e:
-            m = "Exception occurred in '{}' Callback: {}".format
-            self.mylog.warning(m(callback, e))
+            err = "Exception occurred in '{}' Callback: {}"
+            err = err.format(callback, e)
+            self.mylog.warning(err)
 
     def set_complect_pct(self, val): # noqa
         """Set the complete_pct to a new value
@@ -252,7 +250,6 @@ class QuestionPoller(object):
         val : int/float
             float value representing the new percentage to consider self.obj complete
         """
-
         self.complete_pct = val
 
     def get_result_info(self, **kwargs):
@@ -268,34 +265,32 @@ class QuestionPoller(object):
         -------
         result_info : :class:`utils.taniumpy.object_types.result_info.ResultInfo`
         """
-
         # add a retry to re-fetch result info if estimated_total == 0
         gri_retry_count = kwargs.get('gri_retry_count', 10)
+        gri_retry_sleep = kwargs.get('gri_retry_sleep', 1)
 
-        clean_keys = ['obj', 'gri_retry_count']
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
-
+        kwargs['obj'] = self.obj
         current_try = 1
 
         while True:
-            result_info = self.handler.get_result_info(obj=self.obj, **clean_kwargs)
+            result = self.handler.get_result_info(**kwargs)
 
-            if result_info.estimated_total != 0:
+            if result.estimated_total != 0:
                 break
 
             attempt_text = "attempt {} out of {}".format(current_try, gri_retry_count)
             if current_try >= gri_retry_count:
-                m = "Estimated Total of Clients is 0 -- no clients available?, {}".format
-                raise utils.exceptions.PollingError(m(attempt_text))
+                err = "Estimated Total of Clients is 0 -- no clients available?, {}"
+                err = err.format(attempt_text)
+                raise utils.exceptions.PollingError(err)
             else:
                 current_try += 1
-                h = "Re-issuing a GetResultInfo since the estimated_total came back 0, {}".format
-                clean_kwargs['pytan_help'] = h(attempt_text)
-                self.mylog.debug(h(attempt_text))
-                time.sleep(1)
+                myhelp = utils.helpstr.GRI_RETRY.format(attempt_text)
+                kwargs['pytan_help'] = myhelp
+                self.mylog.debug(myhelp)
+                time.sleep(gri_retry_sleep)
                 continue
-
-        return result_info
+        return result
 
     def get_result_data(self, **kwargs):
         """Simple utility wrapper around :func:`handler.Handler.get_result_data`
@@ -304,13 +299,11 @@ class QuestionPoller(object):
         -------
         result_data : :class:`utils.taniumpy.object_types.result_set.ResultSet`
         """
+        kwargs['obj'] = self.obj
+        result = self.handler.get_result_data(**kwargs)
+        return result
 
-        clean_keys = ['obj']
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
-        result_data = self.handler.get_result_data(obj=self.obj, **clean_kwargs)
-        return result_data
-
-    def run(self, callbacks={}, **kwargs):
+    def run(self, **kwargs):
         """Poll for question data and issue callbacks.
 
         Parameters
@@ -336,7 +329,6 @@ class QuestionPoller(object):
             * Polling will be stopped only when one of the callbacks calls the stop() method or the answers are complete.
             * Any callback can call setPercentCompleteThreshold to change what "done" means on the fly
         """
-
         self.start = datetime.utcnow()
         self.expiration_timeout = utils.calc.timestr_to_datetime(timestr=self.expiration)
 
@@ -346,17 +338,14 @@ class QuestionPoller(object):
         else:
             self.override_timeout = None
 
-        clean_keys = ['callbacks']
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
-
-        self.passed_eq_total = self.passed_eq_est_total_loop(callbacks=callbacks, **clean_kwargs)
+        self.passed_eq_total = self.passed_eq_est_total_loop(**kwargs)
         self.poller_result = all([self.passed_eq_total])
         return self.poller_result
 
-    def passed_eq_est_total_loop(self, callbacks={}, **kwargs):
-        """Method to poll Result Info for self.obj until the percentage of 'passed' out of 'estimated_total' is greater than or equal to self.complete_pct
+    def passed_eq_est_total_loop(self, **kwargs):
+        """Method to poll Result Info for self.obj until the percentage of 'passed' out of
+        'estimated_total' is greater than or equal to self.complete_pct
         """
-
         # current percentage tracker
         self.pct = None
         # loop counter
@@ -366,11 +355,8 @@ class QuestionPoller(object):
 
         while not self._stop:
             # perform a GetResultInfo SOAP call
-            clean_keys = ['pytan_help', 'callback', 'pct']
-            clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
-
-            h = "Issue a GetResultInfo for a Question to check the current progress of answers"
-            self.result_info = self.get_result_info(pytan_help=h, **clean_kwargs)
+            kwargs['pytan_help'] = ''
+            self.result_info = self.get_result_info(**kwargs)
 
             # derive the current percentage of completion by calculating percentage of
             # mr_tested out of estimated_total
@@ -385,24 +371,24 @@ class QuestionPoller(object):
             new_pct_str = "{0:.0f}%".format(new_pct)
             complete_pct_str = "{0:.0f}%".format(self.complete_pct)
 
-            # print a progress debug string
-            self.progress_str = (
+            prog = (
                 "Progress: Tested: {0.tested}, Passed: {0.passed}, "
                 "MR Tested: {0.mr_tested}, MR Passed: {0.mr_passed}, "
                 "Est Total: {0.estimated_total}, Row Count: {0.row_count}, Override Est Total: {1}"
-            ).format(self.result_info, self.override_estimated_total)
-            self.progresslog.debug("{}{}".format(self.id_str, self.progress_str))
+            )
+            prog = prog.format(self.result_info, self.override_estimated_total)
+            self.progress_str = prog
 
-            # print a timing debug string
             if self.override_timeout:
                 time_till_expiry = self.override_timeout - datetime.utcnow()
             else:
                 time_till_expiry = self.expiration_timeout - datetime.utcnow()
 
-            self.timing_str = (
+            timing = (
                 "Timing: Started: {}, Expiration: {}, Override Timeout: {}, "
                 "Elapsed Time: {}, Left till expiry: {}, Loop Count: {}"
-            ).format(
+            )
+            timing = timing.format(
                 self.start,
                 self.expiration_timeout,
                 self.override_timeout,
@@ -410,7 +396,17 @@ class QuestionPoller(object):
                 time_till_expiry,
                 self.loop_count,
             )
-            self.progresslog.debug("{}{}".format(self.id_str, self.timing_str))
+            self.timing_str = timing
+
+            # print a progress debug string
+            m = "{}{}"
+            m = m.format(self.id_str, prog)
+            self.progresslog.debug(m)
+
+            # print a timing debug string
+            m = "{}{}"
+            m = m.format(self.id_str, timing)
+            self.progresslog.debug(m)
 
             # check to see if progress has changed, if so run the callback
             progress_changed = any([
@@ -423,10 +419,12 @@ class QuestionPoller(object):
             ])
 
             if progress_changed:
-                m = "{}Progress Changed {} ({} of {})".format
-                self.progresslog.info(m(self.id_str, new_pct_str, tested, est_total))
-                cb = 'ProgressChanged'
-                self.run_callback(callbacks=callbacks, callback=cb, pct=new_pct, **clean_kwargs)
+                m = "{}Progress Changed {} ({} of {})"
+                m = m.format(self.id_str, new_pct_str, tested, est_total)
+                self.progresslog.info(m)
+                kwargs['callback'] = 'ProgressChanged'
+                kwargs['pct'] = new_pct
+                self.run_callback(**kwargs)
 
             # check to see if answers have changed, if so run the callback
             answers_changed = any([
@@ -435,41 +433,49 @@ class QuestionPoller(object):
             ])
 
             if answers_changed:
-                cb = 'AnswersChanged'
-                self.run_callback(callbacks=callbacks, callback=cb, pct=new_pct, **clean_kwargs)
+                kwargs['callback'] = 'AnswersChanged'
+                kwargs['pct'] = new_pct
+                self.run_callback(**kwargs)
 
             # check to see if new_pct has reached complete_pct threshold, if so return True
             if new_pct >= self.complete_pct:
-                m = "{}Reached Threshold of {} ({} of {})".format
-                self.mylog.info(m(self.id_str, complete_pct_str, tested, est_total))
-                cb = 'AnswersComplete'
-                self.run_callback(callbacks=callbacks, callback=cb, pct=new_pct, **clean_kwargs)
+                m = "{}Reached Threshold of {} ({} of {})"
+                m = m.format(self.id_str, complete_pct_str, tested, est_total)
+                self.mylog.info(m)
+                kwargs['callback'] = 'AnswersComplete'
+                kwargs['pct'] = new_pct
+                self.run_callback(**kwargs)
                 return True
 
             if self.force_passed_done_count and passed >= self.force_passed_done_count:
-                m = "{}Reached forced passed done count of {} ({} of {})".format
-                self.mylog.info(m(self.id_str, self.force_passed_done_count, tested, est_total))
-                cb = 'AnswersComplete'
-                self.run_callback(callbacks=callbacks, callback=cb, pct=new_pct, **clean_kwargs)
+                m = "{}Reached forced passed done count of {} ({} of {})"
+                m = m.format(self.id_str, self.force_passed_done_count, tested, est_total)
+                self.mylog.info(m)
+                kwargs['callback'] = 'AnswersComplete'
+                kwargs['pct'] = new_pct
+                self.run_callback(**kwargs)
                 return True
 
             # check to see if override timeout is specified, if so and we have passed it, return
             # False
             if self.override_timeout and datetime.utcnow() >= self.override_timeout:
-                m = "{}Reached override timeout of {}".format
-                self.mylog.warning(m(self.id_str, self.override_timeout))
+                m = "{}Reached override timeout of {}"
+                m = m.format(self.id_str, self.override_timeout)
+                self.mylog.warning(m)
                 return False
 
             # check to see if we have passed the actions expiration timeout, if so return False
             if datetime.utcnow() >= self.expiration_timeout:
-                m = "{}Reached expiration timeout of {}".format
-                self.mylog.warning(m(self.id_str, self.expiration_timeout))
+                m = "{}Reached expiration timeout of {}"
+                m = m.format(self.id_str, self.expiration_timeout)
+                self.mylog.warning(m)
                 return False
 
             # if stop is called, return True
             if self._stop:
-                m = "{}Stop called at {}".format
-                self.mylog.info(m(self.id_str, new_pct_str))
+                m = "{}Stop called at {}"
+                m = m.format(self.id_str, new_pct_str)
+                self.mylog.info(m)
                 return False
 
             # update our class variables to the new values determined by this loop

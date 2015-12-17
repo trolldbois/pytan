@@ -47,6 +47,9 @@ class SSEPoller(question.QuestionPoller):
     """The export_id for this poller"""
 
     def __init__(self, handler, export_id, **kwargs):
+        polling_secs = kwargs.get('polling_secs', self.POLLING_SECS_DEFAULT)
+        timeout_secs = kwargs.get('timeout_secs', self.TIMEOUT_SECS_DEFAULT)
+
         from ..handler import Handler as BaseHandler
 
         self.mylog = mylog
@@ -54,13 +57,14 @@ class SSEPoller(question.QuestionPoller):
         self.resolverlog = resolverlog
 
         if not isinstance(handler, BaseHandler):
-            m = "{} is not a valid handler instance! Must be a: {!r}".format
-            raise utils.exceptions.PollingError(m(type(handler), BaseHandler))
+            err = "{} is not a valid handler instance! Must be a: {!r}"
+            err = err.format(type(handler), BaseHandler)
+            raise utils.exceptions.PollingError(err)
 
         self.handler = handler
         self.export_id = export_id
-        self.polling_secs = kwargs.get('polling_secs', self.POLLING_SECS_DEFAULT)
-        self.timeout_secs = kwargs.get('timeout_secs', self.TIMEOUT_SECS_DEFAULT)
+        self.polling_secs = polling_secs
+        self.timeout_secs = timeout_secs
 
         self.id_str = "ID '{}': ".format(export_id)
         self.poller_result = None
@@ -82,48 +86,37 @@ class SSEPoller(question.QuestionPoller):
 
         Constructs a URL via: export/${export_id}.status and performs an authenticated HTTP get
         """
-        clean_keys = ['url']
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
-
         export_id = kwargs.get('export_id', self.export_id)
-        short_url = 'export/{}.status'.format(export_id)
-        full_url = self.handler.session._full_url(url=short_url)
 
-        h = "Perform an HTTP get to retrieve the status of a server side export"
-        clean_kwargs['pytan_help'] = clean_kwargs.get('pytan_help', h)
-
-        ret = self.handler.session.http_get(url=short_url, **clean_kwargs).strip()
+        kwargs['pytan_help'] = kwargs.get('pytan_help', utils.helpstr.SSE_PROGRESS)
+        kwargs['url'] = 'export/{}.status'.format(export_id)
+        result = self.handler.session.http_request_auth(**kwargs).strip()
 
         # print a progress debug string
-        progress_str = "Server Side Export Progress: '{}' from URL: {}".format
-        progress_str = progress_str(ret, full_url)
-        self.progresslog.debug("{}{}".format(self.id_str, progress_str))
-
-        return ret
+        full_url = self.handler.session._full_url(url=kwargs['url'])
+        m = "{}Server Side Export Progress: '{}' from URL: {}"
+        m = m.format(self.id_str, result, full_url)
+        self.progresslog.debug(m)
+        return result
 
     def get_sse_data(self, **kwargs):
         """Function to get the data of a server side export
 
         Constructs a URL via: export/${export_id}.gz and performs an authenticated HTTP get
         """
-        clean_keys = ['url']
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
-
         export_id = kwargs.get('export_id', self.export_id)
-        short_url = 'export/{}.gz'.format(export_id)
-        full_url = self.handler.session._full_url(url=short_url)
 
-        h = "Perform an HTTP get to retrieve the data of a server side export"
-        clean_kwargs['pytan_help'] = clean_kwargs.get('pytan_help', h)
-
-        ret = self.handler.session.http_get(url=short_url, **clean_kwargs)
+        kwargs['pytan_help'] = kwargs.get('pytan_help', utils.helpstr.SSE_GET)
+        kwargs['url'] = 'export/{}.gz'.format(export_id)
+        kwargs['empty_ok'] = True
+        result = self.handler.session.http_request_auth(**kwargs).strip()
 
         # print a progress debug string
-        progress_str = "Server Side Export Data Length: {} from URL: {}".format
-        progress_str = progress_str(len(ret), full_url)
-        self.progresslog.debug("{}{}".format(self.id_str, progress_str))
-
-        return ret
+        full_url = self.handler.session._full_url(url=kwargs['url'])
+        m = "{}Server Side Export Data Length: {} from URL: {}"
+        m = m.format(self.id_str, len(result), full_url)
+        self.progresslog.debug(m)
+        return result
 
     def run(self, **kwargs):
         """Poll for server side export status"""
@@ -156,17 +149,22 @@ class SSEPoller(question.QuestionPoller):
             else:
                 time_till_expiry = 'Never'
 
-            self.timing_str = (
+            timing = (
                 "Timing: Started: {}, Timeout: {}, Elapsed Time: {}, Left till expiry: {}, "
                 "Loop Count: {}"
-            ).format(
+            )
+            timing = timing.format(
                 self.start,
                 self.timeout,
                 datetime.utcnow() - self.start,
                 time_till_expiry,
                 self.loop_count,
             )
-            self.progresslog.debug("{}{}".format(self.id_str, self.timing_str))
+            self.timing_str = timing
+
+            m = "{}{}"
+            m = m.format(self.id_str, timing)
+            self.progresslog.debug(m)
 
             # check to see if progress has changed, if so print progress log info
             progress_changed = any([
@@ -174,29 +172,34 @@ class SSEPoller(question.QuestionPoller):
             ])
 
             if progress_changed:
-                m = "{}Progress Changed: '{}'".format
-                self.progresslog.info(m(self.id_str, self.sse_status))
+                m = "{}Progress Changed: '{}'"
+                m = m.format(self.id_str, self.sse_status)
+                self.progresslog.info(m)
 
             if 'failed' in self.sse_status.lower():
-                m = "{}Server Side Export Failed: '{}'".format
-                raise utils.exceptions.ServerSideExportError(m(self.id_str, self.sse_status))
+                err = "{}Server Side Export Failed: '{}'"
+                err = err.format(self.id_str, self.sse_status)
+                raise utils.exceptions.ServerSideExportError(err)
 
             if 'completed' in self.sse_status.lower():
-                m = "{}Server Side Export Completed: '{}'".format
-                self.mylog.info(m(self.id_str, self.sse_status))
+                m = "{}Server Side Export Completed: '{}'"
+                m = m.format(self.id_str, self.sse_status)
+                self.mylog.info(m)
                 return True
 
             # check to see if timeout is specified, if so and we have passed it, return
             # False
             if self.timeout and datetime.utcnow() >= self.timeout:
-                m = "{}Reached timeout of {}".format
-                self.mylog.warning(m(self.id_str, self.timeout))
+                m = "{}Reached timeout of {}"
+                m = m.format(self.id_str, self.timeout)
+                self.mylog.warning(m)
                 return False
 
             # if stop is called, return True
             if self._stop:
-                m = "{}Stop called at {}".format
-                self.mylog.info(m(self.id_str, self.sse_status))
+                m = "{}Stop called at {}"
+                m = m.format(self.id_str, self.sse_status)
+                self.mylog.info(m)
                 return False
 
             # update our class variables to the new values determined by this loop

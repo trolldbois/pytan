@@ -716,7 +716,7 @@ class Handler(object):
 
             grd_args = {}
             grd_args.update(kwargs)
-            grd_args['pytan_help'] = utils.helpstr.GRD_SSE
+            grd_args['pytan_help'] = utils.helpstr.GRD_SSE.format(obj.__class__.__name__)
             # add the export_flag = 1 to the kwargs for inclusion in options node
             grd_args['export_flag'] = 1
             # add the export_format to the kwargs for inclusion in options node
@@ -754,7 +754,7 @@ class Handler(object):
                 result = utils.tanium_obj.xml_to_result_set_obj(result)
         else:
             # do a normal getresultdata
-            kwargs['pytan_help'] = utils.helpstr.Gresult
+            kwargs['pytan_help'] = utils.helpstr.GRD.format(obj.__class__.__name__)
             result = self.session.get_result_data(**kwargs)
 
         return result
@@ -2577,19 +2577,19 @@ class Handler(object):
             * True if all values in all v_maps are greater than or equal to self.session.server_version
             * False otherwise
         """
-
+        result = True
         if self.session._invalid_server_version():
             # server version is not valid, force a refresh right now
             self.session.get_server_version(**kwargs)
 
         if self.session._invalid_server_version():
             # server version is STILL invalid, return False
-            return False
-
-        for v_map in v_maps:
-            if not self.session.server_version >= v_map:
-                return False
-        return True
+            result = False
+        else:
+            for v_map in v_maps:
+                if not self.session.server_version >= v_map:
+                    result = False
+        return result
 
     def _check_sse_format_support(self, sse_format, sse_format_int, **kwargs):
         """Determines if the export format integer is supported in the server version
@@ -2601,23 +2601,19 @@ class Handler(object):
         sse_format_int : int
             * `sse_format` parsed into an int
         """
-
         if sse_format_int not in utils.constants.SSE_RESTRICT_MAP:
             return
 
         restrict_maps = utils.constants.SSE_RESTRICT_MAP[sse_format_int]
-
-        if not self._version_support_check(v_maps=restrict_maps, **kwargs):
+        kwargs['v_maps'] = restrict_maps
+        if not self._version_support_check(**kwargs):
             restrict_maps_txt = '\n'.join([str(x) for x in restrict_maps])
-
-            m = (
+            err = (
                 "Server version {} does not support export format {!r}, "
                 "server version must be equal to or greater than one of:\n{}"
-            ).format
-
-            m = m(self.session.server_version, sse_format, restrict_maps_txt)
-
-            raise utils.exceptions.UnsupportedVersionError(m)
+            )
+            err = err.format(self.session.server_version, sse_format, restrict_maps_txt)
+            raise utils.exceptions.UnsupportedVersionError(err)
 
     def _resolve_sse_format(self, sse_format, **kwargs):
         """Resolves the server side export format the user supplied to an integer for the API
@@ -2632,34 +2628,33 @@ class Handler(object):
         sse_format_int : int
             * `sse_format` parsed into an int
         """
+        result = [x[-1] for x in utils.constants.SSE_FORMAT_MAP if sse_format.lower() in x]
 
-        sse_format_int = [x[-1] for x in utils.constants.SSE_FORMAT_MAP if sse_format.lower() in x]
-
-        if not sse_format_int:
-            m = "Unsupport export format {!r}, must be one of:\n{}".format
+        if not result:
             ef_map_txt = '\n'.join(
                 [', '.join(['{!r}'.format(x) for x in y]) for y in utils.constants.SSE_FORMAT_MAP]
             )
-            raise utils.exceptions.PytanError(m(sse_format, ef_map_txt))
+            err = "Unsupport export format {!r}, must be one of:\n{}"
+            err = err.format(sse_format, ef_map_txt)
+            raise utils.exceptions.PytanError(err)
 
-        sse_format_int = sse_format_int[0]
+        result = result[0]
 
-        m = "'sse_format resolved from '{}' to '{}'".format
-        self.mylog.debug(m(sse_format, sse_format_int))
+        m = "'sse_format resolved from '{}' to '{}'"
+        m = m.format(sse_format, result)
+        self.mylog.debug(m)
 
-        self._check_sse_format_support(
-            sse_format=sse_format, sse_format_int=sse_format_int, **kwargs
-        )
-
-        return sse_format_int
+        kwargs['sse_format'] = sse_format
+        kwargs['sse_format_int'] = result
+        self._check_sse_format_support(**kwargs)
+        return result
 
     def _check_sse_version(self, **kwargs):
         """Validates that the server version supports server side export"""
-
         if not self.session.platform_is_6_5(**kwargs):
-            m = "Server side export not supported in version: {}".format
-            m = m(self.session.server_version)
-            raise utils.exceptions.UnsupportedVersionError(m)
+            err = "Server side export not supported in version: {}"
+            err = err.format(self.session.server_version)
+            raise utils.exceptions.UnsupportedVersionError(err)
 
     def _check_sse_crash_prevention(self, obj, **kwargs):
         """Runs a number of methods used to prevent crashing the platform server when performing server side exports
@@ -2669,16 +2664,11 @@ class Handler(object):
         obj : :class:`utils.taniumpy.object_types.base.BaseType`
             * object to pass to self._check_sse_empty_rs
         """
-
-        clean_keys = ['obj', 'v_maps', 'ok_version']
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
-
-        restrict_maps = utils.constants.SSE_CRASH_MAP
-
-        ok_version = self._version_support_check(v_maps=restrict_maps, **clean_kwargs)
-
-        self._check_sse_timing(ok_version=ok_version, **clean_kwargs)
-        self._check_sse_empty_rs(obj=obj, ok_version=ok_version, **clean_kwargs)
+        kwargs['v_maps'] = utils.constants.SSE_CRASH_MAP
+        kwargs['ok_version'] = self._version_support_check(**kwargs)
+        kwargs['obj'] = obj
+        self._check_sse_timing(**kwargs)
+        self._check_sse_empty_rs(**kwargs)
 
     def _check_sse_timing(self, ok_version, **kwargs):
         """Checks that the last server side export was at least 1 second ago if server version is less than any versions in utils.constants.SSE_CRASH_MAP
@@ -2688,15 +2678,12 @@ class Handler(object):
         ok_version : bool
             * if the version currently running is an "ok" version
         """
-
         last_get_rd_sse = getattr(self, 'last_get_rd_sse', None)
-
         if last_get_rd_sse:
             last_elapsed = datetime.datetime.utcnow() - last_get_rd_sse
             if last_elapsed.seconds == 0 and not ok_version:
-                m = "You must wait at least one second between server side export requests!".format
-                raise utils.exceptions.ServerSideExportError(m())
-
+                err = "You must wait at least one second between server side export requests!"
+                raise utils.exceptions.ServerSideExportError(err)
         self.last_get_rd_sse = datetime.datetime.utcnow()
 
     def _check_sse_empty_rs(self, obj, ok_version, **kwargs):
@@ -2709,17 +2696,13 @@ class Handler(object):
         ok_version : bool
             * if the version currently running is an "ok" version
         """
-
-        clean_keys = ['obj']
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
-
         if not ok_version:
-            ri = self.get_result_info(obj=obj, **clean_kwargs)
+            kwargs['obj'] = obj
+            ri = self.get_result_info(**kwargs)
             if ri.row_count == 0:
-                m = (
-                    "No rows available to perform a server side export with, result info: {}"
-                ).format
-                raise utils.exceptions.ServerSideExportError(m(ri))
+                err = "No rows available to perform a server side export with, result info: {}"
+                err = err.format(ri)
+                raise utils.exceptions.ServerSideExportError(err)
 
     def _parse_args(self, kwargs):
         """pass."""

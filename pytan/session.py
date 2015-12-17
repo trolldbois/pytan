@@ -940,7 +940,6 @@ class Session(object):
         body : str
             * str containing body of response from server
         """
-
         headers = kwargs.get('headers', {})
         cleaned_headers = self._clean_headers(headers=headers)
         connect_timeout = kwargs.get('connect_timeout', self.SOAP_CONNECT_TIMEOUT_SEC)
