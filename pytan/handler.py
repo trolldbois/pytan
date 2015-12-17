@@ -1809,16 +1809,21 @@ class Handler(object):
         # FIXIT_BROKEN_FILTER: the API returns all objects even if using a cache filter
         if kwargs.get('FIXIT_BROKEN_FILTER', False):
             # create a new result of the same class to store matching objects in
+            m = "FIXIT_BROKEN_FILTER: Match {}: '{}' using specs: {}".format
             new_result = result.__class__()
             for spec in specs:
-                for subspec in spec:
-                    for r in result:
-                        m = "FIXIT_BROKEN_FILTER: Match {}: '{}' {!r} == {!r}".format
-                        if getattr(r, subspec['field']) == subspec['value']:
-                            self.mylog.info(m('found', r, subspec['field'], subspec['value']))
+                for r in result:
+                    match_found = True
+                    for subspec in spec:
+                        if getattr(r, subspec['field']) != subspec['value']:
+                            match_found = False
+
+                    if match_found:
+                        if r not in new_result:
+                            self.mylog.info(m('found', r, spec))
                             new_result.append(r)
-                        else:
-                            self.mylog.info(m('not found', r, subspec['field'], subspec['value']))
+                    else:
+                        self.mylog.info(m('not found', r, spec))
 
             m = "FIXIT_BROKEN_FILTER: original result '{}', new result '{}'"
             m = m.format(result, new_result)
@@ -1876,7 +1881,7 @@ class Handler(object):
             specs = [specs]
 
         all_parsed_specs = []
-
+        print specs
         for spec in specs:
             # TODO: AWAITING MANUAL PARSER
             # validate & parse a string into a spec
@@ -1884,7 +1889,7 @@ class Handler(object):
             #     spec = utils.parsers.get_str(spec)
 
             parsed_specs = []
-
+            print spec
             # validate & parse the specs
             if isinstance(spec, (list, tuple)):
                 parsed_specs = [utils.parsers.GetObject(all_class, x).parsed_spec for x in spec]
