@@ -9,3 +9,5 @@ use 3 lines to format a string: line 1: m = "text", line 2: m = m.format(), line
 use m for log message strings
 use err for err message strings
 avoid nested returns
+class attrs should be upper case
+log all error messages to critical in exceptions as well as raising them

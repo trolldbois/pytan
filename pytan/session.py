@@ -21,6 +21,7 @@ except:
     import xml.etree.ElementTree as ET
 
 from . import utils
+from . import __version__
 
 utils.requests.packages.urllib3.disable_warnings()
 
@@ -48,14 +49,9 @@ class Session(object):
     Setup a Session() object::
 
         >>> import sys
-        >>> sys.path.append('/path/to/pytan/')
+        >>> sys.path.append('/path/containing/pytan/')
         >>> import pytan
-        >>> session = pytan.sessions.Session('host')
-
-
-    Authenticate with the Session() object::
-
-        >>> session.authenticate('username', 'password')
+        >>> session = pytan.Session(host='host', username='username', password='password')
     """
 
     XMLNS = {
@@ -104,7 +100,10 @@ class Session(object):
     SOAP_RESPONSE_TIMEOUT_SEC = 540
     """number of seconds before timing out for a response while sending a SOAP request"""
 
-    SOAP_REQUEST_HEADERS = {'Content-Type': 'text/xml; charset=utf-8', 'Accept-Encoding': 'gzip'}
+    REQUEST_HEADERS = {
+        'Accept-Encoding': 'gzip',
+        'User-Agent': 'PyTan/{}'.format(__version__)
+    }
     """dictionary of headers to add to every HTTP GET/POST"""
 
     ELEMENT_RE_TXT = r'<{0}>(.*?)</{0}>'
@@ -168,21 +167,28 @@ class Session(object):
     """Holds the last requests response object that was received"""
 
     LAST_RESPONSE_INFO = {}
-    """Holds the information about the last response received by _get_response()"""
+    """Holds the information about the last response received by soap_request()"""
 
-    host = None
+    _HOST = None
     """host to connect to"""
 
-    port = None
+    _PORT = 443
     """port to connect to"""
 
-    server_version = "Not yet determined"
-    """version string of server, will be updated when get_server_version() is called"""
+    _SESSION_ID = ''
+    _USERNAME = ''
+    _PASSWORD = ''
+    _DOMAIN = ''
+    _SECONDARY = ''
+    _PERSISTENT = False
 
     FORCE_SERVER_VERSION = ''
     """In the case where the user wants to have pytan act as if the server is a specific version,
     regardless of what server_version is.
     """
+
+    SERVER_VERSION = "Not yet determined"
+    """version string of server, will be updated when get_server_version() is called"""
 
     def __init__(self, host, **kwargs):
 
@@ -203,15 +209,12 @@ class Session(object):
         # disable SSL cert verification for all requests made in this session
         self.REQUESTS_SESSION.verify = False
 
-        self.host = host
-        self.port = kwargs.get('port', 443)
-        self._session_id = ''
-        self._username = ''
-        self._password = ''
+        self._HOST = host
+        self._PORT = kwargs.get('port', self._PORT)
 
         # kwargs overrides for object properties
         other_args = [
-            'SOAP_REQUEST_HEADERS',
+            'REQUEST_HEADERS',
             'HTTP_AUTH_RETRY',
             'HTTP_RETRY_COUNT',
             'AUTH_CONNECT_TIMEOUT_SEC',
@@ -232,16 +235,20 @@ class Session(object):
         self.ALL_REQUESTS_RESPONSES = []
         self.LAST_RESPONSE_INFO = {}
         self.LAST_REQUESTS_RESPONSE = None
-        self.server_version = "Not yet determined"
+        self.SERVER_VERSION = "Not yet determined"
 
         # test our connectivity to the Tanium server
-        utils.network.test_app_port(self.host, self.port)
+        utils.network.test_app_port(self._HOST, self._PORT)
+
+        # authenticate to the Tanium server
+        self.authenticate(**kwargs)
 
     def __str__(self):
         myname = self.__class__.__name__
         ver = self.get_server_version()
-        m = "{} to {}:{}, Authenticated: {}, Platform Version: {}"
-        result = m.format(myname, self.host, self.port, self.is_auth, ver)
+        auth_type = self.get_auth_type()
+        m = "{} to {}:{}, Auth Type: {}, Platform Version: {}"
+        result = m.format(myname, self._HOST, self._PORT, auth_type, ver)
         return result
 
     @property
@@ -250,36 +257,19 @@ class Session(object):
 
         Returns
         -------
-        self._session_id : str
+        self._SESSION_ID : str
         """
-        result = self._session_id
+        result = self._SESSION_ID
         return result
 
     @session_id.setter
     def session_id(self, value):
         """Setter to update the session_id for this object"""
         if self.session_id != value:
-            self._session_id = value
+            self._SESSION_ID = value
             m = "Session ID updated to: {}"
             m = m.format(value)
             self.authlog.debug(m)
-
-    @property
-    def is_auth(self):
-        """Property to determine if there is a valid session_id or username and password stored in this object
-
-        Returns
-        -------
-        bool
-            * True: if self._session_id or self._username and _self.password are set
-            * False: if not
-        """
-        result = False
-        if self._session_id:
-            result = True
-        elif self._username and self._password:
-            result = True
-        return result
 
     def logout(self, all_session_ids=False, **kwargs):
         """Logout a given session_id from Tanium. If not session_id currently set, it will authenticate to get one.
@@ -291,8 +281,6 @@ class Session(object):
             * False: only log out the current session id for the current user
             * True: log out ALL session id's associated for the current user
         """
-        self._check_auth()
-
         if not self.session_id:
             self.authenticate()
 
@@ -386,44 +374,50 @@ class Session(object):
         NTLM is enabled by default in 6.3 or greater and requires a persistent connection until a
         session is generated.
         """
-        username = kwargs.get('username', None)
-        password = kwargs.get('password', None)
-        session_id = kwargs.get('session_id', None)
-        # TODO: add domain & secondary
+        # the 4 fields that /auth takes for non session auth
+        self._USERNAME = kwargs.get('username', getattr(self, '_USERNAME', ''))
+        self._PASSWORD = kwargs.get('password', getattr(self, '_PASSWORD', ''))
+        self._DOMAIN = kwargs.get('domain', getattr(self, '_DOMAIN', ''))
+        self._SECONDARY = kwargs.get('secondary', getattr(self, '_SECONDARY', ''))
 
-        persistent = kwargs.get('persistent', False)
-        auth_type = 'unknown'
+        # the 1 field that /auth takes for session auth
+        self._SESSION_ID = kwargs.get('session_id', getattr(self, '_SESSION_ID', ''))
 
-        if session_id:
-            auth_type = 'session ID'
-            if persistent:
-                err = "Unable to establish a persistent session when authenticating via session_id"
-                raise utils.exceptions.AuthorizationError(err)
-            self._session_id = session_id
-        else:
-            auth_type = 'username/password'
-            if username:
-                self._username = username
-            if password:
-                self._password = password
+        # the optional field for getting a persistent session with non session auth
+        self._PERSISTENT = kwargs.get('persistent', getattr(self, '_PERSISTENT', False))
 
-        if not session_id:
-            if not self._username:
+        # the time outs for authentication attempts
+        connect_timeout = kwargs.get('connect_timeout', self.AUTH_CONNECT_TIMEOUT_SEC)
+        response_timeout = kwargs.get('response_timeout', self.AUTH_RESPONSE_TIMEOUT_SEC)
+
+        # disable http retry logic by default for auth attempts
+        retry_count = kwargs.get('retry_count', 0)
+
+        if not self._SESSION_ID:
+            if not self._USERNAME:
                 err = "Must supply username"
                 raise utils.exceptions.AuthorizationError(err)
 
-            if not self._password:
+            if not self._PASSWORD:
                 err = "Must supply password"
                 raise utils.exceptions.AuthorizationError(err)
 
+        if self._PERSISTENT and not self._USERNAME and not self._PASSWORD:
+            err = "Unable to establish a persistent session when authenticating via session_id"
+            raise utils.exceptions.AuthorizationError(err)
+
+        if self._SESSION_ID:
+            auth_type = 'session ID'
+        elif self._USERNAME and self._PASSWORD:
+            auth_type = 'username/password'
+        else:
+            err = "Authentication type unknown!"
+            raise utils.exceptions.AuthorizationError(err)
+
         auth_headers = {}
 
-        if persistent:
+        if self._PERSISTENT:
             auth_headers['persistent'] = 1
-
-        retry_count = kwargs.get('retry_count', 0)
-        connect_timeout = kwargs.get('connect_timeout', self.AUTH_CONNECT_TIMEOUT_SEC)
-        response_timeout = kwargs.get('response_timeout', self.AUTH_RESPONSE_TIMEOUT_SEC)
 
         kwargs['url'] = self.AUTH_RES
         kwargs['headers'] = auth_headers
@@ -434,14 +428,21 @@ class Session(object):
         kwargs['request_method'] = 'get'
 
         try:
-            body = self.http_request_auth(**kwargs)
-        except Exception as e:
-            err = "Error while trying to authenticate: {}"
+            self._SESSION_ID = self.http_request_auth(**kwargs)
+        except utils.exceptions.HttpError as e:
+            err = "HTTP Error while trying to authenticate: {}"
             err = err.format(e)
+            self.mylog.critical(e)
+            raise
+        except utils.exceptions.AuthorizationError as e:
+            err = "Authentication Failed: {}"
+            err = err.format(e)
+            self.mylog.critical(e)
             raise utils.exceptions.AuthorizationError(err)
+        except:
+            raise
 
-        self.session_id = body
-        if persistent:
+        if self._PERSISTENT:
             txt = "persistent (up to 1 week)"
         else:
             txt = "non-persistent (up to 5 minutes)"
@@ -454,14 +455,14 @@ class Session(object):
         self._start_stats_thread(**kwargs)
 
     def platform_is_6_5(self, **kwargs):
-        """Check to see if self.server_version is less than 6.5
+        """Check to see if self.SERVER_VERSION is less than 6.5
 
         Returns
         -------
         is6_5 : bool
             * True if self.FORCE_SERVER_VERSION is greater than or equal to 6.5
-            * True if self.server_version is greater than or equal to 6.5
-            * False if self.server_version is less than 6.5
+            * True if self.SERVER_VERSION is greater than or equal to 6.5
+            * False if self.SERVER_VERSION is less than 6.5
         """
         if self.FORCE_SERVER_VERSION:
             if self.FORCE_SERVER_VERSION >= '6.5':
@@ -478,7 +479,7 @@ class Session(object):
                 # inaccessible
                 result = False
             else:
-                result = self.server_version >= '6.5'
+                result = self.SERVER_VERSION >= '6.5'
         return result
 
     def find(self, obj, **kwargs):
@@ -496,7 +497,7 @@ class Session(object):
         """
         kwargs['obj'] = obj
         kwargs['request_body'] = self._create_get_object_body(**kwargs)
-        response_body = self._get_response(**kwargs)
+        response_body = self.soap_request(**kwargs)
         result = utils.taniumpy.BaseType.fromSOAPBody(body=response_body)
         return result
 
@@ -515,7 +516,7 @@ class Session(object):
         """
         kwargs['obj'] = obj
         kwargs['request_body'] = self._create_update_object_body(**kwargs)
-        response_body = self._get_response(**kwargs)
+        response_body = self.soap_request(**kwargs)
         result = utils.taniumpy.BaseType.fromSOAPBody(body=response_body)
         return result
 
@@ -534,7 +535,7 @@ class Session(object):
         """
         kwargs['obj'] = obj
         kwargs['request_body'] = self._create_add_object_body(**kwargs)
-        response_body = self._get_response(**kwargs)
+        response_body = self.soap_request(**kwargs)
         result = utils.taniumpy.BaseType.fromSOAPBody(body=response_body)
         return result
 
@@ -553,7 +554,7 @@ class Session(object):
         """
         kwargs['obj'] = obj
         kwargs['request_body'] = self._create_delete_object_body(**kwargs)
-        response_body = self._get_response(**kwargs)
+        response_body = self.soap_request(**kwargs)
         result = utils.taniumpy.BaseType.fromSOAPBody(body=response_body)
         return result
 
@@ -572,7 +573,7 @@ class Session(object):
         """
         kwargs['obj'] = obj
         kwargs['request_body'] = self._create_run_plugin_object_body(**kwargs)
-        response_body = self._get_response(**kwargs)
+        response_body = self.soap_request(**kwargs)
         result = utils.taniumpy.BaseType.fromSOAPBody(body=response_body)
         return result
 
@@ -591,7 +592,7 @@ class Session(object):
         """
         kwargs['obj'] = obj
         kwargs['request_body'] = self._create_get_result_info_body(**kwargs)
-        response_body = self._get_response(**kwargs)
+        response_body = self.soap_request(**kwargs)
 
         # parse the ResultXML node into it's own element
         resultxml_text = self._extract_resultxml(response_body=response_body)
@@ -616,7 +617,7 @@ class Session(object):
         """
         kwargs['obj'] = obj
         kwargs['request_body'] = self._create_get_result_data_body(**kwargs)
-        response_body = self._get_response(**kwargs)
+        response_body = self.soap_request(**kwargs)
 
         # parse the ResultXML node into it's own element
         resultxml_text = self._extract_resultxml(response_body=response_body)
@@ -641,7 +642,7 @@ class Session(object):
         """
         kwargs['obj'] = obj
         kwargs['request_body'] = self._create_get_result_data_body(**kwargs)
-        response_body = self._get_response(**kwargs)
+        response_body = self.soap_request(**kwargs)
 
         # if there is an export_id node, return the contents of that
         regex_args = {'body': response_body, 'element': 'export_id', 'fail': True}
@@ -655,7 +656,7 @@ class Session(object):
         ----------
         port : int, optional
             * default: None
-            * port to attempt getting /info.json from, if not specified will use self.port
+            * port to attempt getting /info.json from, if not specified will use self._PORT
         fallback_port : int, optional
             * default: 444
             * fallback port to attempt getting /info.json from if `port` fails
@@ -677,14 +678,13 @@ class Session(object):
             * 6.2 /info.json is only available on soap port (default port: 444)
             * 6.5 /info.json is only available on server port (default port: 443)
         """
-        self._check_auth()
         port = kwargs.get('port', None)
         fallback_port = kwargs.get('fallback_port', 444)
 
         connect_timeout = kwargs.get('connect_timeout', self.INFO_CONNECT_TIMEOUT_SEC)
         response_timeout = kwargs.get('response_timeout', self.INFO_RESPONSE_TIMEOUT_SEC)
 
-        kwargs['port'] = port or self.port
+        kwargs['port'] = port or self._PORT
         kwargs['url'] = self.INFO_RES
         kwargs['retry_count'] = 0
         kwargs['connect_timeout'] = connect_timeout
@@ -702,19 +702,19 @@ class Session(object):
 
         try:
             info_body = self.http_request_auth(**kwargs)
-            server_info_pass_msgs.append(ok_m(self.host, port, self.INFO_RES))
+            server_info_pass_msgs.append(ok_m(self._HOST, port, self.INFO_RES))
         except Exception as e:
-            self.mylog.info(bad_m(self.host, port, self.INFO_RES, e))
-            server_info_fail_msgs.append(bad_m(self.host, port, self.INFO_RES, e))
+            self.mylog.info(bad_m(self._HOST, port, self.INFO_RES, e))
+            server_info_fail_msgs.append(bad_m(self._HOST, port, self.INFO_RES, e))
 
         if not info_body:
             kwargs['port'] = fallback_port
             try:
                 info_body = self.http_request_auth(**kwargs)
-                server_info_pass_msgs.append(ok_m(self.host, port, self.INFO_RES))
+                server_info_pass_msgs.append(ok_m(self._HOST, port, self.INFO_RES))
             except Exception as e:
-                self.mylog.info(bad_m(self.host, port, self.INFO_RES, e))
-                server_info_fail_msgs.append(bad_m(self.host, port, self.INFO_RES, e))
+                self.mylog.info(bad_m(self._HOST, port, self.INFO_RES, e))
+                server_info_fail_msgs.append(bad_m(self._HOST, port, self.INFO_RES, e))
 
         try:
             info_dict = json.loads(info_body)
@@ -743,7 +743,7 @@ class Session(object):
         """
         if self._invalid_server_version():
             self._determine_server_version(**kwargs)
-        result = self.server_version
+        result = self.SERVER_VERSION
         return result
 
     def _determine_server_version(self, **kwargs):
@@ -762,7 +762,7 @@ class Session(object):
                 self.mylog.info(m)
 
         result = str(result)
-        self.server_version = result
+        self.SERVER_VERSION = result
         return result
 
     def get_server_stats(self, **kwargs):
@@ -778,12 +778,7 @@ class Session(object):
         :data:`pytan.sessions.Session.STATS_LOOP_TARGETS` : list of dict containing stat keys to pull from /info.json
         """
         try:
-            self._check_auth()
-        except:
-            return "Not yet authenticated!"
-
-        si = self.get_server_info(**kwargs)
-        try:
+            si = self.get_server_info(**kwargs)
             diags = si['diags_flat']
             stats_resolved = [
                 self._find_stat_target(target=t, diags=diags)
@@ -828,8 +823,19 @@ class Session(object):
         if isinstance(sleep, int):
             self.STATS_LOOP_SLEEP_SEC = sleep
 
-    def http_request_auth(self, **kwargs):
-        """This is an authenticated HTTP method. It will always forcibly use the authentication credentials that are stored in the current object when performing an HTTP request.
+    def soap_request(self, request_body, **kwargs):
+        """This is a wrapper around :func:`pytan.sessions.Session.http_post` for SOAP XML requests and responses.
+
+        This method will update self.session_id if the response contains a different session_id than what is currently in this object.
+
+        Parameters
+        ----------
+        request_body : str
+            * the XML request body to send to the server
+        retry_auth: bool, optional
+            * default: True
+            * True: retry authentication with username/password if session_id fails
+            * False: throw exception if session_id fails
 
         Returns
         -------
@@ -838,20 +844,137 @@ class Session(object):
 
         See Also
         --------
-        :func:`pytan.sessions.Session._http_get` : private method used to perform the actual HTTP GET
+        :func:`pytan.sessions.Session.http_post` : wrapper method used to perform the HTTP POST
         """
-        self._check_auth()
-
         headers = kwargs.get('headers', {})
-        headers = self._replace_auth(headers=headers)
+        retry_auth = kwargs.get('retry_auth', True)
+        connect_timeout = kwargs.get('connect_timeout', self.SOAP_CONNECT_TIMEOUT_SEC)
+        response_timeout = kwargs.get('response_timeout', self.SOAP_RESPONSE_TIMEOUT_SEC)
+
+        headers['Content-Type'] = 'text/xml; charset=utf-8'
+
+        kwargs['headers'] = headers
+        kwargs['body'] = request_body
+        kwargs['connect_timeout'] = connect_timeout
+        kwargs['response_timeout'] = response_timeout
+        kwargs['request_method'] = 'post'
+
+        regex_args = {'body': request_body, 'element': 'command', 'fail': True}
+        request_command = self._regex_body_for_element(**regex_args)
+        sent = datetime.utcnow()
+
+        # use the authenticated http request method to get a response
+        result = self.http_request_auth(**kwargs)
+
+        received = datetime.utcnow()
+        elapsed = received - sent
+        regex_args = {'body': result, 'element': 'command', 'fail': True}
+        response_command = self._regex_body_for_element(**regex_args)
+
+        self.LAST_RESPONSE_INFO = {}
+        self.LAST_RESPONSE_INFO['request_command'] = request_command
+        self.LAST_RESPONSE_INFO['request_args'] = kwargs
+        self.LAST_RESPONSE_INFO['sent'] = sent
+        self.LAST_RESPONSE_INFO['received'] = received
+        self.LAST_RESPONSE_INFO['elapsed'] = elapsed
+        self.LAST_RESPONSE_INFO['response_command'] = response_command
+
+        m = "HTTP Response: Timing info -- SENT: {}, RECEIVED: {}, ELAPSED: {}".format
+        self.httplog.debug(m(sent, received, elapsed))
+
+        if 'forbidden' in response_command.lower():
+            if retry_auth:
+                m = "Last request was denied, re-authenticating with user/pass"
+                self.authlog.info(m)
+
+                # we may have hit the 5 minute expiration for session_id, empty out session ID,
+                # re-authenticate, then retry request
+                self._SESSION_ID = ''
+                self.authenticate(**kwargs)
+
+                # re-issue the request
+                kwargs['retry_auth'] = False
+                kwargs['request_body'] = request_body
+                result = self.soap_request(**kwargs)
+            else:
+                err = "Access denied after re-authenticating! Server response: {}"
+                err = err.format(response_command)
+                raise utils.exceptions.AuthorizationError(err)
+
+        elif response_command != request_command:
+            for p in self.BAD_RESPONSE_CMD_PRUNES:
+                response_command = response_command.replace(p, '').strip()
+
+            err = "Response command {} does not match request command {}"
+            err = err.format(response_command, request_command)
+            raise utils.exceptions.BadResponseError(err)
+
+        # update session_id, in case new one issued
+        regex_args = {'body': result, 'element': 'session', 'fail': True}
+        self.session_id = self._regex_body_for_element(**regex_args)
+
+        # check to see if server_version set in response (6.5+ only)
+        if self._invalid_server_version():
+            regex_args = {'body': result, 'element': 'server_version', 'fail': False}
+            server_version = self._regex_body_for_element(**regex_args)
+            if server_version and self.SERVER_VERSION != server_version:
+                self.SERVER_VERSION = server_version
+        return result
+
+    def get_auth_type(self):
+        """pass."""
+        result = []
+        if self._SESSION_ID:
+            result.append("Session ID")
+
+        elif self._USERNAME and self._PASSWORD:
+            result.append("Username")
+            result.append("Password")
+            if self._DOMAIN:
+                result.append("Domain")
+            if self._SECONDARY:
+                result.append("Secondary")
+        else:
+            err = "Authentication type unknown!"
+            raise utils.exceptions.AuthorizationError(err)
+
+        result = ', '.join(result)
+        return result
+
+    def http_request_auth(self, **kwargs):
+        """This is an authenticated HTTP method. It will always forcibly use the authentication
+        credentials that are stored in the current object when performing an HTTP request.
+        """
+        headers = kwargs.get('headers', {})
         connect_timeout = kwargs.get('connect_timeout', self.SOAP_CONNECT_TIMEOUT_SEC)
         response_timeout = kwargs.get('response_timeout', self.SOAP_RESPONSE_TIMEOUT_SEC)
         auth_retry = kwargs.get('auth_retry', self.HTTP_AUTH_RETRY) or False
         retry_count = kwargs.get('retry_count', self.HTTP_RETRY_COUNT) or 0
         request_method = kwargs.get('request_method', 'get')
-        host = kwargs.get('server', self.host)
-        port = kwargs.get('port', self.port)
+        host = kwargs.get('server', self._HOST)
+        port = kwargs.get('port', self._PORT)
         url = kwargs.get('url', self.SOAP_RES)
+
+        removes = ['username', 'password', 'session', 'domain', 'secondary']
+        headers = {k: v for k, v in headers.iteritems() if k not in removes}
+
+        if self._SESSION_ID:
+            headers['session'] = self._SESSION_ID
+        elif self._USERNAME and self._PASSWORD:
+            headers['username'] = b64encode(self._USERNAME)
+            headers['password'] = b64encode(self._PASSWORD)
+            if self._DOMAIN:
+                headers['domain'] = self._DOMAIN
+            if self._SECONDARY:
+                headers['secondary'] = self._SECONDARY
+        else:
+            err = "Authentication type unknown!"
+            raise utils.exceptions.AuthorizationError(err)
+
+        auth_type = self.get_auth_type()
+        m = "Using {} for authentication headers"
+        m = m.format(auth_type)
+        self.authlog.info(m)
 
         kwargs['host'] = host
         kwargs['port'] = port
@@ -873,8 +996,8 @@ class Session(object):
                 result = self.http_request(**kwargs)
                 break
             except utils.exceptions.AuthorizationError:
-                if self._session_id and auth_retry:
-                    self._session_id = ''
+                if self._SESSION_ID and auth_retry:
+                    self._SESSION_ID = ''
                     self.authenticate()
                     kwargs['auth_retry'] = False
                     result = self.http_request_auth(**kwargs)
@@ -941,7 +1064,9 @@ class Session(object):
             * str containing body of response from server
         """
         headers = kwargs.get('headers', {})
-        cleaned_headers = self._clean_headers(headers=headers)
+        headers.update(self.REQUESTS_SESSION.headers)
+        headers.update(self.REQUEST_HEADERS)
+
         connect_timeout = kwargs.get('connect_timeout', self.SOAP_CONNECT_TIMEOUT_SEC)
         response_timeout = kwargs.get('response_timeout', self.SOAP_RESPONSE_TIMEOUT_SEC)
         request_method = kwargs.get('request_method', 'get')
@@ -953,14 +1078,19 @@ class Session(object):
         body = kwargs.get('body', '')
         pytan_help = kwargs.get('pytan_help', "NO HELP SUPPLIED")
 
-        full_url = self._full_url(host=host, port=port, url=url)
+        full_url = self.get_full_url(host=host, port=port, url=url)
 
         pre = "HTTP {} request: '{}': len:{}"
         pre = pre.format(request_method.upper(), full_url, len(body))
         self.httplog.info(pre)
 
+        clean_headers = {}
+        clean_headers.update(headers)
+        if 'password' in clean_headers:
+            clean_headers['password'] = '**PASSWORD**'
+
         m = "{}: headers: {}"
-        m = m.format(pre, cleaned_headers)
+        m = m.format(pre, clean_headers)
         self.httplog.debug(m)
 
         if body:
@@ -1017,56 +1147,22 @@ class Session(object):
         self.bodylog.debug(m)
 
         if response.status_code in self.AUTH_FAIL_CODES:
-            err = "{0}returned code: {1.status_code}, body: {2}"
+            err = "{0}: returned code: {1.status_code}, body: {2}"
             err = err.format(pre, response, response_body)
             raise utils.exceptions.AuthorizationError(err)
 
         if not response.ok:
-            err = "{0}returned code: {1.status_code}, body: {2}"
+            err = "{0}: returned code: {1.status_code}, body: {2}"
             err = err.format(pre, response, response_body)
             raise utils.exceptions.HttpError(err)
 
         if not response_body and not empty_ok:
-            err = "{0}returned empty body"
+            err = "{0}: returned empty body"
             err = err.format(pre)
             raise utils.exceptions.HttpError(err)
         return response_body
 
-    def _replace_auth(self, headers):
-        """Utility method for removing username, password, and/or session from supplied headers and replacing them with the current objects session or username and password
-
-        Parameters
-        ----------
-        headers : dict
-            * dict of key/value pairs for a set of headers for a given request
-
-        Returns
-        -------
-        headers : dict
-            * dict of key/value pairs for a set of headers for a given request
-        """
-        result = dict(headers)
-        removes = ['username', 'password', 'session']
-
-        for k in result:
-            if k in removes:
-                m = "Removing header {!r}".format(k)
-                self.authlog.debug(m)
-                result.pop(k)
-
-        if self._session_id:
-            result['session'] = self._session_id
-            m = "Using session ID for authentication headers"
-            self.authlog.info(m)
-
-        elif self._username and self._password:
-            result['username'] = b64encode(self._username)
-            result['password'] = b64encode(self._password)
-            m = "Using Username/Password for authentication headers"
-            self.authlog.info(m)
-        return result
-
-    def _full_url(self, url, **kwargs):
+    def get_full_url(self, url, **kwargs):
         """Utility method for constructing a full url
 
         Parameters
@@ -1074,10 +1170,10 @@ class Session(object):
         url : str
             * url to use in string
         host : str, optional
-            * default: self.host
+            * default: self._HOST
             * hostname/IP address to use in string
         port : str, optional
-            * default: self.port
+            * default: self._PORT
             * port to use in string
 
         Returns
@@ -1085,32 +1181,12 @@ class Session(object):
         full_url : str
             * full url in the form of https://$host:$port/$url
         """
-        host = kwargs.get('host', self.host)
-        port = kwargs.get('port', self.port)
+        host = kwargs.get('host', self._HOST)
+        port = kwargs.get('port', self._PORT)
+        schema = kwargs.get('schema', 'https')
 
-        result = "https://{0}:{1}/{2}"
-        result = result.format(host, port, url)
-        return result
-
-    def _clean_headers(self, headers=None):
-        """Utility method for getting the headers for the current request, combining them with the session headers used for every request, and obfuscating the value of any 'password' header.
-
-        Parameters
-        ----------
-        headers : dict
-            * dict of key/value pairs for a set of headers for a given request
-
-        Returns
-        -------
-        headers : dict
-            * dict of key/value pairs for a set of cleaned headers for a given request
-        """
-        clean_headers = dict(headers or {})
-        result = {}
-        result.update(self.REQUESTS_SESSION.headers)
-        result.update(clean_headers)
-        if 'password' in result:
-            result['password'] = '**PASSWORD**'
+        result = "{0}://{1}:{2}/{3}"
+        result = result.format(schema, host, port, url)
         return result
 
     def _start_stats_thread(self, **kwargs):
@@ -1395,14 +1471,6 @@ class Session(object):
         result = self._build_body(**kwargs)
         return result
 
-    def _check_auth(self):
-        """Utility method to check if authentication has been done yet, and throw an exception if not """
-        if not self.is_auth:
-            class_name = self.__class__.__name__
-            err = "Not yet authenticated, use {}.authenticate()!"
-            err = err.format(class_name)
-            raise utils.exceptions.AuthorizationError(err)
-
     def _regex_body_for_element(self, body, element, fail=True):
         """Utility method to use a regex to get an element from an XML body
 
@@ -1475,108 +1543,10 @@ class Session(object):
 
         return result
 
-    def _get_response(self, request_body, **kwargs):
-        """This is a wrapper around :func:`pytan.sessions.Session.http_post` for SOAP XML requests and responses.
-
-        This method will update self.session_id if the response contains a different session_id than what is currently in this object.
-
-        Parameters
-        ----------
-        request_body : str
-            * the XML request body to send to the server
-        retry_auth: bool, optional
-            * default: True
-            * True: retry authentication with username/password if session_id fails
-            * False: throw exception if session_id fails
-
-        Returns
-        -------
-        body : str
-            * str containing body of response from server
-
-        See Also
-        --------
-        :func:`pytan.sessions.Session.http_post` : wrapper method used to perform the HTTP POST
-        """
-        self._check_auth()
-
-        regex_args = {'body': request_body, 'element': 'command', 'fail': True}
-        request_command = self._regex_body_for_element(**regex_args)
-
-        retry_auth = kwargs.get('retry_auth', True)
-        connect_timeout = kwargs.get('connect_timeout', self.SOAP_CONNECT_TIMEOUT_SEC)
-        response_timeout = kwargs.get('response_timeout', self.SOAP_RESPONSE_TIMEOUT_SEC)
-
-        kwargs['body'] = request_body
-        kwargs['headers'] = dict(self.SOAP_REQUEST_HEADERS)
-        kwargs['connect_timeout'] = connect_timeout
-        kwargs['response_timeout'] = response_timeout
-        kwargs['request_method'] = 'post'
-        sent = datetime.utcnow()
-
-        self.LAST_RESPONSE_INFO = {}
-        self.LAST_RESPONSE_INFO['request_command'] = request_command
-        self.LAST_RESPONSE_INFO['request_args'] = kwargs
-        self.LAST_RESPONSE_INFO['sent'] = sent
-
-        result = self.http_request_auth(**kwargs)
-
-        received = datetime.utcnow()
-        elapsed = received - sent
-        regex_args = {'body': result, 'element': 'command', 'fail': True}
-        response_command = self._regex_body_for_element(**regex_args)
-
-        self.LAST_RESPONSE_INFO['received'] = received
-        self.LAST_RESPONSE_INFO['elapsed'] = elapsed
-        self.LAST_RESPONSE_INFO['response_command'] = response_command
-
-        m = "HTTP Response: Timing info -- SENT: {}, RECEIVED: {}, ELAPSED: {}".format
-        self.httplog.debug(m(sent, received, elapsed))
-
-        if 'forbidden' in response_command.lower():
-            if retry_auth:
-                m = "Last request was denied, re-authenticating with user/pass"
-                self.authlog.debug(m)
-
-                # we may have hit the 5 minute expiration for session_id, empty out session ID,
-                # re-authenticate, then retry request
-                self._session_id = ''
-                self.authenticate(**kwargs)
-
-                # re-issue the request
-                kwargs['retry_auth'] = False
-                kwargs['request_body'] = request_body
-                result = self._get_response(**kwargs)
-            else:
-                err = "Access denied after re-authenticating! Server response: {}"
-                err = err.format(response_command)
-                raise utils.exceptions.AuthorizationError(err)
-
-        elif response_command != request_command:
-
-            for p in self.BAD_RESPONSE_CMD_PRUNES:
-                response_command = response_command.replace(p, '').strip()
-
-            err = "Response command {} does not match request command {}"
-            err = err.format(response_command, request_command)
-            raise utils.exceptions.BadResponseError(err)
-
-        # update session_id, in case new one issued
-        regex_args = {'body': result, 'element': 'session', 'fail': True}
-        self.session_id = self._regex_body_for_element(**regex_args)
-
-        # check to see if server_version set in response (6.5+ only)
-        if self._invalid_server_version():
-            regex_args = {'body': result, 'element': 'server_version', 'fail': False}
-            server_version = self._regex_body_for_element(**regex_args)
-            if server_version and self.server_version != server_version:
-                self.server_version = server_version
-        return result
-
     def _invalid_server_version(self):
-        """Utility method to find out if self.server_version is valid or not"""
+        """Utility method to find out if self.SERVER_VERSION is valid or not"""
         result = False
-        current_server_version = getattr(self, 'server_version', '')
-        if current_server_version in self.BAD_SERVER_VERSIONS:
+        server_version = getattr(self, 'SERVER_VERSION', '')
+        if server_version in self.BAD_SERVER_VERSIONS:
             result = True
         return result

@@ -110,12 +110,14 @@ class BaseType(object):
         for p in self._simple_properties:
             el = ET.Element(p)
             val = getattr(self, p)
+            # print p, val
             if val is not None:
                 el.text = str(val)
             if val is not None or not minimal:
                 root.append(el)
         for p, t in self._complex_properties.iteritems():
             val = getattr(self, p)
+            # print p, t, val
             if val is not None or not minimal:
                 if val is not None and not isinstance(val, t):
                     raise IncorrectTypeException(p, t, type(val))
@@ -135,11 +137,14 @@ class BaseType(object):
                         el.append(str(val))
         for p, t in self._list_properties.iteritems():
             vals = getattr(self, p)
+            # print p, t, vals
             if not vals:
                 continue
             # fix for str types in list props
             if issubclass(t, BaseType):
                 for val in vals:
+                    # print type(val)
+                    # print val
                     root.append(val.toSOAPElement(minimal=minimal))
             else:
                 for val in vals:

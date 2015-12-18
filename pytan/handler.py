@@ -86,9 +86,6 @@ class Handler(object):
         # establish our Session to the Tanium server
         self.session = session.Session(**self.args_db['parsed_args'])
 
-        # authenticate to the Tanium server using the Session class
-        self.session.authenticate(**self.args_db['parsed_args'])
-
     def __str__(self):
         str_tpl = "PyTan v{} Handler for {}".format
         ret = str_tpl(__version__, self.session)
@@ -176,7 +173,6 @@ class Handler(object):
         right = kwargs.get('right', [])
         max_age_seconds = kwargs.get('max_age_seconds', 0)
         get_results = kwargs.get('get_results', True)
-
         utils.helpers.check_for_help(kwargs)
 
         # parser = utils.parsers.LeftSide(left)
@@ -189,6 +185,8 @@ class Handler(object):
 
         if max_age_seconds:
             kwargs['obj'].max_age_seconds = int(max_age_seconds)
+
+        self.obj = kwargs['obj']
 
         m = "Question Built: {}"
         m = m.format(kwargs['obj'].to_json(kwargs['obj']))
@@ -256,7 +254,7 @@ class Handler(object):
         result.question_results = None
 
         # get the saved_question object the user passed in
-        result.saved_question_object = self.get_saved_questions(limit=1, **kwargs)
+        result.saved_question_object = self.get_saved_questions(limit_exact=1, **kwargs)
 
         # get the last asked question for this saved question
         kwargs['pytan_help'] = utils.helpstr.SQ_GETQ
@@ -439,6 +437,7 @@ class Handler(object):
         return result
 
     # Actions
+    # TODO
     def deploy_action(self, **kwargs):
         """Deploy an action and get the results back
 
@@ -563,7 +562,7 @@ class Handler(object):
             raise utils.exceptions.PytanError(err)
 
         # get the saved_question object the user passed in
-        sa_obj = self.get_saved_actions(limit=1, **kwargs)
+        sa_obj = self.get_saved_actions(limit_exact=1, **kwargs)
 
         result = utils.taniumpy.SavedActionApproval()
         result.id = sa_obj.id
@@ -599,7 +598,7 @@ class Handler(object):
             raise utils.exceptions.PytanError(err)
 
         # get the action object the user passed in
-        a_obj_before = self.get_actions(limit=1, **kwargs)
+        a_obj_before = self.get_actions(limit_exact=1, **kwargs)
 
         result = utils.taniumpy.ActionStop()
         result.action = a_obj_before
@@ -787,6 +786,7 @@ class Handler(object):
         return ri
 
     # Objects
+    # TODO
     def create_from_json(self, objtype, json_file, **kwargs):
         """Creates a new object using the SOAP api from a json file
 
@@ -860,6 +860,7 @@ class Handler(object):
             ret.append(list_obj)
         return ret
 
+    # TODO
     def run_plugin(self, obj, **kwargs):
         """Wrapper around :func:`pytan.session.Session.run_plugin` to run the plugin and zip up the SQL results into a python dictionary
 
@@ -890,6 +891,7 @@ class Handler(object):
         # return the plugin result and the python dictionary of results
         return plugin_result, sql_zipped
 
+    # TODO
     def create_dashboard(self, name, text='', group='', public_flag=True, **kwargs):
         """Calls :func:`pytan.handler.Handler.run_plugin` to run the CreateDashboard plugin and parse the response
 
@@ -974,6 +976,7 @@ class Handler(object):
         # return the plugin result and the python dictionary of results
         return plugin_result, sql_zipped
 
+    # TODO
     def delete_dashboard(self, name, **kwargs):
         """Calls :func:`pytan.handler.Handler.run_plugin` to run the DeleteDashboards plugin and parse the response
 
@@ -1015,6 +1018,7 @@ class Handler(object):
         # return the plugin result and the python dictionary of results
         return plugin_result, sql_zipped
 
+    # TODO
     def get_dashboards(self, name='', **kwargs):
         """Calls :func:`pytan.handler.Handler.run_plugin` to run the GetDashboards plugin and parse the response
 
@@ -1053,6 +1057,7 @@ class Handler(object):
         # return the plugin result and the python dictionary of results
         return plugin_result, sql_zipped
 
+    # TODO
     def create_package(self, name, command, display_name='', file_urls=[],
                        command_timeout_seconds=600, expire_seconds=600, parameters_json_file='',
                        verify_filters=[], verify_filter_options=[], verify_expire_seconds=600,
@@ -1187,6 +1192,7 @@ class Handler(object):
         self.mylog.info(m(package_obj.name, package_obj.id, package_obj.command))
         return package_obj
 
+    # TODO
     def create_group(self, groupname, filters=[], filter_options=[], **kwargs):
         """Create a group object
 
@@ -1244,6 +1250,7 @@ class Handler(object):
         self.mylog.info(m(group_obj.name, group_obj.id, group_obj.text))
         return group_obj
 
+    # TODO
     def create_user(self, name, rolename=[], roleid=[], properties=[], group='', **kwargs):
         """Create a user object
 
@@ -1305,6 +1312,7 @@ class Handler(object):
         ))
         return user_obj
 
+    # TODO
     def create_whitelisted_url(self, url, regex=False, download_seconds=86400, properties=[],
                                **kwargs):
         """Create a whitelisted url object
@@ -1353,54 +1361,7 @@ class Handler(object):
         self.mylog.info(m(url_obj.url_regex, url_obj.id))
         return url_obj
 
-    def delete(self, objtype, **kwargs):
-        """Delete an object type
-
-        Parameters
-        ----------
-        objtype : string
-            * type of object to delete
-        id/name/hash : int or string, list of int or string
-            * search attributes of object to delete, must supply at least one valid search attr
-
-        Returns
-        -------
-        ret : dict
-            * dict containing deploy action object and results from deploy action
-
-        See Also
-        --------
-        :data:`utils.constants.GET_OBJ_MAP` : maps objtype to supported 'search' keys
-        """
-
-        obj_map = utils.tanium_obj.get_obj_map(objtype=objtype)
-
-        delete_ok = obj_map['delete']
-
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs)
-
-        if not delete_ok:
-            deletable = ', '.join([
-                x for x, y in utils.constants.GET_OBJ_MAP.items() if y['delete']
-            ])
-            m = "{} is not a deletable object! Deletable objects: {}".format
-            raise utils.exceptions.PytanError(m(objtype, deletable))
-
-        h = "Issue a GetObject to find the object to be deleted"
-        objs_to_del = self.get(objtype=objtype, pytan_help=h, **clean_kwargs)
-
-        deleted_objects = []
-        for obj_to_del in objs_to_del:
-            h = "Issue a DeleteObject to delete an object"
-            del_obj = self.session.delete(obj=obj_to_del, pytan_help=h, **clean_kwargs)
-
-            deleted_objects.append(del_obj)
-
-            m = "Deleted {!r}".format
-            self.mylog.info(m(str(del_obj)))
-
-        return deleted_objects
-
+    # TODO
     def export_obj(self, obj, export_format='csv', **kwargs):
         """Exports a python API object to a given export format
 
@@ -1511,6 +1472,7 @@ class Handler(object):
 
         return result
 
+    # TODO
     def create_report_file(self, contents, report_file=None, **kwargs):
         """Exports a python API object to a file
 
@@ -1573,6 +1535,7 @@ class Handler(object):
         self.mylog.info(m(report_path, len(contents)))
         return report_path
 
+    # TODO
     def export_to_report_file(self, obj, export_format='csv', **kwargs):
         """Exports a python API object to a file
 
@@ -1663,12 +1626,48 @@ class Handler(object):
         return report_path, contents
 
     # get objects
+    def delete_groups(self, *args, **kwargs):
+        """pass."""
+        result = self.get_groups(*args, **kwargs)
+        result = self._delete_objects(result)
+        return result
+
+    def delete_packages(self, *args, **kwargs):
+        """pass."""
+        result = self.get_packages(*args, **kwargs)
+        result = self._delete_objects(result, **kwargs)
+        return result
+
+    def delete_saved_questions(self, *args, **kwargs):
+        """pass."""
+        result = self.get_saved_questions(*args, **kwargs)
+        result = self._delete_objects(result, **kwargs)
+        return result
+
+    def delete_sensors(self, *args, **kwargs):
+        """pass."""
+        result = self.get_sensors(*args, **kwargs)
+        result = self._delete_objects(result, **kwargs)
+        return result
+
+    def delete_users(self, *args, **kwargs):
+        """pass."""
+        result = self.get_users(*args, **kwargs)
+        result = self._delete_objects(result, **kwargs)
+        return result
+
+    def delete_whitelisted_urls(self, *args, **kwargs):
+        """pass."""
+        result = self.get_whitelisted_urls(*args, **kwargs)
+        result = self._delete_objects(result, **kwargs)
+        return result
+
     def get_sensors(self, *args, **kwargs):
         """pass."""
         kwargs['all_class'] = utils.taniumpy.SensorList
         kwargs['specs_from_args'] = args
         kwargs['hide_sourced_sensors'] = kwargs.get('hide_sourced_sensors', True)
-        result = self.get_object(**kwargs)
+        result = self._get_objects(**kwargs)
         return result
 
     def get_packages(self, *args, **kwargs):
@@ -1676,21 +1675,21 @@ class Handler(object):
         kwargs['all_class'] = utils.taniumpy.PackageSpecList
         kwargs['specs_from_args'] = args
         kwargs['FIXIT_SINGLE'] = True
-        result = self.get_object(**kwargs)
+        result = self._get_objects(**kwargs)
         return result
 
     def get_actions(self, *args, **kwargs):
         """pass."""
         kwargs['all_class'] = utils.taniumpy.ActionList
         kwargs['specs_from_args'] = args
-        result = self.get_object(**kwargs)
+        result = self._get_objects(**kwargs)
         return result
 
     def get_clients(self, *args, **kwargs):
         """pass."""
         kwargs['all_class'] = utils.taniumpy.SystemStatusList
         kwargs['specs_from_args'] = args
-        result = self.get_object(**kwargs)
+        result = self._get_objects(**kwargs)
         return result
 
     def get_groups(self, *args, **kwargs):
@@ -1698,35 +1697,35 @@ class Handler(object):
         kwargs['all_class'] = utils.taniumpy.GroupList
         kwargs['specs_from_args'] = args
         kwargs['FIXIT_GROUP_ID'] = True
-        result = self.get_object(**kwargs)
+        result = self._get_objects(**kwargs)
         return result
 
     def get_questions(self, *args, **kwargs):
         """pass."""
         kwargs['all_class'] = utils.taniumpy.QuestionList
         kwargs['specs_from_args'] = args
-        result = self.get_object(**kwargs)
+        result = self._get_objects(**kwargs)
         return result
 
     def get_saved_actions(self, *args, **kwargs):
         """pass."""
         kwargs['all_class'] = utils.taniumpy.SavedActionList
         kwargs['specs_from_args'] = args
-        result = self.get_object(**kwargs)
+        result = self._get_objects(**kwargs)
         return result
 
     def get_saved_questions(self, *args, **kwargs):
         """pass."""
         kwargs['all_class'] = utils.taniumpy.SavedQuestionList
         kwargs['specs_from_args'] = args
-        result = self.get_object(**kwargs)
+        result = self._get_objects(**kwargs)
         return result
 
     def get_settings(self, *args, **kwargs):
         """pass."""
         kwargs['all_class'] = utils.taniumpy.SystemSettingList
         kwargs['specs_from_args'] = args
-        result = self.get_object(**kwargs)
+        result = self._get_objects(**kwargs)
         return result
 
     def get_users(self, *args, **kwargs):
@@ -1734,7 +1733,7 @@ class Handler(object):
         kwargs['all_class'] = utils.taniumpy.UserList
         kwargs['specs_from_args'] = args
         kwargs['FIXIT_BROKEN_FILTER'] = True
-        result = self.get_object(**kwargs)
+        result = self._get_objects(**kwargs)
         return result
 
     def get_user_roles(self, *args, **kwargs):
@@ -1742,7 +1741,7 @@ class Handler(object):
         kwargs['all_class'] = utils.taniumpy.UserRoleList
         kwargs['specs_from_args'] = args
         kwargs['FIXIT_BROKEN_FILTER'] = True
-        result = self.get_object(**kwargs)
+        result = self._get_objects(**kwargs)
         return result
 
     def get_whitelisted_urls(self, *args, **kwargs):
@@ -1750,12 +1749,13 @@ class Handler(object):
         kwargs['all_class'] = utils.taniumpy.WhiteListedUrlList
         kwargs['specs_from_args'] = args
         kwargs['FIXIT_BROKEN_FILTER'] = True
-        result = self.get_object(**kwargs)
+        result = self._get_objects(**kwargs)
         return result
 
-    def get_object(self, all_class, **kwargs):
+    # BEGIN PRIVATE METHODS
+    def _get_objects(self, all_class, **kwargs):
         """pass."""
-        limit = kwargs.get('limit', None)
+        limit_exact = kwargs.get('limit_exact', None)
         hide_sourced_sensors = kwargs.get('hide_sourced_sensors', False)
         # get specs from kwargs or from args (assuming calling method put them in specs_from_args)
         kwargs['specs'] = kwargs.get('specs', []) or kwargs.get('specs_from_args', [])
@@ -1778,31 +1778,32 @@ class Handler(object):
             # get all objects
             kwargs['pytan_help'] = utils.helpstr.GET.format(all_class.__name__)
             result = self.session.find(**kwargs)
-            self._check_limit(result=result, **kwargs)
+            kwargs['objects'] = result
+            utils.tanium_obj.check_limits(**kwargs)
 
-        # if just one item returned and limit == 1, return result as a single item
-        # if result is a list
-        if len(result) == 1 and limit == 1:
-            try:
-                result = result[0]
-            except:
-                pass
+        if limit_exact is not None:
+            # if just one item returned and limit_exact == 1, return result as a single item
+            # if result is a list
+            if len(result) == 1 and limit_exact == 1:
+                try:
+                    result = result[0]
+                except:
+                    pass
 
-        m = "GetObject found '{}' (using filters: {})"
+        m = "get_objects found '{}' (using filters: {})"
         m = m.format(result, use_filters)
         self.mylog.info(m)
         return result
 
-    # BEGIN PRIVATE METHODS
     def _get_spec_objects(self, specs):
         """pass."""
         for spec in specs:
             if 'sensor' in spec:
-                spec['sensor_object'] = self.get_sensors(limit=1, specs=spec['sensor'])
+                spec['sensor_object'] = self.get_sensors(limit_exact=1, specs=spec['sensor'])
             if 'group' in spec:
-                spec['group_object'] = self.get_groups(limit=1, specs=spec['group'])
+                spec['group_object'] = self.get_groups(limit_exact=1, specs=spec['group'])
             if 'package' in spec:
-                spec['package_object'] = self.get_packages(limit=1, specs=spec['package'])
+                spec['package_object'] = self.get_packages(limit_exact=1, specs=spec['package'])
         return specs
 
     def _fixit_single(self, **kwargs):
@@ -1815,7 +1816,7 @@ class Handler(object):
             result = single_class()
             m = "FIXIT_SINGLE: changed class from {} to {}"
             m = m.format(kwargs['all_class'].__name__, single_class.__name__)
-            self.mylog.info(m)  # TODO
+            self.mylog.debug(m)
         return result
 
     def _fixit_group_id(self, specs, **kwargs):
@@ -1827,75 +1828,40 @@ class Handler(object):
             for spec in specs:
                 if spec['field'] == 'id':
                     result = utils.taniumpy.Group()
-                    setattr(kwargs['obj'], spec['field'], spec['value'])
+                    setattr(result, spec['field'], spec['value'])
                     m = "FIXIT_GROUP_ID: changed class to 'Group' and set {field!r} to {value!r}"
                     m = m.format(**spec)
-                    self.mylog.info(m)  # TODO
+                    self.mylog.debug(m)
         return result
 
-    def _fixit_broken_filter(self, result, specs, **kwargs):
+    def _fixit_broken_filter(self, objects, specs, **kwargs):
         """pass."""
         fixit = kwargs.get('FIXIT_BROKEN_FILTER', False)
+        result = objects
         # FIXIT_BROKEN_FILTER: the API returns all objects even if using a cache filter
         if fixit:
-            # create a new result of the same class to store matching objects in
+            # create a new objects of the same class to store matching objects in
             m = "FIXIT_BROKEN_FILTER: Match {}: '{}' using specs: {}".format
-            new_result = result.__class__()
+            new_objects = objects.__class__()
             for spec in specs:
-                for r in result:
+                for r in objects:
                     match_found = True
                     for subspec in spec:
                         if getattr(r, subspec['field']) != subspec['value']:
                             match_found = False
 
                     if match_found:
-                        if r not in new_result:
-                            self.mylog.info(m('found', r, spec))
-                            new_result.append(r)
+                        if r not in new_objects:
+                            self.mylog.debug(m('found', r, spec))
+                            new_objects.append(r)
                     else:
-                        self.mylog.info(m('not found', r, spec))
+                        self.mylog.debug(m('not found', r, spec))
 
-            m = "FIXIT_BROKEN_FILTER: original result '{}', new result '{}'"
-            m = m.format(result, new_result)
-            self.mylog.info(m)
-            result = new_result
+            m = "FIXIT_BROKEN_FILTER: original objects '{}', new objects '{}'"
+            m = m.format(objects, new_objects)
+            self.mylog.debug(m)
+            result = new_objects
         return result
-
-    def _check_limit(self, result, **kwargs):
-        """pass."""
-        limit = kwargs.get('limit', None)
-        specs = kwargs.get('specs', [])
-
-        # limit is not supplied
-        if limit is None:
-            return
-
-        # coerce single items into a list
-        try:
-            result[0]
-        except:
-            result = [result]
-
-        # limit is supplied and matches length of result
-        if len(result) == int(limit):
-            return
-
-        # limit is supplied and does not match length of result
-
-        # get the str of each result for printing in exception
-        resulttxt = '\n\t'.join([str(x) for x in result])
-
-        # get the class name of the first result
-        classtxt = result[0].__class__.__name__
-
-        # get the specs txt if any specs
-        specstxt = ""
-        if specs:
-            specstxt = " specs: " + ", ".join([str(x) for x in specs])
-
-        err = "{} {} found,{} must return {}, returned items:\n\t{}"
-        err = err.format(len(result), classtxt, specstxt, limit, resulttxt)
-        raise utils.exceptions.PytanError(err)
 
     def _find_filter(self, all_class, specs, **kwargs):
         """pass."""
@@ -1930,7 +1896,8 @@ class Handler(object):
             if hide_sourced_sensors:
                 parsed_specs.append(hide_spec)
 
-            kwargs['obj'] = self._fixit_group_id(specs=parsed_specs, **kwargs)
+            kwargs['specs'] = parsed_specs
+            kwargs['obj'] = self._fixit_group_id(**kwargs)
 
             # create a cache filter list object using the parsed_specs
             kwargs['cache_filters'] = utils.tanium_obj.create_cf_listobj(parsed_specs)
@@ -1940,21 +1907,25 @@ class Handler(object):
 
             m = "{} found using parsed specs: {!r}"
             m = m.format(cf_result, parsed_specs)
-            self.mylog.info(m)  # TODO
+            self.mylog.debug(m)
 
             # if cf_result is a list, append each item to result
             try:
                 cf_result[0]
-                [result.append(r) for r in cf_result]
+                [result.append(r) for r in cf_result if r]
             # otherwise just append cf_result directly to result
             except:
-                result.append(cf_result)
+                if cf_result:
+                    result.append(cf_result)
 
             all_parsed_specs.append(parsed_specs)
 
-        result = self._fixit_broken_filter(specs=all_parsed_specs, result=result, **kwargs)
+        kwargs['specs'] = all_parsed_specs
+        kwargs['objects'] = result
+        result = self._fixit_broken_filter(**kwargs)
 
-        self._check_limit(result=result, specs=all_parsed_specs, **kwargs)
+        kwargs['objects'] = result
+        utils.tanium_obj.check_limits(**kwargs)
         return result
 
     def _add(self, obj, **kwargs):
@@ -1986,10 +1957,11 @@ class Handler(object):
 
         try:
             added_obj = self.session.add(**kwargs)
-        except Exception as e:
-            err = "Error while trying to add object '{}': {}!!"
-            err = err.format(search_str, e)
-            raise utils.exceptions.PytanError(err)
+        except:
+            err = "Error while trying to add object: '{}'!!"
+            err = err.format(search_str)
+            self.mylog.critical(err)
+            raise
 
         m = "Added Object: {}"
         m = m.format(added_obj)
@@ -2000,17 +1972,36 @@ class Handler(object):
 
         try:
             result = self.session.find(**kwargs)
-        except Exception as e:
-            self.utils.exceptions.mylog.error(e)
+        except:
             err = "Error while trying to find recently added object {}!!"
             err = err.format(search_str)
-            raise utils.exceptions.PytanError(err)
+            self.mylog.critical(err)
+            raise
 
         m = "Successfully added and fetched full object: {}"
         m = m.format(result)
         self.mylog.debug(m)
         return result
 
+    def _delete_objects(self, objs, **kwargs):
+        """pass."""
+        # TODO
+        # really_delete = kwargs.get('really_delete', False)
+        # export_before_delete = kwargs.get('export_before_delete', True)
+        result = [self._delete(o) for o in objs]
+        return result
+
+    def _delete(self, obj, **kwargs):
+        """pass."""
+        kwargs['obj'] = obj
+        kwargs['pytan_help'] = kwargs.get('pytan_help', utils.helpstr.DEL)
+        result = self.session.delete(**kwargs)
+        m = "Deleted '{}'"
+        m = m.format(result)
+        self.mylog.info(m)
+        return result
+
+    # TODO
     def _export_class_BaseType(self, obj, export_format, **kwargs): # noqa
         """Handles exporting :class:`utils.taniumpy.object_types.base.BaseType`
 
@@ -2041,6 +2032,7 @@ class Handler(object):
 
         return result
 
+    # TODO
     def _export_class_ResultSet(self, obj, export_format, **kwargs): # noqa
         """Handles exporting :class:`utils.taniumpy.object_types.result_set.ResultSet`
 
@@ -2091,6 +2083,7 @@ class Handler(object):
 
         return result
 
+    # TODO
     def _export_format_csv(self, obj, **kwargs):
         """Handles exporting format: CSV
 
@@ -2122,6 +2115,7 @@ class Handler(object):
         result = out.getvalue()
         return result
 
+    # TODO
     def _export_format_json(self, obj, **kwargs):
         """Handles exporting format: JSON
 
@@ -2146,6 +2140,7 @@ class Handler(object):
         result = obj.to_json(jsonable=obj, **clean_kwargs)
         return result
 
+    # TODO
     def _export_format_xml(self, obj, **kwargs):
         """Handles exporting format: XML
 
@@ -2176,6 +2171,7 @@ class Handler(object):
         result = utils.pretty.xml_pretty(x=raw_xml, **clean_kwargs)
         return result
 
+    # TODO
     def _deploy_action(self, run=False, get_results=True, **kwargs):
         """Deploy an action and get the results back
 

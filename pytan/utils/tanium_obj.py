@@ -5,6 +5,7 @@
 
 import logging
 from .external import taniumpy
+from . import exceptions
 
 try:
     import xml.etree.cElementTree as ET
@@ -179,6 +180,7 @@ def create_parent_group_obj(specs):
     for idx, spec in enumerate(specs):
         # if they supplied a group object, use that instead of creating one
         if 'group_object' in spec:
+            print "using group object instead of filter"
             parent_sub.sub_groups.append(spec['group_object'])
             continue
 
@@ -188,33 +190,70 @@ def create_parent_group_obj(specs):
         # if this is the first spec
         # add a group with a filter from this spec to the current parent_sub
         if first:
-            parent_sub.sub_groups.append(create_group_with_filter_obj(spec))
+            new_group = create_group_with_filter_obj(spec)
+            print 'first: creating a new group and adding to parent_sub'
+            print spec['filter']
+            parent_sub.sub_groups.append(new_group)
+
             if this_and is not None:
+                print 'applying and_flag {} to parent_sub'.format(this_and)
                 parent_sub.and_flag = this_and
             continue
 
         # if this spec does not have and_flag
         # add a group with a filter from this spec to the current parent_sub
         if this_and is None:
-            parent_sub.sub_groups.append(create_group_with_filter_obj(spec))
+            new_group = create_group_with_filter_obj(spec)
+            print 'not first: and is None, creating a new group and adding to parent_sub'
+            print spec['filter']
+            parent_sub.sub_groups.append(new_group)
             continue
 
         # if this spec does have an and_flag and it doesn't match the current
         # parent_sub's and, create a new parent_sub
         # add a group with a filter from this spec to the new parent_sub
         if parent_sub.and_flag != this_and:
+            print 'not first:, and is {} creating a new parent_sub'.format(this_and)
             parent_sub = taniumpy.Group()
             parent_sub.and_flag = this_and
             parent_sub.sub_groups = taniumpy.GroupList()
-            parent_sub.sub_groups.append(create_group_with_filter_obj(spec))
             result.sub_groups.append(parent_sub)
+
+            new_group = create_group_with_filter_obj(spec)
+            print 'not first: creating a new group and adding to parent_sub'
+            print spec['filter']
+            parent_sub.sub_groups.append(new_group)
             continue
 
-        # add a group with a filter from this spec to the current parent_sub
-        parent_sub.sub_groups.append(create_group_with_filter_obj(spec))
+        new_group = create_group_with_filter_obj(spec)
+        print 'catch all: creating a new group and adding to parent_sub'
+        print spec['filter']
+        parent_sub.sub_groups.append(new_group)
         continue
 
+    recurse_group(result)
     return result
+
+
+def recurse_group(g, level=1):
+    """pass"""
+    sglen = len(g.sub_groups or [])
+    flen = len(g.filters or [])
+
+    a = "level: {}, and_flag: {}, filters: {}, sub_groups: {}"
+    a = a.format(level, g.and_flag, flen, sglen)
+    print a
+
+    if g.filters:
+        for i in g.filters:
+            f = "operator: {0.operator} value: {0.value}".format(i)
+            m = "level: {}, and_flag: {}, filter: {}"
+            m = m.format(level, g.and_flag, f)
+            print m
+
+    if g.sub_groups:
+        for i in g.sub_groups:
+            recurse_group(i, level + 1)
 
 
 def create_question_obj(left=[], right=[]):
@@ -224,3 +263,61 @@ def create_question_obj(left=[], right=[]):
     if right:
         result.group = create_parent_group_obj(right)
     return result
+
+
+def check_limits(objects, **kwargs):
+    """pass."""
+    specs = kwargs.get('specs', [])
+
+    if not isinstance(objects, taniumpy.BaseType):
+        err = "{} must be a taniumpy object, type: {}"
+        err = err.format(objects, type(objects))
+        raise exceptions.PytanError(err)
+
+    # coerce single items into a list
+    objects_class = objects.__class__.__name__
+    if not objects_class.endswith('List'):
+        new_class = objects_class + 'List'
+        new_objects = getattr(taniumpy, new_class)()
+        new_objects.append(objects)
+        objects = new_objects
+
+    limit_map = [
+        {'k': 'limit_min', 'm': "{} items or more", 'e': '>='},
+        {'k': 'limit_max', 'm': "{} items or less", 'e': '<='},
+        {'k': 'limit_exact', 'm': "{} items exactly", 'e': '=='},
+    ]
+
+    for l in limit_map:
+        limit_val = kwargs.get(l['k'], None)
+
+        if limit_val is None:
+            m = "check_limits(): found {}, skipped {} (not supplied)"
+            m = m.format(objects, l['k'], )
+            mylog.debug(m)
+            continue
+
+        limit_val = int(limit_val)
+        e = "len(objects) {} limit_val".format(l['e'])
+        limit_pass = eval(e)
+
+        p = "check_limits(): found {}, {} {} (must be {})"
+        limit_msg = l['m'].format(limit_val)
+
+        if limit_pass:
+            m = p.format(objects, 'PASSED', l['k'], limit_msg)
+            mylog.debug(m)
+        else:
+            # get the str of each objects for printing in exception
+            objtxt = '\n\t'.join([str(x) for x in objects])
+
+            # get the specs txt if any specs
+            specstxt = "\n"
+            if specs:
+                specstxt = "\nspecs:\n\t" + "\n\t".join([str(x) for x in specs]) + "\n"
+
+            err_pre = p.format(objects, 'FAILED', l['k'], limit_msg)
+            err = "{}{}returned items:\n\t{}"
+            err = err.format(err_pre, specstxt, objtxt)
+            mylog.critical(err)
+            raise exceptions.PytanError(err)

@@ -42,8 +42,8 @@ if __name__ == "__main__":
 spec1 = {
     'sensor': {'value': "Computer Name"},
     # 'sensor_object': {'id': 3, 'hash': "3409330187"},  # NEEDED FROM SENSOR
-    'filter': {'value': "TPT1.pytanlab.com", 'operator': 'Equal', 'and_flag': 0},  # NEEDED FROM USER
-    'group': {'value': 492},
+    'filter': {'value': "TPT1.pytanlab.com", 'operator': 'Equal', 'and_flag': 1},  # NEEDED FROM USER
+    # 'group': {'value': 492},
     # 'group_object': None,  # NEEDED FROM USER
 }
 
@@ -58,7 +58,7 @@ spec3 = {
     'sensor': {'value': "Folder Contents"},
     # 'sensor_object': {'id': 508, 'hash': "3881863289"},  # NEEDED FROM SENSOR
     'parameters': {'folderPath': 'C:\\Program Files'},  # NEEDED FROM USER
-    'filter': {'value': "Folder : Windows NT", 'operator': 'Equal', 'and_flag': 0},  # NEEDED FROM USER
+    'filter': {'value': "Folder : Windows NT", 'operator': 'Equal', 'and_flag': 1},  # NEEDED FROM USER
 }
 
 # Folder Contents{folderPath=C:\\Program Files}, that re:Folder : Windows NT
@@ -76,5 +76,11 @@ spec4 = {
     'parameters': {'folderPath': 'C:\\Program Files'},  # NEEDED FROM USER
 }
 
-left = [spec1, spec4]
-right = [spec1, spec3, spec5]
+# left = [spec1, spec4]
+# right = [spec1, spec3, spec5]
+v = handler.ask_manual(left=[spec1, spec4], right=[spec1, spec3, spec5], get_results=False)
+# x = handler.get_groups({'value': 615}, limit_exact=1)
+
+q = v.question_object
+group = q.group
+pytan.utils.tanium_obj.recurse_group(group)
