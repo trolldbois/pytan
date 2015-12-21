@@ -1,7 +1,3 @@
-#!/usr/bin/env python
-# -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
-# ex: set tabstop=4
-# Please do not change the two lines above. See PEP 8, PEP 263.
 """Constants for :mod:`pytan`."""
 
 import sys
@@ -87,11 +83,11 @@ LOG_LEVEL_MAPS = {
     'pytan.session.body': 9,
     'pytan.utils.xml_clean': 9,
     'pytan.utils.log': 10,
-    'pytan.utils.external.requests': 11,
-    'pytan.utils.external.requests.packages.urllib3': 11,
-    'pytan.utils.external.requests.packages.urllib3.connectionpool': 11,
-    'pytan.utils.external.requests.packages.urllib3.poolmanager': 11,
-    'pytan.utils.external.requests.packages.urllib3.util.retry': 11,
+    'pytan.external.requests': 11,
+    'pytan.external.requests.packages.urllib3': 11,
+    'pytan.external.requests.packages.urllib3.connectionpool': 11,
+    'pytan.external.requests.packages.urllib3.poolmanager': 11,
+    'pytan.external.requests.packages.urllib3.util.retry': 11,
 }
 """
 Map for pytan loggers into python loggings system.
@@ -254,19 +250,6 @@ GET_OBJ_MAP = {
         'create_json': True,
     },
 }
-"""
-Maps an object type from a human friendly string into various aspects:
-
-    * single: The :mod:`TaniumPy` object used to find singular instances of this object type
-    * multi: The :mod:`TaniumPy` object used to find multiple instances of this object type
-    * all: The :mod:`TaniumPy` object used to find all instances of this object type
-    * search: The list of attributes that can be used with the Tanium SOAP API for searches
-    * manual: Whether or not this object type is allowed to do a manual search, that is -- allow
-      the user to specify an attribute that is not in search, which will get ALL objects of that
-      type then search for a match based on attribute values for EVERY key/value pair supplied
-    * delete: Whether or not this object type can be deleted
-    * create_json: Whether or not this object type can be created by importing from JSON
-"""
 
 EXPORT_MAPS = {
     'ResultSet': {
@@ -279,7 +262,7 @@ EXPORT_MAPS = {
             {
                 'key': 'sensors',
                 'valid_types': [list, tuple],
-                'valid_list_types': ['taniumpy.Sensor'],
+                'valid_list_types': ['tanium_ng.Sensor'],
             },
             {
                 'key': 'header_add_sensor',
@@ -336,7 +319,7 @@ EXPORT_MAPS = {
 
 }
 """
-Maps a given TaniumPy object to the list of supported export formats for each object type, and the
+Maps a given tanium_ng object to the list of supported export formats for each object type, and the
 valid optional arguments for each export format. Optional arguments construct:
     * key: the optional argument name itself
     * valid_types: the valid python types that are allowed to be passed as a value to `key`

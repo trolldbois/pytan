@@ -11,6 +11,7 @@ from datetime import timedelta
 
 from . import question
 from .. import utils
+from .. import tanium_ng
 
 mylog = logging.getLogger(__name__)
 progresslog = logging.getLogger(__name__ + ".progress")
@@ -30,7 +31,7 @@ class ActionPoller(question.QuestionPoller):
     ----------
     handler : :class:`handler.Handler`
         * PyTan handler to use for GetResultInfo calls
-    obj : :class:`utils.taniumpy.object_types.action.Action`
+    obj : :class:`tanium_ng.Action`
         * object to poll for progress
     polling_secs : int, optional
         * default: 5
@@ -45,7 +46,7 @@ class ActionPoller(question.QuestionPoller):
         * instead of getting number of systems that should run this action by asking a question, use this number
     """
 
-    OBJECT_TYPE = utils.taniumpy.object_types.action.Action
+    OBJECT_TYPE = tanium_ng.Action
     """valid type of object that can be passed in as obj to __init__"""
 
     COMPLETE_PCT_DEFAULT = utils.constants.A_COMPLETE_PCT_DEFAULT
@@ -199,7 +200,7 @@ class ActionPoller(question.QuestionPoller):
             'failed': {"{}:{}".format(self.obj.id, k): [] for k in failed},
             'unknown': {},
         }
-        for k, v in self.result_map.iteritems():
+        for k, v in self.result_map.items():
             v['total'] = 0
 
         m = "{}Result Map resolved to {}".format
@@ -268,7 +269,7 @@ class ActionPoller(question.QuestionPoller):
             ).format
             self.mylog.debug(m(self.id_str, self.obj))
 
-            self.pre_question = utils.taniumpy.Question()
+            self.pre_question = tanium_ng.Question()
             self.pre_question.group = self.target_group
             self.pre_question = self.handler._add(
                 obj=self.pre_question, pytan_help=m(self.id_str, self.obj), **clean_kwargs
@@ -303,9 +304,9 @@ class ActionPoller(question.QuestionPoller):
         # loop counter
         self.seen_loop_count = 1
         # establish a previous result_info that's empty
-        self.previous_result_info = utils.taniumpy.object_types.result_info.ResultInfo()
+        self.previous_result_info = tanium_ng.ResultInfo()
         # establish a previous result_data that's empty
-        self.previous_result_data = utils.taniumpy.object_types.result_set.ResultSet()
+        self.previous_result_data = tanium_ng.ResultSet()
 
         if self.passed_count == 0:
             m = "Passed Count of Clients for filter {} is 0 -- no clients match filter".format
@@ -451,9 +452,9 @@ class ActionPoller(question.QuestionPoller):
         # loop counter
         self.loop_count = 1
         # establish a previous result_info that's empty
-        self.previous_result_info = utils.taniumpy.object_types.result_info.ResultInfo()
+        self.previous_result_info = tanium_ng.ResultInfo()
         # establish a previous result_data that's empty
-        self.previous_result_data = utils.taniumpy.object_types.result_set.ResultSet()
+        self.previous_result_data = tanium_ng.ResultSet()
 
         while not self._stop:
             clean_keys = ['pytan_help', 'aggregate', 'callback', 'pct']
@@ -494,7 +495,7 @@ class ActionPoller(question.QuestionPoller):
                 comp_name = row['Computer Name'][0]
                 known = False
 
-                for s, smap in self.result_map.iteritems():
+                for s, smap in self.result_map.items():
                     if action_status in smap:
                         known = True
                         if comp_name not in self.result_map[s][action_status]:
@@ -507,8 +508,8 @@ class ActionPoller(question.QuestionPoller):
                     if comp_name not in self.result_map['unknown'][action_status]:
                         self.result_map['unknown'][action_status].append(comp_name)
 
-                for s, smap in self.result_map.iteritems():
-                    smap['total'] = sum([len(y) for x, y in smap.iteritems() if x != 'total'])
+                for s, smap in self.result_map.items():
+                    smap['total'] = sum([len(y) for x, y in smap.items() if x != 'total'])
 
             # Use the total from the key defined in self.ACTION_DONE_KEY in self.result_map
             # this total will equate to the number of systems that have finished this action
@@ -522,7 +523,7 @@ class ActionPoller(question.QuestionPoller):
 
             # print a progress debug string
             p = "{}: {}".format
-            progress_list = [p(s, smap['total']) for s, smap in self.result_map.iteritems()]
+            progress_list = [p(s, smap['total']) for s, smap in self.result_map.items()]
             progress_list.append("Done Key: {}".format(self.ACTION_DONE_KEY))
             progress_list.append("Passed Count: {}".format(self.passed_count))
             self.progress_str = ', '.join(progress_list)

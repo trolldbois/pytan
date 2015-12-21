@@ -1,14 +1,13 @@
-#!/usr/bin/env python
-# -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
-# ex: set tabstop=4
-# Please do not change the two lines above. See PEP 8, PEP 263.
 """Logging module for :mod:`pytan`."""
+
+# TODO MAKE SUB FUNCS NOT USE constants, pass in from PARENTS!
 
 import re
 import os
 import logging
 import time
 from . import constants
+from . import exceptions
 
 mylog = logging.getLogger(__name__)
 mylog.setLevel(logging.WARN)
@@ -123,6 +122,11 @@ def add_handler(loghandler, **kwargs):
     """Utility to add a logging handler to all loggers."""
     loggers = get_loggers(**kwargs)
     for pytanlog in sorted(constants.LOG_LEVEL_MAPS):
+        if pytanlog not in loggers:
+            err = "pytan logger {} does not exist in logging system!!"
+            err = err.format(pytanlog)
+            mylog.critical(err)
+            raise exceptions.PytanError(err)
         if loghandler.name not in [h.name for h in loggers[pytanlog].handlers]:
             # mylog.debug("add_handler: {0.name} to logger {1}".format(loghandler, pytanlog))
             loggers[pytanlog].addHandler(loghandler)
@@ -134,8 +138,10 @@ def remove_handler(**kwargs):
     loghandler_name = kwargs.get('loghandler_name', None)
     for pytanlog in sorted(constants.LOG_LEVEL_MAPS):
         if pytanlog not in loggers:
-            m = "pytan logger {} does not exist in logging system!!"
-            raise Exception(m.format(pytanlog))
+            err = "pytan logger {} does not exist in logging system!!"
+            err = err.format(pytanlog)
+            mylog.critical(err)
+            raise exceptions.PytanError(err)
 
         for handler in loggers[pytanlog].handlers:
             if loghandler_name is None:
@@ -151,7 +157,7 @@ def remove_handler(**kwargs):
 def get_loggers(**kwargs):
     """Get all loggers currently known to pythons logging system`."""
     logger_dict = logging.Logger.manager.loggerDict
-    all_loggers = {k: v for k, v in logger_dict.iteritems() if isinstance(v, logging.Logger)}
+    all_loggers = {k: v for k, v in logger_dict.items() if isinstance(v, logging.Logger)}
     all_loggers['root'] = logging.getLogger()
     return all_loggers
 
@@ -169,14 +175,16 @@ def set_levels(**kwargs):
     loglevel = int(kwargs.get('loglevel', 0))
     loggers = get_loggers()
     loggers_done = []
-    for pytanlog, infolvl in sorted(constants.LOG_LEVEL_MAPS.iteritems()):
+    for pytanlog, infolvl in sorted(constants.LOG_LEVEL_MAPS.items()):
         if pytanlog not in loggers:
-            m = "pytan logger {} does not exist in logging system!!"
-            raise Exception(m.format(pytanlog))
+            err = "pytan logger {} does not exist in logging system!!"
+            err = err.format(pytanlog)
+            raise exceptions.PytanError(err)
 
         if pytanlog in loggers_done:
-            m = "pytan logger {} already processed!!"
-            raise Exception(m.format(pytanlog))
+            err = "pytan logger {} already processed!!"
+            err = err.format(pytanlog)
+            raise exceptions.PytanError(err)
 
         dbglvl = infolvl + 10
         if infolvl == 0 or loglevel >= dbglvl:
@@ -205,7 +213,7 @@ def set_all_levels(**kwargs):
     logger_level = kwargs.get('logger_level', 'DEBUG')
     loggers = get_loggers()
     mylog.setLevel(getattr(logging, logger_level))
-    for lname, llogger in sorted(loggers.iteritems()):
+    for lname, llogger in sorted(loggers.items()):
         # mylog.debug("setting logger '{}' to {}".format(lname, logger_level))
         llogger.setLevel(getattr(logging, logger_level))
         if lname in constants.LOG_LEVEL_MAPS:
@@ -220,27 +228,27 @@ def print_levels(**kwargs):
 
     m = "{} logger {!r} {} and above messages shown at pytan loglevel {} and above"
     t = "pytan"
-    for pytanlog, infolvl in sorted(constants.LOG_LEVEL_MAPS.iteritems()):
+    for pytanlog, infolvl in sorted(constants.LOG_LEVEL_MAPS.items()):
         loggers_done.append(pytanlog)
         dbglvl = infolvl + 10
         if infolvl == 0:
-            print m.format(t, pytanlog, 'DEBUG', 0)
+            print(m.format(t, pytanlog, 'DEBUG', 0))
         else:
-            print m.format(t, pytanlog, deflvl, 0)
-            print m.format(t, pytanlog, 'INFO', infolvl)
-            print m.format(t, pytanlog, 'DEBUG', dbglvl)
+            print(m.format(t, pytanlog, deflvl, 0))
+            print(m.format(t, pytanlog, 'INFO', infolvl))
+            print(m.format(t, pytanlog, 'DEBUG', dbglvl))
 
     loggers_not_done = [x for x in loggers if x not in loggers_done]
     t = "NON-pytan"
     for logger in loggers_not_done:
-        print m.format(t, logger, 'DEBUG', constants.OVERRIDE_PYTAN_LEVEL)
+        print(m.format(t, logger, 'DEBUG', constants.OVERRIDE_PYTAN_LEVEL))
 
 
 def enable_logs(regex, level='DEBUG'):
     """Utility to enable loggers based on regex."""
     regex = re.compile(regex)
     loggers = get_loggers()
-    for lname, llogger in sorted(loggers.iteritems()):
+    for lname, llogger in sorted(loggers.items()):
         if not regex.search(lname):
             continue
         llogger.setLevel(getattr(logging, level))
@@ -250,7 +258,7 @@ def disable_logs(regex, level='WARN'):
     """Utility to disable loggers based on regex."""
     regex = re.compile(regex)
     loggers = get_loggers()
-    for lname, llogger in sorted(loggers.iteritems()):
+    for lname, llogger in sorted(loggers.items()):
         if not regex.search(lname):
             continue
         llogger.setLevel(getattr(logging, level))

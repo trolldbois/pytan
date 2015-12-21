@@ -7,7 +7,7 @@ import platform
 mylog = logging.getLogger(__name__)
 
 if platform.system().lower() == 'windows':
-    from .externalwin import readline
+    from ..externalwin import readline
 else:
     import readline
 
@@ -15,7 +15,8 @@ import rlcompleter  # noqa
 
 
 class HistoryConsole(code.InteractiveConsole):
-    """Class that provides an interactive python console with full auto complete, history, and history file support.
+    """Class that provides an interactive python console with full auto complete, history, and
+    history file support.
 
     Examples
     --------

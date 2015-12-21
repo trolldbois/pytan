@@ -8,12 +8,14 @@ import pprint
 from argparse import ArgumentDefaultsHelpFormatter as A1 # noqa
 from argparse import RawDescriptionHelpFormatter as A2 # noqa
 from .. import utils
+from ..external import six
 
 
 class CustomArgFormat(A1, A2):
     """Multiple inheritance Formatter class for :class:`argparse.ArgumentParser`.
 
-    If a :class:`argparse.ArgumentParser` class uses this as it's Formatter class, it will show the defaults for each argument in the `help` output
+    If a :class:`argparse.ArgumentParser` class uses this as it's Formatter class, it will show
+    the defaults for each argument in the `help` output
     """
     pass
 
@@ -48,7 +50,7 @@ class CustomArgParse(argparse.ArgumentParser):
             if isinstance(action, argparse._SubParsersAction)
         ]
         for subparsers_action in subparsers_actions:
-            print ""
+            print("")
             for choice, subparser in subparsers_action.choices.items():
                 print(subparser.format_help())
 
@@ -64,6 +66,7 @@ class Base(object):
         self.tanium_obj = utils.tanium_obj
         self.constants = utils.constants
         self.utils = utils
+        self.six = six
         self.CustomArgFormat = CustomArgFormat
         self.CustomArgParse = CustomArgParse
         self.SUPPRESS = argparse.SUPPRESS
@@ -407,25 +410,30 @@ class Base(object):
         self.grp.add_argument(
             '--override_timeout_secs',
             required=False, type=int, action='store', default=0, dest='override_timeout_secs',
-            help='If supplied and not 0, instead of using the question expiration timestamp as the timeout, timeout after N seconds',
+            help='If supplied and not 0, instead of using the question expiration timestamp as '
+            'the timeout, timeout after N seconds',
         )
         self.grp.add_argument(
             '--polling_secs',
             required=False, type=int, action='store', dest='polling_secs',
             default=self.constants.Q_POLLING_SECS_DEFAULT,
-            help='Number of seconds to wait in between GetResultInfo loops while polling for each question',
+            help='Number of seconds to wait in between GetResultInfo loops while polling for '
+            'each question',
         )
         self.grp.add_argument(
             '--override_estimated_total',
             required=False, type=int, action='store', dest='override_estimated_total',
             default=0,
-            help='If supplied and not 0, use this as the estimated total number of systems instead of what Tanium Platform reports',
+            help='If supplied and not 0, use this as the estimated total number of systems '
+            'instead of what Tanium Platform reports',
         )
         self.grp.add_argument(
             '--force_passed_done_count',
             required=False, type=int, action='store', dest='force_passed_done_count',
             default=0,
-            help='If supplied and not 0, when this number of systems have passed the right hand side of the question (the question filter), consider the question complete instead of relying the estimated total that Tanium Platform reports',
+            help='If supplied and not 0, when this number of systems have passed the right '
+            'hand side of the question (the question filter), consider the question complete '
+            'instead of relying the estimated total that Tanium Platform reports',
         )
 
     def add_export_results_opts(self):
@@ -463,7 +471,7 @@ class Base(object):
                     puc_dict = json.load(fh)
             except Exception as e:
                 m = "PyTan User Config file exists at '{}' but is not valid, Exception: {}".format
-                print m(puc, e)
+                print(m(puc, e))
 
         username_arg = self.args.__dict__.get('username', '')
         username_env = os.environ.get('username', '')
@@ -487,7 +495,7 @@ class Base(object):
 
         if not session_id:
             if not username:
-                username = raw_input('Tanium Username: ')
+                username = self.six.input('Tanium Username: ')
                 self.args.username = username.strip()
 
             if not password:
@@ -495,7 +503,7 @@ class Base(object):
                 self.args.password = password.strip()
 
         if not host:
-            host = raw_input('Tanium Host: ')
+            host = self.six.input('Tanium Host: ')
             self.args.host = host.strip()
 
         return self.args
@@ -515,7 +523,7 @@ class Base(object):
                 kwargs['prefix'] = '{}'.format(self.FILE_PREFIX)
 
             m = "-- Exporting {} with arguments:\n{}"
-            print m.format(results, self.pf(kwargs))
+            print(m.format(results, self.pf(kwargs)))
             report_file, report_result = self.handler.export_to_report_file(**kwargs)
 
             m = "++ Report file {!r} written with {} bytes"
@@ -523,7 +531,7 @@ class Base(object):
         else:
             report_file, report_result = None, None
             m = "!! No results returned, run get_results_{}.py to get the results"
-            print m.format(self.ACTION)
+            print(m.format(self.ACTION))
         return report_file, report_result
 
     def version_check(self, version):
@@ -543,7 +551,7 @@ class Base(object):
         return p_args
 
     def get_other_args(self, kwargs):
-        other_args = {a: b for a, b in self.args.__dict__.iteritems() if a not in kwargs}
+        other_args = {a: b for a, b in self.args.__dict__.items() if a not in kwargs}
         return other_args
 
     def check(self):
@@ -632,14 +640,14 @@ class GetBase(Base):
 
         if get_all:
             m = "-- Getting all {} objects with arguments:\n{}"
-            print m.format(self.OBJECT_STR, self.pf(o_dict))
+            print(m.format(self.OBJECT_STR, self.pf(o_dict)))
             response = self.handler.get_all(**o_dict)
         else:
             m = "-- Getting {} objects with arguments:\n{}"
-            print m.format(self.OBJECT_STR, self.pf(kwargs))
+            print(m.format(self.OBJECT_STR, self.pf(kwargs)))
             response = self.handler.get(**kwargs)
 
-        print "++ Successfully found: {}".format(response)
+        print("++ Successfully found: {}".format(response))
         return response
 
     def get_result(self):
@@ -669,11 +677,11 @@ class CreateJsonBase(GetBase):
         kwargs.update(o_dict)
 
         m = "-- Creating {} object from JSON with arguments:\n{}"
-        print m.format(self.OBJECT_TYPE, self.pf(kwargs))
+        print(m.format(self.OBJECT_TYPE, self.pf(kwargs)))
         response = self.handler.create_from_json(**kwargs)
 
         for i in response:
-            print "++ Successfully created: {}, ID: {}".format(i, getattr(i, 'id', 'unknown'))
+            print("++ Successfully created: {}, ID: {}".format(i, getattr(i, 'id', 'unknown')))
         return response
 
     def get_result(self):
@@ -695,11 +703,11 @@ class DeleteBase(GetBase):
         kwargs.update(o_dict)
 
         m = "-- Deleting {} object with arguments:\n{}"
-        print m.format(self.OBJECT_TYPE, self.pf(kwargs))
+        print(m.format(self.OBJECT_TYPE, self.pf(kwargs)))
         response = self.handler.delete(**kwargs)
 
         for i in response:
-            print "++ Successfully deleted: {}".format(i)
+            print("++ Successfully deleted: {}".format(i))
         return response
 
     def get_result(self):
@@ -725,9 +733,9 @@ class GetResultsBase(GetBase):
         kwargs = self.get_parser_args(grps)
         kwargs['obj'] = obj
         m = "-- Getting result data with arguments:\n{}"
-        print m.format(self.pf(kwargs))
+        print(m.format(self.pf(kwargs)))
         result_data = self.handler.get_result_data(**kwargs)
-        print "++ Result data received: {}".format(result_data)
+        print("++ Result data received: {}".format(result_data))
         return result_data
 
     def get_result(self):

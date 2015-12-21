@@ -1,6 +1,3 @@
-# -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
-# ex: set tabstop=4
-# Please do not change the two lines above. See PEP 8, PEP 263.
 '''A python package that makes using the Tanium Server SOAP API easy.'''
 
 import logging
@@ -30,8 +27,8 @@ from .version import __url__  # noqa
 from .version import __title__  # noqa
 
 from . import utils
+from . import tanium_ng
 from .utils import exceptions
-from .utils import taniumpy
 from .handler import Handler
 from .session import Session
 from .pollers import QuestionPoller
@@ -41,8 +38,8 @@ from .pollers import SSEPoller
 
 __all__ = [
     'utils',
+    'tanium_ng',
     'exceptions',
-    'taniumpy',
     'Handler',
     'Session',
     'QuestionPoller',

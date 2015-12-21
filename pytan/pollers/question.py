@@ -10,6 +10,7 @@ from datetime import datetime
 from datetime import timedelta
 
 from .. import utils
+from .. import tanium_ng
 
 mylog = logging.getLogger(__name__)
 progresslog = logging.getLogger(__name__ + ".progress")
@@ -19,7 +20,8 @@ resolverlog = logging.getLogger(__name__ + ".resolver")
 class QuestionPoller(object):
     """A class to poll the progress of a Question.
 
-    The primary function of this class is to poll for result info for a question, and fire off events:
+    The primary function of this class is to poll for result info for a question, and fire off
+    events:
 
         * ProgressChanged
         * AnswersChanged
@@ -29,7 +31,7 @@ class QuestionPoller(object):
     ----------
     handler : :class:`handler.Handler`
         * PyTan handler to use for GetResultInfo calls
-    obj : :class:`utils.taniumpy.object_types.question.Question`
+    obj : :class:`tanium_ng.Question`
         * object to poll for progress
     polling_secs : int, optional
         * default: 5
@@ -41,12 +43,14 @@ class QuestionPoller(object):
         * default: 0
         * If supplied and not 0, timeout in seconds instead of when object expires
     override_estimated_total : int, optional
-        * instead of getting number of systems that should see this question from result_info.estimated_total, use this number
+        * instead of getting number of systems that should see this question from
+        result_info.estimated_total, use this number
     force_passed_done_count : int, optional
-        * when this number of systems have passed the right hand side of the question, consider the question complete
+        * when this number of systems have passed the right hand side of the question, consider
+        the question complete
     """
 
-    OBJECT_TYPE = utils.taniumpy.object_types.question.Question
+    OBJECT_TYPE = tanium_ng.Question
     """valid type of object that can be passed in as obj to __init__"""
 
     STR_ATTRS = utils.constants.Q_STR_ATTRS
@@ -65,7 +69,8 @@ class QuestionPoller(object):
     """attribute of self.obj that contains the expiration for this object"""
 
     EXPIRY_FALLBACK_SECS = utils.constants.Q_EXPIRY_FALLBACK_SECS
-    """If the EXPIRATION_ATTR of `obj` can't be automatically determined, then this is used as a fallback for timeout - polling will failed after this many seconds if completion not reached"""
+    """If the EXPIRATION_ATTR of `obj` can't be automatically determined, then this is used as a
+    fallback for timeout - polling will failed after this many seconds if completion not reached"""
 
     obj = None
     """The object for this poller"""
@@ -216,7 +221,8 @@ class QuestionPoller(object):
     def _derive_expiration(self, **kwargs):
         """Derive the expiration datetime string from a object
 
-        Will generate a datetime string from self.EXPIRY_FALLBACK_SECS if unable to get the expiration from the object (self.obj) itself.
+        Will generate a datetime string from self.EXPIRY_FALLBACK_SECS if unable to get the
+        expiration from the object (self.obj) itself.
         """
         kwargs['attr'] = self.EXPIRATION_ATTR
         kwargs['fallback'] = utils.calc.seconds_from_now(secs=self.EXPIRY_FALLBACK_SECS)
@@ -263,7 +269,7 @@ class QuestionPoller(object):
 
         Returns
         -------
-        result_info : :class:`utils.taniumpy.object_types.result_info.ResultInfo`
+        result_info : :class:`tanium_ng.ResultInfo`
         """
         # add a retry to re-fetch result info if estimated_total == 0
         gri_retry_count = kwargs.get('gri_retry_count', 10)
@@ -297,7 +303,7 @@ class QuestionPoller(object):
 
         Returns
         -------
-        result_data : :class:`utils.taniumpy.object_types.result_set.ResultSet`
+        result_data : :class:`tanium_ng.ResultSet`
         """
         kwargs['obj'] = self.obj
         result = self.handler.get_result_data(**kwargs)
@@ -324,10 +330,13 @@ class QuestionPoller(object):
 
         Notes
         -----
-            * Any callback can choose to get data from the session by calling poller.get_result_data() or new info by calling poller.get_result_info()
+            * Any callback can choose to get data from the session by calling
+            poller.get_result_data() or new info by calling poller.get_result_info()
             * Any callback can choose to stop the poller by calling poller.stop()
-            * Polling will be stopped only when one of the callbacks calls the stop() method or the answers are complete.
-            * Any callback can call setPercentCompleteThreshold to change what "done" means on the fly
+            * Polling will be stopped only when one of the callbacks calls the stop() method or
+            the answers are complete.
+            * Any callback can call setPercentCompleteThreshold to change what "done" means on the
+            fly
         """
         self.start = datetime.utcnow()
         self.expiration_timeout = utils.calc.timestr_to_datetime(timestr=self.expiration)
@@ -351,7 +360,7 @@ class QuestionPoller(object):
         # loop counter
         self.loop_count = 1
         # establish a previous result_info that's empty
-        self.previous_result_info = utils.taniumpy.object_types.result_info.ResultInfo()
+        self.previous_result_info = tanium_ng.ResultInfo()
 
         while not self._stop:
             # perform a GetResultInfo SOAP call

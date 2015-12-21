@@ -1,10 +1,7 @@
-# -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
-# ex: set tabstop=4
-# Please do not change the two lines above. See PEP 8, PEP 263.
 """TaniumPy object module for for :mod:`pytan`"""
 
 import logging
-from .external import taniumpy
+from .. import tanium_ng
 from . import exceptions
 
 try:
@@ -20,15 +17,16 @@ def shrink_obj(obj, attrs=None):
 
     Parameters
     ----------
-    obj : :class:`taniumpy.object_types.base.BaseType`
+    obj : :class:`tanium_ng.base.BaseType`
         * Object to shrink
     attrs : list of str
         * default: None
-        * list of attribute str's to copy over to new object, will default to ['name', 'id', 'hash'] if None
+        * list of attribute str's to copy over to new object, will default to
+        ['name', 'id', 'hash'] if None
 
     Returns
     -------
-    new_obj : :class:`taniumpy.object_types.base.BaseType`
+    new_obj : :class:`tanium_ng.base.BaseType`
         * Shrunken object
     """
     if attrs is None:
@@ -44,13 +42,14 @@ def plugin_zip(p):
 
     Parameters
     ----------
-    p : :class:`taniumpy.object_types.plugin.Plugin`
+    p : :class:`tanium_ng.plugin.Plugin`
         * plugin object
 
     Returns
     -------
     dict
-        * the columns and result_rows of the sql_response in Plugin object zipped up into a dictionary
+        * the columns and result_rows of the sql_response in Plugin object zipped up into a
+        dictionary
     """
     return [
         dict(zip(p.sql_response.columns, x)) for x in p.sql_response.result_row
@@ -61,7 +60,7 @@ def plugin_zip(p):
 
 def create_cf_listobj(specs):
     """pass."""
-    result = taniumpy.CacheFilterList()
+    result = tanium_ng.CacheFilterList()
     if not isinstance(specs, (list, tuple)):
         specs = [specs]
     for spec in specs:
@@ -71,7 +70,7 @@ def create_cf_listobj(specs):
 
 def create_cf_obj(field, value, operator=None, field_type=None, not_flag=None, **kwargs):
     """pass."""
-    result = taniumpy.CacheFilter()
+    result = tanium_ng.CacheFilter()
     result.field = field
     result.value = value
     if operator is not None:
@@ -84,7 +83,8 @@ def create_cf_obj(field, value, operator=None, field_type=None, not_flag=None, *
 
 
 def xml_to_result_set_obj(x):
-    """Wraps a Result Set XML from a server side export in the appropriate tags and returns a ResultSet object
+    """Wraps a Result Set XML from a server side export in the appropriate tags and returns a
+    ResultSet object
 
     Parameters
     ----------
@@ -93,20 +93,20 @@ def xml_to_result_set_obj(x):
 
     Returns
     -------
-    rs : :class:`utils.taniumpy.object_types.result_set.ResultSet`
+    rs : :class:`utils.tanium_ng.result_set.ResultSet`
         * x converted into a ResultSet object
     """
     rs_xml = '<result_sets><result_set>{}</result_set></result_sets>'.format
     rs_xml = rs_xml(x)
     rs_tree = ET.fromstring(rs_xml)
-    rs = taniumpy.ResultSet.fromSOAPElement(rs_tree)
+    rs = tanium_ng.ResultSet.fromSOAPElement(rs_tree)
     rs._RAW_XML = rs_xml
     return rs
 
 
 def create_selectlist_obj(specs):
     """pass."""
-    result = taniumpy.SelectList()
+    result = tanium_ng.SelectList()
     for spec in specs:
         result.append(create_select_obj(spec))
     return result
@@ -114,8 +114,8 @@ def create_selectlist_obj(specs):
 
 def create_select_obj(spec):
     """pass."""
-    result = taniumpy.Select()
-    result.sensor = taniumpy.Sensor()
+    result = tanium_ng.Select()
+    result.sensor = tanium_ng.Sensor()
 
     if 'parameters' in spec:
         result.sensor.source_id = spec['sensor_object'].id
@@ -131,8 +131,8 @@ def create_select_obj(spec):
 def create_filter_obj(spec):
     """pass."""
     filter_spec = spec['filter']
-    result = taniumpy.Filter()
-    result.sensor = taniumpy.Sensor()
+    result = tanium_ng.Filter()
+    result.sensor = tanium_ng.Sensor()
     result.sensor.hash = spec['sensor_object'].hash  # needs to be hash, id no work!
     result.value = filter_spec['value']
     result.operator = filter_spec.get('operator', 'Equal')  # tanium default operator is Less!
@@ -141,15 +141,15 @@ def create_filter_obj(spec):
 
 def create_parameter_objlist(parameters, **kwargs):
     """pass."""
-    result = taniumpy.ParameterList()
-    for k, v in parameters.iteritems():
+    result = tanium_ng.ParameterList()
+    for k, v in parameters.items():
         result.append(create_parameter_obj(key=k, val=v, **kwargs))
     return result
 
 
 def create_parameter_obj(key, val, delim='||'):
     """pass."""
-    result = taniumpy.Parameter()
+    result = tanium_ng.Parameter()
     result.key = '{0}{1}{0}'.format(delim, key)
     result.value = val
     return result
@@ -157,30 +157,30 @@ def create_parameter_obj(key, val, delim='||'):
 
 def create_filterlist_obj(spec):
     """pass."""
-    result = taniumpy.FilterList()
+    result = tanium_ng.FilterList()
     result.append(create_filter_obj(spec))
     return result
 
 
 def create_group_with_filter_obj(spec):
     """pass."""
-    result = taniumpy.Group()
+    result = tanium_ng.Group()
     result.filters = create_filterlist_obj(spec)
     return result
 
 
 def create_parent_group_obj(specs):
     """pass."""
-    result = taniumpy.Group()
-    result.sub_groups = taniumpy.GroupList()
-    parent_sub = taniumpy.Group()
-    parent_sub.sub_groups = taniumpy.GroupList()
+    result = tanium_ng.Group()
+    result.sub_groups = tanium_ng.GroupList()
+    parent_sub = tanium_ng.Group()
+    parent_sub.sub_groups = tanium_ng.GroupList()
     result.sub_groups.append(parent_sub)
 
     for idx, spec in enumerate(specs):
         # if they supplied a group object, use that instead of creating one
         if 'group_object' in spec:
-            print "using group object instead of filter"
+            print("using group object instead of filter")
             parent_sub.sub_groups.append(spec['group_object'])
             continue
 
@@ -191,12 +191,12 @@ def create_parent_group_obj(specs):
         # add a group with a filter from this spec to the current parent_sub
         if first:
             new_group = create_group_with_filter_obj(spec)
-            print 'first: creating a new group and adding to parent_sub'
-            print spec['filter']
+            print('first: creating a new group and adding to parent_sub')
+            print(spec['filter'])
             parent_sub.sub_groups.append(new_group)
 
             if this_and is not None:
-                print 'applying and_flag {} to parent_sub'.format(this_and)
+                print('applying and_flag {} to parent_sub'.format(this_and))
                 parent_sub.and_flag = this_and
             continue
 
@@ -204,8 +204,8 @@ def create_parent_group_obj(specs):
         # add a group with a filter from this spec to the current parent_sub
         if this_and is None:
             new_group = create_group_with_filter_obj(spec)
-            print 'not first: and is None, creating a new group and adding to parent_sub'
-            print spec['filter']
+            print('not first: and is None, creating a new group and adding to parent_sub')
+            print(spec['filter'])
             parent_sub.sub_groups.append(new_group)
             continue
 
@@ -213,21 +213,21 @@ def create_parent_group_obj(specs):
         # parent_sub's and, create a new parent_sub
         # add a group with a filter from this spec to the new parent_sub
         if parent_sub.and_flag != this_and:
-            print 'not first:, and is {} creating a new parent_sub'.format(this_and)
-            parent_sub = taniumpy.Group()
+            print('not first:, and is {} creating a new parent_sub'.format(this_and))
+            parent_sub = tanium_ng.Group()
             parent_sub.and_flag = this_and
-            parent_sub.sub_groups = taniumpy.GroupList()
+            parent_sub.sub_groups = tanium_ng.GroupList()
             result.sub_groups.append(parent_sub)
 
             new_group = create_group_with_filter_obj(spec)
-            print 'not first: creating a new group and adding to parent_sub'
-            print spec['filter']
+            print('not first: creating a new group and adding to parent_sub')
+            print(spec['filter'])
             parent_sub.sub_groups.append(new_group)
             continue
 
         new_group = create_group_with_filter_obj(spec)
-        print 'catch all: creating a new group and adding to parent_sub'
-        print spec['filter']
+        print('catch all: creating a new group and adding to parent_sub')
+        print(spec['filter'])
         parent_sub.sub_groups.append(new_group)
         continue
 
@@ -242,14 +242,14 @@ def recurse_group(g, level=1):
 
     a = "level: {}, and_flag: {}, filters: {}, sub_groups: {}"
     a = a.format(level, g.and_flag, flen, sglen)
-    print a
+    print(a)
 
     if g.filters:
         for i in g.filters:
             f = "operator: {0.operator} value: {0.value}".format(i)
             m = "level: {}, and_flag: {}, filter: {}"
             m = m.format(level, g.and_flag, f)
-            print m
+            print(m)
 
     if g.sub_groups:
         for i in g.sub_groups:
@@ -258,7 +258,7 @@ def recurse_group(g, level=1):
 
 def create_question_obj(left=[], right=[]):
     """pass."""
-    result = taniumpy.Question()
+    result = tanium_ng.Question()
     result.selects = create_selectlist_obj(left)
     if right:
         result.group = create_parent_group_obj(right)
@@ -269,8 +269,8 @@ def check_limits(objects, **kwargs):
     """pass."""
     specs = kwargs.get('specs', [])
 
-    if not isinstance(objects, taniumpy.BaseType):
-        err = "{} must be a taniumpy object, type: {}"
+    if not isinstance(objects, tanium_ng.BaseType):
+        err = "{} must be a tanium_ng object, type: {}"
         err = err.format(objects, type(objects))
         raise exceptions.PytanError(err)
 
@@ -278,7 +278,7 @@ def check_limits(objects, **kwargs):
     objects_class = objects.__class__.__name__
     if not objects_class.endswith('List'):
         new_class = objects_class + 'List'
-        new_objects = getattr(taniumpy, new_class)()
+        new_objects = getattr(tanium_ng, new_class)()
         new_objects.append(objects)
         objects = new_objects
 
@@ -321,3 +321,9 @@ def check_limits(objects, **kwargs):
             err = err.format(err_pre, specstxt, objtxt)
             mylog.critical(err)
             raise exceptions.PytanError(err)
+
+
+def get_single_class(all_class):
+    """pass."""
+    single_class = list(all_class()._list_properties.values())[0]
+    return single_class

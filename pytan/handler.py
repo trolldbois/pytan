@@ -1,6 +1,3 @@
-# -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
-# ex: set tabstop=4
-# Please do not change the two lines above. See PEP 8, PEP 263.
 """The main :mod:`pytan` module that provides first level entities for programmatic use."""
 
 import os
@@ -11,8 +8,10 @@ import json
 
 from . import __version__
 from . import utils
+from . import tanium_ng
 from . import session
 from . import pollers
+from .external import six
 
 mylog = logging.getLogger(__name__)
 
@@ -58,7 +57,8 @@ class Handler(object):
 
     See Also
     --------
-    :data:`utils.constants.LOG_LEVEL_MAPS` : maps a given `loglevel` to respective logger names and their logger levels
+    :data:`utils.constants.LOG_LEVEL_MAPS` : maps a given `loglevel` to respective logger names
+    and their logger levels
     :class:`session.Session` : Session object used by Handler
 
     Examples
@@ -118,7 +118,8 @@ class Handler(object):
         return puc_dict
 
     def write_config_file(self, **kwargs):
-        """Write a PyTan User Config with the current class variables for use with pytan_user_config in instantiating Handler()
+        """Write a PyTan User Config with the current class variables for use with
+        pytan_user_config in instantiating Handler()
 
         Parameters
         ----------
@@ -233,10 +234,19 @@ class Handler(object):
         Returns
         -------
         result : dict, containing
-            * `question_object` : :class:`utils.taniumpy.object_types.saved_question.SavedQuestion`, the saved question object
-            * `question_object` : :class:`utils.taniumpy.object_types.question.Question`, the question asked by `saved_question_object`
-            * ``question_results`` : :class:`utils.taniumpy.object_types.result_set.ResultSet`, the results for `question_object`
-            * ``poller_object`` : None if `refresh` == False, elsewise :class:`QuestionPoller`, poller object used to wait until all results are in before getting `question_results`,
+            * `question_object` :
+            :class:`tanium_ng.saved_question.SavedQuestion`
+            the saved question object
+            * `question_object` :
+            :class:`tanium_ng.question.Question`
+            the question asked by `saved_question_object`
+            * ``question_results`` :
+            :class:`tanium_ng.result_set.ResultSet`
+            the results for `question_object`
+            * ``poller_object`` :
+            None if `refresh` == False
+            elsewise :class:`QuestionPoller`,
+            poller object used to wait until all results are in before getting `question_results`
             * ``poller_success`` : None if ``refresh`` == False, elsewise True or False
         """
         kwargs['specs'] = kwargs.get('specs', []) or list(args)
@@ -309,14 +319,14 @@ class Handler(object):
 
         Returns
         -------
-        result : :class:`utils.taniumpy.object_types.parse_result_group.ParseResultGroup`
+        result : :class:`tanium_ng.parse_result_group.ParseResultGroup`
         """
         if not self.session.platform_is_6_5(**kwargs):
             m = "ParseJob not supported in version: {}"
             m = m.format(self.session.server_version)
             raise utils.exceptions.UnsupportedVersionError(m)
 
-        obj = utils.taniumpy.ParseJob()
+        obj = tanium_ng.ParseJob()
         obj.question_text = question_text
         obj.parser_version = 2
 
@@ -340,7 +350,8 @@ class Handler(object):
             * The question text you want the server to parse into a list of parsed results
         picker : int, optional
             * default: 0
-            * The index number of the parsed results that correlates to the actual question you wish to run
+            * The index number of the parsed results that correlates to the actual question you
+            wish to run
         get_results : bool, optional
             * default: True
             * True: wait for result completion after asking question
@@ -349,16 +360,25 @@ class Handler(object):
         Returns
         -------
         result : dict, containing:
-            * `question_object` : :class:`utils.taniumpy.object_types.question.Question`, the actual question added by PyTan
-            * `question_results` : :class:`utils.taniumpy.object_types.result_set.ResultSet`, the Result Set for `question_object` if `get_results` == True
-            * `poller_object` : :class:`QuestionPoller`, poller object used to wait until all results are in before getting `question_results`
+            * `question_object` :
+            :class:`tanium_ng.question.Question`
+            the actual question added by PyTan
+            * `question_results` :
+            :class:`tanium_ng.result_set.ResultSet`
+            the Result Set for `question_object` if `get_results` == True
+            * `poller_object` :
+            :class:`QuestionPoller`
+            poller object used to wait until all results are in before getting `question_results`
             * `poller_success` : None if `get_results` == True, elsewise True or False
-            * `parse_results` : :class:`utils.taniumpy.object_types.parse_result_group_list.ParseResultGroupList`, the parse result group returned from Tanium after parsing `question_text`
+            * `parse_results` :
+            :class:`tanium_ng.parse_result_group_list.ParseResultGroupList`
+            the parse result group returned from Tanium after parsing `question_text`
 
         Examples
         --------
 
-        Ask the server to parse 'computer name', but don't pick a choice (will print out a list of choices at critical logging level and then throw an exception):
+        Ask the server to parse 'computer name', but don't pick a choice
+        (will print out a list of choices at critical logging level and then throw an exception):
             >>> v = handler.ask_parsed('computer name')
 
         Ask the server to parse 'computer name' and pick index 1 as the question you want to run:
@@ -450,7 +470,8 @@ class Handler(object):
             * package to deploy with this action
         filters : str, list of str, optional
             * default: []
-            * each string must describe a sensor and a filter which limits which computers the action will deploy `package` to
+            * each string must describe a sensor and a filter which limits which computers the
+            action will deploy `package` to
         options : str, list of str, optional
             * default: []
             * options to apply to `filters`
@@ -462,13 +483,15 @@ class Handler(object):
             * distribute action evenly over clients over N seconds
         issue_seconds : int, optional
             * default: 0
-            * have the server re-ask the action status question if performing a GetResultData over N seconds ago
+            * have the server re-ask the action status question if performing a GetResultData over
+            N seconds ago
         expire_seconds : int, optional
             * default: package.expire_seconds
             * expire action N seconds from now, will be derived from package if not supplied
         run : bool, optional
             * default: False
-            * False: just ask the question that pertains to verify action, export the results to CSV, and raise RunFalse -- does not deploy the action
+            * False: just ask the question that pertains to verify action, export the results to
+            CSV, and raise RunFalse -- does not deploy the action
             * True: actually deploy the action
         get_results : bool, optional
             * default: True
@@ -484,14 +507,29 @@ class Handler(object):
         Returns
         -------
         ret : dict, containing:
-            * `saved_action_object` : :class:`utils.taniumpy.object_types.saved_action.SavedAction`, the saved_action added for this action (None if 6.2)
-            * `action_object` : :class:`utils.taniumpy.object_types.action.Action`, the action object that tanium created for `saved_action`
-            * `package_object` : :class:`utils.taniumpy.object_types.package_spec.PackageSPec`, the package object used in `saved_action`
-            * `action_info` : :class:`utils.taniumpy.object_types.result_info.ResultInfo`, the initial GetResultInfo call done before getting results
-            * `poller_object` : :class:`pytan.pollers.ActionPoller`, poller object used to wait until all results are in before getting `action_results`
+            * `saved_action_object` :
+            :class:`tanium_ng.saved_action.SavedAction`
+            the saved_action added for this action (None if 6.2)
+            * `action_object` :
+            :class:`tanium_ng.action.Action`
+            the action object that tanium created for `saved_action`
+            * `package_object` :
+            :class:`tanium_ng.package_spec.PackageSPec`
+            the package object used in `saved_action`
+            * `action_info` :
+            :class:`tanium_ng.result_info.ResultInfo`
+            the initial GetResultInfo call done before getting results
+            * `poller_object` :
+            :class:`pytan.pollers.ActionPoller`
+            poller object used to wait until all results are in before getting `action_results`
             * `poller_success` : None if `get_results` == False, elsewise True or False
-            * `action_results` : None if `get_results` == False, elsewise :class:`utils.taniumpy.object_types.result_set.ResultSet`, the results for `action_object`
-            * `action_result_map` : None if `get_results` == False, elsewise progress map for `action_object` in dictionary form
+            * `action_results` :
+            None if `get_results` == False
+            elsewise :class:`tanium_ng.result_set.ResultSet`
+            the results for `action_object`
+            * `action_result_map` :
+            None if `get_results` == False
+            elsewise progress map for `action_object` in dictionary form
 
         Examples
         --------
@@ -511,7 +549,8 @@ class Handler(object):
         --------
         :data:`utils.constants.FILTER_MAPS` : valid filter dictionaries for filters
         :data:`utils.constants.OPTION_MAPS` : valid option dictionaries for options
-        :func:`pytan.handler.Handler._deploy_action` : private method with the actual workflow used to create and add the action object
+        :func:`pytan.handler.Handler._deploy_action` : private method with the actual workflow
+        used to create and add the action object
         """
 
         utils.helpers.check_for_help(kwargs=kwargs)
@@ -552,7 +591,7 @@ class Handler(object):
 
         Returns
         -------
-        result : :class:`utils.taniumpy.object_types.saved_action_approval.SavedActionApproval`
+        result : :class:`tanium_ng.saved_action_approval.SavedActionApproval`
             * The object containing the return from SavedActionApproval
         """
         kwargs['specs'] = kwargs.get('specs', []) or list(args)
@@ -564,7 +603,7 @@ class Handler(object):
         # get the saved_question object the user passed in
         sa_obj = self.get_saved_actions(limit_exact=1, **kwargs)
 
-        result = utils.taniumpy.SavedActionApproval()
+        result = tanium_ng.SavedActionApproval()
         result.id = sa_obj.id
         result.approved_flag = 1
 
@@ -588,7 +627,7 @@ class Handler(object):
 
         Returns
         -------
-        action_stop_obj : :class:`utils.taniumpy.object_types.action_stop.ActionStop`
+        action_stop_obj : :class:`tanium_ng.action_stop.ActionStop`
             The object containing the ID of the action stop job
         """
         kwargs['specs'] = kwargs.get('specs', []) or list(args)
@@ -600,7 +639,7 @@ class Handler(object):
         # get the action object the user passed in
         a_obj_before = self.get_actions(limit_exact=1, **kwargs)
 
-        result = utils.taniumpy.ActionStop()
+        result = tanium_ng.ActionStop()
         result.action = a_obj_before
 
         kwargs['pytan_help'] = utils.helpstr.STOPA
@@ -625,11 +664,12 @@ class Handler(object):
     def get_result_data(self, obj, **kwargs):
         """Get the result data for a python API object
 
-        This method issues a GetResultData command to the SOAP api for `obj`. GetResultData returns the columns and rows that are currently available for `obj`.
+        This method issues a GetResultData command to the SOAP api for `obj`. GetResultData
+        returns the columns and rows that are currently available for `obj`.
 
         Parameters
         ----------
-        obj : :class:`utils.taniumpy.object_types.base.BaseType`
+        obj : :class:`tanium_ng.base.BaseType`
             * object to get result data for
         aggregate : bool, optional
             * default: False
@@ -642,7 +682,7 @@ class Handler(object):
 
         Returns
         -------
-        rd : :class:`utils.taniumpy.object_types.result_set.ResultSet`
+        rd : :class:`tanium_ng.result_set.ResultSet`
             The return of GetResultData for `obj`
         """
         """Get the result data for a python API object using a server side export (sse)
@@ -652,7 +692,8 @@ class Handler(object):
         result set and save it as `export_format`. Then the user can use an authenticated GET
         request to get the status of the file via "/export/${export_id}.status". Once the status
         returns "Completed.", the actual report file can be retrieved by an authenticated GET
-        request to "/export/${export_id}.gz". This workflow saves a lot of processing time and removes the need to paginate large result sets necessary in normal GetResultData calls.
+        request to "/export/${export_id}.gz". This workflow saves a lot of processing time and
+        removes the need to paginate large result sets necessary in normal GetResultData calls.
 
         *Version support*
             * 6.5.314.4231: initial sse support (csv only)
@@ -663,11 +704,12 @@ class Handler(object):
 
         Parameters
         ----------
-        obj : :class:`utils.taniumpy.object_types.base.BaseType`
+        obj : :class:`tanium_ng.base.BaseType`
             * object to get result data for
         sse_format : str, optional
             * default: 'csv'
-            * format to have server create report in, one of: {'csv', 'xml', 'xml_obj', 'cef', 0, 1, 2}
+            * format to have server create report in, one of:
+            {'csv', 'xml', 'xml_obj', 'cef', 0, 1, 2}
         leading : str, optional
             * default: ''
             * used for sse_format 'cef' only, the string to prepend to each row
@@ -677,21 +719,31 @@ class Handler(object):
 
         See Also
         --------
-        :data:`utils.constants.SSE_FORMAT_MAP` : maps `sse_format` to an integer for use by the SOAP API
-        :data:`utils.constants.SSE_RESTRICT_MAP` : maps sse_format integers to supported platform versions
-        :data:`utils.constants.SSE_CRASH_MAP` : maps platform versions that can cause issues in various scenarios
+        :data:`utils.constants.SSE_FORMAT_MAP` :
+        maps `sse_format` to an integer for use by the SOAP API
+        :data:`utils.constants.SSE_RESTRICT_MAP` :
+        maps sse_format integers to supported platform versions
+        :data:`utils.constants.SSE_CRASH_MAP` :
+        maps platform versions that can cause issues in various scenarios
 
         Returns
         -------
-        export_data : either `str` or :class:`utils.taniumpy.object_types.result_set.ResultSet`
-            * If sse_format is one of csv, xml, or cef, export_data will be a `str` containing the contents of the ResultSet in said format
-            * If sse_format is xml_obj, export_data will be a :class:`utils.taniumpy.object_types.result_set.ResultSet`
+        export_data : either `str` or :class:`tanium_ng.result_set.ResultSet`
+            * If sse_format is one of csv, xml, or cef, export_data will be a `str` containing the
+            contents of the ResultSet in said format
+            * If sse_format is xml_obj, export_data will be a :class:`tanium_ng.
+            result_set.ResultSet`
         """
         """ note #1 from jwk:
-        For Action GetResultData: You have to make a ResultInfo request at least once every 2 minutes. The server gathers the result data by asking a saved question. It won't re-issue the saved question unless you make a GetResultInfo request. When you make a GetResultInfo request, if there is no question that is less than 2 minutes old, the server will automatically reissue a new question instance to make sure fresh data is available.
+        For Action GetResultData: You have to make a ResultInfo request at least once every 2
+        minutes. The server gathers the result data by asking a saved question. It won't re-issue
+        the saved question unless you make a GetResultInfo request. When you make a GetResultInfo
+        request, if there is no question that is less than 2 minutes old, the server will
+        automatically reissue a new question instance to make sure fresh data is available.
 
         note #2 from jwk:
-        To get the aggregate data (without computer names), set row_counts_only_flag = 1. To get the computer names, use row_counts_only_flag = 0 (default).
+        To get the aggregate data (without computer names), set row_counts_only_flag = 1. To get
+        the computer names, use row_counts_only_flag = 0 (default).
         """
         shrink = kwargs.get('shrink', True)
         aggregate = kwargs.get('aggregate', False)
@@ -761,11 +813,13 @@ class Handler(object):
     def get_result_info(self, obj, **kwargs):
         """Get the result info for a python API object
 
-        This method issues a GetResultInfo command to the SOAP api for `obj`. GetResultInfo returns information about how many servers have passed the `obj`, total number of servers, and so on.
+        This method issues a GetResultInfo command to the SOAP api for `obj`. GetResultInfo
+        returns information about how many servers have passed the `obj`, total number of servers,
+        and so on.
 
         Parameters
         ----------
-        obj : :class:`utils.taniumpy.object_types.base.BaseType`
+        obj : :class:`tanium_ng.base.BaseType`
             * object to get result data for
         shrink : bool, optional
             * default: True
@@ -774,7 +828,7 @@ class Handler(object):
 
         Returns
         -------
-        ri : :class:`utils.taniumpy.object_types.result_info.ResultInfo`
+        ri : :class:`tanium_ng.result_info.ResultInfo`
             * The return of GetResultInfo for `obj`
         """
         shrink = kwargs.get('shrink', True)
@@ -799,8 +853,8 @@ class Handler(object):
 
         Returns
         -------
-        ret : :class:`utils.taniumpy.object_types.base.BaseType`
-            * TaniumPy object added to Tanium SOAP Server
+        ret : :class:`tanium_ng.base.BaseType`
+            * tanium_ng object added to Tanium SOAP Server
 
         See Also
         --------
@@ -813,7 +867,7 @@ class Handler(object):
 
         if not create_json_ok:
             json_createable = ', '.join([
-                x for x, y in utils.constants.GET_OBJ_MAP.items() if y['create_json']
+                x for x, y in six.iteritems(utils.constants.GET_OBJ_MAP) if y['create_json']
             ])
             m = "{} is not a json createable object! Supported objects: {}".format
             raise utils.exceptions.PytanError(m(objtype, json_createable))
@@ -862,17 +916,19 @@ class Handler(object):
 
     # TODO
     def run_plugin(self, obj, **kwargs):
-        """Wrapper around :func:`pytan.session.Session.run_plugin` to run the plugin and zip up the SQL results into a python dictionary
+        """Wrapper around :func:`pytan.session.Session.run_plugin` to run the plugin and zip up
+        the SQL results into a python dictionary
 
         Parameters
         ----------
-        obj : :class:`utils.taniumpy.object_types.plugin.Plugin`
+        obj : :class:`tanium_ng.plugin.Plugin`
             * Plugin object to run
 
         Returns
         -------
         plugin_result, sql_zipped : tuple
-            * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server
+            * plugin_result will be the tanium_ng object representation of the SOAP response from
+            Tanium server
             * sql_zipped will be a dict with the SQL results embedded in the SOAP response
         """
 
@@ -893,7 +949,8 @@ class Handler(object):
 
     # TODO
     def create_dashboard(self, name, text='', group='', public_flag=True, **kwargs):
-        """Calls :func:`pytan.handler.Handler.run_plugin` to run the CreateDashboard plugin and parse the response
+        """Calls :func:`pytan.handler.Handler.run_plugin` to run the CreateDashboard plugin and
+        parse the response
 
         Parameters
         ----------
@@ -913,7 +970,8 @@ class Handler(object):
         Returns
         -------
         plugin_result, sql_zipped : tuple
-            * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server
+            * plugin_result will be the tanium_ng object representation of the SOAP response from
+            Tanium server
             * sql_zipped will be a dict with the SQL results embedded in the SOAP response
         """
 
@@ -932,38 +990,38 @@ class Handler(object):
             public_flag = 0
 
         # create the plugin parent
-        plugin = utils.taniumpy.Plugin()
+        plugin = tanium_ng.Plugin()
         plugin.name = 'CreateDashboard'
         plugin.bundle = 'Dashboards'
 
         # create the plugin arguments
-        plugin.arguments = utils.taniumpy.PluginArgumentList()
+        plugin.arguments = tanium_ng.PluginArgumentList()
 
-        arg1 = utils.taniumpy.PluginArgument()
+        arg1 = tanium_ng.PluginArgument()
         arg1.name = 'dash_name'
         arg1.type = 'String'
         arg1.value = name
         plugin.arguments.append(arg1)
 
-        arg2 = utils.taniumpy.PluginArgument()
+        arg2 = tanium_ng.PluginArgument()
         arg2.name = 'dash_text'
         arg2.type = 'String'
         arg2.value = text
         plugin.arguments.append(arg2)
 
-        arg3 = utils.taniumpy.PluginArgument()
+        arg3 = tanium_ng.PluginArgument()
         arg3.name = 'group_id'
         arg3.type = 'Number'
         arg3.value = group_id
         plugin.arguments.append(arg3)
 
-        arg4 = utils.taniumpy.PluginArgument()
+        arg4 = tanium_ng.PluginArgument()
         arg4.name = 'public_flag'
         arg4.type = 'Number'
         arg4.value = public_flag
         plugin.arguments.append(arg4)
 
-        arg5 = utils.taniumpy.PluginArgument()
+        arg5 = tanium_ng.PluginArgument()
         arg5.name = 'sqid_xml'
         arg5.type = 'String'
         arg5.value = ''
@@ -978,7 +1036,8 @@ class Handler(object):
 
     # TODO
     def delete_dashboard(self, name, **kwargs):
-        """Calls :func:`pytan.handler.Handler.run_plugin` to run the DeleteDashboards plugin and parse the response
+        """Calls :func:`pytan.handler.Handler.run_plugin` to run the DeleteDashboards plugin and
+        parse the response
 
         Parameters
         ----------
@@ -988,7 +1047,8 @@ class Handler(object):
         Returns
         -------
         plugin_result, sql_zipped : tuple
-            * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server
+            * plugin_result will be the tanium_ng object representation of the SOAP response from
+            Tanium server
             * sql_zipped will be a dict with the SQL results embedded in the SOAP response
         """
 
@@ -998,14 +1058,14 @@ class Handler(object):
         dashboards_to_del = self.get_dashboards(name=name, **clean_kwargs)[1]
 
         # create the plugin parent
-        plugin = utils.taniumpy.Plugin()
+        plugin = tanium_ng.Plugin()
         plugin.name = 'DeleteDashboards'
         plugin.bundle = 'Dashboards'
 
         # create the plugin arguments
-        plugin.arguments = utils.taniumpy.PluginArgumentList()
+        plugin.arguments = tanium_ng.PluginArgumentList()
 
-        arg1 = utils.taniumpy.PluginArgument()
+        arg1 = tanium_ng.PluginArgument()
         arg1.name = 'dashboard_ids'
         arg1.type = 'Number_Set'
         arg1.value = ','.join([x['id'] for x in dashboards_to_del])
@@ -1020,7 +1080,8 @@ class Handler(object):
 
     # TODO
     def get_dashboards(self, name='', **kwargs):
-        """Calls :func:`pytan.handler.Handler.run_plugin` to run the GetDashboards plugin and parse the response
+        """Calls :func:`pytan.handler.Handler.run_plugin` to run the GetDashboards plugin and
+        parse the response
 
         Parameters
         ----------
@@ -1031,7 +1092,8 @@ class Handler(object):
         Returns
         -------
         plugin_result, sql_zipped : tuple
-            * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server
+            * plugin_result will be the tanium_ng object representation of the SOAP response from
+            Tanium server
             * sql_zipped will be a dict with the SQL results embedded in the SOAP response
         """
 
@@ -1039,7 +1101,7 @@ class Handler(object):
         clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         # create the plugin parent
-        plugin = utils.taniumpy.Plugin()
+        plugin = tanium_ng.Plugin()
         plugin.name = 'GetDashboards'
         plugin.bundle = 'Dashboards'
 
@@ -1113,8 +1175,8 @@ class Handler(object):
 
         Returns
         -------
-        package_obj : :class:`utils.taniumpy.object_types.package_spec.PackageSpec`
-            * TaniumPy object added to Tanium SOAP Server
+        package_obj : :class:`tanium_ng.package_spec.PackageSpec`
+            * tanium_ng object added to Tanium SOAP Server
 
         See Also
         --------
@@ -1130,7 +1192,7 @@ class Handler(object):
         metadatalist_obj = utils.tanium_obj.build_metadatalist_obj(properties=metadata)
 
         # bare minimum arguments for new package: name, command
-        add_package_obj = utils.taniumpy.PackageSpec()
+        add_package_obj = tanium_ng.PackageSpec()
         add_package_obj.name = name
         if display_name:
             add_package_obj.display_name = display_name
@@ -1164,7 +1226,7 @@ class Handler(object):
 
         # FILES
         if file_urls:
-            filelist_obj = utils.taniumpy.PackageFileList()
+            filelist_obj = tanium_ng.PackageFileList()
             for file_url in file_urls:
                 # if :: is in file_url, split on it and use 0 as
                 # download_seconds
@@ -1178,7 +1240,7 @@ class Handler(object):
                     filename, file_url = file_url.split('||')
                 else:
                     filename = os.path.basename(file_url)
-                file_obj = utils.taniumpy.PackageFile()
+                file_obj = tanium_ng.PackageFile()
                 file_obj.name = filename
                 file_obj.source = file_url
                 file_obj.download_seconds = download_seconds
@@ -1217,8 +1279,8 @@ class Handler(object):
 
         Returns
         -------
-        group_obj : :class:`utils.taniumpy.object_types.group.Group`
-            * TaniumPy object added to Tanium SOAP Server
+        group_obj : :class:`tanium_ng.group.Group`
+            * tanium_ng object added to Tanium SOAP Server
 
         See Also
         --------
@@ -1275,8 +1337,8 @@ class Handler(object):
 
         Returns
         -------
-        user_obj : :class:`utils.taniumpy.object_types.user.User`
-            * TaniumPy object added to Tanium SOAP Server
+        user_obj : :class:`tanium_ng.user.User`
+            * tanium_ng object added to Tanium SOAP Server
         """
 
         clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs)
@@ -1290,14 +1352,16 @@ class Handler(object):
 
         if roleid or rolename:
             h = "Issue a GetObject to find a user role"
-            rolelist_obj = self.get(objtype='userrole', id=roleid, name=rolename, pytan_help=h, **clean_kwargs)
+            rolelist_obj = self.get(
+                objtype='userrole', id=roleid, name=rolename, pytan_help=h, **clean_kwargs
+            )
         else:
-            rolelist_obj = utils.taniumpy.RoleList()
+            rolelist_obj = tanium_ng.RoleList()
 
         metadatalist_obj = utils.tanium_obj.build_metadatalist_obj(
             properties=properties, nameprefix='TConsole.User.Property',
         )
-        add_user_obj = utils.taniumpy.User()
+        add_user_obj = tanium_ng.User()
         add_user_obj.name = name
         add_user_obj.roles = rolelist_obj
         add_user_obj.metadata = metadatalist_obj
@@ -1336,8 +1400,8 @@ class Handler(object):
 
         Returns
         -------
-        url_obj : :class:`utils.taniumpy.object_types.white_listed_url.WhiteListedUrl`
-            * TaniumPy object added to Tanium SOAP Server
+        url_obj : :class:`tanium_ng.white_listed_url.WhiteListedUrl`
+            * tanium_ng object added to Tanium SOAP Server
         """
 
         if regex:
@@ -1347,7 +1411,7 @@ class Handler(object):
             properties=properties, nameprefix='TConsole.WhitelistedURL',
         )
 
-        add_url_obj = utils.taniumpy.WhiteListedUrl()
+        add_url_obj = tanium_ng.WhiteListedUrl()
         add_url_obj.url_regex = url
         add_url_obj.download_seconds = download_seconds
         add_url_obj.metadata = metadatalist_obj
@@ -1367,40 +1431,49 @@ class Handler(object):
 
         Parameters
         ----------
-        obj : :class:`utils.taniumpy.object_types.base.BaseType` or :class:`utils.taniumpy.object_types.result_set.ResultSet`
-            * TaniumPy object to export
+        obj : :class:`tanium_ng.base.BaseType` or
+            :class:`tanium_ng.result_set.ResultSet`
+            * tanium_ng object to export
         export_format : str, optional
             * default: 'csv'
             * the format to export `obj` to, one of: {'csv', 'xml', 'json'}
         header_sort : list of str, bool, optional
             * default: True
-            * for `export_format` csv and `obj` types :class:`utils.taniumpy.object_types.base.BaseType` or :class:`utils.taniumpy.object_types.result_set.ResultSet`
+            * for `export_format` csv and `obj` types
+            :class:`tanium_ng.base.BaseType`
+            :class:`tanium_ng.result_set.ResultSet`
             * True: sort the headers automatically
             * False: do not sort the headers at all
             * list of str: sort the headers returned by priority based on provided list
         header_add_sensor : bool, optional
             * default: False
-            * for `export_format` csv and `obj` type :class:`utils.taniumpy.object_types.result_set.ResultSet`
+            * for `export_format` csv and `obj` type
+             :class:`tanium_ng.result_set.ResultSet`
             * False: do not prefix the headers with the associated sensor name for each column
             * True: prefix the headers with the associated sensor name for each column
         header_add_type : bool, optional
             * default: False
-            * for `export_format` csv and `obj` type :class:`utils.taniumpy.object_types.result_set.ResultSet`
+            * for `export_format` csv and `obj` type
+             :class:`tanium_ng.result_set.ResultSet`
             * False: do not postfix the headers with the result type for each column
             * True: postfix the headers with the result type for each column
         expand_grouped_columns : bool, optional
             * default: False
-            * for `export_format` csv and `obj` type :class:`utils.taniumpy.object_types.result_set.ResultSet`
+            * for `export_format` csv and `obj` type
+            :class:`tanium_ng.result_set.ResultSet`
             * False: do not expand multiline row entries into their own rows
             * True: expand multiline row entries into their own rows
         explode_json_string_values : bool, optional
             * default: False
-            * for `export_format` json or csv and `obj` type :class:`utils.taniumpy.object_types.base.BaseType`
-            * False: do not explode JSON strings in object attributes into their own object attributes
+            * for `export_format` json or csv and `obj` type
+            :class:`tanium_ng.base.BaseType`
+            * False: do not explode JSON strings in object attributes into their own object
+            attributes
             * True: explode JSON strings in object attributes into their own object attributes
         minimal : bool, optional
             * default: False
-            * for `export_format` xml and `obj` type :class:`utils.taniumpy.object_types.base.BaseType`
+            * for `export_format` xml and `obj` type
+            :class:`tanium_ng.base.BaseType`
             * False: include empty attributes in XML output
             * True: do not include empty attributes in XML output
 
@@ -1411,11 +1484,14 @@ class Handler(object):
 
         Notes
         -----
-        When performing a CSV export and importing that CSV into excel, keep in mind that Excel has a per cell character limit of 32,000. Any cell larger than that will be broken up into a whole new row, which can wreak havoc with data in Excel.
+        When performing a CSV export and importing that CSV into excel, keep in mind that Excel
+        has a per cell character limit of 32,000. Any cell larger than that will be broken up into
+        a whole new row, which can wreak havoc with data in Excel.
 
         See Also
         --------
-        :data:`utils.constants.EXPORT_MAPS` : maps the type `obj` to `export_format` and the optional args supported for each
+        :data:`utils.constants.EXPORT_MAPS` : maps the type `obj` to `export_format` and the
+        optional args supported for each
         """
 
         objtype = type(obj)
@@ -1426,7 +1502,7 @@ class Handler(object):
 
         # see if supplied obj is a supported object type
         type_match = [
-            x for x in utils.constants.EXPORT_MAPS if isinstance(obj, getattr(utils.taniumpy, x))
+            x for x in utils.constants.EXPORT_MAPS if isinstance(obj, getattr(tanium_ng, x))
         ]
 
         if not type_match:
@@ -1451,12 +1527,12 @@ class Handler(object):
         opt_keys = export_formats.get(export_format, [])
 
         for opt_key in opt_keys:
-            check_args = dict(opt_key.items() + {'d': kwargs}.items())
+            check_args = dict(list(opt_key.items()) + {'d': kwargs}.items())
             utils.validate.check_dictkey(**check_args)
 
         # filter out the kwargs that are specific to this obj type and format type
         format_kwargs = {
-            k: v for k, v in kwargs.iteritems()
+            k: v for k, v in kwargs.items()
             if k in [a['key'] for a in opt_keys]
         }
 
@@ -1541,40 +1617,50 @@ class Handler(object):
 
         Parameters
         ----------
-        obj : :class:`utils.taniumpy.object_types.base.BaseType` or :class:`utils.taniumpy.object_types.result_set.ResultSet`
-            * TaniumPy object to export
+        obj :
+        :class:`tanium_ng.base.BaseType`
+        :class:`tanium_ng.result_set.ResultSet`
+            * tanium_ng object to export
         export_format : str, optional
             * default: 'csv'
             * the format to export `obj` to, one of: {'csv', 'xml', 'json'}
         header_sort : list of str, bool, optional
             * default: True
-            * for `export_format` csv and `obj` types :class:`utils.taniumpy.object_types.base.BaseType` or :class:`utils.taniumpy.object_types.result_set.ResultSet`
+            * for `export_format` csv and `obj` types
+            :class:`tanium_ng.base.BaseType`
+            :class:`tanium_ng.result_set.ResultSet`
             * True: sort the headers automatically
             * False: do not sort the headers at all
             * list of str: sort the headers returned by priority based on provided list
         header_add_sensor : bool, optional
             * default: False
-            * for `export_format` csv and `obj` type :class:`utils.taniumpy.object_types.result_set.ResultSet`
+            * for `export_format` csv and `obj` type
+            :class:`tanium_ng.result_set.ResultSet`
             * False: do not prefix the headers with the associated sensor name for each column
             * True: prefix the headers with the associated sensor name for each column
         header_add_type : bool, optional
             * default: False
-            * for `export_format` csv and `obj` type :class:`utils.taniumpy.object_types.result_set.ResultSet`
+            * for `export_format` csv and `obj`
+            :class:`tanium_ng.result_set.ResultSet`
             * False: do not postfix the headers with the result type for each column
             * True: postfix the headers with the result type for each column
         expand_grouped_columns : bool, optional
             * default: False
-            * for `export_format` csv and `obj` type :class:`utils.taniumpy.object_types.result_set.ResultSet`
+            * for `export_format` csv and `obj`
+            :class:`tanium_ng.result_set.ResultSet`
             * False: do not expand multiline row entries into their own rows
             * True: expand multiline row entries into their own rows
         explode_json_string_values : bool, optional
             * default: False
-            * for `export_format` json or csv and `obj` type :class:`utils.taniumpy.object_types.base.BaseType`
-            * False: do not explode JSON strings in object attributes into their own object attributes
+            * for `export_format` json or csv and `obj` type
+            :class:`tanium_ng.base.BaseType`
+            * False: do not explode JSON strings in object attributes into their own object
+            attributes
             * True: explode JSON strings in object attributes into their own object attributes
         minimal : bool, optional
             * default: False
-            * for `export_format` xml and `obj` type :class:`utils.taniumpy.object_types.base.BaseType`
+            * for `export_format` xml and `obj` type
+             :class:`tanium_ng.base.BaseType`
             * False: include empty attributes in XML output
             * True: do not include empty attributes in XML output
         report_file: str, optional
@@ -1598,12 +1684,16 @@ class Handler(object):
 
         See Also
         --------
-        :func:`pytan.handler.Handler.export_obj` : method that performs the actual work to do the exporting
-        :func:`pytan.handler.Handler.create_report_file` : method that performs the actual work to write the report file
+        :func:`pytan.handler.Handler.export_obj` : method that performs the actual work to do the
+        exporting
+        :func:`pytan.handler.Handler.create_report_file` : method that performs the actual work to
+        write the report file
 
         Notes
         -----
-        When performing a CSV export and importing that CSV into excel, keep in mind that Excel has a per cell character limit of 32,000. Any cell larger than that will be broken up into a whole new row, which can wreak havoc with data in Excel.
+        When performing a CSV export and importing that CSV into excel, keep in mind that Excel
+        has a per cell character limit of 32,000. Any cell larger than that will be broken up into
+        a whole new row, which can wreak havoc with data in Excel.
         """
 
         report_file = kwargs.get('report_file', None)
@@ -1664,7 +1754,7 @@ class Handler(object):
 
     def get_sensors(self, *args, **kwargs):
         """pass."""
-        kwargs['all_class'] = utils.taniumpy.SensorList
+        kwargs['all_class'] = tanium_ng.SensorList
         kwargs['specs_from_args'] = args
         kwargs['hide_sourced_sensors'] = kwargs.get('hide_sourced_sensors', True)
         result = self._get_objects(**kwargs)
@@ -1672,7 +1762,7 @@ class Handler(object):
 
     def get_packages(self, *args, **kwargs):
         """pass. cache_filters need single fix"""
-        kwargs['all_class'] = utils.taniumpy.PackageSpecList
+        kwargs['all_class'] = tanium_ng.PackageSpecList
         kwargs['specs_from_args'] = args
         kwargs['FIXIT_SINGLE'] = True
         result = self._get_objects(**kwargs)
@@ -1680,21 +1770,21 @@ class Handler(object):
 
     def get_actions(self, *args, **kwargs):
         """pass."""
-        kwargs['all_class'] = utils.taniumpy.ActionList
+        kwargs['all_class'] = tanium_ng.ActionList
         kwargs['specs_from_args'] = args
         result = self._get_objects(**kwargs)
         return result
 
     def get_clients(self, *args, **kwargs):
         """pass."""
-        kwargs['all_class'] = utils.taniumpy.SystemStatusList
+        kwargs['all_class'] = tanium_ng.SystemStatusList
         kwargs['specs_from_args'] = args
         result = self._get_objects(**kwargs)
         return result
 
     def get_groups(self, *args, **kwargs):
         """pass. cant find unnamed groups by id using cache filters"""
-        kwargs['all_class'] = utils.taniumpy.GroupList
+        kwargs['all_class'] = tanium_ng.GroupList
         kwargs['specs_from_args'] = args
         kwargs['FIXIT_GROUP_ID'] = True
         result = self._get_objects(**kwargs)
@@ -1702,35 +1792,35 @@ class Handler(object):
 
     def get_questions(self, *args, **kwargs):
         """pass."""
-        kwargs['all_class'] = utils.taniumpy.QuestionList
+        kwargs['all_class'] = tanium_ng.QuestionList
         kwargs['specs_from_args'] = args
         result = self._get_objects(**kwargs)
         return result
 
     def get_saved_actions(self, *args, **kwargs):
         """pass."""
-        kwargs['all_class'] = utils.taniumpy.SavedActionList
+        kwargs['all_class'] = tanium_ng.SavedActionList
         kwargs['specs_from_args'] = args
         result = self._get_objects(**kwargs)
         return result
 
     def get_saved_questions(self, *args, **kwargs):
         """pass."""
-        kwargs['all_class'] = utils.taniumpy.SavedQuestionList
+        kwargs['all_class'] = tanium_ng.SavedQuestionList
         kwargs['specs_from_args'] = args
         result = self._get_objects(**kwargs)
         return result
 
     def get_settings(self, *args, **kwargs):
         """pass."""
-        kwargs['all_class'] = utils.taniumpy.SystemSettingList
+        kwargs['all_class'] = tanium_ng.SystemSettingList
         kwargs['specs_from_args'] = args
         result = self._get_objects(**kwargs)
         return result
 
     def get_users(self, *args, **kwargs):
         """pass. cache_filters fail"""
-        kwargs['all_class'] = utils.taniumpy.UserList
+        kwargs['all_class'] = tanium_ng.UserList
         kwargs['specs_from_args'] = args
         kwargs['FIXIT_BROKEN_FILTER'] = True
         result = self._get_objects(**kwargs)
@@ -1738,7 +1828,7 @@ class Handler(object):
 
     def get_user_roles(self, *args, **kwargs):
         """pass. cache_filters fail"""
-        kwargs['all_class'] = utils.taniumpy.UserRoleList
+        kwargs['all_class'] = tanium_ng.UserRoleList
         kwargs['specs_from_args'] = args
         kwargs['FIXIT_BROKEN_FILTER'] = True
         result = self._get_objects(**kwargs)
@@ -1746,7 +1836,7 @@ class Handler(object):
 
     def get_whitelisted_urls(self, *args, **kwargs):
         """pass. cache_filters fail"""
-        kwargs['all_class'] = utils.taniumpy.WhiteListedUrlList
+        kwargs['all_class'] = tanium_ng.WhiteListedUrlList
         kwargs['specs_from_args'] = args
         kwargs['FIXIT_BROKEN_FILTER'] = True
         result = self._get_objects(**kwargs)
@@ -1812,7 +1902,7 @@ class Handler(object):
         fixit = kwargs.get('FIXIT_SINGLE', False)
         result = kwargs['all_class']()
         if fixit:
-            single_class = kwargs['all_class']()._list_properties.values()[0]
+            single_class = utils.tanium_obj.get_single_class(kwargs['all_class'])
             result = single_class()
             m = "FIXIT_SINGLE: changed class from {} to {}"
             m = m.format(kwargs['all_class'].__name__, single_class.__name__)
@@ -1827,7 +1917,7 @@ class Handler(object):
         if fixit:
             for spec in specs:
                 if spec['field'] == 'id':
-                    result = utils.taniumpy.Group()
+                    result = tanium_ng.Group()
                     setattr(result, spec['field'], spec['value'])
                     m = "FIXIT_GROUP_ID: changed class to 'Group' and set {field!r} to {value!r}"
                     m = m.format(**spec)
@@ -1929,16 +2019,16 @@ class Handler(object):
         return result
 
     def _add(self, obj, **kwargs):
-        """Wrapper for interfacing with :func:`utils.taniumpy.session.Session.add`
+        """Wrapper for interfacing with :func:`tanium_ng.session.Session.add`
 
         Parameters
         ----------
-        obj : :class:`utils.taniumpy.object_types.base.BaseType`
+        obj : :class:`tanium_ng.base.BaseType`
             * object to add
 
         Returns
         -------
-        added_obj : :class:`utils.taniumpy.object_types.base.BaseType`
+        added_obj : :class:`tanium_ng.base.BaseType`
            * full object that was added
         """
         kwargs['suppress_object_list'] = kwargs.get('suppress_object_list', 1)
@@ -2003,12 +2093,12 @@ class Handler(object):
 
     # TODO
     def _export_class_BaseType(self, obj, export_format, **kwargs): # noqa
-        """Handles exporting :class:`utils.taniumpy.object_types.base.BaseType`
+        """Handles exporting :class:`tanium_ng.base.BaseType`
 
         Parameters
         ----------
-        obj : :class:`utils.taniumpy.object_types.base.BaseType`
-            * taniumpy object to export
+        obj : :class:`tanium_ng.base.BaseType`
+            * tanium_ng object to export
         export_format : str
             * str of format to perform export in
 
@@ -2034,12 +2124,12 @@ class Handler(object):
 
     # TODO
     def _export_class_ResultSet(self, obj, export_format, **kwargs): # noqa
-        """Handles exporting :class:`utils.taniumpy.object_types.result_set.ResultSet`
+        """Handles exporting :class:`tanium_ng.result_set.ResultSet`
 
         Parameters
         ----------
-        obj : :class:`utils.taniumpy.object_types.result_set.ResultSet`
-            * taniumpy object to export
+        obj : :class:`tanium_ng.result_set.ResultSet`
+            * tanium_ng object to export
         export_format : str
             * str of format to perform export in
 
@@ -2089,8 +2179,9 @@ class Handler(object):
 
         Parameters
         ----------
-        obj : :class:`utils.taniumpy.object_types.result_set.ResultSet` or :class:`utils.taniumpy.object_types.base.BaseType`
-            * taniumpy object to export
+        obj : :class:`tanium_ng.result_set.ResultSet`
+         :class:`tanium_ng.base.BaseType`
+            * tanium_ng object to export
 
         Returns
         -------
@@ -2121,8 +2212,9 @@ class Handler(object):
 
         Parameters
         ----------
-        obj : :class:`utils.taniumpy.object_types.result_set.ResultSet` or :class:`utils.taniumpy.object_types.base.BaseType`
-            * taniumpy object to export
+        obj : :class:`tanium_ng.result_set.ResultSet`
+        :class:`tanium_ng.base.BaseType`
+            * tanium_ng object to export
 
         Returns
         -------
@@ -2146,8 +2238,9 @@ class Handler(object):
 
         Parameters
         ----------
-        obj : :class:`utils.taniumpy.object_types.result_set.ResultSet` or :class:`utils.taniumpy.object_types.base.BaseType`
-            * taniumpy object to export
+        obj : :class:`tanium_ng.result_set.ResultSet`
+        :class:`tanium_ng.base.BaseType`
+            * tanium_ng object to export
 
         Returns
         -------
@@ -2171,11 +2264,13 @@ class Handler(object):
         result = utils.pretty.xml_pretty(x=raw_xml, **clean_kwargs)
         return result
 
+    '''
     # TODO
     def _deploy_action(self, run=False, get_results=True, **kwargs):
         """Deploy an action and get the results back
 
-        This method requires in-depth knowledge of how filters and options are created in the API, and as such is not meant for human consumption. Use :func:`deploy_action` instead.
+        This method requires in-depth knowledge of how filters and options are created in the API,
+        and as such is not meant for human consumption. Use :func:`deploy_action` instead.
 
         Parameters
         ----------
@@ -2195,13 +2290,15 @@ class Handler(object):
             * distribute action evenly over clients over N seconds
         issue_seconds : int, optional
             * default: 0
-            * have the server re-ask the action status question if performing a GetResultData over N seconds ago
+            * have the server re-ask the action status question if performing a GetResultData over
+            N seconds ago
         expire_seconds : int, optional
             * default: package.expire_seconds
             * expire action N seconds from now, will be derived from package if not supplied
         run : bool, optional
             * default: False
-            * False: just ask the question that pertains to verify action, export the results to CSV, and raise RunFalse -- does not deploy the action
+            * False: just ask the question that pertains to verify action, export the results to
+            CSV, and raise RunFalse -- does not deploy the action
             * True: actually deploy the action
         get_results : bool, optional
             * default: True
@@ -2219,27 +2316,42 @@ class Handler(object):
             * This is passed through to :class:`pytan.pollers.ActionPoller`
         complete_pct : int/float, optional
             * default: 100
-            * Percentage of passed_count out of successfully run actions to consider the action "done"
+            * Percentage of passed_count out of successfully run actions to consider the action
+            "done"
             * This is passed through to :class:`pytan.pollers.ActionPoller`
         override_timeout_secs : int, optional
             * default: 0
             * If supplied and not 0, timeout in seconds instead of when object expires
             * This is passed through to :class:`pytan.pollers.ActionPoller`
         override_passed_count : int, optional
-            * instead of getting number of systems that should run this action by asking a question, use this number
+            * instead of getting number of systems that should run this action by asking a
+            question, use this number
             * This is passed through to :class:`pytan.pollers.ActionPoller`
 
         Returns
         -------
         ret : dict, containing:
-            * `saved_action_object` : :class:`utils.taniumpy.object_types.saved_action.SavedAction`, the saved_action added for this action (None if 6.2)
-            * `action_object` : :class:`utils.taniumpy.object_types.action.Action`, the action object that tanium created for `saved_action`
-            * `package_object` : :class:`utils.taniumpy.object_types.package_spec.PackageSPec`, the package object used in `saved_action`
-            * `action_info` : :class:`utils.taniumpy.object_types.result_info.ResultInfo`, the initial GetResultInfo call done before getting results
-            * `poller_object` : :class:`pytan.pollers.ActionPoller`, poller object used to wait until all results are in before getting `action_results`
+            * `saved_action_object` :
+            :class:`tanium_ng.saved_action.SavedAction`
+            the saved_action added for this action (None if 6.2)
+            * `action_object` :
+            :class:`tanium_ng.action.Action`
+            the action object that tanium created for `saved_action`
+            * `package_object`
+            :class:`tanium_ng.package_spec.PackageSPec`
+            the package object used in `saved_action`
+            * `action_info` :
+            :class:`tanium_ng.result_info.ResultInfo`
+            the initial GetResultInfo call done before getting results
+            * `poller_object` :
+            :class:`pytan.pollers.ActionPoller`
+            poller object used to wait until all results are in before getting `action_results`
             * `poller_success` : None if `get_results` == False, elsewise True or False
-            * `action_results` : None if `get_results` == False, elsewise :class:`utils.taniumpy.object_types.result_set.ResultSet`, the results for `action_object`
-            * `action_result_map` : None if `get_results` == False, elsewise progress map for `action_object` in dictionary form
+            * `action_results` : None if `get_results` == False
+            elsewise :class:`tanium_ng.result_set.ResultSet`
+            the results for `action_object`
+            * `action_result_map` : None if `get_results` == False
+            elsewise progress map for `action_object` in dictionary form
 
         Examples
         --------
@@ -2270,7 +2382,10 @@ class Handler(object):
             * For 6.2:
                 * We need to add an Action object
                 * The Action object should not be in an ActionList
-                * Action.start_time must be specified, if it is not specified the action shows up as expired immediately. We default to 1 second from current time if start_seconds_from_now is not passed in
+                * Action.start_time must be specified, if it is not specified the action shows up
+                as expired immediately. We default to 1 second from current time if
+                start_seconds_from_now is not passed in
+
 
             * For 6.5 / 6.6:
                 * We need to add a SavedAction object, the server creates the Action object for us
@@ -2298,12 +2413,12 @@ class Handler(object):
         clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         if not self.session.platform_is_6_5(**kwargs):
-            objtype = utils.taniumpy.Action
+            objtype = tanium_ng.Action
             objlisttype = None
             force_start_time = True
         else:
-            objtype = utils.taniumpy.SavedAction
-            objlisttype = utils.taniumpy.SavedActionList
+            objtype = tanium_ng.SavedAction
+            objlisttype = tanium_ng.SavedActionList
             force_start_time = False
 
         package_def = utils.validate.defs_gen(
@@ -2435,7 +2550,8 @@ class Handler(object):
             raise utils.exceptions.RunError(m(report_path, len(result)))
 
         # BUILD THE PACKAGE OBJECT TO BE ADDED TO THE ACTION
-        add_package_obj = utils.tanium_obj.copy_package_obj_for_action(obj=package_def['package_obj'])
+        add_package_obj = utils.tanium_obj.copy_package_obj_for_action(
+        obj=package_def['package_obj'])
 
         # if source_id is specified, a new package will be created with the parameters
         # for this action embedded into it - specifying hidden = 1 will ensure the new package
@@ -2553,6 +2669,7 @@ class Handler(object):
             ret['action_result_map'] = ret['poller_object'].result_map
 
         return ret
+    '''
 
     def _version_support_check(self, v_maps, **kwargs):
         """Checks that each of the version maps in v_maps is greater than or equal to
@@ -2563,14 +2680,16 @@ class Handler(object):
         v_maps : list of str
             * each str should be a platform version
             * each str will be checked against self.session.server_version
-            * if self.session.server_version is not greater than or equal to any str in v_maps, return will be False
+            * if self.session.server_version is not greater than or equal to any str in v_maps,
+            return will be False
             * if self.session.server_version is greater than all strs in v_maps, return will be True
             * if self.server_version is invalid/can't be determined, return will be False
 
         Returns
         -------
         bool
-            * True if all values in all v_maps are greater than or equal to self.session.server_version
+            * True if all values in all v_maps are greater than or equal to
+            self.session.server_version
             * False otherwise
         """
         result = True
@@ -2653,11 +2772,12 @@ class Handler(object):
             raise utils.exceptions.UnsupportedVersionError(err)
 
     def _check_sse_crash_prevention(self, obj, **kwargs):
-        """Runs a number of methods used to prevent crashing the platform server when performing server side exports
+        """Runs a number of methods used to prevent crashing the platform server when performing
+        server side exports
 
         Parameters
         ----------
-        obj : :class:`utils.taniumpy.object_types.base.BaseType`
+        obj : :class:`tanium_ng.base.BaseType`
             * object to pass to self._check_sse_empty_rs
         """
         kwargs['v_maps'] = utils.constants.SSE_CRASH_MAP
@@ -2667,7 +2787,8 @@ class Handler(object):
         self._check_sse_empty_rs(**kwargs)
 
     def _check_sse_timing(self, ok_version, **kwargs):
-        """Checks that the last server side export was at least 1 second ago if server version is less than any versions in utils.constants.SSE_CRASH_MAP
+        """Checks that the last server side export was at least 1 second ago if server version is
+        less than any versions in utils.constants.SSE_CRASH_MAP
 
         Parameters
         ----------
@@ -2683,11 +2804,12 @@ class Handler(object):
         self.last_get_rd_sse = datetime.datetime.utcnow()
 
     def _check_sse_empty_rs(self, obj, ok_version, **kwargs):
-        """Checks if the server version is less than any versions in utils.constants.SSE_CRASH_MAP, if so verifies that the result set is not empty
+        """Checks if the server version is less than any versions in
+        utils.constants.SSE_CRASH_MAP, if so verifies that the result set is not empty
 
         Parameters
         ----------
-        obj : :class:`utils.taniumpy.object_types.base.BaseType`
+        obj : :class:`tanium_ng.base.BaseType`
             * object to get result info for to ensure non-empty answers
         ok_version : bool
             * if the version currently running is an "ok" version
@@ -2708,7 +2830,7 @@ class Handler(object):
         self.args_db['default_args'] = self._get_src_args(utils.constants.DEFAULTS)
         self.args_db['env_args'] = {
             k.lower().replace('pytan_', ''): v
-            for k, v in os.environ.iteritems()
+            for k, v in os.environ.items()
             if k.lower().startswith('pytan_')
         }
         self.args_db['env_args'] = self._get_src_args(self.args_db['env_args'])
@@ -2753,37 +2875,47 @@ class Handler(object):
                 string=self.args_db['parsed_args']['password'],
             )
 
+    def _handle_string_arg(self, argname, argtype, value):
+        """handle string types that actually should be other types."""
+        result = value
+        if argtype == bool:
+            valid = ["True", "False"]
+            if value.capitalize() in valid:
+                result = eval(value.capitalize())
+            else:
+                err = "Argument {!r} must be one of {!r}, supplied string containing {!r}"
+                err = err.format(argname, ','.join(valid), value)
+                raise utils.exceptions.PytanError(err)
+
+        if argtype == dict:
+            try:
+                result = dict(eval(value))
+            except Exception as e:
+                err = "Tried to evaluate a dictionary from string {}, exception: {}"
+                err = err.format(value, e)
+                raise utils.exceptions.PytanError(err)
+        return result
+
     def _validate_args(self):
         """pass."""
         pa = self.args_db['parsed_args']
         pas = self.args_db['parsed_args_source']
-        for arg, argtype in utils.constants.HANDLER_ARGS.iteritems():
+        for arg, argtype in utils.constants.HANDLER_ARGS.items():
             if arg not in pa:
                 continue
 
-            pa_type = type(pa[arg]).__name__
-            err = "Argument {!r} must be type {!r}, supplied type {!r} via {!r}"
-            err = err.format(arg, argtype.__name__, pa_type, pas[arg])
+            pa_is_str = isinstance(pa[arg], six.string_types)
+            argtype_is_str = isinstance(argtype(), six.string_types)
 
-            # handle string types that actually should be other types
-            if isinstance(pa[arg], basestring):
-                if argtype == bool:
-                    if pa[arg].capitalize() in ["True", "False"]:
-                        pa[arg] = eval(pa[arg])
-                    else:
-                        raise utils.exceptions.PytanError(err)
-
-                if argtype == dict:
-                    try:
-                        pa[arg] = dict(eval(pa[arg]))
-                    except Exception as e:
-                        err = "{} exception: {}"
-                        err = err.format(err, e)
-                        raise utils.exceptions.PytanError(err)
+            if pa_is_str and not argtype_is_str:
+                pa[arg] = self._handle_string_arg(arg, argtype, pa[arg])
 
             try:
                 pa[arg] = argtype(pa[arg])
             except Exception as e:
+                pa_type = type(pa[arg]).__name__
+                err = "Argument {!r} must be type {!r}, supplied type {!r} via {!r}"
+                err = err.format(arg, argtype.__name__, pa_type, pas[arg])
                 err = "{} exception: {}".format(err, e)
                 raise utils.exceptions.PytanError(err)
 
@@ -2795,19 +2927,18 @@ class Handler(object):
             err = "Must supply port!"
             raise utils.exceptions.PytanError(err)
 
-        if not pa['session_id']:
-            if not pa['username']:
-                err = "Must supply username if no session_id!"
-                raise utils.exceptions.PytanError(err)
+        if not pa['session_id'] and not pa['username']:
+            err = "Must supply username if no session_id!"
+            raise utils.exceptions.PytanError(err)
 
-            if not pa['password']:
-                err = "Must supply password if no session_id!"
-                raise utils.exceptions.PytanError(err)
+        if not pa['session_id'] and not pa['password']:
+            err = "Must supply password if no session_id!"
+            raise utils.exceptions.PytanError(err)
 
     def _log_args(self):
         """pass."""
         m = "Argument {!r} supplied by {!r} type {!r}"
-        for k, v in self.args_db['parsed_args'].iteritems():
+        for k, v in self.args_db['parsed_args'].items():
             mm = m.format(k, self.args_db['parsed_args_source'][k], type(v).__name__)
             self.mylog.debug(mm)
 

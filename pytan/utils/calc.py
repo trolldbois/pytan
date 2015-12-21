@@ -1,6 +1,3 @@
-# -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
-# ex: set tabstop=4
-# Please do not change the two lines above. See PEP 8, PEP 263.
 """Calculations module for for :mod:`pytan`"""
 
 import time
@@ -89,7 +86,8 @@ def seconds_from_now(secs=0, tz='utc'):
     secs : int
         * seconds from now to get time str
     tz : str, optional
-        * time zone to return string in, default is 'utc' - supplying anything else will supply local time
+        * time zone to return string in, default is 'utc' - supplying anything else will supply
+        local time
 
     Returns
     -------
@@ -145,13 +143,14 @@ def question_start_time(q):
 
     Parameters
     ----------
-    q : :class:`taniumpy.object_types.question.Question`
+    q : :class:`tanium_ng.Question`
         * Question object to calculate start time for
 
     Returns
     -------
     tuple : str, datetime
-        * a tuple containing the start time first in str format for Tanium Server API, second in datetime object format
+        * a tuple containing the start time first in str format for Tanium Server API, second in
+        datetime object format
     """
     expire_dt = timestr_to_datetime(q.expiration)
     expire_seconds_delta = datetime.timedelta(seconds=q.expire_seconds)
@@ -161,7 +160,8 @@ def question_start_time(q):
 
 
 def eval_timing(c):
-    """Yet another method to time things -- c will be evaluated and timing information will be printed out
+    """Yet another method to time things -- c will be evaluated and timing information will be
+    printed out
     """
     t_start = datetime.now()
     r = eval(c)

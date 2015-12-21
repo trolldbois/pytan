@@ -4,8 +4,12 @@ import string
 import json
 import platform
 import base64
+import logging
+from ..external import six
 from ..version import __version__
 from . import exceptions
+
+mylog = logging.getLogger(__name__)
 
 
 def filter_filename(filename):
@@ -29,12 +33,12 @@ def write_file(f, c):
     d = os.path.dirname(f)
 
     if not os.path.exists(d):
-        print "Creating directory: {}".format(d)
+        mylog.info("Creating directory: {}".format(d))
         os.makedirs(d)
 
     with open(f, 'w') as fh:
         fh.write(c)
-    print "Wrote file: {}".format(f)
+    mylog.info("Wrote file: {}".format(f))
 
 
 def get_name_title(t):
@@ -48,7 +52,7 @@ def get_name_title(t):
         'Resultinfo': 'ResultInfo',
     }
     ret = t.replace('_', ' ').strip().title()
-    for k, v in fixes.iteritems():
+    for k, v in fixes.items():
         ret = ret.replace(k, v)
     return ret
 
@@ -56,7 +60,7 @@ def get_name_title(t):
 def clean_it(f):
     if os.path.exists(f):
         os.unlink(f)
-        print "Removed {}".format(f)
+        mylog.info("Removed {}".format(f))
 
 
 def clean_up(p, pattern):
@@ -87,9 +91,11 @@ def determine_os_ver():
 
 
 def version_check(my_name, version):
-    m = "PyTan v{} is not greater than {} v{}".format
     if not __version__ >= version:
-        raise exceptions.VersionMismatchError(m(__version__, my_name, version))
+        err = "PyTan v{} is not greater than {} v{}"
+        err = err.format(__version__, my_name, version)
+        mylog.critical(err)
+        raise exceptions.VersionMismatchError(err)
     return True
 
 
@@ -110,16 +116,22 @@ def obfuscate(key, string):
     encoded_string : str
         * encoded string
     """
-    string = str(string)
     encoded_chars = []
-    for i in xrange(len(string)):
+    for i in six.moves.range(len(string)):
         key_c = key[i % len(key)]
-        encoded_c = chr(ord(string[i]) + ord(key_c) % 256)
+        key_ord = ord(key_c) % 256
+        string_c = string[i]
+        string_ord = ord(string_c)
+        encoded_c = chr(string_ord + key_ord)
         encoded_chars.append(encoded_c)
-    v_string = "".join(encoded_chars)
-    encoded_string = base64.urlsafe_b64encode(v_string)
-    encoded_string = '::{}::'.format(encoded_string)
-    return encoded_string
+    encoded_str = "".join(encoded_chars)
+    string_enc = base64.urlsafe_b64encode(encoded_str)
+    result = '::{}::'.format(string_enc)
+    return result
+
+
+def print_type(o, name='Object'):
+    print("{}: {!r} type: {}".format(name, o, type(o).__name__))
 
 
 def deobfuscate(key, string):
@@ -129,7 +141,8 @@ def deobfuscate(key, string):
 
     Notes
     -----
-    This will only work with strings that have been encoded with obfuscate(). "normal" strings will be returned as-is.
+    This will only work with strings that have been encoded with obfuscate(). "normal" strings
+    will be returned as-is.
 
     Parameters
     ----------
@@ -143,17 +156,43 @@ def deobfuscate(key, string):
     decoded_string : str
         * decoded string
     """
+    # print_type(string, 'Initial string')
+    # print_type(key, 'Initial key')
+
+    result = string
     if string.startswith('::') and string.endswith('::'):
-        string = str(string[2:-2])
-    else:
-        return string
+        string_enc = str(result[2:-2])
+        # print_type(string_enc, 'Base64 encoded string')
 
-    v_string = base64.urlsafe_b64decode(string)
+        string_dec = base64.urlsafe_b64decode(string_enc)
+        # print_type(string_dec, 'Base64 decoded string')
 
-    decoded_chars = []
-    for i in xrange(len(v_string)):
-        key_c = key[i % len(key)]
-        encoded_c = chr(abs(ord(v_string[i]) - ord(key_c) % 256))
-        decoded_chars.append(encoded_c)
-    decoded_string = "".join(decoded_chars)
-    return decoded_string
+        decoded_chars = []
+        for i in six.moves.range(len(string_dec)):
+            # print_type(i, 'Current range of Base64 decoded string')
+
+            key_c = key[i % len(key)]
+            # print_type(key_c, 'Current range from key')
+
+            key_ord = ord(key_c) % 256
+            # print_type(key_ord, 'Key ordinal')
+
+            string_c = string_dec[i]
+            # print_type(string_c, 'Current range from Base64 decoded string')
+
+            if isinstance(string_c, six.integer_types):
+                string_ord = string_c
+            else:
+                string_ord = ord(string_c)
+            # print_type(string_ord, 'String ordinal')
+
+            abs_c = abs(string_ord - key_ord)
+            # print_type(abs_c, 'Character abs')
+
+            actual_c = chr(abs_c)
+            # print_type(actual_c, 'Actual character')
+
+            decoded_chars.append(actual_c)
+        decoded_str = "".join(decoded_chars)
+        result = decoded_str
+    return result

@@ -21,14 +21,23 @@
 * add windows install doc tip re: 2.7 only
 
 ## BUG
-create_parent_group_obj broken, fix it and add debug logging!
+* create_parent_group_obj broken, fix it and add debug logging!
 * work on deploy action & start_seconds_from_now (a new action gets created at actual start time)
 * on 6.2, block info.json (block 444), fix _regex_for_body_element when _get_response tries to parse for server_version but it doesn't exist
 * param with \ at end breaks parameter parser regex
 * ~~ Will store value as global in TSAT
 
 ## GEN
+* http/s proxy
+* python3 
+* argparse for specs/left/right/etc
+* move stats threading into it's own class
 * i plan to extend that signature to add “domain” and “secondary” as part of my current pytan refactor, in order to support all 4 fields the /auth api supports
+* increase loglevel range to 50
+* put stats thread into it's own threading class
+* keep loglevels 1-10 reserved for shell scripts
+* keep loglevels 10-30 reserved for info logs
+* keep loglevels 30-50 reserved for debug logs
 * bring csv/json stuffs from taniumpy into handler
 * rebuild taniumpy with latest wsdl
 * backport taniumpy changes

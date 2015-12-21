@@ -1,10 +1,4 @@
-# -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
-# ex: set tabstop=4
-# Please do not change the two lines above. See PEP 8, PEP 263.
 """Session classes for the :mod:`pytan` module."""
-import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
 
 import string
 import logging
@@ -20,10 +14,13 @@ try:
 except:
     import xml.etree.ElementTree as ET
 
+from . import tanium_ng
 from . import utils
 from . import __version__
+from .external import six
+from .external import requests
 
-utils.requests.packages.urllib3.disable_warnings()
+requests.packages.urllib3.disable_warnings()
 
 mylog = logging.getLogger(__name__)
 authlog = logging.getLogger(__name__ + ".auth")
@@ -199,7 +196,7 @@ class Session(object):
         self.statslog = statslog
         self.helplog = helplog
 
-        self.REQUESTS_SESSION = utils.requests.Session()
+        self.REQUESTS_SESSION = requests.Session()
         """
         The Requests session allows you to persist certain parameters across requests. It also
         persists cookies across all requests made from the Session instance. Any requests that you
@@ -271,8 +268,9 @@ class Session(object):
             m = m.format(value)
             self.authlog.debug(m)
 
-    def logout(self, all_session_ids=False, **kwargs):
-        """Logout a given session_id from Tanium. If not session_id currently set, it will authenticate to get one.
+    def logout(self, **kwargs):
+        """Logout a given session_id from Tanium. If not session_id currently set, it will
+        authenticate to get one.
 
         Parameters
         ----------
@@ -281,6 +279,8 @@ class Session(object):
             * False: only log out the current session id for the current user
             * True: log out ALL session id's associated for the current user
         """
+        all_session_ids = kwargs.get('all_session_ids', False)
+
         if not self.session_id:
             self.authenticate()
 
@@ -304,6 +304,8 @@ class Session(object):
             m = "logout exception: {}".format
             self.authlog.info(m(e))
 
+        self.session_id = ''
+
         if all_session_ids:
             txt = "all"
         else:
@@ -312,7 +314,6 @@ class Session(object):
         m = "Successfully logged out {} session ids for current user"
         m = m.format(txt)
         self.authlog.info(m)
-        self.session_id = ''
 
     def authenticate(self, **kwargs):
         """Authenticate against a Tanium Server using a username/password or a session ID
@@ -327,11 +328,13 @@ class Session(object):
             * password for `username`
         session_id : str, optional
             * default: None
-            * session_id to authenticate with, this will be used in favor of username/password if all 3 are supplied.
+            * session_id to authenticate with, this will be used in favor of username/password
         persistent: bool, optional
             * default: False
-            * False: do not request a persistent session (returns a session_id that expires 5 minutes after last use)
-            * True: do request a persistent (returns a session_id that expires 1 week after last use)
+            * False: do not request a persistent session
+             (returns a session_id that expires 5 minutes after last use)
+            * True: do request a persistent
+             (returns a session_id that expires 1 week after last use)
 
         Notes
         -----
@@ -381,7 +384,7 @@ class Session(object):
         self._SECONDARY = kwargs.get('secondary', getattr(self, '_SECONDARY', ''))
 
         # the 1 field that /auth takes for session auth
-        self._SESSION_ID = kwargs.get('session_id', getattr(self, '_SESSION_ID', ''))
+        self.session_id = kwargs.get('session_id', getattr(self, 'session_id', ''))
 
         # the optional field for getting a persistent session with non session auth
         self._PERSISTENT = kwargs.get('persistent', getattr(self, '_PERSISTENT', False))
@@ -393,25 +396,19 @@ class Session(object):
         # disable http retry logic by default for auth attempts
         retry_count = kwargs.get('retry_count', 0)
 
-        if not self._SESSION_ID:
-            if not self._USERNAME:
-                err = "Must supply username"
-                raise utils.exceptions.AuthorizationError(err)
-
-            if not self._PASSWORD:
-                err = "Must supply password"
-                raise utils.exceptions.AuthorizationError(err)
-
-        if self._PERSISTENT and not self._USERNAME and not self._PASSWORD:
-            err = "Unable to establish a persistent session when authenticating via session_id"
+        if not self.session_id and not self._USERNAME:
+            err = "Must supply username"
+            self.mylog.critical(err)
             raise utils.exceptions.AuthorizationError(err)
 
-        if self._SESSION_ID:
-            auth_type = 'session ID'
-        elif self._USERNAME and self._PASSWORD:
-            auth_type = 'username/password'
-        else:
-            err = "Authentication type unknown!"
+        if not self.session_id and not self._PASSWORD:
+            err = "Must supply password"
+            self.mylog.critical(err)
+            raise utils.exceptions.AuthorizationError(err)
+
+        if self.session_id and self._PERSISTENT:
+            err = "Unable to establish a persistent session when authenticating via session_id"
+            self.mylog.critical(err)
             raise utils.exceptions.AuthorizationError(err)
 
         auth_headers = {}
@@ -428,31 +425,34 @@ class Session(object):
         kwargs['request_method'] = 'get'
 
         try:
-            self._SESSION_ID = self.http_request_auth(**kwargs)
+            self.session_id = self.http_request_auth(**kwargs)
         except utils.exceptions.HttpError as e:
             err = "HTTP Error while trying to authenticate: {}"
             err = err.format(e)
-            self.mylog.critical(e)
+            self.mylog.exception(err)
             raise
         except utils.exceptions.AuthorizationError as e:
             err = "Authentication Failed: {}"
             err = err.format(e)
-            self.mylog.critical(e)
+            self.mylog.exception(err)
             raise utils.exceptions.AuthorizationError(err)
         except:
             raise
 
-        if self._PERSISTENT:
-            txt = "persistent (up to 1 week)"
-        else:
-            txt = "non-persistent (up to 5 minutes)"
-
         m = "Successfully authenticated and received a {} session id using {}"
-        m = m.format(txt, auth_type)
+        m = m.format(self.get_session_type(), self.get_auth_type())
         self.authlog.info(m)
 
         # start the stats thread loop in a background thread
         self._start_stats_thread(**kwargs)
+
+    def get_session_type(self):
+        """pass."""
+        if self._PERSISTENT:
+            result = "persistent (up to 1 week)"
+        else:
+            result = "non-persistent (up to 5 minutes)"
+        return result
 
     def platform_is_6_5(self, **kwargs):
         """Check to see if self.SERVER_VERSION is less than 6.5
@@ -483,111 +483,117 @@ class Session(object):
         return result
 
     def find(self, obj, **kwargs):
-        """Creates and sends a GetObject XML Request body from `object_type` and parses the response into an appropriate :mod:`taniumpy` object
+        """Creates and sends a GetObject XML Request body from `object_type` and parses the
+        response into an appropriate :mod:`tanium_ng` object
 
         Parameters
         ----------
-        obj : :class:`utils.taniumpy.object_types.base.BaseType`
+        obj : :class:`tanium_ng.BaseType`
             * object to find
 
         Returns
         -------
-        obj : :class:`utils.taniumpy.object_types.base.BaseType`
+        obj : :class:`tanium_ng.BaseType`
             * found objects
         """
         kwargs['obj'] = obj
         kwargs['request_body'] = self._create_get_object_body(**kwargs)
         response_body = self.soap_request(**kwargs)
-        result = utils.taniumpy.BaseType.fromSOAPBody(body=response_body)
+        result = tanium_ng.BaseType.fromSOAPBody(body=response_body)
         return result
 
     def save(self, obj, **kwargs):
-        """Creates and sends a UpdateObject XML Request body from `obj` and parses the response into an appropriate :mod:`taniumpy` object
+        """Creates and sends a UpdateObject XML Request body from `obj` and parses the response
+        into an appropriate :mod:`tanium_ng` object
 
         Parameters
         ----------
-        obj : :class:`utils.taniumpy.object_types.base.BaseType`
+        obj : :class:`tanium_ng.BaseType`
             * object to save
 
         Returns
         -------
-        obj : :class:`utils.taniumpy.object_types.base.BaseType`
+        obj : :class:`tanium_ng.BaseType`
             * saved object
         """
         kwargs['obj'] = obj
         kwargs['request_body'] = self._create_update_object_body(**kwargs)
         response_body = self.soap_request(**kwargs)
-        result = utils.taniumpy.BaseType.fromSOAPBody(body=response_body)
+        result = tanium_ng.BaseType.fromSOAPBody(body=response_body)
         return result
 
     def add(self, obj, **kwargs):
-        """Creates and sends a AddObject XML Request body from `obj` and parses the response into an appropriate :mod:`taniumpy` object
+        """Creates and sends a AddObject XML Request body from `obj` and parses the response into
+        an appropriate :mod:`tanium_ng` object
 
         Parameters
         ----------
-        obj : :class:`utils.taniumpy.object_types.base.BaseType`
+        obj : :class:`tanium_ng.BaseType`
             * object to add
 
         Returns
         -------
-        obj : :class:`utils.taniumpy.object_types.base.BaseType`
+        obj : :class:`tanium_ng.BaseType`
             * added object
         """
         kwargs['obj'] = obj
         kwargs['request_body'] = self._create_add_object_body(**kwargs)
         response_body = self.soap_request(**kwargs)
-        result = utils.taniumpy.BaseType.fromSOAPBody(body=response_body)
+        result = tanium_ng.BaseType.fromSOAPBody(body=response_body)
         return result
 
     def delete(self, obj, **kwargs):
-        """Creates and sends a DeleteObject XML Request body from `obj` and parses the response into an appropriate :mod:`taniumpy` object
+        """Creates and sends a DeleteObject XML Request body from `obj` and parses the response
+        into an appropriate :mod:`tanium_ng` object
 
         Parameters
         ----------
-        obj : :class:`utils.taniumpy.object_types.base.BaseType`
+        obj : :class:`tanium_ng.BaseType`
             * object to delete
 
         Returns
         -------
-        obj : :class:`utils.taniumpy.object_types.base.BaseType`
+        obj : :class:`tanium_ng.BaseType`
             * deleted object
         """
         kwargs['obj'] = obj
         kwargs['request_body'] = self._create_delete_object_body(**kwargs)
         response_body = self.soap_request(**kwargs)
-        result = utils.taniumpy.BaseType.fromSOAPBody(body=response_body)
+        result = tanium_ng.BaseType.fromSOAPBody(body=response_body)
         return result
 
     def run_plugin(self, obj, **kwargs):
-        """Creates and sends a RunPlugin XML Request body from `obj` and parses the response into an appropriate :mod:`taniumpy` object
+        """Creates and sends a RunPlugin XML Request body from `obj` and parses the response into
+        an appropriate :mod:`tanium_ng` object
 
         Parameters
         ----------
-        obj : :class:`utils.taniumpy.object_types.base.BaseType`
+        obj : :class:`tanium_ng.BaseType`
             * object to run
 
         Returns
         -------
-        obj : :class:`utils.taniumpy.object_types.base.BaseType`
+        obj : :class:`tanium_ng.BaseType`
             * results from running object
         """
         kwargs['obj'] = obj
         kwargs['request_body'] = self._create_run_plugin_object_body(**kwargs)
         response_body = self.soap_request(**kwargs)
-        result = utils.taniumpy.BaseType.fromSOAPBody(body=response_body)
+        result = tanium_ng.BaseType.fromSOAPBody(body=response_body)
         return result
 
     def get_result_info(self, obj, **kwargs):
-        """Creates and sends a GetResultInfo XML Request body from `obj` and parses the response into an appropriate :mod:`taniumpy` object
+        """Creates and sends a GetResultInfo XML Request body from `obj` and parses the response
+        into an appropriate :mod:`tanium_ng` object
 
         Parameters
         ----------
-        obj : :class:`utils.taniumpy.object_types.base.BaseType`
+        obj : :class:`tanium_ng.BaseType`
             * object to get result info for
 
         Returns
         -------
-        obj : :class:`utils.taniumpy.object_types.result_info.ResultInfo`
+        obj : :class:`tanium_ng.ResultInfo`
             * ResultInfo for `obj`
         """
         kwargs['obj'] = obj
@@ -598,21 +604,22 @@ class Session(object):
         resultxml_text = self._extract_resultxml(response_body=response_body)
 
         cdata_el = ET.fromstring(resultxml_text)
-        result = utils.taniumpy.ResultInfo.fromSOAPElement(cdata_el)
+        result = tanium_ng.ResultInfo.fromSOAPElement(cdata_el)
         result._RAW_XML = resultxml_text
         return result
 
     def get_result_data(self, obj, **kwargs):
-        """Creates and sends a GetResultData XML Request body from `obj` and parses the response into an appropriate :mod:`taniumpy` object
+        """Creates and sends a GetResultData XML Request body from `obj` and parses the response
+        into an appropriate :mod:`tanium_ng` object
 
         Parameters
         ----------
-        obj : :class:`utils.taniumpy.object_types.base.BaseType`
+        obj : :class:`tanium_ng.BaseType`
             * object to get result set for
 
         Returns
         -------
-        obj : :class:`utils.taniumpy.object_types.result_set.ResultSet`
+        obj : :class:`tanium_ng.ResultSet`
             * otherwise, `obj` will be the ResultSet for `obj`
         """
         kwargs['obj'] = obj
@@ -623,16 +630,17 @@ class Session(object):
         resultxml_text = self._extract_resultxml(response_body=response_body)
 
         cdata_el = ET.fromstring(resultxml_text)
-        result = utils.taniumpy.ResultSet.fromSOAPElement(cdata_el)
+        result = tanium_ng.ResultSet.fromSOAPElement(cdata_el)
         result._RAW_XML = resultxml_text
         return result
 
     def get_result_data_sse(self, obj, **kwargs):
-        """Creates and sends a GetResultData XML Request body that starts a server side export from `obj` and parses the response for an export_id.
+        """Creates and sends a GetResultData XML Request body that starts a server side export
+        from `obj` and parses the response for an export_id.
 
         Parameters
         ----------
-        obj : :class:`utils.taniumpy.object_types.base.BaseType`
+        obj : :class:`tanium_ng.BaseType`
             * object to start server side export
 
         Returns
@@ -665,13 +673,14 @@ class Session(object):
         -------
         info_dict : dict
             * raw json response converted into python dict
-            * 'diags_flat': info.json flattened out into an easier to use structure for python handling
+            * 'diags_flat': info.json flattened out into an easier to use structure for python
             * 'server_info_pass_msgs': messages about successfully retrieving info.json
             * 'server_info_fail_msgs': messages about failing to retrieve info.json
 
         See Also
         --------
-        :func:`pytan.sessions.Session._flatten_server_info` : method to flatten the dictionary received from info.json into a python friendly format
+        :func:`pytan.sessions.Session._flatten_server_info` : method to flatten the dictionary
+        received from info.json into a python friendly format
 
         Notes
         -----
@@ -775,7 +784,8 @@ class Session(object):
 
         See Also
         --------
-        :data:`pytan.sessions.Session.STATS_LOOP_TARGETS` : list of dict containing stat keys to pull from /info.json
+        :data:`pytan.sessions.Session.STATS_LOOP_TARGETS` : list of dict containing stat keys to
+        pull from /info.json
         """
         try:
             si = self.get_server_info(**kwargs)
@@ -784,22 +794,26 @@ class Session(object):
                 self._find_stat_target(target=t, diags=diags)
                 for t in self.STATS_LOOP_TARGETS
             ]
-            result = ", ".join(["{}: {}".format(*i.items()[0]) for i in stats_resolved])
+            result = ", ".join(["{}: {}".format(*list(i.items())[0]) for i in stats_resolved])
         except Exception as e:
             result = "get_server_stats: Exception {}".format(e)
         return result
 
     def enable_stats_loop(self, **kwargs):
-        """Enables the stats loop thread, which will print out the results of :func:`pytan.sessions.Session.get_server_stats` every :data:`pytan.sessions.Session.STATS_LOOP_SLEEP_SEC`
+        """Enables the stats loop thread, which will print out the results of
+        :func:`pytan.sessions.Session.get_server_stats` every
+        :data:`pytan.sessions.Session.STATS_LOOP_SLEEP_SEC`
 
         Parameters
         ----------
         sleep : int, optional
-            * when enabling the stats loop, update :data:`pytan.sessions.Session.STATS_LOOP_SLEEP_SEC` with `sleep`
+            * when enabling the stats loop, update
+            :data:`pytan.sessions.Session.STATS_LOOP_SLEEP_SEC` with `sleep`
 
         See Also
         --------
-        :func:`pytan.sessions.Session._stats_loop` : method started as a thread which checks self.STATS_LOOP_ENABLED before running :func:`pytan.sessions.Session.get_server_stats`
+        :func:`pytan.sessions.Session._stats_loop` : method started as a thread which checks
+        self.STATS_LOOP_ENABLED before running :func:`pytan.sessions.Session.get_server_stats`
         """
         sleep = kwargs.get('sleep', None)
         self.STATS_LOOP_ENABLED = True
@@ -807,16 +821,20 @@ class Session(object):
             self.STATS_LOOP_SLEEP_SEC = sleep
 
     def disable_stats_loop(self, **kwargs):
-        """Disables the stats loop thread, which will print out the results of :func:`pytan.sessions.Session.get_server_stats` every :data:`pytan.sessions.Session.STATS_LOOP_SLEEP_SEC`
+        """Disables the stats loop thread, which will print out the results of
+        :func:`pytan.sessions.Session.get_server_stats` every
+        :data:`pytan.sessions.Session.STATS_LOOP_SLEEP_SEC`
 
         Parameters
         ----------
         sleep : int, optional
-            * when disabling the stats loop, update :data:`pytan.sessions.Session.STATS_LOOP_SLEEP_SEC` with `sleep`
+            * when disabling the stats loop, update
+            :data:`pytan.sessions.Session.STATS_LOOP_SLEEP_SEC` with `sleep`
 
         See Also
         --------
-        :func:`pytan.sessions.Session._stats_loop` : method started as a thread which checks self.STATS_LOOP_ENABLED before running :func:`pytan.sessions.Session.get_server_stats`
+        :func:`pytan.sessions.Session._stats_loop` : method started as a thread which checks
+        self.STATS_LOOP_ENABLED before running :func:`pytan.sessions.Session.get_server_stats`
         """
         sleep = kwargs.get('sleep', None)
         self.STATS_LOOP_ENABLED = False
@@ -824,9 +842,11 @@ class Session(object):
             self.STATS_LOOP_SLEEP_SEC = sleep
 
     def soap_request(self, request_body, **kwargs):
-        """This is a wrapper around :func:`pytan.sessions.Session.http_post` for SOAP XML requests and responses.
+        """This is a wrapper around :func:`pytan.sessions.Session.http_post` for SOAP XML requests
+        and responses.
 
-        This method will update self.session_id if the response contains a different session_id than what is currently in this object.
+        This method will update self.session_id if the response contains a different session_id
+        than what is currently in this object.
 
         Parameters
         ----------
@@ -941,6 +961,31 @@ class Session(object):
         result = ', '.join(result)
         return result
 
+    def _b64encode(self, val):
+        """pass."""
+        result = b64encode(six.b(val))
+        return result
+
+    def _replace_credentials(self, headers):
+        """pass."""
+        removes = ['username', 'password', 'session', 'domain', 'secondary']
+        result = {k: v for k, v in headers.items() if k not in removes}
+
+        if self._SESSION_ID:
+            result['session'] = self._SESSION_ID
+        elif self._USERNAME and self._PASSWORD:
+            result['username'] = self._b64encode(self._USERNAME)
+            result['password'] = self._b64encode(self._PASSWORD)
+            if self._DOMAIN:
+                result['domain'] = self._DOMAIN
+            if self._SECONDARY:
+                result['secondary'] = self._SECONDARY
+        else:
+            err = "Authentication type unknown!"
+            self.mylog.critical(err)
+            raise utils.exceptions.AuthorizationError(err)
+        return result
+
     def http_request_auth(self, **kwargs):
         """This is an authenticated HTTP method. It will always forcibly use the authentication
         credentials that are stored in the current object when performing an HTTP request.
@@ -955,21 +1000,7 @@ class Session(object):
         port = kwargs.get('port', self._PORT)
         url = kwargs.get('url', self.SOAP_RES)
 
-        removes = ['username', 'password', 'session', 'domain', 'secondary']
-        headers = {k: v for k, v in headers.iteritems() if k not in removes}
-
-        if self._SESSION_ID:
-            headers['session'] = self._SESSION_ID
-        elif self._USERNAME and self._PASSWORD:
-            headers['username'] = b64encode(self._USERNAME)
-            headers['password'] = b64encode(self._PASSWORD)
-            if self._DOMAIN:
-                headers['domain'] = self._DOMAIN
-            if self._SECONDARY:
-                headers['secondary'] = self._SECONDARY
-        else:
-            err = "Authentication type unknown!"
-            raise utils.exceptions.AuthorizationError(err)
+        headers = self._replace_credentials(headers)
 
         auth_type = self.get_auth_type()
         m = "Using {} for authentication headers"
@@ -1047,16 +1078,21 @@ class Session(object):
             * True: Run the response_body through an XML cleaner before returning it
         clean_restricted : bool, optional
             * default: True
-            * True: When XML cleaning the response_body, remove restricted characters as well as invalid characters
+            * True: When XML cleaning the response_body, remove restricted characters as well
+            as invalid characters
             * False: When XML cleaning the response_body, remove only invalid characters
         log_clean_messages : bool, optional
             * default: True
-            * True: When XML cleaning the response_body, enable logging messages about invalid/restricted matches
-            * False: When XML cleaning the response_body, disable logging messages about invalid/restricted matches
+            * True: When XML cleaning the response_body, enable logging messages about invalid/
+            restricted matches
+            * False: When XML cleaning the response_body, disable logging messages about invalid/
+            restricted matches
         log_bad_characters : bool, optional
             * default: False
-            * False: When XML cleaning the response_body, disable logging messages about the actual characters that were invalid/restricted
-            * True: When XML cleaning the response_body, enable logging messages about the actual characters that were invalid/restricted
+            * False: When XML cleaning the response_body, disable logging messages about the
+            actual characters that were invalid/restricted
+            * True: When XML cleaning the response_body, enable logging messages about the actual
+            characters that were invalid/restricted
 
         Returns
         -------
@@ -1070,10 +1106,6 @@ class Session(object):
         connect_timeout = kwargs.get('connect_timeout', self.SOAP_CONNECT_TIMEOUT_SEC)
         response_timeout = kwargs.get('response_timeout', self.SOAP_RESPONSE_TIMEOUT_SEC)
         request_method = kwargs.get('request_method', 'get')
-        perform_xml_clean = kwargs.get('perform_xml_clean', False)
-        clean_restricted = kwargs.get('clean_restricted', True)
-        log_clean_messages = kwargs.get('log_clean_messages', True)
-        log_bad_characters = kwargs.get('log_bad_characters', False)
         empty_ok = kwargs.get('empty_ok', False)
         body = kwargs.get('body', '')
         pytan_help = kwargs.get('pytan_help', "NO HELP SUPPLIED")
@@ -1093,27 +1125,29 @@ class Session(object):
         m = m.format(pre, clean_headers)
         self.httplog.debug(m)
 
-        if body:
-            m = "{}: body:\n{}"
-            m = m.format(pre, body)
-            self.bodylog.debug(m)
-
         pytan_help = "{} - {}".format(pytan_help, pre)
         self.helplog.info(pytan_help)
 
         req_args = {}
         req_args['headers'] = headers
         req_args['timeout'] = (connect_timeout, response_timeout)
+
         if request_method.lower() == 'post':
+            m = "{}: body:\n{}"
+            m = m.format(pre, body)
+            self.bodylog.debug(m)
+
             req_args['data'] = body
-            perform_xml_clean = kwargs.get('perform_xml_clean', True)
+            kwargs['perform_xml_clean'] = kwargs.get('perform_xml_clean', True)
+
+        requests_func = getattr(self.REQUESTS_SESSION, request_method)
 
         try:
-            requests_func = getattr(self.REQUESTS_SESSION, request_method)
             response = requests_func(full_url, **req_args)
         except Exception as e:
             err = "HTTP response: {} request to '{}' failed: {}"
             err = err.format(request_method.upper(), full_url, e)
+            self.mylog.exception(err)
             raise utils.exceptions.HttpError(err)
 
         self.LAST_REQUESTS_RESPONSE = response
@@ -1123,13 +1157,8 @@ class Session(object):
         response.pytan_help = pytan_help
         response_body = response.text
 
-        if perform_xml_clean:
-            xml_clean_args = {}
-            xml_clean_args['s'] = response_body
-            xml_clean_args['clean_restricted'] = clean_restricted
-            xml_clean_args['log_clean_messages'] = log_clean_messages
-            xml_clean_args['log_bad_characters'] = log_bad_characters
-            response_body = utils.xml_cleaner(**xml_clean_args)
+        kwargs['text'] = response_body
+        response_body = utils.xml_cleaner(**kwargs)
 
         pre = "HTTP {} response: '{}'"
         pre = pre.format(request_method.upper(), full_url)
@@ -1190,13 +1219,15 @@ class Session(object):
         return result
 
     def _start_stats_thread(self, **kwargs):
-        """Utility method starting the :func:`pytan.sessions.Session._stats_loop` method in a threaded daemon"""
+        """Utility method starting the :func:`pytan.sessions.Session._stats_loop` method in a
+        threaded daemon"""
         stats_thread = threading.Thread(target=self._stats_loop, args=(), kwargs=kwargs)
         stats_thread.daemon = True
         stats_thread.start()
 
     def _stats_loop(self, **kwargs):
-        """Utility method for logging server stats via :func:`pytan.sessions.Session.get_server_stats` every self.STATS_LOOP_SLEEP_SEC"""
+        """Utility method for logging server stats via
+        :func:`pytan.sessions.Session.get_server_stats` every self.STATS_LOOP_SLEEP_SEC"""
         while True:
             if self.STATS_LOOP_ENABLED:
                 server_stats = self.get_server_stats(**kwargs)
@@ -1218,7 +1249,7 @@ class Session(object):
         """
         result = structure
         if isinstance(structure, dict):
-            for k, v in result.iteritems():
+            for k, v in result.items():
                 result[k] = self._flatten_server_info(structure=v)
         elif isinstance(structure, (tuple, list)):
             if all([isinstance(x, dict) for x in structure]):
@@ -1227,7 +1258,8 @@ class Session(object):
         return result
 
     def _find_stat_target(self, target, diags):
-        """Utility method for finding a target in info.json and returning the value, optionally performing a percentage calculation on two values if the target[0] starts with percentage(
+        """Utility method for finding a target in info.json and returning the value, optionally
+        performing a percentage calculation on two values if the target[0] starts with percentage(
 
         Parameters
         ----------
@@ -1241,7 +1273,8 @@ class Session(object):
         -------
         dict
             * label : same as provided in `target` index0 (label)
-            * result : value resolved from :func:`pytan.sessions.Session._resolve_stat_target` for `target` index1 (search_path)
+            * result : value resolved from :func:`pytan.sessions.Session._resolve_stat_target` for
+            `target` index1 (search_path)
         """
         try:
             label, search_path = target.items()[0]
@@ -1294,7 +1327,8 @@ class Session(object):
         object_list : str
             * XML string to use in object list node when building template
         kwargs : dict, optional
-            * any number of attributes that can be set via :class:`utils.taniumpy.object_types.options.Options` that control the servers response.
+            * any number of attributes that can be set via
+            :class:`tanium_ng.Options` that control the servers response.
         log_options : bool, optional
             * default: False
             * False: Do not print messages setting attributes in Options from keys in kwargs
@@ -1307,9 +1341,9 @@ class Session(object):
         """
         log_options = kwargs.get('log_options', False)
 
-        options_obj = utils.taniumpy.Options()
+        options_obj = tanium_ng.Options()
 
-        for k, v in kwargs.iteritems():
+        for k, v in kwargs.items():
             if hasattr(options_obj, k):
                 if log_options:
                     m = "Setting Options attribute {!r} to value {!r}".format
@@ -1331,10 +1365,11 @@ class Session(object):
 
         Parameters
         ----------
-        obj : :class:`utils.taniumpy.object_types.base.BaseType`
+        obj : :class:`tanium_ng.BaseType`
             * object to convert into XML
         kwargs : dict, optional
-            * any number of attributes that can be set via :class:`utils.taniumpy.object_types.options.Options` that control the servers response.
+            * any number of attributes that can be set via
+            :class:`tanium_ng.Options` that control the servers response.
 
         Returns
         -------
@@ -1351,10 +1386,11 @@ class Session(object):
 
         Parameters
         ----------
-        obj : :class:`utils.taniumpy.object_types.base.BaseType`
+        obj : :class:`tanium_ng.BaseType`
             * object to convert into XML
         kwargs : dict, optional
-            * any number of attributes that can be set via :class:`utils.taniumpy.object_types.options.Options` that control the servers response.
+            * any number of attributes that can be set via
+            :class:`tanium_ng.Options` that control the servers response.
 
         Returns
         -------
@@ -1371,10 +1407,11 @@ class Session(object):
 
         Parameters
         ----------
-        obj : :class:`utils.taniumpy.object_types.base.BaseType`
+        obj : :class:`tanium_ng.BaseType`
             * object to convert into XML
         kwargs : dict, optional
-            * any number of attributes that can be set via :class:`utils.taniumpy.object_types.options.Options` that control the servers response.
+            * any number of attributes that can be set via
+            :class:`tanium_ng.Options` that control the servers response.
 
         Returns
         -------
@@ -1391,10 +1428,11 @@ class Session(object):
 
         Parameters
         ----------
-        obj : :class:`utils.taniumpy.object_types.base.BaseType`
+        obj : :class:`tanium_ng.BaseType`
             * object to convert into XML
         kwargs : dict, optional
-            * any number of attributes that can be set via :class:`utils.taniumpy.object_types.options.Options` that control the servers response.
+            * any number of attributes that can be set via
+            :class:`tanium_ng.Options` that control the servers response.
 
         Returns
         -------
@@ -1411,10 +1449,11 @@ class Session(object):
 
         Parameters
         ----------
-        obj : :class:`utils.taniumpy.object_types.base.BaseType`
+        obj : :class:`tanium_ng.BaseType`
             * object to convert into XML
         kwargs : dict, optional
-            * any number of attributes that can be set via :class:`utils.taniumpy.object_types.options.Options` that control the servers response.
+            * any number of attributes that can be set via
+            :class:`tanium_ng.Options` that control the servers response.
 
         Returns
         -------
@@ -1431,17 +1470,18 @@ class Session(object):
 
         Parameters
         ----------
-        obj : :class:`utils.taniumpy.object_types.base.BaseType`
+        obj : :class:`tanium_ng.BaseType`
             * object to convert into XML
         kwargs : dict, optional
-            * any number of attributes that can be set via :class:`utils.taniumpy.object_types.options.Options` that control the servers response.
+            * any number of attributes that can be set via
+             :class:`tanium_ng.Options` that control the servers response.
 
         Returns
         -------
         obj_body : str
             * The XML request body created from :func:`pytan.sessions.Session._build_body`
         """
-        if isinstance(obj, utils.taniumpy.BaseType):
+        if isinstance(obj, tanium_ng.BaseType):
             object_list = obj.toSOAPBody(minimal=True)
         else:
             object_list = '<{}/>'.format(obj._soap_tag)
@@ -1456,10 +1496,11 @@ class Session(object):
 
         Parameters
         ----------
-        obj : :class:`utils.taniumpy.object_types.base.BaseType`
+        obj : :class:`tanium_ng.BaseType`
             * object to convert into XML
         kwargs : dict, optional
-            * any number of attributes that can be set via :class:`utils.taniumpy.object_types.options.Options` that control the servers response.
+            * any number of attributes that can be set via
+            :class:`tanium_ng.Options` that control the servers response.
 
         Returns
         -------
@@ -1489,10 +1530,6 @@ class Session(object):
         -------
         ret : str
             * The first value that matches the regex ELEMENT_RE_TXT with element
-
-        Notes
-        -----
-            * Using regex is WAY faster than ElementTree chewing the body in and out, this matters a LOT on LARGE return bodies
         """
         regex_txt = self.ELEMENT_RE_TXT.format(element)
         regex = re.compile(regex_txt, re.IGNORECASE | re.DOTALL)

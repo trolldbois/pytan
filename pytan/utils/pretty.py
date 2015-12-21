@@ -1,14 +1,10 @@
-#!/usr/bin/env python
-# -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
-# ex: set tabstop=4
-# Please do not change the two lines above. See PEP 8, PEP 263.
 """Prettifying module for :mod:`pytan`"""
 
 import pprint
 import json
 import io
 import csv
-from .external import xmltodict
+from ..external import xmltodict
 
 
 def jsonify(v, indent=2, sort_keys=True):
@@ -143,7 +139,7 @@ def csvdictwriter(rows_list, **kwargs):
 def pretty_dict(d, indent=0, parent=True):
     """Pretty print a dictionary"""
     strs = []
-    for k, v in d.iteritems():
+    for k, v in d.items():
         ktxt = "{}{}: ".format('  ' * indent, k)
         new_indent = indent + 1
         if isinstance(v, (dict)):
@@ -175,14 +171,13 @@ def debug_obj(debugobj):
 def introspect(obj, depth=0):
     """Utility function to dump all info about an object"""
     import types
-    print "%s%s: %s\n" % (depth * "\t", obj, [
-        x for x in dir(obj) if x[:2] != "__"])
+    print("{}{}: {}\n".format(depth * "\t", obj, [x for x in dir(obj) if x[:2] != "__"]))
     depth += 1
     for x in dir(obj):
         if x[:2] == "__":
             continue
         subobj = getattr(obj, x)
-        print "%s%s: %s" % (depth * "\t", x, subobj)
+        print("{}{}: {}".format(depth * "\t", x, subobj))
         if isinstance(subobj, types.InstanceType) and dir(subobj) != []:
             introspect(subobj, depth=depth + 1)
-            print
+            print("")

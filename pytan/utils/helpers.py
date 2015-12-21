@@ -1,6 +1,3 @@
-# -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
-# ex: set tabstop=4
-# Please do not change the two lines above. See PEP 8, PEP 263.
 """Help module for for :mod:`pytan`"""
 
 from .parsers import constants
@@ -8,7 +5,8 @@ from . import exceptions
 
 
 def check_for_help(kwargs):
-    """Utility method to check for any help arguments and raise a PytanHelp exception with the appropriate help
+    """Utility method to check for any help arguments and raise a PytanHelp exception with the
+    appropriate help
 
     Parameters
     ----------

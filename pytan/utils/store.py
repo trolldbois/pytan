@@ -4,7 +4,7 @@ class Store(dict):
 
     def __str__(self):
         me = self.__class__.__name__
-        ret = '\n'.join(["{} attribute '{}': '{}'".format(me, k, v) for k, v in self.iteritems()])
+        ret = '\n'.join(["{} attribute '{}': '{}'".format(me, k, v) for k, v in self.items()])
         return ret
 
     def __getattr__(self, name):

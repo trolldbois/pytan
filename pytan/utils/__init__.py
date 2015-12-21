@@ -32,9 +32,6 @@ from . import tanium_obj
 from . import parsers
 from . import tools
 from . import store
-from .external import taniumpy
-from .external import xmltodict
-from .external import requests
 from .xml_clean import xml_cleaner
 
 __all__ = [
@@ -49,9 +46,6 @@ __all__ = [
     'tanium_obj',
     'xml_cleaner',
     'parsers',
-    'taniumpy',
-    'xmltodict',
-    'requests',
     'tools',
     'store',
 ]

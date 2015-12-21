@@ -1,14 +1,12 @@
-#!/usr/bin/env python
-# -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
-# ex: set tabstop=4
-# Please do not change the two lines above. See PEP 8, PEP 263.
 """Logging module for :mod:`pytan`."""
 
 import copy
 import logging
 from . import constants
 from . import exceptions
-from .external import taniumpy
+from . import tanium_obj
+from .. import tanium_ng
+from ..external import six
 
 mylog = logging.getLogger(__name__)
 
@@ -36,11 +34,6 @@ def get_str(spec):
 class Spec(object):
     """pass."""
 
-    def get_single_class(self, all_class):
-        """pass."""
-        single_class = all_class()._list_properties.values()[0]
-        return single_class
-
     def chk_dict_key(self, k, d, types,):
         """pass."""
         if not isinstance(d[k], types):
@@ -62,7 +55,7 @@ class Spec(object):
         self.has_dict_key('value', spec)
 
         # check that value is a string or int
-        self.chk_dict_key('value', spec, (basestring, int,))
+        self.chk_dict_key('value', spec, six.string_types + six.integer_types)
 
         # validate value is an appropriate type as defined in single_obj
         obj_type = self.props[spec['field']]
@@ -110,13 +103,13 @@ class Spec(object):
             raise exceptions.PytanError(err)
 
         # validate field is a string
-        self.chk_dict_key('field', spec, (basestring,))
+        self.chk_dict_key('field', spec, six.string_types)
         return spec
 
     def chk_operator(self, spec):
         """pass."""
         # validate operator is a string
-        self.chk_dict_key('operator', spec, (basestring,))
+        self.chk_dict_key('operator', spec, six.string_types)
 
         # if operator is a pytan extended operator, map it back to a Tanium operator
         if spec['operator'].lower() in constants.OPERATORS_PYTAN:
@@ -168,7 +161,7 @@ class Spec(object):
 
     def chk_field_type(self, spec):
         # validate field_type is a string
-        self.chk_dict_key('field_type', spec, (basestring,))
+        self.chk_dict_key('field_type', spec, six.string_types)
 
         # validate field_type is a valid field type
         type_valid = [
@@ -195,7 +188,7 @@ class GetObject(Spec):
 
     def __init__(self, all_class, spec):
         """pass."""
-        self.single_class = self.get_single_class(all_class)
+        self.single_class = tanium_obj.get_single_class(all_class)
         self.single_name = self.single_class.__name__
         self.single_obj = self.single_class()
         self.props = self.single_obj._simple_properties
@@ -242,7 +235,7 @@ class FilterObject(Spec):
 
     def __init__(self, spec):
         """pass."""
-        self.single_class = taniumpy.Filter()
+        self.single_class = tanium_ng.Filter()
         self.single_name = self.single_class.__name__
         self.single_obj = self.single_class()
         self.props = self.single_obj._simple_properties
@@ -311,6 +304,6 @@ class LeftSide(Spec):
         self.chk_dict_key('sensor', spec, (dict,))
 
         # parse the sensor dict
-        sensor_parser = GetObject(taniumpy.SensorList, spec['sensor'])
+        sensor_parser = GetObject(tanium_ng.SensorList, spec['sensor'])
         parsed_spec['sensor'] = sensor_parser.parsed_spec
         return parsed_spec
