@@ -2,7 +2,7 @@
 
 * License: MIT
 * Copyright: Copyright Tanium Inc. 2015
-* Generated from ``console.wsdl`` by ``build_tanium_ng.py`` on D2015-12-22T00-06-10Z-0400
+* Generated from ``console.wsdl`` by ``build_tanium_ng.py`` on D2015-12-22T02-55-41Z-0400
 * Version of ``console.wsdl``: 0.0.1
 * Tanium Server version of ``console.wsdl``: 6.5.314.3400
 * Version of PyTan: 4.0.0
@@ -43,17 +43,26 @@ class Question(BaseType):
 
 
 from .select_list import SelectList
-from .user import User
-from .group import Group
 from .saved_question import SavedQuestion
+from .group import Group
+from .user import User
+
+# Simple fix for type differences for text strings: str (3.x) vs unicode (2.x)
+
+import sys
+PY3 = sys.version_info[0] == 3
+if PY3:
+    text_type = str  # noqa
+else:
+    text_type = unicode  # noqa
 
 SIMPLE_ARGS = {}
 SIMPLE_ARGS['id'] = int
 SIMPLE_ARGS['expire_seconds'] = int
 SIMPLE_ARGS['skip_lock_flag'] = int
-SIMPLE_ARGS['expiration'] = str
-SIMPLE_ARGS['name'] = str
-SIMPLE_ARGS['query_text'] = str
+SIMPLE_ARGS['expiration'] = text_type
+SIMPLE_ARGS['name'] = text_type
+SIMPLE_ARGS['query_text'] = text_type
 SIMPLE_ARGS['hidden_flag'] = int
 SIMPLE_ARGS['action_tracking_flag'] = int
 SIMPLE_ARGS['force_computer_id_flag'] = int

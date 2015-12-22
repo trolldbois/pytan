@@ -1,31 +1,41 @@
+# TODO: fix str for un'init'd
+
+import sys
 import io
+
 try:
     import xml.etree.cElementTree as ET
 except:
     import xml.etree.ElementTree as ET
 
+# Simple fix for type differences for text strings: str (3.x) vs unicode (2.x)
+PY3 = sys.version_info[0] == 3
+if PY3:
+    text_type = str
+else:
+    text_type = unicode  # noqa
 
-class TaniumException(Exception):
+
+class TaniumNextGenException(Exception):
     pass
 
 
-class IncorrectTypeException(TaniumException):
+class IncorrectTypeException(TaniumNextGenException):
     """Raised when a property is not of the expected type"""
-    def __init__(self, property, expected, actual):
-        self.property = property
+    def __init__(self, name, value, expected):
+        self.name = name
         self.expected = expected
-        self.actual = actual
-        err = 'Property {} is not of type {}, got {}'
-        err = err.format(property, str(expected), str(actual))
-        TaniumException.__init__(self, err)
+        self.value = value
+        err = "Attribute '{}' expected type '{}', got '{}' (value: '{}')"
+        err = err.format(name, expected.__name__, type(value).__name__, value)
+        TaniumNextGenException.__init__(self, err)
 
 
 class BaseType(object):
 
     _soap_tag = None
 
-    def __init__(self, simple_properties, complex_properties,
-                 list_properties):
+    def __init__(self, simple_properties, complex_properties, list_properties):
         self._initialized = False
         self._simple_properties = simple_properties
         self._complex_properties = complex_properties
@@ -40,25 +50,24 @@ class BaseType(object):
         result = list(self._list_properties.keys())[0]
         return result
 
-    def __getitem__(self, n):
+    def __getitem__(self, idx):
         """Allow automatic indexing into lists."""
         if not self._is_list():
             err = 'Not a list type, __getitem__ not supported'
-            raise TaniumException(err)
-
-        result = getattr(self, self._get_list_attr())[n]
+            raise TaniumNextGenException(err)
+        result = getattr(self, self._get_list_attr())[idx]
         return result
 
     def __len__(self):
         """Allow len() for lists and str"""
-        ret = 0
+        result = 0
         if self._is_list():
-            ret = len(getattr(self, self._get_list_attr()))
+            result = len(getattr(self, self._get_list_attr()))
         elif getattr(self, 'name', ''):
-            ret = len(str(self.name))
+            result = len(str(self.name))
         elif getattr(self, 'id', ''):
-            ret = len(str(self.id))
-        return ret
+            result = len(str(self.id))
+        return result
 
     def __str__(self):
         class_name = self.__class__.__name__
@@ -78,33 +87,58 @@ class BaseType(object):
                 if vals:
                     vals = "\t" + "\n\t".join(vals)
                     val = ', vals:\n{}'.format(vals)
-        ret = '{}{}'.format(class_name, val)
-        return ret
+        result = '{}{}'.format(class_name, val)
+        return result
+
+    def _check_complex(self, name, value):
+        if not isinstance(value, self._complex_properties[name]):
+            raise IncorrectTypeException(name, value, self._complex_properties[name])
+        return value
+
+    def _check_simple(self, name, value):
+        if not isinstance(value, self._simple_properties[name]):
+            if not value:
+                value = None
+            else:
+                try:
+                    value = self._simple_properties[name](value)
+                except:
+                    raise IncorrectTypeException(name, value, self._simple_properties[name])
+        return value
+
+    def _check_list(self, name, value):
+        if value != [] and not isinstance(value, self._list_properties[name]):
+            raise IncorrectTypeException(name, value, self._list_properties[name])
+        return value
 
     def __setattr__(self, name, value):
-        """Enforce type, if name is a complex property"""
-        if value is not None and \
-                name != '_initialized' and \
-                self._initialized and \
-                name in self._complex_properties:
-            if not isinstance(value, self._complex_properties[name]):
-                raise IncorrectTypeException(value, self._complex_properties[name], type(value))
+        """Enforce type of attribute assignments"""
+        val_not_none = value is not None
+        name_not_init = name != '_initialized'
+        self_is_init = getattr(self, '_initialized', False)
+        check_type = all([val_not_none, name_not_init, self_is_init])
+
+        m = "val_not_none: {}, name_not_init: {}, self_is_init: {}, check_type: {}"
+        m = m.format(val_not_none, name_not_init, self_is_init, check_type)
+        print(m)
+
+        if check_type:
+            if name in getattr(self, '_complex_properties', {}):
+                value = self._check_complex(name, value)
+            elif name in getattr(self, '_simple_properties', {}):
+                value = self._check_simple(name, value)
+            elif name in getattr(self, '_list_properties', {}):
+                value = self._check_list(name, value)
         super(BaseType, self).__setattr__(name, value)
 
     def append(self, n):
-        """Allow adding to list.
-
-        Only supported on types that have a single property
-        that is in list_properties
-
-        """
+        """Allow adding to list."""
         if not self._is_list():
             err = 'Not a list type, append not supported'
-            raise TaniumException(err)
-
+            raise TaniumNextGenException(err)
         getattr(self, self._get_list_attr()).append(n)
 
-    def toSOAPElement(self, minimal=False): # noqa
+    def to_soap_element(self, minimal=False):
         root = ET.Element(self._soap_tag)
         for p in self._simple_properties:
             el = ET.Element(p)
@@ -121,7 +155,7 @@ class BaseType(object):
                 if val is not None and not isinstance(val, t):
                     raise IncorrectTypeException(p, t, type(val))
                 if isinstance(val, BaseType):
-                    child = val.toSOAPElement(minimal=minimal)
+                    child = val.to_soap_element(minimal=minimal)
                     # the tag name is the property name,
                     # not the property type's soap tag
                     el = ET.Element(p)
@@ -144,7 +178,7 @@ class BaseType(object):
                 for val in vals:
                     # print type(val)
                     # print val
-                    root.append(val.toSOAPElement(minimal=minimal))
+                    root.append(val.to_soap_element(minimal=minimal))
             else:
                 for val in vals:
                     el = ET.Element(p)
@@ -155,13 +189,16 @@ class BaseType(object):
                         root.append(el)
         return root
 
-    def toSOAPBody(self, minimal=False): # noqa
+    def to_soap_body(self, minimal=False):
+        """Deserialize self into an XML body"""
+        el = self.to_soap_element(minimal=minimal)
         out = io.BytesIO()
-        ET.ElementTree(self.toSOAPElement(minimal=minimal)).write(out)
-        return out.getvalue()
+        ET.ElementTree(el).write(out)
+        result = out.getvalue()
+        return result
 
     @classmethod
-    def fromSOAPElement(cls, el): # noqa
+    def from_soap_element(cls, el):
         result = cls()
         for p, t in result._simple_properties.items():
             pel = el.find("./{}".format(p))
@@ -172,14 +209,14 @@ class BaseType(object):
         for p, t in result._complex_properties.items():
             elems = el.findall('./{}'.format(p))
             if len(elems) > 1:
-                raise TaniumException(
+                raise TaniumNextGenException(
                     'Unexpected: {} elements for property'.format(p)
                 )
             elif len(elems) == 1:
                 setattr(
                     result,
                     p,
-                    result._complex_properties[p].fromSOAPElement(elems[0]),
+                    result._complex_properties[p].from_soap_element(elems[0]),
                 )
             else:
                 setattr(result, p, None)
@@ -188,7 +225,7 @@ class BaseType(object):
             elems = el.findall('./{}'.format(p))
             for elem in elems:
                 if issubclass(t, BaseType):
-                    getattr(result, p).append(t.fromSOAPElement(elem))
+                    getattr(result, p).append(t.from_soap_element(elem))
                 else:
                     getattr(result, p).append(elem.text)
 
@@ -201,12 +238,12 @@ class BaseType(object):
         if el.tag not in OBJECT_TYPES:
             err = 'Unknown type {}'
             err = err.format(el.tag)
-            raise TaniumException(err)
+            raise TaniumNextGenException(err)
         result = OBJECT_TYPES[el.tag]
         return result
 
     @classmethod
-    def fromSOAPBody(cls, body): # noqa
+    def from_soap_body(cls, body):
         """Parse text ``body`` as XML and produce Python tanium objects.
 
         This method assumes a single <result_object>, which may be a list or a single object.
@@ -217,6 +254,6 @@ class BaseType(object):
             result = el
         if el is not None:
             obj = cls._get_obj_type(el)
-            result = obj.fromSOAPElement(el)
+            result = obj.from_soap_element(el)
             result._ORIGINAL_OBJECT = el
         return result

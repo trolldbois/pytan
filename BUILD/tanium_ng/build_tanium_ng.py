@@ -63,7 +63,7 @@ class WsdlParser(object):
     NAMESPACES = {'xsd': 'http://www.w3.org/2001/XMLSchema'}
     XSD_MAP = {
         'xsd:int': 'int',
-        'xsd:string': 'str',
+        'xsd:string': 'text_type',
         'xsd:long': 'int'
     }
 
@@ -101,7 +101,7 @@ class ${py_type}(BaseType):
 
     _soap_tag = '${soap_tag}'
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         BaseType.__init__(
             self,
             simple_properties=SIMPLE_ARGS,
@@ -111,9 +111,19 @@ class ${py_type}(BaseType):
         ${simple_properties}
         ${complex_properties}
         ${list_properties}
+        self._values = kwargs.get('values', {})
+        self._set_values(self._values)
 
 
 ${imports}
+
+# Simple fix for type differences for text strings: str (3.x) vs unicode (2.x)
+import sys
+PY3 = sys.version_info[0] == 3
+if PY3:
+    text_type = str  # noqa
+else:
+    text_type = unicode  # noqa
 
 SIMPLE_ARGS = {}
 ${SIMPLE_ARGS}
@@ -381,7 +391,7 @@ Handles the serialization and deserialization of objects to / from XML and Pytho
             err = err.format(name, pattern, self.wsdl_file)
             raise Exception(err)
 
-        result = str(result.groups()[0].strip())
+        result = str(result.groups()[0]).strip()
         m = "Parsed {!r} from WSDL file: {!r}"
         m = m.format(name, result)
         mylog.info(m)

@@ -2,7 +2,7 @@
 
 * License: MIT
 * Copyright: Copyright Tanium Inc. 2015
-* Generated from ``console.wsdl`` by ``build_tanium_ng.py`` on D2015-12-22T00-06-10Z-0400
+* Generated from ``console.wsdl`` by ``build_tanium_ng.py`` on D2015-12-22T02-55-41Z-0400
 * Version of ``console.wsdl``: 0.0.1
 * Tanium Server version of ``console.wsdl``: 6.5.314.3400
 * Version of PyTan: 4.0.0
@@ -69,53 +69,62 @@ class ObjectList(BaseType):
         self.computer_group = []
 
 
-from .action_list import ActionList
-from .saved_question_list import SavedQuestionList
-from .parse_result_group_list import ParseResultGroupList
-from .package_spec import PackageSpec
-from .plugin_list import PluginList
-from .action_stop_list import ActionStopList
-from .user_role_list import UserRoleList
-from .group_list import GroupList
-from .package_spec_list import PackageSpecList
-from .system_setting import SystemSetting
-from .white_listed_url_list import WhiteListedUrlList
-from .upload_file_status import UploadFileStatus
-from .question import Question
-from .user_list import UserList
-from .sensor import Sensor
 from .soap_error import SoapError
-from .system_setting_list import SystemSettingList
-from .parse_job_list import ParseJobList
-from .upload_file import UploadFile
-from .package_file_list import PackageFileList
-from .saved_action_approval import SavedActionApproval
-from .action import Action
-from .action_stop import ActionStop
-from .parse_result_group import ParseResultGroup
-from .plugin_schedule_list import PluginScheduleList
-from .computer_group import ComputerGroup
-from .saved_action import SavedAction
-from .client_status import ClientStatus
-from .user import User
-from .client_count import ClientCount
 from .computer_group_list import ComputerGroupList
-from .plugin import Plugin
+from .parse_result_group import ParseResultGroup
+from .saved_question_list import SavedQuestionList
+from .package_spec_list import PackageSpecList
 from .group import Group
-from .question_list import QuestionList
-from .package_file import PackageFile
-from .parse_job import ParseJob
-from .sensor_list import SensorList
-from .system_status_list import SystemStatusList
-from .saved_question import SavedQuestion
-from .saved_action_list import SavedActionList
-from .archived_question import ArchivedQuestion
-from .plugin_schedule import PluginSchedule
+from .sensor import Sensor
 from .archived_question_list import ArchivedQuestionList
+from .parse_job_list import ParseJobList
+from .parse_job import ParseJob
+from .package_file import PackageFile
+from .white_listed_url_list import WhiteListedUrlList
+from .question import Question
+from .saved_question import SavedQuestion
+from .system_status_list import SystemStatusList
+from .plugin_list import PluginList
+from .saved_action_approval import SavedActionApproval
+from .upload_file_status import UploadFileStatus
+from .package_file_list import PackageFileList
+from .archived_question import ArchivedQuestion
+from .question_list import QuestionList
+from .parse_result_group_list import ParseResultGroupList
+from .client_status import ClientStatus
 from .white_listed_url import WhiteListedUrl
+from .action import Action
+from .upload_file import UploadFile
+from .sensor_list import SensorList
+from .system_setting_list import SystemSettingList
+from .computer_group import ComputerGroup
+from .action_stop import ActionStop
+from .plugin_schedule import PluginSchedule
+from .package_spec import PackageSpec
+from .action_list import ActionList
+from .group_list import GroupList
+from .plugin_schedule_list import PluginScheduleList
+from .action_stop_list import ActionStopList
+from .user_list import UserList
+from .saved_action_list import SavedActionList
+from .system_setting import SystemSetting
+from .user_role_list import UserRoleList
+from .client_count import ClientCount
+from .saved_action import SavedAction
+from .plugin import Plugin
+from .user import User
+
+# Simple fix for type differences for text strings: str (3.x) vs unicode (2.x)
+
+import sys
+PY3 = sys.version_info[0] == 3
+if PY3:
+    text_type = str  # noqa
+else:
+    text_type = unicode  # noqa
 
 SIMPLE_ARGS = {}
-SIMPLE_ARGS['export_id'] = str
+SIMPLE_ARGS['export_id'] = text_type
 
 COMPLEX_ARGS = {}
 COMPLEX_ARGS['questions'] = QuestionList

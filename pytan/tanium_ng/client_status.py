@@ -2,7 +2,7 @@
 
 * License: MIT
 * Copyright: Copyright Tanium Inc. 2015
-* Generated from ``console.wsdl`` by ``build_tanium_ng.py`` on D2015-12-22T00-06-10Z-0400
+* Generated from ``console.wsdl`` by ``build_tanium_ng.py`` on D2015-12-22T02-55-41Z-0400
 * Version of ``console.wsdl``: 0.0.1
 * Tanium Server version of ``console.wsdl``: 6.5.314.3400
 * Version of PyTan: 4.0.0
@@ -41,17 +41,26 @@ class ClientStatus(BaseType):
 
 # no extra imports used
 
+# Simple fix for type differences for text strings: str (3.x) vs unicode (2.x)
+
+import sys
+PY3 = sys.version_info[0] == 3
+if PY3:
+    text_type = str  # noqa
+else:
+    text_type = unicode  # noqa
+
 SIMPLE_ARGS = {}
-SIMPLE_ARGS['host_name'] = str
-SIMPLE_ARGS['computer_id'] = str
-SIMPLE_ARGS['ipaddress_client'] = str
-SIMPLE_ARGS['ipaddress_server'] = str
+SIMPLE_ARGS['host_name'] = text_type
+SIMPLE_ARGS['computer_id'] = text_type
+SIMPLE_ARGS['ipaddress_client'] = text_type
+SIMPLE_ARGS['ipaddress_server'] = text_type
 SIMPLE_ARGS['protocol_version'] = int
-SIMPLE_ARGS['full_version'] = str
-SIMPLE_ARGS['last_registration'] = str
-SIMPLE_ARGS['send_state'] = str
-SIMPLE_ARGS['receive_state'] = str
-SIMPLE_ARGS['status'] = str
+SIMPLE_ARGS['full_version'] = text_type
+SIMPLE_ARGS['last_registration'] = text_type
+SIMPLE_ARGS['send_state'] = text_type
+SIMPLE_ARGS['receive_state'] = text_type
+SIMPLE_ARGS['status'] = text_type
 SIMPLE_ARGS['port_number'] = int
 SIMPLE_ARGS['public_key_valid'] = int
 SIMPLE_ARGS['cache_row_id'] = int

@@ -2,7 +2,7 @@
 
 * License: MIT
 * Copyright: Copyright Tanium Inc. 2015
-* Generated from ``console.wsdl`` by ``build_tanium_ng.py`` on D2015-12-22T00-06-10Z-0400
+* Generated from ``console.wsdl`` by ``build_tanium_ng.py`` on D2015-12-22T02-55-41Z-0400
 * Version of ``console.wsdl``: 0.0.1
 * Tanium Server version of ``console.wsdl``: 6.5.314.3400
 * Version of PyTan: 4.0.0
@@ -51,23 +51,32 @@ class Plugin(BaseType):
         # no list_properties defined
 
 
-from .metadata_list import MetadataList
-from .plugin_command_list import PluginCommandList
-from .plugin_argument_list import PluginArgumentList
 from .plugin_sql import PluginSql
+from .plugin_argument_list import PluginArgumentList
 from .permission_list import PermissionList
+from .plugin_command_list import PluginCommandList
+from .metadata_list import MetadataList
+
+# Simple fix for type differences for text strings: str (3.x) vs unicode (2.x)
+
+import sys
+PY3 = sys.version_info[0] == 3
+if PY3:
+    text_type = str  # noqa
+else:
+    text_type = unicode  # noqa
 
 SIMPLE_ARGS = {}
-SIMPLE_ARGS['name'] = str
-SIMPLE_ARGS['bundle'] = str
-SIMPLE_ARGS['plugin_server'] = str
-SIMPLE_ARGS['input'] = str
-SIMPLE_ARGS['script_response'] = str
+SIMPLE_ARGS['name'] = text_type
+SIMPLE_ARGS['bundle'] = text_type
+SIMPLE_ARGS['plugin_server'] = text_type
+SIMPLE_ARGS['input'] = text_type
+SIMPLE_ARGS['script_response'] = text_type
 SIMPLE_ARGS['exit_code'] = int
-SIMPLE_ARGS['type'] = str
-SIMPLE_ARGS['path'] = str
-SIMPLE_ARGS['filename'] = str
-SIMPLE_ARGS['plugin_url'] = str
+SIMPLE_ARGS['type'] = text_type
+SIMPLE_ARGS['path'] = text_type
+SIMPLE_ARGS['filename'] = text_type
+SIMPLE_ARGS['plugin_url'] = text_type
 SIMPLE_ARGS['run_detached_flag'] = int
 SIMPLE_ARGS['execution_id'] = int
 SIMPLE_ARGS['timeout_seconds'] = int
@@ -77,8 +86,8 @@ SIMPLE_ARGS['allow_rest'] = int
 SIMPLE_ARGS['raw_http_response'] = int
 SIMPLE_ARGS['raw_http_request'] = int
 SIMPLE_ARGS['use_json_flag'] = int
-SIMPLE_ARGS['status'] = str
-SIMPLE_ARGS['status_file_content'] = str
+SIMPLE_ARGS['status'] = text_type
+SIMPLE_ARGS['status_file_content'] = text_type
 
 COMPLEX_ARGS = {}
 COMPLEX_ARGS['arguments'] = PluginArgumentList

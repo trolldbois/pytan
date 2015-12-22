@@ -4,20 +4,30 @@ Handles the serialization and deserialization of objects to / from XML and Pytho
 
 * License: MIT
 * Copyright: Copyright Tanium Inc. 2015
-* Generated from ``console.wsdl`` by ``build_tanium_ng.py`` on D2015-12-22T00-06-10Z-0400
+* Generated from ``console.wsdl`` by ``build_tanium_ng.py`` on D2015-12-22T02-55-41Z-0400
 * Version of ``console.wsdl``: 0.0.1
 * Tanium Server version of ``console.wsdl``: 6.5.314.3400
 * Version of PyTan: 4.0.0
 
 """
-
 # TODO: fix str for un'init'd
 
-import io
+import sys
+from collections import OrderedDict
+
 try:
     import xml.etree.cElementTree as ET
 except:
     import xml.etree.ElementTree as ET
+
+# Simple fix for type differences for text strings: str (3.x) vs unicode (2.x)
+PY3 = sys.version_info[0] == 3
+if PY3:
+    text_type = str  # noqa
+    encoding = "unicode"
+else:
+    text_type = unicode  # noqa
+    encoding = "us-ascii"
 
 
 class TaniumNextGenException(Exception):
@@ -39,20 +49,12 @@ class BaseType(object):
 
     _soap_tag = None
 
-    def __init__(self, simple_properties, complex_properties, list_properties):
+    def __init__(self, simple_properties, complex_properties, list_properties, **kwargs):
         self._initialized = False
         self._simple_properties = simple_properties
         self._complex_properties = complex_properties
         self._list_properties = list_properties
         self._initialized = True
-
-    def _is_list(self):
-        result = len(self._list_properties) == 1
-        return result
-
-    def _get_list_attr(self):
-        result = list(self._list_properties.keys())[0]
-        return result
 
     def __getitem__(self, idx):
         """Allow automatic indexing into lists."""
@@ -75,40 +77,81 @@ class BaseType(object):
 
     def __str__(self):
         class_name = self.__class__.__name__
-        val = ''
+        vals = OrderedDict()
         if self._is_list():
-            val = ', len: {}'.format(len(self))
+            vals['length'] = len(self)
         else:
-            if getattr(self, 'name', ''):
-                val += ', name: {!r}'.format(self.name)
-            if getattr(self, 'id', ''):
-                val += ', id: {!r}'.format(self.id)
-            if not val:
-                vals = [
-                    '{}: {!r}'.format(p, getattr(self, p, ''))
-                    for p in sorted(self._simple_properties)
-                ]
-                if vals:
-                    vals = "\t" + "\n\t".join(vals)
-                    val = ', vals:\n{}'.format(vals)
-        result = '{}{}'.format(class_name, val)
+            for k in ['id', 'name']:
+                if not hasattr(self, k):
+                    continue
+                vals[k] = getattr(self, k, None)
+
+            for k in ['query_text', 'hidden_flag', 'package_spec', 'url_regex']:
+                if not getattr(self, k, None):
+                    continue
+                vals[k] = getattr(self, k, None)
+
+        if not vals:
+            for k in sorted(self._simple_properties):
+                val = getattr(self, k, None)
+                if val is not None:
+                    vals[k] = val
+
+        if vals:
+            vals = ', '.join(["'{}'='{}'".format(*p) for p in vals.items()])
+        else:
+            vals = "No attributes assigned yet!"
+
+        result = '{}: {}'.format(class_name, vals)
         return result
 
     def __setattr__(self, name, value):
-        """Enforce type, if name is a complex property"""
+        """Enforce type of attribute assignments"""
         val_not_none = value is not None
         name_not_init = name != '_initialized'
         self_is_init = getattr(self, '_initialized', False)
-        name_in_complex_prop = name in getattr(self, '_complex_properties', {})
-        m = "val_not_none: {}, name_not_init: {}, self_is_init: {}, name_in_complex: {}"
-        m = m.format(val_not_none, name_not_init, self_is_init, name_in_complex_prop)
-        print(m)
-        print(all([val_not_none, name_not_init, self_is_init, name_in_complex_prop]))
+        check_type = all([val_not_none, name_not_init, self_is_init])
 
-        if all([val_not_none, name_not_init, self_is_init, name_in_complex_prop]):
-            if not isinstance(value, self._complex_properties[name]):
-                raise IncorrectTypeException(name, value, self._complex_properties[name])
+        if check_type:
+            if name in getattr(self, '_complex_properties', {}):
+                value = self._check_complex(name, value)
+            elif name in getattr(self, '_simple_properties', {}):
+                value = self._check_simple(name, value)
+            elif name in getattr(self, '_list_properties', {}):
+                value = self._check_list(name, value)
         super(BaseType, self).__setattr__(name, value)
+
+    def _set_values(self, values):
+        for k, v in values.items():
+            setattr(self, k, v)
+
+    def _is_list(self):
+        result = len(self._list_properties) == 1
+        return result
+
+    def _get_list_attr(self):
+        result = None
+        if self._is_list:
+            result = list(self._list_properties.keys())[0]
+        return result
+
+    def _check_complex(self, name, value):
+        if not isinstance(value, self._complex_properties[name]):
+            raise IncorrectTypeException(name, value, self._complex_properties[name])
+        return value
+
+    def _check_simple(self, name, value):
+        if not isinstance(value, self._simple_properties[name]):
+            try:
+                value = self._simple_properties[name](value)
+            except:
+                raise IncorrectTypeException(name, value, self._simple_properties[name])
+        return value
+
+    def _check_list(self, name, value):
+        if value != [] and not isinstance(value, self._list_properties[name]):
+            raise IncorrectTypeException(name, value, self._list_properties[name])
+        return value
 
     def append(self, n):
         """Allow adding to list."""
@@ -117,19 +160,20 @@ class BaseType(object):
             raise TaniumNextGenException(err)
         getattr(self, self._get_list_attr()).append(n)
 
-    def to_soap_element(self, minimal=False):
+    def to_soap_element(self, minimal=False):  # noqa
+        # print(minimal)
         root = ET.Element(self._soap_tag)
         for p in self._simple_properties:
             el = ET.Element(p)
             val = getattr(self, p)
-            # print p, val
+            # print(p, val)
             if val is not None:
                 el.text = str(val)
             if val is not None or not minimal:
                 root.append(el)
         for p, t in self._complex_properties.items():
             val = getattr(self, p)
-            # print p, t, val
+            # print(p, t, val)
             if val is not None or not minimal:
                 if val is not None and not isinstance(val, t):
                     raise IncorrectTypeException(p, t, type(val))
@@ -149,14 +193,13 @@ class BaseType(object):
                         el.append(str(val))
         for p, t in self._list_properties.items():
             vals = getattr(self, p)
-            # print p, t, vals
+            # print(p, t, vals)
             if not vals:
                 continue
             # fix for str types in list props
             if issubclass(t, BaseType):
                 for val in vals:
-                    # print type(val)
-                    # print val
+                    # print(val, type(val))
                     root.append(val.to_soap_element(minimal=minimal))
             else:
                 for val in vals:
@@ -171,9 +214,8 @@ class BaseType(object):
     def to_soap_body(self, minimal=False):
         """Deserialize self into an XML body"""
         el = self.to_soap_element(minimal=minimal)
-        out = io.BytesIO()
-        ET.ElementTree(el).write(out)
-        result = out.getvalue()
+        result = ET.tostring(el, encoding=encoding)
+        # print(result)
         return result
 
     @classmethod

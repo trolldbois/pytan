@@ -2,7 +2,7 @@
 
 * License: MIT
 * Copyright: Copyright Tanium Inc. 2015
-* Generated from ``console.wsdl`` by ``build_tanium_ng.py`` on D2015-12-22T00-06-10Z-0400
+* Generated from ``console.wsdl`` by ``build_tanium_ng.py`` on D2015-12-22T02-55-41Z-0400
 * Version of ``console.wsdl``: 0.0.1
 * Tanium Server version of ``console.wsdl``: 6.5.314.3400
 * Version of PyTan: 4.0.0
@@ -34,10 +34,19 @@ class SensorSubcolumn(BaseType):
 
 # no extra imports used
 
+# Simple fix for type differences for text strings: str (3.x) vs unicode (2.x)
+
+import sys
+PY3 = sys.version_info[0] == 3
+if PY3:
+    text_type = str  # noqa
+else:
+    text_type = unicode  # noqa
+
 SIMPLE_ARGS = {}
-SIMPLE_ARGS['name'] = str
+SIMPLE_ARGS['name'] = text_type
 SIMPLE_ARGS['index'] = int
-SIMPLE_ARGS['value_type'] = str
+SIMPLE_ARGS['value_type'] = text_type
 SIMPLE_ARGS['ignore_case_flag'] = int
 SIMPLE_ARGS['hidden_flag'] = int
 SIMPLE_ARGS['exclude_from_parse_flag'] = int

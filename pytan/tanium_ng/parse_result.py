@@ -2,7 +2,7 @@
 
 * License: MIT
 * Copyright: Copyright Tanium Inc. 2015
-* Generated from ``console.wsdl`` by ``build_tanium_ng.py`` on D2015-12-22T00-06-10Z-0400
+* Generated from ``console.wsdl`` by ``build_tanium_ng.py`` on D2015-12-22T02-55-41Z-0400
 * Version of ``console.wsdl``: 0.0.1
 * Tanium Server version of ``console.wsdl``: 6.5.314.3400
 * Version of PyTan: 4.0.0
@@ -30,9 +30,18 @@ class ParseResult(BaseType):
 
 from .parameter_list import ParameterList
 
+# Simple fix for type differences for text strings: str (3.x) vs unicode (2.x)
+
+import sys
+PY3 = sys.version_info[0] == 3
+if PY3:
+    text_type = str  # noqa
+else:
+    text_type = unicode  # noqa
+
 SIMPLE_ARGS = {}
 SIMPLE_ARGS['id'] = int
-SIMPLE_ARGS['parameter_definition'] = str
+SIMPLE_ARGS['parameter_definition'] = text_type
 
 COMPLEX_ARGS = {}
 COMPLEX_ARGS['parameters'] = ParameterList

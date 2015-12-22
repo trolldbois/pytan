@@ -28,6 +28,11 @@
 * ~~ Will store value as global in TSAT
 
 ## GEN
+* model all objs after ActionListInfo
+* bring statics into line with Base
+* make tanium_ng.py a single file?
+* move serializers out!
+* add reprs to objects!
 * http/s proxy
 * python3 
 * argparse for specs/left/right/etc

@@ -2,7 +2,7 @@
 
 * License: MIT
 * Copyright: Copyright Tanium Inc. 2015
-* Generated from ``console.wsdl`` by ``build_tanium_ng.py`` on D2015-12-22T00-06-10Z-0400
+* Generated from ``console.wsdl`` by ``build_tanium_ng.py`` on D2015-12-22T02-55-41Z-0400
 * Version of ``console.wsdl``: 0.0.1
 * Tanium Server version of ``console.wsdl``: 6.5.314.3400
 * Version of PyTan: 4.0.0
@@ -31,10 +31,19 @@ class AuditData(BaseType):
 
 # no extra imports used
 
+# Simple fix for type differences for text strings: str (3.x) vs unicode (2.x)
+
+import sys
+PY3 = sys.version_info[0] == 3
+if PY3:
+    text_type = str  # noqa
+else:
+    text_type = unicode  # noqa
+
 SIMPLE_ARGS = {}
-SIMPLE_ARGS['creation_time'] = str
-SIMPLE_ARGS['modification_time'] = str
-SIMPLE_ARGS['last_modified_by'] = str
+SIMPLE_ARGS['creation_time'] = text_type
+SIMPLE_ARGS['modification_time'] = text_type
+SIMPLE_ARGS['last_modified_by'] = text_type
 
 COMPLEX_ARGS = {}
 # no COMPLEX_ARGS defined

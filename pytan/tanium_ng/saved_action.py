@@ -2,7 +2,7 @@
 
 * License: MIT
 * Copyright: Copyright Tanium Inc. 2015
-* Generated from ``console.wsdl`` by ``build_tanium_ng.py`` on D2015-12-22T00-06-10Z-0400
+* Generated from ``console.wsdl`` by ``build_tanium_ng.py`` on D2015-12-22T02-55-41Z-0400
 * Version of ``console.wsdl``: 0.0.1
 * Tanium Server version of ``console.wsdl``: 6.5.314.3400
 * Version of PyTan: 4.0.0
@@ -53,33 +53,42 @@ class SavedAction(BaseType):
         # no list_properties defined
 
 
-from .saved_action_policy import SavedActionPolicy
 from .metadata_list import MetadataList
-from .package_spec import PackageSpec
-from .user import User
-from .action import Action
-from .group import Group
 from .saved_action_row_id_list import SavedActionRowIdList
+from .group import Group
+from .action import Action
+from .user import User
+from .package_spec import PackageSpec
+from .saved_action_policy import SavedActionPolicy
+
+# Simple fix for type differences for text strings: str (3.x) vs unicode (2.x)
+
+import sys
+PY3 = sys.version_info[0] == 3
+if PY3:
+    text_type = str  # noqa
+else:
+    text_type = unicode  # noqa
 
 SIMPLE_ARGS = {}
 SIMPLE_ARGS['id'] = int
-SIMPLE_ARGS['name'] = str
-SIMPLE_ARGS['comment'] = str
+SIMPLE_ARGS['name'] = text_type
+SIMPLE_ARGS['comment'] = text_type
 SIMPLE_ARGS['status'] = int
 SIMPLE_ARGS['issue_seconds'] = int
 SIMPLE_ARGS['distribute_seconds'] = int
-SIMPLE_ARGS['start_time'] = str
-SIMPLE_ARGS['end_time'] = str
+SIMPLE_ARGS['start_time'] = text_type
+SIMPLE_ARGS['end_time'] = text_type
 SIMPLE_ARGS['action_group_id'] = int
 SIMPLE_ARGS['public_flag'] = int
 SIMPLE_ARGS['policy_flag'] = int
 SIMPLE_ARGS['expire_seconds'] = int
 SIMPLE_ARGS['approved_flag'] = int
 SIMPLE_ARGS['issue_count'] = int
-SIMPLE_ARGS['creation_time'] = str
-SIMPLE_ARGS['next_start_time'] = str
-SIMPLE_ARGS['last_start_time'] = str
-SIMPLE_ARGS['user_start_time'] = str
+SIMPLE_ARGS['creation_time'] = text_type
+SIMPLE_ARGS['next_start_time'] = text_type
+SIMPLE_ARGS['last_start_time'] = text_type
+SIMPLE_ARGS['user_start_time'] = text_type
 SIMPLE_ARGS['cache_row_id'] = int
 
 COMPLEX_ARGS = {}

@@ -2,7 +2,7 @@
 
 * License: MIT
 * Copyright: Copyright Tanium Inc. 2015
-* Generated from ``console.wsdl`` by ``build_tanium_ng.py`` on D2015-12-22T00-06-10Z-0400
+* Generated from ``console.wsdl`` by ``build_tanium_ng.py`` on D2015-12-22T02-55-41Z-0400
 * Version of ``console.wsdl``: 0.0.1
 * Tanium Server version of ``console.wsdl``: 6.5.314.3400
 * Version of PyTan: 4.0.0
@@ -42,20 +42,29 @@ class PackageFile(BaseType):
 
 from .package_file_status_list import PackageFileStatusList
 
+# Simple fix for type differences for text strings: str (3.x) vs unicode (2.x)
+
+import sys
+PY3 = sys.version_info[0] == 3
+if PY3:
+    text_type = str  # noqa
+else:
+    text_type = unicode  # noqa
+
 SIMPLE_ARGS = {}
 SIMPLE_ARGS['id'] = int
-SIMPLE_ARGS['hash'] = str
-SIMPLE_ARGS['name'] = str
+SIMPLE_ARGS['hash'] = text_type
+SIMPLE_ARGS['name'] = text_type
 SIMPLE_ARGS['size'] = int
-SIMPLE_ARGS['source'] = str
+SIMPLE_ARGS['source'] = text_type
 SIMPLE_ARGS['download_seconds'] = int
 SIMPLE_ARGS['trigger_download'] = int
-SIMPLE_ARGS['cache_status'] = str
+SIMPLE_ARGS['cache_status'] = text_type
 SIMPLE_ARGS['status'] = int
 SIMPLE_ARGS['bytes_downloaded'] = int
 SIMPLE_ARGS['bytes_total'] = int
-SIMPLE_ARGS['download_start_time'] = str
-SIMPLE_ARGS['last_download_progress_time'] = str
+SIMPLE_ARGS['download_start_time'] = text_type
+SIMPLE_ARGS['last_download_progress_time'] = text_type
 SIMPLE_ARGS['deleted_flag'] = int
 
 COMPLEX_ARGS = {}
