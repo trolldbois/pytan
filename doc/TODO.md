@@ -28,9 +28,8 @@
 * ~~ Will store value as global in TSAT
 
 ## GEN
-* model all objs after ActionListInfo
+* remove external deps from utils, move version into utils
 * bring statics into line with Base
-* make tanium_ng.py a single file?
 * move serializers out!
 * add reprs to objects!
 * http/s proxy
@@ -45,7 +44,6 @@
 * keep loglevels 30-50 reserved for debug logs
 * bring csv/json stuffs from taniumpy into handler
 * rebuild taniumpy with latest wsdl
-* backport taniumpy changes
 * verify resultset len
 * fix ALL PEP
 * fix sse

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Builds the ../../pytan/tanium_ng directory from the ../../doc/console.wsdl file"""
+"""Builds ../../pytan/tanium_ng.py from the ../../doc/console.wsdl file"""
 
 # BEGIN BOOTSTRAP CODE
 # statically defined path
@@ -67,7 +67,8 @@ class WsdlParser(object):
         'xsd:long': 'int'
     }
 
-    HEADER_STRING = ('''"""${desc}
+    HEADER_STRING = (
+        '''"""Tanium NG: A Python object representation layer for the XML used by the Tanium SOAP API.
 
 * License: ${pytan_license}
 * Copyright: ${pytan_copyright}
@@ -76,181 +77,103 @@ class WsdlParser(object):
 * Tanium Server version of ``console.wsdl``: ${tanium_version}
 * Version of PyTan: ${pytan_version}
 
-"""''')
+"""
+BASE_TYPES = {}
+"""Maps Tanium XML soap tags to the Tanium NG Python BaseType object"""
+${BASE_TYPES}
 
-    INIT_STRING = HEADER_STRING + (
-        '''
-${imports}
-
-OBJECT_TYPES = {
-${object_types}
-}
-
-__all__ = [
-    'OBJECT_TYPES',
-${alls}
-]
 ''')
 
-    CODE_STRING = HEADER_STRING + (
+    CODE_STRING = (
         '''
-from .base import BaseType
-
 
 class ${py_type}(BaseType):
+    """${desc}."""
 
     _soap_tag = '${soap_tag}'
 
     def __init__(self, **kwargs):
         BaseType.__init__(
             self,
-            simple_properties=SIMPLE_ARGS,
-            complex_properties=COMPLEX_ARGS,
-            list_properties=LIST_ARGS,
+            simple_properties={
+                ${SIMPLE_ARGS}
+            },
+            complex_properties={
+                ${COMPLEX_ARGS}
+            },
+            list_properties={
+                ${LIST_ARGS}
+            },
         )
         ${simple_properties}
         ${complex_properties}
         ${list_properties}
         self._values = kwargs.get('values', {})
         self._set_values(self._values)
-
-
-${imports}
-
-# Simple fix for type differences for text strings: str (3.x) vs unicode (2.x)
-import sys
-PY3 = sys.version_info[0] == 3
-if PY3:
-    text_type = str  # noqa
-else:
-    text_type = unicode  # noqa
-
-SIMPLE_ARGS = {}
-${SIMPLE_ARGS}
-
-COMPLEX_ARGS = {}
-${COMPLEX_ARGS}
-
-LIST_ARGS = {}
-${LIST_ARGS}
 ''')
 
-    INIT_TEMPLATE = string.Template(INIT_STRING)
+    HEADER_TEMPLATE = string.Template(HEADER_STRING)
     CODE_TEMPLATE = string.Template(CODE_STRING)
-
-    STATICS = [
-        {
-            'file': 'base.py',
-            'py_type': 'BaseType',
-            'desc': '''The BaseType used by (almost) all tanium_ng objects.
-
-Handles the serialization and deserialization of objects to / from XML and Python''',
-        },
-        {'file': 'column.py', 'py_type': 'Column'},
-        {'file': 'column_set.py', 'py_type': 'ColumnSet'},
-        {'file': 'result_info.py', 'py_type': 'ResultInfo'},
-        {'file': 'result_set.py', 'py_type': 'ResultSet'},
-        {'file': 'row.py', 'py_type': 'Row'},
-    ]
+    STATIC_FILE = 'static_tanium_ng.py'
 
     def __init__(self, args):
         self.args = args
         self.capcase = utils.tools.capcase
         self.wsdl_file = os.path.abspath(os.path.expanduser(self.args.input))
+        self.ng_file = os.path.abspath(os.path.expanduser(self.args.output))
+        self.ng_static_file = os.path.join(my_dir, self.STATIC_FILE)
+        self.ng_statics = utils.tools.read_file(self.ng_static_file)
         self.wsdl_contents = utils.tools.read_file(self.wsdl_file)
         self.wsdl_version = self.get_wsdl_version()
         self.tanium_version = self.get_tanium_version()
         self.wsdl_dom = self.parse_wsdl()
         self.object_types = self.find_types()
+        self.object_maps = [self.parse_type(x) for x in self.object_types]
+        self.write_tanium_ng()
 
-        if self.args.run:
-            self.check_output_dir()
-
-        self.object_maps = [self.write_static(x) for x in self.STATICS]
-        self.object_maps += [self.parse_type(x) for x in self.object_types]
-        self.write_init()
-
-    def write_static(self, static):
-        result = {}
-        result.update(static)
-        result['type_name'] = os.path.splitext(static['file'])[0]
-
-        filepath = os.path.join(my_dir, 'statics', static['file'])
-        code = utils.tools.read_file(filepath)
-
-        desc = 'Static object Serializer/Deserializer for Tanium SOAP XML types: ``{py_type}``'
-        desc = desc.format(**result)
-
-        if 'desc' not in result:
-            result['desc'] = desc
-
-        result.update(self.general_subs())
-        header = string.Template(self.HEADER_STRING)
-        header = header.substitute(result)
-        result['code'] = '\n'.join([header, code])
-        self.write_file(result['file'], result['code'])
-        return result
-
-    def check_output_dir(self):
-        output_dir = self.get_output_dir()
-        output_exists = os.path.isdir(output_dir)
-
-        if output_exists and not self.args.force:
-            err = "Output dir: '{}' exists and -f/--force not supplied!"
-            err = err.format(output_dir)
-            raise Exception(err)
-
-        if output_exists and self.args.force:
-            tempdir = tempfile.gettempdir()
-            output_base = os.path.basename(output_dir) + '_backup'
-            output_dst = os.path.join(tempdir, output_base)
-            utils.tools.clean_it(output_dst, mylog)
-            shutil.move(output_dir, output_dst)
-            m = "Moved old output dir '{}' to '{}'"
-            m = m.format(output_dir, output_dst)
-            mylog.info(m)
-
-    def write_init(self):
+    def write_tanium_ng(self):
         filename = '__init__.py'
         subs = {}
 
-        impt = "from .{type_name} import {py_type}".format
-        t = "imports"
-        a = [impt(**x) for x in self.object_maps]
-        subs[t] = '\n'.join(a)
-
-        allt = "    '{py_type}',".format
-        t = "alls"
-        a = [allt(**x) for x in self.object_maps]
-        subs[t] = '\n'.join(a)
-
-        typet = "    '{soap_tag}': {py_type},".format
-        t = "object_types"
+        typet = "BASE_TYPES['{soap_tag}'] = '{py_type}'".format
+        t = "BASE_TYPES"
         a = [typet(**x) for x in self.object_maps if 'soap_tag' in x]
         subs[t] = '\n'.join(a)
 
         subs['desc'] = (
-            'Tanium NG: An object Serializer/Deserializer for the XML used by the Tanium SOAP API'
+            ''
         )
         subs.update(self.general_subs())
 
-        code = self.INIT_TEMPLATE.substitute(subs)
-        self.write_file(filename, code)
+        code = self.HEADER_TEMPLATE.substitute(subs)
 
-    def get_output_dir(self):
-        result = os.path.abspath(os.path.expanduser(self.args.output))
-        return result
+        filecode = [code, self.ng_statics]
+        filecode += [x['code'] for x in self.object_maps]
 
-    def write_file(self, filename, filecode):
-        h = '#' * 10
+        filecode = ''.join(filecode)
+        filename = self.ng_file
+
         m = '{0} {1}:\n{2}\n{0}'
-        m = m.format(h, filename, filecode)
+        m = m.format('#' * 30, filename, filecode)
         mylog.debug(m)
 
         if self.args.run:
-            output = self.get_output_dir()
-            filepath = os.path.join(output, filename)
-            utils.tools.write_file(filepath, filecode, mylog)
+            if os.path.exists(filename):
+                tempdir = tempfile.gettempdir()
+                output_base = os.path.basename(filename) + '_backup'
+                backupname = os.path.join(tempdir, output_base)
+                if os.path.exists(backupname):
+                    os.remove(backupname)
+                    m = "Removed old backup: {}"
+                    m = m.format(backupname)
+                    mylog.info(m)
+
+                shutil.move(filename, backupname)
+                m = "Moved current tanium_ng from '{}' to '{}'"
+                m = m.format(filename, backupname)
+                mylog.info(m)
+
+            utils.tools.write_file(filename, filecode, mylog)
         else:
             m = "-r/--run not provided, not writing code - generated {} bytes of code for '{}'"
             m = m.format(len(filecode), filename)
@@ -265,23 +188,20 @@ Handles the serialization and deserialization of objects to / from XML and Pytho
         result['stypes_list'] = self.get_simpleattrs(result['type_els'])
         result['ctypes_list'] = self.get_complexattrs(result['type_els'])
         result['ltypes_list'] = self.get_listattrs(result['type_els'])
-        result['deps_list'] = self.get_deps(result['type_els'])
         result['file_name'] = self.get_file_name(result['type_name'])
 
-        m = "{!r} simple: {}, complex: {}, list: {}, deps: {}, tag: {}, py: {}"
+        m = "{!r} simple: {}, complex: {}, list: {}, tag: {}, py: {}"
         m = m.format(
             result['type_name'],
             len(result['stypes_list']),
             len(result['ctypes_list']),
             len(result['ltypes_list']),
-            len(result['deps_list']),
             result['soap_tag'],
             result['py_type'],
         )
         mylog.debug(m)
 
         result = self.get_type_code(result)
-        self.write_file(result['file_name'], result['code'])
         return result
 
     def get_file_name(self, type_name):
@@ -366,11 +286,6 @@ Handles the serialization and deserialization of objects to / from XML and Pytho
         result = usage.attrib['name'] if usage is not None else type_name
         return result
 
-    def get_deps(self, type_els):
-        result = [x.attrib['type'] for x in type_els if not x.attrib['type'].startswith('xsd:')]
-        result = list(set(result))
-        return result
-
     def get_tanium_version(self):
         """ElementTree exludes comments, just find the line with regex"""
         pattern = r'<!-- From Tanium Server Version\: ([0-9\.]+) -->'
@@ -416,21 +331,21 @@ Handles the serialization and deserialization of objects to / from XML and Pytho
         return result
 
     def get_type_code(self, type_dict):
-        argt = "{}['{}'] = {}".format
-        linej = '\n'
-        nullt = '# no {} defined'.format
+        argt = "'{}': {},".format
+        propj = '\n                '
+        nullt = '# no {} defined in console.wsdl'.format
 
         t = 'SIMPLE_ARGS'
-        a = [argt(t, p[0], p[1]) for p in type_dict['stypes_list']] or [nullt(t)]
-        type_dict[t] = linej.join(a)
+        a = [argt(p[0], p[1]) for p in type_dict['stypes_list']] or [nullt(t)]
+        type_dict[t] = propj.join(a)
 
         t = 'COMPLEX_ARGS'
-        a = [argt(t, p[0], self.capcase(p[1])) for p in type_dict['ctypes_list']] or [nullt(t)]
-        type_dict[t] = linej.join(a)
+        a = [argt(p[0], self.capcase(p[1])) for p in type_dict['ctypes_list']] or [nullt(t)]
+        type_dict[t] = propj.join(a)
 
         t = 'LIST_ARGS'
-        a = [argt(t, p[0], p[1]) for p in type_dict['ltypes_list']] or [nullt(t)]
-        type_dict[t] = linej.join(a)
+        a = [argt(p[0], p[1]) for p in type_dict['ltypes_list']] or [nullt(t)]
+        type_dict[t] = propj.join(a)
 
         simple_def = "self.{} = None".format
         list_def = "self.{} = []".format
@@ -448,49 +363,34 @@ Handles the serialization and deserialization of objects to / from XML and Pytho
         a = [list_def(p[0]) for p in type_dict['ltypes_list']] or [nullt(t)]
         type_dict[t] = propj.join(a)
 
-        dept = "from .{} import {}".format
-        nulld = "# no extra imports used"
-
-        t = "imports"
-        a = [dept(d, self.capcase(d)) for d in type_dict['deps_list']] or [nulld]
-        type_dict[t] = linej.join(a)
-
-        desc = 'Object Serializer/Deserializer for Tanium SOAP XML tag: ``{soap_tag}``'
+        desc = 'Python Object representation for Tanium SOAP XML tag: ``{soap_tag}``'
         desc = desc.format(**type_dict)
         type_dict['desc'] = desc
 
         type_dict.update(self.general_subs())
-
-        t = 'code'
-        type_dict[t] = self.CODE_TEMPLATE.substitute(type_dict)
+        type_dict['code'] = self.CODE_TEMPLATE.substitute(type_dict)
         return type_dict
 
 if __name__ == '__main__':
     pytan_dir = os.path.join(os.pardir, os.pardir)
     default_wsdl_file = os.path.join(pytan_dir, "doc", "console.wsdl")
-    default_output_dir = os.path.join(pytan_dir, "pytan", "tanium_ng")
-    # default_output_dir = "/tmp/tanium_ng"
+    default_output_file = os.path.join(pytan_dir, "pytan", "tanium_ng.py")
 
     parser = ShellParser(my_file=my_file, description=__doc__)
     parser.add_argument(
         '-i', '--input',
         required=False, action='store', dest='input', default=default_wsdl_file,
-        help='Tanium Server WSDL File to generate tanium_ng from',
+        help='Tanium Server console.wsdl file to generate tanium_ng from',
     )
     parser.add_argument(
         '-o', '--output',
-        required=False, action='store', dest='output', default=default_output_dir,
-        help='Directory to generate tanium_ng in',
+        required=False, action='store', dest='output', default=default_output_file,
+        help='File to create tanium_ng as',
     )
     parser.add_argument(
         '-r', '--run',
         required=False, action='store_true', dest='run', default=False,
-        help='Actually generate the tanium_ng directory instead of just previewing the changes',
-    )
-    parser.add_argument(
-        '-f', '--force',
-        required=False, action='store_true', dest='force', default=False,
-        help='If --output dir exists and --run, move the dir to the temp folder',
+        help='Actually generate the tanium_ng file instead of just previewing the changes',
     )
     parser.add_argument(
         '-v', '--verbose',
