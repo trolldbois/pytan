@@ -28,7 +28,6 @@ from . import log
 from . import calc
 from . import network
 from . import pretty
-from . import tanium_obj
 from . import parsers
 from . import tools
 from . import store
@@ -43,7 +42,6 @@ __all__ = [
     'calc',
     'network',
     'pretty',
-    'tanium_obj',
     'xml_cleaner',
     'parsers',
     'tools',

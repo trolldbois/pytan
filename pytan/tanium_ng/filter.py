@@ -1,10 +1,13 @@
+"""Object Serializer/Deserializer for Tanium SOAP XML tag: ``filter``
 
-# Copyright (c) 2015 Tanium Inc
-#
-# Generated from console.wsdl version 0.0.1
-#
-#
+* License: MIT
+* Copyright: Copyright Tanium Inc. 2015
+* Generated from ``console.wsdl`` by ``build_tanium_ng.py`` on D2015-12-22T00-06-10Z-0400
+* Version of ``console.wsdl``: 0.0.1
+* Tanium Server version of ``console.wsdl``: 6.5.314.3400
+* Version of PyTan: 4.0.0
 
+"""
 from .base import BaseType
 
 
@@ -15,26 +18,9 @@ class Filter(BaseType):
     def __init__(self):
         BaseType.__init__(
             self,
-            simple_properties={'id': int,
-                        'operator': str,
-                        'value_type': str,
-                        'value': str,
-                        'not_flag': int,
-                        'max_age_seconds': int,
-                        'ignore_case_flag': int,
-                        'all_values_flag': int,
-                        'substring_flag': int,
-                        'substring_start': int,
-                        'substring_length': int,
-                        'delimiter': str,
-                        'delimiter_index': int,
-                        'utf8_flag': int,
-                        'aggregation': str,
-                        'all_times_flag': int,
-                        'start_time': str,
-                        'end_time': str},
-            complex_properties={'sensor': Sensor},
-            list_properties={},
+            simple_properties=SIMPLE_ARGS,
+            complex_properties=COMPLEX_ARGS,
+            list_properties=LIST_ARGS,
         )
         self.id = None
         self.operator = None
@@ -55,7 +41,33 @@ class Filter(BaseType):
         self.start_time = None
         self.end_time = None
         self.sensor = None
+        # no list_properties defined
 
 
 from .sensor import Sensor
 
+SIMPLE_ARGS = {}
+SIMPLE_ARGS['id'] = int
+SIMPLE_ARGS['operator'] = str
+SIMPLE_ARGS['value_type'] = str
+SIMPLE_ARGS['value'] = str
+SIMPLE_ARGS['not_flag'] = int
+SIMPLE_ARGS['max_age_seconds'] = int
+SIMPLE_ARGS['ignore_case_flag'] = int
+SIMPLE_ARGS['all_values_flag'] = int
+SIMPLE_ARGS['substring_flag'] = int
+SIMPLE_ARGS['substring_start'] = int
+SIMPLE_ARGS['substring_length'] = int
+SIMPLE_ARGS['delimiter'] = str
+SIMPLE_ARGS['delimiter_index'] = int
+SIMPLE_ARGS['utf8_flag'] = int
+SIMPLE_ARGS['aggregation'] = str
+SIMPLE_ARGS['all_times_flag'] = int
+SIMPLE_ARGS['start_time'] = str
+SIMPLE_ARGS['end_time'] = str
+
+COMPLEX_ARGS = {}
+COMPLEX_ARGS['sensor'] = Sensor
+
+LIST_ARGS = {}
+# no LIST_ARGS defined

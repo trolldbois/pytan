@@ -1,5 +1,3 @@
-
-
 class Row(object):
     """A row in a result set.
 

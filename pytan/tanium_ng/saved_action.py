@@ -1,10 +1,13 @@
+"""Object Serializer/Deserializer for Tanium SOAP XML tag: ``saved_action``
 
-# Copyright (c) 2015 Tanium Inc
-#
-# Generated from console.wsdl version 0.0.1
-#
-#
+* License: MIT
+* Copyright: Copyright Tanium Inc. 2015
+* Generated from ``console.wsdl`` by ``build_tanium_ng.py`` on D2015-12-22T00-06-10Z-0400
+* Version of ``console.wsdl``: 0.0.1
+* Tanium Server version of ``console.wsdl``: 6.5.314.3400
+* Version of PyTan: 4.0.0
 
+"""
 from .base import BaseType
 
 
@@ -15,35 +18,9 @@ class SavedAction(BaseType):
     def __init__(self):
         BaseType.__init__(
             self,
-            simple_properties={'id': int,
-                        'name': str,
-                        'comment': str,
-                        'status': int,
-                        'issue_seconds': int,
-                        'distribute_seconds': int,
-                        'start_time': str,
-                        'end_time': str,
-                        'action_group_id': int,
-                        'public_flag': int,
-                        'policy_flag': int,
-                        'expire_seconds': int,
-                        'approved_flag': int,
-                        'issue_count': int,
-                        'creation_time': str,
-                        'next_start_time': str,
-                        'last_start_time': str,
-                        'user_start_time': str,
-                        'cache_row_id': int},
-            complex_properties={'package_spec': PackageSpec,
-                        'action_group': Group,
-                        'target_group': Group,
-                        'policy': SavedActionPolicy,
-                        'metadata': MetadataList,
-                        'row_ids': SavedActionRowIdList,
-                        'user': User,
-                        'approver': User,
-                        'last_action': Action},
-            list_properties={},
+            simple_properties=SIMPLE_ARGS,
+            complex_properties=COMPLEX_ARGS,
+            list_properties=LIST_ARGS,
         )
         self.id = None
         self.name = None
@@ -73,15 +50,48 @@ class SavedAction(BaseType):
         self.user = None
         self.approver = None
         self.last_action = None
+        # no list_properties defined
 
 
-from .package_spec import PackageSpec
-from .group import Group
-from .group import Group
 from .saved_action_policy import SavedActionPolicy
 from .metadata_list import MetadataList
-from .saved_action_row_id_list import SavedActionRowIdList
-from .user import User
+from .package_spec import PackageSpec
 from .user import User
 from .action import Action
+from .group import Group
+from .saved_action_row_id_list import SavedActionRowIdList
 
+SIMPLE_ARGS = {}
+SIMPLE_ARGS['id'] = int
+SIMPLE_ARGS['name'] = str
+SIMPLE_ARGS['comment'] = str
+SIMPLE_ARGS['status'] = int
+SIMPLE_ARGS['issue_seconds'] = int
+SIMPLE_ARGS['distribute_seconds'] = int
+SIMPLE_ARGS['start_time'] = str
+SIMPLE_ARGS['end_time'] = str
+SIMPLE_ARGS['action_group_id'] = int
+SIMPLE_ARGS['public_flag'] = int
+SIMPLE_ARGS['policy_flag'] = int
+SIMPLE_ARGS['expire_seconds'] = int
+SIMPLE_ARGS['approved_flag'] = int
+SIMPLE_ARGS['issue_count'] = int
+SIMPLE_ARGS['creation_time'] = str
+SIMPLE_ARGS['next_start_time'] = str
+SIMPLE_ARGS['last_start_time'] = str
+SIMPLE_ARGS['user_start_time'] = str
+SIMPLE_ARGS['cache_row_id'] = int
+
+COMPLEX_ARGS = {}
+COMPLEX_ARGS['package_spec'] = PackageSpec
+COMPLEX_ARGS['action_group'] = Group
+COMPLEX_ARGS['target_group'] = Group
+COMPLEX_ARGS['policy'] = SavedActionPolicy
+COMPLEX_ARGS['metadata'] = MetadataList
+COMPLEX_ARGS['row_ids'] = SavedActionRowIdList
+COMPLEX_ARGS['user'] = User
+COMPLEX_ARGS['approver'] = User
+COMPLEX_ARGS['last_action'] = Action
+
+LIST_ARGS = {}
+# no LIST_ARGS defined

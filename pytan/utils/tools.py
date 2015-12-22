@@ -5,6 +5,8 @@ import json
 import platform
 import base64
 import logging
+import shutil
+import re
 from ..external import six
 from ..version import __version__
 from . import exceptions
@@ -29,16 +31,19 @@ def read_file(f):
     return out
 
 
-def write_file(f, c):
+def write_file(f, c, thislog=None):
+    if thislog is None:
+        thislog = mylog
+
     d = os.path.dirname(f)
 
     if not os.path.exists(d):
-        mylog.info("Creating directory: {}".format(d))
+        thislog.info("Creating directory: {}".format(d))
         os.makedirs(d)
 
     with open(f, 'w') as fh:
         fh.write(c)
-    mylog.info("Wrote file: {}".format(f))
+    thislog.info("Wrote {} bytes to file: {}".format(len(c), f))
 
 
 def get_name_title(t):
@@ -57,10 +62,13 @@ def get_name_title(t):
     return ret
 
 
-def clean_it(f):
+def clean_it(f, thislog=None):
+    if thislog is None:
+        thislog = mylog
+
     if os.path.exists(f):
-        os.unlink(f)
-        mylog.info("Removed {}".format(f))
+        shutil.rmtree(f)
+        thislog.info("Removed {}".format(f))
 
 
 def clean_up(p, pattern):
@@ -124,6 +132,7 @@ def obfuscate(key, string):
         string_ord = ord(string_c)
         encoded_c = chr(string_ord + key_ord)
         encoded_chars.append(encoded_c)
+
     encoded_str = "".join(encoded_chars)
     string_enc = base64.urlsafe_b64encode(encoded_str)
     result = '::{}::'.format(string_enc)
@@ -156,43 +165,33 @@ def deobfuscate(key, string):
     decoded_string : str
         * decoded string
     """
-    # print_type(string, 'Initial string')
-    # print_type(key, 'Initial key')
-
     result = string
     if string.startswith('::') and string.endswith('::'):
         string_enc = str(result[2:-2])
-        # print_type(string_enc, 'Base64 encoded string')
-
         string_dec = base64.urlsafe_b64decode(string_enc)
-        # print_type(string_dec, 'Base64 decoded string')
 
         decoded_chars = []
         for i in six.moves.range(len(string_dec)):
-            # print_type(i, 'Current range of Base64 decoded string')
-
             key_c = key[i % len(key)]
-            # print_type(key_c, 'Current range from key')
-
             key_ord = ord(key_c) % 256
-            # print_type(key_ord, 'Key ordinal')
-
             string_c = string_dec[i]
-            # print_type(string_c, 'Current range from Base64 decoded string')
 
             if isinstance(string_c, six.integer_types):
                 string_ord = string_c
             else:
                 string_ord = ord(string_c)
-            # print_type(string_ord, 'String ordinal')
 
             abs_c = abs(string_ord - key_ord)
-            # print_type(abs_c, 'Character abs')
-
             actual_c = chr(abs_c)
-            # print_type(actual_c, 'Actual character')
-
             decoded_chars.append(actual_c)
+
         decoded_str = "".join(decoded_chars)
         result = decoded_str
+    return result
+
+
+def capcase(val):
+    """convert some_string or some-string to SomeString"""
+    val = [a[0].upper() + (a[1:]if len(a) > 0 else '') for a in re.split('[-_]', val)]
+    result = ''.join(val)
     return result

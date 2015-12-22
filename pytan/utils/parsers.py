@@ -4,8 +4,6 @@ import copy
 import logging
 from . import constants
 from . import exceptions
-from . import tanium_obj
-from .. import tanium_ng
 from ..external import six
 
 mylog = logging.getLogger(__name__)
@@ -33,6 +31,16 @@ def get_str(spec):
 
 class Spec(object):
     """pass."""
+
+    def __init__(self, **kwargs):
+        from .. import tanium_ng
+        from .. import ng_tools
+        self.tanium_ng = tanium_ng
+        self.ng_tools = ng_tools
+        self.post_init(**kwargs)
+
+    def post_init(self, **kwargs):
+        pass
 
     def chk_dict_key(self, k, d, types,):
         """pass."""
@@ -186,9 +194,9 @@ class Spec(object):
 class GetObject(Spec):
     """pass."""
 
-    def __init__(self, all_class, spec):
+    def post_init(self, all_class, spec, **kwargs):
         """pass."""
-        self.single_class = tanium_obj.get_single_class(all_class)
+        self.single_class = self.ng_tools.get_single_class(all_class)
         self.single_name = self.single_class.__name__
         self.single_obj = self.single_class()
         self.props = self.single_obj._simple_properties
@@ -233,9 +241,9 @@ class GetObject(Spec):
 
 class FilterObject(Spec):
 
-    def __init__(self, spec):
+    def post_init(self, spec, **kwargs):
         """pass."""
-        self.single_class = tanium_ng.Filter()
+        self.single_class = self.tanium_ng.Filter()
         self.single_name = self.single_class.__name__
         self.single_obj = self.single_class()
         self.props = self.single_obj._simple_properties
@@ -280,7 +288,7 @@ class FilterObject(Spec):
 
 class LeftSide(Spec):
 
-    def __init__(self, specs):
+    def post_init(self, specs, **kwargs):
         """pass."""
         self.me = "{}()".format(self.__class__.__name__)
         self.meerr = "{}.{}".format(__name__, self.me)
@@ -304,6 +312,6 @@ class LeftSide(Spec):
         self.chk_dict_key('sensor', spec, (dict,))
 
         # parse the sensor dict
-        sensor_parser = GetObject(tanium_ng.SensorList, spec['sensor'])
+        sensor_parser = GetObject(self.tanium_ng.SensorList, spec['sensor'])
         parsed_spec['sensor'] = sensor_parser.parsed_spec
         return parsed_spec

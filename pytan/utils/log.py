@@ -56,15 +56,14 @@ def install_file(**kwargs):
     create_args['output'] = os.path.expanduser(create_args['output'])
     create_args['name'] = os.path.basename(create_args['output'])
 
-    if not create_args['enable']:
+    if create_args['enable']:
+        kwargs['loghandler'] = create_handler(**create_args)
+        add_handler(**kwargs)
+        mylog.debug("added file log name: '{name}', output: '{output}'".format(**create_args))
+    else:
         mylog.debug("logfile_enable = False, disabling file log")
         uninstall_file(**create_args)
-        return
-
-    # mylog.debug("install_file create_handler args: {}".format(create_args))
-    loghandler = create_handler(**create_args)
-    add_handler(loghandler=loghandler, **kwargs)
-    mylog.debug("added file log name: '{name}', output: '{output}'".format(**create_args))
+    return create_args
 
 
 def install_console(**kwargs):
@@ -72,15 +71,14 @@ def install_console(**kwargs):
     argmap = ['enable', 'formatter', 'output', 'handler', 'level', 'name']
     create_args = get_args("logconsole_", kwargs, argmap)
 
-    if not create_args['enable']:
+    if create_args['enable']:
+        kwargs['loghandler'] = create_handler(**create_args)
+        add_handler(**kwargs)
+        mylog.debug("added console log name: '{name}', output: '{output}'".format(**create_args))
+    else:
         mylog.debug("logconsole_enable = False, disabling console log")
         uninstall_console(**create_args)
-        return
-
-    # mylog.debug("install_console create_handler args: {}".format(create_args))
-    loghandler = create_handler(**create_args)
-    add_handler(loghandler=loghandler, **kwargs)
-    mylog.debug("added console log name: '{name}', output: '{output}'".format(**create_args))
+    return create_args
 
 
 def get_args(prefix, kwargs, argmap):
@@ -121,37 +119,53 @@ def create_handler(handler, output, name, level, formatter, **kwargs):
 def add_handler(loghandler, **kwargs):
     """Utility to add a logging handler to all loggers."""
     loggers = get_loggers(**kwargs)
-    for pytanlog in sorted(constants.LOG_LEVEL_MAPS):
-        if pytanlog not in loggers:
-            err = "pytan logger {} does not exist in logging system!!"
-            err = err.format(pytanlog)
-            mylog.critical(err)
-            raise exceptions.PytanError(err)
-        if loghandler.name not in [h.name for h in loggers[pytanlog].handlers]:
-            # mylog.debug("add_handler: {0.name} to logger {1}".format(loghandler, pytanlog))
-            loggers[pytanlog].addHandler(loghandler)
+
+    logger_name = kwargs.get('logger_name', '')
+    if logger_name:
+        logger_obj = logging.getLogger(logger_name)
+        add_handler_to_logger(logger_obj, loghandler)
+    else:
+        for pytanlog in sorted(constants.LOG_LEVEL_MAPS):
+            if pytanlog not in loggers:
+                err = "pytan logger {} does not exist in logging system!!"
+                err = err.format(pytanlog)
+                mylog.critical(err)
+                raise exceptions.PytanError(err)
+            add_handler_to_logger(loggers[pytanlog], loghandler)
+
+
+def add_handler_to_logger(logger, loghandler, **kwargs):
+    """Utility to add a handler to a specific logger"""
+    if loghandler.name not in [h.name for h in logger.handlers]:
+        logger.addHandler(loghandler)
+
+
+def del_handler_from_logger(logger, loghandler_name=None, **kwargs):
+    """Utility to remove a handler to a specific logger"""
+    for handler in logger.handlers:
+        if loghandler_name is None:
+            logger.removeHandler(handler)
+        elif handler.name == loghandler_name:
+            logger.removeHandler(handler)
 
 
 def remove_handler(**kwargs):
     """Utility to remove a logging handler from all loggers."""
     loggers = get_loggers(**kwargs)
-    loghandler_name = kwargs.get('loghandler_name', None)
-    for pytanlog in sorted(constants.LOG_LEVEL_MAPS):
-        if pytanlog not in loggers:
-            err = "pytan logger {} does not exist in logging system!!"
-            err = err.format(pytanlog)
-            mylog.critical(err)
-            raise exceptions.PytanError(err)
 
-        for handler in loggers[pytanlog].handlers:
-            if loghandler_name is None:
-                # m = "remove_handler: {} from {} due to None"
-                # mylog.debug(m.format(handler.name, pytanlog))
-                loggers[pytanlog].removeHandler(handler)
-            elif handler.name == loghandler_name:
-                # m = "remove_handler: {} from {} due to match"
-                # mylog.debug(m.format(handler.name, pytanlog))
-                loggers[pytanlog].removeHandler(handler)
+    logger_name = kwargs.get('logger_name', '')
+    if logger_name:
+        kwargs['logger'] = logging.getLogger(logger_name)
+        del_handler_from_logger(**kwargs)
+    else:
+        for pytanlog in sorted(constants.LOG_LEVEL_MAPS):
+            if pytanlog not in loggers:
+                err = "pytan logger {} does not exist in logging system!!"
+                err = err.format(pytanlog)
+                mylog.critical(err)
+                raise exceptions.PytanError(err)
+            kwargs['logger'] = loggers[pytanlog]
+            del_handler_from_logger(**kwargs)
 
 
 def get_loggers(**kwargs):

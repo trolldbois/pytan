@@ -1,10 +1,13 @@
+"""Object Serializer/Deserializer for Tanium SOAP XML tag: ``system_setting``
 
-# Copyright (c) 2015 Tanium Inc
-#
-# Generated from console.wsdl version 0.0.1
-#
-#
+* License: MIT
+* Copyright: Copyright Tanium Inc. 2015
+* Generated from ``console.wsdl`` by ``build_tanium_ng.py`` on D2015-12-22T00-06-10Z-0400
+* Version of ``console.wsdl``: 0.0.1
+* Tanium Server version of ``console.wsdl``: 6.5.314.3400
+* Version of PyTan: 4.0.0
 
+"""
 from .base import BaseType
 
 
@@ -15,18 +18,9 @@ class SystemSetting(BaseType):
     def __init__(self):
         BaseType.__init__(
             self,
-            simple_properties={'id': int,
-                        'name': str,
-                        'value': str,
-                        'default_value': str,
-                        'value_type': str,
-                        'setting_type': str,
-                        'hidden_flag': int,
-                        'read_only_flag': int,
-                        'cache_row_id': int},
-            complex_properties={'audit_data': AuditData,
-                        'metadata': MetadataList},
-            list_properties={},
+            simple_properties=SIMPLE_ARGS,
+            complex_properties=COMPLEX_ARGS,
+            list_properties=LIST_ARGS,
         )
         self.id = None
         self.name = None
@@ -39,8 +33,26 @@ class SystemSetting(BaseType):
         self.cache_row_id = None
         self.audit_data = None
         self.metadata = None
+        # no list_properties defined
 
 
-from .audit_data import AuditData
 from .metadata_list import MetadataList
+from .audit_data import AuditData
 
+SIMPLE_ARGS = {}
+SIMPLE_ARGS['id'] = int
+SIMPLE_ARGS['name'] = str
+SIMPLE_ARGS['value'] = str
+SIMPLE_ARGS['default_value'] = str
+SIMPLE_ARGS['value_type'] = str
+SIMPLE_ARGS['setting_type'] = str
+SIMPLE_ARGS['hidden_flag'] = int
+SIMPLE_ARGS['read_only_flag'] = int
+SIMPLE_ARGS['cache_row_id'] = int
+
+COMPLEX_ARGS = {}
+COMPLEX_ARGS['audit_data'] = AuditData
+COMPLEX_ARGS['metadata'] = MetadataList
+
+LIST_ARGS = {}
+# no LIST_ARGS defined

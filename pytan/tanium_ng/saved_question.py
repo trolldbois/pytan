@@ -1,10 +1,13 @@
+"""Object Serializer/Deserializer for Tanium SOAP XML tag: ``saved_question``
 
-# Copyright (c) 2015 Tanium Inc
-#
-# Generated from console.wsdl version 0.0.1
-#
-#
+* License: MIT
+* Copyright: Copyright Tanium Inc. 2015
+* Generated from ``console.wsdl`` by ``build_tanium_ng.py`` on D2015-12-22T00-06-10Z-0400
+* Version of ``console.wsdl``: 0.0.1
+* Tanium Server version of ``console.wsdl``: 6.5.314.3400
+* Version of PyTan: 4.0.0
 
+"""
 from .base import BaseType
 
 
@@ -15,30 +18,9 @@ class SavedQuestion(BaseType):
     def __init__(self):
         BaseType.__init__(
             self,
-            simple_properties={'id': int,
-                        'name': str,
-                        'public_flag': int,
-                        'hidden_flag': int,
-                        'issue_seconds': int,
-                        'issue_seconds_never_flag': int,
-                        'expire_seconds': int,
-                        'sort_column': int,
-                        'query_text': str,
-                        'row_count_flag': int,
-                        'keep_seconds': int,
-                        'archive_enabled_flag': int,
-                        'most_recent_question_id': int,
-                        'action_tracking_flag': int,
-                        'mod_time': str,
-                        'index': int,
-                        'cache_row_id': int},
-            complex_properties={'question': Question,
-                        'packages': PackageSpecList,
-                        'user': User,
-                        'archive_owner': User,
-                        'mod_user': User,
-                        'metadata': MetadataList},
-            list_properties={},
+            simple_properties=SIMPLE_ARGS,
+            complex_properties=COMPLEX_ARGS,
+            list_properties=LIST_ARGS,
         )
         self.id = None
         self.name = None
@@ -63,12 +45,40 @@ class SavedQuestion(BaseType):
         self.archive_owner = None
         self.mod_user = None
         self.metadata = None
+        # no list_properties defined
 
 
 from .question import Question
-from .package_spec_list import PackageSpecList
-from .user import User
-from .user import User
-from .user import User
 from .metadata_list import MetadataList
+from .user import User
+from .package_spec_list import PackageSpecList
 
+SIMPLE_ARGS = {}
+SIMPLE_ARGS['id'] = int
+SIMPLE_ARGS['name'] = str
+SIMPLE_ARGS['public_flag'] = int
+SIMPLE_ARGS['hidden_flag'] = int
+SIMPLE_ARGS['issue_seconds'] = int
+SIMPLE_ARGS['issue_seconds_never_flag'] = int
+SIMPLE_ARGS['expire_seconds'] = int
+SIMPLE_ARGS['sort_column'] = int
+SIMPLE_ARGS['query_text'] = str
+SIMPLE_ARGS['row_count_flag'] = int
+SIMPLE_ARGS['keep_seconds'] = int
+SIMPLE_ARGS['archive_enabled_flag'] = int
+SIMPLE_ARGS['most_recent_question_id'] = int
+SIMPLE_ARGS['action_tracking_flag'] = int
+SIMPLE_ARGS['mod_time'] = str
+SIMPLE_ARGS['index'] = int
+SIMPLE_ARGS['cache_row_id'] = int
+
+COMPLEX_ARGS = {}
+COMPLEX_ARGS['question'] = Question
+COMPLEX_ARGS['packages'] = PackageSpecList
+COMPLEX_ARGS['user'] = User
+COMPLEX_ARGS['archive_owner'] = User
+COMPLEX_ARGS['mod_user'] = User
+COMPLEX_ARGS['metadata'] = MetadataList
+
+LIST_ARGS = {}
+# no LIST_ARGS defined

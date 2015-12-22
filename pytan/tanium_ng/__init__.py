@@ -1,10 +1,19 @@
-'''A python package that handles the serialization/deserialization of XML SOAP
-requests/responses from Tanium to/from python objects.
-'''
+"""Tanium NG: An object Serializer/Deserializer for the XML used by the Tanium SOAP API
 
+* License: MIT
+* Copyright: Copyright Tanium Inc. 2015
+* Generated from ``console.wsdl`` by ``build_tanium_ng.py`` on D2015-12-22T00-06-10Z-0400
+* Version of ``console.wsdl``: 0.0.1
+* Tanium Server version of ``console.wsdl``: 6.5.314.3400
+* Version of PyTan: 4.0.0
+
+"""
 from .base import BaseType
-from .result_set import ResultSet
+from .column import Column
+from .column_set import ColumnSet
 from .result_info import ResultInfo
+from .result_set import ResultSet
+from .row import Row
 from .action import Action
 from .action_list import ActionList
 from .action_list_info import ActionListInfo
@@ -95,10 +104,106 @@ from .white_listed_url import WhiteListedUrl
 from .white_listed_url_list import WhiteListedUrlList
 from .xml_error import XmlError
 
+OBJECT_TYPES = {
+    'action': Action,
+    'actions': ActionList,
+    'info': ActionListInfo,
+    'action_stop': ActionStop,
+    'action_stops': ActionStopList,
+    'archived_question': ArchivedQuestion,
+    'archived_questions': ArchivedQuestionList,
+    'audit_data': AuditData,
+    'filter': CacheFilter,
+    'cache_filters': CacheFilterList,
+    'cache_info': CacheInfo,
+    'client_count': ClientCount,
+    'client_status': ClientStatus,
+    'computer_group': ComputerGroup,
+    'computer_groups': ComputerGroupList,
+    'computer_spec': ComputerGroupSpec,
+    'computer_specs': ComputerSpecList,
+    'errors': ErrorList,
+    'filter': Filter,
+    'filters': FilterList,
+    'group': Group,
+    'groups': GroupList,
+    'item': MetadataItem,
+    'metadata': MetadataList,
+    'object_list': ObjectList,
+    'options': Options,
+    'file': PackageFile,
+    'package_files': PackageFileList,
+    'status': PackageFileStatus,
+    'file_status': PackageFileStatusList,
+    'file_template': PackageFileTemplate,
+    'file_templates': PackageFileTemplateList,
+    'package_spec': PackageSpec,
+    'package_specs': PackageSpecList,
+    'parameter': Parameter,
+    'parameters': ParameterList,
+    'parse_job': ParseJob,
+    'parse_jobs': ParseJobList,
+    'parse_result': ParseResult,
+    'parse_result_group': ParseResultGroup,
+    'parse_result_groups': ParseResultGroupList,
+    'parse_results': ParseResultList,
+    'permissions': PermissionList,
+    'plugin': Plugin,
+    'argument': PluginArgument,
+    'arguments': PluginArgumentList,
+    'commands': PluginCommandList,
+    'plugins': PluginList,
+    'plugin_schedule': PluginSchedule,
+    'plugin_schedules': PluginScheduleList,
+    'sql_response': PluginSql,
+    'columns': PluginSqlColumn,
+    'result_row': PluginSqlResult,
+    'question': Question,
+    'questions': QuestionList,
+    'info': QuestionListInfo,
+    'saved_action': SavedAction,
+    'saved_action_approval': SavedActionApproval,
+    'saved_actions': SavedActionList,
+    'policy': SavedActionPolicy,
+    'row_ids': SavedActionRowIdList,
+    'saved_question': SavedQuestion,
+    'saved_questions': SavedQuestionList,
+    'select': Select,
+    'selects': SelectList,
+    'sensor': Sensor,
+    'sensors': SensorList,
+    'query': SensorQuery,
+    'queries': SensorQueryList,
+    'subcolumn': SensorSubcolumn,
+    'subcolumns': SensorSubcolumnList,
+    'soap_error': SoapError,
+    'string_hints': StringHintList,
+    'system_setting': SystemSetting,
+    'system_settings': SystemSettingList,
+    'aggregate': SystemStatusAggregate,
+    'system_status': SystemStatusList,
+    'upload_file': UploadFile,
+    'file_parts': UploadFileList,
+    'upload_file_status': UploadFileStatus,
+    'user': User,
+    'users': UserList,
+    'role': UserRole,
+    'roles': UserRoleList,
+    'version': VersionAggregate,
+    'versions': VersionAggregateList,
+    'white_listed_url': WhiteListedUrl,
+    'white_listed_urls': WhiteListedUrlList,
+    'error': XmlError,
+}
+
 __all__ = [
+    'OBJECT_TYPES',
     'BaseType',
-    'ResultSet',
+    'Column',
+    'ColumnSet',
     'ResultInfo',
+    'ResultSet',
+    'Row',
     'Action',
     'ActionList',
     'ActionListInfo',

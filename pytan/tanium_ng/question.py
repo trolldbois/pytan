@@ -1,10 +1,13 @@
+"""Object Serializer/Deserializer for Tanium SOAP XML tag: ``question``
 
-# Copyright (c) 2015 Tanium Inc
-#
-# Generated from console.wsdl version 0.0.1
-#
-#
+* License: MIT
+* Copyright: Copyright Tanium Inc. 2015
+* Generated from ``console.wsdl`` by ``build_tanium_ng.py`` on D2015-12-22T00-06-10Z-0400
+* Version of ``console.wsdl``: 0.0.1
+* Tanium Server version of ``console.wsdl``: 6.5.314.3400
+* Version of PyTan: 4.0.0
 
+"""
 from .base import BaseType
 
 
@@ -15,24 +18,9 @@ class Question(BaseType):
     def __init__(self):
         BaseType.__init__(
             self,
-            simple_properties={'id': int,
-                        'expire_seconds': int,
-                        'skip_lock_flag': int,
-                        'expiration': str,
-                        'name': str,
-                        'query_text': str,
-                        'hidden_flag': int,
-                        'action_tracking_flag': int,
-                        'force_computer_id_flag': int,
-                        'cache_row_id': int,
-                        'index': int},
-            complex_properties={'selects': SelectList,
-                        'context_group': Group,
-                        'group': Group,
-                        'user': User,
-                        'management_rights_group': Group,
-                        'saved_question': SavedQuestion},
-            list_properties={},
+            simple_properties=SIMPLE_ARGS,
+            complex_properties=COMPLEX_ARGS,
+            list_properties=LIST_ARGS,
         )
         self.id = None
         self.expire_seconds = None
@@ -51,12 +39,34 @@ class Question(BaseType):
         self.user = None
         self.management_rights_group = None
         self.saved_question = None
+        # no list_properties defined
 
 
 from .select_list import SelectList
-from .group import Group
-from .group import Group
 from .user import User
 from .group import Group
 from .saved_question import SavedQuestion
 
+SIMPLE_ARGS = {}
+SIMPLE_ARGS['id'] = int
+SIMPLE_ARGS['expire_seconds'] = int
+SIMPLE_ARGS['skip_lock_flag'] = int
+SIMPLE_ARGS['expiration'] = str
+SIMPLE_ARGS['name'] = str
+SIMPLE_ARGS['query_text'] = str
+SIMPLE_ARGS['hidden_flag'] = int
+SIMPLE_ARGS['action_tracking_flag'] = int
+SIMPLE_ARGS['force_computer_id_flag'] = int
+SIMPLE_ARGS['cache_row_id'] = int
+SIMPLE_ARGS['index'] = int
+
+COMPLEX_ARGS = {}
+COMPLEX_ARGS['selects'] = SelectList
+COMPLEX_ARGS['context_group'] = Group
+COMPLEX_ARGS['group'] = Group
+COMPLEX_ARGS['user'] = User
+COMPLEX_ARGS['management_rights_group'] = Group
+COMPLEX_ARGS['saved_question'] = SavedQuestion
+
+LIST_ARGS = {}
+# no LIST_ARGS defined

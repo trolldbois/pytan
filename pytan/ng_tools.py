@@ -1,8 +1,8 @@
-"""TaniumPy object module for for :mod:`pytan`"""
+"""Tools for Tanium NG package for :mod:`pytan`"""
 
 import logging
-from .. import tanium_ng
-from . import exceptions
+from . import tanium_ng
+from .utils import exceptions
 
 try:
     import xml.etree.cElementTree as ET

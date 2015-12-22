@@ -10,7 +10,6 @@ from datetime import datetime
 from datetime import timedelta
 
 from .. import utils
-from .. import tanium_ng
 
 mylog = logging.getLogger(__name__)
 progresslog = logging.getLogger(__name__ + ".progress")
@@ -50,7 +49,7 @@ class QuestionPoller(object):
         the question complete
     """
 
-    OBJECT_TYPE = tanium_ng.Question
+    OBJECT_TYPE = 'Question'
     """valid type of object that can be passed in as obj to __init__"""
 
     STR_ATTRS = utils.constants.Q_STR_ATTRS
@@ -85,6 +84,9 @@ class QuestionPoller(object):
     """Controls whether a run() loop should stop or not"""
 
     def __init__(self, handler, obj, **kwargs):
+        from .. import tanium_ng
+        self.tanium_ng = tanium_ng
+
         polling_secs = kwargs.get('polling_secs', self.POLLING_SECS_DEFAULT)
         complete_pct = kwargs.get('complete_pct', self.COMPLETE_PCT_DEFAULT)
         override_timeout = kwargs.get('override_timeout_secs', self.OVERRIDE_TIMEOUT_SECS_DEFAULT)
@@ -97,6 +99,8 @@ class QuestionPoller(object):
             err = "{} is not a valid handler instance! Must be a: {!r}"
             err = err.format(type(handler), BaseHandler)
             raise utils.exceptions.PollingError(err)
+
+        self.OBJECT_TYPE = getattr(self.tanium_ng, self.OBJECT_TYPE)
 
         if not isinstance(obj, self.OBJECT_TYPE):
             err = "{} is not a valid object type! Must be a: {}"
@@ -360,7 +364,7 @@ class QuestionPoller(object):
         # loop counter
         self.loop_count = 1
         # establish a previous result_info that's empty
-        self.previous_result_info = tanium_ng.ResultInfo()
+        self.previous_result_info = self.tanium_ng.ResultInfo()
 
         while not self._stop:
             # perform a GetResultInfo SOAP call

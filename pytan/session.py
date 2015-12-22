@@ -14,7 +14,6 @@ try:
 except:
     import xml.etree.ElementTree as ET
 
-from . import tanium_ng
 from . import utils
 from . import __version__
 from .external import six
@@ -188,6 +187,8 @@ class Session(object):
     """version string of server, will be updated when get_server_version() is called"""
 
     def __init__(self, host, **kwargs):
+        from . import tanium_ng
+        self.tanium_ng = tanium_ng
 
         self.mylog = mylog
         self.authlog = authlog
@@ -499,7 +500,7 @@ class Session(object):
         kwargs['obj'] = obj
         kwargs['request_body'] = self._create_get_object_body(**kwargs)
         response_body = self.soap_request(**kwargs)
-        result = tanium_ng.BaseType.fromSOAPBody(body=response_body)
+        result = self.tanium_ng.BaseType.from_soap_body(body=response_body)
         return result
 
     def save(self, obj, **kwargs):
@@ -519,7 +520,7 @@ class Session(object):
         kwargs['obj'] = obj
         kwargs['request_body'] = self._create_update_object_body(**kwargs)
         response_body = self.soap_request(**kwargs)
-        result = tanium_ng.BaseType.fromSOAPBody(body=response_body)
+        result = self.tanium_ng.BaseType.from_soap_body(body=response_body)
         return result
 
     def add(self, obj, **kwargs):
@@ -539,7 +540,7 @@ class Session(object):
         kwargs['obj'] = obj
         kwargs['request_body'] = self._create_add_object_body(**kwargs)
         response_body = self.soap_request(**kwargs)
-        result = tanium_ng.BaseType.fromSOAPBody(body=response_body)
+        result = self.tanium_ng.BaseType.from_soap_body(body=response_body)
         return result
 
     def delete(self, obj, **kwargs):
@@ -559,7 +560,7 @@ class Session(object):
         kwargs['obj'] = obj
         kwargs['request_body'] = self._create_delete_object_body(**kwargs)
         response_body = self.soap_request(**kwargs)
-        result = tanium_ng.BaseType.fromSOAPBody(body=response_body)
+        result = self.tanium_ng.BaseType.from_soap_body(body=response_body)
         return result
 
     def run_plugin(self, obj, **kwargs):
@@ -579,7 +580,7 @@ class Session(object):
         kwargs['obj'] = obj
         kwargs['request_body'] = self._create_run_plugin_object_body(**kwargs)
         response_body = self.soap_request(**kwargs)
-        result = tanium_ng.BaseType.fromSOAPBody(body=response_body)
+        result = self.tanium_ng.BaseType.from_soap_body(body=response_body)
         return result
 
     def get_result_info(self, obj, **kwargs):
@@ -604,7 +605,7 @@ class Session(object):
         resultxml_text = self._extract_resultxml(response_body=response_body)
 
         cdata_el = ET.fromstring(resultxml_text)
-        result = tanium_ng.ResultInfo.fromSOAPElement(cdata_el)
+        result = self.tanium_ng.ResultInfo.from_soap_element(cdata_el)
         result._RAW_XML = resultxml_text
         return result
 
@@ -630,7 +631,7 @@ class Session(object):
         resultxml_text = self._extract_resultxml(response_body=response_body)
 
         cdata_el = ET.fromstring(resultxml_text)
-        result = tanium_ng.ResultSet.fromSOAPElement(cdata_el)
+        result = self.tanium_ng.ResultSet.from_soap_element(cdata_el)
         result._RAW_XML = resultxml_text
         return result
 
@@ -1341,7 +1342,7 @@ class Session(object):
         """
         log_options = kwargs.get('log_options', False)
 
-        options_obj = tanium_ng.Options()
+        options_obj = self.tanium_ng.Options()
 
         for k, v in kwargs.items():
             if hasattr(options_obj, k):
@@ -1354,7 +1355,7 @@ class Session(object):
                     m = "Ignoring argument {!r} for options list, not a valid attribute".format
                     self.mylog.debug(m(k))
 
-        options = options_obj.toSOAPBody(minimal=True)
+        options = options_obj.to_soap_body(minimal=True)
         body_template = string.Template(self.REQUEST_BODY_BASE)
         subs = {'command': command, 'object_list': object_list, 'options': options}
         result = body_template.substitute(**subs)
@@ -1376,7 +1377,7 @@ class Session(object):
         obj_body : str
             * The XML request body created from :func:`pytan.sessions.Session._build_body`
         """
-        kwargs['object_list'] = obj.toSOAPBody(minimal=True)
+        kwargs['object_list'] = obj.to_soap_body(minimal=True)
         kwargs['command'] = 'RunPlugin'
         result = self._build_body(**kwargs)
         return result
@@ -1397,7 +1398,7 @@ class Session(object):
         obj_body : str
             * The XML request body created from :func:`pytan.sessions.Session._build_body`
         """
-        kwargs['object_list'] = obj.toSOAPBody(minimal=True)
+        kwargs['object_list'] = obj.to_soap_body(minimal=True)
         kwargs['command'] = 'AddObject'
         result = self._build_body(**kwargs)
         return result
@@ -1418,7 +1419,7 @@ class Session(object):
         obj_body : str
             * The XML request body created from :func:`pytan.sessions.Session._build_body`
         """
-        kwargs['object_list'] = obj.toSOAPBody(minimal=True)
+        kwargs['object_list'] = obj.to_soap_body(minimal=True)
         kwargs['command'] = 'DeleteObject'
         result = self._build_body(**kwargs)
         return result
@@ -1439,7 +1440,7 @@ class Session(object):
         obj_body : str
             * The XML request body created from :func:`pytan.sessions.Session._build_body`
         """
-        kwargs['object_list'] = obj.toSOAPBody(minimal=True)
+        kwargs['object_list'] = obj.to_soap_body(minimal=True)
         kwargs['command'] = 'GetResultInfo'
         result = self._build_body(**kwargs)
         return result
@@ -1460,7 +1461,7 @@ class Session(object):
         obj_body : str
             * The XML request body created from :func:`pytan.sessions.Session._build_body`
         """
-        kwargs['object_list'] = obj.toSOAPBody(minimal=True)
+        kwargs['object_list'] = obj.to_soap_body(minimal=True)
         kwargs['command'] = 'GetResultData'
         result = self._build_body(**kwargs)
         return result
@@ -1481,8 +1482,8 @@ class Session(object):
         obj_body : str
             * The XML request body created from :func:`pytan.sessions.Session._build_body`
         """
-        if isinstance(obj, tanium_ng.BaseType):
-            object_list = obj.toSOAPBody(minimal=True)
+        if isinstance(obj, self.tanium_ng.BaseType):
+            object_list = obj.to_soap_body(minimal=True)
         else:
             object_list = '<{}/>'.format(obj._soap_tag)
 
@@ -1507,7 +1508,7 @@ class Session(object):
         obj_body : str
             * The XML request body created from :func:`pytan.sessions.Session._build_body`
         """
-        kwargs['object_list'] = obj.toSOAPBody(minimal=True)
+        kwargs['object_list'] = obj.to_soap_body(minimal=True)
         kwargs['command'] = 'UpdateObject'
         result = self._build_body(**kwargs)
         return result
@@ -1539,7 +1540,7 @@ class Session(object):
         if not ret and fail:
             err = "Unable to find {} in body: {}"
             err = err.format(regex.pattern, body)
-            raise Exception()
+            raise Exception(err)  # TODO
         else:
             ret = str(ret.groups()[0].strip())
 

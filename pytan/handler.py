@@ -8,7 +8,6 @@ import json
 
 from . import __version__
 from . import utils
-from . import tanium_ng
 from . import session
 from . import pollers
 from .external import six
@@ -73,6 +72,11 @@ class Handler(object):
 
     def __init__(self, **kwargs):
         super(Handler, self).__init__()
+        from . import tanium_ng
+        from . import ng_tools
+        self.tanium_ng = tanium_ng
+        self.ng_tools = ng_tools
+
         self.mylog = mylog
         if kwargs.get('loglevel', 0) >= 30:
             utils.log.install_console()
@@ -182,7 +186,7 @@ class Handler(object):
         left = self._get_spec_objects(left)
         right = self._get_spec_objects(right)
 
-        kwargs['obj'] = utils.tanium_obj.create_question_obj(left=left, right=right)
+        kwargs['obj'] = self.ng_tools.create_question_obj(left=left, right=right)
 
         if max_age_seconds:
             kwargs['obj'].max_age_seconds = int(max_age_seconds)
@@ -280,7 +284,7 @@ class Handler(object):
 
             # re-fetch the saved question object to get the newly asked question info
             kwargs['pytan_help'] = utils.helpstr.SQ_RESQ
-            kwargs['obj'] = utils.tanium_obj.shrink_obj(obj=result.saved_question_object)
+            kwargs['obj'] = self.ng_tools.shrink_obj(obj=result.saved_question_object)
             result.saved_question_object = self.session.find(**kwargs)
 
             # get the last asked question for this saved question
@@ -326,7 +330,7 @@ class Handler(object):
             m = m.format(self.session.server_version)
             raise utils.exceptions.UnsupportedVersionError(m)
 
-        obj = tanium_ng.ParseJob()
+        obj = self.tanium_ng.ParseJob()
         obj.question_text = question_text
         obj.parser_version = 2
 
@@ -603,7 +607,7 @@ class Handler(object):
         # get the saved_question object the user passed in
         sa_obj = self.get_saved_actions(limit_exact=1, **kwargs)
 
-        result = tanium_ng.SavedActionApproval()
+        result = self.tanium_ng.SavedActionApproval()
         result.id = sa_obj.id
         result.approved_flag = 1
 
@@ -639,7 +643,7 @@ class Handler(object):
         # get the action object the user passed in
         a_obj_before = self.get_actions(limit_exact=1, **kwargs)
 
-        result = tanium_ng.ActionStop()
+        result = self.tanium_ng.ActionStop()
         result.action = a_obj_before
 
         kwargs['pytan_help'] = utils.helpstr.STOPA
@@ -756,7 +760,7 @@ class Handler(object):
         kwargs['suppress_object_list'] = kwargs.get('suppress_object_list', 1)
 
         if shrink:
-            kwargs['obj'] = utils.tanium_obj.shrink_obj(obj=obj)
+            kwargs['obj'] = self.ng_tools.shrink_obj(obj=obj)
 
         if aggregate:
             kwargs['row_counts_only_flag'] = 1
@@ -802,7 +806,7 @@ class Handler(object):
             result = poller.get_sse_data(**kwargs)
 
             if sse_format.lower() == 'xml_obj':
-                result = utils.tanium_obj.xml_to_result_set_obj(result)
+                result = self.ng_tools.xml_to_result_set_obj(result)
         else:
             # do a normal getresultdata
             kwargs['pytan_help'] = utils.helpstr.GRD.format(obj.__class__.__name__)
@@ -835,7 +839,7 @@ class Handler(object):
         kwargs['suppress_object_list'] = kwargs.get('suppress_object_list', 1)
         kwargs['pytan_help'] = kwargs.get('pytan_help', utils.helpstr.GRI)
         if shrink:
-            kwargs['obj'] = utils.tanium_obj.shrink_obj(obj=obj)
+            kwargs['obj'] = self.ng_tools.shrink_obj(obj=obj)
         ri = self.session.get_result_info(**kwargs)
         return ri
 
@@ -861,7 +865,7 @@ class Handler(object):
         :data:`utils.constants.GET_OBJ_MAP` : maps objtype to supported 'create_json' types
         """
 
-        obj_map = utils.tanium_obj.get_obj_map(objtype=objtype)
+        obj_map = self.ng_tools.get_obj_map(objtype=objtype)
 
         create_json_ok = obj_map['create_json']
 
@@ -872,7 +876,7 @@ class Handler(object):
             m = "{} is not a json createable object! Supported objects: {}".format
             raise utils.exceptions.PytanError(m(objtype, json_createable))
 
-        add_obj = utils.tanium_obj.load_taniumpy_from_json(json_file=json_file)
+        add_obj = self.ng_tools.load_taniumpy_from_json(json_file=json_file)
 
         if getattr(add_obj, '_list_properties', ''):
             obj_list = [x for x in add_obj]
@@ -891,7 +895,7 @@ class Handler(object):
         else:
             all_type = obj_map['all']
 
-        ret = utils.tanium_obj.get_taniumpy_obj(obj_map=all_type)()
+        ret = self.ng_tools.get_taniumpy_obj(obj_map=all_type)()
 
         h = "Issue an AddObject to add an object"
         kwargs['pytan_help'] = kwargs.get('pytan_help', h)
@@ -942,7 +946,7 @@ class Handler(object):
         plugin_result = self.session.run_plugin(obj=obj, **clean_kwargs)
 
         # zip up the sql results into a list of python dictionaries
-        sql_zipped = utils.tanium_obj.plugin_zip(p=plugin_result)
+        sql_zipped = self.ng_tools.plugin_zip(p=plugin_result)
 
         # return the plugin result and the python dictionary of results
         return plugin_result, sql_zipped
@@ -990,38 +994,38 @@ class Handler(object):
             public_flag = 0
 
         # create the plugin parent
-        plugin = tanium_ng.Plugin()
+        plugin = self.tanium_ng.Plugin()
         plugin.name = 'CreateDashboard'
         plugin.bundle = 'Dashboards'
 
         # create the plugin arguments
-        plugin.arguments = tanium_ng.PluginArgumentList()
+        plugin.arguments = self.tanium_ng.PluginArgumentList()
 
-        arg1 = tanium_ng.PluginArgument()
+        arg1 = self.tanium_ng.PluginArgument()
         arg1.name = 'dash_name'
         arg1.type = 'String'
         arg1.value = name
         plugin.arguments.append(arg1)
 
-        arg2 = tanium_ng.PluginArgument()
+        arg2 = self.tanium_ng.PluginArgument()
         arg2.name = 'dash_text'
         arg2.type = 'String'
         arg2.value = text
         plugin.arguments.append(arg2)
 
-        arg3 = tanium_ng.PluginArgument()
+        arg3 = self.tanium_ng.PluginArgument()
         arg3.name = 'group_id'
         arg3.type = 'Number'
         arg3.value = group_id
         plugin.arguments.append(arg3)
 
-        arg4 = tanium_ng.PluginArgument()
+        arg4 = self.tanium_ng.PluginArgument()
         arg4.name = 'public_flag'
         arg4.type = 'Number'
         arg4.value = public_flag
         plugin.arguments.append(arg4)
 
-        arg5 = tanium_ng.PluginArgument()
+        arg5 = self.tanium_ng.PluginArgument()
         arg5.name = 'sqid_xml'
         arg5.type = 'String'
         arg5.value = ''
@@ -1058,14 +1062,14 @@ class Handler(object):
         dashboards_to_del = self.get_dashboards(name=name, **clean_kwargs)[1]
 
         # create the plugin parent
-        plugin = tanium_ng.Plugin()
+        plugin = self.tanium_ng.Plugin()
         plugin.name = 'DeleteDashboards'
         plugin.bundle = 'Dashboards'
 
         # create the plugin arguments
-        plugin.arguments = tanium_ng.PluginArgumentList()
+        plugin.arguments = self.tanium_ng.PluginArgumentList()
 
-        arg1 = tanium_ng.PluginArgument()
+        arg1 = self.tanium_ng.PluginArgument()
         arg1.name = 'dashboard_ids'
         arg1.type = 'Number_Set'
         arg1.value = ','.join([x['id'] for x in dashboards_to_del])
@@ -1101,7 +1105,7 @@ class Handler(object):
         clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         # create the plugin parent
-        plugin = tanium_ng.Plugin()
+        plugin = self.tanium_ng.Plugin()
         plugin.name = 'GetDashboards'
         plugin.bundle = 'Dashboards'
 
@@ -1189,10 +1193,10 @@ class Handler(object):
         clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         metadata = kwargs.get('metadata', [])
-        metadatalist_obj = utils.tanium_obj.build_metadatalist_obj(properties=metadata)
+        metadatalist_obj = self.ng_tools.build_metadatalist_obj(properties=metadata)
 
         # bare minimum arguments for new package: name, command
-        add_package_obj = tanium_ng.PackageSpec()
+        add_package_obj = self.tanium_ng.PackageSpec()
         add_package_obj.name = name
         if display_name:
             add_package_obj.display_name = display_name
@@ -1206,7 +1210,7 @@ class Handler(object):
             v_filter_defs = utils.parsers.parse_filters(filters=verify_filters)
             v_option_defs = utils.parsers.parse_options(options=verify_filter_options)
             v_filter_defs = self._get_sensor_defs(defs=v_filter_defs, **clean_kwargs)
-            add_verify_group = utils.tanium_obj.build_group_obj(
+            add_verify_group = self.ng_tools.build_group_obj(
                 filter_defs=v_filter_defs,
                 option_defs=v_option_defs,
             )
@@ -1220,13 +1224,13 @@ class Handler(object):
 
         # PARAMETERS
         if parameters_json_file:
-            add_package_obj.parameter_definition = utils.tanium_obj.load_param_json_file(
+            add_package_obj.parameter_definition = self.ng_tools.load_param_json_file(
                 parameters_json_file=parameters_json_file
             )
 
         # FILES
         if file_urls:
-            filelist_obj = tanium_ng.PackageFileList()
+            filelist_obj = self.tanium_ng.PackageFileList()
             for file_url in file_urls:
                 # if :: is in file_url, split on it and use 0 as
                 # download_seconds
@@ -1240,7 +1244,7 @@ class Handler(object):
                     filename, file_url = file_url.split('||')
                 else:
                     filename = os.path.basename(file_url)
-                file_obj = tanium_ng.PackageFile()
+                file_obj = self.tanium_ng.PackageFile()
                 file_obj.name = filename
                 file_obj.source = file_url
                 file_obj.download_seconds = download_seconds
@@ -1300,7 +1304,7 @@ class Handler(object):
         )
         filter_defs = self._get_sensor_defs(defs=filter_defs, pytan_help=h, **clean_kwargs)
 
-        add_group_obj = utils.tanium_obj.build_group_obj(
+        add_group_obj = self.ng_tools.build_group_obj(
             filter_defs=filter_defs, option_defs=option_defs,
         )
         add_group_obj.name = groupname
@@ -1356,12 +1360,12 @@ class Handler(object):
                 objtype='userrole', id=roleid, name=rolename, pytan_help=h, **clean_kwargs
             )
         else:
-            rolelist_obj = tanium_ng.RoleList()
+            rolelist_obj = self.tanium_ng.RoleList()
 
-        metadatalist_obj = utils.tanium_obj.build_metadatalist_obj(
+        metadatalist_obj = self.ng_tools.build_metadatalist_obj(
             properties=properties, nameprefix='TConsole.User.Property',
         )
-        add_user_obj = tanium_ng.User()
+        add_user_obj = self.tanium_ng.User()
         add_user_obj.name = name
         add_user_obj.roles = rolelist_obj
         add_user_obj.metadata = metadatalist_obj
@@ -1407,11 +1411,11 @@ class Handler(object):
         if regex:
             url = 'regex:' + url
 
-        metadatalist_obj = utils.tanium_obj.build_metadatalist_obj(
+        metadatalist_obj = self.ng_tools.build_metadatalist_obj(
             properties=properties, nameprefix='TConsole.WhitelistedURL',
         )
 
-        add_url_obj = tanium_ng.WhiteListedUrl()
+        add_url_obj = self.tanium_ng.WhiteListedUrl()
         add_url_obj.url_regex = url
         add_url_obj.download_seconds = download_seconds
         add_url_obj.metadata = metadatalist_obj
@@ -1502,7 +1506,7 @@ class Handler(object):
 
         # see if supplied obj is a supported object type
         type_match = [
-            x for x in utils.constants.EXPORT_MAPS if isinstance(obj, getattr(tanium_ng, x))
+            x for x in utils.constants.EXPORT_MAPS if isinstance(obj, getattr(self.tanium_ng, x))
         ]
 
         if not type_match:
@@ -1754,7 +1758,7 @@ class Handler(object):
 
     def get_sensors(self, *args, **kwargs):
         """pass."""
-        kwargs['all_class'] = tanium_ng.SensorList
+        kwargs['all_class'] = self.tanium_ng.SensorList
         kwargs['specs_from_args'] = args
         kwargs['hide_sourced_sensors'] = kwargs.get('hide_sourced_sensors', True)
         result = self._get_objects(**kwargs)
@@ -1762,7 +1766,7 @@ class Handler(object):
 
     def get_packages(self, *args, **kwargs):
         """pass. cache_filters need single fix"""
-        kwargs['all_class'] = tanium_ng.PackageSpecList
+        kwargs['all_class'] = self.tanium_ng.PackageSpecList
         kwargs['specs_from_args'] = args
         kwargs['FIXIT_SINGLE'] = True
         result = self._get_objects(**kwargs)
@@ -1770,21 +1774,21 @@ class Handler(object):
 
     def get_actions(self, *args, **kwargs):
         """pass."""
-        kwargs['all_class'] = tanium_ng.ActionList
+        kwargs['all_class'] = self.tanium_ng.ActionList
         kwargs['specs_from_args'] = args
         result = self._get_objects(**kwargs)
         return result
 
     def get_clients(self, *args, **kwargs):
         """pass."""
-        kwargs['all_class'] = tanium_ng.SystemStatusList
+        kwargs['all_class'] = self.tanium_ng.SystemStatusList
         kwargs['specs_from_args'] = args
         result = self._get_objects(**kwargs)
         return result
 
     def get_groups(self, *args, **kwargs):
         """pass. cant find unnamed groups by id using cache filters"""
-        kwargs['all_class'] = tanium_ng.GroupList
+        kwargs['all_class'] = self.tanium_ng.GroupList
         kwargs['specs_from_args'] = args
         kwargs['FIXIT_GROUP_ID'] = True
         result = self._get_objects(**kwargs)
@@ -1792,35 +1796,35 @@ class Handler(object):
 
     def get_questions(self, *args, **kwargs):
         """pass."""
-        kwargs['all_class'] = tanium_ng.QuestionList
+        kwargs['all_class'] = self.tanium_ng.QuestionList
         kwargs['specs_from_args'] = args
         result = self._get_objects(**kwargs)
         return result
 
     def get_saved_actions(self, *args, **kwargs):
         """pass."""
-        kwargs['all_class'] = tanium_ng.SavedActionList
+        kwargs['all_class'] = self.tanium_ng.SavedActionList
         kwargs['specs_from_args'] = args
         result = self._get_objects(**kwargs)
         return result
 
     def get_saved_questions(self, *args, **kwargs):
         """pass."""
-        kwargs['all_class'] = tanium_ng.SavedQuestionList
+        kwargs['all_class'] = self.tanium_ng.SavedQuestionList
         kwargs['specs_from_args'] = args
         result = self._get_objects(**kwargs)
         return result
 
     def get_settings(self, *args, **kwargs):
         """pass."""
-        kwargs['all_class'] = tanium_ng.SystemSettingList
+        kwargs['all_class'] = self.tanium_ng.SystemSettingList
         kwargs['specs_from_args'] = args
         result = self._get_objects(**kwargs)
         return result
 
     def get_users(self, *args, **kwargs):
         """pass. cache_filters fail"""
-        kwargs['all_class'] = tanium_ng.UserList
+        kwargs['all_class'] = self.tanium_ng.UserList
         kwargs['specs_from_args'] = args
         kwargs['FIXIT_BROKEN_FILTER'] = True
         result = self._get_objects(**kwargs)
@@ -1828,7 +1832,7 @@ class Handler(object):
 
     def get_user_roles(self, *args, **kwargs):
         """pass. cache_filters fail"""
-        kwargs['all_class'] = tanium_ng.UserRoleList
+        kwargs['all_class'] = self.tanium_ng.UserRoleList
         kwargs['specs_from_args'] = args
         kwargs['FIXIT_BROKEN_FILTER'] = True
         result = self._get_objects(**kwargs)
@@ -1836,7 +1840,7 @@ class Handler(object):
 
     def get_whitelisted_urls(self, *args, **kwargs):
         """pass. cache_filters fail"""
-        kwargs['all_class'] = tanium_ng.WhiteListedUrlList
+        kwargs['all_class'] = self.tanium_ng.WhiteListedUrlList
         kwargs['specs_from_args'] = args
         kwargs['FIXIT_BROKEN_FILTER'] = True
         result = self._get_objects(**kwargs)
@@ -1869,7 +1873,7 @@ class Handler(object):
             kwargs['pytan_help'] = utils.helpstr.GET.format(all_class.__name__)
             result = self.session.find(**kwargs)
             kwargs['objects'] = result
-            utils.tanium_obj.check_limits(**kwargs)
+            self.ng_tools.check_limits(**kwargs)
 
         if limit_exact is not None:
             # if just one item returned and limit_exact == 1, return result as a single item
@@ -1902,7 +1906,7 @@ class Handler(object):
         fixit = kwargs.get('FIXIT_SINGLE', False)
         result = kwargs['all_class']()
         if fixit:
-            single_class = utils.tanium_obj.get_single_class(kwargs['all_class'])
+            single_class = self.ng_tools.get_single_class(kwargs['all_class'])
             result = single_class()
             m = "FIXIT_SINGLE: changed class from {} to {}"
             m = m.format(kwargs['all_class'].__name__, single_class.__name__)
@@ -1917,7 +1921,7 @@ class Handler(object):
         if fixit:
             for spec in specs:
                 if spec['field'] == 'id':
-                    result = tanium_ng.Group()
+                    result = self.tanium_ng.Group()
                     setattr(result, spec['field'], spec['value'])
                     m = "FIXIT_GROUP_ID: changed class to 'Group' and set {field!r} to {value!r}"
                     m = m.format(**spec)
@@ -1976,11 +1980,12 @@ class Handler(object):
             # if not isinstance(spec, (dict,)):
             #     spec = utils.parsers.get_str(spec)
 
+            parser = utils.parsers.GetObject
             # validate & parse the specs
             if isinstance(spec, (list, tuple)):
-                parsed_specs = [utils.parsers.GetObject(all_class, x).parsed_spec for x in spec]
+                parsed_specs = [parser(all_class=all_class, spec=x).parsed_spec for x in spec]
             else:
-                parsed_specs = [utils.parsers.GetObject(all_class, spec).parsed_spec]
+                parsed_specs = [parser(all_class=all_class, spec=spec).parsed_spec]
 
             # if we want to hide sourced sensors, add hide_spec
             if hide_sourced_sensors:
@@ -1990,7 +1995,7 @@ class Handler(object):
             kwargs['obj'] = self._fixit_group_id(**kwargs)
 
             # create a cache filter list object using the parsed_specs
-            kwargs['cache_filters'] = utils.tanium_obj.create_cf_listobj(parsed_specs)
+            kwargs['cache_filters'] = self.ng_tools.create_cf_listobj(parsed_specs)
 
             # use getobject to find the results using the cache_filters to limit the returns
             cf_result = self.session.find(**kwargs)
@@ -2015,7 +2020,7 @@ class Handler(object):
         result = self._fixit_broken_filter(**kwargs)
 
         kwargs['objects'] = result
-        utils.tanium_obj.check_limits(**kwargs)
+        self.ng_tools.check_limits(**kwargs)
         return result
 
     def _add(self, obj, **kwargs):
@@ -2550,7 +2555,7 @@ class Handler(object):
             raise utils.exceptions.RunError(m(report_path, len(result)))
 
         # BUILD THE PACKAGE OBJECT TO BE ADDED TO THE ACTION
-        add_package_obj = utils.tanium_obj.copy_package_obj_for_action(
+        add_package_obj = self.ng_tools.copy_package_obj_for_action(
         obj=package_def['package_obj'])
 
         # if source_id is specified, a new package will be created with the parameters
@@ -2558,7 +2563,7 @@ class Handler(object):
         # is hidden
         add_package_obj.hidden_flag = 1
 
-        param_objlist = utils.tanium_obj.build_param_objlist(
+        param_objlist = self.ng_tools.build_param_objlist(
             obj=package_def['package_obj'],
             user_params=package_def['params'],
             delim='',
@@ -2594,7 +2599,7 @@ class Handler(object):
         add_obj.issue_count = 0
 
         if filter_defs or option_defs:
-            targetgroup_obj = utils.tanium_obj.build_group_obj(
+            targetgroup_obj = self.ng_tools.build_group_obj(
                 filter_defs=filter_defs, option_defs=option_defs,
             )
             add_obj.target_group = targetgroup_obj

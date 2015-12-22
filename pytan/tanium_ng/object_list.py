@@ -1,10 +1,13 @@
+"""Object Serializer/Deserializer for Tanium SOAP XML tag: ``object_list``
 
-# Copyright (c) 2015 Tanium Inc
-#
-# Generated from console.wsdl version 0.0.1
-#
-#
+* License: MIT
+* Copyright: Copyright Tanium Inc. 2015
+* Generated from ``console.wsdl`` by ``build_tanium_ng.py`` on D2015-12-22T00-06-10Z-0400
+* Version of ``console.wsdl``: 0.0.1
+* Tanium Server version of ``console.wsdl``: 6.5.314.3400
+* Version of PyTan: 4.0.0
 
+"""
 from .base import BaseType
 
 
@@ -15,51 +18,9 @@ class ObjectList(BaseType):
     def __init__(self):
         BaseType.__init__(
             self,
-            simple_properties={'export_id': str},
-            complex_properties={'questions': QuestionList,
-                        'actions': ActionList,
-                        'saved_actions': SavedActionList,
-                        'roles': UserRoleList,
-                        'system_status': SystemStatusList,
-                        'system_settings': SystemSettingList,
-                        'client_count': ClientCount,
-                        'white_listed_urls': WhiteListedUrlList,
-                        'computer_groups': ComputerGroupList},
-            list_properties={'question': Question,
-                        'group': Group,
-                        'groups': GroupList,
-                        'saved_question': SavedQuestion,
-                        'saved_questions': SavedQuestionList,
-                        'archived_question': ArchivedQuestion,
-                        'archived_questions': ArchivedQuestionList,
-                        'parse_job': ParseJob,
-                        'parse_jobs': ParseJobList,
-                        'parse_result_group': ParseResultGroup,
-                        'parse_result_groups': ParseResultGroupList,
-                        'action': Action,
-                        'saved_action': SavedAction,
-                        'action_stop': ActionStop,
-                        'action_stops': ActionStopList,
-                        'package_spec': PackageSpec,
-                        'package_specs': PackageSpecList,
-                        'package_file': PackageFile,
-                        'package_files': PackageFileList,
-                        'sensor': Sensor,
-                        'sensors': SensorList,
-                        'user': User,
-                        'users': UserList,
-                        'client_status': ClientStatus,
-                        'system_setting': SystemSetting,
-                        'saved_action_approval': SavedActionApproval,
-                        'plugin': Plugin,
-                        'plugins': PluginList,
-                        'plugin_schedule': PluginSchedule,
-                        'plugin_schedules': PluginScheduleList,
-                        'white_listed_url': WhiteListedUrl,
-                        'upload_file': UploadFile,
-                        'upload_file_status': UploadFileStatus,
-                        'soap_error': SoapError,
-                        'computer_group': ComputerGroup},
+            simple_properties=SIMPLE_ARGS,
+            complex_properties=COMPLEX_ARGS,
+            list_properties=LIST_ARGS,
         )
         self.export_id = None
         self.questions = None
@@ -107,48 +68,99 @@ class ObjectList(BaseType):
         self.soap_error = []
         self.computer_group = []
 
-from .question import Question
-from .question_list import QuestionList
-from .group import Group
-from .group_list import GroupList
-from .saved_question import SavedQuestion
-from .saved_question_list import SavedQuestionList
-from .archived_question import ArchivedQuestion
-from .archived_question_list import ArchivedQuestionList
-from .parse_job import ParseJob
-from .parse_job_list import ParseJobList
-from .parse_result_group import ParseResultGroup
-from .parse_result_group_list import ParseResultGroupList
-from .action import Action
-from .action_list import ActionList
-from .saved_action import SavedAction
-from .saved_action_list import SavedActionList
-from .action_stop import ActionStop
-from .action_stop_list import ActionStopList
-from .package_spec import PackageSpec
-from .package_spec_list import PackageSpecList
-from .package_file import PackageFile
-from .package_file_list import PackageFileList
-from .sensor import Sensor
-from .sensor_list import SensorList
-from .user import User
-from .user_list import UserList
-from .user_role_list import UserRoleList
-from .client_status import ClientStatus
-from .system_setting import SystemSetting
-from .saved_action_approval import SavedActionApproval
-from .system_status_list import SystemStatusList
-from .system_setting_list import SystemSettingList
-from .client_count import ClientCount
-from .plugin import Plugin
-from .plugin_list import PluginList
-from .plugin_schedule import PluginSchedule
-from .plugin_schedule_list import PluginScheduleList
-from .white_listed_url import WhiteListedUrl
-from .white_listed_url_list import WhiteListedUrlList
-from .upload_file import UploadFile
-from .upload_file_status import UploadFileStatus
-from .soap_error import SoapError
-from .computer_group_list import ComputerGroupList
-from .computer_group import ComputerGroup
 
+from .action_list import ActionList
+from .saved_question_list import SavedQuestionList
+from .parse_result_group_list import ParseResultGroupList
+from .package_spec import PackageSpec
+from .plugin_list import PluginList
+from .action_stop_list import ActionStopList
+from .user_role_list import UserRoleList
+from .group_list import GroupList
+from .package_spec_list import PackageSpecList
+from .system_setting import SystemSetting
+from .white_listed_url_list import WhiteListedUrlList
+from .upload_file_status import UploadFileStatus
+from .question import Question
+from .user_list import UserList
+from .sensor import Sensor
+from .soap_error import SoapError
+from .system_setting_list import SystemSettingList
+from .parse_job_list import ParseJobList
+from .upload_file import UploadFile
+from .package_file_list import PackageFileList
+from .saved_action_approval import SavedActionApproval
+from .action import Action
+from .action_stop import ActionStop
+from .parse_result_group import ParseResultGroup
+from .plugin_schedule_list import PluginScheduleList
+from .computer_group import ComputerGroup
+from .saved_action import SavedAction
+from .client_status import ClientStatus
+from .user import User
+from .client_count import ClientCount
+from .computer_group_list import ComputerGroupList
+from .plugin import Plugin
+from .group import Group
+from .question_list import QuestionList
+from .package_file import PackageFile
+from .parse_job import ParseJob
+from .sensor_list import SensorList
+from .system_status_list import SystemStatusList
+from .saved_question import SavedQuestion
+from .saved_action_list import SavedActionList
+from .archived_question import ArchivedQuestion
+from .plugin_schedule import PluginSchedule
+from .archived_question_list import ArchivedQuestionList
+from .white_listed_url import WhiteListedUrl
+
+SIMPLE_ARGS = {}
+SIMPLE_ARGS['export_id'] = str
+
+COMPLEX_ARGS = {}
+COMPLEX_ARGS['questions'] = QuestionList
+COMPLEX_ARGS['actions'] = ActionList
+COMPLEX_ARGS['saved_actions'] = SavedActionList
+COMPLEX_ARGS['roles'] = UserRoleList
+COMPLEX_ARGS['system_status'] = SystemStatusList
+COMPLEX_ARGS['system_settings'] = SystemSettingList
+COMPLEX_ARGS['client_count'] = ClientCount
+COMPLEX_ARGS['white_listed_urls'] = WhiteListedUrlList
+COMPLEX_ARGS['computer_groups'] = ComputerGroupList
+
+LIST_ARGS = {}
+LIST_ARGS['question'] = Question
+LIST_ARGS['group'] = Group
+LIST_ARGS['groups'] = GroupList
+LIST_ARGS['saved_question'] = SavedQuestion
+LIST_ARGS['saved_questions'] = SavedQuestionList
+LIST_ARGS['archived_question'] = ArchivedQuestion
+LIST_ARGS['archived_questions'] = ArchivedQuestionList
+LIST_ARGS['parse_job'] = ParseJob
+LIST_ARGS['parse_jobs'] = ParseJobList
+LIST_ARGS['parse_result_group'] = ParseResultGroup
+LIST_ARGS['parse_result_groups'] = ParseResultGroupList
+LIST_ARGS['action'] = Action
+LIST_ARGS['saved_action'] = SavedAction
+LIST_ARGS['action_stop'] = ActionStop
+LIST_ARGS['action_stops'] = ActionStopList
+LIST_ARGS['package_spec'] = PackageSpec
+LIST_ARGS['package_specs'] = PackageSpecList
+LIST_ARGS['package_file'] = PackageFile
+LIST_ARGS['package_files'] = PackageFileList
+LIST_ARGS['sensor'] = Sensor
+LIST_ARGS['sensors'] = SensorList
+LIST_ARGS['user'] = User
+LIST_ARGS['users'] = UserList
+LIST_ARGS['client_status'] = ClientStatus
+LIST_ARGS['system_setting'] = SystemSetting
+LIST_ARGS['saved_action_approval'] = SavedActionApproval
+LIST_ARGS['plugin'] = Plugin
+LIST_ARGS['plugins'] = PluginList
+LIST_ARGS['plugin_schedule'] = PluginSchedule
+LIST_ARGS['plugin_schedules'] = PluginScheduleList
+LIST_ARGS['white_listed_url'] = WhiteListedUrl
+LIST_ARGS['upload_file'] = UploadFile
+LIST_ARGS['upload_file_status'] = UploadFileStatus
+LIST_ARGS['soap_error'] = SoapError
+LIST_ARGS['computer_group'] = ComputerGroup

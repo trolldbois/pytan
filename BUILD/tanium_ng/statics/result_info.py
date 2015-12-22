@@ -1,5 +1,3 @@
-
-
 class ResultInfo(object):
     """Wrap the result of GetResultInfo"""
 

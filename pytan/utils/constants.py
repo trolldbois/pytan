@@ -64,7 +64,7 @@ LOG_LEVEL_MAPS = {
     'pytan.handler': 1,
     'pytan.utils.historyconsole': 1,
     'pytan.utils.calc': 1,
-    'pytan.utils.tanium_obj': 1,
+    'pytan.ng_tools': 1,
     'pytan.pollers.action': 2,
     'pytan.pollers.question': 2,
     'pytan.pollers.sse': 2,

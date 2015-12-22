@@ -1,10 +1,13 @@
+"""Object Serializer/Deserializer for Tanium SOAP XML tag: ``system_settings``
 
-# Copyright (c) 2015 Tanium Inc
-#
-# Generated from console.wsdl version 0.0.1
-#
-#
+* License: MIT
+* Copyright: Copyright Tanium Inc. 2015
+* Generated from ``console.wsdl`` by ``build_tanium_ng.py`` on D2015-12-22T00-06-10Z-0400
+* Version of ``console.wsdl``: 0.0.1
+* Tanium Server version of ``console.wsdl``: 6.5.314.3400
+* Version of PyTan: 4.0.0
 
+"""
 from .base import BaseType
 
 
@@ -15,14 +18,23 @@ class SystemSettingList(BaseType):
     def __init__(self):
         BaseType.__init__(
             self,
-            simple_properties={},
-            complex_properties={'cache_info': CacheInfo},
-            list_properties={'system_setting': SystemSetting},
+            simple_properties=SIMPLE_ARGS,
+            complex_properties=COMPLEX_ARGS,
+            list_properties=LIST_ARGS,
         )
-
+        # no simple_properties defined
         self.cache_info = None
         self.system_setting = []
 
-from .system_setting import SystemSetting
-from .cache_info import CacheInfo
 
+from .cache_info import CacheInfo
+from .system_setting import SystemSetting
+
+SIMPLE_ARGS = {}
+# no SIMPLE_ARGS defined
+
+COMPLEX_ARGS = {}
+COMPLEX_ARGS['cache_info'] = CacheInfo
+
+LIST_ARGS = {}
+LIST_ARGS['system_setting'] = SystemSetting

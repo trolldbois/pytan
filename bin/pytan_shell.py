@@ -1,10 +1,7 @@
 #!/usr/bin/env python3 -i
-# -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
-# ex: set tabstop=4
-# Please do not change the two lines above. See PEP 8, PEP 263.
 """Python shell for PyTan"""
 __author__ = 'Jim Olsen <jim.olsen@tanium.com>'
-__version__ = '3.0.0'
+__version__ = '4.0.0'
 
 # BEGIN BOOTSTRAP CODE
 

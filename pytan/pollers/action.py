@@ -11,7 +11,6 @@ from datetime import timedelta
 
 from . import question
 from .. import utils
-from .. import tanium_ng
 
 mylog = logging.getLogger(__name__)
 progresslog = logging.getLogger(__name__ + ".progress")
@@ -46,7 +45,7 @@ class ActionPoller(question.QuestionPoller):
         * instead of getting number of systems that should run this action by asking a question, use this number
     """
 
-    OBJECT_TYPE = tanium_ng.Action
+    OBJECT_TYPE = 'Action'
     """valid type of object that can be passed in as obj to __init__"""
 
     COMPLETE_PCT_DEFAULT = utils.constants.A_COMPLETE_PCT_DEFAULT
@@ -269,7 +268,7 @@ class ActionPoller(question.QuestionPoller):
             ).format
             self.mylog.debug(m(self.id_str, self.obj))
 
-            self.pre_question = tanium_ng.Question()
+            self.pre_question = self.tanium_ng.Question()
             self.pre_question.group = self.target_group
             self.pre_question = self.handler._add(
                 obj=self.pre_question, pytan_help=m(self.id_str, self.obj), **clean_kwargs
@@ -304,9 +303,9 @@ class ActionPoller(question.QuestionPoller):
         # loop counter
         self.seen_loop_count = 1
         # establish a previous result_info that's empty
-        self.previous_result_info = tanium_ng.ResultInfo()
+        self.previous_result_info = self.tanium_ng.ResultInfo()
         # establish a previous result_data that's empty
-        self.previous_result_data = tanium_ng.ResultSet()
+        self.previous_result_data = self.tanium_ng.ResultSet()
 
         if self.passed_count == 0:
             m = "Passed Count of Clients for filter {} is 0 -- no clients match filter".format
@@ -452,9 +451,9 @@ class ActionPoller(question.QuestionPoller):
         # loop counter
         self.loop_count = 1
         # establish a previous result_info that's empty
-        self.previous_result_info = tanium_ng.ResultInfo()
+        self.previous_result_info = self.tanium_ng.ResultInfo()
         # establish a previous result_data that's empty
-        self.previous_result_data = tanium_ng.ResultSet()
+        self.previous_result_data = self.tanium_ng.ResultSet()
 
         while not self._stop:
             clean_keys = ['pytan_help', 'aggregate', 'callback', 'pct']

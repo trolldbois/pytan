@@ -1,10 +1,13 @@
+"""Object Serializer/Deserializer for Tanium SOAP XML tag: ``user``
 
-# Copyright (c) 2015 Tanium Inc
-#
-# Generated from console.wsdl version 0.0.1
-#
-#
+* License: MIT
+* Copyright: Copyright Tanium Inc. 2015
+* Generated from ``console.wsdl`` by ``build_tanium_ng.py`` on D2015-12-22T00-06-10Z-0400
+* Version of ``console.wsdl``: 0.0.1
+* Tanium Server version of ``console.wsdl``: 6.5.314.3400
+* Version of PyTan: 4.0.0
 
+"""
 from .base import BaseType
 
 
@@ -15,18 +18,9 @@ class User(BaseType):
     def __init__(self):
         BaseType.__init__(
             self,
-            simple_properties={'id': int,
-                        'name': str,
-                        'domain': str,
-                        'group_id': int,
-                        'deleted_flag': int,
-                        'last_login': str,
-                        'active_session_count': int,
-                        'local_admin_flag': int},
-            complex_properties={'permissions': PermissionList,
-                        'roles': UserRoleList,
-                        'metadata': MetadataList},
-            list_properties={},
+            simple_properties=SIMPLE_ARGS,
+            complex_properties=COMPLEX_ARGS,
+            list_properties=LIST_ARGS,
         )
         self.id = None
         self.name = None
@@ -39,9 +33,27 @@ class User(BaseType):
         self.permissions = None
         self.roles = None
         self.metadata = None
+        # no list_properties defined
 
 
-from .permission_list import PermissionList
-from .user_role_list import UserRoleList
 from .metadata_list import MetadataList
+from .user_role_list import UserRoleList
+from .permission_list import PermissionList
 
+SIMPLE_ARGS = {}
+SIMPLE_ARGS['id'] = int
+SIMPLE_ARGS['name'] = str
+SIMPLE_ARGS['domain'] = str
+SIMPLE_ARGS['group_id'] = int
+SIMPLE_ARGS['deleted_flag'] = int
+SIMPLE_ARGS['last_login'] = str
+SIMPLE_ARGS['active_session_count'] = int
+SIMPLE_ARGS['local_admin_flag'] = int
+
+COMPLEX_ARGS = {}
+COMPLEX_ARGS['permissions'] = PermissionList
+COMPLEX_ARGS['roles'] = UserRoleList
+COMPLEX_ARGS['metadata'] = MetadataList
+
+LIST_ARGS = {}
+# no LIST_ARGS defined

@@ -27,7 +27,6 @@ from .version import __url__  # noqa
 from .version import __title__  # noqa
 
 from . import utils
-from . import tanium_ng
 from .utils import exceptions
 from .handler import Handler
 from .session import Session
@@ -38,7 +37,6 @@ from .pollers import SSEPoller
 
 __all__ = [
     'utils',
-    'tanium_ng',
     'exceptions',
     'Handler',
     'Session',

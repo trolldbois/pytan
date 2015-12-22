@@ -1,10 +1,13 @@
+"""Object Serializer/Deserializer for Tanium SOAP XML tag: ``plugin``
 
-# Copyright (c) 2015 Tanium Inc
-#
-# Generated from console.wsdl version 0.0.1
-#
-#
+* License: MIT
+* Copyright: Copyright Tanium Inc. 2015
+* Generated from ``console.wsdl`` by ``build_tanium_ng.py`` on D2015-12-22T00-06-10Z-0400
+* Version of ``console.wsdl``: 0.0.1
+* Tanium Server version of ``console.wsdl``: 6.5.314.3400
+* Version of PyTan: 4.0.0
 
+"""
 from .base import BaseType
 
 
@@ -15,33 +18,9 @@ class Plugin(BaseType):
     def __init__(self):
         BaseType.__init__(
             self,
-            simple_properties={'name': str,
-                        'bundle': str,
-                        'plugin_server': str,
-                        'input': str,
-                        'script_response': str,
-                        'exit_code': int,
-                        'type': str,
-                        'path': str,
-                        'filename': str,
-                        'plugin_url': str,
-                        'run_detached_flag': int,
-                        'execution_id': int,
-                        'timeout_seconds': int,
-                        'cache_row_id': int,
-                        'local_admin_flag': int,
-                        'allow_rest': int,
-                        'raw_http_response': int,
-                        'raw_http_request': int,
-                        'use_json_flag': int,
-                        'status': str,
-                        'status_file_content': str},
-            complex_properties={'arguments': PluginArgumentList,
-                        'sql_response': PluginSql,
-                        'metadata': MetadataList,
-                        'commands': PluginCommandList,
-                        'permissions': PermissionList},
-            list_properties={},
+            simple_properties=SIMPLE_ARGS,
+            complex_properties=COMPLEX_ARGS,
+            list_properties=LIST_ARGS,
         )
         self.name = None
         self.bundle = None
@@ -69,11 +48,44 @@ class Plugin(BaseType):
         self.metadata = None
         self.commands = None
         self.permissions = None
+        # no list_properties defined
 
 
-from .plugin_argument_list import PluginArgumentList
-from .plugin_sql import PluginSql
 from .metadata_list import MetadataList
 from .plugin_command_list import PluginCommandList
+from .plugin_argument_list import PluginArgumentList
+from .plugin_sql import PluginSql
 from .permission_list import PermissionList
 
+SIMPLE_ARGS = {}
+SIMPLE_ARGS['name'] = str
+SIMPLE_ARGS['bundle'] = str
+SIMPLE_ARGS['plugin_server'] = str
+SIMPLE_ARGS['input'] = str
+SIMPLE_ARGS['script_response'] = str
+SIMPLE_ARGS['exit_code'] = int
+SIMPLE_ARGS['type'] = str
+SIMPLE_ARGS['path'] = str
+SIMPLE_ARGS['filename'] = str
+SIMPLE_ARGS['plugin_url'] = str
+SIMPLE_ARGS['run_detached_flag'] = int
+SIMPLE_ARGS['execution_id'] = int
+SIMPLE_ARGS['timeout_seconds'] = int
+SIMPLE_ARGS['cache_row_id'] = int
+SIMPLE_ARGS['local_admin_flag'] = int
+SIMPLE_ARGS['allow_rest'] = int
+SIMPLE_ARGS['raw_http_response'] = int
+SIMPLE_ARGS['raw_http_request'] = int
+SIMPLE_ARGS['use_json_flag'] = int
+SIMPLE_ARGS['status'] = str
+SIMPLE_ARGS['status_file_content'] = str
+
+COMPLEX_ARGS = {}
+COMPLEX_ARGS['arguments'] = PluginArgumentList
+COMPLEX_ARGS['sql_response'] = PluginSql
+COMPLEX_ARGS['metadata'] = MetadataList
+COMPLEX_ARGS['commands'] = PluginCommandList
+COMPLEX_ARGS['permissions'] = PermissionList
+
+LIST_ARGS = {}
+# no LIST_ARGS defined

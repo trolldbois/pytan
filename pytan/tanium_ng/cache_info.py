@@ -1,10 +1,13 @@
+"""Object Serializer/Deserializer for Tanium SOAP XML tag: ``cache_info``
 
-# Copyright (c) 2015 Tanium Inc
-#
-# Generated from console.wsdl version 0.0.1
-#
-#
+* License: MIT
+* Copyright: Copyright Tanium Inc. 2015
+* Generated from ``console.wsdl`` by ``build_tanium_ng.py`` on D2015-12-22T00-06-10Z-0400
+* Version of ``console.wsdl``: 0.0.1
+* Tanium Server version of ``console.wsdl``: 6.5.314.3400
+* Version of PyTan: 4.0.0
 
+"""
 from .base import BaseType
 
 
@@ -15,13 +18,9 @@ class CacheInfo(BaseType):
     def __init__(self):
         BaseType.__init__(
             self,
-            simple_properties={'cache_id': int,
-                        'page_row_count': int,
-                        'filtered_row_count': int,
-                        'cache_row_count': int,
-                        'expiration': str},
-            complex_properties={'errors': ErrorList},
-            list_properties={},
+            simple_properties=SIMPLE_ARGS,
+            complex_properties=COMPLEX_ARGS,
+            list_properties=LIST_ARGS,
         )
         self.cache_id = None
         self.page_row_count = None
@@ -29,7 +28,20 @@ class CacheInfo(BaseType):
         self.cache_row_count = None
         self.expiration = None
         self.errors = None
+        # no list_properties defined
 
 
 from .error_list import ErrorList
 
+SIMPLE_ARGS = {}
+SIMPLE_ARGS['cache_id'] = int
+SIMPLE_ARGS['page_row_count'] = int
+SIMPLE_ARGS['filtered_row_count'] = int
+SIMPLE_ARGS['cache_row_count'] = int
+SIMPLE_ARGS['expiration'] = str
+
+COMPLEX_ARGS = {}
+COMPLEX_ARGS['errors'] = ErrorList
+
+LIST_ARGS = {}
+# no LIST_ARGS defined

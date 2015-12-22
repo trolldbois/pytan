@@ -1,58 +1,13 @@
 import os
 import sys
 import json
-import copy
+# import copy
 import getpass
-import argparse
 import pprint
-from argparse import ArgumentDefaultsHelpFormatter as A1 # noqa
-from argparse import RawDescriptionHelpFormatter as A2 # noqa
+import argparse
 from .. import utils
 from ..external import six
-
-
-class CustomArgFormat(A1, A2):
-    """Multiple inheritance Formatter class for :class:`argparse.ArgumentParser`.
-
-    If a :class:`argparse.ArgumentParser` class uses this as it's Formatter class, it will show
-    the defaults for each argument in the `help` output
-    """
-    pass
-
-
-class CustomArgParse(argparse.ArgumentParser):
-    """Custom :class:`argparse.ArgumentParser` class which does a number of things:
-
-        * Uses :class:`pytan.utils.CustomArgFormat` as it's Formatter class, if none was passed in
-        * Prints help if there is an error
-        * Prints the help for any subparsers that exist
-    """
-    def __init__(self, *args, **kwargs):
-        self.my_file = __name__
-
-        if 'my_file' in kwargs:
-            self.my_file = kwargs.pop('my_file')
-
-        if 'formatter_class' not in kwargs:
-            kwargs['formatter_class'] = CustomArgFormat
-
-        argparse.ArgumentParser.__init__(self, *args, **kwargs)
-
-    def error(self, message):
-        self.print_help()
-        print('\n!! Argument Parsing Error in "{}": {}\n'.format(self.my_file, message))
-        sys.exit(2)
-
-    def print_help(self, **kwargs):
-        super(CustomArgParse, self).print_help(**kwargs)
-        subparsers_actions = [
-            action for action in self._actions
-            if isinstance(action, argparse._SubParsersAction)
-        ]
-        for subparsers_action in subparsers_actions:
-            print("")
-            for choice, subparser in subparsers_action.choices.items():
-                print(subparser.format_help())
+from ..utils.argparsers import ShellParser
 
 
 class Base(object):
@@ -63,12 +18,11 @@ class Base(object):
     def __init__(self, **kwargs):
         from .. import handler
         self.handler_module = handler
-        self.tanium_obj = utils.tanium_obj
+        # self.tanium_obj = utils.tanium_obj
         self.constants = utils.constants
         self.utils = utils
         self.six = six
-        self.CustomArgFormat = CustomArgFormat
-        self.CustomArgParse = CustomArgParse
+        self.ShellParser = ShellParser
         self.SUPPRESS = argparse.SUPPRESS
         self.pf = pprint.pformat
 
@@ -88,7 +42,7 @@ class Base(object):
         pass
 
     def set_base(self):
-        self.base = self.CustomArgParse(
+        self.base = self.ShellParser(
             my_file=self.my_file,
             description=self.DESCRIPTION,
             add_help=False,
@@ -99,7 +53,7 @@ class Base(object):
         self.add_session_opts()
 
     def set_parser(self):
-        self.parser = self.CustomArgParse(
+        self.parser = self.ShellParser(
             my_file=self.my_file,
             description=self.DESCRIPTION,
             parents=[self.base]
@@ -595,6 +549,7 @@ class GetBase(Base):
         self.GROUP_NAME = self.NAME_TEMP.format(self.OBJECT_STR)
         self.DESCRIPTION = self.DESC_TEMP.format(self.OBJECT_STR)
 
+    '''
     def add_get_opts(self):
         self.grp = self.parser.add_argument_group(self.GROUP_NAME)
         obj_map = self.tanium_obj.get_obj_map(self.OBJECT_TYPE)
@@ -614,6 +569,7 @@ class GetBase(Base):
                 required=False, action='append', default=[], dest=k,
                 help='{} of {} to {}'.format(k, self.OBJECT_STR, self.ACTION),
             )
+    '''
 
     def setup(self):
         self.add_get_opts()

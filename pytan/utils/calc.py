@@ -22,13 +22,13 @@ def get_percent(base, amount, text=None, textformat="{0:.2f}%"):
     percent : the percentage of base out of amount
     """
     if 0 in [base, amount]:
-        percent = float(0)
+        result = float(0)
     else:
-        percent = (100 * (float(base) / float(amount)))
+        result = (100 * (float(base) / float(amount)))
 
     if text:
-        percent = textformat.format(percent)
-    return percent
+        result = textformat.format(result)
+    return result
 
 
 def get_base(percent, amount):
@@ -43,42 +43,38 @@ def get_base(percent, amount):
     -------
     base : the base from percentage of amount
     """
-    base = int((percent * amount) / 100.0)
-    return base
+    result = int((percent * amount) / 100.0)
+    return result
 
 
-def get_now():
-    """Get current time in human friendly format
-
-    Returns
-    -------
-    str :
-        str of current time return from :func:`human_time`
-    """
-    return human_time(time.localtime())
+def get_now_dt(gmt=True):
+    """pass."""
+    if gmt:
+        result = datetime.datetime.utcnow()
+    else:
+        result = datetime.datetime.now()
+    return result
 
 
-def human_time(t, tformat='%Y_%m_%d-%H_%M_%S-%Z'):
-    """Get time in human friendly format
-
-    Parameters
-    ----------
-    t : int, float, time
-        * either a unix epoch or struct_time object to convert to string
-    tformat : str, optional
-        * format of string to convert time to
-
-    Returns
-    -------
-    str :
-        * `t` converted to str
-    """
-    if isinstance(t, (int, float)):
-        t = time.localtime(t)
-    return time.strftime(tformat, t)
+def get_now(gmt=True):
+    """Get current time in human friendly format """
+    now = get_now_dt(gmt)
+    result = human_time(now)
+    return result
 
 
-def seconds_from_now(secs=0, tz='utc'):
+def human_time(dt, dtformat='D%Y-%m-%dT%H-%M-%S', tz=True):
+    """Get time in human friendly format"""
+    result = dt.strftime(dtformat)
+    if tz:
+        tz_pre = '-' if time.altzone > 0 else '+'
+        add_tz = 'Z{}{:0>2}{:0>2}'
+        add_tz = add_tz.format(tz_pre, abs(time.altzone) // 3600, abs(time.altzone // 60) % 60)
+        result = result + add_tz
+    return result
+
+
+def seconds_from_now(secs=0, gmt=True, tformat='%Y-%m-%dT%H:%M:%S'):
     """Get time in Tanium SOAP API format `secs` from now
 
     Parameters
@@ -97,13 +93,10 @@ def seconds_from_now(secs=0, tz='utc'):
     if secs is None:
         secs = 0
 
-    if tz == 'utc':
-        now = datetime.datetime.utcnow()
-    else:
-        now = datetime.datetime.now()
+    now = get_now_dt(gmt)
     from_now = now + datetime.timedelta(seconds=secs)
-    # now.strftime('%Y-%m-%dT%H:%M:%S')
-    return from_now.strftime('%Y-%m-%dT%H:%M:%S')
+    result = from_now.strftime(tformat)
+    return result
 
 
 def timestr_to_datetime(timestr):
@@ -119,7 +112,8 @@ def timestr_to_datetime(timestr):
     datetime.datetime
         * the datetime object for the timestr
     """
-    return datetime.datetime.strptime(timestr, constants.TIME_FORMAT)
+    result = datetime.datetime.strptime(timestr, constants.TIME_FORMAT)
+    return result
 
 
 def datetime_to_timestr(dt):
@@ -135,7 +129,8 @@ def datetime_to_timestr(dt):
     timestr: str
         * the timestr for `dt` in taniums format
     """
-    return dt.strftime(constants.TIME_FORMAT)
+    result = dt.strftime(constants.TIME_FORMAT)
+    return result
 
 
 def question_start_time(q):
@@ -156,31 +151,35 @@ def question_start_time(q):
     expire_seconds_delta = datetime.timedelta(seconds=q.expire_seconds)
     start_time_dt = expire_dt - expire_seconds_delta
     start_time = datetime_to_timestr(start_time_dt)
-    return start_time, start_time_dt
+    result = (start_time, start_time_dt)
+    return result
 
 
-def eval_timing(c):
+def eval_timing(c, thislog=None):
     """Yet another method to time things -- c will be evaluated and timing information will be
     printed out
     """
+    if thislog is None:
+        thislog = mylog
     t_start = datetime.now()
     r = eval(c)
     t_end = datetime.now()
     t_elapsed = t_end - t_start
 
     m = "Timing info for {} -- START: {}, END: {}, ELAPSED: {}, RESPONSE LEN: {}".format
-    mylog.warn(m(c, t_start, t_end, t_elapsed, len(r)))
-    return (c, r, t_start, t_end, t_elapsed)
+    thislog.warn(m(c, t_start, t_end, t_elapsed, len(r)))
+    result = (c, r, t_start, t_end, t_elapsed)
+    return result
 
 
 def func_timing(f):
     """Decorator to add timing information around a function """
     def wrap(*args, **kwargs):
         time1 = datetime.datetime.utcnow()
-        ret = f(*args, **kwargs)
+        result = f(*args, **kwargs)
         time2 = datetime.datetime.utcnow()
         elapsed = time2 - time1
         m = '{}() TIMING start: {}, end: {}, elapsed: {}'.format
         mylog.debug(m(f.func_name, time1, time2, elapsed))
-        return ret
+        return result
     return wrap
