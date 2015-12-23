@@ -108,3 +108,6 @@ spec4 = {
 # q = v.question_object
 # group = q.group
 # pytan.utils.tanium_obj.recurse_group(group)
+a = handler.tanium_ng.SensorList()
+b = handler.tanium_ng.SensorList()
+c = handler.tanium_ng.Sensor()

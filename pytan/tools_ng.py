@@ -1,8 +1,8 @@
 """Tools for Tanium NG package for :mod:`pytan`"""
 
 import logging
-from . import tanium_ng
-from .utils import exceptions
+import datetime
+from . import utils, tanium_ng
 
 try:
     import xml.etree.cElementTree as ET
@@ -33,7 +33,7 @@ def shrink_obj(obj, attrs=None):
         attrs = ['name', 'id', 'hash']
 
     new_obj = obj.__class__()
-    [setattr(new_obj, a, getattr(obj, a)) for a in attrs if getattr(obj, a, '')]
+    [setattr(new_obj, a, getattr(obj, a)) for a in attrs if getattr(obj, a, None) is not None]
     return new_obj
 
 
@@ -272,7 +272,7 @@ def check_limits(objects, **kwargs):
     if not isinstance(objects, tanium_ng.BaseType):
         err = "{} must be a tanium_ng object, type: {}"
         err = err.format(objects, type(objects))
-        raise exceptions.PytanError(err)
+        raise utils.exceptions.PytanError(err)
 
     # coerce single items into a list
     objects_class = objects.__class__.__name__
@@ -320,10 +320,32 @@ def check_limits(objects, **kwargs):
             err = "{}{}returned items:\n\t{}"
             err = err.format(err_pre, specstxt, objtxt)
             mylog.critical(err)
-            raise exceptions.PytanError(err)
+            raise utils.exceptions.PytanError(err)
 
 
 def get_single_class(all_class):
     """pass."""
     single_class = list(all_class()._list_properties.values())[0]
     return single_class
+
+
+def question_start_time(q):
+    """Caclulates the start time of a question by doing q.expiration - q.expire_seconds
+
+    Parameters
+    ----------
+    q : :class:`tanium_ng.Question`
+        * Question object to calculate start time for
+
+    Returns
+    -------
+    tuple : str, datetime
+        * a tuple containing the start time first in str format for Tanium Server API, second in
+        datetime object format
+    """
+    expire_dt = utils.tools.timestr_to_datetime(q.expiration)
+    expire_seconds_delta = datetime.timedelta(seconds=q.expire_seconds)
+    start_time_dt = expire_dt - expire_seconds_delta
+    start_time = utils.tools.datetime_to_timestr(start_time_dt)
+    result = (start_time, start_time_dt)
+    return result

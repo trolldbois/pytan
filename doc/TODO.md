@@ -1,8 +1,11 @@
 <!-- MarkdownTOC -->
 
 - [DOC](#doc)
-- [BUG](#bug)
-- [GEN](#gen)
+- [TANIUMNG](#taniumng)
+- [SESSION](#session)
+- [HUMAN PARSING](#human-parsing)
+- [HANDLER](#handler)
+- [UTILS](#utils)
 - [TEST](#test)
 - [PLATFORM](#platform)
 - [LOW](#low)
@@ -20,57 +23,51 @@
 * add documentation note about PyTan only being fully tested with Administrator role 
 * add windows install doc tip re: 2.7 only
 
-## BUG
-* create_parent_group_obj broken, fix it and add debug logging!
-* work on deploy action & start_seconds_from_now (a new action gets created at actual start time)
-* on 6.2, block info.json (block 444), fix _regex_for_body_element when _get_response tries to parse for server_version but it doesn't exist
-* param with \ at end breaks parameter parser regex
-* ~~ Will store value as global in TSAT
+## TANIUMNG
+* move serializers out => tickle NOW
+* timing for xml?
+* rebuild taniumpy with latest wsdl
 
-## GEN
-* remove external deps from utils, move version into utils
-* bring statics into line with Base
-* move serializers out!
-* add reprs to objects!
+## SESSION
 * http/s proxy
-* python3 
-* argparse for specs/left/right/etc
 * move stats threading into it's own class
 * i plan to extend that signature to add “domain” and “secondary” as part of my current pytan refactor, in order to support all 4 fields the /auth api supports
+* on 6.2, block info.json (block 444), fix _regex_for_body_element when _get_response tries to parse for server_version but it doesn't exist
+
+## HUMAN PARSING
+* argparse for specs/left/right/etc
+
+## HANDLER
+* create_parent_group_obj broken, fix it and add debug logging!
 * increase loglevel range to 50
-* put stats thread into it's own threading class
 * keep loglevels 1-10 reserved for shell scripts
 * keep loglevels 10-30 reserved for info logs
 * keep loglevels 30-50 reserved for debug logs
-* bring csv/json stuffs from taniumpy into handler
-* rebuild taniumpy with latest wsdl
-* verify resultset len
-* fix ALL PEP
-* fix sse
-* fix filename of datetime stamp in win
 * 2.1.7: ask_saved: 
   * add log for get_result_info in refresh_data path
   * add check to see if question for re-fetched sq is not different from old sq, if so throw warning. 
-* re-figure out py2exe
+* fix sse
 * add auto paging/caching to normal GRD
-* rewrite write_csv
 * add secondary loop for if any data == current result unavail/etc (MEDIUM)
 * Add method to get question progress (MEDIUM)
 * add print_user bin script (SMALL)
-* change get logic to use cache_filters instead of objectlist for object selection (HUGE)
-* fix search attrs for cmdline scripts (HUGE/CORRELATIVE)
-* add non id/name/hash search support to get_$object.py (HUGE/CORRELATIVE)
 * question filters get params too?? (UNKNOWN)
-* add json source for parameters in TSAT
 * add export_obj option for csv to split columns longer than 32k
-* refactor utils/binsupport (3.x)
+* work on deploy action & start_seconds_from_now (a new action gets created at actual start time)
+* ~~ Will store value as global in TSAT
+* bundle workflow capture into handler?
+* look into update object methods (UNKNOWN)
+* email out (MEDIUM)
+* add caching (HUGE)
+
+## UTILS
+* remove external deps from utils, move version into utils
 
 ## TEST
 * add approve action to pytan (need doc update and test update)
 * add tests for dashboard stuffs
 * add unit tests for logout()
 * add unit tests for auth with session
-* rebuild zip_dists, and test on win (or expire ZIP builds for now, no one using?)
 * cache_results test: If you are adding tests for that mechanism you could make tests that verify it returns an error if you specify a cache that has expired and make sure that the results that come back don’t change.
 * test verify checks work against package with verification (unable to do) (UNKNOWN)
 * test against all the different levels of user privs (UNKNOWN)
@@ -80,10 +77,5 @@
 * await update on cs values in SSE XML
 
 ## LOW
-* bundle workflow capture into handler?
-* fix build bin doc to run on windows (figure out later)
-* look into update object methods (UNKNOWN)
-* email out (MEDIUM)
-* add caching (HUGE)
 * figure out cert based auth/plugin based auth? (HUGE)
 * add RST output support to mdtester?

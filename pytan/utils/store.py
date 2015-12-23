@@ -7,6 +7,11 @@ class Store(dict):
         ret = '\n'.join(["{} attribute '{}': '{}'".format(me, k, v) for k, v in self.items()])
         return ret
 
+    def __repr__(self):
+        me = self.__class__.__name__
+        ret = '\n'.join(["{!r} attribute {!r}: {!r}".format(me, k, v) for k, v in self.items()])
+        return ret
+
     def __getattr__(self, name):
         if name in self:
             return self[name]
@@ -21,7 +26,3 @@ class Store(dict):
             del self[name]
         else:
             raise AttributeError("No such attribute: " + name)
-
-
-class Result(Store):
-    pass

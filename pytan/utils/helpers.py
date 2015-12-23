@@ -1,7 +1,8 @@
 """Help module for for :mod:`pytan`"""
 
-from .parsers import constants
+# from .parsers import constants
 from . import exceptions
+constants = {}
 
 
 def check_for_help(kwargs):

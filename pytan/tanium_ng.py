@@ -8,141 +8,13 @@
 * Version of PyTan: 4.0.0
 
 """
-BASE_TYPES = {}
-"""Maps Tanium XML soap tags to the Tanium NG Python BaseType object"""
-BASE_TYPES['action'] = 'Action'
-BASE_TYPES['actions'] = 'ActionList'
-BASE_TYPES['info'] = 'ActionListInfo'
-BASE_TYPES['action_stop'] = 'ActionStop'
-BASE_TYPES['action_stops'] = 'ActionStopList'
-BASE_TYPES['archived_question'] = 'ArchivedQuestion'
-BASE_TYPES['archived_questions'] = 'ArchivedQuestionList'
-BASE_TYPES['audit_data'] = 'AuditData'
-BASE_TYPES['filter'] = 'CacheFilter'
-BASE_TYPES['cache_filters'] = 'CacheFilterList'
-BASE_TYPES['cache_info'] = 'CacheInfo'
-BASE_TYPES['client_count'] = 'ClientCount'
-BASE_TYPES['client_status'] = 'ClientStatus'
-BASE_TYPES['computer_group'] = 'ComputerGroup'
-BASE_TYPES['computer_groups'] = 'ComputerGroupList'
-BASE_TYPES['computer_spec'] = 'ComputerGroupSpec'
-BASE_TYPES['computer_specs'] = 'ComputerSpecList'
-BASE_TYPES['errors'] = 'ErrorList'
-BASE_TYPES['filter'] = 'Filter'
-BASE_TYPES['filters'] = 'FilterList'
-BASE_TYPES['group'] = 'Group'
-BASE_TYPES['groups'] = 'GroupList'
-BASE_TYPES['item'] = 'MetadataItem'
-BASE_TYPES['metadata'] = 'MetadataList'
-BASE_TYPES['object_list'] = 'ObjectList'
-BASE_TYPES['options'] = 'Options'
-BASE_TYPES['file'] = 'PackageFile'
-BASE_TYPES['package_files'] = 'PackageFileList'
-BASE_TYPES['status'] = 'PackageFileStatus'
-BASE_TYPES['file_status'] = 'PackageFileStatusList'
-BASE_TYPES['file_template'] = 'PackageFileTemplate'
-BASE_TYPES['file_templates'] = 'PackageFileTemplateList'
-BASE_TYPES['package_spec'] = 'PackageSpec'
-BASE_TYPES['package_specs'] = 'PackageSpecList'
-BASE_TYPES['parameter'] = 'Parameter'
-BASE_TYPES['parameters'] = 'ParameterList'
-BASE_TYPES['parse_job'] = 'ParseJob'
-BASE_TYPES['parse_jobs'] = 'ParseJobList'
-BASE_TYPES['parse_result'] = 'ParseResult'
-BASE_TYPES['parse_result_group'] = 'ParseResultGroup'
-BASE_TYPES['parse_result_groups'] = 'ParseResultGroupList'
-BASE_TYPES['parse_results'] = 'ParseResultList'
-BASE_TYPES['permissions'] = 'PermissionList'
-BASE_TYPES['plugin'] = 'Plugin'
-BASE_TYPES['argument'] = 'PluginArgument'
-BASE_TYPES['arguments'] = 'PluginArgumentList'
-BASE_TYPES['commands'] = 'PluginCommandList'
-BASE_TYPES['plugins'] = 'PluginList'
-BASE_TYPES['plugin_schedule'] = 'PluginSchedule'
-BASE_TYPES['plugin_schedules'] = 'PluginScheduleList'
-BASE_TYPES['sql_response'] = 'PluginSql'
-BASE_TYPES['columns'] = 'PluginSqlColumn'
-BASE_TYPES['result_row'] = 'PluginSqlResult'
-BASE_TYPES['question'] = 'Question'
-BASE_TYPES['questions'] = 'QuestionList'
-BASE_TYPES['info'] = 'QuestionListInfo'
-BASE_TYPES['saved_action'] = 'SavedAction'
-BASE_TYPES['saved_action_approval'] = 'SavedActionApproval'
-BASE_TYPES['saved_actions'] = 'SavedActionList'
-BASE_TYPES['policy'] = 'SavedActionPolicy'
-BASE_TYPES['row_ids'] = 'SavedActionRowIdList'
-BASE_TYPES['saved_question'] = 'SavedQuestion'
-BASE_TYPES['saved_questions'] = 'SavedQuestionList'
-BASE_TYPES['select'] = 'Select'
-BASE_TYPES['selects'] = 'SelectList'
-BASE_TYPES['sensor'] = 'Sensor'
-BASE_TYPES['sensors'] = 'SensorList'
-BASE_TYPES['query'] = 'SensorQuery'
-BASE_TYPES['queries'] = 'SensorQueryList'
-BASE_TYPES['subcolumn'] = 'SensorSubcolumn'
-BASE_TYPES['subcolumns'] = 'SensorSubcolumnList'
-BASE_TYPES['soap_error'] = 'SoapError'
-BASE_TYPES['string_hints'] = 'StringHintList'
-BASE_TYPES['system_setting'] = 'SystemSetting'
-BASE_TYPES['system_settings'] = 'SystemSettingList'
-BASE_TYPES['aggregate'] = 'SystemStatusAggregate'
-BASE_TYPES['system_status'] = 'SystemStatusList'
-BASE_TYPES['upload_file'] = 'UploadFile'
-BASE_TYPES['file_parts'] = 'UploadFileList'
-BASE_TYPES['upload_file_status'] = 'UploadFileStatus'
-BASE_TYPES['user'] = 'User'
-BASE_TYPES['users'] = 'UserList'
-BASE_TYPES['role'] = 'UserRole'
-BASE_TYPES['roles'] = 'UserRoleList'
-BASE_TYPES['version'] = 'VersionAggregate'
-BASE_TYPES['versions'] = 'VersionAggregateList'
-BASE_TYPES['white_listed_url'] = 'WhiteListedUrl'
-BASE_TYPES['white_listed_urls'] = 'WhiteListedUrlList'
-BASE_TYPES['error'] = 'XmlError'
-
-SENSOR_TYPE_MAP = {
-    0: 'Hash',
-    # SENSOR_RESULT_TYPE_STRING
-    1: 'String',
-    # SENSOR_RESULT_TYPE_VERSION
-    2: 'Version',
-    # SENSOR_RESULT_TYPE_NUMERIC
-    3: 'NumericDecimal',
-    # SENSOR_RESULT_TYPE_DATE_BES
-    4: 'BESDate',
-    # SENSOR_RESULT_TYPE_IPADDRESS
-    5: 'IPAddress',
-    # SENSOR_RESULT_TYPE_DATE_WMI
-    6: 'WMIDate',
-    #  e.g. "2 years, 3 months, 18 days, 4 hours, 22 minutes:
-    # 'TimeDiff', and 3.67 seconds" or "4.2 hours"
-    # (numeric + "Y|MO|W|D|H|M|S" units)
-    7: 'TimeDiff',
-    #  e.g. 125MB or 23K or 34.2Gig (numeric + B|K|M|G|T units)
-    8: 'DataSize',
-    9: 'NumericInteger',
-    10: 'VariousDate',
-    11: 'RegexMatch',
-    12: 'LastOperatorType',
-}
-"""Maps Column types in ResultSets from an int to a string."""
-
-import sys
-from collections import OrderedDict
-
 try:
     import xml.etree.cElementTree as ET
 except:
     import xml.etree.ElementTree as ET
 
-# Simple fix for type differences for text strings: str (3.x) vs unicode (2.x)
-PY3 = sys.version_info[0] == 3
-if PY3:
-    text_type = str  # noqa
-    encoding = "unicode"
-else:
-    text_type = unicode  # noqa
-    encoding = "us-ascii"
+from . import text_type, encoding
+from . import utils
 
 
 class TaniumNextGenException(Exception):
@@ -160,6 +32,107 @@ class IncorrectTypeException(TaniumNextGenException):
         TaniumNextGenException.__init__(self, err)
 
 
+def get_obj_type(tag):
+    """Maps Tanium XML soap tags to the Tanium NG Python BaseType object"""
+    base_types = {}
+    base_types['action'] = Action
+    base_types['actions'] = ActionList
+    base_types['info'] = ActionListInfo
+    base_types['action_stop'] = ActionStop
+    base_types['action_stops'] = ActionStopList
+    base_types['archived_question'] = ArchivedQuestion
+    base_types['archived_questions'] = ArchivedQuestionList
+    base_types['audit_data'] = AuditData
+    base_types['filter'] = CacheFilter
+    base_types['cache_filters'] = CacheFilterList
+    base_types['cache_info'] = CacheInfo
+    base_types['client_count'] = ClientCount
+    base_types['client_status'] = ClientStatus
+    base_types['computer_group'] = ComputerGroup
+    base_types['computer_groups'] = ComputerGroupList
+    base_types['computer_spec'] = ComputerGroupSpec
+    base_types['computer_specs'] = ComputerSpecList
+    base_types['errors'] = ErrorList
+    base_types['filter'] = Filter
+    base_types['filters'] = FilterList
+    base_types['group'] = Group
+    base_types['groups'] = GroupList
+    base_types['item'] = MetadataItem
+    base_types['metadata'] = MetadataList
+    base_types['object_list'] = ObjectList
+    base_types['options'] = Options
+    base_types['file'] = PackageFile
+    base_types['package_files'] = PackageFileList
+    base_types['status'] = PackageFileStatus
+    base_types['file_status'] = PackageFileStatusList
+    base_types['file_template'] = PackageFileTemplate
+    base_types['file_templates'] = PackageFileTemplateList
+    base_types['package_spec'] = PackageSpec
+    base_types['package_specs'] = PackageSpecList
+    base_types['parameter'] = Parameter
+    base_types['parameters'] = ParameterList
+    base_types['parse_job'] = ParseJob
+    base_types['parse_jobs'] = ParseJobList
+    base_types['parse_result'] = ParseResult
+    base_types['parse_result_group'] = ParseResultGroup
+    base_types['parse_result_groups'] = ParseResultGroupList
+    base_types['parse_results'] = ParseResultList
+    base_types['permissions'] = PermissionList
+    base_types['plugin'] = Plugin
+    base_types['argument'] = PluginArgument
+    base_types['arguments'] = PluginArgumentList
+    base_types['commands'] = PluginCommandList
+    base_types['plugins'] = PluginList
+    base_types['plugin_schedule'] = PluginSchedule
+    base_types['plugin_schedules'] = PluginScheduleList
+    base_types['sql_response'] = PluginSql
+    base_types['columns'] = PluginSqlColumn
+    base_types['result_row'] = PluginSqlResult
+    base_types['question'] = Question
+    base_types['questions'] = QuestionList
+    base_types['info'] = QuestionListInfo
+    base_types['saved_action'] = SavedAction
+    base_types['saved_action_approval'] = SavedActionApproval
+    base_types['saved_actions'] = SavedActionList
+    base_types['policy'] = SavedActionPolicy
+    base_types['row_ids'] = SavedActionRowIdList
+    base_types['saved_question'] = SavedQuestion
+    base_types['saved_questions'] = SavedQuestionList
+    base_types['select'] = Select
+    base_types['selects'] = SelectList
+    base_types['sensor'] = Sensor
+    base_types['sensors'] = SensorList
+    base_types['query'] = SensorQuery
+    base_types['queries'] = SensorQueryList
+    base_types['subcolumn'] = SensorSubcolumn
+    base_types['subcolumns'] = SensorSubcolumnList
+    base_types['soap_error'] = SoapError
+    base_types['string_hints'] = StringHintList
+    base_types['system_setting'] = SystemSetting
+    base_types['system_settings'] = SystemSettingList
+    base_types['aggregate'] = SystemStatusAggregate
+    base_types['system_status'] = SystemStatusList
+    base_types['upload_file'] = UploadFile
+    base_types['file_parts'] = UploadFileList
+    base_types['upload_file_status'] = UploadFileStatus
+    base_types['user'] = User
+    base_types['users'] = UserList
+    base_types['role'] = UserRole
+    base_types['roles'] = UserRoleList
+    base_types['version'] = VersionAggregate
+    base_types['versions'] = VersionAggregateList
+    base_types['white_listed_url'] = WhiteListedUrl
+    base_types['white_listed_urls'] = WhiteListedUrlList
+    base_types['error'] = XmlError
+
+    if tag not in base_types:
+        err = 'Unknown type {}'
+        err = err.format(tag)
+        raise TaniumNextGenException(err)
+    result = base_types[tag]
+    return result
+
+
 class BaseType(object):
 
     _soap_tag = None
@@ -172,48 +145,84 @@ class BaseType(object):
         self._initialized = True
 
     def __getitem__(self, idx):
-        """Allow automatic indexing into lists."""
-        if not self._is_list():
-            err = 'Not a list type, __getitem__ not supported'
-            raise TaniumNextGenException(err)
-        result = getattr(self, self._get_list_attr())[idx]
+        """Support a[n] for list types."""
+        result = getattr(self, self._get_list_attr()).__getitem__(idx)
         return result
 
+    def append(self, value):
+        """Support .append() for list types."""
+        lname = self._get_list_attr()
+        ltype = self._get_list_type()
+        if not isinstance(value, ltype):
+            raise IncorrectTypeException(lname, value, ltype)
+        getattr(self, lname).append(value)
+
+    def __add__(self, value):
+        """Support + operand for list types.
+
+        >>> a = SensorList()
+        >>> b = SensorList()
+        >>> c = Sensor()
+        >>> b.append(c)
+        >>> d = a + b
+        """
+        mylist = getattr(self, self._get_list_attr())
+        valuelist = getattr(value, value._get_list_attr())
+        newlist = mylist + valuelist
+        newobj = self.__class__()
+        setattr(newobj, newobj._get_list_attr(), newlist)
+        return newobj
+
+    def __iadd__(self, value):
+        """Support += operand for list types.
+
+        >>> a = SensorList()
+        >>> b = SensorList()
+        >>> c = Sensor()
+        >>> b.append(c)
+        >>> a += b
+        """
+        mylist = getattr(self, self._get_list_attr())
+        mylist += getattr(value, value._get_list_attr())
+        return self
+
     def __len__(self):
-        """Allow len() for lists and str"""
-        result = 0
+        """Return length of list attribute if this object is a list, elsewise
+        return the number of attributes that are not None.
+        """
         if self._is_list():
             result = len(getattr(self, self._get_list_attr()))
-        elif getattr(self, 'name', ''):
-            result = len(str(self.name))
-        elif getattr(self, 'id', ''):
-            result = len(str(self.id))
+        else:
+            result = sum([1 for k in self._get_attrs() if getattr(self, k, None) is not None])
+        return result
+
+    def __repr__(self):
+        result = self.__str__()
         return result
 
     def __str__(self):
+        """If this is a list item, return class name and length, elsewise
+        return class name and a list of all attributes that are set
+        """
         class_name = self.__class__.__name__
-        vals = OrderedDict()
+        vals = []
         if self._is_list():
-            vals['length'] = len(self)
+            vals.append(['length', len(self)])
         else:
-            for k in ['id', 'name']:
+            firsts = ['id', 'name']
+            for k in firsts:
                 if not hasattr(self, k):
                     continue
-                vals[k] = getattr(self, k, None)
+                vals.append([k, str(getattr(self, k, None)).replace('\n', '')])
 
-            for k in ['query_text', 'hidden_flag', 'package_spec', 'url_regex']:
-                if not getattr(self, k, None):
+            attrs = self._get_attrs()
+            for k in attrs:
+                if k in firsts or getattr(self, k, None) is None:
                     continue
-                vals[k] = getattr(self, k, None)
-
-        if not vals:
-            for k in sorted(self._simple_properties):
-                val = getattr(self, k, None)
-                if val is not None:
-                    vals[k] = val
+                vals.append([k, str(getattr(self, k, None)).replace('\n', '')])
 
         if vals:
-            vals = ', '.join(["'{}'='{}'".format(*p) for p in vals.items()])
+            vals = ', '.join(["'{}'='{}'".format(*p) for p in vals])
         else:
             vals = "No attributes assigned yet!"
 
@@ -241,13 +250,30 @@ class BaseType(object):
             setattr(self, k, v)
 
     def _is_list(self):
-        result = len(self._list_properties) == 1
+        result = len(getattr(self, '_list_properties', {})) == 1
+        return result
+
+    def _get_list_type(self):
+        if not self._is_list():
+            err = 'Not a list type!'
+            raise TaniumNextGenException(err)
+        result = self._list_properties[self._get_list_attr()]
         return result
 
     def _get_list_attr(self):
-        result = None
-        if self._is_list:
-            result = list(self._list_properties.keys())[0]
+        if not self._is_list():
+            err = 'Not a list type!'
+            raise TaniumNextGenException(err)
+        result = list(self._list_properties.keys())[0]
+        return result
+
+    def _get_attrs(self):
+        result = list(self._simple_properties.keys()) + list(self._complex_properties.keys())
+        result = sorted(result)
+        for f in ['name', 'id']:
+            if f in result:
+                result.remove(f)
+                result.insert(0, f)
         return result
 
     def _check_complex(self, name, value):
@@ -264,16 +290,12 @@ class BaseType(object):
         return value
 
     def _check_list(self, name, value):
-        if value != [] and not isinstance(value, self._list_properties[name]):
+        if not isinstance(value, list):
             raise IncorrectTypeException(name, value, self._list_properties[name])
+        for i in value:
+            if not isinstance(i, self._list_properties[name]):
+                raise IncorrectTypeException(name, i, self._list_properties[name])
         return value
-
-    def append(self, n):
-        """Allow adding to list."""
-        if not self._is_list():
-            err = 'Not a list type, append not supported'
-            raise TaniumNextGenException(err)
-        getattr(self, self._get_list_attr()).append(n)
 
     def to_soap_element(self, minimal=False):  # noqa
         # print(minimal)
@@ -330,7 +352,6 @@ class BaseType(object):
         """Deserialize self into an XML body"""
         el = self.to_soap_element(minimal=minimal)
         result = ET.tostring(el, encoding=encoding)
-        # print(result)
         return result
 
     @classmethod
@@ -364,17 +385,6 @@ class BaseType(object):
                     getattr(result, p).append(t.from_soap_element(elem))
                 else:
                     getattr(result, p).append(elem.text)
-
-        return result
-
-    @classmethod
-    def _get_obj_type(cls, el):
-        """Based on the tag of ``el``, find the appropriate tanium_type."""
-        if el.tag not in BASE_TYPES:
-            err = 'Unknown type {}'
-            err = err.format(el.tag)
-            raise TaniumNextGenException(err)
-        result = eval(BASE_TYPES[el.tag])
         return result
 
     @classmethod
@@ -388,7 +398,7 @@ class BaseType(object):
         if el is None:
             result = el
         if el is not None:
-            obj = cls._get_obj_type(el)
+            obj = get_obj_type(el.tag)
             result = obj.from_soap_element(el)
             result._ORIGINAL_OBJECT = el
         return result
@@ -470,8 +480,8 @@ class Column(object):
         val = el.find('rt')
         if val is not None:
             val = int(val.text)
-            if val in SENSOR_TYPE_MAP:
-                result.result_type = SENSOR_TYPE_MAP[val]
+            if val in utils.constants.SENSOR_TYPE_MAP:
+                result.result_type = utils.constants.SENSOR_TYPE_MAP[val]
             else:
                 result.result_type = int(val)
 

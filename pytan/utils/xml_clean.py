@@ -2,7 +2,33 @@
 import sys
 import re
 import logging
-from ..external import six
+
+# Useful for very coarse version differentiation.
+PY2 = sys.version_info[0] == 2
+PY3 = sys.version_info[0] == 3
+
+if PY3:
+    string_types = str,
+    unichr = chr  # noqa
+    binary_type = bytes  # noqa
+
+    def b(s):  # noqa
+        return s.encode("latin-1")
+
+    def u(s):  # noqa
+        return s
+else:
+    string_types = basestring,  # noqa
+    unichr = unichr  # noqa
+    binary_type = str  # noqa
+
+    def b(s):  # noqa
+        return s
+
+    # Workaround for standalone backslash
+    def u(s):
+        return unicode(s.replace(r'\\', r'\\\\'), "unicode_escape")  # noqa
+
 
 mylog = logging.getLogger(__name__)
 
@@ -68,31 +94,31 @@ for i in [hex(i) for i in range(1, 17)]:
         int('{}FFFF'.format(i), 0),
     ])
 
-XML_1_0_VALID_UNI_LIST = ['-'.join([six.unichr(y) for y in x]) for x in XML_1_0_VALID_HEX]
+XML_1_0_VALID_UNI_LIST = ['-'.join([unichr(y) for y in x]) for x in XML_1_0_VALID_HEX]
 """A list of valid unicode characters"""
 
-XML_1_0_VALID_UNI_TEXT = six.u('').join(XML_1_0_VALID_UNI_LIST)
+XML_1_0_VALID_UNI_TEXT = u('').join(XML_1_0_VALID_UNI_LIST)
 """The text string containing valid unicode characters"""
 
-INVALID_UNICODE_RAW_RE = six.u(r'[^{}]').format(XML_1_0_VALID_UNI_TEXT)
+INVALID_UNICODE_RAW_RE = u(r'[^{}]').format(XML_1_0_VALID_UNI_TEXT)
 """The raw regex string to use when replacing invalid characters"""
 
 INVALID_UNICODE_RE = re.compile(INVALID_UNICODE_RAW_RE, re.U)
 """The regex object to use when replacing invalid characters"""
 
-XML_1_0_RESTRICT_UNI_LIST = ['-'.join([six.unichr(y) for y in x]) for x in XML_1_0_RESTRICT_HEX]
+XML_1_0_RESTRICT_UNI_LIST = ['-'.join([unichr(y) for y in x]) for x in XML_1_0_RESTRICT_HEX]
 """A list of restricted unicode characters"""
 
-XML_1_0_RESTRICT_UNI_TEXT = six.u('').join(XML_1_0_RESTRICT_UNI_LIST)
+XML_1_0_RESTRICT_UNI_TEXT = u('').join(XML_1_0_RESTRICT_UNI_LIST)
 """The text string containing restricted unicode characters"""
 
-RESTRICT_UNICODE_RAW_RE = six.u(r'[{}]').format(XML_1_0_RESTRICT_UNI_TEXT)
+RESTRICT_UNICODE_RAW_RE = u(r'[{}]').format(XML_1_0_RESTRICT_UNI_TEXT)
 """The raw regex string to use when replacing restricted characters"""
 
 RESTRICT_UNICODE_RE = re.compile(RESTRICT_UNICODE_RAW_RE, re.U)
 """The regex object to use when replacing restricted characters"""
 
-DEFAULT_REPLACEMENT = six.u('\uFFFD')
+DEFAULT_REPLACEMENT = u('\uFFFD')
 """The default character to use when replacing characters"""
 
 DEFAULT_ENCODING = 'utf-8'
@@ -103,7 +129,7 @@ def fix_string_type(text, **kwargs):
     """pass."""
     encoding = kwargs.get('encoding', DEFAULT_ENCODING)
     result = text
-    if isinstance(text, six.binary_type):
+    if isinstance(text, binary_type):
         try:
             # if orig_str is not unicode, decode the string into unicode with encoding
             result = text.decode(encoding, 'xmlcharrefreplace')
@@ -116,7 +142,7 @@ def fix_string_type(text, **kwargs):
             except:
                 m = "Unable to decode as latin-1 or UTF-8, decoding as UTF-8 and ignoring errors"
                 mylog.warning(m)
-                result = six.u(text, 'utf-8', errors='ignore')
+                result = u(text, 'utf-8', errors='ignore')
     return result
 
 

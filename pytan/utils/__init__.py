@@ -25,12 +25,9 @@ from . import exceptions
 from . import helpers
 from . import helpstr
 from . import log
-from . import calc
-from . import network
-from . import pretty
-from . import parsers
 from . import tools
-from . import store
+from .store import Store
+from .shellparser import ShellParser
 from .xml_clean import xml_cleaner
 
 __all__ = [
@@ -39,11 +36,8 @@ __all__ = [
     'helpers',
     'helpstr',
     'log',
-    'calc',
-    'network',
-    'pretty',
     'xml_cleaner',
-    'parsers',
     'tools',
-    'store',
+    'Store',
+    'ShellParser',
 ]

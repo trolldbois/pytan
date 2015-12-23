@@ -2,9 +2,9 @@
 
 import copy
 import logging
-from . import constants
-from . import exceptions
-from ..external import six
+from . import string_types, integer_types
+from .utils import constants, exceptions
+
 
 mylog = logging.getLogger(__name__)
 
@@ -33,10 +33,10 @@ class Spec(object):
     """pass."""
 
     def __init__(self, **kwargs):
-        from .. import tanium_ng
-        from .. import ng_tools
+        from . import tanium_ng
+        from . import tools_ng
         self.tanium_ng = tanium_ng
-        self.ng_tools = ng_tools
+        self.tools_ng = tools_ng
         self.post_init(**kwargs)
 
     def post_init(self, **kwargs):
@@ -63,7 +63,7 @@ class Spec(object):
         self.has_dict_key('value', spec)
 
         # check that value is a string or int
-        self.chk_dict_key('value', spec, six.string_types + six.integer_types)
+        self.chk_dict_key('value', spec, string_types + integer_types)
 
         # validate value is an appropriate type as defined in single_obj
         obj_type = self.props[spec['field']]
@@ -111,13 +111,13 @@ class Spec(object):
             raise exceptions.PytanError(err)
 
         # validate field is a string
-        self.chk_dict_key('field', spec, six.string_types)
+        self.chk_dict_key('field', spec, string_types)
         return spec
 
     def chk_operator(self, spec):
         """pass."""
         # validate operator is a string
-        self.chk_dict_key('operator', spec, six.string_types)
+        self.chk_dict_key('operator', spec, string_types)
 
         # if operator is a pytan extended operator, map it back to a Tanium operator
         if spec['operator'].lower() in constants.OPERATORS_PYTAN:
@@ -169,7 +169,7 @@ class Spec(object):
 
     def chk_field_type(self, spec):
         # validate field_type is a string
-        self.chk_dict_key('field_type', spec, six.string_types)
+        self.chk_dict_key('field_type', spec, string_types)
 
         # validate field_type is a valid field type
         type_valid = [
@@ -196,7 +196,7 @@ class GetObject(Spec):
 
     def post_init(self, all_class, spec, **kwargs):
         """pass."""
-        self.single_class = self.ng_tools.get_single_class(all_class)
+        self.single_class = self.tools_ng.get_single_class(all_class)
         self.single_name = self.single_class.__name__
         self.single_obj = self.single_class()
         self.props = self.single_obj._simple_properties

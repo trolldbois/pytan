@@ -14,10 +14,8 @@ try:
 except:
     import xml.etree.ElementTree as ET
 
-from . import utils
-from . import __version__
-from .external import six
-from .external import requests
+from . import b
+from . import utils, requests, tanium_ng, tickle_ng
 
 requests.packages.urllib3.disable_warnings()
 
@@ -98,7 +96,7 @@ class Session(object):
 
     REQUEST_HEADERS = {
         'Accept-Encoding': 'gzip',
-        'User-Agent': 'PyTan/{}'.format(__version__)
+        'User-Agent': 'PyTan/{}'.format(utils.version.__version__)
     }
     """dictionary of headers to add to every HTTP GET/POST"""
 
@@ -187,9 +185,6 @@ class Session(object):
     """version string of server, will be updated when get_server_version() is called"""
 
     def __init__(self, host, **kwargs):
-        from . import tanium_ng
-        self.tanium_ng = tanium_ng
-
         self.mylog = mylog
         self.authlog = authlog
         self.httplog = httplog
@@ -236,7 +231,7 @@ class Session(object):
         self.SERVER_VERSION = "Not yet determined"
 
         # test our connectivity to the Tanium server
-        utils.network.test_app_port(self._HOST, self._PORT)
+        utils.tools.test_app_port(self._HOST, self._PORT)
 
         # authenticate to the Tanium server
         self.authenticate(**kwargs)
@@ -248,6 +243,9 @@ class Session(object):
         m = "{} to {}:{}, Auth Type: {}, Platform Version: {}"
         result = m.format(myname, self._HOST, self._PORT, auth_type, ver)
         return result
+
+    def __repr__(self):
+        return self.__str__()
 
     @property
     def session_id(self):
@@ -500,7 +498,7 @@ class Session(object):
         kwargs['obj'] = obj
         kwargs['request_body'] = self._create_get_object_body(**kwargs)
         response_body = self.soap_request(**kwargs)
-        result = self.tanium_ng.BaseType.from_soap_body(body=response_body)
+        result = tickle_ng.from_soap_body(body=response_body)
         return result
 
     def save(self, obj, **kwargs):
@@ -520,7 +518,7 @@ class Session(object):
         kwargs['obj'] = obj
         kwargs['request_body'] = self._create_update_object_body(**kwargs)
         response_body = self.soap_request(**kwargs)
-        result = self.tanium_ng.BaseType.from_soap_body(body=response_body)
+        result = tanium_ng.BaseType.from_soap_body(body=response_body)
         return result
 
     def add(self, obj, **kwargs):
@@ -540,7 +538,7 @@ class Session(object):
         kwargs['obj'] = obj
         kwargs['request_body'] = self._create_add_object_body(**kwargs)
         response_body = self.soap_request(**kwargs)
-        result = self.tanium_ng.BaseType.from_soap_body(body=response_body)
+        result = tanium_ng.BaseType.from_soap_body(body=response_body)
         return result
 
     def delete(self, obj, **kwargs):
@@ -560,7 +558,7 @@ class Session(object):
         kwargs['obj'] = obj
         kwargs['request_body'] = self._create_delete_object_body(**kwargs)
         response_body = self.soap_request(**kwargs)
-        result = self.tanium_ng.BaseType.from_soap_body(body=response_body)
+        result = tanium_ng.BaseType.from_soap_body(body=response_body)
         return result
 
     def run_plugin(self, obj, **kwargs):
@@ -580,7 +578,7 @@ class Session(object):
         kwargs['obj'] = obj
         kwargs['request_body'] = self._create_run_plugin_object_body(**kwargs)
         response_body = self.soap_request(**kwargs)
-        result = self.tanium_ng.BaseType.from_soap_body(body=response_body)
+        result = tanium_ng.BaseType.from_soap_body(body=response_body)
         return result
 
     def get_result_info(self, obj, **kwargs):
@@ -605,7 +603,7 @@ class Session(object):
         resultxml_text = self._extract_resultxml(response_body=response_body)
 
         cdata_el = ET.fromstring(resultxml_text)
-        result = self.tanium_ng.ResultInfo.from_soap_element(cdata_el)
+        result = tanium_ng.ResultInfo.from_soap_element(cdata_el)
         result._RAW_XML = resultxml_text
         return result
 
@@ -631,7 +629,7 @@ class Session(object):
         resultxml_text = self._extract_resultxml(response_body=response_body)
 
         cdata_el = ET.fromstring(resultxml_text)
-        result = self.tanium_ng.ResultSet.from_soap_element(cdata_el)
+        result = tanium_ng.ResultSet.from_soap_element(cdata_el)
         result._RAW_XML = resultxml_text
         return result
 
@@ -964,7 +962,7 @@ class Session(object):
 
     def _b64encode(self, val):
         """pass."""
-        result = b64encode(six.b(val))
+        result = b64encode(b(val))
         return result
 
     def _replace_credentials(self, headers):
@@ -1219,6 +1217,24 @@ class Session(object):
         result = result.format(schema, host, port, url)
         return result
 
+    def get_last_bodies(self):
+        """Uses :func:`xml_pretty` to pretty print the last request and response bodies from the
+        session object
+
+        """
+        request_body = self.LAST_REQUESTS_RESPONSE.request.body
+        response_body = self.LAST_REQUESTS_RESPONSE.text
+        try:
+            req = utils.tools.xml_pretty(request_body)
+        except Exception as e:
+            req = "Failed to prettify xml: {}, raw xml:\n{}".format(e, request_body)
+
+        try:
+            resp = utils.tools.xml_pretty(response_body)
+        except Exception as e:
+            resp = "Failed to prettify xml: {}, raw xml:\n{}".format(e, response_body)
+        return req, resp
+
     def _start_stats_thread(self, **kwargs):
         """Utility method starting the :func:`pytan.sessions.Session._stats_loop` method in a
         threaded daemon"""
@@ -1283,7 +1299,7 @@ class Session(object):
                 points = search_path.lstrip('percentage(').rstrip(')')
                 points = [self._resolve_stat_target(p, diags) for p in points.split(',')]
                 try:
-                    txt = utils.calc.get_percent(base=points[0], amount=points[1], text=True)
+                    txt = utils.tools.get_percent(base=points[0], amount=points[1], text=True)
                 except:
                     txt = ', '.join(points)
             else:
@@ -1340,20 +1356,16 @@ class Session(object):
         body : str
             * The XML request body created from the string.template self.REQUEST_BODY_TEMPLATE
         """
-        log_options = kwargs.get('log_options', False)
+        log_options = kwargs.get('log_options', True)
 
-        options_obj = self.tanium_ng.Options()
+        options_obj = tanium_ng.Options()
 
         for k, v in kwargs.items():
             if hasattr(options_obj, k):
                 if log_options:
-                    m = "Setting Options attribute {!r} to value {!r}".format
+                    m = "Setting Options attribute {!r} to value '{}'".format
                     self.mylog.debug(m(k, v))
                 setattr(options_obj, k, v)
-            else:
-                if log_options:
-                    m = "Ignoring argument {!r} for options list, not a valid attribute".format
-                    self.mylog.debug(m(k))
 
         options = options_obj.to_soap_body(minimal=True)
         body_template = string.Template(self.REQUEST_BODY_BASE)
@@ -1482,7 +1494,7 @@ class Session(object):
         obj_body : str
             * The XML request body created from :func:`pytan.sessions.Session._build_body`
         """
-        if isinstance(obj, self.tanium_ng.BaseType):
+        if isinstance(obj, tanium_ng.BaseType):
             object_list = obj.to_soap_body(minimal=True)
         else:
             object_list = '<{}/>'.format(obj._soap_tag)

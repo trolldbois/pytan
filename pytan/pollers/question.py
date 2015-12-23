@@ -9,7 +9,7 @@ import time
 from datetime import datetime
 from datetime import timedelta
 
-from .. import utils
+from .. import utils, tanium_ng
 
 mylog = logging.getLogger(__name__)
 progresslog = logging.getLogger(__name__ + ".progress")
@@ -84,9 +84,6 @@ class QuestionPoller(object):
     """Controls whether a run() loop should stop or not"""
 
     def __init__(self, handler, obj, **kwargs):
-        from .. import tanium_ng
-        self.tanium_ng = tanium_ng
-
         polling_secs = kwargs.get('polling_secs', self.POLLING_SECS_DEFAULT)
         complete_pct = kwargs.get('complete_pct', self.COMPLETE_PCT_DEFAULT)
         override_timeout = kwargs.get('override_timeout_secs', self.OVERRIDE_TIMEOUT_SECS_DEFAULT)
@@ -100,7 +97,7 @@ class QuestionPoller(object):
             err = err.format(type(handler), BaseHandler)
             raise utils.exceptions.PollingError(err)
 
-        self.OBJECT_TYPE = getattr(self.tanium_ng, self.OBJECT_TYPE)
+        self.OBJECT_TYPE = getattr(tanium_ng, self.OBJECT_TYPE)
 
         if not isinstance(obj, self.OBJECT_TYPE):
             err = "{} is not a valid object type! Must be a: {}"
@@ -229,7 +226,7 @@ class QuestionPoller(object):
         expiration from the object (self.obj) itself.
         """
         kwargs['attr'] = self.EXPIRATION_ATTR
-        kwargs['fallback'] = utils.calc.seconds_from_now(secs=self.EXPIRY_FALLBACK_SECS)
+        kwargs['fallback'] = utils.tools.seconds_from_now(secs=self.EXPIRY_FALLBACK_SECS)
         self.expiration = self._derive_attribute(**kwargs)
 
     def run_callback(self, callback, pct, **kwargs):
@@ -343,7 +340,7 @@ class QuestionPoller(object):
             fly
         """
         self.start = datetime.utcnow()
-        self.expiration_timeout = utils.calc.timestr_to_datetime(timestr=self.expiration)
+        self.expiration_timeout = utils.tools.timestr_to_datetime(timestr=self.expiration)
 
         if self.override_timeout_secs:
             td_obj = timedelta(seconds=self.override_timeout_secs)
@@ -364,7 +361,7 @@ class QuestionPoller(object):
         # loop counter
         self.loop_count = 1
         # establish a previous result_info that's empty
-        self.previous_result_info = self.tanium_ng.ResultInfo()
+        self.previous_result_info = tanium_ng.ResultInfo()
 
         while not self._stop:
             # perform a GetResultInfo SOAP call
@@ -380,7 +377,7 @@ class QuestionPoller(object):
             est_total = self.override_estimated_total or self.result_info.estimated_total
             passed = self.result_info.passed
 
-            new_pct = utils.calc.get_percent(base=tested, amount=est_total)
+            new_pct = utils.tools.get_percent(base=tested, amount=est_total)
             new_pct_str = "{0:.0f}%".format(new_pct)
             complete_pct_str = "{0:.0f}%".format(self.complete_pct)
 

@@ -244,7 +244,7 @@ class ActionPoller(question.QuestionPoller):
             * Any callbacks can call :func:`pytan.poller.QuestionPoller.setPercentCompleteThreshold` to change what "done" means on the fly
         """
         self.start = datetime.utcnow()
-        self.expiration_timeout = utils.calc.timestr_to_datetime(timestr=self.expiration)
+        self.expiration_timeout = utils.tools.timestr_to_datetime(timestr=self.expiration)
 
         if self.override_timeout_secs:
             td_obj = timedelta(seconds=self.override_timeout_secs)
@@ -348,7 +348,7 @@ class ActionPoller(question.QuestionPoller):
 
             # we use self.passed_count from the question we asked to get the number of matching
             # systems for determining the current pct of completion
-            new_pct = utils.calc.get_percent(base=seen_count, amount=self.passed_count)
+            new_pct = utils.tools.get_percent(base=seen_count, amount=self.passed_count)
             new_pct_str = "{0:.0f}%".format(new_pct)
             complete_pct_str = "{0:.0f}%".format(self.complete_pct)
 
@@ -516,7 +516,7 @@ class ActionPoller(question.QuestionPoller):
 
             # we use self.passed_count from the question we asked to get the number of matching
             # systems for determining the current pct of completion
-            new_pct = utils.calc.get_percent(base=finished_count, amount=self.passed_count)
+            new_pct = utils.tools.get_percent(base=finished_count, amount=self.passed_count)
             new_pct_str = "{0:.0f}%".format(new_pct)
             complete_pct_str = "{0:.0f}%".format(self.complete_pct)
 

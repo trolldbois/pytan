@@ -5,9 +5,9 @@ import json
 import getpass
 import pprint
 import argparse
+
+from .. import input
 from .. import utils
-from ..external import six
-from ..utils.argparsers import ShellParser
 
 
 class Base(object):
@@ -21,8 +21,8 @@ class Base(object):
         # self.tanium_obj = utils.tanium_obj
         self.constants = utils.constants
         self.utils = utils
-        self.six = six
-        self.ShellParser = ShellParser
+        self.input = input
+        self.ShellParser = utils.ShellParser
         self.SUPPRESS = argparse.SUPPRESS
         self.pf = pprint.pformat
 
@@ -449,7 +449,7 @@ class Base(object):
 
         if not session_id:
             if not username:
-                username = self.six.input('Tanium Username: ')
+                username = self.input('Tanium Username: ')
                 self.args.username = username.strip()
 
             if not password:
@@ -457,7 +457,7 @@ class Base(object):
                 self.args.password = password.strip()
 
         if not host:
-            host = self.six.input('Tanium Host: ')
+            host = self.input('Tanium Host: ')
             self.args.host = host.strip()
 
         return self.args
@@ -489,7 +489,12 @@ class Base(object):
         return report_file, report_result
 
     def version_check(self, version):
-        return utils.tools.version_check(self.my_name, version)
+        if not utils.version.__version__ >= version:
+            err = "PyTan v{} is not greater than {} v{}"
+            err = err.format(utils.version.__version__, self.my_name, version)
+            self.mylog.critical(err)
+            raise utils.exceptions.VersionMismatchError(err)
+        return True
 
     def interactive_check(self):
         self.console = None

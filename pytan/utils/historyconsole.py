@@ -7,7 +7,7 @@ import platform
 mylog = logging.getLogger(__name__)
 
 if platform.system().lower() == 'windows':
-    from ..externalwin import readline
+    from . import readline
 else:
     import readline
 
