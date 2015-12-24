@@ -111,3 +111,12 @@ spec4 = {
 a = handler.tanium_ng.SensorList()
 b = handler.tanium_ng.SensorList()
 c = handler.tanium_ng.Sensor()
+
+try:
+    import xml.etree.cElementTree as ET
+except:
+    import xml.etree.ElementTree as ET
+
+from pytan.tanium_ng import *
+
+

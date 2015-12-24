@@ -12,6 +12,11 @@ except ImportError:  # NullHandler not present in Python < 2.7
         def emit(self, record):
             pass
 
+# Set default logging handler to avoid "No handler found" warnings.
+root_logger = logging.getLogger()
+if not root_logger.handlers:
+    root_logger.addHandler(NullHandler())
+
 # Useful for very coarse version differentiation.
 PY3 = sys.version_info[0] == 3
 if PY3:
@@ -42,29 +47,28 @@ else:
     def u(s):
         return unicode(s.replace(r'\\', r'\\\\'), "unicode_escape")  # noqa
 
-
-# Set default logging handler to avoid "No handler found" warnings.
-root_logger = logging.getLogger()
-if not root_logger.handlers:
-    root_logger.addHandler(NullHandler())
-
-from .utils.version import __author__  # noqa
-from .utils.version import __version__  # noqa
-from .utils.version import __email__  # noqa
-from .utils.version import __description__  # noqa
-from .utils.version import __status__  # noqa
-from .utils.version import __license__  # noqa
-from .utils.version import __url__  # noqa
-from .utils.version import __title__  # noqa
-
 from . import utils
 from . import parsers
+from . import tanium_ng
+from . import tools_ng
+from . import tickle_ng
 from .utils import exceptions
 from .handler import Handler
 from .session import Session
 from .pollers import QuestionPoller
 from .pollers import ActionPoller
 from .pollers import SSEPoller
+
+__version__ = utils.__version__
+__codename__ = utils.__codename__
+__title__ = utils.__title__
+__url__ = utils.__url__
+__author__ = utils.__author__
+__email__ = utils.__email__
+__description__ = utils.__description__
+__license__ = utils.__license__
+__copyright__ = utils.__copyright__
+__status__ = utils.__status__
 
 __all__ = [
     'utils',
@@ -75,4 +79,7 @@ __all__ = [
     'QuestionPoller',
     'ActionPoller',
     'SSEPoller',
+    'tanium_ng',
+    'tools_ng',
+    'tickle_ng',
 ]

@@ -2,7 +2,7 @@
 
 import copy
 import logging
-from . import string_types, integer_types
+from . import string_types, integer_types, text_type
 from .utils import constants, exceptions
 
 
@@ -65,13 +65,18 @@ class Spec(object):
         # check that value is a string or int
         self.chk_dict_key('value', spec, string_types + integer_types)
 
+        # TODO: reminder! value expects str
         # validate value is an appropriate type as defined in single_obj
-        obj_type = self.props[spec['field']]
-        if not isinstance(spec['value'], obj_type):
+        # obj_type = self.props[spec['field']]
+
+        # validate value is a string
+        if not isinstance(spec['value'], text_type):
             try:
-                spec['value'] = obj_type(spec['value'])
+                spec['value'] = text_type(spec['value'])
+                print(spec['value'])
+                print(type(spec['value']))
             except:
-                obj_txt = obj_type.__name__
+                obj_txt = text_type.__name__
                 val_type = type(spec['value']).__name__
                 err = "{}: key 'value' must be of type {!r}; supplied type {!r} value {!r}"
                 err = err.format(self.meerr, obj_txt, val_type, spec['value'])
@@ -196,10 +201,10 @@ class GetObject(Spec):
 
     def post_init(self, all_class, spec, **kwargs):
         """pass."""
-        self.single_class = self.tools_ng.get_single_class(all_class)
+        self.single_class = all_class()._LIST_TYPE
         self.single_name = self.single_class.__name__
         self.single_obj = self.single_class()
-        self.props = self.single_obj._simple_properties
+        self.props = self.single_obj._SIMPLE_PROPS
         self.props_txt = ', '.join(self.props)
         self.me = "{}() for object {!r}"
         self.me = self.me.format(self.__class__.__name__, self.single_class.__name__)

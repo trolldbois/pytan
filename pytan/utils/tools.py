@@ -15,7 +15,7 @@ import io
 import csv
 
 from . import exceptions, constants, xmltodict
-from .. import integer_types, range
+from . import integer_types, range
 
 mylog = logging.getLogger(__name__)
 

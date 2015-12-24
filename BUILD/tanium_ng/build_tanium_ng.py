@@ -3,7 +3,7 @@
 
 # BEGIN BOOTSTRAP CODE
 # statically defined path
-PYTAN_PATH = "~/gh/pytan"
+PYTAN_PATH = "~/gh/pytan/pytan"
 
 import os
 import sys
@@ -21,7 +21,9 @@ my_file = os.path.basename(my_filepath)
 my_name = os.path.splitext(my_file)[0]
 my_dir = os.path.dirname(my_filepath)
 parent_dir = os.path.dirname(my_dir)
-path_adds.append(parent_dir)
+pytan_root = os.path.dirname(parent_dir)
+pytan_dir = os.path.join(pytan_root, 'pytan')
+path_adds.append(pytan_dir)
 
 # if OS Environment "PYTAN_PATH" is set, add that to path_adds
 if 'PYTAN_PATH' in os.environ:
@@ -29,15 +31,13 @@ if 'PYTAN_PATH' in os.environ:
 
 # expand user directories and get the absolute path of all path_adds
 path_adds = [os.path.abspath(os.path.expanduser(aa)) for aa in path_adds]
-
+print(path_adds)
 # add the path_adds to beginning of PYTHONPATH
 [sys.path.insert(0, aa) for aa in path_adds if aa not in sys.path]
 
 # END BOOTSTRAP CODE
 
-from pytan import utils
-from pytan import version as pytan_version
-from pytan.utils.argparsers import ShellParser
+import utils
 
 import re
 import logging
@@ -78,9 +78,6 @@ class WsdlParser(object):
 * Version of PyTan: ${pytan_version}
 
 """
-BASE_TYPES = {}
-"""Maps Tanium XML soap tags to the Tanium NG Python BaseType object"""
-${BASE_TYPES}
 
 ''')
 
@@ -90,7 +87,7 @@ ${BASE_TYPES}
 class ${py_type}(BaseType):
     """${desc}."""
 
-    _soap_tag = '${soap_tag}'
+    _SOAP_TAG = '${soap_tag}'
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -105,15 +102,23 @@ class ${py_type}(BaseType):
                 ${LIST_ARGS}
             },
         )
-        ${simple_properties}
-        ${complex_properties}
-        ${list_properties}
-        self._values = kwargs.get('values', {})
-        self._set_values(self._values)
+        ${SIMPLE_PROPS}
+        ${COMPLEX_PROPS}
+        ${LIST_PROPS}
+        self._set_init_values()
 ''')
 
+    FOOTER_STRING = (
+        '''
+BASE_TYPES = {}
+"""Maps Tanium XML soap tags to the Tanium NG Python BaseType object"""
+${BASE_TYPES}
+
+# END DYNAMIC CODE
+''')
     HEADER_TEMPLATE = string.Template(HEADER_STRING)
     CODE_TEMPLATE = string.Template(CODE_STRING)
+    FOOTER_TEMPLATE = string.Template(FOOTER_STRING)
     STATIC_FILE = 'static_tanium_ng.py'
 
     def __init__(self, args):
@@ -122,8 +127,8 @@ class ${py_type}(BaseType):
         self.wsdl_file = os.path.abspath(os.path.expanduser(self.args.input))
         self.ng_file = os.path.abspath(os.path.expanduser(self.args.output))
         self.ng_static_file = os.path.join(my_dir, self.STATIC_FILE)
-        self.ng_statics = utils.tools.read_file(self.ng_static_file)
-        self.wsdl_contents = utils.tools.read_file(self.wsdl_file)
+        self.ng_statics = self.read_file(self.ng_static_file)
+        self.wsdl_contents = self.read_file(self.wsdl_file)
         self.wsdl_version = self.get_wsdl_version()
         self.tanium_version = self.get_tanium_version()
         self.wsdl_dom = self.parse_wsdl()
@@ -131,11 +136,18 @@ class ${py_type}(BaseType):
         self.object_maps = [self.parse_type(x) for x in self.object_types]
         self.write_tanium_ng()
 
+    def read_file(self, f):
+        result = utils.tools.read_file(f)
+        m = "Read {} bytes from file: '{}'"
+        m = m.format(len(result), f)
+        mylog.info(m)
+        return result
+
     def write_tanium_ng(self):
         filename = '__init__.py'
         subs = {}
 
-        typet = "BASE_TYPES['{soap_tag}'] = '{py_type}'".format
+        typet = "BASE_TYPES['{soap_tag}'] = {py_type}".format
         t = "BASE_TYPES"
         a = [typet(**x) for x in self.object_maps if 'soap_tag' in x]
         subs[t] = '\n'.join(a)
@@ -145,10 +157,12 @@ class ${py_type}(BaseType):
         )
         subs.update(self.general_subs())
 
-        code = self.HEADER_TEMPLATE.substitute(subs)
+        header = self.HEADER_TEMPLATE.substitute(subs)
+        footer = self.FOOTER_TEMPLATE.substitute(subs)
 
-        filecode = [code, self.ng_statics]
+        filecode = [header, self.ng_statics]
         filecode += [x['code'] for x in self.object_maps]
+        filecode.append(footer)
 
         filecode = ''.join(filecode)
         filename = self.ng_file
@@ -185,21 +199,19 @@ class ${py_type}(BaseType):
         result['soap_tag'] = self.get_soap_tag(type_name)
         result['py_type'] = self.capcase(result['type_name'])
         result['type_els'] = self.find_type_els(result['type_name'])
-        result['stypes_list'] = self.get_simpleattrs(result['type_els'])
-        result['ctypes_list'] = self.get_complexattrs(result['type_els'])
-        result['ltypes_list'] = self.get_listattrs(result['type_els'])
+        result['simples'] = self.get_simples(result['type_els'])
+        result['complexes'] = self.get_complexes(result['type_els'])
+        result['lists'] = self.get_lists(result['type_els'])
         result['file_name'] = self.get_file_name(result['type_name'])
 
-        m = "{!r} simple: {}, complex: {}, list: {}, tag: {}, py: {}"
-        m = m.format(
-            result['type_name'],
-            len(result['stypes_list']),
-            len(result['ctypes_list']),
-            len(result['ltypes_list']),
-            result['soap_tag'],
-            result['py_type'],
-        )
-        mylog.debug(m)
+        t = "pyobject: {py_type!r}, xml tag: {soap_tag!r}".format(**result)
+        mi = []
+        for k in ['simples', 'complexes', 'lists']:
+            mi.append("{}: {}".format(k, len(result[k])))
+            md = "    {}: {}".format(k, result[k])
+            mylog.debug(md)
+
+        mylog.info("{}: {}".format(t, ', '.join(mi)))
 
         result = self.get_type_code(result)
         return result
@@ -243,22 +255,24 @@ class ${py_type}(BaseType):
         type_els = self.search_wsdl(xpath=find_tpl, **kwargs)
         return type_els
 
-    def get_simpleattrs(self, type_els):
+    def get_simples(self, type_els):
         els = [
             x for x in type_els
             if x.attrib['type'].startswith('xsd:')
             and x.attrib.get('maxOccurs') != 'unbounded'
         ]
         result = [(x.attrib['name'], self.XSD_MAP[x.attrib['type']]) for x in els]
+        result = dict(result)
         return result
 
-    def get_complexattrs(self, type_els):
+    def get_complexes(self, type_els):
         els = [
             x for x in type_els
             if not x.attrib['type'].startswith('xsd:')
             and not x.attrib.get('maxOccurs') == 'unbounded'
         ]
         result = [(x.attrib['name'], x.attrib['type']) for x in els]
+        result = dict(result)
         return result
 
     def _get_el_listtype(self, el):
@@ -268,12 +282,13 @@ class ${py_type}(BaseType):
             result = self.capcase(el.attrib['type'])
         return result
 
-    def get_listattrs(self, type_els):
+    def get_lists(self, type_els):
         els = [
             x for x in type_els
             if x.attrib.get('maxOccurs') == 'unbounded'
         ]
         result = [(x.attrib['name'], self._get_el_listtype(x)) for x in els]
+        result = dict(result)
         return result
 
     def get_soap_tag(self, type_name, **kwargs):
@@ -314,69 +329,56 @@ class ${py_type}(BaseType):
 
     def general_subs(self):
         result = {}
-        result['now'] = utils.calc.get_now()
+        result['now'] = utils.tools.get_now()
         result['tanium_version'] = self.tanium_version
         result['wsdl_version'] = self.wsdl_version
-        result['pytan_version'] = pytan_version.__version__
-        result['pytan_codename'] = pytan_version.__codename__
-        result['pytan_title'] = pytan_version.__title__
-        result['pytan_url'] = pytan_version.__url__
-        result['pytan_author'] = pytan_version.__author__
-        result['pytan_email'] = pytan_version.__email__
-        result['pytan_description'] = pytan_version.__description__
-        result['pytan_license'] = pytan_version.__license__
-        result['pytan_copyright'] = pytan_version.__copyright__
-        result['pytan_status'] = pytan_version.__status__
+        result['pytan_version'] = utils.__version__
+        result['pytan_codename'] = utils.__codename__
+        result['pytan_title'] = utils.__title__
+        result['pytan_url'] = utils.__url__
+        result['pytan_author'] = utils.__author__
+        result['pytan_email'] = utils.__email__
+        result['pytan_description'] = utils.__description__
+        result['pytan_license'] = utils.__license__
+        result['pytan_copyright'] = utils.__copyright__
+        result['pytan_status'] = utils.__status__
         result['script_name'] = my_file
         return result
 
     def get_type_code(self, type_dict):
         argt = "'{}': {},".format
-        propj = '\n                '
-        nullt = '# no {} defined in console.wsdl'.format
+        argj = '\n                '.join
+        propj = '\n        '.join
 
-        t = 'SIMPLE_ARGS'
-        a = [argt(p[0], p[1]) for p in type_dict['stypes_list']] or [nullt(t)]
-        type_dict[t] = propj.join(a)
+        nullt = ['# no simple properties defined in console.wsdl']
+        attr_def = "self.{} = None".format
+        p = type_dict['simples'].items()
+        type_dict['SIMPLE_ARGS'] = argj([argt(k, v) for k, v in p] or nullt)
+        type_dict['SIMPLE_PROPS'] = propj([attr_def(k) for k, v in p] or nullt)
 
-        t = 'COMPLEX_ARGS'
-        a = [argt(p[0], self.capcase(p[1])) for p in type_dict['ctypes_list']] or [nullt(t)]
-        type_dict[t] = propj.join(a)
+        nullt = ['# no complex properties defined in console.wsdl']
+        attr_def = "self.{} = None".format
+        p = type_dict['complexes'].items()
+        type_dict['COMPLEX_ARGS'] = argj([argt(k, self.capcase(v)) for k, v in p] or nullt)
+        type_dict['COMPLEX_PROPS'] = propj([attr_def(k) for k, v in p] or nullt)
 
-        t = 'LIST_ARGS'
-        a = [argt(p[0], p[1]) for p in type_dict['ltypes_list']] or [nullt(t)]
-        type_dict[t] = propj.join(a)
-
-        simple_def = "self.{} = None".format
-        list_def = "self.{} = []".format
-        propj = '\n        '
-
-        t = 'simple_properties'
-        a = [simple_def(p[0]) for p in type_dict['stypes_list']] or [nullt(t)]
-        type_dict[t] = propj.join(a)
-
-        t = 'complex_properties'
-        a = [simple_def(p[0]) for p in type_dict['ctypes_list']] or [nullt(t)]
-        type_dict[t] = propj.join(a)
-
-        t = 'list_properties'
-        a = [list_def(p[0]) for p in type_dict['ltypes_list']] or [nullt(t)]
-        type_dict[t] = propj.join(a)
+        nullt = ['# no list properties defined in console.wsdl']
+        attr_def = "self.{} = []".format
+        p = type_dict['lists'].items()
+        type_dict['LIST_ARGS'] = argj([argt(k, v) for k, v in p] or nullt)
+        type_dict['LIST_PROPS'] = propj([attr_def(k) for k, v in p] or nullt)
 
         desc = 'Python Object representation for Tanium SOAP XML tag: ``{soap_tag}``'
-        desc = desc.format(**type_dict)
-        type_dict['desc'] = desc
-
-        type_dict.update(self.general_subs())
+        type_dict['desc'] = desc.format(**type_dict)
         type_dict['code'] = self.CODE_TEMPLATE.substitute(type_dict)
         return type_dict
 
 if __name__ == '__main__':
     pytan_dir = os.path.join(os.pardir, os.pardir)
-    default_wsdl_file = os.path.join(pytan_dir, "doc", "console.wsdl")
-    default_output_file = os.path.join(pytan_dir, "pytan", "tanium_ng.py")
+    default_wsdl_file = os.path.join(pytan_root, "doc", "console.wsdl")
+    default_output_file = os.path.join(pytan_root, "pytan", "tanium_ng.py")
 
-    parser = ShellParser(my_file=my_file, description=__doc__)
+    parser = utils.ShellParser(my_file=my_file, description=__doc__)
     parser.add_argument(
         '-i', '--input',
         required=False, action='store', dest='input', default=default_wsdl_file,

@@ -22,14 +22,19 @@
 * add note to pytan_test_steps about Administrator user having to exist
 * add documentation note about PyTan only being fully tested with Administrator role 
 * add windows install doc tip re: 2.7 only
+* write history
 
 ## TANIUMNG
 * move serializers out => tickle NOW
+  * MAKE RESULTINFO A BASETYPE! ==> NOW
+  * MAKE RESULTSET A BASETYPE! ==> NOW
 * timing for xml?
 * rebuild taniumpy with latest wsdl
+* get annotations from wsdl
 
 ## SESSION
 * http/s proxy
+* reauth broke
 * move stats threading into it's own class
 * i plan to extend that signature to add “domain” and “secondary” as part of my current pytan refactor, in order to support all 4 fields the /auth api supports
 * on 6.2, block info.json (block 444), fix _regex_for_body_element when _get_response tries to parse for server_version but it doesn't exist

@@ -323,12 +323,6 @@ def check_limits(objects, **kwargs):
             raise utils.exceptions.PytanError(err)
 
 
-def get_single_class(all_class):
-    """pass."""
-    single_class = list(all_class()._list_properties.values())[0]
-    return single_class
-
-
 def question_start_time(q):
     """Caclulates the start time of a question by doing q.expiration - q.expire_seconds
 

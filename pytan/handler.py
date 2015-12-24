@@ -660,6 +660,8 @@ class Handler(object):
             raise utils.exceptions.PytanError(m)
         return result
 
+    # TODO: add question/saved_question/action grd/gri
+
     # Result Data / Result Info
     def get_result_data(self, obj, **kwargs):
         """Get the result data for a python API object
@@ -1902,10 +1904,9 @@ class Handler(object):
         fixit = kwargs.get('FIXIT_SINGLE', False)
         result = kwargs['all_class']()
         if fixit:
-            single_class = tools_ng.get_single_class(kwargs['all_class'])
-            result = single_class()
+            result = kwargs['all_class']._LIST_TYPE()
             m = "FIXIT_SINGLE: changed class from {} to {}"
-            m = m.format(kwargs['all_class'].__name__, single_class.__name__)
+            m = m.format(kwargs['all_class'].__name__, result.__name__)
             self.mylog.debug(m)
         return result
 
@@ -1960,13 +1961,16 @@ class Handler(object):
         # create a base instance of all_class which all results will be added to
         result = all_class()
 
-        hide_spec = {'value': 0, 'field': 'source_id'}
-
-        if hide_sourced_sensors and not specs:
-            specs = hide_spec
-
-        if not isinstance(specs, (list, tuple)):
+        if isinstance(specs, tuple):
+            specs = list(specs)
+        elif not isinstance(specs, list):
             specs = [specs]
+
+        hide_spec = {'value': '0', 'field': 'source_id'}
+
+        # if we want to hide sourced sensors, add hide_spec
+        if hide_sourced_sensors and hide_spec not in specs:
+            specs.append(hide_spec)
 
         all_parsed_specs = []
 
@@ -1982,10 +1986,6 @@ class Handler(object):
                 parsed_specs = [parser(all_class=all_class, spec=x).parsed_spec for x in spec]
             else:
                 parsed_specs = [parser(all_class=all_class, spec=spec).parsed_spec]
-
-            # if we want to hide sourced sensors, add hide_spec
-            if hide_sourced_sensors:
-                parsed_specs.append(hide_spec)
 
             kwargs['specs'] = parsed_specs
             kwargs['obj'] = self._fixit_group_id(**kwargs)

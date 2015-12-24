@@ -1,46 +1,11 @@
-SENSOR_TYPE_MAP = {
-    0: 'Hash',
-    # SENSOR_RESULT_TYPE_STRING
-    1: 'String',
-    # SENSOR_RESULT_TYPE_VERSION
-    2: 'Version',
-    # SENSOR_RESULT_TYPE_NUMERIC
-    3: 'NumericDecimal',
-    # SENSOR_RESULT_TYPE_DATE_BES
-    4: 'BESDate',
-    # SENSOR_RESULT_TYPE_IPADDRESS
-    5: 'IPAddress',
-    # SENSOR_RESULT_TYPE_DATE_WMI
-    6: 'WMIDate',
-    #  e.g. "2 years, 3 months, 18 days, 4 hours, 22 minutes:
-    # 'TimeDiff', and 3.67 seconds" or "4.2 hours"
-    # (numeric + "Y|MO|W|D|H|M|S" units)
-    7: 'TimeDiff',
-    #  e.g. 125MB or 23K or 34.2Gig (numeric + B|K|M|G|T units)
-    8: 'DataSize',
-    9: 'NumericInteger',
-    10: 'VariousDate',
-    11: 'RegexMatch',
-    12: 'LastOperatorType',
-}
-"""Maps Column types in ResultSets from an int to a string."""
-
-import sys
-from collections import OrderedDict
-
+# BEGIN STATIC CODE
 try:
     import xml.etree.cElementTree as ET
 except:
     import xml.etree.ElementTree as ET
 
-# Simple fix for type differences for text strings: str (3.x) vs unicode (2.x)
-PY3 = sys.version_info[0] == 3
-if PY3:
-    text_type = str  # noqa
-    encoding = "unicode"
-else:
-    text_type = unicode  # noqa
-    encoding = "us-ascii"
+from . import text_type, encoding  # noqa
+from . import utils
 
 
 class TaniumNextGenException(Exception):
@@ -58,60 +23,184 @@ class IncorrectTypeException(TaniumNextGenException):
         TaniumNextGenException.__init__(self, err)
 
 
-class BaseType(object):
+def get_obj_type(tag):
+    """Maps Tanium XML soap tags to the Tanium NG Python BaseType object"""
+    if tag not in BASE_TYPES:  # noqa
+        err = 'Unknown type {}'
+        err = err.format(tag)
+        raise TaniumNextGenException(err)
+    result = BASE_TYPES[tag]  # noqa
+    return result
 
-    _soap_tag = None
+
+class BaseType(object):
+    """Base Python Type used for all Tanium XML SOAP Objects generated from console.wsdl"""
+
+    _SOAP_TAG = None
+    """str of XML tag that Tanium SOAP API Uses to define this object"""
+
+    _INIT_VALUES = {}
+    """dict that stores optional argument values={} for setting values after initialization"""
+
+    _INITIALIZED = False
+    """bool to check if the BaseType has finished initiailizing or not"""
+
+    _SIMPLE_PROPS = {}
+    """dict that stores the simple properties for this object (str, int)"""
+
+    _COMPLEX_PROPS = {}
+    """dict that stores the complex properties for this object (other BaseTypes)"""
+
+    _LIST_PROPS = {}
+    """dict that stores the complex properties for this object (other BaseTypes)"""
+
+    _IS_LIST = False
+    """bool indicating if this is a single list object or not"""
+
+    _LIST_ATTR = ''
+    """str that stores the name of the list attribute for this object if it is a single list"""
+
+    _LIST_TYPE = None
+    """stores the type of the list objects for this object if it is a single list"""
+
+    _ATTRS = []
+    """list that stores a preferentially sorted list of non-list attributes for this object"""
 
     def __init__(self, simple_properties, complex_properties, list_properties, **kwargs):
-        self._initialized = False
-        self._simple_properties = simple_properties
-        self._complex_properties = complex_properties
-        self._list_properties = list_properties
-        self._initialized = True
+        self._INITIALIZED = False
+
+        self._INIT_VALUES = kwargs.get('values', {}) or {}
+
+        self._SIMPLE_PROPS = simple_properties
+        self._COMPLEX_PROPS = complex_properties
+        self._LIST_PROPS = list_properties
+
+        self._IS_LIST = len(list_properties) == 1
+        if self._IS_LIST:
+            self._LIST_ATTR, self._LIST_TYPE = list(list_properties.items())[0]
+
+        self._ATTRS = list(self._SIMPLE_PROPS.keys()) + list(self._COMPLEX_PROPS.keys())
+        self._ATTRS = sorted(self._ATTRS)
+        for f in ['name', 'id']:
+            if f in self._ATTRS:
+                self._ATTRS.remove(f)
+                self._ATTRS.insert(0, f)
+
+        self._ALL_PROPS = {}
+        self._ALL_PROPS.update(self._SIMPLE_PROPS)
+        self._ALL_PROPS.update(self._COMPLEX_PROPS)
+        self._ALL_PROPS.update(self._LIST_PROPS)
+
+        self._INITIALIZED = True
+
+    def _list_only_method(self):
+        """Exception to throw on methods that are only supported for single list types"""
+        if not self._IS_LIST:
+            err = 'Not a list type with a single list property!'
+            raise TaniumNextGenException(err)
 
     def __getitem__(self, idx):
-        """Allow automatic indexing into lists."""
-        if not self._is_list():
-            err = 'Not a list type, __getitem__ not supported'
-            raise TaniumNextGenException(err)
-        result = getattr(self, self._get_list_attr())[idx]
+        """Support a[n] for single list types."""
+        self._list_only_method()
+        result = getattr(self, self._LIST_ATTR).__getitem__(idx)
         return result
 
+    def append(self, value):
+        """Support .append() for single list types."""
+        self._list_only_method()
+        if not isinstance(value, self._LIST_TYPE):
+            raise IncorrectTypeException(self._LIST_ATTR, value, self._LIST_TYPE)
+        getattr(self, self._LIST_ATTR).append(value)
+
+    def __add__(self, value):
+        """Support + operand for single list types.
+
+        >>> a = SensorList()
+        >>> b = SensorList()
+        >>> c = Sensor()
+        >>> b.append(c)
+        >>> d = a + b
+        """
+        self._list_only_method()
+        mylist = getattr(self, self._LIST_ATTR)
+        valuelist = getattr(value, value._LIST_ATTR)
+        newlist = mylist + valuelist
+        newobj = self.__class__()
+        setattr(newobj, newobj._LIST_ATTR, newlist)
+        return newobj
+
+    def __iadd__(self, value):
+        """Support += operand for list types.
+
+        >>> a = SensorList()
+        >>> b = SensorList()
+        >>> c = Sensor()
+        >>> b.append(c)
+        >>> a += b
+        """
+        self._list_only_method()
+        mylist = getattr(self, self._LIST_ATTR)
+        mylist += getattr(value, value._LIST_ATTR)
+        return self
+
     def __len__(self):
-        """Allow len() for lists and str"""
-        result = 0
-        if self._is_list():
-            result = len(getattr(self, self._get_list_attr()))
-        elif getattr(self, 'name', ''):
-            result = len(str(self.name))
-        elif getattr(self, 'id', ''):
-            result = len(str(self.id))
+        """Return length of list attribute if this object is a list, elsewise
+        return the number of attributes that are not None.
+        """
+        if self._IS_LIST:
+            result = len(getattr(self, self._LIST_ATTR))
+        else:
+            result = sum([1 for k in self._ATTRS if getattr(self, k, None) is not None])
+        return result
+
+    def __repr__(self):
+        """If this is a list item, return class name, list, and all attributes.
+        If this is not a list item, return class name and all attributes.
+        """
+        class_name = self.__class__
+        vals = []
+        if self._IS_LIST:
+            val = '{} items'.format(len(self))
+            name = 'LIST:{!r}:{!r}'.format(self._LIST_ATTR, self._LIST_TYPE)
+            vals.append([name, val])
+
+        for k in self._ATTRS:
+            val = getattr(self, k, None)
+            name = '{} ({})'.format(k, self._ALL_PROPS[k])
+            if isinstance(val, list):
+                val = "{}".format(len(val))
+            else:
+                val = "{!r}".format(val)
+            vals.append([name, val])
+
+        vals = ', '.join(["{}={}".format(*p) for p in vals])
+        result = '{}: {}'.format(class_name, vals)
         return result
 
     def __str__(self):
+        """If this is a list item, return class name, list length, and all attributes that are set.
+        If this is not a list item, return class name and all attributes that are set.
+        """
         class_name = self.__class__.__name__
-        vals = OrderedDict()
-        if self._is_list():
-            vals['length'] = len(self)
-        else:
-            for k in ['id', 'name']:
-                if not hasattr(self, k):
-                    continue
-                vals[k] = getattr(self, k, None)
+        vals = []
+        if self._IS_LIST:
+            name = 'length'
+            val = len(self)
+            vals.append([name, val])
 
-            for k in ['query_text', 'hidden_flag', 'package_spec', 'url_regex']:
-                if not getattr(self, k, None):
-                    continue
-                vals[k] = getattr(self, k, None)
-
-        if not vals:
-            for k in sorted(self._simple_properties):
-                val = getattr(self, k, None)
-                if val is not None:
-                    vals[k] = val
+        for k in self._ATTRS:
+            if getattr(self, k, None) in [None, []]:
+                continue
+            name = k
+            val = getattr(self, k, None)
+            if isinstance(val, list):
+                val = "{} items".format(len(val))
+            else:
+                val = str(val).replace('\n', '')
+            vals.append([name, val])
 
         if vals:
-            vals = ', '.join(["'{}'='{}'".format(*p) for p in vals.items()])
+            vals = ', '.join(["'{}'='{}'".format(*p) for p in vals])
         else:
             vals = "No attributes assigned yet!"
 
@@ -121,62 +210,48 @@ class BaseType(object):
     def __setattr__(self, name, value):
         """Enforce type of attribute assignments"""
         val_not_none = value is not None
-        name_not_init = name != '_initialized'
-        self_is_init = getattr(self, '_initialized', False)
-        check_type = all([val_not_none, name_not_init, self_is_init])
-
-        if check_type:
-            if name in getattr(self, '_complex_properties', {}):
-                value = self._check_complex(name, value)
-            elif name in getattr(self, '_simple_properties', {}):
-                value = self._check_simple(name, value)
-            elif name in getattr(self, '_list_properties', {}):
+        is_init = name != '_INITIALIZED' and getattr(self, '_INITIALIZED', False)
+        if all([val_not_none, is_init]):
+            if name in getattr(self, '_LIST_PROPS', {}):
                 value = self._check_list(name, value)
+            elif name in getattr(self, '_COMPLEX_PROPS', {}):
+                value = self._check_complex(name, value)
+            elif name in getattr(self, '_SIMPLE_PROPS', {}):
+                value = self._check_simple(name, value)
         super(BaseType, self).__setattr__(name, value)
 
-    def _set_values(self, values):
-        for k, v in values.items():
+    def _set_init_values(self):
+        for k, v in self._INIT_VALUES.items():
             setattr(self, k, v)
 
-    def _is_list(self):
-        result = len(self._list_properties) == 1
-        return result
-
-    def _get_list_attr(self):
-        result = None
-        if self._is_list:
-            result = list(self._list_properties.keys())[0]
-        return result
-
     def _check_complex(self, name, value):
-        if not isinstance(value, self._complex_properties[name]):
-            raise IncorrectTypeException(name, value, self._complex_properties[name])
+        if not isinstance(value, self._COMPLEX_PROPS[name]):
+            raise IncorrectTypeException(name, value, self._COMPLEX_PROPS[name])
         return value
 
     def _check_simple(self, name, value):
-        if not isinstance(value, self._simple_properties[name]):
-            try:
-                value = self._simple_properties[name](value)
-            except:
-                raise IncorrectTypeException(name, value, self._simple_properties[name])
+        if not isinstance(value, self._SIMPLE_PROPS[name]):
+            if self._SIMPLE_PROPS[name] == int:
+                try:
+                    value = self._SIMPLE_PROPS[name](value)
+                except:
+                    raise IncorrectTypeException(name, value, self._SIMPLE_PROPS[name])
+            else:
+                raise IncorrectTypeException(name, value, self._SIMPLE_PROPS[name])
         return value
 
     def _check_list(self, name, value):
-        if value != [] and not isinstance(value, self._list_properties[name]):
-            raise IncorrectTypeException(name, value, self._list_properties[name])
+        if not isinstance(value, list):
+            raise IncorrectTypeException(name, value, self._LIST_PROPS[name])
+        for i in value:
+            if not isinstance(i, self._LIST_PROPS[name]):
+                raise IncorrectTypeException(name, i, self._LIST_PROPS[name])
         return value
-
-    def append(self, n):
-        """Allow adding to list."""
-        if not self._is_list():
-            err = 'Not a list type, append not supported'
-            raise TaniumNextGenException(err)
-        getattr(self, self._get_list_attr()).append(n)
 
     def to_soap_element(self, minimal=False):  # noqa
         # print(minimal)
-        root = ET.Element(self._soap_tag)
-        for p in self._simple_properties:
+        root = ET.Element(self._SOAP_TAG)
+        for p in self._SIMPLE_PROPS:
             el = ET.Element(p)
             val = getattr(self, p)
             # print(p, val)
@@ -184,7 +259,7 @@ class BaseType(object):
                 el.text = str(val)
             if val is not None or not minimal:
                 root.append(el)
-        for p, t in self._complex_properties.items():
+        for p, t in self._COMPLEX_PROPS.items():
             val = getattr(self, p)
             # print(p, t, val)
             if val is not None or not minimal:
@@ -204,7 +279,7 @@ class BaseType(object):
                     root.append(el)
                     if val is not None:
                         el.append(str(val))
-        for p, t in self._list_properties.items():
+        for p, t in self._LIST_PROPS.items():
             vals = getattr(self, p)
             # print(p, t, vals)
             if not vals:
@@ -228,19 +303,18 @@ class BaseType(object):
         """Deserialize self into an XML body"""
         el = self.to_soap_element(minimal=minimal)
         result = ET.tostring(el, encoding=encoding)
-        # print(result)
         return result
 
     @classmethod
     def from_soap_element(cls, el):
         result = cls()
-        for p, t in result._simple_properties.items():
+        for p, t in result._SIMPLE_PROPS.items():
             pel = el.find("./{}".format(p))
             if pel is not None and pel.text:
                 setattr(result, p, t(pel.text))
             else:
                 setattr(result, p, None)
-        for p, t in result._complex_properties.items():
+        for p, t in result._COMPLEX_PROPS.items():
             elems = el.findall('./{}'.format(p))
             if len(elems) > 1:
                 raise TaniumNextGenException(
@@ -250,11 +324,11 @@ class BaseType(object):
                 setattr(
                     result,
                     p,
-                    result._complex_properties[p].from_soap_element(elems[0]),
+                    result._COMPLEX_PROPS[p].from_soap_element(elems[0]),
                 )
             else:
                 setattr(result, p, None)
-        for p, t in result._list_properties.items():
+        for p, t in result._LIST_PROPS.items():
             setattr(result, p, [])
             elems = el.findall('./{}'.format(p))
             for elem in elems:
@@ -262,18 +336,6 @@ class BaseType(object):
                     getattr(result, p).append(t.from_soap_element(elem))
                 else:
                     getattr(result, p).append(elem.text)
-
-        return result
-
-    @classmethod
-    def _get_obj_type(cls, el):
-        """Based on the tag of ``el``, find the appropriate tanium_type."""
-        from . import OBJECT_TYPES
-        if el.tag not in OBJECT_TYPES:
-            err = 'Unknown type {}'
-            err = err.format(el.tag)
-            raise TaniumNextGenException(err)
-        result = eval(OBJECT_TYPES[el.tag])
         return result
 
     @classmethod
@@ -287,7 +349,7 @@ class BaseType(object):
         if el is None:
             result = el
         if el is not None:
-            obj = cls._get_obj_type(el)
+            obj = get_obj_type(el.tag)
             result = obj.from_soap_element(el)
             result._ORIGINAL_OBJECT = el
         return result
@@ -369,8 +431,8 @@ class Column(object):
         val = el.find('rt')
         if val is not None:
             val = int(val.text)
-            if val in SENSOR_TYPE_MAP:
-                result.result_type = SENSOR_TYPE_MAP[val]
+            if val in utils.constants.SENSOR_TYPE_MAP:
+                result.result_type = utils.constants.SENSOR_TYPE_MAP[val]
             else:
                 result.result_type = int(val)
 
@@ -536,3 +598,7 @@ class ResultSet(object):
         for row in rows:
             result.rows.append(Row.from_soap_element(row, result.columns))
         return result
+
+
+# END STATIC CODE
+# BEGIN DYNAMIC CODE

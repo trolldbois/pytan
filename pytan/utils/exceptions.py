@@ -92,3 +92,18 @@ class ServerParseError(PytanException):
 class PickerError(PytanException):
     """Exception thrown for picker errors in :mod:`pytan.handler`"""
     pass
+
+
+class TaniumNextGenException(PytanException):
+    pass
+
+
+class IncorrectTypeException(TaniumNextGenException):
+    """Raised when a property is not of the expected type"""
+    def __init__(self, name, value, expected):
+        self.name = name
+        self.expected = expected
+        self.value = value
+        err = "Attribute '{}' expected type '{}', got '{}' (value: '{}')"
+        err = err.format(name, expected.__name__, type(value).__name__, value)
+        TaniumNextGenException.__init__(self, err)
