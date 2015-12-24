@@ -64,6 +64,7 @@
 * look into update object methods (UNKNOWN)
 * email out (MEDIUM)
 * add caching (HUGE)
+* figure out how to get last N of an obj
 
 ## UTILS
 * remove external deps from utils, move version into utils

@@ -399,11 +399,19 @@ class Session(object):
         session is generated.
         """
         # the 4 fields that /auth takes for non session auth
+        # print("auth kwargs:", kwargs)
         auth_args = ['username', 'password', 'domain', 'secondary', 'session_id', 'persistent']
         for k in auth_args:
-            if k not in kwargs:
+            # print("self attr name: ", x)
+            # v = getattr(self, x)
+            # print("self attr val before: ", v)
+            if k not in kwargs or not kwargs.get(k, ''):
                 continue
-            setattr(self, '_' + k.upper(), kwargs.get(k))
+            x = '_' + k.upper()
+            v = kwargs.get(k)
+            setattr(self, x, v)
+            # v = getattr(self, x)
+            # print("self attr val after: ", v)
 
         self.check_auth_args()
 
@@ -602,13 +610,7 @@ class Session(object):
         kwargs['obj'] = obj
         kwargs['request_body'] = self._create_get_result_info_body(**kwargs)
         response_body = self.soap_request(**kwargs)
-
-        # parse the ResultXML node into it's own element
-        resultxml_text = self._extract_resultxml(response_body=response_body)
-
-        cdata_el = ET.fromstring(resultxml_text)
-        result = tanium_ng.ResultInfo.from_soap_element(cdata_el)
-        result._RAW_XML = resultxml_text
+        result = from_soap_body(response_body)
         return result
 
     def get_result_data(self, obj, **kwargs):
@@ -937,6 +939,7 @@ class Session(object):
         regex_args = {'body': result, 'element': 'session', 'fail': True}
         self.session_id = self._regex_body_for_element(**regex_args)
 
+        # TODO: REMOVE, BUT FIX _REGEX_BODY_FOR_ELEMENT FAIL=FALSE FIRST
         # check to see if server_version set in response (6.5+ only)
         if self._invalid_server_version():
             regex_args = {'body': result, 'element': 'server_version', 'fail': False}
