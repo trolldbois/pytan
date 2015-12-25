@@ -1,5 +1,6 @@
 import sys
 import argparse
+
 from argparse import ArgumentDefaultsHelpFormatter as A1 # noqa
 from argparse import RawDescriptionHelpFormatter as A2 # noqa
 

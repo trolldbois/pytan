@@ -47,17 +47,16 @@ else:
     def u(s):
         return unicode(s.replace(r'\\', r'\\\\'), "unicode_escape")  # noqa
 
-from . import utils
-from . import parsers
-from . import tanium_ng
-from . import tools_ng
-from . import tickle
-from .utils import exceptions
-from .handler import Handler
-from .session import Session
-from .pollers import QuestionPoller
-from .pollers import ActionPoller
-from .pollers import SSEPoller
+from pytan import utils
+from pytan import parsers
+from pytan import tanium_ng
+from pytan import tickle
+from pytan.utils import exceptions
+from pytan.handler import Handler
+from pytan.session import Session
+from pytan.pollers import QuestionPoller
+from pytan.pollers import ActionPoller
+from pytan.pollers import SSEPoller
 
 __version__ = utils.__version__
 __codename__ = utils.__codename__
@@ -80,6 +79,5 @@ __all__ = [
     'ActionPoller',
     'SSEPoller',
     'tanium_ng',
-    'tools_ng',
     'tickle',
 ]

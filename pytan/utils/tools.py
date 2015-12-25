@@ -1,21 +1,21 @@
 import os
-import glob
-import string
-import json
-import platform
-import base64
-import logging
-import shutil
-import re
-import socket
-import time
-import datetime
-import pprint
 import io
+import re
 import csv
+import time
+import glob
+import json
+import pprint
+import string
+import base64
+import shutil
+import socket
+import logging
+import platform
+import datetime
 
-from . import exceptions, constants, xmltodict
 from . import integer_types, range
+from . import exceptions, constants, xmltodict
 
 mylog = logging.getLogger(__name__)
 

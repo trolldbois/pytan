@@ -9,8 +9,10 @@ import time
 from datetime import datetime
 from datetime import timedelta
 
-from . import question
-from .. import utils
+from pytan.pollers import question
+from pytan.utils import constants, tools
+
+validate = "FIXME"  # TODO
 
 mylog = logging.getLogger(__name__)
 progresslog = logging.getLogger(__name__ + ".progress")
@@ -20,7 +22,8 @@ resolverlog = logging.getLogger(__name__ + ".resolver")
 class ActionPoller(question.QuestionPoller):
     """A class to poll the progress of an Action.
 
-    The primary function of this class is to poll for result info for an action, and fire off events:
+    The primary function of this class is to poll for result info for an action, and fire off
+    events:
         * 'SeenProgressChanged'
         * 'SeenAnswersComplete'
         * 'FinishedProgressChanged'
@@ -42,22 +45,23 @@ class ActionPoller(question.QuestionPoller):
         * default: 0
         * If supplied and not 0, timeout in seconds instead of when object expires
     override_passed_count : int, optional
-        * instead of getting number of systems that should run this action by asking a question, use this number
+        * instead of getting number of systems that should run this action by asking a question,
+        use this number
     """
 
     OBJECT_TYPE = 'Action'
     """valid type of object that can be passed in as obj to __init__"""
 
-    COMPLETE_PCT_DEFAULT = utils.constants.A_COMPLETE_PCT_DEFAULT
+    COMPLETE_PCT_DEFAULT = constants.A_COMPLETE_PCT_DEFAULT
     """default value for self.complete_pct"""
 
-    ACTION_DONE_KEY = utils.constants.A_ACTION_DONE_KEY
+    ACTION_DONE_KEY = constants.A_ACTION_DONE_KEY
     """key in action_result_map that maps to an action being done"""
 
-    RUNNING_STATUSES = utils.constants.A_RUNNING_STATUSES
+    RUNNING_STATUSES = constants.A_RUNNING_STATUSES
     """values for status attribute of action object that mean the action is running"""
 
-    EXPIRATION_ATTR = utils.constants.A_EXPIRATION_ATTR
+    EXPIRATION_ATTR = constants.A_EXPIRATION_ATTR
     """attribute of self.obj that contains the expiration for this object"""
 
     def setup_logging(self):
@@ -81,7 +85,7 @@ class ActionPoller(question.QuestionPoller):
     def _derive_status(self, **kwargs):
         """Get the status attribute for self.obj"""
         clean_keys = ['attr', 'fallback']
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         attr_name = 'status'
         fb = None
@@ -90,7 +94,7 @@ class ActionPoller(question.QuestionPoller):
     def _derive_stopped_flag(self, **kwargs):
         """Get the stopped_flag attribute for self.obj"""
         clean_keys = ['attr', 'fallback']
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         attr_name = 'stopped_flag'
         fb = None
@@ -101,7 +105,7 @@ class ActionPoller(question.QuestionPoller):
     def _derive_package_spec(self, **kwargs):
         """Get the package_spec attribute for self.obj, then fetch the full package_spec object"""
         clean_keys = ['attr', 'fallback', 'obj']
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         attr_name = 'package_spec'
         fb = None
@@ -115,7 +119,7 @@ class ActionPoller(question.QuestionPoller):
     def _derive_target_group(self, **kwargs):
         """Get the target_group attribute for self.obj, then fetch the full group object"""
         clean_keys = ['attr', 'fallback', 'obj']
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         attr_name = 'target_group'
         fb = None
@@ -238,13 +242,19 @@ class ActionPoller(question.QuestionPoller):
 
         Notes
         -----
-            * Any callback can choose to get data from the session by calling :func:`pytan.poller.QuestionPoller.get_result_data` or new info by calling :func:`pytan.poller.QuestionPoller.get_result_info`
-            * Any callback can choose to stop the poller by calling :func:`pytan.poller.QuestionPoller.stop`
-            * Polling will be stopped only when one of the callbacks calls the :func:`pytan.poller.QuestionPoller.stop` method or the answers are complete.
-            * Any callbacks can call :func:`pytan.poller.QuestionPoller.setPercentCompleteThreshold` to change what "done" means on the fly
+            * Any callback can choose to get data from the session by calling :func:`pytan.poller.
+            QuestionPoller.get_result_data` or new info by calling :func:`pytan.poller.
+            QuestionPoller.get_result_info`
+            * Any callback can choose to stop the poller by calling :func:`pytan.poller.
+            QuestionPoller.stop`
+            * Polling will be stopped only when one of the callbacks calls the :func:`pytan.poller.
+            QuestionPoller.stop` method or the answers are complete.
+            * Any callbacks can call :func:`pytan.poller.QuestionPoller.
+            setPercentCompleteThreshold` to change what "done" means on the fly
+
         """
         self.start = datetime.utcnow()
-        self.expiration_timeout = utils.tools.timestr_to_datetime(timestr=self.expiration)
+        self.expiration_timeout = tools.timestr_to_datetime(timestr=self.expiration)
 
         if self.override_timeout_secs:
             td_obj = timedelta(seconds=self.override_timeout_secs)
@@ -253,7 +263,7 @@ class ActionPoller(question.QuestionPoller):
             self.override_timeout = None
 
         clean_keys = ['callbacks', 'obj', 'pytan_help', 'handler']
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         if self.override_passed_count:
             self.passed_count = self.override_passed_count
@@ -290,11 +300,15 @@ class ActionPoller(question.QuestionPoller):
         self.poller_result = all([self.seen_eq_passed, self.finished_eq_passed])
         return self.poller_result
 
-    def seen_eq_passed_loop(self, callbacks={}, **kwargs):
-        """Method to poll Result Info for self.obj until the percentage of 'seen_count' out of 'self.passed_count' is greater than or equal to self.complete_pct
+    # TODO
+    def seen_eq_passed_loop(self, callbacks={}, **kwargs):  # noqa
+        """Method to poll Result Info for self.obj until the percentage of 'seen_count' out of
+        'self.passed_count' is greater than or equal to self.complete_pct
 
         * seen_count is calculated from an aggregate GetResultData
-        * self.passed_count is calculated by the question asked before this method is called. that question has no selects, but has a group that is the same group as the action for this object
+        * self.passed_count is calculated by the question asked before this method is called. that
+        question has no selects, but has a group that is the same group as the action for this
+        object
         """
         # number of systems that have SEEN the action
         self.seen_count = None
@@ -314,7 +328,7 @@ class ActionPoller(question.QuestionPoller):
 
         while not self._stop:
             clean_keys = ['pytan_help', 'aggregate', 'callback', 'pct']
-            clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+            clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
             # re-fetch object and re-derive stopped flag and status
             h = (
@@ -348,7 +362,7 @@ class ActionPoller(question.QuestionPoller):
 
             # we use self.passed_count from the question we asked to get the number of matching
             # systems for determining the current pct of completion
-            new_pct = utils.tools.get_percent(base=seen_count, amount=self.passed_count)
+            new_pct = tools.get_percent(base=seen_count, amount=self.passed_count)
             new_pct_str = "{0:.0f}%".format(new_pct)
             complete_pct_str = "{0:.0f}%".format(self.complete_pct)
 
@@ -438,11 +452,16 @@ class ActionPoller(question.QuestionPoller):
             time.sleep(self.polling_secs)
             self.seen_loop_count += 1
 
-    def finished_eq_passed_loop(self, callbacks={}, **kwargs):
-        """Method to poll Result Info for self.obj until the percentage of 'finished_count' out of 'self.passed_count' is greater than or equal to self.complete_pct
+    # TODO
+    def finished_eq_passed_loop(self, callbacks={}, **kwargs):  # noqa
+        """Method to poll Result Info for self.obj until the percentage of 'finished_count' out of
+        'self.passed_count' is greater than or equal to self.complete_pct
 
-        * finished_count is calculated from a full GetResultData call that is parsed into self.action_result_map
-        * self.passed_count is calculated by the question asked before this method is called. that question has no selects, but has a group that is the same group as the action for this object
+        * finished_count is calculated from a full GetResultData call that is parsed into self.
+        action_result_map
+        * self.passed_count is calculated by the question asked before this method is called. that
+        question has no selects, but has a group that is the same group as the action for this
+        object
         """
         # number of systems that have FINISHED the action
         self.finished_count = None
@@ -457,7 +476,7 @@ class ActionPoller(question.QuestionPoller):
 
         while not self._stop:
             clean_keys = ['pytan_help', 'aggregate', 'callback', 'pct']
-            clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+            clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
             # re-fetch object and re-derive stopped flag and status
             h = (
@@ -516,7 +535,7 @@ class ActionPoller(question.QuestionPoller):
 
             # we use self.passed_count from the question we asked to get the number of matching
             # systems for determining the current pct of completion
-            new_pct = utils.tools.get_percent(base=finished_count, amount=self.passed_count)
+            new_pct = tools.get_percent(base=finished_count, amount=self.passed_count)
             new_pct_str = "{0:.0f}%".format(new_pct)
             complete_pct_str = "{0:.0f}%".format(self.complete_pct)
 

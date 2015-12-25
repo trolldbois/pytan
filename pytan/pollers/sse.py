@@ -5,11 +5,12 @@
 """Server Side Export Poller for :mod:`pytan`"""
 import logging
 import time
+
 from datetime import datetime
 from datetime import timedelta
 
-from . import question
-from .. import utils
+from pytan.pollers import question
+from pytan.utils import constants, exceptions, helpstr
 
 mylog = logging.getLogger(__name__)
 progresslog = logging.getLogger(__name__ + ".progress")
@@ -34,13 +35,13 @@ class SSEPoller(question.QuestionPoller):
         * default: 600
         * timeout in seconds for waiting for status completion, 0 does not time out
     """
-    STR_ATTRS = utils.constants.S_STR_ATTRS
+    STR_ATTRS = constants.S_STR_ATTRS
     """Class attributes to include in __str__ output"""
 
-    POLLING_SECS_DEFAULT = utils.constants.S_POLLING_SECS_DEFAULT
+    POLLING_SECS_DEFAULT = constants.S_POLLING_SECS_DEFAULT
     """default value for self.polling_secs"""
 
-    TIMEOUT_SECS_DEFAULT = utils.constants.S_TIMEOUT_SECS_DEFAULT
+    TIMEOUT_SECS_DEFAULT = constants.S_TIMEOUT_SECS_DEFAULT
     """default value for self.timeout_secs"""
 
     export_id = None
@@ -59,7 +60,7 @@ class SSEPoller(question.QuestionPoller):
         if not isinstance(handler, BaseHandler):
             err = "{} is not a valid handler instance! Must be a: {!r}"
             err = err.format(type(handler), BaseHandler)
-            raise utils.exceptions.PollingError(err)
+            raise exceptions.PollingError(err)
 
         self.handler = handler
         self.export_id = export_id
@@ -88,7 +89,7 @@ class SSEPoller(question.QuestionPoller):
         """
         export_id = kwargs.get('export_id', self.export_id)
 
-        kwargs['pytan_help'] = kwargs.get('pytan_help', utils.helpstr.SSE_PROGRESS)
+        kwargs['pytan_help'] = kwargs.get('pytan_help', helpstr.SSE_PROGRESS)
         kwargs['url'] = 'export/{}.status'.format(export_id)
         result = self.handler.session.http_request_auth(**kwargs).strip()
 
@@ -106,7 +107,7 @@ class SSEPoller(question.QuestionPoller):
         """
         export_id = kwargs.get('export_id', self.export_id)
 
-        kwargs['pytan_help'] = kwargs.get('pytan_help', utils.helpstr.SSE_GET)
+        kwargs['pytan_help'] = kwargs.get('pytan_help', helpstr.SSE_GET)
         kwargs['url'] = 'export/{}.gz'.format(export_id)
         kwargs['empty_ok'] = True
         result = self.handler.session.http_request_auth(**kwargs).strip()
@@ -179,7 +180,7 @@ class SSEPoller(question.QuestionPoller):
             if 'failed' in self.sse_status.lower():
                 err = "{}Server Side Export Failed: '{}'"
                 err = err.format(self.id_str, self.sse_status)
-                raise utils.exceptions.ServerSideExportError(err)
+                raise exceptions.ServerSideExportError(err)
 
             if 'completed' in self.sse_status.lower():
                 m = "{}Server Side Export Completed: '{}'"

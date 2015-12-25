@@ -19,9 +19,9 @@ root_logger = logging.getLogger()
 if not root_logger.handlers:
     root_logger.addHandler(NullHandler())
 
-from .question import QuestionPoller
-from .action import ActionPoller
-from .sse import SSEPoller
+from pytan.pollers.question import QuestionPoller
+from pytan.pollers.action import ActionPoller
+from pytan.pollers.sse import SSEPoller
 
 __all__ = [
     'QuestionPoller',

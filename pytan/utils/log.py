@@ -4,10 +4,10 @@
 
 import re
 import os
-import logging
 import time
-from . import constants
-from . import exceptions
+import logging
+
+from . import constants, exceptions
 
 mylog = logging.getLogger(__name__)
 mylog.setLevel(logging.WARN)

@@ -1,13 +1,14 @@
 import os
 import sys
 import json
-# import copy
-import getpass
 import pprint
+import getpass
 import argparse
 
-from .. import input
-from .. import utils
+from pytan import input
+from pytan import utils
+from pytan.utils import constants, exceptions, ShellParser
+from pytan.utils.version import __version__
 
 
 class Base(object):
@@ -16,13 +17,13 @@ class Base(object):
     INTERACTIVE = False
 
     def __init__(self, **kwargs):
-        from .. import handler
+        from pytan import handler
         self.handler_module = handler
-        # self.tanium_obj = utils.tanium_obj
-        self.constants = utils.constants
+        # self.tanium_obj = tanium_obj
         self.utils = utils
+        self.constants = constants
         self.input = input
-        self.ShellParser = utils.ShellParser
+        self.ShellParser = ShellParser
         self.SUPPRESS = argparse.SUPPRESS
         self.pf = pprint.pformat
 
@@ -489,17 +490,17 @@ class Base(object):
         return report_file, report_result
 
     def version_check(self, version):
-        if not utils.version.__version__ >= version:
+        if not __version__ >= version:
             err = "PyTan v{} is not greater than {} v{}"
-            err = err.format(utils.version.__version__, self.my_name, version)
+            err = err.format(version.__version__, self.my_name, version)
             self.mylog.critical(err)
-            raise utils.exceptions.VersionMismatchError(err)
+            raise exceptions.VersionMismatchError(err)
         return True
 
     def interactive_check(self):
         self.console = None
         if self.INTERACTIVE:
-            from ..utils import historyconsole
+            from pytan.utils import historyconsole
             self.historyconsole = historyconsole
             self.console = self.historyconsole.HistoryConsole()
         return self.console

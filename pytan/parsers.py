@@ -2,9 +2,9 @@
 
 import copy
 import logging
-from . import string_types, integer_types, text_type
-from .utils import constants, exceptions
 
+from pytan import string_types, integer_types, text_type
+from pytan.utils import constants, exceptions
 
 mylog = logging.getLogger(__name__)
 
@@ -34,9 +34,9 @@ class Spec(object):
 
     def __init__(self, **kwargs):
         from . import tanium_ng
-        from . import tools_ng
+        from . import tickle
         self.tanium_ng = tanium_ng
-        self.tools_ng = tools_ng
+        self.tickle = tickle
         self.post_init(**kwargs)
 
     def post_init(self, **kwargs):

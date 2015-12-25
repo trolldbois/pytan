@@ -1,13 +1,14 @@
 """The main :mod:`pytan` module that provides first level entities for programmatic use."""
 
 import os
-import logging
-import io
-import datetime
 import json
+import logging
+import datetime
 
-from . import string_types
-from . import utils, session, tanium_ng, tools_ng, pollers, parsers, tickle
+from pytan import string_types
+from pytan import session, tanium_ng, pollers, parsers, tickle
+from pytan.utils import exceptions, log, tools, constants, helpers, Store, helpstr
+from pytan.utils.version import __version__
 
 mylog = logging.getLogger(__name__)
 
@@ -41,7 +42,7 @@ class Handler(object):
         * default: None
         * session_id to use while authenticating instead of username/password
     pytan_user_config : str, optional
-        * default: utils.constants.PYTAN_USER_CONFIG
+        * default: constants.PYTAN_USER_CONFIG
         * JSON file containing key/value pairs to override class variables
 
     Notes
@@ -53,7 +54,7 @@ class Handler(object):
 
     See Also
     --------
-    :data:`utils.constants.LOG_LEVEL_MAPS` : maps a given `loglevel` to respective logger names
+    :data:`constants.LOG_LEVEL_MAPS` : maps a given `loglevel` to respective logger names
     and their logger levels
     :class:`session.Session` : Session object used by Handler
 
@@ -72,12 +73,12 @@ class Handler(object):
         self.tanium_ng = tanium_ng
         self.mylog = mylog
         if kwargs.get('loglevel', 0) >= 30:
-            utils.log.install_console()
-            utils.log.set_all_levels()
+            log.install_console()
+            log.set_all_levels()
 
         self._parse_args(kwargs)
         self._validate_args()
-        utils.log.setup(**self.args_db['parsed_args'])
+        log.setup(**self.args_db['parsed_args'])
         self._log_args()
 
         # establish our Session to the Tanium server
@@ -88,7 +89,7 @@ class Handler(object):
 
     def __str__(self):
         str_tpl = "PyTan v{} Handler for {}".format
-        ret = str_tpl(utils.version.__version__, self.session)
+        ret = str_tpl(__version__, self.session)
         return ret
 
     def read_config_file(self):
@@ -114,7 +115,7 @@ class Handler(object):
         except Exception as e:
             err = "PyTan User config file at: {} is invalid, exception: {}"
             err = err.format(puc, e)
-            raise utils.exceptions.PytanError(err)
+            raise exceptions.PytanError(err)
         return puc_dict
 
     def write_config_file(self, **kwargs):
@@ -139,8 +140,8 @@ class Handler(object):
 
         # obfuscate the password
         if puc_dict['password']:
-            puc_dict['password'] = utils.tools.obfuscate(
-                key=utils.constants.PYTAN_KEY,
+            puc_dict['password'] = tools.obfuscate(
+                key=constants.PYTAN_KEY,
                 string=puc_dict['password'],
             )
 
@@ -150,7 +151,7 @@ class Handler(object):
         except Exception as e:
             err = "Failed to write PyTan User config: '{}', exception: {}"
             err = err.format(result, e)
-            raise utils.exceptions.PytanError(err)
+            raise exceptions.PytanError(err)
         else:
             m = "PyTan User config file successfully written: {} "
             m = m.format(result)
@@ -174,15 +175,15 @@ class Handler(object):
         right = kwargs.get('right', [])
         max_age_seconds = kwargs.get('max_age_seconds', 0)
         get_results = kwargs.get('get_results', True)
-        utils.helpers.check_for_help(kwargs)
+        helpers.check_for_help(kwargs)
 
-        # parser = utils.parsers.LeftSide(left)
+        # parser = parsers.LeftSide(left)
         # print parser.parsed_specs
 
         left = self._get_spec_objects(left)
         right = self._get_spec_objects(right)
 
-        kwargs['obj'] = tools_ng.create_question_obj(left=left, right=right)
+        kwargs['obj'] = tickle.create_question_obj(left=left, right=right)
 
         if max_age_seconds:
             kwargs['obj'].max_age_seconds = int(max_age_seconds)
@@ -199,7 +200,7 @@ class Handler(object):
         m = m.format(kwargs['obj'])
         self.mylog.info(m)
 
-        result = utils.Store()
+        result = Store()
         result.question_object = kwargs['obj']
         result.poller_object = pollers.QuestionPoller(handler=self, **kwargs)
         result.question_results = None
@@ -255,10 +256,10 @@ class Handler(object):
 
         if not kwargs['specs']:
             err = "Must supply arg 'specs' for identifying the saved question to ask"
-            raise utils.exceptions.PytanError(err)
+            raise exceptions.PytanError(err)
 
         # creatStore() object for storing the results
-        result = utils.Store()
+        result = Store()
         result.poller_object = None
         result.poller_success = None
         result.question_results = None
@@ -267,24 +268,24 @@ class Handler(object):
         result.saved_question_object = self.get_saved_questions(limit_exact=1, **kwargs)
 
         # get the last asked question for this saved question
-        kwargs['pytan_help'] = utils.helpstr.SQ_GETQ
+        kwargs['pytan_help'] = helpstr.SQ_GETQ
         kwargs['obj'] = result['saved_question_object'].question
         result.question_object = self.session.find(**kwargs)
 
         if refresh:
             # if GetResultInfo is issued on a saved question, Tanium will issue a new question
             # to fetch new/updated results
-            kwargs['pytan_help'] = utils.helpstr.SQ_RI
+            kwargs['pytan_help'] = helpstr.SQ_RI
             kwargs['obj'] = result.saved_question_object
             self.get_result_info(**kwargs)
 
             # re-fetch the saved question object to get the newly asked question info
-            kwargs['pytan_help'] = utils.helpstr.SQ_RESQ
-            kwargs['obj'] = tools_ng.shrink_obj(obj=result.saved_question_object)
+            kwargs['pytan_help'] = helpstr.SQ_RESQ
+            kwargs['obj'] = tickle.shrink_obj(obj=result.saved_question_object)
             result.saved_question_object = self.session.find(**kwargs)
 
             # get the last asked question for this saved question
-            kwargs['pytan_help'] = utils.helpstr.SQ_GETQ
+            kwargs['pytan_help'] = helpstr.SQ_GETQ
             kwargs['obj'] = result.saved_question_object.question
             result.question_object = self.session.find(**kwargs)
 
@@ -324,7 +325,7 @@ class Handler(object):
         if not self.session.platform_is_6_5(**kwargs):
             m = "ParseJob not supported in version: {}"
             m = m.format(self.get_server_version(**kwargs))
-            raise utils.exceptions.UnsupportedVersionError(m)
+            raise exceptions.UnsupportedVersionError(m)
 
         obj = tanium_ng.ParseJob()
         obj.question_text = question_text
@@ -390,17 +391,17 @@ class Handler(object):
         if not self.session.platform_is_6_5(**kwargs):
             m = "ParseJob not supported in version: {}"
             m = m.format(self.session.server_version)
-            raise utils.exceptions.UnsupportedVersionError(m)
+            raise exceptions.UnsupportedVersionError(m)
 
         pq_args = {}
         pq_args.update(kwargs)
         pq_args['question_text'] = question_text
-        pq_args['pytan_help'] = utils.helpstr.PJ
+        pq_args['pytan_help'] = helpstr.PJ
         parse_job_results = self.parse_query(**pq_args)
 
         if not parse_job_results:
             m = "Question Text '{}' was unable to be parsed into a valid query text by the server"
-            raise utils.exceptions.ServerParseError(m)
+            raise exceptions.ServerParseError(m)
 
         pi = "Index {0}, Score: {1.score}, Query: {1.question_text!r}"
         pw = (
@@ -412,7 +413,7 @@ class Handler(object):
             self.mylog.critical(pw)
             for idx, x in enumerate(parse_job_results):
                 self.mylog.critical(pi.format(idx + 1, x))
-            raise utils.exceptions.PickerError(pw)
+            raise exceptions.PickerError(pw)
 
         try:
             picked_parse_job = parse_job_results[picker - 1]
@@ -423,7 +424,7 @@ class Handler(object):
 
             for idx, x in enumerate(parse_job_results):
                 self.mylog.critical(pi.format(idx + 1, x))
-            raise utils.exceptions.PickerError(pw)
+            raise exceptions.PickerError(pw)
 
         # add our Question and get a Question ID back
         kwargs['obj'] = picked_parse_job.question
@@ -432,14 +433,14 @@ class Handler(object):
         m = m.format(kwargs['obj'].to_json(kwargs['obj']))
         self.mylog.debug(m)
 
-        kwargs['pytan_help'] = utils.helpstr.PJ_ADD
+        kwargs['pytan_help'] = helpstr.PJ_ADD
         kwargs['obj'] = self._add(**kwargs)
 
         m = "Question Added, ID: {0.id}, query text: {0.query_text!r}, expires: {0.expiration}"
         m = m.format(kwargs['obj'])
         self.mylog.info(m)
 
-        result = utils.Store()
+        result = Store()
         result.parse_results = parse_job_results
         result.question_object = kwargs['obj']
         result.question_results = None
@@ -458,128 +459,128 @@ class Handler(object):
 
     # Actions
     # TODO
-    def deploy_action(self, **kwargs):
-        """Deploy an action and get the results back
+    # def deploy_action(self, **kwargs):
+    #     """Deploy an action and get the results back
 
-        This method takes a string or list of strings and parses them into
-        their corresponding definitions needed by :func:`_deploy_action`
+    #     This method takes a string or list of strings and parses them into
+    #     their corresponding definitions needed by :func:`_deploy_action`
 
-        Parameters
-        ----------
-        package : str
-            * package to deploy with this action
-        filters : str, list of str, optional
-            * default: []
-            * each string must describe a sensor and a filter which limits which computers the
-            action will deploy `package` to
-        options : str, list of str, optional
-            * default: []
-            * options to apply to `filters`
-        start_seconds_from_now : int, optional
-            * default: 0
-            * start action N seconds from now
-        distribute_seconds : int, optional
-            * default: 0
-            * distribute action evenly over clients over N seconds
-        issue_seconds : int, optional
-            * default: 0
-            * have the server re-ask the action status question if performing a GetResultData over
-            N seconds ago
-        expire_seconds : int, optional
-            * default: package.expire_seconds
-            * expire action N seconds from now, will be derived from package if not supplied
-        run : bool, optional
-            * default: False
-            * False: just ask the question that pertains to verify action, export the results to
-            CSV, and raise RunFalse -- does not deploy the action
-            * True: actually deploy the action
-        get_results : bool, optional
-            * default: True
-            * True: wait for result completion after deploying action
-            * False: just deploy the action and return the object in `ret`
-        action_name : str, optional
-            * default: prepend package name with "API Deploy "
-            * custom name for action
-        action_comment : str, optional
-            * default:
-            * custom comment for action
+    #     Parameters
+    #     ----------
+    #     package : str
+    #         * package to deploy with this action
+    #     filters : str, list of str, optional
+    #         * default: []
+    #         * each string must describe a sensor and a filter which limits which computers the
+    #         action will deploy `package` to
+    #     options : str, list of str, optional
+    #         * default: []
+    #         * options to apply to `filters`
+    #     start_seconds_from_now : int, optional
+    #         * default: 0
+    #         * start action N seconds from now
+    #     distribute_seconds : int, optional
+    #         * default: 0
+    #         * distribute action evenly over clients over N seconds
+    #     issue_seconds : int, optional
+    #         * default: 0
+    #         * have the server re-ask the action status question if performing a GetResultData over
+    #         N seconds ago
+    #     expire_seconds : int, optional
+    #         * default: package.expire_seconds
+    #         * expire action N seconds from now, will be derived from package if not supplied
+    #     run : bool, optional
+    #         * default: False
+    #         * False: just ask the question that pertains to verify action, export the results to
+    #         CSV, and raise RunFalse -- does not deploy the action
+    #         * True: actually deploy the action
+    #     get_results : bool, optional
+    #         * default: True
+    #         * True: wait for result completion after deploying action
+    #         * False: just deploy the action and return the object in `ret`
+    #     action_name : str, optional
+    #         * default: prepend package name with "API Deploy "
+    #         * custom name for action
+    #     action_comment : str, optional
+    #         * default:
+    #         * custom comment for action
 
-        Returns
-        -------
-        ret : dict, containing:
-            * `saved_action_object` :
-            :class:`tanium_ng.saved_action.SavedAction`
-            the saved_action added for this action (None if 6.2)
-            * `action_object` :
-            :class:`tanium_ng.action.Action`
-            the action object that tanium created for `saved_action`
-            * `package_object` :
-            :class:`tanium_ng.package_spec.PackageSPec`
-            the package object used in `saved_action`
-            * `action_info` :
-            :class:`tanium_ng.result_info.ResultInfo`
-            the initial GetResultInfo call done before getting results
-            * `poller_object` :
-            :class:`pytan.pollers.ActionPoller`
-            poller object used to wait until all results are in before getting `action_results`
-            * `poller_success` : None if `get_results` == False, elsewise True or False
-            * `action_results` :
-            None if `get_results` == False
-            elsewise :class:`tanium_ng.result_set.ResultSet`
-            the results for `action_object`
-            * `action_result_map` :
-            None if `get_results` == False
-            elsewise progress map for `action_object` in dictionary form
+    #     Returns
+    #     -------
+    #     ret : dict, containing:
+    #         * `saved_action_object` :
+    #         :class:`tanium_ng.saved_action.SavedAction`
+    #         the saved_action added for this action (None if 6.2)
+    #         * `action_object` :
+    #         :class:`tanium_ng.action.Action`
+    #         the action object that tanium created for `saved_action`
+    #         * `package_object` :
+    #         :class:`tanium_ng.package_spec.PackageSPec`
+    #         the package object used in `saved_action`
+    #         * `action_info` :
+    #         :class:`tanium_ng.result_info.ResultInfo`
+    #         the initial GetResultInfo call done before getting results
+    #         * `poller_object` :
+    #         :class:`pytan.pollers.ActionPoller`
+    #         poller object used to wait until all results are in before getting `action_results`
+    #         * `poller_success` : None if `get_results` == False, elsewise True or False
+    #         * `action_results` :
+    #         None if `get_results` == False
+    #         elsewise :class:`tanium_ng.result_set.ResultSet`
+    #         the results for `action_object`
+    #         * `action_result_map` :
+    #         None if `get_results` == False
+    #         elsewise progress map for `action_object` in dictionary form
 
-        Examples
-        --------
-        >>> # example of str for `package`
-        >>> package = 'Package1'
+    #     Examples
+    #     --------
+    #     >>> # example of str for `package`
+    #     >>> package = 'Package1'
 
-        >>> # example of str for `package` with params
-        >>> package = 'Package1{key:value}'
+    #     >>> # example of str for `package` with params
+    #     >>> package = 'Package1{key:value}'
 
-        >>> # example of str for `filters` with params and filter for sensors
-        >>> filters = 'Sensor1{key:value}, that contains:example text'
+    #     >>> # example of str for `filters` with params and filter for sensors
+    #     >>> filters = 'Sensor1{key:value}, that contains:example text'
 
-        >>> # example of list of str for `options`
-        >>> options = ['max_data_age:3600', 'and']
+    #     >>> # example of list of str for `options`
+    #     >>> options = ['max_data_age:3600', 'and']
 
-        See Also
-        --------
-        :data:`utils.constants.FILTER_MAPS` : valid filter dictionaries for filters
-        :data:`utils.constants.OPTION_MAPS` : valid option dictionaries for options
-        :func:`pytan.handler.Handler._deploy_action` : private method with the actual workflow
-        used to create and add the action object
-        """
+    #     See Also
+    #     --------
+    #     :data:`constants.FILTER_MAPS` : valid filter dictionaries for filters
+    #     :data:`constants.OPTION_MAPS` : valid option dictionaries for options
+    #     :func:`pytan.handler.Handler._deploy_action` : private method with the actual workflow
+    #     used to create and add the action object
+    #     """
 
-        utils.helpers.check_for_help(kwargs=kwargs)
+    #     helpers.check_for_help(kwargs=kwargs)
 
-        # the human string describing the sensors/filter that user wants
-        # to deploy the action against
-        filters = kwargs.get('filters', [])
+    #     # the human string describing the sensors/filter that user wants
+    #     # to deploy the action against
+    #     filters = kwargs.get('filters', [])
 
-        # the question options to use on the pre-action question and on the
-        # group for the action filters
-        options = kwargs.get('options', [])
+    #     # the question options to use on the pre-action question and on the
+    #     # group for the action filters
+    #     options = kwargs.get('options', [])
 
-        # name of package to deploy with params as {key=value1,key2=value2}
-        package = kwargs.get('package', '')
+    #     # name of package to deploy with params as {key=value1,key2=value2}
+    #     package = kwargs.get('package', '')
 
-        filter_defs = utils.parsers.parse_sensors(filters, 'filters', True)
-        option_defs = utils.parsers.parse_options(options)
-        package_def = utils.parsers.parse_package(package)
+    #     filter_defs = parsers.parse_sensors(filters, 'filters', True)
+    #     option_defs = parsers.parse_options(options)
+    #     package_def = parsers.parse_package(package)
 
-        clean_keys = ['package_def', 'filter_defs', 'option_defs']
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+    #     clean_keys = ['package_def', 'filter_defs', 'option_defs']
+    #     clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
-        deploy_result = self._deploy_action(
-            filter_defs=filter_defs,
-            option_defs=option_defs,
-            package_def=package_def,
-            **clean_kwargs
-        )
-        return deploy_result
+    #     deploy_result = self._deploy_action(
+    #         filter_defs=filter_defs,
+    #         option_defs=option_defs,
+    #         package_def=package_def,
+    #         **clean_kwargs
+    #     )
+    #     return deploy_result
 
     def approve_saved_action(self, *args, **kwargs):
         """Approve a saved action
@@ -598,7 +599,7 @@ class Handler(object):
 
         if not kwargs['specs']:
             err = "Must supply arg 'specs' for identifying the saved action to approve"
-            raise utils.exceptions.PytanError(err)
+            raise exceptions.PytanError(err)
 
         # get the saved_question object the user passed in
         sa_obj = self.get_saved_actions(limit_exact=1, **kwargs)
@@ -608,7 +609,7 @@ class Handler(object):
         result.approved_flag = 1
 
         # we dont want to re-fetch the object, so use sessions add instead of handlers add
-        kwargs['pytan_help'] = utils.helpstr.SAA
+        kwargs['pytan_help'] = helpstr.SAA
         kwargs['obj'] = result
         result = self.session.add(**kwargs)
 
@@ -634,7 +635,7 @@ class Handler(object):
 
         if not kwargs['specs']:
             err = "Must supply arg 'specs' for identifying the saved action to approve"
-            raise utils.exceptions.PytanError(err)
+            raise exceptions.PytanError(err)
 
         # get the action object the user passed in
         a_obj_before = self.get_actions(limit_exact=1, **kwargs)
@@ -642,11 +643,11 @@ class Handler(object):
         result = tanium_ng.ActionStop()
         result.action = a_obj_before
 
-        kwargs['pytan_help'] = utils.helpstr.STOPA
+        kwargs['pytan_help'] = helpstr.STOPA
         kwargs['obj'] = result
         result = self.session.add(**kwargs)
 
-        kwargs['pytan_help'] = utils.helpstr.STOPAR
+        kwargs['pytan_help'] = helpstr.STOPAR
         kwargs['obj'] = a_obj_before
         a_obj_after = self.session.find(**kwargs)
 
@@ -657,7 +658,7 @@ class Handler(object):
         else:
             m = "Action not stopped successfully, json of action after issuing StopAction: {}"
             m = m.format(self.export_obj(a_obj_after, 'json'))
-            raise utils.exceptions.PytanError(m)
+            raise exceptions.PytanError(m)
         return result
 
     # TODO: add question/saved_question/action grd/gri
@@ -721,11 +722,11 @@ class Handler(object):
 
         See Also
         --------
-        :data:`utils.constants.SSE_FORMAT_MAP` :
+        :data:`constants.SSE_FORMAT_MAP` :
         maps `sse_format` to an integer for use by the SOAP API
-        :data:`utils.constants.SSE_RESTRICT_MAP` :
+        :data:`constants.SSE_RESTRICT_MAP` :
         maps sse_format integers to supported platform versions
-        :data:`utils.constants.SSE_CRASH_MAP` :
+        :data:`constants.SSE_CRASH_MAP` :
         maps platform versions that can cause issues in various scenarios
 
         Returns
@@ -758,7 +759,7 @@ class Handler(object):
         kwargs['suppress_object_list'] = kwargs.get('suppress_object_list', 1)
 
         if shrink:
-            kwargs['obj'] = tools_ng.shrink_obj(obj=obj)
+            kwargs['obj'] = tickle.shrink_obj(obj=obj)
 
         if aggregate:
             kwargs['row_counts_only_flag'] = 1
@@ -769,7 +770,7 @@ class Handler(object):
 
             grd_args = {}
             grd_args.update(kwargs)
-            grd_args['pytan_help'] = utils.helpstr.GRD_SSE.format(obj.__class__.__name__)
+            grd_args['pytan_help'] = helpstr.GRD_SSE.format(obj.__class__.__name__)
             # add the export_flag = 1 to the kwargs for inclusion in options node
             grd_args['export_flag'] = 1
             # add the export_format to the kwargs for inclusion in options node
@@ -800,7 +801,7 @@ class Handler(object):
             if not poller_success:
                 m = "SSE Poller failed while waiting for completion, last status: {}"
                 m = m.format()
-                raise utils.exceptions.ServerSideExportError(m)
+                raise exceptions.ServerSideExportError(m)
 
             result = poller.get_sse_data(**kwargs)
 
@@ -811,7 +812,7 @@ class Handler(object):
                     result = tickle.from_sse_xml(result)
         else:
             # do a normal getresultdata
-            kwargs['pytan_help'] = utils.helpstr.GRD.format(obj.__class__.__name__)
+            kwargs['pytan_help'] = helpstr.GRD.format(obj.__class__.__name__)
             result = self.session.get_result_data(**kwargs)
 
         return result
@@ -839,250 +840,250 @@ class Handler(object):
         """
         shrink = kwargs.get('shrink', True)
         kwargs['suppress_object_list'] = kwargs.get('suppress_object_list', 1)
-        kwargs['pytan_help'] = kwargs.get('pytan_help', utils.helpstr.GRI)
+        kwargs['pytan_help'] = kwargs.get('pytan_help', helpstr.GRI)
         if shrink:
-            kwargs['obj'] = tools_ng.shrink_obj(obj=obj)
+            kwargs['obj'] = tickle.shrink_obj(obj=obj)
         ri = self.session.get_result_info(**kwargs)
         return ri
 
     # Objects
     # TODO
-    def create_from_json(self, objtype, json_file, **kwargs):
-        """Creates a new object using the SOAP api from a json file
+    # def create_from_json(self, objtype, json_file, **kwargs):
+    #     """Creates a new object using the SOAP api from a json file
 
-        Parameters
-        ----------
-        objtype : str
-            * Type of object described in `json_file`
-        json_file : str
-            * path to JSON file that describes an API object
+    #     Parameters
+    #     ----------
+    #     objtype : str
+    #         * Type of object described in `json_file`
+    #     json_file : str
+    #         * path to JSON file that describes an API object
 
-        Returns
-        -------
-        ret : :class:`tanium_ng.base.BaseType`
-            * tanium_ng object added to Tanium SOAP Server
+    #     Returns
+    #     -------
+    #     ret : :class:`tanium_ng.base.BaseType`
+    #         * tanium_ng object added to Tanium SOAP Server
 
-        See Also
-        --------
-        :data:`utils.constants.GET_OBJ_MAP` : maps objtype to supported 'create_json' types
-        """
+    #     See Also
+    #     --------
+    #     :data:`constants.GET_OBJ_MAP` : maps objtype to supported 'create_json' types
+    #     """
 
-        obj_map = tools_ng.get_obj_map(objtype=objtype)
+    #     obj_map = tickle.get_obj_map(objtype=objtype)
 
-        create_json_ok = obj_map['create_json']
+    #     create_json_ok = obj_map['create_json']
 
-        if not create_json_ok:
-            json_createable = ', '.join([
-                x for x, y in utils.constants.GET_OBJ_MAP.items() if y['create_json']
-            ])
-            m = "{} is not a json createable object! Supported objects: {}".format
-            raise utils.exceptions.PytanError(m(objtype, json_createable))
+    #     if not create_json_ok:
+    #         json_createable = ', '.join([
+    #             x for x, y in constants.GET_OBJ_MAP.items() if y['create_json']
+    #         ])
+    #         m = "{} is not a json createable object! Supported objects: {}".format
+    #         raise exceptions.PytanError(m(objtype, json_createable))
 
-        add_obj = tools_ng.load_taniumpy_from_json(json_file=json_file)
+    #     add_obj = tickle.load_taniumpy_from_json(json_file=json_file)
 
-        if getattr(add_obj, '_list_properties', ''):
-            obj_list = [x for x in add_obj]
-        else:
-            obj_list = [add_obj]
+    #     if getattr(add_obj, '_list_properties', ''):
+    #         obj_list = [x for x in add_obj]
+    #     else:
+    #         obj_list = [add_obj]
 
-        del_keys = ['id', 'hash']
-        [
-            setattr(y, x, None)
-            for y in obj_list for x in del_keys
-            if hasattr(y, x)
-        ]
+    #     del_keys = ['id', 'hash']
+    #     [
+    #         setattr(y, x, None)
+    #         for y in obj_list for x in del_keys
+    #         if hasattr(y, x)
+    #     ]
 
-        if obj_map.get('allfix'):
-            all_type = obj_map['allfix']
-        else:
-            all_type = obj_map['all']
+    #     if obj_map.get('allfix'):
+    #         all_type = obj_map['allfix']
+    #     else:
+    #         all_type = obj_map['all']
 
-        ret = tools_ng.get_taniumpy_obj(obj_map=all_type)()
+    #     ret = tickle.get_taniumpy_obj(obj_map=all_type)()
 
-        h = "Issue an AddObject to add an object"
-        kwargs['pytan_help'] = kwargs.get('pytan_help', h)
+    #     h = "Issue an AddObject to add an object"
+    #     kwargs['pytan_help'] = kwargs.get('pytan_help', h)
 
-        clean_keys = ['obj']
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+    #     clean_keys = ['obj']
+    #     clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
-        for x in obj_list:
-            try:
-                list_obj = self._add(obj=x, **clean_kwargs)
-            except Exception as e:
-                m = (
-                    "Failure while importing {}: {}\nJSON Dump of object: {}"
-                ).format
-                raise utils.exceptions.PytanError(m(x, e, x.to_json(x)))
+    #     for x in obj_list:
+    #         try:
+    #             list_obj = self._add(obj=x, **clean_kwargs)
+    #         except Exception as e:
+    #             m = (
+    #                 "Failure while importing {}: {}\nJSON Dump of object: {}"
+    #             ).format
+    #             raise exceptions.PytanError(m(x, e, x.to_json(x)))
 
-            m = "New {} (ID: {}) created successfully!".format
-            self.mylog.info(m(list_obj, getattr(list_obj, 'id', 'Unknown')))
+    #         m = "New {} (ID: {}) created successfully!".format
+    #         self.mylog.info(m(list_obj, getattr(list_obj, 'id', 'Unknown')))
 
-            ret.append(list_obj)
-        return ret
-
-    # TODO
-    def run_plugin(self, obj, **kwargs):
-        """Wrapper around :func:`pytan.session.Session.run_plugin` to run the plugin and zip up
-        the SQL results into a python dictionary
-
-        Parameters
-        ----------
-        obj : :class:`tanium_ng.plugin.Plugin`
-            * Plugin object to run
-
-        Returns
-        -------
-        plugin_result, sql_zipped : tuple
-            * plugin_result will be the tanium_ng object representation of the SOAP response from
-            Tanium server
-            * sql_zipped will be a dict with the SQL results embedded in the SOAP response
-        """
-
-        # run the plugin
-        h = "Issue a RunPlugin run a plugin and get results back"
-        kwargs['pytan_help'] = kwargs.get('pytan_help', h)
-
-        clean_keys = ['obj', 'p']
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
-
-        plugin_result = self.session.run_plugin(obj=obj, **clean_kwargs)
-
-        # zip up the sql results into a list of python dictionaries
-        sql_zipped = tools_ng.plugin_zip(p=plugin_result)
-
-        # return the plugin result and the python dictionary of results
-        return plugin_result, sql_zipped
+    #         ret.append(list_obj)
+    #     return ret
 
     # TODO
-    def create_dashboard(self, name, text='', group='', public_flag=True, **kwargs):
-        """Calls :func:`pytan.handler.Handler.run_plugin` to run the CreateDashboard plugin and
-        parse the response
+    # def run_plugin(self, obj, **kwargs):
+    #     """Wrapper around :func:`pytan.session.Session.run_plugin` to run the plugin and zip up
+    #     the SQL results into a python dictionary
 
-        Parameters
-        ----------
-        name : str
-            * name of dashboard to create
-        text : str, optional
-            * default: ''
-            * text for this dashboard
-        group : str, optional
-            * default: ''
-            * group name for this dashboard
-        public_flag : bool, optional
-            * default: True
-            * True: make this dashboard public
-            * False: do not make this dashboard public
+    #     Parameters
+    #     ----------
+    #     obj : :class:`tanium_ng.plugin.Plugin`
+    #         * Plugin object to run
 
-        Returns
-        -------
-        plugin_result, sql_zipped : tuple
-            * plugin_result will be the tanium_ng object representation of the SOAP response from
-            Tanium server
-            * sql_zipped will be a dict with the SQL results embedded in the SOAP response
-        """
+    #     Returns
+    #     -------
+    #     plugin_result, sql_zipped : tuple
+    #         * plugin_result will be the tanium_ng object representation of the SOAP response from
+    #         Tanium server
+    #         * sql_zipped will be a dict with the SQL results embedded in the SOAP response
+    #     """
 
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs)
+    #     # run the plugin
+    #     h = "Issue a RunPlugin run a plugin and get results back"
+    #     kwargs['pytan_help'] = kwargs.get('pytan_help', h)
 
-        # get the ID for the group if a name was passed in
-        if group:
-            h = "Issue a GetObject to find the ID of a group name"
-            group_id = self.get(objtype='group', name=group, pytan_help=h, **clean_kwargs)[0].id
-        else:
-            group_id = 0
+    #     clean_keys = ['obj', 'p']
+    #     clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
-        if public_flag:
-            public_flag = 1
-        else:
-            public_flag = 0
+    #     plugin_result = self.session.run_plugin(obj=obj, **clean_kwargs)
 
-        # create the plugin parent
-        plugin = tanium_ng.Plugin()
-        plugin.name = 'CreateDashboard'
-        plugin.bundle = 'Dashboards'
+    #     # zip up the sql results into a list of python dictionaries
+    #     sql_zipped = tickle.plugin_zip(p=plugin_result)
 
-        # create the plugin arguments
-        plugin.arguments = tanium_ng.PluginArgumentList()
-
-        arg1 = tanium_ng.PluginArgument()
-        arg1.name = 'dash_name'
-        arg1.type = 'String'
-        arg1.value = name
-        plugin.arguments.append(arg1)
-
-        arg2 = tanium_ng.PluginArgument()
-        arg2.name = 'dash_text'
-        arg2.type = 'String'
-        arg2.value = text
-        plugin.arguments.append(arg2)
-
-        arg3 = tanium_ng.PluginArgument()
-        arg3.name = 'group_id'
-        arg3.type = 'Number'
-        arg3.value = group_id
-        plugin.arguments.append(arg3)
-
-        arg4 = tanium_ng.PluginArgument()
-        arg4.name = 'public_flag'
-        arg4.type = 'Number'
-        arg4.value = public_flag
-        plugin.arguments.append(arg4)
-
-        arg5 = tanium_ng.PluginArgument()
-        arg5.name = 'sqid_xml'
-        arg5.type = 'String'
-        arg5.value = ''
-        plugin.arguments.append(arg5)
-
-        # run the plugin
-        h = "Issue a RunPlugin for the CreateDashboard plugin to create a dashboard"
-        plugin_result, sql_zipped = self.run_plugin(obj=plugin, pytan_help=h, **clean_kwargs)
-
-        # return the plugin result and the python dictionary of results
-        return plugin_result, sql_zipped
+    #     # return the plugin result and the python dictionary of results
+    #     return plugin_result, sql_zipped
 
     # TODO
-    def delete_dashboard(self, name, **kwargs):
-        """Calls :func:`pytan.handler.Handler.run_plugin` to run the DeleteDashboards plugin and
-        parse the response
+    # def create_dashboard(self, name, text='', group='', public_flag=True, **kwargs):
+    #     """Calls :func:`pytan.handler.Handler.run_plugin` to run the CreateDashboard plugin and
+    #     parse the response
 
-        Parameters
-        ----------
-        name : str
-            * name of dashboard to delete
+    #     Parameters
+    #     ----------
+    #     name : str
+    #         * name of dashboard to create
+    #     text : str, optional
+    #         * default: ''
+    #         * text for this dashboard
+    #     group : str, optional
+    #         * default: ''
+    #         * group name for this dashboard
+    #     public_flag : bool, optional
+    #         * default: True
+    #         * True: make this dashboard public
+    #         * False: do not make this dashboard public
 
-        Returns
-        -------
-        plugin_result, sql_zipped : tuple
-            * plugin_result will be the tanium_ng object representation of the SOAP response from
-            Tanium server
-            * sql_zipped will be a dict with the SQL results embedded in the SOAP response
-        """
+    #     Returns
+    #     -------
+    #     plugin_result, sql_zipped : tuple
+    #         * plugin_result will be the tanium_ng object representation of the SOAP response from
+    #         Tanium server
+    #         * sql_zipped will be a dict with the SQL results embedded in the SOAP response
+    #     """
 
-        clean_keys = ['obj', 'name', 'pytan_help']
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+    #     clean_kwargs = validate.clean_kwargs(kwargs=kwargs)
 
-        dashboards_to_del = self.get_dashboards(name=name, **clean_kwargs)[1]
+    #     # get the ID for the group if a name was passed in
+    #     if group:
+    #         h = "Issue a GetObject to find the ID of a group name"
+    #         group_id = self.get(objtype='group', name=group, pytan_help=h, **clean_kwargs)[0].id
+    #     else:
+    #         group_id = 0
 
-        # create the plugin parent
-        plugin = tanium_ng.Plugin()
-        plugin.name = 'DeleteDashboards'
-        plugin.bundle = 'Dashboards'
+    #     if public_flag:
+    #         public_flag = 1
+    #     else:
+    #         public_flag = 0
 
-        # create the plugin arguments
-        plugin.arguments = tanium_ng.PluginArgumentList()
+    #     # create the plugin parent
+    #     plugin = tanium_ng.Plugin()
+    #     plugin.name = 'CreateDashboard'
+    #     plugin.bundle = 'Dashboards'
 
-        arg1 = tanium_ng.PluginArgument()
-        arg1.name = 'dashboard_ids'
-        arg1.type = 'Number_Set'
-        arg1.value = ','.join([x['id'] for x in dashboards_to_del])
-        plugin.arguments.append(arg1)
+    #     # create the plugin arguments
+    #     plugin.arguments = tanium_ng.PluginArgumentList()
 
-        # run the plugin
-        h = "Issue a RunPlugin for the DeleteDashboards plugin to delete a dashboard"
-        plugin_result, sql_zipped = self.run_plugin(obj=plugin, pytan_help=h, **clean_kwargs)
+    #     arg1 = tanium_ng.PluginArgument()
+    #     arg1.name = 'dash_name'
+    #     arg1.type = 'String'
+    #     arg1.value = name
+    #     plugin.arguments.append(arg1)
 
-        # return the plugin result and the python dictionary of results
-        return plugin_result, sql_zipped
+    #     arg2 = tanium_ng.PluginArgument()
+    #     arg2.name = 'dash_text'
+    #     arg2.type = 'String'
+    #     arg2.value = text
+    #     plugin.arguments.append(arg2)
+
+    #     arg3 = tanium_ng.PluginArgument()
+    #     arg3.name = 'group_id'
+    #     arg3.type = 'Number'
+    #     arg3.value = group_id
+    #     plugin.arguments.append(arg3)
+
+    #     arg4 = tanium_ng.PluginArgument()
+    #     arg4.name = 'public_flag'
+    #     arg4.type = 'Number'
+    #     arg4.value = public_flag
+    #     plugin.arguments.append(arg4)
+
+    #     arg5 = tanium_ng.PluginArgument()
+    #     arg5.name = 'sqid_xml'
+    #     arg5.type = 'String'
+    #     arg5.value = ''
+    #     plugin.arguments.append(arg5)
+
+    #     # run the plugin
+    #     h = "Issue a RunPlugin for the CreateDashboard plugin to create a dashboard"
+    #     plugin_result, sql_zipped = self.run_plugin(obj=plugin, pytan_help=h, **clean_kwargs)
+
+    #     # return the plugin result and the python dictionary of results
+    #     return plugin_result, sql_zipped
+
+    # TODO
+    # def delete_dashboard(self, name, **kwargs):
+    #     """Calls :func:`pytan.handler.Handler.run_plugin` to run the DeleteDashboards plugin and
+    #     parse the response
+
+    #     Parameters
+    #     ----------
+    #     name : str
+    #         * name of dashboard to delete
+
+    #     Returns
+    #     -------
+    #     plugin_result, sql_zipped : tuple
+    #         * plugin_result will be the tanium_ng object representation of the SOAP response from
+    #         Tanium server
+    #         * sql_zipped will be a dict with the SQL results embedded in the SOAP response
+    #     """
+
+    #     clean_keys = ['obj', 'name', 'pytan_help']
+    #     clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+
+    #     dashboards_to_del = self.get_dashboards(name=name, **clean_kwargs)[1]
+
+    #     # create the plugin parent
+    #     plugin = tanium_ng.Plugin()
+    #     plugin.name = 'DeleteDashboards'
+    #     plugin.bundle = 'Dashboards'
+
+    #     # create the plugin arguments
+    #     plugin.arguments = tanium_ng.PluginArgumentList()
+
+    #     arg1 = tanium_ng.PluginArgument()
+    #     arg1.name = 'dashboard_ids'
+    #     arg1.type = 'Number_Set'
+    #     arg1.value = ','.join([x['id'] for x in dashboards_to_del])
+    #     plugin.arguments.append(arg1)
+
+    #     # run the plugin
+    #     h = "Issue a RunPlugin for the DeleteDashboards plugin to delete a dashboard"
+    #     plugin_result, sql_zipped = self.run_plugin(obj=plugin, pytan_help=h, **clean_kwargs)
+
+    #     # return the plugin result and the python dictionary of results
+    #     return plugin_result, sql_zipped
 
     # TODO
     def get_dashboards(self, name='', **kwargs):
@@ -1102,624 +1103,623 @@ class Handler(object):
             Tanium server
             * sql_zipped will be a dict with the SQL results embedded in the SOAP response
         """
+        # clean_keys = ['obj', 'name', 'pytan_help']
+        # clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
-        clean_keys = ['obj', 'name', 'pytan_help']
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        # # create the plugin parent
+        # plugin = tanium_ng.Plugin()
+        # plugin.name = 'GetDashboards'
+        # plugin.bundle = 'Dashboards'
 
-        # create the plugin parent
-        plugin = tanium_ng.Plugin()
-        plugin.name = 'GetDashboards'
-        plugin.bundle = 'Dashboards'
+        # # run the plugin
+        # h = "Issue a RunPlugin for the GetDashboards plugin to get all dashboards"
+        # plugin_result, sql_zipped = self.run_plugin(obj=plugin, pytan_help=h, **clean_kwargs)
 
-        # run the plugin
-        h = "Issue a RunPlugin for the GetDashboards plugin to get all dashboards"
-        plugin_result, sql_zipped = self.run_plugin(obj=plugin, pytan_help=h, **clean_kwargs)
+        # # if name specified, filter the list of dicts for matching name
+        # if name:
+        #     sql_zipped = [x for x in sql_zipped if x['name'] == name]
+        #     if not sql_zipped:
+        #         m = "No dashboards found that match name: {!r}".format
+        #         raise exceptions.NotFoundError(m(name))
 
-        # if name specified, filter the list of dicts for matching name
-        if name:
-            sql_zipped = [x for x in sql_zipped if x['name'] == name]
-            if not sql_zipped:
-                m = "No dashboards found that match name: {!r}".format
-                raise utils.exceptions.NotFoundError(m(name))
-
-        # return the plugin result and the python dictionary of results
-        return plugin_result, sql_zipped
-
-    # TODO
-    def create_package(self, name, command, display_name='', file_urls=[],
-                       command_timeout_seconds=600, expire_seconds=600, parameters_json_file='',
-                       verify_filters=[], verify_filter_options=[], verify_expire_seconds=600,
-                       **kwargs):
-        """Create a package object
-
-        Parameters
-        ----------
-        name : str
-            * name of package to create
-        command : str
-            * command to execute
-        display_name : str, optional
-            * display name of package
-        file_urls : list of strings, optional
-            * default: []
-            * URL of file to add to package
-            * can optionally define download_seconds by using SECONDS::URL
-            * can optionally define file name by using FILENAME||URL
-            * can combine optionals by using SECONDS::FILENAME||URL
-            * FILENAME will be extracted from basename of URL if not provided
-        command_timeout_seconds : int, optional
-            * default: 600
-            * timeout for command execution in seconds
-        parameters_json_file : str, optional
-            * default: ''
-            * path to json file describing parameters for package
-        expire_seconds : int, optional
-            * default: 600
-            * timeout for action expiry in seconds
-        verify_filters : str or list of str, optional
-            * default: []
-            * each string must describe a filter to be used to verify the package
-        verify_filter_options : str or list of str, optional
-            * default: []
-            * each string must describe an option for `verify_filters`
-        verify_expire_seconds : int, optional
-            * default: 600
-            * timeout for verify action expiry in seconds
-        filters_help : bool, optional
-            * default: False
-            * False: do not print the help string for filters
-            * True: print the help string for filters and exit
-        options_help : bool, optional
-            * default: False
-            * False: do not print the help string for options
-            * True: print the help string for options and exit
-        metadata: list of list of strs, optional
-            * default: []
-            * each list must be a 2 item list:
-            * list item 1 property name
-            * list item 2 property value
-
-        Returns
-        -------
-        package_obj : :class:`tanium_ng.package_spec.PackageSpec`
-            * tanium_ng object added to Tanium SOAP Server
-
-        See Also
-        --------
-        :data:`utils.constants.FILTER_MAPS` : valid filters for verify_filters
-        :data:`utils.constants.OPTION_MAPS` : valid options for verify_filter_options
-        """
-        utils.helpers.check_for_help(kwargs=kwargs)
-
-        clean_keys = ['obj', 'pytan_help', 'defs']
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
-
-        metadata = kwargs.get('metadata', [])
-        metadatalist_obj = tools_ng.build_metadatalist_obj(properties=metadata)
-
-        # bare minimum arguments for new package: name, command
-        add_package_obj = tanium_ng.PackageSpec()
-        add_package_obj.name = name
-        if display_name:
-            add_package_obj.display_name = display_name
-        add_package_obj.command = command
-        add_package_obj.command_timeout = command_timeout_seconds
-        add_package_obj.expire_seconds = expire_seconds
-        add_package_obj.metadata = metadatalist_obj
-
-        # VERIFY FILTERS
-        if verify_filters:
-            v_filter_defs = utils.parsers.parse_filters(filters=verify_filters)
-            v_option_defs = utils.parsers.parse_options(options=verify_filter_options)
-            v_filter_defs = self._get_sensor_defs(defs=v_filter_defs, **clean_kwargs)
-            add_verify_group = tools_ng.build_group_obj(
-                filter_defs=v_filter_defs,
-                option_defs=v_option_defs,
-            )
-            h = "Issue an AddObject to add a Group object for this package"
-            verify_group = self._add(obj=add_verify_group, pytan_help=h, **clean_kwargs)
-
-            # this didn't work:
-            # add_package_obj.verify_group = verify_group
-            add_package_obj.verify_group_id = verify_group.id
-            add_package_obj.verify_expire_seconds = verify_expire_seconds
-
-        # PARAMETERS
-        if parameters_json_file:
-            add_package_obj.parameter_definition = tools_ng.load_param_json_file(
-                parameters_json_file=parameters_json_file
-            )
-
-        # FILES
-        if file_urls:
-            filelist_obj = tanium_ng.PackageFileList()
-            for file_url in file_urls:
-                # if :: is in file_url, split on it and use 0 as
-                # download_seconds
-                if '::' in file_url:
-                    download_seconds, file_url = file_url.split('::')
-                else:
-                    download_seconds = 0
-                # if || is in file_url, split on it and use 0 as file name
-                # else wise get file name from basename of URL
-                if '||' in file_url:
-                    filename, file_url = file_url.split('||')
-                else:
-                    filename = os.path.basename(file_url)
-                file_obj = tanium_ng.PackageFile()
-                file_obj.name = filename
-                file_obj.source = file_url
-                file_obj.download_seconds = download_seconds
-                filelist_obj.append(file_obj)
-            add_package_obj.files = filelist_obj
-
-        h = "Issue an AddObject to add a Group object for this package"
-        package_obj = self._add(obj=add_package_obj, pytan_help=h, **clean_kwargs)
-
-        m = "New package {!r} created with ID {!r}, command: {!r}".format
-        self.mylog.info(m(package_obj.name, package_obj.id, package_obj.command))
-        return package_obj
+        # # return the plugin result and the python dictionary of results
+        # return plugin_result, sql_zipped
 
     # TODO
-    def create_group(self, groupname, filters=[], filter_options=[], **kwargs):
-        """Create a group object
+    # def create_package(self, name, command, display_name='', file_urls=[],
+    #                    command_timeout_seconds=600, expire_seconds=600, parameters_json_file='',
+    #                    verify_filters=[], verify_filter_options=[], verify_expire_seconds=600,
+    #                    **kwargs):
+    #     """Create a package object
 
-        Parameters
-        ----------
-        groupname : str
-            * name of group to create
-        filters : str or list of str, optional
-            * default: []
-            * each string must describe a filter
-        filter_options : str or list of str, optional
-            * default: []
-            * each string must describe an option for `filters`
-        filters_help : bool, optional
-            * default: False
-            * False: do not print the help string for filters
-            * True: print the help string for filters and exit
-        options_help : bool, optional
-            * default: False
-            * False: do not print the help string for options
-            * True: print the help string for options and exit
+    #     Parameters
+    #     ----------
+    #     name : str
+    #         * name of package to create
+    #     command : str
+    #         * command to execute
+    #     display_name : str, optional
+    #         * display name of package
+    #     file_urls : list of strings, optional
+    #         * default: []
+    #         * URL of file to add to package
+    #         * can optionally define download_seconds by using SECONDS::URL
+    #         * can optionally define file name by using FILENAME||URL
+    #         * can combine optionals by using SECONDS::FILENAME||URL
+    #         * FILENAME will be extracted from basename of URL if not provided
+    #     command_timeout_seconds : int, optional
+    #         * default: 600
+    #         * timeout for command execution in seconds
+    #     parameters_json_file : str, optional
+    #         * default: ''
+    #         * path to json file describing parameters for package
+    #     expire_seconds : int, optional
+    #         * default: 600
+    #         * timeout for action expiry in seconds
+    #     verify_filters : str or list of str, optional
+    #         * default: []
+    #         * each string must describe a filter to be used to verify the package
+    #     verify_filter_options : str or list of str, optional
+    #         * default: []
+    #         * each string must describe an option for `verify_filters`
+    #     verify_expire_seconds : int, optional
+    #         * default: 600
+    #         * timeout for verify action expiry in seconds
+    #     filters_help : bool, optional
+    #         * default: False
+    #         * False: do not print the help string for filters
+    #         * True: print the help string for filters and exit
+    #     options_help : bool, optional
+    #         * default: False
+    #         * False: do not print the help string for options
+    #         * True: print the help string for options and exit
+    #     metadata: list of list of strs, optional
+    #         * default: []
+    #         * each list must be a 2 item list:
+    #         * list item 1 property name
+    #         * list item 2 property value
 
-        Returns
-        -------
-        group_obj : :class:`tanium_ng.group.Group`
-            * tanium_ng object added to Tanium SOAP Server
+    #     Returns
+    #     -------
+    #     package_obj : :class:`tanium_ng.package_spec.PackageSpec`
+    #         * tanium_ng object added to Tanium SOAP Server
 
-        See Also
-        --------
-        :data:`utils.constants.FILTER_MAPS` : valid filters for filters
-        :data:`utils.constants.OPTION_MAPS` : valid options for filter_options
-        """
+    #     See Also
+    #     --------
+    #     :data:`constants.FILTER_MAPS` : valid filters for verify_filters
+    #     :data:`constants.OPTION_MAPS` : valid options for verify_filter_options
+    #     """
+    #     helpers.check_for_help(kwargs=kwargs)
 
-        utils.helpers.check_for_help(kwargs=kwargs)
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs)
+    #     clean_keys = ['obj', 'pytan_help', 'defs']
+    #     clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
-        filter_defs = utils.parsers.parse_filters(filters=filters)
-        option_defs = utils.parsers.parse_options(options=filter_options)
+    #     metadata = kwargs.get('metadata', [])
+    #     metadatalist_obj = tickle.build_metadatalist_obj(properties=metadata)
 
-        h = (
-            "Issue a GetObject to get the full object of specified sensors for inclusion in a "
-            "group"
-        )
-        filter_defs = self._get_sensor_defs(defs=filter_defs, pytan_help=h, **clean_kwargs)
+    #     # bare minimum arguments for new package: name, command
+    #     add_package_obj = tanium_ng.PackageSpec()
+    #     add_package_obj.name = name
+    #     if display_name:
+    #         add_package_obj.display_name = display_name
+    #     add_package_obj.command = command
+    #     add_package_obj.command_timeout = command_timeout_seconds
+    #     add_package_obj.expire_seconds = expire_seconds
+    #     add_package_obj.metadata = metadatalist_obj
 
-        add_group_obj = tools_ng.build_group_obj(
-            filter_defs=filter_defs, option_defs=option_defs,
-        )
-        add_group_obj.name = groupname
+    #     # VERIFY FILTERS
+    #     if verify_filters:
+    #         v_filter_defs = parsers.parse_filters(filters=verify_filters)
+    #         v_option_defs = parsers.parse_options(options=verify_filter_options)
+    #         v_filter_defs = self._get_sensor_defs(defs=v_filter_defs, **clean_kwargs)
+    #         add_verify_group = tickle.build_group_obj(
+    #             filter_defs=v_filter_defs,
+    #             option_defs=v_option_defs,
+    #         )
+    #         h = "Issue an AddObject to add a Group object for this package"
+    #         verify_group = self._add(obj=add_verify_group, pytan_help=h, **clean_kwargs)
 
-        h = "Issue an AddObject to add a Group object"
-        group_obj = self._add(obj=add_group_obj, pytan_help=h, **clean_kwargs)
+    #         # this didn't work:
+    #         # add_package_obj.verify_group = verify_group
+    #         add_package_obj.verify_group_id = verify_group.id
+    #         add_package_obj.verify_expire_seconds = verify_expire_seconds
 
-        m = "New group {!r} created with ID {!r}, filter text: {!r}".format
-        self.mylog.info(m(group_obj.name, group_obj.id, group_obj.text))
-        return group_obj
+    #     # PARAMETERS
+    #     if parameters_json_file:
+    #         add_package_obj.parameter_definition = tickle.load_param_json_file(
+    #             parameters_json_file=parameters_json_file
+    #         )
 
-    # TODO
-    def create_user(self, name, rolename=[], roleid=[], properties=[], group='', **kwargs):
-        """Create a user object
+    #     # FILES
+    #     if file_urls:
+    #         filelist_obj = tanium_ng.PackageFileList()
+    #         for file_url in file_urls:
+    #             # if :: is in file_url, split on it and use 0 as
+    #             # download_seconds
+    #             if '::' in file_url:
+    #                 download_seconds, file_url = file_url.split('::')
+    #             else:
+    #                 download_seconds = 0
+    #             # if || is in file_url, split on it and use 0 as file name
+    #             # else wise get file name from basename of URL
+    #             if '||' in file_url:
+    #                 filename, file_url = file_url.split('||')
+    #             else:
+    #                 filename = os.path.basename(file_url)
+    #             file_obj = tanium_ng.PackageFile()
+    #             file_obj.name = filename
+    #             file_obj.source = file_url
+    #             file_obj.download_seconds = download_seconds
+    #             filelist_obj.append(file_obj)
+    #         add_package_obj.files = filelist_obj
 
-        Parameters
-        ----------
-        name : str
-            * name of user to create
-        rolename : str or list of str, optional
-            * default: []
-            * name(s) of roles to add to user
-        roleid : int or list of int, optional
-            * default: []
-            * id(s) of roles to add to user
-        properties: list of list of strs, optional
-            * default: []
-            * each list must be a 2 item list:
-            * list item 1 property name
-            * list item 2 property value
-        group: str
-            * default: ''
-            * name of group to assign to user
+    #     h = "Issue an AddObject to add a Group object for this package"
+    #     package_obj = self._add(obj=add_package_obj, pytan_help=h, **clean_kwargs)
 
-        Returns
-        -------
-        user_obj : :class:`tanium_ng.user.User`
-            * tanium_ng object added to Tanium SOAP Server
-        """
-
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs)
-
-        # get the ID for the group if a name was passed in
-        if group:
-            h = "Issue a GetObject to find the ID of a group name"
-            group_id = self.get(objtype='group', name=group, pytan_help=h, **clean_kwargs)[0].id
-        else:
-            group_id = None
-
-        if roleid or rolename:
-            h = "Issue a GetObject to find a user role"
-            rolelist_obj = self.get(
-                objtype='userrole', id=roleid, name=rolename, pytan_help=h, **clean_kwargs
-            )
-        else:
-            rolelist_obj = tanium_ng.RoleList()
-
-        metadatalist_obj = tools_ng.build_metadatalist_obj(
-            properties=properties, nameprefix='TConsole.User.Property',
-        )
-        add_user_obj = tanium_ng.User()
-        add_user_obj.name = name
-        add_user_obj.roles = rolelist_obj
-        add_user_obj.metadata = metadatalist_obj
-        add_user_obj.group_id = group_id
-
-        h = "Issue an AddObject to add a User object"
-        user_obj = self._add(obj=add_user_obj, pytan_help=h, **clean_kwargs)
-
-        m = "New user {!r} created with ID {!r}, roles: {!r}".format
-        self.mylog.info(m(
-            user_obj.name, user_obj.id, [x.name for x in rolelist_obj]
-        ))
-        return user_obj
-
-    # TODO
-    def create_whitelisted_url(self, url, regex=False, download_seconds=86400, properties=[],
-                               **kwargs):
-        """Create a whitelisted url object
-
-        Parameters
-        ----------
-        url : str
-            * text of new url
-        regex : bool, optional
-            * default: False
-            * False: `url` is not a regex pattern
-            * True: `url` is a regex pattern
-        download_seconds : int, optional
-            * default: 86400
-            * how often to re-download `url`
-        properties: list of list of strs, optional
-            * default: []
-            * each list must be a 2 item list:
-            * list item 1 property name
-            * list item 2 property value
-
-        Returns
-        -------
-        url_obj : :class:`tanium_ng.white_listed_url.WhiteListedUrl`
-            * tanium_ng object added to Tanium SOAP Server
-        """
-
-        if regex:
-            url = 'regex:' + url
-
-        metadatalist_obj = tools_ng.build_metadatalist_obj(
-            properties=properties, nameprefix='TConsole.WhitelistedURL',
-        )
-
-        add_url_obj = tanium_ng.WhiteListedUrl()
-        add_url_obj.url_regex = url
-        add_url_obj.download_seconds = download_seconds
-        add_url_obj.metadata = metadatalist_obj
-
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs)
-
-        h = "Issue an AddObject to add a WhitelistedURL object"
-        url_obj = self._add(obj=add_url_obj, pytan_help=h, **clean_kwargs)
-
-        m = "New Whitelisted URL {!r} created with ID {!r}".format
-        self.mylog.info(m(url_obj.url_regex, url_obj.id))
-        return url_obj
+    #     m = "New package {!r} created with ID {!r}, command: {!r}".format
+    #     self.mylog.info(m(package_obj.name, package_obj.id, package_obj.command))
+    #     return package_obj
 
     # TODO
-    def export_obj(self, obj, export_format='csv', **kwargs):
-        """Exports a python API object to a given export format
+    # def create_group(self, groupname, filters=[], filter_options=[], **kwargs):
+    #     """Create a group object
 
-        Parameters
-        ----------
-        obj : :class:`tanium_ng.base.BaseType` or
-            :class:`tanium_ng.result_set.ResultSet`
-            * tanium_ng object to export
-        export_format : str, optional
-            * default: 'csv'
-            * the format to export `obj` to, one of: {'csv', 'xml', 'json'}
-        header_sort : list of str, bool, optional
-            * default: True
-            * for `export_format` csv and `obj` types
-            :class:`tanium_ng.base.BaseType`
-            :class:`tanium_ng.result_set.ResultSet`
-            * True: sort the headers automatically
-            * False: do not sort the headers at all
-            * list of str: sort the headers returned by priority based on provided list
-        header_add_sensor : bool, optional
-            * default: False
-            * for `export_format` csv and `obj` type
-             :class:`tanium_ng.result_set.ResultSet`
-            * False: do not prefix the headers with the associated sensor name for each column
-            * True: prefix the headers with the associated sensor name for each column
-        header_add_type : bool, optional
-            * default: False
-            * for `export_format` csv and `obj` type
-             :class:`tanium_ng.result_set.ResultSet`
-            * False: do not postfix the headers with the result type for each column
-            * True: postfix the headers with the result type for each column
-        expand_grouped_columns : bool, optional
-            * default: False
-            * for `export_format` csv and `obj` type
-            :class:`tanium_ng.result_set.ResultSet`
-            * False: do not expand multiline row entries into their own rows
-            * True: expand multiline row entries into their own rows
-        explode_json_string_values : bool, optional
-            * default: False
-            * for `export_format` json or csv and `obj` type
-            :class:`tanium_ng.base.BaseType`
-            * False: do not explode JSON strings in object attributes into their own object
-            attributes
-            * True: explode JSON strings in object attributes into their own object attributes
-        minimal : bool, optional
-            * default: False
-            * for `export_format` xml and `obj` type
-            :class:`tanium_ng.base.BaseType`
-            * False: include empty attributes in XML output
-            * True: do not include empty attributes in XML output
+    #     Parameters
+    #     ----------
+    #     groupname : str
+    #         * name of group to create
+    #     filters : str or list of str, optional
+    #         * default: []
+    #         * each string must describe a filter
+    #     filter_options : str or list of str, optional
+    #         * default: []
+    #         * each string must describe an option for `filters`
+    #     filters_help : bool, optional
+    #         * default: False
+    #         * False: do not print the help string for filters
+    #         * True: print the help string for filters and exit
+    #     options_help : bool, optional
+    #         * default: False
+    #         * False: do not print the help string for options
+    #         * True: print the help string for options and exit
 
-        Returns
-        -------
-        result : str
-            * the contents of exporting `export_format`
+    #     Returns
+    #     -------
+    #     group_obj : :class:`tanium_ng.group.Group`
+    #         * tanium_ng object added to Tanium SOAP Server
 
-        Notes
-        -----
-        When performing a CSV export and importing that CSV into excel, keep in mind that Excel
-        has a per cell character limit of 32,000. Any cell larger than that will be broken up into
-        a whole new row, which can wreak havoc with data in Excel.
+    #     See Also
+    #     --------
+    #     :data:`constants.FILTER_MAPS` : valid filters for filters
+    #     :data:`constants.OPTION_MAPS` : valid options for filter_options
+    #     """
 
-        See Also
-        --------
-        :data:`utils.constants.EXPORT_MAPS` : maps the type `obj` to `export_format` and the
-        optional args supported for each
-        """
+    #     helpers.check_for_help(kwargs=kwargs)
+    #     clean_kwargs = validate.clean_kwargs(kwargs=kwargs)
 
-        objtype = type(obj)
-        try:
-            objclassname = objtype.__name__
-        except:
-            objclassname = 'Unknown'
+    #     filter_defs = parsers.parse_filters(filters=filters)
+    #     option_defs = parsers.parse_options(options=filter_options)
 
-        # see if supplied obj is a supported object type
-        type_match = [
-            x for x in utils.constants.EXPORT_MAPS if isinstance(obj, getattr(tanium_ng, x))
-        ]
+    #     h = (
+    #         "Issue a GetObject to get the full object of specified sensors for inclusion in a "
+    #         "group"
+    #     )
+    #     filter_defs = self._get_sensor_defs(defs=filter_defs, pytan_help=h, **clean_kwargs)
 
-        if not type_match:
-            err = (
-                "{} not a supported object to export, must be one of: {}"
-            ).format
+    #     add_group_obj = tickle.build_group_obj(
+    #         filter_defs=filter_defs, option_defs=option_defs,
+    #     )
+    #     add_group_obj.name = groupname
 
-            # build a list of supported object types
-            supp_types = ', '.join(utils.constants.EXPORT_MAPS.keys())
-            raise utils.exceptions.PytanError(err(objtype, supp_types))
+    #     h = "Issue an AddObject to add a Group object"
+    #     group_obj = self._add(obj=add_group_obj, pytan_help=h, **clean_kwargs)
 
-        # get the export formats for this obj type
-        export_formats = utils.constants.EXPORT_MAPS.get(type_match[0], '')
-
-        if export_format not in export_formats:
-            err = (
-                "{!r} not a supported export format for {}, must be one of: {}"
-            ).format(export_format, objclassname, ', '.join(export_formats))
-            raise utils.exceptions.PytanError(err)
-
-        # perform validation on optional kwargs, if they exist
-        opt_keys = export_formats.get(export_format, [])
-
-        for opt_key in opt_keys:
-            check_args = dict(list(opt_key.items()) + {'d': kwargs}.items())
-            utils.validate.check_dictkey(**check_args)
-
-        # filter out the kwargs that are specific to this obj type and format type
-        format_kwargs = {
-            k: v for k, v in kwargs.items()
-            if k in [a['key'] for a in opt_keys]
-        }
-
-        # run the handler that is specific to this objtype, if it exists
-        class_method_str = '_export_class_' + type_match[0]
-        class_handler = getattr(self, class_method_str, '')
-
-        if class_handler:
-            result = class_handler(obj=obj, export_format=export_format, **format_kwargs)
-        else:
-            err = "{!r} not supported by Handler!".format
-            raise utils.exceptions.PytanError(err(objclassname))
-
-        return result
+    #     m = "New group {!r} created with ID {!r}, filter text: {!r}".format
+    #     self.mylog.info(m(group_obj.name, group_obj.id, group_obj.text))
+    #     return group_obj
 
     # TODO
-    def create_report_file(self, contents, report_file=None, **kwargs):
-        """Exports a python API object to a file
+    # def create_user(self, name, rolename=[], roleid=[], properties=[], group='', **kwargs):
+    #     """Create a user object
 
-        Parameters
-        ----------
-        contents : str
-            * contents to write to `report_file`
-        report_file : str, optional
-            * filename to save report as
-        report_dir : str, optional
-            * default: None
-            * directory to save report in, will use current working directory if not supplied
-        prefix : str, optional
-            * default: ''
-            * prefix to add to `report_file`
-        postfix : str, optional
-            * default: ''
-            * postfix to add to `report_file`
+    #     Parameters
+    #     ----------
+    #     name : str
+    #         * name of user to create
+    #     rolename : str or list of str, optional
+    #         * default: []
+    #         * name(s) of roles to add to user
+    #     roleid : int or list of int, optional
+    #         * default: []
+    #         * id(s) of roles to add to user
+    #     properties: list of list of strs, optional
+    #         * default: []
+    #         * each list must be a 2 item list:
+    #         * list item 1 property name
+    #         * list item 2 property value
+    #     group: str
+    #         * default: ''
+    #         * name of group to assign to user
 
-        Returns
-        -------
-        report_path : str
-            * the full path to the file created with `contents`
-        """
+    #     Returns
+    #     -------
+    #     user_obj : :class:`tanium_ng.user.User`
+    #         * tanium_ng object added to Tanium SOAP Server
+    #     """
 
-        if report_file is None:
-            report_file = 'pytan_report_{}.txt'.format(utils.tools.get_now())
+    #     clean_kwargs = validate.clean_kwargs(kwargs=kwargs)
 
-        # try to get report_dir from the report_file
-        report_dir = os.path.dirname(report_file)
+    #     # get the ID for the group if a name was passed in
+    #     if group:
+    #         h = "Issue a GetObject to find the ID of a group name"
+    #         group_id = self.get(objtype='group', name=group, pytan_help=h, **clean_kwargs)[0].id
+    #     else:
+    #         group_id = None
 
-        # try to get report_dir from kwargs
-        if not report_dir:
-            report_dir = kwargs.get('report_dir', None)
+    #     if roleid or rolename:
+    #         h = "Issue a GetObject to find a user role"
+    #         rolelist_obj = self.get(
+    #             objtype='userrole', id=roleid, name=rolename, pytan_help=h, **clean_kwargs
+    #         )
+    #     else:
+    #         rolelist_obj = tanium_ng.RoleList()
 
-        # just use current working dir
-        if not report_dir:
-            report_dir = os.getcwd()
+    #     metadatalist_obj = tickle.build_metadatalist_obj(
+    #         properties=properties, nameprefix='TConsole.User.Property',
+    #     )
+    #     add_user_obj = tanium_ng.User()
+    #     add_user_obj.name = name
+    #     add_user_obj.roles = rolelist_obj
+    #     add_user_obj.metadata = metadatalist_obj
+    #     add_user_obj.group_id = group_id
 
-        # make report_dir if it doesnt exist
-        if not os.path.isdir(report_dir):
-            os.makedirs(report_dir)
+    #     h = "Issue an AddObject to add a User object"
+    #     user_obj = self._add(obj=add_user_obj, pytan_help=h, **clean_kwargs)
 
-        # remove any path from report_file
-        report_file = os.path.basename(report_file)
-
-        # if prefix/postfix, add to report_file
-        prefix = kwargs.get('prefix', '')
-        postfix = kwargs.get('postfix', '')
-        report_file, report_ext = os.path.splitext(report_file)
-        report_file = '{}{}{}{}'.format(prefix, report_file, postfix, report_ext)
-
-        # join the report_dir and report_file to come up with report_path
-        report_path = os.path.join(report_dir, report_file)
-
-        with open(report_path, 'wb') as fd:
-            fd.write(contents)
-
-        m = "Report file {!r} written with {} bytes".format
-        self.mylog.info(m(report_path, len(contents)))
-        return report_path
+    #     m = "New user {!r} created with ID {!r}, roles: {!r}".format
+    #     self.mylog.info(m(
+    #         user_obj.name, user_obj.id, [x.name for x in rolelist_obj]
+    #     ))
+    #     return user_obj
 
     # TODO
-    def export_to_report_file(self, obj, export_format='csv', **kwargs):
-        """Exports a python API object to a file
+    # def create_whitelisted_url(self, url, regex=False, download_seconds=86400, properties=[],
+    #                            **kwargs):
+    #     """Create a whitelisted url object
 
-        Parameters
-        ----------
-        obj :
-        :class:`tanium_ng.base.BaseType`
-        :class:`tanium_ng.result_set.ResultSet`
-            * tanium_ng object to export
-        export_format : str, optional
-            * default: 'csv'
-            * the format to export `obj` to, one of: {'csv', 'xml', 'json'}
-        header_sort : list of str, bool, optional
-            * default: True
-            * for `export_format` csv and `obj` types
-            :class:`tanium_ng.base.BaseType`
-            :class:`tanium_ng.result_set.ResultSet`
-            * True: sort the headers automatically
-            * False: do not sort the headers at all
-            * list of str: sort the headers returned by priority based on provided list
-        header_add_sensor : bool, optional
-            * default: False
-            * for `export_format` csv and `obj` type
-            :class:`tanium_ng.result_set.ResultSet`
-            * False: do not prefix the headers with the associated sensor name for each column
-            * True: prefix the headers with the associated sensor name for each column
-        header_add_type : bool, optional
-            * default: False
-            * for `export_format` csv and `obj`
-            :class:`tanium_ng.result_set.ResultSet`
-            * False: do not postfix the headers with the result type for each column
-            * True: postfix the headers with the result type for each column
-        expand_grouped_columns : bool, optional
-            * default: False
-            * for `export_format` csv and `obj`
-            :class:`tanium_ng.result_set.ResultSet`
-            * False: do not expand multiline row entries into their own rows
-            * True: expand multiline row entries into their own rows
-        explode_json_string_values : bool, optional
-            * default: False
-            * for `export_format` json or csv and `obj` type
-            :class:`tanium_ng.base.BaseType`
-            * False: do not explode JSON strings in object attributes into their own object
-            attributes
-            * True: explode JSON strings in object attributes into their own object attributes
-        minimal : bool, optional
-            * default: False
-            * for `export_format` xml and `obj` type
-             :class:`tanium_ng.base.BaseType`
-            * False: include empty attributes in XML output
-            * True: do not include empty attributes in XML output
-        report_file: str, optional
-            * default: None
-            * filename to save report as, will be automatically generated if not supplied
-        report_dir: str, optional
-            * default: None
-            * directory to save report in, will use current working directory if not supplied
-        prefix: str, optional
-            * default: ''
-            * prefix to add to `report_file`
-        postfix: str, optional
-            * default: ''
-            * postfix to add to `report_file`
+    #     Parameters
+    #     ----------
+    #     url : str
+    #         * text of new url
+    #     regex : bool, optional
+    #         * default: False
+    #         * False: `url` is not a regex pattern
+    #         * True: `url` is a regex pattern
+    #     download_seconds : int, optional
+    #         * default: 86400
+    #         * how often to re-download `url`
+    #     properties: list of list of strs, optional
+    #         * default: []
+    #         * each list must be a 2 item list:
+    #         * list item 1 property name
+    #         * list item 2 property value
 
-        Returns
-        -------
-        report_path, result : tuple
-            * report_path : str, the full path to the file created with contents of `result`
-            * result : str, the contents written to report_path
+    #     Returns
+    #     -------
+    #     url_obj : :class:`tanium_ng.white_listed_url.WhiteListedUrl`
+    #         * tanium_ng object added to Tanium SOAP Server
+    #     """
 
-        See Also
-        --------
-        :func:`pytan.handler.Handler.export_obj` : method that performs the actual work to do the
-        exporting
-        :func:`pytan.handler.Handler.create_report_file` : method that performs the actual work to
-        write the report file
+    #     if regex:
+    #         url = 'regex:' + url
 
-        Notes
-        -----
-        When performing a CSV export and importing that CSV into excel, keep in mind that Excel
-        has a per cell character limit of 32,000. Any cell larger than that will be broken up into
-        a whole new row, which can wreak havoc with data in Excel.
-        """
+    #     metadatalist_obj = tickle.build_metadatalist_obj(
+    #         properties=properties, nameprefix='TConsole.WhitelistedURL',
+    #     )
 
-        report_file = kwargs.get('report_file', None)
+    #     add_url_obj = tanium_ng.WhiteListedUrl()
+    #     add_url_obj.url_regex = url
+    #     add_url_obj.download_seconds = download_seconds
+    #     add_url_obj.metadata = metadatalist_obj
 
-        if not report_file:
-            report_file = "{}_{}.{}".format(
-                type(obj).__name__, utils.tools.get_now(), export_format,
-            )
-            m = "No report file name supplied, generated name: {!r}".format
-            self.mylog.debug(m(report_file))
+    #     clean_kwargs = validate.clean_kwargs(kwargs=kwargs)
 
-        clean_keys = ['obj', 'export_format', 'contents', 'report_file']
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+    #     h = "Issue an AddObject to add a WhitelistedURL object"
+    #     url_obj = self._add(obj=add_url_obj, pytan_help=h, **clean_kwargs)
 
-        # get the results of exporting the object
-        contents = self.export_obj(obj=obj, export_format=export_format, **clean_kwargs)
-        report_path = self.create_report_file(
-            report_file=report_file, contents=contents, **clean_kwargs
-        )
-        return report_path, contents
+    #     m = "New Whitelisted URL {!r} created with ID {!r}".format
+    #     self.mylog.info(m(url_obj.url_regex, url_obj.id))
+    #     return url_obj
+
+    # TODO
+    # def export_obj(self, obj, export_format='csv', **kwargs):
+    #     """Exports a python API object to a given export format
+
+    #     Parameters
+    #     ----------
+    #     obj : :class:`tanium_ng.base.BaseType` or
+    #         :class:`tanium_ng.result_set.ResultSet`
+    #         * tanium_ng object to export
+    #     export_format : str, optional
+    #         * default: 'csv'
+    #         * the format to export `obj` to, one of: {'csv', 'xml', 'json'}
+    #     header_sort : list of str, bool, optional
+    #         * default: True
+    #         * for `export_format` csv and `obj` types
+    #         :class:`tanium_ng.base.BaseType`
+    #         :class:`tanium_ng.result_set.ResultSet`
+    #         * True: sort the headers automatically
+    #         * False: do not sort the headers at all
+    #         * list of str: sort the headers returned by priority based on provided list
+    #     header_add_sensor : bool, optional
+    #         * default: False
+    #         * for `export_format` csv and `obj` type
+    #          :class:`tanium_ng.result_set.ResultSet`
+    #         * False: do not prefix the headers with the associated sensor name for each column
+    #         * True: prefix the headers with the associated sensor name for each column
+    #     header_add_type : bool, optional
+    #         * default: False
+    #         * for `export_format` csv and `obj` type
+    #          :class:`tanium_ng.result_set.ResultSet`
+    #         * False: do not postfix the headers with the result type for each column
+    #         * True: postfix the headers with the result type for each column
+    #     expand_grouped_columns : bool, optional
+    #         * default: False
+    #         * for `export_format` csv and `obj` type
+    #         :class:`tanium_ng.result_set.ResultSet`
+    #         * False: do not expand multiline row entries into their own rows
+    #         * True: expand multiline row entries into their own rows
+    #     explode_json_string_values : bool, optional
+    #         * default: False
+    #         * for `export_format` json or csv and `obj` type
+    #         :class:`tanium_ng.base.BaseType`
+    #         * False: do not explode JSON strings in object attributes into their own object
+    #         attributes
+    #         * True: explode JSON strings in object attributes into their own object attributes
+    #     minimal : bool, optional
+    #         * default: False
+    #         * for `export_format` xml and `obj` type
+    #         :class:`tanium_ng.base.BaseType`
+    #         * False: include empty attributes in XML output
+    #         * True: do not include empty attributes in XML output
+
+    #     Returns
+    #     -------
+    #     result : str
+    #         * the contents of exporting `export_format`
+
+    #     Notes
+    #     -----
+    #     When performing a CSV export and importing that CSV into excel, keep in mind that Excel
+    #     has a per cell character limit of 32,000. Any cell larger than that will be broken up into
+    #     a whole new row, which can wreak havoc with data in Excel.
+
+    #     See Also
+    #     --------
+    #     :data:`constants.EXPORT_MAPS` : maps the type `obj` to `export_format` and the
+    #     optional args supported for each
+    #     """
+
+    #     objtype = type(obj)
+    #     try:
+    #         objclassname = objtype.__name__
+    #     except:
+    #         objclassname = 'Unknown'
+
+    #     # see if supplied obj is a supported object type
+    #     type_match = [
+    #         x for x in constants.EXPORT_MAPS if isinstance(obj, getattr(tanium_ng, x))
+    #     ]
+
+    #     if not type_match:
+    #         err = (
+    #             "{} not a supported object to export, must be one of: {}"
+    #         ).format
+
+    #         # build a list of supported object types
+    #         supp_types = ', '.join(constants.EXPORT_MAPS.keys())
+    #         raise exceptions.PytanError(err(objtype, supp_types))
+
+    #     # get the export formats for this obj type
+    #     export_formats = constants.EXPORT_MAPS.get(type_match[0], '')
+
+    #     if export_format not in export_formats:
+    #         err = (
+    #             "{!r} not a supported export format for {}, must be one of: {}"
+    #         ).format(export_format, objclassname, ', '.join(export_formats))
+    #         raise exceptions.PytanError(err)
+
+    #     # perform validation on optional kwargs, if they exist
+    #     opt_keys = export_formats.get(export_format, [])
+
+    #     for opt_key in opt_keys:
+    #         check_args = dict(list(opt_key.items()) + {'d': kwargs}.items())
+    #         validate.check_dictkey(**check_args)
+
+    #     # filter out the kwargs that are specific to this obj type and format type
+    #     format_kwargs = {
+    #         k: v for k, v in kwargs.items()
+    #         if k in [a['key'] for a in opt_keys]
+    #     }
+
+    #     # run the handler that is specific to this objtype, if it exists
+    #     class_method_str = '_export_class_' + type_match[0]
+    #     class_handler = getattr(self, class_method_str, '')
+
+    #     if class_handler:
+    #         result = class_handler(obj=obj, export_format=export_format, **format_kwargs)
+    #     else:
+    #         err = "{!r} not supported by Handler!".format
+    #         raise exceptions.PytanError(err(objclassname))
+
+    #     return result
+
+    # TODO
+    # def create_report_file(self, contents, report_file=None, **kwargs):
+    #     """Exports a python API object to a file
+
+    #     Parameters
+    #     ----------
+    #     contents : str
+    #         * contents to write to `report_file`
+    #     report_file : str, optional
+    #         * filename to save report as
+    #     report_dir : str, optional
+    #         * default: None
+    #         * directory to save report in, will use current working directory if not supplied
+    #     prefix : str, optional
+    #         * default: ''
+    #         * prefix to add to `report_file`
+    #     postfix : str, optional
+    #         * default: ''
+    #         * postfix to add to `report_file`
+
+    #     Returns
+    #     -------
+    #     report_path : str
+    #         * the full path to the file created with `contents`
+    #     """
+
+    #     if report_file is None:
+    #         report_file = 'pytan_report_{}.txt'.format(tools.get_now())
+
+    #     # try to get report_dir from the report_file
+    #     report_dir = os.path.dirname(report_file)
+
+    #     # try to get report_dir from kwargs
+    #     if not report_dir:
+    #         report_dir = kwargs.get('report_dir', None)
+
+    #     # just use current working dir
+    #     if not report_dir:
+    #         report_dir = os.getcwd()
+
+    #     # make report_dir if it doesnt exist
+    #     if not os.path.isdir(report_dir):
+    #         os.makedirs(report_dir)
+
+    #     # remove any path from report_file
+    #     report_file = os.path.basename(report_file)
+
+    #     # if prefix/postfix, add to report_file
+    #     prefix = kwargs.get('prefix', '')
+    #     postfix = kwargs.get('postfix', '')
+    #     report_file, report_ext = os.path.splitext(report_file)
+    #     report_file = '{}{}{}{}'.format(prefix, report_file, postfix, report_ext)
+
+    #     # join the report_dir and report_file to come up with report_path
+    #     report_path = os.path.join(report_dir, report_file)
+
+    #     with open(report_path, 'wb') as fd:
+    #         fd.write(contents)
+
+    #     m = "Report file {!r} written with {} bytes".format
+    #     self.mylog.info(m(report_path, len(contents)))
+    #     return report_path
+
+    # TODO
+    # def export_to_report_file(self, obj, export_format='csv', **kwargs):
+    #     """Exports a python API object to a file
+
+    #     Parameters
+    #     ----------
+    #     obj :
+    #     :class:`tanium_ng.base.BaseType`
+    #     :class:`tanium_ng.result_set.ResultSet`
+    #         * tanium_ng object to export
+    #     export_format : str, optional
+    #         * default: 'csv'
+    #         * the format to export `obj` to, one of: {'csv', 'xml', 'json'}
+    #     header_sort : list of str, bool, optional
+    #         * default: True
+    #         * for `export_format` csv and `obj` types
+    #         :class:`tanium_ng.base.BaseType`
+    #         :class:`tanium_ng.result_set.ResultSet`
+    #         * True: sort the headers automatically
+    #         * False: do not sort the headers at all
+    #         * list of str: sort the headers returned by priority based on provided list
+    #     header_add_sensor : bool, optional
+    #         * default: False
+    #         * for `export_format` csv and `obj` type
+    #         :class:`tanium_ng.result_set.ResultSet`
+    #         * False: do not prefix the headers with the associated sensor name for each column
+    #         * True: prefix the headers with the associated sensor name for each column
+    #     header_add_type : bool, optional
+    #         * default: False
+    #         * for `export_format` csv and `obj`
+    #         :class:`tanium_ng.result_set.ResultSet`
+    #         * False: do not postfix the headers with the result type for each column
+    #         * True: postfix the headers with the result type for each column
+    #     expand_grouped_columns : bool, optional
+    #         * default: False
+    #         * for `export_format` csv and `obj`
+    #         :class:`tanium_ng.result_set.ResultSet`
+    #         * False: do not expand multiline row entries into their own rows
+    #         * True: expand multiline row entries into their own rows
+    #     explode_json_string_values : bool, optional
+    #         * default: False
+    #         * for `export_format` json or csv and `obj` type
+    #         :class:`tanium_ng.base.BaseType`
+    #         * False: do not explode JSON strings in object attributes into their own object
+    #         attributes
+    #         * True: explode JSON strings in object attributes into their own object attributes
+    #     minimal : bool, optional
+    #         * default: False
+    #         * for `export_format` xml and `obj` type
+    #          :class:`tanium_ng.base.BaseType`
+    #         * False: include empty attributes in XML output
+    #         * True: do not include empty attributes in XML output
+    #     report_file: str, optional
+    #         * default: None
+    #         * filename to save report as, will be automatically generated if not supplied
+    #     report_dir: str, optional
+    #         * default: None
+    #         * directory to save report in, will use current working directory if not supplied
+    #     prefix: str, optional
+    #         * default: ''
+    #         * prefix to add to `report_file`
+    #     postfix: str, optional
+    #         * default: ''
+    #         * postfix to add to `report_file`
+
+    #     Returns
+    #     -------
+    #     report_path, result : tuple
+    #         * report_path : str, the full path to the file created with contents of `result`
+    #         * result : str, the contents written to report_path
+
+    #     See Also
+    #     --------
+    #     :func:`pytan.handler.Handler.export_obj` : method that performs the actual work to do the
+    #     exporting
+    #     :func:`pytan.handler.Handler.create_report_file` : method that performs the actual work to
+    #     write the report file
+
+    #     Notes
+    #     -----
+    #     When performing a CSV export and importing that CSV into excel, keep in mind that Excel
+    #     has a per cell character limit of 32,000. Any cell larger than that will be broken up into
+    #     a whole new row, which can wreak havoc with data in Excel.
+    #     """
+
+    #     report_file = kwargs.get('report_file', None)
+
+    #     if not report_file:
+    #         report_file = "{}_{}.{}".format(
+    #             type(obj).__name__, tools.get_now(), export_format,
+    #         )
+    #         m = "No report file name supplied, generated name: {!r}".format
+    #         self.mylog.debug(m(report_file))
+
+    #     clean_keys = ['obj', 'export_format', 'contents', 'report_file']
+    #     clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+
+    #     # get the results of exporting the object
+    #     contents = self.export_obj(obj=obj, export_format=export_format, **clean_kwargs)
+    #     report_path = self.create_report_file(
+    #         report_file=report_file, contents=contents, **clean_kwargs
+    #     )
+    #     return report_path, contents
 
     # get objects
     def delete_groups(self, *args, **kwargs):
@@ -1868,14 +1868,14 @@ class Handler(object):
 
         if use_filters:
             # get objects using cache filter
-            kwargs['pytan_help'] = utils.helpstr.GETF.format(all_class.__name__)
+            kwargs['pytan_help'] = helpstr.GETF.format(all_class.__name__)
             result = self._find_filter(**kwargs)
         else:
             # get all objects
-            kwargs['pytan_help'] = utils.helpstr.GET.format(all_class.__name__)
+            kwargs['pytan_help'] = helpstr.GET.format(all_class.__name__)
             result = self.session.find(**kwargs)
             kwargs['objects'] = result
-            tools_ng.check_limits(**kwargs)
+            tickle.check_limits(**kwargs)
 
         if limit_exact is not None:
             # if just one item returned and limit_exact == 1, return result as a single item
@@ -1982,7 +1982,7 @@ class Handler(object):
             # TODO: AWAITING MANUAL PARSER
             # validate & parse a string into a spec
             # if not isinstance(spec, (dict,)):
-            #     spec = utils.parsers.get_str(spec)
+            #     spec = parsers.get_str(spec)
 
             parser = parsers.GetObject
             # validate & parse the specs
@@ -1995,7 +1995,7 @@ class Handler(object):
             kwargs['obj'] = self._fixit_group_id(**kwargs)
 
             # create a cache filter list object using the parsed_specs
-            kwargs['cache_filters'] = tools_ng.create_cf_listobj(parsed_specs)
+            kwargs['cache_filters'] = tickle.create_cf_listobj(parsed_specs)
 
             # use getobject to find the results using the cache_filters to limit the returns
             cf_result = self.session.find(**kwargs)
@@ -2020,7 +2020,7 @@ class Handler(object):
         result = self._fixit_broken_filter(**kwargs)
 
         kwargs['objects'] = result
-        tools_ng.check_limits(**kwargs)
+        tickle.check_limits(**kwargs)
         return result
 
     def _add(self, obj, **kwargs):
@@ -2047,7 +2047,7 @@ class Handler(object):
         m = m.format(search_str)
         self.mylog.debug(m)
 
-        kwargs['pytan_help'] = utils.helpstr.ADD.format(obj.__class__.__name__)
+        kwargs['pytan_help'] = helpstr.ADD.format(obj.__class__.__name__)
         kwargs['obj'] = obj
 
         try:
@@ -2062,7 +2062,7 @@ class Handler(object):
         m = m.format(added_obj)
         self.mylog.debug(m)
 
-        kwargs['pytan_help'] = utils.helpstr.ADDGET.format(obj.__class__.__name__)
+        kwargs['pytan_help'] = helpstr.ADDGET.format(obj.__class__.__name__)
         kwargs['obj'] = added_obj
 
         try:
@@ -2089,7 +2089,7 @@ class Handler(object):
     def _delete(self, obj, **kwargs):
         """pass."""
         kwargs['obj'] = obj
-        kwargs['pytan_help'] = kwargs.get('pytan_help', utils.helpstr.DEL)
+        kwargs['pytan_help'] = kwargs.get('pytan_help', helpstr.DEL)
         result = self.session.delete(**kwargs)
         m = "Deleted '{}'"
         m = m.format(result)
@@ -2097,177 +2097,177 @@ class Handler(object):
         return result
 
     # TODO
-    def _export_class_BaseType(self, obj, export_format, **kwargs): # noqa
-        """Handles exporting :class:`tanium_ng.base.BaseType`
+    # def _export_class_BaseType(self, obj, export_format, **kwargs): # noqa
+    #     """Handles exporting :class:`tanium_ng.base.BaseType`
 
-        Parameters
-        ----------
-        obj : :class:`tanium_ng.base.BaseType`
-            * tanium_ng object to export
-        export_format : str
-            * str of format to perform export in
+    #     Parameters
+    #     ----------
+    #     obj : :class:`tanium_ng.base.BaseType`
+    #         * tanium_ng object to export
+    #     export_format : str
+    #         * str of format to perform export in
 
-        Returns
-        -------
-        result : str
-           * results of exporting `obj` into format `export_format`
-        """
-        # run the handler that is specific to this export_format, if it exists
-        format_method_str = '_export_format_' + export_format
-        format_handler = getattr(self, format_method_str, '')
+    #     Returns
+    #     -------
+    #     result : str
+    #        * results of exporting `obj` into format `export_format`
+    #     """
+    #     # run the handler that is specific to this export_format, if it exists
+    #     format_method_str = '_export_format_' + export_format
+    #     format_handler = getattr(self, format_method_str, '')
 
-        clean_keys = ['obj']
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+    #     clean_keys = ['obj']
+    #     clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
-        if format_handler:
-            result = format_handler(obj=obj, **clean_kwargs)
-        else:
-            err = "{!r} not coded for in Handler!".format
-            raise utils.exceptions.PytanError(err(export_format))
+    #     if format_handler:
+    #         result = format_handler(obj=obj, **clean_kwargs)
+    #     else:
+    #         err = "{!r} not coded for in Handler!".format
+    #         raise exceptions.PytanError(err(export_format))
 
-        return result
-
-    # TODO
-    def _export_class_ResultSet(self, obj, export_format, **kwargs): # noqa
-        """Handles exporting :class:`tanium_ng.result_set.ResultSet`
-
-        Parameters
-        ----------
-        obj : :class:`tanium_ng.result_set.ResultSet`
-            * tanium_ng object to export
-        export_format : str
-            * str of format to perform export in
-
-        Returns
-        -------
-        result : str
-           * results of exporting `obj` into format `export_format`
-        """
-
-        """
-        ensure kwargs[sensors] has all the sensors that correlate
-        to the what_hash of each column, but only if header_add_sensor=True
-        needed for: ResultSet.write_csv(header_add_sensor=True)
-        """
-        header_add_sensor = kwargs.get('header_add_sensor', False)
-        sensors = kwargs.get('sensors', []) or getattr(obj, 'sensors', [])
-
-        clean_keys = ['objtype', 'hash', 'obj']
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
-
-        if header_add_sensor and export_format == 'csv':
-            clean_kwargs['sensors'] = sensors
-            sensor_hashes = [x.hash for x in sensors]
-            column_hashes = [x.what_hash for x in obj.columns]
-            missing_hashes = [
-                x for x in column_hashes if x not in sensor_hashes and x > 1
-            ]
-            if missing_hashes:
-                missing_sensors = self.get(objtype='sensor', hash=missing_hashes, **clean_kwargs)
-                clean_kwargs['sensors'] += list(missing_sensors)
-
-        # run the handler that is specific to this export_format, if it exists
-        format_method_str = '_export_format_' + export_format
-        format_handler = getattr(self, format_method_str, '')
-
-        if format_handler:
-            result = format_handler(obj=obj, **clean_kwargs)
-        else:
-            err = "{!r} not coded for in Handler!".format
-            raise utils.exceptions.PytanError(err(export_format))
-
-        return result
+    #     return result
 
     # TODO
-    def _export_format_csv(self, obj, **kwargs):
-        """Handles exporting format: CSV
+    # def _export_class_ResultSet(self, obj, export_format, **kwargs): # noqa
+    #     """Handles exporting :class:`tanium_ng.result_set.ResultSet`
 
-        Parameters
-        ----------
-        obj : :class:`tanium_ng.result_set.ResultSet`
-         :class:`tanium_ng.base.BaseType`
-            * tanium_ng object to export
+    #     Parameters
+    #     ----------
+    #     obj : :class:`tanium_ng.result_set.ResultSet`
+    #         * tanium_ng object to export
+    #     export_format : str
+    #         * str of format to perform export in
 
-        Returns
-        -------
-        result : str
-           * results of exporting `obj` into csv format
-        """
+    #     Returns
+    #     -------
+    #     result : str
+    #        * results of exporting `obj` into format `export_format`
+    #     """
 
-        if not hasattr(obj, 'write_csv'):
-            err = "{!r} has no write_csv() method!".format
-            raise utils.exceptions.PytanError(err(obj))
+    #     """
+    #     ensure kwargs[sensors] has all the sensors that correlate
+    #     to the what_hash of each column, but only if header_add_sensor=True
+    #     needed for: ResultSet.write_csv(header_add_sensor=True)
+    #     """
+    #     header_add_sensor = kwargs.get('header_add_sensor', False)
+    #     sensors = kwargs.get('sensors', []) or getattr(obj, 'sensors', [])
 
-        out = io.BytesIO()
+    #     clean_keys = ['objtype', 'hash', 'obj']
+    #     clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
-        clean_keys = ['fd', 'val']
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+    #     if header_add_sensor and export_format == 'csv':
+    #         clean_kwargs['sensors'] = sensors
+    #         sensor_hashes = [x.hash for x in sensors]
+    #         column_hashes = [x.what_hash for x in obj.columns]
+    #         missing_hashes = [
+    #             x for x in column_hashes if x not in sensor_hashes and x > 1
+    #         ]
+    #         if missing_hashes:
+    #             missing_sensors = self.get(objtype='sensor', hash=missing_hashes, **clean_kwargs)
+    #             clean_kwargs['sensors'] += list(missing_sensors)
 
-        if getattr(obj, '_list_properties', ''):
-            result = obj.write_csv(fd=out, val=list(obj), **clean_kwargs)
-        else:
-            result = obj.write_csv(fd=out, val=obj, **clean_kwargs)
+    #     # run the handler that is specific to this export_format, if it exists
+    #     format_method_str = '_export_format_' + export_format
+    #     format_handler = getattr(self, format_method_str, '')
 
-        result = out.getvalue()
-        return result
+    #     if format_handler:
+    #         result = format_handler(obj=obj, **clean_kwargs)
+    #     else:
+    #         err = "{!r} not coded for in Handler!".format
+    #         raise exceptions.PytanError(err(export_format))
 
-    # TODO
-    def _export_format_json(self, obj, **kwargs):
-        """Handles exporting format: JSON
-
-        Parameters
-        ----------
-        obj : :class:`tanium_ng.result_set.ResultSet`
-        :class:`tanium_ng.base.BaseType`
-            * tanium_ng object to export
-
-        Returns
-        -------
-        result : str
-           * results of exporting `obj` into json format
-        """
-
-        if not hasattr(obj, 'to_json'):
-            err = "{!r} has no to_json() method!".format
-            raise utils.exceptions.PytanError(err(obj))
-
-        clean_keys = ['jsonable']
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
-
-        result = obj.to_json(jsonable=obj, **clean_kwargs)
-        return result
+    #     return result
 
     # TODO
-    def _export_format_xml(self, obj, **kwargs):
-        """Handles exporting format: XML
+    # def _export_format_csv(self, obj, **kwargs):
+    #     """Handles exporting format: CSV
 
-        Parameters
-        ----------
-        obj : :class:`tanium_ng.result_set.ResultSet`
-        :class:`tanium_ng.base.BaseType`
-            * tanium_ng object to export
+    #     Parameters
+    #     ----------
+    #     obj : :class:`tanium_ng.result_set.ResultSet`
+    #      :class:`tanium_ng.base.BaseType`
+    #         * tanium_ng object to export
 
-        Returns
-        -------
-        result : str
-           * results of exporting `obj` into XML format
-        """
+    #     Returns
+    #     -------
+    #     result : str
+    #        * results of exporting `obj` into csv format
+    #     """
 
-        result = None
+    #     if not hasattr(obj, 'write_csv'):
+    #         err = "{!r} has no write_csv() method!".format
+    #         raise exceptions.PytanError(err(obj))
 
-        if hasattr(obj, 'toSOAPBody'):
-            raw_xml = obj.toSOAPBody(**kwargs)
-        elif hasattr(obj, '_RAW_XML'):
-            raw_xml = obj._RAW_XML
-        else:
-            err = "{!r} has no toSOAPBody() method or _RAW_XML attribute!".format
-            raise utils.exceptions.PytanError(err(obj))
+    #     out = io.BytesIO()
 
-        clean_keys = ['x']
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+    #     clean_keys = ['fd', 'val']
+    #     clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
-        result = utils.tools.xml_pretty(x=raw_xml, **clean_kwargs)
-        return result
+    #     if getattr(obj, '_list_properties', ''):
+    #         result = obj.write_csv(fd=out, val=list(obj), **clean_kwargs)
+    #     else:
+    #         result = obj.write_csv(fd=out, val=obj, **clean_kwargs)
+
+    #     result = out.getvalue()
+    #     return result
+
+    # TODO
+    # def _export_format_json(self, obj, **kwargs):
+        # """Handles exporting format: JSON
+
+        # Parameters
+        # ----------
+        # obj : :class:`tanium_ng.result_set.ResultSet`
+        # :class:`tanium_ng.base.BaseType`
+        #     * tanium_ng object to export
+
+        # Returns
+        # -------
+        # result : str
+        #    * results of exporting `obj` into json format
+        # """
+
+        # if not hasattr(obj, 'to_json'):
+        #     err = "{!r} has no to_json() method!".format
+        #     raise exceptions.PytanError(err(obj))
+
+        # clean_keys = ['jsonable']
+        # clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+
+        # result = obj.to_json(jsonable=obj, **clean_kwargs)
+        # return result
+
+    # TODO
+    # def _export_format_xml(self, obj, **kwargs):
+        # """Handles exporting format: XML
+
+        # Parameters
+        # ----------
+        # obj : :class:`tanium_ng.result_set.ResultSet`
+        # :class:`tanium_ng.base.BaseType`
+        #     * tanium_ng object to export
+
+        # Returns
+        # -------
+        # result : str
+        #    * results of exporting `obj` into XML format
+        # """
+
+        # result = None
+
+        # if hasattr(obj, 'toSOAPBody'):
+        #     raw_xml = obj.toSOAPBody(**kwargs)
+        # elif hasattr(obj, '_RAW_XML'):
+        #     raw_xml = obj._RAW_XML
+        # else:
+        #     err = "{!r} has no toSOAPBody() method or _RAW_XML attribute!".format
+        #     raise exceptions.PytanError(err(obj))
+
+        # clean_keys = ['x']
+        # clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+
+        # result = tools.xml_pretty(x=raw_xml, **clean_kwargs)
+        # return result
 
     '''
     # TODO
@@ -2379,8 +2379,8 @@ class Handler(object):
 
         See Also
         --------
-        :data:`utils.constants.FILTER_MAPS` : valid filter dictionaries for filters
-        :data:`utils.constants.OPTION_MAPS` : valid option dictionaries for options
+        :data:`constants.FILTER_MAPS` : valid filter dictionaries for filters
+        :data:`constants.OPTION_MAPS` : valid option dictionaries for options
 
         Notes
         -----
@@ -2398,7 +2398,7 @@ class Handler(object):
                 * Action.start_time does not need to be specified
         """
 
-        utils.helpers.check_for_help(kwargs=kwargs)
+        helpers.check_for_help(kwargs=kwargs)
 
         clean_keys = [
             'defs',
@@ -2415,7 +2415,7 @@ class Handler(object):
             'handler',
         ]
 
-        clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         if not self.session.platform_is_6_5(**kwargs):
             objtype = tanium_ng.Action
@@ -2426,28 +2426,28 @@ class Handler(object):
             objlisttype = tanium_ng.SavedActionList
             force_start_time = False
 
-        package_def = utils.validate.defs_gen(
+        package_def = validate.defs_gen(
             defname='package_def',
             deftypes=['dict()'],
             empty_ok=False,
             **clean_kwargs
         )
-        filter_defs = utils.validate.defs_gen(
+        filter_defs = validate.defs_gen(
             defname='filter_defs',
             deftypes=['list()', 'str()', 'dict()'],
             strconv='name',
             empty_ok=True,
             **clean_kwargs
         )
-        option_defs = utils.validate.defs_gen(
+        option_defs = validate.defs_gen(
             defname='option_defs',
             deftypes=['dict()'],
             empty_ok=True,
             **clean_kwargs
         )
 
-        utils.validate.def_package(package_def=package_def)
-        utils.validate.def_sensors(sensor_defs=filter_defs)
+        validate.def_package(package_def=package_def)
+        validate.def_sensors(sensor_defs=filter_defs)
 
         package_def = self._get_package_def(d=package_def, **clean_kwargs)
         h = (
@@ -2460,13 +2460,13 @@ class Handler(object):
             **clean_kwargs
         )
 
-        start_seconds_from_now = utils.validate.get_kwargs_int(
+        start_seconds_from_now = validate.get_kwargs_int(
             key='start_seconds_from_now',
             default=0,
             **clean_kwargs
         )
 
-        expire_seconds = utils.validate.get_kwargs_int(key='expire_seconds', **clean_kwargs)
+        expire_seconds = validate.get_kwargs_int(key='expire_seconds', **clean_kwargs)
 
         action_name_default = "API Deploy {0.name}".format(package_def['package_obj'])
         action_name = kwargs.get('action_name', action_name_default)
@@ -2499,7 +2499,7 @@ class Handler(object):
         """
         if not run:
             pa_sensors = ['Computer Name', 'Online, that =:True']
-            pa_sensor_defs = utils.parsers.parse_sensors(sensors=pa_sensors)
+            pa_sensor_defs = parsers.parse_sensors(sensors=pa_sensors)
 
             q_clean_keys = [
                 'sensor_defs',
@@ -2509,7 +2509,7 @@ class Handler(object):
                 'pytan_help',
                 'get_results',
             ]
-            q_clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=q_clean_keys)
+            q_clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=q_clean_keys)
 
             h = (
                 "Ask a question to determine the number of systems this action would affect if it "
@@ -2528,7 +2528,7 @@ class Handler(object):
 
             if passed_count == 0:
                 m = "Number of systems that match the action filters provided is zero!"
-                raise utils.exceptions.PytanError(m)
+                raise exceptions.PytanError(m)
 
             default_format = 'csv'
             export_format = kwargs.get('export_format', default_format)
@@ -2541,7 +2541,7 @@ class Handler(object):
                 'export_format',
                 'prefix',
             ]
-            e_clean_kwargs = utils.validate.clean_kwargs(kwargs=kwargs, keys=e_clean_keys)
+            e_clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=e_clean_keys)
             e_clean_kwargs['obj'] = pre_action_question['question_results']
             e_clean_kwargs['export_format'] = export_format
             e_clean_kwargs['prefix'] = export_prefix
@@ -2552,10 +2552,10 @@ class Handler(object):
                 "View and verify the contents of {} (length: {} bytes)\n"
                 "Re-run this deploy action with run=True after verifying"
             ).format
-            raise utils.exceptions.RunError(m(report_path, len(result)))
+            raise exceptions.RunError(m(report_path, len(result)))
 
         # BUILD THE PACKAGE OBJECT TO BE ADDED TO THE ACTION
-        add_package_obj = tools_ng.copy_package_obj_for_action(
+        add_package_obj = tickle.copy_package_obj_for_action(
         obj=package_def['package_obj'])
 
         # if source_id is specified, a new package will be created with the parameters
@@ -2563,7 +2563,7 @@ class Handler(object):
         # is hidden
         add_package_obj.hidden_flag = 1
 
-        param_objlist = tools_ng.build_param_objlist(
+        param_objlist = tickle.build_param_objlist(
             obj=package_def['package_obj'],
             user_params=package_def['params'],
             delim='',
@@ -2599,7 +2599,7 @@ class Handler(object):
         add_obj.issue_count = 0
 
         if filter_defs or option_defs:
-            targetgroup_obj = tools_ng.build_group_obj(
+            targetgroup_obj = tickle.build_group_obj(
                 filter_defs=filter_defs, option_defs=option_defs,
             )
             add_obj.target_group = targetgroup_obj
@@ -2607,12 +2607,12 @@ class Handler(object):
             targetgroup_obj = None
 
         if start_seconds_from_now:
-            add_obj.start_time = utils.tools.seconds_from_now(secs=start_seconds_from_now)
+            add_obj.start_time = tools.seconds_from_now(secs=start_seconds_from_now)
 
         if force_start_time and not add_obj.start_time:
             if not start_seconds_from_now:
                 start_seconds_from_now = 1
-            add_obj.start_time = utils.tools.seconds_from_now(secs=start_seconds_from_now)
+            add_obj.start_time = tools.seconds_from_now(secs=start_seconds_from_now)
 
         if package_def['package_obj'].expire_seconds:
             add_obj.expire_seconds = package_def['package_obj'].expire_seconds
@@ -2721,10 +2721,10 @@ class Handler(object):
         sse_format_int : int
             * `sse_format` parsed into an int
         """
-        if sse_format_int not in utils.constants.SSE_RESTRICT_MAP:
+        if sse_format_int not in constants.SSE_RESTRICT_MAP:
             return
 
-        restrict_maps = utils.constants.SSE_RESTRICT_MAP[sse_format_int]
+        restrict_maps = constants.SSE_RESTRICT_MAP[sse_format_int]
         kwargs['v_maps'] = restrict_maps
         if not self._version_support_check(**kwargs):
             restrict_maps_txt = '\n'.join([str(x) for x in restrict_maps])
@@ -2733,7 +2733,7 @@ class Handler(object):
                 "server version must be equal to or greater than one of:\n{}"
             )
             err = err.format(self.session.server_version, sse_format, restrict_maps_txt)
-            raise utils.exceptions.UnsupportedVersionError(err)
+            raise exceptions.UnsupportedVersionError(err)
 
     def _resolve_sse_format(self, sse_format, **kwargs):
         """Resolves the server side export format the user supplied to an integer for the API
@@ -2748,15 +2748,15 @@ class Handler(object):
         sse_format_int : int
             * `sse_format` parsed into an int
         """
-        result = [x[-1] for x in utils.constants.SSE_FORMAT_MAP if sse_format.lower() in x]
+        result = [x[-1] for x in constants.SSE_FORMAT_MAP if sse_format.lower() in x]
 
         if not result:
             ef_map_txt = '\n'.join(
-                [', '.join(['{!r}'.format(x) for x in y]) for y in utils.constants.SSE_FORMAT_MAP]
+                [', '.join(['{!r}'.format(x) for x in y]) for y in constants.SSE_FORMAT_MAP]
             )
             err = "Unsupport export format {!r}, must be one of:\n{}"
             err = err.format(sse_format, ef_map_txt)
-            raise utils.exceptions.PytanError(err)
+            raise exceptions.PytanError(err)
 
         result = result[0]
 
@@ -2774,7 +2774,7 @@ class Handler(object):
         if not self.session.platform_is_6_5(**kwargs):
             err = "Server side export not supported in version: {}"
             err = err.format(self.session.server_version)
-            raise utils.exceptions.UnsupportedVersionError(err)
+            raise exceptions.UnsupportedVersionError(err)
 
     def _check_sse_crash_prevention(self, obj, **kwargs):
         """Runs a number of methods used to prevent crashing the platform server when performing
@@ -2785,7 +2785,7 @@ class Handler(object):
         obj : :class:`tanium_ng.base.BaseType`
             * object to pass to self._check_sse_empty_rs
         """
-        kwargs['v_maps'] = utils.constants.SSE_CRASH_MAP
+        kwargs['v_maps'] = constants.SSE_CRASH_MAP
         kwargs['ok_version'] = self._version_support_check(**kwargs)
         kwargs['obj'] = obj
         self._check_sse_timing(**kwargs)
@@ -2793,7 +2793,7 @@ class Handler(object):
 
     def _check_sse_timing(self, ok_version, **kwargs):
         """Checks that the last server side export was at least 1 second ago if server version is
-        less than any versions in utils.constants.SSE_CRASH_MAP
+        less than any versions in constants.SSE_CRASH_MAP
 
         Parameters
         ----------
@@ -2805,12 +2805,12 @@ class Handler(object):
             last_elapsed = datetime.datetime.utcnow() - last_get_rd_sse
             if last_elapsed.seconds == 0 and not ok_version:
                 err = "You must wait at least one second between server side export requests!"
-                raise utils.exceptions.ServerSideExportError(err)
+                raise exceptions.ServerSideExportError(err)
         self.last_get_rd_sse = datetime.datetime.utcnow()
 
     def _check_sse_empty_rs(self, obj, ok_version, **kwargs):
         """Checks if the server version is less than any versions in
-        utils.constants.SSE_CRASH_MAP, if so verifies that the result set is not empty
+        constants.SSE_CRASH_MAP, if so verifies that the result set is not empty
 
         Parameters
         ----------
@@ -2825,14 +2825,14 @@ class Handler(object):
             if ri.row_count == 0:
                 err = "No rows available to perform a server side export with, result info: {}"
                 err = err.format(ri)
-                raise utils.exceptions.ServerSideExportError(err)
+                raise exceptions.ServerSideExportError(err)
 
     def _parse_args(self, kwargs):
         """pass."""
         self.args_db = {}
         self.args_db['original_args'] = kwargs
         self.args_db['handler_args'] = self._get_src_args(kwargs)
-        self.args_db['default_args'] = self._get_src_args(utils.constants.DEFAULTS)
+        self.args_db['default_args'] = self._get_src_args(constants.DEFAULTS)
         self.args_db['env_args'] = {
             k.lower().replace('pytan_', ''): v
             for k, v in os.environ.items()
@@ -2845,7 +2845,7 @@ class Handler(object):
         self.args_db['parsed_args'] = {}
 
         args_order = ['config_args', 'env_args', 'handler_args', 'default_args']
-        for k in utils.constants.HANDLER_ARGS:
+        for k in constants.HANDLER_ARGS:
             src = None
             def_val = self.args_db['default_args'].get(k, None)
             for args in args_order:
@@ -2875,8 +2875,8 @@ class Handler(object):
             self.mylog.debug(m)
 
         if self.args_db['parsed_args']['password']:
-            self.args_db['parsed_args']['password'] = utils.tools.deobfuscate(
-                key=utils.constants.PYTAN_KEY,
+            self.args_db['parsed_args']['password'] = tools.deobfuscate(
+                key=constants.PYTAN_KEY,
                 string=self.args_db['parsed_args']['password'],
             )
 
@@ -2890,7 +2890,7 @@ class Handler(object):
             else:
                 err = "Argument {!r} must be one of {!r}, supplied string containing {!r}"
                 err = err.format(argname, ','.join(valid), value)
-                raise utils.exceptions.PytanError(err)
+                raise exceptions.PytanError(err)
 
         if argtype == dict:
             try:
@@ -2898,14 +2898,14 @@ class Handler(object):
             except Exception as e:
                 err = "Tried to evaluate a dictionary from string {}, exception: {}"
                 err = err.format(value, e)
-                raise utils.exceptions.PytanError(err)
+                raise exceptions.PytanError(err)
         return result
 
     def _validate_args(self):
         """pass."""
         pa = self.args_db['parsed_args']
         pas = self.args_db['parsed_args_source']
-        for arg, argtype in utils.constants.HANDLER_ARGS.items():
+        for arg, argtype in constants.HANDLER_ARGS.items():
             if arg not in pa:
                 continue
 
@@ -2922,23 +2922,23 @@ class Handler(object):
                 err = "Argument {!r} must be type {!r}, supplied type {!r} via {!r}"
                 err = err.format(arg, argtype.__name__, pa_type, pas[arg])
                 err = "{} exception: {}".format(err, e)
-                raise utils.exceptions.PytanError(err)
+                raise exceptions.PytanError(err)
 
         if not pa['host']:
             err = "Must supply host!"
-            raise utils.exceptions.PytanError(err)
+            raise exceptions.PytanError(err)
 
         if not pa['port']:
             err = "Must supply port!"
-            raise utils.exceptions.PytanError(err)
+            raise exceptions.PytanError(err)
 
         if not pa['session_id'] and not pa['username']:
             err = "Must supply username if no session_id!"
-            raise utils.exceptions.PytanError(err)
+            raise exceptions.PytanError(err)
 
         if not pa['session_id'] and not pa['password']:
             err = "Must supply password if no session_id!"
-            raise utils.exceptions.PytanError(err)
+            raise exceptions.PytanError(err)
 
     def _log_args(self):
         """pass."""
@@ -2949,5 +2949,5 @@ class Handler(object):
 
     def _get_src_args(self, kwargs):
         """pass."""
-        src_args = {k: kwargs[k] for k in utils.constants.HANDLER_ARGS if k in kwargs}
+        src_args = {k: kwargs[k] for k in constants.HANDLER_ARGS if k in kwargs}
         return src_args

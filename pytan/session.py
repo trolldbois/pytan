@@ -1,16 +1,19 @@
 """Session classes for the :mod:`pytan` module."""
 
+import re
+import time
+import json
 import string
 import logging
-import json
-import re
 import threading
-import time
+
 from datetime import datetime
 from base64 import b64encode
 
-from . import b
-from . import utils, requests, tanium_ng, tickle, tools_ng
+from pytan import b
+from pytan import requests, tanium_ng, tickle
+from pytan.utils import exceptions, tools, helpstr, xml_cleaner
+from pytan.utils.version import __version__
 
 requests.packages.urllib3.disable_warnings()
 
@@ -100,7 +103,7 @@ class Session(object):
 
     _REQUEST_HEADERS = {
         'Accept-Encoding': 'gzip',
-        'User-Agent': 'PyTan/{}'.format(utils.version.__version__)
+        'User-Agent': 'PyTan/{}'.format(__version__)
     }
     """dictionary of headers to add to every HTTP GET/POST"""
 
@@ -230,7 +233,7 @@ class Session(object):
         self.SERVER_VERSION = "Not yet determined"
 
         # test our connectivity to the Tanium server
-        utils.tools.test_app_port(self._HOST, self._PORT)
+        tools.test_app_port(self._HOST, self._PORT)
 
         # authenticate to the Tanium server
         self.authenticate(**kwargs)
@@ -318,17 +321,17 @@ class Session(object):
         if not self.session_id and not self._USERNAME:
             err = "Must supply username"
             mylog.critical(err)
-            raise utils.exceptions.AuthorizationError(err)
+            raise exceptions.AuthorizationError(err)
 
         if not self.session_id and not self._PASSWORD:
             err = "Must supply password"
             mylog.critical(err)
-            raise utils.exceptions.AuthorizationError(err)
+            raise exceptions.AuthorizationError(err)
 
         if self.session_id and self._PERSISTENT:
             err = "Unable to establish a persistent session when authenticating via session_id"
             mylog.critical(err)
-            raise utils.exceptions.AuthorizationError(err)
+            raise exceptions.AuthorizationError(err)
 
     def authenticate(self, **kwargs):
         """Authenticate against a Tanium Server using a username/password or a session ID
@@ -426,21 +429,21 @@ class Session(object):
         kwargs['retry_count'] = retry_count
         kwargs['connect_timeout'] = connect_timeout
         kwargs['response_timeout'] = response_timeout
-        kwargs['pytan_help'] = utils.helpstr.AUTH
+        kwargs['pytan_help'] = helpstr.AUTH
         kwargs['request_method'] = 'get'
 
         try:
             self.session_id = self.http_request_auth(**kwargs)
-        except utils.exceptions.HttpError as e:
+        except exceptions.HttpError as e:
             err = "HTTP Error while trying to authenticate: {}"
             err = err.format(e)
             mylog.exception(err)
             raise
-        except utils.exceptions.AuthorizationError as e:
+        except exceptions.AuthorizationError as e:
             err = "Authentication Failed: {}"
             err = err.format(e)
             mylog.exception(err)
-            raise utils.exceptions.AuthorizationError(err)
+            raise exceptions.AuthorizationError(err)
         except:
             raise
 
@@ -691,7 +694,7 @@ class Session(object):
         kwargs['retry_count'] = 0
         kwargs['connect_timeout'] = connect_timeout
         kwargs['response_timeout'] = response_timeout
-        kwargs['pytan_help'] = utils.helpstr.SERVINFO
+        kwargs['pytan_help'] = helpstr.SERVINFO
         kwargs['request_method'] = 'get'
 
         info_body = ''
@@ -913,7 +916,7 @@ class Session(object):
             else:
                 err = "Access denied after re-authenticating! Server response: {}"
                 err = err.format(response_command)
-                raise utils.exceptions.AuthorizationError(err)
+                raise exceptions.AuthorizationError(err)
 
         elif response_command != request_command:
             for p in self._BAD_RESPONSE_CMD_PRUNES:
@@ -921,7 +924,7 @@ class Session(object):
 
             err = "Response command {} does not match request command {}"
             err = err.format(response_command, request_command)
-            raise utils.exceptions.BadResponseError(err)
+            raise exceptions.BadResponseError(err)
 
         # update session_id, in case new one issued
         regex_args = {'body': result, 'element': 'session', 'fail': True}
@@ -951,11 +954,12 @@ class Session(object):
                 result.append("Secondary")
         else:
             err = "Authentication type unknown!"
-            raise utils.exceptions.AuthorizationError(err)
+            raise exceptions.AuthorizationError(err)
 
         result = ', '.join(result)
         return result
 
+    # TODO: MOVE TO TOOLS
     def _b64encode(self, val):
         """pass."""
         result = b64encode(b(val))
@@ -978,7 +982,7 @@ class Session(object):
         else:
             err = "Authentication type unknown!"
             mylog.critical(err)
-            raise utils.exceptions.AuthorizationError(err)
+            raise exceptions.AuthorizationError(err)
         return result
 
     def http_request_auth(self, **kwargs):
@@ -1021,7 +1025,7 @@ class Session(object):
             try:
                 result = self.http_request(**kwargs)
                 break
-            except utils.exceptions.AuthorizationError:
+            except exceptions.AuthorizationError:
                 if self._SESSION_ID and auth_retry:
                     self._SESSION_ID = ''
                     self.authenticate()
@@ -1143,7 +1147,7 @@ class Session(object):
             err = "HTTP response: {} request to '{}' failed: {}"
             err = err.format(request_method.upper(), full_url, e)
             mylog.exception(err)
-            raise utils.exceptions.HttpError(err)
+            raise exceptions.HttpError(err)
 
         self.LAST_REQUESTS_RESPONSE = response
         if self.RECORD_ALL_REQUESTS:
@@ -1153,7 +1157,7 @@ class Session(object):
         response_body = response.text
 
         kwargs['text'] = response_body
-        response_body = utils.xml_cleaner(**kwargs)
+        response_body = xml_cleaner(**kwargs)
 
         pre = "HTTP {} response: '{}'"
         pre = pre.format(request_method.upper(), full_url)
@@ -1173,17 +1177,17 @@ class Session(object):
         if response.status_code in self._AUTH_FAIL_CODES:
             err = "{0}: returned code: {1.status_code}, body: {2}"
             err = err.format(pre, response, response_body)
-            raise utils.exceptions.AuthorizationError(err)
+            raise exceptions.AuthorizationError(err)
 
         if not response.ok:
             err = "{0}: returned code: {1.status_code}, body: {2}"
             err = err.format(pre, response, response_body)
-            raise utils.exceptions.HttpError(err)
+            raise exceptions.HttpError(err)
 
         if not response_body and not empty_ok:
             err = "{0}: returned empty body"
             err = err.format(pre)
-            raise utils.exceptions.HttpError(err)
+            raise exceptions.HttpError(err)
         return response_body
 
     def _get_full_url(self, **kwargs):
@@ -1222,12 +1226,12 @@ class Session(object):
         request_body = self.LAST_REQUESTS_RESPONSE.request.body
         response_body = self.LAST_REQUESTS_RESPONSE.text
         try:
-            req = utils.tools.xml_pretty(request_body)
+            req = tools.xml_pretty(request_body)
         except Exception as e:
             req = "Failed to prettify xml: {}, raw xml:\n{}".format(e, request_body)
 
         try:
-            resp = utils.tools.xml_pretty(response_body)
+            resp = tools.xml_pretty(response_body)
         except Exception as e:
             resp = "Failed to prettify xml: {}, raw xml:\n{}".format(e, response_body)
         return req, resp
@@ -1296,7 +1300,7 @@ class Session(object):
                 points = search_path.lstrip('percentage(').rstrip(')')
                 points = [self._resolve_stat_target(p, diags) for p in points.split(',')]
                 try:
-                    txt = utils.tools.get_percent(base=points[0], amount=points[1], text=True)
+                    txt = tools.get_percent(base=points[0], amount=points[1], text=True)
                 except:
                     txt = ', '.join(points)
             else:
@@ -1349,7 +1353,7 @@ class Session(object):
         body : str
             * The XML request body created from the string.template self.REQUEST_BODY_TEMPLATE
         """
-        options_obj = tools_ng.create_options_obj(**kwargs)
+        options_obj = tickle.create_options_obj(**kwargs)
         options = tickle.to_xml(options_obj)
 
         body_template = string.Template(self._REQUEST_BODY_BASE.format(**self._XMLNS))

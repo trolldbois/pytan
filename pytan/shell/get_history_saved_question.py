@@ -1,6 +1,4 @@
 from . import base
-from .. import calc
-from .. import pretty
 
 
 class Worker(base.GetBase):

@@ -4,12 +4,14 @@
 # Please do not change the two lines above. See PEP 8, PEP 263.
 """Collection of classes and methods for polling of actions/questions in :mod:`pytan`"""
 
-import logging
 import time
+import logging
+
 from datetime import datetime
 from datetime import timedelta
 
-from .. import utils, tanium_ng
+from pytan import tanium_ng
+from pytan.utils import constants, tools, exceptions, helpstr
 
 mylog = logging.getLogger(__name__)
 progresslog = logging.getLogger(__name__ + ".progress")
@@ -52,22 +54,22 @@ class QuestionPoller(object):
     OBJECT_TYPE = 'Question'
     """valid type of object that can be passed in as obj to __init__"""
 
-    STR_ATTRS = utils.constants.Q_STR_ATTRS
+    STR_ATTRS = constants.Q_STR_ATTRS
     """Class attributes to include in __str__ output"""
 
-    COMPLETE_PCT_DEFAULT = utils.constants.Q_COMPLETE_PCT_DEFAULT
+    COMPLETE_PCT_DEFAULT = constants.Q_COMPLETE_PCT_DEFAULT
     """default value for self.complete_pct"""
 
-    POLLING_SECS_DEFAULT = utils.constants.Q_POLLING_SECS_DEFAULT
+    POLLING_SECS_DEFAULT = constants.Q_POLLING_SECS_DEFAULT
     """default value for self.polling_secs"""
 
-    OVERRIDE_TIMEOUT_SECS_DEFAULT = utils.constants.Q_OVERRIDE_TIMEOUT_SECS_DEFAULT
+    OVERRIDE_TIMEOUT_SECS_DEFAULT = constants.Q_OVERRIDE_TIMEOUT_SECS_DEFAULT
     """default value for self.override_timeout_secs"""
 
-    EXPIRATION_ATTR = utils.constants.Q_EXPIRATION_ATTR
+    EXPIRATION_ATTR = constants.Q_EXPIRATION_ATTR
     """attribute of self.obj that contains the expiration for this object"""
 
-    EXPIRY_FALLBACK_SECS = utils.constants.Q_EXPIRY_FALLBACK_SECS
+    EXPIRY_FALLBACK_SECS = constants.Q_EXPIRY_FALLBACK_SECS
     """If the EXPIRATION_ATTR of `obj` can't be automatically determined, then this is used as a
     fallback for timeout - polling will failed after this many seconds if completion not reached"""
 
@@ -89,20 +91,20 @@ class QuestionPoller(object):
         override_timeout = kwargs.get('override_timeout_secs', self.OVERRIDE_TIMEOUT_SECS_DEFAULT)
         forced_passed_done_count = kwargs.get('force_passed_done_count', 0)
 
-        from ..handler import Handler as BaseHandler
+        from pytan.handler import Handler as BaseHandler
         self.setup_logging()
 
         if not isinstance(handler, BaseHandler):
             err = "{} is not a valid handler instance! Must be a: {!r}"
             err = err.format(type(handler), BaseHandler)
-            raise utils.exceptions.PollingError(err)
+            raise exceptions.PollingError(err)
 
         self.OBJECT_TYPE = getattr(tanium_ng, self.OBJECT_TYPE)
 
         if not isinstance(obj, self.OBJECT_TYPE):
             err = "{} is not a valid object type! Must be a: {}"
             err = err.format(type(obj), self.OBJECT_TYPE)
-            raise utils.exceptions.PollingError(err)
+            raise exceptions.PollingError(err)
 
         self.handler = handler
         self.obj = obj
@@ -148,7 +150,7 @@ class QuestionPoller(object):
         if not obj:
             err = "Unable to find object: {}"
             err = err.format(self.obj)
-            raise utils.exceptions.PollingError(err)
+            raise exceptions.PollingError(err)
 
         self.obj = obj
 
@@ -189,7 +191,7 @@ class QuestionPoller(object):
             if fallback is None:
                 err = "{}{!r} is None, even after re-fetching object"
                 err = err.format(self.id_str, attr)
-                raise utils.exceptions.PollingError(err)
+                raise exceptions.PollingError(err)
 
             m = "{}attribute {!r} is not set after re-fetching object - using fallback of {}"
             m = m.format(self.id_str, attr, fallback)
@@ -226,7 +228,7 @@ class QuestionPoller(object):
         expiration from the object (self.obj) itself.
         """
         kwargs['attr'] = self.EXPIRATION_ATTR
-        kwargs['fallback'] = utils.tools.seconds_from_now(secs=self.EXPIRY_FALLBACK_SECS)
+        kwargs['fallback'] = tools.seconds_from_now(secs=self.EXPIRY_FALLBACK_SECS)
         self.expiration = self._derive_attribute(**kwargs)
 
     def run_callback(self, callback, pct, **kwargs):
@@ -289,10 +291,10 @@ class QuestionPoller(object):
             if current_try >= gri_retry_count:
                 err = "Estimated Total of Clients is 0 -- no clients available?, {}"
                 err = err.format(attempt_text)
-                raise utils.exceptions.PollingError(err)
+                raise exceptions.PollingError(err)
             else:
                 current_try += 1
-                myhelp = utils.helpstr.GRI_RETRY.format(attempt_text)
+                myhelp = helpstr.GRI_RETRY.format(attempt_text)
                 kwargs['pytan_help'] = myhelp
                 self.mylog.debug(myhelp)
                 time.sleep(gri_retry_sleep)
@@ -340,7 +342,7 @@ class QuestionPoller(object):
             fly
         """
         self.start = datetime.utcnow()
-        self.expiration_timeout = utils.tools.timestr_to_datetime(timestr=self.expiration)
+        self.expiration_timeout = tools.timestr_to_datetime(timestr=self.expiration)
 
         if self.override_timeout_secs:
             td_obj = timedelta(seconds=self.override_timeout_secs)
@@ -377,7 +379,7 @@ class QuestionPoller(object):
             est_total = self.override_estimated_total or self.result_info.estimated_total
             passed = self.result_info.passed
 
-            new_pct = utils.tools.get_percent(base=tested, amount=est_total)
+            new_pct = tools.get_percent(base=tested, amount=est_total)
             new_pct_str = "{0:.0f}%".format(new_pct)
             complete_pct_str = "{0:.0f}%".format(self.complete_pct)
 
